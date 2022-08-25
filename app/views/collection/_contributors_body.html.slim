@@ -26,11 +26,21 @@
     h3 =t('.active_collaborators')
 
     -unless @active_transcribers.empty?
-      p
-      -@active_transcribers.each do |user|
-          =link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
-          =t('.collection', collection_time: (@user_time_proportional[user.id] / 60 + 1).floor, total_time: (@user_time[user.id] / 60 + 1).floor) if @user_time[user.id]
-          | <br>
+      table.datagrid.striped(style="width:45%")
+        thead 
+          tr
+            th= t('.user') 
+            th= t('.time_on_this')
+            th= t('.time_on_ftp')
+        tbody 
+        -@active_transcribers.each do |user|
+          tr 
+            td= link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
+            -if @user_time[user.id]
+              td= (@user_time_proportional[user.id] / 60 + 1).floor
+              td= (@user_time[user.id] / 60 + 1).floor
+            -else
+              <td><td>
       p
         -total_minutes = (@user_time.values.sum / 60).floor + 1
         =t('.total_time', hours: (total_minutes / 60), minutes: (total_minutes % 60))

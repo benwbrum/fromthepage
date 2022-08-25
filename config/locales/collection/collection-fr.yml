@@ -31,15 +31,17 @@ fr:
       all_collaborator_emails: Tous les e-mails des collaborateurs
       collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
       collaborators: Collaborateurs
-      collection: " (Collection : %{collection_time} minutes | Total : %{total_time} minutes)"
       detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
       export_activity_as_csv: Exporter l'activité au format CSV
-      export_as_csv: Exporter au format CSV
+      export_as_csv: Exporter l'activité détaillée au format CSV
       find_project_newsletters_recommendations: Trouvez des recommandations pour les newsletters du projet.
       new_collaborators: Nouveaux collaborateurs
       no_activity_this_time_frame: Aucune activité pendant cette période
       no_collaborators: Aucun collaborateur
+      time_on_ftp: Heure sur FromThePage
+      time_on_this: Temps sur cette collection
       total_time: 'Durée totale : %{hours} heures, %{minutes} minutes.'
+      user: Utilisateur
       view_activity: Afficher l'activité
     corrected: corrigée
     create:
