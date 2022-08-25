@@ -79,6 +79,7 @@ pt:
       default_orientation: Selecione a orientação da página predeterminada da transcrição
       delete_collection: Apagar Coleção
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       disable_document_sets: Desativar Conjuntos de Documentos
       disable_facets: Desativar facetas
       disable_ocr: Desativar OCR
@@ -148,6 +149,7 @@ pt:
       text_language: Selecione o idioma da transcrição
       title: Titulo
       transcription_conventions: Convenções de Transcrição
+      transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       transcription_type: Tipo de Transcrição
       transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
       upload_image: Subir Imagem
@@ -200,6 +202,7 @@ pt:
       return_to_collection: Voltar à Coleção
     new:
       collection_description: Descrição Da Colecção
+      collection_description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       create_collection: Criar Coleção
       create_new_collection: Criar Nova Coleção
       enter_collection_title: Para criar uma nova coleção, introduza o título da coleção. No próximo passo você poderá adicionar obras na coleção.

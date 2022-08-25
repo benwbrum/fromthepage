@@ -74,6 +74,7 @@ es:
       current_url: La URL actual para este trabajo es %{current_url}. Si desea editar la sección de trabajo de la URL, utilice letras minúsculas y guiones entre las palabras.
       delete_work: Eliminar trabajo
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       document_date: Fecha del documento
       document_date_hint: La fecha del documento está en el formato EDTF (por ejemplo, 1843, 2001-02, 1643-06-30)
       document_history: Historia del documento
@@ -106,6 +107,7 @@ es:
       support_translation: Traducción de soporte
       support_translation_description: Una obra puede traducirse y transcribirse. Cuando esté marcado, el trabajo tendrá una pestaña de Traducción para cada página.
       transcription_conventions: Convenciones de transcripción
+      transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       translation_instructions: Instrucciones de traducción
       upload_image: Cargar imagen
       uploaded_by: subido por
@@ -126,6 +128,7 @@ es:
       create_empty_work_description: Esto crea un trabajo vacío. Una vez que cree el trabajo, puede agregar imágenes de página individuales. Si tiene un archivo zip o pdf con varias imágenes, debe crear el trabajo y cargar el archivo en %{start_project} en su lugar.
       create_work: Crear trabajo
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       start_a_project: Iniciar un proyecto
       title: Título
       work_description: Un trabajo es un documento único como una carta, un diario, un libro de campo, una tarjeta postal o un cuaderno.

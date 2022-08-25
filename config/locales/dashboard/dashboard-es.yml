@@ -27,6 +27,7 @@ es:
       create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en el trabajo.
       create_work: Crear trabajo
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       select_a_collection: "- Seleccione una colección -"
       title: Título
     exports:
