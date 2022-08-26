@@ -101,10 +101,10 @@ en:
     owner_header:
       account_type: "%{type} account"
       account_types:
-        individual_researcher: Individual researcher
-        large_institution: Large institution
+        individual_researcher: Individual Researcher
+        large_institution: Large Institution
         legacy: Legacy
-        small_organization: Small organization
+        small_organization: Small Organization
         staff: Staff
         trial: Trial
       actions: Actions
