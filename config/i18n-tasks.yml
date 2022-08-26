@@ -132,6 +132,7 @@ ignore_unused:
   - 'page.edit.page_status_*'
   - 'quality_samplings.show.approval_delta_display_{0,1,2,3,4}'
   - 'article.graph.dot.title'
+  - 'dashboard.owner_header.account_types.{legacy,staff,trial,individual_researcher,small_organization,large_institution}'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

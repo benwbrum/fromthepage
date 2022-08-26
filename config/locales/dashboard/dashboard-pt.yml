@@ -100,6 +100,13 @@ pt:
       your_activity: Sua Atividade
     owner_header:
       account_type: conta %{type}
+      account_types:
+        individual_researcher: Pesquisador individual
+        large_institution: Grande instituição
+        legacy: Legado
+        small_organization: Pequena organização
+        staff: Funcionários
+        trial: Tentativas
       actions: Ações
       collection:
         one: Coleção
