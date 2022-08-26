@@ -235,5 +235,13 @@ module ApplicationHelper
     session[:features] && session[:features][feature.to_s]
   end
 
+  # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
+  def to_snippet(intro_block)
+    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+    doc = Nokogiri::HTML(intro_block)
+    doc.xpath('//style').each { |n| n.remove } 
+    # strip tags and truncate
+    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || '' 
+  end
 
 end
