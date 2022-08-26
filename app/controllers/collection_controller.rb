@@ -36,8 +36,6 @@ class CollectionController < ApplicationController
 
   def reviewer_dashboard
     # works which have at least one page needing review
-    @one_off_page_count = @collection.pages_needing_review_for_one_off.count
-    @unreviewed_users = @collection.never_reviewed_users
     @total_pages=@collection.pages.count
     @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
     @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
