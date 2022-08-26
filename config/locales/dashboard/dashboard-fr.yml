@@ -99,7 +99,7 @@ fr:
       you_dont_have_any_collections: Vous n'avez pas encore de collections
       your_activity: Votre activité
     owner_header:
-      account_type: "%{type} compte"
+      account_type: Compte %{type}
       account_types:
         individual_researcher: Chercheur individuel
         large_institution: Grand établissement
