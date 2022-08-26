@@ -79,6 +79,7 @@ fr:
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       delete_collection: Supprimer la collection
       description: Description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       disable_document_sets: Désactiver les jeux de documents
       disable_facets: Désactiver les facettes
       disable_ocr: Désactiver la OCR
@@ -148,6 +149,7 @@ fr:
       text_language: Sélectionnez la langue du texte de transcription
       title: Titre
       transcription_conventions: Conventions de transcription
+      transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
       transcription_type: Type de transcription
       transcription_type_description: Chaque page peut avoir une zone de saisie de texte libre (par défaut) ou plusieurs champs de saisie courts conçus pour les formulaires. Toutes les pages de la collection ont le même type d'entrées de transcription. La dictée vocale n'est pas prise en charge et sera désactivée.
       upload_image: Télécharger une image
@@ -200,6 +202,7 @@ fr:
       return_to_collection: Retour à la collection
     new:
       collection_description: Description de la collection
+      collection_description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       create_collection: Créer une collection
       create_new_collection: Créer une nouvelle collection
       enter_collection_title: Pour créer une nouvelle collection, commencez par entrer le titre de la collection. À l'étape suivante, vous pourrez ajouter des œuvres à la collection.

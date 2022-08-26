@@ -6,6 +6,7 @@ fr:
     edit:
       current_url_for_this_work: L'URL actuelle de ce œuvre est %{current_url}. Si vous souhaitez modifier la section de l'ensemble de documents de l'URL, veuillez utiliser des lettres minuscules et des tirets entre les mots.
       description: La description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       document_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
       save_document_set: Enregistrer le jeu de documents
       title: Titre
@@ -41,6 +42,7 @@ fr:
       create_document_set: Créer un ensemble de documents
       create_new_document_set: Créer un nouveau jeu de documents
       description: La description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       document_set_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
       public: Public
       title: Titre

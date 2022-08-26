@@ -79,6 +79,7 @@ en:
       default_orientation: Select the default page transcription orientation
       delete_collection: Delete Collection
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       disable_document_sets: Disable Document Sets
       disable_facets: Disable Facets
       disable_ocr: Disable OCR
@@ -148,6 +149,7 @@ en:
       text_language: Select the language of the transcription text
       title: Title
       transcription_conventions: Transcription Conventions
+      transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
       upload_image: Upload Image
@@ -200,6 +202,7 @@ en:
       return_to_collection: Return to collection
     new:
       collection_description: Collection Description
+      collection_description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       create_collection: Create Collection
       create_new_collection: Create New Collection
       enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.

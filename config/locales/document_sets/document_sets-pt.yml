@@ -6,6 +6,7 @@ pt:
     edit:
       current_url_for_this_work: O URL atual desta obra é %{current_url}. Se quiser editar a parte do conjunto de documentos no URL, por favor use letras minúsculas e traços entre as palavras.
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       save_document_set: Guardar o Conjunto de Documentos
       title: Título
@@ -41,6 +42,7 @@ pt:
       create_document_set: Criar Conjunto de Documentos
       create_new_document_set: Criar Novo Conjunto de Documentos
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_set_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       public: Público
       title: Título

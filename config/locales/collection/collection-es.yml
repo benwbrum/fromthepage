@@ -79,6 +79,7 @@ es:
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       delete_collection: Eliminar Colección
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       disable_document_sets: Deshabilitar Conjuntos de Documentos
       disable_facets: Deshabilitar facetas
       disable_ocr: Deshabilitar OCR
@@ -148,6 +149,7 @@ es:
       text_language: Selecciona el idioma para texto de transcripción
       title: Título
       transcription_conventions: Convenciones de Transcripción
+      transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
       upload_image: Subir Imagen
@@ -200,6 +202,7 @@ es:
       return_to_collection: Volver a la colección
     new:
       collection_description: Descripción de la Colección
+      collection_description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       create_collection: Crear Colección
       create_new_collection: Crear Nueva Colección
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.

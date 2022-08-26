@@ -53,10 +53,12 @@
         tr
           td(colspan="2")
             =f.label :description, t('.description'), class: 'above'
+            br: i =t('.description_message')
             =f.text_area :description, rows: 5, value: @work.description
         tr
           td(colspan="2")
             =f.label :transcription_conventions, t('.transcription_conventions'), class: 'above'
+            br: i =t('.transcription_conventions_message')
             =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
         tr
           td(colspan="2")
