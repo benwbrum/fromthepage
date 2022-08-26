@@ -100,7 +100,14 @@ es:
       you_dont_have_any_collections: No hay colecciones todavía
       your_activity: Tu Actividad
     owner_header:
-      account_type: "%{type} cuenta"
+      account_type: Cuenta %{type}
+      account_types:
+        individual_researcher: investigador individual
+        large_institution: institución grande
+        legacy: legado
+        small_organization: organización pequeña
+        staff: personal
+        trial: prueba
       actions: Comportamiento
       collection:
         one: Recopilación

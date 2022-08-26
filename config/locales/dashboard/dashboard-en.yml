@@ -101,6 +101,13 @@ en:
       your_activity: Your Activity
     owner_header:
       account_type: "%{type} account"
+      account_types:
+        individual_researcher: Individual Researcher
+        large_institution: Large Institution
+        legacy: Legacy
+        small_organization: Small Organization
+        staff: Staff
+        trial: Trial
       actions: Actions
       collection:
         one: Collection
