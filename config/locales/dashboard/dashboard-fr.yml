@@ -101,12 +101,12 @@ fr:
     owner_header:
       account_type: Compte %{type}
       account_types:
-        individual_researcher: Chercheur individuel
-        large_institution: Grand établissement
-        legacy: Héritage
-        small_organization: Petite organisation
-        staff: Personnel
-        trial: Essai
+        individual_researcher: chercheur individuel
+        large_institution: grand établissement
+        legacy: héritage
+        small_organization: petite organisation
+        staff: personnel
+        trial: essai
       actions: Actions
       collection:
         one: Collection

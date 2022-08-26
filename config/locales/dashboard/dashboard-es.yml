@@ -101,12 +101,12 @@ es:
     owner_header:
       account_type: Cuenta %{type}
       account_types:
-        individual_researcher: Investigador individual
-        large_institution: Institución grande
-        legacy: Legado
-        small_organization: Organización pequeña
-        staff: Personal
-        trial: Prueba
+        individual_researcher: investigador individual
+        large_institution: institución grande
+        legacy: legado
+        small_organization: organización pequeña
+        staff: personal
+        trial: prueba
       actions: Comportamiento
       collection:
         one: Recopilación
