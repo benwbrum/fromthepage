@@ -31,15 +31,17 @@ es:
       all_collaborator_emails: Todos los Correos Electrónicos del Colaborador
       collaborator_stats: Estadísticas del Colaborador %{start_deed} hasta %{end_deed}
       collaborators: Colaboradores
-      collection: " (Colección: %{collection_time} minutos | Total: %{total_time} minutos)"
       detailed_spreadsheet_export: Una hoja de cálculo exportable y detallada de todos los colaboradores está disponible en el panel del dueño.
       export_activity_as_csv: Exportar Actividad Como CSV
-      export_as_csv: Exportar como CSV
+      export_as_csv: Exportar actividad detallada como CSV
       find_project_newsletters_recommendations: Encuentre recomendaciones para boletines de proyectos.
       new_collaborators: Nuevos Colaboradores
       no_activity_this_time_frame: No hubo actividad en este lapso de tiempo
       no_collaborators: No hay colaboradores
+      time_on_ftp: Tiempo en FromThePage
+      time_on_this: Tiempo en esta colección
       total_time: 'Tiempo total: %{hours} horas, %{minutes} minutos.'
+      user: Usuario
       view_activity: Ver Actividad
     corrected: corregido
     create:
@@ -77,6 +79,7 @@ es:
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       delete_collection: Eliminar Colección
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       disable_document_sets: Deshabilitar Conjuntos de Documentos
       disable_facets: Deshabilitar facetas
       disable_ocr: Deshabilitar OCR
@@ -146,6 +149,7 @@ es:
       text_language: Selecciona el idioma para texto de transcripción
       title: Título
       transcription_conventions: Convenciones de Transcripción
+      transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
       upload_image: Subir Imagen
@@ -189,14 +193,16 @@ es:
       translation: Traducción
     needs_review: requiere revisión
     needs_review_pages:
-      pages_that_need_review: Páginas que Necesitan Revisión
+      pages_need_review: Páginas que Necesitan Revisión
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     needs_transcription_pages:
+      pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     new:
       collection_description: Descripción de la Colección
+      collection_description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       create_collection: Crear Colección
       create_new_collection: Crear Nueva Colección
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.
@@ -257,6 +263,7 @@ es:
       this_work_has_not_been_described: Este trabajo necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
       time_ago_in_words: Hace %{time}
+      user_wrote_note: "%{user} escribió %{note}"
       works: Obras
     start_transcribing:
       notice: Lo sentimos, pero no hay páginas cualificadas en esta colección.

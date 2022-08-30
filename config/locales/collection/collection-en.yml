@@ -31,15 +31,17 @@ en:
       all_collaborator_emails: All Collaborator Emails
       collaborator_stats: Collaborator Stats %{start_deed} through %{end_deed}
       collaborators: Collaborators
-      collection: " (Collection: %{collection_time} minutes | Total: %{total_time} minutes)"
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
       export_activity_as_csv: Export Activity as CSV
-      export_as_csv: Export as CSV
+      export_as_csv: Export detailed activity as CSV
       find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame
       no_collaborators: No Collaborators
+      time_on_ftp: Time on FromThePage
+      time_on_this: Time on this collection
       total_time: 'Total time: %{hours} hours, %{minutes} minutes.'
+      user: User
       view_activity: View Activity
     corrected: corrected
     create:
@@ -77,6 +79,7 @@ en:
       default_orientation: Select the default page transcription orientation
       delete_collection: Delete Collection
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       disable_document_sets: Disable Document Sets
       disable_facets: Disable Facets
       disable_ocr: Disable OCR
@@ -96,7 +99,7 @@ en:
       enable_field_based_transcription: Enable Field Based Transcription
       enable_metadata_description: Enable Metadata Description
       enable_ocr: Enable OCR
-      enable_spellcheck: "Enable spellcheck (not suitable for texts with irregular spelling)"
+      enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
       field_based_transcription: Field based transcription
       footer: Footer
       help: Basic Help Text
@@ -146,6 +149,7 @@ en:
       text_language: Select the language of the transcription text
       title: Title
       transcription_conventions: Transcription Conventions
+      transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
       upload_image: Upload Image
@@ -189,14 +193,16 @@ en:
       translation: Translation
     needs_review: needs review
     needs_review_pages:
-      pages_that_need_review: Pages That Need Review
+      pages_need_review: Pages That Need Review
       project_by: Project by
       return_to_collection: Return to collection
     needs_transcription_pages:
+      pages_need_transcription: Pages That Need Transcription
       project_by: Project by
       return_to_collection: Return to collection
     new:
       collection_description: Collection Description
+      collection_description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       create_collection: Create Collection
       create_new_collection: Create New Collection
       enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
@@ -257,6 +263,7 @@ en:
       this_work_has_not_been_described: This work needs better metadata.
       this_work_has_pages_that_need_work: Some pages still need work.
       time_ago_in_words: "%{time} ago"
+      user_wrote_note: "%{user} wrote %{note}"
       works: Works
     start_transcribing:
       notice: Sorry, but there are no qualifying pages in this collection.

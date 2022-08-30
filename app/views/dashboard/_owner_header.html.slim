@@ -40,7 +40,8 @@
 
 -if !(current_user.account_type == nil)
   .owner-info
-    =t('.account_type', type: current_user.account_type)
+    -account_type_key = current_user.account_type.downcase.tr(' ', '_')
+    =t('.account_type', type: t(".account_types.#{account_type_key}"))
     -unless (current_user.start_date == nil)
       span 
         |&nbsp;

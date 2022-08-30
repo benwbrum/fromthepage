@@ -74,6 +74,7 @@ pt:
       current_url: A URL atual para este trabalho é %{current_url}. Se você quiser editar a seção de trabalho do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir trabalho
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
@@ -106,6 +107,7 @@ pt:
       support_translation: Tradução de suporte
       support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
+      transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       translation_instructions: Instruções de tradução
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
@@ -126,6 +128,7 @@ pt:
       create_empty_work_description: Isso cria um trabalho vazio. Depois de criar o trabalho, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar o trabalho e fazer upload do arquivo em %{start_project}.
       create_work: Criar trabalho
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       start_a_project: Iniciar um projeto
       title: Título
       work_description: Uma obra é um documento único como uma carta, um diário, um livro de campo, um cartão postal ou um caderno.

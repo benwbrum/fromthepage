@@ -116,6 +116,21 @@ module ApplicationHelper
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
   end
 
+  def show_prerender(prerender, locale) 
+    begin
+      prerenders = JSON.parse(prerender)
+      unless rendered = prerenders[locale.to_s] # show prerender in specified locale
+        # prerender doesn't have specified locale, show first fallback that prerender has
+        fallback = (I18n.fallbacks[locale].map(&:to_s) & prerenders.keys).first
+        rendered = prerenders[fallback]
+      end
+      rendered
+    rescue JSON::ParserError => e
+      # prerender is a string, not hash
+      prerender
+    end
+  end
+
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
       render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })
@@ -220,5 +235,13 @@ module ApplicationHelper
     session[:features] && session[:features][feature.to_s]
   end
 
+  # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
+  def to_snippet(intro_block)
+    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+    doc = Nokogiri::HTML(intro_block)
+    doc.xpath('//style').each { |n| n.remove } 
+    # strip tags and truncate
+    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || '' 
+  end
 
 end
