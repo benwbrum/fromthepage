@@ -1,6 +1,8 @@
 class AdminMailer < ActionMailer::Base
   include ContributorHelper
   helper ContributorHelper
+  include ApplicationHelper
+  helper ApplicationHelper
 
   before_action :add_inline_attachments!
 
