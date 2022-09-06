@@ -48,6 +48,8 @@ fr:
       text_docx_description: Un fichier MS-Word (.docx) contenant des transcriptions de texte.
       text_pdf: Texte PDF
       text_pdf_description: Un fichier PDF contenant des transcriptions de texte.
+      text_only_pdf: Texte PDF seulement
+      text_only_pdf_description: Un fichier PDF contenant des transcriptions de texte sans métadonnées.
       time: Temps
       verbatim_plaintext: Texte brut verbatim
       verbatim_plaintext_description: Ce fichier de texte brut représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.

@@ -129,6 +129,10 @@ module ExportHelper
           export_printable_to_zip(work, 'text', 'pdf', dirname, out)
         end
 
+        if bulk_export.text_only_pdf_work
+          export_printable_to_zip(work, 'text_only', 'pdf', dirname, out)
+        end
+
         if bulk_export.text_docx_work
           export_printable_to_zip(work, 'text', 'doc', dirname, out)
         end

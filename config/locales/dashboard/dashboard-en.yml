@@ -54,6 +54,7 @@ en:
       table_csv_work: Field/Table CSV (work)
       tei_work: TEX-XML (work)
       text_docx_work: MS Word .docx (work)
+      text_only_pdf_work: Text only PDF (work)
       text_pdf_work: Text PDF (work)
       work_metadata_csv: Work Metadata (collection)
     guest_header:

@@ -101,6 +101,7 @@ class BulkExportController < ApplicationController
         :facing_edition_work,
         :text_docx_work,
         :text_pdf_work,
+        :text_only_pdf_work,
         :static)
     end
 end

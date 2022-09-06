@@ -47,7 +47,9 @@ en:
       text_docx: Text DOCX
       text_docx_description: An MS-Word (.docx) file containing text transcripts.
       text_pdf: Text PDF
-      text_pdf_description: A PDF file containing text transcripts.
+      text_pdf_description: A PDF file containing text transcripts and work metadata.
+      text_only_pdf: Text (only) PDF
+      text_only_pdf_description: A PDF file containing text transcripts only.
       time: Time
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_description: This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
