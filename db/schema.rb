@@ -599,6 +599,7 @@ ActiveRecord::Schema.define(version: 2022_08_12_203801) do
     t.string "at_id"
     t.integer "parent_id"
     t.string "label"
+    t.string "version", default: "2"
     t.index ["collection_id"], name: "index_sc_collections_on_collection_id"
   end
 
@@ -614,6 +615,7 @@ ActiveRecord::Schema.define(version: 2022_08_12_203801) do
     t.datetime "updated_at"
     t.string "at_id"
     t.integer "collection_id"
+    t.string "version", default: "2"
     t.index ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id"
     t.index ["work_id"], name: "index_sc_manifests_on_work_id"
   end
@@ -836,7 +838,6 @@ ActiveRecord::Schema.define(version: 2022_08_12_203801) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
-    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
@@ -844,6 +845,7 @@ ActiveRecord::Schema.define(version: 2022_08_12_203801) do
     t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
+    t.string "uploaded_filename"
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
