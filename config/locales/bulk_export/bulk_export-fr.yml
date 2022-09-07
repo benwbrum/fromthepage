@@ -46,6 +46,8 @@ fr:
       tei_xml_description: Cela peut être utile aux éditeurs qui envisagent de faire un balisage supplémentaire dans les éditeurs TEI-XML comme oXygen.
       text_docx: Texte DOCX
       text_docx_description: Un fichier MS-Word (.docx) contenant des transcriptions de texte.
+      text_only_pdf: Texte PDF seulement
+      text_only_pdf_description: Un fichier PDF contenant des transcriptions de texte sans métadonnées.
       text_pdf: Texte PDF
       text_pdf_description: Un fichier PDF contenant des transcriptions de texte.
       time: Temps

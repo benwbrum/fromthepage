@@ -16,6 +16,8 @@ module ExportService
       path = File.join dirname, 'printable', "facing_edition.pdf"
     when "text"
       path = File.join dirname, 'printable', "text.#{output_format}"
+    when "text_only"
+      path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
     tempfile = export_printable(work, edition, output_format)

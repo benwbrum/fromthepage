@@ -13,7 +13,7 @@ es:
     editor:
       activity_stream: Últimas acciones
       article_in_the_work: Artículo %{article} en la colección %{collection}
-      page_in_the_work: Página %{page} en el trabajo %{work}
+      page_in_the_work: Página %{page} en la obra %{work}
       revision_version: Revisión %{version}
       view_page: Ver pagina
       your_recent_article_edits: Sus ediciones recientes de artículos
@@ -39,22 +39,23 @@ es:
       exported_item: Colección/Obra exportada
       facing_edition_work: Edición enfrentada PDF (obra)
       html_page: HTML (página)
-      html_work: HTML (trabajo)
+      html_work: HTML (obra)
       plaintext_emended_page: Texto sin formato analítico (página)
-      plaintext_emended_work: Texto sin formato analítico (trabajo)
+      plaintext_emended_work: Texto sin formato analítico (obra)
       plaintext_searchable_page: Texto sin formato que se puede buscar (página)
-      plaintext_searchable_work: Texto sin formato que se puede buscar (trabajo)
+      plaintext_searchable_work: Texto sin formato que se puede buscar (obra)
       plaintext_verbatim_page: Texto sin formato textual (página)
-      plaintext_verbatim_work: Texto sin formato textual (trabajo)
+      plaintext_verbatim_work: Texto sin formato textual (obra)
       refresh: Actualizar
       reload_this_page_to: Vuelva a cargar esta página para actualizar la lista.
       status: Estado
       subject_csv_collection: Índice de materias CSV (colección)
       table_csv_collection: CSV de campo/tabla (colección)
-      table_csv_work: CSV de campo/tabla (trabajo)
-      tei_work: TEX-XML (trabajo)
-      text_docx_work: MS Word .docx (trabajo)
-      text_pdf_work: Texto PDF (trabajo)
+      table_csv_work: CSV de campo/tabla (obra)
+      tei_work: TEX-XML (obra)
+      text_docx_work: MS Word .docx (obra)
+      text_only_pdf_work: Texto PDF sencillo (obra)
+      text_pdf_work: Texto PDF (obra)
       work_metadata_csv: Metadatos de trabajo (colección)
     guest_header:
       recent_activity: Actividad reciente
