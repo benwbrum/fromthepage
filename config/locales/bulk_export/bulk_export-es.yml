@@ -46,10 +46,10 @@ es:
       tei_xml_description: Esto puede ser útil para los editores que planean hacer más marcado dentro de los editores TEI-XML como oXygen.
       text_docx: Texto DOCX
       text_docx_description: Un archivo de MS-Word (.docx) que contiene transcripciones de texto.
+      text_only_pdf: PDF de texto sin metadatos
+      text_only_pdf_description: Un archivo PDF que contiene transcripciones de texto, sin metadatos.
       text_pdf: PDF de texto
       text_pdf_description: Un archivo PDF que contiene transcripciones de texto.
-      text_only_pdf: PDF de texto sin metadatos 
-      text_only_pdf_description: Un archivo PDF que contiene transcripciones de texto, sin metadatos.
       time: Tiempo
       verbatim_plaintext: Texto sin formato textual
       verbatim_plaintext_description: Este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Contendrá el texto textual, con todo el formato, enmienda y enlace de tema eliminado.

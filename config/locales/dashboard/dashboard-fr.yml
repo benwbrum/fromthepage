@@ -54,8 +54,8 @@ fr:
       table_csv_work: Champ/Table CSV (œuvre)
       tei_work: TEX-XML (œuvre)
       text_docx_work: MS Word .docx (œuvre)
-      text_pdf_work: Texte PDF (œuvre)
       text_only_pdf_work: Texte PDF seulement (œuvre)
+      text_pdf_work: Texte PDF (œuvre)
       work_metadata_csv: Métadonnées de œuvre (collection)
     guest_header:
       recent_activity: Activité récente

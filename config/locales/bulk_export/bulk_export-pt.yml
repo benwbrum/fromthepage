@@ -46,10 +46,10 @@ pt:
       tei_xml_description: Isso pode ser útil para editores que planejam fazer mais marcação em editores TEI-XML como oXygen.
       text_docx: Texto DOCX
       text_docx_description: Um arquivo MS-Word (.docx) contendo transcrições de texto.
-      text_pdf: Texto PDF
-      text_pdf_description: Um arquivo PDF contendo transcrições de texto.
       text_only_pdf: Texto PDF apenas
       text_only_pdf_description: Um arquivo PDF contendo transcrições de texto sem metadados.
+      text_pdf: Texto PDF
+      text_pdf_description: Um arquivo PDF contendo transcrições de texto.
       time: Tempo
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_description: Este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele conterá o texto literal, com todas as formatações, emendas e links de assuntos removidos.
