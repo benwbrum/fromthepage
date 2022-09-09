@@ -48,11 +48,11 @@ class ApplicationController < ActionController::Base
     end
 
     # append region to locale
-    logger.info("http_accept_language.user_preferred_languages = #{http_accept_language.user_preferred_languages.inspect}")
-    related_locales = http_accept_language.user_preferred_languages.select{ |loc| 
-      loc.to_s.include?(locale) &&                # is related to the chosen locale (is the locale, or is a regional version of it)
-      I18n.available_locales.include?(loc.to_sym) # is an available locale
-    }
+    related_locales = http_accept_language.user_preferred_languages.select do |loc| 
+      loc.to_s.include?(locale) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
+      I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
+    end
+
     unless related_locales.empty?
       # first preferred language from the related locales
       locale = http_accept_language.preferred_language_from(related_locales)
