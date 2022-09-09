@@ -45,6 +45,7 @@ en:
     registrations:
       choose_saml:
         harvard_university: Harvard University
+        johns_hopkins_university: Johns Hopkins University
         institution: Institution
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Sign in with your Institution
