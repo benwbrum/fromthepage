@@ -46,6 +46,7 @@ fr:
       choose_saml:
         harvard_university: Université de Harvard
         institution: Institution
+        johns_hopkins_university: Université de Johns Hopkins
         lds_full_name: Église de Jésus-Christ des Saints des Derniers Jours
         sign_in_with_institution: Connectez-vous avec votre établissement
       destroyed: Au revoir! Votre compte a été annulé avec succès. Nous espérons vous revoir bientôt.
