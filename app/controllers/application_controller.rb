@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
 
     # append region to locale
     related_locales = http_accept_language.user_preferred_languages.select do |loc| 
-      loc.to_s.include?(locale) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
+      loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
       I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
     end
 
