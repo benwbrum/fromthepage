@@ -1,4 +1,4 @@
-dist: xenial
+dist: jammy
 sudo: false
 language: ruby
 cache:
