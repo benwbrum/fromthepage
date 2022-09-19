@@ -171,6 +171,8 @@ pt:
       expan_label: Expansão
       fig_description: Indica uma figura ou uma linha horizontal.
       fig_label: Figura
+      footnote_description: Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador.
+      footnote_label: Nota de rodapé
       gap_description: Marca uma lacuna no texto, muitas vezes devido a danos
       gap_label: Lacuna
       head_description: Marca um título no texto.

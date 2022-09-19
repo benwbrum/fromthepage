@@ -171,6 +171,8 @@ en:
       expan_label: Expansion
       fig_description: Indicates a figure or a horizontal line.
       fig_label: Figure
+      footnote_description: Encloses the body of a footnote, with the footnote symbol in the marker attribute.
+      footnote_label: Footnote
       gap_description: Marks a gap in the text, often due to damage
       gap_label: Gap
       head_description: Marks a heading in the text.

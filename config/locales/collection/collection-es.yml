@@ -171,6 +171,8 @@ es:
       expan_label: Expansión
       fig_description: Indica una figura o una línea horizontal.
       fig_label: Figura
+      footnote_description: Encierra el cuerpo de una nota al pie, con el símbolo de nota al pie en el atributo de marcador.
+      footnote_label: Nota
       gap_description: Marca un espacio en el texto, a menudo debido a daños
       gap_label: Brecha
       head_description: Marca un encabezado en el texto.

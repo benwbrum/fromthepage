@@ -171,6 +171,8 @@ fr:
       expan_label: Expansion
       fig_description: Indique un chiffre ou une ligne horizontale.
       fig_label: Chiffre
+      footnote_description: Entoure le corps d'une note de bas de page, avec le symbole de note de bas de page dans l'attribut marqueur.
+      footnote_label: note de bas de page
       gap_description: Marque un vide dans le texte, souvent dû à des dommages
       gap_label: Écart
       head_description: Marque un titre dans le texte.
