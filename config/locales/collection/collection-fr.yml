@@ -158,15 +158,41 @@ fr:
       user_download: Autoriser les utilisateurs à télécharger des œuvres.
       voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
     edit_buttons:
+      abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan. (Forme alternative de la balise expan.)
+      abbr_label: Abréviation
+      add_description: Marque le texte inséré après coup par l'auteur.
+      add_label: Ajout
+      date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
+      date_label: Date
+      del_description: Marque le texte qui a été supprimé par effacement ou barré.
+      del_label: Effacement
       description: FromThePage peut prendre en charge le balisage dans les transcriptions dans les formulaires TEI-XML ou HTML. Nous vous recommandons de ne pas configurer plus de six boutons à afficher sur l'éditeur de transcription. Demandez-vous si d'autres systèmes pourront utiliser ce type de majoration ; si seul le texte brut est pris en charge, les projets doivent utiliser les conventions typographiques au lieu du balisage.
+      expan_description: Marque les abréviations développées avec des formes originales dans l'attribut orig. (Forme alternative de la balise abbr.)
+      expan_label: Expansion
+      fig_description: Indique un chiffre ou une ligne horizontale.
+      fig_label: Chiffre
+      gap_description: Marque un vide dans le texte, souvent dû à des dommages
+      gap_label: Écart
       heading: Configuration de l'éditeur de transcription
       html: "(HTML)"
       markup_preference_description: Certaines balises ont des formes équivalentes en HTML et TEI-XML. Choisissez une préférence pour déterminer quelle forme de balise est insérée lorsqu'un utilisateur appuie sur le bouton.
       markup_preference_label: Style de balisage
       prefer_html: Préférez le HTML
       prefer_tei: Préférer TEI
+      reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
+      reg_label: Régularisation
+      s_description: Marque le texte qui a été barré pour une raison quelconque.
+      s_label: Barré
       save: sauvegarder
+      sub_description: Texte en indice.
+      sub_label: Indice
+      sup_description: Texte en exposant.
+      sup_label: Exposant
       tei: " (TEI-XML)"
+      u_description: Marque le texte souligné.
+      u_label: Souligner
+      unclear_description: Marque le texte peu clair.
+      unclear_label: Pas clair
     enable_ocr:
       notice: La correction d'OCR a été activée pour toutes les œuvres.
     facet_form:
