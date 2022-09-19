@@ -173,8 +173,12 @@ fr:
       fig_label: Chiffre
       gap_description: Marque un vide dans le texte, souvent dû à des dommages
       gap_label: Écart
+      head_description: Marque un titre dans le texte.
+      head_label: Titre
       heading: Configuration de l'éditeur de transcription
       html: "(HTML)"
+      lb_description: Marque les sauts de ligne
+      lb_label: Saut de ligne
       markup_preference_description: Certaines balises ont des formes équivalentes en HTML et TEI-XML. Choisissez une préférence pour déterminer quelle forme de balise est insérée lorsqu'un utilisateur appuie sur le bouton.
       markup_preference_label: Style de balisage
       prefer_html: Préférez le HTML

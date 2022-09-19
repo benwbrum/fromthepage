@@ -173,8 +173,12 @@ pt:
       fig_label: Figura
       gap_description: Marca uma lacuna no texto, muitas vezes devido a danos
       gap_label: Lacuna
+      head_description: Marca um título no texto.
+      head_label: Cabeçalho
       heading: Configuração do Editor de Transcrição
       html: "(HTML)"
+      lb_description: Marca quebras de linha
+      lb_label: Quebra de linha
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
       markup_preference_label: Estilo de marcação
       prefer_html: Prefira HTML

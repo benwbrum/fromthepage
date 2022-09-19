@@ -173,8 +173,12 @@ en:
       fig_label: Figure
       gap_description: Marks a gap in the text, often due to damage
       gap_label: Gap
+      head_description: Marks a heading in the text.
+      head_label: Heading
       heading: Transcription Editor Configuration
       html: " (HTML)"
+      lb_description: Marks line breaks
+      lb_label: Line Break
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML

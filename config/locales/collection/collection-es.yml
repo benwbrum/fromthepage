@@ -173,8 +173,12 @@ es:
       fig_label: Figura
       gap_description: Marca un espacio en el texto, a menudo debido a daños
       gap_label: Brecha
+      head_description: Marca un encabezado en el texto.
+      head_label: Bóveda
       heading: Configuración del editor de transcripciones
       html: "(HTML)"
+      lb_description: Marca saltos de línea
+      lb_label: Salto de línea
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
