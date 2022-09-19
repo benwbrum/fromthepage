@@ -1,4 +1,4 @@
-dist: jammy
+dist: bionic
 sudo: false
 language: ruby
 cache:
