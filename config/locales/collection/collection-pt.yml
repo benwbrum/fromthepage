@@ -158,15 +158,47 @@ pt:
       user_download: Permitir que os usuários baixem obras.
       voice_recognition: Voz para texto disponível para a transcrição
     edit_buttons:
+      abbr_description: Marca abreviações em um texto com expansões no atributo expand. (Forma alternativa de tag de expansão.)
+      abbr_label: Abreviação
+      add_description: Marca o texto inserido após o fato pelo escritor.
+      add_label: Adição
+      date_description: Marca datas, com formulário padronizado no atributo when.
+      date_label: Encontro
+      del_description: Marca o texto que foi removido por apagamento ou tachado.
+      del_label: Eliminação
       description: FromThePage pode suportar marcação em transcrições em formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
+      expan_description: Marca abreviações expandidas com formas originais no atributo orig. (Forma alternativa de tag abbr.)
+      expan_label: Expansão
+      fig_description: Indica uma figura ou uma linha horizontal.
+      fig_label: Figura
+      footnote_description: Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador.
+      footnote_label: Nota de rodapé
+      gap_description: Marca uma lacuna no texto, muitas vezes devido a danos
+      gap_label: Lacuna
+      head_description: Marca um título no texto.
+      head_label: Cabeçalho
       heading: Configuração do Editor de Transcrição
       html: "(HTML)"
+      lb_description: Marca quebras de linha
+      lb_label: Quebra de linha
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
       markup_preference_label: Estilo de marcação
       prefer_html: Prefira HTML
       prefer_tei: Prefira TEI
+      reg_description: Marca uma forma regularizada do texto, com formas originais no atributo orig.
+      reg_label: Regularização
+      s_description: Marca o texto que foi riscado por qualquer motivo.
+      s_label: Tachado
       save: Salvar
+      sub_description: Texto subscrito.
+      sub_label: Subscrito
+      sup_description: Texto sobrescrito.
+      sup_label: Sobrescrito
       tei: " (TEI-XML)"
+      u_description: Marca o texto sublinhado.
+      u_label: Sublinhado
+      unclear_description: Marca texto pouco claro.
+      unclear_label: Pouco claro
     enable_ocr:
       notice: A correção de OCR foi ativada para todas as obras.
     facet_form:
