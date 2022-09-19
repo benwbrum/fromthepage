@@ -22,9 +22,6 @@ section.signon
       =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :current_password, t('.current_password')
-      =f.password_field :current_password, autocomplete: 'off'
-    .signon_field
       =f.label :real_name, t('devise.real_name')
       =f.text_field :real_name
       small
