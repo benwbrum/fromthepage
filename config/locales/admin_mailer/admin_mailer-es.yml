@@ -1,11 +1,12 @@
+---
 es:
   admin_mailer:
     collection_stats_by_owner:
-      recent_activity: "Actividad reciente en tu proyecto de Fromthepage"
-      you_have_new_collaborators: "¡Tienes nuevos colaboradores!"
-      you_may_consider: "Considera enviarles un %{link} una breve nota dándoles la bienvenida al proyecto."
-      comments_from_your_collaborators: "Comentarios de los Colaboradores:"
-      other_recent_activity: "Otra Actividad Reciente en las Colecciones:"
+      comments_from_your_collaborators: 'Comentarios de los Colaboradores:'
       how_is_your_project_going: "¿Cómo va tu proyecto?"
+      opt_out_email: Si prefieres no recibir estos correos electrónicos, haga clic en %{link} para darte de baja.
+      other_recent_activity: 'Otra Actividad Reciente en las Colecciones:'
+      recent_activity: Actividad reciente en tu proyecto de Fromthepage
       what_is_easy: "¿Qué es fácil? ¿Qué es difícil? ¿Qué podemos hacer para mejorar FromThePage? Nos encantaría saber tu opinión — sólo responde a este correo."
-      opt_out_email: "Si prefieres no recibir estos correos electrónicos, contacta support@fromthepage.com para darte de baja."
+      you_have_new_collaborators: "¡Tienes nuevos colaboradores!"
+      you_may_consider: Considera enviarles un %{link} una breve nota dándoles la bienvenida al proyecto.

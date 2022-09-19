@@ -1,4 +1,4 @@
-.litebox-embed(style="width:550px")
+.litebox-embed(style="width:640px")
   h1 =t('.add_new_page')
   p =t('.choose_a_title')
 
@@ -7,7 +7,7 @@
     =validation_summary @page.errors
     table.form
       tr.big
-        th =f.label :title
+        th =f.label :title, t('.title')
         td.w100 =f.text_field :title
       tr
         th =f.label :base_image, t('.page_image')

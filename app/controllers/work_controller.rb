@@ -152,7 +152,7 @@ class WorkController < ApplicationController
   end
 
   def update
-    @work = Work.find(params[:id]) || Work.find_by(id: params[:work_id])
+    @work = Work.find(params[:id].to_i)
     id = @work.collection_id
     @collection = @work.collection if @collection.nil?
     #check the work transcription convention against the collection version
@@ -257,6 +257,7 @@ class WorkController < ApplicationController
       :ocr_correction, 
       :transcription_conventions,
       :author, 
+      :recipient,
       :location_of_composition, 
       :identifier, 
       :pages_are_meaningful, 

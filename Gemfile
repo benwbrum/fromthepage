@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '6.0.3.2'
 
-gem 'will_paginate', git: 'https://github.com/BrumfieldLabs/will_paginate.git'
+gem 'will_paginate'
 gem 'rmagick'
 gem 'nokogiri'
 gem "capistrano", "~> 3.10", require: false
@@ -88,7 +88,8 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
-  gem 'i18n-tasks', '~> 0.9.31'
+  gem 'i18n-tasks', git: "https://github.com/sylvieed/i18n-tasks", branch: 'main'
+  gem 'easy_translate'
 end
 
 # Use SassC for stylesheets

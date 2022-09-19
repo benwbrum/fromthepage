@@ -28,20 +28,16 @@ html lang="en-US"
       =render :partial => '/layouts/fb_pixel'
 
   body
-    -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
-      .flash(class='flash-#{type}')
-        span.flash_message
-          =svg_symbol flash_icon[type], class: 'icon'
-          span =message.html_safe
-        a.flash_close &times;
+    #flash_wrapper
+      -flash.each do |type, message|
+        =render :partial => '/shared/flash', :locals => { type: type, message: message }
 
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo', title: 'Home', 'aria-label' => 'Home'
+          =link_to root_path, class: 'logo', title: t('.home'), 'aria-label' => t('.home')
             -if USE_PNG_LOGO
-              =image_tag 'logo.png', width: 134, height: 50, alt: 'Home'
+              =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
@@ -53,17 +49,17 @@ html lang="en-US"
             =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             -if @collection 
-              =link_to 'Sign Up To Transcribe', new_for_owner_path(@collection.owner), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@collection.owner), class: 'header_link'              
             -elsif @user && @user.owner?
-              =link_to 'Sign Up To Transcribe', new_for_owner_path(@user), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@user), class: 'header_link'              
             -else
-              =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
+              =link_to t('.sign_up_to_transcribe'), new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
               dt.header_link.header_user tabindex=0
                 span
-                  big =current_user.guest ? "Create An Account" : "Signed In As"
+                  big =current_user.guest ? t('.create_an_account') : t('.signed_in_as')
                   small =current_user.display_name
                 =svg_symbol '#header-user', class: 'icon'
               dd
@@ -85,9 +81,9 @@ html lang="en-US"
           dl.dropdown.right
             dt.header_link.header_locale tabindex=0
               span
-                big =locale.to_s.upcase
+                big =locale.to_s.split("-")[0].upcase
             dd
-              -I18n.available_locales.each do |locale_option|
+              -@dropdown_locales.each do |locale_option|
                 =link_to t(locale_option.to_s), user_choose_locale_path(locale_option.to_s)
 
     -if user_masquerade?
@@ -107,12 +103,16 @@ html lang="en-US"
         .footer_nav
           =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
           =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
-          =link_to t('.about'), about_us_path
+          =link_to t('.about'), 'https://content.fromthepage.com/about-us/'
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           =mail_to 'support@fromthepage.com', t('.contact_us')
           -if request.original_url.include?("fromthepage.com")
             =link_to t('.pricing'), pricing_path
+          =link_to t('.transcription_for_archives_special_collections'), 'https://content.fromthepage.com/special-collections/'
+          =link_to t('.transcription_for_state_provincial_archives'), 'https://content.fromthepage.com/state-provincial-landing-page/'
+          =link_to t('.transcription_for_digital_scholarship'), 'https://content.fromthepage.com/digital-scholarship/'
+          =link_to t('.transcription_for_public_libraries'), 'https://content.fromthepage.com/crowdsourcing-for-public-libraries/'
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'

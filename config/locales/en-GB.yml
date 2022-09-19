@@ -1,0 +1,14 @@
+---
+en-GB:
+  article:
+    show:
+      related_subjects_description: The graph displays the other subjects mentioned on the same pages as the subject "%{article}". If the same subject occurs on a page with "%{article}" more than once, it appears closer to "%{article}" on the graph, and is coloured in a darker shade. The closer a subject is to the center, the more "related" the subjects are.
+  article_version:
+    show:
+      description: Here you can see all subject revisions and compare the changes have been made in each revision. Left column shows the subject title and description in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> colour.
+  page_version:
+    show:
+      help_description: Here you can see all page revisions and compare the changes have been made in each revision. Left column shows the page title and transcription in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> colour.
+  work:
+    description_versions:
+      help_description: View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> colour.

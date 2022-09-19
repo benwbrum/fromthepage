@@ -352,8 +352,14 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get '/iiif/:page_id/notes', :to => 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
+  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas', as: 'iiif_canvas'
   get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
+  get '/iiif/:work_id/structured', :to => 'iiif#structured_data_endpoint', as: 'iiif_work_strucured_data'
+  get '/iiif/:work_id/structured/:page_id', :to => 'iiif#structured_data_endpoint', as: 'iiif_page_strucured_data'
+  get '/iiif/:collection_id/structured/config/work', :to => 'iiif#structured_data_work_config_endpoint', as: 'iiif_work_strucured_data_config'
+  get '/iiif/:collection_id/structured/config/page', :to => 'iiif#structured_data_page_config_endpoint', as: 'iiif_page_strucured_data_config'
+  get '/iiif/structured/config/field/:transcription_field_id', :to => 'iiif#structured_data_field_config_endpoint', as: 'iiif_strucured_data_field_config'
+  get '/iiif/structured/config/column/:spreadsheet_column_id', :to => 'iiif#structured_data_column_config_endpoint', as: 'iiif_strucured_data_column_config'
   get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
   # {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
@@ -435,6 +441,7 @@ Fromthepage::Application.routes.draw do
       get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
       patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
+      patch 'review/user/:user_id/approve_all/:quality_sampling_id', as: 'user_review_approve_all', to: 'collection#approve_all'
 
       resources :quality_samplings
       post 'quality_sampling/initialize', as: 'initialize_sample', to: 'quality_samplings#initialize_sample'
@@ -506,10 +513,11 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
 
       #article related routes
-      match 'article/:article_id', to: 'article#show', via: [:get, :post], as: 'article_show'
+      get 'article/:article_id', to: 'article#show', as: 'article_show'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'
+      get 'article/:article_id/subject_distribution', to: 'export#subject_distribution_csv', as: 'subject_distribution'
     end
   end
 

@@ -5,30 +5,31 @@ module ExportHelper
 
     # do some escaping of the document for markdown
     preprocessed = xml_text || ''
-    preprocessed.gsub!("[","\\[")
-    preprocessed.gsub!("]","\\]")
+    # preprocessed.gsub!("[","\\[")
+    # preprocessed.gsub!("]","\\]")
     preprocessed.gsub!('&', '&amp;') # escape ampersands
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
 
     doc = REXML::Document.new(preprocessed)
     doc.elements.each_with_index("//footnote") do |e,i|
-      marker = "#{i}" #e.attributes['marker'] || '*'
+      marker = "#{i+1}" #e.attributes['marker'] || '*'
 
-      doc.root.add REXML::Text.new("\n\n[^#{marker}]: ")
+      doc.root.add REXML::Text.new("\n\n#{marker}: ")
       e.children.each do |child|
         doc.root.add child
       end
-      doc.root.add REXML::Text.new("\n")
+      doc.root.add REXML::Text.new(" \n")
 
-      e.replace_with(REXML::Text.new("[^#{marker}]"))
+      sup = REXML::Element.new("sup")
+      sup.add(REXML::Text.new(marker))
+      e.replace_with(sup)
     end
 
 
 
     postprocessed = ""
     doc.write(postprocessed)
-
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
@@ -62,6 +63,10 @@ module ExportHelper
     # collection-level exports
     if bulk_export.subject_csv_collection
       export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.subject_details_csv_collection
+      export_subject_details_csv(dirname: '', out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.table_csv_collection
@@ -122,6 +127,10 @@ module ExportHelper
 
         if bulk_export.text_pdf_work
           export_printable_to_zip(work, 'text', 'pdf', dirname, out)
+        end
+
+        if bulk_export.text_only_pdf_work
+          export_printable_to_zip(work, 'text_only', 'pdf', dirname, out)
         end
 
         if bulk_export.text_docx_work
@@ -610,4 +619,205 @@ module ExportHelper
       return doc
     end
   end
+
+
+  def work_metadata_contributions(work)
+    {
+      contributors: work_metadata_contributors_to_array(work),
+      data: work_metadata_to_hash(work),
+    }
+  end
+
+  def page_field_contributions(page)
+    {
+      contributors: page_contributors_to_array(page),
+      data: field_data_to_hash(page),
+    }
+  end
+
+
+
+  def work_metadata_to_hash(work)
+    collection=work.collection
+    fields = {}
+    collection.metadata_fields.each { |field| fields[field.id] = field}
+    metadata = JSON.parse(work.metadata_description)
+    # TODO remember description status!
+    response_array = []
+    metadata.each do |metadata_hash|
+      value = metadata_hash['value']
+      unless value.blank?
+        element = {label: metadata_hash['label'], value: value}
+        element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
+
+        response_array << element
+      end
+    end
+
+    response_array
+  end
+
+  def field_data_to_hash(page)
+    collection=page.collection
+    fields = {}
+    collection.transcription_fields.each { |field| fields[field.label] = field}
+    spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet'}
+    columns = {}
+    if spreadsheet
+      spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column}
+    end
+
+    response_array = []
+    page.table_cells.each do |cell| 
+      unless columns[cell.header]
+
+        field = fields[cell.header]
+        element = {label: cell.header, value: cell.content}
+        if field #field-based project
+          element[:config] = iiif_strucured_data_field_config_url(field.id)
+        else
+          element[:row] = cell.row
+          element[:config] = 'N/A'
+        end
+
+        response_array << element
+      end
+    end
+
+    spreadsheet_array = []
+    page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
+      row = []
+      cell_array.each do |cell|
+        # eliminate header cells
+        unless fields[cell.header]
+          unless cell.content.blank?
+            element = {label: cell.header, value: cell.content}
+            column = columns[cell.header]
+            unless column.blank?
+              element[:config] = iiif_strucured_data_column_config_url(column.id)
+            end
+            row << element
+          end
+        end
+      end
+      spreadsheet_array << row
+    end
+
+    unless spreadsheet_array.flatten.empty?
+      spreadsheet_field = collection.transcription_fields.where(input_type: 'spreadsheet').first
+      element = {
+        data: spreadsheet_array
+      }
+      if spreadsheet_field
+        element[:config] = iiif_strucured_data_field_config_url(spreadsheet_field.id)
+      end
+
+      response_array << element
+    end
+
+    response_array
+  end
+
+
+  def spreadsheet_column_config(column, include_within)
+    column_config = {
+      label: column.label, 
+      input_type: column.input_type, 
+      position: column.position,
+      profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-spreadsheet-column-configuration-response'
+    }
+    if column.options
+      column_config[:options] = column.options.split(";")
+    end
+    column_config['@id'] = iiif_strucured_data_column_config_url(column.id)
+
+    if include_within
+      column_config['within'] = iiif_strucured_data_field_config_url(column.transcription_field.id)
+    end
+
+    column_config
+  end
+
+  def transcription_field_config(field, include_within)
+    element = {
+      label: field.label, 
+      input_type: field.input_type, 
+      position: field.position, 
+      line: field.line_number,
+      profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-field-configuration-response'
+    }
+    element['@id'] = iiif_strucured_data_field_config_url(field.id)
+    if field.options
+      if field.input_type == 'multiselect'
+        element[:options] = field.options.split(/[\n\r]+/)
+      else
+        element[:options] = field.options.split(";")
+      end
+    end
+    if field.page_number
+      element[:page_number] = field.page_number
+    end
+    if field.input_type == 'spreadsheet'
+      columns=[]
+      field.spreadsheet_columns.each do |column|
+        columns << spreadsheet_column_config(column, false)
+      end
+
+      element[:spreadsheet_columns] = columns
+    end
+    if include_within
+      if field.field_type == TranscriptionField::FieldType::TRANSCRIPTION
+        element[:within] = iiif_page_strucured_data_config_url(field.collection.id)
+      else
+        element[:within] = iiif_work_strucured_data_config_url(field.collection.id)
+      end
+    end
+
+    element
+  end
+
+  def field_configuration_to_array(collection, field_type)
+    array = []
+    if field_type == TranscriptionField::FieldType::TRANSCRIPTION
+      fields = collection.transcription_fields
+    else
+      fields = collection.metadata_fields
+    end
+    fields.each do |field|
+      array << transcription_field_config(field, false)
+    end
+
+    array
+  end
+
+  def page_contributors_to_array(page)
+    array = []
+
+    user_ids = page.deeds.where(deed_type: DeedType.transcriptions_or_corrections).pluck(:user_id).uniq
+    User.find(user_ids).each do |user|
+      element = { 'userName' => user.display_name}
+      element['realName'] = user.real_name unless user.real_name.blank?
+      element[:orcid] = user.real_name unless user.orcid.blank?
+      array << element
+    end
+
+    array
+  end
+
+  def work_metadata_contributors_to_array(work)
+    array = []
+
+    user_ids = work.deeds.where(deed_type: DeedType.metadata_creation_or_edits).pluck(:user_id).uniq
+    User.find(user_ids).each do |user|
+      element = { 'userName' => user.display_name}
+      element['realName'] = user.real_name unless user.real_name.blank?
+      element[:orcid] = user.real_name unless user.orcid.blank?
+      array << element
+    end
+
+    array
+  end
+
+
+
 end

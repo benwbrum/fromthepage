@@ -1,21 +1,87 @@
+---
 pt:
   transcription_field:
-    field_layout:
-      instructions: "Instruções"
-    line_form:
-      field_options: "Opções de campos (separar com ponto-e-vírgula)"
-      field_options_title: "Opções para campos selecionados."
-      percentage_width: "Largura %"
-      percentage_title: "Percentagem da largura da linha a usar para este campo."
-      page: "Página"
-      page_title: "Para formulários de várias páginas, em que página este campo deve aparecer? (Deixe em branco para exibir em cada página.)"
-    edit_fields:
-      edit_transcription_fields: "Editar Campos de Transcrição"
-      add_additional_line: "Adicionar Linha Adicional"
-      add_additional_field: "Adicionar Campo Adicional"
-      save: "Guardar"
-      cancel: "Cancelar"
-      done: "Completo"
-      preview: "Pré-Visualizar"
+    add_columns:
+      must_have_options_list: Os campos selecionados devem ter uma lista de opções. Adicione opções a qualquer campo selecionado e salve novamente.
+      starting_rows_must_not_be_blank: As linhas iniciais não devem ficar em branco.
     add_fields:
-      must_have_options_list: "Os campos selecionados devem ter uma lista de opções. Adicione opções a qualquer campo selecionado e salve novamente."
+      must_have_options_list: Os campos selecionados devem ter uma lista de opções. Adicione opções a qualquer campo selecionado e salve novamente.
+    choose_offset:
+      page_layout: Layout da página
+      page_layout_description: Redimensione o retângulo na imagem para cercar a parte da página que contém uma planilha e salve sua seleção.
+      replace_image: Substituir imagem
+      replace_image_description: Se a imagem de exemplo não contiver uma planilha, você poderá substituí-la por uma página diferente da coleção, escolhida aleatoriamente.
+      save_selection: Salvar seleção
+    column_form:
+      column_options: Opções de coluna (separadas por ponto e vírgula)
+      column_options_title: Opções para células suspensas.
+      input_type: Tipo de entrada
+      label: Etiqueta
+    edit_columns:
+      add_additional_column: Adicionar coluna adicional
+      cancel: Cancelar
+      disable_ruler: Desativar Régua
+      done: Feito
+      edit_spreadsheet_columns: Configuração da coluna
+      edit_spreadsheet_header: Configuração da planilha
+      enable_ruler: Ativar Régua
+      identify_rows: Identificar linhas
+      identify_rows_description: As páginas podem ter margens superior e inferior, campos de cabeçalho ou rodapé ou outro texto que não deve ser usado ao identificar onde as linhas estão na página.
+      page_layout: Layout da página
+      preview: Visualização da planilha
+      save: Salvar
+      screen_ruler: Régua de tela
+      screen_ruler_description: Para reduzir a usabilidade e reduzir os erros de transcrição, FromThePage pode exibir uma régua na imagem da página que destaca a parte de uma página que o usuário está transcrevendo. Isso é útil para documentos digitalizados consistentemente escritos em formulários pré-impressos, mas pode ser uma distração ou frustrante se os documentos forem irregulares e a régua da tela não corresponder.
+      start_rows_description: Número de linhas que a planilha deve exibir inicialmente. (Os transcritores poderão adicionar linhas adicionais, se necessário.)
+      start_rows_label: 'Contagem de linhas inicial:'
+      transcription_warning: Este projeto já foi parcialmente transcrito. Adicionar colunas é bom, mas excluir ou alterar colunas pode resultar em perda de dados. Entre em contato com support@fromthepage.com se tiver dúvidas ou precisar renomear colunas.
+    edit_field_form:
+      add_additional_field: Adicionar campo adicional
+      add_additional_line: Adicionar linha adicional
+      cancel: Cancelar
+      data_entry_type_label: Fluxo de metadados
+      data_entry_type_metadata_only: Os usuários só criam metadados
+      data_entry_type_text_and_metadata: Os usuários transcrevem texto e criam metadados
+      description_instructions_label: Instruções de descrição de metadados
+      done: Feito
+      line: Linha
+      preview: Visualizar
+      save: Salvar
+    edit_fields:
+      edit_transcription_fields: Editar Campos de Transcrição
+      transcription_warning: Este projeto já foi parcialmente transcrito. Adicionar campos é bom, mas excluir ou alterar campos pode resultar em perda de dados. Entre em contato com support@fromthepage.com se tiver dúvidas ou precisar renomear campos.
+    edit_metadata_fields:
+      edit_metadata_fields: Editar campos de metadados
+    field_layout:
+      instructions: Instruções
+    line_form:
+      field_options: Opções de campos (separar com ponto-e-vírgula)
+      field_options_title: Opções para campos selecionados.
+      input_type: Tipo de entrada
+      label: Etiqueta
+      page: Página
+      page_title: Para formulários de várias páginas, em que página este campo deve aparecer? (Deixe em branco para exibir em cada página.)
+      percentage_title: Percentagem da largura da linha a usar para este campo.
+      percentage_width: Largura %
+    metadata_field_layout:
+      instructions: Instruções
+    multiselect_form:
+      options_form_description: Insira opções para o campo de metadados de seleção múltipla, com cada opção em uma linha separada
+      options_form_title: Opções de seleção múltipla
+      save: Salvar
+    new_column_form:
+      delete_column: Excluir coluna
+      field_label: Legenda do campo
+      field_options: Opções de campo
+      input_type: Tipo de entrada
+      reorder_column: Reordenar coluna
+    new_field_form:
+      configure_options: Configurar opções
+      configure_spreadsheet: Configurar planilha
+      delete_field: Excluir campo
+      field_label: Legenda do campo
+      field_options: Opções de campo
+      input_type: Tipo de entrada
+      page_number: Número de página
+      reorder_field: Reordenar campo
+      width_percentage: Porcentagem de largura

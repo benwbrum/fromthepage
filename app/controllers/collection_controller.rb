@@ -36,8 +36,6 @@ class CollectionController < ApplicationController
 
   def reviewer_dashboard
     # works which have at least one page needing review
-    @one_off_page_count = @collection.pages_needing_review_for_one_off.count
-    @unreviewed_users = @collection.never_reviewed_users
     @total_pages=@collection.pages.count
     @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
     @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
@@ -46,6 +44,7 @@ class CollectionController < ApplicationController
 
   def works_to_review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
+                        .paginate(:page => params[:page], :per_page => 15)
   end
 
   def one_off_list
@@ -57,9 +56,18 @@ class CollectionController < ApplicationController
   end
 
   def user_contribution_list
-    #pages_needing_review = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW)
-    needs_review_page_ids = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW).pluck(:page_id)
-    @pages = Page.find(needs_review_page_ids)
+    unless params[:quality_sampling_id].blank?
+      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    end
+    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+  end
+
+  def approve_all
+    @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages.update_all(status: Page::STATUS_TRANSCRIBED)
+    flash[:notice] = t('.approved_n_pages', page_count: @pages.count)
+    redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))
   end
 
   def edit_buttons
@@ -81,7 +89,7 @@ class CollectionController < ApplicationController
       end
     end
 
-    flash[:notice] = 'Editor Buttons Updated'
+    flash[:notice] = t('.editor_buttons_updated')
     ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
 
   end
@@ -626,12 +634,14 @@ class CollectionController < ApplicationController
     @count = @pages.count
     @incomplete_pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_completion.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
     @incomplete_count = @incomplete_pages.count
+    @heading = t('.pages_need_transcription')
   end
 
   def needs_review_pages
     work_ids = @collection.works.pluck(:id)
     @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
+    @heading = t('.pages_need_review')
   end
 
   def start_transcribing
@@ -705,6 +715,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck)
   end
 end

@@ -53,6 +53,10 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def enable_spellcheck
+    self.collection.enable_spellcheck
+  end
+
   def reviewers
     self.collection.reviewers
   end
@@ -106,6 +110,11 @@ class DocumentSet < ApplicationRecord
     subjects.export
   end
 
+  def export_subject_distribution_as_csv(subject)
+    subjects = SubjectDistributionExporter::Exporter.new(self, subject)
+
+    subjects.export
+  end
 
   def articles
     Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct

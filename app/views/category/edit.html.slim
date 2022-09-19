@@ -1,5 +1,5 @@
 .litebox-embed(style="width:450px")
-  h1 Edit Category
+  h1= t('.edit_category')
 
   =form_for(@category, :url => { :action => 'update' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
@@ -8,10 +8,10 @@
     =validation_summary @category.errors
     table.form
       tr.big
-        th =f.label :title
+        th =f.label :title, t('.title')
         td.w100 =f.text_field :title
       tr
-        th =f.label :gis_enabled, "Enable GIS"
+        th =f.label :gis_enabled, t('.enable_gis')
         td =f.check_box :gis_enabled
     .toolbar
-      .toolbar_group.aright =f.button 'Save Changes'
+      .toolbar_group.aright =f.button t('.save_changes')

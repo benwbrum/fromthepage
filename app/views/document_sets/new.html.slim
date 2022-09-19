@@ -7,14 +7,15 @@
     =f.hidden_field :collection_id
     table.form
       tr.big
-        th =f.label :title
+        th =f.label :title, t('.title')
         td.w100 =f.text_field :title
       tr
-        th =f.label(:is_public, "Public")
+        th =f.label(:is_public, t('.public'))
         td =f.check_box :is_public, {checked: true}
       tr
         td(colspan="2")
           =f.label :description, t('.description'), class: 'above'
+          br: i =t('.description_message')
           =f.text_area :description, rows: 6
     .toolbar
       .toolbar_group.aright =f.button t('.create_document_set')

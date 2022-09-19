@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_010254) do
+ActiveRecord::Schema.define(version: 2022_08_12_203801) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.boolean "text_docx_work"
     t.boolean "static"
     t.integer "document_set_id"
+    t.boolean "subject_details_csv_collection"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -194,6 +195,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.string "review_type", default: "optional"
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
+    t.boolean "enable_spellcheck", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -223,8 +225,8 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "visit_id"
-    t.string "prerender", limit: 2047
-    t.string "prerender_mailer", limit: 2047
+    t.string "prerender", limit: 8191
+    t.string "prerender_mailer", limit: 8191
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
@@ -585,6 +587,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.integer "width"
     t.string "sc_resource_id"
     t.string "sc_service_context"
+    t.text "annotations"
     t.index ["page_id"], name: "index_sc_canvases_on_page_id"
     t.index ["sc_manifest_id"], name: "index_sc_canvases_on_sc_manifest_id"
   end
@@ -596,6 +599,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.string "at_id"
     t.integer "parent_id"
     t.string "label"
+    t.string "version", default: "2"
     t.index ["collection_id"], name: "index_sc_collections_on_collection_id"
   end
 
@@ -611,6 +615,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.datetime "updated_at"
     t.string "at_id"
     t.integer "collection_id"
+    t.string "version", default: "2"
     t.index ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id"
     t.index ["work_id"], name: "index_sc_manifests_on_work_id"
   end
@@ -845,6 +850,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
     t.text "searchable_metadata"
+    t.string "recipient"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
