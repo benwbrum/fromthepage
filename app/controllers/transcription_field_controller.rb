@@ -49,6 +49,7 @@ class TranscriptionFieldController < ApplicationController
     field_type = params[:field_type]
     new_fields = params[:transcription_fields]
 
+
     new_fields.each_with_index do |fields, index|
       if fields[:line_number] == "new"
         fields[:line_number] = new_fields[index-1][:line_number]
@@ -78,6 +79,7 @@ class TranscriptionFieldController < ApplicationController
           transcription_field.input_type = fields[:input_type]
           transcription_field.options = fields[:options] if fields[:input_type] == 'select'
           transcription_field.line_number = fields[:line_number]
+          transcription_field.page_number = fields[:page_number]
           transcription_field.percentage = fields[:percentage]
           transcription_field.save
         end
