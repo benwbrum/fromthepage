@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'i18n/tasks'
+require 'pry'
 
 RSpec.describe I18n do
   let(:i18n) { I18n::Tasks::BaseTask.new }
@@ -14,8 +15,11 @@ RSpec.describe I18n do
   end
 
   it 'does not have unused keys' do
-    expect(unused_keys).to be_empty,
-                           "#{unused_keys.leaves.count} unused i18n keys, run `i18n-tasks unused' to show them"
+    # edit button keys are dynamic and will throw false positives here
+    static_keys = unused_keys.key_names.select{|key| !key.match(/collection\.edit_buttons/)}
+
+    expect(static_keys).to be_empty,
+                           "#{static_keys.count} unused i18n keys, run `i18n-tasks unused' to show them"
   end
 
   it 'files are normalized' do
