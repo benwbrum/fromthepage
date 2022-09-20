@@ -41,14 +41,14 @@ class DeedController < ApplicationController
       @deed = @deed.where("created_at <= ?", end_date)
     end
 
-    @deeds = @deed.order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @deeds = @deed.order('deeds.created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
   def notes
     if @collection
-      @deeds = @collection.deeds.where(deed_type: DeedType::NOTE_ADDED).order('created_at DESC').includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      @deeds = @collection.deeds.where(deed_type: DeedType::NOTE_ADDED).order('deeds.created_at DESC').includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     else
-      @deeds = Deed.where(deed_type: DeedType::NOTE_ADDED).order('created_at DESC').joins(:collection).includes(:note, :page, :user, :work).where("collections.restricted = 0").paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      @deeds = Deed.where(deed_type: DeedType::NOTE_ADDED).order('deeds.created_at DESC').joins(:collection).includes(:note, :page, :user, :work).where("collections.restricted = 0").paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     end
     render :list
   end
