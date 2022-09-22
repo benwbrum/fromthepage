@@ -10,7 +10,7 @@ module AbstractXmlController
   #constant - words to ignore when autolinking
   STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it", 
     'wife', 'husband','I','him','her','son','daughter']
-  STOPREGEX = /\b\w\b/
+  STOPREGEX = /^\w\.?\$/
 
 
   def autolink(text)
@@ -20,14 +20,6 @@ module AbstractXmlController
     else
       id = @collection.id
     end
-    sql = 'select article_id, '+
-          'display_text, '+
-          'max(page_article_links.created_on) last_reference '+
-          'from page_article_links ' +
-          'inner join articles a '+
-          'on a.id = article_id ' +
-          "where a.collection_id = #{id} "+
-          "group by article_id, display_text"
 
     sql = 'select article_id, '+
           'display_text, '+
