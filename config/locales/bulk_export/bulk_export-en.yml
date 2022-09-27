@@ -33,7 +33,7 @@ en:
       one_site_per_collection: One site per collection
       organization: Folder Organization
       organization_description: Zip files can be organized with a folder per work containing files or subfolders for each export format, or with a folder per export format containing files per work.
-      organization_format:  Format folders
+      organization_format: Format folders
       organization_work: Work folders
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
@@ -58,7 +58,7 @@ en:
       text_pdf_description: A PDF file containing text transcripts and work metadata.
       time: Time
       use_uploaded_filename: File/Folder Names
-      use_uploaded_filename_description: Export files or folders are be based on the work slug by default.  If a work was originally uploaded you can use the original filename for exports instead.  
+      use_uploaded_filename_description: Export files or folders are be based on the work slug by default.  If a work was originally uploaded you can use the original filename for exports instead.
       use_uploaded_filename_label: Use original names
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_description: This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
