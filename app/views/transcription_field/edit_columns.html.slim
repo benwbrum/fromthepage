@@ -28,6 +28,7 @@ div.columns
 
       h3 =t('.edit_spreadsheet_columns')
       p 
+      -if @collection.table_cells.present?
         i =t('.transcription_warning')
       table.field-form#new-columns
         =render ({partial: 'column_form'})
