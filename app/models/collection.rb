@@ -27,6 +27,7 @@ class Collection < ApplicationRecord
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
+  has_many :table_cells, through: :transcription_fields
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
