@@ -10,7 +10,7 @@ Thredded.user_class = 'User'
 
 # User name column, used in @mention syntax and *must* be unique.
 # This is the column used to search for users' names if/when someone is @ mentioned.
-Thredded.user_name_column = :name
+Thredded.user_name_column = :login
 
 # User display name method, by default thredded uses the user_name_column defined above
 # You may want to use :to_s or some more elaborate method
@@ -23,7 +23,7 @@ Thredded.user_name_column = :name
 # setting this to always return nil effectively disables all user links.
 Thredded.user_path = ->(user) {
   user_path = :"#{Thredded.user_class_name.demodulize.underscore}_path"
-  main_app.respond_to?(user_path) ? main_app.send(user_path, user) : "/users/#{user.to_param}"
+  main_app.respond_to?(user_path) ? main_app.send(user_path, user) : "/#{user.to_param}"
 }
 
 # This method is used by Thredded controllers and views to fetch the currently signed-in user
@@ -37,9 +37,9 @@ Thredded.avatar_url = ->(user) { RailsGravatar.src(user.email, 156, 'mm') }
 # and admins and moderators are determined by a flag on the users table.
 
 # The name of the moderator flag column on the users table.
-Thredded.moderator_column = :admin
+Thredded.moderator_column = :owner
 # The name of the admin flag column on the users table.
-Thredded.admin_column = :admin
+Thredded.admin_column = :owner
 
 # Whether posts and topics pending moderation are visible to regular users.
 Thredded.content_visible_while_pending_moderation = true
@@ -65,10 +65,10 @@ Thredded.show_messageboard_group_page = true
 Thredded.show_topic_followers = false
 
 # Whether the list of users who are currently online is displayed.
-Thredded.currently_online_enabled = true
+Thredded.currently_online_enabled = false
 
 # Whether private messaging functionality is enabled.
-Thredded.private_messaging_enabled = true
+Thredded.private_messaging_enabled = false
 
 # The number of topics to display per page.
 # Thredded.topics_per_page = 50

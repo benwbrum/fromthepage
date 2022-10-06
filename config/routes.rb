@@ -1,4 +1,8 @@
 Fromthepage::Application.routes.draw do
+  # TODO make the URL fall under user and collection profile
+  mount Thredded::Engine => '/forum'
+
+
   root :to => 'static#splash'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
@@ -23,6 +27,8 @@ Fromthepage::Application.routes.draw do
   iiif_for 'riiif/image', at: '/image-service'
 
   resources :notes
+
+
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
@@ -462,6 +468,8 @@ Fromthepage::Application.routes.draw do
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
+
+    
 
       #work related routes
       #have to use match because it must be both get and post
