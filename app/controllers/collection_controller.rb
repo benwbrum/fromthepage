@@ -95,6 +95,16 @@ class CollectionController < ApplicationController
   end
 
 
+  def enable_message_boards
+    @collection.enable_message_boards
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
+  def disable_message_boards
+    @collection.disable_message_boards
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!

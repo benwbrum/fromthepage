@@ -15,6 +15,15 @@
   :path => "#{collection_subjects_path(@collection.owner, @collection)}",
 }]
 
+-if @collection.message_boards_enabled?
+  -tabs +=[{\
+  :name => t('.forum'),
+  :selected => 14,
+  :path => "#{Thredded::UrlsHelper::messageboard_topics_path(@collection.messageboard_slug)}",
+}]
+
+
+
 -if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type && @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count > 0
   -tabs +=[{\
   :name => t('.review'),

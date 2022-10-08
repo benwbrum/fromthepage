@@ -1,5 +1,4 @@
 module ExportHelper
-  include Rails.application.routes.url_helpers
 
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 

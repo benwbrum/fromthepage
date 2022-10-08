@@ -101,6 +101,26 @@ class Collection < ApplicationRecord
     review_type != ReviewType::OPTIONAL
   end
 
+
+  def message_boards_enabled?
+    !self.messageboard_slug.blank?
+  end
+
+  def enable_message_boards
+    messageboard = Thredded::Messageboard.create!(slug: coin_message_board_slug, name: self.title)
+    self.messageboard_slug = messageboard.slug
+    self.save!
+  end
+
+  def disable_message_boards
+    self.messageboard_slug = messageboard.slug
+    self.save!
+  end
+
+  def coin_message_board_slug
+    "#{self.slug}-forum"
+  end
+
   def self.access_controlled(user)
     if user.nil?
       Collection.unrestricted

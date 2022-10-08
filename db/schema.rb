@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_06_163607) do
+ActiveRecord::Schema.define(version: 2022_10_08_205347) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 2022_10_06_163607) do
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
     t.boolean "enable_spellcheck", default: false
+    t.string "messageboard_slug"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
