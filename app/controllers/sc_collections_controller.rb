@@ -96,7 +96,6 @@ class ScCollectionsController < ApplicationController
         if manifest['type'] == 'Collection'
           @sc_collection = ScCollection.collection_for_v3_hash(manifest)
           @collection = set_collection
-
           render 'explore_collection', at_id: at_id
 
         elsif manifest['type'] == 'Manifest'
