@@ -33,6 +33,7 @@ class ScManifest < ApplicationRecord
     sc_manifest = ScManifest.new
     sc_manifest.at_id = v3['id']
     sc_manifest.label = v3['label'].values.first.first
+    sc_manifest.metadata = v3['metadata']
     sc_manifest.v3_hash = v3
     sc_manifest.version = '3'
 
@@ -81,11 +82,9 @@ class ScManifest < ApplicationRecord
       collection.owner = user
       collection.title = cleanup_label(sc_collection.label)
       collection.save!
-
       sc_collection.collection = collection
       sc_collection.save!
     end
-
     convert_with_collection(user, collection, nil, annotation_ocr)
   end
 
@@ -110,11 +109,12 @@ class ScManifest < ApplicationRecord
 
     work = Work.new
     work.owner = user
-
     work.title = self.label
     work.description = self.html_description
     work.collection = collection
-    work.original_metadata = normalize_metadata(self.metadata).to_json
+    if self.metadata
+      work.original_metadata = normalize_metadata(self.metadata).to_json
+    end
     work.ocr_correction=annotation_ocr
 
     work.save!
@@ -163,13 +163,15 @@ class ScManifest < ApplicationRecord
   end
 
   def normalize_metadata(raw)
-    raw.map do |hash|
-      # test for v3-style elements
-      label = hash['label'] || hash['@label']
-      label= ScManifest.pluck_language_value(label)
-      value = hash['value'] || hash['@value']
-      value = ScManifest.pluck_language_value(value)
-      { 'label' => label, 'value' => value}
+    if (raw)
+      raw.map do |hash|
+        # test for v3-style elements
+        label = hash['label'] || hash['@label']
+        label= ScManifest.pluck_language_value(label)
+        value = hash['value'] || hash['@value']
+        value = ScManifest.pluck_language_value(value)
+        { 'label' => label, 'value' => value}
+      end
     end
   end
 
