@@ -42,18 +42,18 @@ html lang="en-US"
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
           -if !(Collection.all.count > 30)
-            =link_to t('.projects'), dashboard_path, class: 'header_link'
+            =link_to t('.projects'), main_app.dashboard_path, class: 'header_link'
           -else
-            =link_to t('.find_a_project'), landing_page_path, class: 'header_link'
+            =link_to t('.find_a_project'), main_app.landing_page_path, class: 'header_link'
           -if user_signed_in?
-            =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+            =link_to t('dashboard.plain'), main_app.dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             -if @collection 
-              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@collection.owner), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@collection.owner), class: 'header_link'              
             -elsif @user && @user.owner?
-              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@user), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@user), class: 'header_link'              
             -else
-              =link_to t('.sign_up_to_transcribe'), new_user_registration_path, class: 'header_link'
+              =link_to t('.sign_up_to_transcribe'), main_app.new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
@@ -64,17 +64,17 @@ html lang="en-US"
                 =svg_symbol '#header-user', class: 'icon'
               dd
                 -if current_user.guest
-                  =link_to t('.create_an_account'), new_user_registration_path
+                  =link_to t('.create_an_account'), main_app.new_user_registration_path
                   hr
-                =link_to t('.admin_dashboard'), admin_path if current_user.admin
-                =link_to t('.owner_dashboard'), dashboard_owner_path if current_user.owner
-                =link_to t('.collaborator_dashboard'), dashboard_watchlist_path
+                =link_to t('.admin_dashboard'), main_app.admin_path if current_user.admin
+                =link_to t('.owner_dashboard'), main_app.dashboard_owner_path if current_user.owner
+                =link_to t('.collaborator_dashboard'), main_app.dashboard_watchlist_path
                 hr
-                =link_to t('.your_profile'), user_profile_path(current_user)
+                =link_to t('.your_profile'), main_app.user_profile_path(current_user)
                 hr
-                =link_to t('.sign_out'), destroy_user_session_path, method: :delete
+                =link_to t('.sign_out'), main_app.destroy_user_session_path, method: :delete
           -else
-            =link_to new_user_session_path, class: 'header_link header_user'
+            =link_to main_app.new_user_session_path, class: 'header_link header_user'
               span =t('.sign_in')
               =svg_symbol '#header-user', class: 'icon'
 
@@ -84,11 +84,11 @@ html lang="en-US"
                 big =locale.to_s.split("-")[0].upcase
             dd
               -@dropdown_locales.each do |locale_option|
-                =link_to t(locale_option.to_s), user_choose_locale_path(locale_option.to_s)
+                =link_to t(locale_option.to_s), main_app.user_choose_locale_path(locale_option.to_s)
 
     -if user_masquerade?
       h2.strong
-        =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
+        =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", main_app.back_masquerade_path(current_user)
 
     =(yield :content_above).force_encoding 'UTF-8'
 
@@ -108,7 +108,7 @@ html lang="en-US"
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           =mail_to 'support@fromthepage.com', t('.contact_us')
           -if request.original_url.include?("fromthepage.com")
-            =link_to t('.pricing'), pricing_path
+            =link_to t('.pricing'), main_app.pricing_path
           =link_to t('.transcription_for_archives_special_collections'), 'https://content.fromthepage.com/special-collections/'
           =link_to t('.transcription_for_state_provincial_archives'), 'https://content.fromthepage.com/state-provincial-landing-page/'
           =link_to t('.transcription_for_digital_scholarship'), 'https://content.fromthepage.com/digital-scholarship/'

@@ -17,6 +17,7 @@
 //= require user.js
 //= require handsontable.full.min
 //= require datatables.min
+//= require thredded
 
 ;(function($, window, document, undefined) {
 

@@ -78,6 +78,11 @@ Thredded.private_messaging_enabled = false
 
 # The layout for rendering Thredded views.
 Thredded.layout = 'thredded/application'
+# Thredded.layout = 'application'
+
+
+
+
 
 # ==> Email Configuration
 # Email "From:" field will use the following
@@ -189,3 +194,12 @@ Thredded.layout = 'thredded/application'
 #
 # add in (must install separate gem (under development) as well):
 # Thredded.notifiers = [Thredded::EmailNotifier.new, Thredded::PushoverNotifier.new(ENV['PUSHOVER_APP_ID'])]
+
+
+
+Rails.application.config.to_prepare do
+  Thredded.view_hooks.posts_common.pagination_top do |form:, **args|
+    # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
+    render 'shared/collection_tabs', form: form
+  end
+end
