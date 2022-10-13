@@ -82,7 +82,6 @@ class ScManifest < ApplicationRecord
       collection.owner = user
       collection.title = cleanup_label(sc_collection.label)
       collection.save!
-
       sc_collection.collection = collection
       sc_collection.save!
     end
@@ -110,7 +109,6 @@ class ScManifest < ApplicationRecord
 
     work = Work.new
     work.owner = user
-
     work.title = self.label
     work.description = self.html_description
     work.collection = collection
