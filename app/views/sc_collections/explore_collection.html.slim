@@ -25,11 +25,11 @@
       -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
         p= t('.this_collection_is_divided')
         -if @sc_collection.service['first']  
-          =link_to t('.first_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['first']['@id']}
+          =link_to t('.first_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['first']['@id'] || @sc_collection.service['first'])}
         -if @sc_collection.service['next']
-          =link_to t('.next_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['next']['@id']}
+          =link_to t('.next_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['next']['@id']||@sc_collection.service['next'])}
         -if @sc_collection.service['prev']
-          =link_to t('.previous_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['prev']['@id']}
+          =link_to t('.previous_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['prev']['@id']||@sc_collection.service['prev']['@id'])}
 
     -unless @sc_collection.manifests.empty?
       h4= t('.manifests')
