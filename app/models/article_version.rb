@@ -43,7 +43,7 @@ class ArticleVersion < ApplicationRecord
         next_version.save!
         this_version = next_version
       end
-      self.destroy!
     end
+    self.destroy!
   end
 end
