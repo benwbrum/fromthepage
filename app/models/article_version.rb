@@ -45,6 +45,5 @@ class ArticleVersion < ApplicationRecord
       end
     end
     self.destroy!
-    binding.pry
   end
 end
