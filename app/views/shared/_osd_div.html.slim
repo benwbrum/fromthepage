@@ -1,5 +1,6 @@
-=javascript_include_tag "openseadragon.js"
+=javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.0.0/openseadragon.min.js"
 =javascript_include_tag "openseadragon-filtering.js"
+
 
 .image-toolbar(id="image_toolbar")
   a#osd_zoom_in =svg_symbol "#icon-zoom-in", class: 'icon'
@@ -9,19 +10,19 @@
   a#osd_rotate_left =svg_symbol "#icon-rotate-left", class: 'icon'
   a#osd_rotate_right =svg_symbol "#icon-rotate-right", class: 'icon'
   dl.dropdown.right
-    dt title="Image filters"
+    dt title= t('.image_filters')
       =svg_symbol "#icon-filters", class: 'icon'
     dd
       .filter
-        span.filter_label Brightness
+        span.filter_label= t('.brightness')
         =range_field_tag 'filter-brightness', 0, min: -10, max: 10, step: 1, 'data-filter': 'brightness'
         span.filter_value 0
       .filter
-        span.filter_label Contrast
+        span.filter_label= t('.contrast')
         =range_field_tag 'filter-contrast', 0, min: 0, max: 20, step: 1, 'data-filter': 'contrast'
         span.filter_value 0
       .filter
-        span.filter_label Threshold
+        span.filter_label= t('.threshold')
         =range_field_tag 'filter-threshold', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
         span.filter_value 0
   -if @page.nil?
@@ -37,6 +38,13 @@
     var lastFocused = null; // last focused field in the edit area
 
     $(function() {
+      OpenSeadragon.setString("Tooltips.ZoomIn", "#{t('.zoom_in')}");
+      OpenSeadragon.setString("Tooltips.ZoomOut", "#{t('.zoom_out')}");
+      OpenSeadragon.setString("Tooltips.Home", "#{t('.home')}");
+      OpenSeadragon.setString("Tooltips.FullPage", "#{t('.full_page')}");
+      OpenSeadragon.setString("Tooltips.RotateLeft", "#{t('.rotate_left')}");
+      OpenSeadragon.setString("Tooltips.RotateRight", "#{t('.rotate_right')}");
+      
       viewer = OpenSeadragon({
         id: "image_container",
         toolbar: "image_toolbar",
@@ -134,5 +142,5 @@
     });
 
 noscript
-  p OpenSeadragon is not available unless JavaScript is enabled.
+  p t('.open_seadragon_needs_js')
   img(src="/example-images/highsmith/01967v.jpg" height="600")

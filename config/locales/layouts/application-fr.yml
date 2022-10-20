@@ -1,0 +1,31 @@
+---
+fr:
+  layouts:
+    application:
+      about: À propos de
+      admin_dashboard: Tableau de bord administrateur
+      all_rights_reserved: Tous droits réservés.
+      blog: Blog
+      collaborator_dashboard: Tableau de bord des collaborateurs
+      contact_us: Nous contacter
+      create_an_account: Créer un compte
+      documentation: Documentation
+      find_a_project: Trouver un projet
+      home: Maison
+      internet_archive_difficulties: Internet Archive rencontre des difficultés. Veuillez réessayer plus tard.
+      owner_dashboard: Tableau de bord du propriétaire
+      pricing: Tarification
+      privacy_policy: Politique de confidentialité
+      projects: Projets
+      recaptcha_validation_failed: La validation ReCAPTCHA a échoué
+      sign_in: S'identifier
+      sign_out: Se déconnecter
+      sign_up_to_transcribe: Inscrivez-vous pour transcrire
+      signed_in_as: Connecté en tant que
+      terms_and_conditions: Termes et Conditions
+      transcription_for_archives_special_collections: Transcription pour les archives et les collections spéciales
+      transcription_for_digital_scholarship: Transcription pour la bourse numérique
+      transcription_for_public_libraries: Transcription pour les bibliothèques publiques
+      transcription_for_state_provincial_archives: Transcription pour les archives d'État et provinciales
+      undo_login_as: Annuler la connexion en tant que
+      your_profile: Votre profil

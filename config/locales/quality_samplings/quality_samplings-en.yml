@@ -1,0 +1,37 @@
+---
+en:
+  quality_samplings:
+    destroy:
+      quality_sampling_destroyed: Quality sampling was successfully destroyed.
+    index:
+      description: Quality sampling allows you to spot-check contributions, gathering data about quality as you review each contribution.
+      new_sampling: Start Sampling
+    show:
+      actions: Actions
+      approval_delta_display_0: Very low
+      approval_delta_display_1: Low
+      approval_delta_display_2: Average
+      approval_delta_display_3: High
+      approval_delta_display_4: Very high
+      description: Quality sampling lets you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work. This number may grow as more pages are transcribed.
+      not_applicable: N/A
+      not_fully_sampled_yet: This sample has not been fully reviewed yet.
+      pages_in_sample: Pages in Sample
+      pages_in_sample_desc: Number of pages in the sample for the user or work.
+      pages_to_be_reviewed: Pages to Review
+      pages_to_be_reviewed_desc: Number of pages still needing review in the entire collection.
+      quality_score: Quality Score
+      quality_score_desc: Average percent of changes needed during approval.
+      relative_corrections: Relative Corrections
+      relative_corrections_desc: How many corrections were required before approval, relative to other users in this sample?
+      review: Review
+      review_url: Review URL
+      review_url_desc: URL which will let reviewers approve contributions directly, without displaying this screen.
+      sample: Review Sample
+      sample_field_size: 'Pages to be Reviewed:'
+      sample_set_has_increased: Sample set has increased by %{increase} pages
+      sample_set_size: 'Sample Set Size:'
+      user: Contributor
+      work: Work
+    update:
+      quality_sampling_updated: Quality sampling was successfully updated.

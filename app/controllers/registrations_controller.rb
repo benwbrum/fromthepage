@@ -72,6 +72,24 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def update
+    @user.login = sign_up_params[:login]
+    @user.email = sign_up_params[:email]
+    @user.real_name = sign_up_params[:real_name]
+    unless sign_up_params[:password].blank?
+      @user.password=sign_up_params[:password]
+      @user.password_confirmation=sign_up_params[:password_confirmation]
+    end
+
+    if @user.save
+      bypass_sign_in(@user)
+      flash[:notice] = t('user.update.user_updated')
+      ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
+    else
+      render :controller => 'user', :action => 'edit'
+    end
+  end
+
 
   def set_saml
     institution = saml_provider_param

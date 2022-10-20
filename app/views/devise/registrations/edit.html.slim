@@ -1,38 +1,35 @@
--content_for :page_title, "Edit Account"
+-content_for :page_title, t('.edit_account')
 
 section.signon
-  h1 Edit Account
-  p Here you can change your account information. If you don't want to change your password, leave the password fields blank. You're required to enter your current password to confirm changes.
+  h1= t('.edit_account')
+  p= t('.message')
 
   -if devise_mapping.confirmable? && resource.pending_reconfirmation?
-    p Currently waiting confirmation for #{resource.unconfirmed_email}
+    p= t('.waiting_confirmation_message', resource: (resource.unconfirmed_email))
 
   =form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :login, 'User Name'
+      =f.label :login, t('devise.user_name')
       =f.text_field :login, autofocus: true
     .signon_field
-      =f.label :email, 'Email Address'
+      =f.label :email, t('devise.email_address')
       =f.email_field :email
     .signon_field
-      =f.label :password, 'New Password'
+      =f.label :password, t('.new_password')
       =f.password_field :password, autocomplete: 'off'
     .signon_field
-      =f.label :password_confirmation, 'Confirm Password'
+      =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :current_password, 'Current Password'
-      =f.password_field :current_password, autocomplete: 'off'
-    .signon_field
-      =f.label :real_name, 'Real Name'
+      =f.label :real_name, t('devise.real_name')
       =f.text_field :real_name
       small
-        i Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
+        i= t('devise.real_name_message')
     .toolbar
       .toolbar_group
-        =f.button 'Save Changes', class: 'big'
+        =f.button t('.save_changes'), class: 'big'
       .toolbar_group.aright
-        =link_to registration_path(resource_name), data: { confirm: 'Are you sure you want to delete your account? After deleting the account you won\'t be able to recover it!' }, method: :delete
+        =link_to registration_path(resource_name), data: { confirm: t('.confirm_delete_account') }, method: :delete
           =svg_symbol '#icon-remove-sign', class: 'icon'
-          span Delete Account
+          span= t('.delete_account')

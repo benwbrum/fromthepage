@@ -1,12 +1,22 @@
+---
 en:
   category:
-    update:
-      category_updated: "Category has been updated"
+    add_new:
+      create_category: Create Category
+      enable_gis: Enable GIS
+      title: Title
     create:
-      category_created: "Category has been created"
+      category_created: Category has been created
     delete:
-      category_deleted: "Category has been deleted"
-    enable_gis:
-      gis_enabled_for: "GIS enabled for %{title}"
+      category_deleted: Category has been deleted
     disable_gis:
-      gis_disabled_for: "GIS disabled for %{title}"
+      gis_disabled_for: GIS disabled for %{title}
+    edit:
+      edit_category: Edit Category
+      enable_gis: Enable GIS
+      save_changes: Save Changes
+      title: Title
+    enable_gis:
+      gis_enabled_for: GIS enabled for %{title}
+    update:
+      category_updated: Category has been updated

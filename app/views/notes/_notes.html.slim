@@ -6,7 +6,7 @@
   p.acenter.fglight(data-note-empty)
     = t('.nobody_has_written_a_note')
 -unless user_signed_in?
-  p.acenter.fglight = t('.please_sign_in_to_write', link: link_to('sign in', new_user_session_path)).html_safe
+  p.acenter.fglight = t('.please_sign_in_to_write', link: link_to(t('.sign_in'), new_user_session_path)).html_safe
 
 -notes.each do |note|
   =render({ partial: 'notes/note', locals: { note: note }})

@@ -1,0 +1,22 @@
+---
+fr:
+  category:
+    add_new:
+      create_category: Créer une catégorie
+      enable_gis: Activer le SIG
+      title: Titre
+    create:
+      category_created: La catégorie a été créée
+    delete:
+      category_deleted: La catégorie a été supprimée
+    disable_gis:
+      gis_disabled_for: SIG désactivé pour %{title}
+    edit:
+      edit_category: Modifier la catégorie
+      enable_gis: Activer le SIG
+      save_changes: Enregistrer la modification
+      title: Titre
+    enable_gis:
+      gis_enabled_for: SIG activé pour %{title}
+    update:
+      category_updated: La catégorie a été mise à jour

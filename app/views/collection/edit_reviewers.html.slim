@@ -16,7 +16,7 @@
       =profile_picture(user)
       .username
         =link_to user.display_name, user_profile_path(user)
-        small =pluralize(contributions, 'contribution')
+        small= t('collection.edit.n_contributions', count: contributions)
         =form_tag(collection_remove_reviewer_path) do
           =hidden_field_tag(:user_id, user.id, {:id => "remove_user_#{user.id}"})
           =hidden_field_tag(:collection_id, @collection.id, {:id => "remove_user_collection_#{user.id}"})
@@ -24,7 +24,7 @@
 
   .toolbar
     .toolbar_group.aright
-      =link_to('Done', edit_collection_path(@collection.owner, @collection), class: 'button')
+      =link_to(t('collection.edit.done'), edit_collection_path(@collection.owner, @collection), class: 'button')
 
 javascript:
   $('#add_reviewer_user_id').select2({

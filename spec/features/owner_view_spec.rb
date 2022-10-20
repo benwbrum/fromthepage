@@ -35,7 +35,7 @@ describe "owner view - collection" do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Summary")
     expect(page).to have_selector('.collection-stats_counters')
-    expect(page).to have_content("Last 7 Days Statistics")
+    expect(page).to have_content("Statistics from")
     expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @works.count
     expect(page.find('.collection-users')).to have_content('Transcribing')
     expect(page.find('.collection-users')).to have_content('Editing')

@@ -1,0 +1,87 @@
+---
+fr:
+  transcription_field:
+    add_columns:
+      must_have_options_list: Les champs sélectionnés doivent avoir une liste d'options. Veuillez ajouter des options à tous les champs sélectionnés et réenregistrer.
+      starting_rows_must_not_be_blank: Les lignes de départ ne doivent pas être vides.
+    add_fields:
+      must_have_options_list: Les champs sélectionnés doivent avoir une liste d'options. Veuillez ajouter des options à tous les champs sélectionnés et réenregistrer.
+    choose_offset:
+      page_layout: Mise en page
+      page_layout_description: Redimensionnez le rectangle sur l'image pour entourer la partie de la page contenant une feuille de calcul, puis enregistrez votre sélection.
+      replace_image: Remplacer l'image
+      replace_image_description: Si l'image d'exemple ne contient pas de feuille de calcul, vous pouvez la remplacer par une page différente de la collection, choisie au hasard.
+      save_selection: Enregistrer la sélection
+    column_form:
+      column_options: Options de colonne (séparées par des points-virgules)
+      column_options_title: Options pour les cellules déroulantes.
+      input_type: Type d'entrée
+      label: Étiquette
+    edit_columns:
+      add_additional_column: Ajouter une colonne supplémentaire
+      cancel: Annuler
+      disable_ruler: Désactiver la règle
+      done: Terminer
+      edit_spreadsheet_columns: Configuration de la colonne
+      edit_spreadsheet_header: Configuration de la feuille de calcul
+      enable_ruler: Activer la règle
+      identify_rows: Identifier les lignes
+      identify_rows_description: Les pages peuvent avoir des marges supérieure et inférieure, des champs d'en-tête ou de pied de page ou tout autre texte qui ne doit pas être utilisé lors de l'identification de l'emplacement des lignes sur la page.
+      page_layout: Mise en page
+      preview: Aperçu de la feuille de calcul
+      save: sauvegarder
+      screen_ruler: Règle d'écran
+      screen_ruler_description: Pour améliorer la convivialité et réduire les erreurs du transcripteur, FromThePage peut afficher une règle sur l'image de la page qui met en évidence la partie d'une page que l'utilisateur transcrit. Ceci est utile pour les documents numérisés de manière cohérente écrits sur des formulaires pré-imprimés, mais peut être gênant ou frustrant si les documents sont irréguliers et que la règle de trame ne correspond pas.
+      start_rows_description: Nombre de lignes que la feuille de calcul doit afficher initialement. (Les transcripteurs pourront ajouter des lignes supplémentaires si nécessaire.)
+      start_rows_label: 'Nombre de lignes de départ :'
+      transcription_warning: Ce projet a déjà été partiellement retranscrit. L'ajout de colonnes est acceptable, mais la suppression ou la modification de colonnes peut entraîner la perte de données. Veuillez contacter support@fromthepage.com si vous avez des questions ou si vous avez besoin de renommer des colonnes.
+    edit_field_form:
+      add_additional_field: Ajouter un champ supplémentaire
+      add_additional_line: Ajouter une ligne supplémentaire
+      cancel: Annuler
+      data_entry_type_label: Flux de métadonnées
+      data_entry_type_metadata_only: Les utilisateurs créent uniquement des métadonnées
+      data_entry_type_text_and_metadata: Les utilisateurs transcrivent du texte et créent des métadonnées
+      description_instructions_label: Instructions de description des métadonnées
+      done: Fait
+      line: Ligne
+      preview: Aperçu
+      save: Sauvegarder
+    edit_fields:
+      edit_transcription_fields: Modifier les champs de transcription
+      transcription_warning: Ce projet a déjà été partiellement retranscrit. L'ajout de champs est acceptable, mais la suppression ou la modification de champs peut entraîner la perte de données. Veuillez contacter support@fromthepage.com si vous avez des questions ou si vous avez besoin de renommer des champs.
+    edit_metadata_fields:
+      edit_metadata_fields: Modifier les champs de métadonnées
+    field_layout:
+      instructions: Des instructions
+    line_form:
+      field_options: Options de champ (séparées par des points-virgules)
+      field_options_title: Options pour certains champs.
+      input_type: Type d'entrée
+      label: Étiquette
+      page: Page
+      page_title: Pour les formulaires multipages, sur quelle page ce champ doit-il apparaître ? (Laissez vide pour afficher sur chaque page.)
+      percentage_title: Pourcentage de la largeur de ligne à utiliser pour ce champ.
+      percentage_width: Largeur %
+    metadata_field_layout:
+      instructions: Des instructions
+    multiselect_form:
+      options_form_description: Entrez les options pour le champ de métadonnées à sélection multiple, chaque option sur une ligne distincte
+      options_form_title: Options de sélection multiple
+      save: Sauvegarder
+    new_column_form:
+      delete_column: Supprimer la colonne
+      field_label: Étiquette de champ
+      field_options: Options de champ
+      input_type: Type d'entrée
+      reorder_column: Réorganiser la colonne
+    new_field_form:
+      configure_options: Configurer les options
+      configure_spreadsheet: Configurer la feuille de calcul
+      delete_field: Supprimer le champ
+      field_label: Étiquette de champ
+      field_options: Options de champ
+      input_type: Type d'entrée
+      page_number: Numéro de page
+      reorder_field: Champ de réorganisation
+      width_percentage: Pourcentage de largeur

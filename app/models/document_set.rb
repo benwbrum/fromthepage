@@ -53,6 +53,10 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def enable_spellcheck
+    self.collection.enable_spellcheck
+  end
+
   def reviewers
     self.collection.reviewers
   end
@@ -129,7 +133,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def deeds
-    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work)
+    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work).reorder('deeds.created_at DESC')
   end
 
   def restricted

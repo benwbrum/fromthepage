@@ -1,0 +1,37 @@
+---
+es:
+  quality_samplings:
+    destroy:
+      quality_sampling_destroyed: El muestreo de calidad se destruyó con éxito.
+    index:
+      description: El muestreo de calidad le permite verificar las contribuciones al azar, recopilando datos sobre la calidad a medida que revisa cada contribución.
+      new_sampling: Iniciar muestreo
+    show:
+      actions: Comportamiento
+      approval_delta_display_0: Muy bajo
+      approval_delta_display_1: Bajo
+      approval_delta_display_2: Promedio
+      approval_delta_display_3: Alto
+      approval_delta_display_4: Muy alto
+      description: El muestreo de calidad le permite verificar las contribuciones al azar y luego evaluar las páginas para revisar en función de la cantidad de texto corregido para un usuario u obra en particular. Este número puede crecer a medida que se transcriban más páginas.
+      not_applicable: N / A
+      not_fully_sampled_yet: Esta muestra aún no se ha revisado por completo.
+      pages_in_sample: Páginas en muestra
+      pages_in_sample_desc: Número de páginas de la muestra para el usuario u obra.
+      pages_to_be_reviewed: Páginas para revisar
+      pages_to_be_reviewed_desc: Número de páginas que aún necesitan revisión en toda la colección.
+      quality_score: Nivel de calidad
+      quality_score_desc: Porcentaje promedio de cambios necesarios durante la aprobación.
+      relative_corrections: Correcciones relativas
+      relative_corrections_desc: "¿Cuántas correcciones se requirieron antes de la aprobación, en relación con otros usuarios en esta muestra?"
+      review: Revisar
+      review_url: Revisar URL
+      review_url_desc: URL que permitirá a los revisores aprobar las contribuciones directamente, sin mostrar esta pantalla.
+      sample: Revisar muestra
+      sample_field_size: 'Páginas a revisar:'
+      sample_set_has_increased: El conjunto de muestras ha aumentado en %{increase} páginas
+      sample_set_size: 'Tamaño del conjunto de muestra:'
+      user: Contribuyente
+      work: Trabajar
+    update:
+      quality_sampling_updated: El muestreo de calidad se actualizó con éxito.

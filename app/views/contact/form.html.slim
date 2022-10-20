@@ -1,0 +1,31 @@
+-content_for :page_title, t('.contact_us')
+
+#contact
+  section.signon
+    h1= t('.contact_us')
+    p= t('.contact_us_description')
+
+
+    =form_tag(send_contact_email_path) do |f|
+      .signon_field
+        =label_tag :first_name, t('.first_name')
+        =text_field_tag :first_name, nil, autofocus: true
+      .signon_field
+        = label_tag :last_name, t('.last_name')
+        = text_field_tag :last_name, nil, autofocus: true
+      .signon_field
+        =label_tag email_param, t('.email_address')
+        =email_field_tag email_param
+      .signon_field
+        =label_tag :reason, t('.contact_reason')
+        =select_tag :reason, options_for_select(['', t('.product_question'), t('.large_institution_quote'), t('.free_trial'), t('.event'), t('.press'), t('.other')])
+      .signon_field
+        =label_tag :more, t('.tell_us_more')
+        =text_area_tag :more
+
+      <br>
+      =button_tag t('.submit'), class: 'big'
+
+  javascript:  mixpanel.track("Contact Us");
+
+
