@@ -1,15 +1,11 @@
 -content_for :page_title, t('devise.sign_up')
 
 section.signon
-<<<<<<< HEAD
-  h1 Sign Up
+  h1= t('devise.sign_up')
 
   p Please fill in the following information to create a new FromThePage account. 
   p By registering with this website you certify that you are at least 13 years of age or have parental permission.
   
-=======
-  h1= t('devise.sign_up')
->>>>>>> development
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
