@@ -121,6 +121,10 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
+    if params[:messageboard_id]
+      @collection = set_friendly_collection(params[:messageboard_id].gsub(/-forum$/,''))
+    end
+
     if params[:article_id]
       @article = Article.find(params[:article_id])
       if session[:col_id] != nil

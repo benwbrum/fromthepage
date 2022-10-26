@@ -107,13 +107,17 @@ class Collection < ApplicationRecord
   end
 
   def enable_message_boards
-    messageboard = Thredded::Messageboard.create!(slug: coin_message_board_slug, name: self.title)
+    messageboard = Thredded::Messageboard.where(slug: coin_message_board_slug).first
+    if messageboard.nil?
+      messageboard = Thredded::Messageboard.create!(slug: coin_message_board_slug, name: self.title)
+    end
     self.messageboard_slug = messageboard.slug
     self.save!
   end
 
   def disable_message_boards
-    self.messageboard_slug = messageboard.slug
+    messageboard = Thredded::Messageboard.find(coin_message_board_slug)
+    self.messageboard_slug = nil
     self.save!
   end
 

@@ -82,6 +82,7 @@ en:
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       disable_document_sets: Disable Document Sets
       disable_facets: Disable Facets
+      disable_message_boards: Disable Forum
       disable_ocr: Disable OCR
       document_sets: Document Sets
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
@@ -97,6 +98,7 @@ en:
       enable_document_sets: Enable Document Sets
       enable_facets: Enable Facets
       enable_field_based_transcription: Enable Field Based Transcription
+      enable_message_boards: Enable Forum
       enable_metadata_description: Enable Metadata Description
       enable_ocr: Enable OCR
       enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
@@ -110,6 +112,9 @@ en:
       make_collection_inactive: Make Collection Inactive
       make_collection_private: Make Collection Private
       make_collection_public: Make Collection Public
+      message_boards: Forum
+      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards. 
+
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_entry: Metadata Description
