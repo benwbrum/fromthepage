@@ -1,4 +1,7 @@
 @import "base/ftp_color_scheme";
+
+
+.thredded--navigation-breadcrumbs > li:first-child { display: none; }
 @import "thredded";
 
 
