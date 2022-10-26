@@ -103,8 +103,6 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.integer "document_set_id"
     t.boolean "subject_details_csv_collection"
     t.boolean "text_only_pdf_work"
-    t.string "organization", default: "by_work"
-    t.boolean "use_uploaded_filename", default: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -679,7 +677,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["page_id"], name: "index_tex_figures_on_page_id"
   end
 
-  create_table "thredded_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "messageboard_id", null: false
     t.text "name", null: false
     t.text "description"
@@ -691,14 +689,14 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["name"], name: "thredded_categories_name_ci", length: 191
   end
 
-  create_table "thredded_messageboard_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_messageboard_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "thredded_messageboard_notifications_for_followed_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_messageboard_notifications_for_followed_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.bigint "messageboard_id", null: false
     t.string "notifier_key", limit: 90, null: false
@@ -706,7 +704,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id", "messageboard_id", "notifier_key"], name: "thredded_messageboard_notifications_for_followed_topics_unique", unique: true
   end
 
-  create_table "thredded_messageboard_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_messageboard_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "thredded_user_detail_id", null: false
     t.bigint "thredded_messageboard_id", null: false
     t.datetime "last_seen_at", null: false
@@ -715,7 +713,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["thredded_user_detail_id"], name: "fk_rails_06e42c62f5"
   end
 
-  create_table "thredded_messageboards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_messageboards", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.text "name", null: false
     t.text "slug"
     t.text "description"
@@ -731,21 +729,21 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["slug"], name: "index_thredded_messageboards_on_slug", unique: true, length: 191
   end
 
-  create_table "thredded_notifications_for_followed_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_notifications_for_followed_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "notifier_key", limit: 90, null: false
     t.boolean "enabled", default: true, null: false
     t.index ["user_id", "notifier_key"], name: "thredded_notifications_for_followed_topics_unique", unique: true
   end
 
-  create_table "thredded_notifications_for_private_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_notifications_for_private_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "notifier_key", limit: 90, null: false
     t.boolean "enabled", default: true, null: false
     t.index ["user_id", "notifier_key"], name: "thredded_notifications_for_private_topics_unique", unique: true
   end
 
-  create_table "thredded_post_moderation_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_post_moderation_records", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "post_id"
     t.bigint "messageboard_id"
     t.text "post_content"
@@ -758,7 +756,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["messageboard_id", "created_at"], name: "index_thredded_moderation_records_for_display"
   end
 
-  create_table "thredded_posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_posts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id"
     t.text "content"
     t.string "source", limit: 191, default: "web"
@@ -775,7 +773,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id"], name: "index_thredded_posts_on_user_id"
   end
 
-  create_table "thredded_private_posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_private_posts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id"
     t.text "content"
     t.bigint "postable_id", null: false
@@ -784,7 +782,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["postable_id", "created_at"], name: "index_thredded_private_posts_on_postable_id_and_created_at"
   end
 
-  create_table "thredded_private_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_private_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id"
     t.integer "last_user_id"
     t.text "title", null: false
@@ -799,7 +797,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["slug"], name: "index_thredded_private_topics_on_slug", unique: true, length: 191
   end
 
-  create_table "thredded_private_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_private_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "private_topic_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -808,14 +806,14 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id"], name: "index_thredded_private_users_on_user_id"
   end
 
-  create_table "thredded_topic_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_topic_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "topic_id", null: false
     t.bigint "category_id", null: false
     t.index ["category_id"], name: "index_thredded_topic_categories_on_category_id"
     t.index ["topic_id"], name: "index_thredded_topic_categories_on_topic_id"
   end
 
-  create_table "thredded_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id"
     t.integer "last_user_id"
     t.text "title", null: false
@@ -838,7 +836,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id"], name: "index_thredded_topics_on_user_id"
   end
 
-  create_table "thredded_user_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_details", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "latest_activity_at"
     t.integer "posts_count", default: 0
@@ -853,7 +851,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id"], name: "index_thredded_user_details_on_user_id", unique: true
   end
 
-  create_table "thredded_user_messageboard_preferences", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_messageboard_preferences", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.bigint "messageboard_id", null: false
     t.boolean "follow_topics_on_mention", default: true, null: false
@@ -863,7 +861,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id", "messageboard_id"], name: "thredded_user_messageboard_preferences_user_id_messageboard_id", unique: true
   end
 
-  create_table "thredded_user_post_notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_post_notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.bigint "post_id", null: false
     t.datetime "notified_at", null: false
@@ -871,7 +869,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id", "post_id"], name: "index_thredded_user_post_notifications_on_user_id_and_post_id", unique: true
   end
 
-  create_table "thredded_user_preferences", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_preferences", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "follow_topics_on_mention", default: true, null: false
     t.boolean "auto_follow_topics", default: false, null: false
@@ -880,7 +878,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id"], name: "index_thredded_user_preferences_on_user_id", unique: true
   end
 
-  create_table "thredded_user_private_topic_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_private_topic_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.bigint "postable_id", null: false
     t.integer "unread_posts_count", default: 0, null: false
@@ -890,7 +888,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id", "postable_id"], name: "thredded_user_private_topic_read_states_user_postable", unique: true
   end
 
-  create_table "thredded_user_topic_follows", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_topic_follows", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
     t.bigint "topic_id", null: false
     t.datetime "created_at", null: false
@@ -898,7 +896,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["user_id", "topic_id"], name: "thredded_user_topic_follows_user_topic", unique: true
   end
 
-  create_table "thredded_user_topic_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "thredded_user_topic_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "messageboard_id", null: false
     t.integer "user_id", null: false
     t.bigint "postable_id", null: false

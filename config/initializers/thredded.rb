@@ -77,8 +77,8 @@ Thredded.private_messaging_enabled = false
 # Thredded.posts_per_page = 25
 
 # The layout for rendering Thredded views.
-Thredded.layout = 'thredded/application'
-# Thredded.layout = 'application'
+# Thredded.layout = 'thredded/application'
+Thredded.layout = 'application'
 
 
 
