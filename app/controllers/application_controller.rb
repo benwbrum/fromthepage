@@ -264,8 +264,14 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_collection
-    # skip irrelevant cases
     return unless @collection
+    if self.class.module_parent.name == 'Thredded'
+      unless @collection.message_boards_enabled?
+        flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
+        redirect_to main_app.user_profile_path(@collection.owner)
+      end
+    end
+
     return unless @collection.restricted
     return if (params[:controller] == 'iiif')
 
