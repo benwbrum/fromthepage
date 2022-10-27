@@ -1,13 +1,6 @@
 @import "base/ftp_color_scheme";
 
 
-.thredded--navigation-breadcrumbs > li:first-child { display: none; }
-@import "thredded";
-
-
-// ---------------------------
-// Thredded Overrides
-// ---------------------------
 
 //.thredded--main-container {
 //  // The padding and max-width are handled by the app's container.
@@ -151,6 +144,71 @@ $gapSize:                   20px;
 .mt-10 {
   margin-top: 10px;
 }
+
+
+$thredded-base-font-family: $fontFamily;
+$thredded-heading-font-family: $fontFamilyHead;
+
+$thredded-base-font-size: $fontSize;
+$thredded-font-size-small: $fontSizeSmall;
+$thredded-base-line-height: $lineHeight;
+
+$thredded-heading-line-height: 1.2 !default;
+$thredded-messageboard-title-font-size: 1.125rem !default;
+$thredded-topic-header-font-size: 1.25rem !default;
+$thredded-topic-header-font-size-tablet-and-up: 1.5rem !default;
+
+
+@import "thredded";
+
+// ---------------------------
+// Thredded Overrides
+// ---------------------------
+
+.thredded--post--content {
+  font-size: $fontSize;
+  line-height: $lineHeight;
+  // TODO?
+  word-break: break-word;
+  a {
+    @extend %thredded--link;
+  }
+  p {
+    @extend %thredded--paragraph;
+  }
+  hr {
+    @extend %thredded--hr;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  table {
+    @extend %thredded--table;
+  }
+  blockquote {
+    @extend %thredded--blockquote;
+  }
+  pre {
+    overflow-x: auto;
+  }
+}
+
+
+
+.thredded--main-navigation { 
+  display: none; 
+}
+
+
+
+// our h3 are h1 in Thredded
+h1, .thredded--topic-header--title {
+  color: $fgH3;
+  font-size: $fontSizeH3;
+}
+
+
 
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
