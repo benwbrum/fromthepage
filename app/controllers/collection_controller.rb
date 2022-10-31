@@ -486,11 +486,13 @@ class CollectionController < ApplicationController
 
     headers = [
       :name, 
+      :user_real_name,
       :email,
       :user_total_minutes,
       :user_proportional_minutes,
       :pages_transcribed, 
       :page_edits, 
+      :page_reviews,
       :pages_translated, 
       :ocr_corrections,
       :notes, 
@@ -508,7 +510,7 @@ class CollectionController < ApplicationController
         time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
       end
 
-      id_data = [user.display_name, user.email]
+      id_data = [user.display_name, user.real_name, user.email]
       time_data = [time_total, time_proportional]
 
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
@@ -516,6 +518,7 @@ class CollectionController < ApplicationController
       user_stats = [
         user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
         user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_REVIEWED },
         user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
         user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
         user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
@@ -552,6 +555,7 @@ class CollectionController < ApplicationController
     headers = [
       :date,
       :user,
+      :user_real_name,
       :user_email,
       :deed_type,
       :page_title,
@@ -571,6 +575,7 @@ class CollectionController < ApplicationController
       record = [
         d.created_at,
         d.user.display_name,
+        d.user.real_name,
         d.user.email,
         d.deed_type
       ]
