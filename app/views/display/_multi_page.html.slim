@@ -34,7 +34,7 @@
             =button_to t('.translations_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'translation_review'}, class: 'review-button'
             =button_to t('.translations_need_indexing'), {action: "read_work", work_id: @work.id, needs_review: 'translation_index'}, class: 'review-button'
           -if @collection.metadata_entry?
-            =link_to t('.describe'), describe_collection_work_path(@work.slug), class: 'button review-button'
+            =link_to t('.describe'), describe_collection_work_path(@collection.owner, @collection, @work.slug), class: 'button review-button'
 
       -if @article
         h4 =@article.title
