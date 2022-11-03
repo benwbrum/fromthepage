@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_08_205347) do
+ActiveRecord::Schema.define(version: 2022_11_02_180158) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -197,10 +197,12 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
     t.boolean "enable_spellcheck", default: false
-    t.string "messageboard_slug"
+    t.bigint "thredded_messageboard_group_id"
+    t.boolean "messageboards_enabled"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
+    t.index ["thredded_messageboard_group_id"], name: "index_collections_on_thredded_messageboard_group_id"
   end
 
   create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -234,6 +236,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
     t.index ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id"
     t.index ["collection_id"], name: "index_deeds_on_collection_id"
+    t.index ["created_at", "deed_type", "user_id"], name: "index_deeds_on_created_at_and_deed_type_and_user_id"
     t.index ["created_at"], name: "index_deeds_on_created_at"
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
@@ -1096,6 +1099,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_205347) do
   add_foreign_key "bulk_exports", "users"
   add_foreign_key "bulk_exports", "works"
   add_foreign_key "cdm_bulk_imports", "users"
+  add_foreign_key "collections", "thredded_messageboard_groups"
   add_foreign_key "editor_buttons", "collections"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"

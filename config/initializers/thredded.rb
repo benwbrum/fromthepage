@@ -59,7 +59,7 @@ Thredded.messageboards_order = :position
 Thredded.show_messageboard_delete_button = false
 
 # Whether MessageboardGroup show page is enabled.
-Thredded.show_messageboard_group_page = false
+Thredded.show_messageboard_group_page = true
 
 # Whether users that are following a topic are listed on the topic page.
 Thredded.show_topic_followers = false

@@ -22,6 +22,7 @@ class Collection < ApplicationRecord
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
   has_one :quality_sampling, :dependent => :destroy
+  belongs_to :messageboard_group, class_name: 'Thredded::MessageboardGroup', foreign_key: 'thredded_messageboard_group_id'
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
@@ -102,27 +103,21 @@ class Collection < ApplicationRecord
   end
 
 
-  def message_boards_enabled?
-    !self.messageboard_slug.blank?
-  end
 
-  def enable_message_boards
-    messageboard = Thredded::Messageboard.where(slug: coin_message_board_slug).first
-    if messageboard.nil?
-      messageboard = Thredded::Messageboard.create!(slug: coin_message_board_slug, name: self.title)
+  def enable_messageboards
+    if self.messageboard_group.nil?
+      self.messageboard_group = Thredded::MessageboardGroup.create!(name: self.title)
+      # now create the default messageboards
+      Thredded::Messageboard.create!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.create!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
     end
-    self.messageboard_slug = messageboard.slug
+    self.messageboards_enabled = true
     self.save!
   end
 
-  def disable_message_boards
-    messageboard = Thredded::Messageboard.find(coin_message_board_slug)
-    self.messageboard_slug = nil
+  def disable_messageboards
+    self.messageboards_enabled=false
     self.save!
-  end
-
-  def coin_message_board_slug
-    "#{self.slug}-forum"
   end
 
   def self.access_controlled(user)

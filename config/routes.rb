@@ -1,6 +1,10 @@
 Fromthepage::Application.routes.draw do
   # TODO make the URL fall under user and collection profile
-  mount Thredded::Engine => '/forum'
+  scope ':user_slug' do
+    scope ':collection_id' do
+      mount Thredded::Engine => '/forum'
+    end
+  end
 
 
   root :to => 'static#splash'
@@ -77,7 +81,7 @@ Fromthepage::Application.routes.draw do
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
-    get 'enable_message_boards', to: 'collection#enable_message_boards'
+    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
@@ -87,7 +91,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
-    get 'disable_message_boards', to: 'collection#disable_message_boards'
+    get 'disable_messageboards', to: 'collection#disable_messageboards'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'

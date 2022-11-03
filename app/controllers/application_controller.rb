@@ -121,8 +121,16 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
-    if params[:messageboard_id]
-      @collection = set_friendly_collection(params[:messageboard_id].gsub(/-forum$/,''))
+    if self.class.parent == Thredded && params[:id]
+      if self.class.name == "Thredded::MessageboardGroupsController"
+        messageboard_group_id = params[:id]
+      elsif self.class.name == "Thredded::TopicsController"
+        topic = Thredded::Topic.friendly_find!(params[:id])
+        messageboard_group_id = topic.messageboard.messageboard_group_id
+      else
+        binding.pry
+      end
+      @collection = Collection.where(thredded_messageboard_group_id: messageboard_group_id.to_i).first
     end
 
     if params[:article_id]
@@ -266,7 +274,7 @@ class ApplicationController < ActionController::Base
   def authorize_collection
     return unless @collection
     if self.class.module_parent.name == 'Thredded'
-      unless @collection.message_boards_enabled?
+      unless @collection.messageboards_enabled
         flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
@@ -279,7 +287,7 @@ class ApplicationController < ActionController::Base
       # second chance?
       unless set_fallback_collection
         flash[:error] = t('unauthorized_collection', :project => @collection.title)
-        redirect_to user_profile_path(@collection.owner)
+        redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
   end

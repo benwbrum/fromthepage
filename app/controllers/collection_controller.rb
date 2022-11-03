@@ -95,13 +95,13 @@ class CollectionController < ApplicationController
   end
 
 
-  def enable_message_boards
-    @collection.enable_message_boards
+  def enable_messageboards
+    @collection.enable_messageboards
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-  def disable_message_boards
-    @collection.disable_message_boards
+  def disable_messageboards
+    @collection.disable_messageboards
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 

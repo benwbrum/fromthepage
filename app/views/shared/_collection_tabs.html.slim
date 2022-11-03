@@ -15,11 +15,11 @@
   :path => "#{main_app.collection_subjects_path(@collection.owner, @collection)}",
 }]
 
--if @collection.message_boards_enabled?
+-if @collection.messageboards_enabled? && signed_in?
   -tabs +=[{\
   :name => t('.forum'),
   :selected => 14,
-  :path => "#{Thredded::UrlsHelper::messageboard_topics_path(@collection.messageboard_slug)}",
+  :path => "#{Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group)}",
 }]
 
 
