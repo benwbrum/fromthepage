@@ -642,16 +642,18 @@ module ExportHelper
     collection=work.collection
     fields = {}
     collection.metadata_fields.each { |field| fields[field.id] = field}
-    metadata = JSON.parse(work.metadata_description)
-    # TODO remember description status!
     response_array = []
-    metadata.each do |metadata_hash|
-      value = metadata_hash['value']
-      unless value.blank?
-        element = {label: metadata_hash['label'], value: value}
-        element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
+    if work.metadata_description
+      metadata = JSON.parse(work.metadata_description)
+      # TODO remember description status!
+      metadata.each do |metadata_hash|
+        value = metadata_hash['value']
+        unless value.blank?
+          element = {label: metadata_hash['label'], value: value}
+          element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
 
-        response_array << element
+          response_array << element
+        end
       end
     end
 

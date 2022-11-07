@@ -41,11 +41,12 @@
     h3= t('.references')
     =render :partial => 'article_links'
 
-    h3= t('.text_search')
-    p= t('.search_all_pages_description', collection: (@collection.title), article: (@article.title)).html_safe
-    =button_to t('.search_all_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :collection_id => @collection }
-    p= t('.search_unlinked_pages_description', article: (@article.title)).html_safe
-    =button_to t('.search_unlinked_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true, :collection_id => @collection}, { :rel => 'nofolllow' }
+    -if false
+      h3= t('.text_search')
+      p= t('.search_all_pages_description', collection: (@collection.title), article: (@article.title)).html_safe
+      =button_to t('.search_all_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :collection_id => @collection }
+      p= t('.search_unlinked_pages_description', article: (@article.title)).html_safe
+      =button_to t('.search_unlinked_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true, :collection_id => @collection}, { :rel => 'nofolllow' }
  
     -if user_signed_in? && current_user.like_owner?(@collection)
       h3= t('.export')
