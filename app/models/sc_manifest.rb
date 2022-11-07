@@ -67,7 +67,7 @@ class ScManifest < ApplicationRecord
       if summary.blank?
         ""
       else
-        pluck_language_value v3_hash['summary']
+        ScManifest.pluck_language_value v3_hash['summary']
       end
     else
       service.description
