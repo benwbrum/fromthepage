@@ -87,7 +87,9 @@ module ExportHelper
       works.each do |work|
         print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
         @work = work
-        add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
+        if by_work
+          add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
+        end
 
 
         # work-specific exports
