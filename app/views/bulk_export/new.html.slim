@@ -6,6 +6,31 @@
     =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @bulk_export.errors
+      h4 =t('.file_organization')
+      ul.bulk-export
+        li
+          .bulk-export_format
+            h5= t('.organization')
+            p.nomargin= t('.organization_description')
+          .bulk-export_options
+            =f.label "organization_#{BulkExport::Organization::WORK_THEN_FORMAT}"
+              =f.radio_button :organization, BulkExport::Organization::WORK_THEN_FORMAT
+              span =t('.organization_work')
+            br
+            =f.label "organization_#{BulkExport::Organization::FORMAT_THEN_WORK}"
+              =f.radio_button :organization, BulkExport::Organization::FORMAT_THEN_WORK
+              span =t('.organization_format')
+        -if @uploaded_filename_available
+          li
+            .bulk-export_format
+              h5= t('.use_uploaded_filename')
+              p.nomargin= t('.use_uploaded_filename_description')
+            .bulk-export_options
+              =f.label :use_uploaded_filename
+                =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
+                span= t('.use_uploaded_filename_label')
+
+      h4 =t('.file_formats')
       ul.bulk-export
         li
           .bulk-export_format

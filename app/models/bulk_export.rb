@@ -17,6 +17,11 @@ class BulkExport < ApplicationRecord
     ERROR = 'error'
   end
 
+  module Organization
+    FORMAT_THEN_WORK = 'by_format'
+    WORK_THEN_FORMAT = 'by_work'
+  end
+
 
   def work_level?
     self.attributes.detect{|k,v| k.match(/_work/) && v==true }

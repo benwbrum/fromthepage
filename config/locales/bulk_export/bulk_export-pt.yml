@@ -23,12 +23,18 @@ pt:
       export_all_works: Exportar todos os trabalhos
       facing_edition_pdf: Edição de frente para PDF
       facing_edition_pdf_description: Um arquivo PDF contendo imagens e transcrições em páginas opostas.
+      file_formats: Formatos de exportação
+      file_organization: Organização de pastas
       html: HTML
       html_description: Isso pode ser útil para preservação em outros sistemas ou como ponto de partida para exibição em outro site.
       one_file_per_collection: Um arquivo por coleção
       one_file_per_page: Um arquivo por página
       one_file_per_work: Um arquivo por obra
       one_site_per_collection: Um site por coleção
+      organization: Organização de pastas
+      organization_description: Os arquivos zip podem ser organizados com uma pasta por trabalho contendo arquivos ou subpastas para cada formato de exportação, ou com uma pasta por formato de exportação contendo arquivos por trabalho.
+      organization_format: Formatar pastas
+      organization_work: Pastas de trabalho
       previous_exports: Exportações anteriores
       search_optimized_plaintext: Texto simples otimizado para pesquisa
       search_optimized_plaintext_description: Uma versão em texto simples do trabalho otimizada para pesquisa de texto completo. Esta versão contém uma transcrição literal de cada página (como descrito acima), exceto que as palavras quebradas por novas linhas hifenizadas são unidas e uma lista dos nomes canônicos mencionados em cada página é anexada ao final da página.
@@ -51,6 +57,9 @@ pt:
       text_pdf: Texto PDF
       text_pdf_description: Um arquivo PDF contendo transcrições de texto.
       time: Tempo
+      use_uploaded_filename: Nomes de arquivos/pastas
+      use_uploaded_filename_description: Os arquivos ou pastas de exportação são baseados no slug de trabalho por padrão. Se um trabalho foi carregado originalmente, você pode usar o nome do arquivo original para exportações.
+      use_uploaded_filename_label: Use nomes originais
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_description: Este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele conterá o texto literal, com todas as formatações, emendas e links de assuntos removidos.
       work_metadata_csv: CSV de metadados de trabalho
