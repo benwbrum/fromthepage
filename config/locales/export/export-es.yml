@@ -9,9 +9,8 @@ es:
       contentdm_user_name: Nombre de usuario de CONTENTdm
       license_key: Clave de licencia
     facing_edition:
-      html:
-        contributions_message: 'Este documento no sería posible sin las contribuciones editoriales de las siguientes personas:'
-        export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
+      contributions_message: 'Este documento no sería posible sin las contribuciones editoriales de las siguientes personas:'
+      export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
     index:
       api: API
       export_all_table_data_as_csv: Exportar todos los datos de la tabla en formato CSV

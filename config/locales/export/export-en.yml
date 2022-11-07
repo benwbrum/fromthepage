@@ -9,9 +9,8 @@ en:
       contentdm_user_name: CONTENTdm username
       license_key: License key
     facing_edition:
-      html:
-        contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
-        export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
     index:
       api: API
       export_all_table_data_as_csv: Export All Table Data as CSV
