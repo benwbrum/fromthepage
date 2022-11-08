@@ -261,7 +261,7 @@ xml:id="export">
         <% if @work.sc_manifest %>
           <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
         <% else %>
-          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
         <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
@@ -285,7 +285,7 @@ xml:id="export">
         <% if @work.sc_manifest %>
           <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
         <% else %>
-          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
         <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
@@ -302,7 +302,7 @@ xml:id="export">
       <% if @work.sc_manifest %>
         <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
       <% else %>
-        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
       <% end %>
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
