@@ -18,6 +18,7 @@ class BulkExportController < ApplicationController
     else
       @bulk_export.collection = @collection
     end
+    @uploaded_filename_available = @collection.works.where.not(uploaded_filename: nil).exists?
   end
 
   def create
@@ -102,6 +103,8 @@ class BulkExportController < ApplicationController
         :text_docx_work,
         :text_pdf_work,
         :text_only_pdf_work,
+        :organization,
+        :use_uploaded_filename,
         :static)
     end
 end
