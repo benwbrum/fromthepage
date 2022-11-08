@@ -422,6 +422,7 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/landing', to: 'static#landing_page', as: :landing
 
   resources :document_sets, except: [:show, :create, :edit]
 

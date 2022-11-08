@@ -11,4 +11,8 @@ class StaticController < ApplicationController
     render :file => 'static/metadata.yml', :layout => false, :content_type => "text/plain"
   end
 
+  def landing_page
+    render layout: false
+  end
+
 end
