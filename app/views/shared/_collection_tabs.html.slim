@@ -19,7 +19,7 @@
   -tabs +=[{\
   :name => t('.forum'),
   :selected => 14,
-  :path => "#{Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group)}",
+  :path => "#{Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group, user_slug: @collection.owner.slug, collection_id: @collection.slug)}",
 }]
 
 
