@@ -10,10 +10,10 @@
     <!-- Meta End-->
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="images/favicon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
     <!-- Favicon End -->
 
     <!-- Links -->
@@ -67,20 +67,6 @@
                     <li class="mobil-btn"><a href="#TODO-create-intermediary-page" class="button">Sign Up</a></li>
                     <li>
                         <%= link_to(t('.sign_in'), new_user_session_path, class: 'header_link header_user') %>
-                    </li>
-                    <li>
-                        <div class="dropdown">
-                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="fa fa-caret-down"></i><img src="/assets/icons/globe.svg" alt=""> EN
-                            </a>
-                          
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              <li><a class="dropdown-item" href="#">English</a></li>
-                              <li><a class="dropdown-item" href="#">Español</a></li>
-                              <li><a class="dropdown-item" href="#">Français</a></li>
-                              <li><a class="dropdown-item" href="#">Português</a></li>
-                            </ul>
-                          </div>
                     </li>
                 </ul>
                 <a href="#" class="menu-trigger">
@@ -686,99 +672,15 @@
                 <h4>Start engaging the public to transcribe your documents</h4>
 
                 <div class="buttons">
-                    <a href="#">Schedule a Demo</a>
-                    <a href="#" class="second">Upload 200 pages FREE</a>
+                    <a href="https://calendly.com/fromthepage/30-minute-meeting/" target="_blank">Schedule a Demo</a>
+                    <%= link_to 'Upload 200 pages FREE', users_new_trial_path, class: 'second' %>
                 </div>
             </div>
         </div>
     </section>
     <!-- Home Start End -->
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-
-                    <div class="col-lg-4 mobil">
-                        <a href="index.html" class="logo"><img src="/assets/footer-logo.svg" alt=""></a>
-    
-                        <ul class="social-media">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                            <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
-
-
-                    <ul class="list">
-                        <li><a href="#">Transcription for Archives and Special Collections</a></li>
-                        <li><a href="#">Transcription for State & Provincial Archives</a></li>
-                        <li><a href="#">Transcription for Digital Scholarship</a></li>
-                        <li><a href="#">Transcription for Linguists</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 desktop">
-                    <a href="index.html" class="logo"><img src="/assets/footer-logo.svg" alt=""></a>
-
-                    <ul class="social-media">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4">
-                    <ul class="menu">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <span class="copy">© 2022 FromThePage. All rights reserved.</span>
-    </footer>
-    <!-- Footer End -->
-
-
-    <!-- <a href="tel:0 555 555 55 55" class="whatsapp" id="whatsapp">
-        <i class="fa fa-whatsapp"></i>
-    </a> -->
-
-
-    <!-- $ $ $ Script $ $ $ -->
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-    </script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
-    <script>
-        AOS.init();
-    </script>
-
-    <!-- Lightbox -->
-    <script src="assets/landing/lightbox.min.js"></script>
-
-    <!-- Slick -->
-    <script src="assets/landing/slick.min.js"></script>
-    <script src="assets/landing/slider.js"></script>
-
-    <!-- Main -->
-    <script src="assets/landing/main.js"></script>
-
-
+<%= render "shared/landingfooter" %>
 
 </body>
 
