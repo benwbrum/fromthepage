@@ -71,7 +71,7 @@ es:
       collection_reviewers: Revisores autorizados
       collection_reviewers_description: Estos usuarios podrán revisar y aprobar las transcripciones, así como editarlas.
       collection_status: Estado de la Colección
-      confirm_blank_collection: "¿Está seguro?"
+      confirm_blank_collection: "¿Estás seguro?"
       confirm_delete_collection: "¿Estás seguro de que deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
       current_url: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección de la obra en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
