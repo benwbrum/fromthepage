@@ -423,7 +423,11 @@ Fromthepage::Application.routes.draw do
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
   get '/landing', to: 'static#landing_page', as: :landing
-  get '/special_collections', to: 'static#transcription-archives', as: :special_collections
+  get '/special_collections', to: 'static#transcription_archives', as: :special_collections
+  get '/public_libraries', to: 'static#public_libraries', as: :digital_scholarship
+  get 'digital_scholarship', to: 'static#digital-scholarship', as: :digital_scholarship
+  get 'state_archives', to: 'static#state_archives', as: :state_archives
+
 
   resources :document_sets, except: [:show, :create, :edit]
 
