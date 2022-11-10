@@ -423,6 +423,7 @@ Fromthepage::Application.routes.draw do
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
   get '/landing', to: 'static#landing_page', as: :landing
+  get '/special_collections', to: 'static#transcription-archives', as: :special_collections
 
   resources :document_sets, except: [:show, :create, :edit]
 
