@@ -6,7 +6,7 @@ es:
       collaborator_time_for_dates: Hora del colaborador para fechas
       end_date: Fecha final
       export_activity_as_csv: Exportar actividad detallada como CSV
-      no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
+      no_activity_for_date_range: No hay actividad para este intervalo de fechas.
       start_date: Fecha de inicio
       update: Actualizar
       user_totals_for_dates: Totales de usuarios para fechas

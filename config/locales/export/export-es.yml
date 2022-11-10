@@ -42,7 +42,7 @@ es:
       more: Más
       more_export_formats: Formatos de exportación adicionales
       n_pages:
-        one: 1 pagina
+        one: 1 página
         other: "%{count} páginas"
       pages: Páginas
       plain_text: Texto sin formato

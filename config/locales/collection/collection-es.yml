@@ -159,7 +159,7 @@ es:
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
-      prefer_tei: Prefiero TEI
+      prefer_tei: Preferir TEI
       save: Ahorrar
       tei: " (TEI-XML)"
     enable_ocr:
@@ -240,7 +240,7 @@ es:
         other: "%{count} páginas:"
       pages_need_correction: Páginas que necesitan corrección
       pages_need_correction_or_transcription: Páginas que necesitan corrección o transcripción
-      pages_need_review: Páginas que Necesitan Revisión
+      pages_need_review: Páginas que necesitan Revisión
       pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
       recent_edits: Ediciones Recientes

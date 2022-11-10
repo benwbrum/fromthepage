@@ -41,7 +41,7 @@ es:
       location: Ubicación
       name: Nombre
       name_only_required: Tu nombre es el único campo obligatorio.
-      no_image: Sin imágen
+      no_image: Sin imagen
       ocrid_id: ID OCRID
       owner_stats: Correos electrónicos nocturnos con la actividad de la colección propia
       page_edited: Nota añadida en respuesta a un comentario que hiciste

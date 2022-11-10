@@ -22,7 +22,7 @@ es:
       edit: Editar
       focusing_transcriber_effort: Concentrando el esfuerzo del transcriptor en un grupo particular de obras.
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       no_document_sets: Esta colección no tiene conjuntos de documentos
       privacy: Privacidad
@@ -47,7 +47,7 @@ es:
     set_works:
       collaboration: Colaboración
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
       remove_from_set: Eliminar del conjunto
@@ -75,7 +75,7 @@ es:
         one: 1 contribución
         other: "%{count} contribuciones"
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas: pl"
       no_image: No Hay Imagen
       picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."

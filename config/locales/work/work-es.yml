@@ -36,30 +36,30 @@ es:
       revision: revisión
     download:
       analyze: Analizar
-      docx_download_description: Descargue una versión DOCX de este trabajo.
+      docx_download_description: Descarga una versión DOCX de este trabajo.
       download: Descargar
       expanded_plaintext: Texto sin formato expandido
-      expanded_plaintext_export_description: Exporte transcripciones de texto sin formato reemplazando texto textual con títulos de temas canónicos como un archivo zip que contiene un archivo por página.
+      expanded_plaintext_export_description: Exporta transcripciones de texto sin formato reemplazando texto textual con títulos de temas canónicos como un archivo zip que contiene un archivo por página.
       experiment: Experimento
       export: Exportar
       facing_pdf: Frente a PDF
-      facing_pdf_export_description: Descargue una versión en PDF de este trabajo que incluye imágenes y texto en las páginas opuestas.
+      facing_pdf_export_description: Descarga una versión en PDF de este trabajo que incluye imágenes y texto en las páginas opuestas.
       html: HTML
-      html_export_description: Exporte las transcripciones como un archivo zip que contiene un archivo HTML por página.
+      html_export_description: Exporta las transcripciones como un archivo zip que contiene un archivo HTML por página.
       ms_word: MS Word
       pdf: PDF
-      pdf_download_description: Descargue una versión en PDF de este trabajo.
+      pdf_download_description: Descarga una versión en PDF de este trabajo.
       searchable_plaintext: Texto sin formato que se puede buscar
-      searchable_plaintext_export_description: Exporte transcripciones de texto sin formato optimizadas para la búsqueda de texto completo como un archivo zip que contiene un archivo por página.
+      searchable_plaintext_export_description: Exporta transcripciones de texto sin formato optimizadas para la búsqueda de texto completo como un archivo zip que contiene un archivo por página.
       table_field_csv: CSV de tabla/campo
-      table_field_csv_export_description: Exporte todos los datos tabulares, de hojas de cálculo o basados en campos como un solo archivo CSV.
+      table_field_csv_export_description: Exporta todos los datos tabulares, de hojas de cálculo o basados en campos como un solo archivo CSV.
       verbatim_plaintext: Texto sin formato textual
-      verbatim_plaintext_export_description: Exporte transcripciones textuales de texto sin formato como un archivo zip que contiene un archivo por página.
+      verbatim_plaintext_export_description: Exporta transcripciones textuales de texto sin formato como un archivo zip que contiene un archivo por página.
       voyant: Voyante
-      voyant_analysis_description: Envíe la transcripción de este trabajo a Voyant Tools para su análisis.
+      voyant_analysis_description: Envía la transcripción de este trabajo a Voyant Tools para su análisis.
       warning_work_not_complete: 'Advertencia: este trabajo puede no estar completo.'
       word_trees: Árboles de palabras
-      word_trees_analysis_description: Envíe la transcripción de este trabajo al visualizador Word Trees de Jason Davies para su análisis.
+      word_trees_analysis_description: Envía la transcripción de este trabajo al visualizador Word Trees de Jason Davies para su análisis.
       zip_export_only_project_owners: Formatos de exportación de archivos zip solo accesibles para los propietarios de proyectos.
     edit:
       add: Agregar
@@ -70,8 +70,8 @@ es:
       author: Autor
       collaborators_can_edit_titles: Permitir que los colaboradores editen los títulos de las páginas
       collection: Recopilación
-      confirm_delete_work: "¿Está seguro de que desea eliminar este trabajo? ¡Después de borrar no podrás recuperarlo!"
-      current_url: La URL actual para este trabajo es %{current_url}. Si desea editar la sección de trabajo de la URL, utilice letras minúsculas y guiones entre las palabras.
+      confirm_delete_work: "¿Estás seguro de que desea eliminar este trabajo? ¡Después de borrar no podrás recuperarlo!"
+      current_url: La URL actual para este trabajo es %{current_url}. Si deseas editar la sección de trabajo de la URL, utiliza letras minúsculas y guiones entre las palabras.
       delete_work: Eliminar trabajo
       description: Descripción
       document_date: Fecha del documento
@@ -84,7 +84,7 @@ es:
       identifier: identificador
       identifier_description: Identificador de sistemas fuera de FromThePage, que se utilizará para correlacionar exportaciones con registros externos. (Este campo no es visible para el público).
       in_scope: En alcance
-      more_work_settings_info: Para obtener más información sobre la configuración de trabajo, consulte el artículo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparación de un trabajo para Transcripción</a>.
+      more_work_settings_info: Para obtener más información sobre la configuración de trabajo, consulta el artículo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparación de un trabajo para Transcripción</a>.
       no_allowed_collaborators_selected: No se han seleccionado colaboradores permitidos
       no_image: Sin imágen
       pages_are_meaningful: Las páginas son significativas
@@ -95,7 +95,7 @@ es:
       recipient: Recipiente
       remove: Remover
       restrict_collaborators: Restringir colaboradores
-      restricted_work_no_collaborators_warning: Solo los propietarios de proyectos pueden editar este trabajo. Agregue colaboradores para que el trabajo sea editable por otros.
+      restricted_work_no_collaborators_warning: Solo los propietarios de proyectos pueden editar este trabajo. Agrega colaboradores para que el trabajo sea editable por otros.
       revert: Revertir
       revert_transcription_conventions_description: Revertir las convenciones de transcripción al valor predeterminado de la colección
       save_changes: Guardar cambios
@@ -123,7 +123,7 @@ es:
     new:
       collection: Recopilación
       create_empty_work: Crear trabajo vacío
-      create_empty_work_description: Esto crea un trabajo vacío. Una vez que cree el trabajo, puede agregar imágenes de página individuales. Si tiene un archivo zip o pdf con varias imágenes, debe crear el trabajo y cargar el archivo en %{start_project} en su lugar.
+      create_empty_work_description: Esto crea un trabajo vacío. Una vez que crees el trabajo, puedes agregar imágenes de página individuales. Si tienes un archivo zip o pdf con varias imágenes, debes crear el trabajo y cargar el archivo en %{start_project} en su lugar.
       create_work: Crear trabajo
       description: Descripción
       start_a_project: Iniciar un proyecto
@@ -142,7 +142,7 @@ es:
       no_pages_found: No se encontraron páginas
       no_pages_found_description: Este trabajo aún no contiene ninguna página.
       page_title: Título de la página
-      pages_tab_description: Aquí se ve la lista de todas las páginas de la obra. Si desea cambiar la posición de una página, use las flechas hacia arriba y hacia abajo a la derecha. Para crear una nueva página para este trabajo, haga clic en el botón Agregar nueva página. Una vez creada una nueva página en blanco, búsquela en la lista a continuación y vaya a la configuración donde puede cargar la imagen de la página.
+      pages_tab_description: Aquí se ve la lista de todas las páginas de la obra. Si deseas cambiar la posición de una página, use las flechas hacia arriba y hacia abajo a la derecha. Para crear una nueva página para este trabajo, haga clic en el botón Agregar nueva página. Una vez creada una nueva página en blanco, búsquela en la lista a continuación y vaya a la configuración donde puede cargar la imagen de la página.
       position: Posición
       ready_to_transcribe: Listo para %{transcribe}
       settings: Ajustes
