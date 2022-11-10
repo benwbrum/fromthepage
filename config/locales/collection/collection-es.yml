@@ -5,7 +5,7 @@ es:
       approved_n_pages: "%{page_count} páginas aprobadas."
     collection_works:
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
       work_title: Título de la obra
