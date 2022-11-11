@@ -15,4 +15,20 @@ class StaticController < ApplicationController
     render layout: false
   end
 
+  def special_collections
+    render layout: false
+  end
+
+  def public_libraries
+    render layout: false
+  end
+
+  def state_archives
+    render layout: false
+  end
+
+  def digital_scholarship
+    render layout: false
+  end
+
 end

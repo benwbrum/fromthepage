@@ -2,37 +2,7 @@
 <html lang="tr">
 
 <head>
-    <!-- Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>From The Page</title>
-    <!-- Meta End-->
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="images/favicon/site.webmanifest">
-    <!-- Favicon End -->
-
-    <!-- Links -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!--    <link rel="stylesheet" href="fonts/font.css">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">-->
-    <link href="https://fonts.googleapis.com/css2?family=Crete+Round&family=Lora:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <!--    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">-->
-    <!--    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">-->
-    <link href="css/optimize.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <!-- Links End -->
-
+<%= render "shared/landingheader" %>
 </head>
 
 <body>
@@ -42,7 +12,7 @@
     <header>
         <div class="container">
             <a href="index.html" class="logo">
-                <img src="images/logo.svg" alt="">
+                <img src="assets/logo.svg" alt="">
             </a>
             <nav>
                 <ul class="menu">
@@ -56,7 +26,7 @@
                         <div class="dropdown">
                             <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-caret-down"></i><img src="images/icons/globe.svg" alt=""> EN
+                                <i class="fa fa-caret-down"></i><img src="assets/icons/globe.svg" alt=""> EN
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -80,7 +50,7 @@
 
     <!-- Home Main -->
     <section class="home-main">
-        <!-- <img src="images/materials/main-bg.png" alt=""> -->
+        <!-- <img src="assets/materials/main-bg.png" alt=""> -->
 
         <div class="text">
             <h2 data-aos="zoom-in" data-aos-duration="800">Transcription for Digital Scholarship</h2>
@@ -89,7 +59,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-9">
-                        <img src="images/materials/transcription-digital-main.png" alt="" class="main-img">
+                        <img src="assets/materials/transcription-digital-main.png" alt="" class="main-img">
                     </div>
                 </div>
             </div>
@@ -142,7 +112,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">Like many archives at the university level, we are eager for students to use archival collections in an intellectually rigorous way. Students and alumni find that crowdsourcing transcription is fun and interesting, as well as academically substantive. Having the documents transcribed enables us to ask different questions and to automate larger-scale data exploration of the primary sources. FromThePage is such a feature-rich, easy-to-use platform that using it for archival records about early Chinese students has been a worthwhile, key phase of our larger project. We have been so fortunate to have FromThePage to keep people engaged with the archives remotely during the pandemic. It is a very intuitive platform for archives and volunteers.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">Like many archives at the university level, we are eager for students to use archival collections in an intellectually rigorous way. Students and alumni find that crowdsourcing transcription is fun and interesting, as well as academically substantive. Having the documents transcribed enables us to ask different questions and to automate larger-scale data exploration of the primary sources. FromThePage is such a feature-rich, easy-to-use platform that using it for archival records about early Chinese students has been a worthwhile, key phase of our larger project. We have been so fortunate to have FromThePage to keep people engaged with the archives remotely during the pandemic. It is a very intuitive platform for archives and volunteers.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -166,7 +136,7 @@
         <div class="container">
             <h2 class="title">Our software has been trusted by faculty and librarians at these institutions:</h2>
 
-            <img src="images/materials/transcription-digital-logos.png" alt="">
+            <img src="assets/materials/transcription-digital-logos.png" alt="">
         </div>
     </section>
     <!-- Crowd Logos End -->
@@ -220,7 +190,7 @@
                     <div class="loop">
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">With all of its features, FromThePage has proven to be incredibly useful for us in cultivating community engagement, developing research initiatives, and enhancing collection accessibility. This is primarily due to the customization the platform enables. On the one hand, project contributors have the ability to reconfigure with relative ease their workspace and workflows, such as using dictation to transcribe. On the project management side, the import and export features being designed and deployed as part of the NEH-funded work with UT Libraries will greatly facilitate the movement of collections between our institutional repositories and the platform to expedite access and preserve citizen scholarship.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">With all of its features, FromThePage has proven to be incredibly useful for us in cultivating community engagement, developing research initiatives, and enhancing collection accessibility. This is primarily due to the customization the platform enables. On the one hand, project contributors have the ability to reconfigure with relative ease their workspace and workflows, such as using dictation to transcribe. On the project management side, the import and export features being designed and deployed as part of the NEH-funded work with UT Libraries will greatly facilitate the movement of collections between our institutional repositories and the platform to expedite access and preserve citizen scholarship.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -234,7 +204,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">My experience has been resoundingly positive. Since the very first day we uploaded our documents to the website, we’ve had volunteers from around the globe dive into the project. Additionally, using FromThePage provides a centralized place where I can send volunteers who are interested in transcribing, where I can answer questions quickly and easily, and where I can track progress on the project. Previously, I had been emailing chunks of records to people who were interested in transcribing, which was an extremely inefficient, difficult to track, and overly stressful method. Using FromThePage has streamlined my entire operation and greatly improved the quality and speed of our transcriptions.<img src="images/icons/quote02.svg"
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">My experience has been resoundingly positive. Since the very first day we uploaded our documents to the website, we’ve had volunteers from around the globe dive into the project. Additionally, using FromThePage provides a centralized place where I can send volunteers who are interested in transcribing, where I can answer questions quickly and easily, and where I can track progress on the project. Previously, I had been emailing chunks of records to people who were interested in transcribing, which was an extremely inefficient, difficult to track, and overly stressful method. Using FromThePage has streamlined my entire operation and greatly improved the quality and speed of our transcriptions.<img src="assets/icons/quote02.svg"
                                         alt="" class="bottom"></p>
 
                                 <div class="info">
@@ -249,7 +219,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">We wanted to enrich our digitized collections, improving both the searchability and the accessibility of our records; a notoriously difficult thing for most archives to do, but here we have a way forward to address accessibility issues, and have full text available for screen readers. From an administrator's perspective, this had to be one of the easiest platforms to start up. It took all of 10-20 minutes to get our account and project started, and our transcriber managed to transcribe 20 pages before the end of the first day! Honestly, the barrier-to-entry is almost non-existent, volunteers significantly improve the accessibility of our holdings, and the rewards can be seen almost immediately.<img src="images/icons/quote02.svg"
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">We wanted to enrich our digitized collections, improving both the searchability and the accessibility of our records; a notoriously difficult thing for most archives to do, but here we have a way forward to address accessibility issues, and have full text available for screen readers. From an administrator's perspective, this had to be one of the easiest platforms to start up. It took all of 10-20 minutes to get our account and project started, and our transcriber managed to transcribe 20 pages before the end of the first day! Honestly, the barrier-to-entry is almost non-existent, volunteers significantly improve the accessibility of our holdings, and the rewards can be seen almost immediately.<img src="assets/icons/quote02.svg"
                                         alt="" class="bottom"></p>
 
                                 <div class="info">
@@ -583,7 +553,7 @@
                     <div class="loop-case">
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/digital-case01.png" alt="">
+                                <img src="assets/materials/digital-case01.png" alt="">
                                 <p>Rebecca Nesvet, an English Literature Professor at University of Wisconsin Green Bay uses FromThePage to teach documentary editing, critical editing, and how to create a Text Encoding Initiative (TEI) edition of The String of Pearls or The Barber of Fleet Street, the second oldest story of Sweeny Todd. FromThePage allows students to correct a poor OCR version, making a real contribution to the reading community. Explore Rebecca’s use of transcription for pedagogy <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -594,7 +564,7 @@
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img src="images/materials/digital-case02.png" alt="" class="second-img">
+                                        <img src="assets/materials/digital-case02.png" alt="" class="second-img">
                                     </div>
     
                                     <div class="col-lg-6">
@@ -608,7 +578,7 @@
                     
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/digital-case03.png" alt="">
+                                <img src="assets/materials/digital-case03.png" alt="">
                                 <p>Adam Rabinowitz, a Classics Professor at the University of Texas at Austin, uses FromThePage as a teaching tool in an undergraduate course. Each student is assigned to find the primary source materials in the archive and transcribe a letter in the collection using FromThePage. Then a larger collection of transcribed letters are provided to write a paper. Read more on Adam’s use of transcription for pedagogy <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -617,7 +587,7 @@
                      
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/digital-case04.png" alt="">
+                                <img src="assets/materials/digital-case04.png" alt="">
                                 <p>University of Southern Mississippi is transcribing, and annotating 20,000 digitized documents from the governor’s papers from the Civil War through the Reconstruction era. Transcription of letters to the governor provides a view of people experiencing this contentious time regardless of class, gender, race, religion, nativity, and age; traditional sources cannot provide access to that diversity. The collection includes lesson plans to help secondary educators incorporate these diverse nineteenth-century collections into classrooms. Discover more <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -625,7 +595,7 @@
                       
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/digital-case05.png" alt="">
+                                <img src="assets/materials/digital-case05.png" alt="">
                                 <p>The University of Texas has a project focused on documenting underrepresented communities in Latin America through the digitization, digital preservation, and long-term digital access of fragile and endangered local archives. FromThePage partnered on internationalizing the platform, breaking down barriers to accessing Spanish and Portuguese-language digital collections, enabling collaboration with Latin American partners. Find out more about how FromThePage can support democratizing knowledge production <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -636,7 +606,7 @@
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img src="images/materials/digital-case06.png" alt="" class="second-img">
+                                        <img src="assets/materials/digital-case06.png" alt="" class="second-img">
                                     </div>
     
                                     <div class="col-lg-6">
@@ -651,7 +621,7 @@
                      
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/digital-case07.png" alt="">
+                                <img src="assets/materials/digital-case07.png" alt="">
                                 <p>Dr. Julie deGraffenried & Benna Vaughan of Baylor University presented archival documents in a classroom setting to give students research experience in primary sources. Students used FromThePage to transcribe the 1916 minutes of the Evangelia Settlement House, the first daycare program for underprivileged children in Waco, Texas. Students experienced first-hand how transcription is a public service history enthusiasts can perform for the public. See how impactful the experience was for students <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -662,7 +632,7 @@
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img src="images/materials/digital-case08.png" alt="" class="second-img">
+                                        <img src="assets/materials/digital-case08.png" alt="" class="second-img">
                                     </div>
     
                                     <div class="col-lg-6">
@@ -696,7 +666,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">I have used FromThePage as both a research and a pedagogical tool; not having to wrestle with the tool is so helpful in keeping up the momentum of the work. I can confidently ask my colleagues to collaborate without asking them to spend hours learning a new tool or interface. A four year remote collaboration project has endured to a great extent because we could bring project members in seamlessly. In the classroom, my students have found transcribing exciting and gratifying, and a wonderful addition to the secondary material we are learning. Students really like learning this way because it is an unmediated experience; this is a real experience of meeting a scribe through his or her writings.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">I have used FromThePage as both a research and a pedagogical tool; not having to wrestle with the tool is so helpful in keeping up the momentum of the work. I can confidently ask my colleagues to collaborate without asking them to spend hours learning a new tool or interface. A four year remote collaboration project has endured to a great extent because we could bring project members in seamlessly. In the classroom, my students have found transcribing exciting and gratifying, and a wonderful addition to the secondary material we are learning. Students really like learning this way because it is an unmediated experience; this is a real experience of meeting a scribe through his or her writings.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -710,10 +680,10 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">We have an enormous amount of understudied documentation that could yield meaningful findings, if people could just get to the stuff — FromThePage helps make access possible.
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">We have an enormous amount of understudied documentation that could yield meaningful findings, if people could just get to the stuff — FromThePage helps make access possible.
 <br>
 The platform is straightforward; not having to learn a bunch of code or a complicated platform is such a relief. I had one student say it was “soothing” to work on transcribing on FromThePage, and that made me so happy. I don’t want it to be tedious and boring work, because the subject is so interesting! FromThePage lets the subject be the focus, and makes it easy to work. I lose track of time a lot when I work on the project and don’t want to stop.
- <img src="images/icons/quote02.svg" alt="" class="bottom">
+ <img src="assets/icons/quote02.svg" alt="" class="bottom">
                                 </p>
 
                                 <div class="info">
@@ -728,7 +698,7 @@ The platform is straightforward; not having to learn a bunch of code or a compli
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">As part of a land grant institution, the library wholeheartedly supports the mission of sharing knowledge beyond the campus borders. Adhering to this mission requires a further commitment to digital accessibility and the inclusive practice of removing barriers that prevent interaction with, or access to, digital content by people with disabilities. By providing accurate transcriptions, translations, and correcting OCR, we expand access to this content for all online users in accordance with WCAG 2.1 AA accessibility guidelines. Ben and Sara are easy to work with, understand our profession well, and are committed to making the systems we all use easier and better integrated. <img src="images/icons/quote02.svg" alt="" class="bottom">
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">As part of a land grant institution, the library wholeheartedly supports the mission of sharing knowledge beyond the campus borders. Adhering to this mission requires a further commitment to digital accessibility and the inclusive practice of removing barriers that prevent interaction with, or access to, digital content by people with disabilities. By providing accurate transcriptions, translations, and correcting OCR, we expand access to this content for all online users in accordance with WCAG 2.1 AA accessibility guidelines. Ben and Sara are easy to work with, understand our profession well, and are committed to making the systems we all use easier and better integrated. <img src="assets/icons/quote02.svg" alt="" class="bottom">
                                 </p>
 
                                 <div class="info">
@@ -784,7 +754,7 @@ The platform is straightforward; not having to learn a bunch of code or a compli
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">With FromThePage everyone from secondary and college students to retiree volunteers can hop online and transcribe a document. Template instructions appear with every item — basic transcription protocols and best practices that project directors can tweak to their standards. FromThePage lets us annotate documents from the start, radically improving users ability to navigate and learn from the collection as soon as it is available online.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">With FromThePage everyone from secondary and college students to retiree volunteers can hop online and transcribe a document. Template instructions appear with every item — basic transcription protocols and best practices that project directors can tweak to their standards. FromThePage lets us annotate documents from the start, radically improving users ability to navigate and learn from the collection as soon as it is available online.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -803,90 +773,7 @@ The platform is straightforward; not having to learn a bunch of code or a compli
     </section>
     <!-- Crowd Testimonials End -->
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-
-                    <div class="col-lg-4 mobil">
-                        <a href="index.html" class="logo"><img src="images/footer-logo.svg" alt=""></a>
-
-                        <ul class="social-media">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                            <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
-
-
-                    <ul class="list">
-                        <li><a href="#">Transcription for Archives and Special Collections</a></li>
-                        <li><a href="#">Transcription for State & Provincial Archives</a></li>
-                        <li><a href="#">Transcription for Digital Scholarship</a></li>
-                        <li><a href="#">Transcription for Linguists</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 desktop">
-                    <a href="index.html" class="logo"><img src="images/footer-logo.svg" alt=""></a>
-
-                    <ul class="social-media">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4">
-                    <ul class="menu">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <span class="copy">© 2022 FromThePage. All rights reserved.</span>
-    </footer>
-    <!-- Footer End -->
-
-
-    <!-- <a href="tel:0 555 555 55 55" class="whatsapp" id="whatsapp">
-        <i class="fa fa-whatsapp"></i>
-    </a> -->
-
-    <!-- $ $ $ Script $ $ $ -->
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-    </script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-
-    <!-- Lightbox -->
-    <script src="js/lightbox.min.js"></script>
-
-    <!-- Slick -->
-    <script src="js/slick.min.js"></script>
-    <script src="js/slider.js"></script>
-
-    <!-- Main -->
-    <script src="js/main.js"></script>
-
-
+<%= render "shared/landingfooter" %>
 
 </body>
 

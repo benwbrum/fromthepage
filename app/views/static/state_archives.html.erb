@@ -2,37 +2,7 @@
 <html lang="tr">
 
 <head>
-    <!-- Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>From The Page</title>
-    <!-- Meta End-->
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="images/favicon/site.webmanifest">
-    <!-- Favicon End -->
-
-    <!-- Links -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!--    <link rel="stylesheet" href="fonts/font.css">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">-->
-    <link href="https://fonts.googleapis.com/css2?family=Crete+Round&family=Lora:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <!--    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">-->
-    <!--    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">-->
-    <link href="css/optimize.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <!-- Links End -->
-
+<%= render "shared/landingheader" %>
 </head>
 
 <body>
@@ -42,7 +12,7 @@
     <header>
         <div class="container">
             <a href="index.html" class="logo">
-                <img src="images/logo.svg" alt="">
+                <img src="assets/logo.svg" alt="">
             </a>
             <nav>
                 <ul class="menu">
@@ -56,7 +26,7 @@
                         <div class="dropdown">
                             <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-caret-down"></i><img src="images/icons/globe.svg" alt=""> EN
+                                <i class="fa fa-caret-down"></i><img src="assets/icons/globe.svg" alt=""> EN
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -80,7 +50,7 @@
 
     <!-- Home Main -->
     <section class="home-main">
-        <!-- <img src="images/materials/main-bg.png" alt=""> -->
+        <!-- <img src="assets/materials/main-bg.png" alt=""> -->
 
         <div class="text">
             <h2 data-aos="zoom-in" data-aos-duration="800">Transcription for State & Provincial Archives</h2>
@@ -89,7 +59,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-9">
-                        <img src="images/materials/transcription-state-main.png" alt="" class="main-img">
+                        <img src="assets/materials/transcription-state-main.png" alt="" class="main-img">
                     </div>
                 </div>
             </div>
@@ -142,7 +112,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">Crowdsourcing is a great fit for state archives. It’s an efficient way of reaching out to people interested in the archives and offering them a specific project to work on. For our first project with FromThePage we transcribed 50,000 marriage certificates, which have no index, and have to be searched by hand otherwise. We don’t have the staff for a data-entry project of this magnitude; we need to utilize volunteers. The fielded-form of FromThePage, along with the desire of the volunteer transcribers to help create something useful for the benefit of many, has made this project successful.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">Crowdsourcing is a great fit for state archives. It’s an efficient way of reaching out to people interested in the archives and offering them a specific project to work on. For our first project with FromThePage we transcribed 50,000 marriage certificates, which have no index, and have to be searched by hand otherwise. We don’t have the staff for a data-entry project of this magnitude; we need to utilize volunteers. The fielded-form of FromThePage, along with the desire of the volunteer transcribers to help create something useful for the benefit of many, has made this project successful.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -166,7 +136,7 @@
         <div class="container">
             <h2 class="title">Our software has been trusted by archivists at these institutions:</h2>
 
-            <img src="images/materials/transcription-state-logos.png" alt="">
+            <img src="assets/materials/transcription-state-logos.png" alt="">
         </div>
     </section>
     <!-- Crowd Logos End -->
@@ -220,7 +190,7 @@
                     <div class="loop">
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">FromThePage was exactly what we were looking for—a crowdsourced transcription platform that offered hosting services. The archives used it to create a meaningful World War I centennial commemorative program involving the public. We accomplished a massive indexing project of over 111,000 WWI service records cards more quickly than we ever could have in-house. Working with Ben and Sara we produced the field function feature needed for this project and now it can be adapted for other crowdsourcing projects. Through this work we established a base of “virtual volunteers” and formed relationships in a new community of users.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">FromThePage was exactly what we were looking for—a crowdsourced transcription platform that offered hosting services. The archives used it to create a meaningful World War I centennial commemorative program involving the public. We accomplished a massive indexing project of over 111,000 WWI service records cards more quickly than we ever could have in-house. Working with Ben and Sara we produced the field function feature needed for this project and now it can be adapted for other crowdsourcing projects. Through this work we established a base of “virtual volunteers” and formed relationships in a new community of users.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -234,7 +204,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">As part of a land grant institution, the library wholeheartedly supports the mission of sharing knowledge beyond the campus borders. Adhering to this mission requires a further commitment to digital accessibility and the inclusive practice of removing barriers that prevent interaction with, or access to, digital content by people with disabilities. By providing accurate transcriptions, translations, and correcting OCR, we expand access to this content for all online users in accordance with WCAG 2.1 AA accessibility guidelines. Ben and Sara are easy to work with, understand our profession well, and are committed to making the systems we all use easier and better integrated.<img src="images/icons/quote02.svg"
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">As part of a land grant institution, the library wholeheartedly supports the mission of sharing knowledge beyond the campus borders. Adhering to this mission requires a further commitment to digital accessibility and the inclusive practice of removing barriers that prevent interaction with, or access to, digital content by people with disabilities. By providing accurate transcriptions, translations, and correcting OCR, we expand access to this content for all online users in accordance with WCAG 2.1 AA accessibility guidelines. Ben and Sara are easy to work with, understand our profession well, and are committed to making the systems we all use easier and better integrated.<img src="assets/icons/quote02.svg"
                                         alt="" class="bottom"></p>
 
                                 <div class="info">
@@ -249,7 +219,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">This particular collection has always been available at the Archives, but now people know about it! They are able to search and even see the images from home. It’s been a very efficient way for us to get a large collection indexed. We have over 100 volunteers, and about 25 active any given week; they can all work at the same time, at any time of the day, from anywhere. The collection is now available online to researchers as it’s being indexed, which is something we haven’t been able to offer before. As more archives embark on digitization and transcription projects, our history becomes much more accessible. Also, this project has allowed us to interact with a group of people who have never visited the Indiana Archives before and may have never heard of it.<img src="images/icons/quote02.svg"
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">This particular collection has always been available at the Archives, but now people know about it! They are able to search and even see the images from home. It’s been a very efficient way for us to get a large collection indexed. We have over 100 volunteers, and about 25 active any given week; they can all work at the same time, at any time of the day, from anywhere. The collection is now available online to researchers as it’s being indexed, which is something we haven’t been able to offer before. As more archives embark on digitization and transcription projects, our history becomes much more accessible. Also, this project has allowed us to interact with a group of people who have never visited the Indiana Archives before and may have never heard of it.<img src="assets/icons/quote02.svg"
                                         alt="" class="bottom"></p>
 
                                 <div class="info">
@@ -598,7 +568,7 @@
                     <div class="loop-case">
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/state-case01.png" alt="">
+                                <img src="assets/materials/state-case01.png" alt="">
                                 <p>The Alabama Department of Archives and History staff spent 18 months digitizing 111,000 WWI service record cards and in only 3.5 months volunteer transcribers finished them all. FromThePage made it easy to keep track of all the volunteers, many who were not even in Alabama. People were looking for worthwhile projects, and the geographic boundaries of the documents mattered way less than staff thought they would. When this project was done the virtual volunteers were clamoring for more and the archives went to work getting more digitized collections up on the platform. See the whole story <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -607,7 +577,7 @@
                      
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/state-case02.png" alt="">
+                                <img src="assets/materials/state-case02.png" alt="">
                                 <p>The Maryland State Archives had volunteer transcribers help create an index for over 50,000 marriage certificates. Archivists no longer need to search by hand for the record. This was made more difficult if the patron couldn’t remember the date of their marriage but desperately needed the certificate to apply for social security benefits, a passport, or a driver’s license renewal. Digitized, searchable indexes of records make an enormous difference in helping people who need them and those who use them for genealogical purposes. Check out this project <a href="#">here</a>.</p>
                             </div>  
                         </div>
@@ -616,7 +586,7 @@
                  
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/state-case03.png" alt="">
+                                <img src="assets/materials/state-case03.png" alt="">
                                 <p>The State Archives of North Carolina has active collections on varying topics on FromThePage, including Local Draft Board Records, Colonial Court Records, African American Education, World War I Diaries, WWI and WWII Letters, and Women’s History. Their grant-funded project North Carolina’s Early Court Records kicked-off their use of the platform. Beyond their goal to broaden accessibility to the collections, they also wanted to engage public volunteers with the work of the archives through transcription. Now patrons anywhere in the world can perform full-text searches on the transcribed documents; find out more <a href="#">here</a>.</p>
                             </div> 
                         </div>
@@ -625,7 +595,7 @@
                     
                         <div class="box">
                             <div class="item">
-                                <img src="images/materials/state-case04.png" alt="">
+                                <img src="assets/materials/state-case04.png" alt="">
                                 <p>The Indiana Archives and Records Administration used FromThePage to create an index of Indiana’s WWI service record cards with the goal of honoring veterans and making history more accessible. Interest in transcribing records made it a very efficient way to index a large collection and illustrate the value of the archives to more people. FromThePage is a valuable platform for helping to make that connection happen. Read what volunteers have to say about the transcription process <a href="#">here</a>.</p>
                             </div>
                         </div>
@@ -636,7 +606,7 @@
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img src="images/materials/state-case05.png" alt="" class="second-img">
+                                        <img src="assets/materials/state-case05.png" alt="" class="second-img">
                                     </div>
     
                                     <div class="col-lg-6">
@@ -668,7 +638,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">Our experience using FromThePage has been very positive. Our goal was to capture all the data from the WWI Questionnaires, as well as other field-based documents, in order to increase access and searchability. We chose an absolute beast of a form to attempt as our first structured data transcription set: 118 lines, some with 3 or 4 fields per line, with a total of over 200 fields. Ben and Sara worked with our team at the Library to upload all the images, make the form properly, and even incorporate new features we needed. Crowdsourcing has been immensely popular with our users, and we want to continue to build on this type of interaction with ongoing projects. We look forward to continuing to work with users and FromThePage to improve our collections and generate new interactions.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">Our experience using FromThePage has been very positive. Our goal was to capture all the data from the WWI Questionnaires, as well as other field-based documents, in order to increase access and searchability. We chose an absolute beast of a form to attempt as our first structured data transcription set: 118 lines, some with 3 or 4 fields per line, with a total of over 200 fields. Ben and Sara worked with our team at the Library to upload all the images, make the form properly, and even incorporate new features we needed. Crowdsourcing has been immensely popular with our users, and we want to continue to build on this type of interaction with ongoing projects. We look forward to continuing to work with users and FromThePage to improve our collections and generate new interactions.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -682,7 +652,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">We utilize FromThePage to broaden accessibility to our collections and also to engage public volunteers. Our goals are to increase access through expanded arrangement, description, and digitization, providing greater keyword searching and increased accessibility when cursive or archaic spelling may present a barrier to reading archival materials. Now on transcribed materials we can perform full text searches! Also, the platform is very simple and straightforward to use. One of the best features is its compatibility with CONTENTdm, the digital management software we utilize. Exporting the completed transcriptions is a two-step process requiring very little effort. <img src="images/icons/quote02.svg" alt="" class="bottom">
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">We utilize FromThePage to broaden accessibility to our collections and also to engage public volunteers. Our goals are to increase access through expanded arrangement, description, and digitization, providing greater keyword searching and increased accessibility when cursive or archaic spelling may present a barrier to reading archival materials. Now on transcribed materials we can perform full text searches! Also, the platform is very simple and straightforward to use. One of the best features is its compatibility with CONTENTdm, the digital management software we utilize. Exporting the completed transcriptions is a two-step process requiring very little effort. <img src="assets/icons/quote02.svg" alt="" class="bottom">
                                 </p>
 
                                 <div class="info">
@@ -739,7 +709,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="images/icons/quote01.svg" alt="" class="top">Records are absolutely a frontline necessity for so many aspects of our lives–authorization for medical care, government and employee benefits, passports, even final burial. If you can't find the record you're sunk. I got a call from a woman who needed her marriage certificate so she could authorize treatment for her husband who was hospitalized with covid. I used an index created by FromThePage volunteer transcribers to find the certificate, and was able to email a copy to her in less than thirty minutes. It was a wonderful feeling to be able to help her in a dire time.<img src="images/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><img src="assets/icons/quote01.svg" alt="" class="top">Records are absolutely a frontline necessity for so many aspects of our lives–authorization for medical care, government and employee benefits, passports, even final burial. If you can't find the record you're sunk. I got a call from a woman who needed her marriage certificate so she could authorize treatment for her husband who was hospitalized with covid. I used an index created by FromThePage volunteer transcribers to find the certificate, and was able to email a copy to her in less than thirty minutes. It was a wonderful feeling to be able to help her in a dire time.<img src="assets/icons/quote02.svg" alt="" class="bottom"></p>
 
                                 <div class="info">
 
@@ -758,90 +728,7 @@
     </section>
     <!-- Crowd Testimonials End -->
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-
-                    <div class="col-lg-4 mobil">
-                        <a href="index.html" class="logo"><img src="images/footer-logo.svg" alt=""></a>
-
-                        <ul class="social-media">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                            <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
-
-
-                    <ul class="list">
-                        <li><a href="#">Transcription for Archives and Special Collections</a></li>
-                        <li><a href="#">Transcription for State & Provincial Archives</a></li>
-                        <li><a href="#">Transcription for Digital Scholarship</a></li>
-                        <li><a href="#">Transcription for Linguists</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 desktop">
-                    <a href="index.html" class="logo"><img src="images/footer-logo.svg" alt=""></a>
-
-                    <ul class="social-media">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4">
-                    <ul class="menu">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <span class="copy">© 2022 FromThePage. All rights reserved.</span>
-    </footer>
-    <!-- Footer End -->
-
-
-    <!-- <a href="tel:0 555 555 55 55" class="whatsapp" id="whatsapp">
-        <i class="fa fa-whatsapp"></i>
-    </a> -->
-
-    <!-- $ $ $ Script $ $ $ -->
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-    </script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-
-    <!-- Lightbox -->
-    <script src="js/lightbox.min.js"></script>
-
-    <!-- Slick -->
-    <script src="js/slick.min.js"></script>
-    <script src="js/slider.js"></script>
-
-    <!-- Main -->
-    <script src="js/main.js"></script>
-
-
+<%= render "shared/landingfooter" %>
 
 </body>
 
