@@ -15,7 +15,11 @@ class StaticController < ApplicationController
     render layout: false
   end
 
-  def special_collections
+  def signup
+    render layout: false
+  end
+
+  def transcription_archives
     render layout: false
   end
 

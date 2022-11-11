@@ -50,34 +50,3 @@
     <!-- Links End -->
 </head>
 
-<body>
-
-
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <a href="index.html" class="logo">
-                <img src="/assets/logo.svg" alt="">
-            </a>
-            <nav>
-                <ul class="menu">
-                    <li class="title"><h4>Menu</h4></li>
-                    <% if user_signed_in? in %>
-                    <li><%= link_to t('.find_a_project'), landing_page_path, class: 'header_link' %></li>
-                    <li>Dashboard</li>
-                    <% else %>
-                    <li class="mobil-btn"><a href="#TODO-create-intermediary-page" class="button">Sign Up</a></li>
-                    <li>
-                        <%= link_to(t('.sign_in'), new_user_session_path, class: 'header_link header_user') %>
-                    </li>
-                    <% end %>
-                </ul>
-                <a href="#" class="menu-trigger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
-            </nav>
-        </div>
-    </header>
-    <!-- Header End -->

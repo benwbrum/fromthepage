@@ -1,37 +1,7 @@
-<!DOCTYPE html>
-<html lang="tr">
-
-<head>
 <%= render "shared/landingheader" %>
-</head>
-
 <body>
+<%= render "shared/landingbodyheader" %>
 
-
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <a href="index.html" class="logo">
-                <img src="/assets/logo.svg" alt="">
-            </a>
-            <nav>
-                <ul class="menu">
-                    <li class="title"><h4>Menu</h4></li>
-                    <li><% link_to t('.find_a_project'), landing_page_path, class: 'header_link' %></li>
-                    <li class="mobil-btn"><a href="#TODO-create-intermediary-page" class="button">Sign Up</a></li>
-                    <li>
-                        <%= link_to(t('.sign_in'), new_user_session_path, class: 'header_link header_user') %>
-                    </li>
-                </ul>
-                <a href="#" class="menu-trigger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
-            </nav>
-        </div>
-    </header>
-    <!-- Header End -->
 
     <!-- Home Main -->
     <section class="home-main">
@@ -354,14 +324,14 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="800">
                         <h4>Transcribers</h4>
-                        <p>5,123</p>
+                        <p><%= Deed.where(created_at: (1.year.ago)..).select(:user_id).distinct.count %></p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="900">
-                        <h4>Completed Projects</h4>
-                        <p>444</p>
+                        <h4>Active Projects</h4>
+                        <p><%= Collection.joins(:owner).where("users.account_type" => ["Small Organization", "Individual Researcher", "Large Institution"]).where("users.owner" => true).where(is_active: true).count %></p>
                     </div>
                 </div>
 
@@ -375,7 +345,7 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1100">
                         <h4>Institutions</h4>
-                        <p>161</p>
+                        <p><%= User.where(account_type: ["Small Organization", "Individual Researcher", "Large Institution"]).where(owner: true).count %></p>
                     </div>
                 </div>
             </div>
