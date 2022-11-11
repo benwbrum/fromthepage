@@ -52,7 +52,9 @@ class ScCanvas < ApplicationRecord
     resource_contents = transcript_list['data']['resources'].first['data']['resource']['data']['chars']
 
     if resource_format == 'text/html'
-      transcript = Nokogiri::HTML(resource_contents).text
+      doc = Nokogiri::HTML(resource_contents)
+      doc.search('br').each { |node| node.replace("\n") }
+      transcript = doc.text
     else
       transcript = resource_contents
     end
