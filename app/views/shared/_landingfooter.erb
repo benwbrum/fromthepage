@@ -37,21 +37,21 @@
 
                 <div class="col-lg-4">
                     <ul class="menu">
-                        <li><%= link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank' %></li>
-                        <li><%= link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank' %></li>
-                        <li><%= link_to t('.about'), 'https://content.fromthepage.com/about-us/', target: '_blank' %></li>
-                        <li><%= link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/', target: '_blank' %></li>
-                        <li><%= link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank' %></li>
-                        <li><%= mail_to 'support@fromthepage.com', t('.contact_us') %></li>
+                        <li><%= link_to t('layouts.application.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.blog'), 'http://content.fromthepage.com', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.about'), 'https://content.fromthepage.com/about-us/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank' %></li>
+                        <li><%= mail_to 'support@fromthepage.com', t('layouts.application.contact_us') %></li>
                         <% if request.original_url.include?("fromthepage.com") %></li>
-                            <li><%= link_to t('.pricing'), pricing_path, target: '_blank' %></li>
+                            <li><%= link_to t('layouts.application.pricing'), pricing_path, target: '_blank' %></li>
                         <% end %>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <span class="copy">© <%= Time.now.year %> <%= link_to 'FromThePage.', root_path %> <%= t('.all_rights_reserved') %></span>
+        <span class="copy">© <%= Time.now.year %> <%= link_to 'FromThePage.', root_path %> <%= t('layouts.application.all_rights_reserved') %></span>
     </footer>
     <!-- Footer End -->
 
