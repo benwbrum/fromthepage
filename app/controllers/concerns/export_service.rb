@@ -24,6 +24,8 @@ module ExportService
   end
 
   def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames)
+    return if work.pages.count == 0
+
     dirname = path_from_work(work)
     case edition
     when "facing"
