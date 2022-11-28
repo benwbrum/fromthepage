@@ -61,19 +61,19 @@ module ExportHelper
   def write_work_exports(works, out, export_user, bulk_export)
     # collection-level exports
     if bulk_export.subject_csv_collection
-      export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_subject_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.subject_details_csv_collection
-      export_subject_details_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_subject_details_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.table_csv_collection
-      export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
+      export_table_csv_collection(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.work_metadata_csv
-      export_work_metadata_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_work_metadata_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.static
@@ -81,59 +81,62 @@ module ExportHelper
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
+      by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
+      original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
         print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
         @work = work
-        dirname = work.slug.truncate(200, omission: "")
-        add_readme_to_zip(dirname: dirname, out: out)
+        if by_work
+          add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
+        end
 
 
         # work-specific exports
         if bulk_export.table_csv_work
-          export_table_csv_work(dirname: dirname, out: out, work: work)
+          export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.tei_work
-          export_tei(dirname: dirname, out:out, export_user:export_user)
+          export_tei(work: work, out:out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_verbatim_work
           format='verbatim'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_emended_work
           format='expanded'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_searchable_work
           format='searchable'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.html_work
           %w(full text transcript translation).each do |format|
-            export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+            export_view(work: work, name: format, out: out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
           end
         end
 
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', dirname, out)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', dirname, out)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', dirname, out)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames)
         end
 
         # Page-specific exports
@@ -141,26 +144,26 @@ module ExportHelper
         @work.pages.each do |page|
           if bulk_export.plaintext_verbatim_page
             format='verbatim'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
 
           if bulk_export.plaintext_emended_page
             format='expanded'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end  
 
           if bulk_export.plaintext_searchable_page
             format='searchable'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
         end
 
 
         if bulk_export.html_page
           @work.pages.each do |page|
-            export_html_full_pages(dirname: dirname, out: out, page: page)
+            export_html_full_pages(out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
         end
       end

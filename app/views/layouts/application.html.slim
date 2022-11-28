@@ -81,7 +81,8 @@ html lang="en-US"
           dl.dropdown.right
             dt.header_link.header_locale tabindex=0
               span
-                big =locale.to_s.split("-")[0].upcase
+                <img src="/assets/icons/globe.svg" alt="">
+                big =" " + locale.to_s.split("-")[0].upcase
             dd
               -@dropdown_locales.each do |locale_option|
                 =link_to t(locale_option.to_s), main_app.user_choose_locale_path(locale_option.to_s)

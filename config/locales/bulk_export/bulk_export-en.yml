@@ -23,12 +23,18 @@ en:
       export_all_works: Export All Works
       facing_edition_pdf: Facing Edition PDF
       facing_edition_pdf_description: A PDF file containing images and transcripts on facing pages.
+      file_formats: Export Formats
+      file_organization: Folder Organization
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
       one_file_per_collection: One file per collection
       one_file_per_page: One file per page
       one_file_per_work: One file per work
       one_site_per_collection: One site per collection
+      organization: Folder Organization
+      organization_description: Zip files can be organized with a folder per work containing files or subfolders for each export format, or with a folder per export format containing files per work.
+      organization_format: Format folders
+      organization_work: Work folders
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
       search_optimized_plaintext_description: A plaintext version of the work optimized for full-text search. This version contains a verbatim plaintext transcript of each page (as described above), except that words broken by hyphenated newlines are joined together, and a list of the canonical names mentioned within each page is appended to the end of the page.
@@ -51,6 +57,9 @@ en:
       text_pdf: Text PDF
       text_pdf_description: A PDF file containing text transcripts and work metadata.
       time: Time
+      use_uploaded_filename: File/Folder Names
+      use_uploaded_filename_description: Export files or folders are be based on the work slug by default.  If a work was originally uploaded you can use the original filename for exports instead.
+      use_uploaded_filename_label: Use original names
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_description: This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
       work_metadata_csv: Work Metadata CSV

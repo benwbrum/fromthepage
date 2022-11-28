@@ -77,6 +77,9 @@ class DisplayController < ApplicationController
 
   def paged_search
     if @article
+      render plain: "This functionality has been disabled.  Please contact support@frothepage.com if you need it."
+      return
+
       session[:col_id] = @collection.slug
       # get the unique search terms
       terms = []

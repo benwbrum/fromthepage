@@ -2,7 +2,20 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
 
-  def add_readme_to_zip(dirname:, out:)
+
+  def path_from_work(work, original_filenames=false)
+    if original_filenames && !work.uploaded_filename.blank?
+      dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
+    else
+      dirname = work.slug.truncate(200, omission: "")
+    end
+
+    dirname
+  end
+
+
+  def add_readme_to_zip(work:, out:, by_work:, original_filenames:)
+    dirname = path_from_work(work)
     readme = "#{Rails.root}/doc/zip/README"
     file = File.open(readme, "r")
     path = File.join dirname, 'README.txt'
@@ -10,7 +23,10 @@ module ExportService
     out.write file.read
   end
 
-  def export_printable_to_zip(work, edition, output_format, dirname, out)
+  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames)
+    return if work.pages.count == 0
+
+    dirname = path_from_work(work)
     case edition
     when "facing"
       path = File.join dirname, 'printable', "facing_edition.pdf"
@@ -59,7 +75,7 @@ module ExportService
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc --from markdown+superscript -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
+    cmd = "pandoc --from markdown+superscript -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
@@ -70,44 +86,56 @@ module ExportService
 
 
 
-  def export_work_metadata_csv(dirname:, out:, collection:)
+  def export_work_metadata_csv(out:, collection:)
     path = "work_metadata.csv"
     out.put_next_entry(path)
     out.write(export_work_metadata_as_csv(collection))
   end
 
-  def export_subject_csv(dirname:, out:, collection:)
+  def export_subject_csv(out:, collection:)
     path = "subject_index.csv"
     out.put_next_entry(path)
     out.write(collection.export_subject_index_as_csv)
   end
 
-  def export_subject_details_csv(dirname:, out:, collection:)
+  def export_subject_details_csv(out:, collection:)
     path = "subject_details.csv"
     out.put_next_entry(path)
     out.write(collection.export_subject_details_as_csv)
   end
 
-  def export_table_csv_collection(dirname:, out:, collection:)
+  def export_table_csv_collection(out:, collection:)
     path = "fields_and_tables.csv"
     out.put_next_entry(path)
     out.write(export_tables_as_csv(collection))
   end
 
-  def export_table_csv_work(dirname:, out:, work:)
-    path = File.join dirname, 'csv', "fields_and_tables.csv"
+  def export_table_csv_work(out:, work:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'csv', "fields_and_tables.csv")
+    else
+      path = File.join("fields_and_tables", "#{path_from_work(work, original_filenames)}.csv")
+    end
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
   end
 
-  def export_tei(dirname:, out:, export_user:)
-    path = File.join dirname, 'tei', "tei.xml"
+  def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'tei', "tei.xml")
+    else
+      path = File.join("tei", "#{path_from_work(work, original_filenames)}.xml")
+    end
     out.put_next_entry path
-    out.write work_to_tei(@work, export_user)
+    out.write work_to_tei(work, export_user)
   end
 
-  def export_plaintext_transcript(name:, dirname:, out:)
-    path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
+  def export_plaintext_transcript(work:, name:, out:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_transcript.txt")
+    else
+      path = File.join("plaintext_transcript_#{name}", "#{path_from_work(work, original_filenames)}.txt")
+    end
 
     case name
     when "verbatim"
@@ -124,8 +152,12 @@ module ExportService
     end
   end
 
-  def export_plaintext_translation(name:, dirname:, out:)
-    path = File.join dirname, 'plaintext', "#{name}_translation.txt"
+  def export_plaintext_translation(work:, name:, out:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_translation.txt")
+    else
+      path = File.join("plaintext_translation_#{name}", "#{path_from_work(work, original_filenames)}.txt")
+    end
 
     if @work.supports_translation?
       case name
@@ -141,8 +173,12 @@ module ExportService
     end
   end
 
-  def export_plaintext_transcript_pages(name:, dirname:, out:, page:)
-    path = File.join dirname, 'plaintext', "#{name}_transcript_pages", "#{page.title}.txt"
+  def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{page.title}.txt")
+    else
+      path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
+    end
 
     case name
     when "verbatim"
@@ -159,8 +195,12 @@ module ExportService
     end
   end
 
-  def export_plaintext_translation_pages(name:, dirname:, out:, page:)
-    path = File.join dirname, 'plaintext', "#{name}_translation_pages", "#{page.title}.txt"
+  def export_plaintext_translation_pages(name:, out:, page:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_translation_pages", "#{page.title}.txt")
+    else
+      path = File.join("plaintext_#{name}_translation_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
+    end
 
     if @work.supports_translation?
       case name
@@ -176,8 +216,12 @@ module ExportService
     end
   end
 
-  def export_view(name:, dirname:, out:, export_user:)
-    path = File.join dirname, 'html', "#{name}.html"
+  def export_view(work:, name:, out:, export_user:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'html', "#{name}.html")
+    else
+      path = File.join("html_#{name}", "#{path_from_work(work, original_filenames)}.html")
+    end
 
     case name
     when "full"
@@ -241,8 +285,13 @@ module ExportService
     end
   end
 
-  def export_html_full_pages(dirname:, out:, page:)
-    path = File.join dirname, 'html', 'full_pages', "#{page.title}.html"
+  def export_html_full_pages(out:, page:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(page.work, original_filenames), 'html', 'full_pages', "#{page.title}.html")
+    else
+      path = File.join("html_full_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
+    end
+
 
     out.put_next_entry path
 

@@ -434,6 +434,13 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/landing', to: 'static#landing_page', as: :landing
+  get '/signup', to: 'static#signup', as: :signup 
+  get '/special_collections', to: 'static#transcription_archives', as: :special_collections
+  get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
+  get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
+  get '/state_archives', to: 'static#state_archives', as: :state_archives
+
 
   resources :document_sets, except: [:show, :create, :edit]
 
