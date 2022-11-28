@@ -1,1 +1,26 @@
 h2 Discussions
+
+-@pages.each do |page|
+	-note=page.notes.last
+	.work-page 
+		.work-page_thumbnail
+		  -if page.ia_leaf
+		    =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )
+		  -elsif page.sc_canvas
+		    =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
+		  -else
+		    =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
+    .work-page_content
+    	h4.work-page_title 
+    		=link_to page.title, page_params(page) 
+    		span &nbsp; in #{page.work.title}
+		.user-bubble.editable.comment-bubble(id="note-#{note.id}")
+  		=link_to(user_profile_path(:user_id => note.user.id))
+    		=profile_picture(note.user)
+  		.user-bubble_content
+		    =time_tag note.created_at
+		      =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
+		      |&nbsp;
+		      =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
+		    .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
+		  =link_to t(".total_notes", count: page.notes.count), page_params(page), anchor: "notes"  

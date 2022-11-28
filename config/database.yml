@@ -22,7 +22,10 @@ default: &default
 
 development:
   <<: *default
+  #database: support_development
   database: diary_development
+  username: rails
+  password: rails
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,6 +33,9 @@ development:
 test:
   <<: *default
   database: diary_test
+  username: rails
+  password: rails
+
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -52,6 +58,6 @@ test:
 #
 production:
   <<: *default
-  database: diary_production
-  username: diary
-  password: <%= ENV['DIARY_DATABASE_PASSWORD'] %>
+  database: diary_development
+  username: rails
+  password: rails

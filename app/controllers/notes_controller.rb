@@ -71,6 +71,11 @@ class NotesController < ApplicationController
     deed.save!
   end
 
+  def discussions
+    page_ids = @collection.notes.select(:page_id).distinct.limit(20).pluck(:page_id)
+    @pages = Page.find(page_ids)
+  end
+
   private
 
   def note_params

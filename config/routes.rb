@@ -106,8 +106,6 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
-    get 'discussions', to: 'notes#discussions', as: 'page_discussions'
-
     scope 'metadata', as: 'metadata' do
       get ':id/example', to: 'metadata#example', as: :example
       get ':id/upload', to: 'metadata#upload', as: :upload
@@ -450,6 +448,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
     resources :collection, path: '', only: [:show] do
+      get 'discussions', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
