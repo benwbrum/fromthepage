@@ -2,15 +2,6 @@
 
 
 
-//.thredded--main-container {
-//  // The padding and max-width are handled by the app's container.
-//  max-width: none;
-//  padding: 0;
-//  @include thredded-media-tablet-and-up {
-//    padding: 0;
-//  }
-//}
-
 // ---------------------------
 // TYPOGRAPHY
 // ---------------------------
@@ -188,6 +179,18 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 // ---------------------------
 // Thredded Overrides
 // ---------------------------
+
+
+
+.thredded--main-container {
+  // The padding and max-width are handled by the app's container.
+  max-width: none;
+  padding: 0;
+  @include thredded-media-tablet-and-up {
+    padding: 0;
+  }
+}
+
 
 .thredded--post--content {
   font-size: $fontSize;
