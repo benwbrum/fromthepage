@@ -33,4 +33,6 @@ en:
       error_updating_note: Error updating note
       note_has_been_updated: Note has been updated
     discussions:
-      total_notes: "%{count} total notes"
+      page_notes: Page Notes
+      most_recent_of: "Most recent of "
+      total_notes: "%{count} notes"

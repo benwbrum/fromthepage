@@ -448,7 +448,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
     resources :collection, path: '', only: [:show] do
-      get 'discussions', to: 'notes#discussions', as: 'page_discussions'
+      get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
