@@ -41,7 +41,7 @@ describe "collection metadata", :order => :defined do
     visit edit_collection_path(@owner, c)
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
     click_link "Upload Metadata"
-    sleep(3)
+    sleep(10)
     expect(page).to have_content("To update metadata for several works within this collection")
 
     # workaround

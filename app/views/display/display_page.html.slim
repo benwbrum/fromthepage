@@ -13,7 +13,7 @@
       .page_status
         =t("page.edit.status")
         =t("page.edit.page_status_#{@page.translation_status}")
-      small.headline_aside =link_to t('.show_transcription'), { :translation => false, :page_id => @page.id }, class: 'button outline'
+      small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
     -else
       h3.headline_title =t('.transcription')
       .page_status
@@ -21,7 +21,7 @@
         =t("page.edit.page_status_#{@page.status}")
 
       -if @work.supports_translation
-        small.headline_aside =link_to t('.show_translation'), { :translation => true, :page_id => @page.id }, class: 'button outline'
+        small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
 .page-columns
   .page-column.page-imagescan

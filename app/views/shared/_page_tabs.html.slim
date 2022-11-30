@@ -69,7 +69,7 @@
         -if @page != @work.pages.first
           -higher_item = @page.higher_item
           -unless higher_item.nil?
-            =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
+            =link_to(collection_display_page_path(@collection.owner, @collection, @work, higher_item.id), class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
         -else
           span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
@@ -78,7 +78,7 @@
 
         -if !@page.last?
           -lower_item = @page.lower_item
-          =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+          =link_to(collection_display_page_path(@collection.owner, @collection, @work, lower_item.id), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -elsif selected == 3 # if we're in "transcribe"
           -if @collection.metadata_entry?

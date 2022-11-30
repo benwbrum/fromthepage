@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
     end
 
 
-    if self.class.parent == Thredded && @collection
+    if self.class.module_parent == Thredded && @collection
       Thredded::Engine.routes.default_url_options = { user_slug: @collection.owner.slug, collection_id: @collection.slug }
     else
       Thredded::Engine.routes.default_url_options = { user_slug: 'nil', collection_id: 'nil' }
