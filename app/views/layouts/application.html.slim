@@ -87,9 +87,9 @@ html lang="en-US"
               -@dropdown_locales.each do |locale_option|
                 =link_to t(locale_option.to_s), main_app.user_choose_locale_path(locale_option.to_s)
 
-    -if user_masquerade?
+    -if user_masquerade? && !content_for?(:thredded)
       h2.strong
-        =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", main_app.back_masquerade_path(current_user)
+        =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
     =(yield :content_above).force_encoding 'UTF-8'
 
