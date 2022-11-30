@@ -41,6 +41,7 @@ Fromthepage::Application.routes.draw do
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
     get 'flag_list', to: 'admin#flag_list'
+    get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
