@@ -82,6 +82,7 @@ pt:
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       disable_document_sets: Desativar Conjuntos de Documentos
       disable_facets: Desativar facetas
+      disable_message_boards: Desabilitar Fórum
       disable_ocr: Desativar OCR
       document_sets: Conjuntos de Documentos
       document_sets_description: Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos.
@@ -97,6 +98,7 @@ pt:
       enable_document_sets: Ativar Conjuntos de Documentos
       enable_facets: Ativar facetas
       enable_field_based_transcription: Ativar a Transcrição Baseada em Campos de Formulário
+      enable_message_boards: Ativar fórum
       enable_metadata_description: Ativar descrição de metadados
       enable_ocr: Ativar OCR
       enable_spellcheck: Ativar verificação ortográfica (não é adequado para textos com ortografia irregular)
@@ -110,6 +112,8 @@ pt:
       make_collection_inactive: Tornar a Coleção Inativa
       make_collection_private: Tornar a Coleção Privada
       make_collection_public: Tornar a Coleção Pública
+      message_boards: Fórum
+      message_boards_description: Um fórum permite que os colaboradores discutam tópicos entre si e com os proprietários do projeto por meio de quadros de mensagens.
       metadata: Metadados
       metadata_description: Carregue metadados para itens desta coleção em massa.
       metadata_entry: Descrição de metadados
