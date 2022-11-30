@@ -73,8 +73,7 @@ class NotesController < ApplicationController
   end
 
   def discussions
-    page_ids = @collection.notes.select(:page_id).distinct.pluck(:page_id)
-    @pages = Page.where(id: page_ids).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @pages = @collection.pages.where.not(last_note_updated_at: nil).reorder(last_note_updated_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
   private
