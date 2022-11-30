@@ -1,4 +1,8 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 1, :page_id => @page.id }})
+-if current_page?(collection_forum_page_path(@collection.owner, @collection, @page.work, @page))
+  =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
+  =render('thredded/shared/breadcrumbs')
+-else
+  =render({ :partial => '/shared/page_tabs', :locals => { :selected => 1, :page_id => @page.id }})
 
 .page-headlines
   .headline

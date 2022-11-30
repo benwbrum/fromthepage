@@ -9,17 +9,17 @@
 		.work-page 
 			.work-page_thumbnail
 			  -if page.ia_leaf
-			    =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), collection_display_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes") )
+			    =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes") )
 			  -elsif page.sc_canvas
-			    =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), collection_display_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes"))
+			    =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes"))
 			  -else
-			    =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), collection_display_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes")
+			    =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes")
 	    .work-page_content
 	    	h4.work-page_title 
-	    		=link_to page.title, collection_display_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes") 
+	    		=link_to page.title, collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes") 
 	    		span &nbsp; in #{page.work.title}
 	    	=t(".most_recent_of") 
-	    	=link_to t(".total_notes", count: page.notes.count), collection_display_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes")
+	    	=link_to t(".total_notes", count: page.notes.count), collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes")
 			.user-bubble.editable.comment-bubble(id="note-#{note.id}")
 	  		=link_to(user_profile_path(:user_id => note.user.id))
 	    		=profile_picture(note.user)
