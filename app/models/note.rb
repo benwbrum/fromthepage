@@ -15,7 +15,7 @@ class Note < ApplicationRecord
   has_many :flags
 
   after_save :email_users
-  after_create :update_page_last_note
+  after_save :update_page_last_note
 
   validates :body, presence: true
 
