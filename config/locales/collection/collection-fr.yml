@@ -82,6 +82,7 @@ fr:
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       disable_document_sets: Désactiver les jeux de documents
       disable_facets: Désactiver les facettes
+      disable_message_boards: Désactiver le forum
       disable_ocr: Désactiver la OCR
       document_sets: Jeux de documents
       document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
@@ -97,6 +98,7 @@ fr:
       enable_document_sets: Activer les jeux de documents
       enable_facets: Activer les facettes
       enable_field_based_transcription: Activer la transcription basée sur les champs
+      enable_message_boards: Activer le forum
       enable_metadata_description: Activer la description des métadonnées
       enable_ocr: Activer OCR
       enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
@@ -110,6 +112,8 @@ fr:
       make_collection_inactive: Rendre la collection inactive
       make_collection_private: Rendre la collection privée
       make_collection_public: Rendre la collection publique
+      message_boards: Forum
+      message_boards_description: Un forum permet aux collaborateurs de discuter de sujets entre eux et avec les porteurs de projet via des babillards électroniques.
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_entry: Description des métadonnées

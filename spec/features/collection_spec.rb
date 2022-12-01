@@ -276,7 +276,7 @@ describe "collection spec (isolated)" do
       expect(Collection.all.to_a.count).to eq(old_count+1)
 
       page.find(:css, '#create-empty-work').click
-
+      sleep 3
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')
       page.find('#new_page')

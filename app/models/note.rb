@@ -15,6 +15,7 @@ class Note < ApplicationRecord
   has_many :flags
 
   after_save :email_users
+  after_save :update_page_last_note
 
   validates :body, presence: true
 
@@ -40,6 +41,10 @@ class Note < ApplicationRecord
         end
       end
     end
+  end
+
+  def update_page_last_note
+    self.page.update_column(:last_note_updated_at, page.notes.last.updated_at) if self.page
   end
 
 end
