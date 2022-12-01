@@ -113,8 +113,7 @@ en:
       make_collection_private: Make Collection Private
       make_collection_public: Make Collection Public
       message_boards: Forum
-      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards. 
-
+      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards.
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_entry: Metadata Description
