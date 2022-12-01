@@ -274,6 +274,10 @@ class AdminController < ApplicationController
     redirect_back fallback_location: { action: 'user_list' }, notice: t('.user_downgraded_successfully')
   end
 
+  def moderation
+    @collections = Collection.where(messageboards_enabled:true)
+  end
+
   private
 
   def user_params

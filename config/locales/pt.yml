@@ -10,6 +10,7 @@ pt:
   en: English
   es: Español
   fr: Français
+  message_boards_are_disabled: O fórum para %{project} foi desativado.
   pt: Português
   time:
     formats:

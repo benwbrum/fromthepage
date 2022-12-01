@@ -47,6 +47,14 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+  def messageboards_enabled
+    false
+  end
+
+  def messageboards_enabled?
+    self.messageboards_enabled
+  end
+
   def uniquify_slug
     if Collection.where(slug: self.slug).exists?
       self.slug = self.slug+'-set'
