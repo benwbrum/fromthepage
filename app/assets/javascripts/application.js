@@ -12,11 +12,11 @@
 //
 //= require jquery
 //= require jquery.ui.all
+//= require jquery_ujs
 //= require_tree ./plugins
 //= require user.js
 //= require handsontable.full.min
 //= require datatables.min
-//= require thredded
 
 ;(function($, window, document, undefined) {
 

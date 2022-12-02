@@ -96,6 +96,7 @@ html lang="en-US"
     main.wrapper
       =render :partial => '/shared/breadcrumbs'
       -if content_for?(:thredded)
+        =javascript_include_tag 'thredded'
         -if @collection.nil?
           =render(partial: '/admin/header')
         -else
