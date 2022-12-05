@@ -184,7 +184,14 @@
         =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
           span =t('.enable_metadata_description')    
 
-
+    h3 =t('.message_boards')
+    p =t('.message_boards_description')
+    -if @collection.messageboards_enabled?
+      =link_to(collection_disable_messageboards_path(:collection_id => @collection.id), class: 'button')
+        span =t('.disable_message_boards')
+    -else
+      =link_to(collection_enable_messageboards_path(:collection_id => @collection.id), class: 'button')
+        span =t('.enable_message_boards')
 
     -if !@collection.field_based && @collection.text_entry?
       h3 =t('.editor_buttons')

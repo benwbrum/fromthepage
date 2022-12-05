@@ -11,8 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
 //= require jquery.ui.all
+//= require jquery_ujs
 //= require_tree ./plugins
 //= require user.js
 //= require handsontable.full.min

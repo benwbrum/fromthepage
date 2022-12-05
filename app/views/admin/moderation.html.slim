@@ -1,0 +1,10 @@
+=render(:partial => 'header', :locals => { :selected => 5 })
+ul
+  -@collections.each do |collection|
+    li 
+      =link_to(collection.title, Thredded::UrlsHelper::pending_moderation_path(user_slug: collection.owner.slug, collection_id: collection.slug))
+      -moderatable_messageboards = collection.messageboard_group.messageboards.pluck(:id)
+      i &nbsp;
+      =Thredded::Post.where(messageboard_id: moderatable_messageboards).pending_moderation.count
+      -if collection.restricted
+        i private
