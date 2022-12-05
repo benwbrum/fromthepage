@@ -7,6 +7,12 @@ fr:
       note_has_been_created: La note a été créée
     destroy:
       note_has_been_deleted: La note a été supprimée
+    discussions:
+      description: Questions et notes sur les pages
+      most_recent_of: Le plus récent de
+      page_notes: Remarques sur les pages
+      pages_and_notes_counts: "%{posts_count} notes sur %{topics_count} pages"
+      total_notes: "%{count} remarques"
     note:
       cancel: Annuler
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?

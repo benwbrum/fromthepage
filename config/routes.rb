@@ -1,4 +1,12 @@
 Fromthepage::Application.routes.draw do
+  # TODO make the URL fall under user and collection profile
+  scope ':user_slug' do
+    scope ':collection_id' do
+      mount Thredded::Engine => '/forum'
+    end
+  end
+
+
   root :to => 'static#splash'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
@@ -24,6 +32,8 @@ Fromthepage::Application.routes.draw do
 
   resources :notes
 
+
+
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
@@ -31,6 +41,7 @@ Fromthepage::Application.routes.draw do
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
     get 'flag_list', to: 'admin#flag_list'
+    get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
@@ -71,6 +82,7 @@ Fromthepage::Application.routes.draw do
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
+    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
@@ -80,6 +92,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
+    get 'disable_messageboards', to: 'collection#disable_messageboards'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
@@ -422,6 +435,13 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/landing', to: 'static#landing_page', as: :landing
+  get '/signup', to: 'static#signup', as: :signup 
+  get '/special_collections', to: 'static#transcription_archives', as: :special_collections
+  get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
+  get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
+  get '/state_archives', to: 'static#state_archives', as: :state_archives
+
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -429,6 +449,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
     resources :collection, path: '', only: [:show] do
+      get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
@@ -437,6 +458,7 @@ Fromthepage::Application.routes.draw do
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
       get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'page-notes/:work_id/:page_id', as: 'forum_page', to: 'display#display_page'
       get 'review/one_off/:page_id', as: 'oneoff_review_page', to: 'transcribe#display_page'
       get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
@@ -462,6 +484,8 @@ Fromthepage::Application.routes.draw do
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
+
+    
 
       #work related routes
       #have to use match because it must be both get and post
