@@ -47,14 +47,14 @@
   javascript:
     function countChars() {
       var chars = $(this).val().length
-      $(this).next().text((chars == 1) ? chars + " character" : chars + " characters"); 
+      $(this).next().text(chars + " / 180"); 
 
       if (chars > 180) {
-        $(this).css('background-color', '#FFF0F0');
+        $(this).css('background-color', '#F5B7AC');
       } else if (chars > 140) {
-        $(this).css('background-color', '#FFF6CC');
+        $(this).css('background-color', '#FEDFC9');
       } else if (chars > 125) {
-        $(this).css('background-color', '#FFFCD6');
+        $(this).css('background-color', '#FFF6CC');
       } else {
         $(this).css('background-color', '');
       }
