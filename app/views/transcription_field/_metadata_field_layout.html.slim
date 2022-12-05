@@ -37,9 +37,33 @@
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
           -elsif field.input_type == "description"
             =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -elsif field.input_type == "alt text"
+            =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input alt-text', maxlength: '255'
+            div.character-count
           -else
             =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
 
 -content_for :javascript
   javascript:
+    function countChars() {
+      var chars = $(this).val().length
+      $(this).next().text(chars + " / 180"); 
+
+      if (chars > 180) {
+        $(this).css('background-color', '#F5B7AC');
+      } else if (chars > 140) {
+        $(this).css('background-color', '#FEDFC9');
+      } else if (chars > 125) {
+        $(this).css('background-color', '#FFF6CC');
+      } else {
+        $(this).css('background-color', '');
+      }
+    }
+
+    $('.alt-text').on('input', countChars);
+    $('document').ready(function() {
+      $('.alt-text').each(function() {
+        countChars.call($(this));
+      });
+    });
     $('.edtf').inputmask();
