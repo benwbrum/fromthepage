@@ -106,6 +106,7 @@ en:
       footer: Footer
       help: Basic Help Text
       hide_completed: Hide completed works by default
+      institution_signature: Sign support emails to users with %{name} instead of FromThePage
       learn_more_footer: Learn more about configuring the footer.
       link_help: Subject Linking Help Text (not displayed if subjects are disabled)
       make_collection_active: Make Collection Active

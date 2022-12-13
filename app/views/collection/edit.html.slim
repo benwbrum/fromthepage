@@ -75,6 +75,10 @@
             td(colspan="2")
               =f.check_box :voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')
+        tr
+          td(colspan="2")
+            =f.check_box :institution_signature
+            =f.label :institution_signature, t('.institution_signature', name: @collection.owner.display_name)
         -if @collection.text_entry?
           tr
             td(colspan="2")

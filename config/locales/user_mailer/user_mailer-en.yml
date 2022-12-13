@@ -28,11 +28,12 @@ en:
       message: "%{owner} added you as an authorized reviewer on %{collection}.  You should be able to edit and approve any page needing review."
       text:
         to_view: 'To view %{collection}, visit the following URL: %{url}'
+    fromthepage: FromThePage
     greeting: Hi %{user} --
     html:
       closing: |
         Thanks, <br><br>
-        FromThePage
+        %{from}
       turn_off_notification: " to turn off this notification"
     new_owner:
       welcome: Welcome
@@ -51,7 +52,7 @@ en:
     text:
       closing: |-
         Thanks,
-        FromThePage
+        %{from}
       turn_off_notification: 'Turn off this notification at the URL: %{url}'
     upload_finished:
       html:
