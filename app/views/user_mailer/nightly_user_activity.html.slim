@@ -19,7 +19,7 @@ p =t('.message')
     =t('.html.to_view_note', page: page.title, collection: page.work.access_object(@user_activity.user).title, work: page.work.title)
     p
 
-p== t('user_mailer.html.closing')
+p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
 span =link_to t('user_mailer.click_here'), update_profile_url(@user_activity.user)
