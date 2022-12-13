@@ -28,11 +28,12 @@ fr:
       message: "%{owner} vous a ajouté en tant qu'examinateur autorisé sur %{collection}. Vous devriez pouvoir modifier et approuver toute page nécessitant une révision."
       text:
         to_view: 'Pour afficher %{collection}, visitez l''URL suivante : %{url}'
+    fromthepage: DeLaPage
     greeting: Salut %{user} --
     html:
       closing: |
         Merci, <br><br>
-        DeLaPage
+        %{from}
       turn_off_notification: " pour désactiver cette notification"
     new_owner:
       welcome: Accueillir
@@ -51,7 +52,7 @@ fr:
     text:
       closing: |-
         Merci,
-        DeLaPage
+        %{from}
       turn_off_notification: 'Désactivez cette notification à l''URL : %{url}'
     upload_finished:
       html:

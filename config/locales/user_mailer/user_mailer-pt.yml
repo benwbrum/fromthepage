@@ -28,9 +28,10 @@ pt:
       message: "%{owner} adicionou você como revisor autorizado em %{collection}. Você deve poder editar e aprovar qualquer página que precise de revisão."
       text:
         to_view: 'Para visualizar %{collection}, visite o seguinte URL: %{url}'
+    fromthepage: FromThePage
     greeting: Oi %{user} --
     html:
-      closing: "Gratidão, <br><br> \nFromThePage\n"
+      closing: "Gratidão, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
     new_owner:
       welcome: Bem-vindo
@@ -49,7 +50,7 @@ pt:
     text:
       closing: |-
         Obrigado,
-        Da página
+        %{from}
       turn_off_notification: 'Desative esta notificação no URL: %{url}'
     upload_finished:
       html:
