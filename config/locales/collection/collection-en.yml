@@ -301,6 +301,7 @@ en:
       time_ago_in_words: "%{time} ago"
       user_wrote_note: "%{user} wrote %{note}"
       works: Works
+      restricted_collaboratoration: Collaboration is restricted.
     start_transcribing:
       notice: Sorry, but there are no qualifying pages in this collection.
     transcribed: transcribed
