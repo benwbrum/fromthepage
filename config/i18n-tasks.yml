@@ -107,12 +107,14 @@ ignore_missing:
     - '{!, !0, next, throw}'
     - 'deed.deed.*'
     - 'article.graph.title'
+    - 'thredded.*'
   es: &NOT_EN
     - '{!, !0, next, throw}'
     - 'deed.deed.*'
     - 'article.graph.title'
     - 'admin.*'
     - 'admin_mailer.*'
+    - 'thredded.*'
   pt: *NOT_EN
   fr: *NOT_EN
 
@@ -133,6 +135,8 @@ ignore_unused:
   - 'quality_samplings.show.approval_delta_display_{0,1,2,3,4}'
   - 'article.graph.dot.title'
   - 'dashboard.owner_header.account_types.{legacy,staff,trial,individual_researcher,small_organization,large_institution}'
+  - 'collection.edit_buttons.*_label'
+  - 'collection.edit_buttons.*_description'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:
