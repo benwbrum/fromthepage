@@ -39,17 +39,17 @@
           p.collection-work_snippet = to_snippet(work.description)
           -if @collection.text_entry? && work.next_untranscribed_page
             p.collection-work_action 
-              =t('.this_work_has_pages_that_need_work')
-              span &nbsp;
               -if (current_user && current_user.can_transcribe?(work))
+                =t('.this_work_has_pages_that_need_work')
+                span &nbsp;
                 =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
               -else
                 =t('.restricted_collaboratoration')
           -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
             p.collection-work_action 
-              =t('.this_work_has_not_been_described')
-              span &nbsp;
               -if (current_user && current_user.can_transcribe?(work))
+                =t('.this_work_has_not_been_described')
+                span &nbsp;
                 =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
               -else
                 =t('.restricted_collaboratoration')
