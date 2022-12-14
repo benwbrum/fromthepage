@@ -20,21 +20,26 @@
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Crete+Round&family=Lora:wght@400;500;600;700&display=swap" %>
     <%= stylesheet_link_tag 'optimize' %>
     <%= stylesheet_link_tag 'main' %>
+    <%= javascript_include_tag 'landing/lightbox.min.js' %>
+    <%= javascript_include_tag 'landing/main.js' %>
+    <%= javascript_include_tag 'landing/slick.min.js' %>
+    <%= javascript_include_tag 'landing/slider.js' %>
+
 
     <style>
         .home-main::before {
-            background: url('<%=path_to_image('materials/main-bg')%>') no-repeat;
+            background: url('<%=path_to_image('materials/main-bg.png')%>') no-repeat;
         }
         .home-services::before {
-            background: url('<%=path_to_image('materials/services-bg')%>') no-repeat;
+            background: url('<%=path_to_image('materials/services-bg.png')%>') no-repeat;
             background-size: cover;
         }
 
         .home-video::before {
-            background: url('<%=path_to_image('materials/video-bg')%>') no-repeat;
+            background: url('<%=path_to_image('materials/video-bg.png')%>') no-repeat;
         }
         .home-start::before {
-            background: url('<%=path_to_image('materials/bg-start')%>') no-repeat;
+            background: url('<%=path_to_image('materials/bg-start.png')%>') no-repeat;
         }
     </style>
     <!-- Links End -->
