@@ -5,8 +5,6 @@
 
     <!-- Home Main -->
     <section class="home-main">
-        <!-- <img src="/assets/materials/main-bg.png" alt=""> -->
-
         <div class="text">
             <h2 data-aos="zoom-in" data-aos-duration="800" >Transcribe your material with a community of 5,000+ passionate, detail-oriented volunteers</h2>
             <p data-aos="zoom-in" data-aos-duration="900">FromThePage is a crowdsourcing platform for archives and libraries where volunteers transcribe, index, and describe historic documents</p>
@@ -15,7 +13,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 ">
                         <div class="card" data-aos="zoom-in" data-aos-duration="1000">
-                            <img src="/assets/materials/main-card01.png" alt="">
+                            <%= image_tag("materials/main-card01.png") %>
                             <h4>Start engaging the public to transcribe your documents</h4>
         
                             <div class="bottom">
@@ -27,7 +25,7 @@
     
                     <div class="col-lg-4 col-md-6 ">
                         <div class="card second" data-aos="zoom-in" data-aos-duration="1100">
-                            <img src="/assets/materials/main-card02.png" alt="">
+                            <%= image_tag("materials/main-card02.png") %>
                             <h4>I’m here to help libraries and archives transcribe their historic documents</h4>
         
                             <div class="bottom">
@@ -47,51 +45,51 @@
             <h2 class="title" data-aos="zoom-in" data-aos-duration="800">Trusted by</h2>
             <div class="row">
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo01.png" alt="" data-aos="zoom-in" data-aos-duration="500">
+                    <%= image_tag("materials/logo01.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'500'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo02.png" alt="" data-aos="zoom-in" data-aos-duration="600">
+                    <%= image_tag("materials/logo02.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'600'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo03.png" alt="" data-aos="zoom-in" data-aos-duration="700">
+                    <%= image_tag("materials/logo03.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'700'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo04.png" alt="" data-aos="zoom-in" data-aos-duration="800">
+                    <%= image_tag("materials/logo04.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'800'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo05.png" alt="" data-aos="zoom-in" data-aos-duration="900">
+                    <%= image_tag("materials/logo05.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'900'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo06.png" alt="" data-aos="zoom-in" data-aos-duration="1000">
+                    <%= image_tag("materials/logo06.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1000'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo07.png" alt="" data-aos="zoom-in" data-aos-duration="1100">
+                    <%= image_tag("materials/logo07.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1100'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo08.png" alt="" data-aos="zoom-in" data-aos-duration="1200">
+                    <%= image_tag("materials/logo08.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1200'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo09.png" alt="" data-aos="zoom-in" data-aos-duration="1300">
+                    <%= image_tag("materials/logo09.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1300'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo10.png" alt="" data-aos="zoom-in" data-aos-duration="1400">
+                    <%= image_tag("materials/logo10.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1400'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo11.png" alt="" data-aos="zoom-in" data-aos-duration="1500">
+                    <%= image_tag("materials/logo11.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1500'}) %>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-3">
-                    <img src="/assets/materials/logo12.png" alt="" data-aos="zoom-in" data-aos-duration="1600">
+                    <%= image_tag("materials/logo12.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1600'}) %>
                 </div>
                 
             </div>
@@ -105,8 +103,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="item">
-                        <video id="video" poster="/assets/materials/video.webp">
-                            <source src="/assets/materials/video.mp4">
+                        <video id="video" poster="<%=path_to_image('materials/video.webp')%>">
+                            <source src="<%=path_to_image('materials/video.mp4')%>">
                         </video>
 
                         <span class="button" id="videoButton">
@@ -128,7 +126,7 @@
                 <li>
                     <span>01</span>
                     <div class="icon" data-aos="zoom-in" data-aos-duration="500">
-                        <img src="/assets/materials/how01.png" alt="">
+                        <%= image_tag("materials/how01.png") %>
                     </div>
 
                     <div class="text" data-aos="zoom-in" data-aos-duration="700">
@@ -140,7 +138,7 @@
                 <li>
                     <span>02</span>
                     <div class="icon" data-aos="zoom-in" data-aos-duration="800">
-                        <img src="/assets/materials/how02.png" alt="">
+                        <%= image_tag("materials/how02.png") %>
                     </div>
 
                     <div class="text" data-aos="zoom-in" data-aos-duration="1000">
@@ -152,7 +150,7 @@
                 <li>
                     <span>03</span>
                     <div class="icon" data-aos="zoom-in" data-aos-duration="1100">
-                        <img src="/assets/materials/how03.png" alt="">
+                        <%= image_tag("materials/how03.png") %>
                     </div>
 
                     <div class="text" data-aos="zoom-in" data-aos-duration="1300">
@@ -164,7 +162,7 @@
                 <li>
                     <span>04</span>
                     <div class="icon" data-aos="zoom-in" data-aos-duration="1400">
-                        <img src="/assets/materials/how04.png" alt="">
+                        <%= image_tag("materials/how04.png") %>
                     </div>
 
                     <div class="text" data-aos="zoom-in" data-aos-duration="1600">
@@ -176,7 +174,7 @@
                 <li>
                     <span>05</span>
                     <div class="icon" data-aos="zoom-in" data-aos-duration="1700">
-                        <img src="/assets/materials/how05.png" alt="">
+                        <%= image_tag("materials/how05.png") %>
                     </div>
 
                     <div class="text" data-aos="zoom-in" data-aos-duration="1900">
@@ -198,7 +196,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="500">
                         <div class="icon">
-                            <img src="/assets/materials/home-services01.png" alt="">
+                            <%= image_tag("materials/home-services01.png") %>
                         </div>
 
                         <div class="text">
@@ -211,7 +209,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="600">
                         <div class="icon">
-                            <img src="/assets/materials/home-services02.png" alt="">
+                            <%= image_tag("materials/home-services02.png") %>
                         </div>
 
                         <div class="text">
@@ -224,7 +222,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="700">
                         <div class="icon">
-                            <img src="/assets/materials/home-services03.png" alt="">
+                            <%= image_tag("materials/home-services03.png") %>
                         </div>
 
                         <div class="text">
@@ -237,7 +235,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="800">
                         <div class="icon">
-                            <img src="/assets/materials/home-services04.png" alt="">
+                            <%= image_tag("materials/home-services04.png") %>
                         </div>
 
                         <div class="text">
@@ -250,7 +248,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="900">
                         <div class="icon">
-                            <img src="/assets/materials/home-services05.png" alt="">
+                            <%= image_tag("materials/home-services05.png") %>
                         </div>
 
                         <div class="text">
@@ -263,7 +261,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1000">
                         <div class="icon">
-                            <img src="/assets/materials/home-services06.png" alt="">
+                            <%= image_tag("materials/home-services06.png") %>
                         </div>
 
                         <div class="text">
@@ -276,7 +274,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1100">
                         <div class="icon">
-                            <img src="/assets/materials/home-services07.png" alt="">
+                            <%= image_tag("materials/home-services07.png") %>
                         </div>
 
                         <div class="text">
@@ -289,7 +287,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1200">
                         <div class="icon">
-                            <img src="/assets/materials/home-services08.png" alt="">
+                            <%= image_tag("materials/home-services08.png") %>
                         </div>
 
                         <div class="text">
@@ -302,7 +300,7 @@
                 <div class="col-lg-4 col-md-6 col-6">
                     <div class="item" data-aos="zoom-in" data-aos-duration="1300">
                         <div class="icon">
-                            <img src="/assets/materials/home-services09.png" alt="">
+                            <%= image_tag("materials/home-services09.png") %>
                         </div>
 
                         <div class="text">
@@ -318,7 +316,7 @@
 
     <!-- Home Count -->
     <section class="home-count">
-        <img src="/assets/materials/count-top-bg.png" alt="" class="bg">
+        <%= image_tag("materials/count-top-bg.png", class: 'bg') %>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-6">
@@ -364,7 +362,7 @@
                     
                                    <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">One of our motivations for partnering with FromThePage on this project was their commitment to IIIF support and integrations. We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level. Given the size of some of our collections, we worked with the team to expand FromThePage’s functional support for importing and exporting robust IIIF manifests. The fruits of efforts are now available to all FromThePage users.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>One of our motivations for partnering with FromThePage on this project was their commitment to IIIF support and integrations. We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level. Given the size of some of our collections, we worked with the team to expand FromThePage’s functional support for importing and exporting robust IIIF manifests. The fruits of efforts are now available to all FromThePage users.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
     
@@ -372,7 +370,7 @@
                                         <h4>Stanford University Archives team</h4>
                                         <span>Stanford University</span>
 
-                                        <img src="/assets/materials/logo01.png" alt="">
+                                        <%= image_tag("materials/logo01.png") %>
                                     </div>
                                 </div>
 
@@ -386,18 +384,18 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">"Using FromThePage, gave us a platform to easily share digital images of diaries that allowed our volunteers to engage more deeply with the content than even simply reading would allow. It provides our volunteers the opportunity to read the original words - in the original handwriting - of people who experienced the Holocaust as they were living through it.
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>"Using FromThePage, gave us a platform to easily share digital images of diaries that allowed our volunteers to engage more deeply with the content than even simply reading would allow. It provides our volunteers the opportunity to read the original words - in the original handwriting - of people who experienced the Holocaust as they were living through it.
 
-                                    FromThePage facilitates access beyond the image of a document to the text held within it. Transcription and translation allow these documents to become truly accessible to users who might not work with them otherwise due to access or language barriers."<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                    FromThePage facilitates access beyond the image of a document to the text held within it. Transcription and translation allow these documents to become truly accessible to users who might not work with them otherwise due to access or language barriers."<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/RebeccaDillmeier.png" alt="" class="user">
+                                    <%= image_tag("materials/RebeccaDillmeier.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Rebecca Dillmeier</h4>
                                         <span>United States Holocaust Memorial Museum</span>
 
-                                        <img src="/assets/materials/logo08.png" alt="">
+                                        <%= image_tag("materials/logo08.png") %>
                                     </div>
                                 </div>
 
@@ -410,7 +408,7 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">Using FromThePage has been a really brilliant experience for this project. Firstly, the project has had contributions from so many volunteers all over the world, which has meant that the cataloguing has been completed much more quickly than would be possible with individual volunteers working on site at The National Archives. Secondly, using the system and receiving feedback from volunteers has helped us to adjust and improve the cataloguing guidance we create for volunteers. Our methodology and practical approach to cataloguing this collection has been directly informed by the experience of using FromThePage and the valuable feedback of volunteers.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>Using FromThePage has been a really brilliant experience for this project. Firstly, the project has had contributions from so many volunteers all over the world, which has meant that the cataloguing has been completed much more quickly than would be possible with individual volunteers working on site at The National Archives. Secondly, using the system and receiving feedback from volunteers has helped us to adjust and improve the cataloguing guidance we create for volunteers. Our methodology and practical approach to cataloguing this collection has been directly informed by the experience of using FromThePage and the valuable feedback of volunteers.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
     
@@ -418,7 +416,7 @@
                                         <h4>Keith Mitchell</h4>
                                         <span>The National Archives (UK)</span>
 
-                                        <img src="/assets/materials/logo10.png" alt="">
+                                        <%= image_tag("materials/logo10.png") %>
                                     </div>
                                 </div>
 
@@ -431,16 +429,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">We're so glad we found FromThePage! We'd been looking for a program to facilitate this project for some time, and FromThePage ticked all the boxes for us: ability to import, host, and export documents and content, mechanisms to track progress, and ways to learn about how our collaborators were working on the project were all important to us.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>We're so glad we found FromThePage! We'd been looking for a program to facilitate this project for some time, and FromThePage ticked all the boxes for us: ability to import, host, and export documents and content, mechanisms to track progress, and ways to learn about how our collaborators were working on the project were all important to us.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/KellyRiddle.png" alt="" class="user">
+                                    <%= image_tag("materials/KellyRiddle.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Kelly Riddle</h4>
                                         <span>LA County Library</span>
 
-                                        <img src="/assets/materials/logo05.png" alt="">
+                                        <%= image_tag("materials/logo05.png") %>
                                     </div>
                                 </div>
 
@@ -453,16 +451,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform, in part because of the shared volunteer traffic. In addition, the site’s ease of use allows us to work with volunteers who have vastly different backgrounds and abilities and to keep our instructions simple.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform, in part because of the shared volunteer traffic. In addition, the site’s ease of use allows us to work with volunteers who have vastly different backgrounds and abilities and to keep our instructions simple.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/VictoriaDuncan.png" alt="" class="user">
+                                    <%= image_tag("materials/VictoriaDuncan.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Victoria Duncan</h4>
                                         <span>Indianapolis Public Library</span>
 
-                                        <img src="/assets/materials/logo06.png" alt="">
+                                        <%= image_tag("materials/logo06.png") %>
                                     </div>
                                 </div>
 
@@ -475,16 +473,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">We’ve trialled a couple of other crowd sourcing transcription platforms but have found FromThePage the easiest and most useful for our type of collection. The vast majority of our collection is manuscript materials and the set ups available on FromThePage – especially the field based function – are terrific. The projects and collections are very easy to set up, the volunteers find the programme easy to use, and Ben and Sara are super helpful and responsive if we need help or have any questions.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>We’ve trialled a couple of other crowd sourcing transcription platforms but have found FromThePage the easiest and most useful for our type of collection. The vast majority of our collection is manuscript materials and the set ups available on FromThePage – especially the field based function – are terrific. The projects and collections are very easy to set up, the volunteers find the programme easy to use, and Ben and Sara are super helpful and responsive if we need help or have any questions.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/JulanneNeal.png" alt="" class="user">
+                                    <%= image_tag("materials/JulanneNeal.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Julanne Neal</h4>
                                         <span>Queensland State Archives</span>
 
-                                        <img src="/assets/materials/logo13.png" alt="">
+                                        <%= image_tag("materials/logo13.png") %>
                                     </div>
                                 </div>
 
@@ -497,16 +495,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">FromThePage is lovely and intuitive (I don’t even want to think about the clunky piecemeal solution I was planning before we found FTP), and y’all are a delight to work with—responsive, patient, and always up for a challenge.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>FromThePage is lovely and intuitive (I don’t even want to think about the clunky piecemeal solution I was planning before we found FTP), and y’all are a delight to work with—responsive, patient, and always up for a challenge.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/MeredithMcDonough.png" alt="" class="user">
+                                    <%= image_tag("materials/MeredithMcDonough.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Meredith McDonough</h4>
                                         <span>Alabama Department of Archives and History</span>
 
-                                        <img src="/assets/materials/logo12.png" alt="">
+                                        <%= image_tag("materials/logo12.png") %>
                                     </div>
                                 </div>
 
@@ -519,16 +517,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">FromThePage has been a delight to use. We've gotten very good feedback from volunteers and partners from the transcribers' perspective. Support is super responsive and easy to work with, and has made migrations and integrations painless. For us, the IIIF manifest and Internet Archive import options are particularly appreciated. We have very limited staffing and Internet Archive is our main public-facing repository; IIIF and the Internet Archive importer make adding new collections to FromThePage a snap!<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>FromThePage has been a delight to use. We've gotten very good feedback from volunteers and partners from the transcribers' perspective. Support is super responsive and easy to work with, and has made migrations and integrations painless. For us, the IIIF manifest and Internet Archive import options are particularly appreciated. We have very limited staffing and Internet Archive is our main public-facing repository; IIIF and the Internet Archive importer make adding new collections to FromThePage a snap!<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/PatrickWallace.png" alt="" class="user">
+                                    <%= image_tag("materials/PatrickWallace.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Patrick Wallace</h4>
                                         <span>Middlebury College</span>
 
-                                        <img src="/assets/materials/logo14.png" alt="">
+                                        <%= image_tag("materials/logo14.png") %>
                                     </div>
                                 </div>
 
@@ -541,16 +539,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">Both building a project and participating in a project with FromThePage is straightforward, which is such a relief for this kind of work. There is so much to think about in terms of sustainability that not having to learn a bunch of code or a complicated platform is a godsend. I had one student say it was “soothing,” to work on our project on FromThePage, and that made me so happy. I don’t want it to be tedious and boring work, because the subject is so interesting! FromThePage lets the subject be the focus, and makes it easy to work. I lose track of time a lot when I work on the project and don’t want to stop.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>Both building a project and participating in a project with FromThePage is straightforward, which is such a relief for this kind of work. There is so much to think about in terms of sustainability that not having to learn a bunch of code or a complicated platform is a godsend. I had one student say it was “soothing,” to work on our project on FromThePage, and that made me so happy. I don’t want it to be tedious and boring work, because the subject is so interesting! FromThePage lets the subject be the focus, and makes it easy to work. I lose track of time a lot when I work on the project and don’t want to stop.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/JuliaGearhart.png" alt="" class="user">
+                                    <%= image_tag("materials/JuliaGearhart.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Julia Gearhart</h4>
                                         <span>Princeton's Department of Art and Archaeology</span>
 
-                                        <img src="/assets/materials/logo15.png" alt="">
+                                        <%= image_tag("materials/logo15.png") %>
                                     </div>
                                 </div>
 
@@ -563,16 +561,16 @@
 
                         <div class="box">
                             <div class="item">
-                                <p><img src="/assets/icons/quote01.svg" alt="" class="top">My experience has been resoundingly positive. Since the very first day we uploaded our documents to the website, we’ve had volunteers from around the globe dive into the project. Additionally, using FromThePage provides a centralized place where I can send volunteers who are interested in transcribing, where I can answer questions quickly and easily, and where I can track progress on the project  Previously, I had been emailing chunks of records to people who were interested in transcribing, which was an extremely inefficient, difficult to track, and overly stressful method. Using From the Page has streamlined my entire operation and greatly improved the quality and speed of our transcriptions.<img src="/assets/icons/quote02.svg" alt="" class="bottom"></p>
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>My experience has been resoundingly positive. Since the very first day we uploaded our documents to the website, we’ve had volunteers from around the globe dive into the project. Additionally, using FromThePage provides a centralized place where I can send volunteers who are interested in transcribing, where I can answer questions quickly and easily, and where I can track progress on the project  Previously, I had been emailing chunks of records to people who were interested in transcribing, which was an extremely inefficient, difficult to track, and overly stressful method. Using From the Page has streamlined my entire operation and greatly improved the quality and speed of our transcriptions.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
     
                                 <div class="info">
-                                    <img src="/assets/materials/CamilleWestmont.png" alt="" class="user">
+                                    <%= image_tag("materials/CamilleWestmont.png", class:'user') %>
     
                                     <div class="text">
                                         <h4>Dr. Camille Westmont</h4>
                                         <span>Sewanee: The University of the South</span>
 
-                                        <img src="/assets/materials/logo16.png" alt="">
+                                        <%= image_tag("materials/logo16.png") %>
                                     </div>
                                 </div>
 
