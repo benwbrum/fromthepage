@@ -7,7 +7,7 @@ en:
       bulk_contentdm_import: Bulk CONTENTdm Import
       compound_object_urls: Compound Object URLs
       import: Import
-      import_ocr_text: Import OCR text from CONTENTdm
+      import_ocr_text: Import OCR text
       select_a_collection_to_import_into: "- Select a collection to import into -"
       separate_urls_with: Separate URLs with spaces or newlines.
     convert_manifest:
@@ -19,7 +19,7 @@ en:
       first_page: First Page
       id: 'Id: %{id}'
       import_checked_manifests: Import Checked Manifests
-      import_ocr_text: Import OCR text from CONTENTdm
+      import_ocr_text: Import OCR text
       manifests: 'Manifests:'
       next_page: Next Page
       no_label: no label
@@ -34,7 +34,7 @@ en:
       description: 'Description: %{description}}'
       id: 'Id:'
       import_manifest: Import Manifest
-      import_ocr_text: Import OCR text from CONTENTdm
+      import_ocr_text: Import OCR text
       license: 'License: %{license}'
       manifest: 'Manifest: %{sc_manifest}}'
       metadata: 'Metadata: %{metadata}}'
