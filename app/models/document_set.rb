@@ -295,4 +295,8 @@ class DocumentSet < ApplicationRecord
   def api_access # API access is only controlled by public/private for document sets
     false
   end
+
+  def institution_signature
+    self.collection.institution_signature
+  end
 end
