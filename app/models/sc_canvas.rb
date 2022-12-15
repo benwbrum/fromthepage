@@ -27,6 +27,8 @@ class ScCanvas < ApplicationRecord
 
 
   def transcript_annotations
+    return nil unless self.annotations
+
     annotation_list = JSON.parse(self.annotations)
     transcript_list = annotation_list.detect do |element|
       # Use the page-level annotation if possible
