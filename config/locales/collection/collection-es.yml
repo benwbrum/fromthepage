@@ -106,6 +106,7 @@ es:
       footer: Pie de página
       help: Texto de Ayuda Básica
       hide_completed: Ocultar obras completadas de forma predeterminada
+      institution_signature: Firme correos electrónicos de soporte para usuarios con "%{name}" en lugar de "FromThePage"
       learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
       make_collection_active: Hacer Activa la Colección
