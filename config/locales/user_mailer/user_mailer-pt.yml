@@ -3,10 +3,10 @@ pt:
   user_mailer:
     added_note:
       html:
-        view_note: " para ver a nota em %{collection}: %{work}."
+        view_note: " para responder à nota em %{collection}: %{work}."
       message: Gostaríamos apenas de informar que a seguinte nota foi adicionada a uma página em que você trabalhou no trabalho %{work}, na coleção %{collection}.
       text:
-        view_note: 'Você pode visualizar a nota em %{collection}: %{work} na URL: %{url}.'
+        view_note: 'Você pode responder à nota em %{collection}: %{work} no URL: %{url}.'
     bulk_export_finished:
       html:
         ready_message: foi processado e está pronto em %{this_link}.
