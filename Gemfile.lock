@@ -305,7 +305,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.18.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -335,7 +335,7 @@ GEM
     net-ssh (7.0.1)
     newrelic_rpm (8.9.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nori (2.6.0)
@@ -348,7 +348,7 @@ GEM
     oink (0.10.1)
       activerecord
       hodel_3000_compliant_logger
-    omniauth (1.9.1)
+    omniauth (1.9.2)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     omniauth-google-oauth2 (0.8.2)
@@ -389,7 +389,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.4)
     rack-contrib (2.3.0)
       rack (~> 2.0)
@@ -420,8 +420,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.3)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 7)
@@ -646,7 +646,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   oink
-  omniauth (~> 1.9.1)
+  omniauth (~> 1.9.2)
   omniauth-google-oauth2
   omniauth-multi-provider (~> 0.2.1)
   omniauth-saml

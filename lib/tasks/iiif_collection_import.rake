@@ -40,7 +40,7 @@ namespace :fromthepage do
             sc_manifest = ScManifest.manifest_for_at_id(at_id)
           end
           work = nil
-          work = sc_manifest.convert_with_collection(user, collection)
+          work = sc_manifest.convert_with_collection(user, collection, nil, import_ocr)
           if document_set
             document_set.works << work
           end
@@ -54,6 +54,7 @@ namespace :fromthepage do
           end
         rescue => e
           puts "#{e.message}"
+          puts e.backtrace.join("\n")
           errors.store(at_id, e.message)
 #          errors.store(at_id, e.backtrace.join("\n"))
         end
