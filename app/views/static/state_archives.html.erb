@@ -631,7 +631,7 @@
     <section class="crowd-schedule">
         <div class="container">
             <div class="title">
-                <h4>1,317,240</h4>
+                <h4><%= number_with_delimiter Page.where.not(:status=>nil).count %></h4>
                 <p>Pages — and counting!</p>
             </div>
 
