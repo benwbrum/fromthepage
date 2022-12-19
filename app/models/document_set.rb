@@ -61,6 +61,10 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def metadata_coverages
+    self.collection.metadata_coverages
+  end
+
   def enable_spellcheck
     self.collection.enable_spellcheck
   end
