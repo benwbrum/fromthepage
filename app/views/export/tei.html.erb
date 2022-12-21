@@ -31,7 +31,13 @@ xml:id="export">
 
       <% @user_contributions.each do |user| %>
         <respStmt xml:id="U<%= user[:user_id]%>">
-          <persName><%= user[:real_name] || user.display_name %></persName>
+          <persName
+            <% if user[:real_name].blank? %>
+              type="pseudonym"
+            <% end %>
+            >
+            <%= user.real_name.blank? ? user.display_name : user.real_name %>
+            </persName>
           <% if user[:edit_count] == 1 %>
             <resp>
               <%= t('export.tei.made_one_edit_on') %>
