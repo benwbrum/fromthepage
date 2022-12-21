@@ -99,18 +99,8 @@ class DashboardController < ApplicationController
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
 
     # Stats
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
-    contributor_ids_for_dates = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
-
-    @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-
-    @activity = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date)
-        .group(:user_id)
-        .sum(:minutes)
+    @contributors = current_user.contributors(@start_date, @end_date)
+    @activity = current_user.contributor_time(@start_date, @end_date)
   end
 
   # Collaborator Dashboard - watchlist
@@ -176,27 +166,14 @@ class DashboardController < ApplicationController
     headers += dates.map{|d| d.strftime("%b %d, %Y")}
 
     # Get Row Data (Users)
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
-
-
-    contributor_ids_for_dates = AhoyActivitySummary
-      .where(collection_id: owner_collections)
-      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
-
-    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+    contributors = current_user.contributors(start_date, end_date)
 
     csv = CSV.generate(:headers => true) do |records|
       records << headers
       contributors.each do |user|
         row = [user.display_name, user.email]
 
-        activity = AhoyActivitySummary
-          .where(user_id: user.id)
-          .where(collection_id: owner_collections)
-          .where('date BETWEEN ? AND ?', start_date, end_date)
-          .group(:date)
-          .sum(:minutes)
-          .transform_keys{ |k| k.to_date }
+        activity = current_user.contributor_time_for_user(user.id, start_date, end_date)
 
         user_activity = dates.map{ |d| activity[d.to_date] || 0 }
 
