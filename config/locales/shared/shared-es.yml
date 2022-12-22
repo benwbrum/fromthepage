@@ -67,7 +67,7 @@ es:
       zoom_out: Disminuir el zoom
     page_tabs:
       correct: Corregir
-      describe_work: Describir el trabajo
+      describe_work: Describir la obra
       help: Ayuda
       nav_info: Página %{position} de %{size}
       next_page: Siguiente página
