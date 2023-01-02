@@ -17,6 +17,7 @@ class Deed < ApplicationRecord
   visitable class_name: "Visit" # ahoy integration
 
   before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
+  after_save :update_collections_most_recent_deed
 
   def deed_type_name
     DeedType.name(self.deed_type)
@@ -51,5 +52,9 @@ class Deed < ApplicationRecord
         renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true, locale: locale })
       ]
     }.to_json
+  end
+
+  def update_collections_most_recent_deed
+    self.collection.update(most_recent_deed_created_at: self.created_at)
   end
 end

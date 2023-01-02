@@ -153,6 +153,5 @@ fr:
       collections: collections
       private_collections_you_belong_to: Projets privés
       projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
-      time_ago_in_words: Il y a %{time}
       try_transcribing_a_page: 'Vous n''avez encore participé à aucun projet. Essayez de transcrire une page de l''une de ces '
       your_activity: Votre activité

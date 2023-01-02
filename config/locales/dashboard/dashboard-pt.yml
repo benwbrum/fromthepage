@@ -153,6 +153,5 @@ pt:
       collections: coleções
       private_collections_you_belong_to: Coleções Privadas às quais você pertence
       projects_you_have_contributed_to: Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo.
-      time_ago_in_words: Há %{time}
       try_transcribing_a_page: 'Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes '
       your_activity: Sua Atividade
