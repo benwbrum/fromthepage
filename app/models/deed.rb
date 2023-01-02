@@ -55,6 +55,8 @@ class Deed < ApplicationRecord
   end
 
   def update_collections_most_recent_deed
-    self.collection.update(most_recent_deed_created_at: self.created_at)
+    if self.collection
+      self.collection.update(most_recent_deed_created_at: self.created_at)
+    end
   end
 end
