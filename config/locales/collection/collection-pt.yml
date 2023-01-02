@@ -106,7 +106,6 @@ pt:
       footer: Rodapé
       help: Texto de Ajuda Básica
       hide_completed: Automaticamente não mostrar as obras completadas
-      institution_signature: Assinar e-mails de suporte para usuários com "%{name}" em vez de "FromThePage"
       learn_more_footer: Saiba mais sobre a configuração do rodapé.
       link_help: Texto de Ajuda para Vinculação de Temas (não mostrado se o uso de temas está desativado)
       make_collection_active: Tornar a Coleção Ativa
