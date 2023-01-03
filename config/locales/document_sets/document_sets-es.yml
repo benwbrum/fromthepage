@@ -61,7 +61,7 @@ es:
       add_collaborator: Añadir colaborador
       add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
       collaborators_may_transcribe: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
-      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos los trabajos y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
+      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
       document_set_collaborators: Colaboradores del Conjunto de Documentos
       document_set_image: Imagen del Conjunto de Documentos
       document_set_privacy: Privacidad del Conjunto de Documentos
@@ -89,7 +89,7 @@ es:
     transfer:
       source_and_target_can_not_be_the_same: El origen y el destino no pueden ser el mismo.
     transfer_form:
-      all: todos los trabajos
+      all: todos las obras
       cancel: Cancelar
       completed: Solo obras terminadas
       copy: Copiar (no crea obras duplicadas)
