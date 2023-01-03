@@ -128,8 +128,8 @@ es:
       remove_collaborator: Eliminar colaborador
       remove_owner: Eliminar dueño
       remove_reviewer: Eliminar revisor
-      restrict_completed_works: Restringir trabajos terminados
-      restricted_completed_works: Trabajos Terminados Restringidos
+      restrict_completed_works: Restringir obras terminadas
+      restricted_completed_works: Obras Terminadas Restringidos
       restricted_completed_works_description: Este botón restringirá las obras %{work_count} que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada trabajo.
       revert_document_based_transcription: Revertir a Transcripción Basada en el Documento
       revert_metadata_description: Deshabilitar Descripción
