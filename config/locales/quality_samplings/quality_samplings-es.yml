@@ -37,6 +37,6 @@ es:
       sample_set_size: 'Tamaño del conjunto de muestra:'
       total_pages_desc: Número de páginas dentro de esta colección.
       user: Contribuyente
-      work: Trabajar
+      work: Obra
     update:
       quality_sampling_updated: El muestreo de calidad se actualizó con éxito.
