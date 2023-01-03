@@ -53,9 +53,9 @@ pt:
       turn_off_notification: 'Desative esta notificação no URL: %{url}'
     upload_finished:
       html:
-        message: Seu upload foi processado e está pronto em
+        message: Seu upload de "%{file}" foi processado e está pronto em
       text:
-        message: 'Seu upload foi processado e está pronto neste URL:'
+        message: 'Seu upload de "%{file}" foi processado e está pronto neste URL:'
       your_upload_is_ready: Seu carregamento está pronto!
     work_collaborator:
       html:

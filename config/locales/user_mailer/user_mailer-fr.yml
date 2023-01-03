@@ -55,9 +55,9 @@ fr:
       turn_off_notification: 'Désactivez cette notification à l''URL : %{url}'
     upload_finished:
       html:
-        message: Votre téléchargement a été traité et est prêt à
+        message: Votre téléchargement de "%{file}" a été traité et est prêt à
       text:
-        message: 'Votre importation a été traitée et est prête à cette URL :'
+        message: 'Votre téléchargement de "%{file}" a été traité et est prêt à cette URL :'
       your_upload_is_ready: Votre téléchargement est prêt !
     work_collaborator:
       html:
