@@ -48,7 +48,7 @@ es:
       notice: La corrección OCR se ha deshabilitado para todas las obras.
     edit:
       add_a_new_work: Añadir una obra nueva
-      add_another_work_under: Puedes añadir otro trabajo en %{start_project}
+      add_another_work_under: Puedes añadir otra obra en %{start_project}
       add_button: Añadir
       alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
       api_access: Acceso API
