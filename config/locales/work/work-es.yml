@@ -88,7 +88,7 @@ es:
       no_allowed_collaborators_selected: No se han seleccionado colaboradores permitidos
       no_image: Sin imágen
       pages_are_meaningful: Las páginas son significativas
-      pages_are_meaningful_description: Las páginas pueden ser divisiones semánticas significativas de un trabajo (como en un diario con una fecha para cada página), o pueden no serlo (como en cartas o libros, donde el texto no debe dividirse en secciones según las páginas). Cuando está marcado, el trabajo tendrá títulos de página destacados.
+      pages_are_meaningful_description: Las páginas pueden ser divisiones semánticas significativas de un trabajo (como en un diario con una fecha para cada página), o pueden no serlo (como en cartas o libros, donde el texto no debe dividirse en secciones según las páginas). Cuando está marcado, la obra tendrá títulos de página destacados.
       permission_description: Descripción del permiso
       physical_description: Descripción física
       place_of_creation: Lugar de creación
