@@ -95,7 +95,7 @@ es:
       recipient: Recipiente
       remove: Remover
       restrict_collaborators: Restringir colaboradores
-      restricted_work_no_collaborators_warning: Solo los propietarios de proyectos pueden editar este trabajo. Agrega colaboradores para que el trabajo sea editable por otros.
+      restricted_work_no_collaborators_warning: Solo los propietarios de proyectos pueden editar este trabajo. Agrega colaboradores para que la obra sea editable por otros.
       revert: Revertir
       revert_transcription_conventions_description: Revertir las convenciones de transcripción al valor predeterminado de la colección
       save_changes: Guardar cambios
@@ -104,14 +104,14 @@ es:
       source_collection_name: Nombre de la colección de origen
       source_location: Ubicación de origen
       support_translation: Traducción de soporte
-      support_translation_description: Una obra puede traducirse y transcribirse. Cuando esté marcado, el trabajo tendrá una pestaña de Traducción para cada página.
+      support_translation_description: Una obra puede traducirse y transcribirse. Cuando esté marcado, la obra tendrá una pestaña de Traducción para cada página.
       transcription_conventions: Convenciones de transcripción
       translation_instructions: Instrucciones de traducción
       upload_image: Cargar imagen
       uploaded_by: subido por
       url: URL
       work_image: Imagen de trabajo
-      work_image_description: Una imagen que se utilizará para ilustrar el trabajo. Si no se carga ninguna imagen, se utilizará una imagen de página.
+      work_image_description: Una imagen que se utilizará para ilustrar la obra. Si no se carga ninguna imagen, se utilizará una imagen de página.
       work_thumbnail: Miniatura de trabajo
       work_title: Título de trabajo
     incomplete: Metadatos incompletos.
@@ -123,7 +123,7 @@ es:
     new:
       collection: Recopilación
       create_empty_work: Crear trabajo vacío
-      create_empty_work_description: Esto crea un trabajo vacío. Una vez que crees el trabajo, puedes agregar imágenes de página individuales. Si tienes un archivo zip o pdf con varias imágenes, debes crear el trabajo y cargar el archivo en %{start_project} en su lugar.
+      create_empty_work_description: Esto crea un trabajo vacío. Una vez que crees la obra, puedes agregar imágenes de página individuales. Si tienes un archivo zip o pdf con varias imágenes, debes crear la obra y cargar el archivo en %{start_project} en su lugar.
       create_work: Crear trabajo
       description: Descripción
       start_a_project: Iniciar un proyecto
