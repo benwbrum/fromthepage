@@ -299,4 +299,8 @@ class DocumentSet < ApplicationRecord
   def api_access # API access is only controlled by public/private for document sets
     false
   end
+
+  def most_recent_deed_created_at
+    self.collection.most_recent_deed_created_at
+  end
 end
