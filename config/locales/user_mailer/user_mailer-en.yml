@@ -34,6 +34,12 @@ en:
         Thanks, <br><br>
         FromThePage
       turn_off_notification: " to turn off this notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " to continue transcribing."
+      message: Welcome to %{collection}!
+      text:
+        continue_transcribing: 'Click this URL to continue transcribing: %{url}.'
     new_owner:
       welcome: Welcome
     nightly_user_activity:
@@ -65,9 +71,3 @@ en:
       message: We just wanted to let you know that %{owner} added you as a collaborator on %{collection} - %{work}.
       text:
         to_view: 'You can view %{collection}: %{work} at the URL: %{url}'
-    new_mobile_user:
-      message: Welcome to %{collection}!
-      html:
-        continue_transcribing: ' to continue transcribing.'
-      text:
-        continue_transcribing: 'Click this URL to continue transcribing: %{url}.'
