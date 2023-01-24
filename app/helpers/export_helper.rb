@@ -328,7 +328,7 @@ module ExportHelper
     tei << "            <catDesc>\n"
     tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
     unless subject.uri.blank?
-      tei << "              <idno>#{subject.uri}</idno>\n"
+      tei << "              <idno>#{subject.uri.encode(xml: :text)}</idno>\n"
     end
     tei << '              <note type="categorization">Categories:'
     subject.categories.each do |category|

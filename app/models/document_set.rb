@@ -61,6 +61,10 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def metadata_coverages
+    self.collection.metadata_coverages
+  end
+
   def enable_spellcheck
     self.collection.enable_spellcheck
   end
@@ -298,5 +302,9 @@ class DocumentSet < ApplicationRecord
 
   def institution_signature
     self.collection.institution_signature
+  end
+
+  def most_recent_deed_created_at
+    self.collection.most_recent_deed_created_at
   end
 end
