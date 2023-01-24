@@ -62,6 +62,12 @@ class UserMailer < ActionMailer::Base
     mail to: @user_activity.user.email, subject: "New FromThePage Activity"
   end
 
+  def new_mobile_user(user, obj)
+    @user = user
+    @collection = obj
+    mail to: @user.email, subject: "Welcome to #{@collection.title}"
+  end
+
   private
 
   def add_inline_attachments!

@@ -105,6 +105,8 @@ Fromthepage::Application.routes.draw do
     post 'remove_owner', to: 'collection#remove_owner'
     post 'create', to: 'collection#create'
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
+    get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
+    post ':collection_id/email_link', to: 'collection#email_link', as: 'email_link'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
