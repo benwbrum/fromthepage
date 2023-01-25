@@ -18,6 +18,6 @@
   <%end%>
 <%end%>
 
-<%= t('user_mailer.text.closing') %>
+<%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
 
 <%= t('user_mailer.text.turn_off_notification', url: update_profile_url(@user_activity.user)) %>

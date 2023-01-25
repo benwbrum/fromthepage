@@ -300,6 +300,10 @@ class DocumentSet < ApplicationRecord
     false
   end
 
+  def institution_signature
+    self.collection.institution_signature
+  end
+
   def most_recent_deed_created_at
     self.collection.most_recent_deed_created_at
   end
