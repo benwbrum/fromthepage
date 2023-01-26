@@ -54,9 +54,9 @@ es:
       turn_off_notification: 'Desactive esta notificación en la URL: %{url}'
     upload_finished:
       html:
-        message: Su carga ha sido procesada y está lista en
+        message: Su carga de "%{file}" ha sido procesada y está lista en
       text:
-        message: 'Su carga ha sido procesada y está lista en esta URL:'
+        message: 'Su carga de "%{file}" ha sido procesada y está lista en esta URL:'
       your_upload_is_ready: "¡Tu carga está lista!"
     work_collaborator:
       html:
