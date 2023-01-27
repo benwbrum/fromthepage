@@ -115,7 +115,7 @@ class RegistrationsController < Devise::RegistrationsController
       "#{dashboard_owner_path}#freetrial" 
     else
       # New users should be returned to where they were or to their dashboard/watchlist
-      if session[:user_return_to]
+      if session[:user_return_to] && !landing_pages.include?(session[:user_return_to])
         session[:user_return_to]
       elsif @owner
         user_profile_path(@owner)
@@ -149,4 +149,17 @@ class RegistrationsController < Devise::RegistrationsController
     collection = first_event.properties["collection_id"] || nil
     return collection
   end
+
+  def landing_pages
+    [
+      signup_path,
+      landing_path,
+      special_collections_path,
+      public_libraries_path,
+      digital_scholarship_path,
+      state_archives_path
+    ]
+  end
+
+
 end
