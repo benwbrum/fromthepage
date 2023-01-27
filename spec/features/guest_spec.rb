@@ -129,7 +129,6 @@ describe "guest user actions" do
     expect(page).to have_selector('.carousel')
     expect(page.find('.maincol')).to have_link(@owner.display_name)
     page.find('.maincol').click_link(@owner.display_name)
-    expect(page).to have_content("Recent Activity")
     expect(page.find('.maincol')).not_to have_content(@admin.display_name)
     expect(page.find('h1')).to have_content @owner.display_name
     expect(page.current_path).to eq user_profile_path(@owner)

@@ -121,17 +121,6 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
-    # if self.class.parent == Thredded && params[:id]
-    #   if self.class.name == "Thredded::MessageboardGroupsController"
-    #     messageboard_group_id = params[:id]
-    #   elsif self.class.name == "Thredded::TopicsController"
-    #     topic = Thredded::Topic.friendly_find!(params[:id])
-    #     messageboard_group_id = topic.messageboard.messageboard_group_id
-    #   else
-    #     binding.pry
-    #   end
-    #   @collection = Collection.where(thredded_messageboard_group_id: messageboard_group_id.to_i).first
-    # end
 
     if params[:article_id]
       @article = Article.find(params[:article_id])
