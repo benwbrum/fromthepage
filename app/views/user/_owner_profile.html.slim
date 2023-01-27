@@ -41,6 +41,7 @@ section.user-profile
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+  aside.sidecol
 
 -content_for :javascript
   javascript:
