@@ -18,7 +18,13 @@
         
                             <div class="bottom">
                                 <p>Upload 200 pages FREE</p>
-                                <%= link_to 'Transcribe My Documents', users_new_trial_path, class: 'button' %>
+                                <% if signed_in? 
+                                    target_path = dashboard_watchlist_path
+                                   else
+                                    target_path = users_new_trial_path
+                                   end %>
+
+                                <%= link_to 'Transcribe My Documents', target_path, class: 'button' %>
                             </div>
                         </div>
                     </div>
