@@ -8,7 +8,7 @@ h3 =t('.collaborator_time')
   .collection-users.justified
     .justified_box>
       -@contributors.each do |user|
-        .collection-user(data-prefix= (@activity[user.id] ? "#{@activity[user.id]} min" : ""))
+        .collection-user(data-prefix="#{@activity[user.id]} min")
           =link_to(user_profile_path(user), class: 'collection-user_link')
             span =profile_picture(user)
             span.vmiddle =user.display_name
