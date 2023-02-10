@@ -59,7 +59,26 @@ module ExportHelper
 
 
   def write_work_exports(works, out, export_user, bulk_export)
+
+    # owner-level exports
+    if bulk_export.owner_mailing_list
+      export_owner_mailing_list_csv(out: out, owner: export_user, report_argument: bulk_export.report_arguments)
+    end
+
+    if bulk_export.owner_detailed_activity
+      export owner_detailed_activity(out: out, owner: export_user)
+    end
+
+
     # collection-level exports
+    if bulk_export.collection_activity
+      export_collection_activity(out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.collection_contributors
+      export_collection_contributors(out: out, collection: bulk_export.collection)
+    end
+
     if bulk_export.subject_csv_collection
       export_subject_csv(out: out, collection: bulk_export.collection)
     end

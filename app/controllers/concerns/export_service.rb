@@ -1,6 +1,9 @@
 module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
+  include 
+require 'subject_exporter'
+require 'subject_details_exporter'
 
 
   def path_from_work(work, original_filenames=false)
@@ -83,6 +86,36 @@ module ExportService
 
     output_file
   end
+
+
+
+  def export_mailing_list_csv(out:, owner:, report_arguments:)
+    path = "mailing_list.csv"
+    out.put_next_entry(path)
+    out.write(OwnerExporter.owner_mailing_list(owner, report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+  end
+
+  def export_detailed_activity_csv(out:, owner:, report_arguments:)
+    path = "detailed_activity.csv"
+    out.put_next_entry(path)
+    out.write(OwnerExporter.export_detailed_activity_as_csv(owner, report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+  end
+
+  # TODO add report arguments to params and filename
+  def export_collection_activity_csv(out:, collection:)
+    path = "activity.csv"
+    out.put_next_entry(path)
+    out.write(collection.export_activity_as_csv(report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+  end
+
+
+  # TODO add report arguments to params and filename
+  def export_contributors_csv(out:, collection:)
+    path = "contributors.csv"
+    out.put_next_entry(path)
+    out.write(collection.export_contributors_as_csv(report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime)
+  end
+
 
 
 

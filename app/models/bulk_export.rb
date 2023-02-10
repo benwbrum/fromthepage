@@ -3,7 +3,7 @@ class BulkExport < ApplicationRecord
   include ExportHelper, ExportService
 
   belongs_to :user
-  belongs_to :collection
+  belongs_to :collection, optional: true
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
