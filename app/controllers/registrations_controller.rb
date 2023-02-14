@@ -153,7 +153,7 @@ class RegistrationsController < Devise::RegistrationsController
   def landing_pages
     [
       signup_path,
-      landing_path,
+      root_path,
       special_collections_path,
       public_libraries_path,
       digital_scholarship_path,
