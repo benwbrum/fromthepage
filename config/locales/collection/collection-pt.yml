@@ -38,7 +38,6 @@ pt:
       new_collaborators: Novos Colaboradores
       no_activity_this_time_frame: Nenhuma atividade neste período de tempo
       no_collaborators: Sem Colaboradores
-      time_on_ftp: Tempo em FromThePage
       time_on_this: Tempo nesta coleção
       total_time: 'Tempo Total: %{hours} horas, %{minutes} minutos.'
       user: Do utilizador
