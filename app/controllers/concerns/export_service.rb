@@ -183,7 +183,6 @@ module ExportService
     else
       path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
     end
-    print "#{page.id}\tWriting to #{path}\n"
 
     case name
     when "verbatim"
