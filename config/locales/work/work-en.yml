@@ -55,6 +55,8 @@ en:
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_export_description: Export verbatim, plaintext transcripts as a zip file containing one file per page.
+      verbatim_plaintext_zero_index: Transkribus Training Zip
+      verbatim_plaintext_zero_index_description: Zipfile containing zero-indexed plaintext files, suitable for import as training data for Transkribus
       voyant: Voyant
       voyant_analysis_description: Send the transcription of this work to a Voyant Tools for analysis.
       warning_work_not_complete: 'Warning: this work may not be complete.'

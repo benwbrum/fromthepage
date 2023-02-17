@@ -141,7 +141,7 @@ module ExportHelper
 
         # Page-specific exports
 
-        @work.pages.each do |page|
+        @work.pages.each_with_index do |page,i|
           if bulk_export.plaintext_verbatim_page
             format='verbatim'
             export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
@@ -157,6 +157,11 @@ module ExportHelper
           if bulk_export.plaintext_searchable_page
             format='searchable'
             export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+          end
+
+          if bulk_export.plaintext_verbatim_zero_index_page
+            format='verbatim'
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: :zero_index, index: i)
           end
         end
 
