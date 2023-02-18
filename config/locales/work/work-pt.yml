@@ -46,15 +46,21 @@ pt:
       facing_pdf_export_description: Baixe uma versão em PDF deste trabalho incluindo imagens e texto nas páginas opostas.
       html: HTML
       html_export_description: Exporte as transcrições como um arquivo zip contendo um arquivo HTML por página.
+      iiif: IIIF
+      iiif_manifest: IIIF Manifesto
+      iiif_manifest_description: IIIF Manifest URI para uso em qualquer cliente IIIF.
       ms_word: MS Word
       pdf: PDF
       pdf_download_description: Baixe uma versão em PDF deste trabalho.
+      reuse: Reuso
       searchable_plaintext: Texto simples pesquisável
       searchable_plaintext_export_description: Exporte transcrições de texto simples otimizadas para pesquisa de texto completo como um arquivo zip contendo um arquivo por página.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_export_description: Exporte transcrições em texto simples como um arquivo zip contendo um arquivo por página.
+      verbatim_plaintext_zero_index: Zip de treinamento Transkribus
+      verbatim_plaintext_zero_index_description: Arquivo zip contendo arquivos de texto sem formatação indexados em zero, adequados para importação como dados de treinamento para o Transkribus.
       voyant: Voyant
       voyant_analysis_description: Envie a transcrição deste trabalho para a Voyant Tools para análise.
       warning_work_not_complete: 'Atenção: este trabalho pode não estar completo.'
