@@ -46,15 +46,21 @@ en:
       facing_pdf_export_description: Download a PDF version of this work including images and text on facing pages.
       html: HTML
       html_export_description: Export transcripts as a zip file containing one HTML file per page.
+      iiif: IIIF
+      iiif_manifest: IIIF Manifest
+      iiif_manifest_description: IIIF Manifest URI for use in any IIIF client.
       ms_word: MS Word
       pdf: PDF
       pdf_download_description: Download a PDF version of this work.
+      reuse: Reuse
       searchable_plaintext: Searchable Plaintext
       searchable_plaintext_export_description: Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
       table_field_csv: Table/Field CSV
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_export_description: Export verbatim, plaintext transcripts as a zip file containing one file per page.
+      verbatim_plaintext_zero_index: Transkribus Training Zip
+      verbatim_plaintext_zero_index_description: Zipfile containing zero-indexed plaintext files, suitable for import as training data for Transkribus
       voyant: Voyant
       voyant_analysis_description: Send the transcription of this work to a Voyant Tools for analysis.
       warning_work_not_complete: 'Warning: this work may not be complete.'

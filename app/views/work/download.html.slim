@@ -35,6 +35,26 @@
         .bulk-export_options
           span =link_to(t('.analyze'), "https://www.jasondavies.com/wordtree/?source=#{CGI.escape(iiif_work_export_plaintext_emended_url(@work.id))}", class: 'button', target: :_blank)
 
+    h2.nomargin= t('.reuse')
+    ul.bulk-export
+      li
+        .bulk-export_format
+          h5= t('.iiif_manifest')
+          p.nomargin= t('.iiif_manifest_description')
+        .bulk-export_options
+          =link_to iiif_manifest_path(@work.id)
+            =svg_symbol '#icon-export', class: 'icon'
+            span= t('.iiif')
+      li
+        .bulk-export_format
+          h5= t('.verbatim_plaintext_zero_index')
+          p.nomargin= t('.verbatim_plaintext_zero_index_description')
+        .bulk-export_options
+          =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =f.hidden_field :collection_id, value: @collection.slug
+            =hidden_field_tag :work_id, @work.id
+            =f.hidden_field :plaintext_verbatim_zero_index_page, value: true
+            =f.submit t('.export')
 
 
     -if current_user.like_owner?(@collection)
