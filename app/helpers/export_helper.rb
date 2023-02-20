@@ -144,19 +144,19 @@ module ExportHelper
         @work.pages.each_with_index do |page,i|
           if bulk_export.plaintext_verbatim_page
             format='verbatim'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
             export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
 
           if bulk_export.plaintext_emended_page
             format='expanded'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
             export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end  
 
           if bulk_export.plaintext_searchable_page
             format='searchable'
-            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
           end
 
           if bulk_export.plaintext_verbatim_zero_index_page
