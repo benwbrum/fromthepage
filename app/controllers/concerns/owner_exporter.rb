@@ -17,14 +17,27 @@ module OwnerExporter
     headers += dates.map{|d| d.strftime("%b %d, %Y")}
 
     # Get Row Data (Users)
-    contributors = current_user.contributors(start_date, end_date)
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+
+
+    contributor_ids_for_dates = AhoyActivitySummary
+      .where(collection_id: owner_collections)
+      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
 
     csv = CSV.generate(:headers => true) do |records|
       records << headers
       contributors.each do |user|
         row = [user.display_name, user.email]
 
-        activity = current_user.contributor_time_for_user(user.id, start_date, end_date)
+        activity = AhoyActivitySummary
+          .where(user_id: user.id)
+          .where(collection_id: owner_collections)
+          .where('date BETWEEN ? AND ?', start_date, end_date)
+          .group(:date)
+          .sum(:minutes)
+          .transform_keys{ |k| k.to_date }
 
         user_activity = dates.map{ |d| activity[d.to_date] || 0 }
 
@@ -39,7 +52,6 @@ module OwnerExporter
               :type => "application/csv")
 
     cookies['download_finished'] = 'true'
-  end
 
   def get_data
     @collections = current_user.all_owner_collections
