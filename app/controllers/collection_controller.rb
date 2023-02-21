@@ -498,7 +498,6 @@ class CollectionController < ApplicationController
       :name, 
       :user_real_name,
       :email,
-      :user_total_minutes,
       :user_proportional_minutes,
       :pages_transcribed, 
       :page_edits, 
@@ -508,20 +507,13 @@ class CollectionController < ApplicationController
       :notes, 
     ]
 
+    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
+
     stats = @active_transcribers.map do |user|
-      time_total = 0
-      time_proportional = 0
-
-      if @user_time[user.id]
-        time_total = (@user_time[user.id] / 60 + 1).floor
-      end
-
-      if @user_time_proportional[user.id]
-        time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
-      end
+      time_proportional = user_time_proportional[user.id]
 
       id_data = [user.display_name, user.real_name, user.email]
-      time_data = [time_total, time_proportional]
+      time_data = [time_proportional]
 
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
 

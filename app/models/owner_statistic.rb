@@ -122,98 +122,6 @@ module OwnerStatistic
     false
   end
 
-  def contributors(start_date, end_date)
-    User.where(id: contributor_ids_from_deeds(start_date, end_date)).order(:display_name)
-  end
-
-  # get each contributor's time on this owner's collections within the date range
-  def contributor_time(start_date, end_date)
-    contributor_ids = contributor_ids_from_deeds(start_date, end_date)
-
-    # all distinct visits by users who logged deeds in date range affecting this owner's collections
-    deed_visits = Visit.where("user_id in (?) and started_at between ? and ?", contributor_ids, start_date, end_date)
-
-    # sum the time between the beginning of the visit and the last ahoy event for the session per user
-    user_time = {} # user_time is each user's total time on FTP in the date range
-    deed_visits.each do |visit|
-      if visit.ahoy_events.last
-        user_time[visit.user_id] = 0 unless user_time[visit.user_id]
-        user_time[visit.user_id] += visit.ahoy_events.last.time - visit.started_at
-      end
-    end
-
-    # minutes instead of seconds
-    user_time.transform_values! do |time| (time/60 + 1).floor end
-    
-    # deed counts in the date range per user, for user_time_proportional
-    # on any collections
-    user_deeds_total       = Deed.where(user_id: contributor_ids) 
-                                  .where("created_at >= ? AND created_at <= ?", start_date, end_date)
-                                  .group('user_id').count
-    # only on this owner's collections
-    user_deeds_collections = Deed.where(user_id: contributor_ids)
-                                  .where(collection_id: collection_ids)
-                                  .where("created_at >= ? AND created_at <= ?", start_date, end_date)
-                                  .group('user_id').count
-
-    # get each user's approximate time on this owner's collections
-    user_time_proportional = {}
-    user_time.each do |user_id, total_time|
-      if user_deeds_collections.has_key?(user_id) && user_deeds_total.has_key?(user_id)
-        # the % of their deeds during this time period that were on this owner's collections
-        weight = user_deeds_collections[user_id].to_f / user_deeds_total[user_id]
-        user_time_proportional[user_id] = (user_time[user_id] * weight).round
-      else
-        user_time_proportional[user_id] = "No user #{user_id}"
-      end
-    end
-
-    user_time_proportional
-  end
-
-  # get a specific user's time on this owner's collections per day, within the date range
-  def contributor_time_for_user(user_id, start_date, end_date)
-    # all distinct visits by the user within the date range
-    deed_visits = Visit.where(user_id: user_id).where("started_at between ? and ?", start_date, end_date)
-
-    # sum the time between the beginning of the visit and the last ahoy event for the session per day
-    user_time = {} # user_time is this user's total time on FTP per day, within the date range
-    deed_visits.each do |visit|
-      if visit.ahoy_events.last
-        user_time[visit.started_at.to_date] = 0 unless user_time[visit.started_at.to_date]
-        user_time[visit.started_at.to_date] += visit.ahoy_events.last.time - visit.started_at
-      end
-    end
-
-    # minutes instead of seconds
-    user_time.transform_values! do |time| (time/60 + 1).floor end
-
-    # deed counts in date range per day, for user_time_proportional
-    # on any collections
-    total_deeds =       Deed.where(user_id: user_id)
-                            .where("created_at >= ? AND created_at <= ?", start_date, end_date)
-                            .group_by{|deed| deed.created_at.to_date}.transform_values{|group| group.count} # better way to do this
-    # only on this owner's collections
-    collections_deeds = Deed.where(user_id: user_id)
-                            .where(collection_id: collection_ids)
-                            .where("created_at >= ? AND created_at <= ?", start_date, end_date)
-                            .group_by{|deed| deed.created_at.to_date}.transform_values{|group| group.count} # better way to do this
-
-    # get the user's approximate time on this owner's collections per day
-    user_time_proportional = {}
-    user_time.each do |date, total_time|
-      if collections_deeds.has_key?(date) && total_deeds.has_key?(date)
-        # the % of their deeds on this day that were on this owner's collections
-        weight = collections_deeds[date].to_f / total_deeds[date]
-        user_time_proportional[date] = (user_time[date] * weight).round
-      else
-        user_time_proportional[date] = user_time[date]
-      end
-    end
-
-    user_time_proportional
-  end
-
   private
   def contributor_deeds_by_type(deed_type, contributors, collections)
     user_array = []
@@ -221,10 +129,5 @@ module OwnerStatistic
     deeds_by_user.each { |user_id, count| user_array << [ contributors.find { |u| u.id == user_id }, count ] }
 
     return user_array
-  end
-
-  def contributor_ids_from_deeds(start_date, end_date)
-    # get distinct user ids per deed to create list of user ids
-    Deed.where(collection_id: collection_ids).where("created_at >= ? AND created_at <= ?", start_date, end_date).distinct.pluck(:user_id)
   end
 end

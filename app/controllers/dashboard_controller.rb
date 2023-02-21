@@ -92,8 +92,18 @@ class DashboardController < ApplicationController
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
 
     # Stats
-    @contributors = current_user.contributors(@start_date, @end_date)
-    @activity = current_user.contributor_time(@start_date, @end_date)
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    contributor_ids_for_dates = AhoyActivitySummary
+        .where(collection_id: owner_collections)
+        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
+
+    @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+
+    @activity = AhoyActivitySummary
+        .where(collection_id: owner_collections)
+        .where('date BETWEEN ? AND ?', @start_date, @end_date)
+        .group(:user_id)
+        .sum(:minutes)
   end
 
   # Collaborator Dashboard - watchlist
