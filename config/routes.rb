@@ -7,7 +7,7 @@ Fromthepage::Application.routes.draw do
   end
 
 
-  root :to => 'static#splash'
+  root to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -437,7 +437,6 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
-  get '/landing', to: 'static#landing_page', as: :landing
   get '/signup', to: 'static#signup', as: :signup 
   get '/special_collections', to: 'static#transcription_archives', as: :special_collections
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries

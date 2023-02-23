@@ -173,9 +173,13 @@ module ExportService
     end
   end
 
-  def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:)
+  def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:, index:)
     if by_work
-      path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{page.title}.txt")
+      if original_filenames == :zero_index
+        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{index}.txt")
+      else
+        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{page.title}.txt")
+      end
     else
       path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
     end
