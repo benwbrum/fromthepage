@@ -65,7 +65,7 @@ class UserMailer < ActionMailer::Base
   def new_mobile_user(user, obj)
     @user = user
     @collection = obj
-    mail to: @user.email, subject: "Welcome to #{@collection.title}"
+    mail to: @user.email, subject: "#{@collection.owner.display_name}'s #{@collection.title} Collection"
   end
 
   private
