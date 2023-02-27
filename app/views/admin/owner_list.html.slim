@@ -13,6 +13,7 @@ table.admin-grid.datagrid.striped
       th =link_to t('.acct_type'), admin_owner_list_path(:sort => 'account_type', :dir => 'desc')
       th =link_to t('.start_date'), admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
       th =link_to t('.acct_expiration'), admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
+      th =t('.collections')
       th =t('.active_pages')
       th =t('.total_pages')
       th =t('.last_sign_in')
@@ -32,13 +33,15 @@ table.admin-grid.datagrid.striped
           -if o.location
             small(data-prefix='From ') =o.location
         td.nowrap =o.account_type
-        td.nowrap =o.start_date.strftime('%b %d, %Y') if o.start_date
+        td.nowrap =o.created_at.strftime('%b %d, %Y')
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
-        td.nowrap =o.active_page_count
-        td.nowrap =o.page_count
+        td.nowrap.aright =o.collections.count
+        td.nowrap.aright =o.active_page_count
+        td.nowrap.aright =o.page_count
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap
           .instack
+            =link_to t('.visits'), admin_user_visits_path(:user_id => o.id)
             =link_to t('.login_as'), user_masquerade_path(o)
             =link_to t('.edit'), admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
             =link_to t('.delete'), admin_delete_user_path(:user_id => o.id), data: { confirm: t('.are_you_sure') }

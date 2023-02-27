@@ -264,7 +264,7 @@ class AdminController < ApplicationController
       dir = params[:dir].upcase
       @owners = User.where(owner: true).order("#{sort} #{dir}").paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     else
-      @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+      @owners = User.where(owner: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
   end
 
