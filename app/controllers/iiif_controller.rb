@@ -940,6 +940,7 @@ private
     service["pctTranslationIndexed"] = stats.pct_translation_annotated
     service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
     service["metadataStatus"] = work.description_status
+    service["lastUpdated"] = work.most_recent_deed_created_at
     service
   end
 

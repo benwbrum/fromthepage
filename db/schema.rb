@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_16_230516) do
+ActiveRecord::Schema.define(version: 2023_03_06_173258) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2023_02_16_230516) do
 
   create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "collection_id"
+    t.integer "collection_id", null: false
     t.string "status"
     t.boolean "plaintext_verbatim_page"
     t.boolean "plaintext_verbatim_work"
@@ -105,11 +105,6 @@ ActiveRecord::Schema.define(version: 2023_02_16_230516) do
     t.boolean "text_only_pdf_work"
     t.string "organization", default: "by_work"
     t.boolean "use_uploaded_filename", default: false
-    t.boolean "owner_mailing_list"
-    t.boolean "owner_detailed_activity"
-    t.boolean "collection_activity"
-    t.boolean "collection_contributors"
-    t.string "report_arguments"
     t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
@@ -1099,6 +1094,7 @@ ActiveRecord::Schema.define(version: 2023_02_16_230516) do
     t.string "description_status", default: "undescribed"
     t.text "searchable_metadata"
     t.string "recipient"
+    t.datetime "most_recent_deed_created_at"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
