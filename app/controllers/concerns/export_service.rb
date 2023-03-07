@@ -1,9 +1,8 @@
 module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
-  include 
-require 'subject_exporter'
-require 'subject_details_exporter'
+  require 'subject_exporter'
+  require 'subject_details_exporter'
 
 
   def path_from_work(work, original_filenames=false)
@@ -109,12 +108,14 @@ require 'subject_details_exporter'
   end
 
 
-  # TODO add report arguments to params and filename
-  def export_contributors_csv(out:, collection:)
-    path = "contributors.csv"
-    out.put_next_entry(path)
-    out.write(collection.export_contributors_as_csv(report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime)
-  end
+  # # TODO add report arguments to params and filename
+  # def export_contributors_csv(out:, collection:)
+  #   path = "contributors.csv"
+  #   out.put_next_entry(path)
+  #   out.write(collection.export_contributors_as_csv(
+  #     report_arguments[:start_date].to_datetime, 
+  #     report_arguments[:end_date].to_datetime)
+  # end
 
 
 

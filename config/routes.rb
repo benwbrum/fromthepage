@@ -327,7 +327,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'statistics', as: 'statistics' do
-    get 'export_csv', to: 'statistics#export_csv'
+    post 'export_mailing_list', to: 'statistics#export_mailing_list'
   end
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
