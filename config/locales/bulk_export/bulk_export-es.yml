@@ -3,6 +3,8 @@ es:
   bulk_export:
     create:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
+    create_for_owner:
+      export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     create_for_work:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     download:
