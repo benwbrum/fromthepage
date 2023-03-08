@@ -32,8 +32,8 @@ en:
       collaborator_stats: Collaborator Stats %{start_deed} through %{end_deed}
       collaborators: Collaborators
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
-      export_activity_as_csv: Export Activity as CSV
-      export_as_csv: Export detailed activity as CSV
+      export_activity_as_csv: Export All Activity as a Spreadsheet
+      export_as_csv: Export User Activity as a Spreadsheet
       find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame
