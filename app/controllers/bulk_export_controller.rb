@@ -64,6 +64,7 @@ class BulkExportController < ApplicationController
     @bulk_export = BulkExport.new(bulk_export_params)
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
 
     if @bulk_export.save
       @bulk_export.submit_export_process
@@ -123,6 +124,7 @@ class BulkExportController < ApplicationController
         :owner_mailing_list,
         :owner_detailed_activity,
         :collection_activity,
-        :collection_contributors)
+        :collection_contributors,
+        :report_arguments => [:start_date, :end_date])
   end
 end

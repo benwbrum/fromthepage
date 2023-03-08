@@ -1,58 +1,48 @@
 module OwnerExporter
 
-  # def collaborator_time_export
-  #   start_date = params[:start_date]
-  #   end_date = params[:end_date]
+  def detailed_activity_csv(owner, start_date, end_date)
+    dates = (start_date..end_date)
 
-  #   start_date = start_date.to_date
-  #   end_date = end_date.to_date
+    headers = [
+      "Username",
+      "Email"
+    ]
 
-  #   dates = (start_date..end_date)
+    headers += dates.map{|d| d.strftime("%b %d, %Y")}
 
-  #   headers = [
-  #     "Username",
-  #     "Email"
-  #   ]
-
-  #   headers += dates.map{|d| d.strftime("%b %d, %Y")}
-
-  #   # Get Row Data (Users)
-  #   owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    # Get Row Data (Users)
+    owner_collections = owner.all_owner_collections.map{ |c| c.id }
 
 
-  #   contributor_ids_for_dates = AhoyActivitySummary
-  #     .where(collection_id: owner_collections)
-  #     .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+    contributor_ids_for_dates = AhoyActivitySummary
+      .where(collection_id: owner_collections)
+      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
 
-  #   contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
 
-  #   csv = CSV.generate(:headers => true) do |records|
-  #     records << headers
-  #     contributors.each do |user|
-  #       row = [user.display_name, user.email]
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      contributors.each do |user|
+        row = [user.display_name, user.email]
 
-  #       activity = AhoyActivitySummary
-  #         .where(user_id: user.id)
-  #         .where(collection_id: owner_collections)
-  #         .where('date BETWEEN ? AND ?', start_date, end_date)
-  #         .group(:date)
-  #         .sum(:minutes)
-  #         .transform_keys{ |k| k.to_date }
+        activity = AhoyActivitySummary
+          .where(user_id: user.id)
+          .where(collection_id: owner_collections)
+          .where('date BETWEEN ? AND ?', start_date, end_date)
+          .group(:date)
+          .sum(:minutes)
+          .transform_keys{ |k| k.to_date }
 
-  #       user_activity = dates.map{ |d| activity[d.to_date] || 0 }
+        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
 
-  #       row += user_activity
+        row += user_activity
 
-  #       records << row
-  #     end
-  #   end
+        records << row
+      end
+    end
 
-  #   send_data( csv,
-  #             :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-  #             :type => "application/csv")
-
-  #   cookies['download_finished'] = 'true'
-  # end
+    csv
+  end
 
   def get_data
     @collections = current_user.all_owner_collections

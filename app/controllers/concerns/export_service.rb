@@ -98,7 +98,7 @@ module ExportService
   def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
     path = "detailed_activity.csv"
     out.put_next_entry(path)
-    out.write(OwnerExporter.export_detailed_activity_as_csv(owner, report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+    out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
   # TODO add report arguments to params and filename

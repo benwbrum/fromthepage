@@ -30,7 +30,14 @@ class BulkExport < ApplicationRecord
   def page_level?
     self.attributes.detect{|k,v| k.match(/_page/) && v==true }
   end
-  
+
+  def report_arguments
+    if self[:report_arguments].blank?
+      nil
+    else
+      JSON.parse(self[:report_arguments])  
+    end
+  end
 
   def export_to_zip
     self.status = Status::PROCESSING

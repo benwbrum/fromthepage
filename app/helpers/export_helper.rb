@@ -66,7 +66,7 @@ module ExportHelper
     end
 
     if bulk_export.owner_detailed_activity
-      export owner_detailed_activity(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
+      export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
     end
 
 
