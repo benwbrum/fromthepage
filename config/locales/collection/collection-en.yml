@@ -33,7 +33,9 @@ en:
       collaborators: Collaborators
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
       export_activity_as_csv: Export All Activity as a Spreadsheet
+      export_activity_as_csv_description: Download a spreadsheet with a line listing each action. 
       export_as_csv: Export User Activity as a Spreadsheet
+      export_as_csv_description: Download a spreadsheet with a line listing each user and their time and activity.
       find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame

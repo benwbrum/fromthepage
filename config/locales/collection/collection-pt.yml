@@ -33,7 +33,9 @@ pt:
       collaborators: Colaboradores
       detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
       export_activity_as_csv: Exportar todas as atividades como uma planilha
+      export_activity_as_csv_description: Baixe uma planilha com uma linha listando cada ação.
       export_as_csv: Exportar atividade do usuário como uma planilha
+      export_as_csv_description: Baixe uma planilha com uma linha listando cada usuário e seu tempo e atividade.
       find_project_newsletters_recommendations: Encontre recomendações para boletins de projetos.
       new_collaborators: Novos Colaboradores
       no_activity_this_time_frame: Nenhuma atividade neste período de tempo

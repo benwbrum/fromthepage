@@ -33,7 +33,9 @@ es:
       collaborators: Colaboradores
       detailed_spreadsheet_export: Una hoja de cálculo exportable y detallada de todos los colaboradores está disponible en el panel del dueño.
       export_activity_as_csv: Exportar toda la actividad como una hoja de cálculo
+      export_activity_as_csv_description: Descargue una hoja de cálculo con una línea que enumere cada acción.
       export_as_csv: Exportar la actividad del usuario como una hoja de cálculo
+      export_as_csv_description: Descargue una hoja de cálculo con una línea que enumere a cada usuario y su tiempo y actividad.
       find_project_newsletters_recommendations: Encuentre recomendaciones para boletines de proyectos.
       new_collaborators: Nuevos Colaboradores
       no_activity_this_time_frame: No hubo actividad en este lapso de tiempo
