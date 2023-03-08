@@ -72,11 +72,11 @@ module ExportHelper
 
     # collection-level exports
     if bulk_export.collection_activity
-      export_collection_activity(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+      export_collection_activity_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
     end
 
     if bulk_export.collection_contributors
-      export_collection_contributors(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+      export_collection_contributors_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
     end
 
     if bulk_export.subject_csv_collection
