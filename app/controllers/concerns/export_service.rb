@@ -2,6 +2,7 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
   include OwnerExporter
+  include ContributorHelper
   require 'subject_exporter'
   require 'subject_details_exporter'
 
@@ -96,30 +97,22 @@ module ExportService
   end
 
   def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
-    path = "detailed_activity.csv"
+    path = "all_collaborator_time.csv"
     out.put_next_entry(path)
     out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
-  # TODO add report arguments to params and filename
-  def export_collection_activity_csv(out:, collection:)
-    path = "activity.csv"
+  def export_collection_activity_csv(out:, collection:, report_arguments:)
+    path = "collection_detailed_activity.csv"
     out.put_next_entry(path)
-    out.write(collection.export_activity_as_csv(report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+    out.write(collection_activity_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
-
-  # # TODO add report arguments to params and filename
-  # def export_contributors_csv(out:, collection:)
-  #   path = "contributors.csv"
-  #   out.put_next_entry(path)
-  #   out.write(collection.export_contributors_as_csv(
-  #     report_arguments[:start_date].to_datetime, 
-  #     report_arguments[:end_date].to_datetime)
-  # end
-
-
-
+  def export_collection_contributors_csv(out:, collection:, report_arguments:)
+    path = "collection_contributors_activity.csv"
+    out.put_next_entry(path)
+    out.write(collection_contributors_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
 
   def export_work_metadata_csv(out:, collection:)
     path = "work_metadata.csv"
@@ -671,6 +664,125 @@ private
     running_data
   end
 
+  def collection_activity_csv(collection, start_date, end_date)
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    recent_activity = collection.deeds.where({created_at: start_date...end_date})
+        .where(deed_type: DeedType.contributor_types)
+
+    headers = [
+      :date,
+      :user,
+      :user_real_name,
+      :user_email,
+      :deed_type,
+      :page_title,
+      :page_url,
+      :work_title,
+      :work_url,
+      :comment,
+      :subject_title,
+      :subject_url
+    ]
+
+    rows = recent_activity.map {|d|
+
+    note = ''
+    note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+
+      record = [
+        d.created_at,
+        d.user.display_name,
+        d.user.real_name,
+        d.user.email,
+        d.deed_type
+      ]
+
+      if d.deed_type == DeedType::ARTICLE_EDIT 
+        record += ['','','','','',]
+        record += [
+          d.article ? d.article.title : '[deleted]', 
+          d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
+        ]
+      else
+        unless d.deed_type == DeedType::COLLECTION_JOINED
+          pagedeeds = [
+            d.page.title,
+            collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+            d.work.title,
+            collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+            note,
+          ]
+          record += pagedeeds
+          record += ['','']
+        end
+      end
+      record
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+
+    csv
+  end
+
+  def collection_contributors_csv(collection, start_date, end_date)
+    id = collection.id
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    new_contributors(collection, start_date, end_date)
+
+    headers = [
+      :name, 
+      :user_real_name,
+      :email,
+      :minutes,
+      :pages_transcribed, 
+      :page_edits, 
+      :page_reviews,
+      :pages_translated, 
+      :ocr_corrections,
+      :notes, 
+    ]
+
+    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
+
+    stats = @active_transcribers.map do |user|
+      time_proportional = user_time_proportional[user.id]
+
+      id_data = [user.display_name, user.real_name, user.email]
+      time_data = [time_proportional]
+
+      user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
+
+      user_stats = [
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_REVIEWED },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
+        user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
+        user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
+      ]
+
+      id_data + time_data + user_stats
+    end
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      stats.each do |user|
+          records << user
+      end
+    end
+
+    csv
+  end
 
 
 end

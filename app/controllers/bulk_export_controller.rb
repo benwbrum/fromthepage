@@ -31,6 +31,7 @@ class BulkExportController < ApplicationController
     end
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
 
     if @bulk_export.save!
       @bulk_export.submit_export_process
@@ -51,6 +52,7 @@ class BulkExportController < ApplicationController
     @bulk_export.work = @work
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
 
     if @bulk_export.save
       @bulk_export.submit_export_process
