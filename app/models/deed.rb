@@ -18,6 +18,7 @@ class Deed < ApplicationRecord
 
   before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
   after_save :update_collections_most_recent_deed
+  after_save :update_works_most_recent_deed
 
   def deed_type_name
     DeedType.name(self.deed_type)
