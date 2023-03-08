@@ -1,6 +1,7 @@
 module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
+  include OwnerExporter
   require 'subject_exporter'
   require 'subject_details_exporter'
 
@@ -88,13 +89,13 @@ module ExportService
 
 
 
-  def export_mailing_list_csv(out:, owner:, report_arguments:)
+  def export_owner_mailing_list_csv(out:, owner:)
     path = "mailing_list.csv"
     out.put_next_entry(path)
-    out.write(OwnerExporter.owner_mailing_list(owner, report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))
+    out.write(owner_mailing_list_csv(owner))
   end
 
-  def export_detailed_activity_csv(out:, owner:, report_arguments:)
+  def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
     path = "detailed_activity.csv"
     out.put_next_entry(path)
     out.write(OwnerExporter.export_detailed_activity_as_csv(owner, report_arguments[:start_date].to_datetime, report_arguments[:end_date].to_datetime))

@@ -174,6 +174,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
@@ -324,10 +325,6 @@ Fromthepage::Application.routes.draw do
       get ':transcription_field_id/choose_offset', to: 'transcription_field#choose_offset', as: 'choose_offset'
       post ':transcription_field_id/:page_id/save_offset', to: 'transcription_field#save_offset', as: 'save_offset'
     end
-  end
-
-  scope 'statistics', as: 'statistics' do
-    post 'export_mailing_list', to: 'statistics#export_mailing_list'
   end
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
