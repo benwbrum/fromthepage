@@ -127,6 +127,11 @@ class BulkExportController < ApplicationController
         :owner_detailed_activity,
         :collection_activity,
         :collection_contributors,
-        :report_arguments => [:start_date, :end_date])
+        :report_arguments => [
+          :start_date, 
+          :end_date, 
+          :preserve_linebreaks, 
+          :include_metadata, 
+          :include_contributors])
   end
 end

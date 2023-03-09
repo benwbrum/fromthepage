@@ -27,6 +27,7 @@ en:
       facing_edition_pdf_description: A PDF file containing images and transcripts on facing pages.
       file_formats: Export Formats
       file_organization: Folder Organization
+      report_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
       one_file_per_collection: One file per collection

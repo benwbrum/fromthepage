@@ -33,7 +33,7 @@ class BulkExport < ApplicationRecord
 
   def report_arguments
     if self[:report_arguments].blank?
-      nil
+      {}
     else
       JSON.parse(self[:report_arguments])  
     end

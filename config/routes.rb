@@ -74,11 +74,9 @@ Fromthepage::Application.routes.draw do
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
-    get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
@@ -200,7 +198,6 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
   end

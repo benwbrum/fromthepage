@@ -155,7 +155,8 @@ module ExportHelper
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames)
+          preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
         end
 
         # Page-specific exports
