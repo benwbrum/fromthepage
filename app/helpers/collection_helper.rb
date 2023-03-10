@@ -55,14 +55,14 @@ module CollectionHelper
 
     if @collection.subjects_disabled
       unless @progress_review == 0
-        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
+        @wording = "#{work.work_statistic.total_pages} pages; #{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
       else
-        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type})"
+        @wording = "#{work.work_statistic.total_pages} pages; #{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type})"
       end
     elsif @progress_review == 0
-      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
+      @wording = "#{work.work_statistic.total_pages} pages; #{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
     else
-      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
+      @wording = "#{work.work_statistic.total_pages} pages; #{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
     end
 
     if @collection.metadata_entry?

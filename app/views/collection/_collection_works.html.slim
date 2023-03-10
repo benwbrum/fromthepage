@@ -9,7 +9,6 @@
         li
           span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
           span
-            = t('.n_pages', count: w.work_statistic.total_pages) 
             = @wording
 
           span
