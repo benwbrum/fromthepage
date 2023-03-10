@@ -32,8 +32,11 @@ fr:
       collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
       collaborators: Collaborateurs
       detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
-      export_activity_as_csv: Exporter l'activité au format CSV
-      export_as_csv: Exporter l'activité détaillée au format CSV
+      export_activity_as_csv: Exporter toutes les activités sous forme de feuille de calcul
+      export_activity_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque action.
+      export_activity_as_csv_header: Activité d'exportation
+      export_as_csv: Exporter l'activité de l'utilisateur sous forme de feuille de calcul
+      export_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque utilisateur ainsi que son temps et son activité.
       find_project_newsletters_recommendations: Trouvez des recommandations pour les newsletters du projet.
       new_collaborators: Nouveaux collaborateurs
       no_activity_this_time_frame: Aucune activité pendant cette période

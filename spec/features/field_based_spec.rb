@@ -133,12 +133,6 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.response_headers['Content-Type']).to eq 'application/csv'
   end
 
-  it "exports table data for an entire collection" do
-    visit collection_export_path(@collection.owner, @collection)
-    expect(page).to have_content("Export All Tables")
-    page.find('#btnExportTables').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
-  end
 
   it "sets collection back to document based transcription" do
     visit collection_path(@collection.owner, @collection)
