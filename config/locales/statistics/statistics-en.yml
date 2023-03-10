@@ -4,9 +4,7 @@ en:
     collaborator_time:
       collaborator_time: Collaborator Time
       collaborator_time_description: A spreadsheet of the number of minutes each user contributed per day in the date range.
-      collaborator_time_export: Time Export
       collaborator_time_export_button: Export Collaborator Time Spreadsheet
-      export_activity_as_csv: Export Detailed Activity as CSV
       no_activity_for_date_range: There is no activity for this date range.
       user_totals_for_dates: User Totals for Dates
     collaborators:

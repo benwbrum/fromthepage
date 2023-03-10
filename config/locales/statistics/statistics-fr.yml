@@ -4,9 +4,7 @@ fr:
     collaborator_time:
       collaborator_time: Temps de collaboration
       collaborator_time_description: Une feuille de calcul du nombre de minutes que chaque utilisateur a contribué par jour dans la plage de dates.
-      collaborator_time_export: Exportation de l'heure
       collaborator_time_export_button: Exporter la feuille de calcul du temps des collaborateurs
-      export_activity_as_csv: Exporter l'activité détaillée au format CSV
       no_activity_for_date_range: Il n'y a aucune activité pour cette plage de dates.
       user_totals_for_dates: Totaux utilisateur pour les dates
     collaborators:
