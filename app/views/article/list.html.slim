@@ -81,6 +81,10 @@
   javascript:
     $(function() {
       $(window).on('hashchange', function() {
+        if (document.getElementsByClassName("category_modal")[0] !== undefined){
+          document.getElementsByClassName("category_modal")[0].classList.remove("visible");
+          location.reload();
+        }
         var selected = window.location.hash || $('.tree-item:first').attr('href');
         var $tree_item = $('.tree-item[href="'+selected+'"]');
 
