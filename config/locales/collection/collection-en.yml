@@ -6,7 +6,7 @@ en:
     collection_works:
       n_pages:
         one: '1 page: '
-        other: "%{count} pages: "
+        other: "%{count} pages; "
       progress: Progress
       work_title: Work title
     contributor_activity:
