@@ -1,0 +1,50 @@
+---
+de:
+  ia:
+    confirm_import:
+      book_already_imported_description: 'Die unten aufgeführten Werke wurden möglicherweise aus derselben Quelle importiert:'
+      book_already_imported_warning: 'Warnung: Dieses Buch wurde möglicherweise bereits importiert!'
+      book_was_imported: Internetarchivbuch "%{book}"; wurde von %{user} auf %{date} importiert
+      cancel_import: Import abbrechen
+      import_anyway: Trotzdem importieren
+      import_from_archive_org: Aus Archive.org importieren
+      not_converted_into_work: wurde aber nicht in ein FromThePage-Werk umgewandelt.
+      please_enter_valid_url: Geben Sie zum Importieren eine gültige Archive.org-Buch-URL ein
+      was_converted_into_work: und wurde in FromThePage-Arbeit umgewandelt
+    convert:
+      converted_to_work: "%{title} wurde in ein FromThePage-Werk umgewandelt"
+    ia_book_form:
+      book_url: Buch-URL
+      import_book_description: Um ein Buch zu importieren, öffnen Sie bitte dieses Buch auf www.archive.org, kopieren Sie dann die Buch-URL aus der Adressleiste des Browsers und fügen Sie sie unten ein.
+      import_from_archive_org: Aus Archive.org importieren
+      import_work: Arbeit importieren
+    import_work:
+      imported_into_staging: "%{title} wurde in Ihren Bereitstellungsbereich importiert"
+    manage:
+      actions: Aktionen
+      book_imported_description: Dieses Buch wurde aus dem Internetarchiv importiert, aber noch nicht in ein Werk umgewandelt. Unten sehen Sie die Liste der importierten Seiten und deren OCR-Text. Verwenden Sie das Aktionsmenü, um die erste Seite (alle vorhergehenden Seiten verbergen) und die letzte Seite (alle folgenden Seiten verbergen) zu definieren. Sie können auch Seitentitel aus dem OCR-Text verwalten und diesen Import schließlich in ein Werk umwandeln, indem Sie ihn in einer Sammlung veröffentlichen. Weitere Informationen zu diesem Bildschirm finden Sie im Wiki-Artikel <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importing Works aus dem Internetarchiv</a>.
+      conceal_following_pages: Folgende Seiten verbergen
+      conceal_preceding_pages: Vorherige Seiten verbergen
+      first_line_of_ocr: Erste OCR-Zeile
+      first_line_of_ocr_description: "<b>Erste OCR-Zeile</b> ersetzt die Seitentitel durch die oberste OCR-Textzeile auf jeder Seite. Dies ist nützlich für Tagebücher und Tagebücher, da die erste Zeile im Allgemeinen ein Datum ist."
+      last_line_of_ocr: Letzte OCR-Zeile
+      last_line_of_ocr_description: "<b>Letzte OCR-Zeile</b> ersetzt die Seitentitel durch die unterste Zeile des OCR-Texts auf jeder Seite. Dies ist sinnvoll bei Druckwerken, bei denen die Seitenzahlen unten stehen."
+      manage_archive_org_import: Archive.org-Import verwalten
+      ocr_for_page_contents: OCR-Text für Seiteninhalte verwenden?
+      ocr_for_page_contents_description: Aktivieren Sie dieses Kontrollkästchen, um das anfängliche Transkript jeder Seite mit den Inhalten der entsprechenden OCR zu füllen. (Tun Sie dies nicht, wenn Ihre Seiten Handschriften enthalten, die Sie transkribieren möchten.)
+      ocr_page_titles_description: Dieser Vorgang dauert mehrere Sekunden, da der gesamte OCR-Text für das Buch analysiert und jeder Seitentitel aktualisiert werden muss. Nachdem das Buch in ein FromThePage-Werk konvertiert wurde, können Sie die Seitentitel manuell korrigieren.
+      page_n_of_n: Seite %{n} von %{total} (%{n2})
+      page_titles: Seitentitel
+      publish_to_collaborators: Für Mitbearbeiter veröffentlichen
+      publish_work: Arbeit veröffentlichen
+      publish_work_description: Sobald Sie Titel und Blätter fertig haben, klicken Sie auf Veröffentlichen, um das Buch in ein fertiges FromThePage-Werk zu konvertieren. Dieser Vorgang dauert einige Minuten.
+      select_a_collection: "- Wählen Sie eine Sammlung aus -"
+      select_a_collection_1: Wählen Sie eine Sammlung aus
+    mark_beginning:
+      preceding_the_beginning: Seiten vor dem Textanfang wurden verdeckt
+    mark_end:
+      pages_following_the_end: Seiten nach dem Textende wurden verdeckt
+    title_from_ocr_bottom:
+      pages_has_been_renamed: Seiten wurden mit OCR-Text in der Fußzeile umbenannt
+    title_from_ocr_top:
+      pages_has_been_renamed: Seiten wurden mit der obersten Zeile des OCR-Textes umbenannt

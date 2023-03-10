@@ -1,0 +1,95 @@
+---
+de:
+  shared:
+    article_tabs:
+      overview: Überblick
+      settings: Einstellungen
+      subject: Thema
+      versions: Versionen
+    codemirror:
+      abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
+      add_description: Markiert Text, der nachträglich vom Autor eingefügt wurde.
+      date_description: Markiert Datumsangaben, mit standardisierter Form im when-Attribut.
+      del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
+      expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.
+      fig_description: Zeigt eine Zahl oder eine horizontale Linie an.
+      footnote_description: Umschließt den Hauptteil einer Fußnote mit dem Fußnotensymbol im Markierungsattribut.
+      gap_description: Markiert eine Lücke im Text, oft aufgrund von Beschädigungen
+      head_description: Markiert Überschriften im Text
+      marginalia_description: Markiert Text am Rand des Haupttextes.
+      reg_description: Markiert eine reguläre Form des Textes mit Originalformen im orig-Attribut.
+      s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
+      sub_description: Tiefgestellter Text.
+      sup_description: Hochgestellter Text.
+      u_description: Markiert unterstrichenen Text.
+      unclear_description: Markiert unklaren Text.
+    collection_tabs:
+      add_work: Arbeit hinzufügen
+      collaborators: Mitarbeiter
+      collection: Sammlung
+      edit_fields: Felder
+      edit_metadata_fields: Metadatenfelder
+      export: Export
+      facets: Facetten
+      forum: Forum
+      overview: Überblick
+      review: Rezension
+      sets: Sätze
+      settings: Einstellungen
+      statistics: Statistiken
+      subjects: Fächer
+      works_list: Liste der Werke
+    description_tabs:
+      describe: Metadaten
+      help: Hilfe
+      metadata: Metadaten
+      nav_info: Arbeite %{position} von %{size}
+      next_page: Nächste Seite
+      next_work: Nächste Arbeit
+      overview: Überblick
+      previous_page: Vorherige Seite
+      previous_work: Vorherige Arbeit
+      versions: Versionen
+    handsontable:
+      date_tooltip: Datumsangaben sollten im Format JJJJ-MM-TT (Jahr vierstellig, Monat zweistellig, Tag zweistellig, mit Bindestrichen dazwischen) formatiert sein.
+    markup_help:
+      markup_help_description: '"Autolink" schlägt Themen vor, mit denen bestimmte Wörter verknüpft werden könnten, oder Sie können doppelte Klammern verwenden, um Themen zu verknüpfen. <code>[[Jane Doe]]</code> verknüpft den Text „Jane Doe“ mit dem Betreff Jane Doe, während <code>[[Jane Doe|Jane]]</code> den Text „Jane“ verknüpft. zum Thema Jane Doe. Wir empfehlen, die Verlinkung nach der ersten Transkription einem Editor zu überlassen.'
+    osd_div:
+      brightness: Helligkeit
+      contrast: Kontrast
+      full_page: Ganze Seite umschalten
+      home: Nach Hause gehen
+      image_filters: Bildfilter
+      open_seadragon_needs_js: OpenSeadragon ist nur verfügbar, wenn JavaScript aktiviert ist.
+      rotate_left: Nach links drehen
+      rotate_right: Drehe nach rechts
+      threshold: Schwelle
+      zoom_in: Hineinzoomen
+      zoom_out: Rauszoomen
+    page_tabs:
+      correct: Richtig
+      describe_work: Arbeit beschreiben
+      help: Hilfe
+      nav_info: Seite %{position} von %{size}
+      next_page: Nächste Seite
+      overview: Überblick
+      page: Buchseite
+      previous_page: Vorherige Seite
+      settings: Einstellungen
+      transcribe: Transkribieren
+      translate: Übersetzen
+      versions: Versionen
+    review_breadcrumbs:
+      dashboard: Überprüfungs-Dashboard
+      page: Buchseite
+    validation_summary:
+      form: form
+    work_tabs:
+      about: Um
+      contents: Inhalt
+      download: Herunterladen
+      help: Hilfe
+      pages: Seiten
+      read: Lesen
+      settings: Einstellungen
+      work: Arbeiten

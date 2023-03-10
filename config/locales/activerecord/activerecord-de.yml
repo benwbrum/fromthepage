@@ -1,0 +1,56 @@
+---
+de:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Titel
+      document_set:
+        slug: URL
+        title: Titel
+      work:
+        slug: URL
+        title: Titel
+    errors:
+      models:
+        collection:
+          attributes:
+            slug:
+              blank: erforderlich
+              invalid: muss mindestens einen Buchstaben haben
+        document_set:
+          attributes:
+            slug:
+              blank: erforderlich
+              invalid: muss mindestens einen Buchstaben haben
+        work:
+          attributes:
+            slug:
+              blank: erforderlich
+              invalid: muss mindestens einen Buchstaben haben
+        xml_source_processor:
+          blank_subject_in: Leerer Betreff in %{tag}
+          blank_tag_in: Leeres Tag in %{tag}
+          blank_text_in: Leerer Text in %{tag}
+          subject_linking_error: 'Fehler bei der Betreffverknüpfung:'
+          tags_should_not_use_3_brackets: Tags sollten mit 2 Klammern erstellt werden, nicht mit 3
+          unclosed_bracket_within: Nicht geschlossene Klammer innerhalb von %{tag}
+          wrong_number_of_closing_braces: Falsche Anzahl schließender Klammern nach %{tag}
+    models:
+      bulk_export:
+        one: Massenexport
+        other: Massenexporte
+      ia_leaf:
+        one: Buchseite
+        other: Seiten
+      page:
+        one: Buchseite
+        other: Seiten
+      work:
+        one: arbeiten
+        other: funktioniert
+  errors:
+    messages:
+      not_saved:
+        one: '1 Fehler hat das Speichern von %{resource} verhindert:'
+        other: "%{count}-Fehler verhinderten, dass %{resource} gespeichert wurde:"

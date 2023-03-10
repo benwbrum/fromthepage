@@ -1,0 +1,107 @@
+---
+de:
+  document_sets:
+    create:
+      document_created: Dokumentensatz wurde erstellt
+    edit:
+      current_url_for_this_work: Die aktuelle URL für diese Arbeit ist %{current_url}. Wenn Sie den Dokumentensatz-Abschnitt der URL bearbeiten möchten, verwenden Sie bitte Kleinbuchstaben und Bindestriche zwischen den Wörtern.
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf dem Projektübersichtsbildschirm und dem Projektinfo-Bildschirm angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und dem Bildschirm „Projekt suchen“ angezeigt.
+      document_is_marked_public: Wenn der Dokumentensatz als öffentlich gekennzeichnet ist, sind darin enthaltene Werke lesbar, auch wenn die Sammlung als privat gekennzeichnet ist.
+      save_document_set: Dokumentensatz speichern
+      title: Titel
+      url: URL
+    index:
+      actions: Aktionen
+      aggregating_works_thematic_exhibits: Aggregation von Werken zu thematischen Ausstellungen
+      assign_works_to_document_sets: Werke Dokumentensammlungen zuordnen
+      create_a_document_set: Erstellen Sie eine Dokumentenmappe
+      delete: Löschen
+      delete_document_set_confirm_message: Möchten Sie diese Dokumentenmappe wirklich löschen? Dadurch wird Ihr Dokumentensatz gelöscht, jedoch keines der Werke im Dokumentensatz.
+      document_sets_are_sub_sets: 'Dokumentensätze sind Teilsätze der Dokumente in einer Sammlung. Sie haben mehrere Verwendungszwecke, darunter:'
+      document_sets_for: Dokumentensätze für %{title}
+      edit: Bearbeiten
+      focusing_transcriber_effort: Konzentrieren der Transkriptionsarbeit auf eine bestimmte Gruppe von Werken.
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten:"
+      no_document_sets: Diese Sammlung enthält keine Dokumentensätze
+      privacy: Privatsphäre
+      private: Privatgelände
+      public: Öffentlich
+      publishing_works_private_collection: Veröffentlichung von Werken aus einer Privatsammlung. (Alle Werke in einer privaten Sammlung, die einem öffentlichen Dokumentensatz hinzugefügt werden, sind für die Öffentlichkeit sichtbar.)
+      save: Speichern
+      search: Suchen
+      search_for_works: Werke suchen...
+      status: Status
+      title: Titel
+      toggle_work_in_document_set: Schalten Sie %{work} in Dokumentensatz %{document_set} um
+      transfer_works: Übertragungsarbeiten
+      work: Arbeiten
+    new:
+      create_document_set: Dokumentensatz erstellen
+      create_new_document_set: Neuen Dokumentensatz erstellen
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf dem Projektübersichtsbildschirm und dem Projektinfo-Bildschirm angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und dem Bildschirm „Projekt suchen“ angezeigt.
+      document_set_is_marked_public: Wenn der Dokumentensatz als öffentlich gekennzeichnet ist, sind darin enthaltene Werke lesbar, auch wenn die Sammlung als privat gekennzeichnet ist.
+      public: Öffentlich
+      title: Titel
+    set_works:
+      collaboration: Zusammenarbeit
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten:"
+      progress: Fortschritt
+      remove_from_set: Aus Satz entfernen
+      remove_title_from_document_set: Entfernen Sie %{title} aus dem Dokumentensatz
+      remove_works: Werke entfernen
+      restricted: Eingeschränkt
+      unrestricted: Uneingeschränkt
+      work_title: Arbeitstitel
+    settings:
+      add: Hinzufügen
+      add_collaborator: Mitarbeiter hinzufügen
+      add_work_title_to_document_set: "%{work_title} zum Dokumentensatz hinzufügen"
+      collaborators_may_transcribe: Mitarbeiter können private Dokumentensätze transkribieren und bearbeiten.
+      document_set_based_on: Dies ist ein Dokumentensatz, der auf der Sammlung <b>%{title}</b> basiert. Sie können alle Werke und Dokumentensätze innerhalb dieser Sammlung verwalten, indem Sie auf %{link} klicken.
+      document_set_collaborators: Mitbearbeiter von Dokumentenmappen
+      document_set_image: Dokumentensatzbild
+      document_set_privacy: Datenschutz für Dokumentensätze
+      document_set_restricted: Der Dokumentensatz kann nur von den unten aufgeführten Mitarbeitern eingesehen werden. Sie können die Sammlung öffentlich lesbar machen.
+      document_set_unrestricted: Der Dokumentensatz kann von jedem im Internet eingesehen werden. Alle Werke, die in einen öffentlichen Dokumentensatz gestellt werden, sind lesbar, auch wenn die übergeordnete Sammlung privat ist. Sie können den Dokumentensatz privat machen, um seine Sichtbarkeit für Mitbearbeiter einzuschränken.
+      here: Hier
+      make_document_set_private: Dokumentsatz privat machen
+      make_document_set_public: Dokumentenset öffentlich machen
+      manage_works: Werke verwalten
+      n_contributions:
+        one: 1 Beitrag
+        other: "%{count} Beiträge"
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten: pl"
+      no_image: Kein Bild
+      picture_document_set_description: Ein Bild zur Veranschaulichung der Beschreibung des Dokumentensatzes.
+      remove: Entfernen
+      save: Speichern
+      search: Suchen
+      search_for_works: Werke suchen...
+      status: Status
+      upload_image: Bild hochladen
+      work: Arbeiten
+    transfer:
+      source_and_target_can_not_be_the_same: Quelle und Ziel dürfen nicht identisch sein.
+    transfer_form:
+      all: Alles funktioniert
+      cancel: Stornieren
+      completed: Nur abgeschlossene Arbeiten
+      copy: Kopieren (erzeugt keine doppelten Werke)
+      move: Umzug
+      source_set: Quelldokumentensatz
+      status_filter: Was funktioniert
+      target_set: Zieldokumentsatz
+      transfer: Überweisen
+      transfer_type_label: Übertragungsart
+      transfer_works: Übertragungsarbeiten
+      transfer_works_description: Transfer funktioniert zwischen Dokumentensätzen. (Durch das Kopieren wird dieselbe Arbeit gleichzeitig in zwei Dokumentensätzen platziert.)
+    update:
+      document_updated: Dokumentensatz wurde gespeichert
