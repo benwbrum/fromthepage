@@ -31,6 +31,7 @@ class BulkExportController < ApplicationController
     end
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
 
     if @bulk_export.save!
       @bulk_export.submit_export_process
@@ -51,6 +52,21 @@ class BulkExportController < ApplicationController
     @bulk_export.work = @work
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
+
+    if @bulk_export.save
+      @bulk_export.submit_export_process
+
+      flash[:info] = t('.export_running_message', email: (current_user.email))
+    end
+    redirect_to dashboard_exports_path
+  end
+
+  def create_for_owner
+    @bulk_export = BulkExport.new(bulk_export_params)
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
 
     if @bulk_export.save
       @bulk_export.submit_export_process
@@ -106,6 +122,16 @@ class BulkExportController < ApplicationController
         :text_only_pdf_work,
         :organization,
         :use_uploaded_filename,
-        :static)
-    end
+        :static,
+        :owner_mailing_list,
+        :owner_detailed_activity,
+        :collection_activity,
+        :collection_contributors,
+        :report_arguments => [
+          :start_date, 
+          :end_date, 
+          :preserve_linebreaks, 
+          :include_metadata, 
+          :include_contributors])
+  end
 end

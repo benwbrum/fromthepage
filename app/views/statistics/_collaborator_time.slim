@@ -1,9 +1,13 @@
 h3 =t('.collaborator_time')
+p =t('.collaborator_time_description')
 -unless @contributors.empty?
-  =link_to({:controller => 'dashboard', :action => 'collaborator_time_export',
-      :start_date => @start_date, :end_date => @end_date}, :class => 'button btnExport')
-      =svg_symbol '#icon-export', class: 'icon'
-      span =t('.export_activity_as_csv')
+  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+    =f.hidden_field :owner_detailed_activity, value: true
+    =f.hidden_field 'report_arguments[start_date]', value: @start_date
+    =f.hidden_field 'report_arguments[end_date]', value: @end_date    
+    =f.submit t('.collaborator_time_export_button')
+
+
   h4 =t('.user_totals_for_dates')
   .collection-users.justified
     .justified_box>

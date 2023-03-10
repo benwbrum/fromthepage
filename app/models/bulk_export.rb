@@ -3,7 +3,7 @@ class BulkExport < ApplicationRecord
   include ExportHelper, ExportService
 
   belongs_to :user
-  belongs_to :collection
+  belongs_to :collection, optional: true
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
@@ -30,7 +30,14 @@ class BulkExport < ApplicationRecord
   def page_level?
     self.attributes.detect{|k,v| k.match(/_page/) && v==true }
   end
-  
+
+  def report_arguments
+    if self[:report_arguments].blank?
+      {}
+    else
+      JSON.parse(self[:report_arguments])  
+    end
+  end
 
   def export_to_zip
     self.status = Status::PROCESSING
@@ -41,8 +48,10 @@ class BulkExport < ApplicationRecord
         works=[self.work]
       elsif self.document_set
         works = self.document_set.works.includes(pages: [:notes, {page_versions: :user}])
-      elsif
+      elsif self.collection
         works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+      else
+        works = []
       end
 
       buffer = Zip::OutputStream.open(zip_file_name) do |out|

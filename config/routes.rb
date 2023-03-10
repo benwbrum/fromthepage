@@ -74,11 +74,9 @@ Fromthepage::Application.routes.draw do
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
-    get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
@@ -174,6 +172,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
@@ -199,7 +198,6 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
   end
@@ -324,10 +322,6 @@ Fromthepage::Application.routes.draw do
       get ':transcription_field_id/choose_offset', to: 'transcription_field#choose_offset', as: 'choose_offset'
       post ':transcription_field_id/:page_id/save_offset', to: 'transcription_field#save_offset', as: 'save_offset'
     end
-  end
-
-  scope 'statistics', as: 'statistics' do
-    get 'export_csv', to: 'statistics#export_csv'
   end
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
