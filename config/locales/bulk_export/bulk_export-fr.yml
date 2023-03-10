@@ -27,6 +27,7 @@ fr:
       facing_edition_pdf_description: Un fichier PDF contenant des images et des transcriptions sur les pages opposées.
       file_formats: Formats d'exportation
       file_organization: Organisation des dossiers
+      format_options: Options de mise en forme
       html: HTML
       html_description: Cela peut être utile pour la conservation dans d'autres systèmes ou comme point de départ pour l'affichage sur un autre site Web.
       one_file_per_collection: Un fichier par collection
@@ -37,6 +38,7 @@ fr:
       organization_description: Les fichiers zip peuvent être organisés avec un dossier par œuvre contenant des fichiers ou des sous-dossiers pour chaque format d'exportation, ou avec un dossier par format d'exportation contenant des fichiers par œuvre.
       organization_format: Formater les dossiers
       organization_work: Dossiers de travail
+      preserve_linebreaks: Conserver les sauts de ligne
       previous_exports: Exportations précédentes
       search_optimized_plaintext: Texte brut optimisé pour la recherche
       search_optimized_plaintext_description: Une version en clair de l'œuvre optimisée pour la recherche en texte intégral. Cette version contient une transcription textuelle en clair de chaque page (comme décrit ci-dessus), sauf que les mots coupés par des sauts de ligne sont joints ensemble, et une liste des noms canoniques mentionnés dans chaque page est ajoutée à la fin de la page.
