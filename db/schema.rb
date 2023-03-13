@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_16_230516) do
+ActiveRecord::Schema.define(version: 2023_03_06_173258) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -1099,6 +1099,7 @@ ActiveRecord::Schema.define(version: 2023_02_16_230516) do
     t.string "description_status", default: "undescribed"
     t.text "searchable_metadata"
     t.string "recipient"
+    t.datetime "most_recent_deed_created_at"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"

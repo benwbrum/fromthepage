@@ -59,7 +59,26 @@ module ExportHelper
 
 
   def write_work_exports(works, out, export_user, bulk_export)
+
+    # owner-level exports
+    if bulk_export.owner_mailing_list
+      export_owner_mailing_list_csv(out: out, owner: export_user)
+    end
+
+    if bulk_export.owner_detailed_activity
+      export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
+    end
+
+
     # collection-level exports
+    if bulk_export.collection_activity
+      export_collection_activity_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
+    if bulk_export.collection_contributors
+      export_collection_contributors_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
     if bulk_export.subject_csv_collection
       export_subject_csv(out: out, collection: bulk_export.collection)
     end
@@ -136,7 +155,8 @@ module ExportHelper
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames)
+          preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
         end
 
         # Page-specific exports

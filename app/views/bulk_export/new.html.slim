@@ -109,6 +109,12 @@
             =f.label :text_docx_work
               =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
               span= t('.one_file_per_work')
+            #report-options 
+              =t('.format_options')
+              =f.label :preserve_linebreaks
+                =f.check_box 'report_arguments[preserve_linebreaks]', value: @bulk_export.report_arguments['preserve_linebreaks']
+                span= t('.preserve_linebreaks')
+
         li
           .bulk-export_format
             h5= t('.facing_edition_pdf')
@@ -185,6 +191,10 @@
 
 -content_for :javascript
   javascript:
+    $('#bulk_export_text_docx_work').change(function() {
+      $('#report-options').toggle(this.checked);
+    });
+
     $(function() {
       // Remove 'page_busy' spinner once download finished
       // Cookie should be set to 'true' in the controller method
