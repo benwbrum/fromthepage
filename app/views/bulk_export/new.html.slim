@@ -3,6 +3,7 @@
 .columns
   article.maincol
     h2.nomargin= t('.export_all_works')
+    button id="btnCheckAll" style="float: right;" = "Check All"
     =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @bulk_export.errors
@@ -158,8 +159,8 @@
           .bulk-export_options
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
-              span= t('.one_site_per_collection')
-
+              span= t('.one_site_per_collection') 
+      
       .toolbar
         .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
 
@@ -196,5 +197,18 @@
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
+      $('#btnCheckAll').click(function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var myButton = document.getElementById('btnCheckAll');
+        if (checkboxes[0].checked == false) {
+          myButton.style.backgroundColor = '#8C3';
+        }
+        else {
+          myButton.style.removeProperty('background-color');
+        }
+        checkboxes.forEach(function(checkbox) {
+          checkbox.checked = !checkbox.checked;
+        });
       });
     });
