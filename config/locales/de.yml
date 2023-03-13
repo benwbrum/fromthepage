@@ -8,11 +8,11 @@ de:
     formats:
       default: "%b %d, %Y"
   de: Deutsch
-  en: Englisch
-  es: Spanisch
-  fr: Französisch
+  en: English
+  es: Español
+  fr: Français
   message_boards_are_disabled: Das Forum für %{project} wurde deaktiviert.
-  pt: Portugiesisch
+  pt: Português
   time:
     formats:
       default: "%b %d, %Y %I:%M %p"
