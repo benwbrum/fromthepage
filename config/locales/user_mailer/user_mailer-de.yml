@@ -1,0 +1,68 @@
+---
+de:
+  user_mailer:
+    added_note:
+      html:
+        view_note: " um auf die Notiz in %{collection} zu antworten: %{work}."
+      message: Wir wollten Sie nur darüber informieren, dass die folgende Notiz zu einer Seite hinzugefügt wurde, an der Sie in Arbeit %{work} in der Sammlung %{collection} gearbeitet haben.
+      text:
+        view_note: 'Sie können auf den Hinweis in %{collection} antworten: %{work} unter der URL: %{url}.'
+    bulk_export_finished:
+      html:
+        ready_message: wurde bearbeitet und steht bei %{this_link} bereit.
+      text:
+        ready_message: 'Ihr Export wurde verarbeitet und ist unter dieser URL bereit:'
+      this_link: dieser Link
+      your_export_is_ready: Ihr Export ist fertig!
+      your_export_of: Ihr Export von
+    click_here: klicken Sie hier
+    collection_collaborator:
+      html:
+        to_view: " um %{collection} anzuzeigen"
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeiter auf %{collection} hinzugefügt hat.
+      text:
+        to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+    collection_reviewer:
+      html:
+        to_view: " um %{collection} anzuzeigen"
+      message: "%{owner} hat Sie als autorisierten Rezensenten auf %{collection} hinzugefügt. Sie sollten in der Lage sein, jede Seite, die überprüft werden muss, zu bearbeiten und zu genehmigen."
+      text:
+        to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+    fromthepage: VonThePage
+    greeting: Hallo %{user} --
+    html:
+      closing: |
+        Danke, <br><br>
+        %{from}
+      turn_off_notification: " um diese Benachrichtigung zu deaktivieren"
+    new_owner:
+      welcome: Willkommen
+    nightly_user_activity:
+      html:
+        to_view_note: " , um die Notiz auf Seite %{page} in %{collection}: %{work} anzuzeigen, die hinzugefügt wurde, seit Sie daran gearbeitet haben."
+        to_view_work: " um %{collection} anzuzeigen: %{work}"
+      message: Wir wollten Sie nur darüber informieren, dass in einer Sammlung, an der Sie gearbeitet haben, Aktivitäten stattgefunden haben.
+      new_notes: Neue Notizen
+      new_works: Neue Werke
+      note_added: Eine Notiz wurde zu einer Seite hinzugefügt, die Sie in Arbeit %{work} in der Sammlung %{collection} bearbeitet haben.
+      text:
+        to_view_note: 'Um den Hinweis auf Seite %{work}: %{page} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+        to_view_work: 'Um %{collection}: %{work} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+      work_added: "%{owner} hat %{work} zur Sammlung %{collection} hinzugefügt."
+    text:
+      closing: |-
+        Danke,
+        %{from}
+      turn_off_notification: 'Deaktivieren Sie diese Benachrichtigung unter der URL: %{url}'
+    upload_finished:
+      html:
+        message: Ihr Upload von "%{file}" wurde verarbeitet und ist bereit um
+      text:
+        message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht unter dieser URL bereit:'
+      your_upload_is_ready: Ihr Upload ist fertig!
+    work_collaborator:
+      html:
+        to_view: " um %{collection} - %{work} anzuzeigen."
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeiter auf %{collection}–%{work} hinzugefügt hat.
+      text:
+        to_view: 'Sie können %{collection}: %{work} unter der URL: %{url} anzeigen'

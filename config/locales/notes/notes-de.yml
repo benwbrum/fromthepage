@@ -1,0 +1,40 @@
+---
+de:
+  notes:
+    create:
+      error_creating_note: Fehler beim Erstellen der Notiz
+      must_be_logged: Sie müssen angemeldet sein, um Notizen zu erstellen
+      note_has_been_created: Hinweis wurde erstellt
+    destroy:
+      note_has_been_deleted: Hinweis wurde gelöscht
+    discussions:
+      description: Fragen und Hinweise auf Seiten
+      most_recent_of: Neueste von
+      page_notes: Seite Notizen
+      pages_and_notes_counts: "%{posts_count} Notizen auf %{topics_count} Seiten"
+      total_notes: "%{count} Notizen"
+    note:
+      cancel: Stornieren
+      confirm_delete_message: Möchten Sie diese Notiz wirklich löschen?
+      delete: Löschen
+      edit: Bearbeiten
+      html:
+        cancel: Stornieren
+        confirm_delete_message: Möchten Sie diese Notiz wirklich löschen?
+        delete: Löschen
+        edit: Bearbeiten
+        microphone: Mikrofon
+        update: Aktualisieren
+      microphone: Mikrofon
+      update: Aktualisieren
+    notes:
+      microphone: Mikrofon
+      nobody_has_written_a_note: Bisher hat noch niemand eine Notiz für diese Seite geschrieben
+      note_body: Körper beachten
+      please_sign_in_to_write: Bitte %{link}, um eine Notiz für diese Seite zu schreiben
+      save_note: Hinweis speichern
+      sign_in: anmelden
+      write_a_new_note: Schreiben Sie eine neue Notiz oder stellen Sie eine Frage...
+    update:
+      error_updating_note: Fehler beim Aktualisieren der Notiz
+      note_has_been_updated: Hinweis wurde aktualisiert

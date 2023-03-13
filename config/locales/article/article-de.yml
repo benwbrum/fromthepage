@@ -1,0 +1,104 @@
+---
+de:
+  article:
+    article_links:
+      n_pages_refer_to:
+        one: 1 Seite bezieht sich auf %{article}
+        other: "%{count} Seiten beziehen sich auf %{article}"
+      n_subjects_refer_to:
+        one: 1 Betreff bezieht sich auf %{article}
+        other: "%{count} Themen beziehen sich auf %{article}"
+      show_pages_that_mention: Seiten anzeigen, die %{article} in allen Werken erwähnen
+    combine_duplicate:
+      selected_subjects_combined: Ausgewählte Fächer kombiniert mit %{title}
+    delete:
+      must_remove_referring_links: Sie müssen alle verweisenden Links entfernen, bevor Sie dieses Thema löschen.
+    edit:
+      autolink: Automatische Verknüpfung
+      categories: Kategorien
+      combine_selected: Ausgewählte kombinieren
+      confirm_delete_subject: Möchten Sie dieses Thema wirklich löschen? Nach dem Löschen können Sie es nicht wiederherstellen!
+      delete_subject: Betreff löschen
+      description: Beschreibung
+      latitude: Breite
+      longitude: Längengrad
+      microphone: Mikrofon
+      n_pages:
+        one: 1 Seite
+        other: "%{count} Seiten"
+      no_duplicates_found: Keine Duplikate gefunden
+      no_duplicates_found_description: Das Thema ist innerhalb der Sammlung einzigartig, es wurden keine möglichen Duplikate zum Thema „%{article}“ gefunden.
+      possible_duplicates:
+        one: Mögliches Duplikat
+        other: Mögliche Duplikate
+      possible_duplicates_description: Bitte sehen Sie sich die Liste unten an und wählen Sie die Fächer aus, die kombiniert werden sollen. Duplikate werden neu zugeordnet, sodass alle vorhandenen Links auf den Betreff „%{article}“ verweisen.
+      save_changes: Änderungen speichern
+      select_categories: Kategorien auswählen
+      title: Titel
+      uri: URI
+    graph:
+      dot:
+        title: Häufig genannte Themen mit %{subject}
+    list:
+      actions: Aktionen
+      add_child_category: Untergeordnete Kategorie hinzufügen
+      add_root_category: Root-Kategorie hinzufügen
+      categories: Kategorien
+      category_back_message: Wenn Sie mit der Bearbeitung der Kategorien fertig sind, drücken Sie %{page_link}, um zur Seite „%{page}“ zurückzukehren.
+      click_here: klicken Sie hier
+      confirm_delete_category: Möchten Sie diese Kategorie und alle ihre Unterkategorien wirklich löschen? Nach dem Löschen können Sie es nicht wiederherstellen!
+      create_category_message: "%{link} verwenden Sie zum Gruppieren von Themen."
+      create_the_first_category: Erstellen Sie die erste Kategorie
+      delete_category: Kategorie löschen
+      disable_gis_for_category: GIS für Kategorie deaktivieren
+      edit_category: Kategorie bearbeiten
+      enable_gis_for_category: GIS für Kategorie aktivieren
+      no_categories: Keine Kategorien
+      no_categories_message: Es gibt keine Themenkategorien in der Sammlung.<br>
+      there_are_no_subjects: Es gibt keine Themen für die ausgewählte Kategorie
+      uncategorized: Nicht kategorisiert
+      uncategorized_subjects: Nicht kategorisierte Themen
+      upload_subjects: Themen hochladen
+    show:
+      all_uncategorized_subjects: Alle nicht kategorisierten Themen in der Sammlung
+      categories: Kategorien
+      description: Beschreibung
+      download: Herunterladen
+      download_description: Laden Sie eine Tabelle mit gemeinsamen Themen und Werken herunter, in denen sie vorkommen.
+      edit_description_description: Bearbeiten Sie die Beschreibung auf der Registerkarte Einstellungen.
+      export: Export
+      n_possible_duplicates:
+        one: 1 mögliches Duplikat
+        other: "%{count} mögliche Duplikate"
+      no_category_message: Dieses Thema gehört keiner Kategorie an
+      references: Verweise
+      related_subjects: Verwandte Themen
+      related_subjects_1: Verwandte Themen
+      related_subjects_description: Die Grafik zeigt die anderen erwähnten Themen auf denselben Seiten wie das Thema "%{article}". Wenn dasselbe Thema mehr als einmal auf einer Seite mit „%{article}“ vorkommt, erscheint es in der Grafik näher an „%{article}“ und ist dunkler gefärbt. Je näher ein Thema an der Mitte ist, desto "verwandter" sind die Themen.
+      search_all_pages: Alle Seiten durchsuchen
+      search_all_pages_description: Durchsuchen Sie den Text von %{collection} nach Seiten, die Wörter enthalten, die verwendet werden, um auf <em>%{article}</em> zu verlinken
+      search_unlinked_pages: Nicht verlinkte Seiten durchsuchen
+      search_unlinked_pages_description: Suchen Sie nur nach Text von Seiten, die nicht auf <em>%{article}</em> verlinken
+      see_also: 'Siehe auch:'
+      text_search: Textsuche
+    subject_upload:
+      csv_file_must_contain_headers: Die CSV-Datei muss Header für HEADING, ARTICLE, URI und CATEGORY enthalten
+    tooltip:
+      category:
+        one: 'Kategorie:'
+        other: 'Kategorien:'
+      explore_this_subject: Erkunden Sie dieses Thema
+    update:
+      gis_coordinates_truncated:
+        one: " (GIS-Koordinaten auf %{precision} Dezimalstelle gekürzt)"
+        other: " (GIS-Koordinaten auf %{precision} Dezimalstellen gekürzt)"
+      subject_successfully_updated: Betreff wurde erfolgreich aktualisiert
+      subjects_auto_linking: Automatischer Verknüpfungsprozess für Betreff abgeschlossen
+    upload_form:
+      browse: Durchsuche
+      click_to_browse: Klicken Sie hier, um eine Datei zu durchsuchen...
+      csv_file_with: CSV-Datei mit einer Zeile pro Thema
+      example_csv: Beispiel CSV
+      upload: Hochladen
+      upload_subjects: Themen hochladen
+      upload_subjects_description: Um Themen aus einer externen Normdatei zu erstellen, laden Sie eine %{link}.
