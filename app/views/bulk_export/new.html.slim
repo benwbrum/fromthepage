@@ -3,7 +3,6 @@
 .columns
   article.maincol
     h2.nomargin= t('.export_all_works')
-    button id="btnCheckAll" style="float: right;" = "Check All"
     =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @bulk_export.errors
@@ -31,7 +30,9 @@
                 =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
                 span= t('.use_uploaded_filename_label')
 
-      h4 =t('.file_formats')
+      .container style="display: flex;"
+        h4 =t('.file_formats')
+        button id="btnCheckAll" class="button btnExport" type="button" style="margin-left: auto;" = t('.export_all_works')
       ul.bulk-export
         li
           .bulk-export_format
@@ -165,8 +166,8 @@
           .bulk-export_options
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
-              span= t('.one_site_per_collection') 
-      
+              span= t('.one_site_per_collection')
+
       .toolbar
         .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
 
@@ -213,12 +214,15 @@
         var myButton = document.getElementById('btnCheckAll');
         if (checkboxes[0].checked == false) {
           myButton.style.backgroundColor = '#8C3';
+          $('#report-options').toggle(true);
         }
         else {
           myButton.style.removeProperty('background-color');
+          $('#report-options').toggle(false);
         }
         checkboxes.forEach(function(checkbox) {
           checkbox.checked = !checkbox.checked;
         });
+        document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false
       });
     });
