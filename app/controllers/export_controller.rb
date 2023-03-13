@@ -28,7 +28,7 @@ class ExportController < ApplicationController
   end
 
   def printable
-    output_file = export_printable(@work, params[:edition], params[:format])    
+    output_file = export_printable(@work, params[:edition], params[:format], false)    
 
     if params[:format] == 'pdf'
       content_type = "application/pdf"
