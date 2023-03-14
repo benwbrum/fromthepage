@@ -215,10 +215,12 @@
         if (checkboxes[0].checked == false) {
           myButton.style.backgroundColor = '#8C3';
           $('#report-options').toggle(true);
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = true;
         }
         else {
           myButton.style.removeProperty('background-color');
           $('#report-options').toggle(false);
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = false;
         }
         checkboxes.forEach(function(checkbox) {
           checkbox.checked = !checkbox.checked;
