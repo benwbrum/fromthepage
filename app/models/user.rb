@@ -106,18 +106,23 @@ class User < ApplicationRecord
 
     data = access_token.info
 
-    if data['external_id']
+    if data['external_id'] && !data['external_id'].blank?
       user = User.where(external_id: data['external_id'], sso_issuer: issuer).first
     end
-    if !user && data['email']
+    if !user && !data['email'].blank?
       user = User.where(email: data['email']).first
     end
-    if !user && data['email2']
+    if !user && !data['email2'].blank?
       user = User.where(email: data['email2']).first
     end
-    if !user && data['email3']
+    if !user && !data['email3'].blank?
       user = User.where(email: data['email3']).first
     end
+
+    logger.info("User record before save:")
+    logger.info(user.to_json)
+    logger.info("Data from SAML response:")
+    logger.info(date.to_json)
 
     # update the user's SSO if they don't have one
     if user && user.sso_issuer.nil?
@@ -127,7 +132,9 @@ class User < ApplicationRecord
 
     # create users if they don't exist
     unless user
-      email = data['email'] || data['email2'] || data['email3']
+      email = data['email3'] unless data['email3'].blank? 
+      email = data['email2'] unless data['email2'].blank? 
+      email = data['email'] unless data['email'].blank?
       login = email.gsub(/@.*/,'')
       # avoid duplicate logins
       while User.where(login: login).exists? do
