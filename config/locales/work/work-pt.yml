@@ -171,6 +171,7 @@ pt:
       location_of_composition: Localização da Composição
       metadata: Metadados
       number_of_pages: Número de Páginas:&nbsp;
+      original_filename: Nome do arquivo original
       out_of_scope: Fora do escopo
       permission_description: Descrição da Permissão
       physical_description: Descrição Física
