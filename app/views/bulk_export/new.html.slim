@@ -32,7 +32,9 @@
 
       .container style="display: flex;"
         h4 =t('.file_formats')
-        button id="btnCheckAll" class="button btnExport" type="button" style="margin-left: auto;" = t('.export_all_works')
+        div id="check-box-div" style="margin-left: auto; margin-right: 11%;"
+          = check_box_tag "check_all", "1", false, id: "check-all"
+          label id="check-all-lable" style="margin-left: 2px;" Check All
       ul.bulk-export
         li
           .bulk-export_format
@@ -209,21 +211,25 @@
           }
         }, 1000);
       });
-      $('#btnCheckAll').click(function() {
+      $('#check-all').click(function() {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
         var myButton = document.getElementById('btnCheckAll');
-        if (checkboxes[0].checked == false) {
-          myButton.style.backgroundColor = '#8C3';
+        if ($(this).is(':checked')) {
           $('#report-options').toggle(true);
+          document.getElementById('check-all-lable').textContent = 'Uncheck All'
+          document.getElementById('check-box-div').style.marginRight = "9%"
           document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = true;
         }
         else {
-          myButton.style.removeProperty('background-color');
           $('#report-options').toggle(false);
+          document.getElementById('check-all-lable').textContent = 'Check All'
+          document.getElementById('check-box-div').style.marginRight = "11%"
           document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = false;
         }
         checkboxes.forEach(function(checkbox) {
-          checkbox.checked = !checkbox.checked;
+          if (checkbox.id != 'check-all') {
+            checkbox.checked = !checkbox.checked;
+          }
         });
         document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false
       });
