@@ -30,7 +30,11 @@
                 =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
                 span= t('.use_uploaded_filename_label')
 
-      h4 =t('.file_formats')
+      .container style="display: flex;"
+        h4 =t('.file_formats')
+        div id="check-box-div" style="margin-left: auto; margin-right: 11%;"
+          = check_box_tag "check_all", "1", false, id: "check-all"
+          label id="check-all-lable" style="margin-left: 2px;" Check All
       ul.bulk-export
         li
           .bulk-export_format
@@ -206,5 +210,27 @@
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
+      $('#check-all').click(function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var myButton = document.getElementById('btnCheckAll');
+        if ($(this).is(':checked')) {
+          $('#report-options').toggle(true);
+          document.getElementById('check-all-lable').textContent = 'Uncheck All'
+          document.getElementById('check-box-div').style.marginRight = "9%"
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = true;
+        }
+        else {
+          $('#report-options').toggle(false);
+          document.getElementById('check-all-lable').textContent = 'Check All'
+          document.getElementById('check-box-div').style.marginRight = "11%"
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = false;
+        }
+        checkboxes.forEach(function(checkbox) {
+          if (checkbox.id != 'check-all') {
+            checkbox.checked = !checkbox.checked;
+          }
+        });
+        document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false
       });
     });
