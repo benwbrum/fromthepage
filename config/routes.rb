@@ -486,7 +486,6 @@ Fromthepage::Application.routes.draw do
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
-        get 'print', on: :member
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
