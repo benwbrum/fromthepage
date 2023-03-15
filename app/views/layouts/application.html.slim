@@ -136,9 +136,9 @@ html lang="en-US"
     =javascript_include_tag 'application'
     =yield :javascript
 
-    =javascript_include_tag 'https://unpkg.com/@popperjs/core@2'
-    =javascript_include_tag 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js'
-    =javascript_include_tag '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
     -if defined? INTERCOM_APP_ID
       -if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank?
