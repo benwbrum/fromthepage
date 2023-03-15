@@ -15,7 +15,7 @@ class WorkController < ApplicationController
   before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :configurable_printout]
 
   def authorized?
     if !user_signed_in? || !current_user.owner
@@ -23,6 +23,14 @@ class WorkController < ApplicationController
     elsif @work && !current_user.like_owner?(@work)
       ajax_redirect_to dashboard_path
     end
+  end
+
+
+
+  def configurable_printout
+    @bulk_export = BulkExport.new
+    @bulk_export.collection = @collection
+    @bulk_export.work = @work
   end
 
 
