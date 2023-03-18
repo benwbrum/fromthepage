@@ -81,6 +81,7 @@ class Article < ApplicationRecord
     # take each element of this article name
     words = self.title.tr(',.', ' ').split(' ')
     # sort it by word length, longest to shortest
+    words.keep_if { |word| word.match(/\w\w/) }
     words.sort! { |x,y| x.length <=> y.length }
     words.reverse!
     # for each word
