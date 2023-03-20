@@ -171,6 +171,7 @@ fr:
       location_of_composition: Lieu de composition
       metadata: Métadonnées
       number_of_pages: Nombre de pages : 
+      original_filename: Nom de fichier d'origine
       out_of_scope: Hors de portée
       permission_description: Description de l'autorisation
       physical_description: Description physique
