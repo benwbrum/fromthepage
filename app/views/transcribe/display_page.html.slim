@@ -102,10 +102,8 @@ h2.legend =t('.notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
--text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
--if !@collection.field_based && text_direction == 'ltr' && !@collection.voice_recognition
-  
-  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+-text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
+=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 -unless @current_user_alerted
   -unless current_user.slug.nil?

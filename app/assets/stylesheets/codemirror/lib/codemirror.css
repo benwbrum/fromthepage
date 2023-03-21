@@ -5,7 +5,8 @@
   font-family: monospace;
   height: auto;
   color: black;
-  direction: ltr;
+  text-align: justify;
+  padding-right: 18px;
 }
 
 /* PADDING */
