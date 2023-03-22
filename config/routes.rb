@@ -172,6 +172,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post ':collection_id/work_create_ajax', to: 'bulk_export#create_for_work_ajax', as: 'create_for_work_ajax'
     post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'

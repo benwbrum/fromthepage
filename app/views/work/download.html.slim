@@ -68,7 +68,7 @@
             h5= t('.configurable_printout')
             p.nomargin= t('.configurable_printout_description')
           .bulk-export_options
-            =link_to(t('.configurable_printout_button'), configurable_printout_collection_work_path(@collection.slug, @work), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+            span =link_to(t('.configurable_printout_button'), configurable_printout_collection_work_path(@collection.slug, @work), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
 
         li
           .bulk-export_format

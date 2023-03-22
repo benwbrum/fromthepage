@@ -42,24 +42,14 @@ class BulkExportController < ApplicationController
   end
 
   def create_for_work
-    @bulk_export = BulkExport.new(bulk_export_params)
-    if @collection.is_a? DocumentSet
-      @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
-    else
-      @bulk_export.collection = @collection
-    end
-    @bulk_export.work = @work
-    @bulk_export.user = current_user
-    @bulk_export.status = BulkExport::Status::NEW
-    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
-
-    if @bulk_export.save
-      @bulk_export.submit_export_process
-
-      flash[:info] = t('.export_running_message', email: (current_user.email))
-    end
+    create_for_work_actual
     redirect_to dashboard_exports_path
+  end
+
+
+  def create_for_work_ajax
+    create_for_work_actual
+    ajax_redirect_to dashboard_exports_path
   end
 
   def create_for_owner
@@ -127,6 +117,9 @@ class BulkExportController < ApplicationController
         :owner_detailed_activity,
         :collection_activity,
         :collection_contributors,
+        :preserve_linebreaks, 
+        :include_metadata, 
+        :include_contributors,
         :report_arguments => [
           :start_date, 
           :end_date, 
@@ -134,4 +127,27 @@ class BulkExportController < ApplicationController
           :include_metadata, 
           :include_contributors])
   end
+
+
+private
+  def create_for_work_actual
+    @bulk_export = BulkExport.new(bulk_export_params)
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
+    end
+    @bulk_export.work = @work
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_json
+
+    if @bulk_export.save
+      @bulk_export.submit_export_process
+
+      flash[:info] = t('.export_running_message', email: (current_user.email))
+    end
+  end
+
 end
