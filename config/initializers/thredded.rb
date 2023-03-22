@@ -39,7 +39,7 @@ Thredded.avatar_url = ->(user) { RailsGravatar.src(user.email, 156, 'mm') }
 # The name of the moderator flag column on the users table.
 Thredded.moderator_column = :owner
 # The name of the admin flag column on the users table.
-Thredded.admin_column = :admin
+Thredded.admin_column = :owner
 
 # Whether posts and topics pending moderation are visible to regular users.
 Thredded.content_visible_while_pending_moderation = true
