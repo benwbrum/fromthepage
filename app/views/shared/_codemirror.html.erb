@@ -94,6 +94,8 @@
       hintOptions: {schemaInfo: fromthepage_tags},
       buttons: button_config,
       inputStyle: 'contenteditable',
-      spellcheck: <%= @collection.enable_spellcheck %>
+      spellcheck: <%= @collection.enable_spellcheck %>,
+      rtlMoveVisually: true,
+      direction: "<%= text_direction %>",
     });
 </script>
