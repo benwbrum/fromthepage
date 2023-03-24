@@ -48,12 +48,7 @@ class DisplayController < ApplicationController
         @count = @pages.count
         @heading = t('.translations_need_indexing')
       else
-        @pages = @work.pages
-        numeric_pages, alpha_numeric_pages = @pages.partition { |page| page.title.to_i.positive? }
-        sorted_numeric_pages = numeric_pages.sort_by { |page| page.title.to_i }
-        @pages = sorted_numeric_pages.concat(alpha_numeric_pages)
-        @pages = Page.where(id: @pages.pluck(:id)).order("FIELD(id, #{@pages.pluck(:id).join(',')})")
-        @pages = @pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
         @heading = t('.pages')
       end
