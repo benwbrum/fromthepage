@@ -6,14 +6,12 @@ de:
       export: Export
       file_format: Datei Format
       file_format_description: Dateityp für druckbaren Export
-      format_options: Optionen
       heading: Ausdruckkonfiguration
       include_contributors: Mitwirkende einbeziehen
       include_metadata: Metadaten einschließen
       preserve_linebreaks: Zeilenumbrüche beibehalten
       text_contents: Inhalt
       text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.
-      text_docx_options: Textformat
       text_format: Textformatierung
       text_format_description: Optionen zum Formatieren von Text.
       text_format_docx: MS-Word (.docx)

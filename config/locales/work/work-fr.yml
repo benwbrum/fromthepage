@@ -6,14 +6,12 @@ fr:
       export: Exporter
       file_format: Format de fichier
       file_format_description: Type de fichier pour l'exportation imprimable
-      format_options: Choix
       heading: Configuration de l'impression
       include_contributors: Inclure les contributeurs
       include_metadata: Inclure les métadonnées
       preserve_linebreaks: Conserver les sauts de ligne
       text_contents: Contenu
       text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur le travail.
-      text_docx_options: Format de texte
       text_format: Formatage du texte
       text_format_description: Options de mise en forme du texte.
       text_format_docx: MS Word (.docx)
