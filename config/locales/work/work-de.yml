@@ -1,6 +1,22 @@
 ---
 de:
   work:
+    configurable_printout:
+      description: Exportieren Sie diese Arbeit in einem druckbaren Format
+      export: Export
+      file_format: Datei Format
+      file_format_description: Dateityp für druckbaren Export
+      heading: Ausdruckkonfiguration
+      include_contributors: Mitwirkende einbeziehen
+      include_metadata: Metadaten einschließen
+      preserve_linebreaks: Zeilenumbrüche beibehalten
+      text_contents: Inhalt
+      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.
+      text_format: Textformatierung
+      text_format_description: Optionen zum Formatieren von Text.
+      text_format_docx: MS-Word (.docx)
+      text_format_pdf: Pdf
+      word_wrap: Zeilenumbruch
     create:
       work_created: Arbeit erfolgreich erstellt
     describe:
@@ -36,6 +52,9 @@ de:
       revision: Revision
     download:
       analyze: Analysieren
+      configurable_printout: Konfigurierbarer Ausdruck
+      configurable_printout_button: Konfigurieren
+      configurable_printout_description: PDF- oder MS-Word-Export mit konfigurierbaren Inhalten und Formatierungen
       docx_download_description: Laden Sie eine DOCX-Version dieser Arbeit herunter.
       download: Herunterladen
       expanded_plaintext: Erweiterter Klartext
