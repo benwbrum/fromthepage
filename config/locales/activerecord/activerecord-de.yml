@@ -17,17 +17,17 @@ de:
           attributes:
             slug:
               blank: erforderlich
-              invalid: muss mindestens einen Buchstaben haben
+              invalid: muss mindestens einen Buchstaben beinhalten
         document_set:
           attributes:
             slug:
               blank: erforderlich
-              invalid: muss mindestens einen Buchstaben haben
+              invalid: muss mindestens einen Buchstaben beinhalten
         work:
           attributes:
             slug:
               blank: erforderlich
-              invalid: muss mindestens einen Buchstaben haben
+              invalid: muss mindestens einen Buchstaben beinhalten
         xml_source_processor:
           blank_subject_in: Leerer Betreff in %{tag}
           blank_tag_in: Leeres Tag in %{tag}
@@ -38,8 +38,8 @@ de:
           wrong_number_of_closing_braces: Falsche Anzahl schließender Klammern nach %{tag}
     models:
       bulk_export:
-        one: Massenexport
-        other: Massenexporte
+        one: Bulk-Export
+        other: Bulk-Export
       ia_leaf:
         one: Buchseite
         other: Seiten
@@ -47,10 +47,10 @@ de:
         one: Buchseite
         other: Seiten
       work:
-        one: arbeiten
-        other: funktioniert
+        one: Werk
+        other: Werke
   errors:
     messages:
       not_saved:
         one: '1 Fehler hat das Speichern von %{resource} verhindert:'
-        other: "%{count}-Fehler verhinderten, dass %{resource} gespeichert wurde:"
+        other: "%{count} Fehler verhinderten, dass %{resource} gespeichert wurde:"
