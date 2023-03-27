@@ -7,6 +7,8 @@ fr:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
     create_for_work:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
+    create_for_work_ajax:
+      export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
     download:
       download_cleaned_message: Ce téléchargement d'exportation a été nettoyé. Veuillez en commencer un nouveau.
     index:

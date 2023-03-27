@@ -7,6 +7,8 @@ de:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_work:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work_ajax:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     download:
       download_cleaned_message: Dieser Export-Download wurde bereinigt. Bitte starten Sie einen neuen.
     index:
