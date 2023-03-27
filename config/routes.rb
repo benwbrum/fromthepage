@@ -172,6 +172,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post ':collection_id/work_create_ajax', to: 'bulk_export#create_for_work_ajax', as: 'create_for_work_ajax'
     post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
@@ -486,7 +487,7 @@ Fromthepage::Application.routes.draw do
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
-        get 'print', on: :member
+        get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update

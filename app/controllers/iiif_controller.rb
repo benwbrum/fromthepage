@@ -466,7 +466,7 @@ class IiifController < ApplicationController
 
   def manifest_status
     work = Work.find params[:work_id]
-    service = status_service_for_work(work)
+    service = status_service_for_manifest(work)
     render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 

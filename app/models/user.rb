@@ -122,7 +122,7 @@ class User < ApplicationRecord
     logger.info("User record before save:")
     logger.info(user.to_json)
     logger.info("Data from SAML response:")
-    logger.info(date.to_json)
+    logger.info(data.to_json)
 
     # update the user's SSO if they don't have one
     if user && user.sso_issuer.nil?

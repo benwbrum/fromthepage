@@ -1,6 +1,7 @@
 class BulkExport < ApplicationRecord
   require 'zip'
   include ExportHelper, ExportService
+  store :report_arguments, accessors: [:preserve_linebreaks, :include_metadata, :include_contributors], coder: JSON
 
   belongs_to :user
   belongs_to :collection, optional: true
@@ -31,13 +32,6 @@ class BulkExport < ApplicationRecord
     self.attributes.detect{|k,v| k.match(/_page/) && v==true }
   end
 
-  def report_arguments
-    if self[:report_arguments].blank?
-      {}
-    else
-      JSON.parse(self[:report_arguments])  
-    end
-  end
 
   def export_to_zip
     self.status = Status::PROCESSING
