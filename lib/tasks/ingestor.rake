@@ -209,16 +209,21 @@ namespace :fromthepage do
     print "\tconvert_to_work default title = #{File.basename(path).ljust(3,'.')}\n"
     print "\tconvert_to_work looking for metadata.yml in #{File.join(File.dirname(path), 'metadata.yml')}\n"
     
-    
-    if File.exist? File.join(path, 'metadata.yml')
-      yaml = YAML.load_file(File.join(path, 'metadata.yml'))
-    elsif File.exist? File.join(path, 'metadata.yaml')
-      yaml = YAML.load_file(File.join(path, 'metadata.yaml'))
-    else
-      print "\tconvert_to_work no metadata.yml file; using default settings\n"
-      yaml = nil
+    begin
+      if File.exist? File.join(path, 'metadata.yml')
+        yaml = YAML.load_file(File.join(path, 'metadata.yml'))
+      elsif File.exist? File.join(path, 'metadata.yaml')
+        yaml = YAML.load_file(File.join(path, 'metadata.yaml'))
+      else
+        print "\tconvert_to_work no metadata.yml file; using default settings\n"
+        yaml = nil
+      end
+    rescue StandardError => e
+      document_upload.update(status: DocumentUpload::Status::ERROR)
+      logger.info "Yml/Yaml Failed: Exception: #{e.message}"
+      return
     end
-          
+
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
     
     User.current_user=document_upload.user
