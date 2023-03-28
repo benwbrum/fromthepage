@@ -17,6 +17,6 @@ de:
       save_changes: Änderungen speichern
       title: Titel
     enable_gis:
-      gis_enabled_for: GIS aktiviert für %{title}
+      gis_enabled_for: GIS für %{title} aktiviert
     update:
       category_updated: Kategorie wurde aktualisiert

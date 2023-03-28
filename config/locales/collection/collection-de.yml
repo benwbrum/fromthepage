@@ -2,48 +2,48 @@
 de:
   collection:
     approve_all:
-      approved_n_pages: Genehmigte %{page_count} Seiten.
+      approved_n_pages: Bestätigte %{page_count} Seiten.
     collection_works:
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten;"
       progress: Fortschritt
-      work_title: Arbeitstitel
+      work_title: Werktitel
     contributor_activity:
-      recent_notes: Aktuelle Notizen
-      recent_ocr_correction: Kürzliche OCR-Korrektur
-      recent_pages_needing_review: Letzte Seiten, die überprüft werden müssen
-      recent_subject_indexing: Aktuelle Themenindizierung
-      recent_subjects: Aktuelle Themen
-      recent_transcriptions: Neuere Transkriptionen
-      recent_translation_subject_indexing: Indexierung aktueller Übersetzungsthemen
-      recent_translations: Aktuelle Übersetzungen
-      recent_translations_needing_review: Aktuelle Übersetzungen, die überprüft werden müssen
-      recent_works_added: Neue Werke hinzugefügt
+      recent_notes: Neue Meldungen
+      recent_ocr_correction: Kürzlich hinzugefügte OCR-Korrekturen
+      recent_pages_needing_review: Seiten, die überprüft werden müssen
+      recent_subject_indexing: Kürzlich hinzugefügte Entitäten-Indexierung
+      recent_subjects: Kürzlich hinzugefügte Entitäten
+      recent_transcriptions: Kürzlich hinzugefügte Transkriptionen
+      recent_translation_subject_indexing: Kürzlich hinzugefügte Übersetzungen Entitäten-Indexierung
+      recent_translations: Kürzlich hinzugefügte Übersetzungen
+      recent_translations_needing_review: Kürzlich hinzugefügte Übersetzungen, die überprüft werden müssen
+      recent_works_added: Kürzlich hinzugefügte Werke 
     contributors:
       contributions: Beiträge zwischen %{start_deed} und %{end_deed}
-      end_date: Endtermin
+      end_date: Enddatum
       select_new_date: Wählen Sie einen neuen Datumsbereich aus
       start_date: Startdatum
       update: Aktualisieren
     contributors_body:
-      active_collaborators: Aktive Mitarbeiter
-      all_collaborator_emails: Alle Mitarbeiter-E-Mails
-      collaborator_stats: Mitarbeiterstatistiken %{start_deed} bis %{end_deed}
-      collaborators: Mitarbeiter
-      detailed_spreadsheet_export: Ein detaillierter Tabellenkalkulationsexport aller Mitarbeiter ist auf Ihrem Eigentümer-Dashboard verfügbar.
-      export_activity_as_csv: Alle Aktivitäten als Tabellenkalkulation exportieren
+      active_collaborators: Aktive Mitarbeitende
+      all_collaborator_emails: Alle Mitarbeitende-E-Mails
+      collaborator_stats: Mitarbeitendestatistiken %{start_deed} bis %{end_deed}
+      collaborators: Mitarbeitende
+      detailed_spreadsheet_export: Ein detaillierter Tabellen-Export aller Mitarbeitenden ist auf Ihrem Inhaber-Dashboard verfügbar.
+      export_activity_as_csv: Alle Aktivitäten als Tabelle exportieren
       export_activity_as_csv_description: Laden Sie eine Tabelle herunter, in der jede Aktion aufgelistet ist.
       export_activity_as_csv_header: Aktivität exportieren
-      export_as_csv: Benutzeraktivität als Tabellenkalkulation exportieren
-      export_as_csv_description: Laden Sie eine Tabelle mit einer Zeile herunter, die jeden Benutzer und seine Zeit und Aktivität auflistet.
-      find_project_newsletters_recommendations: Finden Sie Empfehlungen für Projekt-Newsletter.
-      new_collaborators: Neue Mitarbeiter
+      export_as_csv: Benutzer:innen-Aktivität als Tabelle exportieren
+      export_as_csv_description: Laden Sie eine Tabelle, die jede:n Benutzer:in und seine Zeit und Aktivität auflistet.
+      find_project_newsletters_recommendations: Empfehlungen für Projekt-Newsletter finden.
+      new_collaborators: Neue Mitarbeitende
       no_activity_this_time_frame: Keine Aktivität in diesem Zeitraum
-      no_collaborators: Keine Mitarbeiter
-      time_on_this: Zeit für diese Sammlung
+      no_collaborators: Keine Mitarbeitenden
+      time_on_this: Dauer für diese Sammlung
       total_time: 'Gesamtzeit: %{hours} Stunden, %{minutes} Minuten.'
-      user: Benutzer
+      user: Benutzer:in
       view_activity: Aktivität anzeigen
     corrected: korrigiert
     create:
