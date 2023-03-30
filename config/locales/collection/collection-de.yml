@@ -244,7 +244,7 @@ de:
       create_collection: Sammlung erstellen
       create_new_collection: Neue Sammlung erstellen
       enter_collection_title: Um eine neue Sammlung zu erstellen, geben Sie bitte einen Titel für die Sammlung ein. Im nächsten Schritt können Sie der Sammlung Werke hinzufügen.
-      individual_researcher_limited_account: Konten von Einzelforschenden sind auf eine einzige Sammlung beschränkt. Um Ihr Konto zu aktualisieren, wenden Sie sich an support@fromthepage.com.
+      individual_researcher_limited_account: Konten von individuellen Forschenden sind auf eine einzige Sammlung beschränkt. Um Ihr Konto zu aktualisieren, wenden Sie sich an support@fromthepage.com.
       title: Titel
     one_off_list:
       date: Datum
@@ -313,7 +313,7 @@ de:
     update_buttons:
       editor_buttons_updated: Editor-Buttons aktualisiert
     upload:
-      acceptable_image_files: Die zulässigen Formate sind PNG-, GIF- und JPG.
+      acceptable_image_files: 'Zulässige Formate: PNG-, GIF- und JPG.'
       image_naming_guidelines: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
       image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
       page_image_guidelines: Richtlinien für Bildseiten

@@ -1,17 +1,17 @@
 ---
 de:
   deed:
-    article_edit: Artikel bearbeitet
+    article_edit: Entität bearbeitet
     collection_active: Sammlung aktiv
     collection_inactive: Sammlung inaktiv
-    collection_joined: Sammlung zusammengeführt
+    collection_joined: Sammlung beigetreten
     deeds:
       show_more: Mehr zeigen
       time_ago_in_words: "Vor %{time}"
     described_metadata: Beschriebene Metadaten
     edited_metadata: Bearbeitete Metadatenbeschreibung
     list:
-      activity_stream: Aktivitätsfluss
+      activity_stream: Aktivitätenüberblick
       collection_title: 'Sammlung: %{title}'
       newer_activity: Neuere Aktivität
       older_activity: Ältere Aktivität
@@ -27,8 +27,8 @@ de:
     page_reviewed: Seite überprüft
     page_transcription: Seite transkribiert
     page_translated: Seite übersetzt
-    page_translation_edit: Übersetzungsseite bearbeitet
-    translation_indexed: Übersetzung - Seite indiziert
-    translation_review: Übersetzung - Seite muss überprüft werden
+    page_translation_edit: Übersetzung bearbeitet
+    translation_indexed: Übersetzung indiziert
+    translation_review: Übersetzung muss überprüft werden
     translation_reviewed: Übersetzung überprüft
     work_added: Werk hinzugefügt
