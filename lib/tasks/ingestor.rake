@@ -220,7 +220,7 @@ namespace :fromthepage do
       end
     rescue StandardError => e
       document_upload.update(status: DocumentUpload::Status::ERROR)
-      logger.info "Yml/Yaml Failed: Exception: #{e.message}"
+      logger.info "YML/YAML Failed: Exception: #{e.message}"
       return
     end
 
