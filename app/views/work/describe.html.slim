@@ -65,7 +65,7 @@
           -else
             =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}", class: "bggreen"
 
-        -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
+        -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user&.can_review?(@collection)
           =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen"
 
 
