@@ -4,8 +4,8 @@ de:
     edit:
       html_block_for: HTML-Block für %{description}
     html_block:
-      create_help_text: Hilfetext erstellen
-      edit_help_text: Hilfetext bearbeiten
+      create_help_text: Hilfstext erstellen
+      edit_help_text: Hilfstext bearbeiten
     list:
       action: Aktion
       edit: bearbeiten

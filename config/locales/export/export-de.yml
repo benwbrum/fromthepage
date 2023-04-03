@@ -3,30 +3,30 @@ de:
   export:
     edit_contentdm_credentials:
       connect: Verbinden
-      contentdm_credentials: CONTENTdm-Anmeldeinformationen
-      contentdm_credentials_description: Geben Sie Ihren CONTENTdm-Lizenzschlüssel und Ihre Anmeldeinformationen ein, um nach CONTENTdm zu exportieren
+      contentdm_credentials: CONTENTdm-Berechtigung
+      contentdm_credentials_description: Geben Sie Ihren CONTENTdm-Lizenzschlüssel und Ihre Anmeldedaten ein, um nach CONTENTdm zu exportieren
       contentdm_password: CONTENTdm-Passwort
       contentdm_user_name: CONTENTdm-Benutzername
       license_key: Lizenzschlüssel
     facing_edition:
-      contributions_message: 'Dieses Dokument wäre ohne die redaktionellen Beiträge der folgenden Personen nicht möglich:'
-      export_metadata: FromThePage-Export von %{work} aus %{collection} auf %{time}.
+      contributions_message: 'Dieses Dokument wäre ohne die Beiträge der folgenden Personen nicht möglich:'
+      export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
     index:
       api: API
       export_all_works: Alle Werke exportieren
-      export_all_works_description: Wählen Sie Formate und Granularitäten aus, um die gesamte Sammlung in eine ZIP-Datei zu exportieren.
+      export_all_works_description: Wählen Sie Formate und spezifische Einstellungen aus, um die gesamte Sammlung in eine ZIP-Datei zu exportieren.
       export_as: Exportieren als
       export_individual_works: Einzelne Werke exportieren
-      export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Themenartikeln und internen HREFs, die Themen und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Klartext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seitenauflösung.
+      export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Entitäten und internen HREFs, die Entitäten und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Klartext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seiteneinzelheiten.
       export_to_contentdm: Export nach CONTENTdm
-      export_to_contentdm_description: Klicken Sie auf die Schaltfläche, um fertige Transkripte aus der gesamten Sammlung nach CONTENTdm zu exportieren.
-      export_work_metadata: Arbeitsmetadaten exportieren
-      export_work_metadata_as_csv: Arbeitsmetadaten als CSV exportieren
-      export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung, mit Spalten für Statistiken zu transkribierten Seiten und Metadaten für das Werk.
-      here: Hier
+      export_to_contentdm_description: Klicken Sie auf den Button, um fertige Transkripte aus der gesamten Sammlung nach CONTENTdm zu exportieren.
+      export_work_metadata: Werksmetadaten exportieren
+      export_work_metadata_as_csv: Werksmetadaten als CSV exportieren
+      export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung und mit Spalten für Statistiken zu transkribierten Seiten und für die Metadaten für das Werk.
+      here: hier
       html: HTML
       iiif: IIIF
-      iiif_api_description: Wir haben auch eine IIIF-basierte API zum programmgesteuerten Exportieren von Transkripten aus Ihren Sammlungen. Mehr erfahren %{link}
+      iiif_api_description: Wir haben auch eine IIIF-basierte API zum Exportieren von Transkripten aus Ihren Sammlungen. Mehr erfahren %{link}
       iiif_collection_api_endpoint: 'API-Endpunkt der IIIF-Sammlung: %{link}'
       indexed: Indiziert
       more: Mehr
@@ -37,15 +37,15 @@ de:
       pages: Seiten
       plain_text: Klartext
       progress: Fortschritt
-      review: Rezension
+      review: Review
       table_csv: Tabelle CSV
       tei: TEI
-      work_title: Arbeitstitel
+      work_title: Werktitel
     show:
       categories: 'Kategorien:'
-      export_metadata: FromThePage-Export von %{work} aus %{collection} auf %{time}.
+      export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'
-      identifier: 'Kennung: %{work}'
+      identifier: 'Identifier: %{work}'
       notes: 'Anmerkungen:'
       page_edit_history: 'Verlauf der Seitenbearbeitung:'
       page_transcripts: Seitentranskripte
@@ -53,21 +53,21 @@ de:
       pages: 'Seiten:'
       subjects_and_indices: Themen und Indizes
     tei:
-      administrator: Administrator des Transkriptionsprojekts %{collection} auf FromThePage
+      administrator: Administrator:in des Transkriptionsprojekts %{collection} auf FromThePage
       changes_to_page_transcript: Änderungen am Seitentranskript.
-      double_proof_by: 'Doppelbeweis durch:'
-      dynamic_tei_export: Dynamischer TEI-Export aus FromThePage (Version %{version})
-      edition_created: Ausgabe erstellt aus neuen Abschriften dieses Manuskripts.
-      empty_transcript: Leeres Transkript - wahrscheinlich ursprünglicher Upload des Seitenfaksimiles.
-      initial_upload: Erstmaliges Hochladen der Faksimile-Bilder und Metadaten dieses Werks auf FromThePage zur Bearbeitung
-      made_edits_between: zwischen %{count} Änderungen vorgenommen
-      made_one_edit_on: eine Bearbeitung vorgenommen
-      single_proof_by: 'Einzelnachweis durch:'
+      double_proof_by: 'Doppelte Kontrolle durch:'
+      dynamic_tei_export: Dynamischer TEI-Export von FromThePage (Version %{version})
+      edition_created: Edition erstellt aus neuen Transkriptionen dieses Manuskripts.
+      empty_transcript: Leeres Transkript - vermutlich ursprünglicher Upload des Seitenfaksimiles.
+      initial_upload: Erstmaliger Upload der Faksimiles und Metadaten dieses Werks auf FromThePage zur Bearbeitung
+      made_edits_between: '%{count} Bearbeitungen vorgenommen zwischen'
+      made_one_edit_on: eine Bearbeitung vorgenommen an
+      single_proof_by: 'Einfache Kontrolle durch:'
     text:
       categories: 'Kategorien:'
-      export_metadata: FromThePage-Export von %{work} aus %{collection} auf %{time}.
+      export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'
-      identifier: 'Kennung: %{work}'
+      identifier: 'Identifier: %{work}'
       notes: 'Anmerkungen:'
       page_transcripts: Seitentranskripte
       page_translations: Seitenübersetzungen
@@ -83,8 +83,8 @@ de:
     translation:
       export_metadata: FromThePage-Export von %{work} aus %{collection} auf %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'
-      identifier: 'Kennung: %{work}'
+      identifier: 'Identifier: %{work}'
       notes: 'Anmerkungen:'
       page_translations: Seitenübersetzungen
     update_contentdm_credentials:
-      updating_contentdm_message: Aktualisieren von CONTENTdm. Sie sollten eine E-Mail erhalten, wenn die Synchronisierung abgeschlossen ist, und dann Ihren Index neu erstellen müssen, damit die Änderungen angezeigt werden.
+      updating_contentdm_message: Aktualisierung von CONTENTdm. Sie sollten eine E-Mail erhalten, wenn die Synchronisierung abgeschlossen ist. Sie werden dann Ihren Index neu erstellen müssen, damit die Änderungen angezeigt werden.

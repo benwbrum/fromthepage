@@ -27,7 +27,7 @@ de:
       create_empty_work_description: Verwenden Sie diese Option, um ein leeres Werk zu erstellen. Sie können dann einzelne Seitenbilder in die Arbeit hochladen.
       create_work: Arbeit erstellen
       description: Beschreibung
-      description_message: Die Beschreibung wird auf dem Projektübersichtsbildschirm und dem Projektinfo-Bildschirm angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und dem Bildschirm „Projekt suchen“ angezeigt.
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
       select_a_collection: "- Wählen Sie eine Sammlung aus -"
       title: Titel
     exports:
