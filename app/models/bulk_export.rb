@@ -1,7 +1,7 @@
 class BulkExport < ApplicationRecord
   require 'zip'
   include ExportHelper, ExportService
-  store :report_arguments, accessors: [:preserve_linebreaks, :include_metadata, :include_contributors], coder: JSON
+  store :report_arguments, accessors: [:preserve_linebreaks, :include_metadata, :include_contributors, :start_date, :end_date], coder: JSON
 
   belongs_to :user
   belongs_to :collection, optional: true
