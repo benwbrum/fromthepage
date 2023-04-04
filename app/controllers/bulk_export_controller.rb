@@ -146,7 +146,6 @@ private
     if bulk_export_params[:report_arguments]
       @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
     end
-    binding.pry
 
     if @bulk_export.save
       @bulk_export.submit_export_process
