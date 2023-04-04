@@ -29,22 +29,22 @@ de:
               blank: erforderlich
               invalid: muss mindestens einen Buchstaben beinhalten
         xml_source_processor:
-          blank_subject_in: Leerer Betreff in %{tag}
+          blank_subject_in: Leere Entität in %{tag}
           blank_tag_in: Leeres Tag in %{tag}
           blank_text_in: Leerer Text in %{tag}
-          subject_linking_error: 'Fehler bei der Betreffverknüpfung:'
+          subject_linking_error: 'Fehler bei der Entitätenverlinkung:'
           tags_should_not_use_3_brackets: Tags sollten mit 2 Klammern erstellt werden, nicht mit 3
           unclosed_bracket_within: Nicht geschlossene Klammer innerhalb von %{tag}
           wrong_number_of_closing_braces: Falsche Anzahl schließender Klammern nach %{tag}
     models:
       bulk_export:
-        one: Bulk-Export
-        other: Bulk-Export
+        one: Sammel-Export
+        other: Sammel-Export
       ia_leaf:
-        one: Buchseite
+        one: Seite
         other: Seiten
       page:
-        one: Buchseite
+        one: Seite
         other: Seiten
       work:
         one: Werk

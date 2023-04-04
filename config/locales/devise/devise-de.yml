@@ -4,7 +4,7 @@ de:
     confirm_password: Passwort bestätigen
     create_account: Benutzerkonto erstellen
     display_name: Organisationsname
-    email_address: E-Mail-Addresse
+    email_address: E-Mail-Adresse
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
@@ -41,7 +41,7 @@ de:
       updated_not_active: Ihr Passwort wurde erfolgreich geändert.
     real_name: Echter Name
     real_name_message: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
-    receive_activity_emails: Aktivitätsmails erhalten
+    receive_activity_emails: Mails zu Aktivitäten erhalten
     registrations:
       choose_saml:
         harvard_university: Harvard Universität
@@ -65,13 +65,13 @@ de:
         login: Login
         message: Bitte füllen Sie die folgenden Informationen aus, um ein FromThePage-Projektinhaber:innen-Konto mit 200 Seiten zu erstellen. Haben Sie Fragen? %{schedule_a_kickoff_call}
         project_owner_account_have: FromThePage-Projektinhaber:innen-Konto. Haben Sie Fragen?
-        schedule_a_kickoff_call: Termin für ein Kickoff-Gespräch vereinbaren.
+        schedule_a_kickoff_call: Termin für ein Kick-Off-Gespräch vereinbaren.
         sign_up_for_trial: Für eine Testversion anmelden
         sign_up_here: Hier anmelden
         want_to_transcribe: Sie möchten transkribieren?
       owner_new:
         projects_may_use_this: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
-        you_ll_use_this: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
+        you_ll_use_this: Dies ist der Name, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
       signed_up: Willkommen! Sie haben sich erfolgreich angemeldet.
       updated: Ihr Konto wurde erfolgreich aktualisiert.
       updated_but_not_signed_in: Ihr Konto wurde erfolgreich aktualisiert, aber da Ihr Passwort geändert wurde, müssen Sie sich erneut anmelden
@@ -99,7 +99,7 @@ de:
         sign_up_new_account: Ein neues Konto registrieren
     sign_in: Login
     sign_up: Registrieren
-    user_name: Nutzername
+    user_name: Benutzername
     user_name_message: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
   errors:
     messages:

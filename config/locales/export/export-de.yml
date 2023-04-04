@@ -20,15 +20,15 @@ de:
       export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Entitäten und internen HREFs, die Entitäten und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Klartext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seiteneinzelheiten.
       export_to_contentdm: Export nach CONTENTdm
       export_to_contentdm_description: Klicken Sie auf den Button, um fertige Transkripte aus der gesamten Sammlung nach CONTENTdm zu exportieren.
-      export_work_metadata: Werksmetadaten exportieren
-      export_work_metadata_as_csv: Werksmetadaten als CSV exportieren
+      export_work_metadata: Metadaten zum Werk exportieren
+      export_work_metadata_as_csv: Metadaten zum Werk als CSV exportieren
       export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung und mit Spalten für Statistiken zu transkribierten Seiten und für die Metadaten für das Werk.
       here: hier
       html: HTML
       iiif: IIIF
       iiif_api_description: Wir haben auch eine IIIF-basierte API zum Exportieren von Transkripten aus Ihren Sammlungen. Mehr erfahren %{link}
       iiif_collection_api_endpoint: 'API-Endpunkt der IIIF-Sammlung: %{link}'
-      indexed: Indiziert
+      indexed: Indexiert
       more: Mehr
       more_export_formats: Zusätzliche Exportformate
       n_pages:
@@ -51,7 +51,7 @@ de:
       page_transcripts: Seitentranskripte
       page_translations: Seitenübersetzungen
       pages: 'Seiten:'
-      subjects_and_indices: Themen und Indizes
+      subjects_and_indices: Entitäten und Indizes
     tei:
       administrator: Administrator:in des Transkriptionsprojekts %{collection} auf FromThePage
       changes_to_page_transcript: Änderungen am Seitentranskript.
@@ -59,7 +59,7 @@ de:
       dynamic_tei_export: Dynamischer TEI-Export von FromThePage (Version %{version})
       edition_created: Edition erstellt aus neuen Transkriptionen dieses Manuskripts.
       empty_transcript: Leeres Transkript - vermutlich ursprünglicher Upload des Seitenfaksimiles.
-      initial_upload: Erstmaliger Upload der Faksimiles und Metadaten dieses Werks auf FromThePage zur Bearbeitung
+      initial_upload: Erstmaliger Upload der Faksimiles und Metadaten dieses Werkes auf FromThePage zur Bearbeitung
       made_edits_between: '%{count} Bearbeitungen vorgenommen zwischen'
       made_one_edit_on: eine Bearbeitung vorgenommen an
       single_proof_by: 'Einfache Kontrolle durch:'
@@ -72,11 +72,11 @@ de:
       page_transcripts: Seitentranskripte
       page_translations: Seitenübersetzungen
       pages: 'Seiten:'
-      subjects_and_indices: Themen und Indizes
+      subjects_and_indices: Entitäten und Indizes
     transcript:
       export_metadata: FromThePage-Export von %{work} aus %{collection} auf %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'
-      identifier: 'Kennung: %{work}'
+      identifier: 'Identifier: %{work}'
       notes: 'Anmerkungen:'
       page_transcripts: Seitentranskripte
       page_translations: Seitenübersetzungen

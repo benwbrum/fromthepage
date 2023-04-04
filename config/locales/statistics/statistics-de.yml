@@ -3,25 +3,25 @@ de:
   statistics:
     collaborator_time:
       collaborator_time: Mitarbeiterzeit
-      collaborator_time_description: Eine Tabelle mit der Anzahl der Minuten, die jeder Benutzer pro Tag im Datumsbereich beigetragen hat.
-      collaborator_time_export_button: Zeittabelle für Mitarbeiter exportieren
-      no_activity_for_date_range: Für diesen Zeitraum gibt es keine Aktivität.
-      user_totals_for_dates: Benutzersummen für Datumsangaben
+      collaborator_time_description: Eine Tabelle mit der Minutenanzahl, die jede:r Bearbeiter:in pro Tag im ausgewählten Datumsbereich beigetragen hat.
+      collaborator_time_export_button: Zeittabelle für Mitarbeitende exportieren
+      no_activity_for_date_range: In diesem Zeitraum gibt es keine Aktivitäten.
+      user_totals_for_dates: Gesamtzahl Mitarbeitende für Datumsauswahl
     collaborators:
-      collaborators: Mitarbeiter
+      collaborators: Mitarbeitende
       editing: Bearbeitung
-      indexing: Indizierung
+      indexing: Indexierung
       mailing_list_export: Mailingliste exportieren
-      no_editors: Keine Redakteure
-      no_indexers: Keine Indexierer
-      no_transcribers: Keine Transkriptoren
+      no_editors: Keine Bearbeitenden
+      no_indexers: Keine Indexierenden
+      no_transcribers: Keine Transkribierenden
       transcribing: Transkription
     collection:
       last_days_statistics: Statistik der letzten 7 Tage
     collection_statistics:
       collaborator:
-        one: Mitarbeiter
-        other: Mitarbeiter
+        one: Mitarbeitende:r
+        other: Mitarbeitende
       incomplete_page:
         one: Unvollständige Seite
         other: Unvollständige Seiten
@@ -29,20 +29,20 @@ de:
         one: Textzeile
         other: Textzeilen
       note:
-        one: Notiz
+        one: Anmerkung
         other: Anmerkungen
       ocr_correction:
         one: OCR-Korrektur
         other: OCR-Korrekturen
       page:
-        one: Buchseite
+        one: Seite
         other: Seiten
       page_edit:
-        one: Seite bearbeiten
+        one: Seitebearbeitung
         other: Seitenbearbeitungen
       page_indexed:
         one: Seite indexiert
-        other: Seiten indiziert
+        other: Seiten indexiert
       page_needing_review:
         one: Seite muss überprüft werden
         other: Seiten müssen überprüft werden
@@ -56,39 +56,39 @@ de:
         one: Seite übersetzt
         other: Seiten übersetzt
       records_indexed:
-        one: Indizierter Datensatz
-        other: Indizierte Aufzeichnungen
+        one: Indexierter Datensatz
+        other: Indexierte Datensätze
       reference:
-        one: Referenz
+        one: Verweis
         other: Verweise
       subject:
-        one: Thema
-        other: Fächer
+        one: Entität
+        other: Entitäten
       work:
-        one: Arbeiten
-        other: Funktioniert
+        one: Werk
+        other: Werke
       works_described:
-        one: Beschriebene Arbeit
+        one: Beschriebenes Werk
         other: Beschriebene Werke
     recent_statistics:
       collaborator:
-        one: Mitarbeiter
-        other: Mitarbeiter
+        one: Mitarbeitende:r
+        other: Mitarbeitende
       new_subject:
-        one: Neues Thema
-        other: Neue Fächer
+        one: Neue Entität
+        other: Neue Entitäten
       note:
-        one: Notiz
+        one: Anmerkung
         other: Anmerkungen
       ocr_correction:
         one: OCR-Korrektur
         other: OCR-Korrekturen
       page_edit:
-        one: Seite bearbeiten
+        one: Seitenbearbeitung
         other: Seitenbearbeitungen
       page_indexed:
         one: Seite indexiert
-        other: Seiten indiziert
+        other: Seiten indexiert
       page_marked_needing_review:
         one: Seite muss überprüft werden
         other: Seiten müssen überprüft werden
@@ -102,34 +102,34 @@ de:
         one: Seite übersetzt
         other: Seiten übersetzt
       reference:
-        one: Referenz
+        one: Verweis
         other: Verweise
     statistics:
       active_page:
         one: Aktive Seite
         other: Aktive Seiten
       collaborator:
-        one: Mitarbeiter
-        other: Mitarbeiter
-      end_date: Endtermin
+        one: Mitarbeitende:r
+        other: Mitarbeitende
+      end_date: Enddatum
       incomplete_page:
         one: Unvollständige Seite
         other: Unvollständige Seiten
       new_subject:
-        one: Neues Thema
-        other: Neue Fächer
+        one: Neue Entität
+        other: Neue Entitäten
       note:
-        one: Notiz
+        one: Anmerkung
         other: Anmerkungen
       ocr_correction:
         one: OCR-Korrektur
         other: OCR-Korrekturen
       page_edit:
-        one: Seite bearbeiten
+        one: Seitenbearbeitung
         other: Seitenbearbeitungen
       page_indexed:
         one: Seite indexiert
-        other: Seiten indiziert
+        other: Seiten indexiert
       page_marked_needing_review:
         one: Seite muss überprüft werden
         other: Seiten müssen überprüft werden
@@ -146,18 +146,18 @@ de:
         one: Seite übersetzt
         other: Seiten übersetzt
       reference:
-        one: Referenz
+        one: Verweis
         other: Verweise
-      select_new_date: Wählen Sie einen neuen Datumsbereich aus
+      select_new_date: Neuen Datumsbereich auswählen
       start_date: Startdatum
       statistics_from: Statistiken von %{start_date} bis %{end_date}
       subject:
-        one: Thema
-        other: Fächer
+        one: Entität
+        other: Entitäten
       total_page:
         one: Gesamtseite
-        other: Alle Seiten
+        other: Gesamtseiten
       update: Aktualisieren
       work:
-        one: Arbeiten
-        other: Funktioniert
+        one: Werk
+        other: Werke

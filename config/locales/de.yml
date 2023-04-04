@@ -2,8 +2,8 @@
 de:
   authentication_failed: Authentifizierung fehlgeschlagen
   dashboard:
-    collaborator: Mitarbeiter-Dashboard
-    plain: Armaturenbrett
+    collaborator: Mitarbeitenden-Dashboard
+    plain: Dashboard
   date:
     formats:
       default: "%b %d, %Y"
@@ -18,4 +18,4 @@ de:
       default: "%b %d, %Y %I:%M %p"
       short: "%m/%d/%Y um %I:%M %p"
   time_ago_in_words: Vor %{time}
-  unauthorized_collection: Sie haben keinen Zugriff auf %{project}. Bitte melden Sie sich an oder kontaktieren Sie den hinzuzufügenden Projektinhaber.
+  unauthorized_collection: Sie haben keinen Zugriff auf %{project}. Bitte loggen Sie sich ein oder kontaktieren Sie den/die Projektinhaber:in, damit diese:r Sie hinzufügt.

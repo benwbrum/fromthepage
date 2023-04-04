@@ -2,10 +2,10 @@
 de:
   sc_collections:
     cdm_bulk_import_create:
-      import_started: Ihr Import wurde gestartet. Wenn es fertig ist, sollten Sie eine E-Mail an %{email} erhalten.
+      import_started: Ihr Import wurde gestartet. Sobald der Import abgeschlossen ist, versenden wir Sie eine E-Mail an %{email}.
     cdm_bulk_import_new:
-      bulk_contentdm_import: Massenimport von CONTENTdm
-      compound_object_urls: Zusammengesetzte Objekt-URLs
+      bulk_contentdm_import: Sammelimport von CONTENTdm
+      compound_object_urls: URLs für zusammengesetzte Objekte
       import: Importieren
       import_ocr_text: OCR-Text importieren
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
@@ -22,17 +22,17 @@ de:
       import_ocr_text: OCR-Text importieren
       manifests: 'Manifeste:'
       next_page: Nächste Seite
-      no_label: kein Etikett
+      no_label: kein Label
       previous_page: Vorherige Seite
-      select_a_collection: Wählen Sie eine Sammlung aus
+      select_a_collection: Eine Sammlung auswählen
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
-      select_all_manifests: Wählen Sie alle Manifeste aus
-      this_collection_is_divided: Diese Sammlung ist auf mehrere Seiten aufgeteilt. Sie können Elemente von dieser Seite importieren oder zu anderen Seiten navigieren, um stattdessen Elemente von diesen Seiten zu importieren.
+      select_all_manifests: Alle Manifeste auswählen
+      this_collection_is_divided: Diese Sammlung ist auf mehrere Seiten aufgeteilt. Sie können Elemente von dieser Seite importieren oder stattdessen zu anderen Seiten navigieren, um Elemente von diesen Seiten zu importieren.
     explore_manifest:
-      canvases: 'Leinwände:'
-      collection: 'Sammlung: %{sc_collection}'
+      canvases: 'Canvases:'
+      collection: 'Collection: %{sc_collection}'
       description: 'Beschreibung: %{description}}'
-      id: 'Ausweis:'
+      id: 'ID:'
       import_manifest: Manifest importieren
       import_ocr_text: OCR-Text importieren
       license: 'Lizenz: %{license}'
@@ -48,4 +48,4 @@ de:
       please_enter_url: Bitte geben Sie eine URL für ein CONTENTdm-Objekt ein.
       using_manifest_for: Verwendung des CONTENTdm IIIF-Manifests für %{url}
     import_collection:
-      import_is_processing: Import der IIIF-Sammlung wird verarbeitet. Laden Sie diese Seite in ein paar Minuten neu, um importierte Werke anzuzeigen.
+      import_is_processing: Import der IIIF-Sammlung wird verarbeitet. Laden Sie diese Seite in ein paar Minuten neu, um importierte Werke angezeigt zu bekommen.

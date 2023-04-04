@@ -3,8 +3,8 @@ de:
   ia:
     confirm_import:
       book_already_imported_description: 'Die unterhalb angeführten Werke wurden möglicherweise von derselben Quelle importiert:'
-      book_already_imported_warning: 'Warnung: Dieses Buch wurde möglicherweise bereits importiert!'
-      book_was_imported: Buch "%{book}"von Internet Archive ; wurde von %{user} am %{date} importiert
+      book_already_imported_warning: 'Achtung: Dieses Buch wurde möglicherweise bereits importiert!'
+      book_was_imported: Buch "%{book}" von Internet Archive; wurde von %{user} am %{date} importiert
       cancel_import: Import abbrechen
       import_anyway: Trotzdem importieren
       import_from_archive_org: Von Archive.org importieren
@@ -35,7 +35,7 @@ de:
       ocr_page_titles_description: Dieser Vorgang dauert mehrere Sekunden, da der gesamte OCR-Text für das Buch analysiert und jeder Seitentitel aktualisiert werden muss. Nachdem das Buch in ein FromThePage-Werk konvertiert wurde, können Sie die Seitentitel manuell korrigieren.
       page_n_of_n: Seite %{n} von %{total} (%{n2})
       page_titles: Seitentitel
-      publish_to_collaborators: Für Mitbearbeitende veröffentlichen
+      publish_to_collaborators: Für Mitarbeitende veröffentlichen
       publish_work: Werk veröffentlichen
       publish_work_description: Sobald die Titel und Blätter fertig sind, klicken Sie auf Veröffentlichen, um das Buch in ein fertiges FromThePage-Werk zu konvertieren. Dieser Vorgang dauert einige Minuten.
       select_a_collection: "- Wählen Sie eine Sammlung aus -"

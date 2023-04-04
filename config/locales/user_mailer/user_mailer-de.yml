@@ -3,32 +3,32 @@ de:
   user_mailer:
     added_note:
       html:
-        view_note: " um auf die Notiz in %{collection} zu antworten: %{work}."
-      message: Wir wollten Sie nur darüber informieren, dass die folgende Notiz zu einer Seite hinzugefügt wurde, an der Sie in Arbeit %{work} in der Sammlung %{collection} gearbeitet haben.
+        view_note: " um auf die Anmerkung in %{collection} zu antworten: %{work}."
+      message: Wir wollten Sie nur darüber informieren, dass die folgende Anmerkung zu einer Seite hinzugefügt wurde, an der Sie im Werk %{work} in der Sammlung %{collection} gearbeitet haben.
       text:
-        view_note: 'Sie können auf den Hinweis in %{collection} antworten: %{work} unter der URL: %{url}.'
+        view_note: 'Sie können auf die Anmerkung in %{collection} antworten: %{work} unter der URL: %{url}.'
     bulk_export_finished:
       html:
-        ready_message: wurde bearbeitet und steht bei %{this_link} bereit.
+        ready_message: wurde bearbeitet und steht unter %{this_link} bereit.
       text:
-        ready_message: 'Ihr Export wurde verarbeitet und ist unter dieser URL bereit:'
+        ready_message: 'Ihr Export wurde verarbeitet und steht unter dieser URL bereit:'
       this_link: dieser Link
       your_export_is_ready: Ihr Export ist fertig!
       your_export_of: Ihr Export von
-    click_here: klicken Sie hier
+    click_here: Hier klicken,
     collection_collaborator:
       html:
         to_view: " um %{collection} anzuzeigen"
-      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeiter auf %{collection} hinzugefügt hat.
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeitenden zu %{collection} hinzugefügt hat.
       text:
         to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
     collection_reviewer:
       html:
         to_view: " um %{collection} anzuzeigen"
-      message: "%{owner} hat Sie als autorisierten Rezensenten auf %{collection} hinzugefügt. Sie sollten in der Lage sein, jede Seite, die überprüft werden muss, zu bearbeiten und zu genehmigen."
+      message: "%{owner} hat Sie als autorisierte:n Reviewer:in zu %{collection} hinzugefügt. Es sollte nun möglich sein, jede Seite, die überprüft werden muss, zu bearbeiten und freizugeben."
       text:
         to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
-    fromthepage: VonThePage
+    fromthepage: FromThePage
     greeting: Hallo %{user} --
     html:
       closing: |
@@ -39,14 +39,14 @@ de:
       welcome: Willkommen
     nightly_user_activity:
       html:
-        to_view_note: " , um die Notiz auf Seite %{page} in %{collection}: %{work} anzuzeigen, die hinzugefügt wurde, seit Sie daran gearbeitet haben."
+        to_view_note: " um die seit Ihrer letzten Bearbeitung hinzugefügten Anmerkung auf Seite %{page} in %{collection}: %{work} anzuzeigen."
         to_view_work: " um %{collection} anzuzeigen: %{work}"
-      message: Wir wollten Sie nur darüber informieren, dass in einer Sammlung, an der Sie gearbeitet haben, Aktivitäten stattgefunden haben.
-      new_notes: Neue Notizen
+      message: Wir wollten Sie nur darüber informieren, dass in einer von Ihnen bearbeiteten Sammlung Aktivitäten stattgefunden haben.
+      new_notes: Neue Anmerkungen
       new_works: Neue Werke
-      note_added: Eine Notiz wurde zu einer Seite hinzugefügt, die Sie in Arbeit %{work} in der Sammlung %{collection} bearbeitet haben.
+      note_added: Es wurde eine Anmerkung zu einer Seite hinzugefügt, die Sie im Werk %{work} in der Sammlung %{collection} bearbeitet haben.
       text:
-        to_view_note: 'Um den Hinweis auf Seite %{work}: %{page} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+        to_view_note: 'Um die Anmerkung auf Seite %{work}: %{page} anzuzeigen, besuchen Sie die folgende URL: %{url}'
         to_view_work: 'Um %{collection}: %{work} anzuzeigen, besuchen Sie die folgende URL: %{url}'
       work_added: "%{owner} hat %{work} zur Sammlung %{collection} hinzugefügt."
     text:
@@ -63,6 +63,6 @@ de:
     work_collaborator:
       html:
         to_view: " um %{collection} - %{work} anzuzeigen."
-      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeiter auf %{collection}–%{work} hinzugefügt hat.
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeitenden zur %{collection}–%{work} hinzugefügt hat.
       text:
         to_view: 'Sie können %{collection}: %{work} unter der URL: %{url} anzeigen'

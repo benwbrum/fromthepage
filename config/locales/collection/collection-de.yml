@@ -2,7 +2,7 @@
 de:
   collection:
     approve_all:
-      approved_n_pages: Bestätigte %{page_count} Seiten.
+      approved_n_pages: Freigegebene %{page_count} Seiten.
     collection_works:
       n_pages:
         one: '1 Seite:'
@@ -28,23 +28,23 @@ de:
       update: Aktualisieren
     contributors_body:
       active_collaborators: Aktive Mitarbeitende
-      all_collaborator_emails: Alle Mitarbeitende-E-Mails
-      collaborator_stats: Mitarbeitendestatistiken %{start_deed} bis %{end_deed}
+      all_collaborator_emails: Alle Mitarbeitenden-E-Mails
+      collaborator_stats: Mitarbeitendenstatistiken %{start_deed} bis %{end_deed}
       collaborators: Mitarbeitende
       detailed_spreadsheet_export: Ein detaillierter Tabellen-Export aller Mitarbeitenden ist auf Ihrem Inhaber-Dashboard verfügbar.
       export_activity_as_csv: Alle Aktivitäten als Tabelle exportieren
-      export_activity_as_csv_description: Laden Sie eine Tabelle herunter, in der jede Aktion aufgelistet ist.
-      export_activity_as_csv_header: Aktivität exportieren
-      export_as_csv: Benutzer:innen-Aktivität als Tabelle exportieren
-      export_as_csv_description: Laden Sie eine Tabelle, die jede:n Benutzer:in und seine Zeit und Aktivität auflistet.
+      export_activity_as_csv_description: Laden Sie eine Tabelle herunter, in der alle Aktivitäten aufgelistet sind.
+      export_activity_as_csv_header: Aktivitäten exportieren
+      export_as_csv: Mitarbeitenden-Aktivitäten als Tabelle exportieren
+      export_as_csv_description: Laden Sie eine Tabelle, die jede:n Mitarbeitende und seine Zeit und Aktivitäten auflistet.
       find_project_newsletters_recommendations: Empfehlungen für Projekt-Newsletter finden.
       new_collaborators: Neue Mitarbeitende
-      no_activity_this_time_frame: Keine Aktivität in diesem Zeitraum
+      no_activity_this_time_frame: Keine Aktivitäten in diesem Zeitraum
       no_collaborators: Keine Mitarbeitenden
       time_on_this: Dauer für diese Sammlung
       total_time: 'Gesamtzeit: %{hours} Stunden, %{minutes} Minuten.'
-      user: Benutzer:in
-      view_activity: Aktivität anzeigen
+      user: Mitarbeiter:in
+      view_activity: Aktivitäten anzeigen
     corrected: korrigiert
     create:
       notice: Sammlung wurde erstellt
@@ -61,19 +61,19 @@ de:
       blank_collection: Leere Sammlung
       blank_collection_description: Das Drücken dieses Buttons setzt die Sammlung zurück. Alle Transkriptionen und andere Arbeiten an der Sammlung werden gelöscht, als ob sie neu importiert worden wäre.
       close_api: API-Zugriff schließen
-      collection_active_message: Dies ist eine aktive Sammlung. Wird eine Sammlung inaktiv gesetzt, verhindert dies, dass Benutzer:innen Inhalte innerhalb der Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatssphäre-Einstellungen der Sammlung aus.
+      collection_active_message: Dies ist eine aktive Sammlung. Wird eine Sammlung inaktiv gesetzt, verhindert dies, dass Mitarbeitende Inhalte innerhalb der Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatsphäre-Einstellungen der Sammlung aus.
       collection_collaborators: Sammlungsmitarbeitende
       collection_collaborators_description: Mitarbeitende können private Sammlungen transkribieren und bearbeiten.
       collection_image: Profilbild der Sammlung
-      collection_inactive_message: Dies ist eine inaktive Sammlung. Wenn Sie die Sammlung auf aktiv setzen, können Benutzer:innen Inhalte in dieser Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatssphäre-Einstellungen der Sammlung aus.
+      collection_inactive_message: Dies ist eine inaktive Sammlung. Wenn Sie die Sammlung auf aktiv setzen, können Mitarbeitende Inhalte in dieser Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatsphäre-Einstellungen der Sammlung aus.
       collection_link: Link zur Sammlung
       collection_owners: Sammlungsinhaber:in
-      collection_owners_description: Projektinhaber:innen können Werke zur Sammlung hinzufügen und Seitenbilder hochladen sowie Werke in der Sammlung transkribieren und lesen.
+      collection_owners_description: Projektinhaber:innen können Werke zur Sammlung hinzufügen und Faksimiles hochladen sowie Werke in der Sammlung transkribieren und lesen.
       collection_privacy: Sichtbarkeit der Sammlung
       collection_public_message: Die Sammlung kann von jedem im Internet eingesehen werden. Sie können die Sammlung auf privat setzen, um ihre Sichtbarkeit auf die Projektinhaber:innen einzuschränken.
       collection_restricted_message: Die Sammlung kann nur von den unten aufgeführten Projektinhaber:innen eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.
       collection_reviewers: Autorisierte Reviewer:innen
-      collection_reviewers_description: Diese Benutzer:innen können Transkriptionen überprüfen und genehmigen, und zudem auch bearbeiten.
+      collection_reviewers_description: Diese Mitarbeitenden können Transkriptionen überprüfen freigeben und auch bearbeiten.
       collection_status: Sammlungsstatus
       confirm_blank_collection: Sind Sie sicher?
       confirm_delete_collection: Möchten Sie diese Sammlung wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
@@ -81,7 +81,7 @@ de:
       default_orientation: Wählen Sie die standardmäßige Seitenausrichtung für die Transkription aus
       delete_collection: Sammlung löschen
       description: Beschreibung
-      description_message: Die Beschreibung wird in der Übersicht sowie im Abschnitt Projektinfo angezeigt. Ein gekürzter Teil der Beschreibung wird auf der Startseite der Institution und auf der Unterseite "Projekte finden" angezeigt.
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
       disable_document_sets: Dokumentensets deaktivieren
       disable_facets: Facettensuche deaktivieren
       disable_message_boards: Forum deaktivieren
@@ -91,7 +91,7 @@ de:
       done: Erledigt
       edit_authorized_reviewers: Autorisierte Reviewer:innen bearbeiten
       edit_buttons: Buttons konfigurieren
-      edit_collaborators: Mitbearbeitende bearbeiten
+      edit_collaborators: Mitarbeitende bearbeiten
       edit_fields: Felder
       edit_metadata_fields: Felder bearbeiten
       edit_owners: Projektinhaber:innen bearbeiten
@@ -120,7 +120,7 @@ de:
       metadata_description: Laden Sie Metadaten für Werke in dieser Sammlung in großen Mengen hoch.
       metadata_entry: Beschreibung der Metadaten
       metadata_facets: Metadaten-Facetten
-      metadata_facets_description: Erlauben Sie Benutzer:innen, Werke innerhalb dieser Sammlung über Metadaten zu durchsuchen.
+      metadata_facets_description: Erlauben Sie Mitarbeitenden, Werke innerhalb dieser Sammlung über Metadaten zu durchsuchen.
       n_contributions:
         one: 1 Beitrag
         other: "%{count} Beiträge"
@@ -135,18 +135,18 @@ de:
       page_on_the_right: Seite rechts
       page_on_the_top: Seite ganz oben
       picture_to_be_used_message: Ein Bild zur Veranschaulichung der Sammlungsbeschreibung.
-      remove_collaborator: Mitbearbeitende:n entfernen
+      remove_collaborator: Mitarbeitende:n entfernen
       remove_owner: Projektinhaber:in entfernen
       remove_reviewer: Reviewer:in entfernen
-      restrict_completed_works: Beschränken Sie die Bearbeitung abgeschlossener Werke
-      restricted_completed_works: Eingeschränkte abgeschlossene Werke
-      restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werk(en) ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitbearbeitende hinzufügen.
+      restrict_completed_works: Sperren Sie die Bearbeitung abgeschlossener Werke
+      restricted_completed_works: Gesperrte abgeschlossene Werke
+      restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werken ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitarbeitende hinzufügen.
       revert_document_based_transcription: Zur dokumentbasierten Transkription zurückkehren
       revert_metadata_description: Beschreibung deaktivieren
       review_type: Review-Optionen
       review_type_optional: " Optional: Mitarbeitende können eine Überprüfung ihrer Transkriptionen anfordern."
-      review_type_required: " Erforderlich: Alle Ersttranskriptionen werden als Review-bedürftig gekennzeichnet. (Die Überprüfung kann von jedem durchgeführt werden.)"
-      review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen."
+      review_type_required: " Erforderlich: Jede Erstfassung einer Transkription wird als Review-bedürftig gekennzeichnet. (Die Überprüfung kann von jedem durchgeführt werden.)"
+      review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen bzw. freigeben."
       save_changes: Änderungen speichern
       start_a_project: Projekt starten
       subjects_enabled: Entitätenindexierung aktivieren
@@ -155,13 +155,13 @@ de:
       text_language: Wählen Sie die Sprache des Transkriptionstextes aus
       title: Titel
       transcription_conventions: Transkriptionskonventionen
-      transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseingabebereich für jede Seite angezeigt, die transkribiert oder indiziert wird.
+      transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseditor für jede Seite angezeigt, die transkribiert oder indexiert wird.
       transcription_type: Transkriptionstyp
       transcription_type_description: Jede Seite kann einen Bereich für eine freie Texteingabe (Standard) oder mehrere kurze Eingabefelder für Formulare haben. Alle Seiten in der Sammlung haben die gleiche Art von Transkriptionseinträgen. Spracheingabe wird nicht unterstützt und wird deaktiviert.
       upload_image: Bild hochladen
       upload_metadata: Metadaten hochladen
       url: URL
-      user_download: Nutzer:innen erlauben, Werke herunterzuladen.
+      user_download: Mitarbeitenden erlauben, Werke herunterzuladen.
       voice_recognition: Spracherkennung (Speech-to-text) zum Transkribieren verfügbar (nicht kompatibel mit erweitertem Editor)
     edit_buttons:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut (Alternative Form des expan-Tags).
@@ -172,7 +172,7 @@ de:
       date_label: Datum
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
       del_label: Streichung
-      description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Markup verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
+      description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Mark-up verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im orig-Attribut (Alternative Form des abbr-Tags).
       expan_label: Erweiterung
       fig_description: Kennzeichnet eine Abbildung oder eine horizontale Linie.
@@ -187,7 +187,7 @@ de:
       html: "(HTML)"
       lb_description: Markiert Zeilenumbrüche
       lb_label: Zeilenumbruch
-      markup_preference_description: Einige Tags haben Entsprechungen in HTML und TEI-XML. Wählen Sie eine Einstellung aus, um festzulegen, welche Tag-Form eingefügt wird, wenn ein:e Benutzer:in den Button nutzt.
+      markup_preference_description: Einige Tags haben Entsprechungen in HTML und TEI-XML. Wählen Sie eine Einstellung aus, um festzulegen, welche Tag-Form eingefügt wird, wenn ein:e Mitarbeitende:r den Button nutzt.
       markup_preference_label: Mark-up-Stil
       prefer_html: Bevorzugt HTML
       prefer_tei: Bevorzugt TEI
@@ -240,7 +240,7 @@ de:
       return_to_collection: Zurück zur Sammlung
     new:
       collection_description: Sammlungsbeschreibung
-      collection_description_message: Die Beschreibung wird in der Übersicht sowie im Abschnitt Projektinfo angezeigt. Ein gekürzter Teil der Beschreibung wird auf der Startseite der Institution und auf der Unterseite "Projekte finden" angezeigt.
+      collection_description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
       create_collection: Sammlung erstellen
       create_new_collection: Neue Sammlung erstellen
       enter_collection_title: Um eine neue Sammlung zu erstellen, geben Sie bitte einen Titel für die Sammlung ein. Im nächsten Schritt können Sie der Sammlung Werke hinzufügen.
@@ -250,11 +250,11 @@ de:
       date: Datum
       filter_contributions: Filter
       no_contributions_need_review: Es gibt keine Beiträge, die überprüft werden müssen
-      one_off_description: Diese Beiträge stammen von Benutzer:innen, die nur eine einzige Seite bearbeitet haben. Sie sollten mit besonderer Aufmerksamkeit überprüft werden.
+      one_off_description: Diese Beiträge stammen von Mitarbeitenden, die nur eine einzige Seite bearbeitet haben. Sie sollten mit besonderer Aufmerksamkeit überprüft werden.
       one_off_title: Einmalige Beiträge
       review: Review
       title: Seite (Werk)
-      user: Benutzer:in
+      user: Mitarbeiter:in
     quality_sampling: Qualitätskontrolle
     recent_contributor_list:
       date: Erstes Beitragsdatum
@@ -264,12 +264,12 @@ de:
       recent_contributor_description: Diese Mitarbeitenden haben vor kurzem mit der Arbeit an dem Projekt begonnen, aber ihre Arbeit wurde nie überprüft.
       recent_contributor_title: Aktuelle Mitarbeitende
       review: Review
-      user: Benutzer:in
+      user: Mitarbeiter:in
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten
       quality_sampling: Qualitätskontrolle
-      quality_sampling_desc: Mit Qualitätsstichproben können Sie Beiträge stichprobenartig überprüfen und dann die zu überprüfenden Seiten anhand jener Texte bewerten, die für einen bestimmte:n Benutzer:in oder ein bestimmtes Werk korrigiert wurde.
+      quality_sampling_desc: Mit Qualitätsstichproben können Sie Beiträge stichprobenartig überprüfen und dann die zu überprüfenden Seiten anhand jener Texte bewerten, die für eine:n bestimmte:n Mitarbeiter:in oder ein bestimmtes Werk korrigiert wurde.
       total_page: Gesamtseitenanzahl
       transcribed_page: Transkribierte Seite
       unreviewed_contributors: Neue Mitarbeitende
@@ -294,8 +294,8 @@ de:
       search: Suche
       search_by_title: Suche nach Titel oder Metadaten...
       search_by_title_1: Suche nach Titel
-      search_the_text: Durchsuche den Text ...
-      search_the_text_1: Durchsuche den Text
+      search_the_text: Den Text durchsuchen...
+      search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
       start_transcribing: Mit der Transkription beginnen
       subject_categories: Entitätenkategorien
@@ -318,7 +318,7 @@ de:
       image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
       page_image_guidelines: Richtlinien für Bildseiten
     user_contribution_list:
-      approve_all: Alle genehmigen
+      approve_all: Alle freigeben
       date: Datum
       email: 'E-Mail: %{email}'
       filter_contributions: Filter
@@ -328,12 +328,12 @@ de:
       real_name: 'Richtiger Name: %{user}'
       review: Review
       title: Seite (Werk)
-      user_contribution_description: Seiten, die von Benutzer:in %{user_name} überprüft werden müssen
-      user_profile: Benutzer:innenprofil
+      user_contribution_description: Seiten, die von Mitarbeiter:in %{user_name} überprüft werden müssen
+      user_profile: Mitarbeitendenprofil
     works_list:
       alphabetical: Alphabetisch
       percent_complete: Prozent abgeschlossen
-      recent_activity: Kürzliche Aktivität
+      recent_activity: Letzte Aktivitäten
       sort_works_by: Werke sortieren nach...
       works: Werke
     works_to_review:
@@ -342,7 +342,7 @@ de:
       description: Werke mit Seiten, die überprüft werden müssen
       filter_works: Filter
       incomplete: Unvollständig
-      last_activity: Letzte Aktivität
+      last_activity: Letzte Aktivitäten
       no_works_need_review: Es müssen keine Werke überprüft werden
       notes: Anmerkungen
       review: Review
