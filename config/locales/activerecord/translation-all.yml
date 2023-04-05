@@ -1384,7 +1384,7 @@ de:
     notes:
       microphone: Mikrofon
       nobody_has_written_a_note: Bisher hat noch niemand eine Anmerkung für diese Seite verfasst
-      note_body: Anmerkungstext
+      note_body: Anmerkung
       please_sign_in_to_write: Bitte %{link}, um eine Notiz für diese Seite zu schreiben
       save_note: Anmerkung speichern
       sign_in: anmelden

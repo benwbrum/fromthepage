@@ -37,7 +37,7 @@ de:
       date: Exportdatum
       download: Download
       exported_item: Exportierte Sammlung/Werk
-      facing_edition_work: Text-Bild-Synopse PDF (Werk)
+      facing_edition_work: Bild-Text-Synopse PDF (Werk)
       html_page: HTML (Seite)
       html_work: HTML (Werk)
       plaintext_emended_page: Analytischer Klartext (Seite)
@@ -101,12 +101,12 @@ de:
       you_dont_have_any_collections: Sie haben noch keine Sammlungen
       your_activity: Ihre Aktivitäten
     owner_header:
-      account_type: "%{type}-Account"
+      account_type: "Konto für %{type}"
       account_types:
-        individual_researcher: Individuell Forschender
-        large_institution: Große Institution
+        individual_researcher: Einzelforschende
+        large_institution: Großinstitutionen
         legacy: Vermächtnis
-        small_organization: Kleine Organisation
+        small_organization: Kleininstitutionen
         staff: Mitarbeitende
         trial: Testversion
       actions: Aktionen

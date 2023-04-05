@@ -10,7 +10,7 @@ de:
     discussions:
       description: Fragen und Anmerkungen auf Seiten
       most_recent_of: Neueste von
-      page_notes: Seite Anmerkungen
+      page_notes: Seitenanmerkungen
       pages_and_notes_counts: "%{posts_count} Anmerkungen auf %{topics_count} Seiten"
       total_notes: "%{count} Anmerkungen"
     note:

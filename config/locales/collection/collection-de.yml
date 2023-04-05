@@ -31,7 +31,7 @@ de:
       all_collaborator_emails: Alle Mitarbeitenden-E-Mails
       collaborator_stats: Mitarbeitendenstatistiken %{start_deed} bis %{end_deed}
       collaborators: Mitarbeitende
-      detailed_spreadsheet_export: Ein detaillierter Tabellen-Export aller Mitarbeitenden ist auf Ihrem Inhaber-Dashboard verfügbar.
+      detailed_spreadsheet_export: Ein detaillierter Tabellen-Export aller Mitarbeitenden ist auf Ihrem Projektinhaber:innen-Dashboard verfügbar.
       export_activity_as_csv: Alle Aktivitäten als Tabelle exportieren
       export_activity_as_csv_description: Laden Sie eine Tabelle herunter, in der alle Aktivitäten aufgelistet sind.
       export_activity_as_csv_header: Aktivitäten exportieren
@@ -41,7 +41,7 @@ de:
       new_collaborators: Neue Mitarbeitende
       no_activity_this_time_frame: Keine Aktivitäten in diesem Zeitraum
       no_collaborators: Keine Mitarbeitenden
-      time_on_this: Dauer für diese Sammlung
+      time_on_this: Arbeitszeit an dieser Sammlung
       total_time: 'Gesamtzeit: %{hours} Stunden, %{minutes} Minuten.'
       user: Mitarbeiter:in
       view_activity: Aktivitäten anzeigen
@@ -219,7 +219,7 @@ de:
       metadata_facets: Metadaten-Facetten
       metadata_facets_description: Konfigurieren Sie Metadaten-Facetten, indem Sie die Metadaten in Ihrer Sammlung überprüfen und Felder mit Labeln ausstatten, die den Transkribierenden angezeigt werden sollen.
       occurrences: Vorkommen
-      order: Befehl
+      order: Reihenfolge
       translate: Übersetzen
       type: Typ
     indexed: indexiert
@@ -244,7 +244,7 @@ de:
       create_collection: Sammlung erstellen
       create_new_collection: Neue Sammlung erstellen
       enter_collection_title: Um eine neue Sammlung zu erstellen, geben Sie bitte einen Titel für die Sammlung ein. Im nächsten Schritt können Sie der Sammlung Werke hinzufügen.
-      individual_researcher_limited_account: Konten von individuellen Forschenden sind auf eine einzige Sammlung beschränkt. Um Ihr Konto zu aktualisieren, wenden Sie sich an support@fromthepage.com.
+      individual_researcher_limited_account: Konten von Einzelforschenden sind auf eine einzige Sammlung beschränkt. Um Ihr Konto zu aktualisieren, wenden Sie sich an support@fromthepage.com.
       title: Titel
     one_off_list:
       date: Datum
@@ -292,8 +292,8 @@ de:
       recent_notes: Aktuelle Anmerkungen
       restricted_collaboratoration: Die Mitarbeit ist eingeschränkt.
       search: Suche
-      search_by_title: Suche nach Titel oder Metadaten...
-      search_by_title_1: Suche nach Titel
+      search_by_title: Nach Titel oder Metadaten suchen...
+      search_by_title_1: Nach Titel suchen
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
@@ -305,7 +305,7 @@ de:
       user_wrote_note: "%{user} hat %{note} geschrieben"
       works: Werke
     start_transcribing:
-      notice: Tut mir leid, aber diese Sammlung enthält keine entsprechenden Seiten.
+      notice: Diese Sammlung enthält leider keine entsprechenden Seiten.
     transcribed: transkribiert
     translated: übersetzt
     update:

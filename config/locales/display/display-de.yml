@@ -9,7 +9,7 @@ de:
       help_correct: korrigieren helfen
       help_transcribe: transkribieren helfen
       help_translate: übersetzen helfen
-      mark_the_page_blank: Markiere die Seite als leer
+      mark_the_page_blank: Seite als leer markieren
       or_mark_blank: "<br>oder %{mark_blank}"
       page_notes: Anmerkungen und Fragen
       please_help_this_page: Bitte %{help_link} diese Seite
