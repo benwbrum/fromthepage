@@ -36,9 +36,9 @@ describe "different user role logins" do
       fill_in 'Login', with: INACTIVE
       fill_in 'Password', with: @password
       click_button('Sign In')
-      expect(page.current_path).to eq dashboard_watchlist_path
+      expect(page.current_path).to eq landing_page_path
       expect(page).to have_content(I18n.t('dashboard.collaborator'))
-      expect(page).to have_content("You haven't participated in any projects yet.")
+      expect(page).to have_content("Signed in successfully")
       visit root_path
       click_link('Dashboard')
       expect(page.current_path).to eq dashboard_watchlist_path
@@ -55,11 +55,11 @@ describe "different user role logins" do
     fill_in 'Login', with: USER
     fill_in 'Password', with: @password
     click_button('Sign In')
-    expect(page.current_path).to eq dashboard_watchlist_path
+    expect(page.current_path).to eq landing_page_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
     expect(page).to have_content(collections.first.title)
     within ".sidecol" do
-      expect(page).to have_content("Your Activity")
+      expect(page).to have_content("Recent Activity")
     end
     visit root_path
     click_link('Dashboard')
@@ -76,7 +76,7 @@ describe "different user role logins" do
     fill_in 'Login', with: user.email
     fill_in 'Password', with: @password
     click_button('Sign In')
-    expect(page.current_path).to eq dashboard_watchlist_path
+    expect(page.current_path).to eq landing_page_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
   end
 

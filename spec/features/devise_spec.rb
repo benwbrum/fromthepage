@@ -127,12 +127,12 @@ describe "Devise" do
       click_button('Sign In')
       expect(page.current_path).to eq old_path
     end
-    it "redirects user back to user dashboard/watchlist if original path was nil" do
+    it "redirects user back to user fina a project if original path was nil" do
       visit new_user_session_path
       page.fill_in 'Login', with: user.login
       page.fill_in 'Password', with: user.password
       click_button('Sign In')
-      expect(page.current_path).to eq dashboard_watchlist_path
+      expect(page.current_path).to eq landing_page_path
     end
   end
   context "owner login" do
