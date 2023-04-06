@@ -10,7 +10,7 @@ de:
       uncategorized_subjects: Nicht kategorisierte Entitäten
       uncategorized_subjects_mentioned: Sie haben nicht kategorisierte Entitäten, die in der Seitentranskription erwähnt werden. Bitte überprüfen Sie die folgenden Entitäten und weisen Sie ihnen die entsprechenden Kategorien zu.
     display_page:
-      alert: Diese Seite wird von einem anderen Mitarbeitenden bearbeitet!
+      alert: Diese Seite wird gerade von einem anderen Mitarbeitenden bearbeitet!
       always_show_fullscreen: Immer im Vollbildmodus anzeigen
       edit_transcription: Transkription bearbeiten
       fullscreen: Vollbild
@@ -69,15 +69,15 @@ de:
       corrected: korrigiert
       edit: Bearbeiten
       edit_translation: Übersetzung bearbeiten
-      help_correct: korrigieren helfen
-      help_transcribe: transkribieren helfen
+      help_correct: zu korrigieren
+      help_transcribe: zu transkribieren
       mark_as_blank: Als leer markieren
-      mark_the_page_blank: Seite als leer markieren
+      mark_the_page_blank: markieren Sie die Seite als leer
       microphone: Mikrofon
       or_mark_blank: "<br>oder %{mark_blank}"
       page_needs_review: Seite muss überprüft werden
       page_notes: Anmerkungen und Fragen
-      please_help_this_page: Bitte %{help_link} diese Seite
+      please_help_this_page: Bitte helfen Sie diese Seite %{help_link}
       preview: Vorschau
       save_changes: Änderungen speichern
       show_image: Bild anzeigen

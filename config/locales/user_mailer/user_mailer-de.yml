@@ -56,7 +56,7 @@ de:
       turn_off_notification: 'Deaktivieren Sie diese Benachrichtigung unter der URL: %{url}'
     upload_finished:
       html:
-        message: Ihr Upload von "%{file}" wurde verarbeitet und ist bereit um
+        message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht hier bereit:'
       text:
         message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht unter dieser URL bereit:'
       your_upload_is_ready: Ihr Upload ist fertig!

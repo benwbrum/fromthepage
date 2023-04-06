@@ -6,7 +6,7 @@ de:
       collaborator_time_description: Eine Tabelle mit der Minutenanzahl, die jede:r Bearbeiter:in pro Tag im ausgewählten Datumsbereich beigetragen hat.
       collaborator_time_export_button: Zeittabelle für Mitarbeitende exportieren
       no_activity_for_date_range: In diesem Zeitraum gibt es keine Aktivitäten.
-      user_totals_for_dates: Gesamtzahl Mitarbeitende für Datumsauswahl
+      user_totals_for_dates: Gesamtzeitaufwand der Mitarbeitenden für Datumsauswahl
     collaborators:
       collaborators: Mitarbeitende
       editing: Bearbeitung
@@ -155,8 +155,8 @@ de:
         one: Entität
         other: Entitäten
       total_page:
-        one: Gesamtseite
-        other: Gesamtseiten
+        one: Seite insgesamt
+        other: Seiten insgesamt
       update: Aktualisieren
       work:
         one: Werk
