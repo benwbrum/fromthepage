@@ -212,25 +212,30 @@
         }, 1000);
       });
       $('#check-all').click(function() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var myButton = document.getElementById('btnCheckAll');
-        if ($(this).is(':checked')) {
-          $('#report-options').toggle(true);
-          document.getElementById('check-all-lable').textContent = 'Uncheck All'
-          document.getElementById('check-box-div').style.marginRight = "9%"
-          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = true;
-        }
-        else {
-          $('#report-options').toggle(false);
-          document.getElementById('check-all-lable').textContent = 'Check All'
-          document.getElementById('check-box-div').style.marginRight = "11%"
-          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').disabled = false;
-        }
-        checkboxes.forEach(function(checkbox) {
-          if (checkbox.id != 'check-all') {
-            checkbox.checked = !checkbox.checked;
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkAll = this.checked;
+        const preserveLineBreak = document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked;
+
+        checkboxes.forEach(checkbox => {
+          if (checkbox.id !== 'check-all') {
+            checkbox.checked = checkAll;
           }
         });
-        document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false
+
+        if (checkAll) {
+          $('#report-options').show();
+          document.getElementById('check-all-lable').textContent = 'Uncheck All';
+          document.getElementById('check-box-div').style.marginRight = "9%";
+        } else {
+          $('#report-options').hide();
+          document.getElementById('check-all-lable').textContent = 'Check All';
+          document.getElementById('check-box-div').style.marginRight = "11%";
+        }
+
+        if (checkAll && preserveLineBreak) {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = true;
+        } else {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false;
+        }
       });
     });
