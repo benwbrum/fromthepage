@@ -324,7 +324,7 @@ class ApplicationController < ActionController::Base
     elsif current_user.owner
       dashboard_owner_path
     else
-      landing_page_path
+      dashboard_watchlist_path
     end
   end
 
