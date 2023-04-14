@@ -40,12 +40,12 @@ de:
       facing_edition_work: Bild-Text-Synopse PDF (Werk)
       html_page: HTML (Seite)
       html_work: HTML (Werk)
-      plaintext_emended_page: Analytischer Klartext (Seite)
-      plaintext_emended_work: Analytischer Klartext (Werk)
-      plaintext_searchable_page: Durchsuchbarer Klartext (Seite)
-      plaintext_searchable_work: Durchsuchbarer Klartext (Werk)
-      plaintext_verbatim_page: Wörtlicher Klartext (Seite)
-      plaintext_verbatim_work: Wörtlicher Klartext (Werk)
+      plaintext_emended_page: Analytischer Plaintext (Seite)
+      plaintext_emended_work: Analytischer Plaintext (Werk)
+      plaintext_searchable_page: Durchsuchbarer Plaintext (Seite)
+      plaintext_searchable_work: Durchsuchbarer Plaintext (Werk)
+      plaintext_verbatim_page: Wörtlicher Plaintext (Seite)
+      plaintext_verbatim_work: Wörtlicher Plaintext (Werk)
       refresh: Aktualisieren
       reload_this_page_to: Laden Sie diese Seite neu, um die Liste zu aktualisieren.
       status: Status
@@ -89,7 +89,7 @@ de:
       page_image_guidelines: Richtlinien für Faksimiles
       paste_in_the_url: Fügen Sie die URL eines mehrteiligen Objekts oder einer Sammlung auf Ihrer CONTENTdm-Site ein.
     owner:
-      create_a_collection: Sammlung erstellen
+      create_a_collection: eine Sammlung erstellen
       document_sets: Dokumentensets
       see_all_works: Alle Werke ansehen...
       start_a_project: Ein Projekt starten
@@ -101,14 +101,14 @@ de:
       you_dont_have_any_collections: Sie haben noch keine Sammlungen
       your_activity: Ihre Aktivitäten
     owner_header:
-      account_type: "Konto für %{type}"
+      account_type: "%{type}konto"
       account_types:
-        individual_researcher: Einzelforschende
-        large_institution: Großinstitutionen
-        legacy: Vermächtnis
-        small_organization: Kleininstitutionen
-        staff: Mitarbeitende
-        trial: Testversion
+        individual_researcher: Einzelforschenden
+        large_institution: Großinstitutions
+        legacy: Bestands
+        small_organization: Kleininstitutions
+        staff: Mitarbeitenden
+        trial: Testversions
       actions: Aktionen
       collection:
         one: Sammlung

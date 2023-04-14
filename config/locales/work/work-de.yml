@@ -107,9 +107,9 @@ de:
       revert_transcription_conventions_description: Setzen Sie die Transkriptionskonventionen auf die standardmäßigen Konventionen zurück
       save_changes: Änderungen speichern
       settings_only_work_owners: Die Einstellungen für dieses Werk sind nur für Inhaber:innen des Werkes zugänglich.
-      source_box_folder: Archivquelle
-      source_collection_name: Name der ursprünglichen Sammlung (Quelle)
-      source_location: Quellort
+      source_box_folder: Quellverzeichnis
+      source_collection_name: Name der ursprünglichen Sammlung der Quelle
+      source_location: Standort der Quelle
       support_translation: Übersetzung aktivieren
       support_translation_description: Ein Werk kann sowohl übersetzt als auch transkribiert werden. Wenn diese Option aktiviert ist, verfügt das Werk über einen Tab „Übersetzung“ für jede Seite.
       transcription_conventions: Transkriptionskonventionen
@@ -176,9 +176,9 @@ de:
       physical_description: Physische Beschreibung
       recipient_name: Rezipientenname
       scope: Scope
-      source_box_folder: Archivquelle
-      source_collection_name: Name der ursprünglichen Sammlung (Quelle)
-      source_location: Standort der Quelle
+      source_box_folder: Quellenverzeichnis/-aufbewahrung 
+      source_collection_name: Name der ursprünglichen Sammlung der Quelle
+      source_location: Ort der Quelle
       uploaded_by: hochgeladen von
     undescribed: Keine Metadaten.
     update:

@@ -6,13 +6,13 @@ de:
       collection_is_not_active: Dieses Projekt ist nicht aktiv. Bei Fragen wenden Sie sich bitte an den Projektverantwortlichen.
       corrected: korrigiert
       facsimile: Faksimile
-      help_correct: korrigieren helfen
-      help_transcribe: transkribieren helfen
-      help_translate: übersetzen helfen
+      help_correct: zu korrigieren 
+      help_transcribe: zu transkribieren
+      help_translate: zu übersetzen
       mark_the_page_blank: Seite als leer markieren
       or_mark_blank: "<br>oder %{mark_blank}"
       page_notes: Anmerkungen und Fragen
-      please_help_this_page: Bitte %{help_link} diese Seite
+      please_help_this_page: Bitte helfen Sie, diese Seite %{help_link}
       show_transcription: Transkription anzeigen
       show_translation: Übersetzung anzeigen
       this_page_is_blank: Diese Seite ist leer
@@ -40,7 +40,7 @@ de:
       review: Review
       transcribe: Transkribieren
       translate: Übersetzen
-      user_notes: Anmerkungen von Nutzer:innen
+      user_notes: Anmerkungen von Mitarbeitenden
     multi_page:
       categories: Kategorien
       describe: Metadaten erstellen
@@ -58,14 +58,14 @@ de:
     pages_view:
       collaboration_is_restricted: Die Mitarbeit an dieser Sammlung ist eingeschränkt. Bitte wenden Sie sich an den/die Projektinhaber:in, wenn Sie zur Transkription beitragen möchten.
       corrected: korrigiert
-      help_complete: Bearbeite diese Seite
-      help_correct: korrigieren helfen
-      help_transcribe: transkribieren helfen
-      help_translate: übersetzen helfen
+      help_complete: zu bearbeiten
+      help_correct: zu korrigieren
+      help_transcribe: zu transkribieren
+      help_translate: zu übersetzen
       last_edit: Zuletzt bearbeitet vor %{edit_time} von %{user_link}
       no_pages_found: Keine Seiten gefunden
       no_pages_needing_transcription_found_these_pages_are_incomplete: Keine Seiten müssen von Grund auf neu transkribiert werden. Diese Seiten wurden teilweise transkribiert, müssen aber noch vervollständigt werden.
-      page_not_translated: Diese Seite ist nicht übersetzt, bitte %{help_translate} diese Seite
+      page_not_translated: Diese Seite ist nicht übersetzt, bitte helfen Sie, diese Seite %{help_translate}
       pages_needing_completion: Seiten, die vervollständigt werden müssen
       review_metadata: Metadaten überprüfen
       this_page_is_blank: Diese Seite ist leer

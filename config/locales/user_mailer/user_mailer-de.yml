@@ -12,7 +12,7 @@ de:
         ready_message: wurde bearbeitet und steht unter %{this_link} bereit.
       text:
         ready_message: 'Ihr Export wurde verarbeitet und steht unter dieser URL bereit:'
-      this_link: dieser Link
+      this_link: diesem Link
       your_export_is_ready: Ihr Export ist fertig!
       your_export_of: Ihr Export von
     click_here: Hier klicken,

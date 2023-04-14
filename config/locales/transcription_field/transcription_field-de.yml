@@ -33,7 +33,7 @@ de:
       screen_ruler: Bildschirmlineal
       screen_ruler_description: Um die Benutzerfreundlichkeit zu verbessern und Transkriptionsfehler zu reduzieren, kann FromThePage ein Lineal auf dem Faksimile anzeigen, das jenen Teil einer Seite hervorhebt, den der/die Bearbeiter:in transkribiert. Dies ist nützlich für einheitlich gescannte Dokumente, die vorgedruckte Formularen nutzen, kann jedoch verwirrend sein oder zu Problemen führen, wenn die Dokumente ungleich sind und das Bildschirmlineal nicht passt.
       start_rows_description: Anzahl der Zeilen, die die Tabelle zu Beginn anzeigen soll. (Transkribierende können bei Bedarf zusätzliche Zeilen hinzufügen.)
-      start_rows_label: 'Zeilenzählung beginnen: '
+      start_rows_label: 'Vordefinierte Zeilenanzahl: '
       transcription_warning: In diesem Projekt wurde bereits teilweise transkribiert. Das Hinzufügen von Spalten ist unproblematisch, aber das Löschen oder Ändern von Spalten kann zu einem Datenverlust führen. Bitte wenden Sie sich an support@fromthepage.com, wenn Sie Fragen haben oder Spalten umbenennen müssen.
     edit_field_form:
       add_additional_field: Zusätzliches Feld hinzufügen

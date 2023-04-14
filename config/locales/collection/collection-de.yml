@@ -305,7 +305,7 @@ de:
       user_wrote_note: "%{user} hat %{note} geschrieben"
       works: Werke
     start_transcribing:
-      notice: Diese Sammlung enthält leider keine entsprechenden Seiten.
+      notice: Diese Sammlung enthält leider keine Seiten, die nicht transkribiert oder unvollständig sind.
     transcribed: transkribiert
     translated: übersetzt
     update:

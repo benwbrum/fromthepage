@@ -17,7 +17,7 @@ de:
       export_all_works_description: Wählen Sie Formate und spezifische Einstellungen aus, um die gesamte Sammlung in eine ZIP-Datei zu exportieren.
       export_as: Exportieren als
       export_individual_works: Einzelne Werke exportieren
-      export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Entitäten und internen HREFs, die Entitäten und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Klartext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seiteneinzelheiten.
+      export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Entitäten und internen HREFs, die Entitäten und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Plaintext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seiteneinzelheiten.
       export_to_contentdm: Export nach CONTENTdm
       export_to_contentdm_description: Klicken Sie auf den Button, um fertige Transkripte aus der gesamten Sammlung nach CONTENTdm zu exportieren.
       export_work_metadata: Metadaten zum Werk exportieren
@@ -35,7 +35,7 @@ de:
         one: 1 Seite
         other: "%{count} Seiten"
       pages: Seiten
-      plain_text: Klartext
+      plain_text: Plaintext
       progress: Fortschritt
       review: Review
       table_csv: Tabelle CSV

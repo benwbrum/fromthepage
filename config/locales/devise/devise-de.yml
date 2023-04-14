@@ -8,8 +8,8 @@ de:
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
-      invalid: Ungültiges %{authentication_keys} oder Passwort.
-      not_found_in_database: Ungültiges %{authentication_keys} oder Passwort.
+      invalid: Ungültige/r %{authentication_keys} oder Passwort.
+      not_found_in_database: Ungültige/r %{authentication_keys} oder Passwort.
       timeout: Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren.
       unauthenticated: Sie müssen sich anmelden oder registrieren, bevor Sie fortfahren können.
     login: Login
@@ -39,7 +39,7 @@ de:
       send_paranoid_instructions: Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
       updated: Ihr Passwort wurde erfolgreich geändert. Sie sind jetzt angemeldet.
       updated_not_active: Ihr Passwort wurde erfolgreich geändert.
-    real_name: Echter Name
+    real_name: Offizieller Name 
     real_name_message: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
     receive_activity_emails: Mails zu Aktivitäten erhalten
     registrations:
@@ -103,6 +103,6 @@ de:
     user_name_message: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
   errors:
     messages:
-      expired: abgelaufen, fordern Sie bitte eine neue an
+      expired: abgelaufen, bitte neu anfordern
       not_found: nicht gefunden
       not_signed: 'Anmeldung aufgrund des folgenden Fehlers nicht möglich:'

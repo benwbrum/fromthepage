@@ -47,7 +47,7 @@ de:
       category_back_message: Wenn Sie mit der Bearbeitung der Kategorien fertig sind, klicken Sie %{page_link}, um zur Seite „%{page}“ zurückzukehren.
       click_here: hier klicken
       confirm_delete_category: Möchten Sie diese Kategorie und all ihre Unterkategorien wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
-      create_category_message: "%{link} zum Gruppieren von Entitäten verwenden."
+      create_category_message: "%{link}, die zum Gruppieren von Entitäten verwendet wird."
       create_the_first_category: Erste Kategorie erstellen
       delete_category: Kategorie löschen
       disable_gis_for_category: GIS für Kategorie deaktivieren
