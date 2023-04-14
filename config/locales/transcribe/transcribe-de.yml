@@ -77,7 +77,7 @@ de:
       or_mark_blank: "<br>oder %{mark_blank}"
       page_needs_review: Seite muss überprüft werden
       page_notes: Anmerkungen und Fragen
-      please_help_this_page: Bitte helfen Sie diese Seite %{help_link}
+      please_help_this_page: Bitte helfen Sie, diese Seite %{help_link}
       preview: Vorschau
       save_changes: Änderungen speichern
       show_image: Bild anzeigen
