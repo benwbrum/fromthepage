@@ -1,0 +1,37 @@
+{
+"name": "Ruby on Rails (Community)",
+"build": {
+	"dockerfile": "Dockerfile",
+	// Used to create MySQL user; change these to the username and password in config/database.yml
+	"args": { "MYSQL_USERNAME": "root", 
+			  "MYSQL_PASSWORD": "" }
+},
+
+// When creating the container, install gems and set up database 
+"updateContentCommand": "bundle install; sudo service mariadb start; rails db:create; rails db:migrate",
+
+// Start the server after the container is created
+"postCreateCommand": "rails s",
+
+// Configure tool-specific properties.
+"customizations": {
+	// Configure properties specific to VS Code.
+	"vscode": {
+		// Add the IDs of extensions you want installed when the container is created.
+		"extensions": [
+			"rebornix.Ruby"
+		]
+	}
+},
+
+// Use 'forwardPorts' to make a list of ports inside the container available locally.
+"forwardPorts": [3000],
+
+// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+"remoteUser": "vscode",
+"features": {
+	"ghcr.io/devcontainers/features/ruby:1": {
+		"version": "2.7"
+	}
+}
+}

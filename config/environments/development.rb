@@ -67,6 +67,9 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
+  # Allow codespaces host
+  config.hosts << "sylvieed-obscure-space-rotary-phone-w9gpvjwqgpxcggr5-3000.preview.app.github.dev"
+
   # location of system calls on this machine
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'
