@@ -8,10 +8,10 @@
 },
 
 // When creating the container, install gems and set up database 
-"updateContentCommand": "bundle install; sudo service mariadb start; rails db:create; rails db:migrate",
-
-// Start the server after the container is created
-"postCreateCommand": "rails s",
+"updateContentCommand": "bundle install; sudo service mariadb start; rake db:create; rake db:migrate",
+"postAttachCommand": {
+    "server": "rails server"
+},
 
 // Configure tool-specific properties.
 "customizations": {
@@ -26,6 +26,13 @@
 
 // Use 'forwardPorts' to make a list of ports inside the container available locally.
 "forwardPorts": [3000],
+// Open the site after it starts
+"portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "openBrowser"
+    }
+  },
 
 // Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 "remoteUser": "vscode",
