@@ -10,7 +10,7 @@
 // When creating the container, install gems and set up database 
 "updateContentCommand": "bundle install; sudo service mariadb start; rake db:create; rake db:migrate",
 "postAttachCommand": {
-    "server": "rails server"
+    "server": "sudo service mariadb start; rails server"
 },
 
 // Configure tool-specific properties.
