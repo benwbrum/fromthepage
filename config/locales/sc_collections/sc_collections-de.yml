@@ -5,7 +5,7 @@ de:
       import_started: Ihr Import wurde gestartet. Sobald der Import abgeschlossen ist, versenden wir Sie eine E-Mail an %{email}.
     cdm_bulk_import_new:
       bulk_contentdm_import: Sammelimport von CONTENTdm
-      compound_object_urls: URLs für zusammengesetzte Objekte
+      compound_object_urls: URLs für komplexe Objekte
       import: Importieren
       import_ocr_text: OCR-Text importieren
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
