@@ -35,7 +35,7 @@ de:
       search_for_works: Werke suchen...
       status: Status
       title: Titel
-      toggle_work_in_document_set: '%{work} in Dokumentenset %{document_set} umschalten'
+      toggle_work_in_document_set: "%{work} in Dokumentenset %{document_set} umschalten"
       transfer_works: Werke übertragen
       work: Werk
     new:
@@ -53,7 +53,7 @@ de:
         other: "%{count} Seiten:"
       progress: Fortschritt
       remove_from_set: Aus Set entfernen
-      remove_title_from_document_set:  '%{title} aus dem Dokumentenset entfernen'
+      remove_title_from_document_set: "%{title} aus dem Dokumentenset entfernen"
       remove_works: Werke entfernen
       restricted: Eingeschränkt
       unrestricted: Uneingeschränkt
