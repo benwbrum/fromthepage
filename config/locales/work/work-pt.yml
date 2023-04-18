@@ -1,6 +1,22 @@
 ---
 pt:
   work:
+    configurable_printout:
+      description: Exporte este trabalho em um formato para impressão
+      export: Exportar
+      file_format: Formato de arquivo
+      file_format_description: Tipo de arquivo para exportação para impressão
+      heading: Configuração de impressão
+      include_contributors: Incluir colaboradores
+      include_metadata: Incluir metadados
+      preserve_linebreaks: Preservar quebras de linha
+      text_contents: Conteúdo
+      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre o trabalho.
+      text_format: Formatação de texto
+      text_format_description: Opções para formatar texto.
+      text_format_docx: MS Word (.docx)
+      text_format_pdf: PDF
+      word_wrap: Quebra de linha
     create:
       work_created: Trabalho criado com sucesso
     describe:
@@ -36,6 +52,9 @@ pt:
       revision: revisão
     download:
       analyze: Analisar
+      configurable_printout: Impressão Configurável
+      configurable_printout_button: configurar
+      configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
       docx_download_description: Baixe uma versão DOCX deste trabalho.
       download: Download
       expanded_plaintext: Texto simples expandido
@@ -171,6 +190,7 @@ pt:
       location_of_composition: Localização da Composição
       metadata: Metadados
       number_of_pages: Número de Páginas:&nbsp;
+      original_filename: Nome do arquivo original
       out_of_scope: Fora do escopo
       permission_description: Descrição da Permissão
       physical_description: Descrição Física

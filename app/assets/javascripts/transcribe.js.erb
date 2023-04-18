@@ -125,3 +125,23 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
     };
   };
 }
+
+//Check for unsaved changes if user tries to navigate to project page
+window.addEventListener('DOMContentLoaded', function() {
+  var breadcrumbs = document.querySelector('ul.breadcrumbs');
+  if (breadcrumbs) {
+    breadcrumbs.addEventListener('click', function(e) {
+        unsavedTranscription(e)
+    });
+  }
+});
+
+//Check for unsaved changes if user tries to navigate to other tabs
+window.addEventListener('DOMContentLoaded', function() {
+  var tabs = document.querySelector('div.tabs');
+  if (tabs) {
+    tabs.addEventListener('click', function(e) {
+        unsavedTranscription(e)
+    });
+  }
+});

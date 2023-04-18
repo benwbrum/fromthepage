@@ -10,7 +10,11 @@
 
 <p>
   <strong>Collection:</strong>
-  <%= @bulk_export.collection.title %>
+  <% if @bulk_export.collection %>
+    <%= @bulk_export.collection.title %>
+  <% else %>
+    <i>All</i>
+  <% end %>
 </p>
 
 <p>

@@ -63,6 +63,7 @@ class User < ApplicationRecord
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
+  scope :active_mailers,   -> { where(activity_email: true)}
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^<>]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
@@ -122,7 +123,7 @@ class User < ApplicationRecord
     logger.info("User record before save:")
     logger.info(user.to_json)
     logger.info("Data from SAML response:")
-    logger.info(date.to_json)
+    logger.info(data.to_json)
 
     # update the user's SSO if they don't have one
     if user && user.sso_issuer.nil?

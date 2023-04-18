@@ -1,0 +1,45 @@
+h2.nomargin =t('.heading')
+p =t('.description')
+=form_with(url: bulk_export_create_for_work_ajax_path, model: @bulk_export, local: true) do |f|
+  =f.hidden_field :collection_id, value: @collection.slug
+  =hidden_field_tag :work_id, @work.id
+  =f.hidden_field :plaintext_verbatim_page, value: true
+
+  .bulk-export_format
+    h5= t('.file_format')
+    p.nomargin= t('.file_format_description')
+  .bulk-export_options
+    =f.label :file_format_one
+      =f.check_box :text_docx_work
+      =f.label :text_docx_work, t('.text_format_docx')
+    =f.label :file_format_two
+      =f.check_box :text_pdf_work
+      =f.label :text_pdf_work, t('.text_format_pdf')
+
+
+  .bulk-export_format
+    h5= t('.text_format')
+    p.nomargin= t('.text_format_description')
+  .bulk-export_options
+    =f.label 'preserve_linebreaks'
+      =f.radio_button 'preserve_linebreaks', true
+      =f.label "preserve_linebreaks_true", t('.preserve_linebreaks')
+    =f.label :word_wrap
+      =f.radio_button 'preserve_linebreaks', false
+      =f.label "preserve_linebreaks_false", t('.word_wrap')
+
+  .bulk-export_format
+    h5= t('.text_contents')
+    p.nomargin= t('.text_contents_description')
+  .bulk-export_options
+    =f.label :include_metadata
+      =f.check_box 'include_metadata'
+      =f.label "include_metadata",  t('.include_metadata')
+  .bulk-export_options
+    =f.label :include_contributors
+      =f.check_box 'include_contributors'
+      =f.label "include_contributors",  t('.include_contributors')
+
+
+  =f.submit t('.export')
+

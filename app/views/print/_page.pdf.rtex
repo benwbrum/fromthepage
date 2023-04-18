@@ -1,4 +1,0 @@
-
-\section*{<%= page.title %>}
-
-<%= xml_to_latex(page.xml_text) %>
