@@ -53,7 +53,7 @@ de:
         other: "%{count} Seiten:"
       progress: Fortschritt
       remove_from_set: Aus Set entfernen
-      remove_title_from_document_set:  "%{title} aus dem Dokumentenset entfernen"
+      remove_title_from_document_set: "%{title} aus dem Dokumentenset entfernen"
       remove_works: Werke entfernen
       restricted: Eingeschränkt
       unrestricted: Uneingeschränkt
