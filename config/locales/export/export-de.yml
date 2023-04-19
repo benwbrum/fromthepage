@@ -60,7 +60,7 @@ de:
       edition_created: Edition erstellt aus neuen Transkriptionen dieses Manuskripts.
       empty_transcript: Leeres Transkript - vermutlich ursprünglicher Upload des Seitenfaksimiles.
       initial_upload: Erstmaliger Upload der Faksimiles und Metadaten dieses Werkes auf FromThePage zur Bearbeitung
-      made_edits_between: '%{count} Bearbeitungen vorgenommen zwischen'
+      made_edits_between: "%{count} Bearbeitungen vorgenommen zwischen"
       made_one_edit_on: eine Bearbeitung vorgenommen an
       single_proof_by: 'Einfache Kontrolle durch:'
     text:
