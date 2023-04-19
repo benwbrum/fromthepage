@@ -10,10 +10,10 @@ de:
       single_page:
         one: Anzeige von 1 %{model}
         other: Anzeige aller %{count} %{model}
-        zero: Kein %{model} gefunden
+        zero: Keine %{model} gefunden
       single_page_html:
         one: Anzeige von <b>1</b> %{model}
         other: Anzeige <b>aller %{count}</b> %{model}
-        zero: Kein %{model} gefunden
+        zero: Keine %{model} gefunden
     page_gap: "&hellip;"
     previous_label: "← Vorherige"
