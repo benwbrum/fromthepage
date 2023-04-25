@@ -147,6 +147,10 @@ class UserController < ApplicationController
   private
 
   def authorized?
+    unless @user
+      @user = User.friendly.find(params[:user_slug])
+    end
+
     unless current_user && (@user == current_user&&current_user.admin?)
       redirect_to dashboard_path
     end
