@@ -3,11 +3,12 @@
   :selected => 1,
   :path => metadata_overview_collection_work_path(@work.slug),
 }]
--tabs += [{\
-  :name => t('.describe'),
-  :selected => 2,
-  :path => describe_collection_work_path(@work.slug),
-}]
+-if current_user.present?
+  -tabs += [{\
+    :name => t('.describe'),
+    :selected => 2,
+    :path => describe_collection_work_path(@work.slug),
+  }]
 -if @work.metadata_description_versions.present?
   -tabs += [{\
     :name => t('.versions'),
