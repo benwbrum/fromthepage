@@ -3,8 +3,8 @@
 "build": {
 	"dockerfile": "Dockerfile",
 	// Used to create MySQL user
-	"args": { "MYSQL_USERNAME": "rails", 
-			  "MYSQL_PASSWORD": "rails" }
+	"args": { "MYSQL_USERNAME": "", 
+			  "MYSQL_PASSWORD": "" }
 },
 
 // When creating the container, install gems and set up database 
