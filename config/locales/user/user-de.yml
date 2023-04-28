@@ -36,6 +36,7 @@ de:
       add_as_owner: Als Projektinhaber:in zur Sammlung hinzugefügt
       add_as_reviewer: Als autorisierte:r Reviewer:in zur Sammlung hinzugefügt
       default_dictation_language: 'Standard-Diktiersprache:'
+      help: Grundlegender Hilfstext
       interface_language: Oberflächensprache
       location: Standort
       name: Name
@@ -48,6 +49,7 @@ de:
       picture_to_be_used_message: Zu verwendendes Bild
       select_notification: 'Wählen Sie, welche der folgenden Benachrichtigungen Sie erhalten möchten:'
       sign_up_url: 'URL für Registrierung:'
+      suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
       update_profile: Profil aktualisieren
       update_user_profile: Benutzerprofil aktualisieren
       upload_image: Bild hochladen
@@ -58,5 +60,3 @@ de:
       where_are_you_from: Woher sind Sie?
       your_blog_or_homepage: Ihr Blog oder Homepage
       your_ocrid_id: Ihre OCRID-ID
-      help: Grundlegender Hilfstext
-      suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
