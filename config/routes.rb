@@ -1,5 +1,13 @@
 Fromthepage::Application.routes.draw do
-  root :to => 'static#splash'
+  # TODO make the URL fall under user and collection profile
+  scope ':user_slug' do
+    scope ':collection_id' do
+      mount Thredded::Engine => '/forum'
+    end
+  end
+
+
+  root to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -24,6 +32,8 @@ Fromthepage::Application.routes.draw do
 
   resources :notes
 
+
+
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
@@ -31,6 +41,7 @@ Fromthepage::Application.routes.draw do
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
     get 'flag_list', to: 'admin#flag_list'
+    get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
@@ -63,14 +74,13 @@ Fromthepage::Application.routes.draw do
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
-    get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
+    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
@@ -80,6 +90,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
+    get 'disable_messageboards', to: 'collection#disable_messageboards'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
@@ -161,6 +172,8 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post ':collection_id/work_create_ajax', to: 'bulk_export#create_for_work_ajax', as: 'create_for_work_ajax'
+    post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
@@ -186,7 +199,6 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
   end
@@ -313,10 +325,6 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-  scope 'statistics', as: 'statistics' do
-    get 'export_csv', to: 'statistics#export_csv'
-  end
-
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
@@ -422,6 +430,12 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/signup', to: 'static#signup', as: :signup 
+  get '/special_collections', to: 'static#transcription_archives', as: :special_collections
+  get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
+  get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
+  get '/state_archives', to: 'static#state_archives', as: :state_archives
+
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -429,6 +443,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
     resources :collection, path: '', only: [:show] do
+      get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
@@ -437,6 +452,7 @@ Fromthepage::Application.routes.draw do
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
       get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'page-notes/:work_id/:page_id', as: 'forum_page', to: 'display#display_page'
       get 'review/one_off/:page_id', as: 'oneoff_review_page', to: 'transcribe#display_page'
       get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
@@ -463,13 +479,15 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
+    
+
       #work related routes
       #have to use match because it must be both get and post
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
-        get 'print', on: :member
+        get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update

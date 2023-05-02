@@ -1,0 +1,87 @@
+---
+de:
+  transcription_field:
+    add_columns:
+      must_have_options_list: Ausgewählte Felder müssen über eine Optionsliste verfügen. Bitte fügen Sie Optionen zu ausgewählten Feldern hinzu und speichern Sie erneut.
+      starting_rows_must_not_be_blank: Anfangszeilen dürfen nicht leer sein.
+    add_fields:
+      must_have_options_list: Ausgewählte Felder müssen über eine Optionsliste verfügen. Bitte fügen Sie Optionen zu ausgewählten Feldern hinzu und speichern Sie erneut.
+    choose_offset:
+      page_layout: Seitenlayout
+      page_layout_description: Ändern Sie die Größe des Rechtecks auf dem Bild, um jenen Teil der Seite auszuwählen, der eine Tabelle enthält, und speichern Sie dann Ihre Auswahl.
+      replace_image: Bild ersetzen
+      replace_image_description: Wenn das Beispielbild keine Tabelle enthält, können Sie es durch eine andere zufällig ausgewählte Seite aus der Sammlung ersetzen.
+      save_selection: Auswahl speichern
+    column_form:
+      column_options: Spaltenoptionen (mit Semikolon trennen)
+      column_options_title: Optionen für Dropdown-Zellen.
+      input_type: Eingabetyp
+      label: Bezeichnung
+    edit_columns:
+      add_additional_column: Zusätzliche Spalte hinzufügen
+      cancel: Abbrechen
+      disable_ruler: Lineal deaktivieren
+      done: Fertig
+      edit_spreadsheet_columns: Spaltenkonfiguration
+      edit_spreadsheet_header: Tabellenkonfiguration
+      enable_ruler: Lineal aktivieren
+      identify_rows: Zeilen identifizieren
+      identify_rows_description: Seiten können obere und untere Ränder, Kopf- oder Fußzeilen oder anderen Text aufweisen, die bei der Identifizierung von Zeilen auf der Seite außer Acht gelassen werden sollen.
+      page_layout: Seitenlayout
+      preview: Tabellenvorschau
+      save: Speichern
+      screen_ruler: Bildschirmlineal
+      screen_ruler_description: Um die Benutzerfreundlichkeit zu verbessern und Transkriptionsfehler zu reduzieren, kann FromThePage ein Lineal auf dem Faksimile anzeigen, das jenen Teil einer Seite hervorhebt, den der/die Bearbeiter:in transkribiert. Dies ist nützlich für einheitlich gescannte Dokumente, die vorgedruckte Formularen nutzen, kann jedoch verwirrend sein oder zu Problemen führen, wenn die Dokumente ungleich sind und das Bildschirmlineal nicht passt.
+      start_rows_description: Anzahl der Zeilen, die die Tabelle zu Beginn anzeigen soll. (Transkribierende können bei Bedarf zusätzliche Zeilen hinzufügen.)
+      start_rows_label: 'Vordefinierte Zeilenanzahl: '
+      transcription_warning: In diesem Projekt wurde bereits teilweise transkribiert. Das Hinzufügen von Spalten ist unproblematisch, aber das Löschen oder Ändern von Spalten kann zu einem Datenverlust führen. Bitte wenden Sie sich an support@fromthepage.com, wenn Sie Fragen haben oder Spalten umbenennen müssen.
+    edit_field_form:
+      add_additional_field: Zusätzliches Feld hinzufügen
+      add_additional_line: Zusätzliche Zeile hinzufügen
+      cancel: Abbrechen
+      data_entry_type_label: Metadaten Flow
+      data_entry_type_metadata_only: Mitarbeitende erstellen nur Metadaten
+      data_entry_type_text_and_metadata: Mitarbeitende transkribieren Text und erstellen Metadaten
+      description_instructions_label: Anweisungen zur Metadatenbeschreibung
+      done: Fertig
+      line: Linie
+      preview: Vorschau
+      save: Speichern
+    edit_fields:
+      edit_transcription_fields: Transkriptionsfelder bearbeiten
+      transcription_warning: In diesem Projekt wurde bereits teilweise transkribiert. Das Hinzufügen von Feldern ist unproblematisch, aber das Löschen oder Ändern von Feldern kann zu einem Datenverlust führen. Bitte wenden Sie sich an support@fromthepage.com, wenn Sie Fragen haben oder Felder umbenennen müssen.
+    edit_metadata_fields:
+      edit_metadata_fields: Metadatenfelder bearbeiten
+    field_layout:
+      instructions: Anweisungen
+    line_form:
+      field_options: Feldoptionen (mit Semikolon trennen)
+      field_options_title: Optionen für ausgewählte Felder.
+      input_type: Eingabetyp
+      label: Bezeichnung
+      page: Seite
+      page_title: Auf welcher Seite soll dieses Feld bei mehrseitigen Formularen erscheinen? (Leer lassen, um auf jeder Seite anzuzeigen.)
+      percentage_title: Prozentueller Anteil der zu verwendenden Zeilenbreite für dieses Feld.
+      percentage_width: Breite %
+    metadata_field_layout:
+      instructions: Anweisungen
+    multiselect_form:
+      options_form_description: Geben Sie Optionen für die Mehrfachauswahl dieses Metadatenfeldes ein, wobei jede Option in einer separaten Zeile stehen muss
+      options_form_title: Mehrfachauswahloptionen
+      save: Speichern
+    new_column_form:
+      delete_column: Spalte löschen
+      field_label: Feldbezeichnung
+      field_options: Feldoptionen
+      input_type: Eingabetyp
+      reorder_column: Spalte neu anordnen
+    new_field_form:
+      configure_options: Optionen konfigurieren
+      configure_spreadsheet: Tabelle konfigurieren
+      delete_field: Feld löschen
+      field_label: Feldbezeichnung
+      field_options: Feldoptionen
+      input_type: Eingabetyp
+      page_number: Seitennummer
+      reorder_field: Feld neu anordnen
+      width_percentage: Prozentsatz Zeilenbreite

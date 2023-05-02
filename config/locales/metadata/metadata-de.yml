@@ -1,0 +1,10 @@
+---
+de:
+  metadata:
+    upload:
+      browse: Durchsuchen
+      click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
+      template_file_anchor: diese Vorlage
+      upload: Hochladen
+      upload_metadata: Metadaten hochladen
+      upload_metadata_description: Um Metadaten für mehrere Werke in dieser Sammlung zu aktualisieren, laden Sie eine Tabelle mit einer Zeile pro Werk hoch. Bitte laden Sie %{link} herunter, um zu beginnen.

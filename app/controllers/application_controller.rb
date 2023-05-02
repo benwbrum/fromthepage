@@ -121,6 +121,7 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
+
     if params[:article_id]
       @article = Article.find(params[:article_id])
       if session[:col_id] != nil
@@ -176,7 +177,16 @@ class ApplicationController < ActionController::Base
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
     end
+
+
+    if self.class.module_parent == Thredded && @collection
+      Thredded::Engine.routes.default_url_options = { user_slug: @collection.owner.slug, collection_id: @collection.slug }
+    else
+      Thredded::Engine.routes.default_url_options = { user_slug: 'nil', collection_id: 'nil' }
+    end
+
   end
+
 
   def set_friendly_collection(id)
     if Collection.friendly.exists?(id)
@@ -260,8 +270,14 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_collection
-    # skip irrelevant cases
     return unless @collection
+    if self.class.module_parent.name == 'Thredded'
+      unless @collection.messageboards_enabled
+        flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
+        redirect_to main_app.user_profile_path(@collection.owner)
+      end
+    end
+
     return unless @collection.restricted
     return if (params[:controller] == 'iiif')
 
@@ -269,7 +285,7 @@ class ApplicationController < ActionController::Base
       # second chance?
       unless set_fallback_collection
         flash[:error] = t('unauthorized_collection', :project => @collection.title)
-        redirect_to user_profile_path(@collection.owner)
+        redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
   end
@@ -303,7 +319,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
-    elsif !session[:user_return_to].blank?
+    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/'
       session[:user_return_to]
     elsif current_user.owner
       dashboard_owner_path

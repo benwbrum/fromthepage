@@ -466,7 +466,7 @@ class IiifController < ApplicationController
 
   def manifest_status
     work = Work.find params[:work_id]
-    service = status_service_for_work(work)
+    service = status_service_for_manifest(work)
     render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -598,8 +598,14 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work.id), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work.id), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { "@id" => iiif_work_export_html_url(work.id), 
+        "label" => "XHTML Export", 
+        "format" => "text/html",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work.id), 
+        "label" => "TEI Export", 
+        "format" => "application/tei+xml",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|
@@ -934,6 +940,7 @@ private
     service["pctTranslationIndexed"] = stats.pct_translation_annotated
     service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
     service["metadataStatus"] = work.description_status
+    service["lastUpdated"] = work.most_recent_deed_created_at
     service
   end
 

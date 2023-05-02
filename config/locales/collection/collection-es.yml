@@ -32,13 +32,15 @@ es:
       collaborator_stats: Estadísticas del Colaborador %{start_deed} hasta %{end_deed}
       collaborators: Colaboradores
       detailed_spreadsheet_export: Una hoja de cálculo exportable y detallada de todos los colaboradores está disponible en el panel del dueño.
-      export_activity_as_csv: Exportar Actividad Como CSV
-      export_as_csv: Exportar actividad detallada como CSV
+      export_activity_as_csv: Exportar toda la actividad como una hoja de cálculo
+      export_activity_as_csv_description: Descargue una hoja de cálculo con una línea que enumere cada acción.
+      export_activity_as_csv_header: Actividad de exportación
+      export_as_csv: Exportar la actividad del usuario como una hoja de cálculo
+      export_as_csv_description: Descargue una hoja de cálculo con una línea que enumere a cada usuario y su tiempo y actividad.
       find_project_newsletters_recommendations: Encuentre recomendaciones para boletines de proyectos.
       new_collaborators: Nuevos Colaboradores
       no_activity_this_time_frame: No hubo actividad en este lapso de tiempo
       no_collaborators: No hay colaboradores
-      time_on_ftp: Tiempo en FromThePage
       time_on_this: Tiempo en esta colección
       total_time: 'Tiempo total: %{hours} horas, %{minutes} minutos.'
       user: Usuario
@@ -82,6 +84,7 @@ es:
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       disable_document_sets: Deshabilitar Conjuntos de Documentos
       disable_facets: Deshabilitar facetas
+      disable_message_boards: Desactivar foro
       disable_ocr: Deshabilitar OCR
       document_sets: Conjuntos de Documentos
       document_sets_description: Los conjuntos de documentos son subconjuntos de las obras en esta colección que se pueden utilizar para darle foco a un proyecto de edición o para crear una exposición pública sobre un enfoque particular de los documentos.
@@ -97,6 +100,7 @@ es:
       enable_document_sets: Habilitar Conjuntos de Documentos
       enable_facets: Habilitar facetas
       enable_field_based_transcription: Habilitar transcripción basada en campos
+      enable_message_boards: Habilitar foro
       enable_metadata_description: Habilitar descripción de metadatos
       enable_ocr: Habilitar OCR
       enable_spellcheck: Habilitar el corrector ortográfico (no apto para textos con ortografía irregular)
@@ -110,6 +114,8 @@ es:
       make_collection_inactive: Hacer Inactiva la Colección
       make_collection_private: Hacer Privada la Colección
       make_collection_public: Hacer Pública la Colección
+      message_boards: Foro
+      message_boards_description: Un foro permite a los colaboradores discutir temas entre ellos y con los propietarios de proyectos a través de tableros de mensajes.
       metadata: metadatos
       metadata_description: Cargue los metadatos de los elementos de esta colección de forma masiva.
       metadata_entry: Metadatos Descripción
@@ -284,6 +290,7 @@ es:
       project_by: Proyecto de
       recent_edits: Ediciones Recientes
       recent_notes: Notas Recientes
+      restricted_collaboratoration: La colaboración está restringida.
       search: Búsqueda
       search_by_title: Buscar por título...
       search_by_title_1: Buscar por título

@@ -1,0 +1,21 @@
+---
+de:
+  authentication_failed: Authentifizierung fehlgeschlagen
+  dashboard:
+    collaborator: Mitarbeitenden-Dashboard
+    plain: Dashboard
+  date:
+    formats:
+      default: "%b %d, %Y"
+  de: Deutsch
+  en: English
+  es: Español
+  fr: Français
+  message_boards_are_disabled: Das Forum für %{project} wurde deaktiviert.
+  pt: Português
+  time:
+    formats:
+      default: "%b %d, %Y %I:%M %p"
+      short: "%m/%d/%Y um %I:%M %p"
+  time_ago_in_words: Vor %{time}
+  unauthorized_collection: Sie haben keinen Zugriff auf %{project}. Bitte loggen Sie sich ein oder kontaktieren Sie den/die Projektinhaber:in, damit diese:r Sie hinzufügt.

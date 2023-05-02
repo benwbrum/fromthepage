@@ -6,7 +6,7 @@ en:
     collection_works:
       n_pages:
         one: '1 page: '
-        other: "%{count} pages: "
+        other: "%{count} pages; "
       progress: Progress
       work_title: Work title
     contributor_activity:
@@ -32,13 +32,15 @@ en:
       collaborator_stats: Collaborator Stats %{start_deed} through %{end_deed}
       collaborators: Collaborators
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
-      export_activity_as_csv: Export Activity as CSV
-      export_as_csv: Export detailed activity as CSV
+      export_activity_as_csv: Export All Activity as a Spreadsheet
+      export_activity_as_csv_description: Download a spreadsheet with a line listing each action.
+      export_activity_as_csv_header: Export activity
+      export_as_csv: Export User Activity as a Spreadsheet
+      export_as_csv_description: Download a spreadsheet with a line listing each user and their time and activity.
       find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame
       no_collaborators: No Collaborators
-      time_on_ftp: Time on FromThePage
       time_on_this: Time on this collection
       total_time: 'Total time: %{hours} hours, %{minutes} minutes.'
       user: User
@@ -82,6 +84,7 @@ en:
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       disable_document_sets: Disable Document Sets
       disable_facets: Disable Facets
+      disable_message_boards: Disable Forum
       disable_ocr: Disable OCR
       document_sets: Document Sets
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
@@ -97,6 +100,7 @@ en:
       enable_document_sets: Enable Document Sets
       enable_facets: Enable Facets
       enable_field_based_transcription: Enable Field Based Transcription
+      enable_message_boards: Enable Forum
       enable_metadata_description: Enable Metadata Description
       enable_ocr: Enable OCR
       enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
@@ -110,6 +114,8 @@ en:
       make_collection_inactive: Make Collection Inactive
       make_collection_private: Make Collection Private
       make_collection_public: Make Collection Public
+      message_boards: Forum
+      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards.
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_entry: Metadata Description
@@ -284,6 +290,7 @@ en:
       project_by: Project by
       recent_edits: Recent Edits
       recent_notes: Recent Notes
+      restricted_collaboratoration: Collaboration is restricted.
       search: Search
       search_by_title: Search by title or metadata...
       search_by_title_1: Search by title

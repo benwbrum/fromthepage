@@ -27,6 +27,8 @@ class ScCanvas < ApplicationRecord
 
 
   def transcript_annotations
+    return nil unless self.annotations
+
     annotation_list = JSON.parse(self.annotations)
     transcript_list = annotation_list.detect do |element|
       # Use the page-level annotation if possible
@@ -52,7 +54,9 @@ class ScCanvas < ApplicationRecord
     resource_contents = transcript_list['data']['resources'].first['data']['resource']['data']['chars']
 
     if resource_format == 'text/html'
-      transcript = Nokogiri::HTML(resource_contents).text
+      doc = Nokogiri::HTML(resource_contents)
+      doc.search('br').each { |node| node.replace("\n") }
+      transcript = doc.text
     else
       transcript = resource_contents
     end

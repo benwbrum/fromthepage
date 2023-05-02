@@ -32,13 +32,15 @@ fr:
       collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
       collaborators: Collaborateurs
       detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
-      export_activity_as_csv: Exporter l'activité au format CSV
-      export_as_csv: Exporter l'activité détaillée au format CSV
+      export_activity_as_csv: Exporter toutes les activités sous forme de feuille de calcul
+      export_activity_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque action.
+      export_activity_as_csv_header: Activité d'exportation
+      export_as_csv: Exporter l'activité de l'utilisateur sous forme de feuille de calcul
+      export_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque utilisateur ainsi que son temps et son activité.
       find_project_newsletters_recommendations: Trouvez des recommandations pour les newsletters du projet.
       new_collaborators: Nouveaux collaborateurs
       no_activity_this_time_frame: Aucune activité pendant cette période
       no_collaborators: Aucun collaborateur
-      time_on_ftp: Heure sur FromThePage
       time_on_this: Temps sur cette collection
       total_time: 'Durée totale : %{hours} heures, %{minutes} minutes.'
       user: Utilisateur
@@ -82,6 +84,7 @@ fr:
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       disable_document_sets: Désactiver les jeux de documents
       disable_facets: Désactiver les facettes
+      disable_message_boards: Désactiver le forum
       disable_ocr: Désactiver la OCR
       document_sets: Jeux de documents
       document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
@@ -97,6 +100,7 @@ fr:
       enable_document_sets: Activer les jeux de documents
       enable_facets: Activer les facettes
       enable_field_based_transcription: Activer la transcription basée sur les champs
+      enable_message_boards: Activer le forum
       enable_metadata_description: Activer la description des métadonnées
       enable_ocr: Activer OCR
       enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
@@ -110,6 +114,8 @@ fr:
       make_collection_inactive: Rendre la collection inactive
       make_collection_private: Rendre la collection privée
       make_collection_public: Rendre la collection publique
+      message_boards: Forum
+      message_boards_description: Un forum permet aux collaborateurs de discuter de sujets entre eux et avec les porteurs de projet via des babillards électroniques.
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_entry: Description des métadonnées
@@ -284,6 +290,7 @@ fr:
       project_by: Projet par
       recent_edits: Modifications récentes
       recent_notes: Notes récentes
+      restricted_collaboratoration: La collaboration est restreinte.
       search: Chercher
       search_by_title: Rechercher par titre ou métadonnées...
       search_by_title_1: Rechercher par titre

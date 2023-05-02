@@ -67,7 +67,7 @@ class ScManifest < ApplicationRecord
       if summary.blank?
         ""
       else
-        pluck_language_value v3_hash['summary']
+        ScManifest.pluck_language_value v3_hash['summary']
       end
     else
       service.description
@@ -189,7 +189,7 @@ class ScManifest < ApplicationRecord
   def sc_canvas_to_page(sc_canvas, annotation_ocr=false)
     page = Page.new
     page.title = ScManifest.flatten_element(sc_canvas.sc_canvas_label)
-    if annotation_ocr
+    if annotation_ocr && sc_canvas.has_annotation?
       page.source_text=sc_canvas.annotation_text_for_source
     end
 

@@ -5,7 +5,15 @@
   font-family: monospace;
   height: auto;
   color: black;
-  direction: ltr;
+}
+/* Set the direction of the lenguage for ltr and rtl */
+.rtl {
+  text-align: right;
+  padding: 20px;
+}
+
+.ltr {
+  text-align: left;
 }
 
 /* PADDING */
