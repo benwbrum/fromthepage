@@ -249,4 +249,9 @@ module ApplicationHelper
     truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || '' 
   end
 
+  def timeago(time, options = {})
+    options[:class] ||= "timeago"
+    content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
+  end
+
 end
