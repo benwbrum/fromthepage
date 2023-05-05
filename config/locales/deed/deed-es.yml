@@ -29,7 +29,6 @@ es:
         translated_page: tradujo la página %{page}
     deeds:
       show_more: Mostrar Más
-      time_ago_in_words: Hace %{time}
     described_metadata: Metadatos descritos
     edited_metadata: Descripción de los metadatos editados
     list:

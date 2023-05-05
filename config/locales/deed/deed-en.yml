@@ -31,7 +31,6 @@ en:
         translated_page: translated %{page}
     deeds:
       show_more: Show More
-      time_ago_in_words: "%{time} ago"
     described_metadata: Described Metadata
     edited_metadata: Edited Metadata Description
     list:

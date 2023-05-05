@@ -29,7 +29,6 @@ pt:
       this_collection: esta coleção
     deeds:
       show_more: Mostrar Mais
-      time_ago_in_words: Há %{time}
     described_metadata: Metadados Descritos
     edited_metadata: Descrição de metadados editada
     list:

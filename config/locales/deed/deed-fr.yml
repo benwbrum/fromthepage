@@ -31,7 +31,6 @@ fr:
         translated_page: a traduit %{page}
     deeds:
       show_more: Voir plus
-      time_ago_in_words: Il y a %{time}
     described_metadata: Métadonnées décrites
     edited_metadata: Description des métadonnées modifiées
     list:
