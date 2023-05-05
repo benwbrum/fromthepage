@@ -185,6 +185,8 @@ en:
       head_label: Heading
       heading: Transcription Editor Configuration
       html: " (HTML)"
+      i_description: Marks italicized text.
+      i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.

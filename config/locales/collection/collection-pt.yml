@@ -185,6 +185,8 @@ pt:
       head_label: Cabeçalho
       heading: Configuração do Editor de Transcrição
       html: "(HTML)"
+      i_description: Marque o texto em itálico.
+      i_label: Itálico
       lb_description: Marca quebras de linha
       lb_label: Quebra de linha
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.

@@ -175,6 +175,14 @@ module AbstractXmlHelper
       end
     end
 
+    doc.elements.each("//emph") do |e|
+      rend = e.attributes["rend"]
+      span = e
+      if rend == 'italics'
+        span.name='i'
+      end
+    end
+
     doc.elements.each("//add") do |e|
       e.name='span'
       e.add_attribute('class', "addition")
