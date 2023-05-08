@@ -106,6 +106,7 @@ module XmlSourceProcessor
     xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
+    xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
@@ -114,6 +115,13 @@ module XmlSourceProcessor
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
+  end
+
+
+  # remove script tags from HTML to prevent javascript injection
+  def clean_script_tags(text)
+    # text.gsub(/<script.*?<\/script>/m, '')
+    text.gsub(/<\/?script.*?>/m, '')
   end
 
   BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/

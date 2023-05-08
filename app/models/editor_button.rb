@@ -14,7 +14,7 @@ class EditorButton < ApplicationRecord
     MARGINALIA = 'marginalia'
     REG = 'reg'
     SOFT_BREAK = 'lb'
-    STRIKE = 's'
+    STRIKE = 'strike'
     SUB = 'sub'
     SUP = 'sup'
     UNCLEAR = 'unclear'
@@ -34,7 +34,7 @@ class EditorButton < ApplicationRecord
     Keys::SOFT_BREAK => ['<lb break="no">'],
     Keys::MARGINALIA => ['<marginalia>'],
     Keys::REG => ['<reg orig="">'],
-    Keys::STRIKE => ['<hi rend="str">', '<s>'],
+    Keys::STRIKE => ['<hi rend="str">', '<strike>'],
     Keys::SUB => ['<hi rend="sub">', '<sub>'],
     Keys::SUP => ['<hi rend="sup">', '<sup>'],
     Keys::UNCLEAR => ['<unclear>'],

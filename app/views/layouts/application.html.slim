@@ -113,13 +113,13 @@ html lang="en-US"
           =link_to t('.about'), 'https://content.fromthepage.com/about-us/'
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
-          =mail_to 'support@fromthepage.com', t('.contact_us')
           -if request.original_url.include?("fromthepage.com")
+            =link_to t('.contact_us'), contact_path(contact_form_token)
             =link_to t('.pricing'), main_app.pricing_path
-          =link_to t('.transcription_for_archives_special_collections'), 'https://content.fromthepage.com/special-collections/'
-          =link_to t('.transcription_for_state_provincial_archives'), 'https://content.fromthepage.com/state-provincial-landing-page/'
-          =link_to t('.transcription_for_digital_scholarship'), 'https://content.fromthepage.com/digital-scholarship/'
-          =link_to t('.transcription_for_public_libraries'), 'https://content.fromthepage.com/crowdsourcing-for-public-libraries/'
+            =link_to t('.transcription_for_archives_special_collections'), special_collections_path
+            =link_to t('.transcription_for_state_provincial_archives'), state_archives_path
+            =link_to t('.transcription_for_digital_scholarship'), digital_scholarship_path
+            =link_to t('.transcription_for_public_libraries'), public_libraries_path
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
         =link_to 'https://www.youtube.com/user/fromthepage', target: '_blank'
