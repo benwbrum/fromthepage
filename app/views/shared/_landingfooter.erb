@@ -73,5 +73,10 @@
     <%= javascript_include_tag 'landing/slider.js' %>
     <%= javascript_include_tag 'landing/main.js' %>
 
-
-
+    <% if defined? INTERCOM_APP_ID %>
+      <% if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom_customer" %>
+      <% elsif controller_name=='static' && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom" %>
+      <% end %>
+    <% end %>
