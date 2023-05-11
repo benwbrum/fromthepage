@@ -13,7 +13,7 @@ class CollectionController < ApplicationController
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewe]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer]
@@ -262,6 +262,17 @@ class CollectionController < ApplicationController
     redirect_to collection_edit_owners_path(@collection)
   end
 
+  def remove_block_user
+    collection_block = CollectionBlock.find_by(collection_id: params[:collection_id].to_i, user_id: params[:user_id].to_i)
+    collection_block.destroy
+    redirect_to collection_block_users_path(@collection)
+  end
+
+  def block_users
+    @list_of_blocked_users = @collection.blocked_users
+    render layout: false
+  end
+
   def add_collaborator
     @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
@@ -282,6 +293,11 @@ class CollectionController < ApplicationController
       send_email(@user, @collection)
     end
     redirect_to collection_edit_reviewers_path(@collection)
+  end
+
+  def add_block_user
+    CollectionBlock.create(collection_id: params[:collection_id].to_i, user_id: params[:user_id].to_i)
+    redirect_to collection_block_users_path(@collection)
   end
 
   def remove_reviewer
