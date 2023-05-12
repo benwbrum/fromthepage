@@ -20,5 +20,6 @@ small.legend
 -content_for :javascript
   javascript:
     $(document).ready(function() {
+      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
       $("time.timeago").timeago();
     });

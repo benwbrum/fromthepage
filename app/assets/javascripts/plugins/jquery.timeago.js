@@ -165,6 +165,84 @@
           window.clearInterval(this._timeagoInterval);
           this._timeagoInterval = null;
         }
+      },
+      setLocale: function(locale) {
+        locale = locale.split("-")[0];
+        if (locale == "fr") {
+          // French
+          jQuery.timeago.settings.strings = {
+            // environ ~= about, it's optional
+            prefixAgo: "il y a",
+            prefixFromNow: "d'ici",
+            seconds: "moins d'une minute",
+            minute: "environ une minute",
+            minutes: "environ %d minutes",
+            hour: "environ une heure",
+            hours: "environ %d heures",
+            day: "environ un jour",
+            days: "environ %d jours",
+            month: "environ un mois",
+            months: "environ %d mois",
+            year: "un an",
+            years: "%d ans"
+          };
+        } else if (locale == "de") {
+          // German
+          jQuery.timeago.settings.strings = {
+            prefixAgo: "vor",
+            prefixFromNow: "in",
+            suffixAgo: "",
+            suffixFromNow: "",
+            inPast: "jetzt gleich",
+            seconds: "wenigen Sekunden",
+            minute: "etwa einer Minute",
+            minutes: "%d Minuten",
+            hour: "etwa einer Stunde",
+            hours: "%d Stunden",
+            day: "etwa einem Tag",
+            days: "%d Tagen",
+            month: "etwa einem Monat",
+            months: "%d Monaten",
+            year: "etwa einem Jahr",
+            years: "%d Jahren"
+          };
+        } else if (locale == "es") {
+          // Spanish
+          jQuery.timeago.settings.strings = {
+            prefixAgo: "hace",
+            prefixFromNow: "dentro de",
+            suffixAgo: "",
+            suffixFromNow: "",
+            seconds: "menos de un minuto",
+            minute: "un minuto",
+            minutes: "unos %d minutos",
+            hour: "una hora",
+            hours: "%d horas",
+            day: "un día",
+            days: "%d días",
+            month: "un mes",
+            months: "%d meses",
+            year: "un año",
+            years: "%d años"
+          };
+        } else if (locale == "pt") {
+          // Portuguese
+          jQuery.timeago.settings.strings = {
+            prefixAgo: "há",
+            prefixFromNow: "daqui a",
+            seconds: "menos de um minuto",
+            minute: "cerca de um minuto",
+            minutes: "%d minutos",
+            hour: "cerca de uma hora",
+            hours: "cerca de %d horas",
+            day: "um dia",
+            days: "%d dias",
+            month: "cerca de um mês",
+            months: "%d meses",
+            year: "cerca de um ano",
+            years: "%d anos"
+          };
+        }
       }
     };
   
@@ -173,10 +251,15 @@
       if (!fn) {
         throw new Error("Unknown function name '"+ action +"' for timeago");
       }
-      // each over objects here and call the requested function
-      this.each(function() {
+      if (action == "setLocale") {
+        // only needs to be called once
         fn.call(this, options);
-      });
+      } else {
+        // each over objects here and call the requested function
+        this.each(function() {
+          fn.call(this, options);
+        });
+      }
       return this;
     };
   
