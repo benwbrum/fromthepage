@@ -164,22 +164,15 @@ module AbstractXmlHelper
         span.name='sup'
       when 'underline'
         span.name='u'
-      when 'italic'
+      when 'italics'
         span.name='i'
+        span.attributes.delete 'rend'
       when 'bold'
         span.name='i'
       when 'sub'
         span.name='sub'
       when 'str'
         span.name='strike'
-      end
-    end
-
-    doc.elements.each("//emph") do |e|
-      rend = e.attributes["rend"]
-      span = e
-      if rend == 'italics'
-        span.name='i'
       end
     end
 

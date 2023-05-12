@@ -32,6 +32,7 @@ class EditorButton < ApplicationRecord
     Keys::FOOTNOTE => ['<footnote marker="*">'],
     Keys::GAP => ['<gap>'],
     Keys::HEAD => ['<head>'],
+    Keys::ITALIC => ['<hi rend="italics">', '<i>'],
     Keys::SOFT_BREAK => ['<lb break="no">'],
     Keys::MARGINALIA => ['<marginalia>'],
     Keys::REG => ['<reg orig="">'],
@@ -39,8 +40,7 @@ class EditorButton < ApplicationRecord
     Keys::SUB => ['<hi rend="sub">', '<sub>'],
     Keys::SUP => ['<hi rend="sup">', '<sup>'],
     Keys::UNCLEAR => ['<unclear>'],
-    Keys::UNDERLINE => ['<hi rend="underline">', '<u>'],
-    Keys::ITALIC => ['<emph rend="italics">', '<i>']
+    Keys::UNDERLINE => ['<hi rend="underline">', '<u>']
   }
 
 
