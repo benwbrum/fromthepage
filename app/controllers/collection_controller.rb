@@ -13,7 +13,7 @@ class CollectionController < ApplicationController
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewe]
+  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer]
@@ -263,8 +263,8 @@ class CollectionController < ApplicationController
   end
 
   def remove_block_user
-    collection_block = CollectionBlock.find_by(collection_id: params[:collection_id].to_i, user_id: params[:user_id].to_i)
-    collection_block.destroy
+    collection_block = CollectionBlock.find_by(collection_id: @collection.id, user_id: @user.id)
+    collection_block.destroy if collection_block
     redirect_to collection_block_users_path(@collection)
   end
 
@@ -296,7 +296,7 @@ class CollectionController < ApplicationController
   end
 
   def add_block_user
-    CollectionBlock.create(collection_id: params[:collection_id].to_i, user_id: params[:user_id].to_i)
+    CollectionBlock.create(collection_id: @collection.id, user_id: @user.id)
     redirect_to collection_block_users_path(@collection)
   end
 

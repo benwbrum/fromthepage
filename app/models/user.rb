@@ -267,7 +267,7 @@ class User < ApplicationRecord
     # document set show_to? logic:
     #     (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
     public_collections = self.unrestricted_collections
-    blocked_collection_ids = CollectionBlock.where(user_id: current_user.id).pluck(:collection_id)
+    blocked_collection_ids = CollectionBlock.where(user_id: user&.id).pluck(:collection_id)
     filtered_public_collections = public_collections.where.not(id: blocked_collection_ids)
     public_sets = self.unrestricted_document_sets
 

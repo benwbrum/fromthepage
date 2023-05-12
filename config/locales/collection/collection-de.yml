@@ -60,8 +60,10 @@ de:
       authorized_reviewers: Autorisierte Reviewer:innen
       blank_collection: Leere Sammlung
       blank_collection_description: Das Drücken dieses Buttons setzt die Sammlung zurück. Alle Transkriptionen und andere Arbeiten an der Sammlung werden gelöscht, als ob sie neu importiert worden wäre.
-      block_users: Benutzer blockieren
-      block_users_description: Dadurch werden die Benutzer aufgelistet, die das Projekt derzeit sehen können, und der Projektinhaber kann diejenigen auswählen, die blockiert werden sollen
+      block: Bloquear
+      block_users_description: Bloqueie o acesso de usuários individuais à coleção.
+      block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
+      blocked_users: Usuários bloqueados
       close_api: API-Zugriff schließen
       collection_active_message: Dies ist eine aktive Sammlung. Wird eine Sammlung inaktiv gesetzt, verhindert dies, dass Mitarbeitende Inhalte innerhalb der Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatsphäre-Einstellungen der Sammlung aus.
       collection_collaborators: Sammlungsmitarbeitende

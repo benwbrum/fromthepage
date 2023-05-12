@@ -168,7 +168,7 @@ class Collection < ApplicationRecord
   end
 
   def show_to?(user)
-    (!self.restricted && self.works.present? && CollectionBlock.joins(:user).where(user: user, collection_id: self.id).none?
+    (!self.restricted && self.works.present? && self.collection_blocks.where(user_id: user.id).none?
     ) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
