@@ -168,77 +168,82 @@ class CollectionController < ApplicationController
   end
 
   def show
-    unless @collection.nil?
-      if @collection.restricted
-        if !user_signed_in? || !@collection.show_to?(current_user)
-          flash[:error] = t('unauthorized_collection', :project => @collection.title)
-          redirect_to user_profile_path(@collection.owner)
-        end
-      end
-
-      if params[:work_search]
-        @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-      elsif (params[:works] == 'untranscribed')
-        ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
-        @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
-        #show all works
-      elsif (params[:works] == 'show')
-        @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-        #hide incomplete works
-      elsif params[:works] == 'hide' || (@collection.hide_completed)
-        #find ids of completed translation works
-        translation_ids = @collection.works.incomplete_translation.pluck(:id)
-        #find ids of completed transcription works
-        transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
-        #combine ids anduse to get works that aren't complete
-        ids = translation_ids + transcription_ids
-
-        if @collection.metadata_entry?
-          description_ids = @collection.works.incomplete_description.pluck(:id)
-          ids += description_ids
-        end
-
-        works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
-
-        if works.empty?
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-        else
-          @works = works
-        end
-      else
-        @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-      end
-
-      if @collection.facets_enabled?
-        # construct the search object from the parameters
-        @search = WorkSearch.new(params)
-        @search.filter([:work, :collection_id]).value=@collection.id
-        # the search results are WorkFacets, not works, so we need to fetch the works themselves
-        facet_ids = @search.result.pluck(:id)
-        @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
-
-        @date_ranges = []
-        date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
-        if date_configs.size > 0
-          collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
-          date_configs.each do |facet_config|
-            facet_attr = [:d0,:d1,:d2][facet_config.order]
-
-            selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
-            collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
-
-            @date_ranges << {
-              :facet => facet_attr,
-              :max => collection_values.max.year,
-              :min => collection_values.min.year,
-              :top => selection_values.max.year,
-              :bottom => selection_values.min.year
-            }
+    if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
+      flash[:error] = t('unauthorized_collection', :project => @collection.title)
+      redirect_to user_profile_path(@collection.owner)
+    else
+      unless @collection.nil?
+        if @collection.restricted
+          if !user_signed_in? || !@collection.show_to?(current_user)
+            flash[:error] = t('unauthorized_collection', :project => @collection.title)
+            redirect_to user_profile_path(@collection.owner)
           end
         end
+
+        if params[:work_search]
+          @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+        elsif (params[:works] == 'untranscribed')
+          ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+          @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
+          #show all works
+        elsif (params[:works] == 'show')
+          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          #hide incomplete works
+        elsif params[:works] == 'hide' || (@collection.hide_completed)
+          #find ids of completed translation works
+          translation_ids = @collection.works.incomplete_translation.pluck(:id)
+          #find ids of completed transcription works
+          transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
+          #combine ids anduse to get works that aren't complete
+          ids = translation_ids + transcription_ids
+
+          if @collection.metadata_entry?
+            description_ids = @collection.works.incomplete_description.pluck(:id)
+            ids += description_ids
+          end
+
+          works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+
+          if works.empty?
+            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          else
+            @works = works
+          end
+        else
+          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+        end
+
+        if @collection.facets_enabled?
+          # construct the search object from the parameters
+          @search = WorkSearch.new(params)
+          @search.filter([:work, :collection_id]).value=@collection.id
+          # the search results are WorkFacets, not works, so we need to fetch the works themselves
+          facet_ids = @search.result.pluck(:id)
+          @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+
+          @date_ranges = []
+          date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
+          if date_configs.size > 0
+            collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
+            date_configs.each do |facet_config|
+              facet_attr = [:d0,:d1,:d2][facet_config.order]
+
+              selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
+              collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
+
+              @date_ranges << {
+                :facet => facet_attr,
+                :max => collection_values.max.year,
+                :min => collection_values.min.year,
+                :top => selection_values.max.year,
+                :bottom => selection_values.min.year
+              }
+            end
+          end
+        end
+      else
+        redirect_to "/404"
       end
-    else
-      redirect_to "/404"
     end
   end
 

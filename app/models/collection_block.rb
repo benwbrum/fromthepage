@@ -4,4 +4,4 @@ class CollectionBlock < ApplicationRecord
   
     validates :collection, presence: true
     validates :user, presence: true
-  end
+end
