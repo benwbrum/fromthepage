@@ -185,6 +185,8 @@ de:
       head_label: Überschrift
       heading: Konfiguration des Transkriptionseditors
       html: "(HTML)"
+      i_description: Markiert kursiven Text.
+      i_label: Kursiv
       lb_description: Markiert Zeilenumbrüche
       lb_label: Zeilenumbruch
       markup_preference_description: Einige Tags haben Entsprechungen in HTML und TEI-XML. Wählen Sie eine Einstellung aus, um festzulegen, welche Tag-Form eingefügt wird, wenn ein:e Mitarbeitende:r den Button nutzt.
