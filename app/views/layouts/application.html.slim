@@ -122,12 +122,12 @@ html lang="en-US"
             =link_to t('.transcription_for_public_libraries'), main_app.public_libraries_path
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
+        =link_to 'https://www.youtube.com/user/fromthepage', target: '_blank'
+          =svg_symbol '#logo-youtube', title: 'Youtube'
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'
           =svg_symbol '#logo-twitter', title: 'Twitter'
         =link_to 'https://www.facebook.com/FromThePageTranscription', target: '_blank'
           =svg_symbol '#logo-facebook', title: 'Facebook'
-        =link_to 'https://www.youtube.com/user/fromthepage', target: '_blank'
-          =svg_symbol '#logo-youtube', title: 'Youtube'
         =link_to 'https://www.instagram.com/_fromthepage_/', target: '_blank'
           =svg_symbol '#logo-instagram', title: 'Instagram'
 
