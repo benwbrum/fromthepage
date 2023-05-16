@@ -19,6 +19,7 @@ class EditorButton < ApplicationRecord
     SUP = 'sup'
     UNCLEAR = 'unclear'
     UNDERLINE = 'u'
+    ITALIC = 'i'
   end
 
   BUTTON_MAP = {
@@ -31,6 +32,7 @@ class EditorButton < ApplicationRecord
     Keys::FOOTNOTE => ['<footnote marker="*">'],
     Keys::GAP => ['<gap>'],
     Keys::HEAD => ['<head>'],
+    Keys::ITALIC => ['<hi rend="italics">', '<i>'],
     Keys::SOFT_BREAK => ['<lb break="no">'],
     Keys::MARGINALIA => ['<marginalia>'],
     Keys::REG => ['<reg orig="">'],

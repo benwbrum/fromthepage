@@ -185,6 +185,8 @@ es:
       head_label: Bóveda
       heading: Configuración del editor de transcripciones
       html: "(HTML)"
+      i_description: Marca el texto en cursiva.
+      i_label: Itálico
       lb_description: Marca saltos de línea
       lb_label: Salto de línea
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
