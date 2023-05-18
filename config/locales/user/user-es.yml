@@ -36,8 +36,10 @@ es:
       add_as_owner: Añadido a obra privada como dueño
       add_as_reviewer: Añadido a la colección como revisor autorizado
       default_dictation_language: 'Idioma de dictado predeterminado: '
+      footer: Pie de página
       help: Texto de Ayuda Básica
       interface_language: Lenguaje de interfaz
+      learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       location: Ubicación
       name: Nombre
       name_only_required: Tu nombre es el único campo obligatorio.

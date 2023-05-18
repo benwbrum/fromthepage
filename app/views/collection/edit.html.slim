@@ -19,11 +19,6 @@
             =f.label :intro_block, t('.description'), class: "above"
             br: i =t('.description_message')
             =f.text_area :intro_block, rows: 10, value: @collection.intro_block
-        tr
-          td(colspan="2")
-            =f.label :footer_block, t('.footer'), class: "above"
-            =f.text_area :footer_block, rows: 5, value: @collection.footer_block
-            p.nomargin.settings =link_to t('.learn_more_footer'), "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
         -if @collection.text_entry?
           tr
             td(colspan="2")
@@ -263,8 +258,6 @@
       h3 =t('.delete_collection')
       =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
         span =t('.delete_collection')
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

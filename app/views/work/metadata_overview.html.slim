@@ -43,8 +43,6 @@ h2.legend =t('.notes_and_questions')
   =render :partial => "notes/notes"
 
 
-=render({ :partial => '/shared/collection_footer' })
-
 -unless @current_user_alerted
   -if current_user.present?
     -unless current_user.slug.nil?

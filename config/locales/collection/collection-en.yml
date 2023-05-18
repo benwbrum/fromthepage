@@ -105,10 +105,8 @@ en:
       enable_ocr: Enable OCR
       enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
       field_based_transcription: Field based transcription
-      footer: Footer
       help: Basic Help Text
       hide_completed: Hide completed works by default
-      learn_more_footer: Learn more about configuring the footer.
       link_help: Subject Linking Help Text (not displayed if subjects are disabled)
       make_collection_active: Make Collection Active
       make_collection_inactive: Make Collection Inactive

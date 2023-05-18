@@ -100,8 +100,6 @@ h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
 
-=render({ :partial => '/shared/collection_footer' })
-
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
 =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
