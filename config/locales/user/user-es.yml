@@ -36,6 +36,7 @@ es:
       add_as_owner: Añadido a obra privada como dueño
       add_as_reviewer: Añadido a la colección como revisor autorizado
       default_dictation_language: 'Idioma de dictado predeterminado: '
+      help: Texto de Ayuda Básica
       interface_language: Lenguaje de interfaz
       location: Ubicación
       name: Nombre
@@ -48,6 +49,7 @@ es:
       picture_to_be_used_message: Imagen a utilizar
       select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
       sign_up_url: 'URL de registro:'
+      suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       update_profile: Actualizar Perfil
       update_user_profile: Actualizar Perfil de Usuario
       upload_image: Cargar imagen
