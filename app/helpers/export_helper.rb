@@ -309,7 +309,7 @@ module ExportHelper
     has_content = false
     tei = ""
     tei << "<category xml:id=\"C#{category.id}\">\n"
-    tei << "<catDesc>#{category.title}</catDesc>\n"
+    tei << "<catDesc>#{ERB::Util.html_escape(category.title)}</catDesc>\n"
     category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
       has_content = true
       if seen_subjects.include?(subject)
@@ -364,9 +364,9 @@ module ExportHelper
         else
           category_class = "#category #branch"
         end
-        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{parent.title}</ptr> -- "
+        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{ERB::Util.html_escape(parent.title)}</ptr> -- "
       end
-      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{category.title}</ptr>"
+      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{ERB::Util.html_escape(category.title)}</ptr>"
       tei << "</ab>\n"
     end
     tei << "              </note>\n"
