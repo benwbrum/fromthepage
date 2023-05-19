@@ -58,6 +58,10 @@ class AdminMailer < ActionMailer::Base
     mail to: user_email, subject: "CONTENTdm Bulk Import Complete"
   end
 
+  def weekly_trial_cohort(file)
+    attachments.inline["weekly_cohort.csv"] = File.read(file)
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Trial Cohort")
+  end
 
   class OwnerCollectionActivity
     attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity

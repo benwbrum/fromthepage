@@ -36,6 +36,7 @@ fr:
       add_as_owner: Ajouté à la collection en tant que copropriétaire
       add_as_reviewer: Ajouté à la collection en tant qu'examinateur autorisé
       default_dictation_language: 'Langue de dictée par défaut :'
+      help: Texte de la page d'aide
       interface_language: Langue de l'interface
       location: Emplacement
       name: Nom
@@ -48,6 +49,7 @@ fr:
       picture_to_be_used_message: Image à utiliser
       select_notification: 'Sélectionnez les notifications suivantes que vous souhaitez recevoir :'
       sign_up_url: 'URL d''inscription :'
+      suggestions_help_tab: Suggestions pour votre onglet d'aide.
       update_profile: Mettre à jour le profil
       update_user_profile: Mettre à jour le profil utilisateur
       upload_image: Télécharger une image
