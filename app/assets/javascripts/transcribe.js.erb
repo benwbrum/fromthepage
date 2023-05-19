@@ -87,8 +87,12 @@ function unsavedNotes(e){
   var notes = $('textarea#note_body');
   var msg = "You have unsaved notes. Please save or discard notes before saving transcription."
   checkForUnsaved(notes, msg, e, true);
+  localStorage.removeItem("autoLinkAndPreviewFlag");
 }
 
+function set_autolink_and_preview(e){ 
+  localStorage.setItem("autoLinkAndPreviewFlag", "true");
+}
 //check for unsaved transcriptions before changing page
 function unsavedTranscription(e){
   var msg = "You have unsaved changes. Please save or discard your work before going to the next page.";
@@ -118,7 +122,7 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
   // the advanced editor is a contentEditable div, not an input, so we need to use the CodeMirror API
   if (typeof myCodeMirror !== 'undefined' && !ignoreCodeMirror) {
     // the advanced editor is in use
-    if (!myCodeMirror.isClean()) {
+    if (!myCodeMirror.isClean() || localStorage.getItem("autoLinkAndPreviewFlag")) {
         e.preventDefault();
         alert(msg);
         return false;      
