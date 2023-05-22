@@ -95,6 +95,7 @@ de:
       edit_fields: Felder
       edit_metadata_fields: Felder bearbeiten
       edit_owners: Projektinhaber:innen bearbeiten
+      edit_profile: Ändern Sie dies in Ihrem Benutzerprofil
       editor_buttons: Editor-Buttons
       editor_buttons_description: Wählen Sie die Mark-up-Buttons aus, die im Transkriptionseditor angezeigt werden sollen.
       enable_document_sets: Dokumentensets aktivieren
@@ -105,6 +106,7 @@ de:
       enable_ocr: OCR aktivieren
       enable_spellcheck: Rechtschreibprüfung aktivieren (nicht geeignet für Texte mit unregelmäßiger oder nicht standardisierter Rechtschreibung)
       field_based_transcription: Feldbasierte Transkription
+      footer: Fusszeile
       help: Grundlegender Hilfstext
       hide_completed: Abgeschlossene Werke standardmäßig ausblenden
       link_help: Hilfstext zur Entitätenverlinkung (wird nicht angezeigt, wenn Entitäten deaktiviert sind)
@@ -156,6 +158,7 @@ de:
       transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseditor für jede Seite angezeigt, die transkribiert oder indexiert wird.
       transcription_type: Transkriptionstyp
       transcription_type_description: Jede Seite kann einen Bereich für eine freie Texteingabe (Standard) oder mehrere kurze Eingabefelder für Formulare haben. Alle Seiten in der Sammlung haben die gleiche Art von Transkriptionseinträgen. Spracheingabe wird nicht unterstützt und wird deaktiviert.
+      update_footer_message: Sie können die Fußzeile aktualisieren, indem Sie das Profil für %{owner} bearbeiten.
       upload_image: Bild hochladen
       upload_metadata: Metadaten hochladen
       url: URL

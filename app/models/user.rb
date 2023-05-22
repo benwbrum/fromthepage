@@ -73,6 +73,7 @@ class User < ApplicationRecord
   before_validation :update_display_name
 
   after_save :create_notifications
+  after_create :set_default_footer_block
   #before_destroy :clean_up_orphans
 
   def email_does_not_match_denylist
@@ -369,6 +370,11 @@ class User < ApplicationRecord
       token = SecureRandom.base64.tr('+/=', 'Qrt')
       break token unless User.exists?(api_key: token)
     end
+  end
+
+  def set_default_footer_block
+    self.footer_block = "For questions about this project, contact at."
+    save
   end
 
 end

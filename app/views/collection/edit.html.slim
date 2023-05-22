@@ -19,6 +19,18 @@
             =f.label :intro_block, t('.description'), class: "above"
             br: i =t('.description_message')
             =f.text_area :intro_block, rows: 10, value: @collection.intro_block
+        tr
+          td(colspan="2")
+            =f.label :footer_block, t('.footer'), class: "above"
+            - if current_user == @collection.owner
+              - if ["Legacy", "Small Organization", "Individual Researcher", "Trial", "Large Institution"].include?(current_user.account_type)
+                = f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = link_to t('.edit_profile'), user_profile_path(current_user)
+              - elsif current_user.account_type == "Staff"
+                = f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = t('.update_footer_message', owner: @collection.owner.display_name)
+            - else
+              = f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
         -if @collection.text_entry?
           tr
             td(colspan="2")
