@@ -105,10 +105,8 @@ de:
       enable_ocr: OCR aktivieren
       enable_spellcheck: Rechtschreibprüfung aktivieren (nicht geeignet für Texte mit unregelmäßiger oder nicht standardisierter Rechtschreibung)
       field_based_transcription: Feldbasierte Transkription
-      footer: Footer
       help: Grundlegender Hilfstext
       hide_completed: Abgeschlossene Werke standardmäßig ausblenden
-      learn_more_footer: Erfahren Sie mehr über die Konfiguration des Footers.
       link_help: Hilfstext zur Entitätenverlinkung (wird nicht angezeigt, wenn Entitäten deaktiviert sind)
       make_collection_active: Sammlung aktiv setzen
       make_collection_inactive: Sammlung inaktiv setzen

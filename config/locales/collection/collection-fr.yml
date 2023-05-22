@@ -105,10 +105,8 @@ fr:
       enable_ocr: Activer OCR
       enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
       field_based_transcription: Transcription basée sur les champs
-      footer: Bas de chaque page
       help: Texte de la page d'aide
       hide_completed: Masquer les œuvres terminés par défaut
-      learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
       make_collection_active: Rendre la collection active
       make_collection_inactive: Rendre la collection inactive
