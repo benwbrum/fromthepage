@@ -95,6 +95,7 @@ fr:
       edit_fields: Champs
       edit_metadata_fields: Modifier les champs
       edit_owners: Modifier les propriétaires
+      edit_profile: Changez ceci dans votre profil d'utilisateur
       editor_buttons: Boutons de l'éditeur
       editor_buttons_description: Choisissez les boutons de balisage à afficher dans l'éditeur de transcription.
       enable_document_sets: Activer les jeux de documents
@@ -105,10 +106,9 @@ fr:
       enable_ocr: Activer OCR
       enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
       field_based_transcription: Transcription basée sur les champs
-      footer: Bas de chaque page
+      footer: Bas de page
       help: Texte de la page d'aide
       hide_completed: Masquer les œuvres terminés par défaut
-      learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
       make_collection_active: Rendre la collection active
       make_collection_inactive: Rendre la collection inactive
@@ -158,6 +158,7 @@ fr:
       transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
       transcription_type: Type de transcription
       transcription_type_description: Chaque page peut avoir une zone de saisie de texte libre (par défaut) ou plusieurs champs de saisie courts conçus pour les formulaires. Toutes les pages de la collection ont le même type d'entrées de transcription. La dictée vocale n'est pas prise en charge et sera désactivée.
+      update_footer_message: Vous pouvez mettre à jour le pied de page en modifiant le profil de %{owner}
       upload_image: Télécharger une image
       upload_metadata: Télécharger les métadonnées
       url: URL

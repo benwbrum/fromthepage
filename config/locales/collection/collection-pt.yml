@@ -95,6 +95,7 @@ pt:
       edit_fields: Campos
       edit_metadata_fields: Editar campos
       edit_owners: Editar proprietários
+      edit_profile: Altere isso no seu perfil de usuário
       editor_buttons: Botões do Editor
       editor_buttons_description: Escolha os botões de marcação para aparecer no editor de transcrição.
       enable_document_sets: Ativar Conjuntos de Documentos
@@ -108,7 +109,6 @@ pt:
       footer: Rodapé
       help: Texto de Ajuda Básica
       hide_completed: Automaticamente não mostrar as obras completadas
-      learn_more_footer: Saiba mais sobre a configuração do rodapé.
       link_help: Texto de Ajuda para Vinculação de Temas (não mostrado se o uso de temas está desativado)
       make_collection_active: Tornar a Coleção Ativa
       make_collection_inactive: Tornar a Coleção Inativa
@@ -158,6 +158,7 @@ pt:
       transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       transcription_type: Tipo de Transcrição
       transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
+      update_footer_message: Você pode atualizar o rodapé editando o perfil de %{owner}
       upload_image: Subir Imagem
       upload_metadata: Carregar metadados
       url: URL
