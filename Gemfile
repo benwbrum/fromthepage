@@ -122,6 +122,5 @@ gem 'rack-mini-profiler'
 gem 'stackprof'
 
 gem 'intercom', '~> 3.9.0'
-gem 'newrelic_rpm'
 
 gem 'open3'
