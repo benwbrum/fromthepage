@@ -635,6 +635,7 @@ DEPENDENCIES
   memory_profiler
   meta_request
   mysql2
+  newrelic_rpm
   nokogiri
   oink
   omniauth (~> 1.9.2)
