@@ -95,6 +95,7 @@ es:
       edit_fields: Campos
       edit_metadata_fields: Editar campos
       edit_owners: Editar propietarios
+      edit_profile: Cambia esto en tu perfil de usuario
       editor_buttons: Botones del editor
       editor_buttons_description: Elija los botones de marcado para que aparezcan en el editor de transcripción.
       enable_document_sets: Habilitar Conjuntos de Documentos
@@ -108,7 +109,6 @@ es:
       footer: Pie de página
       help: Texto de Ayuda Básica
       hide_completed: Ocultar obras completadas de forma predeterminada
-      learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
       make_collection_active: Hacer Activa la Colección
       make_collection_inactive: Hacer Inactiva la Colección
@@ -158,6 +158,7 @@ es:
       transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
+      update_footer_message: Puede actualizar el pie de página editando el perfil de %{owner}
       upload_image: Subir Imagen
       upload_metadata: Subir metadatos
       url: URL

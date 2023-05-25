@@ -36,8 +36,10 @@ de:
       add_as_owner: Als Projektinhaber:in zur Sammlung hinzugefügt
       add_as_reviewer: Als autorisierte:r Reviewer:in zur Sammlung hinzugefügt
       default_dictation_language: 'Standard-Diktiersprache:'
+      footer: Fusszeile
       help: Grundlegender Hilfstext
       interface_language: Oberflächensprache
+      learn_more_footer: Erfahren Sie mehr über die Konfiguration der Fußzeile.
       location: Standort
       name: Name
       name_only_required: Ihr Name ist das einzige Pflichtfeld.
