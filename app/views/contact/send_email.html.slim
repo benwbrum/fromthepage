@@ -1,0 +1,13 @@
+-content_for :page_title, t('.thank_you')
+
+#contact
+  section.signon
+    h1= t('.thank_you!')
+
+    p= t('.will_follow_up')
+
+    p= t('.get_started_right_away')
+
+    =link_to t('.start_free_trial'), users_new_trial_path
+
+javascript: mixpanel.track("Contact Us - Thank You");
