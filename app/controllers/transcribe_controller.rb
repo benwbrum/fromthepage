@@ -259,7 +259,11 @@ class TranscribeController  < ApplicationController
       display_page
       render :action => 'display_page'
     elsif params['autolink']
-      @page.source_text = autolink(@page.source_text)
+      autolinked_source_text = autolink(@page.source_text)
+      if Page.find(@page.id).source_text != autolinked_source_text
+        @page.source_text = autolinked_source_text
+        @autolinked_changed = true
+      end
       display_page
       render :action => 'display_page'
     end
