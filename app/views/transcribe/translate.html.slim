@@ -82,7 +82,6 @@ h2.legend =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
-=render({ :partial => '/shared/collection_footer' })
 -unless @collection.voice_recognition  
   =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
 

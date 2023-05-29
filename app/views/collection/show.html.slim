@@ -138,8 +138,6 @@
     -cache @collection.most_recent_deed_created_at do
       =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-=render({ :partial => '/shared/collection_footer' })
-
 -content_for :javascript
   javascript:
     $(document).ready(function() {
