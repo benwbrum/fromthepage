@@ -1,0 +1,64 @@
+---
+de:
+  user:
+    api_key:
+      api_key: API-Schlüssel
+      api_key_description: <a href="https://content.fromthepage.com/api-keys/">API-Schlüssel</a> ermöglichen den Zugriff auf private Sammlungen über die <a href="https://github.com/benwbrum/fromthepage /wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">IIIF-API</a> oder die <a href="http://content.fromthepage.com/bulk-export- api/">Sammelexport-API</a>.
+      delete_key: Schlüssel löschen
+      generate_key: Schlüssel generieren
+      no_api_key_description: Ihr Konto hat keinen API-Schlüssel. Generieren Sie einen, um den API-Zugriff zu aktivieren.
+      your_api_key_description: 'Ihr Konto hat den folgenden API-Schlüssel, der für den Zugriff auf Ihre privaten Sammlungen verwendet werden kann:'
+    owner_profile:
+      api_keys: API-Schlüssel
+      edit_profile: Profil bearbeiten
+      login_and_password: Login & Passwort
+      next_image: Nächstes Bild
+      previous_image: Vorheriges Bild
+      website: Website
+    profile:
+      contribution:
+        one: Beitrag
+        other: Beiträge
+      edit_profile: Profil bearbeiten
+      last_seen: Zuletzt gesehen %{date}
+      login_and_password: Login & Passwort
+      newer_activity: Neuere Aktivitäten
+      older_activity: Ältere Aktivitäten
+      recent_activity_by: Letzte Aktivitäten von %{user_display_name}
+      user_deleted: Benutzerprofil wurde gelöscht
+      user_since: Benutzer:in seit %{date}
+      users_profile_at_fromthepage: "%{user}s Profil bei FromThePage. %{about}"
+    update:
+      user_updated: Benutzerprofil wurde aktualisiert
+    update_profile:
+      about_you: Über dich
+      add_as_collaborator: Als Mitarbeitender zur privaten Sammlung hinzugefügt
+      add_as_owner: Als Projektinhaber:in zur Sammlung hinzugefügt
+      add_as_reviewer: Als autorisierte:r Reviewer:in zur Sammlung hinzugefügt
+      default_dictation_language: 'Standard-Diktiersprache:'
+      footer: Fusszeile
+      help: Grundlegender Hilfstext
+      interface_language: Oberflächensprache
+      learn_more_footer: Erfahren Sie mehr über die Konfiguration der Fußzeile.
+      location: Standort
+      name: Name
+      name_only_required: Ihr Name ist das einzige Pflichtfeld.
+      no_image: Kein Bild
+      ocrid_id: OCRID-ID
+      owner_stats: Nächtliche E-Mails mit Aktivätsverlauf von eigenen Sammlungen
+      page_edited: Antwort auf einen Ihrer Kommentar hinzugefügt
+      picture: Profilbild
+      picture_to_be_used_message: Zu verwendendes Bild
+      select_notification: 'Wählen Sie, welche der folgenden Benachrichtigungen Sie erhalten möchten:'
+      sign_up_url: 'URL für Registrierung:'
+      suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
+      update_profile: Profil aktualisieren
+      update_user_profile: Benutzerprofil aktualisieren
+      upload_image: Bild hochladen
+      url: URL
+      user_activity: Nächtliche E-Mails mit Aktivätsverlauf von Sammlungen, die Sie bearbeitet haben
+      user_url: 'URL:'
+      website: Website
+      where_are_you_from: Woher sind Sie?
+      your_blog_or_homepage: Ihr Blog oder Homepage
+      your_ocrid_id: Ihre OCRID-ID

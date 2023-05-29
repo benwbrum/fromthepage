@@ -67,6 +67,11 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
+  # Allow codespaces host
+  unless ENV["CODESPACE_NAME"].nil?
+    config.hosts << ENV["CODESPACE_NAME"]+"-3000.preview.app.github.dev"
+  end
+
   # location of system calls on this machine
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'

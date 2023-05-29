@@ -30,7 +30,11 @@
                 =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
                 span= t('.use_uploaded_filename_label')
 
-      h4 =t('.file_formats')
+      .container style="display: flex;"
+        h4 =t('.file_formats')
+        div id="check-box-div" style="margin-left: auto; margin-right: 11%;"
+          = check_box_tag "check_all", "1", false, id: "check-all"
+          label id="check-all-lable" style="margin-left: 2px;" Check All
       ul.bulk-export
         li
           .bulk-export_format
@@ -108,6 +112,12 @@
             =f.label :text_docx_work
               =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
               span= t('.one_file_per_work')
+            #report-options 
+              =t('.format_options')
+              =f.label :preserve_linebreaks
+                =f.check_box 'report_arguments[preserve_linebreaks]', value: @bulk_export.report_arguments['preserve_linebreaks']
+                span= t('.preserve_linebreaks')
+
         li
           .bulk-export_format
             h5= t('.facing_edition_pdf')
@@ -184,6 +194,10 @@
 
 -content_for :javascript
   javascript:
+    $('#bulk_export_text_docx_work').change(function() {
+      $('#report-options').toggle(this.checked);
+    });
+
     $(function() {
       // Remove 'page_busy' spinner once download finished
       // Cookie should be set to 'true' in the controller method
@@ -196,5 +210,32 @@
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
+      $('#check-all').click(function() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkAll = this.checked;
+        const preserveLineBreak = document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked;
+
+        checkboxes.forEach(checkbox => {
+          if (checkbox.id !== 'check-all') {
+            checkbox.checked = checkAll;
+          }
+        });
+
+        if (checkAll) {
+          $('#report-options').show();
+          document.getElementById('check-all-lable').textContent = 'Uncheck All';
+          document.getElementById('check-box-div').style.marginRight = "9%";
+        } else {
+          $('#report-options').hide();
+          document.getElementById('check-all-lable').textContent = 'Check All';
+          document.getElementById('check-box-div').style.marginRight = "11%";
+        }
+
+        if (checkAll && preserveLineBreak) {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = true;
+        } else {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false;
+        }
       });
     });

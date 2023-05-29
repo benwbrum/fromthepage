@@ -55,14 +55,14 @@ module CollectionHelper
 
     if @collection.subjects_disabled
       unless @progress_review == 0
-        @wording = "#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
+        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
       else
-        @wording = "#{@progress_completed+@progress_review}% #{@type}"
+        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type})"
       end
     elsif @progress_review == 0
-      @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type}"
+      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
     else
-      @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
+      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
     end
 
     if @collection.metadata_entry?

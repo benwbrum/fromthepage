@@ -1,0 +1,12 @@
+---
+de:
+  page_block:
+    edit:
+      html_block_for: HTML-Block für %{description}
+    html_block:
+      create_help_text: Hilfstext erstellen
+      edit_help_text: Hilfstext bearbeiten
+    list:
+      action: Aktion
+      edit: bearbeiten
+      page_block: Seite Block

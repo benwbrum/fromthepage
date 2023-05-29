@@ -77,7 +77,5 @@ h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
-=render({ :partial => '/shared/collection_footer' })
-
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Display Page");

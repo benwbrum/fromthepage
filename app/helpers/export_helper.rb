@@ -59,7 +59,26 @@ module ExportHelper
 
 
   def write_work_exports(works, out, export_user, bulk_export)
+
+    # owner-level exports
+    if bulk_export.owner_mailing_list
+      export_owner_mailing_list_csv(out: out, owner: export_user)
+    end
+
+    if bulk_export.owner_detailed_activity
+      export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
+    end
+
+
     # collection-level exports
+    if bulk_export.collection_activity
+      export_collection_activity_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
+    if bulk_export.collection_contributors
+      export_collection_contributors_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
     if bulk_export.subject_csv_collection
       export_subject_csv(out: out, collection: bulk_export.collection)
     end
@@ -123,20 +142,21 @@ module ExportHelper
           end
         end
 
+        preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
         end
 
         # Page-specific exports
@@ -289,7 +309,7 @@ module ExportHelper
     has_content = false
     tei = ""
     tei << "<category xml:id=\"C#{category.id}\">\n"
-    tei << "<catDesc>#{category.title}</catDesc>\n"
+    tei << "<catDesc>#{ERB::Util.html_escape(category.title)}</catDesc>\n"
     category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
       has_content = true
       if seen_subjects.include?(subject)
@@ -344,9 +364,9 @@ module ExportHelper
         else
           category_class = "#category #branch"
         end
-        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{parent.title}</ptr> -- "
+        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{ERB::Util.html_escape(parent.title)}</ptr> -- "
       end
-      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{category.title}</ptr>"
+      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{ERB::Util.html_escape(category.title)}</ptr>"
       tei << "</ab>\n"
     end
     tei << "              </note>\n"

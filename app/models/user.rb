@@ -63,6 +63,7 @@ class User < ApplicationRecord
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
+  scope :active_mailers,   -> { where(activity_email: true)}
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^<>]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
@@ -72,6 +73,7 @@ class User < ApplicationRecord
   before_validation :update_display_name
 
   after_save :create_notifications
+  after_create :set_default_footer_block
   #before_destroy :clean_up_orphans
 
   def email_does_not_match_denylist
@@ -106,18 +108,23 @@ class User < ApplicationRecord
 
     data = access_token.info
 
-    if data['external_id']
+    if data['external_id'] && !data['external_id'].blank?
       user = User.where(external_id: data['external_id'], sso_issuer: issuer).first
     end
-    if !user && data['email']
+    if !user && !data['email'].blank?
       user = User.where(email: data['email']).first
     end
-    if !user && data['email2']
+    if !user && !data['email2'].blank?
       user = User.where(email: data['email2']).first
     end
-    if !user && data['email3']
+    if !user && !data['email3'].blank?
       user = User.where(email: data['email3']).first
     end
+
+    logger.info("User record before save:")
+    logger.info(user.to_json)
+    logger.info("Data from SAML response:")
+    logger.info(data.to_json)
 
     # update the user's SSO if they don't have one
     if user && user.sso_issuer.nil?
@@ -127,7 +134,9 @@ class User < ApplicationRecord
 
     # create users if they don't exist
     unless user
-      email = data['email'] || data['email2'] || data['email3']
+      email = data['email3'] unless data['email3'].blank? 
+      email = data['email2'] unless data['email2'].blank? 
+      email = data['email'] unless data['email'].blank?
       login = email.gsub(/@.*/,'')
       # avoid duplicate logins
       while User.where(login: login).exists? do
@@ -361,6 +370,11 @@ class User < ApplicationRecord
       token = SecureRandom.base64.tr('+/=', 'Qrt')
       break token unless User.exists?(api_key: token)
     end
+  end
+
+  def set_default_footer_block
+    self.footer_block = "For questions about this project, contact at."
+    save
   end
 
 end

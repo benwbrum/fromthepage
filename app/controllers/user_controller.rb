@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   before_action :remove_col_id, :only => [:profile, :update_profile]
+  before_action :authorized?, :only => [:update_profile, :update]
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
 
@@ -48,6 +49,7 @@ class UserController < ApplicationController
 
   NOTOWNER = "NOTOWNER"
   def update
+
     # spam check
     if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
       logger.error("Possible spam: deleting user #{@user.email}")
@@ -144,8 +146,19 @@ class UserController < ApplicationController
 
   private
 
+  def authorized?
+    unless @user
+      @user = User.friendly.find(params[:user_slug])
+    end
+
+    unless current_user && (@user == current_user || current_user.admin?)
+      redirect_to dashboard_path
+    end
+  end
+
+
   def user_params
-    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
+    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
   end
 
 end

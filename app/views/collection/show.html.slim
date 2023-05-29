@@ -137,8 +137,6 @@
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-=render({ :partial => '/shared/collection_footer' })
-
 =link_to(collection_new_mobile_user_path(@collection.id), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""
 

@@ -1,0 +1,31 @@
+---
+de:
+  layouts:
+    application:
+      about: Info
+      admin_dashboard: Admin-Dashboard
+      all_rights_reserved: Alle Rechte vorbehalten.
+      blog: Bloggen
+      collaborator_dashboard: Mitarbeitenden-Dashboard
+      contact_us: Kontaktieren Sie uns
+      create_an_account: Konto erstellen
+      documentation: Dokumentation
+      find_a_project: Projekt suchen
+      home: Home
+      internet_archive_difficulties: Das Internet Archive hat momentan Schwierigkeiten. Bitte versuchen Sie es später erneut.
+      owner_dashboard: Projektinhaber:innen-Dashboard
+      pricing: Preisgestaltung
+      privacy_policy: Datenschutz-Bestimmungen
+      projects: Projekte
+      recaptcha_validation_failed: ReCAPTCHA-Validierung fehlgeschlagen
+      sign_in: Anmelden
+      sign_out: Abmelden
+      sign_up_to_transcribe: Melden Sie sich an, um zu transkribieren
+      signed_in_as: Eingeloggt als
+      terms_and_conditions: Terms & Bedingungen
+      transcription_for_archives_special_collections: Transkription für Archive und Sondersammlungen
+      transcription_for_digital_scholarship: Transkription für die Digitale Lehre
+      transcription_for_public_libraries: Transkription für Öffentliche Bibliotheken
+      transcription_for_state_provincial_archives: Transkription für Staats- und Provinzarchive
+      undo_login_as: Abmeldung als
+      your_profile: Ihr Profil

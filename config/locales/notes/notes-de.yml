@@ -1,0 +1,40 @@
+---
+de:
+  notes:
+    create:
+      error_creating_note: Fehler beim Erstellen der Anmerkung
+      must_be_logged: Sie müssen angemeldet sein, um Anmerkungen zu erstellen
+      note_has_been_created: Anmerkung wurde erstellt
+    destroy:
+      note_has_been_deleted: Anmerkung wurde gelöscht
+    discussions:
+      description: Fragen und Anmerkungen auf Seiten
+      most_recent_of: Neueste von
+      page_notes: Seitenanmerkungen
+      pages_and_notes_counts: "%{posts_count} Anmerkungen auf %{topics_count} Seiten"
+      total_notes: "%{count} Anmerkungen"
+    note:
+      cancel: Abbrechen
+      confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?
+      delete: Löschen
+      edit: Bearbeiten
+      html:
+        cancel: Abbrechen
+        confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?
+        delete: Löschen
+        edit: Bearbeiten
+        microphone: Mikrofon
+        update: Aktualisieren
+      microphone: Mikrofon
+      update: Aktualisieren
+    notes:
+      microphone: Mikrofon
+      nobody_has_written_a_note: Bisher hat noch niemand eine Anmerkung für diese Seite verfasst
+      note_body: Anmerkungstext
+      please_sign_in_to_write: Bitte %{link}, um eine Anmerkung für diese Seite zu schreiben
+      save_note: Anmerkung speichern
+      sign_in: anmelden
+      write_a_new_note: Schreiben Sie eine neue Anmerkung oder stellen Sie eine Frage...
+    update:
+      error_updating_note: Fehler beim Aktualisieren der Anmerkung
+      note_has_been_updated: Anmerkung wurde aktualisiert

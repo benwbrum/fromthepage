@@ -3,8 +3,10 @@ pt:
   bulk_export:
     create:
       export_running_message: Exportação em execução. O e-mail será enviado para %{email} após a conclusão.
-    create_for_work:
-      export_running_message: Exportação em execução. O e-mail será enviado para %{email} após a conclusão.
+    create_for_owner:
+      export_running_message: Exportar em execução. O e-mail será enviado para %{email} após a conclusão.
+    create_for_work_actual:
+      export_running_message: Exportar em execução. O e-mail será enviado para %{email} após a conclusão.
     download:
       download_cleaned_message: Este download de exportação foi limpo. Por favor, inicie um novo.
     index:
@@ -25,6 +27,7 @@ pt:
       facing_edition_pdf_description: Um arquivo PDF contendo imagens e transcrições em páginas opostas.
       file_formats: Formatos de exportação
       file_organization: Organização de pastas
+      format_options: Opções de formato
       html: HTML
       html_description: Isso pode ser útil para preservação em outros sistemas ou como ponto de partida para exibição em outro site.
       one_file_per_collection: Um arquivo por coleção
@@ -35,6 +38,7 @@ pt:
       organization_description: Os arquivos zip podem ser organizados com uma pasta por trabalho contendo arquivos ou subpastas para cada formato de exportação, ou com uma pasta por formato de exportação contendo arquivos por trabalho.
       organization_format: Formatar pastas
       organization_work: Pastas de trabalho
+      preserve_linebreaks: Preservar quebras de linha
       previous_exports: Exportações anteriores
       search_optimized_plaintext: Texto simples otimizado para pesquisa
       search_optimized_plaintext_description: Uma versão em texto simples do trabalho otimizada para pesquisa de texto completo. Esta versão contém uma transcrição literal de cada página (como descrito acima), exceto que as palavras quebradas por novas linhas hifenizadas são unidas e uma lista dos nomes canônicos mencionados em cada página é anexada ao final da página.

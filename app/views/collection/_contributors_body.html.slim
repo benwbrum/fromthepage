@@ -15,9 +15,15 @@
 
   =link_to(t('.view_activity'), deed_list_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed),  :class => 'button btnExport')
   | &nbsp;
-  =link_to(collection_activity_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span =t('.export_activity_as_csv')
+  h3 =t('.export_activity_as_csv_header')
+  p =t('.export_activity_as_csv_description')
+  =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f| 
+    =f.hidden_field :collection_activity, value: true
+    =f.hidden_field 'report_arguments[start_date]', value: @start_deed.to_datetime
+    =f.hidden_field 'report_arguments[end_date]', value: @end_deed.to_datetime
+    =f.submit t('.export_activity_as_csv')
+
+
 
 -else
   h3 =t('.no_activity_this_time_frame')
@@ -43,9 +49,13 @@
         -total_minutes = @user_time_proportional.values.sum
         =t('.total_time', hours: (total_minutes / 60), minutes: (total_minutes % 60))
       p
-        =link_to(collection_contributors_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
-            =svg_symbol '#icon-export', class: 'icon'
-            span =t('.export_as_csv')
+        =t('.export_as_csv_description')
+        =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f| 
+          =f.hidden_field :collection_contributors, value: true
+          =f.hidden_field 'report_arguments[start_date]', value: @start_deed.to_datetime
+          =f.hidden_field 'report_arguments[end_date]', value: @end_deed.to_datetime
+          =f.submit t('.export_as_csv')
+
     -else
       h3 =t('.collaborators')
       p =t('.no_collaborators')

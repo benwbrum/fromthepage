@@ -3,7 +3,9 @@ en:
   bulk_export:
     create:
       export_running_message: Export running.  Email will be sent to %{email} on completion.
-    create_for_work:
+    create_for_owner:
+      export_running_message: Export running.  Email will be sent to %{email} on completion.
+    create_for_work_actual:
       export_running_message: Export running.  Email will be sent to %{email} on completion.
     download:
       download_cleaned_message: This export download has been cleaned.  Please start a new one.
@@ -25,6 +27,7 @@ en:
       facing_edition_pdf_description: A PDF file containing images and transcripts on facing pages.
       file_formats: Export Formats
       file_organization: Folder Organization
+      format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
       one_file_per_collection: One file per collection
@@ -35,6 +38,7 @@ en:
       organization_description: Zip files can be organized with a folder per work containing files or subfolders for each export format, or with a folder per export format containing files per work.
       organization_format: Format folders
       organization_work: Work folders
+      preserve_linebreaks: Preserve Linebreaks
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
       search_optimized_plaintext_description: A plaintext version of the work optimized for full-text search. This version contains a verbatim plaintext transcript of each page (as described above), except that words broken by hyphenated newlines are joined together, and a list of the canonical names mentioned within each page is appended to the end of the page.

@@ -75,12 +75,14 @@
       ==t('.no_categories_message')
       ==t('.create_category_message', link: add_category) if user_signed_in? && current_user.like_owner?(@collection)
 
-=render({ :partial => '/shared/collection_footer' })
-
 -content_for :javascript
   javascript:
     $(function() {
       $(window).on('hashchange', function() {
+        if (document.getElementsByClassName("category_modal")[0] !== undefined){
+          document.getElementsByClassName("category_modal")[0].classList.remove("visible");
+          location.reload();
+        }
         var selected = window.location.hash || $('.tree-item:first').attr('href');
         var $tree_item = $('.tree-item[href="'+selected+'"]');
 
