@@ -136,3 +136,13 @@
 
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
+
+=link_to(collection_new_mobile_user_path(@collection.id), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
+  span =""
+
+-if @new_mobile_user
+  -content_for :javascript
+    javascript: 
+      $(document).ready(function(){
+        $('#new_mobile_user_link').trigger('click');
+      });

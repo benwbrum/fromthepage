@@ -249,4 +249,7 @@ module ApplicationHelper
     truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || '' 
   end
 
+  def mobile_device?
+    !!(request.user_agent =~ /Mobile/)
+  end
 end

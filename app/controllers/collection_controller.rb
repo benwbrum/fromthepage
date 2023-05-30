@@ -16,7 +16,7 @@ class CollectionController < ApplicationController
   before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
 
   def authorized?
     unless user_signed_in?
@@ -149,6 +149,11 @@ class CollectionController < ApplicationController
     render :plain => @works.to_json(:methods => [:thumbnail])
   end
 
+  def new_mobile_user
+    # don't show popup again
+    session[:new_mobile_user] = false
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
@@ -168,6 +173,7 @@ class CollectionController < ApplicationController
   end
 
   def show
+    @new_mobile_user = !!(session[:new_mobile_user])
     unless @collection.nil?
       if @collection.restricted
         if !user_signed_in? || !@collection.show_to?(current_user)
@@ -542,6 +548,18 @@ class CollectionController < ApplicationController
     @collection.disable_ocr
     flash[:notice] = t('.notice')
     redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
+  def email_link
+    if SMTP_ENABLED
+      begin
+        UserMailer.new_mobile_user(current_user, @collection).deliver!
+      rescue StandardError => e
+        log_smtp_error(e, current_user)
+      end
+    end
+    flash[:notice] = "Email sent."
+    ajax_redirect_to(collection_path(@collection.owner, @collection))
   end
 
 private
