@@ -4,11 +4,10 @@
     -if @sc_collection
       p= t('.collection', sc_collection: (@sc_collection.label))
     -if @sc_manifest.description
-      p= t('.description', description: (@sc_manifest.description))
-		
-    -if @sc_manifest.metadata
+      p== t('.description', description: @sc_manifest.html_description)
+	  -if @sc_manifest.metadata
       p== t('.metadata', metadata: (html_metadata(@sc_manifest.metadata)))
-
+	
     -if @sc_manifest.v3?
       -unless @sc_manifest.requiredStatement.blank?
         p Required Statement: #{@sc_manifest.requiredStatement}

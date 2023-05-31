@@ -249,6 +249,9 @@ es:
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.
       individual_researcher_limited_account: Las Cuentas de Investigador Individual están limitadas a una sola colección. Para actualizar su cuenta, póngase en contacto con support@fromthepage.com.
       title: Título
+    new_mobile_user:
+      email_me: Envíame un enlace por correo electrónico
+      message: Parece que estás viendo esta página en un dispositivo móvil. Es más fácil transcribir esta colección en una pantalla más grande.
     one_off_list:
       date: Fecha
       filter_contributions: Filtrar
