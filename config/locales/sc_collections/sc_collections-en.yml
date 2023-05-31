@@ -31,13 +31,13 @@ en:
     explore_manifest:
       canvases: 'Canvases:'
       collection: 'Collection: %{sc_collection}'
-      description: 'Description: %{description}}'
+      description: 'Description: %{description}'
       id: 'Id:'
       import_manifest: Import Manifest
       import_ocr_text: Import OCR text
       license: 'License: %{license}'
-      manifest: 'Manifest: %{sc_manifest}}'
-      metadata: 'Metadata: %{metadata}}'
+      manifest: 'Manifest: %{sc_manifest}'
+      metadata: 'Metadata: %{metadata}'
       select_a_collection_to_import_into: "- Select a collection to import into -"
       select_a_collection_to_import_into_label: Select a collection to import into
     import:
