@@ -35,6 +35,12 @@ fr:
         Merci, <br><br>
         %{from}
       turn_off_notification: " pour désactiver cette notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " continuer à transcrire."
+      message: Bienvenue sur %{collection} !
+      text:
+        continue_transcribing: 'Cliquez sur cette URL pour continuer la transcription : %{url}.'
     new_owner:
       welcome: Accueillir
     nightly_user_activity:

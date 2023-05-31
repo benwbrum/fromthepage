@@ -33,6 +33,12 @@ es:
     html:
       closing: "Gracias, <br><br> \n%{from}\n"
       turn_off_notification: " para desactivar esta notificación."
+    new_mobile_user:
+      html:
+        continue_transcribing: " para seguir transcribiendo."
+      message: "¡Bienvenido a %{collection}!"
+      text:
+        continue_transcribing: 'Haga clic en esta URL para continuar con la transcripción: %{url}.'
     new_owner:
       welcome: Bienvenidos
     nightly_user_activity:
