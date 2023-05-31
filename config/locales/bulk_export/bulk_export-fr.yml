@@ -23,6 +23,9 @@ fr:
       expanded_plaintext: Texte brut étendu
       expanded_plaintext_description: Comme le texte brut verbatim, ce fichier de texte brut représentera les sauts de ligne avec un seul saut de ligne, les sauts de paragraphe avec un double saut de ligne et les sauts de page avec un triple saut de ligne. Il diffère du texte verbatim, en ce que la normalisation sera appliquée à tous les sujets mentionnés, de sorte que si le texte verbatim peut se lire "J'ai salué M. Jones et sa femme ce matin.", le texte en clair modifié se lira "J'ai salué James Jones et Elizabeth Smith Jones ce matin ». Ce texte artificiel est utile pour l'analyse programmatique, mais n'est pas destiné à être lu par des humains.
       export_all_works: Exporter toutes les œuvres
+      export_work_metadata: Exporter les métadonnées de œuvre
+      export_work_metadata_as_csv: Exporter les métadonnées de œuvre au format CSV
+      export_work_metadata_description: Exporter une feuille de calcul contenant une ligne pour chaque œuvre de la collection, avec des colonnes pour les statistiques sur les pages transcrites et les métadonnées de l'œuvre.
       facing_edition_pdf: Livret PDF
       facing_edition_pdf_description: Un fichier PDF contenant des images et des transcriptions sur les pages opposées.
       file_formats: Formats d'exportation

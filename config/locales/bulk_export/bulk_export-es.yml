@@ -23,6 +23,9 @@ es:
       expanded_plaintext: Texto sin formato expandido
       expanded_plaintext_description: Al igual que el texto sin formato textual, este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Se diferencia del texto textual en que la normalización se aplicará a todos los temas mencionados, de modo que mientras el texto textual puede decir "Saludé al Sr. Jones y su esposa esta mañana", el texto sin formato modificado dirá "Saludé a James Jones". y Elizabeth Smith Jones esta mañana”. Este texto artificial es útil para el análisis programático, pero no está destinado a ser leído por humanos.
       export_all_works: Exportar todas las obras
+      export_work_metadata: Exportar metadatos de trabajo
+      export_work_metadata_as_csv: Exportar metadatos de trabajo en formato CSV
+      export_work_metadata_description: Exportar una hoja de cálculo que contiene una fila para cada trabajo de la colección, con columnas para estadísticas sobre las páginas transcritas y los metadatos del trabajo.
       facing_edition_pdf: Edición enfrentada PDF
       facing_edition_pdf_description: Un archivo PDF que contiene imágenes y transcripciones en páginas opuestas.
       file_formats: Formatos de exportación

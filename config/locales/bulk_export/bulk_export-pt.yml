@@ -23,6 +23,9 @@ pt:
       expanded_plaintext: Texto simples expandido
       expanded_plaintext_description: Como o texto simples literal, este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele difere do texto literal, pois a normalização será aplicada a todos os assuntos mencionados, de modo que, enquanto o texto literal pode ser "Cumprimentei o Sr. Jones e sua esposa esta manhã.", o texto simples corrigido será "Cumprimentei James Jones e Elizabeth Smith Jones esta manhã”. Este texto artificial é útil para análise programática, mas não deve ser lido por humanos.
       export_all_works: Exportar todos os trabalhos
+      export_work_metadata: Exportar metadados de trabalho
+      export_work_metadata_as_csv: Exportar metadados de trabalho como CSV
+      export_work_metadata_description: Exporte uma planilha contendo uma linha para cada obra da coleção, com colunas para estatísticas sobre as páginas transcritas e metadados da obra.
       facing_edition_pdf: Edição de frente para PDF
       facing_edition_pdf_description: Um arquivo PDF contendo imagens e transcrições em páginas opostas.
       file_formats: Formatos de exportação

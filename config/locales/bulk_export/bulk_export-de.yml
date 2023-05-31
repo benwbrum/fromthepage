@@ -23,6 +23,9 @@ de:
       expanded_plaintext: Erweiterte Plaintext-Datei
       expanded_plaintext_description: Wie bei der wörtlichen Plaintext-Datei werden in dieser Plaintext-Datei Zeilenumbrüche mit einem einfachen Zeilenumbruch, Absatzumbrüche mit einem doppelten Zeilenumbruch und Seitenumbrüche mit einem dreifachen Zeilenumbruch repräsentiert. Im Gegensatz zum wörtlichen Text werden die Normalisierung auf alle erwähnten Entitäten angewendet, so dass der wörtliche Text möglicherweise lautet „Ich habe heute Morgen Mr. Jones und seine Frau gegrüßt.“ und der berichtigte Klartext „Ich habe heute Morgen James Jones und Elizabeth Smith Jones gegrüßt“. Dieser künstliche Text ist nützlich für die programmatische Analyse, aber er ist nicht dazu bestimmt, von Menschen gelesen zu werden.
       export_all_works: Alle Werke exportieren
+      export_work_metadata: Metadaten zum Werk exportieren
+      export_work_metadata_as_csv: Metadaten zum Werk als CSV exportieren
+      export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung und mit Spalten für Statistiken zu transkribierten Seiten und für die Metadaten für das Werk.
       facing_edition_pdf: Bild-Text-Synopse PDF
       facing_edition_pdf_description: Eine PDF-Datei, in der die Bilder und die dazugehörigen Transkripte jeweils auf gegenüberliegenden Seiten abgebildet sind.
       file_formats: Exportformate

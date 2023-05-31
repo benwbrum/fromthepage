@@ -171,7 +171,10 @@
               span= t('.one_site_per_collection')
 
       .toolbar
-        .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
+        .toolbar_group.aright 
+            = link_to collection_export_path(@collection.owner, @collection), class: 'button big btn-back' do
+              span = t('.back')
+            =f.button t('.start_export'), class: 'big', 'data-start-export': ''
 
   aside.sidecol
     h4= t('.previous_exports')
@@ -191,6 +194,14 @@
               -if bulk_export.status == BulkExport::Status::FINISHED
                 br
                 =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
+
+h2 =t('.export_work_metadata')
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
+      =svg_symbol '#icon-export', class: 'icon'
+      span =t('.export_work_metadata_as_csv')
+  span =t('.export_work_metadata_description')
 
 -content_for :javascript
   javascript:
