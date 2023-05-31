@@ -31,13 +31,13 @@ pt:
     explore_manifest:
       canvases: 'Telas:'
       collection: 'Coleção: %{sc_collection}'
-      description: 'Descrição: %{description}}'
+      description: 'Descrição: %{description}'
       id: 'Identidade:'
       import_manifest: Importar Manifesto
       import_ocr_text: Importar texto OCR do CONTENTdm
       license: 'Licença: %{license}'
-      manifest: 'Manifesto: %{sc_manifest}}'
-      metadata: 'Metadados: %{metadata}}'
+      manifest: 'Manifesto: %{sc_manifest}'
+      metadata: 'Metadados: %{metadata}'
       select_a_collection_to_import_into: "- Selecione uma coleção para importar -"
       select_a_collection_to_import_into_label: Selecione uma coleção para importar
     import:
