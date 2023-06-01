@@ -308,9 +308,9 @@ class CollectionController < ApplicationController
               end
             end
           end
-        else
-          redirect_to "/404"
         end
+      else
+        redirect_to "/404"
       end
     end
   end
