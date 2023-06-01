@@ -99,6 +99,7 @@ en:
       edit_fields: Fields
       edit_metadata_fields: Edit Fields
       edit_owners: Edit Owners
+      edit_profile: Change this in your user profile
       editor_buttons: Editor Buttons
       editor_buttons_description: Choose mark-up buttons to appear on the transcription editor.
       enable_document_sets: Enable Document Sets
@@ -112,7 +113,6 @@ en:
       footer: Footer
       help: Basic Help Text
       hide_completed: Hide completed works by default
-      learn_more_footer: Learn more about configuring the footer.
       link_help: Subject Linking Help Text (not displayed if subjects are disabled)
       make_collection_active: Make Collection Active
       make_collection_inactive: Make Collection Inactive
@@ -163,6 +163,7 @@ en:
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
       unblock_user: Unblock user
+      update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
       upload_metadata: Upload Metadata
       url: URL
@@ -190,6 +191,8 @@ en:
       head_label: Heading
       heading: Transcription Editor Configuration
       html: " (HTML)"
+      i_description: Marks italicized text.
+      i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
@@ -251,6 +254,9 @@ en:
       enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
       individual_researcher_limited_account: Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com.
       title: Title
+    new_mobile_user:
+      email_me: Email me a link
+      message: It looks like you're viewing this page on a mobile device. It's easier to transcribe this collection on a larger screen.
     one_off_list:
       date: Date
       filter_contributions: Filter

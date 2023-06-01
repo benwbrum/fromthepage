@@ -446,4 +446,10 @@ ENDHELP
     end
   end
 
+  def user_help
+    User.find(self.owner_user_id).help
+  end
+
+  public :user_help
+
 end

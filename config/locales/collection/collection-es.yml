@@ -99,6 +99,7 @@ es:
       edit_fields: Campos
       edit_metadata_fields: Editar campos
       edit_owners: Editar propietarios
+      edit_profile: Cambia esto en tu perfil de usuario
       editor_buttons: Botones del editor
       editor_buttons_description: Elija los botones de marcado para que aparezcan en el editor de transcripción.
       enable_document_sets: Habilitar Conjuntos de Documentos
@@ -112,7 +113,6 @@ es:
       footer: Pie de página
       help: Texto de Ayuda Básica
       hide_completed: Ocultar obras completadas de forma predeterminada
-      learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
       make_collection_active: Hacer Activa la Colección
       make_collection_inactive: Hacer Inactiva la Colección
@@ -163,6 +163,7 @@ es:
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
       unblock_user: Desbloquear usuario
+      update_footer_message: Puede actualizar el pie de página editando el perfil de %{owner}
       upload_image: Subir Imagen
       upload_metadata: Subir metadatos
       url: URL
@@ -190,6 +191,8 @@ es:
       head_label: Bóveda
       heading: Configuración del editor de transcripciones
       html: "(HTML)"
+      i_description: Marca el texto en cursiva.
+      i_label: Itálico
       lb_description: Marca saltos de línea
       lb_label: Salto de línea
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
@@ -251,6 +254,9 @@ es:
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.
       individual_researcher_limited_account: Las Cuentas de Investigador Individual están limitadas a una sola colección. Para actualizar su cuenta, póngase en contacto con support@fromthepage.com.
       title: Título
+    new_mobile_user:
+      email_me: Envíame un enlace por correo electrónico
+      message: Parece que estás viendo esta página en un dispositivo móvil. Es más fácil transcribir esta colección en una pantalla más grande.
     one_off_list:
       date: Fecha
       filter_contributions: Filtrar

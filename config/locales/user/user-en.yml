@@ -36,7 +36,10 @@ en:
       add_as_owner: Added to collection as a co-owner
       add_as_reviewer: Added to collection as an authorized reviewer
       default_dictation_language: 'Default dictation language: '
+      footer: Footer
+      help: Basic Help Text
       interface_language: Interface language
+      learn_more_footer: Learn more about configuring the footer.
       location: Location
       name: Name
       name_only_required: Your name is the only required field.
@@ -48,6 +51,7 @@ en:
       picture_to_be_used_message: Picture to be used
       select_notification: 'Select which of the following notifications you want to receive:'
       sign_up_url: 'Sign-up URL:'
+      suggestions_help_tab: Suggestions for your help tab.
       update_profile: Update Profile
       update_user_profile: Update User Profile
       upload_image: Upload image

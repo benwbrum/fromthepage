@@ -118,7 +118,8 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
   // the advanced editor is a contentEditable div, not an input, so we need to use the CodeMirror API
   if (typeof myCodeMirror !== 'undefined' && !ignoreCodeMirror) {
     // the advanced editor is in use
-    if (!myCodeMirror.isClean()) {
+    var autolinkedSourceTextField = document.querySelector('input[name="autolinked_source_text"]');
+    if (!myCodeMirror.isClean() || autolinkedSourceTextField) {
         e.preventDefault();
         alert(msg);
         return false;      

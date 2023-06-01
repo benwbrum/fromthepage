@@ -75,8 +75,6 @@
       ==t('.no_categories_message')
       ==t('.create_category_message', link: add_category) if user_signed_in? && current_user.like_owner?(@collection)
 
-=render({ :partial => '/shared/collection_footer' })
-
 -content_for :javascript
   javascript:
     $(function() {
