@@ -89,8 +89,16 @@ de:
       page_image_guidelines: Richtlinien für Faksimiles
       paste_in_the_url: Fügen Sie die URL eines mehrteiligen Objekts oder einer Sammlung auf Ihrer CONTENTdm-Site ein.
     owner:
+      active_collections: Aktive Sammlungen
       create_a_collection: eine Sammlung erstellen
       document_sets: Dokumentensets
+      inactive_collections: Inaktive Sammlungen
+      n_works:
+        one: '1 Werk:'
+        other: "%{count} funktioniert:"
+      pct_complete: "%{pct} % abgeschlossen"
+      private: " (Privatgelände)"
+      public: " (Öffentlich)"
       see_all_works: Alle Werke ansehen...
       start_a_project: Ein Projekt starten
       there_are_no_works: Es gibt noch keine Werke in dieser Sammlung

@@ -89,8 +89,16 @@ fr:
       page_image_guidelines: Directives relatives aux images de page
       paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
+      active_collections: Collections actives
       create_a_collection: créer une collection
       document_sets: Jeux de documents
+      inactive_collections: Collections inactives
+      n_works:
+        one: '1 œuvre :'
+        other: "%{count} fonctionne :"
+      pct_complete: "%{pct} % terminé"
+      private: " (Privé)"
+      public: " (Public)"
       see_all_works: Voir toutes les oeuvres...
       start_a_project: Démarrer un projet
       there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection

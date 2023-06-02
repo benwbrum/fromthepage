@@ -9,6 +9,7 @@ es:
         other: "%{count} páginas:"
       progress: Progreso
       work_title: Título de la obra
+    complete: completo
     contributor_activity:
       recent_notes: Notas Recientes
       recent_ocr_correction: Correcciones de OCR recientes

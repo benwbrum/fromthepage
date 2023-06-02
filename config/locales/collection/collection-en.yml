@@ -9,6 +9,7 @@ en:
         other: "%{count} pages; "
       progress: Progress
       work_title: Work title
+    complete: complete
     contributor_activity:
       recent_notes: Recent Notes
       recent_ocr_correction: Recent OCR correction

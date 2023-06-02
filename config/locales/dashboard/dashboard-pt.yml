@@ -89,8 +89,16 @@ pt:
       page_image_guidelines: Regras Gerais das Imagens da Página
       paste_in_the_url: Cole o URL de um objeto composto na sua página web de CONTENTdm.
     owner:
+      active_collections: Coleções ativas
       create_a_collection: criar uma coleção
       document_sets: Conjuntos de Documentos
+      inactive_collections: Coleções inativas
+      n_works:
+        one: '1 trabalho:'
+        other: "%{count} funciona:"
+      pct_complete: "%{pct}% concluído"
+      private: " (Privado)"
+      public: " (Público)"
       see_all_works: Ver Todas as Obras...
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
