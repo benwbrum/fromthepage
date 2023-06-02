@@ -249,6 +249,9 @@ de:
       enter_collection_title: Um eine neue Sammlung zu erstellen, geben Sie bitte einen Titel für die Sammlung ein. Im nächsten Schritt können Sie der Sammlung Werke hinzufügen.
       individual_researcher_limited_account: Konten von Einzelforschenden sind auf eine einzige Sammlung beschränkt. Um Ihr Konto zu aktualisieren, wenden Sie sich an support@fromthepage.com.
       title: Titel
+    new_mobile_user:
+      email_me: Schicken Sie mir einen Link per E-Mail
+      message: Es sieht so aus, als würden Sie diese Seite auf einem Mobilgerät anzeigen. Es ist einfacher, diese Sammlung auf einem größeren Bildschirm zu transkribieren.
     one_off_list:
       date: Datum
       filter_contributions: Filter

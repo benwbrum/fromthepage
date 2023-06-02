@@ -188,7 +188,12 @@ module ApplicationHelper
         return value.map {|e| e["@value"]}.join("; ")
       end
     elsif value.is_a? Hash
-      return value.values.map{|value_array| value_array.first}.join('<br/>')
+      # is this a pre-IIIF-v3 multi-language value?
+      if value.keys.include?('@language') && value.keys.include?('@value')
+        return value["@value"]
+      else
+        return value.values.map{|value_array| value_array.first}.join('<br/>')
+      end
     end
   end
 
@@ -254,4 +259,7 @@ module ApplicationHelper
     content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
   end
 
+  def mobile_device?
+    !!(request.user_agent =~ /Mobile/)
+  end
 end

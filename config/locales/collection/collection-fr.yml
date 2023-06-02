@@ -249,6 +249,9 @@ fr:
       enter_collection_title: Pour créer une nouvelle collection, commencez par entrer le titre de la collection. À l'étape suivante, vous pourrez ajouter des œuvres à la collection.
       individual_researcher_limited_account: Les comptes de chercheurs individuels sont limités à une seule collection. Pour mettre à niveau votre compte, contactez support@fromthepage.com.
       title: Titre
+    new_mobile_user:
+      email_me: Envoyez-moi un lien par e-mail
+      message: Il semble que vous consultiez cette page sur un appareil mobile. Il est plus facile de retranscrire cette collection sur un écran plus grand.
     one_off_list:
       date: Date
       filter_contributions: Filtre

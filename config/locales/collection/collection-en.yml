@@ -249,6 +249,9 @@ en:
       enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
       individual_researcher_limited_account: Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com.
       title: Title
+    new_mobile_user:
+      email_me: Email me a link
+      message: It looks like you're viewing this page on a mobile device. It's easier to transcribe this collection on a larger screen.
     one_off_list:
       date: Date
       filter_contributions: Filter

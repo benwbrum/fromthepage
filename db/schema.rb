@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_22_121402) do
+ActiveRecord::Schema.define(version: 2023_06_01_130844) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -253,12 +253,14 @@ ActiveRecord::Schema.define(version: 2023_05_22_121402) do
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "created_at"], name: "index_deeds_on_collection_id_and_created_at"
+    t.index ["collection_id", "deed_type", "created_at"], name: "index_deeds_on_collection_id_and_deed_type_and_created_at"
     t.index ["created_at", "collection_id"], name: "index_deeds_on_created_at_and_collection_id"
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
     t.index ["user_id", "created_at"], name: "index_deeds_on_user_id_and_created_at"
     t.index ["visit_id"], name: "index_deeds_on_visit_id"
     t.index ["work_id", "created_at"], name: "index_deeds_on_work_id_and_created_at"
+    t.index ["work_id", "deed_type", "user_id", "created_at"], name: "index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at"
   end
 
   create_table "document_set_collaborators", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
