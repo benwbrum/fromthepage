@@ -67,6 +67,9 @@ pt:
       work:
         one: Trabalho
         other: Trabalhos
+      work_transcribed:
+        one: Trabalho transcrita
+        other: Trabalhos transcrita
       works_described:
         one: Trabalho descrito
         other: Trabalhos descritos
