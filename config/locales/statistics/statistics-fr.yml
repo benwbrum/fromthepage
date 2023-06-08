@@ -66,8 +66,8 @@ fr:
         one: Œuvre
         other: Œuvres
       work_transcribed:
-        one: Œuvre transcrites
-        other: Œuvre transcrites
+        one: Œuvre transcrite
+        other: Œuvres transcrites
       works_described: Œuvre décrite
     recent_statistics:
       collaborator:
