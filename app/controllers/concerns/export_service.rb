@@ -366,19 +366,19 @@ private
           raw_field_index += 1
           raw_heading = "#{field.label} #{column.label}"
           @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
-          @headings << "#{raw_heading} (text)"
+          @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
           @headings << "#{raw_heading} (subject)"
         end
         @raw_headings.delete(field_id)
       else
         raw_heading = field ? field.label : field_id
-        @headings << "#{raw_heading} (text)"
+        @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
         @headings << "#{raw_heading} (subject)"
       end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
-      @headings << "#{raw_heading} (text)"
+      @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
       @headings << "#{raw_heading} (subject)"
     end
     @headings
