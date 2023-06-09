@@ -67,6 +67,9 @@ en:
       work:
         one: Work
         other: Works
+      work_transcribed:
+        one: Work transcribed
+        other: Works transcribed
       works_described:
         one: Described work
         other: Described works
