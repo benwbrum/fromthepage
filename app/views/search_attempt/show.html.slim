@@ -1,0 +1,38 @@
+.columns.project-list
+  article.maincol
+    -if @search_results && @owners.empty?
+      -@search_results.each do |sr|
+        .project-list_projects
+          .projects-owner
+            h3.projects-owner_title
+              =link_to sr.owner.display_name, user_profile_path(sr.owner)
+          .projects
+            div.projects_details
+              .projects_collection
+                h5
+                  =link_to sr.title, collection_path(sr.owner.slug, sr.id)
+                .projects_collection_snippet
+                  = to_snippet(sr.intro_block)
+    -@owners.each do |owner|
+      -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
+      -unless projects.blank?
+        .project-list_projects
+          .projects-owner
+            h3.projects-owner_title
+              =link_to owner.display_name, user_profile_path(owner)
+            -if owner.about.present?
+              .description
+                =owner.about
+          .projects
+            -projects.each do |project|
+              -snippet = to_snippet(project.intro_block)
+              div.projects_details
+                -unless project.picture.blank?
+                  .projects_details_image
+                    =image_tag(project.picture_url(:thumb), alt: project.title)
+                .projects_collection
+                  h5
+                    =link_to project.title, collection_path(owner, project)
+                  -unless snippet.empty?
+                    .projects_collection_snippet =snippet
+            .projects_link =link_to t('.more'), user_profile_path(owner)

@@ -205,6 +205,11 @@ Fromthepage::Application.routes.draw do
     post 'create_work', to: 'dashboard#create_work'
   end
 
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get ':id', to: 'search_attempt#show', as: 'show'
+  end
+
   scope 'category', as: 'category' do
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'

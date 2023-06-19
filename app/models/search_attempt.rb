@@ -1,0 +1,2 @@
+class SearchAttempt < ApplicationRecord
+end
