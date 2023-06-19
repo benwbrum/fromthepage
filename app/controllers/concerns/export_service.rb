@@ -223,8 +223,12 @@ module ExportService
         out.write page.emended_transcription_plaintext
       end
     when "searchable"
-      out.put_next_entry path
-      out.write page.search_text      
+      chunks = SearchTranslator.strip_markup(page.xml_text).split("\n")
+      chunks.each_with_index do |chunk,i|
+        paragraph_path = path.sub(".","_para_#{i}.")
+        out.put_next_entry paragraph_path
+        out.write chunk
+      end
     end
   end
 

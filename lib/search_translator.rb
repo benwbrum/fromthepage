@@ -62,8 +62,8 @@ private
 
 
     no_tags = doc.text
-    no_linefeeds = no_tags.gsub(/\s/, ' ')
-    single_spaces = no_linefeeds.gsub(/ +/, ' ').strip
+#    no_linefeeds = no_tags.gsub(/\s/, ' ')
+    single_spaces = no_tags.gsub(/ +/, ' ').strip
 
     single_spaces    
   end
