@@ -74,6 +74,8 @@ fr:
       reuse: Réutilisation
       searchable_plaintext: Texte brut optimisé pour la recherche
       searchable_plaintext_export_description: Exporter des transcriptions en texte brut optimisées pour la recherche en texte intégral sous forme de fichier zip contenant un fichier par page.
+      subject_index_csv: Índice de materias CSV
+      subject_index_csv_description: Une feuille de calcul répertoriant chaque endroit où un sujet est mentionné dans une page de l'œuvre.
       table_field_csv: Tableau/Champ CSV
       table_field_csv_export_description: Exporter toutes les données tabulaires, de feuilles de calcul ou basées sur des champs dans un seul fichier CSV.
       verbatim_plaintext: Texte brut verbatim

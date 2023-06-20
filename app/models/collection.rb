@@ -143,8 +143,8 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subject_index_as_csv
-    subject_link = SubjectExporter::Exporter.new(self)
+  def export_subject_index_as_csv(work)
+    subject_link = SubjectExporter::Exporter.new(self, work)
 
     subject_link.export
   end
