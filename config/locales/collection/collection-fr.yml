@@ -60,7 +60,7 @@ fr:
       authorized_reviewers: Examinateurs autorisés
       blank_collection: Effacer collection
       blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
-      block: Bloc
+      block: Bloquer les utilisateurs
       block_users_description: Empêchez les utilisateurs individuels d'accéder à la collection.
       block_users_modal_description: L'accès à la collection a été bloqué pour ces utilisateurs. La collection ne leur sera pas visible, comme si elle avait été marquée comme privée ou supprimée. L'ajout d'utilisateurs à cette liste ne les avertira pas qu'ils ont été bloqués.
       blocked_users: Utilisateurs bloqués

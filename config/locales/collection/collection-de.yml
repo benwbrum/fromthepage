@@ -60,7 +60,7 @@ de:
       authorized_reviewers: Autorisierte Reviewer:innen
       blank_collection: Leere Sammlung
       blank_collection_description: Das Drücken dieses Buttons setzt die Sammlung zurück. Alle Transkriptionen und andere Arbeiten an der Sammlung werden gelöscht, als ob sie neu importiert worden wäre.
-      block: Bloquear
+      block: Benutzer blockieren
       block_users_description: Bloqueie o acesso de usuários individuais à coleção.
       block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
       blocked_users: Usuários bloqueados

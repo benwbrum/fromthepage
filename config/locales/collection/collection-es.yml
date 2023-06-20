@@ -60,7 +60,7 @@ es:
       authorized_reviewers: revisores autorizados
       blank_collection: Colección en Blanco
       blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
-      block: Bloquear
+      block: Bloquear usuarios
       block_users_description: Bloquee el acceso de usuarios individuales a la colección.
       block_users_modal_description: A estos usuarios se les ha bloqueado el acceso a la colección. La colección no será visible para ellos, como si hubiera sido marcada como privada o eliminada. Agregar usuarios a esta lista no les notificará que han sido bloqueados.
       blocked_users: Usuarios bloqueados
