@@ -1,0 +1,44 @@
+.litebox-embed(style="width:450px")
+  
+  h3 =t('collection.edit.blocked_users')
+  p.fglight =t('collection.edit.block_users_modal_description')
+  =form_tag(collection_add_block_user_path, class: 'user-select-form') do
+    =hidden_field_tag :collection_id, @collection.id
+    -if User.count > 100
+      -options = nil
+    -else
+      -options = options_from_collection_for_select(@nonowners, 'id', 'name_with_identifier')
+    =select_tag 'user_id', options, include_blank: true
+    =button_tag t('collection.edit.add_button')
+  -@list_of_blocked_users.each do |user|
+    -contributions = user.deeds.where(collection_id: @collection.id).count
+    .user-label
+      =profile_picture(user)
+      .username
+        =link_to user.display_name, user_profile_path(user)
+        small= t('collection.edit.n_contributions', count: contributions)
+      -if user != @main_owner
+        =form_tag(collection_remove_block_user_path) do
+          =hidden_field_tag :user_id, user.id
+          =hidden_field_tag :collection_id, @collection.id
+          =button_tag '', class: 'remove', title: t('collection.edit.unblock_user'), 'aria-label' => t('collection.edit.unblock_user')
+  .toolbar
+    .toolbar_group.aright
+      =link_to(t('collection.edit.done'), edit_collection_path(@collection.owner, @collection), class: 'button')
+
+javascript:
+  $('#user_id').select2({
+    placeholder: 'Block new user...',
+    ajax: {
+      url: '#{collection_search_users_path(@collection)}',
+      dataType: 'json', 
+      delay: 250,
+      data: function (params) {
+        var query = {
+          term: params.term,
+          user_type: 'collaborator'
+        }
+        return query;
+      }
+    }
+  });
