@@ -369,6 +369,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
+        article.created_by = collection.owner
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode
