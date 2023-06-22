@@ -53,6 +53,15 @@ module AbstractXmlHelper
       end
     end
 
+    doc.elements.each("//date") do |e|
+      when_value = e.attributes["when"]
+      time = REXML::Element.new("time")
+      time.add_attribute("datetime", when_value)
+      time.add_text(when_value)
+  
+      e.replace_with(time)
+    end
+
     doc.elements.each("//abbr") do |e|
       expan = e.attributes['expan']
       span = REXML::Element.new("span")
