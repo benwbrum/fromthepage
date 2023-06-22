@@ -57,8 +57,7 @@ module AbstractXmlHelper
       when_value = e.attributes["when"]
       time = REXML::Element.new("time")
       time.add_attribute("datetime", when_value)
-      time.add_text(when_value)
-  
+      e.children.each{|e| time.add(e)}
       e.replace_with(time)
     end
 
