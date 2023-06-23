@@ -1,7 +1,7 @@
 module AbstractXmlHelper
   require 'rexml/document'
 
-  SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var)
+  SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
 
   def source_to_html(source)
     html = source.gsub(/\n/, "<br/>")
@@ -51,6 +51,14 @@ module AbstractXmlHelper
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
+    end
+
+    doc.elements.each("//date") do |e|
+      when_value = e.attributes["when"]
+      time = REXML::Element.new("time")
+      time.add_attribute("datetime", when_value)
+      e.children.each{|e| time.add(e)}
+      e.replace_with(time)
     end
 
     doc.elements.each("//abbr") do |e|

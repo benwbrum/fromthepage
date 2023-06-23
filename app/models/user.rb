@@ -28,6 +28,9 @@ class User < ApplicationRecord
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
+  has_many :collection_blocks, dependent: :destroy
+  has_many :blocked_collections, through: :collection_blocks, source: :collection
+
   has_and_belongs_to_many(:scribe_works,
                           :join_table => 'transcribe_authorizations',
                           :class_name => 'Work')
@@ -265,6 +268,8 @@ class User < ApplicationRecord
     # document set show_to? logic:
     #     (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
     public_collections = self.unrestricted_collections
+    blocked_collection_ids = CollectionBlock.where(user_id: user&.id).pluck(:collection_id)
+    filtered_public_collections = public_collections.where.not(id: blocked_collection_ids)
     public_sets = self.unrestricted_document_sets
 
     if user
@@ -275,9 +280,9 @@ class User < ApplicationRecord
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
     
-      (public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
+      (filtered_public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
-      (public_collections+public_sets)
+      (filtered_public_collections+public_sets)
     end
   end
 

@@ -60,6 +60,10 @@ fr:
       authorized_reviewers: Examinateurs autorisés
       blank_collection: Effacer collection
       blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      block: Bloquer les utilisateurs
+      block_users_description: Empêchez les utilisateurs individuels d'accéder à la collection.
+      block_users_modal_description: L'accès à la collection a été bloqué pour ces utilisateurs. La collection ne leur sera pas visible, comme si elle avait été marquée comme privée ou supprimée. L'ajout d'utilisateurs à cette liste ne les avertira pas qu'ils ont été bloqués.
+      blocked_users: Utilisateurs bloqués
       close_api: Fermer l'API
       collection_active_message: Ceci est une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
       collection_collaborators: Collaborateurs de la collection
@@ -158,6 +162,7 @@ fr:
       transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
       transcription_type: Type de transcription
       transcription_type_description: Chaque page peut avoir une zone de saisie de texte libre (par défaut) ou plusieurs champs de saisie courts conçus pour les formulaires. Toutes les pages de la collection ont le même type d'entrées de transcription. La dictée vocale n'est pas prise en charge et sera désactivée.
+      unblock_user: Débloquer l'utilisateur
       update_footer_message: Vous pouvez mettre à jour le pied de page en modifiant le profil de %{owner}
       upload_image: Télécharger une image
       upload_metadata: Télécharger les métadonnées

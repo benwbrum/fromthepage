@@ -26,7 +26,7 @@ RSpec.describe SubjectExporter do
       article_a.collection = collection
       article_b.collection = collection
 
-      subjects = SubjectExporter::Exporter.new(collection)
+      subjects = SubjectExporter::Exporter.new(collection, collection.works)
       export = subjects.export
       expect(export).to include('Work_Title')
       expect(export).to include('Identifier')

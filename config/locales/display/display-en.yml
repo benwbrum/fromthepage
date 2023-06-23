@@ -52,6 +52,7 @@ en:
       search_for: Search for %{search_string}
       search_in_collection: Search in collection...
       search_in_collection_1: Search in collection
+      search_in_work: Search in work...
       translations_need_indexing: Translations That Need Indexing
       translations_need_review: Translations That Need Review
       view_all_pages: View All Pages

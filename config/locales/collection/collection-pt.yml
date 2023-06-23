@@ -60,6 +60,10 @@ pt:
       authorized_reviewers: Revisores autorizados
       blank_collection: Repor Coleção em Branco
       blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outros trabalhos sobre a coleção, como se fosse recentemente importado.
+      block: Bloquear usuários
+      block_users_description: Bloqueie o acesso de usuários individuais à coleção.
+      block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
+      blocked_users: Usuários bloqueados
       close_api: Fechar API
       collection_active_message: Esta é uma coleção ativa. Tornar uma coleção inativa impede os utilizadores de editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
       collection_collaborators: Colaboradores da Coleção
@@ -158,6 +162,7 @@ pt:
       transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       transcription_type: Tipo de Transcrição
       transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
+      unblock_user: Desbloquear usuário
       update_footer_message: Você pode atualizar o rodapé editando o perfil de %{owner}
       upload_image: Subir Imagem
       upload_metadata: Carregar metadados

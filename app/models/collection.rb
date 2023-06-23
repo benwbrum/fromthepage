@@ -10,6 +10,8 @@ class Collection < ApplicationRecord
   friendly_id :slug_candidates, :use => [:slugged, :history]
   before_save :uniquify_slug
 
+  has_many :collection_blocks, dependent: :destroy
+  has_many :blocked_users, through: :collection_blocks, source: :user
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
   has_many :articles, :dependent => :destroy
@@ -141,8 +143,8 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subject_index_as_csv
-    subject_link = SubjectExporter::Exporter.new(self)
+  def export_subject_index_as_csv(work)
+    subject_link = SubjectExporter::Exporter.new(self, work)
 
     subject_link.export
   end
@@ -166,7 +168,8 @@ class Collection < ApplicationRecord
   end
 
   def show_to?(user)
-    (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    (!self.restricted && self.works.present? && self.collection_blocks.where(user_id: user&.id).none?
+    ) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def create_categories

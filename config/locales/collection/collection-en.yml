@@ -60,6 +60,10 @@ en:
       authorized_reviewers: Authorized reviewers
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+      block: Block Users
+      block_users_description: Block individual users from accessing the collection.
+      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
+      blocked_users: Blocked Users
       close_api: Close API
       collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_collaborators: Collection Collaborators
@@ -158,6 +162,7 @@ en:
       transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
+      unblock_user: Unblock user
       update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
       upload_metadata: Upload Metadata

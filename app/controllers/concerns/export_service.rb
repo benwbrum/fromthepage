@@ -121,10 +121,10 @@ module ExportService
     out.write(export_work_metadata_as_csv(collection))
   end
 
-  def export_subject_csv(out:, collection:)
+  def export_subject_csv(out:, collection:, work:)
     path = "subject_index.csv"
     out.put_next_entry(path)
-    out.write(collection.export_subject_index_as_csv)
+    out.write(collection.export_subject_index_as_csv(work))
   end
 
   def export_subject_details_csv(out:, collection:)
@@ -366,20 +366,20 @@ private
           raw_field_index += 1
           raw_heading = "#{field.label} #{column.label}"
           @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
-          @headings << "#{raw_heading} (text)"
-          @headings << "#{raw_heading} (subject)"
+          @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+          @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
         end
         @raw_headings.delete(field_id)
       else
         raw_heading = field ? field.label : field_id
-        @headings << "#{raw_heading} (text)"
-        @headings << "#{raw_heading} (subject)"
+        @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+        @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
       end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
+      @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+      @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
     end
     @headings
   end
@@ -520,14 +520,14 @@ private
       end
 
       works.each do |w|
-        csv = generate_csv(w, csv, col_sections)
+        csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?)
       end
 
     end
     csv_string
   end
 
-  def generate_csv(work, csv, col_sections)
+  def generate_csv(work, csv, col_sections, transcription_field_flag)
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
@@ -561,7 +561,7 @@ private
           #get cell data for a page with only one table
           page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
-            cell_data(cell_array, data_cells)
+            cell_data(cell_array, data_cells, transcription_field_flag)
             if has_spreadsheet
               running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
             end
@@ -587,7 +587,7 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, data_cells)
+              cell_data(cell_array, data_cells, transcription_field_flag)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
@@ -629,12 +629,12 @@ private
   end
 
 
-  def cell_data(array, data_cells)
+  def cell_data(array, data_cells, transcription_field_flag)
     array.each do |cell|
       index = index_for_cell(cell)
-      target = index *2
+      target = transcription_field_flag ? index : index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
+      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag
     end
   end
 
@@ -658,7 +658,7 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells)
+      cell_data(running_data, data_cells, false)
     end
 
     # return the current running data

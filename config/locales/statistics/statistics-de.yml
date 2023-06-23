@@ -67,6 +67,9 @@ de:
       work:
         one: Werk
         other: Werke
+      work_transcribed:
+        one: Werk transkribiert
+        other: Werke transkribiert
       works_described:
         one: Beschriebenes Werk
         other: Beschriebene Werke
