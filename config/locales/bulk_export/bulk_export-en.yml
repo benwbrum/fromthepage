@@ -19,7 +19,6 @@ en:
       upload_details: Upload details
       user: User
     new:
-      back: Back
       download: Download
       expanded_plaintext: Expanded Plaintext
       expanded_plaintext_description: Like the verbatim plaintext, this plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It differs from the verbatim text, in that normalization will be applied to all subjects mentioned, so that while the verbatim text may read “I greeted Mr. Jones and his wife this morning.”, the emended plaintext will read “I greeted James Jones and Elizabeth Smith Jones this morning”. This artificial text is useful for programmatic analysis, but is not meant to be read by humans.

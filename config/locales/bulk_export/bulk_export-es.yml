@@ -19,7 +19,6 @@ es:
       upload_details: Subir detalles
       user: Usuario
     new:
-      back: Atrás
       download: Descargar
       expanded_plaintext: Texto sin formato expandido
       expanded_plaintext_description: Al igual que el texto sin formato textual, este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Se diferencia del texto textual en que la normalización se aplicará a todos los temas mencionados, de modo que mientras el texto textual puede decir "Saludé al Sr. Jones y su esposa esta mañana", el texto sin formato modificado dirá "Saludé a James Jones". y Elizabeth Smith Jones esta mañana”. Este texto artificial es útil para el análisis programático, pero no está destinado a ser leído por humanos.

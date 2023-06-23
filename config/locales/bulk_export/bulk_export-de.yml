@@ -19,7 +19,6 @@ de:
       upload_details: Details hochladen
       user: Nutzer:in
     new:
-      back: Zurück
       download: Herunterladen
       expanded_plaintext: Erweiterte Plaintext-Datei
       expanded_plaintext_description: Wie bei der wörtlichen Plaintext-Datei werden in dieser Plaintext-Datei Zeilenumbrüche mit einem einfachen Zeilenumbruch, Absatzumbrüche mit einem doppelten Zeilenumbruch und Seitenumbrüche mit einem dreifachen Zeilenumbruch repräsentiert. Im Gegensatz zum wörtlichen Text werden die Normalisierung auf alle erwähnten Entitäten angewendet, so dass der wörtliche Text möglicherweise lautet „Ich habe heute Morgen Mr. Jones und seine Frau gegrüßt.“ und der berichtigte Klartext „Ich habe heute Morgen James Jones und Elizabeth Smith Jones gegrüßt“. Dieser künstliche Text ist nützlich für die programmatische Analyse, aber er ist nicht dazu bestimmt, von Menschen gelesen zu werden.

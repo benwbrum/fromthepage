@@ -19,7 +19,6 @@ fr:
       upload_details: Télécharger les détails
       user: Utilisateur
     new:
-      back: Dos
       download: Télécharger
       expanded_plaintext: Texte brut étendu
       expanded_plaintext_description: Comme le texte brut verbatim, ce fichier de texte brut représentera les sauts de ligne avec un seul saut de ligne, les sauts de paragraphe avec un double saut de ligne et les sauts de page avec un triple saut de ligne. Il diffère du texte verbatim, en ce que la normalisation sera appliquée à tous les sujets mentionnés, de sorte que si le texte verbatim peut se lire "J'ai salué M. Jones et sa femme ce matin.", le texte en clair modifié se lira "J'ai salué James Jones et Elizabeth Smith Jones ce matin ». Ce texte artificiel est utile pour l'analyse programmatique, mais n'est pas destiné à être lu par des humains.

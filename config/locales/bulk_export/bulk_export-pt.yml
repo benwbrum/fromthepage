@@ -19,7 +19,6 @@ pt:
       upload_details: Detalhes do upload
       user: Do utilizador
     new:
-      back: Voltar
       download: Download
       expanded_plaintext: Texto simples expandido
       expanded_plaintext_description: Como o texto simples literal, este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele difere do texto literal, pois a normalização será aplicada a todos os assuntos mencionados, de modo que, enquanto o texto literal pode ser "Cumprimentei o Sr. Jones e sua esposa esta manhã.", o texto simples corrigido será "Cumprimentei James Jones e Elizabeth Smith Jones esta manhã”. Este texto artificial é útil para análise programática, mas não deve ser lido por humanos.

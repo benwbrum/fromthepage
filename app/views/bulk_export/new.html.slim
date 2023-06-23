@@ -1,4 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
+=render(partial: '/shared/export_breadcrumbs', locals: { selection: :export_all_works})
 
 .columns
   article.maincol
@@ -171,10 +172,7 @@
               span= t('.one_site_per_collection')
 
       .toolbar
-        .toolbar_group.aright 
-            = link_to collection_export_path(@collection.owner, @collection), class: 'button big btn-back' do
-              span = t('.back')
-            =f.button t('.start_export'), class: 'big', 'data-start-export': ''
+        .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
 
   aside.sidecol
     h4= t('.previous_exports')
