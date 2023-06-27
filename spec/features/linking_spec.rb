@@ -86,7 +86,7 @@ describe "subject linking" do
     page.find('.tabs').click_link("Settings")
     click_link('Delete Subject')
     expect(page).to have_content("People")
-    expect(page).not_to have_content("There are no subjects for the category selected")
+    expect(page).to have_content("There are no subjects for the category selected")
   end
 
   it "links a categorized subject" do
