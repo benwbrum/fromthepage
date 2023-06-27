@@ -369,7 +369,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
-        article.created_by = User.current_user
+        article.created_by = User.current_user if User.current_user.present?
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode
