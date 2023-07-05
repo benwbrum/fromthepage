@@ -25,24 +25,64 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
-      h4(data-diff-title="changed" data-empty=t('.untitled')) =@selected_version.title ? @selected_version.title : t('.untitled')
-      div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-        ==xml_to_html(@selected_version.xml_transcription)
-      -if @work.supports_translation
-        hr
-        h4= t('.translation')
-        div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-          ==xml_to_html(@selected_version.xml_translation)
+      - if @selected_version&.page_version && @previous_version&.page_version
+        - if @selected_version.page_version > @previous_version.page_version
+          h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
+          div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+            == xml_to_html(@selected_version.xml_transcription)
+          - if @work.supports_translation
+            hr
+            h4= t('.translation')
+            div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+              == xml_to_html(@selected_version.xml_translation)
+        - else
+          h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
+          div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+            == xml_to_html(@previous_version.xml_transcription)
+          - if @work.supports_translation
+            hr
+            h4= t('.translation')
+            div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+              == xml_to_html(@previous_version.xml_translation)
+      - else
+        h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
+        div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+          == xml_to_html(@selected_version&.xml_transcription)
+        - if @work.supports_translation
+          hr
+          h4= t('.translation')
+          div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+            == xml_to_html(@selected_version&.xml_translation)
 
     td.diff-version[*language_attrs(@collection)]
-      h4(data-diff-title="original" data-empty=t('.untitled')) =(@previous_version.title rescue "")
-      div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-        ==xml_to_html((@previous_version.xml_transcription rescue ""))
-      -if @work.supports_translation
-        hr
-        h4= t('.translation')
-        div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-          ==xml_to_html((@previous_version.xml_translation rescue ""))
+      - if @selected_version&.page_version && @previous_version&.page_version
+        - if @selected_version.page_version > @previous_version.page_version
+          h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
+          div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+            == xml_to_html(@previous_version.xml_transcription)
+          - if @work.supports_translation
+            hr
+            h4= t('.translation')
+            div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+              == xml_to_html(@previous_version.xml_translation)
+        - else
+          h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
+          div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+            == xml_to_html(@selected_version.xml_transcription)
+          - if @work.supports_translation
+            hr
+            h4= t('.translation')
+            div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+              == xml_to_html(@selected_version.xml_translation)
+      - else
+        h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
+        div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+          == xml_to_html(@previous_version&.xml_transcription)
+        - if @work.supports_translation
+          hr
+          h4= t('.translation')
+          div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+            == xml_to_html(@previous_version&.xml_translation)
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'
