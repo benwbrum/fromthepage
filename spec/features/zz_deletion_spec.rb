@@ -53,6 +53,7 @@ describe "testing deletions" do
     count = work.pages.count
     test_page = work.pages.first
     visit dashboard_owner_path
+    page.find('.maincol').click_link(@collection.title)
     page.find('.maincol').find_all('a', text: work.title).first.click
     expect(page).to have_content(work.title)
     expect(page).to have_content(test_page.title)
@@ -76,7 +77,8 @@ describe "testing deletions" do
     path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
     expect(Dir.exist?(path)).to be true
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: work.title).click
+    page.find('.maincol').click_link(work.collection.title)
+    page.find('.collection-works').find('a', text: work.title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(work.title)
     expect(page).to have_selector('a', text: 'Delete Work')

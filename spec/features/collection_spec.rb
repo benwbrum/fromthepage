@@ -284,7 +284,8 @@ describe "collection spec (isolated)" do
 
       visit dashboard_owner_path
 
-      page.find('.collections').click_link('Stats Test Work')
+      page.find('.collections').click_link('Stats Test Collection')
+      page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
       page.find('#finish_button_top').click
