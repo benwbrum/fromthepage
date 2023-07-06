@@ -5,6 +5,8 @@
 
 
 \newpage
+
+<% if @include_metadata %>
 ### Metadata
 <p>
 <%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
@@ -15,6 +17,8 @@
 %>
 <%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
 \newpage
+<% end %>
+
 <% end %>
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
@@ -41,7 +45,7 @@
 
 <% end %>
 
-<% unless @edition_type == 'text_only'%>
+<% if @edition_type != 'text_only' && @include_contributors %>
 
 \newpage
 <%= t('.contributions_message') %>
