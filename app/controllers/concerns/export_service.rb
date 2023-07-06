@@ -121,10 +121,10 @@ module ExportService
     out.write(export_work_metadata_as_csv(collection))
   end
 
-  def export_subject_csv(out:, collection:)
+  def export_subject_csv(out:, collection:, work:)
     path = "subject_index.csv"
     out.put_next_entry(path)
-    out.write(collection.export_subject_index_as_csv)
+    out.write(collection.export_subject_index_as_csv(work))
   end
 
   def export_subject_details_csv(out:, collection:)

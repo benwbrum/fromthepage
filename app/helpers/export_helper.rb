@@ -80,7 +80,7 @@ module ExportHelper
     end
 
     if bulk_export.subject_csv_collection
-      export_subject_csv(out: out, collection: bulk_export.collection)
+      export_subject_csv(out: out, collection: bulk_export.collection, work: works)
     end
 
     if bulk_export.subject_details_csv_collection

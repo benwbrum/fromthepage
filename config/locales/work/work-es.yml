@@ -74,6 +74,8 @@ es:
       reuse: Reutilizar
       searchable_plaintext: Texto sin formato que se puede buscar
       searchable_plaintext_export_description: Exporte transcripciones de texto sin formato optimizadas para la búsqueda de texto completo como un archivo zip que contiene un archivo por página.
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: Una hoja de cálculo que enumera cada lugar donde se menciona un tema dentro de una página dentro del trabajo.
       table_field_csv: CSV de tabla/campo
       table_field_csv_export_description: Exporte todos los datos tabulares, de hojas de cálculo o basados en campos como un solo archivo CSV.
       verbatim_plaintext: Texto sin formato textual

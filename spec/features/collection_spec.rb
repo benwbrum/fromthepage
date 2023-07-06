@@ -273,6 +273,7 @@ describe "collection spec (isolated)" do
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
       old_count = Collection.all.count
       click_button('Create Collection')
+      sleep 3
       expect(Collection.all.to_a.count).to eq(old_count+1)
 
       page.find(:css, '#create-empty-work').click

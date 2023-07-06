@@ -4,8 +4,8 @@ module SubjectExporter
   class Exporter
     include Rails.application.routes.url_helpers
 
-    def initialize(collection)
-      @works = collection.works
+    def initialize(collection, works)
+      @works = works ? works : collection.works
       @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI Subject_Latitude Subject_Longitude Subject_Description]
       @metadata_keys = collection.metadata_coverages.map{|c| c.key}
     end

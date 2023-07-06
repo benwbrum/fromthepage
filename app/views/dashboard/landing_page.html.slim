@@ -31,16 +31,28 @@
                 =owner.about
           .projects
             -projects.each do |project|
-              -snippet = to_snippet(project.intro_block)
-              div.projects_details
-                -unless project.picture.blank?
-                  .projects_details_image
-                    =image_tag(project.picture_url(:thumb), alt: project.title)
-                .projects_collection
-                  h5
-                    =link_to project.title, collection_path(owner, project)
-                  -unless snippet.empty?
-                    .projects_collection_snippet =snippet
+              -if current_user && show_project_snippet?(project, current_user)
+                -snippet = to_snippet(project.intro_block)
+                div.projects_details
+                  -unless project.picture.blank?
+                    .projects_details_image
+                      =image_tag(project.picture_url(:thumb), alt: project.title)
+                  .projects_collection
+                    h5
+                      =link_to project.title, collection_path(owner, project)
+                    -unless snippet.empty?
+                      .projects_collection_snippet =snippet
+              -else
+                -snippet = to_snippet(project.intro_block)
+                div.projects_details
+                  -unless project.picture.blank?
+                    .projects_details_image
+                      =image_tag(project.picture_url(:thumb), alt: project.title)
+                  .projects_collection
+                    h5
+                      =link_to project.title, collection_path(owner, project)
+                    -unless snippet.empty?
+                      .projects_collection_snippet =snippet
             .projects_link =link_to t('.more'), user_profile_path(owner)
 
     .project-list_link

@@ -52,6 +52,7 @@ es:
       search_for: Búsqueda de obras %{search_string}
       search_in_collection: Buscar en la colección...
       search_in_collection_1: Buscar en la colección
+      search_in_work: Buscar en la obra...
       translations_need_indexing: Traducciones que Necesitan Indexación
       translations_need_review: Traducciones que Necesitan Revisión
       view_all_pages: Ver Todas las Páginas

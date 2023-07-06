@@ -74,6 +74,8 @@ pt:
       reuse: Reuso
       searchable_plaintext: Texto simples pesquisável
       searchable_plaintext_export_description: Exporte transcrições de texto simples otimizadas para pesquisa de texto completo como um arquivo zip contendo um arquivo por página.
+      subject_index_csv: Índice de assunto CSV
+      subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro do trabalho.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
       verbatim_plaintext: Texto simples literal

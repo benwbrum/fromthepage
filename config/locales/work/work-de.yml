@@ -74,6 +74,8 @@ de:
       reuse: Nachnutzung
       searchable_plaintext: Durchsuchbarer Klartext
       searchable_plaintext_export_description: Exportieren Sie für die Volltextsuche optimierte Klartext-Transkripte als ZIP-Datei mit einer Datei pro Seite.
+      subject_index_csv: Entitätenindex CSV
+      subject_index_csv_description: Eine Tabelle, in der jede Stelle aufgeführt ist, an der ein Thema auf einer Seite des Werks erwähnt wird.
       table_field_csv: Tabelle/Felder CSV
       table_field_csv_export_description: Exportieren Sie alle tabellarischen, tabellen- oder feldbasierten Daten als eine einzige CSV-Datei.
       verbatim_plaintext: Wörtlicher Klartext
