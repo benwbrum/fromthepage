@@ -9,7 +9,7 @@
 <% if @include_metadata %>
 ### Metadata
 <p>
-<%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+<%= t('export.facing_edition.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
 
 <% 
@@ -48,7 +48,7 @@
 <% if @edition_type != 'text_only' && @include_contributors %>
 
 \newpage
-<%= t('.contributions_message') %>
+<%= t('export.facing_edition.contributions_message') %>
 
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>
