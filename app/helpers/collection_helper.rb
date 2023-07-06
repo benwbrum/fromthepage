@@ -37,15 +37,23 @@ module CollectionHelper
   def collection_stats(collection)
     works = WorkStatistic.where(work_id: collection.works.pluck(:id))
     total_pages = works.sum(:total_pages)
-    total_blank_pages = works.sum(:blank_pages)
-    total_annotated_pages = works.sum('annotated_pages + translated_annotated')
-    total_review_pages = works.sum('needs_review + translated_review')
-    total_completed_pages = works.sum('transcribed_pages + translated_pages')
     
-    @progress_blank = ((total_blank_pages.to_f/total_pages)*100).round
-    @progress_annotated = ((total_annotated_pages.to_f/total_pages)*100).round
-    @progress_review = ((total_review_pages.to_f/total_pages)*100).round
-    @progress_completed = ((total_completed_pages.to_f/total_pages)*100).round
+    unless total_pages == 0
+      total_blank_pages = works.sum(:blank_pages)
+      total_annotated_pages = works.sum('annotated_pages + translated_annotated')
+      total_review_pages = works.sum('needs_review + translated_review')
+      total_completed_pages = works.sum('transcribed_pages + translated_pages')
+      
+      @progress_blank = ((total_blank_pages.to_f/total_pages)*100).round
+      @progress_annotated = ((total_annotated_pages.to_f/total_pages)*100).round
+      @progress_review = ((total_review_pages.to_f/total_pages)*100).round
+      @progress_completed = ((total_completed_pages.to_f/total_pages)*100).round
+    else
+      @progress_blank = 0
+      @progress_annotated = 0
+      @progress_review = 0
+      @progress_completed = 0
+    end
 
     if collection.subjects_disabled
       unless @progress_review == 0
