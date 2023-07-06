@@ -27,7 +27,7 @@ module ExportService
     out.write file.read
   end
 
-  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb)
+  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
@@ -40,12 +40,12 @@ module ExportService
       path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
-    tempfile = export_printable(work, edition, output_format, preserve_lb)
+    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
-  def export_printable(work, edition, format, preserve_lb)
+  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
     rendered_markdown = 
       ApplicationController.new.render_to_string(
@@ -56,7 +56,9 @@ module ExportService
           :work => work,
           :edition_type => edition,
           :output_type => format,
-          :preserve_linebreaks => preserve_lb
+          :preserve_linebreaks => preserve_lb,
+          :include_metadata => include_metadata,
+          :include_contributors => include_contributors
         }
       )
 
