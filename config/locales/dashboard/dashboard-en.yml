@@ -96,14 +96,10 @@ en:
       n_works:
         one: '1 work: '
         other: "%{count} works: "
-      pct_complete: "%{pct}% complete"
       private: " (Private)"
       public: " (Public)"
-      see_all_works: See All Works...
       start_a_project: Start A Project
       there_are_no_works: There are no works in this collection yet
-      total_work_count: 'Total work count: %{count}'
-      you_can_add_another_work: You can add another work under %{start_project}
       you_can_new_collection: You can %{new_collection}
       you_can_upload_documents: You can upload documents under %{start_project}
       you_dont_have_any_collections: You don't have any collections yet

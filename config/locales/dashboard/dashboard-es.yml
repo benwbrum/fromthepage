@@ -96,14 +96,10 @@ es:
       n_works:
         one: '1 trabajo:'
         other: "%{count} funciona:"
-      pct_complete: "%{pct}% completado"
       private: " (Privado)"
       public: " (Público)"
-      see_all_works: Consulte Todas las Obras...
       start_a_project: Iniciar Un Proyecto
       there_are_no_works: Todavía no hay obras en esta colección
-      total_work_count: 'Recuento total de obras: %{count}'
-      you_can_add_another_work: Puedes añadir otra obra bajo %{start_project}
       you_can_new_collection: Puedes %{new_collection}
       you_can_upload_documents: Puedes subir documentos en %{start_project}
       you_dont_have_any_collections: No hay colecciones todavía

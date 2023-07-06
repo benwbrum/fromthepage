@@ -96,14 +96,10 @@ de:
       n_works:
         one: '1 Werk:'
         other: "%{count} funktioniert:"
-      pct_complete: "%{pct} % abgeschlossen"
       private: " (Privatgelände)"
       public: " (Öffentlich)"
-      see_all_works: Alle Werke ansehen...
       start_a_project: Ein Projekt starten
       there_are_no_works: Es gibt noch keine Werke in dieser Sammlung
-      total_work_count: 'Gesamtanzahl an Werken: %{count}'
-      you_can_add_another_work: Sie können ein weiteres Werk unter %{start_project} hinzufügen
       you_can_new_collection: Sie können %{new_collection}
       you_can_upload_documents: Unter %{start_project} können Sie Dokumente hochladen
       you_dont_have_any_collections: Sie haben noch keine Sammlungen
