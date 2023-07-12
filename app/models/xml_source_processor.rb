@@ -279,11 +279,14 @@ module XmlSourceProcessor
 
   def process_any_sections(line)
     6.downto(2) do |depth|
-      line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
-        verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
-        safe_verbatim=verbatim.gsub(/"/, "&quot;")
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
-        @sections << Section.new(:title => wiki_title.last, :depth => depth)
+      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |section_match|
+        wiki_title = section_match[1].strip
+        if wiki_title.length > 0
+          verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title)
+          safe_verbatim = verbatim.gsub(/"/, "&quot;")
+          line = line.sub(section_match.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title}</entryHeading>")
+          @sections << Section.new(:title => wiki_title, :depth => depth)
+        end
       end
     end
 
