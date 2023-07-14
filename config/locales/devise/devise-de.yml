@@ -44,10 +44,10 @@ de:
     receive_activity_emails: Mails zu Aktivitäten erhalten
     registrations:
       choose_saml:
-        harvard_university: Harvard Universität
+        harvard_university: Harvard University
         illinois_state: Illinois State University
         institution: Institution
-        johns_hopkins_university: Johns Hopkins Universität
+        johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Melden Sie sich bei Ihrer Institution an
       destroyed: Auf Wiedersehen! Ihr Konto wurde erfolgreich gekündigt. Wir hoffen, Sie bald wiederzusehen.

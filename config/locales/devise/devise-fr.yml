@@ -44,11 +44,11 @@ fr:
     receive_activity_emails: Recevoir des e-mails d'activité
     registrations:
       choose_saml:
-        harvard_university: Université de Harvard
-        illinois_state: Université d'État de l'Illinois
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
         institution: Institution
-        johns_hopkins_university: Université de Johns Hopkins
-        lds_full_name: Église de Jésus-Christ des Saints des Derniers Jours
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Connectez-vous avec votre établissement
       destroyed: Au revoir! Votre compte a été annulé avec succès. Nous espérons vous revoir bientôt.
       edit:
