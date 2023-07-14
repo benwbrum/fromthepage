@@ -54,7 +54,7 @@ describe "testing deletions" do
     test_page = work.pages.first
     visit dashboard_owner_path
     page.find('.maincol').click_link(@collection.title)
-    page.find('.collection-works .collection-work_title').find_all('a', text: work.title).first.click
+    page.find('.collection-works').find('a', text: work.title).click
     expect(page).to have_content(work.title)
     expect(page).to have_content(test_page.title)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
