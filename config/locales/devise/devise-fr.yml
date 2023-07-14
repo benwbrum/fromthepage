@@ -45,6 +45,7 @@ fr:
     registrations:
       choose_saml:
         harvard_university: Université de Harvard
+        illinois_state: Université d'État de l'Illinois
         institution: Institution
         johns_hopkins_university: Université de Johns Hopkins
         lds_full_name: Église de Jésus-Christ des Saints des Derniers Jours
