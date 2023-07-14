@@ -58,7 +58,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       elsif identity_provider_id == 'ilstu'
         options = {
           idp_cert: ENV['IDP_CERT_ILSTU'],
-          idp_sso_target_url: 'https://sso.illinoisstate.edu/idp/shibboleth',
+          idp_sso_target_url: 'https://sso.illinoisstate.edu/idp/profile/SAML2/Redirect/SSO',
           issuer: 'https://fromthepage.com',
           attribute_statements: { 
             external_id: ['employeeNumber'], 
