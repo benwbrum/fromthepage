@@ -56,7 +56,7 @@ namespace :fromthepage do
       previous_actions=action_count
 
       users_with_pages = User.find(ids_with_pages)
-      ids_with_activity = users_with_pages.select{|u| u.owner_works.detect{|w| w.work_statistic.line_count > 0} }.map{|u| u.id}
+      ids_with_activity = users_with_pages.select{|u| u.owner_works.detect{|w| (w.work_statistic.line_count||0) > 0} }.map{|u| u.id}
       action_count = ids_with_activity.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")
