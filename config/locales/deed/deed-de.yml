@@ -7,7 +7,6 @@ de:
     collection_joined: Sammlung beigetreten
     deeds:
       show_more: Mehr zeigen
-      time_ago_in_words: Vor %{time}
     described_metadata: Beschriebene Metadaten
     edited_metadata: Bearbeitete Metadatenbeschreibung
     list:

@@ -1,9 +1,0 @@
--collection.deeds.includes(:page, :user, :work).limit(5).each do |d|
-  -d.collection = nil
-  .user-bubble
-    =link_to(user_profile_path(d.user))
-      =profile_picture(d.user)
-    .user-bubble_content
-      =time_tag d.created_at
-        =t('time_ago_in_words', time: time_ago_in_words(d.created_at))
-      p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
