@@ -282,7 +282,6 @@ class Work < ApplicationRecord
   def cleanup_images
     absolute_filenames = pages.map { |page| [page.base_image, page.thumbnail_filename]}.flatten
     modern_filenames = absolute_filenames.map{|fn| fn.sub(/^.*uploaded/, File.join(Rails.root, "public", "images", "uploaded"))}
-    binding.pry
     modern_filenames.each do |fn|
       File.delete(fn) if File.exist?(fn)
     end
