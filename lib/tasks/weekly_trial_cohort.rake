@@ -39,7 +39,7 @@ namespace :fromthepage do
       end
 
       # additional statistics require non-Ahoy data
-      collection_users = User.find Visit.where(id: previous_visits).pluck(:user_id)
+      collection_users = User.where(id: Visit.where(id: previous_visits).pluck(:user_id))
       ids_with_collections = collection_users.select{|u| u.collections.present? }.map{|u| u.id}
       action_count = ids_with_collections.count
       pct = (action_count.to_f/previous_actions).round(4)
