@@ -20,9 +20,6 @@ pt:
       export_individual_works_description: Você pode escolher exportar trabalhos individuais em vários formatos de arquivo. O XHTML exporta um trabalho como um arquivo XHTML de uma página com transcrições, comentários do usuário, artigos de assunto e HREFs internos vinculando assuntos e páginas. O TEI exporta uma obra como um documento TEI-XML compatível com P5. O texto é texto simples. A exportação zip fornecerá todos os formatos de um trabalho e granularidade de página.
       export_to_contentdm: Exportar para CONTENTdm
       export_to_contentdm_description: Clique no botão para exportar as transcrições concluídas de toda a coleção para o CONTENTdm.
-      export_work_metadata: Exportar metadados de trabalho
-      export_work_metadata_as_csv: Exportar metadados de trabalho como CSV
-      export_work_metadata_description: Exporte uma planilha contendo uma linha para cada obra da coleção, com colunas para estatísticas sobre as páginas transcritas e metadados da obra.
       here: aqui
       html: HTML
       iiif: IIIF
