@@ -22,6 +22,7 @@ class Work < ApplicationRecord
      "document_date",
      "uploaded_filename"]
   
+  before_destroy :cleanup_images # must precede pages association
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
@@ -51,7 +52,6 @@ class Work < ApplicationRecord
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
 
-  after_destroy :cleanup_images
 
   after_create :alert_intercom
 
@@ -283,7 +283,11 @@ class Work < ApplicationRecord
     absolute_filenames = pages.map { |page| [page.base_image, page.thumbnail_filename]}.flatten
     modern_filenames = absolute_filenames.map{|fn| fn.sub(/^.*uploaded/, File.join(Rails.root, "public", "images", "uploaded"))}
     modern_filenames.each do |fn|
-      File.delete(fn) if File.exist?(fn)
+      if File.exist?(fn)
+        File.delete(fn) if File.exist?(fn)
+      else
+        logger.debug "File #{fn} does not exist"
+      end
     end
     new_dir_name = File.join(Rails.root, "public", "images", "uploaded", self.id.to_s)
     if Dir.exist?(new_dir_name)
@@ -291,6 +295,8 @@ class Work < ApplicationRecord
       if Dir.glob(File.join(new_dir_name, "*")).empty?
         # if it is, delete it
         Dir.rmdir(new_dir_name)
+      else
+        logger.debug "Directory #{new_dir_name} is not empty; contents are #{Dir.glob(File.join(new_dir_name, "*")).sort.join(', ')}"
       end
     end
   end
