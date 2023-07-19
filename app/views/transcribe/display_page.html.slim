@@ -176,7 +176,20 @@ h2.legend =t('.notes_and_questions')
       });
     });
 
+    $(function() {
+      $('form').submit(function() {
+        var isMarkedBlank = $('#page_mark_blank').is(':checked');
+        var hasTranscribedText = $('.page-editarea_textarea').val().trim().length > 0;
 
+        if (isMarkedBlank && hasTranscribedText) {
+          var confirmation = confirm('This page has transcribed text but you are marking it as blank. Do you want to continue?');
+
+          if (!confirmation) {
+            return false; // Prevent form submission
+          }
+        }
+      });
+    });
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet
