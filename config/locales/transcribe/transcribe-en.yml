@@ -20,6 +20,7 @@ en:
       image_at_the_top: Image at the top
       layout: Layout
       mark_as_blank: Mark as blank
+      mark_blank_warning: This page has transcribed data but you are marking it as blank. Do you want to continue?
       microphone: Microphone
       more_help: More help....
       needs_review: Needs Review
