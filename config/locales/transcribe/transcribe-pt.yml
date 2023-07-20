@@ -20,6 +20,7 @@ pt:
       image_at_the_top: Imagem superior
       layout: Esquema
       mark_as_blank: Marcar como em branco
+      mark_blank_warning: Esta página contém dados transcritos, mas você a está marcando como vazia. Deseja continuar?
       microphone: Microfone
       more_help: Mais ajuda....
       needs_review: Precisa de Revisão

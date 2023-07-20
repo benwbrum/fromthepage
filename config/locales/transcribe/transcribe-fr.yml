@@ -20,6 +20,7 @@ fr:
       image_at_the_top: Image en haut
       layout: Disposition
       mark_as_blank: Marquer comme vierge
+      mark_blank_warning: Cette page contient des données transcrites, mais vous la marquez comme vide. Voulez-vous continuer ?
       microphone: Microphone
       more_help: Plus de conseils...
       needs_review: À besoin d'une révision
