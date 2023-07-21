@@ -208,8 +208,14 @@ class CollectionController < ApplicationController
             ids += description_ids
           end
 
-          works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
-
+          works = @collection.works
+                              .joins(:work_statistic)
+                              .where(id: ids)
+                              .order("CASE WHEN work_statistics.complete = 0 THEN 0
+                                            WHEN work_statistics.complete < 100 THEN 1
+                                            ELSE 2
+                                      END, work_statistics.complete ASC")
+                              .paginate(page: params[:page], per_page: 10)
           if works.empty?
             @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
           else
