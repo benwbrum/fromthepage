@@ -89,6 +89,15 @@ en:
       total_pages: Total Pages
     process_upload:
       uploaded_document_queued: Uploaded document has been queued for processing
+    searches:
+      clicks: Clicks
+      contributions: Contributions
+      date: Date
+      hits: Hits
+      owner: Owner
+      owner_filter: Filter to only transcribers
+      query: Query
+      user: User
     settings:
       flag_blacklist: 'Terms to flag as potential abusive content:'
       save_changes: Save Changes

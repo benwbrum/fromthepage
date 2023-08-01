@@ -278,6 +278,22 @@ class AdminController < ApplicationController
     @collections = Collection.where(messageboards_enabled:true)
   end
 
+  def searches
+    if params[:filter]
+      @searches = SearchAttempt.where(owner: false).order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    else
+      @searches = SearchAttempt.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    end
+
+    this_week = SearchAttempt.where('created_at > ?', 1.week.ago)
+    @searches_per_day = (this_week.count / 7.0).round(2)
+    @average_hits = this_week.average(:hits).round(2)
+    @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count.to_f) * 100).round(1)
+    @clickthrough_rate_visit = (this_week.joins(:visit).group('visits.id').sum(:clicks).values.count{|c|c>0}.to_f / this_week.joins(:visit).group('visits.id').length).round(3) * 100
+    @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count.to_f) * 100).round(1) 
+    @contribution_rate_visit = (this_week.joins(:visit).group('visits.id').sum(:contributions).values.count{|c|c>0}.to_f / this_week.joins(:visit).group('visits.id').length).round(3) * 100
+  end
+
   private
 
   def user_params

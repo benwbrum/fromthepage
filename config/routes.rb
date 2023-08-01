@@ -43,6 +43,7 @@ Fromthepage::Application.routes.draw do
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'

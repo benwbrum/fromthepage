@@ -1,0 +1,45 @@
+=render(:partial => 'header', :locals => { :selected => 7 })
+
+section.admin-counters
+  .counter
+  .counter(data-prefix="#{number_with_delimiter(@searches_per_day)}") Searches per day
+  .counter(data-prefix="#{number_with_delimiter(@average_hits)}") Average hits
+  .counter
+  .counter(data-prefix="#{number_with_delimiter(@clickthrough_rate)}%") Searches get clicks
+  .counter(data-prefix="#{number_with_delimiter(@clickthrough_rate_visit)}%") Visits get search clicks
+  .counter(data-prefix="#{number_with_delimiter(@contribution_rate)}%") Searches get contributions
+  .counter(data-prefix="#{number_with_delimiter(@contribution_rate_visit)}%") Visits get contributions from searches
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th =t('.query')
+      th =t('.hits')
+      th =t('.clicks')
+      th =t('.contributions')
+      th =t('.date')
+      th(colspan="2") =t('.user')
+      th =link_to t('.owner'), admin_searches_path(:filter => 'owner'), class: 'acenter', title: t('.owner_filter')
+
+  tbody 
+    -@searches.each do |search|
+      tr
+        td.nowrap.toleft
+          div =link_to search.query, search_attempt_show_path(search)
+        td =search.hits
+        td =search.clicks
+        td =search.contributions
+        td.nowrap =search.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+        -if search.user
+          td.nowrap.toleft
+            div =link_to user_profile_path(search.user), class: 'userpic userpic-small'
+              =profile_picture(search.user)
+          td
+            div =link_to search.user.login, user_profile_path(search.user)
+            small =search.user.email
+        -else
+          td
+          td Guest
+        td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if search.user&.owner
+
+=render(:partial => 'shared/pagination', :locals => { :model => @searches, :entries_info => true })
