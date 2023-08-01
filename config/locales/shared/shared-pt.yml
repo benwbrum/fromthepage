@@ -6,6 +6,8 @@ pt:
       settings: Configurações
       subject: sujeito
       versions: Versões
+    breadcrumbs:
+      search_results: Procurar Resultados
     codemirror:
       abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
       add_description: Marca o texto inserido após o fato pelo escritor.
