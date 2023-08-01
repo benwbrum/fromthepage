@@ -1,9 +1,13 @@
 class SearchAttemptController < ApplicationController
     def create
-        @search_attempt = SearchAttempt.new(
-            query: params[:search], 
-            user_id: current_user.id, 
-            owner: current_user.owner)
+        if current_user.nil?
+            @search_attempt = SearchAttempt.new(query: params[:search])
+        else
+            @search_attempt = SearchAttempt.new(
+                query: params[:search], 
+                user_id: current_user.id, 
+                owner: current_user.owner)
+        end
         @search_attempt.save
         
         ajax_redirect_to(search_attempt_show_path(@search_attempt))
