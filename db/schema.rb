@@ -105,12 +105,12 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
     t.boolean "text_only_pdf_work"
     t.string "organization", default: "by_work"
     t.boolean "use_uploaded_filename", default: false
-    t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.boolean "owner_mailing_list"
     t.boolean "owner_detailed_activity"
     t.boolean "collection_activity"
     t.boolean "collection_contributors"
     t.string "report_arguments"
+    t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
     t.index ["uri"], name: "index_clientperf_uris_on_uri"
   end
 
-  create_table "collection_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+  create_table "collection_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "collection_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
     t.index ["user_id"], name: "fk_rails_c117458532"
   end
 
-  create_table "collection_collaborators", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+  create_table "collection_collaborators", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "user_id"
     t.integer "collection_id"
   end
@@ -252,15 +252,15 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
     t.string "prerender_mailer", limit: 8191
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
-    t.index ["collection_id", "created_at"], name: "index_deeds_on_collection_id_and_created_at"
-    t.index ["collection_id", "deed_type", "created_at"], name: "index_deeds_on_collection_id_and_deed_type_and_created_at"
-    t.index ["created_at", "collection_id"], name: "index_deeds_on_created_at_and_collection_id"
+    t.index ["collection_id", "created_at"], name: "index_deeds_on_collection_id_and_created_at", order: { created_at: :desc }
+    t.index ["collection_id", "deed_type", "created_at"], name: "index_deeds_on_collection_id_and_deed_type_and_created_at", order: { created_at: :desc }
+    t.index ["created_at", "collection_id"], name: "index_deeds_on_created_at_and_collection_id", order: { created_at: :desc }
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
-    t.index ["user_id", "created_at"], name: "index_deeds_on_user_id_and_created_at"
+    t.index ["user_id", "created_at"], name: "index_deeds_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["visit_id"], name: "index_deeds_on_visit_id"
-    t.index ["work_id", "created_at"], name: "index_deeds_on_work_id_and_created_at"
-    t.index ["work_id", "deed_type", "user_id", "created_at"], name: "index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at"
+    t.index ["work_id", "created_at"], name: "index_deeds_on_work_id_and_created_at", order: { created_at: :desc }
+    t.index ["work_id", "deed_type", "user_id", "created_at"], name: "index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at", order: { created_at: :desc }
   end
 
   create_table "document_set_collaborators", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
@@ -646,11 +646,17 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
   end
 
   create_table "search_attempts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "query"
     t.integer "hits", default: 0
     t.integer "clicks", default: 0
     t.integer "contributions", default: 0
-    t.integer "ahoy_visit_id"
+    t.integer "visit_id"
+    t.bigint "user_id"
+    t.boolean "owner", default: false
+    t.index ["user_id"], name: "index_search_attempts_on_user_id"
+    t.index ["visit_id"], name: "index_search_attempts_on_visit_id"
   end
 
   create_table "sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
@@ -1001,8 +1007,8 @@ ActiveRecord::Schema.define(version: 2023_06_01_130844) do
     t.string "preferred_locale"
     t.string "api_key"
     t.string "picture"
-    t.text "footer_block", size: :medium
     t.text "help"
+    t.text "footer_block", size: :medium
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
