@@ -70,6 +70,7 @@ class NotesController < ApplicationController
     deed.user = current_user
 
     deed.save!
+    update_search_attempt_contributions
   end
 
   def discussions
