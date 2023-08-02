@@ -188,8 +188,8 @@ class CollectionController < ApplicationController
 
         # Check if the user is coming from a search result
         if session[:search_attempt_id]
-          @search_attempt = SearchAttempt.find(session[:search_attempt_id])
-          @search_attempt.update(clicks: @search_attempt.clicks + 1)
+          search_attempt = SearchAttempt.find(session[:search_attempt_id])
+          search_attempt.increment!(:clicks)
         end
 
         if params[:work_search]

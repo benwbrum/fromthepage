@@ -409,8 +409,7 @@ end
   def update_search_attempt_contributions
     if session[:search_attempt_id]
       search_attempt = SearchAttempt.find(session[:search_attempt_id])
-      search_attempt.contributions += 1
-      search_attempt.save
+      search_attempt.increment!(:contributions)
     end
   end
 

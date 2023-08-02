@@ -1,6 +1,7 @@
 -path = []
--if @search_attempt && (@collection || @work || @user)
-  -path.push(link_to t('.search_results'), search_attempt_show_path(@search_attempt))
+-if session[:search_attempt_id] && (@collection || @work || @user)
+  -search_attempt = SearchAttempt.find(session[:search_attempt_id])
+  -path.push(link_to t('.search_results'), search_attempt_show_path(search_attempt))
 -if @document_set && @document_set.title.present? && (@work || @article)
   -path.push(link_to @document_set.title, document_set_path(@document_set.owner, @document_set))
 -elsif @collection && @collection.title.present? && (@work || @article)
