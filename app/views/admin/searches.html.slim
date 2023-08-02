@@ -24,7 +24,7 @@ table.admin-grid.datagrid.striped
   tbody 
     -@searches.each do |search|
       tr
-        td.nowrap.toleft
+        td.toleft
           div =link_to search.query, search_attempt_show_path(search)
         td =search.hits
         td =search.clicks
@@ -34,7 +34,7 @@ table.admin-grid.datagrid.striped
           td.nowrap.toleft
             div =link_to user_profile_path(search.user), class: 'userpic userpic-small'
               =profile_picture(search.user)
-          td
+          td.nowrap
             div =link_to search.user.login, user_profile_path(search.user)
             small =search.user.email
         -else

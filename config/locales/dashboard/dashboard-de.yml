@@ -31,6 +31,7 @@ de:
       select_a_collection: "- Wählen Sie eine Sammlung aus -"
       title: Titel
     exports:
+      admin_searches: Suchen
       bulk_exports_description: Hier werden alle von ihnen ausgeführten Sammelexporte aufgelistet. Exporte werden nach einigen Tagen bereinigt und stehen nicht mehr zum Download zur Verfügung.
       configuration: Konfiguration (Level)
       create_bulk_export_description: Erstellen Sie einen Sammelexport über den Tab „Export“ im Dashboard der Sammlung oder über den Tab „Download“ im Dashboard eines Werks.

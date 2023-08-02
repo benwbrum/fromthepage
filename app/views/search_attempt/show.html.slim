@@ -1,3 +1,14 @@
+section.search(style='width: 50%; float: right;')
+  =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+    =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
+    =button_tag t('.search')
+    =label_tag 'search', t('.search_for_collections'), class: 'hidden'
+
+-if @search_results.empty? && @owners.empty?
+  h3.search_heading ==t('.no_results', query: @search_attempt.query)
+-else
+  h2.search-heading ==t('.results_for', query: @search_attempt.query)
+
 .columns.project-list
   article.maincol
     -if @search_results && @owners.empty?
@@ -13,6 +24,7 @@
                   =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
                   = to_snippet(sr.intro_block)
+    
     -@owners.each do |owner|
       -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
       -unless projects.blank?
