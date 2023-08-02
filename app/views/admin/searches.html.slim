@@ -43,3 +43,44 @@ table.admin-grid.datagrid.striped
         td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if search.user&.owner
 
 =render(:partial => 'shared/pagination', :locals => { :model => @searches, :entries_info => true })
+
+br
+br
+section.export-searches
+  h2=t('.export_searches')
+  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+    =f.hidden_field :admin_searches, value: true
+    =f.label(:start_date, t('.start_date'))
+    |  
+    =f.text_field('report_arguments[start_date]', value: l(@start_date.to_date), style: "width:30%", id: 'start_date')
+    |  
+    =f.label(:end_date, t('.end_date'))
+    |  
+    =f.text_field('report_arguments[end_date]', value: l(@end_date.to_date), style: "width:30%", id: 'end_date')
+    |
+    =f.submit t('.export'), id: 'searches-export-submit'
+  br
+
+-content_for :javascript
+=javascript_include_tag 'datepicker/datepicker'
+javascript:
+  var today = new Date()
+  var yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  
+  //Attach a date picker for start and end dates
+  datePickerController.createDatePicker({
+      formElements:{
+          "start_date":"%M %d, %Y"
+      },
+      rangeHigh: yesterday,
+      noFadeEffect: true
+  });
+
+  datePickerController.createDatePicker({
+      formElements:{
+          "end_date":"%M %d, %Y"
+      },
+      rangeHigh: yesterday,
+      noFadeEffect: true      
+  });

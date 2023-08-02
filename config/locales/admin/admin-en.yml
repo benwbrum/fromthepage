@@ -93,10 +93,14 @@ en:
       clicks: Clicks
       contributions: Contributions
       date: Date
+      end_date: End date
+      export: Export
+      export_searches: Export searches
       hits: Hits
       owner: Owner
       owner_filter: Filter to only transcribers
       query: Query
+      start_date: Start date
       user: User
     settings:
       flag_blacklist: 'Terms to flag as potential abusive content:'

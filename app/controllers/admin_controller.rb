@@ -286,12 +286,20 @@ class AdminController < ApplicationController
     end
 
     this_week = SearchAttempt.where('created_at > ?', 1.week.ago)
+    by_visit = this_week.joins(:visit).group('visits.id')
     @searches_per_day = (this_week.count / 7.0).round(2)
     @average_hits = this_week.average(:hits).round(2)
-    @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count.to_f) * 100).round(1)
-    @clickthrough_rate_visit = (this_week.joins(:visit).group('visits.id').sum(:clicks).values.count{|c|c>0}.to_f / this_week.joins(:visit).group('visits.id').length).round(3) * 100
-    @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count.to_f) * 100).round(1) 
-    @contribution_rate_visit = (this_week.joins(:visit).group('visits.id').sum(:contributions).values.count{|c|c>0}.to_f / this_week.joins(:visit).group('visits.id').length).round(3) * 100
+    @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
+    @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+    @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1) 
+    @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+
+    start_d = params[:start_date]
+    end_d = params[:end_date]
+    max_date = 1.day.ago.end_of_day
+    @start_date = start_d&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
+    @end_date = end_d&.to_datetime&.end_of_day || max_date
+    @end_date = max_date if max_date < @end_date
   end
 
   private

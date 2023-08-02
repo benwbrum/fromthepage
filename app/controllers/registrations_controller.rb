@@ -67,6 +67,13 @@ class RegistrationsController < Devise::RegistrationsController
         @user.save
         alert_intercom
       end
+
+      # Update search attempt with new user
+      if session[:search_attempt_id]
+        search_attempt = SearchAttempt.find(session[:search_attempt_id])
+        search_attempt.user = @user
+        search_attempt.save
+      end
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?

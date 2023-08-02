@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_01_152022) do
+ActiveRecord::Schema.define(version: 2023_08_02_141742) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.datetime "date"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2023_08_01_152022) do
     t.boolean "collection_contributors"
     t.string "report_arguments"
     t.boolean "plaintext_verbatim_zero_index_page", default: false
+    t.boolean "admin_searches"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"

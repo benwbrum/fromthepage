@@ -317,6 +317,13 @@ class ApplicationController < ActionController::Base
     # Otherwise owners should go to their dashboards
     # And everyone else should go to user dashboard/watchlist
   def after_sign_in_path_for(resource)
+    # Update search attempt with user
+    if session[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session[:search_attempt_id])
+      search_attempt.user = current_user
+      search_attempt.save
+    end
+
     if current_user.admin
       admin_path
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/'
