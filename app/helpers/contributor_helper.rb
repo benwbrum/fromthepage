@@ -13,7 +13,7 @@ module ContributorHelper
     #check to see if there are any deeds in the collection
     @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
 
-    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions_or_corrections)
+    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions_or_corrections).or(@collection.deeds.where(deed_type: DeedType.collection_joins))
 
     @recent_notes = @collection_deeds.where(deed_type: DeedType::NOTE_ADDED)
     @recent_transcriptions = @collection_deeds.where(deed_type: DeedType.transcriptions)
