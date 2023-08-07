@@ -65,7 +65,7 @@ namespace :fromthepage do
 
 
       users_with_activity = User.find(ids_with_activity)
-      ids_with_multiple_contributors = users_with_activity.select{|u| u.owned_collections.detect{|c| c.deeds.pluck(:user_id).uniq > 1} }.map{|u| u.id}
+      ids_with_multiple_contributors = users_with_activity.select{|u| u.owned_collections.detect{|c| c.deeds.pluck(:user_id).uniq.count > 1} }.map{|u| u.id}
       action_count = ids_with_multiple_contributors.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")
