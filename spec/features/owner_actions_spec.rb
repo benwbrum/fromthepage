@@ -165,8 +165,10 @@ describe "owner actions", :order => :defined do
   end
 
   it "moves a work to another collection" do
+    work = Work.find_by(title: @title)
+
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @rtl_collection.title).click
+    page.find('.maincol').find('a', text: work.collection).click
     page.find('.collection-works').find('a', text: @title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
@@ -176,7 +178,6 @@ describe "owner actions", :order => :defined do
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
-    work = Work.find_by(title: @title)
     expect(Deed.last.work_id).to eq(work.id)
     expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
@@ -230,14 +231,17 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a work" do
+    collection = Work.find_by(title: @title).collection
+
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @rtl_collection.title).click
+    page.find('.maincol').find('a', text: collection.title).click
     page.find('.collection-works').find('a', text: @title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
     click_link("Delete Work")
     expect(page.current_path).to eq dashboard_owner_path
+    page.find('.maincol').find('a', text: collection.title).click
     expect(page).not_to have_content(@title)
   end
 
