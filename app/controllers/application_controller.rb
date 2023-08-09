@@ -319,7 +319,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
-    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/'
+    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
       dashboard_owner_path
