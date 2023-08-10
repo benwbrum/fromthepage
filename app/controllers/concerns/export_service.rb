@@ -660,7 +660,7 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells, false)
+      cell_data(running_data, data_cells, true)
     end
 
     # return the current running data
