@@ -77,9 +77,7 @@ describe "admin actions" do
     collections = Collection.where(owner_user_id: @owner.id)
     collections.each do |c|
       expect(page).to have_content(c.title)
-      c.works.each do |w|
-        expect(page).to have_content(w.title)
-      end
+      expect(page).to have_content("#{c.works.count} works")
     end
     #make the masqueraded user doesn't have access to the admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')

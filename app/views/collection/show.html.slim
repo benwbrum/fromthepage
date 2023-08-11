@@ -60,12 +60,7 @@
                 = t('.n_pages', count: work.work_statistic.total_pages)
                 = @wording
               span
-                span.progress
-                  -unless @collection.subjects_disabled
-                    span(style="width:#{@progress_annotated}%")
-                  span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
-                  -unless @progress_review == 0
-                    span(style="width:#{@progress_review}%")
+                =render(:partial => 'shared/progress', :locals => { :collection => @collection })
           -else
             .collection-work_stats
               span =t("work.#{work.description_status}")

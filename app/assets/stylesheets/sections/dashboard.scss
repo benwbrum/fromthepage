@@ -181,6 +181,32 @@
   font-style: italic;
 }
 
+.owner-collection {
+  clear: both;
+  padding: $gapSize;
+  border-radius: 4px;
+  margin-bottom: $gapSize / 2;
+  background-clip: padding-box;
+  border: 1px solid rgba(#000, 0.06);
+  background-color: mix(#FFF, $bodyBg, 35%);
+  overflow: hidden;
+  &.stats-visible { border-color: transparent; }
+  &.stats-visible &_stats-bubble { opacity: 1; }
+  &_title {
+    margin: 0;
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+}
+
+.visibility {
+  font-style: italic;
+  color: $bgSelected;
+}
+
 //--------------------------------
 // LANDING PAGE
 //--------------------------------

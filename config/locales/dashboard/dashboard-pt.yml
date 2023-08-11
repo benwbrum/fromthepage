@@ -89,13 +89,17 @@ pt:
       page_image_guidelines: Regras Gerais das Imagens da Página
       paste_in_the_url: Cole o URL de um objeto composto na sua página web de CONTENTdm.
     owner:
+      active_collections: Coleções ativas
       create_a_collection: criar uma coleção
       document_sets: Conjuntos de Documentos
-      see_all_works: Ver Todas as Obras...
+      inactive_collections: Coleções inativas
+      n_works:
+        one: '1 trabalho:'
+        other: "%{count} funciona:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
-      total_work_count: 'Número total de obras: %{count}'
-      you_can_add_another_work: Você pode adicionar uma nova obra em %{start_project}
       you_can_new_collection: Você pode %{new_collection}
       you_can_upload_documents: Você pode subir um documento em %{start_project}
       you_dont_have_any_collections: Você ainda não tem nenhuma coleção.

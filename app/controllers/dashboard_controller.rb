@@ -74,6 +74,11 @@ class DashboardController < ApplicationController
 
   # Owner Dashboard - list of works
   def owner
+    collections = current_user.all_owner_collections
+    @active_collections = @collections.select { |c| c.active? }
+    @inactive_collections = @collections.select { |c| !c.active? }
+    # Needs to be active collections first, then inactive collections
+    @collections = @active_collections + @inactive_collections
   end
 
   # Owner Summary Statistics - statistics for all owned collections

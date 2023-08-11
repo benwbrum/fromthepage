@@ -12,6 +12,15 @@ class StaticController < ApplicationController
   end
 
   def landing_page
+    if user_signed_in? && params[:logo] != 'true' 
+      if current_user.admin
+        return redirect_to admin_path
+      elsif current_user.owner
+        return redirect_to dashboard_owner_path
+      else
+        return redirect_to dashboard_watchlist_path
+      end
+    end
     render layout: false
   end
 
