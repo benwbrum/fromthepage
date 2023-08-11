@@ -100,7 +100,13 @@ en:
       owner: Owner
       owner_filter: Filter to only transcribers
       query: Query
+      search_type:
+        collection: Collection
+        collection-title: Title / Metadata
+        findaproject: Find a Project
+        work: Work
       start_date: Start date
+      type: Type
       user: User
     settings:
       flag_blacklist: 'Terms to flag as potential abusive content:'

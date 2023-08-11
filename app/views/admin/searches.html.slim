@@ -1,10 +1,10 @@
 =render(:partial => 'header', :locals => { :selected => 7 })
 
 section.admin-counters
-  .counter
-  .counter(data-prefix="#{number_with_delimiter(@searches_per_day)}") Searches per day
-  .counter(data-prefix="#{number_with_delimiter(@average_hits)}") Average hits
-  .counter
+  .counter(data-prefix="#{number_with_delimiter(@find_a_project_searches_per_day)}") Find a project<br> searches per day
+  .counter(data-prefix="#{number_with_delimiter(@collection_work_searches_per_day)}") Collection/work<br> searches per day
+  .counter(data-prefix="#{number_with_delimiter(@find_a_project_average_hits)}") Find a project<br> average hits
+  .counter(data-prefix="#{number_with_delimiter(@collection_work_average_hits)}") Collection/work<br> average hits
   .counter(data-prefix="#{number_with_delimiter(@clickthrough_rate)}%") Searches get clicks
   .counter(data-prefix="#{number_with_delimiter(@clickthrough_rate_visit)}%") Visits get search clicks
   .counter(data-prefix="#{number_with_delimiter(@contribution_rate)}%") Searches get contributions
@@ -14,21 +14,47 @@ table.admin-grid.datagrid.striped
   thead
     tr
       th =t('.query')
+      th 
+        =t('.type')
+        br
+        =form_tag admin_searches_path, method: :get do
+          =select_tag :filter, options_for_select([['All', 'all'], ['Find a Project', 'findaproject'], ['Collection & Work', 'collectionwork'], ['Collection', 'collection'], ['Collection title/metadata', 'collection-title'], ['Work', 'work']], params[:filter]), onchange: 'this.form.submit();'
+
+      th =t('.collection')
+      th =t('.work')
       th =t('.hits')
       th =t('.clicks')
       th =t('.contributions')
       th =t('.date')
       th(colspan="2") =t('.user')
-      th =link_to t('.owner'), admin_searches_path(:filter => 'owner'), class: 'acenter', title: t('.owner_filter')
+      th =link_to t('.owner'), admin_searches_path(:filter => 'nonowner'), class: 'acenter', title: t('.owner_filter')
 
   tbody 
     -@searches.each do |search|
       tr
         td.toleft
-          div =link_to search.query, search_attempt_show_path(search)
-        td =search.hits
-        td =search.clicks
-        td =search.contributions
+          -if search.search_type == 'findaproject'
+            -link = search_attempt_show_path(search)
+          -elsif search.search_type == 'collection'
+            -link = paged_search_path(search)
+          -elsif search.search_type == 'collection-title'
+            -link = collection_path(search.collection.owner, search.collection.slug, search_attempt_id: search.id)
+          -else #Work
+            -link = paged_search_path(search)
+
+          div =link_to search.query, link
+        td.nowrap =t(".search_type.#{search.search_type}")
+        td
+          -if search.collection 
+            =link_to search.collection.title, collection_path(search.collection.owner, search.collection)
+          -elsif search.work
+            =link_to search.work.collection.title, collection_path(search.work.collection.owner, search.work.collection)
+        td 
+          -if search.work
+            =link_to search.work.title, collection_read_work_path(search.work.collection.owner, search.work.collection, search.work)
+        td.nowrap =search.hits
+        td.nowrap =search.clicks
+        td.nowrap =search.contributions
         td.nowrap =search.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
         -if search.user
           td.nowrap.toleft
@@ -40,7 +66,7 @@ table.admin-grid.datagrid.striped
         -else
           td
           td Guest
-        td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if search.user&.owner
+        td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if search.owner
 
 =render(:partial => 'shared/pagination', :locals => { :model => @searches, :entries_info => true })
 

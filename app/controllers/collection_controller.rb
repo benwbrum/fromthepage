@@ -186,14 +186,15 @@ class CollectionController < ApplicationController
           end
         end
 
-        # Check if the user is coming from a search result
-        if session[:search_attempt_id]
-          search_attempt = SearchAttempt.find(session[:search_attempt_id])
-          search_attempt.increment!(:clicks)
-        end
-
-        if params[:work_search]
-          @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+        # Coming from work title/metadata search
+        if params[:search_attempt_id]
+          @search_attempt = SearchAttempt.find_by(id: params[:search_attempt_id])
+          if session[:search_attempt_id] != @search_attempt.id
+            session[:search_attempt_id] = @search_attempt.id
+          end
+          @query = @search_attempt.query
+          @works = @collection.search_works(@query).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          @search_attempt.update(hits: @works.count)
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -253,8 +254,11 @@ class CollectionController < ApplicationController
             end
           end
 
-          if params[:work_search]
-            @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          if params[:search_attempt_id]
+            @search_attempt = SearchAttempt.find_by(id: params[:search_attempt_id])
+            @query = @search_attempt.query
+            @works = @collection.search_works(@query).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @search_attempt.update(hits: @works.count)
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -696,6 +700,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck)
+    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id)
   end
 end

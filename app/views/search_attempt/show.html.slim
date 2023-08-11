@@ -16,12 +16,12 @@ section.search(style='width: 50%; float: right;')
         .project-list_projects
           .projects-owner
             h3.projects-owner_title
-              =link_to sr.owner.display_name, user_profile_path(sr.owner)
+              =link_to sr.owner.display_name, user_profile_path(sr.owner), onclick: "resultClicked();"
           .projects
             div.projects_details
               .projects_collection
                 h5
-                  =link_to sr.title, collection_path(sr.owner.slug, sr.id)
+                  =link_to sr.title, collection_path(sr.owner.slug, sr.id), onclick: "resultClicked();"
                 .projects_collection_snippet
                   = to_snippet(sr.intro_block)
     
@@ -31,7 +31,7 @@ section.search(style='width: 50%; float: right;')
         .project-list_projects
           .projects-owner
             h3.projects-owner_title
-              =link_to owner.display_name, user_profile_path(owner)
+              =link_to owner.display_name, user_profile_path(owner), onclick: "resultClicked();"
             -if owner.about.present?
               .description
                 =owner.about
@@ -44,7 +44,16 @@ section.search(style='width: 50%; float: right;')
                     =image_tag(project.picture_url(:thumb), alt: project.title)
                 .projects_collection
                   h5
-                    =link_to project.title, collection_path(owner, project)
+                    =link_to project.title, collection_path(owner, project), onclick: "resultClicked();"
                   -unless snippet.empty?
                     .projects_collection_snippet =snippet
-            .projects_link =link_to t('.more'), user_profile_path(owner)
+            .projects_link =link_to t('.more'), user_profile_path(owner), onclick: "resultClicked();"
+
+-content_for :javascript
+  javascript:
+    function resultClicked() {
+      $.ajax({
+        url: '/search_attempt/click',
+        type: 'GET',
+      })
+    };

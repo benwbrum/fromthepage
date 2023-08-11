@@ -125,12 +125,6 @@ class UserController < ApplicationController
   end
 
   def profile
-    # Check if the user is coming from a search result
-    if session[:search_attempt_id]
-      @search_attempt = SearchAttempt.find(session[:search_attempt_id])
-      @search_attempt.increment!(:clicks)
-    end
-
     #find the user if it isn't already set
     unless @user
       @user = User.friendly.find(params[:id])
