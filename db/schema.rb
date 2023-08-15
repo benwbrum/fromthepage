@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_02_141742) do
+ActiveRecord::Schema.define(version: 2023_08_04_144422) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.datetime "date"
@@ -657,9 +657,14 @@ ActiveRecord::Schema.define(version: 2023_08_02_141742) do
     t.bigint "user_id"
     t.boolean "owner", default: false
     t.string "slug"
+    t.bigint "collection_id"
+    t.bigint "work_id"
+    t.string "search_type"
+    t.index ["collection_id"], name: "index_search_attempts_on_collection_id"
     t.index ["slug"], name: "index_search_attempts_on_slug", unique: true
     t.index ["user_id"], name: "index_search_attempts_on_user_id"
     t.index ["visit_id"], name: "index_search_attempts_on_visit_id"
+    t.index ["work_id"], name: "index_search_attempts_on_work_id"
   end
 
   create_table "sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|

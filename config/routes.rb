@@ -211,6 +211,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'search_attempt', as: 'search_attempt' do
     get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
     get ':id', to: 'search_attempt#show', as: 'show'
   end
 
@@ -340,8 +341,7 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do

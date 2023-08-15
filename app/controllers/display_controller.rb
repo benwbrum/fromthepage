@@ -71,10 +71,6 @@ class DisplayController < ApplicationController
     session[:col_id] = @collection.slug
   end
 
-  def search
-    redirect_to paged_search_path(request.params)
-  end
-
   def paged_search
     if @article
       render plain: "This functionality has been disabled.  Please contact support@frothepage.com if you need it."
@@ -112,14 +108,25 @@ class DisplayController < ApplicationController
       end
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
+      @search_attempt = SearchAttempt.find_by(slug: params[:id])
+      @query = @search_attempt.query
+      if session[:search_attempt_id] != @search_attempt.id
+        session[:search_attempt_id] = @search_attempt.id
+      end
+      
       # restrict to pages that include that subject
-      if params[:work_id]
-        @search_work_string = sanitize_and_format_search_string(params[:search_work_string])
-        pages = search_pages_by_work(params[:work_id], @search_work_string)
+      if @search_attempt.search_type == "work"
+        @collection = @search_attempt.work.collection
+        @work = @search_attempt.work
+        @search_work_string = sanitize_and_format_search_string(@query)
+        pages = search_pages_by_work(@search_attempt.work.id, @search_work_string)
       else
-        @search_string = sanitize_and_format_search_string(params[:search_string])
+        @collection = @search_attempt.collection
+        @search_string = sanitize_and_format_search_string(@query)
         pages = search_pages_in_collection(@search_string)
       end
+      @search_attempt.update(hits: pages.count)
+
       @pages = pages.paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
