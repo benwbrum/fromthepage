@@ -147,20 +147,22 @@ module ExportHelper
         end
 
         preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+        include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
+        include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         # Page-specific exports

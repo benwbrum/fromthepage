@@ -1,4 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
+=render(partial: '/shared/export_breadcrumbs', locals: { selection: :export_all_works})
 
 .columns
   article.maincol
@@ -191,6 +192,14 @@
               -if bulk_export.status == BulkExport::Status::FINISHED
                 br
                 =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
+
+h2 =t('.export_work_metadata')
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
+      =svg_symbol '#icon-export', class: 'icon'
+      span =t('.export_work_metadata_as_csv')
+  span =t('.export_work_metadata_description')
 
 -content_for :javascript
   javascript:

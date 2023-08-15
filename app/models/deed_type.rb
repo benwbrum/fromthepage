@@ -109,6 +109,12 @@ class DeedType
       ]
     end
 
+    def collection_joins
+      [
+        COLLECTION_JOINED
+      ]
+    end
+
     def transcriptions_or_corrections_no_edits
       [
         PAGE_TRANSCRIPTION,

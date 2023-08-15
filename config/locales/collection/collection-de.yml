@@ -9,6 +9,7 @@ de:
         other: "%{count} Seiten;"
       progress: Fortschritt
       work_title: Werktitel
+    complete: vollständig
     contributor_activity:
       recent_notes: Neue Anmerkungen
       recent_ocr_correction: Kürzlich hinzugefügte OCR-Korrekturen

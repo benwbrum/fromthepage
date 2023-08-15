@@ -39,7 +39,7 @@ namespace :fromthepage do
       end
 
       # additional statistics require non-Ahoy data
-      collection_users = User.find Visit.where(id: previous_visits).pluck(:user_id)
+      collection_users = User.where(id: Visit.where(id: previous_visits).pluck(:user_id))
       ids_with_collections = collection_users.select{|u| u.collections.present? }.map{|u| u.id}
       action_count = ids_with_collections.count
       pct = (action_count.to_f/previous_actions).round(4)
@@ -56,7 +56,7 @@ namespace :fromthepage do
       previous_actions=action_count
 
       users_with_pages = User.find(ids_with_pages)
-      ids_with_activity = users_with_pages.select{|u| u.owner_works.detect{|w| w.work_statistic.line_count > 0} }.map{|u| u.id}
+      ids_with_activity = users_with_pages.select{|u| u.owner_works.detect{|w| (w.work_statistic.line_count||0) > 0} }.map{|u| u.id}
       action_count = ids_with_activity.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")
@@ -65,7 +65,7 @@ namespace :fromthepage do
 
 
       users_with_activity = User.find(ids_with_activity)
-      ids_with_multiple_contributors = users_with_activity.select{|u| u.owned_collections.detect{|c| c.deeds.pluck(:user_id).uniq > 1} }.map{|u| u.id}
+      ids_with_multiple_contributors = users_with_activity.select{|u| u.owned_collections.detect{|c| c.deeds.pluck(:user_id).uniq.count > 1} }.map{|u| u.id}
       action_count = ids_with_multiple_contributors.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")

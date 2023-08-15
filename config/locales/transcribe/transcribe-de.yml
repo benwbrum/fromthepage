@@ -20,6 +20,7 @@ de:
       image_at_the_top: Bild oben
       layout: Layout
       mark_as_blank: Als leer markieren
+      mark_blank_warning: Diese Seite enthält transkribierte Daten, aber Sie markieren sie als leer. Möchten Sie fortfahren?
       microphone: Mikrofon
       more_help: Mehr Hilfe....
       needs_review: Überprüfung erforderlich

@@ -35,11 +35,12 @@ html lang="en-US"
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo', title: t('.home'), 'aria-label' => t('.home')
+          =link_to landing_path(logo: true), class: 'logo', title: t('.home'), 'aria-label' => t('.home')
             -if USE_PNG_LOGO
               =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
               =svg_symbol '#logo', title: 'Home'
+            
         .toolbar_group
           -if !(Collection.all.count > 30)
             =link_to t('.projects'), main_app.dashboard_path, class: 'header_link'

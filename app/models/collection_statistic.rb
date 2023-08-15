@@ -89,8 +89,9 @@ module CollectionStatistic
 
   def calculate_complete
     #note: need to compact mapped array so it doesn't fail on a nil value
-    unless work_count == 0
-      pct = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
+    unless page_count == 0
+      # Weighted by page count
+      pct = (self.works.includes(:work_statistic).map{|w| w.work_statistic.pct_completed * w.work_statistic.total_pages}.compact.sum)/page_count
     else
       pct = 0
     end
