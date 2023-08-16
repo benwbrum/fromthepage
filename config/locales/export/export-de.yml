@@ -13,6 +13,9 @@ de:
       export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
     index:
       api: API
+      export_all_notes: Alle Notizen exportieren
+      export_all_notes_as_csv: Alle Notizen als CSV exportieren
+      export_all_notes_description: Exportieren Sie alle Notizen aus der gesamten Sammlung in eine CSV-Datei.
       export_all_works: Alle Werke exportieren
       export_all_works_description: Wählen Sie Formate und spezifische Einstellungen aus, um die gesamte Sammlung in eine ZIP-Datei zu exportieren.
       export_as: Exportieren als

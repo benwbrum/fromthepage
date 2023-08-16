@@ -13,6 +13,9 @@ es:
       export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
     index:
       api: API
+      export_all_notes: Exportar todas las notas
+      export_all_notes_as_csv: Exportar todas las notas como CSV
+      export_all_notes_description: Exporte todas las notas de toda la colección en un archivo CSV.
       export_all_works: Exportar todo el contenido
       export_all_works_description: Elije los formatos y las granularidades para exportar toda la colección en un archivo zip.
       export_as: Exportar como

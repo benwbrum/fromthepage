@@ -151,6 +151,12 @@ module ExportService
     out.write(export_tables_as_csv(work))
   end
 
+  def export_collection_notes_csv(out:, collection:)
+    path = "collection_notes.csv"
+    out.put_next_entry(path)
+    out.write(export_notes_as_csv(collection))
+  end
+
   def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
     if by_work
       path = File.join(path_from_work(work, original_filenames), 'tei', "tei.xml")
@@ -787,5 +793,33 @@ private
     csv
   end
 
+  def export_notes_as_csv(collection)
+    headers = [
+      :note,
+      :contributor,
+      :page_link,
+      :page_title,
+      :work_title,
+      :date
+    ]
 
+    notes = collection.notes.order(created_at: :desc)
+    rows = notes.map {|n|
+      [
+        n.body,
+        n.user.display_name,
+        collection_display_page_url(n.collection.owner, n.collection, n.work, n.page.id),
+        n.page.title,
+        n.work.title,
+        n.created_at
+      ]
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+  end
 end
