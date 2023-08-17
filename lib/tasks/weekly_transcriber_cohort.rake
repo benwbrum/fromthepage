@@ -75,7 +75,7 @@ namespace :fromthepage do
     # send the file to the admin
     if SMTP_ENABLED
       begin
-        AdminMailer.weekly_trial_cohort(TRANSCRIBER_TEMP_FILE).deliver!
+        AdminMailer.weekly_transcriber_cohort(TRANSCRIBER_TEMP_FILE).deliver!
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message} \n"
       end
