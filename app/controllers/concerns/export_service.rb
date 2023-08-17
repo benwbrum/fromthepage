@@ -413,6 +413,7 @@ private
         'Pages Translated',
         'Pages Needing Review',
         'Pages Marked Blank',
+        'Contributors',
         'work_id'
       ]
 
@@ -424,7 +425,9 @@ private
 
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
-      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
+    
+        work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         row = [
           work.title,
           work.collection.title,
@@ -443,7 +446,9 @@ private
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
+          work_users,
           work.id
+          
         ]
 
         unless work.original_metadata.blank?
