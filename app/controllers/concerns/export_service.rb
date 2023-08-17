@@ -407,8 +407,8 @@ private
         'Pages Translated',
         'Pages Needing Review',
         'Pages Marked Blank',
-        'work_id',
-        'Contributors Users'
+        'Contributors',
+        'work_id'
       ]
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
@@ -440,8 +440,9 @@ private
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
-          work.id,
-          work_users
+          work_users,
+          work.id
+          
         ]
 
         unless work.original_metadata.blank?
