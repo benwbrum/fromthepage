@@ -2,6 +2,7 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
   include OwnerExporter
+  include AdminExporter
   include ContributorHelper
   require 'subject_exporter'
   require 'subject_details_exporter'
