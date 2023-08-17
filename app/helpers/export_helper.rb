@@ -99,6 +99,10 @@ module ExportHelper
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.collection_notes
+      export_collection_notes_csv(out: out, collection: bulk_export.collection)
+    end
+
     if bulk_export.work_level? || bulk_export.page_level?
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
