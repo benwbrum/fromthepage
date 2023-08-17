@@ -297,15 +297,17 @@ class AdminController < ApplicationController
     @searches = searches.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
 
     this_week = SearchAttempt.where('created_at > ?', 1.week.ago)
-    by_visit = this_week.joins(:visit).group('visits.id')
-    @find_a_project_searches_per_day = (this_week.where(search_type: 'findaproject').count / 7.0).round(2)
-    @collection_work_searches_per_day = (this_week.where.not(search_type: 'findaproject').count / 7.0).round(2)
-    @find_a_project_average_hits = this_week.where(search_type: 'findaproject').average(:hits).round(2)
-    @collection_work_average_hits = this_week.where.not(search_type: 'findaproject').average(:hits).round(2)
-    @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
-    @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
-    @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1) 
-    @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+    unless this_week.empty?
+      by_visit = this_week.joins(:visit).group('visits.id')
+      @find_a_project_searches_per_day = (this_week.where(search_type: 'findaproject').count / 7.0).round(2)
+      @collection_work_searches_per_day = (this_week.where.not(search_type: 'findaproject').count / 7.0).round(2)
+      @find_a_project_average_hits = this_week.where(search_type: 'findaproject').average(:hits).round(2)
+      @collection_work_average_hits = this_week.where.not(search_type: 'findaproject').average(:hits).round(2)
+      @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
+      @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1) 
+      @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+    end
 
     start_d = params[:start_date]
     end_d = params[:end_date]

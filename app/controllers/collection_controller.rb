@@ -192,9 +192,7 @@ class CollectionController < ApplicationController
           if session[:search_attempt_id] != @search_attempt.id
             session[:search_attempt_id] = @search_attempt.id
           end
-          @query = @search_attempt.query
-          @works = @collection.search_works(@query).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-          @search_attempt.update(hits: @works.count)
+          @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -256,9 +254,10 @@ class CollectionController < ApplicationController
 
           if params[:search_attempt_id]
             @search_attempt = SearchAttempt.find_by(id: params[:search_attempt_id])
-            @query = @search_attempt.query
-            @works = @collection.search_works(@query).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-            @search_attempt.update(hits: @works.count)
+            if session[:search_attempt_id] != @search_attempt.id
+              session[:search_attempt_id] = @search_attempt.id
+            end
+            @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)

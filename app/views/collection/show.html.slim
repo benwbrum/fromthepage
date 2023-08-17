@@ -98,7 +98,7 @@
 
     =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.slug, {:id => "collection id for search work"})
-      =search_field_tag :search_by_title, @query, placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
+      =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
       =button_tag t('.search')
       =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
 

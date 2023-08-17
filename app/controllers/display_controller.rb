@@ -109,62 +109,15 @@ class DisplayController < ApplicationController
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
       @search_attempt = SearchAttempt.find_by(slug: params[:id])
-      @query = @search_attempt.query
       if session[:search_attempt_id] != @search_attempt.id
         session[:search_attempt_id] = @search_attempt.id
       end
-      
       # restrict to pages that include that subject
-      if @search_attempt.search_type == "work"
-        @collection = @search_attempt.work.collection
-        @work = @search_attempt.work
-        @search_work_string = sanitize_and_format_search_string(@query)
-        pages = search_pages_by_work(@search_attempt.work.id, @search_work_string)
-      else
-        @collection = @search_attempt.collection
-        @search_string = sanitize_and_format_search_string(@query)
-        pages = search_pages_in_collection(@search_string)
-      end
-      @search_attempt.update(hits: pages.count)
-
+      @collection = @search_attempt.collection
+      @work = @search_attempt&.work
+      pages = @search_attempt.results
       @pages = pages.paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
-  end
-  
-  private
-
-  def sanitize_and_format_search_string(search_string)
-    return CGI::escapeHTML(search_string) if search_string.present?
-
-    ''
-  end
-
-  def search_pages_by_work(work_id, search_work_string)
-    return Page.none unless work_id.present? && search_work_string.present?
-
-    formatted_search_string = format_search_string(search_work_string)
-    Page.order('work_id, position')
-        .joins(:work)
-        .where(work_id: work_id)
-        .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", formatted_search_string)
-  end
-
-  def search_pages_in_collection(search_string)
-    return Page.none unless search_string.present?
-
-    formatted_search_string = format_search_string(search_string)
-    Page.order('work_id, position')
-        .joins(:work)
-        .where(work_id: @collection.works.ids)
-        .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", formatted_search_string)
-  end
-
-  def format_search_string(search_string)
-    # convert 'natural' search strings unless they're precise
-    return search_string if search_string.match(/["+-]/)
-
-    search_string.gsub!(/\s+/, ' ')
-    "+\"#{search_string}\""
   end
 end

@@ -65,9 +65,7 @@ class SearchAttemptController < ApplicationController
             end
 
             # Get matching Collections and Docsets
-            @search_results = Collection.search(@search_attempt.query).unrestricted + DocumentSet.search(@search_attempt.query).unrestricted
-            @search_attempt.update(hits: @search_results.count)
-
+            @search_results = @search_attempt.results
             # Get user_ids from the resulting search
             search_user_ids = User.search(@search_attempt.query).pluck(:id) + @search_results.map(&:owner_user_id)
             # Get matching users and users from Collections and DocSets search
