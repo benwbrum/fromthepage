@@ -67,8 +67,6 @@ class RegistrationsController < Devise::RegistrationsController
         @user.save
         alert_intercom
       end
-
-      update_search_attempt_user(@user)
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?

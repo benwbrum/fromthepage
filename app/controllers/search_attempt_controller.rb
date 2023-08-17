@@ -47,8 +47,8 @@ class SearchAttemptController < ApplicationController
             @search_attempt = SearchAttempt.new(
                 query: params[:search], 
                 search_type: "findaproject",
-                user_id: current_user.id, 
-                owner: current_user.owner
+                user_id: user_id, 
+                owner: owner
             )
             @search_attempt.save
             session[:search_attempt_id] = @search_attempt.id

@@ -317,8 +317,6 @@ class ApplicationController < ActionController::Base
     # Otherwise owners should go to their dashboards
     # And everyone else should go to user dashboard/watchlist
   def after_sign_in_path_for(resource)
-    update_search_attempt_user(current_user)
-
     if current_user.admin
       admin_path
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
@@ -408,9 +406,9 @@ end
     end
   end
 
-  def update_search_attempt_user(user)
-    if session[:search_attempt_id]
-      search_attempt = SearchAttempt.find(session[:search_attempt_id])
+  def update_search_attempt_user(user, session_var)
+    if session_var[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session_var[:search_attempt_id])
       search_attempt.user = user
       search_attempt.owner = user.owner
       search_attempt.save
