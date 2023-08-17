@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2023_08_14_235154) do
     t.string "report_arguments"
     t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.boolean "admin_searches"
+    t.boolean "collection_notes"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -1139,6 +1140,7 @@ ActiveRecord::Schema.define(version: 2023_08_14_235154) do
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"
