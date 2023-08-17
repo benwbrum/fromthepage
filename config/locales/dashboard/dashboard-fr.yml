@@ -40,6 +40,7 @@ fr:
       facing_edition_work: Face à l'édition PDF (œuvre)
       html_page: HTML (page)
       html_work: HTML (œuvre)
+      notes_csv: Remarques CSV (collection)
       plaintext_emended_page: Texte brut analytique (page)
       plaintext_emended_work: Texte brut analytique (œuvre)
       plaintext_searchable_page: Texte brut consultable (page)

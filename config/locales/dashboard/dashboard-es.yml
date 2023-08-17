@@ -40,6 +40,7 @@ es:
       facing_edition_work: Edición enfrentada PDF (obra)
       html_page: HTML (página)
       html_work: HTML (obra)
+      notes_csv: Notas CSV (colección)
       plaintext_emended_page: Texto sin formato analítico (página)
       plaintext_emended_work: Texto sin formato analítico (obra)
       plaintext_searchable_page: Texto sin formato que se puede buscar (página)

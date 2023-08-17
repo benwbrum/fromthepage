@@ -40,6 +40,7 @@ en:
       facing_edition_work: Facing Edition PDF (work)
       html_page: HTML (page)
       html_work: HTML (work)
+      notes_csv: Notes CSV (collection)
       plaintext_emended_page: Analytic Plaintext (page)
       plaintext_emended_work: Analytic Plaintext (work)
       plaintext_searchable_page: Searchable Plaintext (page)

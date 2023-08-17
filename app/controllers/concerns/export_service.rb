@@ -800,22 +800,37 @@ private
 
   def export_notes_as_csv(collection)
     headers = [
-      :note,
-      :contributor,
-      :page_link,
-      :page_title,
-      :work_title,
-      :date
+      'Work Title',
+      'Work Identifier',
+      'FromThePage Identifier',
+      'Page Title',
+      'Page Position',
+      'Page URL',
+      'Page Contributors',
+      'Page Status',
+      'Note',
+      'Contributor',
+      'Date'
     ]
 
     notes = collection.notes.order(created_at: :desc)
     rows = notes.map {|n|
+      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_contributors = n.page.deeds
+        .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
+      
       [
-        n.body,
-        n.user.display_name,
-        collection_display_page_url(n.collection.owner, n.collection, n.work, n.page.id),
-        n.page.title,
         n.work.title,
+        n.work.identifier,
+        n.work.id,
+        n.page.title,
+        n.page.position,
+        page_url,
+        page_contributors,
+        I18n.t("page.edit.page_status_#{n.page.status}"),
+        n.body,
+        "#{n.user.display_name}<#{n.user.email}>",
         n.created_at
       ]
     }

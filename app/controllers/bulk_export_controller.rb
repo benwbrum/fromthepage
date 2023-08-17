@@ -124,7 +124,7 @@ class BulkExportController < ApplicationController
         :work_id,
         :include_metadata, 
         :include_contributors,
-        :collection_notes,
+        :notes_csv,
         :report_arguments => [
           :start_date, 
           :end_date, 
