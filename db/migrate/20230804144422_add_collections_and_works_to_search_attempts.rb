@@ -1,4 +1,4 @@
-class AddCollectionsAndWorksToSearchAttempts < ActiveRecord::Migration[6.0]
+class AddCollectionsAndWorksToSearchAttempts < ActiveRecord::Migration[5.0]
   def change
     add_reference :search_attempts, :collection, null: true
     add_reference :search_attempts, :work, null: true

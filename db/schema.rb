@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_04_144422) do
+ActiveRecord::Schema.define(version: 2023_08_14_235154) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.datetime "date"
@@ -646,19 +646,19 @@ ActiveRecord::Schema.define(version: 2023_08_04_144422) do
     t.index ["work_id"], name: "index_sc_manifests_on_work_id"
   end
 
-  create_table "search_attempts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table "search_attempts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "query"
     t.integer "hits", default: 0
     t.integer "clicks", default: 0
     t.integer "contributions", default: 0
     t.integer "visit_id"
-    t.bigint "user_id"
+    t.integer "user_id"
     t.boolean "owner", default: false
     t.string "slug"
-    t.bigint "collection_id"
-    t.bigint "work_id"
+    t.integer "collection_id"
+    t.integer "work_id"
     t.string "search_type"
     t.index ["collection_id"], name: "index_search_attempts_on_collection_id"
     t.index ["slug"], name: "index_search_attempts_on_slug", unique: true

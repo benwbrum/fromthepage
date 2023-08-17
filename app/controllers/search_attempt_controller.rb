@@ -80,9 +80,6 @@ class SearchAttemptController < ApplicationController
 
     # Called from any search result link by ajax
     def click
-        # binding.pry
-        puts "CLICK"
-        # puts session.inspect
         if session[:search_attempt_id].present?
             search_attempt = SearchAttempt.find(session[:search_attempt_id])
             search_attempt.increment!(:clicks)

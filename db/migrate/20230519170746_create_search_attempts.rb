@@ -1,4 +1,4 @@
-class CreateSearchAttempts < ActiveRecord::Migration[6.0]
+class CreateSearchAttempts < ActiveRecord::Migration[5.0]
   def change
     create_table :search_attempts do |t|
       t.timestamps
