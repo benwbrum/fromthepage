@@ -65,7 +65,7 @@ class AdminMailer < ActionMailer::Base
 
   def weekly_transcriber_cohort(file)
     attachments.inline["weekly_transcriber_cohort.csv"] = File.read(file)
-    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Transicriber Cohort")
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Transcriber Cohort")
   end
 
   class OwnerCollectionActivity
