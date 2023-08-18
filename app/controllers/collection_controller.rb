@@ -185,7 +185,6 @@ class CollectionController < ApplicationController
             redirect_to user_profile_path(@collection.owner)
           end
         end
-
         if params[:work_search]
           @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
         elsif (params[:works] == 'untranscribed')
@@ -207,19 +206,16 @@ class CollectionController < ApplicationController
             description_ids = @collection.works.incomplete_description.pluck(:id)
             ids += description_ids
           end
-
-          works = @collection.works
-                              .joins(:work_statistic)
-                              .where(id: ids)
-                              .reorder('work_statistics.complete ASC')
-                              .paginate(page: params[:page], per_page: 10)
+          
+          works = @collection.works.joins(:work_statistic).where(id: ids).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
+          
           if works.empty?
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
           else
             @works = works
           end
         else
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
         end
 
         if @collection.facets_enabled?
@@ -257,7 +253,7 @@ class CollectionController < ApplicationController
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
             #show all works
           elsif (params[:works] == 'show')
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
             #hide incomplete works
           elsif params[:works] == 'hide' || (@collection.hide_completed)
             #find ids of completed translation works
@@ -272,15 +268,15 @@ class CollectionController < ApplicationController
               ids += description_ids
             end
 
-            works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+            works = @collection.works.joins(:work_statistic).where(id: ids).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
 
             if works.empty?
-              @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+              @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
             else
               @works = works
             end
           else
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC').paginate(page: params[:page], per_page: 10)
           end
 
           if @collection.facets_enabled?
