@@ -50,9 +50,9 @@ pt:
       create_category_message: "%{link} que você usará para agrupar assuntos."
       create_the_first_category: Crie a primeira categoria
       delete_category: Excluir categoria
-      disable_gis_for_category: Desativar GIS para categoria
+      disable_gis_for_category: Desativar SIG para categoria
       edit_category: Editar categoria
-      enable_gis_for_category: Ativar GIS para categoria
+      enable_gis_for_category: Ativar SIG para categoria
       no_categories: Sem categorias
       no_categories_message: Não há categorias de assunto na coleção.<br>
       there_are_no_subjects: Não há assuntos para a categoria selecionada
@@ -90,8 +90,8 @@ pt:
       explore_this_subject: Explorar este assunto
     update:
       gis_coordinates_truncated:
-        one: " (Coordenadas GIS truncadas para a casa decimal %{precision})"
-        other: " (coordenadas GIS truncadas para %{precision} casas decimais)"
+        one: " (Coordenadas SIG truncadas para a casa decimal %{precision})"
+        other: " (coordenadas SIG truncadas para %{precision} casas decimais)"
       subject_successfully_updated: O tema foi atualizado com sucesso
       subjects_auto_linking: Processo de auto-ligação dos temas concluído
     upload_form:
