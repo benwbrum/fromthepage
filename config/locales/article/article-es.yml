@@ -50,7 +50,7 @@ es:
       create_category_message: "%{link} que usarás para agrupar materias."
       create_the_first_category: Crear la primera categoría
       delete_category: Eliminar categoría
-      disable_gis_for_category: Deshabilitar GIS para la categoría
+      disable_gis_for_category: Deshabilitar SIG para la categoría
       edit_category: Editar categoria
       enable_gis_for_category: Habilitar SIG para la categoría
       no_categories: Sin categorías
@@ -90,8 +90,8 @@ es:
       explore_this_subject: Explora este tema
     update:
       gis_coordinates_truncated:
-        one: " (Coordenadas GIS truncadas a %{precision} lugar decimal)"
-        other: " (Coordenadas GIS truncadas a %{precision} lugares decimales)"
+        one: " (Coordenadas SIG truncadas a %{precision} lugar decimal)"
+        other: " (Coordenadas SIG truncadas a %{precision} lugares decimales)"
       subject_successfully_updated: El tema se ha actualizado exitosamente
       subjects_auto_linking: Proceso de auto-vinculación de temas completado
     upload_form:

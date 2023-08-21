@@ -10,13 +10,13 @@ es:
     delete:
       category_deleted: La categoría ha sido eliminada
     disable_gis:
-      gis_disabled_for: GIS deshabilitado para %{title}
+      gis_disabled_for: SIG deshabilitado para %{title}
     edit:
       edit_category: Editar categoria
       enable_gis: Habilitar SIG
       save_changes: Guardar cambio
       title: Título
     enable_gis:
-      gis_enabled_for: GIS habilitado para %{title}
+      gis_enabled_for: SIG habilitado para %{title}
     update:
       category_updated: La categoría ha sido actualizada
