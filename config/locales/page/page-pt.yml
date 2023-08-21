@@ -27,7 +27,7 @@ pt:
       page_translation_status: Status da tradução da página
       rotate_clockwise: Girar Sentido Horário
       rotate_counterclockwise: Girar Sentido Anti-Horário
-      save_changes: Guardar Alterações
+      save_changes: Salvar Alterações
       status: 'Status:'
     new:
       add_new_page: Adicionar Página Nova
@@ -36,8 +36,8 @@ pt:
       choose_a_title: Escolha um título para a página e selecione uma imagem de página para subir.
       click_to_browse_a_file: Clique para navegar num arquivo...
       page_image: Imagem da Página
-      save_and_add_next_page: Guardar & Adicionar Página Seguinte
-      save_and_new_work: Guardar & Nova Obra
+      save_and_add_next_page: Salvar & Adicionar Página Seguinte
+      save_and_new_work: Salvar & Nova Obra
       title: Título
     update:
       page_updated: Esta página foi atualizada

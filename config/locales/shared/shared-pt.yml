@@ -58,7 +58,7 @@ pt:
       brightness: Brilho
       contrast: Contraste
       full_page: Alternar página inteira
-      home: Ir para casa
+      home: Ir para Página Inicial
       image_filters: Filtros de imagem
       open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
       rotate_left: Vire à esquerda
@@ -86,7 +86,7 @@ pt:
       form: Formato
     work_tabs:
       about: Sobre
-      contents: Conteudo
+      contents: Conteúdo
       download: Download
       help: Ajuda
       pages: Páginas

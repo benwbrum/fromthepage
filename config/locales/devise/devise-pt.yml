@@ -97,7 +97,7 @@ pt:
         sign_in_existing_account: Faça login na conta existente
         sign_in_with_google: Faça login no Google
         sign_in_with_institution: Faça login com sua instituição (SSO)
-        sign_up_new_account: Registe-se para uma nova conta
+        sign_up_new_account: Registre-se para uma nova conta
     sign_in: Entrar
     sign_up: Inscrever-se
     user_name: Nome de usuário

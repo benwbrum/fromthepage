@@ -86,7 +86,7 @@ pt:
       voyant_analysis_description: Envie a transcrição deste trabalho para a Voyant Tools para análise.
       warning_work_not_complete: 'Atenção: este trabalho pode não estar completo.'
       word_trees: Árvores de palavras
-      word_trees_analysis_description: Envie a transcrição deste trabalho para o visualizador Word Trees de Jason Davies para análise.
+      word_trees_analysis_description: Envie a transcrição deste trabalho para o visualizador Árvores de Palavras de Jason Davies para análise.
       zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis apenas para proprietários de projetos.
     edit:
       add: Adicionar

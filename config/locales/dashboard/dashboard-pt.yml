@@ -147,7 +147,7 @@ pt:
       page_image_guidelines: Diretrizes de imagem da página
       select_a_collection: "- Selecione uma coleção -"
       to_specify_metadata: Para indicar os meta-dados juntamente com as imagens, inclua um %{link} arquivo em cada pasta que indique os campos para a obra.
-      trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para elevar a sua conta.
+      trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para fazer upgrade da sua conta.
       upload_file: Subir arquivo
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP
       use_image_filenames: Utilizar os nomes dos arquivos das imagens como títulos de páginas.

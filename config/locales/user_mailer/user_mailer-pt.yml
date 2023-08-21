@@ -31,7 +31,7 @@ pt:
     fromthepage: FromThePage
     greeting: Oi %{user} --
     html:
-      closing: "Gratidão, <br><br> \n%{from}\n"
+      closing: "Obrigado, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
     new_mobile_user:
       message: Bem-vindo ao %{collection}!
