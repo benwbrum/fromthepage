@@ -48,7 +48,7 @@ es:
     description_versions:
       author_contributed_at: "%{author} a %{date}"
       compared_with: Comparado con
-      help_description: Vea y compare los cambios que se han realizado en cada revisión a los metadatos de trabajo. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
+      help_description: Vea y compara los cambios que se han realizado en cada revisión a los metadatos de trabajo. La columna de la izquierda muestra los metadatos en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
       revision: revisión
     download:
       analyze: Analizar
@@ -98,7 +98,7 @@ es:
       collaborators_can_edit_titles: Permitir que los colaboradores editen los títulos de las páginas
       collection: Recopilación
       confirm_delete_work: "¿Estás seguro de que desea eliminar este trabajo? ¡Después de borrar no podrás recuperarlo!"
-      current_url: La URL actual para este trabajo es %{current_url}. Si desea editar la sección de trabajo de la URL, utilice letras minúsculas y guiones entre las palabras.
+      current_url: La URL actual para este trabajo es %{current_url}. Si deseas editar la sección de trabajo de la URL, utiliza  letras minúsculas y guiones entre las palabras.
       delete_work: Eliminar trabajo
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
