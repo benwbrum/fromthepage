@@ -102,6 +102,6 @@ es:
       transfer: Transferir
       transfer_type_label: Tipo de transferencia
       transfer_works: Transferencia de obras
-      transfer_works_description: Transferir trabajos entre conjuntos de documentos. (La copia colocará el mismo trabajo dentro de dos conjuntos de documentos al mismo tiempo).
+      transfer_works_description: Transferir obras entre conjuntos de documentos. (La copia colocará la mimsa obra dentro de dos conjuntos de documentos al mismo tiempo).
     update:
       document_updated: El documento ha sido actualizado

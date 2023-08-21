@@ -23,7 +23,7 @@ es:
       your_projects: Tus Proyectos
     empty:
       add_new_collection: Agregar nueva colección
-      create_empty_work: Crear trabajo vacío
+      create_empty_work: Crear obra vacío
       create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en la obra.
       create_work: Crear obra
       description: Descripción
@@ -56,7 +56,7 @@ es:
       text_docx_work: MS Word .docx (obra)
       text_only_pdf_work: Texto PDF sencillo (obra)
       text_pdf_work: Texto PDF (obra)
-      work_metadata_csv: Metadatos de trabajo (colección)
+      work_metadata_csv: Metadatos de obra (colección)
     guest_header:
       recent_activity: Actividad reciente
     hierarchical_collections_and_document_sets:
@@ -94,8 +94,8 @@ es:
       document_sets: Conjuntos de Documentos
       inactive_collections: Colecciones inactivas
       n_works:
-        one: '1 trabajo:'
-        other: "%{count} funciona:"
+        one: '1 obra:'
+        other: "%{count} obras:"
       private: " (Privado)"
       public: " (Público)"
       start_a_project: Iniciar Un Proyecto
@@ -130,7 +130,7 @@ es:
       to_upgrade_contact: Para actualizar, póngase en contacto con support@fromthepage.com
       total_pages: 'Páginas totales: %{pages}'
       work:
-        one: Trabajar
+        one: Obra
         other: Obras
       your_collections: Tus Colecciones
     upload:
@@ -140,7 +140,7 @@ es:
       click_to_browse_files: Haz clic para consultar los archivos...
       each_folder_will_be_treated: Cada carpeta se tratará como un documento diferente, por lo tanto, no mezcle páginas de documentos diferentes en la misma carpeta.
       each_pdf_will_be_treated: Cada PDF se tratará como su propio documento, por lo tanto, no divida las páginas del mismo documento entre más de un PDF.
-      for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último trabajo con las 5 imágenes de la carpeta.'
+      for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último obra con las 5 imágenes de la carpeta.'
       image_naming_guidelines: 'Las imágenes se deben nombrar de modo que una ordenación alfabética resulte en el orden de página correcto.<br> (Esto puede requerir "relleno con ceros" para cualquier número de página: <code>page_09.jpg, page_10.jpg</code> ordenará correctamente, pero <code>page_9.jpg, page_10.jpg</code> no).'
       image_orientation_guidelines: Las imágenes deben estar orientadas de manera que queden boca arriba.
       import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto.

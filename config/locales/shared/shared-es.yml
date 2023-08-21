@@ -43,12 +43,12 @@ es:
       describe: Metadatos
       help: Ayuda
       metadata: metadatos
-      nav_info: Trabajo %{position} de %{size}
+      nav_info: Obra %{position} de %{size}
       next_page: Siguiente página
-      next_work: Siguiente trabajo
+      next_work: Siguiente obra
       overview: Visión general
       previous_page: Pagina anterior
-      previous_work: Trabajo previo
+      previous_work: Obra previa
       versions: Versiones
     handsontable:
       date_tooltip: Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del día, con guiones que separen los números).
