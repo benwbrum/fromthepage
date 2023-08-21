@@ -3,14 +3,17 @@
     h4= t('.manifest', sc_manifest: (@sc_manifest.label))
     -if @sc_collection
       p= t('.collection', sc_collection: (@sc_collection.label))
-    -if @sc_manifest.service.description
-      p= t('.description', description: (@sc_manifest.service.description))
-		
-    -if @sc_manifest.service.metadata
-      p= t('.metadata', metadata: (html_metadata(@sc_manifest.service.metadata)))
-
-    -if @sc_manifest.service.license
-      p= t('.license', license: (@sc_manifest.service.license))
+    -if @sc_manifest.description
+      p== t('.description', description: @sc_manifest.html_description)
+	  -if @sc_manifest.metadata
+      p== t('.metadata', metadata: (html_metadata(@sc_manifest.metadata)))
+	
+    -if @sc_manifest.v3?
+      -unless @sc_manifest.requiredStatement.blank?
+        p Required Statement: #{@sc_manifest.requiredStatement}
+    -else 
+      -if @sc_manifest.service.license
+        p= t('.license', license: (@sc_manifest.service.license))
     p 
       =t('.id')
       =link_to @sc_manifest.at_id, @sc_manifest.at_id

@@ -4,6 +4,7 @@ pt:
     article_tabs:
       overview: Resumo
       settings: Configurações
+      subject: sujeito
       versions: Versões
     codemirror:
       abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
@@ -25,9 +26,12 @@ pt:
     collection_tabs:
       add_work: Adicionar Obra
       collaborators: Colaboradores
+      collection: coleção
       edit_fields: Campos
+      edit_metadata_fields: Campos de metadados
       export: Exportar
       facets: Facetas
+      forum: Fórum
       overview: Resumo
       review: Análise
       sets: Conjuntos
@@ -35,17 +39,51 @@ pt:
       statistics: Estatisticas
       subjects: Temas
       works_list: Lista de Obras
+    description_tabs:
+      describe: Metadados
+      help: Ajuda
+      metadata: Metadados
+      nav_info: Trabalho %{position} de %{size}
+      next_page: Próxima página
+      next_work: Próximo trabalho
+      overview: Visão geral
+      previous_page: Página anterior
+      previous_work: Trabalho prévio
+      versions: Versões
     handsontable:
       date_tooltip: As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles).
+    markup_help:
+      markup_help_description: '"Autolink" sugerirá assuntos aos quais certas palavras podem ser vinculadas ou você pode usar chaves duplas para vincular assuntos. <code>[[Jane Doe]]</code> vinculará o texto "Jane Doe" ao assunto Jane Doe, enquanto <code>[[Jane Doe|Jane]]</code> vinculará o texto "Jane" ao assunto Jane Doe. Recomendamos que o link seja deixado para um editor após a transcrição inicial.'
+    osd_div:
+      brightness: Brilho
+      contrast: Contraste
+      full_page: Alternar página inteira
+      home: Ir para casa
+      image_filters: Filtros de imagem
+      open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
+      rotate_left: Vire à esquerda
+      rotate_right: Vire à direita
+      threshold: Limite
+      zoom_in: Mais Zoom
+      zoom_out: Reduzir o zoom
     page_tabs:
       correct: Corrigir
+      describe_work: Descreva o trabalho
       help: Ajuda
       nav_info: Página %{position} de %{size}
+      next_page: Próxima página
       overview: Resumo
+      page: página
+      previous_page: Página anterior
       settings: Configurações
       transcribe: Transcrever
       translate: Traduzir
       versions: Versões
+    review_breadcrumbs:
+      dashboard: Painel de revisão
+      page: Página
+    validation_summary:
+      form: Formato
     work_tabs:
       about: Sobre
       contents: Conteudo
@@ -54,3 +92,4 @@ pt:
       pages: Páginas
       read: Ler
       settings: Configurações
+      work: Trabalhar

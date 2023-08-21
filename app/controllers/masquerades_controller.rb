@@ -13,7 +13,6 @@ class MasqueradesController < Devise::MasqueradesController
   def show
     user = User.friendly.find(params[:id])
     self.resource = resource_class.to_adapter.find_first(:id => user.id)
-
     redirect_to(new_user_session_path) and return unless self.resource
     self.resource.masquerade!
     request.env["devise.skip_trackable"] = "1"
@@ -45,6 +44,10 @@ class MasqueradesController < Devise::MasqueradesController
 
   def after_back_masquerade_path_for(resource)
     admin_path
+  end
+
+  def after_masquerade_path_for(user)
+    user_profile_path(user)
   end
 
 end

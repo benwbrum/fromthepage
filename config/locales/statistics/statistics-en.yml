@@ -3,18 +3,15 @@ en:
   statistics:
     collaborator_time:
       collaborator_time: Collaborator Time
-      collaborator_time_for_dates: Collaborator Time for Dates
-      end_date: End date
-      export_activity_as_csv: Export Detailed Activity as CSV
+      collaborator_time_description: A spreadsheet of the number of minutes each user contributed per day in the date range.
+      collaborator_time_export_button: Export Collaborator Time Spreadsheet
       no_activity_for_date_range: There is no activity for this date range.
-      start_date: Start date
-      update: Update
       user_totals_for_dates: User Totals for Dates
     collaborators:
       collaborators: Collaborators
       editing: Editing
       indexing: Indexing
-      mailing_list_export: Mailing List Export
+      mailing_list_export: Export Mailing List
       no_editors: No editors
       no_indexers: No indexers
       no_transcribers: No transcribers
@@ -70,6 +67,9 @@ en:
       work:
         one: Work
         other: Works
+      work_transcribed:
+        one: Work transcribed
+        other: Works transcribed
       works_described:
         one: Described work
         other: Described works
@@ -114,10 +114,10 @@ en:
       collaborator:
         one: Collaborator
         other: Collaborators
+      end_date: End date
       incomplete_page:
         one: Incomplete page
         other: Incomplete pages
-      last_days_statistics: Last 7 Days Statistics
       new_subject:
         one: New subject
         other: New subjects
@@ -151,12 +151,16 @@ en:
       reference:
         one: Reference
         other: References
+      select_new_date: Select a new date range
+      start_date: Start date
+      statistics_from: Statistics from %{start_date} to %{end_date}
       subject:
         one: Subject
         other: Subjects
       total_page:
         one: Total page
         other: Total pages
+      update: Update
       work:
         one: Work
         other: Works

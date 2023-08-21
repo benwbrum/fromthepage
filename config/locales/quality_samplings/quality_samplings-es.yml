@@ -16,12 +16,8 @@ es:
       description: El muestreo de calidad le permite verificar las contribuciones al azar y luego evaluar las páginas para revisar en función de la cantidad de texto corregido para un usuario u obra en particular. Este número puede crecer a medida que se transcriban más páginas.
       not_applicable: N / A
       not_fully_sampled_yet: Esta muestra aún no se ha revisado por completo.
-      pages_corrected: Páginas corregidas
-      pages_corrected_desc: Páginas que requirieron corrección durante la aprobación (bajo es mejor).
       pages_in_sample: Páginas en muestra
       pages_in_sample_desc: Número de páginas de la muestra para el usuario u obra.
-      pages_sampled: Páginas muestreadas
-      pages_sampled_desc: Número de páginas muestreadas hasta ahora del campo total del muestreo.
       pages_to_be_reviewed: Páginas para revisar
       pages_to_be_reviewed_desc: Número de páginas que aún necesitan revisión en toda la colección.
       quality_score: Nivel de calidad
@@ -35,7 +31,6 @@ es:
       sample_field_size: 'Páginas a revisar:'
       sample_set_has_increased: El conjunto de muestras ha aumentado en %{increase} páginas
       sample_set_size: 'Tamaño del conjunto de muestra:'
-      total_pages_desc: Número de páginas dentro de esta colección.
       user: Contribuyente
       work: Obra
     update:

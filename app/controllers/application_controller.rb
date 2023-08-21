@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
+    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
+
     locale = nil
 
     # use user-record locale
@@ -37,13 +39,25 @@ class ApplicationController < ActionController::Base
     # if we can't find that, use browser locale
     if locale.nil?
       # the user might their locale set in the browser
-      locale = http_accept_language.compatible_language_from(I18n.available_locales)
+      locale = http_accept_language.preferred_language_from(I18n.available_locales)
     end
 
     if locale.nil? || !I18n.available_locales.include?(locale.to_sym)
       # use the default if the above optiosn didn't work
       locale = I18n.default_locale
     end
+
+    # append region to locale
+    related_locales = http_accept_language.user_preferred_languages.select do |loc| 
+      loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
+      I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
+    end
+
+    unless related_locales.empty?
+      # first preferred language from the related locales
+      locale = http_accept_language.preferred_language_from(related_locales)
+    end
+
     # execute the action with the locale
     I18n.with_locale(locale, &action)
   end
@@ -107,6 +121,7 @@ class ApplicationController < ActionController::Base
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
+
     if params[:article_id]
       @article = Article.find(params[:article_id])
       if session[:col_id] != nil
@@ -162,7 +177,16 @@ class ApplicationController < ActionController::Base
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
     end
+
+
+    if self.class.module_parent == Thredded && @collection
+      Thredded::Engine.routes.default_url_options = { user_slug: @collection.owner.slug, collection_id: @collection.slug }
+    else
+      Thredded::Engine.routes.default_url_options = { user_slug: 'nil', collection_id: 'nil' }
+    end
+
   end
+
 
   def set_friendly_collection(id)
     if Collection.friendly.exists?(id)
@@ -246,8 +270,14 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_collection
-    # skip irrelevant cases
     return unless @collection
+    if self.class.module_parent.name == 'Thredded'
+      unless @collection.messageboards_enabled
+        flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
+        redirect_to main_app.user_profile_path(@collection.owner)
+      end
+    end
+
     return unless @collection.restricted
     return if (params[:controller] == 'iiif')
 
@@ -255,7 +285,7 @@ class ApplicationController < ActionController::Base
       # second chance?
       unless set_fallback_collection
         flash[:error] = t('unauthorized_collection', :project => @collection.title)
-        redirect_to user_profile_path(@collection.owner)
+        redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
   end
@@ -289,7 +319,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
-    elsif !session[:user_return_to].blank?
+    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
       dashboard_owner_path

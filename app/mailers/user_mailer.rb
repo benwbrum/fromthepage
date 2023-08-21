@@ -32,13 +32,13 @@ class UserMailer < ActionMailer::Base
     @user = user
     @note = note
     @page = note.page
-    mail to: @user.email, subject: "New FromThePage Note"
+    mail to: @user.email, subject: "New FromThePage Note", reply_to: @note.collection.owner.email
   end
 
   def collection_reviewer(user, obj)
     @user = user
     @collection = obj
-    mail to: @user.email, subject: "You've been added as a reviewer on #{@collection.title}"
+    mail to: @user.email, subject: "You've been added as a reviewer on #{@collection.title}", reply_to: @collection.owner.email
   end
 
   def collection_collaborator(user, obj)
@@ -48,18 +48,24 @@ class UserMailer < ActionMailer::Base
     else
       @collection = obj
     end
-    mail to: @user.email, subject: "You've been added to #{@collection.title}"
+    mail to: @user.email, subject: "You've been added to #{@collection.title}", reply_to: @collection.owner.email
   end
 
   def work_collaborator(user, work)
     @user = user
     @work = work
-    mail to: @user.email, subject: "You've been added to #{@work.title}"
+    mail to: @user.email, subject: "You've been added to #{@work.title}", reply_to: @work.collection.owner.email
   end
 
   def nightly_user_activity(user_activity)
     @user_activity = user_activity
     mail to: @user_activity.user.email, subject: "New FromThePage Activity"
+  end
+
+  def new_mobile_user(user, obj)
+    @user = user
+    @collection = obj
+    mail to: @user.email, subject: "#{@collection.owner.display_name}'s #{@collection.title} Collection"
   end
 
   private

@@ -10,6 +10,8 @@ class Collection < ApplicationRecord
   friendly_id :slug_candidates, :use => [:slugged, :history]
   before_save :uniquify_slug
 
+  has_many :collection_blocks, dependent: :destroy
+  has_many :blocked_users, through: :collection_blocks, source: :user
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
   has_many :articles, :dependent => :destroy
@@ -22,11 +24,13 @@ class Collection < ApplicationRecord
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
   has_one :quality_sampling, :dependent => :destroy
+  belongs_to :messageboard_group, class_name: 'Thredded::MessageboardGroup', foreign_key: 'thredded_messageboard_group_id', optional: true
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
+  has_many :table_cells, through: :transcription_fields
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
@@ -44,7 +48,7 @@ class Collection < ApplicationRecord
 
   mount_uploader :picture, PictureUploader
 
-  scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
+  scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
@@ -100,6 +104,24 @@ class Collection < ApplicationRecord
     review_type != ReviewType::OPTIONAL
   end
 
+
+
+  def enable_messageboards
+    if self.messageboard_group.nil?
+      self.messageboard_group = Thredded::MessageboardGroup.create!(name: self.title)
+      # now create the default messageboards
+      Thredded::Messageboard.create!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.create!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
+    end
+    self.messageboards_enabled = true
+    self.save!
+  end
+
+  def disable_messageboards
+    self.messageboards_enabled=false
+    self.save!
+  end
+
   def self.access_controlled(user)
     if user.nil?
       Collection.unrestricted
@@ -121,8 +143,8 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subject_index_as_csv
-    subject_link = SubjectExporter::Exporter.new(self)
+  def export_subject_index_as_csv(work)
+    subject_link = SubjectExporter::Exporter.new(self, work)
 
     subject_link.export
   end
@@ -146,7 +168,8 @@ class Collection < ApplicationRecord
   end
 
   def show_to?(user)
-    (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    (!self.restricted && self.works.present? && self.collection_blocks.where(user_id: user&.id).none?
+    ) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def create_categories
@@ -422,5 +445,11 @@ ENDHELP
       self.link_help = "<h2>Linking Subjects</h2>\n<p> To create a link within a transcription, surround the text with double square braces.</p>\n<p> Example: Say that we want to create a subject link for &ldquo;Dr. Owen&rdquo; in the text:</p>\n<code> Dr. Owen and his wife came by for fried chicken today.</code>\n<p> Place <code>[[ and ]]</code> around Dr Owen like this:</p>\n<code>[[Dr. Owen]] and his wife came by for fried chicken today.</code>\n<p> When you save the page, a new subject will be created for &ldquo;Dr. Owen&rdquo;, and the page will be added to its index. You can add an article about Dr. Owen&mdash;perhaps biographical notes or references&mdash;to the subject by clicking on &ldquo;Dr. Owen&rdquo; and clicking the Edit tab.</p>\n<p> To create a subject link with a different name from that used within the text, use double braces with a pipe as follows: <code>[[official name of subject|name used in the text]]</code>. For example:</p>\n<code> [[Dr. Owen]] and [[Dr. Owen's wife|his wife]] came by for fried chicken today.</code>\n<p> This will create a subject for &ldquo;Dr. Owen's wife&rdquo; and link the text &ldquo;his wife&rdquo; to that subject.</p></a>\n<h2> Renaming Subjects</h2>\n<p> In the example above, we don't know Dr. Owen's wife's name, but created a subject for her anyway. If we later discover that her name is &ldquo;Juanita&rdquo;, all we have to do is edit the subject title:</p>\n<ol><li>Click on &ldquo;his wife&rdquo; on the page, or navigate to &ldquo;Dr. Owen's wife&rdquo; on the home page for the project.</li>\n<li>Click the Edit tab.</li>\n<li> Change &ldquo;Dr. Owen's wife&rdquo; to &ldquo;Juanita Owen&rdquo;.</li></ol>\n<p> This will change the links on the pages that mention that subject, so our page is automatically updated:</p>\n    <code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for fried chicken today.</code>\n<h2> Combining Subjects</h2>\n<p> Occasionally you may find that two subjects actually refer to the same person. When this happens, rather than painstakingly updating each link, you can use the Combine button at the bottom of the subject page.</p>\n <p> For example, if one page reads:</p>\n<code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for [[fried chicken]] today.</code>\n<p> while a different page contains</p>\n<code> Jim bought a [[chicken]] today.</code>\n<p> you can combine &ldquo;chicken&rdquo; with &ldquo;fried chicken&rdquo; by going to the &ldquo;chicken&rdquo; article and reviewing the combination suggestions at the bottom of the screen. Combining &ldquo;fried chicken&rdquo; into &ldquo;chicken&rdquo; will update all links to point to &ldquo;chicken&rdquo; instead, copy any article text from the &ldquo;fried chicken&rdquo; article onto the end of the &ldquo;chicken&rdquo; article, then delete the &ldquo;fried chicken&rdquo; subject.</p>\n<h2> Auto-linking Subjects</h2>\n<p> Whenever text is linked to a subject, that fact can be used by the system to suggest links in new pages. At the bottom of the transcription screen, there is an Autolink button. This will refresh the transcription text with suggested links, which should then be reviewed and may be saved.</p>\n<p> Using our example, the system already knows that &ldquo;Dr. Owen&rdquo; links to &ldquo;Dr. Owen&rdquo; and &ldquo;his wife&rdquo; links to &ldquo;Juanita Owen&rdquo;. If a new page reads:</p>\n<code> We told Dr. Owen about Sam Jones and his wife.</code>\n<p> pressing Autolink will suggest these links:</p>\n<code> We told [[Dr. Owen]] about Sam Jones and [[Juanita Owen|his wife]].</code>\n<p> In this case, the link around &ldquo;Dr. Owen&rdquo; is correct, but we must edit the suggested link that incorrectly links Sam Jones's wife to &ldquo;Juanita Owen&rdquo;. The autolink feature can save a great deal of labor and prevent collaborators from forgetting to link a subject they previously thought was important, but its suggestions still need to be reviewed before the transcription is saved.</p>"
     end
   end
+
+  def user_help
+    User.find(self.owner_user_id).help
+  end
+
+  public :user_help
 
 end

@@ -20,6 +20,7 @@ fr:
       image_at_the_top: Image en haut
       layout: Disposition
       mark_as_blank: Marquer comme vierge
+      mark_blank_warning: Cette page contient des données transcrites, mais vous la marquez comme vide. Voulez-vous continuer ?
       microphone: Microphone
       more_help: Plus de conseils...
       needs_review: À besoin d'une révision
@@ -50,6 +51,7 @@ fr:
       edit_tooltip: Modifier cette page
       finish_to_needs_review_tooltip: Enregistrer une page terminée
       finish_to_transcribed_tooltip: Enregistrer une page terminée
+      please_wait: S'il vous plaît, attendez...
       preview: Aperçu
       preview_tooltip: Aperçu de cette page
       save_changes: Sauvegarder

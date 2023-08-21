@@ -6,6 +6,7 @@ en:
     edit:
       current_url_for_this_work: The current URL for this work is %{current_url}.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words.
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       document_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
       save_document_set: Save Document Set
       title: Title
@@ -41,6 +42,7 @@ en:
       create_document_set: Create Document Set
       create_new_document_set: Create New Document Set
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       document_set_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
       public: Public
       title: Title

@@ -1,0 +1,107 @@
+---
+de:
+  document_sets:
+    create:
+      document_created: Dokumentenset wurde erstellt
+    edit:
+      current_url_for_this_work: Die aktuelle URL für dieses Werk ist %{current_url}. Wenn Sie den Abschnitt zum Dokumentenset in der URL bearbeiten möchten, verwenden Sie bitte Kleinbuchstaben und Bindestriche zwischen den Wörtern.
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      document_is_marked_public: Wenn das Dokumentenset als öffentlich gekennzeichnet ist, sind darin enthaltene Werke einsehbar, auch wenn die Sammlung auf privat gesetzt ist.
+      save_document_set: Dokumentenset speichern
+      title: Titel
+      url: URL
+    index:
+      actions: Aktionen
+      aggregating_works_thematic_exhibits: Aggregation von Werken zu thematischen Exponaten
+      assign_works_to_document_sets: Werke einem Dokumentenset zuordnen
+      create_a_document_set: Ein Dokumentenset erstellen
+      delete: Löschen
+      delete_document_set_confirm_message: Möchten Sie dieses Dokumentenset wirklich löschen? Hierdurch wird nur Ihr Dokumentenset gelöscht, die Werke im Dokumentenset bleiben bestehen.
+      document_sets_are_sub_sets: 'Dokumentensets sind Teilsets der Dokumente in einer Sammlung. Zu den Verwendungszwecken gehören:'
+      document_sets_for: Dokumentensets für %{title}
+      edit: Bearbeiten
+      focusing_transcriber_effort: Die Aufmerksamkeit bei der Transkriptionsarbeit wird auf eine bestimmte Gruppe von Werken gelenkt.
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten:"
+      no_document_sets: Diese Sammlung enthält keine Dokumentensets
+      privacy: Privatsphäre-Einstellung
+      private: Privat
+      public: Öffentlich
+      publishing_works_private_collection: Die Veröffentlichung von Werken aus einer privaten Sammlung. (Alle Werke in einer privaten Sammlung, die einem öffentlichen Dokumentenset hinzugefügt werden, sind für die Öffentlichkeit einsehbar.)
+      save: Speichern
+      search: Suchen
+      search_for_works: Werke suchen...
+      status: Status
+      title: Titel
+      toggle_work_in_document_set: "%{work} in Dokumentenset %{document_set} umschalten"
+      transfer_works: Werke übertragen
+      work: Werk
+    new:
+      create_document_set: Dokumentenset erstellen
+      create_new_document_set: Neues Dokumentenset erstellen
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      document_set_is_marked_public: Wenn das Dokumentenset als öffentlich gekennzeichnet ist, sind darin enthaltene Werke einsehbar, auch wenn die Sammlung auf privat gesetzt ist.
+      public: Öffentlich
+      title: Titel
+    set_works:
+      collaboration: Kollaboration
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten:"
+      progress: Fortschritt
+      remove_from_set: Aus Set entfernen
+      remove_title_from_document_set: "%{title} aus dem Dokumentenset entfernen"
+      remove_works: Werke entfernen
+      restricted: Eingeschränkt
+      unrestricted: Uneingeschränkt
+      work_title: Werktitel
+    settings:
+      add: Hinzufügen
+      add_collaborator: Mitarbeitende:n hinzufügen
+      add_work_title_to_document_set: "%{work_title} zum Dokumentenset hinzufügen"
+      collaborators_may_transcribe: Mitarbeitende können private Dokumentensets transkribieren und bearbeiten.
+      document_set_based_on: Dies ist ein Dokumentenset basierend auf der Sammlung <b>%{title}</b>. Sie können alle Werke und Dokumentensets innerhalb dieser Sammlung verwalten, indem Sie auf %{link} klicken.
+      document_set_collaborators: Mitarbeitende an Dokumentensets
+      document_set_image: Dokumentenset-Bild
+      document_set_privacy: Privatsphäre-Einstellungen für Dokumentensets
+      document_set_restricted: Das Dokumentenset kann nur von den unterhalb angeführten Mitarbeitenden eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.
+      document_set_unrestricted: Das Dokumentenset kann von jedem im Internet eingesehen werden. Alle Werke, die einem öffentlichen Dokumentenset zugeordnet sind, sind einsehbar, auch wenn die übergeordnete Sammlung privat ist. Sie können das Dokumentenset auf privat setzen, um die Sichtbarkeit nur auf Mitarbeitende einzuschränken.
+      here: Hier
+      make_document_set_private: Dokumentenset privat setzen
+      make_document_set_public: Dokumentenset öffentlich setzen
+      manage_works: Werke verwalten
+      n_contributions:
+        one: 1 Beitrag
+        other: "%{count} Beiträge"
+      n_pages:
+        one: '1 Seite:'
+        other: "%{count} Seiten: pl"
+      no_image: Kein Bild
+      picture_document_set_description: Ein Bild zur Veranschaulichung der Beschreibung des Dokumentensets.
+      remove: Entfernen
+      save: Speichern
+      search: Suchen
+      search_for_works: Werke suchen...
+      status: Status
+      upload_image: Bild hochladen
+      work: Werk
+    transfer:
+      source_and_target_can_not_be_the_same: Quelle und Ziel dürfen nicht identisch sein.
+    transfer_form:
+      all: Alle Werke
+      cancel: Abbrechen
+      completed: Nur abgeschlossene Werke
+      copy: Kopieren (erzeugt keine doppelten Werke)
+      move: Verschieben
+      source_set: Quelldokumentensets
+      status_filter: Welche Werke
+      target_set: Zieldokumentenset
+      transfer: Übertragen
+      transfer_type_label: Übertragungsart
+      transfer_works: Werke übertragen
+      transfer_works_description: Werke zwischen Dokumentensets übertragen. (Durch das Kopieren besteht das gleiche Werk in zwei Dokumentensets.)
+    update:
+      document_updated: Dokumentenset wurde gespeichert

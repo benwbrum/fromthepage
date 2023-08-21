@@ -1,0 +1,14 @@
+---
+de:
+  article_version:
+    show:
+      description: Hier können Sie alle Überarbeitungen der Entität sehen und die Änderungen vergleichen, die in jeder Revision vorgenommen wurden. Die linke Spalte zeigt die Entitätenbezeichnung und die Beschreibung in der ausgewählten Revisionsversion, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
+      n_revisions:
+        one: 1 Überarbeitung
+        other: "%{count} Überarbeitungen"
+      no_description_provided: Keine Beschreibung angegeben
+      no_versions_to_compare: Es gibt keine Versionen zum Vergleichen
+      no_versions_to_compare_description: Diese Entität wurde nicht beschrieben, deshalb haben wir keine Versionen zum Vergleichen.
+      revision_changes: Überarbeitungen
+      untitled: Ohne Titel
+      user_at_time: "%{user} um %{time}"

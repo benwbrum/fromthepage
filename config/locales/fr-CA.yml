@@ -1,0 +1,50 @@
+---
+fr-CA:
+  collection:
+    contributor_activity:
+      recent_ocr_correction: Correction de ROC récente
+    disable_ocr:
+      notice: La correction de ROC a été désactivée pour toutes les œuvres.
+    edit:
+      disable_ocr: Désactiver la ROC
+      enable_ocr: Activer ROC
+      ocr_correction: Correction de ROC
+      ocr_correction_description: Activez ou désactivez la correction de ROC pour toutes les œuvres de cette collection.
+    enable_ocr:
+      notice: La correction de ROC a été activée pour toutes les œuvres.
+  deed:
+    ocr_corrected: ROC de page corrigé
+  ia:
+    manage:
+      first_line_of_ocr: Première ligne de ROC
+      first_line_of_ocr_description: "<b>La première ligne de la ROC</b> remplace les titres de page par la première ligne du texte ROC sur chaque page. Ceci est utile pour les agendas et les livres de jour, puisque la première ligne est généralement une date."
+      last_line_of_ocr: Dernière ligne de la ROC
+      last_line_of_ocr_description: "<b>La dernière ligne de la ROC</b> remplace les titres de page par la dernière ligne du texte ROC sur chaque page. Ceci est utile pour les œuvres imprimés dans lesquels les numéros de page apparaissent en bas."
+      ocr_for_page_contents: Utiliser le texte ROC pour le contenu de la page ?
+      ocr_for_page_contents_description: Cochez cette case pour remplir la transcription initiale de chaque page avec le contenu de la ROC correspondant. (Ne le faites pas si vos pages contiennent une écriture manuscrite que vous souhaitez transcrire.)
+      ocr_page_titles_description: Ce processus prendra plusieurs secondes pour s'exécuter, car il nécessite l'analyse de l'intégralité du texte ROC du livre et la mise à jour de chaque titre de page. Une fois le livre converti en une œuvre FromThePage, vous pourrez corriger les titres de page manuellement.
+    title_from_ocr_bottom:
+      pages_has_been_renamed: Les pages ont été renommées avec la ligne inférieure du texte ROC
+    title_from_ocr_top:
+      pages_has_been_renamed: Les pages ont été renommées avec la ligne supérieure du texte ROC
+  sc_collections:
+    cdm_bulk_import_new:
+      import_ocr_text: Importer du texte ROC à partir de CONTENTdm
+    explore_collection:
+      import_ocr_text: Importer du texte ROC à partir de CONTENTdm
+    explore_manifest:
+      import_ocr_text: Importer du texte ROC à partir de CONTENTdm
+  statistics:
+    collection_statistics:
+      ocr_correction:
+        one: Correction de ROC
+        other: Corrections de ROC
+    recent_statistics:
+      ocr_correction: Correction de ROC
+    statistics:
+      ocr_correction:
+        one: Correction de ROC
+        other: Corrections de ROC
+  work:
+    edit:
+      enable_ocr_correction: Activer la correction de ROC

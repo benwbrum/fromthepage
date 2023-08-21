@@ -45,7 +45,7 @@ describe "display marked as blank" do
 
     # Visit page
     visit 'collections'
-    expect(page.find('.sidecol')).to have_content("#{user.display_name} marked page #{page1.title} as blank")
+    expect(page.find('.sidecol')).to have_content("#{user.display_name} marked #{page1.title} as blank")
 
     # Tear down Factories
     Deed.destroy(deed.id)
@@ -72,7 +72,7 @@ describe "display marked as blank" do
     # Visit page
     visit "#{user.login}/#{collection.slug}"
     expect(page).to have_content('Recent Edits')
-    expect(page.find('.sidecol')).to have_content("#{user.display_name} marked page #{page1.title} as blank")
+    expect(page.find('.sidecol')).to have_content("#{user.display_name} marked #{page1.title} as blank")
 
     # Tear down Factories
     Deed.destroy(deed.id)

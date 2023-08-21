@@ -11,11 +11,21 @@ pt:
       create_an_account: Criar uma Conta
       documentation: Documentação
       find_a_project: Buscar um Projeto
+      home: Casa
+      internet_archive_difficulties: O Internet Archive está passando por dificuldades. Por favor, tente novamente mais tarde.
       owner_dashboard: Painel de Controle do Dono
+      pricing: Preços
       privacy_policy: Política de Privacidade
       projects: Projetos
+      recaptcha_validation_failed: Falha na validação do ReCAPTCHA
       sign_in: Entrar
       sign_out: Sair
+      sign_up_to_transcribe: Inscreva-se para transcrever
+      signed_in_as: Assinado como
       terms_and_conditions: Termos e Condições
+      transcription_for_archives_special_collections: Transcrição para Arquivos e Coleções Especiais
+      transcription_for_digital_scholarship: Transcrição para bolsa digital
+      transcription_for_public_libraries: Transcrição para Bibliotecas Públicas
+      transcription_for_state_provincial_archives: Transcrição para Arquivos Estaduais e Provinciais
       undo_login_as: Desfazer o Login Como
       your_profile: Seu Perfil

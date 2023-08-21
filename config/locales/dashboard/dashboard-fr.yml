@@ -27,6 +27,7 @@ fr:
       create_empty_work_description: Utilisez cette option pour créer une œuvre sans pages. Vous pouvez ensuite téléverser des images de page individuelles dans l'œuvre.
       create_work: Créer une œuvre
       description: La description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       select_a_collection: "- Sélectionnez une collection -"
       title: Titre
     exports:
@@ -53,6 +54,7 @@ fr:
       table_csv_work: Champ/Table CSV (œuvre)
       tei_work: TEX-XML (œuvre)
       text_docx_work: MS Word .docx (œuvre)
+      text_only_pdf_work: Texte PDF seulement (œuvre)
       text_pdf_work: Texte PDF (œuvre)
       work_metadata_csv: Métadonnées de œuvre (collection)
     guest_header:
@@ -87,19 +89,30 @@ fr:
       page_image_guidelines: Directives relatives aux images de page
       paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
+      active_collections: Collections actives
       create_a_collection: créer une collection
       document_sets: Jeux de documents
-      see_all_works: Voir toutes les oeuvres...
+      inactive_collections: Collections inactives
+      n_works:
+        one: '1 œuvre :'
+        other: "%{count} fonctionne :"
+      private: " (Privé)"
+      public: " (Public)"
       start_a_project: Démarrer un projet
       there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
-      total_work_count: 'Nombre total de œuvres : %{count}'
-      you_can_add_another_work: Vous pouvez ajouter une autre œuvre sous %{start_project}
       you_can_new_collection: Vous pouvez %{new_collection}
       you_can_upload_documents: Vous pouvez téléverser des documents sous %{start_project}
       you_dont_have_any_collections: Vous n'avez pas encore de collections
       your_activity: Votre activité
     owner_header:
-      account_type: "%{type} compte"
+      account_type: Compte %{type}
+      account_types:
+        individual_researcher: chercheur individuel
+        large_institution: grand établissement
+        legacy: héritage
+        small_organization: petite organisation
+        staff: personnel
+        trial: essai
       actions: Actions
       collection:
         one: Collection
@@ -144,6 +157,5 @@ fr:
       collections: collections
       private_collections_you_belong_to: Projets privés
       projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
-      time_ago_in_words: Il y a %{time}
       try_transcribing_a_page: 'Vous n''avez encore participé à aucun projet. Essayez de transcrire une page de l''une de ces '
       your_activity: Votre activité

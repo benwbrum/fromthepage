@@ -1,6 +1,6 @@
 <%= t('.your_upload_is_ready') %>
 
-<%= t('.text.message') %>
+<%= t('.text.message', file: @document_upload.name) %>
 <%= url_for({
     controller: 'collection',
     action: 'show',

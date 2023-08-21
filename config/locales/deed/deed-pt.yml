@@ -1,6 +1,10 @@
 ---
 pt:
   deed:
+    article_edit: Artigo editado
+    collection_active: Coleção ativa
+    collection_inactive: Coleção inativa
+    collection_joined: Coleção associada
     deed:
       html:
         added_a_note_to_page: adicionou uma nota à página %{page}
@@ -25,11 +29,27 @@ pt:
       this_collection: esta coleção
     deeds:
       show_more: Mostrar Mais
-      time_ago_in_words: Há %{time}
+    described_metadata: Metadados Descritos
+    edited_metadata: Descrição de metadados editada
     list:
       activity_stream: Fluxo de Atividade
       collection_title: 'Coleção: %{title}'
       newer_activity: Atividade Mais Recente
       older_activity: Atividade Mais Antiga
+      owner_title: 'Proprietário: %{title}'
       time_ago_in_words: Há %{time}
       user_title: 'Usuário: %{title}'
+    needs_review: A página precisa de revisão
+    note_added: Nota adicionada
+    ocr_corrected: OCR de página corrigido
+    page_edit: Página editada
+    page_indexed: Página indexada
+    page_marked_blank: Página marcada em branco
+    page_reviewed: Página revisada
+    page_transcription: Página transcrita
+    page_translated: Página traduzida
+    page_translation_edit: Página de tradução editada
+    translation_indexed: Página de tradução indexada
+    translation_review: A página de tradução precisa de revisão
+    translation_reviewed: Tradução revisada
+    work_added: Trabalho adicionado

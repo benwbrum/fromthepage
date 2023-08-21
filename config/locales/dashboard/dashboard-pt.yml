@@ -10,11 +10,61 @@ pt:
       recent_activity: Atividade Recente
     create_work:
       work_created: Obra criada com sucesso
+    editor:
+      activity_stream: Fluxo de atividades
+      article_in_the_work: Artigo %{article} na coleção %{collection}
+      page_in_the_work: Página %{page} no trabalho %{work}
+      revision_version: Revisão %{version}
+      view_page: Ver pagina
+      your_recent_article_edits: Suas edições recentes de artigos
+      your_recent_notes: Suas notas recentes
+      your_recent_page_edits: Suas edições recentes de página
+    editor_header:
+      your_projects: Seus projetos
+    empty:
+      add_new_collection: Adicionar nova coleção
+      create_empty_work: Criar trabalho vazio
+      create_empty_work_description: Use esta opção para criar um trabalho vazio. Você pode então carregar imagens de páginas individuais no trabalho.
+      create_work: Criar trabalho
+      description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      select_a_collection: "- Selecione uma coleção -"
+      title: Título
+    exports:
+      bulk_exports_description: Isso lista todas as exportações em massa que você executou. As exportações são limpas após alguns dias e não estão mais disponíveis para download
+      configuration: Configuração (nível)
+      create_bulk_export_description: Crie uma exportação em massa na guia Exportar de uma coleção ou na guia Download de uma obra.
+      date: Data de exportação
+      download: Download
+      exported_item: Coleção/Obra Exportada
+      facing_edition_work: Edição de rosto PDF (obra)
+      html_page: HTML (página)
+      html_work: HTML (obra)
+      plaintext_emended_page: Texto simples analítico (página)
+      plaintext_emended_work: Texto simples analítico (obra)
+      plaintext_searchable_page: Texto simples pesquisável (página)
+      plaintext_searchable_work: Texto simples pesquisável (obra)
+      plaintext_verbatim_page: Texto simples literal (página)
+      plaintext_verbatim_work: Texto simples literal (obra)
+      refresh: Atualizar
+      reload_this_page_to: Recarregue esta página para atualizar a lista.
+      status: Status
+      subject_csv_collection: Índice de assuntos CSV (coleção)
+      table_csv_collection: Campo/Tabela CSV (coleção)
+      table_csv_work: Campo/Tabela CSV (obra)
+      tei_work: TEX-XML (obra)
+      text_docx_work: MS Word .docx (obra)
+      text_only_pdf_work: Texto PDF (obra)
+      text_pdf_work: Texto PDF (obra)
+      work_metadata_csv: Metadados de trabalho (coleção)
+    guest_header:
+      recent_activity: Atividade recente
     hierarchical_collections_and_document_sets:
       project_by: Projeto de %{author}
       start_transcribing: Iniciar Transcrição
     landing_page:
       all_collections: Todas as Coleções
+      more: Mais...
       next_image: Imagem seguinte
       previous_image: Imagem anterior
       recent_activity: Atividade Recente
@@ -29,38 +79,73 @@ pt:
       acceptable_formats: Os arquivos em formatos PNG, GIF e JPG são todos aceitados.
       images_should_be_named: 'As imagens devem ser nomeadas para que uma ordenação alfabética resulte na ordem de página correta. <br> (Isso pode necessitar o uso de zeros adicionais nos números das páginas: <code>pagina_09.jpg, pagina_10.jpg</code> ficaria na ordem correta, mas <code>pagina_9.jpg, pagina_10.jpg</code> não ficaria.)'
       images_should_be_oriented: As imagens devem ser orientadas de cabeça para cima.
+      import: Importar
       import_a_iiif_manifest_or_collection: Importar um Manifesto ou Coleção IIIF
       import_from_archive_dot_org: Importar de Archive.org
       import_from_contentdm: Importar de CONTENTdm
       import_from_the_internet_archive: Importar de Internet Archive
+      import_many_link: importar vários objetos compostos individuais.
+      or_import_many: Ou
       page_image_guidelines: Regras Gerais das Imagens da Página
       paste_in_the_url: Cole o URL de um objeto composto na sua página web de CONTENTdm.
     owner:
+      active_collections: Coleções ativas
       create_a_collection: criar uma coleção
       document_sets: Conjuntos de Documentos
-      see_all_works: Ver Todas as Obras...
+      inactive_collections: Coleções inativas
+      n_works:
+        one: '1 trabalho:'
+        other: "%{count} funciona:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
-      total_work_count: 'Número total de obras: %{count}'
-      you_can_add_another_work: Você pode adicionar uma nova obra em %{start_project}
       you_can_new_collection: Você pode %{new_collection}
       you_can_upload_documents: Você pode subir um documento em %{start_project}
       you_dont_have_any_collections: Você ainda não tem nenhuma coleção.
       your_activity: Sua Atividade
     owner_header:
+      account_type: Conta %{type}
+      account_types:
+        individual_researcher: pesquisador individual
+        large_institution: grande instituição
+        legacy: legado
+        small_organization: pequena organização
+        staff: funcionários
+        trial: tentativas
+      actions: Ações
+      collection:
+        one: Coleção
+        other: Coleções
       create_a_collection: Criar uma Coleção
+      current_subscription_expires: A assinatura atual expira %{date}
+      document_set:
+        one: Conjunto de documentos
+        other: Conjuntos de documentos
+      exports: Exportações
       owner_dashboard: Painel de Controle do Dono
+      since: desde %{date}
       start_a_project: Iniciar um Projeto
       summary: Resumo
+      to_upgrade_contact: Para atualizar, entre em contato com support@fromthepage.com
+      total_pages: 'Total de páginas: %{pages}'
+      work:
+        one: Trabalhar
+        other: Funciona
       your_collections: Suas Coleções
     upload:
+      acceptable_image_files: Arquivos PNG, GIF e JPG são todos aceitáveis.
       browse: Navegar
       click_to_browse_a_file: Clique para navegar num arquivo...
       click_to_browse_files: Clique para navegar nos arquivos
       each_folder_will_be_treated: Cada pasta será tratada como um documento diferente, por isso não misture páginas de documentos diferentes na mesma pasta.
       each_pdf_will_be_treated: Cada PDF será tratado como seu próprio documento, por isso não divida páginas do mesmo documento entre mais de um PDF.
       for_example_a_zip_file: 'Por exemplo, um arquivo ZIP com 3 imagens, 2 PDFs, e uma pasta contendo 5 imagens adicionais criaria 4 obras: as imagens de nível superior em um, cada PDF em sua própria obra, e uma última obra contendo as 5 imagens adicionais da pasta.'
+      image_naming_guidelines: 'As imagens devem ser nomeadas para que uma classificação alfabética resulte na ordem correta das páginas.<br> (Isso pode exigir "preenchimento zero" para qualquer número de página: <code>page_09.jpg, page_10.jpg</code> classificará corretamente, mas <code>page_9.jpg, page_10.jpg</code> não.)'
+      image_orientation_guidelines: As imagens devem ser orientadas para que fiquem com o lado certo para cima.
       import_form_message: Usando este formulário, você pode importar as suas imagens de página para FromThePage. Você deve selecionar uma coleção de destino para importar e anexar um arquivo ZIP ou PDF contendo imagens de página para o seu projeto.
+      page_image_guidelines: Diretrizes de imagem da página
+      select_a_collection: "- Selecione uma coleção -"
       to_specify_metadata: Para indicar os meta-dados juntamente com as imagens, inclua um %{link} arquivo em cada pasta que indique os campos para a obra.
       trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para elevar a sua conta.
       upload_file: Subir arquivo
@@ -72,6 +157,5 @@ pt:
       collections: coleções
       private_collections_you_belong_to: Coleções Privadas às quais você pertence
       projects_you_have_contributed_to: Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo.
-      time_ago_in_words: Há %{time}
       try_transcribing_a_page: 'Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes '
       your_activity: Sua Atividade

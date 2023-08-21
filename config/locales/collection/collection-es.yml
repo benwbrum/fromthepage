@@ -9,6 +9,7 @@ es:
         other: "%{count} páginas:"
       progress: Progreso
       work_title: Título de la obra
+    complete: completo
     contributor_activity:
       recent_notes: Notas Recientes
       recent_ocr_correction: Correcciones de OCR recientes
@@ -31,15 +32,19 @@ es:
       all_collaborator_emails: Todos los Correos Electrónicos del Colaborador
       collaborator_stats: Estadísticas del Colaborador %{start_deed} hasta %{end_deed}
       collaborators: Colaboradores
-      collection: " (Colección: %{collection_time} minutos | Total: %{total_time} minutos)"
       detailed_spreadsheet_export: Una hoja de cálculo exportable y detallada de todos los colaboradores está disponible en el panel del dueño.
-      export_activity_as_csv: Exportar Actividad Como CSV
-      export_as_csv: Exportar como CSV
+      export_activity_as_csv: Exportar toda la actividad como una hoja de cálculo
+      export_activity_as_csv_description: Descargue una hoja de cálculo con una línea que enumere cada acción.
+      export_activity_as_csv_header: Actividad de exportación
+      export_as_csv: Exportar la actividad del usuario como una hoja de cálculo
+      export_as_csv_description: Descargue una hoja de cálculo con una línea que enumere a cada usuario y su tiempo y actividad.
       find_project_newsletters_recommendations: Encuentre recomendaciones para boletines de proyectos.
       new_collaborators: Nuevos Colaboradores
       no_activity_this_time_frame: No hubo actividad en este lapso de tiempo
       no_collaborators: No hay colaboradores
+      time_on_this: Tiempo en esta colección
       total_time: 'Tiempo total: %{hours} horas, %{minutes} minutos.'
+      user: Usuario
       view_activity: Ver Actividad
     corrected: corregido
     create:
@@ -56,6 +61,10 @@ es:
       authorized_reviewers: revisores autorizados
       blank_collection: Colección en Blanco
       blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
+      block: Bloquear usuarios
+      block_users_description: Bloquee el acceso de usuarios individuales a la colección.
+      block_users_modal_description: A estos usuarios se les ha bloqueado el acceso a la colección. La colección no será visible para ellos, como si hubiera sido marcada como privada o eliminada. Agregar usuarios a esta lista no les notificará que han sido bloqueados.
+      blocked_users: Usuarios bloqueados
       close_api: Cerrar API
       collection_active_message: Esta es una colección activa. Hacer inactiva una colección impide que los usuarios editen contenido dentro de la colección. El estado de la colección no afecta la configuración de privacidad de la misma.
       collection_collaborators: Colaboradores de la Colección
@@ -77,8 +86,10 @@ es:
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       delete_collection: Eliminar Colección
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       disable_document_sets: Deshabilitar Conjuntos de Documentos
       disable_facets: Deshabilitar facetas
+      disable_message_boards: Desactivar foro
       disable_ocr: Deshabilitar OCR
       document_sets: Conjuntos de Documentos
       document_sets_description: Los conjuntos de documentos son subconjuntos de las obras en esta colección que se pueden utilizar para darle foco a un proyecto de edición o para crear una exposición pública sobre un enfoque particular de los documentos.
@@ -89,23 +100,27 @@ es:
       edit_fields: Campos
       edit_metadata_fields: Editar campos
       edit_owners: Editar propietarios
+      edit_profile: Cambia esto en tu perfil de usuario
       editor_buttons: Botones del editor
       editor_buttons_description: Elija los botones de marcado para que aparezcan en el editor de transcripción.
       enable_document_sets: Habilitar Conjuntos de Documentos
       enable_facets: Habilitar facetas
       enable_field_based_transcription: Habilitar transcripción basada en campos
+      enable_message_boards: Habilitar foro
       enable_metadata_description: Habilitar descripción de metadatos
       enable_ocr: Habilitar OCR
+      enable_spellcheck: Habilitar el corrector ortográfico (no apto para textos con ortografía irregular)
       field_based_transcription: Transcripción basada en campos
       footer: Pie de página
       help: Texto de Ayuda Básica
       hide_completed: Ocultar obras completadas de forma predeterminada
-      learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
       make_collection_active: Hacer Activa la Colección
       make_collection_inactive: Hacer Inactiva la Colección
       make_collection_private: Hacer Privada la Colección
       make_collection_public: Hacer Pública la Colección
+      message_boards: Foro
+      message_boards_description: Un foro permite a los colaboradores discutir temas entre ellos y con los propietarios de proyectos a través de tableros de mensajes.
       metadata: metadatos
       metadata_description: Cargue los metadatos de los elementos de esta colección de forma masiva.
       metadata_entry: Metadatos Descripción
@@ -145,23 +160,60 @@ es:
       text_language: Selecciona el idioma para texto de transcripción
       title: Título
       transcription_conventions: Convenciones de Transcripción
+      transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
+      unblock_user: Desbloquear usuario
+      update_footer_message: Puede actualizar el pie de página editando el perfil de %{owner}
       upload_image: Subir Imagen
       upload_metadata: Subir metadatos
       url: URL
       user_download: Permitir a los usuarios descargar obras.
       voice_recognition: Voz a texto disponible para transcribir
     edit_buttons:
+      abbr_description: Marca abreviaturas en un texto con expansiones en el atributo expan. (Forma alternativa de etiqueta de expansión).
+      abbr_label: Abreviatura
+      add_description: Marca el texto insertado después del hecho por el escritor.
+      add_label: Suma
+      date_description: Marca fechas, con forma estandarizada en el atributo when.
+      date_label: Fecha
+      del_description: Marca el texto que ha sido eliminado por borrado o tachado.
+      del_label: Supresión
       description: FromThePage puede admitir el marcado dentro de las transcripciones en formularios TEI-XML o HTML. Recomendamos configurar no más de seis botones para que aparezcan en el editor de transcripción. Considere si otros sistemas podrán usar este tipo de margen; si solo se admite texto sin formato, los proyectos deben usar convenciones tipográficas en lugar de marcado.
+      expan_description: Marca abreviaturas expandidas con formas originales en el atributo orig. (Forma alternativa de etiqueta abbr.)
+      expan_label: Expansión
+      fig_description: Indica una figura o una línea horizontal.
+      fig_label: Figura
+      footnote_description: Encierra el cuerpo de una nota al pie, con el símbolo de nota al pie en el atributo de marcador.
+      footnote_label: Nota
+      gap_description: Marca un espacio en el texto, a menudo debido a daños
+      gap_label: Brecha
+      head_description: Marca un encabezado en el texto.
+      head_label: Bóveda
       heading: Configuración del editor de transcripciones
       html: "(HTML)"
+      i_description: Marca el texto en cursiva.
+      i_label: Itálico
+      lb_description: Marca saltos de línea
+      lb_label: Salto de línea
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
       prefer_tei: Preferir TEI
+      reg_description: Marca una forma regularizada del texto, con formas originales en el atributo orig.
+      reg_label: regularización
+      s_description: Marca el texto que ha sido tachado por cualquier motivo.
+      s_label: tachado
       save: Ahorrar
+      sub_description: Texto de subíndice.
+      sub_label: Subíndice
+      sup_description: Texto en superíndice.
+      sup_label: Sobrescrito
       tei: " (TEI-XML)"
+      u_description: Marca el texto subrayado.
+      u_label: Subrayar
+      unclear_description: Marca texto poco claro.
+      unclear_label: Poco claro
     enable_ocr:
       notice: La corrección OCR ha sido habilitada para todas las obras.
     facet_form:
@@ -188,19 +240,24 @@ es:
       translation: Traducción
     needs_review: requiere revisión
     needs_review_pages:
-      pages_that_need_review: Páginas que Necesitan Revisión
+      pages_need_review: Páginas que Necesitan Revisión
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     needs_transcription_pages:
+      pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     new:
       collection_description: Descripción de la Colección
+      collection_description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       create_collection: Crear Colección
       create_new_collection: Crear Nueva Colección
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.
       individual_researcher_limited_account: Las Cuentas de Investigador Individual están limitadas a una sola colección. Para actualizar su cuenta, póngase en contacto con support@fromthepage.com.
       title: Título
+    new_mobile_user:
+      email_me: Envíame un enlace por correo electrónico
+      message: Parece que estás viendo esta página en un dispositivo móvil. Es más fácil transcribir esta colección en una pantalla más grande.
     one_off_list:
       date: Fecha
       filter_contributions: Filtrar
@@ -240,11 +297,12 @@ es:
         other: "%{count} páginas:"
       pages_need_correction: Páginas que necesitan corrección
       pages_need_correction_or_transcription: Páginas que necesitan corrección o transcripción
-      pages_need_review: Páginas que necesitan Revisión
+      pages_need_review: Páginas que Necesitan Revisión
       pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
       recent_edits: Ediciones Recientes
       recent_notes: Notas Recientes
+      restricted_collaboratoration: La colaboración está restringida.
       search: Búsqueda
       search_by_title: Buscar por título...
       search_by_title_1: Buscar por título
@@ -256,6 +314,7 @@ es:
       this_work_has_not_been_described: Este trabajo necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
       time_ago_in_words: Hace %{time}
+      user_wrote_note: "%{user} escribió %{note}"
       works: Obras
     start_transcribing:
       notice: Lo sentimos, pero no hay páginas cualificadas en esta colección.

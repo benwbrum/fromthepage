@@ -1,12 +1,21 @@
 ---
 pt:
   category:
+    add_new:
+      create_category: Criar categoria
+      enable_gis: Ativar SIG
+      title: Título
     create:
       category_created: A categoria foi criada
     delete:
       category_deleted: A categoria foi deletada
     disable_gis:
       gis_disabled_for: GIS desativado para %{title}
+    edit:
+      edit_category: Editar categoria
+      enable_gis: Ativar SIG
+      save_changes: Salvar alterações
+      title: Título
     enable_gis:
       gis_enabled_for: GIS ativado para %{title}
     update:

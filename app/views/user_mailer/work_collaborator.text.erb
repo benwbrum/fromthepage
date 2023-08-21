@@ -4,6 +4,10 @@
 
 <%= t('.text.to_view', collection: @work.collection.title, work: @work.title, url: (collection_read_work_url(@work.owner, @work.collection, @work, only_path: false))) %>
 
-<%= t('user_mailer.text.closing') %>
+<% unless @work.collection.owner.display_name.blank? %>
+    <%= t('user_mailer.text.closing', from: @work.collection.owner.display_name) %>
+<% else %>
+    <%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
+<% end %>
 
 <%= t('user_mailer.text.turn_off_notification', url: update_profile_url(@user, only_path: false)) %>

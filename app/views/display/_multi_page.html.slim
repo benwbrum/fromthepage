@@ -20,21 +20,27 @@
           =button_tag t('.search')
           =label_tag 'search_string', t('.search_in_collection'), class: 'hidden'
 
+        =form_tag({:controller => 'display', :action => 'search'}, :method => :post, class: 'collection-search') do
+          =hidden_field_tag('work_id', @work&.id)
+          =search_field_tag 'search_work_string', @search_work_string, :placeholder => t('.search_in_work'), "aria-label" => t('.search_in_collection_1')
+          =button_tag t('.search')
+          =label_tag 'search_work_string', t('.search_in_work'), class: 'hidden'
+
       -if @work
         -if @total != @count
-          =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.id, needs_review: 'none'}, class: 'review-button'
+          =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.slug, needs_review: 'none'}, class: 'review-button'
         -elsif @collection.active?
-          =button_to t('.pages_need_transcription'), {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
+          =button_to t('.pages_need_transcription'), {action: "read_work", work_id: @work.slug, needs_review: 'transcription' }, class: 'review-button'
           -if user_signed_in? && current_user.can_review?(@collection)
-            =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
-          =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.id, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
+            =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'review' }, class: 'review-button'
+          =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
 
           -if @work.supports_translation
-            =button_to t('.pages_need_translation'), {action: "read_work", work_id: @work.id, needs_review: 'translation' }, class: 'review-button'
-            =button_to t('.translations_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'translation_review'}, class: 'review-button'
-            =button_to t('.translations_need_indexing'), {action: "read_work", work_id: @work.id, needs_review: 'translation_index'}, class: 'review-button'
+            =button_to t('.pages_need_translation'), {action: "read_work", work_id: @work.slug, needs_review: 'translation' }, class: 'review-button'
+            =button_to t('.translations_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_review'}, class: 'review-button'
+            =button_to t('.translations_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_index'}, class: 'review-button'
           -if @collection.metadata_entry?
-            =link_to t('.describe'), describe_collection_work_path(@work.slug), class: 'button review-button'
+            =link_to t('.describe'), describe_collection_work_path(@collection.owner, @collection, @work.slug), class: 'button review-button'
 
       -if @article
         h4 =@article.title

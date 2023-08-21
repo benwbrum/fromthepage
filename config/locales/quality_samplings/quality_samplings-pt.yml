@@ -1,0 +1,37 @@
+---
+pt:
+  quality_samplings:
+    destroy:
+      quality_sampling_destroyed: A amostragem de qualidade foi destruída com sucesso.
+    index:
+      description: A amostragem de qualidade permite que você verifique as contribuições, coletando dados sobre a qualidade à medida que você revisa cada contribuição.
+      new_sampling: Iniciar amostragem
+    show:
+      actions: Ações
+      approval_delta_display_0: Muito baixo
+      approval_delta_display_1: Baixo
+      approval_delta_display_2: Média
+      approval_delta_display_3: Alto
+      approval_delta_display_4: Muito alto
+      description: A amostragem de qualidade permite que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou trabalho. Esse número pode crescer à medida que mais páginas são transcritas.
+      not_applicable: N / D
+      not_fully_sampled_yet: Esta amostra ainda não foi totalmente revisada.
+      pages_in_sample: Páginas na amostra
+      pages_in_sample_desc: Número de páginas na amostra para o usuário ou trabalho.
+      pages_to_be_reviewed: Páginas para revisão
+      pages_to_be_reviewed_desc: Número de páginas que ainda precisam de revisão em toda a coleção.
+      quality_score: Índice de qualidade
+      quality_score_desc: Porcentagem média de mudanças necessárias durante a aprovação.
+      relative_corrections: Correções relativas
+      relative_corrections_desc: Quantas correções foram necessárias antes da aprovação, em relação a outros usuários nesta amostra?
+      review: Análise
+      review_url: URL de revisão
+      review_url_desc: URL que permitirá que os revisores aprovem contribuições diretamente, sem exibir esta tela.
+      sample: Amostra de Revisão
+      sample_field_size: 'Páginas a serem revisadas:'
+      sample_set_has_increased: O conjunto de amostras aumentou em %{increase} páginas
+      sample_set_size: 'Tamanho do conjunto de amostra:'
+      user: Contribuinte
+      work: Trabalhar
+    update:
+      quality_sampling_updated: A amostragem de qualidade foi atualizada com sucesso.

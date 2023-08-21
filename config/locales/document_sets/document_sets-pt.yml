@@ -4,10 +4,13 @@ pt:
     create:
       document_created: O documento foi criado
     edit:
-      current_url_for_this_work: O URL atual desta obra é %{current_ URL}. Se quiser editar a parte do conjunto de documentos no URL, por favor use letras minúsculas e traços entre as palavras.
+      current_url_for_this_work: O URL atual desta obra é %{current_url}. Se quiser editar a parte do conjunto de documentos no URL, por favor use letras minúsculas e traços entre as palavras.
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       save_document_set: Guardar o Conjunto de Documentos
+      title: Título
+      url: URL
     index:
       actions: Ações
       aggregating_works_thematic_exhibits: Agregar obras em exposições temáticas
@@ -16,9 +19,12 @@ pt:
       delete: Apagar
       delete_document_set_confirm_message: Tem certeza que deseja apagar este conjunto de documentos? O conjunto de documentos será apagado, mas nenhuma das obras dentro do conjunto de documentos será apagada.
       document_sets_are_sub_sets: 'Os conjuntos de documentos são subconjuntos dos documentos de uma coleção. Eles têm vários usos, incluindo:'
-      document_sets_for: Conjuntos de Documentos para %{título}
+      document_sets_for: Conjuntos de Documentos para %{title}
       edit: Editar
       focusing_transcriber_effort: Focar os esforços dos transcritores em um grupo específico de obras.
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
       no_document_sets: Esta coleção não contem conjuntos de documentos
       privacy: Privacidade
       private: Privado
@@ -27,15 +33,24 @@ pt:
       save: Guardar
       search: Buscar
       search_for_works: Buscar obras...
+      status: Status
       title: Titulo
+      toggle_work_in_document_set: Alternar %{work} no conjunto de documentos %{document_set}
+      transfer_works: Trabalhos de Transferência
       work: Obra
     new:
       create_document_set: Criar Conjunto de Documentos
       create_new_document_set: Criar Novo Conjunto de Documentos
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_set_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
+      public: Público
+      title: Título
     set_works:
       collaboration: Colaboração
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
       progress: Progresso
       remove_from_set: Remover do conjunto
       remove_title_from_document_set: Remover %{title} do Conjunto de Documentos
@@ -58,13 +73,35 @@ pt:
       make_document_set_private: Tornar o Conjunto de Documentos Privado
       make_document_set_public: Tornar o Conjunto de Documentos Público
       manage_works: Controlar Obras
+      n_contributions:
+        one: 1 contribuição
+        other: "%{count} contribuições"
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas: pl"
       no_image: Sem Imagem
       picture_document_set_description: Uma imagem para ilustrar a descrição do conjunto de documentos.
       remove: Remover
       save: Guardar
       search: Buscar
       search_for_works: Buscar obras...
+      status: Status
       upload_image: Subir Imagem
       work: Obra
+    transfer:
+      source_and_target_can_not_be_the_same: Origem e destino não podem ser iguais.
+    transfer_form:
+      all: Todas as obras
+      cancel: Cancelar
+      completed: Apenas obras concluídas
+      copy: Copiar (não cria trabalhos duplicados)
+      move: Jogada
+      source_set: Conjunto de documentos de origem
+      status_filter: O que funciona
+      target_set: Conjunto de documentos de destino
+      transfer: Transferir
+      transfer_type_label: Tipo de transferência
+      transfer_works: Trabalhos de Transferência
+      transfer_works_description: A transferência funciona entre conjuntos de documentos. (A cópia colocará o mesmo trabalho em dois conjuntos de documentos ao mesmo tempo.)
     update:
       document_updated: O documento foi atualizado

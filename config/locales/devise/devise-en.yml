@@ -3,7 +3,7 @@ en:
   devise:
     confirm_password: Confirm Password
     create_account: Create Account
-    display_name: Display Name
+    display_name: Organization Name
     email_address: Email Address
     failure:
       already_authenticated: You are already signed in.
@@ -45,7 +45,9 @@ en:
     registrations:
       choose_saml:
         harvard_university: Harvard University
+        illinois_state: Illinois State University
         institution: Institution
+        johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Sign in with your Institution
       destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.

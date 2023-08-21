@@ -1,0 +1,41 @@
+<%= render "shared/landingheader" %>
+<body>
+<%= render "shared/landingbodyheader" %>
+   <!-- Home Main -->
+    <section class="home-main">
+        <!-- <img src="/assets/materials/main-bg.png" alt=""> -->
+        <div class="text">
+            <h2> What do you want to do? </h2>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 ">
+                        <div class="card second" data-aos="zoom-in" data-aos-duration="1000">
+                            <img src="/assets/materials/main-card01.png" alt="">
+                            <h4>I want to upload documents to transcribe.</h4>
+        
+                            <div class="bottom">
+                                <%= link_to 'Create an Organization Account', users_new_trial_path, class: 'button' %>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-lg-4 col-md-6 ">
+                        <div class="card second" data-aos="zoom-in" data-aos-duration="1100">
+                            <img src="/assets/materials/main-card02.png" alt="">
+                            <h4>I want to help libraries and archives transcribe their historic documents</h4>
+        
+                            <div class="bottom">
+                                <%= link_to "Become a Transcriber", new_user_registration_path, class: 'button' %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<%= render "shared/landingfooter" %>
+
+</body>
+
+</html>

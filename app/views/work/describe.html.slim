@@ -4,110 +4,109 @@
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
-=form_for(@work, :url => { :action => 'save_description' }, :html => { class: editor_class }) do |f|
-  =hidden_field_tag(:work_id, @work.slug)
-  =validation_summary @work.errors
+-if current_user.present?
+  =form_for(@work, :url => { :action => 'save_description' }, :html => { class: editor_class }) do |f|
+    =hidden_field_tag(:work_id, @work.slug)
+    =validation_summary @work.errors
 
-  .page-toolbar
-    .flex-toolbar
-      .flex-toolbar_group
-        /if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
-          /button#toggleImage.button.outline type="button" =t('.show_image')
-        a.button.outline(data-fullscreen-toggle)
-          =svg_symbol "#icon-expand", class: 'icon'
-          span.hide-l =t('.fullscreen')
-        -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
-        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
-          dt.button.outline
-            =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
-            span.hide-l =t('.layout')
-          dd
-            -layout_modes.each do |mode, text|
-              a(data-layout-set="#{mode}")
-                =svg_symbol "#icon-layout-#{mode}", class: 'icon'
-                span =text
-        -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
-        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
-          dt.button.outline
-            span.hide-l =t('.view_original')
-          dd
-            -view_modes.each do |mode, text|
-              a(data-view-set="#{mode}")
-                span =text
+    .page-toolbar
+      .flex-toolbar
+        .flex-toolbar_group
+          /if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+            /button#toggleImage.button.outline type="button" =t('.show_image')
+          a.button.outline(data-fullscreen-toggle)
+            =svg_symbol "#icon-expand", class: 'icon'
+            span.hide-l =t('.fullscreen')
+          -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
+          dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+            dt.button.outline
+              =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
+              span.hide-l =t('.layout')
+            dd
+              -layout_modes.each do |mode, text|
+                a(data-layout-set="#{mode}")
+                  =svg_symbol "#icon-layout-#{mode}", class: 'icon'
+                  span =text
+          -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
+          dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+            dt.button.outline
+              span.hide-l =t('.view_original')
+            dd
+              -view_modes.each do |mode, text|
+                a(data-view-set="#{mode}")
+                  span =text
 
-      .flex-toolbar_group.hide-m
-        label.auto-fullscreen
-          =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
-          |&nbsp;
-          span =t('.always_show_fullscreen')
-
-
-
-      -if !@collection.review_workflow
-        .flex-toolbar_group.push-right
-          =f.label 'needs_review', t('.needs_review')
-          =f.check_box('needs_review', {checked: @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW})
-
-      .flex-toolbar_group class=(@collection.review_workflow ? 'push-right' : '')
-        / check status of page and configuration of collection
-        -if @work.description_status.nil? || @work.description_status == Work::DescriptionStatus::INCOMPLETE || @work.description_status == Work::DescriptionStatus::UNDESCRIBED
-          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
-
-        -if [Work::DescriptionStatus::NEEDS_REVIEW, Work::DescriptionStatus::DESCRIBED].include?(@work.description_status)
-          -if @collection.review_workflow
-            =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
-          -else
-            =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}", class: "bggreen"
-
-        -if [Work::DescriptionStatus::UNDESCRIBED, Work::DescriptionStatus::INCOMPLETE].include?(@work.description_status)
-          -if @collection.review_workflow
-            =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}", class: "bggreen"
-          -else
-            =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}", class: "bggreen"
-
-        -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
-          =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen"
+        .flex-toolbar_group.hide-m
+          label.auto-fullscreen
+            =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
+            |&nbsp;
+            span =t('.always_show_fullscreen')
 
 
 
+        -if !@collection.review_workflow
+          .flex-toolbar_group.push-right
+            =f.label 'needs_review', t('.needs_review')
+            =f.check_box('needs_review', {checked: @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW})
+
+        .flex-toolbar_group class=(@collection.review_workflow ? 'push-right' : '')
+          / check status of page and configuration of collection
+          -if @work.description_status.nil? || @work.description_status == Work::DescriptionStatus::INCOMPLETE || @work.description_status == Work::DescriptionStatus::UNDESCRIBED
+            =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+
+          -if [Work::DescriptionStatus::NEEDS_REVIEW, Work::DescriptionStatus::DESCRIBED].include?(@work.description_status)
+            -if @collection.review_workflow
+              =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
+            -else
+              =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}", class: "bggreen"
+
+          -if [Work::DescriptionStatus::UNDESCRIBED, Work::DescriptionStatus::INCOMPLETE].include?(@work.description_status)
+            -if @collection.review_workflow
+              =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}", class: "bggreen"
+            -else
+              =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}", class: "bggreen"
+
+          -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user&.can_review?(@collection)
+            =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen"
 
 
-  .page-columns(data-layout-mode="#{@layout_mode}")
-    .page-column
-      .page-preview(*language_attrs(@collection))
-        .work-page_content
-          -@work.pages.each do |page|
-            -if page.work.pages_are_meaningful
-              h4.work-page_title =page.title
-
-            .work-page_text[*language_attrs(@collection)]
-              -transcription = xml_to_html(page.xml_text, false)
-              -if page.status == Page::STATUS_BLANK
-                p.nodata_text ==t('.this_page_is_blank')
-              -elsif transcription.present?
-                ==transcription.force_encoding('utf-8')
-      .page-imagescan
-        =render :partial => '/shared/osd_div'
-      .page-original
-        h5= t('.original_metadata')
-        .big =raw(html_metadata_from_work(@work))
 
 
 
-    .page-column
-      -if @collection.description_instructions.present?
-        .fgfaded ==@collection.description_instructions
-      .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
-        =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+    .page-columns(data-layout-mode="#{@layout_mode}")
+      .page-column
+        .page-preview(*language_attrs(@collection))
+          .work-page_content
+            -@work.pages.each do |page|
+              -if page.work.pages_are_meaningful
+                h4.work-page_title =page.title
 
+              .work-page_text[*language_attrs(@collection)]
+                -transcription = xml_to_html(page.xml_text, false)
+                -if page.status == Page::STATUS_BLANK
+                  p.nodata_text ==t('.this_page_is_blank')
+                -elsif transcription.present?
+                  ==transcription.force_encoding('utf-8')
+        .page-imagescan
+          =render :partial => '/shared/osd_div'
+        .page-original
+          h5= t('.original_metadata')
+          .big =raw(html_metadata_from_work(@work))
+
+
+
+      .page-column
+        -if @collection.description_instructions.present?
+          .fgfaded ==@collection.description_instructions
+        .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
+          =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+- else
+  javascript:
+    window.location.href = "#{metadata_overview_collection_work_path(@work.slug)}"
 
 h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
-
-
-=render({ :partial => '/shared/collection_footer' })
-
 
 -content_for :javascript
   javascript:
@@ -194,4 +193,9 @@ h2.legend =t('.notes_and_questions')
         $('#page_needs_review').prop('checked', false);
       });
     });
+
+    $(window).on('load', function() {
+      $('.page-preview').toggle(false);
+      $('.page-original').toggle(false);
+    })
 

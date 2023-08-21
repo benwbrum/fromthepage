@@ -17,6 +17,8 @@ class Deed < ApplicationRecord
   visitable class_name: "Visit" # ahoy integration
 
   before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
+  after_save :update_collections_most_recent_deed
+  after_save :update_works_most_recent_deed
 
   def deed_type_name
     DeedType.name(self.deed_type)
@@ -34,12 +36,35 @@ class Deed < ApplicationRecord
   def calculate_prerender
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
       renderer = ApplicationController.renderer.new
-      self.prerender = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+      locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
+      self.prerender = locales.to_h { |locale| 
+        [ locale, 
+          renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true, locale: locale })
+        ] 
+      }.to_json
     end
   end
 
   def calculate_prerender_mailer
     renderer = ApplicationController.renderer.new
-    self.prerender_mailer = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+    locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
+    self.prerender_mailer = locales.to_h { |locale|
+      [ locale,
+        renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true, locale: locale })
+      ]
+    }.to_json
   end
+
+  def update_collections_most_recent_deed
+    if self.collection
+      self.collection.update(most_recent_deed_created_at: self.created_at)
+    end
+  end
+
+  def update_works_most_recent_deed
+    if self.work
+      self.work.update(most_recent_deed_created_at: self.created_at)
+    end
+  end
+
 end

@@ -11,6 +11,7 @@ class DocumentUpload < ApplicationRecord
     QUEUED = 'queued'
     PROCESSING = 'processing'
     FINISHED = 'finished'
+    ERROR = 'error'
   end
 
   def submit_process

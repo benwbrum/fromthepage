@@ -31,6 +31,7 @@ es:
       edit_metadata_fields: Campos de metadatos
       export: Exportar
       facets: facetas
+      forum: Foro
       overview: Resumen General
       review: Revisar
       sets: Conjuntos
@@ -57,7 +58,7 @@ es:
       brightness: Brillo
       contrast: Contraste
       full_page: Alternar página completa
-      home: Vete a la Página Inicial
+      home: Vete a casa
       image_filters: filtros de imagen
       open_seadragon_needs_js: OpenSeadragon no está disponible a menos que JavaScript esté habilitado.
       rotate_left: Girar a la izquierda

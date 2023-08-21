@@ -5,20 +5,30 @@ class ScCanvas < ApplicationRecord
   belongs_to :page, optional: true
 
   def thumbnail_url
-    service_id = sc_service_id.sub(/\/$/,'')
-    if sc_service_context ==  "http://iiif.io/api/image/1/context.json"
-      "#{service_id}/full/100,/0/native.jpg"
+    if sc_service_id
+      service_id = sc_service_id.sub(/\/$/,'')
+      if sc_service_context ==  "http://iiif.io/api/image/1/context.json"
+        "#{service_id}/full/100,/0/native.jpg"
+      else
+        "#{service_id}/full/100,/0/default.jpg"
+      end
     else
-      "#{service_id}/full/100,/0/default.jpg"
+      sc_resource_id
     end
   end
 
   def facsimile_url
-    "#{sc_service_id}/full/full/0/default.jpg"
+    if sc_service_id
+      "#{sc_service_id}/full/full/0/default.jpg"
+    else
+      sc_resource_id
+    end
   end
 
 
   def transcript_annotations
+    return nil unless self.annotations
+
     annotation_list = JSON.parse(self.annotations)
     transcript_list = annotation_list.detect do |element|
       # Use the page-level annotation if possible
@@ -44,7 +54,9 @@ class ScCanvas < ApplicationRecord
     resource_contents = transcript_list['data']['resources'].first['data']['resource']['data']['chars']
 
     if resource_format == 'text/html'
-      transcript = Nokogiri::HTML(resource_contents).text
+      doc = Nokogiri::HTML(resource_contents)
+      doc.search('br').each { |node| node.replace("\n") }
+      transcript = doc.text
     else
       transcript = resource_contents
     end

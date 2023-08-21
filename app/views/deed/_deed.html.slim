@@ -2,111 +2,113 @@
 -suppress_collection = local_assigns[:suppress_collection]
 -mailer = local_assigns[:mailer] ? true : false
 -prerender = local_assigns[:prerender] ? true : false
+-locale = I18n.locale if local_assigns[:locale].nil?
 
--access_object = nil
--if prerender
-  -access_object = deed.collection
--else
-  -if deed.collection && deed.work
-    -access_object = deed.work.access_object(current_user)
-
--user_name = deed.user.display_name if deed.user
-
--user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
-
--if deed.page.nil?
-  -page = ''
--else
-  -if access_object
-    -page = link_to(deed.page.title, collection_display_page_url(access_object.owner, access_object, deed.work, deed.page, only_path: !mailer))
-  -else
-    -page = deed.page.title
--article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
-
--if(!deed.work.nil? && !deed.work.collection.nil? )
-  -if access_object
-    -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
-  -else
-    -work = deed.work.title
-
--unless(deed.collection.nil?)
+-I18n.with_locale(locale) do
+  -access_object = nil
   -if prerender
-     -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
+    -access_object = deed.collection
   -else
-    -if deed.collection.show_to?(current_user)
+    -if deed.collection && deed.work
+      -access_object = deed.work.access_object(current_user)
+
+  -user_name = deed.user.display_name if deed.user
+
+  -user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
+
+  -if deed.page.nil?
+    -page = ''
+  -else
+    -if access_object
+      -page = link_to(deed.page.title, collection_display_page_url(access_object.owner, access_object, deed.work, deed.page, only_path: !mailer))
+    -else
+      -page = deed.page.title
+  -article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
+
+  -if(!deed.work.nil? && !deed.work.collection.nil? )
+    -if access_object
+      -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
+    -else
+      -work = deed.work.title
+
+  -unless(deed.collection.nil?)
+    -if prerender
       -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
-    -elsif access_object
-      -collection = link_to(access_object.title, collection_url(access_object.owner, access_object, only_path: !mailer ))
     -else
-      -collection = deed.collection.title
--output = "#{user} "
+      -if deed.collection.show_to?(current_user)
+        -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
+      -elsif access_object
+        -collection = link_to(access_object.title, collection_url(access_object.owner, access_object, only_path: !mailer ))
+      -else
+        -collection = deed.collection.title
+  -output = "#{user} "
 
--case deed.deed_type
--when DeedType::PAGE_TRANSCRIPTION
-  -output += t('.transcribed_page', page: page)
+  -case deed.deed_type
+  -when DeedType::PAGE_TRANSCRIPTION
+    -output += t('.transcribed_page', page: page)
 
--when DeedType::PAGE_EDIT
-  -output += t('.edited_page', page: page)
+  -when DeedType::PAGE_EDIT
+    -output += t('.edited_page', page: page)
 
--when DeedType::PAGE_INDEXED
-  -output += t('.indexed_page', page: page)
-  
--when DeedType::PAGE_MARKED_BLANK
-  -output += t('.marked_page_as_blank', page: page)
-
--when DeedType::ARTICLE_EDIT
-  -output += t('.edited_article', article: article)
-
--when DeedType::NOTE_ADDED
-  -output += t('.added_a_note_to_page', page: page)
-
--when DeedType::PAGE_TRANSLATED
-  -output += t('.translated_page', page: page)
-
--when DeedType::PAGE_TRANSLATION_EDIT
-  -output += t('.edited_translation_of_page', page: page)
-
--when DeedType::OCR_CORRECTED
-  -output += t('.corrected_page', page: page)
-
--when DeedType::NEEDS_REVIEW
-  -output += t('.marked_page_as_needing_review', page: page)
-
--when DeedType::PAGE_REVIEWED
-  -output += t('.reviewed_page', page: page)
-
--when DeedType::TRANSLATION_INDEXED
-  -output += t('.indexed_translation_of_page', page: page)
-
--when DeedType::TRANSLATION_REVIEW
-  -output += t('.marked_translation_page_as_needing_review', page: page)
-
--when DeedType::TRANSLATION_REVIEWED
-  -output += t('.reviewed_translation', page: page)
-
--when DeedType::WORK_ADDED
-  -output += t('.added_work', work: work)
-
--when DeedType::COLLECTION_JOINED
-    -output += t('.joined')
+  -when DeedType::PAGE_INDEXED
+    -output += t('.indexed_page', page: page)
     
-    -if deed.collection.nil?
-      -output += t('.this_collection')
-    -else
-      -output += collection
+  -when DeedType::PAGE_MARKED_BLANK
+    -output += t('.marked_page_as_blank', page: page)
 
--when DeedType::DESCRIBED_METADATA
-  -output += t('.described_metadata')
+  -when DeedType::ARTICLE_EDIT
+    -output += t('.edited_article', article: article)
 
--when DeedType::EDITED_METADATA
-  -output += t('.edited_metadata')
+  -when DeedType::NOTE_ADDED
+    -output += t('.added_a_note_to_page', page: page)
 
--if(!deed.work.nil?)
-  -output += t('.in_the_work', work: work)
+  -when DeedType::PAGE_TRANSLATED
+    -output += t('.translated_page', page: page)
 
--if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED && !suppress_collection)
-  -output += t('.in_collection', collection: collection)
+  -when DeedType::PAGE_TRANSLATION_EDIT
+    -output += t('.edited_translation_of_page', page: page)
 
--if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
-  -output += t('.saying_deed', title: deed.note.title).html_safe
-==output
+  -when DeedType::OCR_CORRECTED
+    -output += t('.corrected_page', page: page)
+
+  -when DeedType::NEEDS_REVIEW
+    -output += t('.marked_page_as_needing_review', page: page)
+
+  -when DeedType::PAGE_REVIEWED
+    -output += t('.reviewed_page', page: page)
+
+  -when DeedType::TRANSLATION_INDEXED
+    -output += t('.indexed_translation_of_page', page: page)
+
+  -when DeedType::TRANSLATION_REVIEW
+    -output += t('.marked_translation_page_as_needing_review', page: page)
+
+  -when DeedType::TRANSLATION_REVIEWED
+    -output += t('.reviewed_translation', page: page)
+
+  -when DeedType::WORK_ADDED
+    -output += t('.added_work', work: work)
+
+  -when DeedType::COLLECTION_JOINED
+      -output += t('.joined')
+      
+      -if deed.collection.nil?
+        -output += t('.this_collection')
+      -else
+        -output += collection
+
+  -when DeedType::DESCRIBED_METADATA
+    -output += t('.described_metadata')
+
+  -when DeedType::EDITED_METADATA
+    -output += t('.edited_metadata')
+
+  -if(!deed.work.nil?)
+    -output += t('.in_the_work', work: work)
+
+  -if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED && !suppress_collection)
+    -output += t('.in_collection', collection: collection)
+
+  -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
+    -output += t('.saying_deed', title: deed.note.title).html_safe
+  ==output

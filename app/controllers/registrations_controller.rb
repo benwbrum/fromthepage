@@ -40,9 +40,17 @@ class RegistrationsController < Devise::RegistrationsController
     yield resource if block_given?
       
     if check_recaptcha(model: @user) && @user.save
+      # Record the `joined` deed based on Ahoy Visit
+      join_collection = joined_from_collection(current_visit.id)
+      unless join_collection.nil?
+        @user.join_collection(join_collection)
+        new_mobile_user = helpers.mobile_device?
+      end
+
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
+        session[:new_mobile_user] = new_mobile_user
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
@@ -54,9 +62,6 @@ class RegistrationsController < Devise::RegistrationsController
         session[:guest_user_id] = nil
       end
       
-      # Record the `joined` deed based on Ahoy Visit
-      join_collection = joined_from_collection(current_visit.id)
-      @user.join_collection(join_collection) unless join_collection.nil?
       if @user.owner
         @user.account_type="Trial"
         @user.save
@@ -69,6 +74,24 @@ class RegistrationsController < Devise::RegistrationsController
         @minimum_password_length = resource_class.password_length.min
       end
       respond_with resource
+    end
+  end
+
+  def update
+    @user.login = sign_up_params[:login]
+    @user.email = sign_up_params[:email]
+    @user.real_name = sign_up_params[:real_name]
+    unless sign_up_params[:password].blank?
+      @user.password=sign_up_params[:password]
+      @user.password_confirmation=sign_up_params[:password_confirmation]
+    end
+
+    if @user.save
+      bypass_sign_in(@user)
+      flash[:notice] = t('user.update.user_updated')
+      ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
+    else
+      render :controller => 'user', :action => 'edit'
     end
   end
 
@@ -97,7 +120,7 @@ class RegistrationsController < Devise::RegistrationsController
       "#{dashboard_owner_path}#freetrial" 
     else
       # New users should be returned to where they were or to their dashboard/watchlist
-      if session[:user_return_to]
+      if session[:user_return_to] && !landing_pages.include?(session[:user_return_to])
         session[:user_return_to]
       elsif @owner
         user_profile_path(@owner)
@@ -131,4 +154,17 @@ class RegistrationsController < Devise::RegistrationsController
     collection = first_event.properties["collection_id"] || nil
     return collection
   end
+
+  def landing_pages
+    [
+      signup_path,
+      root_path,
+      special_collections_path,
+      public_libraries_path,
+      digital_scholarship_path,
+      state_archives_path
+    ]
+  end
+
+
 end

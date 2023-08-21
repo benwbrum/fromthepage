@@ -25,8 +25,9 @@ es:
       add_new_collection: Agregar nueva colección
       create_empty_work: Crear trabajo vacío
       create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en la obra.
-      create_work: Crear trabajo
+      create_work: Crear obra
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       select_a_collection: "- Seleccione una colección -"
       title: Título
     exports:
@@ -38,22 +39,23 @@ es:
       exported_item: Colección/Obra exportada
       facing_edition_work: Edición enfrentada PDF (obra)
       html_page: HTML (página)
-      html_work: HTML (trabajo)
+      html_work: HTML (obra)
       plaintext_emended_page: Texto sin formato analítico (página)
-      plaintext_emended_work: Texto sin formato analítico (trabajo)
+      plaintext_emended_work: Texto sin formato analítico (obra)
       plaintext_searchable_page: Texto sin formato que se puede buscar (página)
-      plaintext_searchable_work: Texto sin formato que se puede buscar (trabajo)
+      plaintext_searchable_work: Texto sin formato que se puede buscar (obra)
       plaintext_verbatim_page: Texto sin formato textual (página)
-      plaintext_verbatim_work: Texto sin formato textual (trabajo)
+      plaintext_verbatim_work: Texto sin formato textual (obra)
       refresh: Actualizar
       reload_this_page_to: Vuelva a cargar esta página para actualizar la lista.
       status: Estado
       subject_csv_collection: Índice de materias CSV (colección)
       table_csv_collection: CSV de campo/tabla (colección)
-      table_csv_work: CSV de campo/tabla (trabajo)
-      tei_work: TEX-XML (trabajo)
-      text_docx_work: MS Word .docx (trabajo)
-      text_pdf_work: Texto PDF (trabajo)
+      table_csv_work: CSV de campo/tabla (obra)
+      tei_work: TEX-XML (obra)
+      text_docx_work: MS Word .docx (obra)
+      text_only_pdf_work: Texto PDF sencillo (obra)
+      text_pdf_work: Texto PDF (obra)
       work_metadata_csv: Metadatos de trabajo (colección)
     guest_header:
       recent_activity: Actividad reciente
@@ -87,19 +89,30 @@ es:
       page_image_guidelines: Guías para Imagen de Página
       paste_in_the_url: Pega el URL del objeto compuesto de tu sitio CONTENTdm.
     owner:
+      active_collections: Colecciones activas
       create_a_collection: crear una colección
       document_sets: Conjuntos de Documentos
-      see_all_works: Consulte Todas las Obras...
+      inactive_collections: Colecciones inactivas
+      n_works:
+        one: '1 trabajo:'
+        other: "%{count} funciona:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar Un Proyecto
       there_are_no_works: Todavía no hay obras en esta colección
-      total_work_count: 'Recuento total de obras: %{count}'
-      you_can_add_another_work: Puedes añadir otra obra bajo %{start_project}
       you_can_new_collection: Puedes %{new_collection}
       you_can_upload_documents: Puedes subir documentos en %{start_project}
       you_dont_have_any_collections: No hay colecciones todavía
       your_activity: Tu Actividad
     owner_header:
       account_type: "%{type} cuenta"
+      account_types:
+        individual_researcher: investigador individual
+        large_institution: institución grande
+        legacy: legado
+        small_organization: organización pequeña
+        staff: personal
+        trial: prueba
       actions: Comportamiento
       collection:
         one: Recopilación
@@ -144,6 +157,5 @@ es:
       collections: colecciones
       private_collections_you_belong_to: Colecciones Privadas a las que Perteneces
       projects_you_have_contributed_to: Los proyectos a los que has contribuido -- transcribiendo, editando o comentando -- se enumerarán aquí con su actividad más reciente para que puedas mantenerte al día con lo que está sucediendo.
-      time_ago_in_words: Hace %{time}
       try_transcribing_a_page: 'Aún no has participado en ningún proyecto.  Intenta transcribir una página de uno de estos '
       your_activity: Tu Actividad

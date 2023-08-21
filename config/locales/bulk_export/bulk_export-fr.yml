@@ -3,7 +3,9 @@ fr:
   bulk_export:
     create:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
-    create_for_work:
+    create_for_owner:
+      export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
+    create_for_work_actual:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
     download:
       download_cleaned_message: Ce téléchargement d'exportation a été nettoyé. Veuillez en commencer un nouveau.
@@ -21,14 +23,25 @@ fr:
       expanded_plaintext: Texte brut étendu
       expanded_plaintext_description: Comme le texte brut verbatim, ce fichier de texte brut représentera les sauts de ligne avec un seul saut de ligne, les sauts de paragraphe avec un double saut de ligne et les sauts de page avec un triple saut de ligne. Il diffère du texte verbatim, en ce que la normalisation sera appliquée à tous les sujets mentionnés, de sorte que si le texte verbatim peut se lire "J'ai salué M. Jones et sa femme ce matin.", le texte en clair modifié se lira "J'ai salué James Jones et Elizabeth Smith Jones ce matin ». Ce texte artificiel est utile pour l'analyse programmatique, mais n'est pas destiné à être lu par des humains.
       export_all_works: Exporter toutes les œuvres
+      export_work_metadata: Exporter les métadonnées de œuvre
+      export_work_metadata_as_csv: Exporter les métadonnées de œuvre au format CSV
+      export_work_metadata_description: Exporter une feuille de calcul contenant une ligne pour chaque œuvre de la collection, avec des colonnes pour les statistiques sur les pages transcrites et les métadonnées de l'œuvre.
       facing_edition_pdf: Livret PDF
       facing_edition_pdf_description: Un fichier PDF contenant des images et des transcriptions sur les pages opposées.
+      file_formats: Formats d'exportation
+      file_organization: Organisation des dossiers
+      format_options: Options de mise en forme
       html: HTML
       html_description: Cela peut être utile pour la conservation dans d'autres systèmes ou comme point de départ pour l'affichage sur un autre site Web.
       one_file_per_collection: Un fichier par collection
       one_file_per_page: Un fichier par page
       one_file_per_work: Un fichier par œuvre
       one_site_per_collection: Un site par collection
+      organization: Organisation des dossiers
+      organization_description: Les fichiers zip peuvent être organisés avec un dossier par œuvre contenant des fichiers ou des sous-dossiers pour chaque format d'exportation, ou avec un dossier par format d'exportation contenant des fichiers par œuvre.
+      organization_format: Formater les dossiers
+      organization_work: Dossiers de travail
+      preserve_linebreaks: Conserver les sauts de ligne
       previous_exports: Exportations précédentes
       search_optimized_plaintext: Texte brut optimisé pour la recherche
       search_optimized_plaintext_description: Une version en clair de l'œuvre optimisée pour la recherche en texte intégral. Cette version contient une transcription textuelle en clair de chaque page (comme décrit ci-dessus), sauf que les mots coupés par des sauts de ligne sont joints ensemble, et une liste des noms canoniques mentionnés dans chaque page est ajoutée à la fin de la page.
@@ -46,9 +59,14 @@ fr:
       tei_xml_description: Cela peut être utile aux éditeurs qui envisagent de faire un balisage supplémentaire dans les éditeurs TEI-XML comme oXygen.
       text_docx: Texte DOCX
       text_docx_description: Un fichier MS-Word (.docx) contenant des transcriptions de texte.
+      text_only_pdf: Texte PDF seulement
+      text_only_pdf_description: Un fichier PDF contenant des transcriptions de texte sans métadonnées.
       text_pdf: Texte PDF
       text_pdf_description: Un fichier PDF contenant des transcriptions de texte.
       time: Temps
+      use_uploaded_filename: Noms de fichiers/dossiers
+      use_uploaded_filename_description: Les fichiers ou dossiers d'exportation sont basés sur le slug de travail par défaut. Si une œuvre a été téléchargée à l'origine, vous pouvez utiliser le nom de fichier d'origine pour les exportations à la place.
+      use_uploaded_filename_label: Utilisez des noms originaux
       verbatim_plaintext: Texte brut verbatim
       verbatim_plaintext_description: Ce fichier de texte brut représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.
       work_metadata_csv: Métadonnées CSV

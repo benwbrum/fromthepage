@@ -3,12 +3,9 @@ es:
   statistics:
     collaborator_time:
       collaborator_time: Tiempo del colaborador
-      collaborator_time_for_dates: Hora del colaborador para fechas
-      end_date: Fecha final
-      export_activity_as_csv: Exportar actividad detallada como CSV
-      no_activity_for_date_range: No hay actividad para este intervalo de fechas.
-      start_date: Fecha de inicio
-      update: Actualizar
+      collaborator_time_description: Una hoja de cálculo de la cantidad de minutos que cada usuario contribuyó por día en el intervalo de fechas.
+      collaborator_time_export_button: Exportar hoja de cálculo de tiempo de colaborador
+      no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
       user_totals_for_dates: Totales de usuarios para fechas
     collaborators:
       collaborators: Colaboradores
@@ -70,6 +67,9 @@ es:
       work:
         one: Trabajo
         other: Trabajos
+      work_transcribed:
+        one: Obra transcrita
+        other: Obras transcritas
       works_described:
         one: trabajo descrito
         other: obras descritas
@@ -114,10 +114,10 @@ es:
       collaborator:
         one: Colaborador
         other: Colaboradores
+      end_date: Fecha final
       incomplete_page:
         one: página incompleta
         other: páginas incompletas
-      last_days_statistics: Estadísticas de los últimos 7 días
       new_subject:
         one: Nuevo tema
         other: Nuevos temas
@@ -151,12 +151,16 @@ es:
       reference:
         one: Referencia
         other: Referencias
+      select_new_date: Seleccione un nuevo intervalo de fechas
+      start_date: Fecha de inicio
+      statistics_from: Estadísticas de %{start_date} a %{end_date}
       subject:
         one: Tema
         other: Temas
       total_page:
         one: Página total
         other: Páginas totales
+      update: Actualizar
       work:
         one: Trabajo
         other: Trabajos

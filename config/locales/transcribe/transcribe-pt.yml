@@ -18,12 +18,16 @@ pt:
       image_at_the_left: Imagem à esquerda
       image_at_the_right: Imagem à direita
       image_at_the_top: Imagem superior
+      layout: Esquema
       mark_as_blank: Marcar como em branco
+      mark_blank_warning: Esta página contém dados transcritos, mas você a está marcando como vazia. Deseja continuar?
       microphone: Microfone
       more_help: Mais ajuda....
       needs_review: Precisa de Revisão
+      notes_and_questions: Notas e perguntas
       this_page_marked_blank: Esta página foi marcada como em branco
       this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão\". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
+      this_page_marked_needs_review_workflow_version: Esta página precisa de revisão. Você pode melhorar esta página revisando-a em relação ao original e adicionando ou corrigindo o texto e, em seguida, aprove o texto.
       title: 'Título:'
     goto_next_untranscribed_page:
       another_page_notice: Aqui está outra página nesta obra.
@@ -40,9 +44,16 @@ pt:
     save_buttons:
       approve: Confirmar
       approve_to_transcribed_tooltip: Salve e aprove esta página
+      autolink: Autolink
+      autolink_tooltip: Sugerir tags de assunto automaticamente
       done: Feito
+      edit: Editar
+      edit_tooltip: Edite essa página
       finish_to_needs_review_tooltip: Salvar uma página completa
       finish_to_transcribed_tooltip: Salvar uma página completa
+      please_wait: Por favor, espere...
+      preview: Visualizar
+      preview_tooltip: Visualizar esta página
       save_changes: Salvar
       save_to_incomplete_tooltip: Salvar uma página incompleta
       save_to_needs_review_tooltip: Salve suas alterações
@@ -50,24 +61,29 @@ pt:
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
       saved_notice: Guardada
-      you_may_save_notice: Você pode guardar até %{guest_deed_ count} transcrições como hóspede.
+      you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     save_translation:
       error_message: 'Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
-      notice: Você pode guardar até %{guest_deed_ count} transcrições como hóspede.
+      notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     translate:
       autolink: Link automático
+      corrected: corrigido
       edit: Editar
       edit_translation: Editar tradução
+      help_correct: ajudar a corrigir
+      help_transcribe: ajude a transcrever
       mark_as_blank: Marcar como em branco
       mark_the_page_blank: marcar a página como em branco
       microphone: Microfone
-      or_mark_blank: "<br>ou %{mark_ blank}"
+      or_mark_blank: "<br>ou %{mark_blank}"
       page_needs_review: Página Precisa de Revisão
       page_notes: Notas da Página
       please_help_this_page: Por favor %{help_link} esta página
       preview: Pré-Visualizar
       save_changes: Guardar Alterações
       show_image: Mostrar Imagem
+      show_transcription: Mostrar transcrição
       this_page_is_blank: Esta página está em branco
       this_page_is_not: Esta página não é %{text_type}
       this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
+      transcribed: transcrito

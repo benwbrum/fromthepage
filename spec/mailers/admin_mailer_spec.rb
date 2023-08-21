@@ -98,6 +98,17 @@ RSpec.describe AdminMailer, type: :mailer do
         expect(mail.html_part.body.decoded).to match(@old_collaborator.display_name)
         @new_deed.destroy
       end
+      it "doesn't show language hashes" do
+        @new_deed = create(:deed, {
+          deed_type: DeedType::WORK_ADDED,
+          collection_id: @collection.id,
+          user_id: @old_collaborator.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+        expect(mail.html_part.body.decoded).not_to match('{"en":')
+        @new_deed.destroy
+      end
       it "doesn't show other activity if there isn't any" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver

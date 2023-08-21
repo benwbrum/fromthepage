@@ -1,6 +1,10 @@
 ---
 pt:
   devise:
+    confirm_password: Confirme a Senha
+    create_account: Criar uma conta
+    display_name: Nome em Exibição
+    email_address: Endereço de email
     failure:
       already_authenticated: Você já entrou na sua conta.
       inactive: A sua conta ainda não foi ativada.
@@ -8,27 +12,96 @@ pt:
       not_found_in_database: "%{authentication_keys} ou senha inválidos."
       timeout: A sua sessão expirou. Por favor, entre na sua conta novamente para continuar.
       unauthenticated: Você tem que entrar na sua conta ou se inscrever numa conta antes de continuar.
+    login: Conecte-se
     mailer:
       reset_password_instructions:
+        change_my_password: Mudar minha senha
+        greeting: Olá %{email}!
+        message_1: 'Alguém solicitou um link para alterar sua senha. Você pode fazer isso através do link abaixo:'
+        message_2: Se você não solicitou isso, ignore este e-mail.
+        message_3: Sua senha não será alterada até que você acesse o link acima e crie uma nova.
         subject: Instruções para redefinir a senha
     omniauth_callbacks:
       failure: Não foi possível autenticar você com %{kind} porque "%{reason}".
       success: Foi autenticado com sucesso a partir da conta de %{kind}.
+    password: Senha
     passwords:
+      edit:
+        change_password: Mudar senha
+        change_password_message: Crie uma nova senha para sua conta. A senha deve ter pelo menos 8 caracteres e conter letras e números. Por favor, não use a mesma senha que você usa para seu banco online ou conta de e-mail!
+        new_password: Nova Senha
+      new:
+        message: Insira o endereço de e-mail associado à sua conta FromThePage. Se o seu endereço de e-mail existir em nosso banco de dados, você receberá um link de recuperação de senha em seu endereço de e-mail em alguns minutos.
+        password_recovery: Recuperação de senha
+        recover_password: Recuperar senha
       no_token: Você não pode acessar esta página sem utilizar o link enviado através de um email de redefinição de senha. Se você utilizou um link enviado através de um email de redefinição de senha, por favor, certifique-se que você usou o URL completo fornecido.
       send_instructions: Você receberá um e-mail com instruções para redefinir a sua senha em poucos minutos.
       send_paranoid_instructions: Se o seu endereço de e-mail existe em nossa base de dados, você receberá um link de recuperação de senha no seu e-mail em poucos minutos.
       updated: A sua senha foi alterada com sucesso. Você já entrou na sua conta.
       updated_not_active: A sua senha foi alterada com sucesso.
+    real_name: Nome real
+    real_name_message: Os projetos podem usar isso ao dar crédito a você. Deixe em branco se não quiser ser creditado.
+    receive_activity_emails: Receba e-mails de atividades
     registrations:
+      choose_saml:
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
+        institution: Instituição
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
+        sign_in_with_institution: Faça login com sua instituição
       destroyed: Tchau! A sua conta foi cancelada com sucesso. Esperamos voltar a ver você em breve.
+      edit:
+        confirm_delete_account: Tem certeza de que deseja excluir sua conta? Depois de excluir a conta, você não poderá recuperá-la!
+        current_password: Senha atual
+        delete_account: Deletar conta
+        edit_account: Editar conta
+        message: Aqui você pode alterar as informações da sua conta. Se você não quiser alterar sua senha, deixe os campos de senha em branco. Você é obrigado a digitar sua senha atual para confirmar as alterações.
+        new_password: Nova Senha
+        save_changes: Salvar alterações
+        waiting_confirmation_message: Atualmente aguardando confirmação para %{resource}
+      new_trial:
+        fill_in_the_following: Por favor, preencha as seguintes informações para criar uma avaliação de duzentas páginas
+        just_want_to_transcribe: Quer apenas transcrever? %{sign_up_here}
+        login: Conecte-se
+        message: Preencha as informações a seguir para criar uma conta de proprietário do projeto FromThePage de avaliação de duzentas páginas. Tem perguntas? %{schedule_a_kickoff_call}
+        project_owner_account_have: Conta do proprietário do projeto FromThePage. Tem perguntas?
+        schedule_a_kickoff_call: Agende uma chamada inicial.
+        sign_up_for_trial: Inscreva-se para um teste
+        sign_up_here: Assine aqui
+        want_to_transcribe: quer transcrever?
+      owner_new:
+        projects_may_use_this: Os projetos podem usar isso ao dar crédito a você. Deixe em branco se não quiser ser creditado.
+        you_ll_use_this: Você usará esse nome para fazer login. Ele será exibido publicamente.
       signed_up: Bem-vindo! A sua conta foi criada com sucesso.
       updated: A sua conta foi atualizada com sucesso.
       updated_but_not_signed_in: Sua conta foi atualizada com sucesso, mas como sua senha foi alterada, você precisa entrar novamente
     sessions:
       already_signed_out: Saiu com sucesso.
+      new:
+        forgot_your_password: Esqueceu sua senha?
+        or: ou
+        remember_me: " Lembre de mim"
+        sign_in_with_institution: Faça login com sua instituição (SSO)
+        sign_up_as_transcriber_message: Quer participar de um projeto existente como transcritor? Inscreva-se como um transcritor.
+        sign_up_now: Inscreva-se agora
+        start_free_trial: Iniciar avaliação gratuita
+        start_free_trial_message: Quer começar um novo projeto de transcrição? Inicie um teste gratuito.
       signed_in: Entrou com sucesso.
       signed_out: Saiu com sucesso.
+    shared:
+      links:
+        forgot_your_password: Esqueceu sua senha?
+        no_confirmation_instructions: Não recebeu as instruções de confirmação?
+        no_unlock_instructions: Não recebeu instruções de desbloqueio?
+        sign_in_existing_account: Faça login na conta existente
+        sign_in_with_google: Faça login no Google
+        sign_in_with_institution: Faça login com sua instituição (SSO)
+        sign_up_new_account: Registe-se para uma nova conta
+    sign_in: Entrar
+    sign_up: Inscrever-se
+    user_name: Nome de usuário
+    user_name_message: Você usará esse nome para fazer login. Ele será exibido publicamente.
   errors:
     messages:
       expired: expirou, por favor solicite um novo

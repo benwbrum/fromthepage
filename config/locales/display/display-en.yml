@@ -52,6 +52,7 @@ en:
       search_for: Search for %{search_string}
       search_in_collection: Search in collection...
       search_in_collection_1: Search in collection
+      search_in_work: Search in work...
       translations_need_indexing: Translations That Need Indexing
       translations_need_review: Translations That Need Review
       view_all_pages: View All Pages
@@ -67,7 +68,6 @@ en:
       no_pages_needing_transcription_found_these_pages_are_incomplete: No pages need transcription from scratch.  These pages have been partially transcribed but need to be completed.
       page_not_translated: This page is not translated, please %{help_translate} this page
       pages_needing_completion: Pages needing completion
-      pages_that_need_transcription: Pages That Need Transcription
       review_metadata: Review Metadata
       this_page_is_blank: This page is blank
       this_page_is_incomplete: This page is incomplete
@@ -75,6 +75,17 @@ en:
       transcribed: transcribed
       translation: Translation
       unable_to_find_pages: We were unable to find any pages matching your request
+    read_all_works:
+      pages: Pages
+      pages_that_mention: Pages That Mention %{article}
+    read_work:
+      pages: Pages
+      pages_need_indexing: Pages That Need Indexing
+      pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
+      pages_need_translation: Pages That Need Translation
+      translations_need_indexing: Translations That Need Indexing
+      translations_need_review: Translations That Need Review
   display_helper:
     page_action:
       blank_page: Blank page

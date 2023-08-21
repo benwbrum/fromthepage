@@ -7,9 +7,11 @@ es:
   date:
     formats:
       default: "%d de %b de %Y"
+  de: Deutsch
   en: English
   es: Español
   fr: Français
+  message_boards_are_disabled: El foro para %{project} ha sido deshabilitado.
   pt: Português
   time:
     formats:

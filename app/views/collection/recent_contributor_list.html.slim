@@ -27,9 +27,6 @@ p =t '.recent_contributor_description'
           td.vbottom =user.display_name
           td.vbottom =user_deeds.last.created_at
           td.vbottom =user_deeds.count
-  
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

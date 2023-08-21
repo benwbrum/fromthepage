@@ -29,10 +29,25 @@ module Fromthepage
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
     config.i18n.default_locale = :en
-    config.i18n.available_locales = [:en, :es, :fr, :pt]
+    config.i18n.available_locales = [:de, :en, :'en-GB', :es, :fr, :'fr-CA', :pt]
     config.i18n.fallbacks = true
     config.i18n.fallbacks = [:en]
+
+
+
+  # load overrides for Thredded and other engines
+  # config/application.rb
+    overrides = "#{Rails.root}/app/overrides"
+    Rails.autoloaders.main.ignore(overrides)
+
+    config.to_prepare do
+      Dir.glob("#{overrides}/**/*_override.rb").each do |override|
+        load override
+      end
+    end
+
   end
+
   #uncomment for development of SSO
   #Rails.application.config.action_controller.forgery_protection_origin_check=false
 end

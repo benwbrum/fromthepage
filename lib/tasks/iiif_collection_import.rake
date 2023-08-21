@@ -4,7 +4,6 @@ namespace :fromthepage do
   task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr] => :environment do |t, args|
   
     sc_collection = ScCollection.find_by(id: args.sc_collection_id)
-    service = find_service(sc_collection.at_id)
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id
     user_id = args.user_id
@@ -23,14 +22,25 @@ namespace :fromthepage do
     puts "collection_id is #{collection_id.inspect}"
     errors = {}
 
-    service.manifests.each_with_index do |manifest, index|
+    if sc_collection.v3?
+      sc_collection.v3_hash = fetch_manifest(sc_collection.at_id)
+    else
+      sc_collection.service = fetch_service(sc_collection.at_id)
+    end
+
+    sc_collection.manifests.each_with_index do |manifest, index|
       if manifest_array.include?(index.to_s)
         begin
-          at_id = manifest["@id"]
-          print "\n[#{index}/#{service.manifests.count}] attempting #{at_id}\n"
-          sc_manifest = ScManifest.manifest_for_at_id(at_id)
+          at_id = manifest["@id"] || manifest['id']
+          print "\n[#{index}/#{sc_collection.manifests.count}] attempting #{at_id}\n"
+          if sc_collection.v3?
+            # TODO
+            sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id)) # fetch the manifest
+          else
+            sc_manifest = ScManifest.manifest_for_at_id(at_id)
+          end
           work = nil
-          work = sc_manifest.convert_with_collection(user, collection)
+          work = sc_manifest.convert_with_collection(user, collection, nil, import_ocr)
           if document_set
             document_set.works << work
           end
@@ -44,6 +54,7 @@ namespace :fromthepage do
           end
         rescue => e
           puts "#{e.message}"
+          puts e.backtrace.join("\n")
           errors.store(at_id, e.message)
 #          errors.store(at_id, e.backtrace.join("\n"))
         end
@@ -65,13 +76,21 @@ namespace :fromthepage do
 
   end
   
-  def find_service(at_id)
+  def fetch_service(at_id)
+    IIIF::Service.parse(fetch_raw(at_id))
+  end
+  
+
+  def fetch_manifest(at_id)
+    JSON.parse(fetch_raw(at_id))
+  end
+
+  def fetch_raw(at_id)
     puts "Importing #{at_id}"
     connection = URI.open(at_id)
     manifest_json = connection.read
-    service = IIIF::Service.parse(manifest_json)
-    return service
+
+    manifest_json
   end
-  
 
 end

@@ -5,35 +5,41 @@ pt:
       connect: Conectar
       contentdm_credentials: Credenciais do CONTENTdm
       contentdm_credentials_description: Insira sua chave de licença do CONTENTdm e suas credenciais de login para exportar para o CONTENTdm
+      contentdm_password: senha do CONTENTdm
+      contentdm_user_name: nome de usuário do CONTENTdm
+      license_key: Chave de licença
+    facing_edition:
+      contributions_message: 'Este documento não seria possível sem as contribuições editoriais das seguintes pessoas:'
+      export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
     index:
-      export_all_table_data_as_csv: Exportar todas as tabelas como CSV
-      export_all_tables: Exportar todas as tabelas
-      export_all_tables_description: Clique no botão para exportar os dados da tabela de toda a coleção em um único arquivo CSV. Observe que o processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.
+      api: API
+      export_all_notes: Exportar todas as notas
+      export_all_notes_as_csv: Exportar todas as notas como CSV
+      export_all_notes_description: Exporte todas as notas de toda a coleção em um arquivo CSV.
       export_all_works: Exportar todo o trabalho
       export_all_works_description: Escolha formatos e granularidades para exportar toda a coleção em um arquivo zip.
       export_as: Exportar como
       export_individual_works: Exportar Obras Individuais
       export_individual_works_description: Você pode escolher exportar trabalhos individuais em vários formatos de arquivo. O XHTML exporta um trabalho como um arquivo XHTML de uma página com transcrições, comentários do usuário, artigos de assunto e HREFs internos vinculando assuntos e páginas. O TEI exporta uma obra como um documento TEI-XML compatível com P5. O texto é texto simples. A exportação zip fornecerá todos os formatos de um trabalho e granularidade de página.
-      export_subject_coocurrence_as_csv: Exportar coocorrências como CSV
-      export_subject_coocurrence_description: Clique no botão para exportar um arquivo CSV com uma linha para cada combinação de assuntos na coleção que são mencionados na mesma página. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subject_details_as_csv: Exportar sujeitos como CSV
-      export_subject_details_description: Clique no botão para exportar um arquivo CSV com uma linha para cada assunto da coleção. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subject_index: Exportar sujeitos
-      export_subject_index_description: Clique no botão para exportar índices de assuntos de toda a coleção em um único arquivo CSV. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subjects_as_csv: Exportar índice como CSV
       export_to_contentdm: Exportar para CONTENTdm
       export_to_contentdm_description: Clique no botão para exportar as transcrições concluídas de toda a coleção para o CONTENTdm.
-      export_work_metadata: Exportar metadados de trabalho
-      export_work_metadata_as_csv: Exportar metadados de trabalho como CSV
-      export_work_metadata_description: Exporte uma planilha contendo uma linha para cada obra da coleção, com colunas para estatísticas sobre as páginas transcritas e metadados da obra.
+      here: aqui
+      html: HTML
+      iiif: IIIF
       iiif_api_description: Também temos uma API baseada em IIIF para exportar transcrições de forma programática de suas coleções. Saber mais %{link}
       iiif_collection_api_endpoint: 'IIIF Collection API Endpoint: %{link}'
       indexed: Indexado
+      more: Mais
+      more_export_formats: Formatos de exportação adicionais
+      n_pages:
+        one: 1 página
+        other: "%{count} páginas"
       pages: Páginas
       plain_text: texto simples
       progress: Progresso
       review: Análise
       table_csv: Tabela CSV
+      tei: TEI
       work_title: Título de trabalho
     show:
       categories: 'Categorias:'

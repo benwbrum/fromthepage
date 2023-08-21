@@ -20,15 +20,15 @@ RSpec.describe AbstractXmlHelper, type: :helper do
   end
 
   it "returns a <span> tag without a hyphen with preserve_lb=false" do
-    expect(xml_to_html(@xml_text, false, true)).to include("pron<span class='line-break'></span>ounciation")
-    expect(xml_to_html(@xml_text, false, true)).to include("Faith<span class='line-break'></span>fully")
+    expect(xml_to_html(@xml_text, false, true)).to include("pron<span class=\"line-break\"></span>ounciation")
+    expect(xml_to_html(@xml_text, false, true)).to include("Faith<span class=\"line-break\"></span>fully")
   end
 
   context "with params" do
     let(:params) { { action: "read_work" } }
 
     it "returns a whitespace after a hard break with preserve_lb=false" do
-      expect(xml_to_html(@xml_text, false, true)).to include("guide the reader <span class='line-break'> </span>to")
+      expect(xml_to_html(@xml_text, false, true)).to include("guide the reader <span class=\"line-break\"> </span>to")
     end
   end
 end
