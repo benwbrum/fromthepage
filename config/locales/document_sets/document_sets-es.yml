@@ -23,7 +23,7 @@ es:
       edit: Editar
       focusing_transcriber_effort: Concentrando el esfuerzo del transcriptor en un grupo particular de obras.
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       no_document_sets: Esta colección no tiene conjuntos de documentos
       privacy: Privacidad
@@ -49,7 +49,7 @@ es:
     set_works:
       collaboration: Colaboración
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
       remove_from_set: Eliminar del conjunto
@@ -63,7 +63,7 @@ es:
       add_collaborator: Añadir colaborador
       add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
       collaborators_may_transcribe: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
-      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos los trabajos y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
+      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
       document_set_collaborators: Colaboradores del Conjunto de Documentos
       document_set_image: Imagen del Conjunto de Documentos
       document_set_privacy: Privacidad del Conjunto de Documentos
@@ -77,7 +77,7 @@ es:
         one: 1 contribución
         other: "%{count} contribuciones"
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas: pl"
       no_image: No Hay Imagen
       picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
@@ -91,7 +91,7 @@ es:
     transfer:
       source_and_target_can_not_be_the_same: El origen y el destino no pueden ser el mismo.
     transfer_form:
-      all: todos los trabajos
+      all: todos las obras
       cancel: Cancelar
       completed: Solo obras terminadas
       copy: Copiar (no crea obras duplicadas)
@@ -102,6 +102,6 @@ es:
       transfer: Transferir
       transfer_type_label: Tipo de transferencia
       transfer_works: Transferencia de obras
-      transfer_works_description: Transferir trabajos entre conjuntos de documentos. (La copia colocará el mismo trabajo dentro de dos conjuntos de documentos al mismo tiempo).
+      transfer_works_description: Transferir obras entre conjuntos de documentos. (La copia colocará la mimsa obra dentro de dos conjuntos de documentos al mismo tiempo).
     update:
       document_updated: El documento ha sido actualizado

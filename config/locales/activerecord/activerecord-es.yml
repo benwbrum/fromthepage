@@ -47,7 +47,7 @@ es:
         one: página
         other: paginas
       work:
-        one: trabajar
+        one: obra
         other: obras
   errors:
     messages:
