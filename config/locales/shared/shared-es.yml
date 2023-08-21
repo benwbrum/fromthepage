@@ -4,6 +4,7 @@ es:
     article_tabs:
       overview: Resumen General
       settings: Configuración
+      subject: tema
       versions: Versiones
     codemirror:
       abbr_description: Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan.
@@ -25,25 +26,64 @@ es:
     collection_tabs:
       add_work: Añadir Obra
       collaborators: Colaboradores
+      collection: recopilación
       edit_fields: Campos
+      edit_metadata_fields: Campos de metadatos
       export: Exportar
+      facets: facetas
+      forum: Foro
       overview: Resumen General
+      review: Revisar
       sets: Conjuntos
       settings: Configuración
       statistics: Estadísticas
       subjects: Temas
       works_list: Lista de Obras
+    description_tabs:
+      describe: Metadatos
+      help: Ayuda
+      metadata: metadatos
+      nav_info: Trabajo %{position} de %{size}
+      next_page: Siguiente página
+      next_work: Siguiente trabajo
+      overview: Visión general
+      previous_page: Pagina anterior
+      previous_work: Trabajo previo
+      versions: Versiones
     handsontable:
       date_tooltip: Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del dá, con guiones que separen los números).
+    markup_help:
+      markup_help_description: '"Autolink" sugerirá temas a los que se podrían vincular ciertas palabras o puede usar llaves dobles para vincular temas. <code>[[Jane Doe]]</code> vinculará el texto "Jane Doe" al asunto Jane Doe, mientras que <code>[[Jane Doe|Jane]]</code> vinculará el texto "Jane" al tema Jane Doe. Recomendamos que la vinculación se deje a un editor después de realizar la transcripción inicial.'
+    osd_div:
+      brightness: Brillo
+      contrast: Contraste
+      full_page: Alternar página completa
+      home: Vete a casa
+      image_filters: filtros de imagen
+      open_seadragon_needs_js: OpenSeadragon no está disponible a menos que JavaScript esté habilitado.
+      rotate_left: Girar a la izquierda
+      rotate_right: Gira a la derecha
+      threshold: Límite
+      zoom_in: Acercarse
+      zoom_out: Disminuir el zoom
     page_tabs:
       correct: Corregir
+      describe_work: Describir el trabajo
       help: Ayuda
       nav_info: Página %{position} de %{size}
+      next_page: Siguiente página
       overview: Resumen General
+      page: página
+      previous_page: Pagina anterior
       settings: Configuración
       transcribe: Transcribir
       translate: Traducción
       versions: Versiones
+    review_breadcrumbs:
+      dashboard: Panel de revisión
+      page: Página
+    validation_summary:
+      form: forma
     work_tabs:
       about: Acerca de
       contents: Contenido
@@ -52,3 +92,4 @@ es:
       pages: Paginas
       read: Leer
       settings: Configuración
+      work: Trabajar

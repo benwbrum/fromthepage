@@ -1,0 +1,51 @@
+---
+de:
+  sc_collections:
+    cdm_bulk_import_create:
+      import_started: Ihr Import wurde gestartet. Sobald der Import abgeschlossen ist, versenden wir Sie eine E-Mail an %{email}.
+    cdm_bulk_import_new:
+      bulk_contentdm_import: Sammelimport von CONTENTdm
+      compound_object_urls: URLs für komplexe Objekte
+      import: Importieren
+      import_ocr_text: OCR-Text importieren
+      select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
+      separate_urls_with: Trennen Sie URLs durch Leerzeichen oder Zeilenumbrüche.
+    convert_manifest:
+      metadata_is_being_imported: Die Metadaten %{ocr_text} werden aus CONTENTdm importiert und sollten in Kürze erscheinen.
+    explore_collection:
+      already_imported_into: Bereits importiert in
+      collection: 'Sammlung: %{sc_collection}'
+      collections: 'Sammlungen:'
+      first_page: Erste Seite
+      id: 'ID: %{id}'
+      import_checked_manifests: Geprüfte Manifeste importieren
+      import_ocr_text: OCR-Text importieren
+      manifests: 'Manifeste:'
+      next_page: Nächste Seite
+      no_label: kein Label
+      previous_page: Vorherige Seite
+      select_a_collection: Eine Sammlung auswählen
+      select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
+      select_all_manifests: Alle Manifeste auswählen
+      this_collection_is_divided: Diese Sammlung ist auf mehrere Seiten aufgeteilt. Sie können Elemente von dieser Seite importieren oder stattdessen zu anderen Seiten navigieren, um Elemente von diesen Seiten zu importieren.
+    explore_manifest:
+      canvases: 'Canvases:'
+      collection: 'Collection: %{sc_collection}'
+      description: 'Beschreibung: %{description}'
+      id: 'ID:'
+      import_manifest: Manifest importieren
+      import_ocr_text: OCR-Text importieren
+      license: 'Lizenz: %{license}'
+      manifest: 'Manifest: %{sc_manifest}'
+      metadata: 'Metadaten: %{metadata}'
+      select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
+      select_a_collection_to_import_into_label: Wählen Sie eine Sammlung aus, in die importiert werden soll
+    import:
+      no_manifest_exist: Für das CONTENTdm-Element %{url} ist kein IIIF-Manifest vorhanden
+      please_enter_valid_url: Bitte geben Sie eine gültige IIIF-Manifest-URL ein.
+    import_cdm:
+      bad_contentdm_url: 'Fehlerhafte CONTENTdm-URL: %{url} FEHLER: %{message}'
+      please_enter_url: Bitte geben Sie eine URL für ein CONTENTdm-Objekt ein.
+      using_manifest_for: Verwendung des CONTENTdm IIIF-Manifests für %{url}
+    import_collection:
+      import_is_processing: Import der IIIF-Sammlung wird verarbeitet. Laden Sie diese Seite in ein paar Minuten neu, um importierte Werke angezeigt zu bekommen.

@@ -23,19 +23,60 @@
       -if @works.where(ocr_correction: true).exists?
         .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count}") #{t('.ocr_correction', count: @statistics_object.ocr_count)}
 
-  h4.legend.fglight =t('.last_days_statistics')
+  h2=t('.statistics_from', start_date: l(@start_date.to_date), end_date: l(@end_date.to_date))
+
+  h4=t('.select_new_date')
+
+  =form_tag('/dashboard/summary', method: "get") do
+    =hidden_field_tag(:collection_id, @collection)
+    =label_tag(:start_date, t('.start_date'))
+    |  
+    =text_field_tag(:start_date, l(@start_date.to_date), style: "width:30%")
+    |  
+    =label_tag(:end_date, t('.end_date'))
+    |  
+    =text_field_tag(:end_date, l(@end_date.to_date), style: "width:30%")
+    |  
+    =submit_tag(t('.update'))
+  br
+  
+  -date_range = @start_date..@end_date
   section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(7)}") #{t('.collaborator', count: @statistics_object.contributor_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(7)}") #{t('.page_transcribed', count: @statistics_object.transcription_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count(7)}") #{t('.page_marked_needing_review', count: @statistics_object.needs_review_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count(7)}") #{t('.page_reviewed', count: @statistics_object.review_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(7)}") #{t('.page_edit', count: @statistics_object.edit_count)}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(date_range)}") #{t('.collaborator', count: @statistics_object.contributor_count(date_range))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(date_range)}") #{t('.page_transcribed', count: @statistics_object.transcription_count(date_range))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count(date_range)}") #{t('.page_marked_needing_review', count: @statistics_object.needs_review_count(date_range))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count(date_range)}") #{t('.page_reviewed', count: @statistics_object.review_count(date_range))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(date_range)}") #{t('.page_edit', count: @statistics_object.edit_count)}
     -unless subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(7)}") #{t('.page_indexed', count: @statistics_object.index_count(7))}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(7)}") #{t('.reference', count: @statistics_object.mention_count(7))}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(7)}") #{t('.new_subject', count: @statistics_object.subject_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(7)}") #{t('.note', count: @statistics_object.comment_count(7))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(date_range)}") #{t('.page_indexed', count: @statistics_object.index_count(date_range))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(date_range)}") #{t('.reference', count: @statistics_object.mention_count(date_range))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(date_range)}") #{t('.new_subject', count: @statistics_object.subject_count(date_range))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(date_range)}") #{t('.note', count: @statistics_object.comment_count(date_range))}
     -if @works.where(supports_translation: true).exists?
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(7)}") #{t('.page_translated', count: @statistics_object.translation_count(7))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(date_range)}") #{t('.page_translated', count: @statistics_object.translation_count(date_range))}
     -if @works.where(ocr_correction: true).exists?
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(7)}") #{t('.ocr_correction', count: @statistics_object.ocr_count(7))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(date_range)}") #{t('.ocr_correction', count: @statistics_object.ocr_count(date_range))}
+
+-content_for :javascript
+=javascript_include_tag 'datepicker/datepicker'
+javascript:
+  var today = new Date()
+  var yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  
+  //Attach a date picker for start and end dates
+  datePickerController.createDatePicker({
+      formElements:{
+          "start_date":"%M %d, %Y"
+      },
+      rangeHigh: yesterday,
+      noFadeEffect: true
+  });
+
+  datePickerController.createDatePicker({
+      formElements:{
+          "end_date":"%M %d, %Y"
+      },
+      noFadeEffect: true,
+      rangeHigh: yesterday
+  });

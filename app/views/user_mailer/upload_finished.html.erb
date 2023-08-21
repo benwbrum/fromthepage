@@ -1,6 +1,6 @@
 <h2 style="color:#453939; margin:0; font-weight:normal;"><%= t('.your_upload_is_ready') %></h2>
 <p>
-  <%= t('.html.message') %>
+  <%= t('.html.message', file: @document_upload.name) %>
   <%= link_to @document_upload.collection.title, {
       controller: 'collection',
       action: 'show',

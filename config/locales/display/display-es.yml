@@ -4,7 +4,11 @@ es:
     display_page:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
       collection_is_not_active: Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta.
+      corrected: corregido
       facsimile: Facsímil
+      help_correct: ayudar a corregir
+      help_transcribe: ayudar a transcribir
+      help_translate: ayuda a traducir
       mark_the_page_blank: marcar la página en blanco
       or_mark_blank: "<br>o %{mark_blank}"
       page_notes: Notas de Página
@@ -13,10 +17,18 @@ es:
       show_translation: Mostrar Traducción
       this_page_is_blank: Esta página está en blanco
       this_page_is_not: Esta página no es %{text_type}
+      transcribed: transcrito
       transcription: Transcripción
+      translated: traducido
       translation: Traducción
     list_pages:
       actions: Acciones
+      blank_page: Página en blanco
+      completed: Terminado
+      correct: Correcto
+      describe: Describir
+      index: Índice
+      metadata: Metadatos
       n_notes:
         one: 1 nota
         other: "%{count} notas"
@@ -24,9 +36,14 @@ es:
       no_pages_found: No se encontró ninguna página
       no_pages_in_work: Esta obra aún no contiene ninguna página, ve a %{link} para crear una nueva página
       page_title: Título de la Página
+      pages_tab: Pestaña Páginas
+      review: Revisar
+      transcribe: Transcribir
+      translate: Traducir
       user_notes: Notas del Usuario
     multi_page:
       categories: Categorías
+      describe: Crear metadatos
       pages_need_indexing: Páginas que Necesitan Indexación
       pages_need_review: Páginas que Necesitan Revisión
       pages_need_transcription: Páginas que Necesitan Transcripción
@@ -34,18 +51,47 @@ es:
       search: Búsqueda
       search_for: Búsqueda de obras %{search_string}
       search_in_collection: Buscar en la colección...
+      search_in_collection_1: Buscar en la colección
+      search_in_work: Buscar en la obra...
       translations_need_indexing: Traducciones que Necesitan Indexación
       translations_need_review: Traducciones que Necesitan Revisión
       view_all_pages: Ver Todas las Páginas
     pages_view:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
       corrected: corregida
+      help_complete: Edita esta página
+      help_correct: ayudar a corregir
       help_transcribe: Por favor, ayuda a transcribir
       help_translate: ayuda a traducir
       last_edit: Última edición hace %{edit_time} por %{user_link}
       no_pages_found: No se encontró ninguna página
+      no_pages_needing_transcription_found_these_pages_are_incomplete: Ninguna página necesita transcripción desde cero. Estas páginas han sido parcialmente transcritas pero necesitan ser completadas.
       page_not_translated: Esta página no está traducida, por favor  %{help_translate} esta página
+      pages_needing_completion: Páginas que necesitan completarse
+      review_metadata: Revisar metadatos
       this_page_is_blank: Esta página está en blanco
+      this_page_is_incomplete: esta pagina esta incompleta
       this_page_is_not: Esta página no es %{status}, por favor %{help} esta página
       transcribed: transcrita
+      translation: Traducción
       unable_to_find_pages: No pudimos encontrar ninguna página que coincida con la solicitud
+    read_all_works:
+      pages: Paginas
+      pages_that_mention: Páginas que mencionan %{article}
+    read_work:
+      pages: Paginas
+      pages_need_indexing: Páginas que necesitan indexación
+      pages_need_review: Páginas que necesitan revisión
+      pages_need_transcription: Páginas que necesitan transcripción
+      pages_need_translation: Páginas que necesitan traducción
+      translations_need_indexing: Traducciones que necesitan indexación
+      translations_need_review: Traducciones que necesitan revisión
+  display_helper:
+    page_action:
+      blank_page: Página en blanco
+      completed: Terminado
+      correct: Correcto
+      index: Índice
+      review: Revisar
+      transcribe: Transcribir
+      translate: Traducir

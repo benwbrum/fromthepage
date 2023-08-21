@@ -1,5 +1,6 @@
 class NotesController < ApplicationController
   include ActionView::Helpers::TextHelper
+  PAGES_PER_SCREEN = 20
 
   def create
     @note = Note.new(note_params)
@@ -69,6 +70,10 @@ class NotesController < ApplicationController
     deed.user = current_user
 
     deed.save!
+  end
+
+  def discussions
+    @pages = @collection.pages.where.not(last_note_updated_at: nil).reorder(last_note_updated_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
   private

@@ -14,7 +14,7 @@ gem 'jquery-ui-sass-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
 gem 'text'
-
+gem 'thredded', '~> 1.0'
 gem "recaptcha", require: "recaptcha/rails"
 
 gem 'acts_as_list'
@@ -41,7 +41,7 @@ gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: '
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth', '~> 1.9.1'
+gem 'omniauth', '~> 1.9.2'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
@@ -88,7 +88,7 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
-  gem 'i18n-tasks', '~> 0.9.31'
+  gem 'i18n-tasks'
   gem 'easy_translate'
 end
 

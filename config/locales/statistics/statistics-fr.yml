@@ -3,12 +3,9 @@ fr:
   statistics:
     collaborator_time:
       collaborator_time: Temps de collaboration
-      collaborator_time_for_dates: Heures du travail par collaborateurs pour les dates
-      end_date: Date de fin
-      export_activity_as_csv: Exporter l'activité détaillée au format CSV
+      collaborator_time_description: Une feuille de calcul du nombre de minutes que chaque utilisateur a contribué par jour dans la plage de dates.
+      collaborator_time_export_button: Exporter la feuille de calcul du temps des collaborateurs
       no_activity_for_date_range: Il n'y a aucune activité pour cette plage de dates.
-      start_date: Date de début
-      update: Mise à jour
       user_totals_for_dates: Totaux utilisateur pour les dates
     collaborators:
       collaborators: Collaborateurs
@@ -68,12 +65,23 @@ fr:
       work:
         one: Œuvre
         other: Œuvres
+      work_transcribed:
+        one: Œuvre transcrite
+        other: Œuvres transcrites
       works_described: Œuvre décrite
     recent_statistics:
-      collaborator: Collaborateur
-      new_subject: Nouveau sujet
-      note: Noter
-      ocr_correction: Correction d'OCR
+      collaborator:
+        one: Collaborateur
+        other: Collaborateurs
+      new_subject:
+        one: Nouveau sujet
+        other: Nouveaux sujets
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: Correction d'OCR
+        other: Corrections d'OCR
       page_edit:
         one: Modification
         other: Modifications
@@ -102,11 +110,13 @@ fr:
       collaborator:
         one: Collaborateur
         other: Collaborateurs
+      end_date: Date de fin
       incomplete_page:
         one: Page incomplète
         other: Pages incomplètes
-      last_days_statistics: Statistiques des 7 derniers jours
-      new_subject: Nouveau sujet
+      new_subject:
+        one: Nouveau sujet
+        other: Nouveaux sujets
       note:
         one: Note
         other: Notes
@@ -137,12 +147,16 @@ fr:
       reference:
         one: Référence
         other: Références
+      select_new_date: Sélectionnez une nouvelle plage de dates
+      start_date: Date de début
+      statistics_from: Statistiques de %{start_date} à %{end_date}
       subject:
         one: Sujet
         other: Sujets
       total_page:
         one: Page totale
         other: Pages totales
+      update: Mise à jour
       work:
         one: Œuvre
         other: Œuvres

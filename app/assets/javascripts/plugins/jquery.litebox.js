@@ -81,7 +81,7 @@
         this.$wrapper.add(this.$container).addClass('visible');
       } else {
         // Create elements
-        this.$wrapper = $('<section>').addClass('litebox').addClass(this.options.cssclass);
+        this.$wrapper = $('<section>').addClass('litebox category_modal').addClass(this.options.cssclass);
         this.$closebutton = $('<a>').addClass('litebox_close')
           .attr('aria-label', 'close').text('×');
         this.$container = $('<div>').addClass('litebox_container');

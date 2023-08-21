@@ -16,12 +16,8 @@ pt:
       description: A amostragem de qualidade permite que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou trabalho. Esse número pode crescer à medida que mais páginas são transcritas.
       not_applicable: N / D
       not_fully_sampled_yet: Esta amostra ainda não foi totalmente revisada.
-      pages_corrected: Páginas corrigidas
-      pages_corrected_desc: Páginas que exigiram correção durante a aprovação (baixa é melhor).
       pages_in_sample: Páginas na amostra
       pages_in_sample_desc: Número de páginas na amostra para o usuário ou trabalho.
-      pages_sampled: Páginas amostradas
-      pages_sampled_desc: Número de páginas amostradas até agora do campo total da amostragem.
       pages_to_be_reviewed: Páginas para revisão
       pages_to_be_reviewed_desc: Número de páginas que ainda precisam de revisão em toda a coleção.
       quality_score: Índice de qualidade
@@ -35,7 +31,6 @@ pt:
       sample_field_size: 'Páginas a serem revisadas:'
       sample_set_has_increased: O conjunto de amostras aumentou em %{increase} páginas
       sample_set_size: 'Tamanho do conjunto de amostra:'
-      total_pages_desc: Número de páginas nesta coleção.
       user: Contribuinte
       work: Trabalhar
     update:

@@ -144,7 +144,7 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(:wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
+    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
@@ -168,6 +168,7 @@ module ContentdmTranslator
         :action => 'edit'
       }
       resp = soap_client.call(:process_conten_tdm, :message => message )
+
       puts resp.to_hash[:process_conten_tdm_response][:return]
 
     end

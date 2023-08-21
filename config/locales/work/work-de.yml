@@ -1,0 +1,207 @@
+---
+de:
+  work:
+    configurable_printout:
+      description: Exportieren Sie diese Arbeit in einem druckbaren Format
+      export: Export
+      file_format: Datei Format
+      file_format_description: Dateityp für druckbaren Export
+      heading: Ausdruckkonfiguration
+      include_contributors: Mitwirkende einbeziehen
+      include_metadata: Metadaten einschließen
+      preserve_linebreaks: Zeilenumbrüche beibehalten
+      text_contents: Inhalt
+      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.
+      text_format: Textformatierung
+      text_format_description: Optionen zum Formatieren von Text.
+      text_format_docx: MS-Word (.docx)
+      text_format_pdf: Pdf
+      word_wrap: Zeilenumbruch
+    create:
+      work_created: Werk erfolgreich erstellt
+    describe:
+      always_show_fullscreen: Immer Vollbild anzeigen
+      approve: Freigeben
+      approve_to_transcribed_tooltip: Diese Metadaten speichern und freigeben
+      done: Fertig
+      finish_to_needs_review_tooltip: Abgeschlossene Metadaten speichern
+      finish_to_transcribed_tooltip: Abgeschlossene Metadaten speichern
+      fullscreen: Vollbild
+      image_at_the_bottom: Bild unten
+      image_at_the_left: Bild links
+      image_at_the_right: Bild rechts
+      image_at_the_top: Bild oben
+      layout: Layout
+      metadata: Metadaten
+      needs_review: Überprüfung erforderlich
+      notes_and_questions: Anmerkungen und Fragen
+      original_metadata: Ursprüngliche Metadaten
+      page_images: Faksimiles
+      save_changes: Speichern
+      save_to_incomplete_tooltip: Unvollständige Metadaten speichern
+      save_to_needs_review_tooltip: Änderungen speichern
+      save_to_transcribed_tooltip: Änderungen speichern
+      text: Text
+      this_page_is_blank: Diese Seite ist leer
+      view_original: Original ansehen
+    described: Metadaten vollständig.
+    description_versions:
+      author_contributed_at: "%{author} am %{date}"
+      compared_with: Im Vergleich zu
+      help_description: Anzeige und Vergleich der Änderungen, die in jeder Revision an dem Metadaten des Werkes vorgenommen wurden. Die linke Spalte zeigt die Metadaten in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
+      revision: Revision
+    download:
+      analyze: Analysieren
+      configurable_printout: Konfigurierbarer Ausdruck
+      configurable_printout_button: Konfigurieren
+      configurable_printout_description: PDF- oder MS-Word-Export mit konfigurierbaren Inhalten und Formatierungen
+      docx_download_description: Laden Sie eine DOCX-Version dieses Werkes herunter.
+      download: Download
+      expanded_plaintext: Erweiterter Klartext
+      expanded_plaintext_export_description: Exportieren Sie Klartext-Transkripte, die den wörtlichen Text durch kanonische Entitätenbezeichnungen ersetzen, als ZIP-Datei mit einer Datei pro Seite.
+      experiment: Experimentieren
+      export: Export
+      facing_pdf: Bild-Text-Synopse PDF
+      facing_pdf_export_description: Laden Sie eine PDF-Version dieses Werkes mit Bildern und Text auf den gegenüberliegenden Seiten herunter.
+      html: HTML
+      html_export_description: Exportieren Sie Transkripte als ZIP-Datei mit einer HTML-Datei pro Seite.
+      iiif: IIIF
+      iiif_manifest: IIIF-Manifest
+      iiif_manifest_description: IIIF-Manifest-URI zur Verwendung in jedem IIIF-Client.
+      ms_word: MS Word
+      pdf: PDF
+      pdf_download_description: Laden Sie eine PDF-Version dieses Werkes herunter.
+      reuse: Nachnutzung
+      searchable_plaintext: Durchsuchbarer Klartext
+      searchable_plaintext_export_description: Exportieren Sie für die Volltextsuche optimierte Klartext-Transkripte als ZIP-Datei mit einer Datei pro Seite.
+      subject_index_csv: Entitätenindex CSV
+      subject_index_csv_description: Eine Tabelle, in der jede Stelle aufgeführt ist, an der ein Thema auf einer Seite des Werks erwähnt wird.
+      table_field_csv: Tabelle/Felder CSV
+      table_field_csv_export_description: Exportieren Sie alle tabellarischen, tabellen- oder feldbasierten Daten als eine einzige CSV-Datei.
+      verbatim_plaintext: Wörtlicher Klartext
+      verbatim_plaintext_export_description: Exportieren Sie wörtliche Transkripte im Klartext als ZIP-Datei mit einer Datei pro Seite.
+      verbatim_plaintext_zero_index: Transkribus-Training-ZIP
+      verbatim_plaintext_zero_index_description: ZIP-Datei mit 0-indexierten Klartextdateien, geeignet zum Import als Trainingsdaten für Transkribus
+      voyant: Voyant
+      voyant_analysis_description: Senden Sie die Transkription dieses Werks zur Analyse an Voyant Tools.
+      warning_work_not_complete: 'Achtung: Die Arbeit an diesem Werk ist möglicherweise nicht abgeschlossen.'
+      word_trees: Word Trees
+      word_trees_analysis_description: Senden Sie die Transkription dieses Werkes zur Analyse an Jason Davies Word Trees Visualizer.
+      zip_export_only_project_owners: ZIP-Datei-Exportformate, auf die nur Projektinhaber:innen zugreifen können.
+    edit:
+      add: Hinzufügen
+      additional_metadata: Zusätzliche Metadaten
+      additional_metadata_description: Diese Metadatenfelder werden in der Projektinfo dieses Werkes und in TEI-Exporten angezeigt, beeinträchtigen jedoch nicht die Funktionalität von FromThePage.
+      allowed_collaborators: Freigeschaltete Mitarbeitende
+      apply: Anwenden
+      author: Autor:in
+      collaborators_can_edit_titles: Erlauben Sie Mitarbeitenden, Seitentitel zu bearbeiten
+      collection: Sammlung
+      confirm_delete_work: Möchten Sie dieses Werk wirklich löschen? Nach dem Löschen können Sie es nicht wiederherstellen!
+      current_url: Die aktuelle URL für dieses Werk ist %{current_url}. Wenn Sie den Abschnitt zum Werk in der URL bearbeiten möchten, verwenden Sie bitte Kleinbuchstaben und Bindestriche zwischen den Wörtern.
+      delete_work: Werk löschen
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      document_date: Datum des Dokuments
+      document_date_hint: Datum des Dokuments ist im EDTF-Format anzugeben (z. B. 1843, 2001-02, 1643-06-30)
+      document_history: Dokumentenverlauf
+      editorial_notes: Editorische Anmerkungen
+      enable_ocr_correction: OCR-Korrektur aktivieren
+      enable_ocr_correction_description: Ein Werk kann mit OCR-Text beginnen, der korrigiert werden muss. Wenn diese Option aktiviert ist, wird der Tab Transkription durch den Tab Korrektur ersetzt.
+      genre: Genre
+      identifier: Identifier
+      identifier_description: Identifier von Systemen außerhalb von FromThePage, der verwendet werden soll, um Exporte externen Datensätzen zuzuordnen. (Dieses Feld ist nicht öffentlich sichtbar.)
+      in_scope: Im Scope
+      more_work_settings_info: Weitere Informationen zu den Einstellungen für das Werk finden Sie im Wiki-Artikel <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transkription</a>.
+      no_allowed_collaborators_selected: Keine freigeschalteten Mitarbeitenden ausgewählt
+      no_image: Kein Bild
+      pages_are_meaningful: Seitenaufteilung berücksichtigen
+      pages_are_meaningful_description: Seiten können sinnvolle semantische Unterteilungen eines Werkes sein (z. B. in einer Zeitschrift mit einem Datum für jede Seite), oder aber auch nicht (wie in Briefen oder Büchern, wo der Text nicht basierend auf Seiten in Abschnitte unterteilt werden sollte). Wenn diese Option aktiviert ist, werden die Seitentitel des Werkes gut sichtbar angezeigt.
+      permission_description: Beschreibung der Berechtigung(en)
+      physical_description: Physische Beschreibung
+      place_of_creation: Entstehungsort
+      recipient: Rezipient
+      remove: Entfernen
+      restrict_collaborators: Mitarbeit einschränken
+      restricted_work_no_collaborators_warning: Nur Projektinhaber:innen können dieses Werk bearbeiten. Fügen Sie Mitarbeitende hinzu, damit das Werk von anderen bearbeitet werden kann.
+      revert: Zurücksetzen
+      revert_transcription_conventions_description: Setzen Sie die Transkriptionskonventionen auf die standardmäßigen Konventionen zurück
+      save_changes: Änderungen speichern
+      settings_only_work_owners: Die Einstellungen für dieses Werk sind nur für Inhaber:innen des Werkes zugänglich.
+      source_box_folder: Quellverzeichnis
+      source_collection_name: Name der ursprünglichen Sammlung der Quelle
+      source_location: Standort der Quelle
+      support_translation: Übersetzung aktivieren
+      support_translation_description: Ein Werk kann sowohl übersetzt als auch transkribiert werden. Wenn diese Option aktiviert ist, verfügt das Werk über einen Tab „Übersetzung“ für jede Seite.
+      transcription_conventions: Transkriptionskonventionen
+      transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseditor für jede Seite angezeigt, die transkribiert oder indexiert wird.
+      translation_instructions: Übersetzungsanweisungen
+      upload_image: Bild hochladen
+      uploaded_by: hochgeladen von
+      url: URL
+      work_image: Werksbild
+      work_image_description: Ein Bild zur Veranschaulichung des Werkes. Wenn kein Bild hochgeladen wird, wird eines der Faksimiles verwendet.
+      work_thumbnail: Vorschaubild des Werkes
+      work_title: Werkstitel
+    incomplete: Unvollständige Metadaten.
+    metadata_overview:
+      notes_and_questions: Anmerkungen und Fragen
+      show_image: Bild anzeigen
+      this_page_is_blank: Diese Seite ist leer
+    needsreview: Metadaten müssen überprüft werden.
+    new:
+      collection: Sammlung
+      create_empty_work: Erstellen Sie ein neues Werk
+      create_empty_work_description: Dadurch entsteht ein neues Werk. Sobald Sie das Werk erstellt haben, können Sie einzelne Faksimiles hinzufügen. Wenn Sie eine ZIP-Datei oder ein PDF mit mehreren Bildern haben, sollten Sie stattdessen unter %{start_project} ein Werk erstellen und die Datei(en) hochladen.
+      create_work: Werk erstellen
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      start_a_project: Ein Projekt starten
+      title: Titel
+      work_description: Ein Werk ist ein Dokument wie ein Brief, ein Tagebuch, ein Grundbuch, eine Postkarte oder ein Notizbuch.
+    pages_tab:
+      actions: Aktionen
+      add_new_page: Neue Seite hinzufügen
+      confirm_delete_page: Möchten Sie diese Seite wirklich löschen? Nach dem Löschen können Sie sie nicht wiederherstellen!
+      delete: Löschen
+      featured_page: Hauptseite
+      image_status: Bildstatus
+      make_featured_page: Zur Hauptseite machen
+      move_down: Hinunterschieben
+      move_up: Hinaufschieben
+      no_pages_found: Keine Seiten gefunden
+      no_pages_found_description: Dieses Werk enthält noch keine Seiten
+      page_title: Seitentitel
+      pages_tab_description: Hier finden Sie eine Auflistung aller Seiten des Werkes. Wenn Sie die Position einer Seite ändern möchten, verwenden Sie die Aufwärts- und Abwärtspfeile auf der rechten Seite. Um eine neue Seite für dieses Werk zu erstellen, klicken Sie auf den Button "Neue Seite hinzufügen". Sobald eine neue leere Seite erstellt wurde, finden Sie sie am Ende der Liste und kommen zu den Einstellungen, wo Sie ein Faksimile hochladen können.
+      position: Position
+      ready_to_transcribe: Bereit zum %{transcribe}
+      settings: Einstellungen
+      transcribe: Transkribieren
+      upload: Hochladen
+      upload_page_image: "%{upload} Faksimile"
+    save_description:
+      work_described: Ihre Beschreibung wurde gespeichert
+    show:
+      author_name: Name des Autors/der Autorin
+      description: Beschreibung
+      document_date: Datum des Dokuments
+      document_history: Dokumentenverlauf
+      editorial_notes: Editorische Anmerkungen
+      genre: Genre
+      iiif_manifest: IIIF-Manifest
+      location_of_composition: Ort der Zusammenstellung
+      metadata: Metadaten
+      number_of_pages: Anzahl der Seiten:&nbsp;
+      original_filename: Ursprünglicher Dateiname
+      out_of_scope: Außerhalb des Scopes
+      permission_description: Beschreibung der Berechtigungen
+      physical_description: Physische Beschreibung
+      recipient_name: Rezipientenname
+      scope: Scope
+      source_box_folder: Quellenverzeichnis/-aufbewahrung
+      source_collection_name: Name der ursprünglichen Sammlung der Quelle
+      source_location: Ort der Quelle
+      uploaded_by: hochgeladen von
+    undescribed: Keine Metadaten.
+    update:
+      work_updated: Werk erfolgreich aktualisiert

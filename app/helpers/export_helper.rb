@@ -1,5 +1,4 @@
 module ExportHelper
-  include Rails.application.routes.url_helpers
 
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
@@ -60,104 +59,142 @@ module ExportHelper
 
 
   def write_work_exports(works, out, export_user, bulk_export)
+
+    # owner-level exports
+    if bulk_export.owner_mailing_list
+      export_owner_mailing_list_csv(out: out, owner: export_user)
+    end
+
+    if bulk_export.owner_detailed_activity
+      export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
+    end
+
+
     # collection-level exports
+    if bulk_export.collection_activity
+      export_collection_activity_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
+    if bulk_export.collection_contributors
+      export_collection_contributors_csv(out: out, collection: bulk_export.collection, report_arguments: bulk_export.report_arguments)
+    end
+
     if bulk_export.subject_csv_collection
-      export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_subject_csv(out: out, collection: bulk_export.collection, work: works)
     end
 
     if bulk_export.subject_details_csv_collection
-      export_subject_details_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_subject_details_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.table_csv_collection
-      export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
+      export_table_csv_collection(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.work_metadata_csv
-      export_work_metadata_csv(dirname: '', out: out, collection: bulk_export.collection)
+      export_work_metadata_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.static
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.collection_notes
+      export_collection_notes_csv(out: out, collection: bulk_export.collection)
+    end
+
     if bulk_export.work_level? || bulk_export.page_level?
+      by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
+      original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
         print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
         @work = work
-        dirname = work.slug.truncate(200, omission: "")
-        add_readme_to_zip(dirname: dirname, out: out)
+        if by_work
+          add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
+        end
 
 
         # work-specific exports
         if bulk_export.table_csv_work
-          export_table_csv_work(dirname: dirname, out: out, work: work)
+          export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.tei_work
-          export_tei(dirname: dirname, out:out, export_user:export_user)
+          export_tei(work: work, out:out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_verbatim_work
           format='verbatim'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_emended_work
           format='expanded'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
+          export_plaintext_translation(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_searchable_work
           format='searchable'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_transcript(work: work, name: format, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.html_work
           %w(full text transcript translation).each do |format|
-            export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+            export_view(work: work, name: format, out: out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
           end
         end
 
+        preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+        include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
+        include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', dirname, out)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+        end
+
+        if bulk_export.text_only_pdf_work
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', dirname, out)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         # Page-specific exports
 
-        @work.pages.each do |page|
+        @work.pages.each_with_index do |page,i|
           if bulk_export.plaintext_verbatim_page
             format='verbatim'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
 
           if bulk_export.plaintext_emended_page
             format='expanded'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+            export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end  
 
           if bulk_export.plaintext_searchable_page
             format='searchable'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
+          end
+
+          if bulk_export.plaintext_verbatim_zero_index_page
+            format='verbatim'
+            export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: :zero_index, index: i)
           end
         end
 
 
         if bulk_export.html_page
           @work.pages.each do |page|
-            export_html_full_pages(dirname: dirname, out: out, page: page)
+            export_html_full_pages(out: out, page: page, by_work: by_work, original_filenames: original_filenames)
           end
         end
       end
@@ -278,7 +315,7 @@ module ExportHelper
     has_content = false
     tei = ""
     tei << "<category xml:id=\"C#{category.id}\">\n"
-    tei << "<catDesc>#{category.title}</catDesc>\n"
+    tei << "<catDesc>#{ERB::Util.html_escape(category.title)}</catDesc>\n"
     category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
       has_content = true
       if seen_subjects.include?(subject)
@@ -322,7 +359,7 @@ module ExportHelper
     tei << "            <catDesc>\n"
     tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
     unless subject.uri.blank?
-      tei << "              <idno>#{subject.uri}</idno>\n"
+      tei << "              <idno>#{subject.uri.encode(xml: :text)}</idno>\n"
     end
     tei << '              <note type="categorization">Categories:'
     subject.categories.each do |category|
@@ -333,9 +370,9 @@ module ExportHelper
         else
           category_class = "#category #branch"
         end
-        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{parent.title}</ptr> -- "
+        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{ERB::Util.html_escape(parent.title)}</ptr> -- "
       end
-      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{category.title}</ptr>"
+      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{ERB::Util.html_escape(category.title)}</ptr>"
       tei << "</ab>\n"
     end
     tei << "              </note>\n"
@@ -637,16 +674,18 @@ module ExportHelper
     collection=work.collection
     fields = {}
     collection.metadata_fields.each { |field| fields[field.id] = field}
-    metadata = JSON.parse(work.metadata_description)
-    # TODO remember description status!
     response_array = []
-    metadata.each do |metadata_hash|
-      value = metadata_hash['value']
-      unless value.blank?
-        element = {label: metadata_hash['label'], value: value}
-        element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
+    if work.metadata_description
+      metadata = JSON.parse(work.metadata_description)
+      # TODO remember description status!
+      metadata.each do |metadata_hash|
+        value = metadata_hash['value']
+        unless value.blank?
+          element = {label: metadata_hash['label'], value: value}
+          element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
 
-        response_array << element
+          response_array << element
+        end
       end
     end
 

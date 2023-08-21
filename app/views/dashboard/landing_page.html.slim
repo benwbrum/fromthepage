@@ -3,7 +3,7 @@
     -@collections.each do |c|
       -cache c do
         -link_page = c.next_untranscribed_page
-        -snippet = truncate(Loofah.fragment(c.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+        -snippet = to_snippet(c.intro_block)
         .carousel_slide
           =link_to image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c), class: 'carousel_slide_image'
           .carousel_slide_content
@@ -31,7 +31,7 @@
                 h5
                   =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
-                  = truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+                  = to_snippet(sr.intro_block)
     -@owners.each do |owner|
       -if params[:search]
         -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
@@ -47,16 +47,28 @@
                 =owner.about
           .projects
             -projects.each do |project|
-              -snippet = truncate(Loofah.fragment(project.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
-              div.projects_details
-                -unless project.picture.blank?
-                  .projects_details_image
-                    =image_tag(project.picture_url(:thumb), alt: project.title)
-                .projects_collection
-                  h5
-                    =link_to project.title, collection_path(owner, project)
-                  -unless snippet.empty?
-                    .projects_collection_snippet =snippet
+              -if current_user && show_project_snippet?(project, current_user)
+                -snippet = to_snippet(project.intro_block)
+                div.projects_details
+                  -unless project.picture.blank?
+                    .projects_details_image
+                      =image_tag(project.picture_url(:thumb), alt: project.title)
+                  .projects_collection
+                    h5
+                      =link_to project.title, collection_path(owner, project)
+                    -unless snippet.empty?
+                      .projects_collection_snippet =snippet
+              -else
+                -snippet = to_snippet(project.intro_block)
+                div.projects_details
+                  -unless project.picture.blank?
+                    .projects_details_image
+                      =image_tag(project.picture_url(:thumb), alt: project.title)
+                  .projects_collection
+                    h5
+                      =link_to project.title, collection_path(owner, project)
+                    -unless snippet.empty?
+                      .projects_collection_snippet =snippet
             .projects_link =link_to t('.more'), user_profile_path(owner)
 
     .project-list_link

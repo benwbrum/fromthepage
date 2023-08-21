@@ -3,10 +3,10 @@ fr:
   user_mailer:
     added_note:
       html:
-        view_note: " pour afficher la note en %{collection} : %{work}."
+        view_note: " pour répondre à la note en %{collection} : %{work}."
       message: Nous voulions simplement vous informer que la note suivante a été ajoutée à une page sur laquelle vous avez travaillé dans l'œuvre %{work}, dans la collection %{collection}.
       text:
-        view_note: 'Vous pouvez afficher la note dans %{collection} : %{work} à l''URL : %{url}.'
+        view_note: 'Vous pouvez répondre à la note dans %{collection} : %{work} à l''URL : %{url}.'
     bulk_export_finished:
       html:
         ready_message: a été traité et est prêt à %{this_link}.
@@ -28,12 +28,19 @@ fr:
       message: "%{owner} vous a ajouté en tant qu'examinateur autorisé sur %{collection}. Vous devriez pouvoir modifier et approuver toute page nécessitant une révision."
       text:
         to_view: 'Pour afficher %{collection}, visitez l''URL suivante : %{url}'
+    fromthepage: DeLaPage
     greeting: Salut %{user} --
     html:
       closing: |
         Merci, <br><br>
-        DeLaPage
+        %{from}
       turn_off_notification: " pour désactiver cette notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " continuer à transcrire."
+      message: Bienvenue sur %{collection} !
+      text:
+        continue_transcribing: 'Cliquez sur cette URL pour continuer la transcription : %{url}.'
     new_owner:
       welcome: Accueillir
     nightly_user_activity:
@@ -51,13 +58,13 @@ fr:
     text:
       closing: |-
         Merci,
-        DeLaPage
+        %{from}
       turn_off_notification: 'Désactivez cette notification à l''URL : %{url}'
     upload_finished:
       html:
-        message: Votre téléchargement a été traité et est prêt à
+        message: Votre téléchargement de "%{file}" a été traité et est prêt à
       text:
-        message: 'Votre importation a été traitée et est prête à cette URL :'
+        message: 'Votre téléchargement de "%{file}" a été traité et est prêt à cette URL :'
       your_upload_is_ready: Votre téléchargement est prêt !
     work_collaborator:
       html:

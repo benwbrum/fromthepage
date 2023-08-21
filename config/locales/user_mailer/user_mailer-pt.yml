@@ -3,10 +3,10 @@ pt:
   user_mailer:
     added_note:
       html:
-        view_note: " para ver a nota em %{collection}: %{work}."
+        view_note: " para responder à nota em %{collection}: %{work}."
       message: Gostaríamos apenas de informar que a seguinte nota foi adicionada a uma página em que você trabalhou no trabalho %{work}, na coleção %{collection}.
       text:
-        view_note: 'Você pode visualizar a nota em %{collection}: %{work} na URL: %{url}.'
+        view_note: 'Você pode responder à nota em %{collection}: %{work} no URL: %{url}.'
     bulk_export_finished:
       html:
         ready_message: foi processado e está pronto em %{this_link}.
@@ -28,13 +28,17 @@ pt:
       message: "%{owner} adicionou você como revisor autorizado em %{collection}. Você deve poder editar e aprovar qualquer página que precise de revisão."
       text:
         to_view: 'Para visualizar %{collection}, visite o seguinte URL: %{url}'
+    fromthepage: FromThePage
     greeting: Oi %{user} --
     html:
-      closing: "Gratidão, <br><br> \nFromThePage\n"
+      closing: "Gratidão, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
+    new_mobile_user:
+      message: Bem-vindo ao %{collection}!
+      text:
+        continue_transcribing: 'Clique neste URL para continuar a transcrição: %{url}.'
     new_owner:
       welcome: Bem-vindo
-    nightly_user_activity:
       html:
         to_view_note: " para visualizar a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
         to_view_work: " para visualizar %{collection}: %{work}"
@@ -49,13 +53,13 @@ pt:
     text:
       closing: |-
         Obrigado,
-        Da página
+        %{from}
       turn_off_notification: 'Desative esta notificação no URL: %{url}'
     upload_finished:
       html:
-        message: Seu upload foi processado e está pronto em
+        message: Seu upload de "%{file}" foi processado e está pronto em
       text:
-        message: 'Seu upload foi processado e está pronto neste URL:'
+        message: 'Seu upload de "%{file}" foi processado e está pronto neste URL:'
       your_upload_is_ready: Seu carregamento está pronto!
     work_collaborator:
       html:

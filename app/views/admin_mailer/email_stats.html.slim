@@ -12,6 +12,16 @@ p This is the activity from the last #{@hours} hours.
       =u.deeds.count
       <br>
 
+-unless @recent_collections.empty?
+  h2.nomargin New Collections
+  -@recent_collections.each do |c|
+    =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id, only_path: false}
+    |
+    =" project by " 
+    |
+    =link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id, only_path: false}
+    | <br>
+
 -unless @recent_users.empty?
   h2.nomargin New Users
   -@recent_users.each do |u|
@@ -22,12 +32,3 @@ p This is the activity from the last #{@hours} hours.
     =u.deeds.count
     <br>
 
--unless @recent_collections.empty?
-  h2.nomargin New Collections
-  -@recent_collections.each do |c|
-    =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id, only_path: false}
-    |
-    =" project by " 
-    |
-    =link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id, only_path: false}
-    | <br>

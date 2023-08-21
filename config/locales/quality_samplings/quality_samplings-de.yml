@@ -1,0 +1,37 @@
+---
+de:
+  quality_samplings:
+    destroy:
+      quality_sampling_destroyed: Qualitätsstichprobe wurde erfolgreich vernichtet.
+    index:
+      description: Qualitätsstichproben ermöglichen es Ihnen, Beiträge stichprobenartig zu überprüfen und Daten über die Qualität zu sammeln, während Sie jeden Beitrag überprüfen.
+      new_sampling: Stichprobe starten
+    show:
+      actions: Aktionen
+      approval_delta_display_0: Sehr niedrig
+      approval_delta_display_1: Niedrig
+      approval_delta_display_2: Durchschnittlich
+      approval_delta_display_3: Hoch
+      approval_delta_display_4: Sehr hoch
+      description: Bei der Qualitätsstichprobe können Sie Beiträge nach dem Zufallsprinzip prüfen und dann die zu überprüfenden Seiten anhand jener Textmenge bewerten, die von einem/einer bestimmten Bearbeiter:in oder innerhalb eines bestimmten Werkes korrigiert wurde. Umso höher die Zahl an transkribierten Seiten, desto höher die Anzahl an Seiten in der Stichprobe.
+      not_applicable: N/A
+      not_fully_sampled_yet: Diese Auswahl wurde noch nicht vollständig überprüft.
+      pages_in_sample: Seiten in der Auswahl
+      pages_in_sample_desc: Anzahl der Seiten in der Auswahl von einem/einer Bearbeiter:in oder von einem Werk.
+      pages_to_be_reviewed: Zu überprüfende Seiten
+      pages_to_be_reviewed_desc: Anzahl der noch zu überprüfenden Seiten in der gesamten Sammlung.
+      quality_score: Qualitätsfaktor
+      quality_score_desc: Durchschnittlicher Prozentsatz an erforderlichen Änderungen für die Freigabe.
+      relative_corrections: Relative Korrekturen
+      relative_corrections_desc: Wie viele Korrekturen waren vor der Freigabe im Vergleich zu anderen Bearbeiter:innen in dieser Stichprobe erforderlich?
+      review: Review
+      review_url: URL für Review
+      review_url_desc: URL, mit der Reviewer:innen Beiträge direkt genehmigen bzw. freigeben können, ohne zu dieser Ansicht zu gelangen.
+      sample: Stichprobe überprüfen
+      sample_field_size: 'Zu überprüfende Seiten:'
+      sample_set_has_increased: Die Stichprobe hat sich um %{increase} Seiten erhöht
+      sample_set_size: 'Stichprobenumfang:'
+      user: Mitwirkende:r
+      work: Werk
+    update:
+      quality_sampling_updated: Qualitätsstichprobe wurde erfolgreich aktualisiert.

@@ -43,12 +43,7 @@
             -if user_deed_count.size > max_contributor_rows
               i =t('.and_n_more', n: (user_deed_count.size - max_contributor_rows))
               
-
-
-
-  
-
-=render({ :partial => '/shared/collection_footer' })
+  =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 -content_for :javascript
   javascript:

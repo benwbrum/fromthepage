@@ -27,6 +27,7 @@ pt:
       create_empty_work_description: Use esta opção para criar um trabalho vazio. Você pode então carregar imagens de páginas individuais no trabalho.
       create_work: Criar trabalho
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       select_a_collection: "- Selecione uma coleção -"
       title: Título
     exports:
@@ -36,24 +37,25 @@ pt:
       date: Data de exportação
       download: Download
       exported_item: Coleção/Obra Exportada
-      facing_edition_work: Edição de rosto PDF (trabalho)
+      facing_edition_work: Edição de rosto PDF (obra)
       html_page: HTML (página)
-      html_work: HTML (trabalho)
+      html_work: HTML (obra)
       plaintext_emended_page: Texto simples analítico (página)
-      plaintext_emended_work: Texto simples analítico (trabalho)
+      plaintext_emended_work: Texto simples analítico (obra)
       plaintext_searchable_page: Texto simples pesquisável (página)
-      plaintext_searchable_work: Texto simples pesquisável (trabalho)
+      plaintext_searchable_work: Texto simples pesquisável (obra)
       plaintext_verbatim_page: Texto simples literal (página)
-      plaintext_verbatim_work: Texto simples literal (trabalho)
+      plaintext_verbatim_work: Texto simples literal (obra)
       refresh: Atualizar
       reload_this_page_to: Recarregue esta página para atualizar a lista.
       status: Status
       subject_csv_collection: Índice de assuntos CSV (coleção)
       table_csv_collection: Campo/Tabela CSV (coleção)
-      table_csv_work: Campo/Tabela CSV (trabalho)
-      tei_work: TEX-XML (trabalho)
-      text_docx_work: MS Word .docx (trabalho)
-      text_pdf_work: Texto PDF (trabalho)
+      table_csv_work: Campo/Tabela CSV (obra)
+      tei_work: TEX-XML (obra)
+      text_docx_work: MS Word .docx (obra)
+      text_only_pdf_work: Texto PDF (obra)
+      text_pdf_work: Texto PDF (obra)
       work_metadata_csv: Metadados de trabalho (coleção)
     guest_header:
       recent_activity: Atividade recente
@@ -87,19 +89,30 @@ pt:
       page_image_guidelines: Regras Gerais das Imagens da Página
       paste_in_the_url: Cole o URL de um objeto composto na sua página web de CONTENTdm.
     owner:
+      active_collections: Coleções ativas
       create_a_collection: criar uma coleção
       document_sets: Conjuntos de Documentos
-      see_all_works: Ver Todas as Obras...
+      inactive_collections: Coleções inativas
+      n_works:
+        one: '1 trabalho:'
+        other: "%{count} funciona:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
-      total_work_count: 'Número total de obras: %{count}'
-      you_can_add_another_work: Você pode adicionar uma nova obra em %{start_project}
       you_can_new_collection: Você pode %{new_collection}
       you_can_upload_documents: Você pode subir um documento em %{start_project}
       you_dont_have_any_collections: Você ainda não tem nenhuma coleção.
       your_activity: Sua Atividade
     owner_header:
-      account_type: conta %{type}
+      account_type: Conta %{type}
+      account_types:
+        individual_researcher: pesquisador individual
+        large_institution: grande instituição
+        legacy: legado
+        small_organization: pequena organização
+        staff: funcionários
+        trial: tentativas
       actions: Ações
       collection:
         one: Coleção
@@ -144,6 +157,5 @@ pt:
       collections: coleções
       private_collections_you_belong_to: Coleções Privadas às quais você pertence
       projects_you_have_contributed_to: Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo.
-      time_ago_in_words: Há %{time}
       try_transcribing_a_page: 'Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes '
       your_activity: Sua Atividade

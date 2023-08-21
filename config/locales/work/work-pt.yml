@@ -1,6 +1,22 @@
 ---
 pt:
   work:
+    configurable_printout:
+      description: Exporte este trabalho em um formato para impressão
+      export: Exportar
+      file_format: Formato de arquivo
+      file_format_description: Tipo de arquivo para exportação para impressão
+      heading: Configuração de impressão
+      include_contributors: Incluir colaboradores
+      include_metadata: Incluir metadados
+      preserve_linebreaks: Preservar quebras de linha
+      text_contents: Conteúdo
+      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre o trabalho.
+      text_format: Formatação de texto
+      text_format_description: Opções para formatar texto.
+      text_format_docx: MS Word (.docx)
+      text_format_pdf: PDF
+      word_wrap: Quebra de linha
     create:
       work_created: Trabalho criado com sucesso
     describe:
@@ -36,6 +52,9 @@ pt:
       revision: revisão
     download:
       analyze: Analisar
+      configurable_printout: Impressão Configurável
+      configurable_printout_button: configurar
+      configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
       docx_download_description: Baixe uma versão DOCX deste trabalho.
       download: Download
       expanded_plaintext: Texto simples expandido
@@ -46,15 +65,23 @@ pt:
       facing_pdf_export_description: Baixe uma versão em PDF deste trabalho incluindo imagens e texto nas páginas opostas.
       html: HTML
       html_export_description: Exporte as transcrições como um arquivo zip contendo um arquivo HTML por página.
+      iiif: IIIF
+      iiif_manifest: IIIF Manifesto
+      iiif_manifest_description: IIIF Manifest URI para uso em qualquer cliente IIIF.
       ms_word: MS Word
       pdf: PDF
       pdf_download_description: Baixe uma versão em PDF deste trabalho.
+      reuse: Reuso
       searchable_plaintext: Texto simples pesquisável
       searchable_plaintext_export_description: Exporte transcrições de texto simples otimizadas para pesquisa de texto completo como um arquivo zip contendo um arquivo por página.
+      subject_index_csv: Índice de assunto CSV
+      subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro do trabalho.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_export_description: Exporte transcrições em texto simples como um arquivo zip contendo um arquivo por página.
+      verbatim_plaintext_zero_index: Zip de treinamento Transkribus
+      verbatim_plaintext_zero_index_description: Arquivo zip contendo arquivos de texto sem formatação indexados em zero, adequados para importação como dados de treinamento para o Transkribus.
       voyant: Voyant
       voyant_analysis_description: Envie a transcrição deste trabalho para a Voyant Tools para análise.
       warning_work_not_complete: 'Atenção: este trabalho pode não estar completo.'
@@ -74,6 +101,7 @@ pt:
       current_url: A URL atual para este trabalho é %{current_url}. Se você quiser editar a seção de trabalho do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir trabalho
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
@@ -106,6 +134,7 @@ pt:
       support_translation: Tradução de suporte
       support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
+      transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       translation_instructions: Instruções de tradução
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
@@ -126,6 +155,7 @@ pt:
       create_empty_work_description: Isso cria um trabalho vazio. Depois de criar o trabalho, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar o trabalho e fazer upload do arquivo em %{start_project}.
       create_work: Criar trabalho
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       start_a_project: Iniciar um projeto
       title: Título
       work_description: Uma obra é um documento único como uma carta, um diário, um livro de campo, um cartão postal ou um caderno.
@@ -162,6 +192,7 @@ pt:
       location_of_composition: Localização da Composição
       metadata: Metadados
       number_of_pages: Número de Páginas:&nbsp;
+      original_filename: Nome do arquivo original
       out_of_scope: Fora do escopo
       permission_description: Descrição da Permissão
       physical_description: Descrição Física

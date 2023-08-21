@@ -1,0 +1,16 @@
+<ul class="thredded--navigation-breadcrumbs">
+  <% if controller_name != 'notes' && controller_name != 'display'%>
+    <li><%= link_to t('thredded.nav.all_messageboards'), Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group) %></li>
+    <% if messageboard_or_nil.try(:persisted?) %>
+      <li><%= link_to messageboard.name, messageboard_topics_path(messageboard) %></li>
+    <% end %>
+  <% else %>
+    <% Thredded::Engine.routes.default_url_options = { user_slug: @collection.owner.slug, collection_id: @collection.slug } %>
+    <li><%= link_to t('thredded.nav.all_messageboards'), Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group) %></li>
+
+    <li><%= link_to t('notes.discussions.page_notes'), main_app.collection_page_discussions_path(@collection.owner, @collection) %></li>
+    <% if @page %>
+      <li><%= @page.title %></li>
+    <% end %> 
+  <% end %>
+</ul>

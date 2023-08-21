@@ -18,10 +18,13 @@ es:
       image_at_the_left: Imagen hacia la izquierda
       image_at_the_right: Imagen hacia la derecha
       image_at_the_top: Imagen hacia arriba
+      layout: Diseño
       mark_as_blank: Marcar como en blanco
+      mark_blank_warning: Esta página contiene datos transcritos pero la está marcando como vacía. ¿Desea continuar?
       microphone: Micrófono
       more_help: Más ayuda....
       needs_review: Necesita Revisión
+      notes_and_questions: Notas y Preguntas
       this_page_marked_blank: Esta página está en blanco
       this_page_marked_needs_review: Esta página ha sido marcada como "necesita revisión". Puedes mejorar esta página corrigiéndola con el original y agregando o corrigiendo texto. Cuando hayas terminado, desmarca "necesita revisión" y guarda la página.
       this_page_marked_needs_review_workflow_version: Esta página necesita revisión. Puedes mejorar esta página revisándola con el original y añadiendo o corrigiendo el texto y. Después, aprueba el texto.
@@ -41,9 +44,16 @@ es:
     save_buttons:
       approve: Aprobar
       approve_to_transcribed_tooltip: Guardar y aprobar esta página
+      autolink: Enlace automático
+      autolink_tooltip: Sugerir etiquetas de asunto automáticamente
       done: Terminado
+      edit: Editar
+      edit_tooltip: Edita esta página
       finish_to_needs_review_tooltip: Guardar una página completada
       finish_to_transcribed_tooltip: Guardar una página completada
+      please_wait: Espere por favor...
+      preview: Avance
+      preview_tooltip: Vista previa de esta página
       save_changes: Guardar Cambios
       save_to_incomplete_tooltip: Guardar una página incompleta
       save_to_needs_review_tooltip: SGuardar tus cambios
@@ -57,8 +67,11 @@ es:
       notice: Puedes guardar hasta %{guest_deed_count} transcripciones como visitante.
     translate:
       autolink: Enlace automático
+      corrected: corregido
       edit: Editar
       edit_translation: Editar traducción
+      help_correct: ayudar a corregir
+      help_transcribe: ayudar a transcribir
       mark_as_blank: Marcar como en blanco
       mark_the_page_blank: marcar la página en blanco
       microphone: Micrófono
@@ -69,6 +82,8 @@ es:
       preview: Vista Preliminar
       save_changes: Guardar Cambios
       show_image: Mostrar Imagen
+      show_transcription: Mostrar transcripción
       this_page_is_blank: Esta página está en blanco
       this_page_is_not: Esta página no es %{text_type}
       this_page_marked_needs_review: Esta página ha sido marcada como "necesita revisión". Puedes mejorar esta página corrigiéndola con el original y agregando o corrigiendo texto. Cuando hayas terminado, desmarca "necesita revisión" y guarda la página.
+      transcribed: transcrito

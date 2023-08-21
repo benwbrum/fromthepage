@@ -5,7 +5,10 @@ p= t('.message', owner: @collection.owner.display_name, collection: @collection.
 span= link_to t('user_mailer.click_here'), (collection_url(@collection.owner, @collection, only_path: false))
 = t('.html.to_view', collection: @collection.title)
 
-p== t('user_mailer.html.closing')
+-unless @collection.owner.display_name.blank?
+    p== t('user_mailer.html.closing', from: @collection.owner.display_name)
+-else
+    p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
 span =link_to t('user_mailer.click_here'), update_profile_url(@user, only_path: false)

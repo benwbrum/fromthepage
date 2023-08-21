@@ -1,6 +1,10 @@
 ---
 es:
   devise:
+    confirm_password: Confirmar contraseña
+    create_account: Crear una cuenta
+    display_name: Nombre para mostrar
+    email_address: Dirección de correo electrónico
     failure:
       already_authenticated: Ya has iniciado sesión.
       inactive: Tu cuenta aún no ha sido activada.
@@ -8,27 +12,96 @@ es:
       not_found_in_database: La contraseña o %{authentication_keys} son inválidos.
       timeout: La sesión expiró. Por favor vuelve a iniciar sesión para continuar.
       unauthenticated: Para continuar debes iniciar sesión o crear una cuenta.
+    login: Acceso
     mailer:
       reset_password_instructions:
+        change_my_password: cambiar mi contraseña
+        greeting: "¡Hola %{email}!"
+        message_1: 'Alguien ha solicitado un enlace para cambiar su contraseña. Puedes hacerlo a través del siguiente enlace:'
+        message_2: Si no lo solicitó, ignore este correo electrónico.
+        message_3: Su contraseña no cambiará hasta que acceda al enlace anterior y cree una nueva.
         subject: Instrucciones para reestablecer la contraseña
     omniauth_callbacks:
       failure: No se pudo corroborar tu información de %{kind} ya que %{reason}.
       success: Corroborado exitosamente por la cuenta %{kind}.
+    password: Clave
     passwords:
+      edit:
+        change_password: Cambia la contraseña
+        change_password_message: Cree una nueva contraseña para su cuenta. La contraseña debe tener al menos 8 caracteres y contener tanto letras como números. ¡No use la misma contraseña que usa para su banco en línea o cuenta de correo electrónico!
+        new_password: Nueva contraseña
+      new:
+        message: Ingrese la dirección de correo electrónico asociada con su cuenta de FromThePage. Si su dirección de correo electrónico existe en nuestra base de datos, recibirá un enlace de recuperación de contraseña en su dirección de correo electrónico en unos minutos.
+        password_recovery: Recuperación de contraseña
+        recover_password: Recuperar contraseña
       no_token: Esta página solo puede ser accesada desde un  correo para reestablecer la contraseña. Si este es el caso, por favor asegúrate de haber usado el URL entero que se proveyó en el correo para reestablecer la contraseña.
       send_instructions: Recibirás un correo con las instrucciones para reestablecer la contraseña en unos minutos.
       send_paranoid_instructions: Si tu dirección de correo electrónico ya existe en nuestra base de datos, dentro de unos minutos recibirás un enlace para recuperar su contraseña en el buzón de entrada de tu correo.
       updated: La contraseña ha sido cambiada exitosamente. Has iniciado sesión.
       updated_not_active: La contraseña ha sido cambiada exitosamente.
+    real_name: Nombre real
+    real_name_message: Los proyectos pueden usar esto cuando le den crédito. Deje esto en blanco si no desea que se le acredite.
+    receive_activity_emails: Recibir correos electrónicos de actividad
     registrations:
+      choose_saml:
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
+        institution: Institución
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
+        sign_in_with_institution: Ingresa con tu Institución
       destroyed: "¡Adiós! La cuenta ha sido cancelada exitosamente. Esperamos verte de nuevo pronto."
+      edit:
+        confirm_delete_account: "¿Está seguro de que desea eliminar su cuenta? ¡Después de eliminar la cuenta, no podrás recuperarla!"
+        current_password: Contraseña actual
+        delete_account: Borrar cuenta
+        edit_account: Editar cuenta
+        message: Aquí puede cambiar la información de su cuenta. Si no desea cambiar su contraseña, deje los campos de contraseña en blanco. Debe ingresar su contraseña actual para confirmar los cambios.
+        new_password: Nueva contraseña
+        save_changes: Guardar cambios
+        waiting_confirmation_message: Actualmente esperando confirmación para %{resource}
+      new_trial:
+        fill_in_the_following: Complete la siguiente información para crear una prueba de doscientas páginas
+        just_want_to_transcribe: "¿Solo quieres transcribir? %{sign_up_here}"
+        login: Acceso
+        message: Complete la siguiente información para crear una cuenta de propietario de proyecto FromThePage de prueba de doscientas páginas. ¿Tiene preguntas? %{schedule_a_kickoff_call}
+        project_owner_account_have: Cuenta del propietario del proyecto FromThePage. ¿Tiene preguntas?
+        schedule_a_kickoff_call: Programe una llamada de inicio.
+        sign_up_for_trial: Regístrese para una prueba
+        sign_up_here: Registrate aquí
+        want_to_transcribe: quieres transcribir?
+      owner_new:
+        projects_may_use_this: Los proyectos pueden usar esto cuando le den crédito. Deje esto en blanco si no desea que se le acredite.
+        you_ll_use_this: Usarás este nombre para iniciar sesión. Se mostrará públicamente.
       signed_up: "¡Te damos la bienvenida! Has iniciado sesión exitosamente."
       updated: La cuenta se ha actualizado correctamente.
       updated_but_not_signed_in: La cuenta se ha actualizado exitosamente, pero dado que se cambió la contraseña, debes volver a iniciar sesión
     sessions:
       already_signed_out: Has cerrado sesión exitosamente.
+      new:
+        forgot_your_password: "¿Olvidaste tu contraseña?"
+        or: o
+        remember_me: " Acuérdate de mí"
+        sign_in_with_institution: Regístrese con su Institución (SSO)
+        sign_up_as_transcriber_message: "¿Quieres unirte a un proyecto existente como transcriptor? Regístrese como transcriptor."
+        sign_up_now: Regístrate ahora
+        start_free_trial: Empiza la prueba gratuita
+        start_free_trial_message: "¿Quiere comenzar un nuevo proyecto de transcripción? Inicie una prueba gratuita."
       signed_in: Has iniciado sesión exitosamente.
       signed_out: Has cerrado sesión exitosamente.
+    shared:
+      links:
+        forgot_your_password: "¿Olvidaste tu contraseña?"
+        no_confirmation_instructions: "¿No recibió las instrucciones de confirmación?"
+        no_unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
+        sign_in_existing_account: Iniciar sesión cuenta existente
+        sign_in_with_google: Inicia sesión con Google
+        sign_in_with_institution: Regístrese con su Institución (SSO)
+        sign_up_new_account: Regístrate para una nueva cuenta
+    sign_in: Registrarse
+    sign_up: Inscribirse
+    user_name: Nombre de usuario
+    user_name_message: Usarás este nombre para iniciar sesión. Se mostrará públicamente.
   errors:
     messages:
       expired: ha expirado, por favor solicite uno nuevo

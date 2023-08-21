@@ -1,6 +1,10 @@
 ---
 es:
   deed:
+    article_edit: Artículo editado
+    collection_active: Colección Activa
+    collection_inactive: Colección inactiva
+    collection_joined: Colección Unida
     deed:
       html:
         added_a_note_to_page: añadió una nota a la página %{page}
@@ -17,7 +21,7 @@ es:
         marked_page_as_blank: marcó la página %{page} como en blanco
         marked_page_as_needing_review: marcó %{page} la página como en necesidad de revisión
         marked_translation_page_as_needing_review: marcó la página de traducción %{page} como necesitando revisión
-        reviewed_page: ''
+        reviewed_page: revisada %{page}
         reviewed_translation: traducción revisada de la página %{page}
         saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
         this_collection: esta colección
@@ -25,11 +29,27 @@ es:
         translated_page: tradujo la página %{page}
     deeds:
       show_more: Mostrar Más
-      time_ago_in_words: Hace %{time}
+    described_metadata: Metadatos descritos
+    edited_metadata: Descripción de los metadatos editados
     list:
       activity_stream: Flujo de Actividad
       collection_title: 'Colección: %{title}'
       newer_activity: Actividad Más Reciente
       older_activity: Actividad Anterior
+      owner_title: 'Propietario: %{title}'
       time_ago_in_words: Hace %{time}
       user_title: 'Usuario: %{title}'
+    needs_review: Página necesita revisión
+    note_added: Nota añadida
+    ocr_corrected: Página OCR corregido
+    page_edit: Página editada
+    page_indexed: Página indexada
+    page_marked_blank: Página marcada en blanco
+    page_reviewed: Página revisada
+    page_transcription: Página transcrita
+    page_translated: Página traducida
+    page_translation_edit: Página de traducción editada
+    translation_indexed: Página de traducción indexada
+    translation_review: Página de traducción necesita revisión
+    translation_reviewed: Traducción revisada
+    work_added: Trabajo agregado

@@ -28,6 +28,9 @@ class User < ApplicationRecord
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
+  has_many :collection_blocks, dependent: :destroy
+  has_many :blocked_collections, through: :collection_blocks, source: :collection
+
   has_and_belongs_to_many(:scribe_works,
                           :join_table => 'transcribe_authorizations',
                           :class_name => 'Work')
@@ -63,6 +66,7 @@ class User < ApplicationRecord
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
+  scope :active_mailers,   -> { where(activity_email: true)}
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^<>]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
@@ -72,6 +76,7 @@ class User < ApplicationRecord
   before_validation :update_display_name
 
   after_save :create_notifications
+  after_create :set_default_footer_block
   #before_destroy :clean_up_orphans
 
   def email_does_not_match_denylist
@@ -106,18 +111,23 @@ class User < ApplicationRecord
 
     data = access_token.info
 
-    if data['external_id']
+    if data['external_id'] && !data['external_id'].blank?
       user = User.where(external_id: data['external_id'], sso_issuer: issuer).first
     end
-    if !user && data['email']
+    if !user && !data['email'].blank?
       user = User.where(email: data['email']).first
     end
-    if !user && data['email2']
+    if !user && !data['email2'].blank?
       user = User.where(email: data['email2']).first
     end
-    if !user && data['email3']
+    if !user && !data['email3'].blank?
       user = User.where(email: data['email3']).first
     end
+
+    logger.info("User record before save:")
+    logger.info(user.to_json)
+    logger.info("Data from SAML response:")
+    logger.info(data.to_json)
 
     # update the user's SSO if they don't have one
     if user && user.sso_issuer.nil?
@@ -127,7 +137,9 @@ class User < ApplicationRecord
 
     # create users if they don't exist
     unless user
-      email = data['email'] || data['email2'] || data['email3']
+      email = data['email3'] unless data['email3'].blank? 
+      email = data['email2'] unless data['email2'].blank? 
+      email = data['email'] unless data['email'].blank?
       login = email.gsub(/@.*/,'')
       # avoid duplicate logins
       while User.where(login: login).exists? do
@@ -256,6 +268,8 @@ class User < ApplicationRecord
     # document set show_to? logic:
     #     (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
     public_collections = self.unrestricted_collections
+    blocked_collection_ids = CollectionBlock.where(user_id: user&.id).pluck(:collection_id)
+    filtered_public_collections = public_collections.where.not(id: blocked_collection_ids)
     public_sets = self.unrestricted_document_sets
 
     if user
@@ -266,9 +280,9 @@ class User < ApplicationRecord
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
     
-      (public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
+      (filtered_public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
-      (public_collections+public_sets)
+      (filtered_public_collections+public_sets)
     end
   end
 
@@ -361,6 +375,11 @@ class User < ApplicationRecord
       token = SecureRandom.base64.tr('+/=', 'Qrt')
       break token unless User.exists?(api_key: token)
     end
+  end
+
+  def set_default_footer_block
+    self.footer_block = "For questions about this project, contact at."
+    save
   end
 
 end

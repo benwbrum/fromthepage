@@ -36,17 +36,23 @@
             -unless work.thumbnail.nil?
                 =link_to image_tag(work.thumbnail, alt: work.title), default_path
           h4.collection-work_title =link_to work.title, default_path
-          p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+          p.collection-work_snippet = to_snippet(work.description)
           -if @collection.text_entry? && work.next_untranscribed_page
             p.collection-work_action 
-              =t('.this_work_has_pages_that_need_work')
-              span &nbsp;
-              =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
+              -if (current_user && current_user.can_transcribe?(work))
+                =t('.this_work_has_pages_that_need_work')
+                span &nbsp;
+                =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
+              -else
+                =t('.restricted_collaboratoration')
           -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
             p.collection-work_action 
-              =t('.this_work_has_not_been_described')
-              span &nbsp;
-              =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
+              -if (current_user && current_user.can_transcribe?(work))
+                =t('.this_work_has_not_been_described')
+                span &nbsp;
+                =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
+              -else
+                =t('.restricted_collaboratoration')
           -if @collection.text_entry?
             .collection-work_stats
               -work_stats(work)
@@ -54,12 +60,7 @@
                 = t('.n_pages', count: work.work_statistic.total_pages)
                 = @wording
               span
-                span.progress
-                  -unless @collection.subjects_disabled
-                    span(style="width:#{@progress_annotated}%")
-                  span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
-                  -unless @progress_review == 0
-                    span(style="width:#{@progress_review}%")
+                =render(:partial => 'shared/progress', :locals => { :collection => @collection })
           -else
             .collection-work_stats
               span =t("work.#{work.description_status}")
@@ -124,11 +125,27 @@
           =time_tag(note.created_at, class: 'legend legend-left')
             =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
           span.deed-short_content
-            =="#{user} wrote #{text}"
+            ==t('.user_wrote_note', user: user, note: text)
     small.legend
       =link_to t('.show_more'), deed_notes_path(@collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
-    =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
+    -cache @collection.most_recent_deed_created_at do
+      =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-=render({ :partial => '/shared/collection_footer' })
+=link_to(collection_new_mobile_user_path(@collection.id), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
+  span =""
+
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
+      $("time.timeago").timeago();
+    });
+
+-if @new_mobile_user
+  -content_for :javascript
+    javascript: 
+      $(document).ready(function(){
+        $('#new_mobile_user_link').trigger('click');
+      });

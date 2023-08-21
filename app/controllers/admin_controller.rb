@@ -264,7 +264,7 @@ class AdminController < ApplicationController
       dir = params[:dir].upcase
       @owners = User.where(owner: true).order("#{sort} #{dir}").paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     else
-      @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+      @owners = User.where(owner: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
   end
 
@@ -272,6 +272,10 @@ class AdminController < ApplicationController
     u = User.find(params[:user_id])
     u.downgrade
     redirect_back fallback_location: { action: 'user_list' }, notice: t('.user_downgraded_successfully')
+  end
+
+  def moderation
+    @collections = Collection.where(messageboards_enabled:true)
   end
 
   private

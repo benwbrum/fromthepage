@@ -29,7 +29,6 @@ pt:
       this_collection: esta coleção
     deeds:
       show_more: Mostrar Mais
-      time_ago_in_words: Há %{time}
     described_metadata: Metadados Descritos
     edited_metadata: Descrição de metadados editada
     list:
@@ -37,6 +36,7 @@ pt:
       collection_title: 'Coleção: %{title}'
       newer_activity: Atividade Mais Recente
       older_activity: Atividade Mais Antiga
+      owner_title: 'Proprietário: %{title}'
       time_ago_in_words: Há %{time}
       user_title: 'Usuário: %{title}'
     needs_review: A página precisa de revisão

@@ -43,25 +43,24 @@ h2.legend =t('.notes_and_questions')
   =render :partial => "notes/notes"
 
 
-=render({ :partial => '/shared/collection_footer' })
-
 -unless @current_user_alerted
-  -unless current_user.slug.nil?
-    -content_for :javascript
-      javascript:
-        setInterval("transcribe_periodic_timer()", 60000);
+  -if current_user.present?
+    -unless current_user.slug.nil?
+      -content_for :javascript
+        javascript:
+          setInterval("transcribe_periodic_timer()", 60000);
 
-        function transcribe_periodic_timer() {
-          $.ajax({
-            url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, 0)}",
+          function transcribe_periodic_timer() {
+            $.ajax({
+              url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, 0)}",
 
-            complete: function() {
-              $(".page-busy-overlay").hide();
-            }
-          });
-        }
+              complete: function() {
+                $(".page-busy-overlay").hide();
+              }
+            });
+          }
 
-        transcribe_periodic_timer();
+          transcribe_periodic_timer();
 
 -content_for :javascript
   javascript:

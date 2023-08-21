@@ -6,8 +6,11 @@ es:
     edit:
       current_url_for_this_work: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección del conjunto de documentos en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       document_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
       save_document_set: Guardar Conjunto de Documentos
+      title: Título
+      url: URL
     index:
       actions: Acciones
       aggregating_works_thematic_exhibits: Agregando obras a exposiciones temáticas
@@ -19,6 +22,9 @@ es:
       document_sets_for: Conjuntos de Documentos para %{title}
       edit: Editar
       focusing_transcriber_effort: Concentrando el esfuerzo del transcriptor en un grupo particular de obras.
+      n_pages:
+        one: '1 pagina:'
+        other: "%{count} páginas:"
       no_document_sets: Esta colección no tiene conjuntos de documentos
       privacy: Privacidad
       private: Privado
@@ -27,15 +33,24 @@ es:
       save: Guardar
       search: Búsqueda
       search_for_works: Búsqueda de obras...
+      status: Estado
       title: Título
+      toggle_work_in_document_set: Alternar %{work} en el conjunto de documentos %{document_set}
+      transfer_works: Transferencia de obras
       work: Obras
     new:
       create_document_set: Crear Conjunto de Documentos
       create_new_document_set: Crear Nuevo Conjunto de Documentos
       description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       document_set_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      public: Público
+      title: Título
     set_works:
       collaboration: Colaboración
+      n_pages:
+        one: '1 pagina:'
+        other: "%{count} páginas:"
       progress: Progreso
       remove_from_set: Eliminar del conjunto
       remove_title_from_document_set: Eliminar %{title} del Conjunto de Documentos
@@ -58,13 +73,35 @@ es:
       make_document_set_private: Hacer Privado el Conjunto de Documentos
       make_document_set_public: Hacer Público el Conjunto de Documentos
       manage_works: Administrar Obras
+      n_contributions:
+        one: 1 contribución
+        other: "%{count} contribuciones"
+      n_pages:
+        one: '1 pagina:'
+        other: "%{count} páginas: pl"
       no_image: No Hay Imagen
       picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
       remove: Eliminar
       save: Guardar
       search: Búsqueda
       search_for_works: Búsqueda de obras...
+      status: Estado
       upload_image: Subir Imagen
       work: Obras
+    transfer:
+      source_and_target_can_not_be_the_same: El origen y el destino no pueden ser el mismo.
+    transfer_form:
+      all: todos los trabajos
+      cancel: Cancelar
+      completed: Solo obras terminadas
+      copy: Copiar (no crea obras duplicadas)
+      move: Muevete
+      source_set: Conjunto de documentos de origen
+      status_filter: que funciona
+      target_set: Conjunto de documentos de destino
+      transfer: Transferir
+      transfer_type_label: Tipo de transferencia
+      transfer_works: Transferencia de obras
+      transfer_works_description: Transferir trabajos entre conjuntos de documentos. (La copia colocará el mismo trabajo dentro de dos conjuntos de documentos al mismo tiempo).
     update:
       document_updated: El documento ha sido actualizado

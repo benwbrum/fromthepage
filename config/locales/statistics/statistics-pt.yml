@@ -3,9 +3,8 @@ pt:
   statistics:
     collaborator_time:
       collaborator_time: Tempo do colaborador
-      collaborator_time_for_dates: Hora do Colaborador para Datas
-      end_date: Data final
-      export_activity_as_csv: Exportar atividade detalhada como CSV
+      collaborator_time_description: Uma planilha com o número de minutos que cada usuário contribuiu por dia no intervalo de datas.
+      collaborator_time_export_button: Exportar Planilha de Tempo do Colaborador
       no_activity_for_date_range: Não há atividade para este intervalo de datas.
       start_date: Data de início
       update: Atualizar
@@ -70,6 +69,9 @@ pt:
       work:
         one: Trabalho
         other: Trabalhos
+      work_transcribed:
+        one: Trabalho transcrita
+        other: Trabalhos transcritas
       works_described:
         one: Trabalho descrito
         other: Trabalhos descritos
@@ -114,10 +116,10 @@ pt:
       collaborator:
         one: Colaborador
         other: Colaboradores
+      end_date: Data final
       incomplete_page:
         one: Página incompleta
         other: Páginas incompletas
-      last_days_statistics: Estatísticas dos últimos 7 dias
       new_subject:
         one: Novo assunto
         other: Novos assuntos
@@ -151,12 +153,16 @@ pt:
       reference:
         one: Referência
         other: Referências
+      select_new_date: Selecione um novo intervalo de datas
+      start_date: Data de início
+      statistics_from: Estatísticas de %{start_date} a %{end_date}
       subject:
         one: Assunto
         other: Assuntos
       total_page:
         one: Página total
         other: Páginas totais
+      update: Atualizar
       work:
         one: Trabalho
         other: Trabalhos

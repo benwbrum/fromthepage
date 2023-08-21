@@ -52,6 +52,7 @@ fr:
       search_for: Rechercher %{search_string}
       search_in_collection: Rechercher dans la collection...
       search_in_collection_1: Rechercher dans la collection
+      search_in_work: Rechercher dans l'œuvre...
       translations_need_indexing: Traductions nécessitant une indexation
       translations_need_review: Traductions à revoir
       view_all_pages: Afficher toutes les pages
@@ -67,7 +68,6 @@ fr:
       no_pages_needing_transcription_found_these_pages_are_incomplete: Aucune page n'a besoin d'être retranscrite à partir de zéro. Ces pages ont été partiellement transcrites mais doivent être complétées.
       page_not_translated: Cette page n'est pas traduite, veuillez %{help_translate} cette page
       pages_needing_completion: Pages à compléter
-      pages_that_need_transcription: Pages nécessitant une transcription
       review_metadata: Examiner les métadonnées
       this_page_is_blank: Cette page est vierge
       this_page_is_incomplete: Cette page est incomplète
@@ -75,6 +75,17 @@ fr:
       transcribed: transcrite
       translation: Traduction
       unable_to_find_pages: Nous n'avons trouvé aucune page correspondant à votre demande
+    read_all_works:
+      pages: Pages
+      pages_that_mention: Pages qui mentionnent %{article}
+    read_work:
+      pages: Pages
+      pages_need_indexing: Pages à indexer
+      pages_need_review: Pages à réviser
+      pages_need_transcription: Pages nécessitant une transcription
+      pages_need_translation: Pages à traduire
+      translations_need_indexing: Traductions nécessitant une indexation
+      translations_need_review: Traductions à revoir
   display_helper:
     page_action:
       blank_page: Page vierge

@@ -4,14 +4,15 @@ module SubjectExporter
   class Exporter
     include Rails.application.routes.url_helpers
 
-    def initialize(collection)
-      @works = collection.works
-      @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI]
+    def initialize(collection, works)
+      @works = works ? works : collection.works
+      @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI Subject_Latitude Subject_Longitude Subject_Description]
+      @metadata_keys = collection.metadata_coverages.map{|c| c.key}
     end
 
     def export
       csv_string = CSV.generate(force_quotes: true) do |csv|
-        csv << @headers
+        csv << @headers + @metadata_keys
 
         ac_map = {}
         collection = @works.first.collection
@@ -24,6 +25,17 @@ module SubjectExporter
           GC.start
           transcription_sections  = ['']
           translation_sections    = ['']
+
+          metadata_row = []
+          unless work.original_metadata.blank?
+            metadata = {}
+            JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
+
+            @metadata_keys.each do |header|
+              # look up the value for this index
+              metadata_row << metadata[header]
+            end
+          end
 
           work.pages.includes(:page_article_links, articles: [:page_article_links]).each do |page|
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
@@ -40,7 +52,7 @@ module SubjectExporter
                 categories = ac_map[article] || []
                 article_link = Rails.application.routes.url_helpers.collection_article_show_url(owner, collection, article.id, :only_path => false)
                 section_header = sections_by_link[link.id] 
-                csv << [
+                row = [
                   work.title,
                   work.identifier,
                   section_header,
@@ -53,8 +65,12 @@ module SubjectExporter
                   link.text_type,
                   article.uri,
                   categories.first(3).join('|'),
-                  article_link
+                  article_link,
+                  article.latitude,
+                  article.longitude,
+                  article.source_text
                 ]
+                csv << row + metadata_row
               end
             end
           end

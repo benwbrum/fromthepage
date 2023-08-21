@@ -7,6 +7,12 @@ en:
       note_has_been_created: Note has been created
     destroy:
       note_has_been_deleted: Note has been deleted
+    discussions:
+      description: Questions and notes on pages
+      most_recent_of: 'Most recent of '
+      page_notes: Page Notes
+      pages_and_notes_counts: "%{posts_count} notes on %{topics_count} pages"
+      total_notes: "%{count} notes"
     note:
       cancel: Cancel
       confirm_delete_message: Are you sure you want to delete this note?

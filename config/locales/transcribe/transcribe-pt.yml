@@ -20,6 +20,7 @@ pt:
       image_at_the_top: Imagem superior
       layout: Esquema
       mark_as_blank: Marcar como em branco
+      mark_blank_warning: Esta página contém dados transcritos, mas você a está marcando como vazia. Deseja continuar?
       microphone: Microfone
       more_help: Mais ajuda....
       needs_review: Precisa de Revisão
@@ -50,6 +51,7 @@ pt:
       edit_tooltip: Edite essa página
       finish_to_needs_review_tooltip: Salvar uma página completa
       finish_to_transcribed_tooltip: Salvar uma página completa
+      please_wait: Por favor, espere...
       preview: Visualizar
       preview_tooltip: Visualizar esta página
       save_changes: Salvar
@@ -59,10 +61,10 @@ pt:
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
       saved_notice: Guardada
-      you_may_save_notice: Você pode guardar até %{guest_deed_ count} transcrições como hóspede.
+      you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     save_translation:
       error_message: 'Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
-      notice: Você pode guardar até %{guest_deed_ count} transcrições como hóspede.
+      notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     translate:
       autolink: Link automático
       corrected: corrigido
@@ -73,7 +75,7 @@ pt:
       mark_as_blank: Marcar como em branco
       mark_the_page_blank: marcar a página como em branco
       microphone: Microfone
-      or_mark_blank: "<br>ou %{mark_ blank}"
+      or_mark_blank: "<br>ou %{mark_blank}"
       page_needs_review: Página Precisa de Revisão
       page_notes: Notas da Página
       please_help_this_page: Por favor %{help_link} esta página

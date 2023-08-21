@@ -3,7 +3,9 @@ en:
   bulk_export:
     create:
       export_running_message: Export running.  Email will be sent to %{email} on completion.
-    create_for_work:
+    create_for_owner:
+      export_running_message: Export running.  Email will be sent to %{email} on completion.
+    create_for_work_actual:
       export_running_message: Export running.  Email will be sent to %{email} on completion.
     download:
       download_cleaned_message: This export download has been cleaned.  Please start a new one.
@@ -21,14 +23,25 @@ en:
       expanded_plaintext: Expanded Plaintext
       expanded_plaintext_description: Like the verbatim plaintext, this plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It differs from the verbatim text, in that normalization will be applied to all subjects mentioned, so that while the verbatim text may read “I greeted Mr. Jones and his wife this morning.”, the emended plaintext will read “I greeted James Jones and Elizabeth Smith Jones this morning”. This artificial text is useful for programmatic analysis, but is not meant to be read by humans.
       export_all_works: Export All Works
+      export_work_metadata: Export Work Metadata
+      export_work_metadata_as_csv: Export Work Metadata As CSV
+      export_work_metadata_description: Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work.
       facing_edition_pdf: Facing Edition PDF
       facing_edition_pdf_description: A PDF file containing images and transcripts on facing pages.
+      file_formats: Export Formats
+      file_organization: Folder Organization
+      format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
       one_file_per_collection: One file per collection
       one_file_per_page: One file per page
       one_file_per_work: One file per work
       one_site_per_collection: One site per collection
+      organization: Folder Organization
+      organization_description: Zip files can be organized with a folder per work containing files or subfolders for each export format, or with a folder per export format containing files per work.
+      organization_format: Format folders
+      organization_work: Work folders
+      preserve_linebreaks: Preserve Linebreaks
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
       search_optimized_plaintext_description: A plaintext version of the work optimized for full-text search. This version contains a verbatim plaintext transcript of each page (as described above), except that words broken by hyphenated newlines are joined together, and a list of the canonical names mentioned within each page is appended to the end of the page.
@@ -46,9 +59,14 @@ en:
       tei_xml_description: This may be useful to editors who plan to do further mark-up within TEI-XML editors like oXygen.
       text_docx: Text DOCX
       text_docx_description: An MS-Word (.docx) file containing text transcripts.
+      text_only_pdf: Text (only) PDF
+      text_only_pdf_description: A PDF file containing text transcripts only.
       text_pdf: Text PDF
-      text_pdf_description: A PDF file containing text transcripts.
+      text_pdf_description: A PDF file containing text transcripts and work metadata.
       time: Time
+      use_uploaded_filename: File/Folder Names
+      use_uploaded_filename_description: Export files or folders are be based on the work slug by default.  If a work was originally uploaded you can use the original filename for exports instead.
+      use_uploaded_filename_label: Use original names
       verbatim_plaintext: Verbatim Plaintext
       verbatim_plaintext_description: This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
       work_metadata_csv: Work Metadata CSV

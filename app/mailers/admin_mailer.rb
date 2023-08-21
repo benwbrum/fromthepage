@@ -1,6 +1,8 @@
 class AdminMailer < ActionMailer::Base
   include ContributorHelper
   helper ContributorHelper
+  include ApplicationHelper
+  helper ApplicationHelper
 
   before_action :add_inline_attachments!
 
@@ -56,6 +58,15 @@ class AdminMailer < ActionMailer::Base
     mail to: user_email, subject: "CONTENTdm Bulk Import Complete"
   end
 
+  def weekly_trial_cohort(file)
+    attachments.inline["weekly_cohort.csv"] = File.read(file)
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Trial Cohort")
+  end
+
+  def weekly_transcriber_cohort(file)
+    attachments.inline["weekly_transcriber_cohort.csv"] = File.read(file)
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Transcriber Cohort")
+  end
 
   class OwnerCollectionActivity
     attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity

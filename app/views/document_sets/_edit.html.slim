@@ -17,6 +17,7 @@
       tr
         td(colspan="2")
           =f.label :description, t('.description'), class: 'above'
+          br: i =t('.description_message')
           =f.text_area :description, rows: 6
     .toolbar
       .toolbar_group.aright =f.button t('.save_document_set')

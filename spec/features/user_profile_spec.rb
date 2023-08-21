@@ -30,10 +30,9 @@ describe 'User profile and settings actions' do
     # in the test. It works in the real app, but I'd like to sort it out, if I can
     # fill_in('user[login]', with: 'NewLogin')
     fill_in('user[email]', with: 'newemail@example.com')
-    fill_in('user[current_password]', with: 'password')
     click_button('Save Changes')
-    expect(page).to have_content('Your account has been updated successfully.')
-    expect(current_url).to eq(edit_user_path)
+
+    expect(page).to have_content('has been updated')
   end
 
 

@@ -4,8 +4,9 @@ pt:
     create:
       document_created: O documento foi criado
     edit:
-      current_url_for_this_work: O URL atual desta obra é %{current_ URL}. Se quiser editar a parte do conjunto de documentos no URL, por favor use letras minúsculas e traços entre as palavras.
+      current_url_for_this_work: O URL atual desta obra é %{current_url}. Se quiser editar a parte do conjunto de documentos no URL, por favor use letras minúsculas e traços entre as palavras.
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       save_document_set: Guardar o Conjunto de Documentos
       title: Título
@@ -18,7 +19,7 @@ pt:
       delete: Apagar
       delete_document_set_confirm_message: Tem certeza que deseja apagar este conjunto de documentos? O conjunto de documentos será apagado, mas nenhuma das obras dentro do conjunto de documentos será apagada.
       document_sets_are_sub_sets: 'Os conjuntos de documentos são subconjuntos dos documentos de uma coleção. Eles têm vários usos, incluindo:'
-      document_sets_for: Conjuntos de Documentos para %{título}
+      document_sets_for: Conjuntos de Documentos para %{title}
       edit: Editar
       focusing_transcriber_effort: Focar os esforços dos transcritores em um grupo específico de obras.
       n_pages:
@@ -41,6 +42,7 @@ pt:
       create_document_set: Criar Conjunto de Documentos
       create_new_document_set: Criar Novo Conjunto de Documentos
       description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_set_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       public: Público
       title: Título

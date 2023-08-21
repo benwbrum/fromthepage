@@ -13,26 +13,16 @@ en:
       export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
     index:
       api: API
-      export_all_table_data_as_csv: Export All Table Data as CSV
-      export_all_tables: Export All Tables
-      export_all_tables_description: Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+      export_all_notes: Export All Notes
+      export_all_notes_as_csv: Export All Notes as CSV
+      export_all_notes_description: Export all notes from the entire collection in a CSV file.
       export_all_works: Export All Works
       export_all_works_description: Choose formats and granularities to export the entire collection in a zip file.
       export_as: Export As
       export_individual_works: Export Individual Works
       export_individual_works_description: You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats of a work and page granularity.
-      export_subject_coocurrence_as_csv: Export Coocurrences as CSV
-      export_subject_coocurrence_description: Click the button to export a CSV file with an row for each combination of subjects in the collection which are mentioned within the same page. (The export process could take some time to complete, so please wait until you get the File Save dialog.)
-      export_subject_details_as_csv: Export Subjects as CSV
-      export_subject_details_description: Click the button to export a CSV file with an row for each subject in the collection. (The export process could take some time to complete, so please wait until you get the File Save dialog.)
-      export_subject_index: Export Subjects
-      export_subject_index_description: Click the button to export subject indexes from the entire collection in a single CSV file.  (The export process could take some time to complete, so please wait until you get the File Save dialog.)
-      export_subjects_as_csv: Export Index as CSV
       export_to_contentdm: Export to CONTENTdm
       export_to_contentdm_description: Click the button to export completed transcripts from the entire collection to CONTENTdm.
-      export_work_metadata: Export Work Metadata
-      export_work_metadata_as_csv: Export Work Metadata As CSV
-      export_work_metadata_description: Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work.
       here: here
       html: HTML
       iiif: IIIF

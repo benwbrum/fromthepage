@@ -37,7 +37,10 @@ pt:
       add_as_owner: Adicionado como dono a uma obra privada
       add_as_reviewer: Adicionado à coleção como revisor autorizado
       default_dictation_language: 'Idioma de ditado automático: '
+      footer: Rodapé
+      help: Texto de Ajuda Básica
       interface_language: Idioma da interface
+      learn_more_footer: Saiba mais sobre a configuração do rodapé.
       location: Localização
       name: Nome
       name_only_required: O seu nome é o único campo requerido.
@@ -49,6 +52,7 @@ pt:
       picture_to_be_used_message: Imagem a ser usada
       select_notification: 'Selecione quais das seguintes notificações você gostaria de receber:'
       sign_up_url: 'URL de inscrição:'
+      suggestions_help_tab: Sugestões para a sua aba de ajuda.
       update_profile: Atualizar Perfil
       update_user_profile: Atualizar Perfil do Usuário
       upload_image: Enviar Imagem

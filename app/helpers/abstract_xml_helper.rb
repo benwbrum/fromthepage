@@ -1,6 +1,8 @@
 module AbstractXmlHelper
   require 'rexml/document'
 
+  SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
+
   def source_to_html(source)
     html = source.gsub(/\n/, "<br/>")
     return html
@@ -37,6 +39,9 @@ module AbstractXmlHelper
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
+            if params[:article_id] && id == params[:article_id]
+              anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting
+            end
           end
         else
           # preview mode for this link
@@ -46,6 +51,14 @@ module AbstractXmlHelper
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
+    end
+
+    doc.elements.each("//date") do |e|
+      when_value = e.attributes["when"]
+      time = REXML::Element.new("time")
+      time.add_attribute("datetime", when_value)
+      e.children.each{|e| time.add(e)}
+      e.replace_with(time)
     end
 
     doc.elements.each("//abbr") do |e|
@@ -164,8 +177,9 @@ module AbstractXmlHelper
         span.name='sup'
       when 'underline'
         span.name='u'
-      when 'italic'
+      when 'italics'
         span.name='i'
+        span.attributes.delete 'rend'
       when 'bold'
         span.name='i'
       when 'sub'
@@ -268,8 +282,11 @@ module AbstractXmlHelper
     doc.write(my_display_html)
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
+    my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
+    my_display_html.gsub!('<p/>','')
+    my_display_html.gsub!(/<\/?page>/,'')
 
-    return my_display_html.gsub("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip
+    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
   end
 
 end

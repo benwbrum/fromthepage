@@ -35,25 +35,26 @@ html lang="en-US"
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo', title: t('.home'), 'aria-label' => t('.home')
+          =link_to landing_path(logo: true), class: 'logo', title: t('.home'), 'aria-label' => t('.home')
             -if USE_PNG_LOGO
               =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
               =svg_symbol '#logo', title: 'Home'
+            
         .toolbar_group
           -if !(Collection.all.count > 30)
-            =link_to t('.projects'), dashboard_path, class: 'header_link'
+            =link_to t('.projects'), main_app.dashboard_path, class: 'header_link'
           -else
-            =link_to t('.find_a_project'), landing_page_path, class: 'header_link'
+            =link_to t('.find_a_project'), main_app.landing_page_path, class: 'header_link'
           -if user_signed_in?
-            =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+            =link_to t('dashboard.plain'), main_app.dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             -if @collection 
-              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@collection.owner), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@collection.owner), class: 'header_link'              
             -elsif @user && @user.owner?
-              =link_to t('.sign_up_to_transcribe'), new_for_owner_path(@user), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@user), class: 'header_link'              
             -else
-              =link_to t('.sign_up_to_transcribe'), new_user_registration_path, class: 'header_link'
+              =link_to t('.sign_up_to_transcribe'), main_app.new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
@@ -64,29 +65,30 @@ html lang="en-US"
                 =svg_symbol '#header-user', class: 'icon'
               dd
                 -if current_user.guest
-                  =link_to t('.create_an_account'), new_user_registration_path
+                  =link_to t('.create_an_account'), main_app.new_user_registration_path
                   hr
-                =link_to t('.admin_dashboard'), admin_path if current_user.admin
-                =link_to t('.owner_dashboard'), dashboard_owner_path if current_user.owner
-                =link_to t('.collaborator_dashboard'), dashboard_watchlist_path
+                =link_to t('.admin_dashboard'), main_app.admin_path if current_user.admin
+                =link_to t('.owner_dashboard'), main_app.dashboard_owner_path if current_user.owner
+                =link_to t('.collaborator_dashboard'), main_app.dashboard_watchlist_path
                 hr
-                =link_to t('.your_profile'), user_profile_path(current_user)
+                =link_to t('.your_profile'), main_app.user_profile_path(current_user)
                 hr
-                =link_to t('.sign_out'), destroy_user_session_path, method: :delete
+                =link_to t('.sign_out'), main_app.destroy_user_session_path, method: :delete
           -else
-            =link_to new_user_session_path, class: 'header_link header_user'
+            =link_to main_app.new_user_session_path, class: 'header_link header_user'
               span =t('.sign_in')
               =svg_symbol '#header-user', class: 'icon'
 
           dl.dropdown.right
             dt.header_link.header_locale tabindex=0
               span
-                big =locale.to_s.upcase
+                <img src="/assets/icons/globe.svg" alt="">
+                big =" " + locale.to_s.split("-")[0].upcase
             dd
-              -I18n.available_locales.each do |locale_option|
-                =link_to t(locale_option.to_s), user_choose_locale_path(locale_option.to_s)
+              -@dropdown_locales.each do |locale_option|
+                =link_to t(locale_option.to_s), main_app.user_choose_locale_path(locale_option.to_s)
 
-    -if user_masquerade?
+    -if user_masquerade? && !content_for?(:thredded)
       h2.strong
         =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
@@ -94,10 +96,16 @@ html lang="en-US"
 
     main.wrapper
       =render :partial => '/shared/breadcrumbs'
+      -if content_for?(:thredded)
+        =javascript_include_tag 'thredded'
+        -if @collection.nil?
+          =render(partial: '/admin/header')
+        -else
+          =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
       =yield.force_encoding 'UTF-8'
 
     =(yield :content_below).force_encoding 'UTF-8'
-
+    =render({ :partial => '/shared/user_collection_footer' })
     footer.footer
       .footer_links
         .footer_nav
@@ -106,21 +114,21 @@ html lang="en-US"
           =link_to t('.about'), 'https://content.fromthepage.com/about-us/'
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
-          =mail_to 'support@fromthepage.com', t('.contact_us')
           -if request.original_url.include?("fromthepage.com")
-            =link_to t('.pricing'), pricing_path
-          =link_to t('.transcription_for_archives_special_collections'), 'https://content.fromthepage.com/special-collections/'
-          =link_to t('.transcription_for_state_provincial_archives'), 'https://content.fromthepage.com/state-provincial-landing-page/'
-          =link_to t('.transcription_for_digital_scholarship'), 'https://content.fromthepage.com/digital-scholarship/'
-          =link_to t('.transcription_for_linguists'), 'https://content.fromthepage.com/transcription-for-linguists/'
+            =link_to t('.contact_us'), main_app.contact_path(contact_form_token)
+            =link_to t('.pricing'), main_app.pricing_path
+            =link_to t('.transcription_for_archives_special_collections'), main_app.special_collections_path
+            =link_to t('.transcription_for_state_provincial_archives'), main_app.state_archives_path
+            =link_to t('.transcription_for_digital_scholarship'), main_app.digital_scholarship_path
+            =link_to t('.transcription_for_public_libraries'), main_app.public_libraries_path
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
+        =link_to 'https://www.youtube.com/user/fromthepage', target: '_blank'
+          =svg_symbol '#logo-youtube', title: 'Youtube'
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'
           =svg_symbol '#logo-twitter', title: 'Twitter'
         =link_to 'https://www.facebook.com/FromThePageTranscription', target: '_blank'
           =svg_symbol '#logo-facebook', title: 'Facebook'
-        =link_to 'https://www.youtube.com/user/fromthepage', target: '_blank'
-          =svg_symbol '#logo-youtube', title: 'Youtube'
         =link_to 'https://www.instagram.com/_fromthepage_/', target: '_blank'
           =svg_symbol '#logo-instagram', title: 'Instagram'
 
@@ -129,9 +137,9 @@ html lang="en-US"
     =javascript_include_tag 'application'
     =yield :javascript
 
-    =javascript_include_tag 'https://unpkg.com/@popperjs/core@2'
-    =javascript_include_tag 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js'
-    =javascript_include_tag '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
     -if defined? INTERCOM_APP_ID
       -if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank?

@@ -76,9 +76,9 @@ en:
       action: Action
       active_pages: Active Pages
       are_you_sure: Are you sure you want to delete user? After deleting you won't be able to recover it!
+      collections: Collections
       delete: Delete
       edit: Edit
-      last_sign_in: Last Sign In
       login_as: Login As
       name_and_location: Name &amp; Location
       owner_login: Owner Login
@@ -113,7 +113,6 @@ en:
       actions: Actions
       edit: Edit
       expunge: Expunge
-      last_sign_in: Last Sign In
       name_and_location: Name &amp; Location
       owner: Owner
       registered: Registered
@@ -128,7 +127,6 @@ en:
       contributions: Contributions
       details: Details
       duration: Duration
-      last_sign_in: Last Sign In
       other_users: Other Users
       site_visits_for_user: Site visits for %{user}
     visit_actions:

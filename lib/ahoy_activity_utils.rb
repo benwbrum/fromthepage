@@ -4,10 +4,8 @@ module AhoyActivityUtils
         AhoyActivitySummary.where(date: day.beginning_of_day).delete_all
 
 
-        # Active users are users who log "transcription-type" deeds on a given day.
         # We only want to track these people for now
         active_users = Deed
-        .where(deed_type: DeedType.transcriptions_or_corrections)
         .where("created_at BETWEEN ? AND ?", day.beginning_of_day, day.end_of_day)
         .distinct.pluck(:user_id)
         
@@ -18,22 +16,20 @@ module AhoyActivityUtils
         # Just for more useful logging
         puts "\tUser ID: #{user}"
 
-        # We Define transcribe events as any even on the transcribe controller
+        # We figure if you are logged in and doing stuff it counts as volunteer time
         # This could be expanded or resctricted
         events = Ahoy::Event
             .where(user_id: user)
-            .where("name LIKE 'transcribe#%'")
             .where("time BETWEEN ? AND ?", day.beginning_of_day, day.end_of_day)
-            .select(:id, :user_id, :time, :properties)
+            .select(:id, :user_id, :time, :name, :properties)
 
         unless events.empty?
             # We group by collection first, so we can sort and sum the timestamps
             events
                 .group_by { |e| e.properties["collection_id"] }
                 .each do |cid, event|
+                    timestamps = event.map{|e| [e[:time], e[:name]] }
 
-                    timestamps = event.map{|e| e[:time] }
-                    
                     minutes = self.total_contiguous_seconds(timestamps) / 60
                     
                     unless minutes <= 0
@@ -56,14 +52,30 @@ module AhoyActivityUtils
         end
     end
 
-    def self.total_contiguous_seconds(times, tolerance=60.minutes)
-        
+    def self.total_contiguous_seconds(times_and_names, tolerance=90.minutes)
         total_seconds = 0
         from_time = nil
 
+        grouped_events = times_and_names.group_by{|e| e[0]}
+        times=grouped_events.keys.sort
+
         for time in times.sort do
             time_diff = from_time.nil? ? 0 : (time - from_time).round
-            total_seconds += time_diff if time_diff < tolerance
+            if time_diff < tolerance && time_diff > 0
+                total_seconds += time_diff
+            else
+              #if less than tolerance and there's a discontinuity
+              #is the first event a save
+              #use save transcription or assign categories for indicating a save since they happen at the same event time
+              events = grouped_events[time]
+              names = events.map{|e| e[1]}
+              if names.include?('transcribe#assign_categories') || names.include?('transcribe#save_transcription')
+                # if the first event was a save, they were transcribing and we need to pad
+                # just pad by adding 20 minutes
+                # in the future we may want to pad based on project type text: 20 minutes, spreadsheet: 90 minutes, field: 5 minutes
+                total_seconds += 20*60
+              end
+            end
             from_time = time
         end
         return total_seconds

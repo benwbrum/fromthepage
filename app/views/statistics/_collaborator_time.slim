@@ -1,25 +1,13 @@
-h4.legend.fglight= t('.collaborator_time_for_dates')
-
-=form_tag('/dashboard/summary', method: "get") do
-  =hidden_field_tag(:collection_id, @collection)
-  =label_tag(:start_date, t('.start_date'))
-  |  
-  =text_field_tag(:start_date, l(@start_date.to_date), style: "width:30%")
-  |  
-  =label_tag(:end_date, t('.end_date'))
-  |  
-  =text_field_tag(:end_date, l(@end_date.to_date), style: "width:30%")
-  |  
-  =submit_tag(t('.update'))
-
-hr
-
 h3 =t('.collaborator_time')
+p =t('.collaborator_time_description')
 -unless @contributors.empty?
-  =link_to({:controller => 'dashboard', :action => 'collaborator_time_export',
-      :start_date => @start_date, :end_date => @end_date}, :class => 'button btnExport')
-      =svg_symbol '#icon-export', class: 'icon'
-      span =t('.export_activity_as_csv')
+  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+    =f.hidden_field :owner_detailed_activity, value: true
+    =f.hidden_field 'report_arguments[start_date]', value: @start_date
+    =f.hidden_field 'report_arguments[end_date]', value: @end_date    
+    =f.submit t('.collaborator_time_export_button')
+
+
   h4 =t('.user_totals_for_dates')
   .collection-users.justified
     .justified_box>
@@ -30,28 +18,3 @@ h3 =t('.collaborator_time')
             span.vmiddle =user.display_name
 -else
     p =t('.no_activity_for_date_range')
-
-
--content_for :javascript
-=javascript_include_tag 'datepicker/datepicker'
-javascript:
-  var today = new Date()
-  var yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
-  
-  //Attach a date picker for start and end dates
-  datePickerController.createDatePicker({
-      formElements:{
-          "start_date":"%M %d, %Y"
-      },
-      rangeHigh: yesterday,
-      noFadeEffect: true
-  });
-
-  datePickerController.createDatePicker({
-      formElements:{
-          "end_date":"%M %d, %Y"
-      },
-      noFadeEffect: true,
-      rangeHigh: yesterday
-  });

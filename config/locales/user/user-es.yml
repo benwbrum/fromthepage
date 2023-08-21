@@ -1,6 +1,13 @@
 ---
 es:
   user:
+    api_key:
+      api_key: Clave API
+      api_key_description: Las <a href="https://content.fromthepage.com/api-keys/">claves API</a> permiten el acceso a colecciones privadas a través de <a href="https://github.com/benwbrum/fromthepage /wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">IIIF API</a> o <a href="http://content.fromthepage.com/bulk-export- api/">API de exportación masiva</a>.
+      delete_key: Eliminar clave
+      generate_key: Generar clave
+      no_api_key_description: Su cuenta no tiene una clave API. Genere uno para habilitar el acceso a la API.
+      your_api_key_description: 'Su cuenta tiene la siguiente clave API, que puede usarse para acceder a sus colecciones privadas:'
     owner_profile:
       api_keys: Claves API
       edit_profile: Editar Perfil
@@ -15,9 +22,12 @@ es:
       edit_profile: Editar Perfil
       last_seen: Visto por última vez %{date}
       login_and_password: Inicio de sesión y Contraseña
+      newer_activity: Actividad más reciente
+      older_activity: Actividad anterior
       recent_activity_by: Actividad Reciente de %{user_display_name}
       user_deleted: El perfil del usuario ha sido borrado
       user_since: Usuario desde %{date}
+      users_profile_at_fromthepage: Perfil de %{user} en FromThePage. %{about}
     update:
       user_updated: El perfil del usuario ha sido actualizado
     update_profile:
@@ -26,14 +36,29 @@ es:
       add_as_owner: Añadido a obra privada como dueño
       add_as_reviewer: Añadido a la colección como revisor autorizado
       default_dictation_language: 'Idioma de dictado predeterminado: '
+      footer: Pie de página
+      help: Texto de Ayuda Básica
+      interface_language: Lenguaje de interfaz
+      learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
+      location: Ubicación
       name: Nombre
       name_only_required: Tu nombre es el único campo obligatorio.
+      no_image: Sin imágen
+      ocrid_id: ID OCRID
       owner_stats: Correos electrónicos nocturnos con la actividad de la colección propia
       page_edited: Nota añadida en respuesta a un comentario que hiciste
       picture: Imagen de perfil
+      picture_to_be_used_message: Imagen a utilizar
       select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
+      sign_up_url: 'URL de registro:'
+      suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       update_profile: Actualizar Perfil
       update_user_profile: Actualizar Perfil de Usuario
+      upload_image: Cargar imagen
+      url: URL
       user_activity: Correo electrónico nocturno con la actividad de colecciones en las que has trabajado
+      user_url: 'URL:'
+      website: Sitio web
       where_are_you_from: "¿De dónde eres?"
       your_blog_or_homepage: Tu blog o página de inicio
+      your_ocrid_id: Su identificación OCRID

@@ -5,36 +5,37 @@
       p= t('.id', id: (@sc_collection.at_id))
 
     .iiif-collection
-      -if @sc_collection.service.thumbnail
+      -if @sc_collection.thumbnail
         .iiif-collection_thumbnail
-          =image_tag(@sc_collection.service.thumbnail)
-      -if @sc_collection.service.description
+          =image_tag(@sc_collection.thumbnail)
+      -if @sc_collection.description
         .iiif-collection_content
-          =@sc_collection.service.description
+          =@sc_collection.description
 
 
-    -if @sc_collection.service.collections.size > 0
+    -if @sc_collection.collections.size > 0
       h4= t('.collections')
       ul
-        -@sc_collection.service.collections.each do |json_collection|
+        -@sc_collection.collections.each do |json_collection|
          li
-           =link_to json_collection['label'], {:action => 'explore_collection', :at_id => json_collection['@id']}
+           =link_to ScManifest.pluck_language_value(json_collection['label']), {:action => 'explore_collection', :at_id => (json_collection['@id']||json_collection['id'])}
 
 
-    -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
-      p= t('.this_collection_is_divided')
-      -if @sc_collection.service['first']  
-        =link_to t('.first_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['first']['@id']}
-      -if @sc_collection.service['next']
-        =link_to t('.next_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['next']['@id']}
-      -if @sc_collection.service['prev']
-        =link_to t('.previous_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['prev']['@id']}
+    -unless @sc_collection.v3?
+      -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
+        p= t('.this_collection_is_divided')
+        -if @sc_collection.service['first']  
+          =link_to t('.first_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['first']['@id'] || @sc_collection.service['first'])}
+        -if @sc_collection.service['next']
+          =link_to t('.next_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['next']['@id']||@sc_collection.service['next'])}
+        -if @sc_collection.service['prev']
+          =link_to t('.previous_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['prev']['@id']||@sc_collection.service['prev']['@id'])}
 
-    -unless @sc_collection.service.manifests.empty?
+    -unless @sc_collection.manifests.empty?
       h4= t('.manifests')
 
       =form_tag({action: 'import_collection'}) do
-        -if @sc_collection.service.manifests.size > 0 || ContentdmTranslator.iiif_manifest_is_cdm?(@sc_collection.service.manifests.first['@id'])
+        -if @sc_collection.manifests.size > 0 || ContentdmTranslator.iiif_manifest_is_cdm?(@sc_collection.manifests.first['@id'])
           =label_tag :contentdm_ocr, t('.import_ocr_text')
           =check_box_tag :contentdm_ocr
         br
@@ -49,12 +50,19 @@
         =label_tag 'select_all', t('.select_all_manifests')
 
         ul.iiif-works-list
-          -preimported_pairs = ScManifest.joins(:work => :collection).where(:at_id => @sc_collection.service.manifests.map { |m| m['@id'] } ).pluck('sc_manifests.at_id', 'collections.title')
+          -preimported_pairs = ScManifest.joins(:work => :collection).where(:at_id => @sc_collection.manifests.map { |m| m['@id'] } ).pluck('sc_manifests.at_id', 'collections.title')
           -preimported_collections = Hash[ preimported_pairs.group_by(&:first).map{ |k,a| [k,a.map(&:last)] } ]
-          -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
+          -@sc_collection.manifests.each_with_index do |json_manifest, index|
             li
               -at_id = json_manifest["@id"]
-              -label_name = json_manifest['label'].blank? ? t('.no_label') : json_manifest['label']
+              -raw_label = json_manifest['label']
+              -if raw_label.blank?
+                -label_name = t('.no_label')
+              -else
+                -if @sc_collection.v3?
+                  -label_name = ScManifest.pluck_language_value(raw_label)
+                -else
+                  -label_name = json_manifest['label']
               =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
               =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
                 =link_to(label_name, { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})

@@ -27,6 +27,7 @@ en:
       create_empty_work_description: Use this option to create an empty work. You can then upload individual page images into the work.
       create_work: Create Work
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       select_a_collection: "- Select a collection -"
       title: Title
     exports:
@@ -53,6 +54,7 @@ en:
       table_csv_work: Field/Table CSV (work)
       tei_work: TEX-XML (work)
       text_docx_work: MS Word .docx (work)
+      text_only_pdf_work: Text only PDF (work)
       text_pdf_work: Text PDF (work)
       work_metadata_csv: Work Metadata (collection)
     guest_header:
@@ -87,19 +89,30 @@ en:
       page_image_guidelines: Page Image Guidelines
       paste_in_the_url: Paste in the URL of a compound object or a collection on your CONTENTdm site.
     owner:
+      active_collections: Active Collections
       create_a_collection: create a collection
       document_sets: Document Sets
-      see_all_works: See All Works...
+      inactive_collections: Inactive Collections
+      n_works:
+        one: '1 work: '
+        other: "%{count} works: "
+      private: " (Private)"
+      public: " (Public)"
       start_a_project: Start A Project
       there_are_no_works: There are no works in this collection yet
-      total_work_count: 'Total work count: %{count}'
-      you_can_add_another_work: You can add another work under %{start_project}
       you_can_new_collection: You can %{new_collection}
       you_can_upload_documents: You can upload documents under %{start_project}
       you_dont_have_any_collections: You don't have any collections yet
       your_activity: Your Activity
     owner_header:
       account_type: "%{type} account"
+      account_types:
+        individual_researcher: Individual Researcher
+        large_institution: Large Institution
+        legacy: Legacy
+        small_organization: Small Organization
+        staff: Staff
+        trial: Trial
       actions: Actions
       collection:
         one: Collection
@@ -144,6 +157,5 @@ en:
       collections: collections
       private_collections_you_belong_to: Private projects
       projects_you_have_contributed_to: Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
-      time_ago_in_words: "%{time} ago"
-      try_transcribing_a_page: "You haven't participated in any projects yet.  Try transcribing a page from one of these "
+      try_transcribing_a_page: 'You haven''t participated in any projects yet.  Try transcribing a page from one of these '
       your_activity: Your Activity

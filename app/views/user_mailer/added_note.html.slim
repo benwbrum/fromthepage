@@ -7,7 +7,10 @@ p "#{@note.body}"
 span =link_to t('user_mailer.click_here'), collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
 span =t('.html.view_note', collection: @page.collection.title, work: @page.work.title)
 
-p== t('user_mailer.html.closing')
+-unless @note.collection.owner.display_name.blank?
+    p== t('user_mailer.html.closing', from: @note.collection.owner.display_name)
+-else
+    p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
 span =link_to t('user_mailer.click_here'), update_profile_url(@user, only_path: false)

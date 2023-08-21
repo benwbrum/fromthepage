@@ -1,8 +1,45 @@
 ---
 es:
   sc_collections:
+    cdm_bulk_import_create:
+      import_started: Su importación ha comenzado. Cuando esté completo, debería recibir un correo electrónico en %{email}.
+    cdm_bulk_import_new:
+      bulk_contentdm_import: Importación masiva de CONTENTdm
+      compound_object_urls: URL de objetos compuestos
+      import: Importar
+      import_ocr_text: Importar texto OCR de CONTENTdm
+      select_a_collection_to_import_into: "- Seleccione una colección para importar a -"
+      separate_urls_with: Separe las URL con espacios o saltos de línea.
     convert_manifest:
       metadata_is_being_imported: Los metadatos %{ocr_text} se están importando desde CONTENTdm y aparecerán en breve.
+    explore_collection:
+      already_imported_into: Ya importado en
+      collection: 'Colección: %{sc_collection}'
+      collections: 'Colecciones:'
+      first_page: Primera página
+      id: 'Identificación: %{id}'
+      import_checked_manifests: Importar manifiestos marcados
+      import_ocr_text: Importar texto OCR de CONTENTdm
+      manifests: 'Manifiestos:'
+      next_page: Siguiente página
+      no_label: sin etiqueta
+      previous_page: Pagina anterior
+      select_a_collection: Seleccione una colección
+      select_a_collection_to_import_into: "- Seleccione una colección para importar a -"
+      select_all_manifests: Seleccionar todos los manifiestos
+      this_collection_is_divided: Esta colección está dividida en varias páginas.
+    explore_manifest:
+      canvases: 'Lienzos:'
+      collection: 'Colección: %{sc_collection}'
+      description: 'Descripción: %{description}'
+      id: 'Identificación:'
+      import_manifest: Manifiesto de importación
+      import_ocr_text: Importar texto OCR de CONTENTdm
+      license: 'Licencia: %{license}'
+      manifest: 'Manifiesto: %{sc_manifest}'
+      metadata: 'Metadatos: %{metadata}'
+      select_a_collection_to_import_into: "- Seleccione una colección para importar a -"
+      select_a_collection_to_import_into_label: Seleccione una colección para importar a
     import:
       no_manifest_exist: No existe manifiesto IIIF para el elemento CONTENTdm %{url}
       please_enter_valid_url: Ingrese un URL válido para el manifiesto IIIF.

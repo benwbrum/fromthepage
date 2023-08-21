@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 class DashboardController < ApplicationController
   include AddWorkHelper
+  include OwnerExporter
   PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
@@ -33,13 +33,6 @@ class DashboardController < ApplicationController
     end
   end
 
-  def get_data
-    @collections = current_user.all_owner_collections
-    @notes = current_user.notes
-    @works = current_user.owner_works
-    @ia_works = current_user.ia_works
-    @document_sets = current_user.document_sets
-  end
 
   # Public Dashboard - list of all collections
   def index
@@ -81,6 +74,11 @@ class DashboardController < ApplicationController
 
   # Owner Dashboard - list of works
   def owner
+    collections = current_user.all_owner_collections
+    @active_collections = @collections.select { |c| c.active? }
+    @inactive_collections = @collections.select { |c| !c.active? }
+    # Needs to be active collections first, then inactive collections
+    @collections = @active_collections + @inactive_collections
   end
 
   # Owner Summary Statistics - statistics for all owned collections
@@ -157,60 +155,6 @@ class DashboardController < ApplicationController
       colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
       @collections = (docsets + colls).sample(8)
     end
-  end
-
-  def collaborator_time_export
-    start_date = params[:start_date]
-    end_date = params[:end_date]
-
-    start_date = start_date.to_date
-    end_date = end_date.to_date
-
-    dates = (start_date..end_date)
-
-    headers = [
-      "Username",
-      "Email",
-    ]
-
-    headers += dates.map{|d| d.strftime("%b %d, %Y")}
-
-    # Get Row Data (Users)
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
-
-
-    contributor_ids_for_dates = AhoyActivitySummary
-      .where(collection_id: owner_collections)
-      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
-
-    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-
-    csv = CSV.generate(:headers => true) do |records|
-      records << headers
-      contributors.each do |user|
-        row = [user.display_name, user.email]
-
-        activity = AhoyActivitySummary
-          .where(user_id: user.id)
-          .where(collection_id: owner_collections)
-          .where('date BETWEEN ? AND ?', start_date, end_date)
-          .group(:date)
-          .sum(:minutes)
-          .transform_keys{ |k| k.to_date }
-
-        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
-
-        row += user_activity
-
-        records << row
-      end
-    end
-
-    send_data( csv,
-              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-              :type => "application/csv")
-
-    cookies['download_finished'] = 'true'
   end
 
   private

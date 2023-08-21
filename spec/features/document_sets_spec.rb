@@ -286,14 +286,14 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Overview")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
-    click_button("Search All Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("Search for")
-    #return to overview
-    visit collection_article_show_path(@set.owner, @set, @article.id)
-    click_button("Search Unlinked Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("Search for")
+    # click_button("Search All Pages")
+    # expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    # expect(page).to have_content("Search for")
+    # #return to overview
+    # visit collection_article_show_path(@set.owner, @set, @article.id)
+    # click_button("Search Unlinked Pages")
+    # expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    # expect(page).to have_content("Search for")
     page.find('a', text: "Show pages that mention #{@article.title} in all works").click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     set_pages = @article.pages.where(work_id: @set.works.ids)

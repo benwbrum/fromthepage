@@ -3,7 +3,8 @@ es:
   statistics:
     collaborator_time:
       collaborator_time: Tiempo del colaborador
-      export_activity_as_csv: Exportar actividad detallada como CSV
+      collaborator_time_description: Una hoja de cálculo de la cantidad de minutos que cada usuario contribuyó por día en el intervalo de fechas.
+      collaborator_time_export_button: Exportar hoja de cálculo de tiempo de colaborador
       no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
       user_totals_for_dates: Totales de usuarios para fechas
     collaborators:
@@ -21,6 +22,12 @@ es:
       collaborator:
         one: Colaborador
         other: Colaboradores
+      incomplete_page:
+        one: página incompleta
+        other: páginas incompletas
+      lines_transcribed:
+        one: línea de texto
+        other: lineas de texto
       note:
         one: Nota
         other: Notas
@@ -30,6 +37,27 @@ es:
       page:
         one: Página
         other: Páginas
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_needing_review:
+        one: Página que necesita revisión
+        other: Páginas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
+      records_indexed:
+        one: registro indexado
+        other: Registros indexados
       reference:
         one: Referencia
         other: Referencias
@@ -39,6 +67,12 @@ es:
       work:
         one: Trabajo
         other: Trabajos
+      work_transcribed:
+        one: Obra transcrita
+        other: Obras transcritas
+      works_described:
+        one: trabajo descrito
+        other: obras descritas
     recent_statistics:
       collaborator:
         one: Colaborador
@@ -52,6 +86,24 @@ es:
       ocr_correction:
         one: Corrección OCR
         other: Correcciones OCR
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada que necesita revisión
+        other: Páginas marcadas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
       reference:
         one: Referencia
         other: Referencias
@@ -62,7 +114,10 @@ es:
       collaborator:
         one: Colaborador
         other: Colaboradores
-      last_days_statistics: Estadísticas de los últimos 7 días
+      end_date: Fecha final
+      incomplete_page:
+        one: página incompleta
+        other: páginas incompletas
       new_subject:
         one: Nuevo tema
         other: Nuevos temas
@@ -72,15 +127,40 @@ es:
       ocr_correction:
         one: Corrección OCR
         other: Correcciones OCR
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada que necesita revisión
+        other: Páginas marcadas que necesitan revisión
+      page_needing_review:
+        one: Página que necesita revisión
+        other: Páginas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
       reference:
         one: Referencia
         other: Referencias
+      select_new_date: Seleccione un nuevo intervalo de fechas
+      start_date: Fecha de inicio
+      statistics_from: Estadísticas de %{start_date} a %{end_date}
       subject:
         one: Tema
         other: Temas
       total_page:
         one: Página total
         other: Páginas totales
+      update: Actualizar
       work:
         one: Trabajo
         other: Trabajos

@@ -37,13 +37,6 @@ namespace :fromthepage do
     document_upload.status = DocumentUpload::Status::FINISHED
     document_upload.save
 
-    #if the upload processes correctly,
-    #remove the uploaded file to prevent filling up the disk
-    if document_upload.status = DocumentUpload::Status::FINISHED
-      document_upload.remove_file!
-      document_upload.save
-    end
-
     if SMTP_ENABLED
       begin
         UserMailer.upload_finished(document_upload).deliver!
@@ -216,16 +209,21 @@ namespace :fromthepage do
     print "\tconvert_to_work default title = #{File.basename(path).ljust(3,'.')}\n"
     print "\tconvert_to_work looking for metadata.yml in #{File.join(File.dirname(path), 'metadata.yml')}\n"
     
-    
-    if File.exist? File.join(path, 'metadata.yml')
-      yaml = YAML.load_file(File.join(path, 'metadata.yml'))
-    elsif File.exist? File.join(path, 'metadata.yaml')
-      yaml = YAML.load_file(File.join(path, 'metadata.yaml'))
-    else
-      print "\tconvert_to_work no metadata.yml file; using default settings\n"
-      yaml = nil
+    begin
+      if File.exist? File.join(path, 'metadata.yml')
+        yaml = YAML.load_file(File.join(path, 'metadata.yml'))
+      elsif File.exist? File.join(path, 'metadata.yaml')
+        yaml = YAML.load_file(File.join(path, 'metadata.yaml'))
+      else
+        print "\tconvert_to_work no metadata.yml file; using default settings\n"
+        yaml = nil
+      end
+    rescue StandardError => e
+      document_upload.update(status: DocumentUpload::Status::ERROR)
+      logger.info "YML/YAML Failed: Exception: #{e.message}"
+      return
     end
-          
+
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
     
     User.current_user=document_upload.user
@@ -273,6 +271,10 @@ namespace :fromthepage do
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
     ls = Dir.glob(File.join(new_dir_name, "*")).sort
+    numeric_pages, alpha_numeric_pages = ls.partition { |page| File.basename(page).to_i.positive? }
+    sorted_numeric_pages = numeric_pages.sort_by { |page| File.basename(page).to_i }
+    ls = sorted_numeric_pages.concat(alpha_numeric_pages)
+    
     GC.start
     ls.each_with_index do |image_fn,i|
       page = Page.new

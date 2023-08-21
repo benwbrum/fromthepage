@@ -45,7 +45,9 @@ pt:
     registrations:
       choose_saml:
         harvard_university: Universidade de Harvard
+        illinois_state: Illinois State University
         institution: Instituição
+        johns_hopkins_university: Johns Hopkins University
         lds_full_name: Igreja de Jesus Cristo dos Santos dos Últimos Dias
         sign_in_with_institution: Faça login com sua instituição
       destroyed: Tchau! A sua conta foi cancelada com sucesso. Esperamos voltar a ver você em breve.

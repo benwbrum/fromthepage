@@ -10,7 +10,7 @@ pt:
       help_transcribe: ajude a transcrever
       help_translate: ajude a traduzir
       mark_the_page_blank: marcar a página como em branco
-      or_mark_blank: "<br>ou %{mark_ blank}"
+      or_mark_blank: "<br>ou %{mark_blank}"
       page_notes: Notas da Página
       please_help_this_page: Por favor %{help_link} esta página
       show_transcription: Mostrar Transcrição
@@ -52,6 +52,7 @@ pt:
       search_for: Buscar por %{search_string}
       search_in_collection: Buscar na coleção...
       search_in_collection_1: Pesquisar na coleção
+      search_in_work: Pesquise no trabalho...
       translations_need_indexing: Traduções para Indexar
       translations_need_review: Traduções para Revisar
       view_all_pages: Ver Todas as Páginas
@@ -67,7 +68,6 @@ pt:
       no_pages_needing_transcription_found_these_pages_are_incomplete: Nenhuma página precisa de transcrição do zero. Estas páginas foram parcialmente transcritas, mas precisam ser completadas.
       page_not_translated: Esta página não está traduzida, por favor %{help_translate} esta página
       pages_needing_completion: Páginas que precisam de conclusão
-      pages_that_need_transcription: Páginas que precisam de transcrição
       review_metadata: Revisar metadados
       this_page_is_blank: Esta página está em branco
       this_page_is_incomplete: Esta página está incompleta
@@ -75,6 +75,17 @@ pt:
       transcribed: transcreveu
       translation: Tradução
       unable_to_find_pages: Não conseguimos encontrar nenhuma página correspondente ao seu pedido
+    read_all_works:
+      pages: Páginas
+      pages_that_mention: Páginas que mencionam %{article}
+    read_work:
+      pages: Páginas
+      pages_need_indexing: Páginas que precisam de indexação
+      pages_need_review: Páginas que precisam de revisão
+      pages_need_transcription: Páginas que precisam de transcrição
+      pages_need_translation: Páginas que precisam de tradução
+      translations_need_indexing: Traduções que precisam de indexação
+      translations_need_review: Traduções que precisam de revisão
   display_helper:
     page_action:
       blank_page: Página em branco

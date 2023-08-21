@@ -1,0 +1,161 @@
+---
+de:
+  dashboard:
+    alphabetical_collections_and_document_sets:
+      project_by: Projekt von %{author}
+      start_transcribing: Mit der Transkription beginnen
+    collections_list:
+      collections: Sammlungen
+      meta_description: Wählen Sie frei aus den vielen interessanten Projekten, die auf FromThePage gehostet werden. Lesen Sie zuerst historische Schriften, die bereits von anderen Mitgliedern transkribiert wurden. Gerne können Sie einem der tollen Projekte dabei helfen, ins digitale Zeitalter zu kommen.
+      recent_activity: Kürzliche Aktivitäten
+    create_work:
+      work_created: Werk erfolgreich erstellt
+    editor:
+      activity_stream: Aktivitätenüberblick
+      article_in_the_work: "%{article}-Entität in der %{collection}-Sammlung"
+      page_in_the_work: "%{page}-Seite im %{work}-Werk"
+      revision_version: Revision %{version}
+      view_page: Seite anzeigen
+      your_recent_article_edits: Ihre letzten Bearbeitungen von Entitäten
+      your_recent_notes: Ihre letzten Anmerkungen
+      your_recent_page_edits: Ihre letzten Seitenbearbeitungen
+    editor_header:
+      your_projects: Ihre Projekte
+    empty:
+      add_new_collection: Neue Sammlung hinzufügen
+      create_empty_work: Leeres Werk erstellen
+      create_empty_work_description: Verwenden Sie diese Option, um ein leeres Werk zu erstellen. Sie können dann einzelne Faksimiles in das Werk hochladen.
+      create_work: Werk erstellen
+      description: Beschreibung
+      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
+      select_a_collection: "- Wählen Sie eine Sammlung aus -"
+      title: Titel
+    exports:
+      bulk_exports_description: Hier werden alle von ihnen ausgeführten Sammelexporte aufgelistet. Exporte werden nach einigen Tagen bereinigt und stehen nicht mehr zum Download zur Verfügung.
+      configuration: Konfiguration (Level)
+      create_bulk_export_description: Erstellen Sie einen Sammelexport über den Tab „Export“ im Dashboard der Sammlung oder über den Tab „Download“ im Dashboard eines Werks.
+      date: Exportdatum
+      download: Download
+      exported_item: Exportierte Sammlung/Werk
+      facing_edition_work: Bild-Text-Synopse PDF (Werk)
+      html_page: HTML (Seite)
+      html_work: HTML (Werk)
+      plaintext_emended_page: Analytischer Plaintext (Seite)
+      plaintext_emended_work: Analytischer Plaintext (Werk)
+      plaintext_searchable_page: Durchsuchbarer Plaintext (Seite)
+      plaintext_searchable_work: Durchsuchbarer Plaintext (Werk)
+      plaintext_verbatim_page: Wörtlicher Plaintext (Seite)
+      plaintext_verbatim_work: Wörtlicher Plaintext (Werk)
+      refresh: Aktualisieren
+      reload_this_page_to: Laden Sie diese Seite neu, um die Liste zu aktualisieren.
+      status: Status
+      subject_csv_collection: Entitätsindex CSV (Sammlung)
+      table_csv_collection: Feld/Tabellen CSV (Sammlung)
+      table_csv_work: Feld/Tabellen CSV (Werk)
+      tei_work: TEX-XML (Werk)
+      text_docx_work: MS Word .docx (Werk)
+      text_only_pdf_work: Nur Text PDF (Werk)
+      text_pdf_work: Text PDF (Werk)
+      work_metadata_csv: Metadaten zum Werk (Sammlung)
+    guest_header:
+      recent_activity: Letzte Aktivitäten
+    hierarchical_collections_and_document_sets:
+      project_by: Projekt von %{author}
+      start_transcribing: Mit der Transkription beginnen
+    landing_page:
+      all_collections: Alle Sammlungen
+      more: Mehr...
+      next_image: Nächstes Bild
+      previous_image: Vorheriges Bild
+      recent_activity: Letzte Aktivitäten
+      search: Suche
+      search_for_collections: Nach Sammlungen suchen
+      search_for_collections_or_owners: Suchen Sie nach Sammlungen oder Projektinhaber:innen...
+      transcribe_a_page: Eine Seite transkribieren
+    new_upload:
+      document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
+      reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.
+    new_work:
+      acceptable_formats: 'Zulässige Formate: PNG-, GIF- und JPG.'
+      images_should_be_named: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
+      images_should_be_oriented: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
+      import: Import
+      import_a_iiif_manifest_or_collection: Importieren Sie ein IIIF-Manifest oder eine IIIF-Collection
+      import_from_archive_dot_org: Von Archive.org importieren
+      import_from_contentdm: Import von CONTENTdm
+      import_from_the_internet_archive: Import von Internet Archive
+      import_many_link: Import mehrerer einzelner mehrteiliger Objekte.
+      or_import_many: Oder
+      page_image_guidelines: Richtlinien für Faksimiles
+      paste_in_the_url: Fügen Sie die URL eines mehrteiligen Objekts oder einer Sammlung auf Ihrer CONTENTdm-Site ein.
+    owner:
+      active_collections: Aktive Sammlungen
+      create_a_collection: eine Sammlung erstellen
+      document_sets: Dokumentensets
+      inactive_collections: Inaktive Sammlungen
+      n_works:
+        one: '1 Werk:'
+        other: "%{count} funktioniert:"
+      private: " (Privatgelände)"
+      public: " (Öffentlich)"
+      start_a_project: Ein Projekt starten
+      there_are_no_works: Es gibt noch keine Werke in dieser Sammlung
+      you_can_new_collection: Sie können %{new_collection}
+      you_can_upload_documents: Unter %{start_project} können Sie Dokumente hochladen
+      you_dont_have_any_collections: Sie haben noch keine Sammlungen
+      your_activity: Ihre Aktivitäten
+    owner_header:
+      account_type: "%{type}konto"
+      account_types:
+        individual_researcher: Einzelforschenden
+        large_institution: Großinstitutions
+        legacy: Bestands
+        small_organization: Kleininstitutions
+        staff: Mitarbeitenden
+        trial: Testversions
+      actions: Aktionen
+      collection:
+        one: Sammlung
+        other: Sammlungen
+      create_a_collection: Eine Sammlung erstellen
+      current_subscription_expires: Das aktuelle Abonnement läuft am %{date} ab
+      document_set:
+        one: Dokumentenset
+        other: Dokumentensets
+      exports: Exporte
+      owner_dashboard: Projektinhaber:innen-Dashboard
+      since: seit %{date}
+      start_a_project: Ein Projekt starten
+      summary: Übersicht
+      to_upgrade_contact: Für ein Upgrade Wenden Sie sich an support@fromthepage.com
+      total_pages: 'Seitenanzahl: %{pages}'
+      work:
+        one: Werk
+        other: Werke
+      your_collections: Ihre Sammlungen
+    upload:
+      acceptable_image_files: PNG-, GIF- und JPG-Dateien sind alle akzeptabel.
+      browse: Durchsuchen
+      click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
+      click_to_browse_files: Klicken Sie hier, um Dateien zu durchsuchen
+      each_folder_will_be_treated: Jeder Ordner wird als ein eigenes Dokument behandelt, vermischen Sie also keine Seiten aus verschiedenen Dokumenten in einem Ordner.
+      each_pdf_will_be_treated: Jedes PDF wird als eigenes Dokument behandelt. Teilen Sie also Seiten desselben Dokuments nicht auf mehr als ein PDF auf.
+      for_example_a_zip_file: 'Der Upload einer ZIP-Datei mit 3 Bildern, 2 PDFs und 1 Ordner mit 5 weiteren Bildern würde zum Beispiel zur Erstellung von 4 Werken führen: die Bilder der obersten Ebene in einem, jedes PDF als eigenes Werk und ein letztes Werk, das die 5 Bilder aus dem Ordner enthält.'
+      image_naming_guidelines: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
+      image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
+      import_form_message: In diesem Bereich können Sie Ihre Faksimiles nach FromThePage importieren. Wählen Sie eine Sammlung aus, in die importiert werden soll, und hängen Sie eine ZIP- oder PDF-Datei an, die Faksimiles enthält, die für Ihr Projekt verwendet werden sollen.
+      page_image_guidelines: Richtlinien für Faksimiles
+      select_a_collection: "- Sammlung auswählen -"
+      to_specify_metadata: Um Metadaten zusammen mit Bildern hochzuladen, fügen Sie jedem Ordner eine %{link}-Datei hinzu, die Felder für das Werk angibt.
+      trial_accounts_are_limited: Testversionskonten sind auf 200 Seiten begrenzt. Bitte wenden Sie sich an support@fromthepage.com, um Ihren Kontotyp zu ändern.
+      upload_file: Datei hochladen
+      upload_pdf_or_zip_file: PDF- oder ZIP-Datei hochladen
+      use_image_filenames: " Bilddateinamen als Seitentitel verwenden."
+      use_ocr_from_pdf: " Text aus PDF-Textebenen, Textdateien oder XML-Dateien impprtieren."
+      zip_files_may_contain: ZIP-Dateien können Ordner mit Bildern, PDFs oder Ordner mit PDFs enthalten.
+    watchlist:
+      collections: Sammlungen
+      private_collections_you_belong_to: Private Projekte
+      projects_you_have_contributed_to: Projekte, an denen Sie mitgewirkt haben – durch Transkription, Bearbeitung oder Kommentierung –, werden hier mit der letzten Aktivität aufgelistet, damit Sie auf dem Laufenden bleiben.
+      try_transcribing_a_page: Sie haben sich noch an keinem Projekt beteiligt. Versuchen Sie, eine Seite davon zu transkribieren
+      your_activity: Ihre Aktivitäten

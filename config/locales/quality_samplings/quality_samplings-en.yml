@@ -16,12 +16,8 @@ en:
       description: Quality sampling lets you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work. This number may grow as more pages are transcribed.
       not_applicable: N/A
       not_fully_sampled_yet: This sample has not been fully reviewed yet.
-      pages_corrected: Pages Corrected
-      pages_corrected_desc: Pages that required correction during approval (low is better).
       pages_in_sample: Pages in Sample
       pages_in_sample_desc: Number of pages in the sample for the user or work.
-      pages_sampled: Pages Sampled
-      pages_sampled_desc: Number of pages sampled so far from the total field of the sampling.
       pages_to_be_reviewed: Pages to Review
       pages_to_be_reviewed_desc: Number of pages still needing review in the entire collection.
       quality_score: Quality Score
@@ -35,7 +31,6 @@ en:
       sample_field_size: 'Pages to be Reviewed:'
       sample_set_has_increased: Sample set has increased by %{increase} pages
       sample_set_size: 'Sample Set Size:'
-      total_pages_desc: Number of pages within this collection.
       user: Contributor
       work: Work
     update:

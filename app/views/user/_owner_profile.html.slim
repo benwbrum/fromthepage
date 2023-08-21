@@ -28,7 +28,7 @@ section.user-profile
 -unless carousel_collections.blank?
   .carousel
     -carousel_collections.each do |c|
-      -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+      -snippet = to_snippet(c.intro_block)
       .carousel_slide
         =link_to image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c), class: 'carousel_slide_image'
         .carousel_slide_content
@@ -41,10 +41,7 @@ section.user-profile
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
-
   aside.sidecol
-    h2= t('.recent_activity')
-    =deeds_for({:owner => user, :limit => 10})
 
 -content_for :javascript
   javascript:
