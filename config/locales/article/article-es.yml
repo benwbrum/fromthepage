@@ -24,7 +24,7 @@ es:
       longitude: Longitud
       microphone: Micrófono
       n_pages:
-        one: 1 pagina
+        one: 1 página
         other: "%{count} páginas"
       no_duplicates_found: No se encontraron duplicados
       no_duplicates_found_description: El tema es único dentro de la colección, no se han encontrado posibles duplicados del tema "%{article}".

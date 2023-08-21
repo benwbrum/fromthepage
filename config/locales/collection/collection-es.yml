@@ -293,7 +293,7 @@ es:
       help_create_metadata: "¡Ayudar!"
       help_transcribe_or_correct: "¡Ayudar!"
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       pages_need_correction: Páginas que necesitan corrección
       pages_need_correction_or_transcription: Páginas que necesitan corrección o transcripción

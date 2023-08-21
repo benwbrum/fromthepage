@@ -5,7 +5,7 @@ es:
       collaborator_time: Tiempo del colaborador
       collaborator_time_description: Una hoja de cálculo de la cantidad de minutos que cada usuario contribuyó por día en el intervalo de fechas.
       collaborator_time_export_button: Exportar hoja de cálculo de tiempo de colaborador
-      no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
+      no_activity_for_date_range: No hay actividad para este intervalo de fechas.
       user_totals_for_dates: Totales de usuarios para fechas
     collaborators:
       collaborators: Colaboradores
