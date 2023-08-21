@@ -43,12 +43,12 @@ pt:
       describe: Metadados
       help: Ajuda
       metadata: Metadados
-      nav_info: Trabalho %{position} de %{size}
+      nav_info: Obra %{position} de %{size}
       next_page: Próxima página
-      next_work: Próximo trabalho
+      next_work: Próxima obra
       overview: Visão geral
       previous_page: Página anterior
-      previous_work: Trabalho prévio
+      previous_work: Obra anterior
       versions: Versões
     handsontable:
       date_tooltip: As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles).
@@ -68,7 +68,7 @@ pt:
       zoom_out: Reduzir o zoom
     page_tabs:
       correct: Corrigir
-      describe_work: Descreva o trabalho
+      describe_work: Descrever obra
       help: Ajuda
       nav_info: Página %{position} de %{size}
       next_page: Próxima página
@@ -92,4 +92,4 @@ pt:
       pages: Páginas
       read: Ler
       settings: Configurações
-      work: Trabalhar
+      work: Obra
