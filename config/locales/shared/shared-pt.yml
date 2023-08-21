@@ -43,12 +43,12 @@ pt:
       describe: Metadados
       help: Ajuda
       metadata: Metadados
-      nav_info: Trabalho %{position} de %{size}
+      nav_info: Obra %{position} de %{size}
       next_page: Próxima página
-      next_work: Próximo trabalho
+      next_work: Próxima obra
       overview: Visão geral
       previous_page: Página anterior
-      previous_work: Trabalho prévio
+      previous_work: Obra anterior
       versions: Versões
     handsontable:
       date_tooltip: As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles).
@@ -58,7 +58,7 @@ pt:
       brightness: Brilho
       contrast: Contraste
       full_page: Alternar página inteira
-      home: Ir para casa
+      home: Ir para Página Inicial
       image_filters: Filtros de imagem
       open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
       rotate_left: Vire à esquerda
@@ -68,7 +68,7 @@ pt:
       zoom_out: Reduzir o zoom
     page_tabs:
       correct: Corrigir
-      describe_work: Descreva o trabalho
+      describe_work: Descrever obra
       help: Ajuda
       nav_info: Página %{position} de %{size}
       next_page: Próxima página
@@ -86,10 +86,10 @@ pt:
       form: Formato
     work_tabs:
       about: Sobre
-      contents: Conteudo
+      contents: Conteúdo
       download: Download
       help: Ajuda
       pages: Páginas
       read: Ler
       settings: Configurações
-      work: Trabalhar
+      work: Obra
