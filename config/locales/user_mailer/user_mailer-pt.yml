@@ -34,18 +34,21 @@ pt:
       closing: "Obrigado, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
     new_mobile_user:
+      html:
+        continue_transcribing: " para continuar a transcrição."
       message: Bem-vindo ao %{collection}!
       text:
         continue_transcribing: 'Clique neste URL para continuar a transcrição: %{url}.'
     new_owner:
       welcome: Bem-vindo
+    nightly_user_activity:
       html:
-        to_view_note: " para visualizar a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
-        to_view_work: " para visualizar %{collection}: %{work}"
-      message: Só queríamos informar que houve atividade numa colecção em que você trabalhou.
-      new_notes: Notas Novas
+        to_view_note: " para ver a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
+        to_view_work: " para ver %{collection}: %{work}"
+      message: Só queríamos informar que houve atividade em uma coleção na qual você trabalhou.
+      new_notes: Novas Notas
       new_works: Novas Obras
-      note_added: Uma nota foi adicionada a uma página na qual você trabalhou no trabalho %{work}, na coleção %{collection}.
+      note_added: Uma nota foi adicionada a uma página em que você trabalhou no trabalho %{work}, na coleção %{collection}.
       text:
         to_view_note: 'Para visualizar a nota na página %{work}: %{page}, visite o seguinte URL: %{url}'
         to_view_work: 'Para visualizar %{collection}: %{work}, visite o seguinte URL: %{url}'

@@ -6,8 +6,6 @@ pt:
       collaborator_time_description: Uma planilha com o número de minutos que cada usuário contribuiu por dia no intervalo de datas.
       collaborator_time_export_button: Exportar Planilha de Tempo do Colaborador
       no_activity_for_date_range: Não há atividade para este intervalo de datas.
-      start_date: Data de início
-      update: Atualizar
       user_totals_for_dates: Totais do usuário para datas
     collaborators:
       collaborators: Colaboradores
