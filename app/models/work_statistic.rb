@@ -1,6 +1,9 @@
 class WorkStatistic < ApplicationRecord
   belongs_to :work, optional: true
 
+  after_create_commit :update_transcribed_percentage
+  after_update :update_transcribed_percentage
+
   def pct_transcribed
     raw = self[:transcribed_pages].to_f / self[:total_pages] * 100
     raw = 0.0 if raw.nan?
@@ -119,6 +122,14 @@ class WorkStatistic < ApplicationRecord
     work.collection&.calculate_complete
     unless work.document_sets.empty?
       work.document_sets.each(&:calculate_complete)
+    end
+  end
+
+  def update_transcribed_percentage
+    if self.complete == 100 
+      self.update_column(:transcribed_percentage, 100)
+    else
+      self.update_column(:transcribed_percentage, pct_needs_review.round)
     end
   end
 end
