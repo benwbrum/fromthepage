@@ -31,6 +31,7 @@ es:
       select_a_collection: "- Seleccione una colección -"
       title: Título
     exports:
+      admin_searches: Búsquedas
       bulk_exports_description: Aquí se enumeran todas las exportaciones masivas que ha realizado. Las exportaciones se limpian después de unos días y ya no están disponibles para descargar
       configuration: Configuración (nivel)
       create_bulk_export_description: Cree una exportación masiva desde la pestaña Exportar de una colección o la pestaña Descargar de una obra.

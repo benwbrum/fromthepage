@@ -69,6 +69,10 @@ module ExportHelper
       export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
     end
 
+    # admin-level exports
+    if bulk_export.admin_searches
+      export_admin_searches_csv(out: out, report_arguments: bulk_export.report_arguments)
+    end
 
     # collection-level exports
     if bulk_export.collection_activity

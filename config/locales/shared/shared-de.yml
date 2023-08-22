@@ -6,6 +6,8 @@ de:
       settings: Einstellungen
       subject: Entität
       versions: Versionen
+    breadcrumbs:
+      search_results: Suchergebnisse
     codemirror:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.

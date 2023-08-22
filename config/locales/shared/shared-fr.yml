@@ -6,6 +6,8 @@ fr:
       settings: Réglages
       subject: Sujet
       versions: Versions
+    breadcrumbs:
+      search_results: Résultats de recherche
     codemirror:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
       add_description: Marque le texte inséré après coup par l'auteur.
