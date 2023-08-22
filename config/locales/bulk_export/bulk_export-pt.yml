@@ -22,9 +22,9 @@ pt:
       download: Download
       expanded_plaintext: Texto simples expandido
       expanded_plaintext_description: Como o texto simples literal, este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele difere do texto literal, pois a normalização será aplicada a todos os assuntos mencionados, de modo que, enquanto o texto literal pode ser "Cumprimentei o Sr. Jones e sua esposa esta manhã.", o texto simples corrigido será "Cumprimentei James Jones e Elizabeth Smith Jones esta manhã”. Este texto artificial é útil para análise programática, mas não deve ser lido por humanos.
-      export_all_works: Exportar todos os trabalhos
-      export_work_metadata: Exportar metadados de trabalho
-      export_work_metadata_as_csv: Exportar metadados de trabalho como CSV
+      export_all_works: Exportar Todas as Obras
+      export_work_metadata: Exportar Metadados de Obra
+      export_work_metadata_as_csv: Exportar Metadados de Obra Como CSV
       export_work_metadata_description: Exporte uma planilha contendo uma linha para cada obra da coleção, com colunas para estatísticas sobre as páginas transcritas e metadados da obra.
       facing_edition_pdf: Edição de frente para PDF
       facing_edition_pdf_description: Um arquivo PDF contendo imagens e transcrições em páginas opostas.
@@ -40,13 +40,13 @@ pt:
       one_file_per_work: Um arquivo por obra
       one_site_per_collection: Um site por coleção
       organization: Organização de pastas
-      organization_description: Os arquivos zip podem ser organizados com uma pasta por trabalho contendo arquivos ou subpastas para cada formato de exportação, ou com uma pasta por formato de exportação contendo arquivos por trabalho.
+      organization_description: Os arquivos zip podem ser organizados com uma pasta por obra contendo arquivos ou subpastas para cada formato de exportação, ou com uma pasta por formato de exportação contendo arquivos por obra.
       organization_format: Formatar pastas
-      organization_work: Pastas de trabalho
+      organization_work: Pastas de obras
       preserve_linebreaks: Preservar quebras de linha
       previous_exports: Exportações anteriores
       search_optimized_plaintext: Texto simples otimizado para pesquisa
-      search_optimized_plaintext_description: Uma versão em texto simples do trabalho otimizada para pesquisa de texto completo. Esta versão contém uma transcrição literal de cada página (como descrito acima), exceto que as palavras quebradas por novas linhas hifenizadas são unidas e uma lista dos nomes canônicos mencionados em cada página é anexada ao final da página.
+      search_optimized_plaintext_description: Uma versão em texto simples da obra otimizada para pesquisa de texto completo. Esta versão contém uma transcrição literal de cada página (como descrito acima), exceto que as palavras quebradas por novas linhas hifenizadas são unidas e uma lista dos nomes canônicos mencionados em cada página é anexada ao final da página.
       start_export: Iniciar exportação
       static_site: Site estático
       static_site_description: Um site estático Jekyll contendo a edição inteira
@@ -67,9 +67,9 @@ pt:
       text_pdf_description: Um arquivo PDF contendo transcrições de texto.
       time: Tempo
       use_uploaded_filename: Nomes de arquivos/pastas
-      use_uploaded_filename_description: Os arquivos ou pastas de exportação são baseados no slug de trabalho por padrão. Se um trabalho foi carregado originalmente, você pode usar o nome do arquivo original para exportações.
+      use_uploaded_filename_description: Os arquivos ou pastas de exportação são baseados no slug da obra por padrão. Se uma obra foi carregado originalmente, você pode usar o nome do arquivo original para exportações.
       use_uploaded_filename_label: Use nomes originais
       verbatim_plaintext: Texto simples literal
       verbatim_plaintext_description: Este arquivo de texto simples representará quebras de linha com uma nova linha única, quebras de parágrafo com uma nova linha dupla e quebras de página com uma nova linha tripla. Ele conterá o texto literal, com todas as formatações, emendas e links de assuntos removidos.
-      work_metadata_csv: CSV de metadados de trabalho
-      work_metadata_csv_description: Uma planilha listando cada trabalho com contagens de páginas e metadados.
+      work_metadata_csv: CSV de metadados de obra
+      work_metadata_csv_description: Uma planilha listando cada obra com contagens de páginas e metadados.
