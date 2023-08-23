@@ -590,13 +590,7 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    if params[:sort_by] == "Percent Complete"
-      @works = @collection.works.includes(:work_statistic).order_by_completed.paginate(page: params[:page], per_page: 15)
-    elsif params[:sort_by] == "Recent Activity"
-      @works = @collection.works.includes(:work_statistic).order_by_recent_activity.paginate(page: params[:page], per_page: 15)
-    else
-      @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
-    end
+    @works = @collection.works.includes(:work_statistic).order(:title)
   end
 
   def needs_transcription_pages

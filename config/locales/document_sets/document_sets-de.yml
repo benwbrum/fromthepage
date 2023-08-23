@@ -48,6 +48,7 @@ de:
       title: Titel
     set_works:
       collaboration: Kollaboration
+      most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten:"
