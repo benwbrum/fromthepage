@@ -18,16 +18,16 @@
   -if !@work && work_title != old_work_title
     h3 =work_title
     -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
-      =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button'
+      =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button', onclick: "resultClicked();"
 
   .work-page 
     .work-page_thumbnail
       -if page.ia_leaf
-        =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )
+        =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page), onclick: "resultClicked();")
       -elsif page.sc_canvas
-        =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
+        =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page), onclick: "resultClicked();")
       -else
-        =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
+        =link_to(image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page), onclick: "resultClicked();")
       span
         span.progress
           -if page.status.nil?
@@ -47,7 +47,7 @@
 
     .work-page_content
       -if page.work.pages_are_meaningful
-        h4.work-page_title =link_to page.title, page_params(page)
+        h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
 
       .work-page_text[*language_attrs(@collection)]
         -transcription = xml_to_html(page.xml_text, false)
@@ -66,7 +66,7 @@
               ==transcription.force_encoding('utf-8')
             .incomplete_text
               b ==t('.this_page_is_incomplete')
-              =link_to(t('.help_complete'), action, class: 'button')
+              =link_to(t('.help_complete'), action, class: 'button', onclick: "resultClicked();")
           -else
             ==transcription.force_encoding('utf-8')
 
@@ -75,10 +75,10 @@
             -if @collection.active?
               -if page.work.ocr_correction
                 -status = t('.corrected')
-                -help = link_to(t('.help_correct'), action)
+                -help = link_to(t('.help_correct'), action, onclick: "resultClicked();")
               -else
                 -status = t('.transcribed')
-                -help = link_to(t('.help_transcribe'), action)
+                -help = link_to(t('.help_transcribe'), action, onclick: "resultClicked();")
               p.nodata_text == t('.this_page_is_not', status: status, help: help)
             -else
               p.nodata_text 
@@ -94,12 +94,21 @@
           -elsif translation.present?
             ==translation.force_encoding('utf-8')
           -else
-            -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page))
+            -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page), onclick: "resultClicked();")
             p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 
       -current_version = page.page_versions[0]
       -if current_version && current_version.page_version > 0
         small.work-page_edited
-          -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
+          -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user), onclick: "resultClicked();")
           -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
           = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe
+
+-content_for :javascript
+  javascript:
+    function resultClicked() {
+      $.ajax({
+        url: '/search_attempt/click',
+        type: 'GET',
+      })
+    };
