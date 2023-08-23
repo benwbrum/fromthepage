@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user_in_model
   before_action :masquerade_user!
+  before_action :check_search_attempt
   after_action :track_action
   around_action :switch_locale
 
@@ -396,6 +397,15 @@ end
   def set_api_user
     authenticate_with_http_token do |token, options|
       @api_user = User.find_by(api_key: token)
+    end
+  end
+
+  def check_search_attempt
+    if session[:search_attempt_id]
+      your_profile = controller_name == "user" && @user == current_user
+      if ["dashboard", "static"].include?(controller_name) || your_profile
+        session[:search_attempt_id] = nil
+      end
     end
   end
 
