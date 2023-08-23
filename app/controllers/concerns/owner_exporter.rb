@@ -86,7 +86,4 @@ module OwnerExporter
     csv_string
   end
 
-
-
-
 end

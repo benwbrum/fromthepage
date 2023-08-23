@@ -31,6 +31,7 @@ fr:
       select_a_collection: "- Sélectionnez une collection -"
       title: Titre
     exports:
+      admin_searches: Recherches
       bulk_exports_description: Cela répertorie toutes les exportations en masse que vous avez exécutées. Les exportations sont nettoyées après quelques jours et ne sont plus disponibles au téléchargement
       configuration: Configuration (niveau)
       create_bulk_export_description: Créez une exportation en bloc à partir de l'onglet Exporter d'une collection ou de l'onglet Télécharger d'une œuvre.

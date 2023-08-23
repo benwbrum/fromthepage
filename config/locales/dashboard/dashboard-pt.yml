@@ -31,6 +31,7 @@ pt:
       select_a_collection: "- Selecione uma coleção -"
       title: Título
     exports:
+      admin_searches: Pesquisas
       bulk_exports_description: Isso lista todas as exportações em massa que você executou. As exportações são limpas após alguns dias e não estão mais disponíveis para download
       configuration: Configuração (nível)
       create_bulk_export_description: Crie uma exportação em massa na guia Exportar de uma coleção ou na guia Download de uma obra.

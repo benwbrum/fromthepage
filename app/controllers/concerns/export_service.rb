@@ -2,6 +2,7 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
   include OwnerExporter
+  include AdminExporter
   include ContributorHelper
   require 'subject_exporter'
   require 'subject_details_exporter'
@@ -103,6 +104,12 @@ module ExportService
     path = "all_collaborator_time.csv"
     out.put_next_entry(path)
     out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
+  def export_admin_searches_csv(out:, report_arguments:)
+    path = "admin_searches.csv"
+    out.put_next_entry(path)
+    out.write(admin_searches_csv(report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
   def export_collection_activity_csv(out:, collection:, report_arguments:)

@@ -399,6 +399,22 @@ end
     end
   end
 
+  def update_search_attempt_contributions
+    if session[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session[:search_attempt_id])
+      search_attempt.increment!(:contributions)
+    end
+  end
+
+  def update_search_attempt_user(user, session_var)
+    if session_var[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session_var[:search_attempt_id])
+      search_attempt.user = user
+      search_attempt.owner = user.owner
+      search_attempt.save
+    end
+  end
+
 private
   def store_current_location
     store_location_for(:user, request.url)
