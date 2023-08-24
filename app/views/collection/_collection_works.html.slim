@@ -27,23 +27,7 @@ table#works-list.collection-work-stats.datagrid.striped
         'columnDefs': [ {
           'targets': [2], 
           'orderable': false, 
-        } ],
-
-        "fnDrawCallback": function(oSettings) {
-          // don't show pagination if only one page
-          if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
-              $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
-          } else {
-              $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
-          }
-
-          // don't show pagination count selector if less than 10 items
-          if (oSettings.fnRecordsDisplay() < 10) {
-              $(oSettings.nTableWrapper).find('.dataTables_length').hide();
-          } else {
-              $(oSettings.nTableWrapper).find('.dataTables_length').show();
-          }
-        }
+        } ]
       } );
 
       // fix the layout of the pagination controls
