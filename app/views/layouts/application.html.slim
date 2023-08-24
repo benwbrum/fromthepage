@@ -35,7 +35,7 @@ html lang="en-US"
     header.header
       .toolbar
         .toolbar_group
-          =link_to landing_path(logo: true), class: 'logo', title: t('.home'), 'aria-label' => t('.home')
+          =link_to main_app.landing_path(logo: true), class: 'logo', title: t('.home'), 'aria-label' => t('.home')
             -if USE_PNG_LOGO
               =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
