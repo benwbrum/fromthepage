@@ -88,17 +88,17 @@
       :path => "#{main_app.document_sets_path(:collection_id => @collection)}",
     }]
 
-  -tabs += [{\
-    :name => t('.works_list'),
-    :selected => 9,
-    :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
-  }]
   -if @collection.facets_enabled?
     -tabs += [{\
       :name => t('.facets'),
       :selected => 11,
       :path => "#{main_app.collection_facets_path(@collection.owner, @collection)}",
     }]
+-tabs += [{\
+    :name => t('.works_list'),
+    :selected => 9,
+    :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
+  }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
