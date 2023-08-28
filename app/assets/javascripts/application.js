@@ -250,6 +250,7 @@ $.fn.imageView = function() {
 
 
 $(function() {
+  console.log("in big ready block");
   $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('.input-file').inputFile();
@@ -317,6 +318,13 @@ $(function() {
     maxWidth: 300,
   });
 });
+
+
+$(window).on("popstate", function() {
+  console.log("Popstate event intiated");
+  $('html').removeClass('page-busy');
+  }
+)
 
 //Enable and disable select options for field-based transcription
 function addOptions(selector, enabled_index){
