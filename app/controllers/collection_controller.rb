@@ -10,10 +10,11 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]                              
+  before_action :authorized?, :only => edit_actions + [:new, :update, :delete, :works_list]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
@@ -474,25 +475,17 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
-    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
-    #array of languages
-    array = Collection::LANGUAGE_ARRAY
-
-    #set language to default if it doesn't exist
-
-    lang = !@collection.language.blank? ? @collection.language : "en-US"
-    #find the language portion of the language/dialect or set to nil
-    part = lang.split('-').first
-    #find the index of the language in the array (transform to integer)
-    @lang_index = array.size.times.select {|i| array[i].include?(part)}[0]
-    #then find the index of the nested dialect within the language array
-    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
-    #transform to integer and subtract 2 because of how the array is nested
-    @dialect_index = !int.nil? ? int-2 : nil
     if @collection.field_based && !@collection.transcription_fields.present? 
       flash.now[:info] = t('.alert') 
     end
+  end
+
+  def edit_tasks
+    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
+  end
+
+  def edit_look
+    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
   end
 
   def update

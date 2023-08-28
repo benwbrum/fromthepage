@@ -1,0 +1,29 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+=render({ :partial => 'edit_tabs', :locals => { :selected => 7}})
+
+.columns.collection-settings
+  =form_for :collection, url: collection_update_path(@collection) do |f|
+    =validation_summary @collection.errors
+    table.form.collection-settings
+      tr
+        td(colspan="2")
+          h3 =t('.collection_status')
+          p =t('.collection_status_description')
+        
+          =f.radio_button :is_active, true
+          =f.label :is_active, t('.active')
+          br
+          =f.radio_button :is_active, false
+          =f.label :is_active, t('.inactive')
+
+      tr
+        td 
+          =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
+            span =t('.blank_collection')
+          p =t('.blank_collection_description')
+          
+      tr 
+        td
+          =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+            span =t('.delete_collection')
+          p =t('.delete_collection_description')

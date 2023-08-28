@@ -1,0 +1,26 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+=render({ :partial => 'edit_tabs', :locals => { :selected => 5}})
+
+.columns.collection-settings
+  =form_for :collection, url: collection_update_path(@collection) do |f|
+    =validation_summary @collection.errors
+    table.form.collection-settings
+      tr
+        th
+          =f.label :transcription_conventions, t('.transcription_conventions'), class: "above"
+          p.nomargin.settings =link_to t('.suggestions_transcription_conventions'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
+          br: i =t('.transcription_conventions_message')
+        td
+          =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
+      tr
+        th
+          =f.label :help, t('.help'), class: "above"
+          p.nomargin.settings =link_to t('.suggestions_help_tab'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
+        td
+          =f.text_area :help, rows: 8, value: @collection.help   
+      tr
+        th
+          =f.label :link_help, t('.link_help'), class: "above"
+        td
+          =f.text_area :link_help, rows: 10, value: @collection.link_help
+      

@@ -1,0 +1,32 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+=render({ :partial => 'edit_tabs', :locals => { :selected => 6}})
+
+.columns.collection-settings
+  =form_for :collection, url: collection_update_path(@collection) do |f|
+    =validation_summary @collection.errors
+    table.form.collection-settings
+      tr
+        td(colspan="2")
+          h3
+            =f.label :review_type, t('.review_type')
+            
+          =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
+          =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
+          br
+          =f.radio_button :review_type, Collection::ReviewType::REQUIRED
+          =f.label "review_type_#{Collection::ReviewType::REQUIRED}", t('.review_type_required')
+          br
+          =f.radio_button :review_type, Collection::ReviewType::RESTRICTED
+          =f.label "review_type_#{Collection::ReviewType::RESTRICTED}", t('.review_type_restricted')
+      tr
+        th 
+          =t('.authorized_reviewers')
+          =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+        td
+          -@reviewers.each do |user|
+            .user-label
+              .userpic
+                =profile_picture(user)
+              .username
+                =link_to user.display_name, user_profile_path(user)
+          

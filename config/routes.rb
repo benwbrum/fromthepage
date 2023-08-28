@@ -484,6 +484,13 @@ Fromthepage::Application.routes.draw do
       post 'search'
 
       get 'edit', on: :member
+      get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
+      get 'edit/look', on: :member, to: 'collection#edit_look'
+      get 'edit/privacy', on: :member, to: 'collection#edit_privacy'
+      get 'edit/help', on: :member, to: 'collection#edit_help'
+      get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
+      get 'edit/danger', on: :member, to: 'collection#edit_danger'
+
       get 'new_work', on: :member
       get 'collaborators', on: :member, to: 'collection#contributors', as: :contributors
       get 'works_list', as: :works_list, to: 'collection#works_list'
