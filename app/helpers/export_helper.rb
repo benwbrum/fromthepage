@@ -417,20 +417,24 @@ module ExportHelper
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
-
+    binding.pry
     my_display_html = ""
-    doc.elements.each_with_index("//p") do |e,i|
-      transform_links(e)
-      transform_expansions(e)
-      transform_regularizations(e)
-      transform_marginalia_and_catchwords(e)
-      transform_footnotes(e)
-      transform_lb(e)
-      e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-      if add_corrsp
-        e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+    tags = ['table', 'p']
+    tags.each do |tag|
+      doc.elements.each_with_index("//#{tag}") do |e,i|
+        transform_links(e)
+        transform_expansions(e)
+        transform_regularizations(e)
+        transform_marginalia_and_catchwords(e)
+        transform_footnotes(e)
+        transform_lb(e)
+        transform_tables(e)
+        e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+        if add_corrsp
+          e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+        end
+        my_display_html << e.to_s
       end
-      my_display_html << e.to_s
     end
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
@@ -499,6 +503,56 @@ module ExportHelper
       e.name='fw'
       e.add_attribute('type', 'catchword')
     end
+  end
+
+  def transform_tables(p_element)
+    # convert HTML tables to TEI tables
+    p_element_string = p_element.to_s
+    p_element.elements.each("//table") do |e|
+      row_count = 0
+      max_column_count = 0
+      table = REXML::Element.new("table")
+      # does the table have a header?
+      if e.elements["thead"]
+        # convert the header into a row element with role="label"
+        header = REXML::Element.new("row")
+        header.add_attribute("role", "label")
+        e.elements.each("thead/tr/th") do |th|
+          # convert the th into a cell element
+          cell = REXML::Element.new("cell")
+          cell.add_attribute("role", "data")
+          th.children.each { |child| cell.add(child) }
+          header.add(cell)
+        end
+        table.add(header)
+      end
+      # now convert the body of the table
+      e.elements.each("tbody/tr") do |tr|
+        row = REXML::Element.new("row")
+        tr.elements.each("td") do |td|
+          cell = REXML::Element.new("cell")
+          cell.add_attribute("role", "data")
+          td.children.each { |child| cell.add(child) }
+          if cell.children.count > max_column_count
+            max_column_count = cell.children.count
+          end
+          row.add(cell)
+        end
+        row_count += 1
+        table.add(row)
+      end # end of tbody
+      table.add_attribute("rows", row_count)
+      table.add_attribute("cols", max_column_count)
+      e.replace_with(table)
+
+    end # end of tables
+    # now delete any lb elements from tables elements in the document
+    p_element.elements.each("//table") do |table|
+      table.elements.each("//lb") do |lb|
+        lb.remove
+      end
+    end
+    
   end
 
   def transform_footnotes(p_element)

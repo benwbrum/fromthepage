@@ -35,6 +35,43 @@ module TeiHelper
         e.replace_with(lb)
       end
     end
+    binding.pry
+    # convert HTML tables to TEI tables
+    doc.elements.each("//table") do |e|
+      table = REXML::Element.new("table")
+      # does the table have a header?
+      if e.elements["thead"]
+        # convert the header into a row element with role="label"
+        header = REXML::Element.new("row")
+        header.add_attribute("role", "label")
+        e.elements.each("thead/tr/th") do |th|
+          # convert the th into a cell element
+          cell = REXML::Element.new("cell")
+          cell.add_attribute("role", "data")
+          cell.add_child(th.children)
+        end
+        table.add(header)
+      end
+      # now convert the body of the table
+      e.elements.each("tbody/tr") do |tr|
+        row = REXML::Element.new("row")
+        tr.elements.each("td") do |td|
+          cell = REXML::Element.new("cell")
+          cell.add_attribute("role", "data")
+          cell.add_child(td.children)
+          row.add(cell)
+        end
+        table.add(row)
+      end # end of tbody
+      e.replace_with(table)
+    end # end of table
+    # now delete any lb elements from tables elements in the document
+    doc.elements.each("//table") do |table|
+      table.elements.each("//lb") do |lb|
+        lb.remove
+      end
+    end
+
     unless user_signed_in?
       doc.elements.each("//sensitive") do |e|
         e.replace_with(REXML::Comment.new("sensitive information suppressed"))
