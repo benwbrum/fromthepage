@@ -7,9 +7,11 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          h3
-            =f.label :review_type, t('.review_type')
+          =f.label :review_type
+            h3 =t('.review_type')
+            p =t('.review_type_description')
             
+          br
           =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
           =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
           br
@@ -20,8 +22,8 @@
           =f.label "review_type_#{Collection::ReviewType::RESTRICTED}", t('.review_type_restricted')
       tr
         th 
-          =t('.authorized_reviewers')
-          =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+          h3 =t('.authorized_reviewers')
+          p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
         td
           -@reviewers.each do |user|
             .user-label
@@ -29,4 +31,8 @@
                 =profile_picture(user)
               .username
                 =link_to user.display_name, user_profile_path(user)
-          
+      tr 
+        td: td: td
+          .toolbar
+            .toolbar_group
+              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'

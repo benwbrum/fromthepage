@@ -6,18 +6,20 @@
     =validation_summary @collection.errors
     table.form.collection-settings
       tr
-        th =f.label :text_language, t('.text_language'), class: 'collection-label'
+        th 
+          h3 =f.label :text_language, t('.text_language'), class: 'collection-label'
+          p =t('.text_language_description')
         td =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
-
       tr 
-        th =t('.transcription_type')
-      tr
-        th =t('.transcription_type_description')
-
+        th
+          h3 =t('.transcription_type')
+          p =t('.transcription_type_description')
       tr 
         th
           =f.radio_button :field_based, false, :checked => !@collection.field_based
-          =t('.document_based_transcription')
+          =f.label :field_based
+            h3 =t('.document_based_transcription')
+            p =t('.document_based_transcription_description')
         td
           =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
             span =t('.edit_buttons')
@@ -25,55 +27,38 @@
       tr 
         th
           =f.radio_button :field_based, true, :checked => @collection.field_based
-          =t('.field_based_transcription')
+          =f.label :field_based
+            h3 =t('.field_based_transcription')
+            p =t('.field_based_transcription_description')
         td 
           =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
       
       tr
         th 
           =f.check_box :data_entry_type
-          =t('.enable_metadata_description')
+          =f.label :data_entry_type
+            h3 =t('.enable_metadata_description')
+            p =t('.enable_metadata_description_description')
         td 
           =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
 
       tr 
         th
           =f.check_box :subjects_enabled
-          =f.label :subjects_enabled, t('.subjects_enabled')
+          =f.label :subjects_enabled
+            h3 =t('.subjects_enabled')
+            p =t('.subjects_enabled_description')
       tr 
         th
           -if @collection.works.ocr_disabled.any?
             =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button')
               span =t('.enable_ocr')
-          '
           -if @collection.works.ocr_enabled.any?
             =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
               span =t('.disable_ocr')
-     
-        / -if !@collection.field_based
-        /   =link_to(collection_enable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.field_based_transcription'))
-        /     span =t('.enable_field_based_transcription')
-        / -else
-        /   =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_document_based_transcription'))
-        /     span =t('.revert_document_based_transcription')
-       
-      
-      / -if !@collection.field_based && @collection.text_entry?
-      /   h3 =t('.editor_buttons')
-      /   p =t('.editor_buttons_description')
-        
-
-
-      / h3 =t('.metadata_entry')
-      / -if @collection.metadata_entry?
-        
-      /   =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
-      /     span =t('.revert_metadata_description')
-      / -else
-      /   =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
-      /     span =t('.enable_metadata_description')    
-      / td(colspan="2")
-        
-
-      / h3 =t('.ocr_correction')
-      
+          p =t('.ocr_description')
+      tr 
+        td: td: td
+          .toolbar
+            .toolbar_group
+              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'

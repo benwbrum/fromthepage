@@ -408,7 +408,7 @@
 
 .collection-settings {
   float: left;
-  width: 80%;
+  width: 85%;
   td input[type="checkbox"] {
     margin-right: 5px;
     margin-top: 10px;
@@ -419,11 +419,14 @@
   .collection-label {
     margin-right: 10px;
   }
+  th {
+    white-space: normal !important;
+  }
 }
 
 .side-tabs {
   float: left;
-  width: 20%;
+  width: 15%;
   a {
     display: block;
     &.active {

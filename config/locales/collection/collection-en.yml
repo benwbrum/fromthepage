@@ -56,7 +56,6 @@ en:
       add_another_work_under: You can add another work under %{start_project}
       add_button: Add
       alert: Please configure fields or choose document based transcription under Transcription Type.
-      
       close_api: Close API
       collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_image: Collection Image
@@ -64,10 +63,7 @@ en:
       collection_link: Collection Link
       collection_reviewers: Authorized Reviewers
       collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
-      
       current_url: The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words.
-      
-      
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       disable_document_sets: Disable Document Sets
@@ -91,9 +87,6 @@ en:
       enable_ocr: Enable OCR
       field_based_transcription: Field based transcription
       footer: Footer
-      
-      
-      
       make_collection_active: Make Collection Active
       make_collection_inactive: Make Collection Inactive
       make_collection_private: Make Collection Private
@@ -109,20 +102,16 @@ en:
       no_document_sets_in_collection: This collection does not have any document sets.
       no_image: No Image
       ocr_correction: OCR Correction
-      ocr_correction_description: Enable or disable OCR correction for all works in this collection.
       open_api: Open API
       page_needing_transcription: 'This link will send transcribers directly to a page needing transcription:  %{current_url}'
-      
       picture_to_be_used_message: A picture to be used to illustrate the collection description.
       remove_collaborator: Remove collaborator
       remove_owner: Remove owner
       remove_reviewer: Remove Reviewer
       revert_metadata_description: Disable Description
       review_type: Review Type
-      
       save_changes: Save Changes
       start_a_project: Start A Project
-      
       title: Title
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
@@ -130,7 +119,6 @@ en:
       update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
       url: URL
-      
     edit_danger:
       collection_status: Collection Status
       confirm_blank_collection: Are you sure?
@@ -146,18 +134,21 @@ en:
       suggestions_transcription_conventions: Suggestions for your transcription conventions.
       help: Basic Help Text
       suggestions_help_tab: Suggestions for your help tab.
-      link_help: Subject Linking Help Text (not displayed if subjects are disabled)
+      link_help: Subject Linking Help Text
+      link_help_message: (not displayed if subjects are disabled)
     edit_look:
-      default_orientation: Select the default page transcription orientation
+      default_orientation: Default page transcription orientation
       user_download: Allow users to download works.
-      voice_recognition: Speech to text available for transcribing (not compatible with advanced editor)
+      voice_recognition: Speech to text available for transcribing 
+      voice_recognition_description: (not compatible with advanced editor)
       hide_completed: Hide completed works by default
       enable_forums: Enable forums
       enable_document_sets: Enable document sets
       metadata_description: Upload metadata for items in this collection in bulk.
       upload_metadata: Upload Metadata
       enable_metadata_facets: Enable metadata facets
-      enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
+      enable_spellcheck: Enable spellcheck
+      enable_spellcheck_description: (not suitable for texts with irregular spelling)
       page_on_the_bottom: Page on the Bottom
       page_on_the_left: Page on the Left
       page_on_the_right: Page on the Right
@@ -192,7 +183,7 @@ en:
       authorized_reviewers: Authorized reviewers
       edit_authorized_reviewers: Edit Authorized Reviewers
     edit_tasks:
-      text_language: Select the language of the transcription text
+      text_language: Transcription Text Language
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
       document_based_transcription: Document based transcription
@@ -201,9 +192,10 @@ en:
       edit_fields: Edit Fields
       edit_metadata_fields: Edit Fields
       enable_metadata_description: Enable Metadata Description
-      subjects_enabled: Enable subject indexing
+      subjects_enabled: Enable Subject Indexing
       enable_ocr: Enable OCR
       disable_ocr: Disable OCR
+      ocr_description: Enable or disable OCR correction for all works in this collection.
     edit_tabs:
       danger_zone: Danger Zone
       general: General

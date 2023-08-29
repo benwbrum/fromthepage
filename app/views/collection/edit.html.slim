@@ -5,18 +5,18 @@
   =form_for :collection, url: collection_update_path(@collection) do |f|
     =validation_summary @collection.errors
     table.form.collection-settings
-      tr.big
-        th =f.label :title, t('.title')
+      tr
+        th: h3 =f.label :title, t('.title')
         td.w100 =f.text_field :title, value: @collection.title
-      tr.big
-        th =f.label :slug, t('.url')
+      tr
+        th: h3 =f.label :slug, t('.url')
         td =f.text_field :slug, value: @collection.slug
       tr
-        th.hidden =t('.url')
+        th
         td
           p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
       tr 
-        th =t('.collection_image')
+        th: h3 =t('.collection_image')
         td 
           =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
             =hidden_field_tag(:collection_id, @collection.id)
@@ -24,17 +24,14 @@
               =f.file_field :picture, accept: 'image/*'
               -if @collection.picture_url(:thumb)
                 =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
-          p.fglight =t('.picture_to_be_used_message')        
+          p =t('.picture_to_be_used_message')        
       tr
-        th=f.label :intro_block, t('.description'), class: "above"
+        th: h3 =f.label :intro_block, t('.description')
         td
           =f.text_area :intro_block, rows: 10, value: @collection.intro_block  
-          br: i =t('.description_message')      
-
+          p =t('.description_message')      
       tr 
-        td 
-        td 
-        td   
+        td: td: td
           .toolbar
             .toolbar_group
               =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'      

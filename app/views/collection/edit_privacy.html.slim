@@ -6,24 +6,24 @@
     =validation_summary @collection.errors
     table.form.collection-settings
       tr 
-        th 
-          =t('.collection_privacy')
-          p =t('.collection_restricted_message')
+        td
+          h3 =t('.collection_privacy')
+          -if @collection.restricted
+            p =t('.collection_restricted_message')
+          -else
+            p =t('.collection_public_message')
         td
           -if @collection.restricted
-            
             =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button')
               =svg_symbol '#icon-unlock', class: 'icon'
               span =t('.make_collection_public')
           -else
-            p =t('.collection_public_message')
             =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button')
               =svg_symbol '#icon-lock', class: 'icon'
               span =t('.make_collection_private')
-      
       tr
         th 
-          =t('.collection_collaborators')
+          h3 =t('.collection_collaborators')
           p =t('.collection_collaborators_description')
           p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
@@ -32,10 +32,9 @@
               =profile_picture(user)
               .username
                 =link_to user.display_name, user_profile_path(user)
-        
       tr 
-        th 
-          =t('.collection_owners')
+        th
+          h3 =t('.collection_owners')
           p =t('.collection_owners_description')
           p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
         td
@@ -44,10 +43,9 @@
               =profile_picture(user)
               .username
                 =link_to user.display_name, user_profile_path(user)
-
       tr
         th 
-          =t('.blocked_users')
+          h3 =t('.blocked_users')
           p =t('.block_users_description')
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
@@ -56,10 +54,9 @@
           /     =profile_picture(user)
           /     .username
           /       =link_to user.display_name, user_profile_path(user)
-
       tr
         th 
-          =t('.api_access')
+          h3 =t('.api_access')
           p =t('.api_access_description')
       tr 
         td
@@ -69,10 +66,13 @@
         td
           =f.radio_button :api_access, false
           =t('.closed_api')
-
       tr 
         td 
           =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
-      
+      tr 
+        td: td: td
+          .toolbar
+            .toolbar_group
+              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'

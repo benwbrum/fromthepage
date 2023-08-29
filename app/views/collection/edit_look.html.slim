@@ -7,24 +7,34 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          =f.label :default_orientation, t('.default_orientation')
+          =f.label :default_orientation
+            h3 =t('.default_orientation')
+            p =t('.default_orientation_description')
           =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w50'}
       tr
         td(colspan="2")
           =f.check_box :user_download
-          =f.label :user_download, t('.user_download')
+          =f.label :user_download
+            h3 =t('.user_download')
+            p =t('.user_download_description')
       tr
         td(colspan="2")
           =f.check_box :hide_completed
-          =f.label :hide_completed, t('.hide_completed')
+          =f.label :hide_completed
+            h3 =t('.hide_completed')
+            p =t('.hide_completed_description')
       tr 
         td(colspan="2")
           =f.check_box :messageboards_enabled
-          =f.label :messageboards_enabled, t('.enable_forums')
+          =f.label :messageboards_enabled
+            h3 =t('.enable_forums')
+            p =t('.enable_forums_description')
       tr 
         td(colspan="2")
           =f.check_box :supports_document_sets
-          =f.label :supports_document_sets, t('.enable_document_sets')
+          =f.label :supports_document_sets
+            h3 =t('.enable_document_sets')
+            p =t('.enable_document_sets_description')
       tr 
         td
           =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
@@ -33,12 +43,23 @@
       tr 
         td(colspan="2")
           =f.check_box :facets_enabled 
-          =f.label :facets_enabled, t('.enable_metadata_facets')
+          =f.label :facets_enabled
+            h3 =t('.enable_metadata_facets')
+            p =t('.enable_metadata_facets_description')
       tr 
         td(colspan="2")
             =f.check_box :enable_spellcheck
-            =f.label :enable_spellcheck, t('.enable_spellcheck')
+            =f.label :enable_spellcheck
+              h3 =t('.enable_spellcheck')
+              p =t('.enable_spellcheck_description')
       tr
           td(colspan="2")
             =f.check_box :voice_recognition, onchange: 'showLang(event)'
-            =f.label :voice_recognition, t('.voice_recognition')
+            =f.label :voice_recognition
+              h3 =t('.voice_recognition')
+              p =t('.voice_recognition_description')
+      tr 
+        td: td: td
+          .toolbar
+            .toolbar_group
+              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
