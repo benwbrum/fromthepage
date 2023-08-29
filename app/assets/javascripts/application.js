@@ -314,12 +314,6 @@ $(function() {
 });
 
 
-$(window).on("popstate", function() {
-  console.log("Popstate event intiated");
-  $('html').removeClass('page-busy');
-  }
-)
-
 //Enable and disable select options for field-based transcription
 function addOptions(selector, enabled_index){
   var parentTr = selector.parentElement.parentElement;
