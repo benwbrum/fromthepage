@@ -337,7 +337,7 @@ Object.assign(DataTable.defaults, {
 
   "drawCallback": function(oSettings) {
     // don't show pagination if only one page
-    if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay() || oSettings._iDisplayLength == -1) {
+    if (oSettings._iDisplayLength >= oSettings.fnRecordsDisplay() || oSettings._iDisplayLength == -1) {
         $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
     } else {
         $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
