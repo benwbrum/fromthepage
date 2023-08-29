@@ -250,7 +250,6 @@ $.fn.imageView = function() {
 
 
 $(function() {
-  console.log("in big ready block");
   $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('.input-file').inputFile();
@@ -270,11 +269,6 @@ $(function() {
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
-    .on('beforeunload', function() {
-      if($('form[data-areyousure].dirty').length === 0) {
-        $('html').addClass('page-busy');
-      }
-    })
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
