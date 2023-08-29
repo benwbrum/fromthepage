@@ -36,8 +36,9 @@ en:
     list:
       activity_stream: Activity Stream
       collection_title: 'Collection: %{title}'
-      newer_activity: Newer Activity
-      older_activity: Older Activity
+      deed: Deed
+      type: Type
+      time: Time
       owner_title: 'Owner: %{title}'
       time_ago_in_words: "%{time} ago"
       user_title: 'User: %{title}'
