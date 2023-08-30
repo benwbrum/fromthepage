@@ -110,9 +110,9 @@ ActiveRecord::Schema.define(version: 2023_08_14_235154) do
     t.boolean "collection_activity"
     t.boolean "collection_contributors"
     t.string "report_arguments"
+    t.boolean "notes_csv"
     t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.boolean "admin_searches"
-    t.boolean "collection_notes"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
