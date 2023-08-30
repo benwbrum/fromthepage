@@ -23,7 +23,7 @@
       tr
         th 
           h3 =t('.authorized_reviewers')
-          p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+          p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED), :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
         td
           -@reviewers.each do |user|
             .user-label

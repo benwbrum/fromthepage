@@ -21,9 +21,7 @@
             h3 =t('.document_based_transcription')
             p =t('.document_based_transcription_description')
         td
-          =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
-            span =t('.edit_buttons')
-          
+          =link_to t('.edit_buttons'), collection_editor_button_edit_path(:collection_id => @collection.id), disabled: @collection.field_based, class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }}          
       tr 
         th
           =f.radio_button :field_based, true, :checked => @collection.field_based
@@ -31,7 +29,7 @@
             h3 =t('.field_based_transcription')
             p =t('.field_based_transcription_description')
         td 
-          =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
+          =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based, class: 'button fields', 'aria-label' => t('.edit_fields')
       
       tr
         th 
@@ -40,7 +38,7 @@
             h3 =t('.enable_metadata_description')
             p =t('.enable_metadata_description_description')
         td 
-          =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
+          =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), disabled: !@collection.metadata_entry?, class: 'button fields', 'aria-label' => t('.edit_fields')    
 
       tr 
         th

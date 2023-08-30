@@ -7,7 +7,9 @@
     table.form.collection-settings
       tr 
         td
-          h3 =t('.collection_privacy')
+          h3 
+            =t('.collection_privacy')
+            i =@collection.is_public ? t('.public') : t('.private')
           -if @collection.restricted
             p =t('.collection_restricted_message')
           -else
@@ -25,7 +27,7 @@
         th 
           h3 =t('.collection_collaborators')
           p =t('.collection_collaborators_description')
-          p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+          p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: @collection.is_public, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
           -@collaborators.each do |user|
             .user-label
@@ -47,7 +49,7 @@
         th 
           h3 =t('.blocked_users')
           p =t('.block_users_description')
-          p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
+          p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: !@collection.is_public, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
           -@blocked_users.each do |user|
             .user-label
