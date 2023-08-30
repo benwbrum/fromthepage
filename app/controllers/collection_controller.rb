@@ -379,13 +379,10 @@ class CollectionController < ApplicationController
   def publish_collection
     @collection.restricted = false
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def toggle_collection_active
-    @collection.is_active = !@collection.active?
-    @collection.save!
-
     # Register New Deed for In/Active
     deed = Deed.new
     deed.collection = @collection
@@ -396,25 +393,17 @@ class CollectionController < ApplicationController
       deed.deed_type = DeedType::COLLECTION_INACTIVE
     end
     deed.save!
-
-    redirect_to action: 'edit', collection_id: @collection.id
-  end
-
-  def toggle_collection_api_access
-    @collection.api_access = !@collection.api_access
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def restrict_collection
     @collection.restricted = true
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def restrict_transcribed
     @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_to edit_privacy_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def enable_fields
@@ -423,12 +412,6 @@ class CollectionController < ApplicationController
     @collection.language = nil
     @collection.save!
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
-  end
-
-  def disable_fields
-    @collection.field_based = false
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
   end
 
   def delete
@@ -460,13 +443,19 @@ class CollectionController < ApplicationController
       params[:collection].delete(:subjects_enabled)
     end
     if collection_params[:data_entry_type].present?
-      collection_params[:data_entry_type] = params[:data_entry_type] ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
+      params[:collection][:data_entry_type] = (collection_params[:data_entry_type] == '1') ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
     end
     if collection_params[:slug] == ""
-      collection_params[:slug] = @collection.title.parameterize
+      params[:collection][:slug] = @collection.title.parameterize
     end
-    if collection_params[:messageboards_enabled].present?
+    if collection_params[:messageboards_enabled].present? && collection_params[:messageboards_enabled] != @collection.messageboards_enabled
       collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
+    end
+    if collection_params[:is_active].present? && collection_params[:is_active] != @collection.is_active
+      toggle_collection_active
+    end
+    if collection_params[:field_based] == "1" && !@collection.field_based
+      enable_fields
     end
 
     @collection.attributes = collection_params
@@ -599,13 +588,13 @@ class CollectionController < ApplicationController
   def enable_ocr
     @collection.enable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def disable_ocr
     @collection.disable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def email_link
