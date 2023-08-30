@@ -49,11 +49,11 @@
           p =t('.block_users_description')
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
-          / -@blocked_users.each do |user|
-          /   .user-label
-          /     =profile_picture(user)
-          /     .username
-          /       =link_to user.display_name, user_profile_path(user)
+          -@blocked_users.each do |user|
+            .user-label
+              =profile_picture(user)
+              .username
+                =link_to user.display_name, user_profile_path(user)
       tr
         th 
           h3 =t('.api_access')

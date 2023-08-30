@@ -53,9 +53,11 @@ en:
       notice: OCR correction has been disabled for all works.
     edit:
       add_a_new_work: Add a new work
+      collection_owners: Collection Owners
+      collection_owners_description: Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
+      block_users_description: Block individual users from accessing the collection.
       add_another_work_under: You can add another work under %{start_project}
       add_button: Add
-      alert: Please configure fields or choose document based transcription under Transcription Type.
       close_api: Close API
       collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_image: Collection Image
@@ -118,6 +120,8 @@ en:
       unblock_user: Unblock user
       update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
+      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
+      blocked_users: Blocked Users
       url: URL
     edit_danger:
       collection_status: Collection Status
@@ -163,9 +167,6 @@ en:
       collection_collaborators_description: Collaborators may transcribe and edit private collections.
       edit_collaborators: Edit Collaborators
       collection_owners: Collection Owners
-      collection_owners_description: Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
-      block_users_description: Block individual users from accessing the collection.
-      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
       blocked_users: Blocked Users
       block: Block Users
       api_access: API Access
@@ -183,6 +184,7 @@ en:
       authorized_reviewers: Authorized reviewers
       edit_authorized_reviewers: Edit Authorized Reviewers
     edit_tasks:
+      alert: Please configure fields or choose document based transcription under Transcription Type.
       text_language: Transcription Text Language
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.

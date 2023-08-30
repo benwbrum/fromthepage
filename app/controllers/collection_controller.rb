@@ -95,29 +95,6 @@ class CollectionController < ApplicationController
 
   end
 
-
-  def enable_messageboards
-    @collection.enable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def disable_messageboards
-    @collection.disable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def enable_document_sets
-    @collection.supports_document_sets = true
-    @collection.save!
-    redirect_to document_sets_path(collection_id: @collection)
-  end
-
-  def disable_document_sets
-    @collection.supports_document_sets = false
-    @collection.save!
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
   def facets
     collection = Collection.find(params[:collection_id])
     @metadata_coverages = collection.metadata_coverages
@@ -161,6 +138,7 @@ class CollectionController < ApplicationController
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
     @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
+    @blocked_users = @collection.blocked_users.sort_by { |blocked_user| blocked_user.display_name }
     if User.count > 100
       @nonowners = []
       @noncollaborators = []
@@ -436,7 +414,7 @@ class CollectionController < ApplicationController
 
   def restrict_transcribed
     @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def enable_fields
@@ -453,18 +431,6 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection
   end
 
-  def enable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_AND_METADATA
-    @collection.save!
-    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
-  end
-
-  def disable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_ONLY
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
-  end
-
   def delete
     @collection.destroy
     redirect_to dashboard_owner_path
@@ -475,13 +441,13 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    if @collection.field_based && !@collection.transcription_fields.present? 
-      flash.now[:info] = t('.alert') 
-    end
   end
 
   def edit_tasks
     @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
+    if @collection.field_based && !@collection.transcription_fields.present? 
+      flash.now[:info] = t('.alert') 
+    end
   end
 
   def edit_look
@@ -489,21 +455,28 @@ class CollectionController < ApplicationController
   end
 
   def update
-    @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
-    params[:collection].delete(:subjects_enabled)
+    if collection_params[:subjects_enabled].present?
+      collection_params[:subjects_disabled] = params[:subjects_enabled] ? false : true
+      params[:collection].delete(:subjects_enabled)
+    end
+    if collection_params[:data_entry_type].present?
+      collection_params[:data_entry_type] = params[:data_entry_type] ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
+    end
+    if collection_params[:slug] == ""
+      collection_params[:slug] = @collection.title.parameterize
+    end
+    if collection_params[:messageboards_enabled].present?
+      collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
+    end
 
     @collection.attributes = collection_params
-
-    if collection_params[:slug].blank?
-      @collection.slug = @collection.title.parameterize
-    end
-   
     if @collection.save
       flash[:notice] = t('.notice')
-      redirect_to action: 'edit', collection_id: @collection.id
+      redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
     else
       edit # load the appropriate variables
-      render action: 'edit'
+      edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
+      render action: edit_action
     end
   end
 
@@ -692,6 +665,29 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id)
+    params.require(:collection).permit(
+      :title, 
+      :slug, 
+      :intro_block, 
+      :transcription_conventions, 
+      :help, 
+      :link_help, 
+      :subjects_disabled, 
+      :subjects_enabled, 
+      :review_type, 
+      :hide_completed, 
+      :text_language, 
+      :default_orientation, 
+      :voice_recognition, 
+      :picture, 
+      :user_download, 
+      :enable_spellcheck, 
+      :messageboards_enabled,
+      :facets_enabled, 
+      :supports_document_sets,
+      :api_access, 
+      :data_entry_type, 
+      :field_based
+    )
   end
 end
