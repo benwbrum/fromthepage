@@ -2,7 +2,8 @@
 =render({ :partial => 'edit_tabs', :locals => { :selected => 1}})
 
 .columns.collection-settings
-  =form_for :collection, url: collection_update_path(@collection) do |f|
+  =form_for :collection, url: collection_update_path(@collection), html: { multipart: true } do |f|
+    =hidden_field_tag(:collection_id, @collection.id)
     =validation_summary @collection.errors
     table.form.collection-settings
       tr
@@ -17,13 +18,14 @@
           p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
       tr 
         th: h3 =t('.collection_image')
-        td 
-          =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
-            =hidden_field_tag(:collection_id, @collection.id)
-            label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
+        td.image-form
+          -if @collection.picture_url(:thumb)
+            label.image-upload( data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
               =f.file_field :picture, accept: 'image/*'
-              -if @collection.picture_url(:thumb)
-                =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
+              =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
+          -else
+            label( data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
+              =f.file_field :picture, accept: 'image/*'
           p =t('.picture_to_be_used_message')        
       tr
         th: h3 =f.label :intro_block, t('.description')

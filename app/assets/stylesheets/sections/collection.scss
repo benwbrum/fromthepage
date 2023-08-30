@@ -436,6 +436,15 @@
   }
 }
 
+.image-upload {
+  height: auto !important;
+  min-height: 50px;
+  max-height: 150px;
+  width: auto !important;
+  min-width: 120px;
+  max-width: 150px;
+}
+
 
 // Collection export
 
