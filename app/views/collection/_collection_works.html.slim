@@ -13,7 +13,13 @@ table#works-list.collection-work-stats.datagrid.striped
           = t('.n_pages', count: w.work_statistic.total_pages) 
           = @wording
         td.w20
-          =render partial: 'shared/progress', locals: { collection: @collection}
+          span.progress
+            -unless @collection.subjects_disabled
+              span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+            -unless @progress_review == 0
+              span(style="width:#{@progress_review}%")
+            span(style="width:#{w.work_statistic.complete}%")
         -most_recent_activity = w.deeds.first&.created_at || w.created_on
         td.nowrap (data-order="#{most_recent_activity.to_i}")
           =l(most_recent_activity, format: :short)
