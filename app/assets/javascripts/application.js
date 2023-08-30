@@ -269,11 +269,6 @@ $(function() {
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
-    .on('beforeunload', function() {
-      if($('form[data-areyousure].dirty').length === 0) {
-        $('html').addClass('page-busy');
-      }
-    })
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
@@ -317,6 +312,7 @@ $(function() {
     maxWidth: 300,
   });
 });
+
 
 //Enable and disable select options for field-based transcription
 function addOptions(selector, enabled_index){
