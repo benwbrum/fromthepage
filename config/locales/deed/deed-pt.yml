@@ -34,10 +34,11 @@ pt:
     list:
       activity_stream: Fluxo de Atividade
       collection_title: 'Coleção: %{title}'
-      newer_activity: Atividade Mais Recente
-      older_activity: Atividade Mais Antiga
+      deed: Obra
       owner_title: 'Proprietário: %{title}'
+      time: Tempo
       time_ago_in_words: Há %{time}
+      type: Tipo
       user_title: 'Usuário: %{title}'
     needs_review: A página precisa de revisão
     note_added: Nota adicionada
