@@ -26,7 +26,7 @@
           -else
             label( data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
               =f.file_field :picture, accept: 'image/*'
-          p =t('.picture_to_be_used_message')        
+          p =t('.collection_image_description')        
       tr
         th: h3 =f.label :intro_block, t('.description')
         td

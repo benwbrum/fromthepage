@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px")
 
-  h3 =t('collection.edit.collection_collaborators')
-  p.fglight =t('collection.edit.collection_collaborators_description')
+  h3 =t('collection.edit_privacy.collection_collaborators')
+  p.fglight =t('collection.edit_privacy.collection_collaborators_description')
   =form_tag(collection_add_collaborator_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id
     -if User.count > 100

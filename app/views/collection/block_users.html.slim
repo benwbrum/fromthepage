@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px")
   
-  h3 =t('collection.edit.blocked_users')
-  p.fglight =t('collection.edit.block_users_modal_description')
+  h3 =t('collection.edit_privacy.blocked_users')
+  p.fglight =t('collection.edit_privacy.block_users_modal_description')
   =form_tag(collection_add_block_user_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id
     -if User.count > 100

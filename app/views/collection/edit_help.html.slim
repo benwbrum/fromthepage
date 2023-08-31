@@ -9,7 +9,7 @@
         th
           h3 =f.label :transcription_conventions, t('.transcription_conventions'), class: "above"
           p.nomargin.settings =link_to t('.suggestions_transcription_conventions'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
-          p =t('.transcription_conventions_message')
+          p =t('.transcription_conventions_description')
         td.w70
           =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
       tr
@@ -21,7 +21,7 @@
       tr
         th
           h3 =f.label :link_help, t('.link_help'), class: "above"
-          p.nomargin.settings =t('.link_help_message')
+          p.nomargin.settings =t('.link_help_description')
         td.w70
           =f.text_area :link_help, rows: 10, value: @collection.link_help
       tr 

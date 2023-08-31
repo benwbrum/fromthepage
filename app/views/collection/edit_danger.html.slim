@@ -11,9 +11,9 @@
             =t('.collection_status')
             i =@collection.is_active ? t('.active') : t('.inactive')
           -if @collection.is_active
-            p =t('.collection_active_message')
+            p =t('.collection_active_description')
           -else
-            p =t('.collection_inactive_message')
+            p =t('.collection_inactive_description')
         
           =f.radio_button :is_active, true
           =f.label :is_active, t('.active')
