@@ -409,6 +409,16 @@
 .collection-settings {
   float: left;
   width: 85%;
+  td:nth-child(1), th { 
+    width: 20%;
+  }
+  td:nth-child(2) {
+    width: 60%;
+  }
+  td:nth-child(3) {
+    width: 20%;
+  }
+
   td input[type="checkbox"] {
     margin-right: 5px;
     margin-top: 10px;

@@ -6,10 +6,12 @@
     =validation_summary @collection.errors
     table.form.collection-settings
       tr 
-        td
+        th(colspan="2")
           h3 
             =t('.collection_privacy')
             i =@collection.is_public ? t('.public') : t('.private')
+      tr 
+        th
           -if @collection.restricted
             p =t('.collection_restricted_description')
           -else
@@ -57,19 +59,16 @@
               .username
                 =link_to user.display_name, user_profile_path(user)
       tr
-        th 
+        td(colspan="2")
           h3 =t('.api_access')
           p =t('.api_access_description')
-      tr 
-        td
           =f.radio_button :api_access, true
           =t('.open_api')
-      tr 
-        td
+          br
           =f.radio_button :api_access, false
           =t('.closed_api')
       tr 
-        td 
+        td(colspan="2")
           =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)

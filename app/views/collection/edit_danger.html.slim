@@ -7,13 +7,14 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          h3 
-            =t('.collection_status')
-            i =@collection.is_active ? t('.active') : t('.inactive')
-          -if @collection.is_active
-            p =t('.collection_active_description')
-          -else
-            p =t('.collection_inactive_description')
+          =f.label :collection_status
+            h3 
+              =t('.collection_status')
+              i =@collection.is_active ? t('.active') : t('.inactive')
+            -if @collection.is_active
+              p =t('.collection_active_description')
+            -else
+              p =t('.collection_inactive_description')
         
           =f.radio_button :is_active, true
           =f.label :is_active, t('.active')
@@ -21,12 +22,12 @@
           =f.radio_button :is_active, false
           =f.label :is_active, t('.inactive')
       tr
-        td 
+        td(colspan="2")
           =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
             span =t('.blank_collection')
           p =t('.blank_collection_description')
       tr 
-        td
+        td(colspan="2")
           =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
             span =t('.delete_collection')
           p =t('.delete_collection_description')

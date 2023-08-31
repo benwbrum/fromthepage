@@ -8,7 +8,7 @@
     table.form.collection-settings
       tr
         th: h3 =f.label :title, t('.title')
-        td.w100 =f.text_field :title, value: @collection.title
+        td =f.text_field :title, value: @collection.title
       tr
         th: h3 =f.label :slug, t('.url')
         td =f.text_field :slug, value: @collection.slug
