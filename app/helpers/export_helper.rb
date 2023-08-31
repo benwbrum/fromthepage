@@ -69,6 +69,10 @@ module ExportHelper
       export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
     end
 
+    # admin-level exports
+    if bulk_export.admin_searches
+      export_admin_searches_csv(out: out, report_arguments: bulk_export.report_arguments)
+    end
 
     # collection-level exports
     if bulk_export.collection_activity
@@ -99,7 +103,7 @@ module ExportHelper
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
     end
 
-    if bulk_export.collection_notes
+    if bulk_export.notes_csv
       export_collection_notes_csv(out: out, collection: bulk_export.collection)
     end
 

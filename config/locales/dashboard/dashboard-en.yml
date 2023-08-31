@@ -31,6 +31,7 @@ en:
       select_a_collection: "- Select a collection -"
       title: Title
     exports:
+      admin_searches: Searches
       bulk_exports_description: This lists all bulk exports you have run. Exports are cleaned after a few days, and are no longer available for download
       configuration: Configuration (level)
       create_bulk_export_description: Create a bulk export from the Export tab of a collection or the Download tab of a work.
@@ -40,6 +41,7 @@ en:
       facing_edition_work: Facing Edition PDF (work)
       html_page: HTML (page)
       html_work: HTML (work)
+      notes_csv: Notes CSV (collection)
       plaintext_emended_page: Analytic Plaintext (page)
       plaintext_emended_work: Analytic Plaintext (work)
       plaintext_searchable_page: Searchable Plaintext (page)

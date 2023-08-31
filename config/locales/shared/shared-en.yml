@@ -6,6 +6,8 @@ en:
       settings: Settings
       subject: subject
       versions: Versions
+    breadcrumbs:
+      search_results: Search results
     codemirror:
       abbr_description: Marks abbreviations in a text with expansions in the expan attribute.
       add_description: Marks text inserted after-the-fact by the writer.

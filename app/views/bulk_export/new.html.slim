@@ -170,6 +170,15 @@
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
               span= t('.one_site_per_collection')
+        li 
+          .bulk-export_format
+            h5= t('.notes_csv')
+            p.nomargin= t('.notes_csv_description')
+          .bulk-export_options
+            =f.label :notes_csv
+              =f.check_box :notes_csv, value: @bulk_export.notes_csv
+              span= t('.one_file_per_collection')
+            
 
       .toolbar
         .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''

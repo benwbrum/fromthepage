@@ -111,6 +111,7 @@ $gapSize:                   20px;
 @import "sections/user";
 @import "sections/ia-import";
 @import "sections/iiif-import";
+@import "sections/search_attempt";
 
 @import "plugins/select2/core";
 
@@ -257,4 +258,5 @@ h3, .thredded--post-form--title {
 
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
-@import "handsontable.min"
+@import "handsontable.min";
+@import "datatables.min";

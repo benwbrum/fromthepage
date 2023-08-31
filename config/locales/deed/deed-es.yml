@@ -34,10 +34,11 @@ es:
     list:
       activity_stream: Flujo de Actividad
       collection_title: 'Colección: %{title}'
-      newer_activity: Actividad Más Reciente
-      older_activity: Actividad Anterior
+      deed: Escritura
       owner_title: 'Propietario: %{title}'
+      time: Tiempo
       time_ago_in_words: Hace %{time}
+      type: Tipo
       user_title: 'Usuario: %{title}'
     needs_review: Página necesita revisión
     note_added: Nota añadida
@@ -52,4 +53,4 @@ es:
     translation_indexed: Página de traducción indexada
     translation_review: Página de traducción necesita revisión
     translation_reviewed: Traducción revisada
-    work_added: Trabajo agregado
+    work_added: Obra agregada

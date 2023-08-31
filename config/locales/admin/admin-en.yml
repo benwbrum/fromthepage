@@ -89,6 +89,25 @@ en:
       total_pages: Total Pages
     process_upload:
       uploaded_document_queued: Uploaded document has been queued for processing
+    searches:
+      clicks: Clicks
+      contributions: Contributions
+      date: Date
+      end_date: End date
+      export: Export
+      export_searches: Export searches
+      hits: Hits
+      owner: Owner
+      owner_filter: Filter to only transcribers
+      query: Query
+      search_type:
+        collection: Collection
+        collection-title: Title / Metadata
+        findaproject: Find a Project
+        work: Work
+      start_date: Start date
+      type: Type
+      user: User
     settings:
       flag_blacklist: 'Terms to flag as potential abusive content:'
       save_changes: Save Changes

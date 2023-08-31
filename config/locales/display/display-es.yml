@@ -8,7 +8,7 @@ es:
       facsimile: Facsímil
       help_correct: ayudar a corregir
       help_transcribe: ayudar a transcribir
-      help_translate: ayuda a traducir
+      help_translate: ayudar a traducir
       mark_the_page_blank: marcar la página en blanco
       or_mark_blank: "<br>o %{mark_blank}"
       page_notes: Notas de Página
@@ -89,7 +89,7 @@ es:
   display_helper:
     page_action:
       blank_page: Página en blanco
-      completed: Terminado
+      completed: Terminada
       correct: Correcto
       index: Índice
       review: Revisar
