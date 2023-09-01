@@ -7,9 +7,8 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          =f.label :review_type
-            h3 =t('.review_type')
-            p =t('.review_type_description')
+          h3 =t('.review_type')
+          p =t('.review_type_description')
       tr 
         td(colspan="2")
           =f.radio_button :review_type, Collection::ReviewType::OPTIONAL

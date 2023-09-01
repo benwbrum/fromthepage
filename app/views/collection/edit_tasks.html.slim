@@ -7,7 +7,7 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          =f.label :text_lanugage
+          =f.label :text_language
             h3(style="display:inline-block") =t('.text_language')
             =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}
             p =t('.text_language_description')   
