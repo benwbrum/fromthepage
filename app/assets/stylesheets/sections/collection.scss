@@ -414,6 +414,13 @@
 }
 
 .collection-settings {
+  border-collapse: separate;
+  border-spacing: 0 0.5em;
+
+  th {
+    white-space: normal !important;
+    vertical-align: top;
+  }
   td:nth-child(1), th { 
     width: 20%;
   }
@@ -424,18 +431,37 @@
     width: 20%;
   }
 
-  td input[type="checkbox"] {
-    margin-right: 5px;
-    margin-top: 10px;
+  input[type="checkbox"], input[type="radio"] {
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 7px; // align with label
+    vertical-align: top;
   }
-  td select {
-    margin-top: 10px;
+  select, .inline-btn {
+    margin-left: 1em;
+    display: inline-block;
+  }
+  select {
+    width: 50%;
+  }
+  .action-btn {
+    margin-bottom: 0.5em;
+  }
+  td label {
+    vertical-align: top;
+    width: 95%;
   }
   .collection-label {
     margin-right: 10px;
   }
-  th {
-    white-space: normal !important;
+  .settings-label {
+    display: inline-block;
+  }
+  .button[disabled] {
+    pointer-events: none;
+  }
+  p {
+    margin: 0;
   }
 }
 

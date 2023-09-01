@@ -62,14 +62,16 @@
         td(colspan="2")
           h3 =t('.api_access')
           p =t('.api_access_description')
-          =f.radio_button :api_access, true
-          =t('.open_api')
-          br
-          =f.radio_button :api_access, false
-          =t('.closed_api')
       tr 
         td(colspan="2")
-          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
+          =f.radio_button :api_access, true
+          =f.label :api_access_true, t('.open_api'), class: 'big'
+          br
+          =f.radio_button :api_access, false
+          =f.label :api_access_false, t('.closed_api'), class: 'big'
+      tr 
+        td(colspan="2")
+          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn')
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
       tr 

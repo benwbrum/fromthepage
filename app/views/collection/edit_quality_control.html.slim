@@ -10,8 +10,8 @@
           =f.label :review_type
             h3 =t('.review_type')
             p =t('.review_type_description')
-            
-          br
+      tr 
+        td(colspan="2")
           =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
           =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
           br
@@ -40,7 +40,7 @@
 -content_for :javascript
   javascript: 
     $(document).ready(function() {
-       $('input[type=radio][name="collection[review_type]"]').change(function() {
+      $('input[type=radio][name="collection[review_type]"]').change(function() {
         if ($(this).val() == 'restricted') {
           $('#edit-reviewers').removeAttr('disabled');
         } else {

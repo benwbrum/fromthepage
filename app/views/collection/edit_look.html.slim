@@ -7,9 +7,10 @@
     table.form.collection-settings
       tr
         td(colspan="2")
-          h3(style="display:inline-block") =f.label :default_orientation, t('.default_orientation'), class: 'collection-label'
-          =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w50', style:"display:inline-block"}
-          p =t('.default_orientation_description')
+          =f.label :default_orientation
+            h3(style="display:inline-block") =t('.default_orientation')
+            =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}
+            p =t('.default_orientation_description')
       tr
         td(colspan="2")
           =f.check_box :user_download
@@ -36,7 +37,7 @@
             p =t('.document_sets_description')
       tr 
         td(colspan="2")
-          =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+          =link_to(collection_metadata_upload_path(@collection.id), class: 'button action-btn', :data => { litebox: { hash: 'upload-metadata' }})
             span =t('.upload_metadata')
           p =t('.metadata_description')
       tr 

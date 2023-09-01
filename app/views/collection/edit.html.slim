@@ -11,11 +11,10 @@
         td =f.text_field :title, value: @collection.title
       tr
         th: h3 =f.label :slug, t('.url')
-        td =f.text_field :slug, value: @collection.slug
-      tr
-        th
-        td
-          p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
+        td 
+          =f.text_field :slug, value: @collection.slug
+          p ==t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>")
+          
       tr 
         th: h3 =t('.collection_image')
         td.image-form

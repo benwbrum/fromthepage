@@ -15,20 +15,21 @@
               p =t('.collection_active_description')
             -else
               p =t('.collection_inactive_description')
-        
+      tr 
+        td(colspan="2")
           =f.radio_button :is_active, true
-          =f.label :is_active, t('.active')
+          =f.label :is_active_true, t('.active'), class: 'big'
           br
           =f.radio_button :is_active, false
-          =f.label :is_active, t('.inactive')
+          =f.label :is_active_false, t('.inactive'), class: 'big'
       tr
         td(colspan="2")
-          =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
+          =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button action-btn', data: { confirm: t('.confirm_blank_collection') })
             span =t('.blank_collection')
           p =t('.blank_collection_description')
       tr 
         td(colspan="2")
-          =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+          =link_to(collection_delete_path(:collection_id => @collection.id), class: 'button action-btn', data: { confirm: t('.confirm_delete_collection') })
             span =t('.delete_collection')
           p =t('.delete_collection_description')
       tr 

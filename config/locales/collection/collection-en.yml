@@ -137,7 +137,9 @@ en:
       transcription_conventions: Transcription Conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
     edit_look:
+      default_orientation_description: Filler Text The default page orientation for this collection. This setting can be overridden for individual works. Choose the orientation that best matches the majority of the works in this collection.
       default_orientation: Default page transcription orientation
+      user_download_description: Filler Text Allow users to download works in this collection. Please note that this setting does not affect the ability of users to download individual pages.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
       enable_document_sets: Enable document sets
       enable_forums: Enable forums
@@ -152,11 +154,11 @@ en:
       page_on_the_right: Page on the Right
       page_on_the_top: Page on the Top
       save_changes: Save Changes
-      spellcheck_description: "(not suitable for texts with irregular spelling)"
+      spellcheck_description: Not suitable for texts with irregular spelling.
       upload_metadata: Upload Metadata
-      user_download: Allow users to download works.
-      voice_recognition: Speech to text available for transcribing
-      voice_recognition_description: "(not compatible with advanced editor)"
+      user_download: Allow users to download works
+      voice_recognition: Enable speech to text
+      voice_recognition_description: Not compatible with advanced editor.
     edit_privacy:
       api_access: API Access
       api_access_description: Allow access to transcriptions via IIIF API
@@ -188,9 +190,10 @@ en:
       collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
       edit_authorized_reviewers: Edit Authorized Reviewers
       review_type: Review Type
-      review_type_optional: " Optional: Collaborators may request review of their transcriptions."
-      review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
-      review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
+      review_type_description: Filler Text Choose the type of review that will be performed on transcriptions in this collection.
+      review_type_optional: "Optional: Collaborators may request review of their transcriptions."
+      review_type_required: "Required: All initial transcriptions will be marked as needing review. (Review may be performed by anyone.)"
+      review_type_restricted: "Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
       save_changes: Save Changes
     edit_tabs:
       danger_zone: Danger Zone
@@ -201,8 +204,13 @@ en:
       quality_control: Quality Control
       task_configuration: Task Configuration
     edit_tasks:
+      text_language_description: Filler Text This setting will be used to determine the language of the text for voice recognition.
+      document_based_transcription_description: Filler Text Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription". Voice dictation is not supported and will be disabled.
       alert: Please configure fields or choose document based transcription under Transcription Type.
       disable_ocr: Disable OCR
+      metadata_description_description: Filler Text Metadata description is used to describe the metadata fields for the collection. It will be displayed on the metadata entry page.
+      field_based_transcription_description: Filler Text Each page in the collection will have multiple short entry fields designed for forms. Also known as "field based transcription". Voice dictation is not supported and will be disabled.
+      subjects_enabled_description: Filler Text Subjects are used to index works in the collection. They are displayed on the work page and can be used to browse works in the collection.
       document_based_transcription: Document based transcription
       edit_buttons: Configure Buttons
       edit_fields: Edit Fields
