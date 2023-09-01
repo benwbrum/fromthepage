@@ -1,28 +1,35 @@
 -tabs = [{\
+  icon: '',
   name: t('.general'),
   selected: 1,
   path: "#{main_app.edit_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '',
   name: t('.task_configuration'),
   selected: 2,
   path: "#{main_app.edit_tasks_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '',
   name: t('.look_feel'),
   selected: 3,
   path: "#{main_app.edit_look_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '#icon-lock',
   name: t('.privacy_access'),
   selected: 4,
   path: "#{main_app.edit_privacy_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '',
   name: t('.help_text'),
   selected: 5,
   path: "#{main_app.edit_help_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '#icon-check-sign',
   name: t('.quality_control'),
   selected: 6,
   path: "#{main_app.edit_quality_control_collection_path(@collection.owner, @collection)}",
 },{\
+  icon: '#icon-warning-sign',
   name: t('.danger_zone'),
   selected: 7,
   path: "#{main_app.edit_danger_collection_path(@collection.owner, @collection)}",
@@ -31,5 +38,11 @@
 
 .side-tabs
   -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
-        a.active =tab[:name]
+    -if tab[:selected] == selected
+      a.active 
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]
+    -else
+      =link_to tab[:path]
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]

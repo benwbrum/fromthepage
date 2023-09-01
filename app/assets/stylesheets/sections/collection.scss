@@ -406,9 +406,14 @@
   }
 }
 
-.collection-settings {
+.collection-settings-wrapper {
+  width: 80%;
   float: left;
-  width: 85%;
+  padding-left: 2%;
+  border-left: 1px solid rgba(#000, 0.15);
+}
+
+.collection-settings {
   td:nth-child(1), th { 
     width: 20%;
   }
@@ -435,13 +440,28 @@
 }
 
 .side-tabs {
+  $textColor: #322;
   float: left;
-  width: 15%;
+  padding-right: 2%;
+  font-family: $fontFamilyHead;
+  font-size: $fontSizeBig;
   a {
     display: block;
+    margin: 0 0 1em 0;
+    text-decoration: none;
+    color: rgba($textColor, 0.65);
+    &:hover {
+      text-decoration: underline;
+    }
     &.active {
+      color: $textColor;
       cursor: default;
-      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .icon {
+      margin-right: 0.5em;
     }
   }
 }

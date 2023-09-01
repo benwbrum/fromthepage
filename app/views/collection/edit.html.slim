@@ -1,7 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 =render({ :partial => 'edit_tabs', :locals => { :selected => 1}})
 
-.columns.collection-settings
+.collection-settings-wrapper
   =form_for :collection, url: collection_update_path(@collection), html: { multipart: true } do |f|
     =hidden_field_tag(:collection_id, @collection.id)
     =validation_summary @collection.errors
