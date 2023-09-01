@@ -176,7 +176,47 @@ h2.legend =t('.notes_and_questions')
       });
     });
 
+    $(function() {
+      $('form').submit(function() {
+        var isMarkedBlank = $('#page_mark_blank').is(':checked');
+        var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;
+        var hasFieldContent = false;
+        var hasFilledCells = false;
 
+        // Check if spreadsheet have content
+        if (typeof hot !== 'undefined') {
+          var data = hot.getData();
+          for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < data[i].length; j++) {
+              if (data[i][j] !== null && data[i][j] !== '') {
+                hasFilledCells = true;
+                break;
+              }
+            }
+            if (hasFilledCells) {
+              break;
+            }
+          }
+        }
+
+      // Check if fields have content
+        $('.field-wrapper .field-input').each(function() {
+          var content = $(this).val().trim();
+          if (content !== '') {
+            hasFieldContent = true;
+            return false;
+          }
+        });
+
+        if (isMarkedBlank && (hasTranscribedText || hasFieldContent || hasFilledCells)) {
+          var confirmation = confirm("#{j(t('.mark_blank_warning'))}");
+
+          if (!confirmation) {
+            return false;
+          }
+        }
+      });
+    });
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet

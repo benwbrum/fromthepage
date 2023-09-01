@@ -281,6 +281,7 @@ class ArticleController < ApplicationController
     deed.collection = @article.collection
     deed.user = current_user
     deed.save!
+    update_search_attempt_contributions
   end
 
   def combine_articles(from_article, to_article)

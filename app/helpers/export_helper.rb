@@ -69,6 +69,10 @@ module ExportHelper
       export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
     end
 
+    # admin-level exports
+    if bulk_export.admin_searches
+      export_admin_searches_csv(out: out, report_arguments: bulk_export.report_arguments)
+    end
 
     # collection-level exports
     if bulk_export.collection_activity
@@ -80,7 +84,7 @@ module ExportHelper
     end
 
     if bulk_export.subject_csv_collection
-      export_subject_csv(out: out, collection: bulk_export.collection)
+      export_subject_csv(out: out, collection: bulk_export.collection, work: works)
     end
 
     if bulk_export.subject_details_csv_collection
@@ -97,6 +101,10 @@ module ExportHelper
 
     if bulk_export.static
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.notes_csv
+      export_collection_notes_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
@@ -143,20 +151,22 @@ module ExportHelper
         end
 
         preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+        include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
+        include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         # Page-specific exports

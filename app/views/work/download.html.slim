@@ -130,6 +130,16 @@
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :table_csv_work, value: true
               =f.submit t('.export')
+        li
+          .bulk-export_format
+            h5= t('.subject_index_csv')
+            p.nomargin= t('.subject_index_csv_description')
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :subject_csv_collection, value: true
+              =f.submit t('.export')
 
 
 -content_for :javascript

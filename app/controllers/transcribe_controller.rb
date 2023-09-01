@@ -529,6 +529,7 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSCRIPTION
     end
     deed.save!
+    update_search_attempt_contributions
   end
 
   def stub_deed
@@ -550,6 +551,7 @@ protected
     deed = stub_deed
     deed.deed_type = type
     deed.save!
+    update_search_attempt_contributions
   end
 
   def record_translation_deed
@@ -560,6 +562,7 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
+    update_search_attempt_contributions
   end
 
   private

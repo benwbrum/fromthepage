@@ -29,6 +29,7 @@ class BulkExportController < ApplicationController
     else
       @bulk_export.collection = @collection
     end
+    @bulk_export.work = @work if params[:work_id]
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
     @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
@@ -119,9 +120,12 @@ class BulkExportController < ApplicationController
         :owner_detailed_activity,
         :collection_activity,
         :collection_contributors,
-        :preserve_linebreaks, 
+        :preserve_linebreaks,
+        :work_id,
         :include_metadata, 
         :include_contributors,
+        :notes_csv,
+        :admin_searches,
         :report_arguments => [
           :start_date, 
           :end_date, 

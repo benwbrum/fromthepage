@@ -4,11 +4,13 @@ es:
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     collection_works:
+      most_recent_activity: Actividad más reciente
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
       work_title: Título de la obra
+    complete: completo
     contributor_activity:
       recent_notes: Notas Recientes
       recent_ocr_correction: Correcciones de OCR recientes
@@ -52,7 +54,7 @@ es:
       notice: La corrección OCR se ha deshabilitado para todas las obras.
     edit:
       add_a_new_work: Añadir una obra nueva
-      add_another_work_under: Puedes añadir otro trabajo en %{start_project}
+      add_another_work_under: Puedes añadir otra obra en %{start_project}
       add_button: Añadir
       alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
       api_access: Acceso API
@@ -60,6 +62,10 @@ es:
       authorized_reviewers: revisores autorizados
       blank_collection: Colección en Blanco
       blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
+      block: Bloquear usuarios
+      block_users_description: Bloquee el acceso de usuarios individuales a la colección.
+      block_users_modal_description: A estos usuarios se les ha bloqueado el acceso a la colección. La colección no será visible para ellos, como si hubiera sido marcada como privada o eliminada. Agregar usuarios a esta lista no les notificará que han sido bloqueados.
+      blocked_users: Usuarios bloqueados
       close_api: Cerrar API
       collection_active_message: Esta es una colección activa. Hacer inactiva una colección impide que los usuarios editen contenido dentro de la colección. El estado de la colección no afecta la configuración de privacidad de la misma.
       collection_collaborators: Colaboradores de la Colección
@@ -75,7 +81,7 @@ es:
       collection_reviewers: Revisores autorizados
       collection_reviewers_description: Estos usuarios podrán revisar y aprobar las transcripciones, así como editarlas.
       collection_status: Estado de la Colección
-      confirm_blank_collection: "¿Está seguro?"
+      confirm_blank_collection: "¿Estás seguro?"
       confirm_delete_collection: "¿Estás seguro de que deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
       current_url: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección de la obra en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
@@ -138,9 +144,9 @@ es:
       remove_collaborator: Eliminar colaborador
       remove_owner: Eliminar dueño
       remove_reviewer: Eliminar revisor
-      restrict_completed_works: Restringir trabajos terminados
-      restricted_completed_works: Trabajos Terminados Restringidos
-      restricted_completed_works_description: Este botón restringirá los trabajos %{work_count} que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada trabajo.
+      restrict_completed_works: Restringir obras terminadas
+      restricted_completed_works: Obras Terminadas Restringidos
+      restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.
       revert_document_based_transcription: Revertir a Transcripción Basada en el Documento
       revert_metadata_description: Deshabilitar Descripción
       review_type: Tipo de revisión
@@ -158,6 +164,7 @@ es:
       transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
       transcription_type: Tipo de Transcripción
       transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
+      unblock_user: Desbloquear usuario
       update_footer_message: Puede actualizar el pie de página editando el perfil de %{owner}
       upload_image: Subir Imagen
       upload_metadata: Subir metadatos
@@ -193,7 +200,7 @@ es:
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
-      prefer_tei: Prefiero TEI
+      prefer_tei: Preferir TEI
       reg_description: Marca una forma regularizada del texto, con formas originales en el atributo orig.
       reg_label: regularización
       s_description: Marca el texto que ha sido tachado por cualquier motivo.
@@ -259,7 +266,7 @@ es:
       one_off_description: Estas contribuciones fueron realizadas por usuarios que solo editaron una sola página. Es posible que necesiten atención especial.
       one_off_title: Aportaciones puntuales
       review: Revisar
-      title: Página (Trabajo)
+      title: Página (Obra)
       user: Usuario
     quality_sampling: Muestreo de calidad
     recent_contributor_list:
@@ -287,7 +294,7 @@ es:
       help_create_metadata: "¡Ayudar!"
       help_transcribe_or_correct: "¡Ayudar!"
       n_pages:
-        one: '1 pagina:'
+        one: '1 página:'
         other: "%{count} páginas:"
       pages_need_correction: Páginas que necesitan corrección
       pages_need_correction_or_transcription: Páginas que necesitan corrección o transcripción
@@ -305,7 +312,7 @@ es:
       show_more: Mostrar Más
       start_transcribing: Comenzar a Transcribir
       subject_categories: Categorías de Temas
-      this_work_has_not_been_described: Este trabajo necesita mejores metadatos.
+      this_work_has_not_been_described: Esta obra necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
       time_ago_in_words: Hace %{time}
       user_wrote_note: "%{user} escribió %{note}"
@@ -333,14 +340,10 @@ es:
       quality_score: 'Puntuación de calidad:'
       real_name: 'Nombre real: %{user}'
       review: Revisar
-      title: Página (Trabajo)
+      title: Página (Obra)
       user_contribution_description: Páginas que necesitan revisión por parte del usuario %{user_name}
       user_profile: Perfil del usuario
     works_list:
-      alphabetical: Orden Alfabético
-      percent_complete: Porcentaje completado
-      recent_activity: Actividad Reciente
-      sort_works_by: Ordenar Obras Por...
       works: Obras
     works_to_review:
       and_n_more: y %{n} más
@@ -349,7 +352,7 @@ es:
       filter_works: Filtrar
       incomplete: Incompleto
       last_activity: Última actividad
-      no_works_need_review: Ningún trabajo necesita revisión
+      no_works_need_review: Ningún obra necesita revisión
       notes: notas
       review: Revisar
       title: Título

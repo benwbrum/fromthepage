@@ -74,6 +74,8 @@ en:
       reuse: Reuse
       searchable_plaintext: Searchable Plaintext
       searchable_plaintext_export_description: Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the work.
       table_field_csv: Table/Field CSV
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
       verbatim_plaintext: Verbatim Plaintext

@@ -1,9 +1,9 @@
-<script>var _gaq = _gaq || [];
-_gaq.push(["_setAccount", "<%= GA_ACCOUNT %>"]);
-_gaq.push(["_trackPageview"]);
-_gaq.push(["_trackPageLoadTime"]);
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
-})();</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ACCOUNT %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '<%= GA_ACCOUNT %>');
+</script>

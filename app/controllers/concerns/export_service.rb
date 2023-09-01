@@ -2,6 +2,7 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
   include OwnerExporter
+  include AdminExporter
   include ContributorHelper
   require 'subject_exporter'
   require 'subject_details_exporter'
@@ -27,7 +28,7 @@ module ExportService
     out.write file.read
   end
 
-  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb)
+  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
@@ -40,12 +41,12 @@ module ExportService
       path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
-    tempfile = export_printable(work, edition, output_format, preserve_lb)
+    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
-  def export_printable(work, edition, format, preserve_lb)
+  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
     rendered_markdown = 
       ApplicationController.new.render_to_string(
@@ -56,7 +57,9 @@ module ExportService
           :work => work,
           :edition_type => edition,
           :output_type => format,
-          :preserve_linebreaks => preserve_lb
+          :preserve_linebreaks => preserve_lb,
+          :include_metadata => include_metadata,
+          :include_contributors => include_contributors
         }
       )
 
@@ -103,6 +106,12 @@ module ExportService
     out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
+  def export_admin_searches_csv(out:, report_arguments:)
+    path = "admin_searches.csv"
+    out.put_next_entry(path)
+    out.write(admin_searches_csv(report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
   def export_collection_activity_csv(out:, collection:, report_arguments:)
     path = "collection_detailed_activity.csv"
     out.put_next_entry(path)
@@ -121,10 +130,10 @@ module ExportService
     out.write(export_work_metadata_as_csv(collection))
   end
 
-  def export_subject_csv(out:, collection:)
+  def export_subject_csv(out:, collection:, work:)
     path = "subject_index.csv"
     out.put_next_entry(path)
-    out.write(collection.export_subject_index_as_csv)
+    out.write(collection.export_subject_index_as_csv(work))
   end
 
   def export_subject_details_csv(out:, collection:)
@@ -147,6 +156,12 @@ module ExportService
     end
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
+  end
+
+  def export_collection_notes_csv(out:, collection:)
+    path = "collection_notes.csv"
+    out.put_next_entry(path)
+    out.write(export_notes_as_csv(collection))
   end
 
   def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
@@ -366,20 +381,20 @@ private
           raw_field_index += 1
           raw_heading = "#{field.label} #{column.label}"
           @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
-          @headings << "#{raw_heading} (text)"
-          @headings << "#{raw_heading} (subject)"
+          @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+          @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
         end
         @raw_headings.delete(field_id)
       else
         raw_heading = field ? field.label : field_id
-        @headings << "#{raw_heading} (text)"
-        @headings << "#{raw_heading} (subject)"
+        @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+        @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
       end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
+      @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+      @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
     end
     @headings
   end
@@ -405,6 +420,7 @@ private
         'Pages Translated',
         'Pages Needing Review',
         'Pages Marked Blank',
+        'Contributors',
         'work_id'
       ]
 
@@ -416,7 +432,9 @@ private
 
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
-      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
+    
+        work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         row = [
           work.title,
           work.collection.title,
@@ -435,7 +453,9 @@ private
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
+          work_users,
           work.id
+          
         ]
 
         unless work.original_metadata.blank?
@@ -520,14 +540,14 @@ private
       end
 
       works.each do |w|
-        csv = generate_csv(w, csv, col_sections)
+        csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?)
       end
 
     end
     csv_string
   end
 
-  def generate_csv(work, csv, col_sections)
+  def generate_csv(work, csv, col_sections, transcription_field_flag)
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
@@ -561,7 +581,7 @@ private
           #get cell data for a page with only one table
           page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
-            cell_data(cell_array, data_cells)
+            cell_data(cell_array, data_cells, transcription_field_flag)
             if has_spreadsheet
               running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
             end
@@ -587,7 +607,7 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, data_cells)
+              cell_data(cell_array, data_cells, transcription_field_flag)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
@@ -629,12 +649,12 @@ private
   end
 
 
-  def cell_data(array, data_cells)
+  def cell_data(array, data_cells, transcription_field_flag)
     array.each do |cell|
       index = index_for_cell(cell)
-      target = index *2
+      target = transcription_field_flag ? index : index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
+      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag
     end
   end
 
@@ -658,7 +678,7 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells)
+      cell_data(running_data, data_cells, true)
     end
 
     # return the current running data
@@ -785,5 +805,48 @@ private
     csv
   end
 
+  def export_notes_as_csv(collection)
+    headers = [
+      'Work Title',
+      'Work Identifier',
+      'FromThePage Identifier',
+      'Page Title',
+      'Page Position',
+      'Page URL',
+      'Page Contributors',
+      'Page Status',
+      'Note',
+      'Contributor',
+      'Date'
+    ]
 
+    notes = collection.notes.order(created_at: :desc)
+    rows = notes.map {|n|
+      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_contributors = n.page.deeds
+        .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
+      
+      [
+        n.work.title,
+        n.work.identifier,
+        n.work.id,
+        n.page.title,
+        n.page.position,
+        page_url,
+        page_contributors,
+        I18n.t("page.edit.page_status_#{n.page.status}"),
+        n.body,
+        "#{n.user.display_name}<#{n.user.email}>",
+        n.created_at
+      ]
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+  end
 end

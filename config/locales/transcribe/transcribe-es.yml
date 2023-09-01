@@ -20,6 +20,7 @@ es:
       image_at_the_top: Imagen hacia arriba
       layout: Diseño
       mark_as_blank: Marcar como en blanco
+      mark_blank_warning: Esta página contiene datos transcritos pero la está marcando como vacía. ¿Desea continuar?
       microphone: Micrófono
       more_help: Más ayuda....
       needs_review: Necesita Revisión
@@ -29,7 +30,7 @@ es:
       this_page_marked_needs_review_workflow_version: Esta página necesita revisión. Puedes mejorar esta página revisándola con el original y añadiendo o corrigiendo el texto y. Después, aprueba el texto.
       title: 'Título:'
     goto_next_untranscribed_page:
-      another_page_notice: Aquí hay otra página de este trabajo.
+      another_page_notice: Aquí hay otra página de esta obra.
       no_more_pages_notice: No hay más páginas para transcribir en esta obra. Aquí hay otra página en esta colección.
       notice: No hay más páginas para transcribir en esta colección.
     guest:

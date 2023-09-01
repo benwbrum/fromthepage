@@ -7,7 +7,8 @@ Fromthepage::Application.routes.draw do
   end
 
 
-  root to: 'static#landing_page'
+  root to: redirect('/landing')
+  get '/landing', to: 'static#landing_page' 
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -43,6 +44,7 @@ Fromthepage::Application.routes.draw do
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'
@@ -86,6 +88,7 @@ Fromthepage::Application.routes.draw do
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+    get ':collection_id/block_users', to: 'collection#block_users', as: 'block_users'
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
@@ -98,9 +101,11 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
+    post 'remove_block_user', to: 'collection#remove_block_user'
     post 'create', to: 'collection#create'
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
@@ -203,6 +208,12 @@ Fromthepage::Application.routes.draw do
     get 'exports', to: 'dashboard#exports'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
+  end
+
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
+    get ':id', to: 'search_attempt#show', as: 'show'
   end
 
   scope 'category', as: 'category' do
@@ -331,8 +342,7 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do

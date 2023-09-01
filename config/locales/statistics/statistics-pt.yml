@@ -65,14 +65,14 @@ pt:
         one: Assunto
         other: Assuntos
       work:
-        one: Trabalho
-        other: Trabalhos
+        one: Obra
+        other: Obras
       work_transcribed:
-        one: Trabalho transcrita
-        other: Trabalhos transcritas
+        one: Obra transcrita
+        other: Obras transcritas
       works_described:
-        one: Trabalho descrito
-        other: Trabalhos descritos
+        one: Obras descrita
+        other: Obras descritas
     recent_statistics:
       collaborator:
         one: Colaborador
@@ -162,5 +162,5 @@ pt:
         other: Páginas totais
       update: Atualizar
       work:
-        one: Trabalho
-        other: Trabalhos
+        one: Obra
+        other: Obras

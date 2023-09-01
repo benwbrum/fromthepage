@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user_in_model
   before_action :masquerade_user!
+  before_action :check_search_attempt
   after_action :track_action
   around_action :switch_locale
 
@@ -319,7 +320,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
-    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/'
+    elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
       dashboard_owner_path
@@ -396,6 +397,31 @@ end
   def set_api_user
     authenticate_with_http_token do |token, options|
       @api_user = User.find_by(api_key: token)
+    end
+  end
+
+  def check_search_attempt
+    if session[:search_attempt_id]
+      your_profile = controller_name == "user" && @user == current_user
+      if ["dashboard", "static"].include?(controller_name) || your_profile
+        session[:search_attempt_id] = nil
+      end
+    end
+  end
+
+  def update_search_attempt_contributions
+    if session[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session[:search_attempt_id])
+      search_attempt.increment!(:contributions)
+    end
+  end
+
+  def update_search_attempt_user(user, session_var)
+    if session_var[:search_attempt_id]
+      search_attempt = SearchAttempt.find(session_var[:search_attempt_id])
+      search_attempt.user = user
+      search_attempt.owner = user.owner
+      search_attempt.save
     end
   end
 

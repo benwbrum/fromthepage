@@ -20,9 +20,6 @@ en:
       export_individual_works_description: You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats of a work and page granularity.
       export_to_contentdm: Export to CONTENTdm
       export_to_contentdm_description: Click the button to export completed transcripts from the entire collection to CONTENTdm.
-      export_work_metadata: Export Work Metadata
-      export_work_metadata_as_csv: Export Work Metadata As CSV
-      export_work_metadata_description: Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work.
       here: here
       html: HTML
       iiif: IIIF

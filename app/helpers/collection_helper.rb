@@ -34,6 +34,40 @@ module CollectionHelper
     end
   end
 
+  def collection_stats(collection)
+    works = WorkStatistic.where(work_id: collection.works.pluck(:id))
+    total_pages = works.sum(:total_pages)
+    
+    unless total_pages == 0
+      total_blank_pages = works.sum(:blank_pages)
+      total_annotated_pages = works.sum('annotated_pages + translated_annotated')
+      total_review_pages = works.sum('needs_review + translated_review')
+      total_completed_pages = works.sum('transcribed_pages + translated_pages')
+      
+      @progress_blank = ((total_blank_pages.to_f/total_pages)*100).round
+      @progress_annotated = ((total_annotated_pages.to_f/total_pages)*100).round
+      @progress_review = ((total_review_pages.to_f/total_pages)*100).round
+      @progress_completed = ((total_completed_pages.to_f/total_pages)*100).round
+    else
+      @progress_blank = 0
+      @progress_annotated = 0
+      @progress_review = 0
+      @progress_completed = 0
+    end
+
+    if collection.subjects_disabled
+      unless @progress_review == 0
+        @wording = "#{collection.pct_completed}% #{t('collection.complete')} (#{@progress_completed+@progress_review+@progress_blank}% #{t('collection.transcribed')}, #{@progress_review}% #{t('collection.needs_review')})"
+      else
+        @wording = "#{collection.pct_completed}% #{t('collection.complete')} (#{@progress_completed+@progress_review+@progress_blank}% #{t('collection.transcribed')})"
+      end
+    elsif @progress_review == 0
+      @wording = "#{collection.pct_completed}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_blank}% #{t('collection.transcribed')})"
+    else
+      @wording = "#{collection.pct_completed}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review+@progress_blank}% #{t('collection.transcribed')}, #{@progress_review}% #{t('collection.needs_review')})"
+    end
+  end
+
   def work_stats(work)
     @wording=''
     @progress_blank = work.work_statistic.pct_blank.round
@@ -51,18 +85,23 @@ module CollectionHelper
       @progress_review = work.work_statistic.pct_translation_needs_review.round
       @progress_completed = work.work_statistic.pct_translation_completed.round
       @type = t('collection.translated')
+      @transcribed_type = t('collection.transcribed') 
     end
 
     if @collection.subjects_disabled
       unless @progress_review == 0
-        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
       else
-        @wording = "#{work.work_statistic.complete}% complete (#{@progress_completed+@progress_review}% #{@type})"
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_completed+@progress_review}% #{@type})"
       end
     elsif @progress_review == 0
-      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
+      if @transcribed_type.present?
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type}, #{work.work_statistic.pct_transcribed.round}% #{@transcribed_type})"
+      else
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
+      end
     else
-      @wording = "#{work.work_statistic.complete}% complete (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
+      @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
     end
 
     if @collection.metadata_entry?
