@@ -228,16 +228,17 @@ describe "collection settings js tasks", :order => :defined do
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.pluck(:title).last
+    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
+    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
     #sort by percent complete
-    page.select('Percent Complete', from: 'sort_by')
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
+    page.find('.collection-work-stats').find('thead').find('th', text: 'Progress').click
+    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
+    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
     #sort by recent activity
-    page.select('Recent Activity', from: 'sort_by')
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
+    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
+    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
+    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
 
   it "views pages that need transcription" do
@@ -285,7 +286,8 @@ describe "collection spec (isolated)" do
 
       visit dashboard_owner_path
 
-      page.find('.collections').click_link('Stats Test Work')
+      page.find('.collections').click_link('Stats Test Collection')
+      page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
       page.find('#finish_button_top').click

@@ -360,11 +360,9 @@
 .collection-work-stats {
   padding: 0;
   width: 100%;
-  display: table;
-  list-style: none;
   margin: 1em 0 0 0;
   border-top: 1px solid rgba(#000, 0.08);
-  li {
+  tr {
     margin: 0;
     display: table-row;
     > span {

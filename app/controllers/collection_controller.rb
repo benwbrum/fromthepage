@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :authorized?, :only => [:new, :edit, :update, :delete]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
@@ -185,8 +185,15 @@ class CollectionController < ApplicationController
             redirect_to user_profile_path(@collection.owner)
           end
         end
-        if params[:work_search]
-          @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+
+        # Coming from work title/metadata search
+        if params[:search_attempt_id]
+          @search_attempt = SearchAttempt.find_by(id: params[:search_attempt_id])
+          if session[:search_attempt_id] != @search_attempt.id
+            session[:search_attempt_id] = @search_attempt.id
+          end
+          @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -246,8 +253,12 @@ class CollectionController < ApplicationController
             end
           end
 
-          if params[:work_search]
-            @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          if params[:search_attempt_id]
+            @search_attempt = SearchAttempt.find_by(id: params[:search_attempt_id])
+            if session[:search_attempt_id] != @search_attempt.id
+              session[:search_attempt_id] = @search_attempt.id
+            end
+            @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -580,13 +591,7 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    if params[:sort_by] == "Percent Complete"
-      @works = @collection.works.includes(:work_statistic).order_by_completed.paginate(page: params[:page], per_page: 15)
-    elsif params[:sort_by] == "Recent Activity"
-      @works = @collection.works.includes(:work_statistic).order_by_recent_activity.paginate(page: params[:page], per_page: 15)
-    else
-      @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
-    end
+    @works = @collection.works.includes(:work_statistic).order(:title)
   end
 
   def needs_transcription_pages
@@ -689,6 +694,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck)
+    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id)
   end
 end

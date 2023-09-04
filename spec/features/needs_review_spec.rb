@@ -204,13 +204,13 @@ describe "needs review", :order => :defined do
         review = w.work_statistic.pct_needs_review.round
       end
       stats = w.work_statistic
-      list = page.find('.collection-work-stats').find('li', text: w.title)
-      expect(list).to have_content(w.title)
-      expect(list).to have_content(w.pages.count)
-      expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
-      expect(list).to have_content("#{completed+review}% #{wording}")
+      row = page.find('.collection-work-stats').find('tr', text: w.title)
+      expect(row).to have_content(w.title)
+      expect(row).to have_content(w.pages.count)
+      expect(row.find('td', text: 'indexed')).to have_content(stats.pct_annotated.round)
+      expect(row).to have_content("#{completed+review}% #{wording}")
       unless review == 0
-        expect(list.find('span', text: 'needs review')).to have_content(review)
+        expect(row.find('td', text: 'needs review')).to have_content(review)
       end
     end
   end

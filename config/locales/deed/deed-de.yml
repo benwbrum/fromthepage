@@ -12,10 +12,11 @@ de:
     list:
       activity_stream: Aktivitätenüberblick
       collection_title: 'Sammlung: %{title}'
-      newer_activity: Neuere Aktivitäten
-      older_activity: Ältere Aktivitäten
+      deed: Tat
       owner_title: 'Projektinhaber:in: %{title}'
+      time: Zeit
       time_ago_in_words: Vor %{time}
+      type: Typ
       user_title: 'Benutzer:in: %{title}'
     needs_review: Seite muss überprüft werden
     note_added: Anmerkung hinzugefügt

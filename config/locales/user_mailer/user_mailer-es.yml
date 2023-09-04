@@ -4,7 +4,7 @@ es:
     added_note:
       html:
         view_note: " para responder a la nota en %{collection}: %{work}."
-      message: Solo queríamos informarle que la siguiente nota se ha agregado a una página en la que trabajó en el trabajo %{work}, en la colección %{collection}.
+      message: Solo queríamos informarle que la siguiente nota se ha agregado a una página en la que trabajó en la obra %{work}, en la colección %{collection}.
       text:
         view_note: 'Puede responder a la nota en %{collection}: %{work} en la URL: %{url}.'
     bulk_export_finished:
@@ -48,7 +48,7 @@ es:
       message: Solo queríamos dejarte saber que hubo actividad en una colección en la que trabajaste.
       new_notes: Notas Nuevas
       new_works: Obras nuevas
-      note_added: Se ha agregado una nota a una página en la que trabajó en el trabajo %{work}, en la colección %{collection}.
+      note_added: Se ha agregado una nota a una página en la que trabajó en la obra %{work}, en la colección %{collection}.
       text:
         to_view_note: 'Para ver la nota en la página %{work}: %{page}, visite la siguiente URL: %{url}'
         to_view_work: 'Para ver %{collection}: %{work}, visite la siguiente URL: %{url}'

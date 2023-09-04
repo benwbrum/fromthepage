@@ -7,7 +7,8 @@ Fromthepage::Application.routes.draw do
   end
 
 
-  root to: 'static#landing_page'
+  root to: redirect('/landing')
+  get '/landing', to: 'static#landing_page' 
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -43,6 +44,7 @@ Fromthepage::Application.routes.draw do
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'
@@ -208,6 +210,12 @@ Fromthepage::Application.routes.draw do
     post 'create_work', to: 'dashboard#create_work'
   end
 
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
+    get ':id', to: 'search_attempt#show', as: 'show'
+  end
+
   scope 'category', as: 'category' do
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'
@@ -334,8 +342,7 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do

@@ -2,6 +2,7 @@ module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
   include OwnerExporter
+  include AdminExporter
   include ContributorHelper
   require 'subject_exporter'
   require 'subject_details_exporter'
@@ -105,6 +106,12 @@ module ExportService
     out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
   end
 
+  def export_admin_searches_csv(out:, report_arguments:)
+    path = "admin_searches.csv"
+    out.put_next_entry(path)
+    out.write(admin_searches_csv(report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
   def export_collection_activity_csv(out:, collection:, report_arguments:)
     path = "collection_detailed_activity.csv"
     out.put_next_entry(path)
@@ -149,6 +156,12 @@ module ExportService
     end
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
+  end
+
+  def export_collection_notes_csv(out:, collection:)
+    path = "collection_notes.csv"
+    out.put_next_entry(path)
+    out.write(export_notes_as_csv(collection))
   end
 
   def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
@@ -407,6 +420,7 @@ private
         'Pages Translated',
         'Pages Needing Review',
         'Pages Marked Blank',
+        'Contributors',
         'work_id'
       ]
 
@@ -418,7 +432,9 @@ private
 
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
-      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
+    
+        work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         row = [
           work.title,
           work.collection.title,
@@ -437,7 +453,9 @@ private
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
+          work_users,
           work.id
+          
         ]
 
         unless work.original_metadata.blank?
@@ -660,7 +678,7 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells, false)
+      cell_data(running_data, data_cells, true)
     end
 
     # return the current running data
@@ -787,5 +805,48 @@ private
     csv
   end
 
+  def export_notes_as_csv(collection)
+    headers = [
+      'Work Title',
+      'Work Identifier',
+      'FromThePage Identifier',
+      'Page Title',
+      'Page Position',
+      'Page URL',
+      'Page Contributors',
+      'Page Status',
+      'Note',
+      'Contributor',
+      'Date'
+    ]
 
+    notes = collection.notes.order(created_at: :desc)
+    rows = notes.map {|n|
+      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_contributors = n.page.deeds
+        .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
+      
+      [
+        n.work.title,
+        n.work.identifier,
+        n.work.id,
+        n.page.title,
+        n.page.position,
+        page_url,
+        page_contributors,
+        I18n.t("page.edit.page_status_#{n.page.status}"),
+        n.body,
+        "#{n.user.display_name}<#{n.user.email}>",
+        n.created_at
+      ]
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+  end
 end

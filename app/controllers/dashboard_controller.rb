@@ -74,6 +74,11 @@ class DashboardController < ApplicationController
 
   # Owner Dashboard - list of works
   def owner
+    collections = current_user.all_owner_collections
+    @active_collections = @collections.select { |c| c.active? }
+    @inactive_collections = @collections.select { |c| !c.active? }
+    # Needs to be active collections first, then inactive collections
+    @collections = @active_collections + @inactive_collections
   end
 
   # Owner Summary Statistics - statistics for all owned collections
@@ -132,24 +137,13 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    if params[:search]
-      # Get matching Collections and Docsets
-      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+    # Get random Collections and DocSets from paying users
+    @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
 
-      # Get user_ids from the resulting search
-      search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
-
-      # Get matching users and users from Collections and DocSets search
-      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
-    else
-      # Get random Collections and DocSets from paying users
-      @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
-
-      # Sampled Randomly down to 8 items for Carousel
-      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-      @collections = (docsets + colls).sample(8)
-    end
+    # Sampled Randomly down to 8 items for Carousel
+    docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+    colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+    @collections = (docsets + colls).sample(8)
   end
 
   private

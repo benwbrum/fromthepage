@@ -4,11 +4,13 @@ pt:
     approve_all:
       approved_n_pages: Páginas %{page_count} aprovadas.
     collection_works:
+      most_recent_activity: Atividade mais recente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
       progress: Progresso
       work_title: Título da obra
+    complete: completo
     contributor_activity:
       recent_notes: Notas Recentes
       recent_ocr_correction: Correção de OCR recente
@@ -142,9 +144,9 @@ pt:
       remove_collaborator: Remover Colaborador
       remove_owner: Remover Dono
       remove_reviewer: Remover revisor
-      restrict_completed_works: Restringir trabalhos concluídos
-      restricted_completed_works: Trabalhos Concluídos Restritos
-      restricted_completed_works_description: Este botão restringirá os trabalhos %{work_count} concluídos, mas não restritos atualmente aos proprietários do projeto ou colaboradores designados. Você pode alterar essa configuração e adicionar colaboradores na página de configurações de cada trabalho.
+      restrict_completed_works: Restringir obras concluídos
+      restricted_completed_works: Obras Concluídas Restritas
+      restricted_completed_works_description: Este botão restringirá os %{work_count} obras concluídos, mas não restritos atualmente aos proprietários do projeto ou colaboradores designados. Você pode alterar essa configuração e adicionar colaboradores na página de configurações de cada obra.
       revert_document_based_transcription: Reverter para a Transcrição Baseada em Documento
       revert_metadata_description: Desativar descrição
       review_type: Tipo de revisão
@@ -252,7 +254,7 @@ pt:
       create_collection: Criar Coleção
       create_new_collection: Criar Nova Coleção
       enter_collection_title: Para criar uma nova coleção, introduza o título da coleção. No próximo passo você poderá adicionar obras na coleção.
-      individual_researcher_limited_account: Uma Conta de Investigador Individual se limita a uma única coleção. Para elevar a sua conta entre em contato com support@fromthepage.com.
+      individual_researcher_limited_account: Uma Conta de Pesquisador Individual se limita a uma única coleção. Para fazer upgrade da sua conta entre em contato com support@fromthepage.com.
       title: Titulo
     new_mobile_user:
       email_me: Envie-me um link por e-mail
@@ -264,7 +266,7 @@ pt:
       one_off_description: Essas contribuições foram feitas por usuários que editaram apenas uma única página. Eles podem precisar de atenção especial.
       one_off_title: Contribuições únicas
       review: Análise
-      title: Página (Trabalho)
+      title: Página (Obra)
       user: Do utilizador
     quality_sampling: Amostragem de Qualidade
     recent_contributor_list:
@@ -280,11 +282,11 @@ pt:
       one_off_contributions: Contribuições únicas
       pages_needing_review: Páginas para revisão
       quality_sampling: Amostragem de Qualidade
-      quality_sampling_desc: As amostras de qualidade permitem que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou trabalho.
+      quality_sampling_desc: As amostras de qualidade permitem que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou obra.
       total_page: Página total
       transcribed_page: Página transcrita
       unreviewed_contributors: Novos colaboradores
-      works_to_review: Trabalhos para Revisão
+      works_to_review: Obras para Revisão
     show:
       about: Sobre
       add_a_new_work: Adicionar uma nova obra
@@ -310,7 +312,7 @@ pt:
       show_more: Mostrar Mais
       start_transcribing: Iniciar Transcrição
       subject_categories: Categorias de Temas
-      this_work_has_not_been_described: Este trabalho precisa de melhores metadados.
+      this_work_has_not_been_described: Este obra precisa de melhores metadados.
       this_work_has_pages_that_need_work: Algumas páginas ainda precisam de trabalho.
       time_ago_in_words: Há %{time}
       user_wrote_note: "%{user} escreveu %{note}"
@@ -338,14 +340,10 @@ pt:
       quality_score: 'Índice de qualidade:'
       real_name: 'Nome verdadeiro: %{user}'
       review: Análise
-      title: Página (Trabalho)
+      title: Página (Obra)
       user_contribution_description: Páginas que precisam de revisão pelo usuário %{user_name}
       user_profile: Perfil de usuário
     works_list:
-      alphabetical: Alfabético
-      percent_complete: Percentagem Completa
-      recent_activity: Atividade Recente
-      sort_works_by: Ordenar Obras por...
       works: Obras
     works_to_review:
       and_n_more: e %{n} mais
@@ -361,5 +359,5 @@ pt:
       total: Total
   collection_helper:
     link:
-      incomplete_works: Trabalhos incompletos
+      incomplete_works: Obras incompletas
       show_all: Mostre tudo

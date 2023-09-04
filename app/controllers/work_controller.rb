@@ -255,6 +255,7 @@ class WorkController < ApplicationController
     deed.collection = work.collection
     deed.user = user
     deed.save!
+    update_search_attempt_contributions
   end
 
   private

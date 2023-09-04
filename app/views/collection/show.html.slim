@@ -34,15 +34,15 @@
         .collection-work
           .collection-work_image
             -unless work.thumbnail.nil?
-                =link_to image_tag(work.thumbnail, alt: work.title), default_path
-          h4.collection-work_title =link_to work.title, default_path
+                =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
+          h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
           p.collection-work_snippet = to_snippet(work.description)
           -if @collection.text_entry? && work.next_untranscribed_page
             p.collection-work_action 
               -if (current_user && current_user.can_transcribe?(work))
                 =t('.this_work_has_pages_that_need_work')
                 span &nbsp;
-                =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
+                =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
               -else
                 =t('.restricted_collaboratoration')
           -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
@@ -50,7 +50,7 @@
               -if (current_user && current_user.can_transcribe?(work))
                 =t('.this_work_has_not_been_described')
                 span &nbsp;
-                =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
+                =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
               -else
                 =t('.restricted_collaboratoration')
           -if @collection.text_entry?
@@ -60,12 +60,7 @@
                 = t('.n_pages', count: work.work_statistic.total_pages)
                 = @wording
               span
-                span.progress
-                  -unless @collection.subjects_disabled
-                    span(style="width:#{@progress_annotated}%")
-                  span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
-                  -unless @progress_review == 0
-                    span(style="width:#{@progress_review}%")
+                =render(:partial => 'shared/progress', :locals => { :collection => @collection })
           -else
             .collection-work_stats
               span =t("work.#{work.description_status}")
@@ -95,15 +90,15 @@
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =form_tag(display_search_path, :method => :post, class: 'collection-search') do
+    =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.slug)
-      =search_field_tag 'search_string', nil, :placeholder => t('.search_the_text'), "aria-label" => t('.search_the_text_1')
+      =search_field_tag :search, nil, placeholder: t('.search_the_text'), "aria-label" => t('.search_the_text_1')
       =button_tag t('.search')
       =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
 
-    =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      =hidden_field_tag('collection_id', @collection, {:id => "collection id for search work"})
-      =search_field_tag :work_search, params[:work_search], placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
+    =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag('collection_id', @collection.slug, {:id => "collection id for search work"})
+      =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
       =button_tag t('.search')
       =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
 
@@ -154,3 +149,13 @@
       $(document).ready(function(){
         $('#new_mobile_user_link').trigger('click');
       });
+
+-if @search_attempt
+  -content_for :javascript
+    javascript:
+      function resultClicked() {
+        $.ajax({
+          url: '/search_attempt/click',
+          type: 'GET',
+        })
+      };
