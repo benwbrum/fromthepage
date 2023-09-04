@@ -47,7 +47,7 @@ class ArticleController < ApplicationController
 
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
-      if @article.created_by == current_user || current_user.like_owner?(@collection)
+      if @article.created_by_id == current_user.id || current_user.like_owner?(@collection)
         @article.destroy 
         redirect_to collection_subjects_path(@collection.owner, @collection)
       else
