@@ -31,33 +31,21 @@
           p =t('.collection_collaborators_description')
           p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: @collection.is_public, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
-          -@collaborators.each do |user|
-            .user-label
-              =profile_picture(user)
-              .username
-                =link_to user.display_name, user_profile_path(user)
+          =render 'users_list', users: @collaborators, type: 'collaborators'
       tr 
         th
           h3 =t('.collection_owners')
           p =t('.collection_owners_description')
           p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
         td
-          -@owners.each do |user|
-            .user-label
-              =profile_picture(user)
-              .username
-                =link_to user.display_name, user_profile_path(user)
+          =render 'users_list', users: @owners, type: 'owners'
       tr
         th 
           h3 =t('.blocked_users')
           p =t('.block_users_description')
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: !@collection.is_public, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
-          -@blocked_users.each do |user|
-            .user-label
-              =profile_picture(user)
-              .username
-                =link_to user.display_name, user_profile_path(user)
+          =render 'users_list', users: @blocked_users, type: 'blocked'
       tr
         td(colspan="2")
           h3 =t('.api_access')

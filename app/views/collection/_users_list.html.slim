@@ -1,0 +1,21 @@
+.users-list id="users-list-#{type}"
+  -if users.empty?
+    h3.nodata =t(".no_users_#{type}")
+  -else
+    -if users.count > 4
+      a.expand-btn id="expand-btn-#{type}"
+        =svg_symbol '#icon-arrow-bottom', class: 'icon'
+    -users.each do |user|
+      span.user-label
+        =profile_picture(user)
+        .username
+          =link_to user.display_name, user_profile_path(user)
+
+-content_for :javascript
+  javascript: 
+    $(document).ready(function() {
+      $("#expand-btn-#{type}").click(function() {
+        $("#expand-btn-#{type}").toggleClass('expanded');
+        $("#users-list-#{type}").toggleClass('expanded');
+      });
+    });

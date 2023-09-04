@@ -71,6 +71,11 @@ en:
       unblock_user: Unblock user
       upload_image: Upload Image
       url: URL
+    users_list:
+      no_users_collaborators: No collaborators
+      no_users_owners: No owners
+      no_users_blocked: No blocked users
+      no_users_reviewers: No reviewers
     edit_buttons:
       abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
       abbr_label: Abbreviation

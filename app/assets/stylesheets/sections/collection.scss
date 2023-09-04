@@ -415,20 +415,20 @@
 
 .collection-settings {
   border-collapse: separate;
-  border-spacing: 0 0.5em;
+  border-spacing: 0.25em 0.5em;
 
   th {
     white-space: normal !important;
     vertical-align: top;
   }
   td:nth-child(1), th { 
-    width: 20%;
+    width: 30%;
   }
   td:nth-child(2) {
     width: 60%;
   }
   td:nth-child(3) {
-    width: 20%;
+    width: 10%;
   }
 
   input[type="checkbox"], input[type="radio"] {
@@ -501,6 +501,51 @@
   max-width: 150px;
 }
 
+.users-list {
+  $bgColor: mix($themeLight, $bodyBg, 50);
+  $transitionTime: 1s;
+  background-color: $bgColor;
+  border: 1px solid $bgColor;
+  border-radius: 16px;
+  padding: 1em;
+  display: inline-block;
+  width: 100%;
+  overflow: none;
+
+  .expand-btn {
+    float: right;
+    color: $bodyFgLight;
+
+    transform: rotate(0deg);
+    transition: transform 0.3s;
+  }
+  .user-label {
+    float: left;
+    min-width: 45%;
+    width: fit-content;
+
+    &:nth-child(n+6) {
+      display: none;
+    }
+  }
+  
+  &.expanded {
+    .user-label {
+      display: inline-block;
+    }
+    .expand-btn {
+      transform: rotate(-180deg);
+      transition: transform 0.3s;
+    }
+  }
+
+  .nodata {
+    margin: 0;
+    padding: 20px;
+    border: none;
+    background-color:inherit;
+  }
+}
 
 // Collection export
 
