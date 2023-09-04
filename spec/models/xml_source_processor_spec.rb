@@ -30,19 +30,11 @@ RSpec.describe XmlSourceProcessor, type: :model do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  before :each do
-    DatabaseCleaner.start
-  end
-
-  before :each do
-    DatabaseCleaner.clean
-  end
-
   let(:collection){ build_stubbed(:collection ) }
   let(:work)      { build_stubbed(:work, collection: collection) }
   let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT)}
   let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
-  User.current_user = nil
+    
     context 'subject linking not disabled (default)' do
       it 'builds the xml document' do
         expect(work.collection).to eq(collection)
