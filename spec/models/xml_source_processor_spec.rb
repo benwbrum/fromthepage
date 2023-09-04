@@ -25,26 +25,6 @@ EOF
 
 RSpec.describe XmlSourceProcessor, type: :model do
   describe '#wiki_to_xml' do
-  
-  # before :each do
-  #   DatabaseCleaner.clean_with(:truncation)
-  # end
-
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 
   let(:collection){ build_stubbed(:collection ) }
   let(:work)      { build_stubbed(:work, collection: collection) }

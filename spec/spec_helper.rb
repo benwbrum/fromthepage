@@ -8,7 +8,7 @@ require 'database_cleaner'
 require 'coveralls'
 Coveralls.wear!
 
-DatabaseCleaner.strategy = :transaction
+# DatabaseCleaner.strategy = :transaction
 
 WebMock.allow_net_connect!
 
@@ -57,6 +57,23 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
+
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
