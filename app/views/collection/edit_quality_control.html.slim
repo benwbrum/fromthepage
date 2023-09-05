@@ -12,13 +12,22 @@
       tr 
         td(colspan="2")
           =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
-          =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
-          br
+          =f.label "review_type_#{Collection::ReviewType::OPTIONAL}"
+            h3 =t('.review_type_optional')
+            p =t('.review_type_optional_description')
+      tr 
+        td(colspan="2")
           =f.radio_button :review_type, Collection::ReviewType::REQUIRED
-          =f.label "review_type_#{Collection::ReviewType::REQUIRED}", t('.review_type_required')
-          br
+          =f.label "review_type_#{Collection::ReviewType::REQUIRED}"
+            h3 =t('.review_type_required')
+            p =t('.review_type_required_description')
+      tr 
+        td(colspan="2")
           =f.radio_button :review_type, Collection::ReviewType::RESTRICTED
-          =f.label "review_type_#{Collection::ReviewType::RESTRICTED}", t('.review_type_restricted')
+          =f.label "review_type_#{Collection::ReviewType::RESTRICTED}"
+            h3 =t('.review_type_restricted')
+            p =t('.review_type_restricted_description')
+      tr: td
       tr
         th 
           h3 =t('.authorized_reviewers')

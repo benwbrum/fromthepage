@@ -196,9 +196,12 @@ en:
       edit_authorized_reviewers: Edit Authorized Reviewers
       review_type: Review Type
       review_type_description: Filler Text Choose the type of review that will be performed on transcriptions in this collection.
-      review_type_optional: "Optional: Collaborators may request review of their transcriptions."
-      review_type_required: "Required: All initial transcriptions will be marked as needing review. (Review may be performed by anyone.)"
-      review_type_restricted: "Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
+      review_type_optional: Optional
+      review_type_optional_description: Collaborators may request review of their transcriptions.
+      review_type_required: Required
+      review_type_required_description: All initial transcriptions will be marked as needing review. (Review may be performed by anyone.)
+      review_type_restricted: Restricted
+      review_type_restricted_description: All transcriptions need review, and only authorized reviewers may approve transcriptions.
       save_changes: Save Changes
     edit_tabs:
       danger_zone: Danger Zone

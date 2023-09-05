@@ -10,7 +10,8 @@
           =f.label :text_language
             h3(style="display:inline-block") =t('.text_language')
             =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}
-            p =t('.text_language_description')   
+            p =t('.text_language_description') 
+      tr: td
       tr 
         td(colspan="2")
           h3 =t('.transcription_type')
@@ -29,6 +30,7 @@
             h3.settings-label =t('.field_based_transcription')
             =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based, class: 'button inline-btn fields', id: 'field-based-edit', 'aria-label' => t('.edit_fields')
             p =t('.field_based_transcription_description')
+      tr: td
       tr
         td(colspan="2")
           =f.check_box :data_entry_type, :checked => @collection.metadata_entry?
@@ -42,6 +44,7 @@
           =f.label :subjects_enabled
             h3 =t('.subjects_enabled')
             p =t('.subjects_enabled_description')
+      tr: td
       tr 
         td(colspan="2") 
           -if @collection.works.ocr_disabled.any?

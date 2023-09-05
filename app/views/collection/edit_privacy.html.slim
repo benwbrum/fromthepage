@@ -7,45 +7,43 @@
     table.form.collection-settings
       tr 
         th(colspan="2")
-          h3 
+          h3.settings-label
             =t('.collection_privacy')
             i =@collection.is_public ? t('.public') : t('.private')
+          -if @collection.restricted
+            =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button inline-btn')
+              =svg_symbol '#icon-unlock', class: 'icon'
+              span =t('.make_collection_public')
+          -else
+            =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button inline-btn')
+              =svg_symbol '#icon-lock', class: 'icon'
+              span =t('.make_collection_private')
       tr 
-        th
+        td(colspan="2")
           -if @collection.restricted
             p =t('.collection_restricted_description')
           -else
             p =t('.collection_public_description')
-        td
-          -if @collection.restricted
-            =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button')
-              =svg_symbol '#icon-unlock', class: 'icon'
-              span =t('.make_collection_public')
-          -else
-            =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button')
-              =svg_symbol '#icon-lock', class: 'icon'
-              span =t('.make_collection_private')
+      tr: td
       tr
         th 
           h3 =t('.collection_collaborators')
-          p =t('.collection_collaborators_description')
           p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: @collection.is_public, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
           =render 'users_list', users: @collaborators, type: 'collaborators'
       tr 
         th
           h3 =t('.collection_owners')
-          p =t('.collection_owners_description')
           p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
         td
           =render 'users_list', users: @owners, type: 'owners'
       tr
         th 
           h3 =t('.blocked_users')
-          p =t('.block_users_description')
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: !@collection.is_public, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
           =render 'users_list', users: @blocked_users, type: 'blocked'
+      tr: td
       tr
         td(colspan="2")
           h3 =t('.api_access')
@@ -57,6 +55,7 @@
           br
           =f.radio_button :api_access, false
           =f.label :api_access_false, t('.closed_api'), class: 'big'
+      tr: td
       tr 
         td(colspan="2")
           =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn')
