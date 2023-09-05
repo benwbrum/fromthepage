@@ -22,7 +22,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
           =link_to(page_version_show_path(:page_version_id => version.id), class: ('selected' if version == @selected_version))
             =time_tag(version.created_on)
               =l(version.created_on.to_date)
-              = version.status && render_status_icon(version.status)
+            = render_status_icon(version.status)
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
