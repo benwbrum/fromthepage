@@ -372,6 +372,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
+        article.created_by_id = User.current_user.id if User.current_user.present?
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode
