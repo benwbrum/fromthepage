@@ -205,7 +205,7 @@ describe "needs review", :order => :defined do
         review = w.work_statistic.pct_needs_review.round
       end
       stats = w.work_statistic
-      list = page.find('.collection-work-stats').find('li', text: w.title)[0]
+      list = page.find('.collection-work-stats').find('li', text: w.title)
       expect(list).to have_content(w.title)
       expect(list).to have_content(w.pages.count)
       expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
