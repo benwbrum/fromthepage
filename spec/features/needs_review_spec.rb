@@ -173,7 +173,8 @@ describe "needs review", :order => :defined do
         indexed = w.work_statistic.pct_annotated.round
       end
 
-      stats = page.find('.collection-work', text: w.title).find('.collection-work_stats') 
+      collection_works = page.all('.collection-work', text: w.title)
+      stats = collection_works[0].find('.collection-work_stats') # Access the first matching element
       expect(stats).to have_content("#{indexed}% indexed")
       expect(stats).to have_content("#{completed+review}% #{wording}")
       unless review == 0
