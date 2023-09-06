@@ -1,7 +1,7 @@
 module PageVersionsHelper
     def render_status_icon(status)
 
-        status_translation = I18n.t("page_version.show.#{status}", default: status)
+        status_translation = I18n.t("page_version.show.page_version_status_#{status}", default: status)
 
         if status == "transcribed" || status == "incomplete" || status == "review" || status == "blank"
             image_tag(

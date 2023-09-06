@@ -3,16 +3,16 @@ es:
   page_version:
     show:
       author_contributed_at: "%{author} en %{date}"
-      blank: blanco
       compared_with: Comparado con
       help_description: Aquí puede ver todas las revisiones de página y comparar los cambios que se han realizado en cada revisión. La columna izquierda muestra el título de la página y la transcripción en la revisión seleccionada, la columna derecha muestra lo que se ha cambiado. El texto sin cambios se <span>resalta en blanco</span>, el texto eliminado se <del>resalta en rojo</del> y el texto <ins>insertado se resalta</ins> en verde.
-      incomplete: incompleto
       n_revisions:
         one: 1 revisión
         other: "%{count} revisiones"
       no_transcription_provided: No se proporcionó transcripción
       no_translation_provided: No se proporcionó traducción
-      review: revisar
-      transcribed: transcrito
+      page_version_status_blank: blanco
+      page_version_status_incomplete: incompleto
+      page_version_status_review: revisar
+      page_version_status_transcribed: transcrito
       translation: Traducción
       untitled: Intitulado
