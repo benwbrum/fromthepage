@@ -23,7 +23,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
             =time_tag(version.created_on)
               =l(version.created_on.to_date)
             div.image-wrap
-              = version.status && render_status_icon(version.status)
+              = version.status && render_status_icon("page_version_status_#{version.status}")
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
