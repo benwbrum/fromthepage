@@ -33,6 +33,8 @@ pt:
       format_options: Opções de formato
       html: HTML
       html_description: Isso pode ser útil para preservação em outros sistemas ou como ponto de partida para exibição em outro site.
+      notes_csv: Notas CSV
+      notes_csv_description: Uma planilha listando cada nota na coleção.
       one_file_per_collection: Um arquivo por coleção
       one_file_per_page: Um arquivo por página
       one_file_per_work: Um arquivo por obra

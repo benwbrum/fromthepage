@@ -211,7 +211,7 @@ describe "needs review", :order => :defined do
       expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
       expect(list).to have_content("#{completed+review}% #{wording}")
       unless review == 0
-        expect(list.find('span', text: 'needs review')).to have_content(review)
+        expect(row.find('td', text: 'needs review')).to have_content(review)
       end
     end
   end

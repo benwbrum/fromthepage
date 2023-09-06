@@ -41,6 +41,7 @@ pt:
       facing_edition_work: Edição de rosto PDF (obra)
       html_page: HTML (página)
       html_work: HTML (obra)
+      notes_csv: Notas CSV (coleção)
       plaintext_emended_page: Texto simples analítico (página)
       plaintext_emended_work: Texto simples analítico (obra)
       plaintext_searchable_page: Texto simples pesquisável (página)
