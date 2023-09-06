@@ -174,7 +174,7 @@ describe "needs review", :order => :defined do
       end
 
       collection_works = page.all('.collection-work', text: w.title)
-      stats = collection_works[0].find('.collection-work_stats') # Access the first matching element
+      stats = collection_works[0].find('.collection-work_stats')
       expect(stats).to have_content("#{indexed}% indexed")
       expect(stats).to have_content("#{completed+review}% #{wording}")
       unless review == 0
@@ -205,7 +205,7 @@ describe "needs review", :order => :defined do
         review = w.work_statistic.pct_needs_review.round
       end
       stats = w.work_statistic
-      list = page.find('.collection-work-stats').find('li', text: w.title)
+      list = page.find('.collection-work-stats').find('li', text: w.title)[0]
       expect(list).to have_content(w.title)
       expect(list).to have_content(w.pages.count)
       expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)

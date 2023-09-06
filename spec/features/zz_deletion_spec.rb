@@ -79,7 +79,7 @@ describe "testing deletions" do
     expect(Dir.exist?(path)).to be true
     visit dashboard_owner_path
     page.find('.maincol').click_link(work.collection.title)
-    page.find('.collection-works').find('a', text: work.title).click
+    page.find('.collection-works').find('a', text: work.title)[0].click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(work.title)
     expect(page).to have_selector('a', text: 'Delete Work')
