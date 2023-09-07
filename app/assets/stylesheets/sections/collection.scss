@@ -550,6 +550,17 @@
   }
 }
 
+.danger-warning {
+  background-color: mix($bgRed, red, 90);
+  border: 1px solid $bgRed;
+  border-radius: 16px;
+  padding: 1em;
+  color: $fgRed;
+  .icon {
+    margin-right: 0.5em;
+  }
+}
+
 // Collection export
 
 .bulk-export {

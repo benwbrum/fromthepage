@@ -121,6 +121,7 @@ en:
       unclear_description: Marks unclear text.
       unclear_label: Unclear
     edit_danger:
+      danger_zone_description: This section contains settings that have irreversible consequences. Please use caution when changing these settings.
       active: Active
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state. It will delete all transcriptions and other work on the collection, as though it was newly imported.

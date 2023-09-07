@@ -5,6 +5,11 @@
   =form_for :collection, url: collection_update_path(@collection) do |f|
     =validation_summary @collection.errors
     table.form.collection-settings
+      tr 
+        td(colspan="2")
+          .danger-warning
+            =svg_symbol '#icon-warning-sign', class: 'icon'
+            =t('.danger_zone_description')
       tr
         td(colspan="2")
           h3 
