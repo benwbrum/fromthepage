@@ -63,6 +63,8 @@
 -content_for :javascript
   javascript: 
     $(document).ready(function() {
+      $('#collection_text_language').select2();
+
       $('input[type=radio][name="collection[field_based]"]').change(function() {
         if ($(this).val() == 'true') {
           $('#field-based-edit').removeAttr('disabled');

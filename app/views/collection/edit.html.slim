@@ -25,7 +25,7 @@
           -else
             label( data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
               =f.file_field :picture, accept: 'image/*'
-          p =t('.collection_image_description')        
+          p =t('.collection_image_description')
       tr
         th: h3 =f.label :intro_block, t('.description')
         td
@@ -40,8 +40,6 @@
 -content_for :javascript
   javascript:
     $(function() {
-      $('#collection_text_language').select2();
-
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });

@@ -437,9 +437,13 @@
     margin-top: 7px; // align with label
     vertical-align: top;
   }
-  select, .inline-btn {
+  select, .inline-btn, .select2 {
     margin-left: 1em;
     display: inline-block;
+
+    &.select2-hidden-accessible {
+      display: none;
+    }
   }
   select {
     width: 50%;
@@ -456,6 +460,9 @@
   }
   .settings-label {
     display: inline-block;
+  }
+  .image-form label {
+    width: 150px;
   }
   .button[disabled] {
     pointer-events: none;
