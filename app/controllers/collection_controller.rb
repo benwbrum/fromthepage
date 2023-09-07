@@ -439,7 +439,7 @@ class CollectionController < ApplicationController
 
   def update
     if collection_params[:subjects_enabled].present?
-      collection_params[:subjects_disabled] = params[:subjects_enabled] ? false : true
+      params[:collection][:subjects_disabled] = (collection_params[:subjects_enabled] == '1') ? false : true
       params[:collection].delete(:subjects_enabled)
     end
     if collection_params[:data_entry_type].present?
@@ -676,7 +676,8 @@ private
       :supports_document_sets,
       :api_access, 
       :data_entry_type, 
-      :field_based
+      :field_based,
+      :is_active
     )
   end
 end
