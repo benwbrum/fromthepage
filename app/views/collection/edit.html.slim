@@ -10,13 +10,17 @@
         th: h3 =f.label :title, t('.title')
         td =f.text_field :title, value: @collection.title
       tr
-        th: h3 =f.label :slug, t('.url')
+        th
+          h3 =f.label :slug, t('.url')
+          p =t('.url_description')
         td 
           =f.text_field :slug, value: @collection.slug
           p ==t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>")
-          
+          p ==t('.transcriber_url', transcriber_url: "<b>#{collection_start_transcribing_url(@collection.owner.slug, @collection.slug)}</b>")
       tr 
-        th: h3 =t('.collection_image')
+        th
+          h3 =t('.collection_image')
+          p =t('.collection_image_description')
         td.image-form
           -if @collection.picture_url(:thumb)
             label.image-upload( data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
@@ -25,12 +29,11 @@
           -else
             label( data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
               =f.file_field :picture, accept: 'image/*'
-          p =t('.collection_image_description')
       tr
-        th: h3 =f.label :intro_block, t('.description')
-        td
-          =f.text_area :intro_block, rows: 10, value: @collection.intro_block  
-          p =t('.description_message')      
+        th
+          h3 =f.label :intro_block, t('.description')
+          p = t('.description_message')
+        td =f.text_area :intro_block, rows: 6, value: @collection.intro_block  
       tr 
         td: td: td
           .toolbar

@@ -53,9 +53,11 @@ en:
       notice: OCR correction has been disabled for all works.
     edit:
       add_button: Add
+      url_description: Please use lowercase letters and dashes between any words.
       collection_image: Collection Image
       collection_image_description: A picture to be used to illustrate the collection description.
-      current_url: The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words.
+      current_url: The current URL for this collection is %{current_url}.
+      transcriber_url: 'This link will send transcribers directly to a page needing transcription: %{transcriber_url}.'
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       done: Done
