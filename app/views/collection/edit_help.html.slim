@@ -23,7 +23,7 @@
           h3 =f.label :link_help, t('.link_help')
           p =t('.link_help_description')
         td.w70
-          =f.text_area :link_help, rows: 10, value: @collection.link_help
+          =f.text_area :link_help, rows: 10, value: @collection.link_help, disabled: @collection.subjects_disabled?
       tr 
         td: td: td
           .toolbar
