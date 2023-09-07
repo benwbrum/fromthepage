@@ -27,19 +27,22 @@
       tr: td
       tr
         th 
-          h3 =t('.collection_collaborators')
+          h3.settings-label =t('.collection_collaborators')
+          p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
           p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !@collection.restricted, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
           =render 'users_list', users: @collaborators, type: 'collaborators'
       tr 
         th
-          h3 =t('.collection_owners')
+          h3.settings-label =t('.collection_owners')
+          p.settings-label  ="(#{@owners.count})" unless @owners.empty?
           p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
         td
           =render 'users_list', users: @owners, type: 'owners'
       tr
         th 
-          h3 =t('.blocked_users')
+          h3.settings-label =t('.blocked_users')
+          p.settings-label ="(#{@blocked_users.count})" unless @blocked_users.empty?
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
           =render 'users_list', users: @blocked_users, type: 'blocked'
@@ -53,6 +56,7 @@
           =f.radio_button :api_access, true, disabled: !@collection.restricted, :checked => (@collection.api_access || !@collection.restricted)
           =f.label :api_access_true
             .big =t('.open_api')
+          br
           =f.radio_button :api_access, false, disabled: !@collection.restricted, :checked => !(@collection.api_access || !@collection.restricted)
           =f.label :api_access_false
             .big =t('.closed_api')

@@ -30,7 +30,8 @@
       tr: td
       tr
         th 
-          h3 =t('.authorized_reviewers')
+          h3.settings-label =t('.authorized_reviewers')
+          p.settings-label ="(#{@reviewers.count})" unless @reviewers.empty?
           p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', id: 'edit-reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED), :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
         td
           =render 'users_list', users: @reviewers, type: 'reviewers'
