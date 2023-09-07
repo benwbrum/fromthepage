@@ -1,4 +1,6 @@
-.users-list id="users-list-#{type}"
+-disabled = false if local_assigns[:disabled].nil?
+
+.users-list (id="users-list-#{type}" class=(disabled ? 'disabled' : ''))
   -if users.empty?
     h3.nodata =t(".no_users_#{type}")
   -else

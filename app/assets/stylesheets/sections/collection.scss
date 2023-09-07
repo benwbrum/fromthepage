@@ -555,6 +555,16 @@
     border: none;
     background-color:inherit;
   }
+
+  &.disabled {
+    $disabledBg: mix($bodyBg, gray, 90);
+    $disabledFg: mix($bodyFgLight, $disabledBg, 70);
+    background-color: $disabledBg;
+    a, h3 {
+      text-decoration: none;
+      color: $disabledFg;
+    }
+  }
 }
 
 .danger-warning {

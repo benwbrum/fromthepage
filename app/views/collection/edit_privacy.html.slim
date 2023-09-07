@@ -31,7 +31,7 @@
           p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
           p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !@collection.restricted, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
         td
-          =render 'users_list', users: @collaborators, type: 'collaborators'
+          =render 'users_list', users: @collaborators, type: 'collaborators', disabled: !@collection.restricted
       tr 
         th
           h3.settings-label =t('.collection_owners')
@@ -45,7 +45,7 @@
           p.settings-label ="(#{@blocked_users.count})" unless @blocked_users.empty?
           p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
         td
-          =render 'users_list', users: @blocked_users, type: 'blocked'
+          =render 'users_list', users: @blocked_users, type: 'blocked', disabled: @collection.restricted
       tr: td
       tr
         td(colspan="2")
