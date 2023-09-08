@@ -35,6 +35,8 @@ es:
       activity_stream: Flujo de Actividad
       collection_title: 'Colección: %{title}'
       deed: Escritura
+      newer_activity: Actividad más reciente
+      older_activity: Actividad anterior
       owner_title: 'Propietario: %{title}'
       time: Tiempo
       time_ago_in_words: Hace %{time}
