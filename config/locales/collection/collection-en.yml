@@ -147,6 +147,8 @@ en:
       enable_forums: Enable forums
       enable_metadata_facets: Enable metadata facets
       enable_spellcheck: Enable spell-check
+      edit_facets: Edit Facets
+      edit_document_sets: Edit Sets
       forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
       hide_completed: Hide completed works by default
       metadata_description: Upload metadata for items in this collection in bulk.

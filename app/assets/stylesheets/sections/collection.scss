@@ -430,6 +430,9 @@
   td:nth-child(3) {
     width: 10%;
   }
+  p {
+    margin: 0;
+  }
 
   input[type="checkbox"], input[type="radio"] {
     margin-right: 0.5em;
@@ -444,9 +447,6 @@
     &.select2-hidden-accessible {
       display: none;
     }
-  }
-  select {
-    width: 50%;
   }
   .action-btn {
     margin-bottom: 0.5em;
@@ -466,9 +466,6 @@
   }
   .button[disabled] {
     pointer-events: none;
-  }
-  p {
-    margin: 0;
   }
 }
 

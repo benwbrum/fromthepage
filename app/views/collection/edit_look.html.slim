@@ -9,7 +9,7 @@
         td(colspan="2")
           =f.label :default_orientation
             h3(style="display:inline-block") =t('.default_orientation')
-            =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}
+            =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w20'}
             p =t('.default_orientation_description')
       tr
         td(colspan="2")
@@ -33,7 +33,8 @@
         td(colspan="2")
           =f.check_box :supports_document_sets
           =f.label :supports_document_sets
-            h3 =t('.enable_document_sets')
+            h3.settings-label =t('.enable_document_sets')
+            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
             p =t('.document_sets_description')
       tr 
         td(colspan="2")
@@ -44,7 +45,8 @@
         td(colspan="2")
           =f.check_box :facets_enabled 
           =f.label :facets_enabled
-            h3 =t('.enable_metadata_facets')
+            h3.settings-label =t('.enable_metadata_facets')
+            =link_to t('.edit_facets'), collection_facets_path(@collection.owner, @collection), disabled: !@collection.facets_enabled?, class: 'button inline-btn', id: 'facets-edit', 'aria-label' => t('.edit_facets')
             p =t('.metadata_facets_description')
       tr 
         td(colspan="2")
@@ -63,3 +65,22 @@
           .toolbar
             .toolbar_group
               =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
+
+-content_for :javascript
+  javascript: 
+    $(document).ready(function() {
+      $('input[type=checkbox][name="collection[facets_enabled]"]').change(function() {
+        if ($(this).is(':checked')) {
+          $('#facets-edit').removeAttr('disabled');
+        } else {
+          $('#facets-edit').attr('disabled', 'disabled');
+        }
+      });
+      $('input[type=checkbox][name="collection[supports_document_sets]"]').change(function() {
+        if ($(this).is(':checked')) {
+          $('#document-sets-edit').removeAttr('disabled');
+        } else {
+          $('#document-sets-edit').attr('disabled', 'disabled');
+        }
+      });
+    });
