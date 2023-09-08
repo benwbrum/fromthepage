@@ -40,24 +40,29 @@ table.datagrid.striped#deeds-list
         td.nowrap (data-order="#{d.created_at.to_i}")
           =time_tag(d.created_at, class: 'small fglight')
             =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
+-if @paginate
+  br
+  small.legend
+    =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }
+  br
 
--content_for :javascript
-  javascript:
-    $(document).ready( function () {
-      console.log("Hey");
-      // initialize the works list datatable
-      $('#deeds-list').DataTable( {
-        // don't allow sorting on the user icon column
-        'columnDefs': [ {
-          'targets': [0], 
-          'orderable': false, 
-        } ],
-        // Initially sort by recency
-        "order": [[3, 'desc']]
+-else
+  -content_for :javascript
+    javascript:
+      $(document).ready( function () {
+        // initialize the works list datatable
+        $('#deeds-list').DataTable( {
+          // don't allow sorting on the user icon column
+          'columnDefs': [ {
+            'targets': [0], 
+            'orderable': false, 
+          } ],
+          // Initially sort by recency
+          "order": [[3, 'desc']]
+        } );
+
+        // fix the layout of the pagination controls
+        $('select[name="deeds-list_length"]').parent().before('Show ');
+        $('select[name="deeds-list_length"]').parent().after(' entries');
+
       } );
-
-      // fix the layout of the pagination controls
-      $('select[name="deeds-list_length"]').parent().before('Show ');
-      $('select[name="deeds-list_length"]').parent().after(' entries');
-
-    } );
