@@ -35,6 +35,15 @@
           h3 =f.label :intro_block, t('.description')
           p = t('.description_message')
         td =f.text_area :intro_block, rows: 6, value: @collection.intro_block  
+      tr: td 
+      tr 
+        th 
+          h3 =t('.footer')
+          p =t('.footer_description')
+        td 
+          .footer-preview
+              ==@collection.owner.footer_block
+          i ==t('.footer_edit', link: link_to(t('.footer_edit_link'), user_update_profile_path(user_id: @collection.owner)))
       tr 
         td: td: td
           .toolbar

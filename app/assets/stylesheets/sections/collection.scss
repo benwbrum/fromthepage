@@ -507,7 +507,6 @@
 
 .users-list {
   $bgColor: mix($themeLight, $bodyBg, 50);
-  $transitionTime: 1s;
   background-color: $bgColor;
   border: 1px solid $bgColor;
   border-radius: 16px;
@@ -573,6 +572,16 @@
   .icon {
     margin-right: 0.5em;
   }
+}
+
+.footer-preview {
+  $bgColor: mix($themeLight, $bodyBg, 50);
+  background-color: $bgColor;
+  border-radius: 16px;
+  padding: 1em;
+  
+  text-align: center;
+  color: $bodyFgLight;
 }
 
 // Collection export

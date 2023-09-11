@@ -52,6 +52,9 @@ en:
     disable_ocr:
       notice: OCR correction has been disabled for all works.
     edit:
+      footer_description: This text will be displayed at the bottom of every page in the collection. 
+      footer_edit: Edit this footer in %{link}.
+      footer_edit_link: your user profile
       add_button: Add
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
