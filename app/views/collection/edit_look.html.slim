@@ -39,6 +39,7 @@
             p =t('.document_sets_description')
       tr 
         td(colspan="2")
+          h3 =t('.metadata')
           =link_to(collection_metadata_upload_path(@collection.id), class: 'button action-btn', :data => { litebox: { hash: 'upload-metadata' }})
             span =t('.upload_metadata')
           p =t('.metadata_description')

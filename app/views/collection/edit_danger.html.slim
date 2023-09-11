@@ -30,12 +30,14 @@
       tr: td
       tr
         td(colspan="2")
+          h3 =t('.clear_transcripts')
           =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button action-btn exits', data: { confirm: t('.confirm_blank_collection') })
             span =t('.blank_collection')
           p =t('.blank_collection_description')
       tr: td
       tr 
         td(colspan="2")
+          h3 =t('.destroy_everything')
           =link_to(collection_delete_path(:collection_id => @collection.id), class: 'button action-btn', data: { confirm: t('.confirm_delete_collection') })
             span =t('.delete_collection')
           p =t('.delete_collection_description')

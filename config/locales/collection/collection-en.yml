@@ -121,6 +121,7 @@ en:
       active: Active
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state. It will delete all transcriptions and other work on the collection, as though it was newly imported.
+      clear_transcripts: Clear Transcripts
       collection_active_description: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_inactive_description: This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
       collection_status: 'Collection status: '
@@ -128,6 +129,7 @@ en:
       confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
       danger_zone_description: This section contains settings that have irreversible consequences. Please use caution when changing these settings.
       delete_collection: Delete Collection
+      destroy_everything: Destroy Everything
       inactive: Inactive
       save_changes: Save Changes
     edit_help:
@@ -143,14 +145,15 @@ en:
       default_orientation: Default transcription screen orientation
       default_orientation_description: Filler Text The default page orientation for this collection. This setting can be overridden for individual works. Choose the orientation that best matches the majority of the works in this collection.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
+      edit_document_sets: Edit Sets
+      edit_facets: Edit Facets
       enable_document_sets: Enable document sets
       enable_forums: Enable forums
       enable_metadata_facets: Enable metadata facets
       enable_spellcheck: Enable spell-check
-      edit_facets: Edit Facets
-      edit_document_sets: Edit Sets
       forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
       hide_completed: Hide completed works by default
+      metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_facets_description: Allow users to browse works within this collection via metadata.
       page_on_the_bottom: Image on the bottom
@@ -186,6 +189,7 @@ en:
       private: Private
       public: Public
       restrict_completed_works: Restrict Completed Works
+      restrict_editing: Restrict editing
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
       save_changes: Save Changes
     edit_quality_control:
@@ -223,6 +227,7 @@ en:
       field_based_transcription: Field-based transcription
       field_based_transcription_description: Filler Text Each page in the collection will have multiple short entry fields designed for forms. Also known as "field based transcription". Voice dictation is not supported and will be disabled.
       metadata_description_description: Filler Text Metadata description is used to describe the metadata fields for the collection. It will be displayed on the metadata entry page.
+      ocr_correction: OCR Correction
       ocr_description: Enable or disable OCR correction for all works in this collection.
       save_changes: Save Changes
       subjects_enabled: Enable subject indexing
