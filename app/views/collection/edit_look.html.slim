@@ -1,3 +1,4 @@
+=javascript_include_tag "settings"
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 =render({ :partial => 'edit_tabs', :locals => { :selected => 3}})
 
@@ -34,7 +35,7 @@
           =f.check_box :supports_document_sets
           =f.label :supports_document_sets
             h3.settings-label =t('.enable_document_sets')
-            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
+            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
             p =t('.document_sets_description')
       tr 
         td(colspan="2")
@@ -46,7 +47,7 @@
           =f.check_box :facets_enabled 
           =f.label :facets_enabled
             h3.settings-label =t('.enable_metadata_facets')
-            =link_to t('.edit_facets'), collection_facets_path(@collection.owner, @collection), disabled: !@collection.facets_enabled?, class: 'button inline-btn', id: 'facets-edit', 'aria-label' => t('.edit_facets')
+            =link_to t('.edit_facets'), collection_facets_path(@collection.owner, @collection), disabled: !@collection.facets_enabled?, class: 'button inline-btn exits', id: 'facets-edit', 'aria-label' => t('.edit_facets')
             p =t('.metadata_facets_description')
       tr 
         td(colspan="2")

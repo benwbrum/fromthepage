@@ -1,3 +1,4 @@
+=javascript_include_tag "settings"
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 =render({ :partial => 'edit_tabs', :locals => { :selected => 2}})
 
@@ -9,7 +10,7 @@
         td(colspan="2")
           =f.label :text_language
             h3(style="display:inline-block") =t('.text_language')
-            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}
+            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
             p =t('.text_language_description') 
       tr: td
       tr 
@@ -28,7 +29,7 @@
           =f.radio_button :field_based, true, :checked => @collection.field_based
           =f.label :field_based_true
             h3.settings-label =t('.field_based_transcription')
-            =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based, class: 'button inline-btn fields', id: 'field-based-edit', 'aria-label' => t('.edit_fields')
+            =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based, class: 'button inline-btn fields exits', id: 'field-based-edit', 'aria-label' => t('.edit_fields')
             p =t('.field_based_transcription_description')
       tr: td
       tr
@@ -36,7 +37,7 @@
           =f.check_box :data_entry_type, :checked => @collection.metadata_entry?
           =f.label :data_entry_type
             h3.settings-label =t('.enable_metadata_description')
-            =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), disabled: !@collection.metadata_entry?, class: 'button inline-btn fields', id: 'metadata-fields-edit', 'aria-label' => t('.edit_fields')    
+            =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), disabled: !@collection.metadata_entry?, class: 'button inline-btn fields exits', id: 'metadata-fields-edit', 'aria-label' => t('.edit_fields')    
             p =t('.metadata_description_description')
       tr 
         td(colspan="2")

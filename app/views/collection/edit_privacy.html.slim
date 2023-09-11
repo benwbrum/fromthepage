@@ -1,3 +1,4 @@
+=javascript_include_tag "settings"
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 =render({ :partial => 'edit_tabs', :locals => { :selected => 4}})
 
@@ -62,7 +63,7 @@
             .big =t('.closed_api')
       tr 
         td(colspan="2")
-          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn')
+          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits')
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
       tr 
