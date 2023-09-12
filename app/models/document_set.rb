@@ -307,4 +307,10 @@ class DocumentSet < ApplicationRecord
   def most_recent_deed_created_at
     self.collection.most_recent_deed_created_at
   end
+
+  def user_help
+    User.find(self.collection.owner_user_id).help
+  end
+
+  public :user_help
 end
