@@ -3,7 +3,8 @@
     - if @collection.help.present?    
       = @collection.help.html_safe
     - else
-      = @collection.user_help&.html_safe
+      - if @collection.instance_of?(Collection)
+        = @collection.user_help&.html_safe
 
     -unless @collection.subjects_disabled
       =@collection.link_help.html_safe
