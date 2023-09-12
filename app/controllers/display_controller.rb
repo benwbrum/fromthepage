@@ -113,7 +113,7 @@ class DisplayController < ApplicationController
         session[:search_attempt_id] = @search_attempt.id
       end
       # restrict to pages that include that subject
-      @collection = @search_attempt.collection
+      @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
       @work = @search_attempt&.work
       pages = @search_attempt.results
       @pages = pages.paginate(page: params[:page])
