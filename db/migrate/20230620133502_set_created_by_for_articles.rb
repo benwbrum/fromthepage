@@ -3,7 +3,7 @@ class SetCreatedByForArticles < ActiveRecord::Migration[6.0]
     Article.all.each do |article|
       if article.collection_id.present?
         collection = Collection.find(article.collection_id)
-        article.update(created_by: collection.owner)
+        article.update(created_by_id: collection.owner_user_id)
       end
     end
   end
