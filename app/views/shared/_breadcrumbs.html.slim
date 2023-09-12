@@ -15,11 +15,8 @@
 -if @work && @work.title.present? && (@page || @article)
   -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
--if search_attempt && (@page || @article)
-  -if search_attempt.search_type == "collection" 
-    -path.push(link_to t('.search_results'), paged_search_path(search_attempt))
-  -elsif search_attempt.search_type == "work" && (@page || @article)
-    -path.push(link_to t('.search_results'), paged_search_path(search_attempt))
+-if search_attempt && (@page || @article) && (search_attempt.search_type == "collection" || search_attempt.search_type == "work")
+  -path.push(link_to t('.search_results'), paged_search_path(search_attempt))
 
 -if path.present? && @quality_sampling.nil?
   -unless (controller_name == 'transcribe' && @collection && @work && @page && current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page))) || (@work && @page && @user && current_page?(collection_user_review_page_path))
