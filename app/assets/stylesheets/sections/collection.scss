@@ -514,21 +514,34 @@
   display: inline-block;
   width: 100%;
   overflow: none;
+  position: relative;
 
   .expand-btn {
-    float: right;
     color: $bodyFgLight;
+    text-decoration: none;
+    position: absolute;
+    bottom: 1.5em;
+    right: 1em;
+    width: fit-content;
 
-    transform: rotate(0deg);
-    transition: transform 0.3s;
+    .no-display {
+      display: none;
+    }
+    .icon {
+      transform: rotate(0deg);
+      transition: transform 0.3s;
+    }
   }
   .user-label {
     float: left;
-    min-width: 45%;
+    min-width: 40%;
     width: fit-content;
 
     &:nth-child(n+6) {
       display: none;
+    }
+    &:nth-child(5) {
+      margin-right: 60px; // prevent overlap with expand button
     }
     a {
       padding-right: 1em;
@@ -538,8 +551,11 @@
   &.expanded {
     .user-label {
       display: inline-block;
+      &:nth-child(5) {
+        margin-right: 0; // expand button is gone
+      }
     }
-    .expand-btn {
+    .expand-btn .icon {
       transform: rotate(-180deg);
       transition: transform 0.3s;
     }

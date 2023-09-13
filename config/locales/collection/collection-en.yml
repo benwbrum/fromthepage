@@ -62,6 +62,8 @@ en:
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       done: Done
+      n_more: '%{count} more '
+      less: Show less
       n_contributions:
         one: 1 contribution
         other: "%{count} contributions"

@@ -6,6 +6,8 @@
   -else
     -if users.count > 4
       a.expand-btn id="expand-btn-#{type}"
+        span.more (id="expand-more-#{type}") =t('collection.edit.n_more', count: users.count - 4)
+        span.less.no-display (id="expand-less-#{type}") =t('collection.edit.less')
         =svg_symbol '#icon-arrow-bottom', class: 'icon'
     -users.each do |user|
       span.user-label
@@ -18,6 +20,8 @@
     $(document).ready(function() {
       $("#expand-btn-#{type}").click(function() {
         $("#expand-btn-#{type}").toggleClass('expanded');
+        $("#expand-more-#{type}").toggleClass('no-display');
+        $("#expand-less-#{type}").toggleClass('no-display');
         $("#users-list-#{type}").toggleClass('expanded');
       });
     });
