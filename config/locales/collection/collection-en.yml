@@ -52,28 +52,29 @@ en:
     disable_ocr:
       notice: OCR correction has been disabled for all works.
     edit:
-      footer_description: This text will be displayed at the bottom of every page in the collection. 
-      footer_edit: Edit this footer in %{link}.
-      footer_edit_link: your user profile
       add_button: Add
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
-      current_url: The current URL for this collection is %{current_url}.
+      copy_url: Copy to clipboard
+      current_url: 'The current URL for this collection:'
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       done: Done
-      n_more: '%{count} more '
+      footer_description: This text will be displayed at the bottom of every page in the collection.
+      footer_edit: Edit this footer in %{link}.
+      footer_edit_link: your user profile
       less: Show less
       n_contributions:
         one: 1 contribution
         other: "%{count} contributions"
+      n_more: "%{count} more "
       no_image: No Image
       remove_collaborator: Remove collaborator
       remove_owner: Remove owner
       remove_reviewer: Remove Reviewer
       save_changes: Save Changes
       title: Title
-      transcriber_url: 'This link will send transcribers directly to a page needing transcription: %{transcriber_url}.'
+      transcriber_url: 'This link will send transcribers directly to a page needing transcription:'
       unblock_user: Unblock user
       upload_image: Upload Image
       url: URL
@@ -126,7 +127,7 @@ en:
       active: Active
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state. It will delete all transcriptions and other work on the collection, as though it was newly imported.
-      clear_transcripts: Clear Transcripts
+      clear_transcripts: Clear transcripts
       collection_active_description: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_inactive_description: This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
       collection_status: 'Collection status: '
@@ -134,7 +135,7 @@ en:
       confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
       danger_zone_description: This section contains settings that have irreversible consequences. Please use caution when changing these settings.
       delete_collection: Delete Collection
-      destroy_everything: Destroy Everything
+      destroy_everything: Destroy everything
       inactive: Inactive
       save_changes: Save Changes
     edit_help:
@@ -221,7 +222,7 @@ en:
       task_configuration: Task Configuration
     edit_tasks:
       alert: Please configure fields or choose document based transcription under Transcription Type.
-      disable_ocr: Disable OCR
+      disable_ocr: Disable OCR Correction
       document_based_transcription: Document-based transcription
       document_based_transcription_description: Filler Text Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription". Voice dictation is not supported and will be disabled.
       edit_buttons: Configure Buttons

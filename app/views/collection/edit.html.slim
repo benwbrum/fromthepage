@@ -16,8 +16,18 @@
           p =t('.url_description')
         td 
           =f.text_field :slug, value: @collection.slug
-          p ==t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>")
-          p ==t('.transcriber_url', transcriber_url: "<b>#{collection_start_transcribing_url(@collection.owner.slug, @collection.slug)}</b>")
+      tr 
+        th =t('.current_url')
+        td
+          b#collection-url =collection_url(@collection.owner.slug,@collection.slug)
+          a.clipboard-btn (data-clipboard-target='#collection-url' aria-label=t('.copy_url') title=t('.copy_url'))
+            =svg_symbol '#icon-copy', class: 'icon'
+      tr
+        th =t('.transcriber_url')
+        td 
+          b#transcriber-url =collection_start_transcribing_url(@collection.owner.slug, @collection.slug)
+          a.clipboard-btn (data-clipboard-target='#transcriber-url' aria-label=t('.copy_url') title=t('.copy_url'))
+            =svg_symbol '#icon-copy', class: 'icon'
       tr 
         th
           h3 =t('.collection_image')
@@ -53,6 +63,8 @@
 -content_for :javascript
   javascript:
     $(function() {
+      var clipboard = new Clipboard('.clipboard-btn');
+
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });

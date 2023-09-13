@@ -520,7 +520,7 @@
     color: $bodyFgLight;
     text-decoration: none;
     position: absolute;
-    bottom: 1.5em;
+    bottom: 1em;
     right: 1em;
     width: fit-content;
 
@@ -598,6 +598,13 @@
   
   text-align: center;
   color: $bodyFgLight;
+}
+
+.clipboard-btn {
+  color: inherit;
+  .icon {
+    margin-left: 0.5em;
+  }
 }
 
 // Collection export

@@ -125,3 +125,6 @@ gem 'intercom', '~> 3.9.0'
 gem 'newrelic_rpm'
 
 gem 'open3'
+
+# Copy to clipboard
+gem 'clipboard-rails' 
