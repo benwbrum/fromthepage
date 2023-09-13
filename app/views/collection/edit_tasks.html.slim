@@ -49,8 +49,8 @@
       tr 
         td(colspan="2") 
           h3 =t('.ocr_correction')
-          -if @collection.works.ocr_disabled.any?
-            =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button action-btn')
+          -if @collection.works.ocr_disabled.any? || @collection.works.empty?
+            =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button action-btn', disabled: @collection.works.empty?)
               span =t('.enable_ocr')
           -if @collection.works.ocr_enabled.any?
             =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button action-btn')

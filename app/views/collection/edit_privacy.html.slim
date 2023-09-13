@@ -64,7 +64,7 @@
       tr 
         td(colspan="2")
           h3 =t('.restrict_editing')
-          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits')
+          =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits', disabled: @collection.works.empty?)
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
       tr 
