@@ -6,7 +6,8 @@ h3 =t('.site_visits_for_user', user: @user.login)
 table.admin-grid.datagrid.striped
   thead
     tr
-      th =t('.last_sign_in')
+      th =t('.started_at')
+      th =t('.referrer')
       th =t('.duration')
       th =t('.clicks')
       th =t('.contributions')
@@ -15,13 +16,14 @@ table.admin-grid.datagrid.striped
     -@visits.each do |v|
       tr
         td.nowrap =v.started_at.strftime('%b %d, %Y')
+        td.nowrap =v.referring_domain
         -if v.ahoy_events.count > 0
           td.nowrap =distance_of_time_in_words v.started_at, v.ahoy_events.last.time
           td.nowrap =v.ahoy_events.count
         -else
           td.nowrap (cleaned)
           td.nowrap 
-        td.nowrap 
+        td.nowrap
           -if v.deeds.count > 0
             =link_to v.deeds.count, admin_visit_deeds_path(:user_id => @user.id, :visit_id => v.id)
           -else

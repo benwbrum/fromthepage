@@ -13,7 +13,7 @@ pt:
     editor:
       activity_stream: Fluxo de atividades
       article_in_the_work: Artigo %{article} na coleção %{collection}
-      page_in_the_work: Página %{page} no trabalho %{work}
+      page_in_the_work: Página %{page} na obra %{work}
       revision_version: Revisão %{version}
       view_page: Ver pagina
       your_recent_article_edits: Suas edições recentes de artigos
@@ -23,14 +23,15 @@ pt:
       your_projects: Seus projetos
     empty:
       add_new_collection: Adicionar nova coleção
-      create_empty_work: Criar trabalho vazio
-      create_empty_work_description: Use esta opção para criar um trabalho vazio. Você pode então carregar imagens de páginas individuais no trabalho.
-      create_work: Criar trabalho
+      create_empty_work: Criar obra vazia
+      create_empty_work_description: Use esta opção para criar uma obra vazia. Você pode então carregar imagens de páginas individuais na obra.
+      create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       select_a_collection: "- Selecione uma coleção -"
       title: Título
     exports:
+      admin_searches: Pesquisas
       bulk_exports_description: Isso lista todas as exportações em massa que você executou. As exportações são limpas após alguns dias e não estão mais disponíveis para download
       configuration: Configuração (nível)
       create_bulk_export_description: Crie uma exportação em massa na guia Exportar de uma coleção ou na guia Download de uma obra.
@@ -40,6 +41,7 @@ pt:
       facing_edition_work: Edição de rosto PDF (obra)
       html_page: HTML (página)
       html_work: HTML (obra)
+      notes_csv: Notas CSV (coleção)
       plaintext_emended_page: Texto simples analítico (página)
       plaintext_emended_work: Texto simples analítico (obra)
       plaintext_searchable_page: Texto simples pesquisável (página)
@@ -56,7 +58,7 @@ pt:
       text_docx_work: MS Word .docx (obra)
       text_only_pdf_work: Texto PDF (obra)
       text_pdf_work: Texto PDF (obra)
-      work_metadata_csv: Metadados de trabalho (coleção)
+      work_metadata_csv: Metadados de obra (coleção)
     guest_header:
       recent_activity: Atividade recente
     hierarchical_collections_and_document_sets:
@@ -89,13 +91,17 @@ pt:
       page_image_guidelines: Regras Gerais das Imagens da Página
       paste_in_the_url: Cole o URL de um objeto composto na sua página web de CONTENTdm.
     owner:
+      active_collections: Coleções ativas
       create_a_collection: criar uma coleção
       document_sets: Conjuntos de Documentos
-      see_all_works: Ver Todas as Obras...
+      inactive_collections: Coleções inativas
+      n_works:
+        one: '1 obra:'
+        other: "%{count} obras:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar um Projeto
       there_are_no_works: Ainda não há obras nesta coleção
-      total_work_count: 'Número total de obras: %{count}'
-      you_can_add_another_work: Você pode adicionar uma nova obra em %{start_project}
       you_can_new_collection: Você pode %{new_collection}
       you_can_upload_documents: Você pode subir um documento em %{start_project}
       you_dont_have_any_collections: Você ainda não tem nenhuma coleção.
@@ -126,8 +132,8 @@ pt:
       to_upgrade_contact: Para atualizar, entre em contato com support@fromthepage.com
       total_pages: 'Total de páginas: %{pages}'
       work:
-        one: Trabalhar
-        other: Funciona
+        one: Obra
+        other: Obras
       your_collections: Suas Coleções
     upload:
       acceptable_image_files: Arquivos PNG, GIF e JPG são todos aceitáveis.
@@ -143,7 +149,7 @@ pt:
       page_image_guidelines: Diretrizes de imagem da página
       select_a_collection: "- Selecione uma coleção -"
       to_specify_metadata: Para indicar os meta-dados juntamente com as imagens, inclua um %{link} arquivo em cada pasta que indique os campos para a obra.
-      trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para elevar a sua conta.
+      trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para fazer upgrade da sua conta.
       upload_file: Subir arquivo
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP
       use_image_filenames: Utilizar os nomes dos arquivos das imagens como títulos de páginas.

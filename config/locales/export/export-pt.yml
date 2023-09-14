@@ -13,26 +13,13 @@ pt:
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
     index:
       api: API
-      export_all_table_data_as_csv: Exportar todas as tabelas como CSV
-      export_all_tables: Exportar todas as tabelas
-      export_all_tables_description: Clique no botão para exportar os dados da tabela de toda a coleção em um único arquivo CSV. Observe que o processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.
-      export_all_works: Exportar todo o trabalho
+      export_all_works: Exportar todos as obras
       export_all_works_description: Escolha formatos e granularidades para exportar toda a coleção em um arquivo zip.
       export_as: Exportar como
       export_individual_works: Exportar Obras Individuais
-      export_individual_works_description: Você pode escolher exportar trabalhos individuais em vários formatos de arquivo. O XHTML exporta um trabalho como um arquivo XHTML de uma página com transcrições, comentários do usuário, artigos de assunto e HREFs internos vinculando assuntos e páginas. O TEI exporta uma obra como um documento TEI-XML compatível com P5. O texto é texto simples. A exportação zip fornecerá todos os formatos de um trabalho e granularidade de página.
-      export_subject_coocurrence_as_csv: Exportar coocorrências como CSV
-      export_subject_coocurrence_description: Clique no botão para exportar um arquivo CSV com uma linha para cada combinação de assuntos na coleção que são mencionados na mesma página. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subject_details_as_csv: Exportar sujeitos como CSV
-      export_subject_details_description: Clique no botão para exportar um arquivo CSV com uma linha para cada assunto da coleção. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subject_index: Exportar sujeitos
-      export_subject_index_description: Clique no botão para exportar índices de assuntos de toda a coleção em um único arquivo CSV. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subjects_as_csv: Exportar índice como CSV
+      export_individual_works_description: Você pode escolher exportar obras individuais em vários formatos de arquivo. O XHTML exporta uma obra como um arquivo XHTML de uma página com transcrições, comentários do usuário, artigos de assunto e HREFs internos vinculando assuntos e páginas. O TEI exporta uma obra como um documento TEI-XML compatível com P5. O texto é texto simples. A exportação zip fornecerá todos os formatos de uma obra e granularidade de página.
       export_to_contentdm: Exportar para CONTENTdm
       export_to_contentdm_description: Clique no botão para exportar as transcrições concluídas de toda a coleção para o CONTENTdm.
-      export_work_metadata: Exportar metadados de trabalho
-      export_work_metadata_as_csv: Exportar metadados de trabalho como CSV
-      export_work_metadata_description: Exporte uma planilha contendo uma linha para cada obra da coleção, com colunas para estatísticas sobre as páginas transcritas e metadados da obra.
       here: aqui
       html: HTML
       iiif: IIIF
@@ -50,7 +37,7 @@ pt:
       review: Análise
       table_csv: Tabela CSV
       tei: TEI
-      work_title: Título de trabalho
+      work_title: Título da obra
     show:
       categories: 'Categorias:'
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
@@ -69,7 +56,7 @@ pt:
       dynamic_tei_export: Exportação dinâmica de TEI de FromThePage (versão %{version})
       edition_created: Edição criada a partir de novas transcrições deste manuscrito.
       empty_transcript: Transcrição vazia –– provavelmente upload inicial do fac-símile da página.
-      initial_upload: Carregamento inicial das imagens fac-símile e metadados deste trabalho para FromThePage para edição
+      initial_upload: Carregamento inicial das imagens fac-símile e metadados desta obra para FromThePage para edição
       made_edits_between: fez %{count} edições entre
       made_one_edit_on: fez uma edição em
       single_proof_by: 'Prova única por:'

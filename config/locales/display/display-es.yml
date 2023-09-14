@@ -8,7 +8,7 @@ es:
       facsimile: Facsímil
       help_correct: ayudar a corregir
       help_transcribe: ayudar a transcribir
-      help_translate: ayuda a traducir
+      help_translate: ayudar a traducir
       mark_the_page_blank: marcar la página en blanco
       or_mark_blank: "<br>o %{mark_blank}"
       page_notes: Notas de Página
@@ -52,6 +52,7 @@ es:
       search_for: Búsqueda de obras %{search_string}
       search_in_collection: Buscar en la colección...
       search_in_collection_1: Buscar en la colección
+      search_in_work: Buscar en la obra...
       translations_need_indexing: Traducciones que Necesitan Indexación
       translations_need_review: Traducciones que Necesitan Revisión
       view_all_pages: Ver Todas las Páginas
@@ -88,7 +89,7 @@ es:
   display_helper:
     page_action:
       blank_page: Página en blanco
-      completed: Terminado
+      completed: Terminada
       correct: Correcto
       index: Índice
       review: Revisar

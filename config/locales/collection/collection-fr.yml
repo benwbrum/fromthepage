@@ -4,11 +4,13 @@ fr:
     approve_all:
       approved_n_pages: "%{page_count} pages approuvées."
     collection_works:
+      most_recent_activity: Activité la plus récente
       n_pages:
         one: '1 page :'
         other: "%{count} pages :"
       progress: Progrès
       work_title: Titre de œuvre
+    complete: complet
     contributor_activity:
       recent_notes: Notes récentes
       recent_ocr_correction: Correction d'OCR récente
@@ -32,8 +34,11 @@ fr:
       collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
       collaborators: Collaborateurs
       detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
-      export_activity_as_csv: Exporter l'activité au format CSV
-      export_as_csv: Exporter l'activité détaillée au format CSV
+      export_activity_as_csv: Exporter toutes les activités sous forme de feuille de calcul
+      export_activity_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque action.
+      export_activity_as_csv_header: Activité d'exportation
+      export_as_csv: Exporter l'activité de l'utilisateur sous forme de feuille de calcul
+      export_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque utilisateur ainsi que son temps et son activité.
       find_project_newsletters_recommendations: Trouvez des recommandations pour les newsletters du projet.
       new_collaborators: Nouveaux collaborateurs
       no_activity_this_time_frame: Aucune activité pendant cette période
@@ -57,6 +62,10 @@ fr:
       authorized_reviewers: Examinateurs autorisés
       blank_collection: Effacer collection
       blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      block: Bloquer les utilisateurs
+      block_users_description: Empêchez les utilisateurs individuels d'accéder à la collection.
+      block_users_modal_description: L'accès à la collection a été bloqué pour ces utilisateurs. La collection ne leur sera pas visible, comme si elle avait été marquée comme privée ou supprimée. L'ajout d'utilisateurs à cette liste ne les avertira pas qu'ils ont été bloqués.
+      blocked_users: Utilisateurs bloqués
       close_api: Fermer l'API
       collection_active_message: Ceci est une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
       collection_collaborators: Collaborateurs de la collection
@@ -92,6 +101,7 @@ fr:
       edit_fields: Champs
       edit_metadata_fields: Modifier les champs
       edit_owners: Modifier les propriétaires
+      edit_profile: Changez ceci dans votre profil d'utilisateur
       editor_buttons: Boutons de l'éditeur
       editor_buttons_description: Choisissez les boutons de balisage à afficher dans l'éditeur de transcription.
       enable_document_sets: Activer les jeux de documents
@@ -102,10 +112,9 @@ fr:
       enable_ocr: Activer OCR
       enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
       field_based_transcription: Transcription basée sur les champs
-      footer: Bas de chaque page
+      footer: Bas de page
       help: Texte de la page d'aide
       hide_completed: Masquer les œuvres terminés par défaut
-      learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
       make_collection_active: Rendre la collection active
       make_collection_inactive: Rendre la collection inactive
@@ -155,6 +164,8 @@ fr:
       transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
       transcription_type: Type de transcription
       transcription_type_description: Chaque page peut avoir une zone de saisie de texte libre (par défaut) ou plusieurs champs de saisie courts conçus pour les formulaires. Toutes les pages de la collection ont le même type d'entrées de transcription. La dictée vocale n'est pas prise en charge et sera désactivée.
+      unblock_user: Débloquer l'utilisateur
+      update_footer_message: Vous pouvez mettre à jour le pied de page en modifiant le profil de %{owner}
       upload_image: Télécharger une image
       upload_metadata: Télécharger les métadonnées
       url: URL
@@ -182,6 +193,8 @@ fr:
       head_label: Titre
       heading: Configuration de l'éditeur de transcription
       html: "(HTML)"
+      i_description: Marquez le texte en italique.
+      i_label: Italique
       lb_description: Marque les sauts de ligne
       lb_label: Saut de ligne
       markup_preference_description: Certaines balises ont des formes équivalentes en HTML et TEI-XML. Choisissez une préférence pour déterminer quelle forme de balise est insérée lorsqu'un utilisateur appuie sur le bouton.
@@ -243,6 +256,9 @@ fr:
       enter_collection_title: Pour créer une nouvelle collection, commencez par entrer le titre de la collection. À l'étape suivante, vous pourrez ajouter des œuvres à la collection.
       individual_researcher_limited_account: Les comptes de chercheurs individuels sont limités à une seule collection. Pour mettre à niveau votre compte, contactez support@fromthepage.com.
       title: Titre
+    new_mobile_user:
+      email_me: Envoyez-moi un lien par e-mail
+      message: Il semble que vous consultiez cette page sur un appareil mobile. Il est plus facile de retranscrire cette collection sur un écran plus grand.
     one_off_list:
       date: Date
       filter_contributions: Filtre
@@ -328,10 +344,6 @@ fr:
       user_contribution_description: Pages nécessitant une révision par l'utilisateur %{user_name}
       user_profile: Profil de l'utilisateur
     works_list:
-      alphabetical: Alphabétique
-      percent_complete: Pourcentage achevé
-      recent_activity: Activité récente
-      sort_works_by: Trier les œuvres par...
       works: Œuvres
     works_to_review:
       and_n_more: et %{n} de plus

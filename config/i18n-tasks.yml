@@ -3,7 +3,7 @@
 # The "main" locale.
 base_locale: en
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
-locales: [en, es, pt, fr]
+locales: [en, es, pt, fr, de]
 ## Reporting locale, default: en. Available: en, ru.
 # internal_locale: en
 
@@ -117,6 +117,7 @@ ignore_missing:
     - 'thredded.*'
   pt: *NOT_EN
   fr: *NOT_EN
+  de: *NOT_EN
 
 ## Consider these keys used:
 ignore_unused:
@@ -125,7 +126,7 @@ ignore_unused:
   - 'errors.*'
   - 'shared.codemirror.*'
   - 'will_paginate.*'
-  - '{en,es,pt,fr}'
+  - '{en,es,pt,fr,de}'
   - '{time,date}.formats.*'
   - 'deed.:'
   - 'deed.deed.html.:'

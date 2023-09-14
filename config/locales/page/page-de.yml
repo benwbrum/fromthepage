@@ -1,0 +1,43 @@
+---
+de:
+  page:
+    create:
+      page_created: Seite erfolgreich erstellt
+    delete:
+      page_deleted: Seite wurde gelöscht
+    edit:
+      browse: Durchsuchen
+      click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
+      created: "%{date} erstellt"
+      delete_confirm_message: Möchten Sie diese Seite wirklich löschen? Nach dem Löschen können Sie sie nicht wiederherstellen!
+      delete_page: Seite löschen
+      dimensions: 'Maße: %{width} × %{height}'
+      here_you_can_edit: Hier können Sie den Seitentitel bearbeiten und ein neues Bild hochladen. Wenn Sie die Transkription oder den Übersetzungstext bearbeiten möchten, wechseln Sie bitte oberhalb auf die entsprechende Registerkarte.
+      page_image: Faksimile
+      page_position: 'Seitenposition: %{position}'
+      page_status: Seitenstatus
+      page_status_: Nicht angefangen
+      page_status_blank: Leere Seite
+      page_status_incomplete: Unvollständig
+      page_status_indexed: Indexiert
+      page_status_review: Überprüfung erforderlich
+      page_status_transcribed: Vollständig
+      page_status_translated: Übersetzt
+      page_title: Seitentitel
+      page_translation_status: Übersetzungsstatus
+      rotate_clockwise: Im Uhrzeigersinn drehen
+      rotate_counterclockwise: Gegen den Uhrzeigersinn drehen
+      save_changes: Änderungen speichern
+      status: 'Status:'
+    new:
+      add_new_page: Neue Seite hinzufügen
+      browse: Durchsuchen
+      cancel: Abbrechen
+      choose_a_title: Wählen Sie einen Titel für die Seite und ein Faksimile zum Hochladen aus.
+      click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
+      page_image: Faksimile
+      save_and_add_next_page: Speichern und nächste Seite hinzufügen
+      save_and_new_work: Speichern & neues Werk
+      title: Titel
+    update:
+      page_updated: Seite aktualisiert

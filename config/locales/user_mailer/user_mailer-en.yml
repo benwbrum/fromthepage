@@ -35,6 +35,12 @@ en:
         Thanks, <br><br>
         %{from}
       turn_off_notification: " to turn off this notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " to continue transcribing."
+      message: Welcome to %{collection}!
+      text:
+        continue_transcribing: 'Click this URL to continue transcribing: %{url}.'
     new_owner:
       welcome: Welcome
     nightly_user_activity:

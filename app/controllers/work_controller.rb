@@ -15,7 +15,7 @@ class WorkController < ApplicationController
   before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :configurable_printout]
 
   def authorized?
     if !user_signed_in? || !current_user.owner
@@ -23,6 +23,18 @@ class WorkController < ApplicationController
     elsif @work && !current_user.like_owner?(@work)
       ajax_redirect_to dashboard_path
     end
+  end
+
+
+
+  def configurable_printout
+    @bulk_export = BulkExport.new
+    @bulk_export.collection = @collection
+    @bulk_export.work = @work
+    @bulk_export.text_pdf_work = true
+    @bulk_export.report_arguments['include_contributors'] = true
+    @bulk_export.report_arguments['include_metadata'] = true
+    @bulk_export.report_arguments['preserve_linebreaks'] = false
   end
 
 
@@ -243,6 +255,7 @@ class WorkController < ApplicationController
     deed.collection = work.collection
     deed.user = user
     deed.save!
+    update_search_attempt_contributions
   end
 
   private

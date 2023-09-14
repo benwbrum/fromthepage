@@ -13,26 +13,13 @@ es:
       export_metadata: Exportación FromThePage de %{work} desde %{collection} realizada en %{time}.
     index:
       api: API
-      export_all_table_data_as_csv: Exportar todos los datos de la tabla en formato CSV
-      export_all_tables: Exportar todas las tablas
-      export_all_tables_description: Haz clic en el botón para exportar datos de la tabla de toda la colección en un solo archivo CSV. Tenga en cuenta que el proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo.
       export_all_works: Exportar todo el contenido
       export_all_works_description: Elije los formatos y las granularidades para exportar toda la colección en un archivo zip.
       export_as: Exportar como
-      export_individual_works: Exportar Trabajos Individuales
-      export_individual_works_description: Puedes elegir exportar trabajos individuales en varios formatos de archivo. XHTML exporta un trabajo como un archivo XHTML de una sola página con transcripciones, comentarios de los usuarios, artículos temáticos y HREF internos que vinculan temas y páginas. TEI exporta un trabajo como documento TEI-XML compatible con P5. El texto no tiene formato. La exportación zip te dará todos los formatos de una obra y una granularidad de página.
-      export_subject_coocurrence_as_csv: Exportar coocurrencias en formato CSV
-      export_subject_coocurrence_description: Haz clic en el botón para exportar un archivo CSV con una fila para cada combinación de asuntos de la colección mencionados en la misma página. (El proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo).
-      export_subject_details_as_csv: Exportar asuntos en formato CSV
-      export_subject_details_description: Haz clic en el botón para exportar un archivo CSV con una fila para cada tema o asunto de la colección. (El proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo).
-      export_subject_index: Exportar asuntos
-      export_subject_index_description: Haz clic en el botón para exportar índices temáticos de toda la colección en un solo archivo CSV. (El proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo).
-      export_subjects_as_csv: Exportar índice como archivo CSV
+      export_individual_works: Exportar Obras Individuales
+      export_individual_works_description: Puedes elegir exportar obras individuales en varios formatos de archivo. XHTML exporta una obra como un archivo XHTML de una sola página con transcripciones, comentarios de los usuarios, artículos temáticos y HREF internos que vinculan temas y páginas. TEI exporta una obra como documento TEI-XML compatible con P5. El texto no tiene formato. La exportación zip te dará todos los formatos de una obra y una granularidad de página.
       export_to_contentdm: Exportar a CONTENTdm
       export_to_contentdm_description: Haz clic en el botón para exportar las transcripciones completadas de toda la colección a CONTENTdm.
-      export_work_metadata: Exportar metadatos de trabajo
-      export_work_metadata_as_csv: Exportar metadatos de trabajo en formato CSV
-      export_work_metadata_description: Exportar una hoja de cálculo que contiene una fila para cada trabajo de la colección, con columnas para estadísticas sobre las páginas transcritas y los metadatos del trabajo.
       here: aquí
       html: HTML
       iiif: IIIF
@@ -42,7 +29,7 @@ es:
       more: Más
       more_export_formats: Formatos de exportación adicionales
       n_pages:
-        one: 1 pagina
+        one: 1 página
         other: "%{count} páginas"
       pages: Páginas
       plain_text: Texto sin formato
@@ -50,7 +37,7 @@ es:
       review: Revisar
       table_csv: Tabla en formato CSV
       tei: IET
-      work_title: Título del trabajo
+      work_title: Título de la obra
     show:
       categories: 'Categorías:'
       export_metadata: Exportar desde FromThePage de %{work} de %{collection} realizada en %{time}.
@@ -69,7 +56,7 @@ es:
       dynamic_tei_export: Exportación dinámica TEI de FromThePage (versión %{version})
       edition_created: Edición creada a partir de nuevas transcripciones de este manuscrito.
       empty_transcript: Transcripción vacía -- probablemente carga inicial del facsímil de página.
-      initial_upload: Carga inicial de las imágenes de facsímil y metadatos de este trabajo a FromThePage para editarlos
+      initial_upload: Carga inicial de las imágenes de facsímil y metadatos de esta obra a FromThePage para editarlos
       made_edits_between: hizo %{count} ediciones entre
       made_one_edit_on: hizo una edición en
       single_proof_by: 'Prueba única por:'

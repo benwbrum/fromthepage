@@ -1,6 +1,22 @@
 ---
 fr:
   work:
+    configurable_printout:
+      description: Exportez ce travail dans un format imprimable
+      export: Exporter
+      file_format: Format de fichier
+      file_format_description: Type de fichier pour l'exportation imprimable
+      heading: Configuration de l'impression
+      include_contributors: Inclure les contributeurs
+      include_metadata: Inclure les métadonnées
+      preserve_linebreaks: Conserver les sauts de ligne
+      text_contents: Contenu
+      text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur le travail.
+      text_format: Formatage du texte
+      text_format_description: Options de mise en forme du texte.
+      text_format_docx: MS Word (.docx)
+      text_format_pdf: PDF
+      word_wrap: Retour à la ligne
     create:
       work_created: Œuvre créée avec succès
     describe:
@@ -36,6 +52,9 @@ fr:
       revision: révision
     download:
       analyze: Analyser
+      configurable_printout: Impression configurable
+      configurable_printout_button: Configurer
+      configurable_printout_description: Export PDF ou MS Word avec contenu et mise en forme configurables
       docx_download_description: Télécharger une version DOCX de ce œuvre.
       download: Télécharger
       expanded_plaintext: Texte brut étendu
@@ -55,6 +74,8 @@ fr:
       reuse: Réutilisation
       searchable_plaintext: Texte brut optimisé pour la recherche
       searchable_plaintext_export_description: Exporter des transcriptions en texte brut optimisées pour la recherche en texte intégral sous forme de fichier zip contenant un fichier par page.
+      subject_index_csv: Índice de materias CSV
+      subject_index_csv_description: Une feuille de calcul répertoriant chaque endroit où un sujet est mentionné dans une page de l'œuvre.
       table_field_csv: Tableau/Champ CSV
       table_field_csv_export_description: Exporter toutes les données tabulaires, de feuilles de calcul ou basées sur des champs dans un seul fichier CSV.
       verbatim_plaintext: Texte brut verbatim
@@ -171,6 +192,7 @@ fr:
       location_of_composition: Lieu de composition
       metadata: Métadonnées
       number_of_pages: Nombre de pages : 
+      original_filename: Nom de fichier d'origine
       out_of_scope: Hors de portée
       permission_description: Description de l'autorisation
       physical_description: Description physique

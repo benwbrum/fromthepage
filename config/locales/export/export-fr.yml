@@ -13,26 +13,13 @@ fr:
       export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
     index:
       api: API
-      export_all_table_data_as_csv: Exporter toutes les données du tableau au format CSV
-      export_all_tables: Exporter tous les tableaux
-      export_all_tables_description: Cliquer sur le bouton pour exporter les données du tableau de toute la collection dans un seul fichier CSV. Veuillez noter que le processus d'exportation peut prendre un certain temps, veuillez donc patienter jusqu'à ce que la boîte de dialogue Enregistrer le fichier s'affiche.
       export_all_works: Exporter toutes les œuvres
       export_all_works_description: Choisir les formats et les granularités pour exporter toute la collection dans un fichier zip.
       export_as: Exporter sous
       export_individual_works: Exporter des œuvres individuelles
       export_individual_works_description: Vous pouvez choisir d'exporter des œuvres individuelles dans plusieurs formats de fichiers. XHTML exporte une œuvre sous la forme d'un fichier XHTML d'une seule page avec des transcriptions, des commentaires d'utilisateurs, des articles de sujet et des HREF internes reliant les sujets et les pages. TEI exporte une œuvre sous la forme d'un document TEI-XML conforme à P5. Le texte est en clair. L'export zip vous donnera tous les formats d'une œuvre et la granularité des pages.
-      export_subject_coocurrence_as_csv: Exporter les cooccurrences au format CSV
-      export_subject_coocurrence_description: Cliquer sur le bouton pour exporter un fichier CSV avec une ligne pour chaque combinaison de sujets de la collection qui sont mentionnés dans la même page. (Le processus d'exportation peut prendre un certain temps, veuillez donc patienter jusqu'à ce que la boîte de dialogue Enregistrer le fichier s'affiche.)
-      export_subject_details_as_csv: Exporter les sujets au format CSV
-      export_subject_details_description: Cliquer sur le bouton pour exporter un fichier CSV avec une ligne pour chaque sujet de la collection. (Le processus d'exportation peut prendre un certain temps, veuillez donc patienter jusqu'à ce que la boîte de dialogue Enregistrer le fichier s'affiche.)
-      export_subject_index: Exporter les sujets
-      export_subject_index_description: Cliquer sur le bouton pour exporter les index des sujets de toute la collection dans un seul fichier CSV. (Le processus d'exportation peut prendre un certain temps, veuillez donc patienter jusqu'à ce que la boîte de dialogue Enregistrer le fichier s'affiche.)
-      export_subjects_as_csv: Index d'exportation au format CSV
       export_to_contentdm: Exporter vers CONTENTdm
       export_to_contentdm_description: Cliquer sur le bouton pour exporter les transcriptions terminées de l'ensemble de la collection vers CONTENTdm.
-      export_work_metadata: Exporter les métadonnées de œuvre
-      export_work_metadata_as_csv: Exporter les métadonnées de œuvre au format CSV
-      export_work_metadata_description: Exporter une feuille de calcul contenant une ligne pour chaque œuvre de la collection, avec des colonnes pour les statistiques sur les pages transcrites et les métadonnées de l'œuvre.
       here: ici
       html: HTML
       iiif: IIIF

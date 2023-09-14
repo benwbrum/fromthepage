@@ -47,8 +47,8 @@ pt:
         one: página
         other: Páginas
       work:
-        one: trabalhar
-        other: funciona
+        one: obra
+        other: obras
   errors:
     messages:
       not_saved:

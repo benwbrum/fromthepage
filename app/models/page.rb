@@ -247,6 +247,7 @@ class Page < ApplicationRecord
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
+    version.status = self.status
     unless User.current_user.nil?
       version.user = User.current_user
     else
@@ -340,21 +341,9 @@ class Page < ApplicationRecord
   # It should be called twice whenever a page is changed
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
-    Article.where("id in (select article_id "+
-                       "       from page_article_links "+
-                       "       where page_id = #{self.id})").update_all(:graph_image=>nil)
+    article_ids = self.page_article_links.pluck(:article_id)
+    Article.where(id: article_ids).update_all(:graph_image=>nil)
   end
-=begin
-Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
-Article.update_all('graph_image=NULL', "id in (select article_id from page_article_links  where page_id = 1)")
-It produces this SQL:
-UPDATE `articles` SET graph_image=NULL WHERE (id in (select article_id from page_article_links where page_id = 1))
-
-There is a more idiomatic ActiveRecord call:
-Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id).where('page_id = ?', 1))
-it produces this sql:
-UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
-=end
 
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)

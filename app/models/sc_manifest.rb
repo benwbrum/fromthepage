@@ -247,7 +247,7 @@ class ScManifest < ApplicationRecord
   def html_description
     description=self.description
     unless description.blank?
-      description += ScManifest.flatten_element(self.description) + "\n<br /><br />\n"
+      description = ScManifest.flatten_element(self.description) + "\n<br /><br />\n"
     end
 
     description

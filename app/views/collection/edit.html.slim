@@ -22,8 +22,12 @@
         tr
           td(colspan="2")
             =f.label :footer_block, t('.footer'), class: "above"
-            =f.text_area :footer_block, rows: 5, value: @collection.footer_block
-            p.nomargin.settings =link_to t('.learn_more_footer'), "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
+            - if current_user == @collection.owner
+                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = link_to t('.edit_profile'), user_profile_path(current_user)
+            - else
+                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = t('.update_footer_message', owner: @collection.owner.display_name)
         -if @collection.text_entry?
           tr
             td(colspan="2")
@@ -162,6 +166,11 @@
         =profile_picture(user)
         .username
           =link_to user.display_name, user_profile_path(user)
+    
+    - unless @collection.restricted
+      h3 =t('.blocked_users')
+      p =t('.block_users_description')
+      p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
 
 
     -if @collection.text_entry?
@@ -263,8 +272,6 @@
       h3 =t('.delete_collection')
       =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
         span =t('.delete_collection')
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

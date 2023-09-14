@@ -42,10 +42,12 @@
                         <li><%= link_to t('layouts.application.about'), 'https://content.fromthepage.com/about-us/', target: '_blank' %></li>
                         <li><%= link_to t('layouts.application.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/', target: '_blank' %></li>
                         <li><%= link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank' %></li>
-                        <li><%= mail_to 'support@fromthepage.com', t('layouts.application.contact_us') %></li>
+                        <li><%= link_to t('layouts.application.contact_us'), contact_path(contact_form_token) %></li>
                         <% if request.original_url.include?("fromthepage.com") %></li>
                             <li><%= link_to t('layouts.application.pricing'), pricing_path, target: '_blank' %></li>
                         <% end %>
+                        <li><%= link_to 'Press', 'https://content.fromthepage.com/press/', target: '_blank' %></li>
+
                     </ul>
                 </div>
             </div>
@@ -73,5 +75,10 @@
     <%= javascript_include_tag 'landing/slider.js' %>
     <%= javascript_include_tag 'landing/main.js' %>
 
-
-
+    <% if defined? INTERCOM_APP_ID %>
+      <% if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom_customer" %>
+      <% elsif controller_name=='static' && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom" %>
+      <% end %>
+    <% end %>

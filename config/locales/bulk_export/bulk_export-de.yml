@@ -1,0 +1,75 @@
+---
+de:
+  bulk_export:
+    create:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_owner:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work_actual:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    download:
+      download_cleaned_message: Dieser Export wurde bereinigt. Bitte starten Sie einen neuen.
+    index:
+      actions: Aktionen
+      collection: 'Sammlung:'
+      date: Datum
+      file_name: 'Dateiname:'
+      show_details: Zeige Details
+      status: Status
+      upload_details: Details hochladen
+      user: Nutzer:in
+    new:
+      download: Herunterladen
+      expanded_plaintext: Erweiterte Plaintext-Datei
+      expanded_plaintext_description: Wie bei der wörtlichen Plaintext-Datei werden in dieser Plaintext-Datei Zeilenumbrüche mit einem einfachen Zeilenumbruch, Absatzumbrüche mit einem doppelten Zeilenumbruch und Seitenumbrüche mit einem dreifachen Zeilenumbruch repräsentiert. Im Gegensatz zum wörtlichen Text werden die Normalisierung auf alle erwähnten Entitäten angewendet, so dass der wörtliche Text möglicherweise lautet „Ich habe heute Morgen Mr. Jones und seine Frau gegrüßt.“ und der berichtigte Klartext „Ich habe heute Morgen James Jones und Elizabeth Smith Jones gegrüßt“. Dieser künstliche Text ist nützlich für die programmatische Analyse, aber er ist nicht dazu bestimmt, von Menschen gelesen zu werden.
+      export_all_works: Alle Werke exportieren
+      export_work_metadata: Metadaten zum Werk exportieren
+      export_work_metadata_as_csv: Metadaten zum Werk als CSV exportieren
+      export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung und mit Spalten für Statistiken zu transkribierten Seiten und für die Metadaten für das Werk.
+      facing_edition_pdf: Bild-Text-Synopse PDF
+      facing_edition_pdf_description: Eine PDF-Datei, in der die Bilder und die dazugehörigen Transkripte jeweils auf gegenüberliegenden Seiten abgebildet sind.
+      file_formats: Exportformate
+      file_organization: Ordnerorganisation
+      format_options: Formatoptionen
+      html: HTML
+      html_description: Dies kann für die Aufbewahrung in anderen Systemen oder als Ausgangspunkt für die Anzeige auf einer anderen Website nützlich sein.
+      notes_csv: Notizen CSV
+      notes_csv_description: Eine Tabelle, in der jede Notiz in der Sammlung aufgeführt ist.
+      one_file_per_collection: Eine Datei pro Sammlung
+      one_file_per_page: Eine Datei pro Seite
+      one_file_per_work: Eine Datei pro Werk
+      one_site_per_collection: Eine Website pro Sammlung
+      organization: Ordnerorganisation
+      organization_description: ZIP-Dateien können je einen Ordner pro Werk enthalten, der Dateien oder Unterordner für jedes Exportformat enthält, oder sie enthalten einen Ordner pro Exportformat, der Dateien pro Werk enthält.
+      organization_format: Ordner nach Formaten
+      organization_work: Ordner nach Werken
+      preserve_linebreaks: Zeilenumbrüche beibehalten
+      previous_exports: Frühere Exporte
+      search_optimized_plaintext: Suchoptimierter Plaintext
+      search_optimized_plaintext_description: Eine für die Volltextsuche optimierte Plaintext-Version des Werkes. Diese Version enthält eine wörtliche Plaintext-Abschrift jeder Seite (wie oben beschrieben), mit der Ausnahme, dass Wörter, die durch Zeilenumbrüche mit Bindestrich unterbrochen wurden, miteinander verbunden sind, und eine Liste der kanonischen Namen, die auf jeder Seite erwähnt werden, am Ende der Seite angehängt ist.
+      start_export: Export starten
+      static_site: Statische Website
+      static_site_description: Eine statische Jekyll-Website, die die gesamte Edition enthält.
+      status: Status
+      subject_details_csv: Entitätendetails CSV
+      subject_details_csv_description: Eine Tabelle, die jede Entität in der Sammlung auflistet.
+      subject_index_csv: Entitätenindex CSV
+      subject_index_csv_description: Eine Tabelle, in der jede Position aufgelistet ist, an der eine Entität auf einer Seite innerhalb der Sammlung erwähnt wird.
+      table_field_csv: Tabelle/Felder CSV
+      table_field_csv_description: Exportiert eine Tabelle mit feldbasierten oder tabellarischen Daten.
+      tei_xml: TEI-XML
+      tei_xml_description: Dies kann für Editor:innen nützlich sein, die weitere Auszeichnungen in TEI-XML-Editoren wie oXygen planen.
+      text_docx: Text DOCX
+      text_docx_description: Eine MS-Word-Datei (.docx) mit Texttranskripten.
+      text_only_pdf: Text (nur) PDF
+      text_only_pdf_description: Eine PDF-Datei, die nur Texttranskripte enthält.
+      text_pdf: Text-PDF
+      text_pdf_description: Eine PDF-Datei, die Texttranskripte und Metadaten des Werkes enthält.
+      time: Zeitpunkt
+      use_uploaded_filename: Datei-/Ordnernamen
+      use_uploaded_filename_description: Exportdateien oder -ordner basieren standardmäßig auf dem Werk-Kürzel (wie in der URL). Sollte das Werk zu Beginn hochgeladen worden sein, ist es auch möglich, den ursprünglichen Dateinamen für Exporte verwenden.
+      use_uploaded_filename_label: Originalnamen verwenden
+      verbatim_plaintext: Wörtliche Plaintext-Datei
+      verbatim_plaintext_description: In dieser Plaintext-Datei werden Zeilenumbrüche mit einem einfachen Zeilenumbruch, Absatzumbrüche mit einem doppelten Zeilenumbruch und Seitenumbrüche mit einem dreifachen Zeilenumbruch dargestellt. Es enthält den wörtlichen Text ohne Formatierungen, Korrekturen oder Entitätenverlinkungen.
+      work_metadata_csv: Werk-Metadaten CSV
+      work_metadata_csv_description: Eine Tabelle, die jedes Werk mit Seitenanzahl und Metadaten auflistet.

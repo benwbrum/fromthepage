@@ -55,21 +55,6 @@ describe "export tasks" do
     expect(page).to have_content("Finished")
   end
 
-  it "exports the subject index" do
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Subjects")
-    expect(page).to have_content(@work.title)
-    page.find('#btnCsvExport').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
-  end
-
-  it "exports the subject details" do
-    visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Subjects")
-    expect(page).to have_content(@work.title)
-    page.find('#btnCsvDetailExport').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
-  end
 
   it "exports a work as xhtml" do
     visit "/export?collection_id=#{@collection.id}"

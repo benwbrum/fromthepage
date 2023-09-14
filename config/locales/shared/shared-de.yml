@@ -1,0 +1,97 @@
+---
+de:
+  shared:
+    article_tabs:
+      overview: Überblick
+      settings: Einstellungen
+      subject: Entität
+      versions: Versionen
+    breadcrumbs:
+      search_results: Suchergebnisse
+    codemirror:
+      abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
+      add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
+      date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
+      del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
+      expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.
+      fig_description: Kennzeichnet eine Abbildung oder eine horizontale Linie.
+      footnote_description: Umschließt den Inhalt einer Fußnote mit dem Fußnotensymbol im Markierungsattribut.
+      gap_description: Markiert eine Lücke im Text, oft aufgrund von Beschädigungen
+      head_description: Markiert Überschriften im Text
+      marginalia_description: Markiert Text am Seitenrand (außerhalb des Haupttextes).
+      reg_description: Markiert eine normalisierte Schreibung mit Originalform im orig-Attribut.
+      s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
+      sub_description: Tiefgestellter Text.
+      sup_description: Hochgestellter Text.
+      u_description: Markiert unterstrichenen Text.
+      unclear_description: Markiert unklaren Text.
+    collection_tabs:
+      add_work: Werk hinzufügen
+      collaborators: Mitarbeitende
+      collection: Sammlung
+      edit_fields: Felder
+      edit_metadata_fields: Metadatenfelder
+      export: Export
+      facets: Facetten
+      forum: Forum
+      overview: Überblick
+      review: Review
+      sets: Sets
+      settings: Einstellungen
+      statistics: Statistiken
+      subjects: Entitäten
+      works_list: Werkliste
+    description_tabs:
+      describe: Metadaten
+      help: Hilfe
+      metadata: Metadaten
+      nav_info: Werk %{position} von %{size}
+      next_page: Nächste Seite
+      next_work: Nächstes Werk
+      overview: Überblick
+      previous_page: Vorherige Seite
+      previous_work: Vorheriges Werk
+      versions: Versionen
+    handsontable:
+      date_tooltip: Datumsangaben sollten im Format JJJJ-MM-TT (Jahr vierstellig, Monat zweistellig, Tag zweistellig, mit Bindestrichen dazwischen) formatiert sein.
+    markup_help:
+      markup_help_description: '"Autolink" schlägt Entitäten vor, mit denen bestimmte Wörter verknüpft werden könnten. Sie können aber auch doppelte Klammern verwenden, um Entitäten zu verknüpfen. <code>[[Jane Doe]]</code> verknüpft den Text „Jane Doe“ mit der Entität Jane Doe, und <code>[[Jane Doe|Jane]]</code> den Text „Jane“ zur Entität Jane Doe. Wir empfehlen, die Verlinkungen erst dann von einem/einer Bearbeiter:in vornehmen zu lassen, sobald eine erste Fassung der Transkription fertig ist.'
+    osd_div:
+      brightness: Helligkeit
+      contrast: Kontrast
+      full_page: Auf Vollbild umschalten
+      home: Zum Ausgangsbild zurückkehren
+      image_filters: Bildfilter
+      open_seadragon_needs_js: OpenSeadragon ist nur verfügbar, wenn JavaScript aktiviert ist.
+      rotate_left: Nach links drehen
+      rotate_right: Nach rechts drehen
+      threshold: Schwelleneffekt
+      zoom_in: Hineinzoomen
+      zoom_out: Rauszoomen
+    page_tabs:
+      correct: Korrektur
+      describe_work: Werk beschreiben
+      help: Hilfe
+      nav_info: Seite %{position} von %{size}
+      next_page: Nächste Seite
+      overview: Überblick
+      page: Seite
+      previous_page: Vorherige Seite
+      settings: Einstellungen
+      transcribe: Transkription
+      translate: Übersetzung
+      versions: Versionen
+    review_breadcrumbs:
+      dashboard: Review-Dashboard
+      page: Seite
+    validation_summary:
+      form: Formular
+    work_tabs:
+      about: Info
+      contents: Inhalt
+      download: Download
+      help: Hilfe
+      pages: Seiten
+      read: Lesen
+      settings: Einstellungen
+      work: Werk

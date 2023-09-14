@@ -3,14 +3,15 @@ en:
   statistics:
     collaborator_time:
       collaborator_time: Collaborator Time
-      export_activity_as_csv: Export Detailed Activity as CSV
+      collaborator_time_description: A spreadsheet of the number of minutes each user contributed per day in the date range.
+      collaborator_time_export_button: Export Collaborator Time Spreadsheet
       no_activity_for_date_range: There is no activity for this date range.
       user_totals_for_dates: User Totals for Dates
     collaborators:
       collaborators: Collaborators
       editing: Editing
       indexing: Indexing
-      mailing_list_export: Mailing List Export
+      mailing_list_export: Export Mailing List
       no_editors: No editors
       no_indexers: No indexers
       no_transcribers: No transcribers
@@ -66,6 +67,9 @@ en:
       work:
         one: Work
         other: Works
+      work_transcribed:
+        one: Work transcribed
+        other: Works transcribed
       works_described:
         one: Described work
         other: Described works

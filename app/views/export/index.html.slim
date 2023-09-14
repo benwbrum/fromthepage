@@ -82,45 +82,6 @@ p.big
 
   =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
-  -unless @collection.subjects_disabled
-    h2 =t('.export_subject_index')
-    p.big
-      span.fright(style="margin-left: 30px")
-        =link_to(export_subject_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span =t('.export_subjects_as_csv')
-      span =t('.export_subject_index_description')
-    p.big
-      span.fright(style="margin-left: 30px")
-        =link_to(export_subject_details_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvDetailExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span =t('.export_subject_details_as_csv')
-      span =t('.export_subject_details_description')
-    -if @collection.is_a? Collection
-      p.big
-        span.fright(style="margin-left: 30px")
-          =link_to(export_subject_coocurrence_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvCoocurrenceExport')
-            =svg_symbol '#icon-export', class: 'icon'
-            span =t('.export_subject_coocurrence_as_csv')
-        span =t('.export_subject_coocurrence_description')
-
-  -unless @table_export.blank?
-    h2 =t('.export_all_tables')
-    p.big
-      span.fright(style="margin-left: 30px")
-        =link_to(export_export_all_tables_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnExportTables')
-          =svg_symbol '#icon-export', class: 'icon'
-          span =t('.export_all_table_data_as_csv')
-      span =t('.export_all_tables_description')
-
-h2 =t('.export_work_metadata')
-p.big
-  span.fright(style="margin-left: 30px")
-    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
-      =svg_symbol '#icon-export', class: 'icon'
-      span =t('.export_work_metadata_as_csv')
-  span =t('.export_work_metadata_description')
-
 h2= t('.api')
 p
   =t('.iiif_api_description', link: link_to(t('.here'), 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')).html_safe
@@ -128,8 +89,6 @@ p
 p
   =t('.iiif_collection_api_endpoint', link: link_to(iiif_collection_url(@collection.slug, only_path: false),
                                                     iiif_collection_url(@collection.slug, only_path: false))).html_safe
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

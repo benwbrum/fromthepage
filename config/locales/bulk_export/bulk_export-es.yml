@@ -3,7 +3,9 @@ es:
   bulk_export:
     create:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
-    create_for_work:
+    create_for_owner:
+      export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
+    create_for_work_actual:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     download:
       download_cleaned_message: Esta descarga de exportación se ha limpiado. Por favor, comience uno nuevo.
@@ -21,20 +23,27 @@ es:
       expanded_plaintext: Texto sin formato expandido
       expanded_plaintext_description: Al igual que el texto sin formato textual, este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Se diferencia del texto textual en que la normalización se aplicará a todos los temas mencionados, de modo que mientras el texto textual puede decir "Saludé al Sr. Jones y su esposa esta mañana", el texto sin formato modificado dirá "Saludé a James Jones". y Elizabeth Smith Jones esta mañana”. Este texto artificial es útil para el análisis programático, pero no está destinado a ser leído por humanos.
       export_all_works: Exportar todas las obras
+      export_work_metadata: Exportar metadatos de obras
+      export_work_metadata_as_csv: Exportar metadatos de obras en formato CSV
+      export_work_metadata_description: Exportar una hoja de cálculo que contiene una fila para cada obre de la colección, con columnas para estadísticas sobre las páginas transcritas y los metadatos de la obra.
       facing_edition_pdf: Edición enfrentada PDF
       facing_edition_pdf_description: Un archivo PDF que contiene imágenes y transcripciones en páginas opuestas.
       file_formats: Formatos de exportación
       file_organization: Organización de carpetas
+      format_options: Opciones de formato
       html: HTML
       html_description: Esto puede ser útil para la conservación en otros sistemas o como punto de partida para su visualización en otro sitio web.
+      notes_csv: Notas CSV
+      notes_csv_description: Una hoja de cálculo que enumera cada nota en la colección.
       one_file_per_collection: Un archivo por colección
       one_file_per_page: Un archivo por página
       one_file_per_work: Un archivo por obra
       one_site_per_collection: Un sitio por colección
       organization: Organización de carpetas
-      organization_description: Los archivos zip se pueden organizar con una carpeta por trabajo que contenga archivos o subcarpetas para cada formato de exportación, o con una carpeta por formato de exportación que contenga archivos por trabajo.
+      organization_description: Los archivos zip se pueden organizar con una carpeta por obra que contenga archivos o subcarpetas para cada formato de exportación, o con una carpeta por formato de exportación que contenga archivos por obra.
       organization_format: Formatear carpetas
-      organization_work: carpetas de trabajo
+      organization_work: Carpetas de obras
+      preserve_linebreaks: Conservar saltos de línea
       previous_exports: Exportaciones anteriores
       search_optimized_plaintext: Texto sin formato optimizado para búsqueda
       search_optimized_plaintext_description: Una versión de texto sin formato de la obra optimizada para la búsqueda de texto completo. Esta versión contiene una transcripción literal de texto sin formato de cada página (como se describe anteriormente), excepto que las palabras separadas por saltos de línea con guión se unen, y se adjunta una lista de los nombres canónicos mencionados dentro de cada página al final de la página.
@@ -58,9 +67,9 @@ es:
       text_pdf_description: Un archivo PDF que contiene transcripciones de texto.
       time: Tiempo
       use_uploaded_filename: Nombres de archivos/carpetas
-      use_uploaded_filename_description: Los archivos o carpetas de exportación se basan en el slug de trabajo de forma predeterminada. Si un trabajo se cargó originalmente, puede usar el nombre de archivo original para exportarlo.
+      use_uploaded_filename_description: Los archivos o carpetas de exportación se basan en el slug de la obra de forma predeterminada. Si una obra se cargó originalmente, puede usar el nombre de archivo original para exportarlo.
       use_uploaded_filename_label: Usa nombres originales
       verbatim_plaintext: Texto sin formato textual
       verbatim_plaintext_description: Este archivo de texto sin formato representará saltos de línea con una sola línea nueva, saltos de párrafo con una doble línea nueva y saltos de página con una triple línea nueva. Contendrá el texto textual, con todo el formato, enmienda y enlace de tema eliminado.
-      work_metadata_csv: CSV de metadatos de trabajo
-      work_metadata_csv_description: Una hoja de cálculo que enumera cada trabajo con recuentos de páginas y metadatos.
+      work_metadata_csv: CSV de metadatos de obra
+      work_metadata_csv_description: Una hoja de cálculo que enumera cada obra con recuentos de páginas y metadatos.

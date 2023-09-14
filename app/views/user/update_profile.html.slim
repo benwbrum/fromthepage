@@ -46,6 +46,16 @@
           td(colspan="2")
             =f.label :about, t('.about_you'), class: 'above'
             =f.text_area :about, rows: 4
+        tr
+          td(colspan="2")
+            =f.label :help, t('.help'), class: "above"
+            =f.text_area :help, rows: 8, value: @user.help
+            p.nomargin.settings =link_to t('.suggestions_help_tab'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
+        tr
+          td(colspan="2")
+            =f.label :footer_block, t('.footer'), class: "above"
+            =f.text_area :footer_block, rows: 5, value: @user.footer_block
+            p.nomargin.settings =link_to t('.learn_more_footer'), "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"

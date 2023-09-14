@@ -9,6 +9,7 @@
       .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator', count: stats[:contributors])}
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter stats[:pages_transcribed]}") #{t('.page_transcribed', count: stats[:pages_transcribed])}
+      .counter(data-prefix="#{number_with_delimiter stats[:works_transcribed]}") #{t('.work_transcribed', count: stats[:works_transcribed])}
       .counter(data-prefix="#{number_with_delimiter stats[:pages_incomplete]}") #{t('.incomplete_page', count: stats[:pages_incomplete])}
       .counter(data-prefix="#{number_with_delimiter stats[:pages_needing_review]}") #{t('.page_needing_review', count: stats[:pages_needing_review])}
       .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page_reviewed', count: stats[DeedType::PAGE_REVIEWED])}

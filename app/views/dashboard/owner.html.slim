@@ -2,40 +2,39 @@
 
 .columns
   article.maincol
-    -unless current_user.all_owner_collections.empty?
+    -unless @collections.empty?
+      -unless @active_collections.empty? || @inactive_collections.empty?
+        h4 =t('.active_collections')
       .collections
-        -current_user.all_owner_collections.includes(:works).each do |c|
-          .collection
+        -@collections.each do |c|
+          -if c == @inactive_collections.first
+            h4 =t('.inactive_collections')
+          .owner-collection
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c) unless c.owner.nil?
-              -collection_list(c)
-            ol.collection_works
-            ==c.intro_block
-            -unless @works.empty?
-              -@works.each do |w|
-                li =link_to w.title, collection_read_work_path(c.owner, c, w)
-              -more_works = link_to t('.see_all_works'), collection_works_list_path(c.owner, c)
-              -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
-              p.nodata_text = t('.total_work_count', count: @count)
-                  -if @count > 15
-                    i &nbsp; #{more_works}
-                    br
-              p.nodata_text = t('.you_can_add_another_work', start_project: start_project).html_safe
+              span.visibility
+                -if c.is_public
+                  =t('.public')
+                -else
+                  =t('.private')
+            -unless c.works.empty?
+              -collection_stats(c)
+              .collection-work_stats
+                span 
+                  =t('.n_works', count: c.works.count)
+                  =@wording
+                span
+                  =render({ :partial => 'shared/progress', :locals => { :collection => c } })
             -else
               -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
               .nodata
                 h5.nodata_title =t('.there_are_no_works')
                 p.nodata_text =t('.you_can_upload_documents', start_project: start_project).html_safe
-      -unless current_user.document_sets.empty?
-        h3 =t('.document_sets')
-        -current_user.document_sets.each do |s|
-          .collection
-            h4.collection_title
-              =link_to s.title, collection_path(s.owner, s)
-            ol.collection_works
-            -unless s.works.empty?
-              -(s.works.sort_by { |work| work.title }).each do |w|
-                li =link_to w.title, collection_read_work_path(s.owner, s, w)
+            -unless c.document_sets.empty?
+              h3 =t('.document_sets')
+              -c.document_sets.each do |s|
+                h5.collection_title
+                  =link_to s.title, collection_path(s.owner, s)
 
     -else
       -new_collection = link_to t('.create_a_collection'), collection_new_path

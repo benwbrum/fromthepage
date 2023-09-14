@@ -13,7 +13,7 @@ module ContributorHelper
     #check to see if there are any deeds in the collection
     @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
 
-    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions_or_corrections)
+    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions_or_corrections).or(@collection.deeds.where(deed_type: DeedType.collection_joins))
 
     @recent_notes = @collection_deeds.where(deed_type: DeedType::NOTE_ADDED)
     @recent_transcriptions = @collection_deeds.where(deed_type: DeedType.transcriptions)
@@ -36,14 +36,14 @@ module ContributorHelper
 
     #find recent transcription deeds by user, then older deeds by user
     recent_trans_deeds = transcription_deeds.where(created_at: [start_date..end_date]).distinct.pluck(:user_id)
-    recent_users = User.where(id: recent_trans_deeds)
+    recent_users = User.active_mailers.where(id: recent_trans_deeds)
     older_trans_deeds = transcription_deeds.where(created_at: [..start_date]).distinct.pluck(:user_id)
-    older_users = User.where(id: older_trans_deeds)
+    older_users = User.active_mailers.where(id: older_trans_deeds)
 
     #compare older to recent list to get new transcribers
     @new_transcribers = recent_users - older_users
 
-    all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
+    all_transcribers = User.active_mailers.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
     @all_collaborators = all_transcribers.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
   end
 

@@ -8,11 +8,12 @@ pt:
       n_subjects_refer_to:
         one: 1 assunto refere-se a %{article}
         other: "%{count} assuntos referem-se a %{article}"
-      show_pages_that_mention: Mostrar páginas que mencionam %{article} em todos os trabalhos
+      show_pages_that_mention: Mostrar páginas que mencionam %{article} em todos as obras
     combine_duplicate:
       selected_subjects_combined: Temas selecionados combinados com %{title}
     delete:
       must_remove_referring_links: Você deve remover todos os links que fazem referência antes de deletar este tema.
+      only_subject_owner_can_delete: Somente o criador do assunto ou proprietário do projeto pode excluir isso.
     edit:
       autolink: Autolink
       categories: Categorias
@@ -50,9 +51,9 @@ pt:
       create_category_message: "%{link} que você usará para agrupar assuntos."
       create_the_first_category: Crie a primeira categoria
       delete_category: Excluir categoria
-      disable_gis_for_category: Desativar GIS para categoria
+      disable_gis_for_category: Desativar SIG para categoria
       edit_category: Editar categoria
-      enable_gis_for_category: Ativar GIS para categoria
+      enable_gis_for_category: Ativar SIG para categoria
       no_categories: Sem categorias
       no_categories_message: Não há categorias de assunto na coleção.<br>
       there_are_no_subjects: Não há assuntos para a categoria selecionada
@@ -64,7 +65,7 @@ pt:
       categories: Categorias
       description: Descrição
       download: Download
-      download_description: Faça o download de uma planilha de assuntos e trabalhos simultâneos em que eles aparecem.
+      download_description: Faça o download de uma planilha de assuntos e obras simultâneos em que eles aparecem.
       edit_description_description: Edite a descrição na guia de configurações.
       export: Exportar
       n_possible_duplicates:
@@ -90,8 +91,8 @@ pt:
       explore_this_subject: Explorar este assunto
     update:
       gis_coordinates_truncated:
-        one: " (Coordenadas GIS truncadas para a casa decimal %{precision})"
-        other: " (coordenadas GIS truncadas para %{precision} casas decimais)"
+        one: " (Coordenadas SIG truncadas para a casa decimal %{precision})"
+        other: " (coordenadas SIG truncadas para %{precision} casas decimais)"
       subject_successfully_updated: O tema foi atualizado com sucesso
       subjects_auto_linking: Processo de auto-ligação dos temas concluído
     upload_form:

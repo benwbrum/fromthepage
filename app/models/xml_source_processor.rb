@@ -106,6 +106,7 @@ module XmlSourceProcessor
     xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
+    xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
@@ -114,6 +115,13 @@ module XmlSourceProcessor
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
+  end
+
+
+  # remove script tags from HTML to prevent javascript injection
+  def clean_script_tags(text)
+    # text.gsub(/<script.*?<\/script>/m, '')
+    text.gsub(/<\/?script.*?>/m, '')
   end
 
   BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
@@ -271,11 +279,14 @@ module XmlSourceProcessor
 
   def process_any_sections(line)
     6.downto(2) do |depth|
-      line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
-        verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
-        safe_verbatim=verbatim.gsub(/"/, "&quot;")
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
-        @sections << Section.new(:title => wiki_title.last, :depth => depth)
+      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |section_match|
+        wiki_title = section_match[1].strip
+        if wiki_title.length > 0
+          verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title)
+          safe_verbatim = verbatim.gsub(/"/, "&quot;")
+          line = line.sub(section_match.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title}</entryHeading>")
+          @sections << Section.new(:title => wiki_title, :depth => depth)
+        end
       end
     end
 
@@ -361,6 +372,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
+        article.created_by_id = User.current_user.id if User.current_user.present?
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode

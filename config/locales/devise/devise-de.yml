@@ -1,0 +1,109 @@
+---
+de:
+  devise:
+    confirm_password: Passwort bestätigen
+    create_account: Benutzerkonto erstellen
+    display_name: Organisationsname
+    email_address: E-Mail-Adresse
+    failure:
+      already_authenticated: Sie sind bereits angemeldet.
+      inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
+      invalid: Ungültige/r %{authentication_keys} oder Passwort.
+      not_found_in_database: Ungültige/r %{authentication_keys} oder Passwort.
+      timeout: Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren.
+      unauthenticated: Sie müssen sich anmelden oder registrieren, bevor Sie fortfahren können.
+    login: Login
+    mailer:
+      reset_password_instructions:
+        change_my_password: Passwort ändern
+        greeting: Hallo %{email}!
+        message_1: 'Jemand hat einen Link angefordert, um Ihr Passwort zu ändern. Sie können dies über den folgenden Link tun:'
+        message_2: Wenn Sie diesen Link nicht angefordert haben, ignorieren Sie diese E-Mail bitte.
+        message_3: Ihr Passwort ändert sich erst, wenn Sie auf den zuvor angeführten Link zugreifen und ein neues Passwort erstellen.
+        subject: Anweisungen zum Zurücksetzen des Passworts
+    omniauth_callbacks:
+      failure: Sie konnten nicht von %{kind} authentifiziert werden, weil "%{reason}".
+      success: Erfolgreich vom %{kind}-Konto authentifiziert.
+    password: Passwort
+    passwords:
+      edit:
+        change_password: Passwort ändern
+        change_password_message: Erstellen Sie ein neues Passwort für Ihr Konto. Das Passwort muss mindestens 8 Zeichen lang sein und sowohl Buchstaben als auch Zahlen enthalten. Bitte verwenden Sie nicht das gleiche Passwort, das Sie für Ihr Online-Bank- oder E-Mail-Konto verwenden!
+        new_password: Neues Passwort
+      new:
+        message: Bitte geben Sie die mit Ihrem FromThePage-Konto verknüpfte E-Mail-Adresse ein. Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
+        password_recovery: Passwort-Wiederherstellung
+        recover_password: Passwort wiederherstellen
+      no_token: Sie können nicht auf diese Seite zugreifen, ohne von einer E-Mail zum Zurücksetzen des Passworts hierher weitergeleitet zu werden. Wenn Sie von einer E-Mail zum Zurücksetzen des Passworts weitergeleitet wurden, stellen Sie bitte sicher, dass Sie die vollständige angegebene URL verwendet haben.
+      send_instructions: Sie erhalten in wenigen Minuten eine E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts.
+      send_paranoid_instructions: Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
+      updated: Ihr Passwort wurde erfolgreich geändert. Sie sind jetzt angemeldet.
+      updated_not_active: Ihr Passwort wurde erfolgreich geändert.
+    real_name: Offizieller Name
+    real_name_message: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
+    receive_activity_emails: Mails zu Aktivitäten erhalten
+    registrations:
+      choose_saml:
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
+        institution: Institution
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
+        sign_in_with_institution: Melden Sie sich bei Ihrer Institution an
+      destroyed: Auf Wiedersehen! Ihr Konto wurde erfolgreich gekündigt. Wir hoffen, Sie bald wiederzusehen.
+      edit:
+        confirm_delete_account: Möchten Sie Ihr Konto wirklich löschen? Nach dem Löschen des Kontos können Sie es nicht wiederherstellen!
+        current_password: Aktuelles Passwort
+        delete_account: Konto löschen
+        edit_account: Konto bearbeiten
+        message: Hier können Sie Ihre Kontoinformationen ändern. Wenn Sie Ihr Passwort nicht ändern möchten, lassen Sie die Passwortfelder leer. Sie müssen Ihr aktuelles Passwort eingeben, um Änderungen zu bestätigen.
+        new_password: Neues Passwort
+        save_changes: Änderungen speichern
+        waiting_confirmation_message: Warte derzeit auf Bestätigung für %{resource}
+      new_trial:
+        fill_in_the_following: Bitte füllen Sie die folgenden Informationen aus, um zu einer Testversion für 200 Seiten zu gelangen
+        just_want_to_transcribe: Wollen Sie nur transkribieren? %{sign_up_here}
+        login: Login
+        message: Bitte füllen Sie die folgenden Informationen aus, um ein FromThePage-Projektinhaber:innen-Konto mit 200 Seiten zu erstellen. Haben Sie Fragen? %{schedule_a_kickoff_call}
+        project_owner_account_have: FromThePage-Projektinhaber:innen-Konto. Haben Sie Fragen?
+        schedule_a_kickoff_call: Termin für ein Kick-Off-Gespräch vereinbaren.
+        sign_up_for_trial: Für eine Testversion anmelden
+        sign_up_here: Hier anmelden
+        want_to_transcribe: Sie möchten transkribieren?
+      owner_new:
+        projects_may_use_this: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
+        you_ll_use_this: Dies ist der Name, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
+      signed_up: Willkommen! Sie haben sich erfolgreich angemeldet.
+      updated: Ihr Konto wurde erfolgreich aktualisiert.
+      updated_but_not_signed_in: Ihr Konto wurde erfolgreich aktualisiert, aber da Ihr Passwort geändert wurde, müssen Sie sich erneut anmelden
+    sessions:
+      already_signed_out: Erfolgreich abgemeldet.
+      new:
+        forgot_your_password: Haben Sie Ihr Passwort vergessen?
+        or: oder
+        remember_me: " Eingeloggt bleiben"
+        sign_in_with_institution: Melden Sie sich über Ihre Institution an (SSO)
+        sign_up_as_transcriber_message: Möchten Sie sich einem bestehenden Projekt als Transkribierende:r anschließen? Melden Sie sich als Transkribierende:r an.
+        sign_up_now: Jetzt registrieren
+        start_free_trial: Kostenlos testen
+        start_free_trial_message: Möchten Sie ein neues Transkriptionsprojekt beginnen? Starten Sie eine kostenlose Testversion.
+      signed_in: Erfolgreich angemeldet.
+      signed_out: Erfolgreich abgemeldet.
+    shared:
+      links:
+        forgot_your_password: Haben Sie Ihr Passwort vergessen?
+        no_confirmation_instructions: Keine Anweisungen zur Bestätigung erhalten?
+        no_unlock_instructions: Keine Anweisungen zum Entsperren erhalten?
+        sign_in_existing_account: Melden Sie sich mit einem bestehenden Konto an
+        sign_in_with_google: Anmeldung über Google
+        sign_in_with_institution: Melden Sie sich über Ihre Institution an (SSO)
+        sign_up_new_account: Ein neues Konto registrieren
+    sign_in: Login
+    sign_up: Registrieren
+    user_name: Benutzername
+    user_name_message: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
+  errors:
+    messages:
+      expired: abgelaufen, bitte neu anfordern
+      not_found: nicht gefunden
+      not_signed: 'Anmeldung aufgrund des folgenden Fehlers nicht möglich:'

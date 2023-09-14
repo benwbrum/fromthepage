@@ -12,7 +12,8 @@
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
-
+- if @autolinked_changed
+  = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
@@ -100,12 +101,8 @@ h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
 
-=render({ :partial => '/shared/collection_footer' })
-
--text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
--if !@collection.field_based && text_direction == 'ltr' && !@collection.voice_recognition
-  
-  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+-text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
+=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 -unless @current_user_alerted
   -unless current_user.slug.nil?
@@ -179,7 +176,47 @@ h2.legend =t('.notes_and_questions')
       });
     });
 
+    $(function() {
+      $('form').submit(function() {
+        var isMarkedBlank = $('#page_mark_blank').is(':checked');
+        var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;
+        var hasFieldContent = false;
+        var hasFilledCells = false;
 
+        // Check if spreadsheet have content
+        if (typeof hot !== 'undefined') {
+          var data = hot.getData();
+          for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < data[i].length; j++) {
+              if (data[i][j] !== null && data[i][j] !== '') {
+                hasFilledCells = true;
+                break;
+              }
+            }
+            if (hasFilledCells) {
+              break;
+            }
+          }
+        }
+
+      // Check if fields have content
+        $('.field-wrapper .field-input').each(function() {
+          var content = $(this).val().trim();
+          if (content !== '') {
+            hasFieldContent = true;
+            return false;
+          }
+        });
+
+        if (isMarkedBlank && (hasTranscribedText || hasFieldContent || hasFilledCells)) {
+          var confirmation = confirm("#{j(t('.mark_blank_warning'))}");
+
+          if (!confirmation) {
+            return false;
+          }
+        }
+      });
+    });
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet

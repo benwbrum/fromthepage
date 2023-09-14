@@ -32,6 +32,6 @@ es:
       sample_set_has_increased: El conjunto de muestras ha aumentado en %{increase} páginas
       sample_set_size: 'Tamaño del conjunto de muestra:'
       user: Contribuyente
-      work: Trabajar
+      work: Obra
     update:
       quality_sampling_updated: El muestreo de calidad se actualizó con éxito.

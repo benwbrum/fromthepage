@@ -78,8 +78,6 @@ describe "owner view - collection" do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Export")
     expect(page).to have_content(@collection.title)
-    expect(page).to have_content("Export Subjects")
-    expect(page).to have_content("Export Individual Works")
     @collections.first.works.each do |w|
       expect(page).to have_content(w.title)
     end

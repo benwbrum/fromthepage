@@ -4,11 +4,13 @@ pt:
     approve_all:
       approved_n_pages: Páginas %{page_count} aprovadas.
     collection_works:
+      most_recent_activity: Atividade mais recente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
       progress: Progresso
       work_title: Título da obra
+    complete: completo
     contributor_activity:
       recent_notes: Notas Recentes
       recent_ocr_correction: Correção de OCR recente
@@ -32,8 +34,11 @@ pt:
       collaborator_stats: Estatísticas de Colaborador %{start_deed} até %{end_deed}
       collaborators: Colaboradores
       detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
-      export_activity_as_csv: Exportar Atividade em formato .CSV
-      export_as_csv: Exportar atividade detalhada como CSV
+      export_activity_as_csv: Exportar todas as atividades como uma planilha
+      export_activity_as_csv_description: Baixe uma planilha com uma linha listando cada ação.
+      export_activity_as_csv_header: atividade de exportação
+      export_as_csv: Exportar atividade do usuário como uma planilha
+      export_as_csv_description: Baixe uma planilha com uma linha listando cada usuário e seu tempo e atividade.
       find_project_newsletters_recommendations: Encontre recomendações para boletins de projetos.
       new_collaborators: Novos Colaboradores
       no_activity_this_time_frame: Nenhuma atividade neste período de tempo
@@ -57,6 +62,10 @@ pt:
       authorized_reviewers: Revisores autorizados
       blank_collection: Repor Coleção em Branco
       blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outros trabalhos sobre a coleção, como se fosse recentemente importado.
+      block: Bloquear usuários
+      block_users_description: Bloqueie o acesso de usuários individuais à coleção.
+      block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
+      blocked_users: Usuários bloqueados
       close_api: Fechar API
       collection_active_message: Esta é uma coleção ativa. Tornar uma coleção inativa impede os utilizadores de editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
       collection_collaborators: Colaboradores da Coleção
@@ -92,6 +101,7 @@ pt:
       edit_fields: Campos
       edit_metadata_fields: Editar campos
       edit_owners: Editar proprietários
+      edit_profile: Altere isso no seu perfil de usuário
       editor_buttons: Botões do Editor
       editor_buttons_description: Escolha os botões de marcação para aparecer no editor de transcrição.
       enable_document_sets: Ativar Conjuntos de Documentos
@@ -105,7 +115,6 @@ pt:
       footer: Rodapé
       help: Texto de Ajuda Básica
       hide_completed: Automaticamente não mostrar as obras completadas
-      learn_more_footer: Saiba mais sobre a configuração do rodapé.
       link_help: Texto de Ajuda para Vinculação de Temas (não mostrado se o uso de temas está desativado)
       make_collection_active: Tornar a Coleção Ativa
       make_collection_inactive: Tornar a Coleção Inativa
@@ -135,9 +144,9 @@ pt:
       remove_collaborator: Remover Colaborador
       remove_owner: Remover Dono
       remove_reviewer: Remover revisor
-      restrict_completed_works: Restringir trabalhos concluídos
-      restricted_completed_works: Trabalhos Concluídos Restritos
-      restricted_completed_works_description: Este botão restringirá os trabalhos %{work_count} concluídos, mas não restritos atualmente aos proprietários do projeto ou colaboradores designados. Você pode alterar essa configuração e adicionar colaboradores na página de configurações de cada trabalho.
+      restrict_completed_works: Restringir obras concluídos
+      restricted_completed_works: Obras Concluídas Restritas
+      restricted_completed_works_description: Este botão restringirá os %{work_count} obras concluídos, mas não restritos atualmente aos proprietários do projeto ou colaboradores designados. Você pode alterar essa configuração e adicionar colaboradores na página de configurações de cada obra.
       revert_document_based_transcription: Reverter para a Transcrição Baseada em Documento
       revert_metadata_description: Desativar descrição
       review_type: Tipo de revisão
@@ -155,6 +164,8 @@ pt:
       transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       transcription_type: Tipo de Transcrição
       transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
+      unblock_user: Desbloquear usuário
+      update_footer_message: Você pode atualizar o rodapé editando o perfil de %{owner}
       upload_image: Subir Imagem
       upload_metadata: Carregar metadados
       url: URL
@@ -182,6 +193,8 @@ pt:
       head_label: Cabeçalho
       heading: Configuração do Editor de Transcrição
       html: "(HTML)"
+      i_description: Marque o texto em itálico.
+      i_label: Itálico
       lb_description: Marca quebras de linha
       lb_label: Quebra de linha
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
@@ -241,8 +254,11 @@ pt:
       create_collection: Criar Coleção
       create_new_collection: Criar Nova Coleção
       enter_collection_title: Para criar uma nova coleção, introduza o título da coleção. No próximo passo você poderá adicionar obras na coleção.
-      individual_researcher_limited_account: Uma Conta de Investigador Individual se limita a uma única coleção. Para elevar a sua conta entre em contato com support@fromthepage.com.
+      individual_researcher_limited_account: Uma Conta de Pesquisador Individual se limita a uma única coleção. Para fazer upgrade da sua conta entre em contato com support@fromthepage.com.
       title: Titulo
+    new_mobile_user:
+      email_me: Envie-me um link por e-mail
+      message: Parece que você está visualizando esta página em um dispositivo móvel. É mais fácil transcrever esta coleção em uma tela maior.
     one_off_list:
       date: Encontro
       filter_contributions: Filtro
@@ -250,7 +266,7 @@ pt:
       one_off_description: Essas contribuições foram feitas por usuários que editaram apenas uma única página. Eles podem precisar de atenção especial.
       one_off_title: Contribuições únicas
       review: Análise
-      title: Página (Trabalho)
+      title: Página (Obra)
       user: Do utilizador
     quality_sampling: Amostragem de Qualidade
     recent_contributor_list:
@@ -266,11 +282,11 @@ pt:
       one_off_contributions: Contribuições únicas
       pages_needing_review: Páginas para revisão
       quality_sampling: Amostragem de Qualidade
-      quality_sampling_desc: As amostras de qualidade permitem que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou trabalho.
+      quality_sampling_desc: As amostras de qualidade permitem que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou obra.
       total_page: Página total
       transcribed_page: Página transcrita
       unreviewed_contributors: Novos colaboradores
-      works_to_review: Trabalhos para Revisão
+      works_to_review: Obras para Revisão
     show:
       about: Sobre
       add_a_new_work: Adicionar uma nova obra
@@ -296,7 +312,7 @@ pt:
       show_more: Mostrar Mais
       start_transcribing: Iniciar Transcrição
       subject_categories: Categorias de Temas
-      this_work_has_not_been_described: Este trabalho precisa de melhores metadados.
+      this_work_has_not_been_described: Este obra precisa de melhores metadados.
       this_work_has_pages_that_need_work: Algumas páginas ainda precisam de trabalho.
       time_ago_in_words: Há %{time}
       user_wrote_note: "%{user} escreveu %{note}"
@@ -324,14 +340,10 @@ pt:
       quality_score: 'Índice de qualidade:'
       real_name: 'Nome verdadeiro: %{user}'
       review: Análise
-      title: Página (Trabalho)
+      title: Página (Obra)
       user_contribution_description: Páginas que precisam de revisão pelo usuário %{user_name}
       user_profile: Perfil de usuário
     works_list:
-      alphabetical: Alfabético
-      percent_complete: Percentagem Completa
-      recent_activity: Atividade Recente
-      sort_works_by: Ordenar Obras por...
       works: Obras
     works_to_review:
       and_n_more: e %{n} mais
@@ -347,5 +359,5 @@ pt:
       total: Total
   collection_helper:
     link:
-      incomplete_works: Trabalhos incompletos
+      incomplete_works: Obras incompletas
       show_all: Mostre tudo

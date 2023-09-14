@@ -63,6 +63,7 @@ module CollectionStatistic
       :mentions             => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors         => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
       :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).where(timeframe(start_date, end_date,'pages.edit_started_at')).count,
+      :works_transcribed    => self.works.joins(:work_statistic).where(work_statistics: { complete: 100 }).where(timeframe(start_date, end_date, 'work_statistics.updated_at')).count,
       :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
       :pages_needing_review => self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
       :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
@@ -88,8 +89,9 @@ module CollectionStatistic
 
   def calculate_complete
     #note: need to compact mapped array so it doesn't fail on a nil value
-    unless work_count == 0
-      pct = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
+    unless page_count == 0
+      # Weighted by page count
+      pct = (self.works.includes(:work_statistic).map{|w| w.work_statistic.pct_completed * w.work_statistic.total_pages}.compact.sum)/page_count
     else
       pct = 0
     end

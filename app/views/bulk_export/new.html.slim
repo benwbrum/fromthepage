@@ -1,4 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
+=render(partial: '/shared/export_breadcrumbs', locals: { selection: :export_all_works})
 
 .columns
   article.maincol
@@ -30,7 +31,11 @@
                 =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
                 span= t('.use_uploaded_filename_label')
 
-      h4 =t('.file_formats')
+      .container style="display: flex;"
+        h4 =t('.file_formats')
+        div id="check-box-div" style="margin-left: auto; margin-right: 11%;"
+          = check_box_tag "check_all", "1", false, id: "check-all"
+          label id="check-all-lable" style="margin-left: 2px;" Check All
       ul.bulk-export
         li
           .bulk-export_format
@@ -108,6 +113,12 @@
             =f.label :text_docx_work
               =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
               span= t('.one_file_per_work')
+            #report-options 
+              =t('.format_options')
+              =f.label :preserve_linebreaks
+                =f.check_box 'report_arguments[preserve_linebreaks]', value: @bulk_export.report_arguments['preserve_linebreaks']
+                span= t('.preserve_linebreaks')
+
         li
           .bulk-export_format
             h5= t('.facing_edition_pdf')
@@ -159,6 +170,15 @@
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
               span= t('.one_site_per_collection')
+        li 
+          .bulk-export_format
+            h5= t('.notes_csv')
+            p.nomargin= t('.notes_csv_description')
+          .bulk-export_options
+            =f.label :notes_csv
+              =f.check_box :notes_csv, value: @bulk_export.notes_csv
+              span= t('.one_file_per_collection')
+            
 
       .toolbar
         .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
@@ -182,8 +202,20 @@
                 br
                 =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
 
+h2 =t('.export_work_metadata')
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
+      =svg_symbol '#icon-export', class: 'icon'
+      span =t('.export_work_metadata_as_csv')
+  span =t('.export_work_metadata_description')
+
 -content_for :javascript
   javascript:
+    $('#bulk_export_text_docx_work').change(function() {
+      $('#report-options').toggle(this.checked);
+    });
+
     $(function() {
       // Remove 'page_busy' spinner once download finished
       // Cookie should be set to 'true' in the controller method
@@ -196,5 +228,32 @@
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
+      $('#check-all').click(function() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkAll = this.checked;
+        const preserveLineBreak = document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked;
+
+        checkboxes.forEach(checkbox => {
+          if (checkbox.id !== 'check-all') {
+            checkbox.checked = checkAll;
+          }
+        });
+
+        if (checkAll) {
+          $('#report-options').show();
+          document.getElementById('check-all-lable').textContent = 'Uncheck All';
+          document.getElementById('check-box-div').style.marginRight = "9%";
+        } else {
+          $('#report-options').hide();
+          document.getElementById('check-all-lable').textContent = 'Check All';
+          document.getElementById('check-box-div').style.marginRight = "11%";
+        }
+
+        if (checkAll && preserveLineBreak) {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = true;
+        } else {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false;
+        }
       });
     });

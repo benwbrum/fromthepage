@@ -4,11 +4,13 @@ en:
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     collection_works:
+      most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
-        other: "%{count} pages: "
+        other: "%{count} pages; "
       progress: Progress
       work_title: Work title
+    complete: complete
     contributor_activity:
       recent_notes: Recent Notes
       recent_ocr_correction: Recent OCR correction
@@ -32,8 +34,11 @@ en:
       collaborator_stats: Collaborator Stats %{start_deed} through %{end_deed}
       collaborators: Collaborators
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
-      export_activity_as_csv: Export Activity as CSV
-      export_as_csv: Export detailed activity as CSV
+      export_activity_as_csv: Export All Activity as a Spreadsheet
+      export_activity_as_csv_description: Download a spreadsheet with a line listing each action.
+      export_activity_as_csv_header: Export activity
+      export_as_csv: Export User Activity as a Spreadsheet
+      export_as_csv_description: Download a spreadsheet with a line listing each user and their time and activity.
       find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame
@@ -57,6 +62,10 @@ en:
       authorized_reviewers: Authorized reviewers
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+      block: Block Users
+      block_users_description: Block individual users from accessing the collection.
+      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
+      blocked_users: Blocked Users
       close_api: Close API
       collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
       collection_collaborators: Collection Collaborators
@@ -92,6 +101,7 @@ en:
       edit_fields: Fields
       edit_metadata_fields: Edit Fields
       edit_owners: Edit Owners
+      edit_profile: Change this in your user profile
       editor_buttons: Editor Buttons
       editor_buttons_description: Choose mark-up buttons to appear on the transcription editor.
       enable_document_sets: Enable Document Sets
@@ -105,7 +115,6 @@ en:
       footer: Footer
       help: Basic Help Text
       hide_completed: Hide completed works by default
-      learn_more_footer: Learn more about configuring the footer.
       link_help: Subject Linking Help Text (not displayed if subjects are disabled)
       make_collection_active: Make Collection Active
       make_collection_inactive: Make Collection Inactive
@@ -155,6 +164,8 @@ en:
       transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       transcription_type: Transcription Type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
+      unblock_user: Unblock user
+      update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
       upload_metadata: Upload Metadata
       url: URL
@@ -182,6 +193,8 @@ en:
       head_label: Heading
       heading: Transcription Editor Configuration
       html: " (HTML)"
+      i_description: Marks italicized text.
+      i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
@@ -243,6 +256,9 @@ en:
       enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
       individual_researcher_limited_account: Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com.
       title: Title
+    new_mobile_user:
+      email_me: Email me a link
+      message: It looks like you're viewing this page on a mobile device. It's easier to transcribe this collection on a larger screen.
     one_off_list:
       date: Date
       filter_contributions: Filter
@@ -328,10 +344,6 @@ en:
       user_contribution_description: Pages needing review by user %{user_name}
       user_profile: User profile
     works_list:
-      alphabetical: Alphabetical
-      percent_complete: Percent Complete
-      recent_activity: Recent Activity
-      sort_works_by: Sort Works By...
       works: Works
     works_to_review:
       and_n_more: and %{n} more

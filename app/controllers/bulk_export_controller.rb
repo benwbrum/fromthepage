@@ -29,8 +29,10 @@ class BulkExportController < ApplicationController
     else
       @bulk_export.collection = @collection
     end
+    @bulk_export.work = @work if params[:work_id]
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
 
     if @bulk_export.save!
       @bulk_export.submit_export_process
@@ -41,16 +43,23 @@ class BulkExportController < ApplicationController
   end
 
   def create_for_work
+    create_for_work_actual
+    redirect_to dashboard_exports_path
+  end
+
+
+  def create_for_work_ajax
+    create_for_work_actual
+    ajax_redirect_to dashboard_exports_path
+  end
+
+  def create_for_owner
     @bulk_export = BulkExport.new(bulk_export_params)
-    if @collection.is_a? DocumentSet
-      @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
-    else
-      @bulk_export.collection = @collection
-    end
-    @bulk_export.work = @work
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    if bulk_export_params[:report_arguments]
+      @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
+    end
 
     if @bulk_export.save
       @bulk_export.submit_export_process
@@ -106,6 +115,47 @@ class BulkExportController < ApplicationController
         :text_only_pdf_work,
         :organization,
         :use_uploaded_filename,
-        :static)
+        :static,
+        :owner_mailing_list,
+        :owner_detailed_activity,
+        :collection_activity,
+        :collection_contributors,
+        :preserve_linebreaks,
+        :work_id,
+        :include_metadata, 
+        :include_contributors,
+        :notes_csv,
+        :admin_searches,
+        :report_arguments => [
+          :start_date, 
+          :end_date, 
+          :preserve_linebreaks, 
+          :include_metadata, 
+          :include_contributors])
+  end
+
+
+private
+  def create_for_work_actual
+    @bulk_export = BulkExport.new(bulk_export_params)
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
     end
+    @bulk_export.work = @work
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+    if bulk_export_params[:report_arguments]
+      @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
+    end
+
+    if @bulk_export.save
+      @bulk_export.submit_export_process
+
+      flash[:info] = t('.export_running_message', email: (current_user.email))
+    end
+  end
+
 end

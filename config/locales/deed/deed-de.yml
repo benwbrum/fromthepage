@@ -1,0 +1,36 @@
+---
+de:
+  deed:
+    article_edit: Entität bearbeitet
+    collection_active: Sammlung aktiv
+    collection_inactive: Sammlung inaktiv
+    collection_joined: Sammlung beigetreten
+    deeds:
+      show_more: Mehr zeigen
+    described_metadata: Beschriebene Metadaten
+    edited_metadata: Bearbeitete Metadatenbeschreibung
+    list:
+      activity_stream: Aktivitätenüberblick
+      collection_title: 'Sammlung: %{title}'
+      deed: Tat
+      newer_activity: Neuere Aktivität
+      older_activity: Ältere Aktivität
+      owner_title: 'Projektinhaber:in: %{title}'
+      time: Zeit
+      time_ago_in_words: Vor %{time}
+      type: Typ
+      user_title: 'Benutzer:in: %{title}'
+    needs_review: Seite muss überprüft werden
+    note_added: Anmerkung hinzugefügt
+    ocr_corrected: Seite OCR-korrigiert
+    page_edit: Seite bearbeitet
+    page_indexed: Seite indexiert
+    page_marked_blank: Seite als leer markiert
+    page_reviewed: Seite überprüft
+    page_transcription: Seite transkribiert
+    page_translated: Seite übersetzt
+    page_translation_edit: Übersetzung bearbeitet
+    translation_indexed: Übersetzung indexiert
+    translation_review: Übersetzung muss überprüft werden
+    translation_reviewed: Übersetzung überprüft
+    work_added: Werk hinzugefügt

@@ -1,6 +1,22 @@
 ---
 en:
   work:
+    configurable_printout:
+      description: Export this work in a printable format
+      export: Export
+      file_format: File Format
+      file_format_description: File type for printable export
+      heading: Printout Configuration
+      include_contributors: Include Contributors
+      include_metadata: Include Metadata
+      preserve_linebreaks: Preserve Linebreaks
+      text_contents: Contents
+      text_contents_description: The printable export will include the text of the transcription, and can also include information about the contributors to the project or metadata about the work.
+      text_format: Text Formatting
+      text_format_description: Options for formatting text.
+      text_format_docx: MS Word (.docx)
+      text_format_pdf: PDF
+      word_wrap: Word Wrap
     create:
       work_created: Work created successfully
     describe:
@@ -36,6 +52,9 @@ en:
       revision: revision
     download:
       analyze: Analyze
+      configurable_printout: Configurable Printout
+      configurable_printout_button: Configure
+      configurable_printout_description: PDF or MS Word export with configurable contents and formatting
       docx_download_description: Download a DOCX version of this work.
       download: Download
       expanded_plaintext: Expanded Plaintext
@@ -55,6 +74,8 @@ en:
       reuse: Reuse
       searchable_plaintext: Searchable Plaintext
       searchable_plaintext_export_description: Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the work.
       table_field_csv: Table/Field CSV
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
       verbatim_plaintext: Verbatim Plaintext
@@ -171,6 +192,7 @@ en:
       location_of_composition: Location of Composition
       metadata: Metadata
       number_of_pages: Number of Pages:&nbsp;
+      original_filename: Original Filename
       out_of_scope: Out of scope
       permission_description: Permission Description
       physical_description: Physical Description

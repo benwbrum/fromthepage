@@ -33,7 +33,7 @@
   ];
 
   var fromthepage_tags = {
-    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "s", "span", "a"],
+    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "span", "a", "i"],
     abbr: { attrs: { expan: null}},
     add: { children: ["u", "s", "hi"] },
     cb: { attrs: { "n": null } },
@@ -94,6 +94,11 @@
       hintOptions: {schemaInfo: fromthepage_tags},
       buttons: button_config,
       inputStyle: 'contenteditable',
-      spellcheck: <%= @collection.enable_spellcheck %>
+      spellcheck: <%= @collection.enable_spellcheck %>,
+      rtlMoveVisually: true,
+      direction: "<%= text_direction %>",
     });
+    
+    // give codeMirror with class of respective text direction
+    myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
 </script>

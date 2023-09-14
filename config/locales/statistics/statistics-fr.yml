@@ -3,7 +3,8 @@ fr:
   statistics:
     collaborator_time:
       collaborator_time: Temps de collaboration
-      export_activity_as_csv: Exporter l'activité détaillée au format CSV
+      collaborator_time_description: Une feuille de calcul du nombre de minutes que chaque utilisateur a contribué par jour dans la plage de dates.
+      collaborator_time_export_button: Exporter la feuille de calcul du temps des collaborateurs
       no_activity_for_date_range: Il n'y a aucune activité pour cette plage de dates.
       user_totals_for_dates: Totaux utilisateur pour les dates
     collaborators:
@@ -64,6 +65,9 @@ fr:
       work:
         one: Œuvre
         other: Œuvres
+      work_transcribed:
+        one: Œuvre transcrite
+        other: Œuvres transcrites
       works_described: Œuvre décrite
     recent_statistics:
       collaborator:
