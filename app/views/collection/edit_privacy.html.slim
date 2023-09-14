@@ -3,8 +3,9 @@
 =render({ :partial => 'edit_tabs', :locals => { :selected => 4}})
 
 .collection-settings-wrapper
-  =form_for :collection, url: collection_update_path(@collection) do |f|
+  =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
     =validation_summary @collection.errors
+    =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
     table.form.collection-settings
       tr 
         th(colspan="2")
@@ -67,8 +68,3 @@
           =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits', disabled: @collection.works.empty?)
             span =t('.restrict_completed_works')
           p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
-      tr 
-        td: td: td
-          .toolbar
-            .toolbar_group
-              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'

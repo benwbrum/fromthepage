@@ -3,8 +3,9 @@
 =render({ :partial => 'edit_tabs', :locals => { :selected => 5}})
 
 .collection-settings-wrapper
-  =form_for :collection, url: collection_update_path(@collection) do |f|
+  =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
     =validation_summary @collection.errors
+    =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
     table.form.collection-settings
       tr
         th
@@ -25,8 +26,3 @@
           p =t('.link_help_description')
         td.w70
           =f.text_area :link_help, rows: 10, value: @collection.link_help, disabled: @collection.subjects_disabled?
-      tr 
-        td: td: td
-          .toolbar
-            .toolbar_group
-              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'

@@ -3,8 +3,8 @@
 =render({ :partial => 'edit_tabs', :locals => { :selected => 2}})
 
 .collection-settings-wrapper
-  =form_for :collection, url: collection_update_path(@collection) do |f|
-    =validation_summary @collection.errors
+  =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
+    =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
     table.form.collection-settings
       tr
         td(colspan="2")
@@ -56,11 +56,6 @@
             =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button action-btn')
               span =t('.disable_ocr')
           p =t('.ocr_description')
-      tr 
-        td: td: td
-          .toolbar
-            .toolbar_group
-              =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
 
 -content_for :javascript
   javascript: 

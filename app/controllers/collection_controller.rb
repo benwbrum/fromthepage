@@ -438,6 +438,7 @@ class CollectionController < ApplicationController
   end
 
   def update
+    # Convert incoming params to fit the model
     if collection_params[:subjects_enabled].present?
       params[:collection][:subjects_disabled] = (collection_params[:subjects_enabled] == '1') ? false : true
       params[:collection].delete(:subjects_enabled)
@@ -445,9 +446,13 @@ class CollectionController < ApplicationController
     if collection_params[:data_entry_type].present?
       params[:collection][:data_entry_type] = (collection_params[:data_entry_type] == '1') ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
     end
+
+    # Default slug to title if blank
     if collection_params[:slug] == ""
       params[:collection][:slug] = @collection.title.parameterize
     end
+
+    # Call methods to enable/disable features if the fields have changed
     if collection_params[:messageboards_enabled].present? && collection_params[:messageboards_enabled] != @collection.messageboards_enabled
       collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
     end
@@ -460,12 +465,20 @@ class CollectionController < ApplicationController
 
     @collection.attributes = collection_params
     if @collection.save
-      flash[:notice] = t('.notice')
-      redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
+      if request.xhr?
+        render json: { success: true }
+      else
+        flash[:notice] = t('.notice')
+        redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
+      end
     else
-      edit # load the appropriate variables
-      edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
-      render action: edit_action
+      if request.xhr?
+        render json: { success: false }
+      else
+        edit # load the appropriate variables
+        edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
+        render action: edit_action
+      end
     end
   end
 
