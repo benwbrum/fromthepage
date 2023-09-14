@@ -11,6 +11,7 @@ class StatisticsController < ApplicationController
     @users = User.all # Really??? TODO: fix this
     @all_transcribers = build_user_array(DeedType::PAGE_TRANSCRIPTION)
     @all_editors      = build_user_array(DeedType::PAGE_EDIT)
+    @all_reviewers    = build_user_array(DeedType::PAGE_REVIEWED)
     @all_indexers     = build_user_array(DeedType::PAGE_INDEXED)
   end
 
