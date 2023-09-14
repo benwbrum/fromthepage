@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_12_135655) do
+ActiveRecord::Schema.define(version: 2023_09_14_142257) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -578,7 +578,7 @@ ActiveRecord::Schema.define(version: 2023_09_12_135655) do
     t.datetime "last_note_updated_at"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
-    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
+    t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
@@ -664,7 +664,9 @@ ActiveRecord::Schema.define(version: 2023_09_12_135655) do
     t.integer "collection_id"
     t.integer "work_id"
     t.string "search_type"
+    t.bigint "document_set_id"
     t.index ["collection_id"], name: "index_search_attempts_on_collection_id"
+    t.index ["document_set_id"], name: "index_search_attempts_on_document_set_id"
     t.index ["slug"], name: "index_search_attempts_on_slug", unique: true
     t.index ["user_id"], name: "index_search_attempts_on_user_id"
     t.index ["visit_id"], name: "index_search_attempts_on_visit_id"
