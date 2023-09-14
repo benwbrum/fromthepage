@@ -309,7 +309,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def user_help
-    User.find(self.collection.owner_user_id).help
+    self.collection.owner.help
   end
 
   public :user_help
