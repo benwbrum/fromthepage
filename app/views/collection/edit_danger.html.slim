@@ -14,12 +14,15 @@
             =t('.danger_zone_description')
       tr
         td(colspan="2")
-          h3 
-            =t('.collection_status')
-            i =@collection.is_active ? t('.active') : t('.inactive')
-          -if @collection.is_active
+          .collection-active(style=('display:none' if !@collection.is_active))
+            h3
+              =t('.collection_status')
+              i =t('.active')
             p =t('.collection_active_description')
-          -else
+          .collection-inactive(style=('display:none' if @collection.is_active))
+            h3
+              =t('.collection_status')
+              i =t('.inactive')
             p =t('.collection_inactive_description')
       tr 
         td(colspan="2")

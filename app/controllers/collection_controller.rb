@@ -464,16 +464,23 @@ class CollectionController < ApplicationController
     end
 
     @collection.attributes = collection_params
+    updated_fields = updated_fields_hash
     if @collection.save
       if request.xhr?
-        render json: { success: true }
+        render json: { 
+          success: true,
+          updated_field: updated_fields
+        }
       else
         flash[:notice] = t('.notice')
         redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
       end
     else
       if request.xhr?
-        render json: { success: false }
+        render json: { 
+          success: false,
+          errors: @collection.errors.full_messages
+        }
       else
         edit # load the appropriate variables
         edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
@@ -664,6 +671,10 @@ private
       article.collection = collection
       article.save!
     end
+  end
+
+  def updated_fields_hash
+    @collection.changed.to_h {|field| [field, @collection.send(field)]}
   end
 
   def collection_params
