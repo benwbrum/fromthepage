@@ -63,6 +63,7 @@ en:
       footer_description: This text will be displayed at the bottom of every page in the collection.
       footer_edit: Edit this footer in %{link}.
       footer_edit_link: your user profile
+      footer_edit_nonprimary: Edit this footer in the organization account.
       less: Show less
       n_contributions:
         one: 1 contribution

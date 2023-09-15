@@ -54,7 +54,10 @@
         td 
           .footer-preview
               ==@collection.owner.footer_block
-          i ==t('.footer_edit', link: link_to(t('.footer_edit_link'), user_update_profile_path(user_id: @collection.owner)))
+          -if current_user == @collection.owner
+            i ==t('.footer_edit', link: link_to(t('.footer_edit_link'), user_update_profile_path(user_id: @collection.owner)))
+          -else
+            i =t('.footer_edit_nonprimary')
 
 -content_for :javascript
   javascript:
