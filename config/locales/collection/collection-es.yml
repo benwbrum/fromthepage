@@ -173,11 +173,11 @@ es:
     edit_buttons:
       abbr_description: Marca abreviaturas en un texto con expansiones en el atributo expan. (Forma alternativa de etiqueta de expansión).
       abbr_label: Abreviatura
-      add_description: Marca el texto insertado después del hecho por el escritor.
+      add_description: Marca el texto insertado después del hecho por el escritor. <br><i>Recomendado</i>
       add_label: Suma
       date_description: Marca fechas, con forma estandarizada en el atributo when.
       date_label: Fecha
-      del_description: Marca el texto que ha sido eliminado por borrado o tachado.
+      del_description: Marca el texto que ha sido eliminado por borrado o tachado. <br><i>Recomendado</i>
       del_label: Supresión
       description: FromThePage puede admitir el marcado dentro de las transcripciones en formularios TEI-XML o HTML. Recomendamos configurar no más de seis botones para que aparezcan en el editor de transcripción. Considere si otros sistemas podrán usar este tipo de margen; si solo se admite texto sin formato, los proyectos deben usar convenciones tipográficas en lugar de marcado.
       expan_description: Marca abreviaturas expandidas con formas originales en el atributo orig. (Forma alternativa de etiqueta abbr.)
@@ -202,9 +202,9 @@ es:
       prefer_tei: Preferir TEI
       reg_description: Marca una forma regularizada del texto, con formas originales en el atributo orig.
       reg_label: regularización
-      s_description: Marca el texto que ha sido tachado por cualquier motivo.
-      s_label: tachado
       save: Ahorrar
+      strike_description: Marca el texto que ha sido tachado por cualquier motivo. <br><i>Recomendado</i>
+      strike_label: tachado
       sub_description: Texto de subíndice.
       sub_label: Subíndice
       sup_description: Texto en superíndice.
@@ -212,7 +212,7 @@ es:
       tei: " (TEI-XML)"
       u_description: Marca el texto subrayado.
       u_label: Subrayar
-      unclear_description: Marca texto poco claro.
+      unclear_description: Marca texto poco claro. <br><i>Recomendado</i>
       unclear_label: Poco claro
     enable_ocr:
       notice: La corrección OCR ha sido habilitada para todas las obras.

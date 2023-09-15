@@ -173,11 +173,11 @@ de:
     edit_buttons:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut (Alternative Form des expan-Tags).
       abbr_label: Abkürzung
-      add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
+      add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde. <br><i>Empfohlen</i>
       add_label: Ergänzung
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       date_label: Datum
-      del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
+      del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde. <br><i>Empfohlen</i>
       del_label: Streichung
       description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Mark-up verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im orig-Attribut (Alternative Form des abbr-Tags).
@@ -202,9 +202,9 @@ de:
       prefer_tei: Bevorzugt TEI
       reg_description: Markiert eine normalisierte Schreibung mit Originalform im orig-Attribut.
       reg_label: Normalisierung
-      s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
-      s_label: Streichung
       save: Speichern
+      strike_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde. <br><i>Empfohlen</i>
+      strike_label: Streichung
       sub_description: Tiefgestellter Text.
       sub_label: Subskript
       sup_description: Hochgestellter Text.
@@ -212,7 +212,7 @@ de:
       tei: " (TEI-XML)"
       u_description: Markiert unterstrichenen Text.
       u_label: Unterstrichen
-      unclear_description: Markiert unklaren Text.
+      unclear_description: Markiert unklaren Text. <br><i>Empfohlen</i>
       unclear_label: Unklar
     enable_ocr:
       notice: Die OCR-Korrektur wurde für alle Werke aktiviert.

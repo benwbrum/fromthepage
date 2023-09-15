@@ -83,11 +83,11 @@ en:
     edit_buttons:
       abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
       abbr_label: Abbreviation
-      add_description: Marks text inserted after-the-fact by the writer.
+      add_description: Marks text inserted after-the-fact by the writer. <br><i>Recommended</i>
       add_label: Addition
       date_description: Marks dates, with standardized form in the when attribute.
       date_label: Date
-      del_description: Marks text that has been removed by erasure or strike-through.
+      del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
       del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
       expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
@@ -106,15 +106,17 @@ en:
       i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
+      marginalina_description: 
+      marginalina_label: Marginalia
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML
       prefer_tei: Prefer TEI
       reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
       reg_label: Regularization
-      s_description: Marks text that has been struck through for any reason.
-      s_label: Strikethrough
       save: Save
+      strike_description: Marks text that has been struck through for any reason. <br><i>Recommended</i>
+      strike_label: Strikethrough
       sub_description: Subscript text.
       sub_label: Subscript
       sup_description: Superscript text.
@@ -122,7 +124,7 @@ en:
       tei: " (TEI-XML)"
       u_description: Marks underlined text.
       u_label: Underline
-      unclear_description: Marks unclear text.
+      unclear_description: Marks unclear text. <br><i>Recommended</i>
       unclear_label: Unclear
     edit_danger:
       active: Active

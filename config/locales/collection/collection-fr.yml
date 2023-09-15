@@ -173,11 +173,11 @@ fr:
     edit_buttons:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan. (Forme alternative de la balise expan.)
       abbr_label: Abréviation
-      add_description: Marque le texte inséré après coup par l'auteur.
+      add_description: Marque le texte inséré après coup par l'auteur. <br><i>Recommandé</i>
       add_label: Ajout
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       date_label: Date
-      del_description: Marque le texte qui a été supprimé par effacement ou barré.
+      del_description: Marque le texte qui a été supprimé par effacement ou barré. <br><i>Recommandé</i>
       del_label: Effacement
       description: FromThePage peut prendre en charge le balisage dans les transcriptions dans les formulaires TEI-XML ou HTML. Nous vous recommandons de ne pas configurer plus de six boutons à afficher sur l'éditeur de transcription. Demandez-vous si d'autres systèmes pourront utiliser ce type de majoration ; si seul le texte brut est pris en charge, les projets doivent utiliser les conventions typographiques au lieu du balisage.
       expan_description: Marque les abréviations développées avec des formes originales dans l'attribut orig. (Forme alternative de la balise abbr.)
@@ -202,9 +202,9 @@ fr:
       prefer_tei: Préférer TEI
       reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
       reg_label: Régularisation
-      s_description: Marque le texte qui a été barré pour une raison quelconque.
-      s_label: Barré
       save: sauvegarder
+      strike_description: Marque le texte qui a été barré pour une raison quelconque. <br><i>Recommandé</i>
+      strike_label: Barré
       sub_description: Texte en indice.
       sub_label: Indice
       sup_description: Texte en exposant.
@@ -212,7 +212,7 @@ fr:
       tei: " (TEI-XML)"
       u_description: Marque le texte souligné.
       u_label: Souligner
-      unclear_description: Marque le texte peu clair.
+      unclear_description: Marque le texte peu clair. <br><i>Recommandé</i>
       unclear_label: Pas clair
     enable_ocr:
       notice: La correction d'OCR a été activée pour toutes les œuvres.
