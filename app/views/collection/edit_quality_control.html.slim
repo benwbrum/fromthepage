@@ -13,19 +13,19 @@
           p =t('.review_type_description')
       tr 
         td(colspan="2")
-          =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
+          =f.radio_button :review_type, Collection::ReviewType::OPTIONAL, disabled: !@collection.text_entry?
           =f.label "review_type_#{Collection::ReviewType::OPTIONAL}"
             h3 =t('.review_type_optional')
             p =t('.review_type_optional_description')
       tr 
         td(colspan="2")
-          =f.radio_button :review_type, Collection::ReviewType::REQUIRED
+          =f.radio_button :review_type, Collection::ReviewType::REQUIRED, disabled: !@collection.text_entry?
           =f.label "review_type_#{Collection::ReviewType::REQUIRED}"
             h3 =t('.review_type_required')
             p =t('.review_type_required_description')
       tr 
         td(colspan="2")
-          =f.radio_button :review_type, Collection::ReviewType::RESTRICTED
+          =f.radio_button :review_type, Collection::ReviewType::RESTRICTED, disabled: !@collection.text_entry?
           =f.label "review_type_#{Collection::ReviewType::RESTRICTED}"
             h3 =t('.review_type_restricted')
             p =t('.review_type_restricted_description')
@@ -34,9 +34,9 @@
         th 
           h3.settings-label =t('.authorized_reviewers')
           p.settings-label ="(#{@reviewers.count})" unless @reviewers.empty?
-          p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', id: 'edit-reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED), :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+          p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', id: 'edit-reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED) || !@collection.text_entry?, :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
         td
-          =render 'users_list', users: @reviewers, type: 'reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED)
+          =render 'users_list', users: @reviewers, type: 'reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED) || !@collection.text_entry?
 
 -content_for :javascript
   javascript: 

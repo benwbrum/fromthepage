@@ -10,7 +10,7 @@
         td(colspan="2")
           =f.label :text_language
             h3(style="display:inline-block") =t('.text_language')
-            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
+            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50', disabled: !@collection.text_entry?}
             p =t('.text_language_description') 
       tr: td
       tr 
@@ -19,17 +19,17 @@
           p =t('.transcription_type_description')
       tr 
         td(colspan="2")
-          =f.radio_button :field_based, false, :checked => !@collection.field_based
+          =f.radio_button :field_based, false, :checked => !@collection.field_based, disabled: !@collection.text_entry?
           =f.label :field_based_false
             h3.settings-label =t('.document_based_transcription')
-            =link_to t('.edit_buttons'), collection_editor_button_edit_path(:collection_id => @collection.id), disabled: @collection.field_based, class: 'button inline-btn', id: 'document-based-edit', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }}          
+            =link_to t('.edit_buttons'), collection_editor_button_edit_path(:collection_id => @collection.id), disabled: @collection.field_based || !@collection.text_entry?, class: 'button inline-btn', id: 'document-based-edit', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }}          
             p =t('.document_based_transcription_description')          
       tr 
         td(colspan="2")
-          =f.radio_button :field_based, true, :checked => @collection.field_based
+          =f.radio_button :field_based, true, :checked => @collection.field_based, disabled: !@collection.text_entry?
           =f.label :field_based_true
             h3.settings-label =t('.field_based_transcription')
-            =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based, class: 'button inline-btn fields exits', id: 'field-based-edit', 'aria-label' => t('.edit_fields')
+            =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), disabled: !@collection.field_based || !@collection.text_entry?, class: 'button inline-btn fields exits', id: 'field-based-edit', 'aria-label' => t('.edit_fields')
             p =t('.field_based_transcription_description')
       tr: td
       tr
@@ -41,7 +41,7 @@
             p =t('.metadata_description_description')
       tr 
         td(colspan="2")
-          =f.check_box :subjects_enabled
+          =f.check_box :subjects_enabled, disabled: !@collection.text_entry?
           =f.label :subjects_enabled
             h3 =t('.subjects_enabled')
             p =t('.subjects_enabled_description')
@@ -50,10 +50,10 @@
         td(colspan="2") 
           h3 =t('.ocr_correction')
           -if @collection.works.ocr_disabled.any? || @collection.works.empty?
-            =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button action-btn', disabled: @collection.works.empty?)
+            =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button action-btn', disabled: @collection.works.empty? || !@collection.text_entry?)
               span =t('.enable_ocr')
           -if @collection.works.ocr_enabled.any?
-            =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button action-btn')
+            =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button action-btn', disabled: !@collection.text_entry?)
               span =t('.disable_ocr')
           p =t('.ocr_description')
 

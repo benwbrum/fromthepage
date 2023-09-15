@@ -35,7 +35,7 @@
       tr
         td(colspan="2")
           h3 =t('.clear_transcripts')
-          =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button action-btn exits', data: { confirm: t('.confirm_blank_collection') })
+          =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button action-btn exits', data: { confirm: t('.confirm_blank_collection') }, disabled: !@collection.text_entry?)
             span =t('.blank_collection')
           p =t('.blank_collection_description')
       tr: td

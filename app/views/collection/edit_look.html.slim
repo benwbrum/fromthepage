@@ -15,8 +15,8 @@
             p =t('.default_orientation_description')
       tr
         td(colspan="2")
-          =f.check_box :user_download
-          =f.label :user_download
+          =f.check_box :user_download, disabled: !@collection.text_entry?
+          =f.label :user_download, disabled: !@collection.text_entry?
             h3 =t('.user_download')
             p =t('.user_download_description')
       tr
@@ -53,13 +53,13 @@
             p =t('.metadata_facets_description')
       tr 
         td(colspan="2")
-            =f.check_box :enable_spellcheck
+            =f.check_box :enable_spellcheck, disabled: !@collection.text_entry? || @collection.field_based?
             =f.label :enable_spellcheck
               h3 =t('.enable_spellcheck')
               p =t('.spellcheck_description')
       tr
         td(colspan="2")
-          =f.check_box :voice_recognition, onchange: 'showLang(event)'
+          =f.check_box :voice_recognition, disabled: !@collection.text_entry? || @collection.field_based?, onchange: 'showLang(event)'
           =f.label :voice_recognition
             h3 =t('.voice_recognition')
             p =t('.voice_recognition_description')
