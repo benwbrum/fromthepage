@@ -13,6 +13,8 @@ de:
       activity_stream: Aktivitätenüberblick
       collection_title: 'Sammlung: %{title}'
       deed: Tat
+      newer_activity: Neuere Aktivität
+      older_activity: Ältere Aktivität
       owner_title: 'Projektinhaber:in: %{title}'
       time: Zeit
       time_ago_in_words: Vor %{time}

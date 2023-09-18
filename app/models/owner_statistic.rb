@@ -117,6 +117,10 @@ module OwnerStatistic
     contributor_deeds_by_type(DeedType::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
   end
 
+  def reviewers_with_count
+    contributor_deeds_by_type(DeedType::PAGE_REVIEWED, self.all_collaborators, self.collection_ids)
+  end
+
   #this is to prevent an error in the statistics view
   def subjects_disabled
     false
