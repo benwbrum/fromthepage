@@ -24,18 +24,18 @@ describe "Metadata Description" do
   # let(:work_ocr)   { create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: true) }
   # let(:page_ocr)   { create(:page, work: work_ocr) }
 
-  it "Enables and disables" do
+  it "Enables and disables", js: true do
     visit edit_collection_path(@owner, collection)
-    page.click_link("Enable Metadata Description")
-    expect(page).to have_content("Metadata Fields")
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.check("Enable metadata description")
+    expect(page).to have_button('Edit Metadata Form', disabled: false)
     expect(Collection.last.data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
 
     visit edit_collection_path(@owner, collection)
-    page.click_link("Disable Description")
-    expect(page).not_to have_content("Metadata Fields")
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.uncheck("Enable metadata description")
+    expect(page).to have_button('Edit Metadata Form', disabled: true)
     expect(Collection.last.data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
-
-
   end
 
 
@@ -45,9 +45,10 @@ describe "Metadata Description" do
       visit '/feature/description/enable'
     end
 
-    it "edits description fields" do
+    it "edits description fields", js: true do
       visit edit_collection_path(@owner, collection)
-      page.click_link("Enable Metadata Description")
+      page.find('.side-tabs').click_link("Task Configuration")
+      page.check("Enable metadata description")
 
       visit collection_path(@owner, collection)
       page.find('.tabs').click_link("Metadata Fields")

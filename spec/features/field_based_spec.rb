@@ -12,14 +12,12 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "sets collection to field based transcription" do
+  it "sets collection to field based transcription", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.click_link("Enable Field Based Transcription")
-    expect(page).to have_content("Edit Transcription Fields")
-    page.find('.tabs').click_link("Settings")
-    expect(page).to have_selector('a', text: 'Fields')
-    page.find('.sidecol').click_link('Fields')
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.choose('Field-based transcription')
+    page.click_link('Edit Fields')
     expect(page).to have_content("Edit Transcription Fields")
   end
 
@@ -134,11 +132,13 @@ describe "collection settings js tasks", :order => :defined do
   end
 
 
-  it "sets collection back to document based transcription" do
+  it "sets collection back to document based transcription", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.click_link("Revert to Document Based Transcription")
-    expect(page).not_to have_selector('a', text: 'Fields')
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.choose('Document-based transcription')
+    expect(page.find_link('Edit Fields')).to be_disabled
+    expect(page.find_link('Configure Buttons')).to_not be_disabled
   end
 
 end

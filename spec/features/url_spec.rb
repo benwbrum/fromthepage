@@ -62,7 +62,7 @@ describe "URL tests" do
     end
   end
 
-  it "edits a collection slug" do
+  it "edits a collection slug", js: true do
     login_as(@owner, :scope => :user)
     #make sure path works correctly
     slug = "new-#{@collection.slug}"
@@ -73,7 +73,9 @@ describe "URL tests" do
     page.find('.tabs').click_link("Settings")
     expect(page).to have_field('collection[slug]', with: @collection.slug)
     page.fill_in 'collection_slug', with: "new-#{@collection.slug}"
-    click_button('Save Changes')
+    sleep 0.5
+    expect(page.find('#current-url')).to have_content("#{slug}")
+    expect(page.find('#transcriber-url').value).to have_content("#{slug}")
     expect(page).to have_selector('h1', text: @collection.title)
     expect(page).to have_content("Title")
     expect(Collection.find_by(id: @collection.id).slug).to eq "#{slug}"
@@ -91,7 +93,7 @@ describe "URL tests" do
     visit "/#{@owner.slug}/#{@collection.slug}"
     page.find('.tabs').click_link("Settings")
     page.fill_in 'collection_slug', with: ""
-    click_button('Save Changes')
+    sleep 0.5
     expect(page).to have_selector('h1', text: @collection.title)
     expect(Collection.find_by(id: @collection.id).slug).to eq @collection.slug
   end

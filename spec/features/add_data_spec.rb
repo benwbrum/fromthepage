@@ -128,13 +128,15 @@ describe "uploads data for collections", :order => :defined do
     #testing the cancel button involves ajax
   end
 
-  it "adds new document sets" do
+  it "adds new document sets", js: true do
     @owner = User.find_by(login: OWNER)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Settings")
-    page.find('.button', text: 'Enable Document Sets').click
+    page.find('.side-tabs').click_link("Look & Feel")
+    page.check('Enable document sets')
+    page.click_link('Edit Sets')
     expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: "Test Document Set 1"
