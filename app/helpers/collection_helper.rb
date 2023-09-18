@@ -85,6 +85,7 @@ module CollectionHelper
       @progress_review = work.work_statistic.pct_translation_needs_review.round
       @progress_completed = work.work_statistic.pct_translation_completed.round
       @type = t('collection.translated')
+      @transcribed_type = t('collection.transcribed') 
     end
 
     if @collection.subjects_disabled
@@ -94,7 +95,11 @@ module CollectionHelper
         @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_completed+@progress_review}% #{@type})"
       end
     elsif @progress_review == 0
-      @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
+      if @transcribed_type.present?
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type}, #{work.work_statistic.pct_transcribed.round}% #{@transcribed_type})"
+      else
+        @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type})"
+      end
     else
       @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
     end

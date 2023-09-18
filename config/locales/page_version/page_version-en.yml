@@ -10,5 +10,9 @@ en:
         other: "%{count} revisions"
       no_transcription_provided: No transcription provided
       no_translation_provided: No translation provided
+      page_version_status_blank: blank
+      page_version_status_incomplete: incomplete
+      page_version_status_review: review
+      page_version_status_transcribed: transcribed
       translation: Translation
       untitled: Untitled

@@ -33,6 +33,8 @@ en:
       format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
+      notes_csv: Notes CSV
+      notes_csv_description: A spreadsheet listing each note in the collection.
       one_file_per_collection: One file per collection
       one_file_per_page: One file per page
       one_file_per_work: One file per work

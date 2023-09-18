@@ -36,10 +36,13 @@ fr:
     list:
       activity_stream: Flux d'activité
       collection_title: 'Collection : %{title}'
+      deed: Acte
       newer_activity: Activité plus récente
       older_activity: Activité plus ancienne
       owner_title: 'Propriétaire : %{title}'
+      time: Temps
       time_ago_in_words: Il y a %{time}
+      type: Taper
       user_title: 'Utilisateur : %{title}'
     needs_review: La page doit être révisée
     note_added: Note ajoutée

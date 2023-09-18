@@ -52,6 +52,7 @@ module Api::V1
             bulk_export.subject_csv_collection = !(params[:subject_csv_collection].blank?)
             bulk_export.table_csv_collection = !(params[:table_csv_collection].blank?)
             bulk_export.table_csv_work = !(params[:table_csv_work].blank?)
+            bulk_export.notes_csv = !(params[:notes_csv].blank?)
             bulk_export.save
             bulk_export.submit_export_process
 

@@ -35,7 +35,7 @@ class Flag < ApplicationRecord
   end
 
   def self.check_article(version)
-    if version.user&.owner? || version.user.account_type == "Staff"
+    if version.user&.owner? || version.user&.account_type == "Staff"
       return
     end
     if snippet = Flagger.check(version.source_text)

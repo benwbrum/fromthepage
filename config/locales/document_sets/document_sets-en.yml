@@ -48,6 +48,7 @@ en:
       title: Title
     set_works:
       collaboration: Collaboration
+      most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
         other: "%{count} pages: "
