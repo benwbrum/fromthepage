@@ -383,12 +383,12 @@ class CollectionController < ApplicationController
     redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
-  def toggle_collection_active
+  def toggle_collection_active(is_active)
     # Register New Deed for In/Active
     deed = Deed.new
     deed.collection = @collection
     deed.user = current_user
-    if @collection.active?
+    if is_active
       deed.deed_type = DeedType::COLLECTION_ACTIVE
     else
       deed.deed_type = DeedType::COLLECTION_INACTIVE
@@ -458,7 +458,7 @@ class CollectionController < ApplicationController
       collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
     end
     if collection_params[:is_active].present? && collection_params[:is_active] != @collection.is_active
-      toggle_collection_active
+      toggle_collection_active(collection_params[:is_active] == "true")
     end
     if collection_params[:field_based] == "1" && !@collection.field_based
       enable_fields

@@ -437,7 +437,7 @@ describe "document sets", :order => :defined do
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable document sets') 
-    expect(page).to have_button("Edit Sets", disabled: true)
+    expect(page.find_link("Edit Sets")).to match_css('[disabled]')
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
   end
 
@@ -445,9 +445,9 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
-    page.check('Enable document sets')
-    expect(page).to have_button("Edit Sets", disabled: false)
-    page.find_button('Edit Sets').click
+    page.check("Enable document sets")
+    expect(page.find_link("Edit Sets")).not_to match_css('[disabled]')
+    page.click_link('Edit Sets')
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true

@@ -152,7 +152,6 @@ en:
       transcription_conventions: Transcription conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
     edit_look:
-      not_available_researcher: Not available for researcher accounts.
       default_orientation: Default transcription screen orientation
       default_orientation_description: Filler Text The default page orientation for this collection. This setting can be overridden for individual works. Choose the orientation that best matches the majority of the works in this collection.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
@@ -167,6 +166,7 @@ en:
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_facets_description: Allow users to browse works within this collection via metadata.
+      not_available_researcher: Not available for researcher accounts.
       page_on_the_bottom: Image on the bottom
       page_on_the_left: Image on the left
       page_on_the_right: Image on the right

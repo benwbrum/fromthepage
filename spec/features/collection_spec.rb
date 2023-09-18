@@ -32,11 +32,11 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Collection privacy: Public")
     #check to see if Collaborators & API access are disabled
     expect(page.find('#users-list-collaborators')).to match_css('.disabled')
-    expect(page.find_link('Edit Collaborators').to be_disabled)
-    expect(page).to have_field('api_access', disabled: true)
+    expect(page.find_link('Edit Collaborators')).to match_css('[disabled]')
+    expect(page).to have_field('collection[api_access]', disabled: true)
     #check to see if Blocked Users is enabled
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
-    expect(page.find_button('Block Users').to_not be_disabled)
+    expect(page.find_link('Block Users').not_to match_css('[disabled]'))
 
     page.click_link('Make Collection Private')
     @collection.reload
@@ -44,11 +44,11 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Collection privacy: Private")
     #check to see if Collaborators & API access are enabled
     expect(page.find('#users-list-collaborators')).not_to match_css('.disabled')
-    expect(page.find_link('Edit Collaborators').to_not be_disabled)
-    expect(page).to have_field('api_access', disabled: false)
+    expect(page.find_link('Edit Collaborators')).not_to match_css('[disabled]')
+    expect(page).to have_field('collection[api_access]', disabled: false)
     #check to see if Blocked Users is disabled
     expect(page.find('#users-list-blocked')).to match_css('.disabled')
-    expect(page.find_button('Block Users').to be_disabled)
+    expect(page.find_link('Block Users')).to match_css('[disabled]')
   end
 
   it "checks that a restricted user can't view the collection" do

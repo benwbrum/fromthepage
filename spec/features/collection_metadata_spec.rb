@@ -154,7 +154,7 @@ describe "collection metadata", :order => :defined do
     visit edit_collection_path(@user, c)
     page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_field("Enable metadata facets", disabled: true)
-    expect(page.find("Edit Facets")).to be_disabled
+    expect(page.find_link("Edit Facets")).to match_css('[disabled]')
     expect(page).to have_content("Not available for researcher accounts.")
   end
 

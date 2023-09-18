@@ -137,8 +137,8 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Task Configuration")
     page.choose('Document-based transcription')
-    expect(page.find_link('Edit Fields')).to be_disabled
-    expect(page.find_link('Configure Buttons')).to_not be_disabled
+    expect(page.find_link('Edit Fields')).to match_css('[disabled]')
+    expect(page.find_link('Configure Buttons')).to_not match_css('[disabled]')
   end
 
 end
