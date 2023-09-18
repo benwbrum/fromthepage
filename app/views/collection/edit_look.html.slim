@@ -33,13 +33,11 @@
             p =t('.forums_description')
       tr 
         td(colspan="2")
-          -researcher = current_user.account_type == "Individual Researcher"
-          =f.check_box :supports_document_sets, disabled: researcher
+          =f.check_box :supports_document_sets
           =f.label :supports_document_sets
             h3.settings-label =t('.enable_document_sets')
-            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets? || researcher, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
+            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
             p =t('.document_sets_description')
-            i =t('.not_available_researcher') if researcher
       tr 
         td(colspan="2")
           h3 =t('.metadata')
