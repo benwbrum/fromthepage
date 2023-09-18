@@ -14,7 +14,9 @@ fr:
       mailing_list_export: Exportation de la liste de diffusion
       no_editors: Aucun éditeur
       no_indexers: Aucun indexeur
+      no_reviewers: Aucun évaluateur
       no_transcribers: Aucun transcripteur
+      reviewing: Révision
       transcribing: Transcription
     collection:
       last_days_statistics: Statistiques des 7 derniers jours

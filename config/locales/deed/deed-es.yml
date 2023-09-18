@@ -34,10 +34,13 @@ es:
     list:
       activity_stream: Flujo de Actividad
       collection_title: 'Colección: %{title}'
-      newer_activity: Actividad Más Reciente
-      older_activity: Actividad Anterior
+      deed: Escritura
+      newer_activity: Actividad más reciente
+      older_activity: Actividad anterior
       owner_title: 'Propietario: %{title}'
+      time: Tiempo
       time_ago_in_words: Hace %{time}
+      type: Tipo
       user_title: 'Usuario: %{title}'
     needs_review: Página necesita revisión
     note_added: Nota añadida

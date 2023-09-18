@@ -4,6 +4,7 @@ es:
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     collection_works:
+      most_recent_activity: Actividad más reciente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
@@ -343,10 +344,6 @@ es:
       user_contribution_description: Páginas que necesitan revisión por parte del usuario %{user_name}
       user_profile: Perfil del usuario
     works_list:
-      alphabetical: Orden Alfabético
-      percent_complete: Porcentaje completado
-      recent_activity: Actividad Reciente
-      sort_works_by: Ordenar Obras Por...
       works: Obras
     works_to_review:
       and_n_more: y %{n} más

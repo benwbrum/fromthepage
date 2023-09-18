@@ -247,6 +247,7 @@ class Page < ApplicationRecord
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
+    version.status = self.status
     unless User.current_user.nil?
       version.user = User.current_user
     else

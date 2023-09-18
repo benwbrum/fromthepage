@@ -1154,7 +1154,7 @@ button, .button, .dropdown dd a {
     padding-right: $gapSize / 2;
   }
   a {
-    display: block;
+    display: flex;
     overflow: hidden;
     line-height: 2.4;
     color: $bodyFgLight;
@@ -1171,6 +1171,9 @@ button, .button, .dropdown dd a {
       width: 8em;
       display: inline-block;
     }
+  }
+  .image-wrap {
+    margin: 0px 10px;
   }
 }
 

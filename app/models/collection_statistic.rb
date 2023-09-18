@@ -55,20 +55,39 @@ module CollectionStatistic
     deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
 
-    stats =
-    {
-      :works                => self.works.count,
-      :pages                => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,
-      :subjects             => self.articles.where(timeframe(start_date, end_date, 'created_on')).count,
-      :mentions             => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
-      :contributors         => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
-      :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).where(timeframe(start_date, end_date,'pages.edit_started_at')).count,
-      :works_transcribed    => self.works.joins(:work_statistic).where(work_statistics: { complete: 100 }).where(timeframe(start_date, end_date, 'work_statistics.updated_at')).count,
-      :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
-      :pages_needing_review => self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
-      :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
-      :line_count           => self.line_count
-    }
+
+    if start_date || end_date
+      stats =
+      {
+        :works                => self.works.count,
+        :pages                => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,
+        :subjects             => self.articles.where(timeframe(start_date, end_date, 'created_on')).count,
+        :mentions             => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
+        :contributors         => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
+        :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).where(timeframe(start_date, end_date,'pages.edit_started_at')).count,
+        :works_transcribed    => self.works.joins(:work_statistic).where(work_statistics: { complete: 100 }).where(timeframe(start_date, end_date, 'work_statistics.updated_at')).count,
+        :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
+        :pages_needing_review => self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
+        :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
+        :line_count           => self.line_count
+      }
+    else
+      stats =
+      {
+        :works                => self.works.count,
+        :pages                => self.works.joins(:work_statistic).sum(:total_pages),
+        :subjects             => self.articles.count,
+        :mentions             => self.articles.joins(:page_article_links).count,
+        :contributors         => self.deeds.select('user_id').distinct.count,
+        :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).count,
+        :works_transcribed    => self.works.joins(:work_statistic).where(work_statistics: { complete: 100 }).count,
+        :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).count,
+        :pages_needing_review => self.works.joins(:work_statistic).sum(:needs_review),
+        :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
+        :line_count           => self.line_count
+      }
+
+    end
 
     stats.merge(deeds)
   end

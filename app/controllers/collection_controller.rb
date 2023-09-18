@@ -11,7 +11,8 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]                              
-  before_action :authorized?, :only => edit_actions + [:new, :update, :delete, :works_list]
+  before_action :authorized?, :only => edit_actions + [:new, :update, :delete]
+
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
@@ -565,13 +566,7 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    if params[:sort_by] == "Percent Complete"
-      @works = @collection.works.includes(:work_statistic).order_by_completed.paginate(page: params[:page], per_page: 15)
-    elsif params[:sort_by] == "Recent Activity"
-      @works = @collection.works.includes(:work_statistic).order_by_recent_activity.paginate(page: params[:page], per_page: 15)
-    else
-      @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
-    end
+    @works = @collection.works.includes(:work_statistic).order(:title)
   end
 
   def needs_transcription_pages

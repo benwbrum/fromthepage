@@ -4,6 +4,7 @@ de:
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     collection_works:
+      most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten;"
@@ -343,10 +344,6 @@ de:
       user_contribution_description: Seiten, die von Mitarbeiter:in %{user_name} überprüft werden müssen
       user_profile: Mitarbeitendenprofil
     works_list:
-      alphabetical: Alphabetisch
-      percent_complete: Prozent abgeschlossen
-      recent_activity: Letzte Aktivitäten
-      sort_works_by: Werke sortieren nach...
       works: Werke
     works_to_review:
       and_n_more: und %{n} mehr

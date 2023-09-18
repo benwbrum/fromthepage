@@ -33,20 +33,13 @@ table.admin-grid.datagrid.striped
     -@searches.each do |search|
       tr
         td.toleft
-          -if search.search_type == 'findaproject'
-            -link = search_attempt_show_path(search)
-          -elsif search.search_type == 'collection'
-            -link = paged_search_path(search)
-          -elsif search.search_type == 'collection-title'
-            -link = collection_path(search.collection.owner, search.collection.slug, search_attempt_id: search.id)
-          -else #Work
-            -link = paged_search_path(search)
-
-          div =link_to search.query, link
+          div =link_to search.query, search.results_link
         td.nowrap =t(".search_type.#{search.search_type}")
         td
           -if search.collection 
             =link_to search.collection.title, collection_path(search.collection.owner, search.collection)
+          -elsif search.document_set 
+            =link_to search.document_set.title, collection_path(search.document_set.owner, search.document_set)
           -elsif search.work
             =link_to search.work.collection.title, collection_path(search.work.collection.owner, search.work.collection)
         td 
