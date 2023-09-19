@@ -125,3 +125,5 @@ gem 'intercom', '~> 3.9.0'
 gem 'newrelic_rpm'
 
 gem 'open3'
+
+gem 'ajax-datatables-rails', '~> 1.0.0'

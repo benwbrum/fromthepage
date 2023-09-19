@@ -42,19 +42,6 @@ class DeedController < ApplicationController
     end
 
     @deeds = @deed.order('deeds.created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
-    @paginate = true
   end
-
-  def notes
-    if @collection
-      @deeds = @collection.deeds.where(deed_type: DeedType::NOTE_ADDED).order('deeds.created_at DESC').includes(:note, :page, :user, :work, :collection)
-      @paginate = false
-    else
-      @deeds = Deed.where(deed_type: DeedType::NOTE_ADDED).order('deeds.created_at DESC').joins(:collection).includes(:note, :page, :user, :work).where("collections.restricted = 0").paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
-      @paginate = true
-    end
-    render :list
-  end
-
 
 end
