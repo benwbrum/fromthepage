@@ -36,7 +36,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_field('collection[api_access]', disabled: true)
     #check to see if Blocked Users is enabled
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
-    expect(page.find_link('Block Users').not_to match_css('[disabled]'))
+    expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
     page.click_link('Make Collection Private')
     @collection.reload
@@ -54,6 +54,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that a restricted user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
+#    binding.pry
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 

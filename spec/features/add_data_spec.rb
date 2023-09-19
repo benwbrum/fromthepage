@@ -139,8 +139,10 @@ describe "uploads data for collections", :order => :defined do
     page.click_link('Edit Sets')
     expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
+    sleep(1)
     page.fill_in 'document_set_title', with: "Test Document Set 1"
     page.find_button('Create Document Set').click
+    sleep(1)
     expect(DocumentSet.last.is_public).to be true
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
