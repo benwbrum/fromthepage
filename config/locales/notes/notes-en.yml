@@ -13,6 +13,15 @@ en:
       page_notes: Page Notes
       pages_and_notes_counts: "%{posts_count} notes on %{topics_count} pages"
       total_notes: "%{count} notes"
+    list:
+      collection: Collection
+      collection_title: 'Collection: %{title}'
+      note: Note
+      notes: Notes
+      page: Page
+      time: Time
+      user: User
+      work: Work
     note:
       cancel: Cancel
       confirm_delete_message: Are you sure you want to delete this note?

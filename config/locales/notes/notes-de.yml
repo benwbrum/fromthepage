@@ -13,6 +13,15 @@ de:
       page_notes: Seitenanmerkungen
       pages_and_notes_counts: "%{posts_count} Anmerkungen auf %{topics_count} Seiten"
       total_notes: "%{count} Anmerkungen"
+    list:
+      collection: Sammlung
+      collection_title: 'Sammlung: %{title}'
+      note: Notiz
+      notes: Anmerkungen
+      page: Seite
+      time: Zeit
+      user: Benutzer
+      work: Werk
     note:
       cancel: Abbrechen
       confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?

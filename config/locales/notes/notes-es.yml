@@ -13,6 +13,15 @@ es:
       page_notes: Notas de página
       pages_and_notes_counts: "%{posts_count} notas en %{topics_count} páginas"
       total_notes: "%{count} notas"
+    list:
+      collection: Recopilación
+      collection_title: 'Colección: %{title}'
+      note: Nota
+      notes: Notas
+      page: Página
+      time: Tiempo
+      user: Usuario
+      work: Obra
     note:
       cancel: Cancelar
       confirm_delete_message: Confirma que deseas eliminar esta nota.
