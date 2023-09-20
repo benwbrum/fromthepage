@@ -31,6 +31,9 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  scope 'notes', as: 'notes' do
+    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
+  end
   resources :notes
 
 
@@ -239,7 +242,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do

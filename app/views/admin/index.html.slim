@@ -40,7 +40,7 @@ table.admin-grid.datagrid.striped
   =link_to admin_work_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @works_count}") #{'Work'.pluralize(@works_count)}
   .counter(data-prefix="#{number_with_delimiter @articles_count}") #{'Article'.pluralize(@articles_count)}
-  =link_to deed_notes_path do
+  =link_to notes_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @notes_count}") #{'Note'.pluralize(@notes_count)}
   .counter
   =link_to admin_owner_list_path do

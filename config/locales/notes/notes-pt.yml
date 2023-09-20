@@ -13,6 +13,15 @@ pt:
       page_notes: Notas de página
       pages_and_notes_counts: "%{posts_count} notas em %{topics_count} páginas"
       total_notes: "%{count} notas"
+    list:
+      collection: Coleção
+      collection_title: 'Coleção: %{title}'
+      note: Observação
+      notes: Notas
+      page: Página
+      time: Tempo
+      user: Do utilizador
+      work: Obra
     note:
       cancel: Cancelar
       confirm_delete_message: Você tem certeza que deseja apagar esta nota?

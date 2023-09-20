@@ -22,6 +22,7 @@ RSpec.describe Deed, type: :model do
       allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
 
       first_deed = create(:deed, deed_type: deed_type)
+      sleep 0.5
       second_deed = create(:deed, deed_type: deed_type)
 
       expect(Deed.order_by_recent_activity.first).to eq(second_deed)
