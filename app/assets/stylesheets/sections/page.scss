@@ -125,6 +125,10 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
+#save_note_button {
+  z-index: 100;
+}
+
 // Page columns
 
 .page-headlines {
