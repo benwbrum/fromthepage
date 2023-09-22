@@ -92,12 +92,6 @@
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
-#custom-alert
-  #custom-alert-box
-    p Are you sure you want to blank out this page?
-    button#cancelButton Cancel
-    button#blankPageButton Blank out this page
-
 .fgfaded
   ==@work.set_transcription_conventions
   =render :partial => 'shared/markup_help'
@@ -109,6 +103,12 @@ h2.legend =t('.notes_and_questions')
 
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
 =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+
+#custom-alert
+  #custom-alert-box
+    p Are you sure you want to blank out this page?
+    button#cancelButton Cancel
+    button#blankPageButton Blank out this page
 
 -unless @current_user_alerted
   -unless current_user.slug.nil?

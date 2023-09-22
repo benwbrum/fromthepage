@@ -314,9 +314,7 @@ describe "editor actions" , :order => :defined do
       #because of the note, page.source_text should not have changed
       expect(new_text).to eq text
       #save the note
-      button = find('#save_note_button')
-      page.execute_script("arguments[0].scrollIntoView();", button)
-      button.click
+      find('#save_note_button').click
       expect(test_page.notes.count).not_to be nil
     end
 
