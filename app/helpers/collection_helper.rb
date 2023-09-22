@@ -72,6 +72,7 @@ module CollectionHelper
     @wording=''
     @progress_blank = work.work_statistic.pct_blank.round
     unless work.supports_translation
+      @transcribed_type = nil if @transcribed_type.present?
       @progress_annotated = work.work_statistic.pct_annotated.round
       @progress_review = work.work_statistic.pct_needs_review.round
       @progress_completed = work.work_statistic.pct_completed.round
