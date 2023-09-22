@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'selenium-webdriver'
 
 FIELD_XML = <<EOF
 <?xml version='1.0' encoding='UTF-8'?>    
@@ -315,9 +314,8 @@ describe "editor actions" , :order => :defined do
       #because of the note, page.source_text should not have changed
       expect(new_text).to eq text
       #save the note
-      wait = Selenium::WebDriver::Wait.new(timeout: 20)
-      # Wait until the element is clickable, then click it
-      wait.until { driver.find_element(id: 'save_note_button').click }
+      sleep(15)
+      find('#save_note_button').click
       expect(test_page.notes.count).not_to be nil
     end
 
