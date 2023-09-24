@@ -9,6 +9,7 @@
 //= link main.css.map
 //= link main.css
 //= link lightbox.min.css
+//= link datatables.min.css
 //= link codemirror/lib/codemirror.js
 //= link codemirror/mode/xml/xml.js
 //= link codemirror/addon/display/display/panel.js
@@ -19,4 +20,5 @@
 //= link landing/main.js
 //= link landing/slick.min.js
 //= link landing/slider.js
+//= link datatables.min.js
 

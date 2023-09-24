@@ -1,59 +1,35 @@
 class SearchAttemptController < ApplicationController
     def create
-        user_id = current_user.nil? ? nil : current_user.id
         owner = current_user.nil? ? false : current_user.owner
+        query = params[:search]
+        # Some of these objects may be nil, based on the search type
+        work = Work.find(params[:work_id]) if params[:work_id].present?
+        collection = Collection.find(params[:collection_id]) if params[:collection_id].present?
+        document_set = DocumentSet.find(params[:document_set_id]) if params[:document_set_id].present?
         
         if params[:work_id].present?
-            work =  Work.find(params[:work_id])
-            @search_attempt = SearchAttempt.new(
-                query: params[:search],
-                search_type: "work",
-                work_id: work.id,
-                collection_id: work.collection_id,
-                user_id: user_id,
-                owner: owner
-            )
-            @search_attempt.save
-            session[:search_attempt_id] = @search_attempt.id
-            ajax_redirect_to(paged_search_path(@search_attempt))
-
-        elsif params[:collection_id].present? && params[:search_by_title].present?
-            collection = Collection.find(params[:collection_id])
-            @search_attempt = SearchAttempt.new(
-                query: params[:search_by_title],
-                search_type: "collection-title",
-                collection_id: collection.id,
-                user_id: user_id,
-                owner: owner
-            )
-            @search_attempt.save
-            session[:search_attempt_id] = @search_attempt.id
-            ajax_redirect_to(collection_path(collection.owner, collection.slug, search_attempt_id: @search_attempt.id))
-
-        elsif params[:collection_id].present?
-            collection_id = Collection.find(params[:collection_id]).id
-            @search_attempt = SearchAttempt.new(
-                query: params[:search],
-                search_type: "collection",
-                collection_id: collection_id,
-                user_id: user_id,
-                owner: owner
-            )
-            @search_attempt.save
-            session[:search_attempt_id] = @search_attempt.id
-            ajax_redirect_to(paged_search_path(@search_attempt))
-
+            search_type = "work"
+        elsif (params[:collection_id].present? || params[:document_set_id].present?) && params[:search_by_title].present?
+            search_type = "collection-title"
+            query = params[:search_by_title]
+        elsif params[:collection_id].present? || params[:document_set_id].present?
+            search_type = "collection"
         else # Find a Project search
-            @search_attempt = SearchAttempt.new(
-                query: params[:search], 
-                search_type: "findaproject",
-                user_id: user_id, 
-                owner: owner
-            )
-            @search_attempt.save
-            session[:search_attempt_id] = @search_attempt.id
-            ajax_redirect_to(search_attempt_show_path(@search_attempt))
+            search_type = "findaproject"
         end
+
+        @search_attempt = SearchAttempt.new(
+            query: query,
+            search_type: search_type,
+            work_id: work&.id,
+            collection_id: collection&.id,
+            document_set_id: document_set&.id,
+            user_id: current_user&.id,
+            owner: owner
+        )
+        @search_attempt.save
+        session[:search_attempt_id] = @search_attempt.id
+        ajax_redirect_to(@search_attempt.results_link)
     end
 
     def show

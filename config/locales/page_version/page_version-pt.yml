@@ -10,5 +10,9 @@ pt:
         other: "%{count} revisões"
       no_transcription_provided: Nenhuma transcrição fornecida
       no_translation_provided: Nenhuma tradução fornecida
+      page_version_status_blank: em branco
+      page_version_status_incomplete: incompleto
+      page_version_status_review: análise
+      page_version_status_transcribed: transcrito
       translation: Tradução
       untitled: Sem título

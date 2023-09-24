@@ -103,7 +103,7 @@ module ExportHelper
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
     end
 
-    if bulk_export.collection_notes
+    if bulk_export.notes_csv
       export_collection_notes_csv(out: out, collection: bulk_export.collection)
     end
 

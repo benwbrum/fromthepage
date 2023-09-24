@@ -13,6 +13,7 @@ en:
       selected_subjects_combined: Selected subjects combined with %{title}
     delete:
       must_remove_referring_links: You must remove all referring links before you delete this subject.
+      only_subject_owner_can_delete: Only the subject creator or project owner can delete this.
     edit:
       autolink: Autolink
       categories: Categories

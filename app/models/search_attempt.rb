@@ -2,6 +2,7 @@ class SearchAttempt < ApplicationRecord
     belongs_to :user, optional: true
     belongs_to :collection, optional: true
     belongs_to :work, optional: true
+    belongs_to :document_set, optional: true
     visitable class_name: "Visit" # ahoy integration
 
     after_create :update_slug
@@ -12,6 +13,24 @@ class SearchAttempt < ApplicationRecord
 
     def update_slug
         update_attribute(:slug, to_param)
+    end
+
+    def results_link
+        paths = Rails.application.routes.url_helpers
+        case search_type
+        when "work"
+            paths.paged_search_path(self)
+        when "collection"
+            paths.paged_search_path(self)
+        when "collection-title"
+            if collection.present?
+                paths.collection_path(collection.owner, collection, search_attempt_id: id)
+            else # document_set
+                paths.collection_path(document_set.owner, document_set, search_attempt_id: id)
+            end
+        when "findaproject"
+            paths.search_attempt_show_path(self)
+        end
     end
 
     def results
@@ -30,18 +49,20 @@ class SearchAttempt < ApplicationRecord
             end
 
         when "collection"
-            if collection.present? && query.present?
+            collection_or_document_set = collection || document_set
+            if collection_or_document_set.present? && query.present?
                 query = precise_search_string(query)
                 results = Page.order('work_id, position')
                     .joins(:work)
-                    .where(work_id: collection.works.ids)
+                    .where(work_id: collection_or_document_set.works.ids)
                     .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
             else 
                 results = Page.none
             end
         
         when "collection-title"
-            results = collection.search_works(query).includes(:work_statistic)
+            collection_or_document_set = collection || document_set
+            results = collection_or_document_set.search_works(query).includes(:work_statistic)
 
         when "findaproject"
             results = Collection.search(query).unrestricted + DocumentSet.search(query).unrestricted

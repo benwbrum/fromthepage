@@ -19,16 +19,6 @@ p.big
         span =t('.export_to_contentdm')
     span =t('.export_to_contentdm_description')
 
-h2 =t('.export_all_notes')
-=form_for :bulk_export, url: bulk_export_create_path(collection_id: @collection.id) do |f|
-  =f.hidden_field :collection_notes, value: true
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to '#', class: 'button btnExport', id: 'btnExportNotes', onclick: "$(this).closest('form').submit();" do
-        =svg_symbol '#icon-export', class: 'icon'
-        span =t('.export_all_notes_as_csv')      
-    span =t('.export_all_notes_description')
-
 -if @collection.text_entry?
   h2 =t('.export_individual_works')
   p.big =t('.export_individual_works_description')
