@@ -1,5 +1,6 @@
 module ExportHelper
-
+  include XmlSourceProcessor
+ 
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
     # do some escaping of the document for markdown
@@ -25,11 +26,27 @@ module ExportHelper
       e.replace_with(sup)
     end
 
-
-
     postprocessed = ""
     doc.write(postprocessed)
-    html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
+
+
+    # use Nokogiri for doc
+    markdown_tables = []
+    doc = Nokogiri::XML(postprocessed)
+    doc.xpath("//table").each_with_index do |n,i|
+      markdown_tables << xml_table_to_markdown_table(n, true)
+      n.replace("REPLACEMETABLE#{i}")
+    end
+
+    # now back to REXML
+    # html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
+    # doc = REXML::Document.new("<html>#{html}</html>")
+    # doc.elements.each_with_index("//table") do |n,i|
+    #   n.replace_with(REXML::Text.new(markdown_tables[i]))
+    # end
+    html = doc.to_s
+    # html=postprocessed
+    
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
     else
@@ -46,11 +63,15 @@ module ExportHelper
 
     processed = "never ran"
 
-    cmd = "pandoc --from html --to markdown"
+    cmd = "pandoc --from html --to markdown+pipe_tables"
     Open3.popen2(cmd) do |stdin, stdout, t| 
       stdin.print(html)
       stdin.close
       processed = stdout.read
+    end
+
+    markdown_tables.each_with_index do |table,i|
+      processed.gsub!("REPLACEMETABLE#{i}", table)
     end
 
     return processed
