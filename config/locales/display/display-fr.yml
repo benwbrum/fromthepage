@@ -35,6 +35,7 @@ fr:
       no_notes: Aucune note
       no_pages_found: Aucune page trouvée
       no_pages_in_work: Ce œuvre ne contient pas encore de pages, rendez-vous sur %{link} pour créer une nouvelle page
+      no_works_found: Aucune œuvre trouvée
       page_title: Titre de la page
       pages_tab: Onglet Pages
       review: Examen

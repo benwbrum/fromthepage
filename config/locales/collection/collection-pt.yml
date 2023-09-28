@@ -244,6 +244,8 @@ pt:
       pages_need_review: Páginas para Revisar
       project_by: Projeto por
       return_to_collection: Voltar à Coleção
+      review_metadata: Revise os metadados
+      works_that_need_metadata: Obras que precisam de metadados
     needs_transcription_pages:
       pages_need_transcription: Páginas que precisam de transcrição
       project_by: Projeto por

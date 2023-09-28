@@ -171,6 +171,7 @@ pt:
       move_up: Subir
       no_pages_found: Nenhuma página encontrada
       no_pages_found_description: Esta obra ainda não contém páginas
+      no_works_found_description: Não há nenhum trabalho presente neste momento
       page_title: Título da página
       pages_tab_description: Aqui você vê a lista de todas as páginas da obra. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para esta obra clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
       position: Posição

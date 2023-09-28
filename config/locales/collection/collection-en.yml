@@ -244,6 +244,8 @@ en:
       pages_need_review: Pages That Need Review
       project_by: Project by
       return_to_collection: Return to collection
+      review_metadata: Review Metadata
+      works_that_need_metadata: Works That Need Metadata
     needs_transcription_pages:
       pages_need_transcription: Pages That Need Transcription
       project_by: Project by

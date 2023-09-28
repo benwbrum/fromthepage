@@ -77,6 +77,10 @@ class Collection < ApplicationRecord
   def metadata_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
   end
+
+  def metadata_only_entry?
+    self.data_entry_type == DataEntryType::METADATA_ONLY
+  end
   
   def subjects_enabled
     !subjects_disabled
