@@ -35,7 +35,7 @@ module TeiHelper
         e.replace_with(lb)
       end
     end
-    binding.pry
+
     # convert HTML tables to TEI tables
     doc.elements.each("//table") do |e|
       table = REXML::Element.new("table")
