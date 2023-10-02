@@ -20,6 +20,12 @@
             =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
           -else
             =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+        - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
+          p
+          -if user_signed_in?
+            =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+          -else
+            =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
