@@ -1,7 +1,7 @@
 -links = @article.show_links(@collection)
 -unless links.empty?
-  h5 ="#{pluralize(links.map{|link| link.page_id}.uniq.size, 'page')} refer to #{@article.title}"
-  p =link_to "Show pages that mention #{@article.title} in all works", controller: 'display', action: 'read_all_works', article_id: @article.id
+  h5 =t('.n_pages_refer_to', count: (links.map{|link| link.page_id}.uniq.size), article: @article.title)
+  p =link_to t('.show_pages_that_mention', article: @article.title), controller: 'display', action: 'read_all_works', article_id: @article.id
   ul.article-links
     -seen_pages=[]
     -links.each do |link|
@@ -17,7 +17,7 @@
 
 
 -unless @article.target_article_links.empty?
-  h5 ="#{pluralize(@article.target_article_links.size, 'subject')} refer to #{@article.title}"
+  h5= t('.n_subjects_refer_to', count: @article.target_article_links.size, article: @article.title)
   ul.article-links
     -@article.target_article_links.each do |link|
       li

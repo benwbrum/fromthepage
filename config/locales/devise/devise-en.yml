@@ -1,0 +1,109 @@
+---
+en:
+  devise:
+    confirm_password: Confirm Password
+    create_account: Create Account
+    display_name: Organization Name
+    email_address: Email Address
+    failure:
+      already_authenticated: You are already signed in.
+      inactive: Your account is not activated yet.
+      invalid: Invalid %{authentication_keys} or password.
+      not_found_in_database: Invalid %{authentication_keys} or password.
+      timeout: Your session expired. Please sign in again to continue.
+      unauthenticated: You need to sign in or sign up before continuing.
+    login: Login
+    mailer:
+      reset_password_instructions:
+        change_my_password: Change my password
+        greeting: Hello %{email}!
+        message_1: 'Someone has requested a link to change your password. You can do this through the link below:'
+        message_2: If you didn't request this, please ignore this email.
+        message_3: Your password won't change until you access the link above and create a new one.
+        subject: Reset password instructions
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    password: Password
+    passwords:
+      edit:
+        change_password: Change password
+        change_password_message: Create a new password for your account. Password must be at least 8 characters long and contain both letters and numbers. Please don't use the same password you use for your online bank or email account!
+        new_password: New password
+      new:
+        message: Please enter the email address associated with your FromThePage account. If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
+        password_recovery: Password Recovery
+        recover_password: Recover Password
+      no_token: You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.
+      send_instructions: You will receive an email with instructions on how to reset your password in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
+      updated: Your password has been changed successfully. You are now signed in.
+      updated_not_active: Your password has been changed successfully.
+    real_name: Real Name
+    real_name_message: Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
+    receive_activity_emails: Receive activity emails
+    registrations:
+      choose_saml:
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
+        institution: Institution
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
+        sign_in_with_institution: Sign in with your Institution
+      destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.
+      edit:
+        confirm_delete_account: Are you sure you want to delete your account? After deleting the account you won't be able to recover it!
+        current_password: Current password
+        delete_account: Delete Account
+        edit_account: Edit Account
+        message: Here you can change your account information. If you don't want to change your password, leave the password fields blank. You're required to enter your current password to confirm changes.
+        new_password: New password
+        save_changes: Save Changes
+        waiting_confirmation_message: Currently waiting confirmation for %{resource}
+      new_trial:
+        fill_in_the_following: Please fill in the following information to create a two hundred page trial
+        just_want_to_transcribe: Just want to transcribe? %{sign_up_here}
+        login: Login
+        message: Please fill in the following information to create a two hundred page trial FromThePage project owner account.  Have questions?  %{schedule_a_kickoff_call}
+        project_owner_account_have: FromThePage project owner account. Have questions?
+        schedule_a_kickoff_call: Schedule a kickoff call.
+        sign_up_for_trial: Sign Up for a Trial
+        sign_up_here: Sign Up Here
+        want_to_transcribe: want to transcribe?
+      owner_new:
+        projects_may_use_this: Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
+        you_ll_use_this: You'll use this name to log in. It will be shown publicly.
+      signed_up: Welcome! You have signed up successfully.
+      updated: Your account has been updated successfully.
+      updated_but_not_signed_in: Your account has been updated successfully, but since your password was changed, you need to sign in again
+    sessions:
+      already_signed_out: Signed out successfully.
+      new:
+        forgot_your_password: Forgot your password?
+        or: or
+        remember_me: " Remember me"
+        sign_in_with_institution: Sign in with your Institution (SSO)
+        sign_up_as_transcriber_message: Want to join an existing project as a transcriber? Sign up as a transcriber.
+        sign_up_now: Sign Up Now
+        start_free_trial: Start Free Trial
+        start_free_trial_message: Want to begin a new transcription project? Start a free trial.
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    shared:
+      links:
+        forgot_your_password: Forgot your password?
+        no_confirmation_instructions: Didn't receive confirmation instructions?
+        no_unlock_instructions: Didn't receive unlock instructions?
+        sign_in_existing_account: Sign in existing account
+        sign_in_with_google: Sign in with Google
+        sign_in_with_institution: Sign in with your Institution (SSO)
+        sign_up_new_account: Sign up for a new account
+    sign_in: Sign In
+    sign_up: Sign Up
+    user_name: User Name
+    user_name_message: You'll use this name to log in. It will be shown publicly.
+  errors:
+    messages:
+      expired: has expired, please request a new one
+      not_found: not found
+      not_signed: 'Unable to sign in due to the following error:'

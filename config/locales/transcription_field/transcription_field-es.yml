@@ -1,21 +1,87 @@
+---
 es:
   transcription_field:
-    field_layout:
-      instructions: "Instrucciones"
-    line_form:
-      field_options: "Opciones de campo (separa con punto y coma)"
-      field_options_title: "Opciones para los campos seleccionados."
-      percentage_width: "Ancho %"
-      percentage_title: "Porcentaje del ancho de línea que se utilizará para este campo."
-      page: "Página"
-      page_title: "Para formularios de varias páginas, ¿en qué página debería aparecer este campo? (Déjalo en blanco para mostrar en cada página.)"
-    edit_fields:
-      edit_transcription_fields: "Editar Campos de Transcripción"
-      add_additional_line: "Añadir Línea Adicional"
-      add_additional_field: "Añadir Campo Adicional"
-      save: "Guardar"
-      cancel: "Cancelar"
-      done: "Completado"
-      preview: "Vista Preliminar"
+    add_columns:
+      must_have_options_list: Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar.
+      starting_rows_must_not_be_blank: Las filas iniciales no deben estar en blanco.
     add_fields:
-      must_have_options_list: "Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar."
+      must_have_options_list: Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar.
+    choose_offset:
+      page_layout: Diseño de página
+      page_layout_description: Cambie el tamaño del rectángulo en la imagen para rodear la parte de la página que contiene una hoja de cálculo, luego guarde su selección.
+      replace_image: Reemplazar imagen
+      replace_image_description: Si la imagen de ejemplo no contiene una hoja de cálculo, puede reemplazarla con una página diferente de la colección, elegida al azar.
+      save_selection: Guardar selección
+    column_form:
+      column_options: Opciones de columna (separadas con punto y coma)
+      column_options_title: Opciones para celdas desplegables.
+      input_type: Tipo de entrada
+      label: Etiqueta
+    edit_columns:
+      add_additional_column: Agregar columna adicional
+      cancel: Cancelar
+      disable_ruler: Deshabilitar regla
+      done: Hecho
+      edit_spreadsheet_columns: Configuración de columna
+      edit_spreadsheet_header: Configuración de la hoja de cálculo
+      enable_ruler: Habilitar regla
+      identify_rows: Identificar filas
+      identify_rows_description: Las páginas pueden tener márgenes superior e inferior, campos de encabezado o pie de página u otro texto que no debe usarse al identificar dónde están las filas en la página.
+      page_layout: Diseño de página
+      preview: Vista previa de la hoja de cálculo
+      save: Ahorrar
+      screen_ruler: Regla de pantalla
+      screen_ruler_description: Para mejorar la usabilidad y reducir los errores del transcriptor, FromThePage puede mostrar una regla en la imagen de la página que resalta la parte de la página que el usuario está transcribiendo. Esto es útil para documentos escaneados consistentemente escritos en formularios preimpresos, pero puede distraer o frustrar si los documentos son irregulares y la regla de la pantalla no coincide.
+      start_rows_description: Número de filas que la hoja de cálculo debe mostrar inicialmente. (Los transcriptores podrán agregar filas adicionales si es necesario).
+      start_rows_label: 'Recuento de filas inicial:'
+      transcription_warning: Este proyecto ya ha sido transcrito parcialmente. Agregar columnas está bien, pero eliminar o cambiar columnas puede provocar la pérdida de datos. Póngate en contacto con support@fromthepage.com si tienes preguntas o necesitas cambiar el nombre de las columnas.
+    edit_field_form:
+      add_additional_field: Agregar campo adicional
+      add_additional_line: Agregar línea adicional
+      cancel: Cancelar
+      data_entry_type_label: Flujo de metadatos
+      data_entry_type_metadata_only: Los usuarios solo crean metadatos
+      data_entry_type_text_and_metadata: Los usuarios transcriben texto y crean metadatos
+      description_instructions_label: Metadatos Descripción Instrucciones
+      done: Hecho
+      line: Línea
+      preview: Avance
+      save: Ahorrar
+    edit_fields:
+      edit_transcription_fields: Editar Campos de Transcripción
+      transcription_warning: Este proyecto ya ha sido transcrito parcialmente. Agregar campos está bien, pero eliminar o cambiar campos puede provocar la pérdida de datos. Póngate en contacto con support@fromthepage.com si tienes preguntas o necesitas cambiar el nombre de los campos.
+    edit_metadata_fields:
+      edit_metadata_fields: Editar campos de metadatos
+    field_layout:
+      instructions: Instrucciones
+    line_form:
+      field_options: Opciones de campo (separa con punto y coma)
+      field_options_title: Opciones para los campos seleccionados.
+      input_type: Tipo de entrada
+      label: Etiqueta
+      page: Página
+      page_title: Para formularios de varias páginas, ¿en qué página debería aparecer este campo? (Déjalo en blanco para mostrar en cada página.)
+      percentage_title: Porcentaje del ancho de línea que se utilizará para este campo.
+      percentage_width: Ancho %
+    metadata_field_layout:
+      instructions: Instrucciones
+    multiselect_form:
+      options_form_description: Ingresa opciones para el campo de metadatos de selección múltiple, con cada opción en una línea separada
+      options_form_title: Opciones de selección múltiple
+      save: Ahorrar
+    new_column_form:
+      delete_column: Eliminar columna
+      field_label: Etiqueta de campo
+      field_options: Opciones de campo
+      input_type: Tipo de entrada
+      reorder_column: Reordenar columna
+    new_field_form:
+      configure_options: Configurar opciones
+      configure_spreadsheet: Configurar hoja de cálculo
+      delete_field: Eliminar campo
+      field_label: Etiqueta de campo
+      field_options: Opciones de campo
+      input_type: Tipo de entrada
+      page_number: Número de página
+      reorder_field: Reordenar campo
+      width_percentage: Porcentaje de ancho

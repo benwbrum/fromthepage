@@ -1,31 +1,43 @@
+---
 es:
   page:
-    edit:
-      page_title: "Título de la Página"
-      page_image: "Imagen de la Página"
-      click_to_browse_a_file: "Haz clic para consultar un archivo..."
-      browse: "Navegar"
-      delete_confirm_message: "¿De verdad deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
-      delete_page: "Eliminar Página"
-      save_changes: "Guardar Cambios"
-      page_position: "Posición de Página: %{position}"
-      created: "Creado %{date}"
-      here_you_can_edit: "Aquí puedes editar el título de la página y subir una nueva imagen. Para editar la transcripción de la página o el texto de traducción, cambia a la pestaña correspondiente arriba."
-      dimensions: "Dimensiones: %{width}&times;%{height}"
-      rotate_clockwise: "Girar en Sentido Horario"
-      rotate_counterclockwise: "Girar Hacia la Izquierda"
-    new:
-      add_new_page: "Añadir Nueva Página"
-      choose_a_title: "Elige un título para la página y selecciona una imagen de página para subir."
-      page_image: "Imagen de la Página"
-      click_to_browse_a_file: "Haz clic para consultar un archivo..."
-      browse: "Navegar"
-      cancel: "Cancelar"
-      save_and_new_work: "Guardar y Trabajo Nuevo"
-      save_and_add_next_page: "Guardar y Añadir Página Siguiente"
-    delete:
-      page_deleted: "La página ha sido eliminada"
     create:
-      page_created: "Página creada con suceso"
+      page_created: Página creada con suceso
+    delete:
+      page_deleted: La página ha sido eliminada
+    edit:
+      browse: Navegar
+      click_to_browse_a_file: Haz clic para consultar un archivo...
+      created: Creado %{date}
+      delete_confirm_message: "¿De verdad deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
+      delete_page: Eliminar Página
+      dimensions: 'Dimensiones: %{width}&times;%{height}'
+      here_you_can_edit: Aquí puedes editar el título de la página y subir una nueva imagen. Para editar la transcripción de la página o el texto de traducción, cambia a la pestaña correspondiente arriba.
+      page_image: Imagen de la Página
+      page_position: 'Posición de Página: %{position}'
+      page_status: Estado de la página
+      page_status_: No empezado
+      page_status_blank: Página en blanco
+      page_status_incomplete: Incompleto
+      page_status_indexed: Indexado
+      page_status_review: Revisión de necesidades
+      page_status_transcribed: Completo
+      page_status_translated: Traducido
+      page_title: Título de la Página
+      page_translation_status: Estado de traducción de la página
+      rotate_clockwise: Girar en Sentido Horario
+      rotate_counterclockwise: Girar Hacia la Izquierda
+      save_changes: Guardar Cambios
+      status: 'Estado:'
+    new:
+      add_new_page: Añadir Nueva Página
+      browse: Navegar
+      cancel: Cancelar
+      choose_a_title: Elige un título para la página y selecciona una imagen de página para subir.
+      click_to_browse_a_file: Haz clic para consultar un archivo...
+      page_image: Imagen de la Página
+      save_and_add_next_page: Guardar y Añadir Página Siguiente
+      save_and_new_work: Guardar y Obra Nuevo
+      title: Título
     update:
-      page_updated: "Página actualizada"
+      page_updated: Página actualizada

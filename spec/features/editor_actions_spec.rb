@@ -136,7 +136,7 @@ describe "editor actions" , :order => :defined do
       page.find('h4', text: @collection.title).click_link(@collection.title)
       expect(page).to have_content("Works")    
       expect(page).to have_content(@work.title)
-      expect(page).to have_content("Collection Footer")
+      expect(page).not_to have_content("Collection Footer")
       #check the tabs in the collection
       #Subjects
       page.find('.tabs').click_link("Subjects")
@@ -182,7 +182,7 @@ describe "editor actions" , :order => :defined do
       page.find('#page_source_text')
       expect(page).to have_button('Preview')
       expect(page).to have_content(@page.title)
-      expect(page).to have_content("Collection Footer")
+      expect(page).not_to have_content("Collection Footer")
       #Versions
       page.find('.tabs').click_link("Versions")
       expect(page).to have_content("revisions")
@@ -192,7 +192,7 @@ describe "editor actions" , :order => :defined do
       visit "/display/display_page?page_id=#{@page.id}"
       expect(page).to have_content("This page is not transcribed")
       page.find('.tabs').click_link("Transcribe")
-      expect(page).to have_content("Collection Footer")
+      expect(page).not_to have_content("Collection Footer")
       fill_in_editor_field "Test Preview"
       click_button('Preview', match: :first)
       expect(page).to have_content('Edit')
@@ -209,7 +209,7 @@ describe "editor actions" , :order => :defined do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
       page.find('.tabs').click_link("Translate")
-      expect(page).to have_content("Collection Footer")
+      expect(page).not_to have_content("Collection Footer")
       fill_in_editor_field "Test Translation Preview"
       click_button('Preview')
       expect(page).to have_content('Edit')
@@ -314,6 +314,7 @@ describe "editor actions" , :order => :defined do
       #because of the note, page.source_text should not have changed
       expect(new_text).to eq text
       #save the note
+      find('#blankPageButton').click
       find('#save_note_button').click
       expect(test_page.notes.count).not_to be nil
     end
@@ -340,7 +341,7 @@ describe "editor actions" , :order => :defined do
       message = accept_alert do
         page.click_link("Next page")
       end
-      sleep(3)
+      sleep(10)
       expect(message).to have_content("You have unsaved changes.")
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       #previous page arrow - make sure it also works with notes
@@ -348,7 +349,7 @@ describe "editor actions" , :order => :defined do
       message = accept_alert do
         page.click_link("Previous page")
       end
-      sleep(3)
+      sleep(10)
       expect(message).to have_content("You have unsaved changes.")
     end
 

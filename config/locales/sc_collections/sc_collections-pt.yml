@@ -1,13 +1,51 @@
+---
 pt:
   sc_collections:
-    import_cdm:
-      please_enter_url: "Por favor introduza um URL para um objeto de CONTENTdm."
-      using_manifest_for: "Usando manifesto de CONTENTdm IIIF para %{url}"
-      bad_contentdm_url: "URL de CONTENTdm inválido: %{url} ERROR: %{message}"
-    import:
-      no_manifest_exist: "Não existe qualquer manifesto do IIIF para o item de CONTENTdm %{url}"
-      please_enter_valid_url: "Por favor introduza um URL válido para o manifesto do IIIF."
-    import_collection:
-      import_is_processing: "A importação da coleção do IIIF está em processo. Recarregue esta página em alguns minutos para ver obras importadas."
+    cdm_bulk_import_create:
+      import_started: Sua importação foi iniciada. Quando estiver concluído, você deverá receber um e-mail em %{email}.
+    cdm_bulk_import_new:
+      bulk_contentdm_import: Importação de CONTENTdm em massa
+      compound_object_urls: URLs de objetos compostos
+      import: Importar
+      import_ocr_text: Importar texto OCR do CONTENTdm
+      select_a_collection_to_import_into: "- Selecione uma coleção para importar -"
+      separate_urls_with: URLs separados com espaços ou novas linhas.
     convert_manifest:
-      metadata_is_being_imported: "Os meta-dados %{ocr_ text} estão sendo importados do CONTENTdm e deverão aparecer em breve."
+      metadata_is_being_imported: Os metadados %{ocr_text} estão sendo importados do CONTENTdm e deverão aparecer em breve.
+    explore_collection:
+      already_imported_into: Já importado para
+      collection: 'Coleção: %{sc_collection}'
+      collections: 'Coleções:'
+      first_page: Primeira página
+      id: 'Código: %{id}'
+      import_checked_manifests: Importar manifestos verificados
+      import_ocr_text: Importar texto OCR do CONTENTdm
+      manifests: 'Manifestos:'
+      next_page: Próxima página
+      no_label: sem rótulo
+      previous_page: Página anterior
+      select_a_collection: Selecione uma coleção
+      select_a_collection_to_import_into: "- Selecione uma coleção para importar -"
+      select_all_manifests: Selecionar todos os manifestos
+      this_collection_is_divided: Esta coleção está dividida em várias páginas
+    explore_manifest:
+      canvases: 'Telas:'
+      collection: 'Coleção: %{sc_collection}'
+      description: 'Descrição: %{description}'
+      id: 'Identidade:'
+      import_manifest: Importar Manifesto
+      import_ocr_text: Importar texto OCR do CONTENTdm
+      license: 'Licença: %{license}'
+      manifest: 'Manifesto: %{sc_manifest}'
+      metadata: 'Metadados: %{metadata}'
+      select_a_collection_to_import_into: "- Selecione uma coleção para importar -"
+      select_a_collection_to_import_into_label: Selecione uma coleção para importar
+    import:
+      no_manifest_exist: Não existe qualquer manifesto do IIIF para o item de CONTENTdm %{url}
+      please_enter_valid_url: Por favor introduza um URL válido para o manifesto do IIIF.
+    import_cdm:
+      bad_contentdm_url: 'URL de CONTENTdm inválido: %{url} ERROR: %{message}'
+      please_enter_url: Por favor introduza um URL para um objeto de CONTENTdm.
+      using_manifest_for: Usando manifesto de CONTENTdm IIIF para %{url}
+    import_collection:
+      import_is_processing: A importação da coleção do IIIF está em processo. Recarregue esta página em alguns minutos para ver obras importadas.

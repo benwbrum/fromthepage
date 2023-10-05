@@ -1,9 +1,4 @@
 module DashboardHelper
-  def collection_list(collection)
-    @count = collection.works.count
-    @works = collection.works.order(:title).limit(15)
-  end
-
   def dashboard_set_title
     case
     when is_active_link?(dashboard_startproject_path)

@@ -28,7 +28,7 @@ class ExportController < ApplicationController
   end
 
   def printable
-    output_file = export_printable(@work, params[:edition], params[:format])    
+    output_file = export_printable(@work, params[:edition], params[:format], false, true, true)    
 
     if params[:format] == 'pdf'
       content_type = "application/pdf"
@@ -79,6 +79,12 @@ class ExportController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
+  def subject_distribution_csv
+    send_data(@collection.export_subject_distribution_as_csv(@article),
+              :filename => "fromthepage_subject_distribution_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
 
   def subject_index_csv
     send_data(@collection.export_subject_index_as_csv,

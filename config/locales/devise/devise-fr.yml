@@ -1,0 +1,104 @@
+---
+fr:
+  devise:
+    confirm_password: Confirmez le mot de passe
+    create_account: Créer un compte
+    display_name: Organisation
+    email_address: Adresse e-mail
+    failure:
+      already_authenticated: Vous êtes déjà connecté.
+      inactive: Votre compte n'est pas encore activé.
+      invalid: "%{authentication_keys} ou mot de passe non valide."
+      not_found_in_database: "%{authentication_keys} ou mot de passe non valide."
+      timeout: Votre session a expiré. Veuillez vous reconnecter pour continuer.
+      unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
+    login: Nom d'utilisateur
+    mailer:
+      reset_password_instructions:
+        change_my_password: Changer mon mot de passe
+        greeting: Bonjour %{email} !
+        message_1: 'Quelqu''un a demandé un lien pour changer votre mot de passe. Vous pouvez le faire via le lien ci-dessous :'
+        message_2: Si vous ne l'avez pas demandé, veuillez ignorer cet e-mail.
+        message_3: Votre mot de passe ne changera pas tant que vous n'aurez pas accédé au lien ci-dessus et créé un nouveau.
+        subject: Instructions de réinitialisation du mot de passe
+    omniauth_callbacks:
+      failure: Impossible de vous authentifier à partir de %{kind} car "%{reason}".
+      success: Authentification réussie à partir du compte %{kind}.
+    password: Mot de passe
+    passwords:
+      edit:
+        change_password: Changer le mot de passe
+        change_password_message: Créez un nouveau mot de passe pour votre compte. Le mot de passe doit comporter au moins 8 caractères et contenir à la fois des lettres et des chiffres. Veuillez ne pas utiliser le même mot de passe que vous utilisez pour votre banque en ligne ou votre compte de messagerie !
+        new_password: Nouveau mot de passe
+      new:
+        message: Veuillez saisir l'adresse e-mail associée à votre compte FromThePage. Si votre adresse e-mail existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse e-mail dans quelques minutes.
+        password_recovery: Récupération de mot de passe
+        recover_password: Récupérer mot de passe
+      no_token: Vous ne pouvez pas accéder à cette page sans venir d'un e-mail de réinitialisation de mot de passe. Si vous venez d'un e-mail de réinitialisation de mot de passe, assurez-vous d'avoir utilisé l'URL complète fournie.
+      send_instructions: Vous recevrez un e-mail avec des instructions sur la façon de réinitialiser votre mot de passe en quelques minutes.
+      send_paranoid_instructions: Si votre adresse e-mail existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse e-mail dans quelques minutes.
+      updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant inscrit.
+      updated_not_active: Votre mot de passe a été changé avec succès.
+    real_name: Nom
+    real_name_message: Les projets peuvent l'utiliser lorsqu'ils vous citent. Laissez ce champ vide si vous ne souhaitez pas être crédité.
+    receive_activity_emails: Recevoir des e-mails d'activité
+    registrations:
+      choose_saml:
+        harvard_university: Harvard University
+        illinois_state: Illinois State University
+        institution: Institution
+        johns_hopkins_university: Johns Hopkins University
+        lds_full_name: Church of Jesus Christ of Latter Day Saints
+        sign_in_with_institution: Connectez-vous avec votre établissement
+      destroyed: Au revoir! Votre compte a été annulé avec succès. Nous espérons vous revoir bientôt.
+      edit:
+        confirm_delete_account: Êtes-vous sûr de vouloir supprimer votre compte ? Après avoir supprimé le compte, vous ne pourrez pas le récupérer !
+        current_password: Mot de passe actuel
+        delete_account: Supprimer le compte
+        edit_account: Modifier le compte
+        message: Ici, vous pouvez modifier les informations de votre compte. Si vous ne souhaitez pas modifier votre mot de passe, laissez les champs de mot de passe vides. Vous devez saisir votre mot de passe actuel pour confirmer les modifications.
+        new_password: Nouveau mot de passe
+        save_changes: Sauvegarder les modifications
+        waiting_confirmation_message: En attente de confirmation pour %{resource}
+      new_trial:
+        fill_in_the_following: Veuillez remplir les informations suivantes pour créer un essai de deux cents pages
+        just_want_to_transcribe: Vous souhaitez simplement transcrire ? %{sign_up_here}
+        login: Connexion
+        message: Veuillez remplir les informations suivantes pour créer un compte de propriétaire de projet FromThePage d'essai de deux cents pages. Des questions? %{schedule_a_kickoff_call}
+        project_owner_account_have: Compte du propriétaire du projet FromThePage. Avoir des questions?
+        schedule_a_kickoff_call: Planifier un rendez-vous en ligne.
+        sign_up_for_trial: Inscrivez-vous pour un essai
+        sign_up_here: Inscrivez-vous ici
+        want_to_transcribe: voulez-vous transcrire?
+      owner_new:
+        projects_may_use_this: Les projets peuvent l'utiliser lorsqu'ils vous accordent un crédit. Laissez ce champ vide si vous ne souhaitez pas être crédité.
+        you_ll_use_this: Vous utiliserez ce nom pour vous connecter. Il sera affiché publiquement.
+      signed_up: Accueillir! Vous vous êtes inscrit avec succès.
+      updated: Votre compte a été mis à jour avec succès.
+      updated_but_not_signed_in: Votre compte a été mis à jour avec succès, mais depuis que votre mot de passe a été changé, vous devez vous reconnecter
+    sessions:
+      already_signed_out: Déconnexion réussie.
+      new:
+        forgot_your_password: Mot de passe oublié?
+        or: ou
+        remember_me: " Se souvenir de moi"
+        sign_in_with_institution: Connectez-vous avec votre établissement (SSO)
+        sign_up_as_transcriber_message: Vous souhaitez rejoindre un projet existant en tant que transcripteur ? Inscrivez-vous en tant que transcripteur.
+        sign_up_now: S'inscrire maintenant
+        start_free_trial: Commencer l'essai gratuit
+        start_free_trial_message: Vous voulez commencer un nouveau projet de transcription ? Commencez un essai gratuit.
+      signed_in: Connexion réussie.
+      signed_out: Déconnexion réussie.
+    shared:
+      links:
+        forgot_your_password: Mot de passe oublié?
+        no_confirmation_instructions: Vous n'avez pas reçu les instructions de confirmation ?
+        no_unlock_instructions: Vous n'avez pas reçu d'instructions de déverrouillage ?
+        sign_in_existing_account: Connectez-vous au compte existant
+        sign_in_with_google: Connectez-vous avec Google
+        sign_in_with_institution: Connectez-vous avec votre établissement (SSO)
+        sign_up_new_account: Inscrivez-vous pour un nouveau compte
+    sign_in: S'identifier
+    sign_up: S'inscrire
+    user_name: Nom d'utilisateur
+    user_name_message: Vous utiliserez ce nom pour vous connecter. Il sera affiché publiquement.

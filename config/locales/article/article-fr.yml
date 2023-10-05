@@ -1,0 +1,105 @@
+---
+fr:
+  article:
+    article_links:
+      n_pages_refer_to:
+        one: 1 page fait référence à %{article}
+        other: "%{count} pages renvoient à %{article}"
+      n_subjects_refer_to:
+        one: 1 sujet fait référence à %{article}
+        other: "%{count} sujets font référence à %{article}"
+      show_pages_that_mention: Afficher les pages qui mentionnent %{article} dans tous les œuvres
+    combine_duplicate:
+      selected_subjects_combined: Sujets sélectionnés combinés avec %{title}
+    delete:
+      must_remove_referring_links: Vous devez supprimer tous les liens de référence avant de supprimer ce sujet.
+      only_subject_owner_can_delete: Seul le créateur du sujet ou le propriétaire du projet peut le supprimer.
+    edit:
+      autolink: Lien automatique
+      categories: Catégories
+      combine_selected: Combiner la sélection
+      confirm_delete_subject: Voulez-vous vraiment supprimer ce sujet ? Après la suppression, vous ne pourrez pas le récupérer !
+      delete_subject: Supprimer le sujet
+      description: Description
+      latitude: Latitude
+      longitude: Longitude
+      microphone: Microphone
+      n_pages:
+        one: 1 page
+        other: "%{count}pages"
+      no_duplicates_found: Aucun doublon trouvé
+      no_duplicates_found_description: Le sujet est unique dans la collection, aucun doublon possible du sujet "%{article}" n'a été trouvé.
+      possible_duplicates:
+        one: Doublon possible
+        other: Doublons possibles
+      possible_duplicates_description: Veuillez consulter la liste ci-dessous et sélectionner les sujets à combiner. Les doublons seront regroupés afin que tous les liens existants redirigent vers le sujet "%{article}".
+      save_changes: Sauvegarder les modifications
+      select_categories: Sélectionnez les catégories
+      title: Titre
+      uri: URI
+    graph:
+      dot:
+        title: Sujets fréquemment mentionnés avec %{subject}
+    list:
+      actions: Actions
+      add_child_category: Ajouter une sous-catégorie
+      add_root_category: Ajouter une catégorie principale
+      categories: Catégories
+      category_back_message: Une fois que vous avez fini de modifier les catégories, %{page_link} pour revenir à la page "%{page}".
+      click_here: Cliquez ici
+      confirm_delete_category: Voulez-vous vraiment supprimer cette catégorie et toutes ses sous-catégories ? Après la suppression, vous ne pourrez pas la récupérer
+      create_category_message: "%{link} que vous utiliserez pour regrouper les sujets."
+      create_the_first_category: Créer la première catégorie
+      delete_category: Supprimer la catégorie
+      disable_gis_for_category: Désactiver le SIG pour la catégorie
+      edit_category: Modifier la catégorie
+      enable_gis_for_category: Activer le SIG pour la catégorie
+      no_categories: Aucune catégorie
+      no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
+      there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée
+      uncategorized: Non catégorisé
+      uncategorized_subjects: Sujets non catégorisés
+      upload_subjects: Téléverser des sujets
+    show:
+      all_uncategorized_subjects: Tous les sujets non catégorisés de la collection
+      categories: Catégories
+      description: Description
+      download: Télécharger
+      download_description: Télécharger un tableau CSV des sujets et des œuvres associées dans lesquels ils apparaissent.
+      edit_description_description: Modifiez la description dans l'onglet Réglages.
+      export: Exporter
+      n_possible_duplicates:
+        one: 1 doublon possible
+        other: "%{count} Doublons possibles"
+      no_category_message: Ce sujet n'appartient à aucune catégorie
+      references: Références
+      related_subjects: Sujets connexes
+      related_subjects_1: Sujets connexes
+      related_subjects_description: Le graphique affiche les autres sujets mentionnés sur les mêmes pages que le sujet "%{article}". Si le même sujet apparaît plus d'une fois sur une page avec "%{article}", il apparaît plus proche de "%{article}" sur le graphique et est coloré dans une teinte plus foncée. Plus un sujet est proche du centre, plus les sujets sont "liés".
+      search_all_pages: Rechercher toutes les pages
+      search_all_pages_description: Rechercher dans le texte de %{collection} les pages contenant des mots utilisés pour créer un lien vers <em>%{article}</em>
+      search_unlinked_pages: Rechercher des pages non liées
+      search_unlinked_pages_description: 'Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>'
+      see_also: 'Voir également:'
+      text_search: Recherche de texte
+    subject_upload:
+      csv_file_must_contain_headers: Le fichier CSV doit contenir des en-têtes pour HEADING, ARTICLE, URI et CATEGORY
+    tooltip:
+      category:
+        one: 'Catégorie :'
+        other: 'Catégories :'
+      explore_this_subject: Explorer ce sujet
+    update:
+      gis_coordinates_truncated:
+        one: " (Coordonnées SIG tronquées à la décimale %{precision})"
+        other: " (Coordonnées SIG tronquées à %{precision} décimales)"
+      subject_successfully_updated: Le sujet a été mis à jour avec succès
+      subjects_auto_linking: Processus de liaison automatique des sujets terminé
+    upload_form:
+      browse: Parcourir
+      click_to_browse: Cliquez pour parcourir un fichier...
+      csv_file_with: Fichier CSV avec une ligne par sujet
+      example_csv: Exemple de CSV
+      upload: Télécharger
+      upload_subjects: Télécharger des sujets
+      upload_subjects_description: Pour créer des sujets à partir d'un fichier d'autorité externe, téléchargez un fichier %{link}.

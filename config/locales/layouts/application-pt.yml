@@ -1,21 +1,31 @@
+---
 pt:
   layouts:
     application:
-      projects: "Projetos"
-      find_a_project: "Buscar um Projeto"
-      sign_up: "Inscrever-se"
-      create_an_account: "Criar uma Conta"
-      admin_dashboard: "Painel de Administração"
-      owner_dashboard: "Painel de Controle do Dono"
-      collaborator_dashboard: "Painel de Controle do Colaborador"
-      your_profile: "Seu Perfil"
-      sign_out: "Sair"
-      sign_in: "Entrar"
-      undo_login_as: "Desfazer o Login Como"
-      documentation: "Documentação"
-      blog: "Blog"
-      about: "Sobre"
-      terms_and_conditions: "Termos e Condições"
-      privacy_policy: "Política de Privacidade"
-      contact_us: "Entre em Contato"
-      all_rights_reserved: "Todos os direitos reservados."
+      about: Sobre
+      admin_dashboard: Painel de Administração
+      all_rights_reserved: Todos os direitos reservados.
+      blog: Blog
+      collaborator_dashboard: Painel de Controle do Colaborador
+      contact_us: Entre em Contato
+      create_an_account: Criar uma Conta
+      documentation: Documentação
+      find_a_project: Buscar um Projeto
+      home: Página Inicial
+      internet_archive_difficulties: O Internet Archive está passando por dificuldades. Por favor, tente novamente mais tarde.
+      owner_dashboard: Painel de Controle do Dono
+      pricing: Preços
+      privacy_policy: Política de Privacidade
+      projects: Projetos
+      recaptcha_validation_failed: Falha na validação do ReCAPTCHA
+      sign_in: Entrar
+      sign_out: Sair
+      sign_up_to_transcribe: Inscreva-se para transcrever
+      signed_in_as: Assinado como
+      terms_and_conditions: Termos e Condições
+      transcription_for_archives_special_collections: Transcrição para Arquivos e Coleções Especiais
+      transcription_for_digital_scholarship: Transcrição para bolsa digital
+      transcription_for_public_libraries: Transcrição para Bibliotecas Públicas
+      transcription_for_state_provincial_archives: Transcrição para Arquivos Estaduais e Provinciais
+      undo_login_as: Desfazer o Login Como
+      your_profile: Seu Perfil

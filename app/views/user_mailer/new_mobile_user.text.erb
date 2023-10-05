@@ -1,0 +1,10 @@
+<%= t('user_mailer.greeting', user: @user.display_name) %>
+
+<%= t('.message', collection: @collection.title) %>
+<%= t('.text.continue_transcribing', url: collection_start_transcribing_url(@collection.owner.slug, @collection.slug)) %>
+
+<% unless @collection.owner.display_name.blank? %>
+    <%= t('user_mailer.text.closing', from: @collection.owner.display_name) %>
+<% else %>
+    <%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
+<% end %>

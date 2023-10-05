@@ -238,6 +238,9 @@ class IiifController < ApplicationController
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
         "@id" => iiif_work_export_plaintext_searchable_url(work.id)
     }
+    if work.collection.metadata_entry?
+      manifest.seeAlso << structured_data_reference(work)
+    end
     manifest.service << status_service_for_manifest(work)
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
@@ -296,7 +299,7 @@ class IiifController < ApplicationController
 
   def layer
     work_id = params[:id]
-    work = Work.find work_id
+    work = Work.find work_id.to_i
     #params[:type]
     if params[:type]=="transcription"
       seed = {
@@ -348,6 +351,79 @@ class IiifController < ApplicationController
     render :plain => layer.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def structured_data_field_config_endpoint
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    response = transcription_field_config(@transcription_field, true)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def structured_data_column_config_endpoint
+    @spreadsheet_column = SpreadsheetColumn.find(params[:spreadsheet_column_id])
+    response = spreadsheet_column_config(@spreadsheet_column, true)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def structured_data_page_config_endpoint
+    response = {}
+    response['@id'] = iiif_page_strucured_data_config_url(@collection.id)
+    response[:label] = "Transcription field configuration for #{@collection.title}"
+    response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::TRANSCRIPTION)
+    response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def structured_data_work_config_endpoint
+    response = {}
+    response['@id'] = iiif_work_strucured_data_config_url(@collection.id)
+    response[:label] = "Metadata field configuration for #{@collection.title}"
+    response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::METADATA)
+    response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  # endpoint containing actual contents of strucured data
+  def structured_data_endpoint
+    if @page
+      on = {
+        '@type' => 'sc:Canvas',
+        '@id' => iiif_canvas_url(@work.id,@page.id),
+        'within' => iiif_manifest_url(@work.id)
+      }
+      response = page_field_contributions(@page)
+      response[:config] = iiif_page_strucured_data_config_url(@collection.id)
+    else
+      on = {
+        '@type' => 'sc:Manifest',
+        '@id' => iiif_manifest_url(@work.id)
+      }
+      response = work_metadata_contributions(@work)
+      response[:config] = iiif_work_strucured_data_config_url(@collection.id)
+    end
+    response['profile'] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-endpoint-response'
+    response['on'] = on
+    response['@id'] = structured_data_id(@work,@page)
+    response['label'] = structured_data_label(@work,@page)
+    if @page && !@page.notes.blank?
+      response['notes'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => 'notes', :only_path => false})
+    end
+    if @page
+      response['pageStatus'] = JSON.parse(status_service_for_page(@page).to_json)
+    end
+    response['workStatus'] = JSON.parse(status_service_for_manifest(@work).to_json)
+
+
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  # id to structured data endpoint
+  def structured_data_id(work, page=nil)
+    if page.nil?
+      iiif_work_strucured_data_url(work.id)
+    else
+      iiif_page_strucured_data_url(work.id, page.id)
+    end
+  end
+
   def sequence
     work_id = @work.id
     sequence = iiif_sequence_from_work_id(work_id)
@@ -390,7 +466,7 @@ class IiifController < ApplicationController
 
   def manifest_status
     work = Work.find params[:work_id]
-    service = status_service_for_work(work)
+    service = status_service_for_manifest(work)
     render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -447,6 +523,26 @@ class IiifController < ApplicationController
   end
 
 private
+  def structured_data_label(work, page=nil)
+    if page
+      "Structured data (field-based or spreadsheet transcriptions) for canvas"
+    else
+      "Structured data (user-created metadata) for manifest"
+    end
+  end
+
+
+  # stanza to embed within manifests or canvas documents
+  def structured_data_reference(work, page=nil)
+    {
+      '@id' => structured_data_id(work,page),
+      'label' => structured_data_label(work,page),
+      'format' => 'application/ld+json',
+      "@context" => "http://www.fromthepage.org/jsonld/structured/1/context.json",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions"
+    }
+  end
+
   def iiif_page_note(page, noteid)
     note = IIIF::Presentation::Annotation.new({'motivation' => 'oa:commenting'})
     #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
@@ -502,8 +598,14 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work.id), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work.id), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { "@id" => iiif_work_export_html_url(work.id), 
+        "label" => "XHTML Export", 
+        "format" => "text/html",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work.id), 
+        "label" => "TEI Export", 
+        "format" => "application/tei+xml",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|
@@ -782,6 +884,10 @@ private
         "@id" => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
       }
     end
+    if page.collection.field_based
+      canvas.seeAlso << structured_data_reference(page.work,page)
+    end
+
   end
 
  def annotationlist_from_page(page,type)
@@ -833,6 +939,8 @@ private
     service["pctTranslationNeedsReview"] = stats.pct_translation_needs_review
     service["pctTranslationIndexed"] = stats.pct_translation_annotated
     service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
+    service["metadataStatus"] = work.description_status
+    service["lastUpdated"] = work.most_recent_deed_created_at
     service
   end
 

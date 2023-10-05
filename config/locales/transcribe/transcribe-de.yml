@@ -1,0 +1,89 @@
+---
+de:
+  transcribe:
+    assign_categories:
+      assign_categories: Kategorien zuweisen
+      continue: Weitermachen
+      manage_categories: Kategorien verwalten
+      options: Optionen
+      subject: 'Entität:'
+      uncategorized_subjects: Nicht kategorisierte Entitäten
+      uncategorized_subjects_mentioned: Sie haben nicht kategorisierte Entitäten, die in der Seitentranskription erwähnt werden. Bitte überprüfen Sie die folgenden Entitäten und weisen Sie ihnen die entsprechenden Kategorien zu.
+    display_page:
+      alert: Diese Seite wird gerade von einem anderen Mitarbeitenden bearbeitet!
+      always_show_fullscreen: Immer im Vollbildmodus anzeigen
+      edit_transcription: Transkription bearbeiten
+      fullscreen: Vollbild
+      image_at_the_bottom: Bild unten
+      image_at_the_left: Bild links
+      image_at_the_right: Bild rechts
+      image_at_the_top: Bild oben
+      layout: Layout
+      mark_as_blank: Als leer markieren
+      mark_blank_warning: Diese Seite enthält transkribierte Daten, aber Sie markieren sie als leer. Möchten Sie fortfahren?
+      microphone: Mikrofon
+      more_help: Mehr Hilfe....
+      needs_review: Überprüfung erforderlich
+      notes_and_questions: Anmerkungen und Fragen
+      this_page_marked_blank: Diese Seite ist als leer gekennzeichnet
+      this_page_marked_needs_review: Diese Seite wurde mit "Überprüfung erforderlich" markiert. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text ergänzen oder korrigieren. Wenn Sie fertig sind, deaktivieren Sie das Auswahlkästchen „Überprüfung erforderlich“ und speichern Sie die Seite.
+      this_page_marked_needs_review_workflow_version: Diese Seite muss überprüft werden. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text hinzufügen oder korrigieren, und am Ende den Text dann freigeben.
+      title: 'Titel:'
+    goto_next_untranscribed_page:
+      another_page_notice: Es gibt eine weitere Seite in diesem Werk.
+      no_more_pages_notice: In diesem Werk sind keine Seiten mehr zu transkribieren. Es gibt weitere Seite in dieser Sammlung.
+      notice: In dieser Sammlung sind keine Seiten mehr zu transkribieren.
+    guest:
+      collaboration_restricted_collection: Die Mitarbeit an dieser Sammlung ist eingeschränkt. Bitte wenden Sie sich an den/die Projektinhaber:in, wenn Sie bei der Transkription helfen möchten.
+      save_up_to_three_transcriptions: Sie können bis zu drei Transkriptionen als Gast speichern oder sich jetzt anmelden.
+      sign_up_now: Jetzt registrieren
+      sign_up_now_to_transcribe: Registrieren Sie sich jetzt, um zu transkribieren.
+      transcribe_as_guest: Als Gast transkribieren
+    mark_page_blank:
+      saved_notice: Gespeichert
+    save_buttons:
+      approve: Freigeben
+      approve_to_transcribed_tooltip: Diese Seite speichern und freigeben
+      autolink: Autolink
+      autolink_tooltip: Entitäten-Tags automatisch vorschlagen
+      done: Fertig
+      edit: Bearbeiten
+      edit_tooltip: Bearbeite diese Seite
+      finish_to_needs_review_tooltip: Eine fertige Seite speichern
+      finish_to_transcribed_tooltip: Eine fertige Seite speichern
+      please_wait: Einen Moment...
+      preview: Vorschau
+      preview_tooltip: Vorschau dieser Seite
+      save_changes: Speichern
+      save_to_incomplete_tooltip: Eine unvollständige Seite speichern
+      save_to_needs_review_tooltip: Änderungen speichern
+      save_to_transcribed_tooltip: Änderungen speichern
+    save_transcription:
+      error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
+      saved_notice: Gespeichert
+      you_may_save_notice: Als Gast können Sie bis zu %{guest_deed_count} Transkriptionen speichern.
+    save_translation:
+      error_message: 'Bei der Analyse des Mark-ups in Ihrer Übersetzung ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
+      notice: Als Gast können Sie bis zu %{guest_deed_count} Transkriptionen speichern.
+    translate:
+      autolink: Autolink
+      corrected: korrigiert
+      edit: Bearbeiten
+      edit_translation: Übersetzung bearbeiten
+      help_correct: zu korrigieren
+      help_transcribe: zu transkribieren
+      mark_as_blank: Als leer markieren
+      mark_the_page_blank: markieren Sie die Seite als leer
+      microphone: Mikrofon
+      or_mark_blank: "<br>oder %{mark_blank}"
+      page_needs_review: Seite muss überprüft werden
+      page_notes: Anmerkungen und Fragen
+      please_help_this_page: Bitte helfen Sie, diese Seite %{help_link}
+      preview: Vorschau
+      save_changes: Änderungen speichern
+      show_image: Bild anzeigen
+      show_transcription: Transkription anzeigen
+      this_page_is_blank: Diese Seite ist leer
+      this_page_is_not: Diese Seite ist nicht %{text_type}
+      this_page_marked_needs_review: Diese Seite wurde mit "Überprüfung erforderlich" markiert. Sie können diese Seite verbessern, indem Sie sie anhand des Originals Korrektur lesen und den Text ergänzen oder korrigieren. Wenn Sie fertig sind, deaktivieren Sie das Auswahlkästchen „Überprüfung erforderlich“ und speichern Sie die Seite.
+      transcribed: transkribiert

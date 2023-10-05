@@ -15,7 +15,7 @@ h2.nomargin =t('.recent_activity')
   p
     - @activity.comments.each do |comment|
       -if comment.prerender_mailer
-        =raw(comment.prerender_mailer)
+        =raw(show_prerender(comment.prerender_mailer, I18n.locale))
       -else
         =render(:partial => 'deed/deed.html', :locals => { :deed => comment, :long_view => true, :mailer => true })
       | <br>
@@ -28,7 +28,7 @@ h2.nomargin =t('.recent_activity')
     p 
       - deeds.each do |deed|
         -if deed.prerender
-          =raw(deed.prerender_mailer)
+          =raw(show_prerender(deed.prerender_mailer, I18n.locale))
         -else
           =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true, :mailer => true })
         | <br>

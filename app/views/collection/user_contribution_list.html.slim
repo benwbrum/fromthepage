@@ -6,14 +6,21 @@
 -else
   =render(partial: '/shared/review_breadcrumbs', locals: { selection: :user_contribution_list_from_sampling})
 
-p =t '.user_contribution_description', user_name: @user.display_name
+h4 =t '.user_contribution_description', user_name: @user.display_name
 
-p =link_to(t('.user_profile'), user_profile_path(@user))
--if user_signed_in? && current_user.like_owner?(@collection)
-  -if  @user.activity_email
-    p Email: =@user.email
-  -unless @user.real_name.blank?
-    p Real Name: #{@user.real_name}
+table.datagrid
+  tr
+    td =link_to(t('.user_profile'), user_profile_path(@user))
+    -if user_signed_in? && current_user.like_owner?(@collection)
+      -if  @user.activity_email
+        td.acenter =t('.email', email: @user.email)
+      -unless @user.real_name.blank?
+        td.acenter= t('.real_name', user: @user.real_name)
+      -if @quality_sampling
+        td.acenter= t('.quality_score')
+          '#{(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => @user.id).average(:approval_delta)).truncate(3)*100}%'
+        td.aright 
+          =link_to t('.approve_all'), collection_user_review_approve_all_path(quality_sampling_id: @quality_sampling.id), method: :patch, class: 'button'
 
 
 -if @pages.empty?
@@ -30,17 +37,13 @@ p =link_to(t('.user_profile'), user_profile_path(@user))
       -@pages.each do |page|
         -recent_version = page.page_versions.first
         tr
-          td.vbottom 
-            =link_to(t('.review'), collection_user_review_page_path(@collection.owner, @collection, @user.slug, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button')
-          td.vbottom =recent_version.created_on
-          td.vbottom ="#{page.title} (#{page.work.title})"
-          td.vbottom 
+          td.vtop 
+            =link_to(t('.review'), collection_user_review_page_path(@collection.owner, @collection, @user.slug, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button button')
+          td.vtop =recent_version.created_on
+          td.vtop ="#{page.title} (#{page.work.title})"
+          td.vtop 
             -page.notes.each do |note|
               =render({ partial: 'notes/note', locals: { note: note }})
-    
-  
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

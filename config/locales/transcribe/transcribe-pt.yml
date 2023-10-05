@@ -1,83 +1,89 @@
+---
 pt:
   transcribe:
     assign_categories:
-      uncategorized_subjects: "Temas Não Categorizados"
-      manage_categories: "Controlar Categorias"
-      uncategorized_subjects_mentioned: "Você tem temas não categorizados mencionados na transcrição da página. Por favor, revisa os temas abaixo e atribua as categorias apropriadas para eles."
-      subject: "Tema: "
-      assign_categories: "Atribuir categorias"
-      options: "opções"
-      continue: "Continuar"
-    save_buttons:
-      edit_transcription: "Editar transcrições"
-      save_changes: "Salvar"
-      done: "Feito"
-      approve: "Confirmar"
-      approve_to_transcribed_tooltip: "Salve e aprove esta página"
-      finish_to_needs_review_tooltip: "Salvar uma página completa"
-      finish_to_transcribed_tooltip: "Salvar uma página completa"
-      save_to_transcribed_tooltip: "Salve suas alterações"
-      save_to_needs_review_tooltip: "Salve suas alterações"
-      save_to_incomplete_tooltip: "Salvar uma página incompleta"
+      assign_categories: Atribuir categorias
+      continue: Continuar
+      manage_categories: Controlar Categorias
+      options: opções
+      subject: 'Tema: '
+      uncategorized_subjects: Temas Não Categorizados
+      uncategorized_subjects_mentioned: Você tem temas não categorizados mencionados na transcrição da página. Por favor, revisa os temas abaixo e atribua as categorias apropriadas para eles.
     display_page:
-      fullscreen: "Tela Cheia"
-      image_at_the_left: "Imagem à esquerda"
-      image_at_the_right: "Imagem à direita"
-      image_at_the_top: "Imagem superior"
-      image_at_the_bottom: "Imagem inferior"
-      always_show_fullscreen: "Mostrar sempre em tela cheia"
-      mark_as_blank: "Marcar como em branco"
-      needs_review: "Precisa de Revisão"
-      save_changes: "Guardar Alterações"
-      this_page_marked_needs_review: 'Esta página foi marcada como "precisa de revisão\". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.'
-      this_page_marked_blank: "Esta página foi marcada como em branco"
-      microphone: "Microfone"
-      preview: "Pré-Visualizar"
-      edit: "Editar"
-      autolink: "Link automático"
-      title: "Título:"
-      edit_transcription: "Editar transcrição"
-      save_changes: "Guardar Alterações"
-      done: "Feito"
-      approve: "Confirmar"
-      more_help: "Mais ajuda...."
-      alert: "Esta página está sendo editada por outro usuário!"
-      notes_and_questions: "Notas e Perguntas"
-      autolink_tooltip: "Sugerir links de assunto dentro do texto"
-      preview_tooltip: "Visualize a página sem salvar as alterações"
-    guest:
-      save_up_to_three_transcriptions: "Você pode guardar até três transcrições como hóspede ou se inscrever agora."
-      transcribe_as_guest: "Transcrever como hóspede"
-      sign_up_now: "Inscrever-se Agora"
-      sign_up_now_to_transcribe: "Inscreva-se agora para transcrever."
-      collaboration_restricted_collection: "A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever."
-    translate:
-      show_image: "Mostrar Imagem"
-      mark_as_blank: "Marcar como em branco"
-      page_needs_review: "Página Precisa de Revisão"
-      save_changes: "Guardar Alterações"
-      this_page_marked_needs_review: 'Esta página foi marcada como "precisa de revisão". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.'
-      this_page_is_blank: "Esta página está em branco"
-      mark_the_page_blank: "marcar a página como em branco"
-      this_page_is_not: "Esta página não é %{text_type}"
-      please_help_this_page: "Por favor %{help_link} esta página"
-      or_mark_blank: "<br>ou %{mark_ blank}"
-      microphone: "Microfone"
-      preview: "Pré-Visualizar"
-      edit: "Editar"
-      autolink: "Link automático"
-      edit_translation: "Editar tradução"
-      page_notes: "Notas da Página"
-    mark_page_blank:
-      saved_notice: "Guardada"
-    save_transcription:
-      saved_notice: "Guardada"
-      you_may_save_notice: "Você pode guardar até %{guest_deed_ count} transcrições como hóspede."
-      error_message: "Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=\"\"> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
-    save_translation:
-      notice: "Você pode guardar até %{guest_deed_ count} transcrições como hóspede."
-      error_message: "Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=\"\"> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
+      alert: Esta página está sendo editada por outro usuário!
+      always_show_fullscreen: Mostrar sempre em tela cheia
+      edit_transcription: Editar transcrição
+      fullscreen: Tela Cheia
+      image_at_the_bottom: Imagem inferior
+      image_at_the_left: Imagem à esquerda
+      image_at_the_right: Imagem à direita
+      image_at_the_top: Imagem superior
+      layout: Esquema
+      mark_as_blank: Marcar como em branco
+      mark_blank_warning: Esta página contém dados transcritos, mas você a está marcando como vazia. Deseja continuar?
+      microphone: Microfone
+      more_help: Mais ajuda....
+      needs_review: Precisa de Revisão
+      notes_and_questions: Notas e perguntas
+      this_page_marked_blank: Esta página foi marcada como em branco
+      this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão\". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
+      this_page_marked_needs_review_workflow_version: Esta página precisa de revisão. Você pode melhorar esta página revisando-a em relação ao original e adicionando ou corrigindo o texto e, em seguida, aprove o texto.
+      title: 'Título:'
     goto_next_untranscribed_page:
-      notice: "Não há mais páginas para transcrever nesta coleção."
-      another_page_notice: "Aqui está outra página nesta obra."
-      no_more_pages_notice: "Não há mais páginas para transcrever nesta obra. Aqui está outra página desta coleção."
+      another_page_notice: Aqui está outra página nesta obra.
+      no_more_pages_notice: Não há mais páginas para transcrever nesta obra. Aqui está outra página desta coleção.
+      notice: Não há mais páginas para transcrever nesta coleção.
+    guest:
+      collaboration_restricted_collection: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
+      save_up_to_three_transcriptions: Você pode guardar até três transcrições como hóspede ou se inscrever agora.
+      sign_up_now: Inscrever-se Agora
+      sign_up_now_to_transcribe: Inscreva-se agora para transcrever.
+      transcribe_as_guest: Transcrever como hóspede
+    mark_page_blank:
+      saved_notice: Guardada
+    save_buttons:
+      approve: Confirmar
+      approve_to_transcribed_tooltip: Salve e aprove esta página
+      autolink: Autolink
+      autolink_tooltip: Sugerir tags de assunto automaticamente
+      done: Feito
+      edit: Editar
+      edit_tooltip: Edite essa página
+      finish_to_needs_review_tooltip: Salvar uma página completa
+      finish_to_transcribed_tooltip: Salvar uma página completa
+      please_wait: Por favor, espere...
+      preview: Visualizar
+      preview_tooltip: Visualizar esta página
+      save_changes: Salvar
+      save_to_incomplete_tooltip: Salvar uma página incompleta
+      save_to_needs_review_tooltip: Salve suas alterações
+      save_to_transcribed_tooltip: Salve suas alterações
+    save_transcription:
+      error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
+      saved_notice: Guardada
+      you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
+    save_translation:
+      error_message: 'Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
+      notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
+    translate:
+      autolink: Link automático
+      corrected: corrigido
+      edit: Editar
+      edit_translation: Editar tradução
+      help_correct: ajudar a corrigir
+      help_transcribe: ajude a transcrever
+      mark_as_blank: Marcar como em branco
+      mark_the_page_blank: marcar a página como em branco
+      microphone: Microfone
+      or_mark_blank: "<br>ou %{mark_blank}"
+      page_needs_review: Página Precisa de Revisão
+      page_notes: Notas da Página
+      please_help_this_page: Por favor %{help_link} esta página
+      preview: Pré-Visualizar
+      save_changes: Salvar Alterações
+      show_image: Mostrar Imagem
+      show_transcription: Mostrar transcrição
+      this_page_is_blank: Esta página está em branco
+      this_page_is_not: Esta página não é %{text_type}
+      this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
+      transcribed: transcrito

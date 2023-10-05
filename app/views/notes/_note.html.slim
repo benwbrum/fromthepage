@@ -15,7 +15,7 @@
     =time_tag note.created_at
       =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
       |&nbsp;
-      =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
+      =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
     .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
 
   -if note.user == current_user

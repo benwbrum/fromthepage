@@ -1,68 +1,168 @@
+---
 en:
   statistics:
-    collection:
-      last_days_statistics: "Last 7 Days Statistics"
-    recent_statistics:
-      collaborator: "Collaborator"
-      page: "Page"
-      transcribed: "transcribed"
-      marked_needing_review: "marked needing review"
-      reviewed: "reviewed"
-      edit: "edit"
-      indexed: "indexed"
-      translated: "translated"
-      reference: "Reference"
-      new_subject: "New subject"
-      note: "Note"
-      ocr_correction: "OCR Correction"
-    collection_statistics:
-      work: "Work"
-      page: "Page"
-      note: "Note"
-      subject: "Subject"
-      reference: "Reference"
-      collaborator: "Collaborator"
-      page: "Page"
-      transcribed: "transcribed"
-      incomplete_page: "Incomplete page"
-      needing_review: "needing review"
-      reviewed: "reviewed"
-      indexed: "indexed"
-      translated: "translated"
-      edit: "edit"
-      ocr_correction: "OCR Correction"
-      works_described: "Described work"
-      records_indexed: Indexed record
-      lines_transcribed: Text line
-    collaborators:
-      collaborators: "Collaborators"
-      mailing_list_export: "Mailing List Export"
-      transcribing: "Transcribing"
-      no_transcribers: "No transcribers"
-      editing: "Editing"
-      no_editors: "No editors"
-      indexing: "Indexing"
-      no_indexers: "No indexers"
-    statistics:
-      work: "Work"
-      page: "Page"
-      total_page: "Total page"
-      active_page: "Active page"
-      incomplete_page: "Incomplete page"
-      transcribed: "transcribed"
-      needing_review: "needing review"
-      reviewed: "reviewed"
-      marked_needing_review: "marked needing review"
-      edit: "edit"
-      note: "Note"
-      subject: "Subject"
-      reference: "Reference"
-      collaborator: "Collaborator"
-      ocr_correction: "OCR Correction"
-      last_days_statistics: "Last 7 Days Statistics"
-      new_subject: "New subject"
     collaborator_time:
-      collaborator_time: "Collaborator Time"
-      export_activity_as_csv: "Export Detailed Activity as CSV"
-      user_totals_for_dates: "User Totals for Dates"
-      no_activity_for_date_range: "There is no activity for this date range."
+      collaborator_time: Collaborator Time
+      collaborator_time_description: A spreadsheet of the number of minutes each user contributed per day in the date range.
+      collaborator_time_export_button: Export Collaborator Time Spreadsheet
+      no_activity_for_date_range: There is no activity for this date range.
+      user_totals_for_dates: User Totals for Dates
+    collaborators:
+      collaborators: Collaborators
+      editing: Editing
+      indexing: Indexing
+      mailing_list_export: Export Mailing List
+      no_editors: No editors
+      no_indexers: No indexers
+      no_reviewers: No reviewers
+      no_transcribers: No transcribers
+      reviewing: Reviewing
+      transcribing: Transcribing
+    collection:
+      last_days_statistics: Last 7 Days Statistics
+    collection_statistics:
+      collaborator:
+        one: Collaborator
+        other: Collaborators
+      incomplete_page:
+        one: Incomplete page
+        other: Incomplete pages
+      lines_transcribed:
+        one: Text line
+        other: Text lines
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: OCR Correction
+        other: OCR Corrections
+      page:
+        one: Page
+        other: Pages
+      page_edit:
+        one: Page edit
+        other: Page edits
+      page_indexed:
+        one: Page indexed
+        other: Pages indexed
+      page_needing_review:
+        one: Page needing review
+        other: Pages needing review
+      page_reviewed:
+        one: Page reviewed
+        other: Pages reviewed
+      page_transcribed:
+        one: Page transcribed
+        other: Pages transcribed
+      page_translated:
+        one: Page translated
+        other: Pages translated
+      records_indexed:
+        one: Indexed record
+        other: Indexed records
+      reference:
+        one: Reference
+        other: References
+      subject:
+        one: Subject
+        other: Subjects
+      work:
+        one: Work
+        other: Works
+      work_transcribed:
+        one: Work transcribed
+        other: Works transcribed
+      works_described:
+        one: Described work
+        other: Described works
+    recent_statistics:
+      collaborator:
+        one: Collaborator
+        other: Collaborators
+      new_subject:
+        one: New subject
+        other: New subjects
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: OCR Correction
+        other: OCR Corrections
+      page_edit:
+        one: Page edit
+        other: Page edits
+      page_indexed:
+        one: Page indexed
+        other: Pages indexed
+      page_marked_needing_review:
+        one: Page marked needing review
+        other: Pages marked needing review
+      page_reviewed:
+        one: Page reviewed
+        other: Pages reviewed
+      page_transcribed:
+        one: Page transcribed
+        other: Pages transcribed
+      page_translated:
+        one: Page translated
+        other: Pages translated
+      reference:
+        one: Reference
+        other: References
+    statistics:
+      active_page:
+        one: Active page
+        other: Active pages
+      collaborator:
+        one: Collaborator
+        other: Collaborators
+      end_date: End date
+      incomplete_page:
+        one: Incomplete page
+        other: Incomplete pages
+      new_subject:
+        one: New subject
+        other: New subjects
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: OCR Correction
+        other: OCR Corrections
+      page_edit:
+        one: Page edit
+        other: Page edits
+      page_indexed:
+        one: Page indexed
+        other: Pages indexed
+      page_marked_needing_review:
+        one: Page marked needing review
+        other: Pages marked needing review
+      page_needing_review:
+        one: Page needing review
+        other: Pages needing review
+      page_reviewed:
+        one: Page reviewed
+        other: Pages reviewed
+      page_transcribed:
+        one: Page transcribed
+        other: Pages transcribed
+      page_translated:
+        one: Page translated
+        other: Pages translated
+      reference:
+        one: Reference
+        other: References
+      select_new_date: Select a new date range
+      start_date: Start date
+      statistics_from: Statistics from %{start_date} to %{end_date}
+      subject:
+        one: Subject
+        other: Subjects
+      total_page:
+        one: Total page
+        other: Total pages
+      update: Update
+      work:
+        one: Work
+        other: Works

@@ -1,6 +1,6 @@
 -user_name = @user.display_name.presence || @user.login
 -content_for :page_title, user_name
--content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
+-content_for :meta_description, t('.users_profile_at_fromthepage', user: user_name, about: @user.about)
 -if @user.owner?
   =render partial: 'owner_profile', locals: { user: @user, carousel_collections: @carousel_collections, collections_and_document_sets: @collections_and_document_sets }
 -else
@@ -22,9 +22,9 @@
               span =t('.login_and_password').html_safe
       .user-profile_stats
         span ="#{number_with_delimiter(@user.deeds.count)} #{t('.contribution', count: @user.deeds.count)}"
-        span = t('.user_since', date: @user.created_at.strftime("%b %d, %Y"))
+        span = t('.user_since', date: l(@user.created_at.to_date))
         -if @user.last_sign_in_at.present?
-          span = t('.last_seen', date: @user.last_sign_in_at.strftime("%b %d, %Y"))
+          span = t('.last_seen', date: l(@user.last_sign_in_at.to_date))
 
   
 
@@ -39,7 +39,7 @@
             =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
             
         td
-          small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
+          small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
         td.nowrap
           =time_tag(d.created_at, class: 'small fglight')
             =t('time_ago_in_words', time: time_ago_in_words(d.created_at))

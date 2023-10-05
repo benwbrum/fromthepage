@@ -1,9 +1,10 @@
+---
 en:
   metadata:
     upload:
-      upload_metadata: "Upload Metadata"
-      upload_metadata_description: "To update metadata for several works within this collection, upload a spreadsheet with one row per work. Please download %{link} to start."
-      click_to_browse_a_file: "Click to browse a file..."
-      browse: "Browse"
-      upload: "Upload"
-      template_file_anchor: "this template file"
+      browse: Browse
+      click_to_browse_a_file: Click to browse a file...
+      template_file_anchor: this template file
+      upload: Upload
+      upload_metadata: Upload Metadata
+      upload_metadata_description: To update metadata for several works within this collection, upload a spreadsheet with one row per work. Please download %{link} to start.

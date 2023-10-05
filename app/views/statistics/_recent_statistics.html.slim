@@ -1,15 +1,15 @@
 section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator').pluralize(stats[:contributors])}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSCRIPTION]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSCRIPTION])} #{t('.transcribed')}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NEEDS_REVIEW]}") #{t('.page').pluralize(stats[DeedType::NEEDS_REVIEW])} #{t('.marked_needing_review')}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page').pluralize(stats[DeedType::PAGE_REVIEWED])} #{t('.reviewed')}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") #{t('.page')} #{t('.edit').pluralize(stats[DeedType::PAGE_EDIT])}
+    .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator', count: stats[:contributors])}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSCRIPTION]}") #{t('.page_transcribed', count: stats[DeedType::PAGE_TRANSCRIPTION])}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NEEDS_REVIEW]}") #{t('.page_marked_needing_review', count: stats[DeedType::NEEDS_REVIEW])}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page_reviewed', count: stats[DeedType::PAGE_REVIEWED])}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") #{t('.page_edit', count: stats[DeedType::PAGE_EDIT])}
     -if @collection.works.where(supports_translation: true).exists?
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSLATED])} #{t('.translated')}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page_translated', count: stats[DeedType::PAGE_TRANSLATED])}
     -unless subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_INDEXED]}") #{t('.page').pluralize(stats[DeedType::PAGE_INDEXED])} #{t('.indexed')}
-      .counter(data-prefix="#{number_with_delimiter stats[:mentions]}") #{t('.reference').pluralize(stats[:mentions])}
-      .counter(data-prefix="#{number_with_delimiter stats[:subjects]}") #{t('.new_subject').pluralize(stats[:subjects])}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NOTE_ADDED]}") #{t('.note').pluralize(stats[DeedType::NOTE_ADDED])}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_INDEXED]}") #{t('.page_indexed', count: stats[DeedType::PAGE_INDEXED])}
+      .counter(data-prefix="#{number_with_delimiter stats[:mentions]}") #{t('.reference', count: stats[:mentions])}
+      .counter(data-prefix="#{number_with_delimiter stats[:subjects]}") #{t('.new_subject', count: stats[:subjects])}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NOTE_ADDED]}") #{t('.note', count: stats[DeedType::NOTE_ADDED])}
     -if @collection.works.where(ocr_correction: true).exists?
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction').pluralize(stats[DeedType::OCR_CORRECTED])}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction', count: stats[DeedType::OCR_CORRECTED])}

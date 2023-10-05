@@ -1,16 +1,50 @@
+---
 pt:
   ia:
+    confirm_import:
+      book_already_imported_description: 'As obras listadas abaixo podem ter sido importadas da mesma fonte:'
+      book_already_imported_warning: 'Aviso: Este livro pode já ter sido importado!'
+      book_was_imported: Livro de arquivo da Internet "%{book}"; foi importado por %{user} em %{date}
+      cancel_import: Cancelar importação
+      import_anyway: Importar mesmo assim
+      import_from_archive_org: Importar do Archive.org
+      not_converted_into_work: mas não foi convertido em uma obra FromThePage.
+      please_enter_valid_url: Introduza um URL válido de um livro de Archive.org para importar
+      was_converted_into_work: 'e foi convertido em obra FromThePage '
     convert:
       converted_to_work: "%{title} foi convertido numa obra de FromThePage"
-    mark_beginning:
-      preceding_the_beginning: "As páginas que precedem o início do texto foram escondidas"
-    mark_end:
-      pages_following_the_end: "As páginas que seguem o final do texto foram escondidas"
-    title_from_ocr_top:
-      pages_has_been_renamed: "As páginas foram renomeadas com a linha superior do texto OCR"
-    title_from_ocr_bottom:
-      pages_has_been_renamed: "As páginas foram renomeadas com a linha inferior do texto OCR"
-    confirm_import:
-      please_enter_valid_url: "Introduza um URL válido de um livro de Archive.org para importar"
+    ia_book_form:
+      book_url: URL do livro
+      import_book_description: Para importar um livro, abra este livro em www.archive.org e copie o URL do livro da barra de endereços do navegador e cole-o abaixo.
+      import_from_archive_org: Importar do Archive.org
+      import_work: Importar Obra
     import_work:
       imported_into_staging: "%{title} foi importado para a sua área de preparação"
+    manage:
+      actions: Ações
+      book_imported_description: Este livro foi importado do Internet Archive, mas ainda não foi convertido em uma obra. Abaixo você vê a lista de páginas importadas e seu texto OCR. Use o menu de ações para definir a primeira página (ocultar todas as páginas anteriores) e a última página (ocultar todas as páginas seguintes). Você também pode gerenciar os títulos das páginas do texto OCR e, finalmente, converter essa importação em uma obra publicando-a em uma coleção. Para obter mais informações sobre esta tela, consulte o artigo Wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importando obras do Internet Archive</a>.
+      conceal_following_pages: Ocultar as páginas seguintes
+      conceal_preceding_pages: Ocultar páginas anteriores
+      first_line_of_ocr: Primeira linha de OCR
+      first_line_of_ocr_description: "<b>Primeira linha do OCR</b> substitui os títulos das páginas pela linha superior do texto OCR em cada página. Isso é útil para diários e diários, já que a primeira linha geralmente é uma data."
+      last_line_of_ocr: Última linha do OCR
+      last_line_of_ocr_description: "<b>Última linha do OCR</b> substitui os títulos das páginas pela linha inferior do texto OCR em cada página. Isso é útil para obras impressos nos quais os números de página aparecem na parte inferior."
+      manage_archive_org_import: Gerenciar importação do Archive.org
+      ocr_for_page_contents: Usar texto OCR para o conteúdo da página?
+      ocr_for_page_contents_description: Marque esta caixa de seleção para preencher a transcrição inicial de cada página com o conteúdo do OCR correspondente. (Não faça isso se suas páginas contiverem caligrafia que você deseja que seja transcrita.)
+      ocr_page_titles_description: Esse processo levará vários segundos para ser executado, pois requer a análise de todo o texto OCR do livro e a atualização de cada título de página. Depois que o livro for convertido em uma obra FromThePage, você poderá corrigir os títulos das páginas manualmente.
+      page_n_of_n: Página %{n} de %{total} (%{n2})
+      page_titles: Títulos de página
+      publish_to_collaborators: Publicar para colaboradores
+      publish_work: Publicar obra
+      publish_work_description: Assim que tiver os títulos e as folhas prontas, clique em Publicar para converter o livro em uma obra FromThePage pronto para transcrição. Esse processo levará vários minutos para ser executado.
+      select_a_collection: "- Selecione uma coleção -"
+      select_a_collection_1: Selecione uma coleção
+    mark_beginning:
+      preceding_the_beginning: As páginas que precedem o início do texto foram escondidas
+    mark_end:
+      pages_following_the_end: As páginas que seguem o final do texto foram escondidas
+    title_from_ocr_bottom:
+      pages_has_been_renamed: As páginas foram renomeadas com a linha inferior do texto OCR
+    title_from_ocr_top:
+      pages_has_been_renamed: As páginas foram renomeadas com a linha superior do texto OCR

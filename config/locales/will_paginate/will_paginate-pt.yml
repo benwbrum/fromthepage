@@ -1,0 +1,19 @@
+---
+pt:
+  will_paginate:
+    container_aria_label: Paginação
+    next_label: Próximo →
+    page_aria_label: Página %{page}
+    page_entries_info:
+      multi_page: Exibindo %{model} %{from} - %{to} de %{count} no total
+      multi_page_html: Exibindo %{model} <b>%{from} - %{to}</b> de <b>%{count}</b> no total
+      single_page:
+        one: Exibindo 1 %{model}
+        other: Exibindo todos os %{count} %{model}
+        zero: Nenhum %{model} encontrado
+      single_page_html:
+        one: Exibindo <b>1</b> %{model}
+        other: Exibindo <b>todos os %{count}</b> %{model}
+        zero: Nenhum %{model} encontrado
+    page_gap: "&hellip;"
+    previous_label: "← Anterior"

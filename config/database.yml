@@ -20,8 +20,11 @@ default: &default
   variables:
     sql_mode: TRADITIONAL
 
+
 development:
   <<: *default
+  username: rails
+  password: rails
   database: diary_development
 
 # Warning: The database defined as "test" will be erased and

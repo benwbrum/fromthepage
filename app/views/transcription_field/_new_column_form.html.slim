@@ -6,20 +6,20 @@
 
 tr id="#{column_id}"
   td.field-form_label
-    =text_field_tag "spreadsheet_columns[][label]", "#{label_value}", 'aria-label' => 'Field label'
+    =text_field_tag "spreadsheet_columns[][label]", "#{label_value}", 'aria-label' => t('.field_label')
   td.field-form_type
-    =select_tag("spreadsheet_columns[][input_type]", options_for_select(SpreadsheetColumn::INPUTS, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type')
+    =select_tag("spreadsheet_columns[][input_type]", options_for_select(SpreadsheetColumn::INPUTS, "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
   td.field-form_options
-    =text_area_tag "spreadsheet_columns[][options]", "#{options_value}", 'aria-label' => 'Field options', class: 'field-options', disabled: true
+    =text_area_tag "spreadsheet_columns[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_actions
     -if !column.blank?
       =hidden_field_tag "spreadsheet_columns[][id]", column.id
-      =link_to transcription_field_spreadsheet_column_delete_path(spreadsheet_column_id: column.id, field_id: @transcription_field.id, collection_id: @collection), title: 'Delete column', 'aria-label' => 'Delete column', class: 'field-form_icon'
+      =link_to transcription_field_spreadsheet_column_delete_path(spreadsheet_column_id: column.id, field_id: @transcription_field.id, collection_id: @collection), title: t('.delete_column'), 'aria-label' => t('.delete_column'), class: 'field-form_icon'
         =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete column'
-      span.field-form_icon.reorder title="Reorder column"
+      span.field-form_icon.reorder title=t('.reorder_column')
         =svg_symbol '#icon-reorder', class: 'icon', title: 'Reorder column'
     -else
-      a.field-form_icon title="Delete column" data-delete-column=""
+      a.field-form_icon title=t('.delete_column') data-delete-column=""
         =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete column'
-      span.field-form_icon.reorder title="Reorder column"
+      span.field-form_icon.reorder title=t('.reorder_column')
         =svg_symbol '#icon-reorder', class: 'icon', title: 'Reorder column'

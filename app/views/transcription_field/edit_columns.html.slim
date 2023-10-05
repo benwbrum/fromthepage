@@ -5,16 +5,16 @@ div.columns
     h2 =t('.edit_spreadsheet_header')
 
     h3 =t('.screen_ruler')
-    p To reduce improve usability and reduce transcriber errors, FromThePage can display a ruler on the page image that highlights the part of a page the user is transcribing.  This is useful for consistently scanned documents written on pre-printed forms, but can be distracting or frustrating if documents are irregular and the screen ruler does not match.
+    p= t('.screen_ruler_description')
     -if @transcription_field.row_highlight
-      =link_to 'Disable Ruler', transcription_field_spreadsheet_column_disable_ruler_path(@transcription_field), class: 'button'
+      =link_to t('.disable_ruler'), transcription_field_spreadsheet_column_disable_ruler_path(@transcription_field), class: 'button'
 
       h4 =t('.page_layout')
-      p Pages may have top and bottom margins, header or footer fields, or other text that should not be used when identifying where the rows are on the page.
-      =link_to 'Identify Rows', transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
+      p= t('.identify_rows_description')
+      =link_to t('.identify_rows'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
 
     -else
-      =link_to 'Enable Ruler', transcription_field_spreadsheet_column_enable_ruler_path(@transcription_field), class: 'button'
+      =link_to t('.enable_ruler'), transcription_field_spreadsheet_column_enable_ruler_path(@transcription_field), class: 'button'
   
     =form_tag transcription_field_spreadsheet_column_add_columns_path
       =hidden_field_tag(:collection_id, @collection.id)
@@ -28,6 +28,7 @@ div.columns
 
       h3 =t('.edit_spreadsheet_columns')
       p 
+      -if @collection.table_cells.present?
         i =t('.transcription_warning')
       table.field-form#new-columns
         =render ({partial: 'column_form'})

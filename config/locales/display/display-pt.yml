@@ -1,56 +1,97 @@
+---
 pt:
   display:
-    #TODO next 6 messages
-    correct: ""
-    transcribe: ""
-    blank_page: ""
-    review: ""
-    translate: ""
-    completed: ""
     display_page:
-      facsimile: "Fac-símile"
-      translation: "Tradução"
-      show_transcription: "Mostrar Transcrição"
-      transcription: "Transcrição"
-      show_translation: "Mostrar Tradução"
-      mark_the_page_blank: "marcar a página como em branco"
-      this_page_is_blank: "Esta página está em branco"
-      this_page_is_not: "Esta página não é %{text_type}"
-      please_help_this_page: "Por favor %{help_link} esta página"
-      or_mark_blank: "<br>ou %{mark_ blank}"
-      collaboration_is_restricted: "A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever."
-      collection_is_not_active: "Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas."
-      page_notes: "Notas da Página"
-    multi_page:
-      search_in_collection: "Buscar na coleção..."
-      search: "Buscar"
-      view_all_pages: "Ver Todas as Páginas"
-      pages_need_transcription: "Páginas para Transcrever"
-      pages_need_review: "Páginas para Revisar"
-      pages_need_indexing: "Páginas para Indexar"
-      pages_need_translation: "Páginas para Traduzir"
-      translations_need_review: "Traduções para Revisar"
-      translations_need_indexing: "Traduções para Indexar"
-      search_for: "Buscar por %{search_string}"
-      categories: "Categorias"
-    pages_view:
-      no_pages_found: "Nenhuma página encontrada"
-      unable_to_find_pages: "Não conseguimos encontrar nenhuma página correspondente ao seu pedido"
-      this_page_is_blank: "Esta página está em branco"
-      this_page_is_not: "Esta página não está %{status}, por favor %{help} esta página"
-      collection_is_not_active: "Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas."
-      collaboration_is_restricted: "A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever."
-      this_page_is_blank: "Esta página está em branco"
-      help_translate: "ajudar a traduzir"
-      page_not_translated: "Esta página não está traduzida, por favor %{help_translate} esta página"
-      corrected: "corrigiu"
-      transcribed: "transcreveu"
-      help_transcribe: "Por favor, ajude a transcrever"
-      last_edit: "Última edição há %{edit_time} por %{user_link}"
+      collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
+      collection_is_not_active: Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas.
+      corrected: corrigido
+      facsimile: Fac-símile
+      help_correct: ajudar a corrigir
+      help_transcribe: ajude a transcrever
+      help_translate: ajude a traduzir
+      mark_the_page_blank: marcar a página como em branco
+      or_mark_blank: "<br>ou %{mark_blank}"
+      page_notes: Notas da Página
+      please_help_this_page: Por favor %{help_link} esta página
+      show_transcription: Mostrar Transcrição
+      show_translation: Mostrar Tradução
+      this_page_is_blank: Esta página está em branco
+      this_page_is_not: Esta página não é %{text_type}
+      transcribed: transcrito
+      transcription: Transcrição
+      translated: traduzido
+      translation: Tradução
     list_pages:
-      no_pages_found: "Nenhuma página encontrada"
-      no_pages_in_work: "Esta obra ainda não contém nenhuma página; vá para %{link} para criar uma nova página"
-      page_title: "Título da Página"
-      user_notes: "Notas do Usuário"
-      actions: "Ações"
-      no_notes: "Sem notas"
+      actions: Ações
+      blank_page: Página em branco
+      completed: Concluído
+      correct: Correto
+      describe: Descrever
+      index: Índice
+      metadata: Metadados
+      n_notes:
+        one: 1 nota
+        other: "%{count} notas"
+      no_notes: Sem notas
+      no_pages_found: Nenhuma página encontrada
+      no_pages_in_work: Esta obra ainda não contém nenhuma página; vá para %{link} para criar uma nova página
+      page_title: Título da Página
+      pages_tab: Guia de páginas
+      review: Análise
+      transcribe: Transcrever
+      translate: Traduzir
+      user_notes: Notas do Usuário
+    multi_page:
+      categories: Categorias
+      describe: Criar metadados
+      pages_need_indexing: Páginas para Indexar
+      pages_need_review: Páginas para Revisar
+      pages_need_transcription: Páginas para Transcrever
+      pages_need_translation: Páginas para Traduzir
+      search: Buscar
+      search_for: Buscar por %{search_string}
+      search_in_collection: Buscar na coleção...
+      search_in_collection_1: Pesquisar na coleção
+      search_in_work: Pesquise em obra...
+      translations_need_indexing: Traduções para Indexar
+      translations_need_review: Traduções para Revisar
+      view_all_pages: Ver Todas as Páginas
+    pages_view:
+      collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
+      corrected: corrigiu
+      help_complete: Edite essa página
+      help_correct: ajudar a corrigir
+      help_transcribe: Por favor, ajude a transcrever
+      help_translate: ajudar a traduzir
+      last_edit: Última edição há %{edit_time} por %{user_link}
+      no_pages_found: Nenhuma página encontrada
+      no_pages_needing_transcription_found_these_pages_are_incomplete: Nenhuma página precisa de transcrição do zero. Estas páginas foram parcialmente transcritas, mas precisam ser completadas.
+      page_not_translated: Esta página não está traduzida, por favor %{help_translate} esta página
+      pages_needing_completion: Páginas que precisam de conclusão
+      review_metadata: Revisar metadados
+      this_page_is_blank: Esta página está em branco
+      this_page_is_incomplete: Esta página está incompleta
+      this_page_is_not: Esta página não está %{status}, por favor %{help} esta página
+      transcribed: transcreveu
+      translation: Tradução
+      unable_to_find_pages: Não conseguimos encontrar nenhuma página correspondente ao seu pedido
+    read_all_works:
+      pages: Páginas
+      pages_that_mention: Páginas que mencionam %{article}
+    read_work:
+      pages: Páginas
+      pages_need_indexing: Páginas que precisam de indexação
+      pages_need_review: Páginas que precisam de revisão
+      pages_need_transcription: Páginas que precisam de transcrição
+      pages_need_translation: Páginas que precisam de tradução
+      translations_need_indexing: Traduções que precisam de indexação
+      translations_need_review: Traduções que precisam de revisão
+  display_helper:
+    page_action:
+      blank_page: Página em branco
+      completed: Concluído
+      correct: Correto
+      index: Índice
+      review: Análise
+      transcribe: Transcrever
+      translate: Traduzir

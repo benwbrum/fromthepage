@@ -1,33 +1,49 @@
+---
 pt:
   notes:
-    note:
-      html:
-        edit: "Editar"
-        confirm_delete_message: "Você tem certeza que deseja apagar esta nota?"
-        delete: "Apagar"
-        microphone: "Microfone"
-        cancel: "Cancelar"
-        update: "Atualizar"
-      edit: "Editar"
-      confirm_delete_message: "Você tem certeza que deseja apagar esta nota?"
-      delete: "Apagar"
-      microphone: "Microfone"
-      cancel: "Cancelar"
-      update: "Atualizar"
-      time_ago_in_words: "Há %{time}"
-    notes:
-      nobody_has_written_a_note: "Não há nenhuma nota para esta página"
-      please_sign_in_to_write: "Por favor %{link} para escrever uma nota para esta página"
-      write_a_new_note: "Escrever uma nova nota..."
-      note_body: "Corpo da nota"
-      microphone: "Microfone"
-      save_note: "Guardar Nota"
     create:
-      must_be_logged: "Você deve estar logado para criar notas"
-      note_has_been_created: "A nota foi criada"
-      error_creating_note: "Erro ao criar a nota"
-    update:
-      note_has_been_updated: "A nota foi atualizada"
-      error_updating_note: "Erro ao atualizar a nota"
+      error_creating_note: Erro ao criar a nota
+      must_be_logged: Você deve estar logado para criar notas
+      note_has_been_created: A nota foi criada
     destroy:
-      note_has_been_deleted: "A nota foi excluída"
+      note_has_been_deleted: A nota foi excluída
+    discussions:
+      description: Dúvidas e notas nas páginas
+      most_recent_of: Mais recente de
+      page_notes: Notas de página
+      pages_and_notes_counts: "%{posts_count} notas em %{topics_count} páginas"
+      total_notes: "%{count} notas"
+    list:
+      collection: Coleção
+      collection_title: 'Coleção: %{title}'
+      note: Observação
+      notes: Notas
+      page: Página
+      time: Tempo
+      user: Do utilizador
+      work: Obra
+    note:
+      cancel: Cancelar
+      confirm_delete_message: Você tem certeza que deseja apagar esta nota?
+      delete: Apagar
+      edit: Editar
+      html:
+        cancel: Cancelar
+        confirm_delete_message: Você tem certeza que deseja apagar esta nota?
+        delete: Apagar
+        edit: Editar
+        microphone: Microfone
+        update: Atualizar
+      microphone: Microfone
+      update: Atualizar
+    notes:
+      microphone: Microfone
+      nobody_has_written_a_note: Não há nenhuma nota para esta página
+      note_body: Corpo da nota
+      please_sign_in_to_write: Por favor %{link} para escrever uma nota para esta página
+      save_note: Guardar Nota
+      sign_in: entrar
+      write_a_new_note: Escrever uma nova nota...
+    update:
+      error_updating_note: Erro ao atualizar a nota
+      note_has_been_updated: A nota foi atualizada

@@ -26,7 +26,7 @@ class ScCollectionsController < ApplicationController
 
     import.submit_background_task
 
-    flash[:info] = "Your import has been started.  When it is complete, you should receive email at #{current_user.email}."
+    flash[:info] = t('.import_started', email: (current_user.email))
     redirect_to dashboard_owner_path
   end
 
@@ -59,38 +59,56 @@ class ScCollectionsController < ApplicationController
     at_id = params[:at_id]
 
     begin
-      service = find_service(at_id)
+      version = detect_version(at_id)
+      if version == 2
+        service = find_service(at_id)
 
-      if service["@type"] == "sc:Collection"
-        @sc_collection = ScCollection.collection_for_at_id(at_id)
-        @collection = set_collection
+        if service["@type"] == "sc:Collection"
+          @sc_collection = ScCollection.collection_for_at_id(at_id)
+          @collection = set_collection
 
-        render 'explore_collection', at_id: at_id
-      elsif service["@type"] == "sc:Manifest"
-        @sc_manifest = ScManifest.manifest_for_at_id(at_id)
-        find_parent = @sc_manifest.service["within"]
-        if find_parent.nil? || !find_parent.is_a?(Hash)
-          @sc_collection = nil
-        else
-          parent_at_id = @sc_manifest.service["within"]["@id"]
-          unless parent_at_id.nil?
-            @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
-          else
+          render 'explore_collection', at_id: at_id
+        elsif service["@type"] == "sc:Manifest"
+          @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+          find_parent = @sc_manifest.service["within"]
+          if find_parent.nil? || !find_parent.is_a?(Hash)
             @sc_collection = nil
+          else
+            parent_at_id = @sc_manifest.service["within"]["@id"]
+            unless parent_at_id.nil?
+              @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
+            else
+              @sc_collection = nil
+            end
           end
+          #this allows jquery to recover if there is no parent collection
+          if @sc_collection
+            @label = @sc_collection.label
+            @col = @sc_collection.collection
+          else
+            @label = nil
+            @col = nil
+          end
+          render 'explore_manifest', at_id: at_id
         end
-        #this allows jquery to recover if there is no parent collection
-        if @sc_collection
-          @label = @sc_collection.label
-          @col = @sc_collection.collection
-        else
-          @label = nil
-          @col = nil
+      elsif version == 3
+        manifest = JSON.parse(fetch_manifest(at_id))
+        if manifest['type'] == 'Collection'
+          @sc_collection = ScCollection.collection_for_v3_hash(manifest)
+          @collection = set_collection
+          render 'explore_collection', at_id: at_id
+        elsif manifest['type'] == 'Manifest'
+          @sc_manifest = ScManifest.manifest_for_v3_hash(manifest)
+          @sc_collection = nil # TODO figure out within partOf
+          @label = nil # TODO
+          @col = nil # TODO
+          render 'explore_manifest', at_id: at_id
         end
-        render 'explore_manifest', at_id: at_id
+
+
       end
     rescue => e
-      logger.error(e)
+      logger.error(e.message + "\n\n" + e.backtrace.join("\n"))
       case params[:source]
       when 'contentdm'
         flash[:error] = t('.no_manifest_exist', url: params[:source_url])
@@ -104,9 +122,14 @@ class ScCollectionsController < ApplicationController
 
   def explore_manifest
     at_id = params[:at_id]
+    version = detect_version(at_id)
 
     begin
-      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+      if version == 3
+        @sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
+      else
+        @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+      end
     rescue ArgumentError
       redirect_to :action => 'explore_collection', :at_id => at_id
       return
@@ -123,7 +146,14 @@ class ScCollectionsController < ApplicationController
 
   def explore_collection
     at_id = params[:at_id]
-    @sc_collection = ScCollection.collection_for_at_id(at_id)
+    version = detect_version(at_id)
+
+    if version == 3
+      manifest = JSON.parse(fetch_manifest(at_id))
+      @sc_collection = ScCollection.collection_for_v3_hash(manifest)
+    else
+      @sc_collection = ScCollection.collection_for_at_id(at_id)
+    end
     @collection = set_collection
   end
 
@@ -132,6 +162,8 @@ class ScCollectionsController < ApplicationController
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
     collection_id = params[:collection_id]
     cdm_ocr = !params[:contentdm_ocr].blank?
+    annotation_ocr = !params[:annotation_ocr].blank?
+    import_ocr = cdm_ocr || annotation_ocr
 
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
@@ -160,7 +192,7 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} 2>&1 &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
@@ -184,11 +216,17 @@ class ScCollectionsController < ApplicationController
 
   def convert_manifest
     at_id = params[:at_id]
-    @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    annotation_ocr = !params[:annotation_ocr].blank?
+    version = detect_version(at_id)
+    if version == 3
+      @sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
+    else
+      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    end
     work = nil
     if params[:sc_manifest][:collection_id] == 'sc_collection'
       set_sc_collection
-      work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
+      work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection, annotation_ocr)
     else
       collection_id = params[:sc_manifest][:collection_id]
       unless collection_id.blank?
@@ -199,9 +237,9 @@ class ScCollectionsController < ApplicationController
         else
           @collection = Collection.find_by(id: collection_id)
         end
-        work = @sc_manifest.convert_with_collection(current_user, @collection, document_set)
+        work = @sc_manifest.convert_with_collection(current_user, @collection, document_set, annotation_ocr)
       else
-        work = @sc_manifest.convert_with_no_collection(current_user) 
+        work = @sc_manifest.convert_with_no_collection(current_user, annotation_ocr) 
       end
     end
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
@@ -278,9 +316,45 @@ class ScCollectionsController < ApplicationController
   end
 
   def find_service(at_id)
-    connection = URI.open(at_id)
-    manifest_json = connection.read
+    manifest_json = fetch_manifest(at_id)
     service = IIIF::Service.parse(manifest_json)
     return service
+  end
+
+  V3_CONTEXT = 'http://iiif.io/api/presentation/3/context.json'
+  V2_CONTEXT = 'http://iiif.io/api/presentation/2/context.json'
+  def detect_version(at_id)
+    manifest = JSON.parse(fetch_manifest(at_id))
+    context = manifest['@context']
+
+    return 3 if context.nil?
+
+    if context.is_a? Array
+      if context.include? V2_CONTEXT
+        return 2
+      elsif context.include? V3_CONTEXT
+        return 3
+      else
+        return nil
+      end
+    else
+      if context == V2_CONTEXT
+        return 2
+      elsif context == V3_CONTEXT
+        return 3
+      else
+        return nil
+      end
+    end
+        
+
+  end
+
+  def fetch_manifest(at_id)
+    if @raw_manifest.nil?
+      connection = URI.open(at_id)
+      @raw_manifest = connection.read
+    end
+    @raw_manifest
   end
 end

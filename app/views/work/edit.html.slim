@@ -16,68 +16,69 @@
       =validation_summary @work.errors
       table.form.settings
         tr.big
-          th =f.label :title, 'Work title'
+          th =f.label :title, t('.work_title')
           td.w100 =f.text_field :title, value: @work.title
         tr
-          th =f.label :collection_id
+          th =f.label :collection_id, t('.collection')
           td =f.collection_select(:collection_id, @collections, :id, :title)
         tr
-          th =f.label :slug, 'URL'
+          th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @work.slug
         tr
-          th.hidden Current URL
+          th.hidden= t('.url')
           td
-            p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
-
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_read_work_url( @work.collection.owner.slug, @work.collection.slug, @work.slug)}</b>").html_safe
         tr
-          th =f.label :identifier, 'Identifier'
+          th =f.label :identifier, t('.identifier')
           td =f.text_field :identifier, value: @work.identifier
         tr
-          th.hidden Identifier Help
+          th.hidden= t('.identifier')
           td
-            p.nomargin.settings Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+            p.nomargin.settings= t('.identifier_description')
         tr
           td(colspan="2")
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
-            =f.label :pages_are_meaningful, 'Pages Are Meaningful'
+            =f.label :pages_are_meaningful, t('.pages_are_meaningful')
             br
-            span.settings Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
+            span.settings= t('.pages_are_meaningful_description')
 
         tr
           td(colspan="2")
             =f.check_box :ocr_correction, value: @work.ocr_correction
             |&nbsp;
-            =f.label :ocr_correction, 'Enable OCR Correction'
+            =f.label :ocr_correction, t('.enable_ocr_correction')
             br
-            span.settings A work may begin with OCR text that needs to be corrected.  When checked, the Transcribe tab will be replaced by a Correct tab.
+            span.settings= t('.enable_ocr_correction_description')
         tr
           td(colspan="2")
-            =f.label :description, class: 'above'
+            =f.label :description, t('.description'), class: 'above'
+            br: i =t('.description_message')
             =f.text_area :description, rows: 5, value: @work.description
         tr
           td(colspan="2")
-            =f.label :transcription_conventions, class: 'above'
+            =f.label :transcription_conventions, t('.transcription_conventions'), class: 'above'
+            br: i =t('.transcription_conventions_message')
             =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
         tr
           td(colspan="2")
             .aright
               -if @work.transcription_conventions.present?
-                | Revert transcription conventions to collection default &nbsp;
-                =button_tag 'Revert', :work_id => @work.id, type: 'button', hidden: false, id: 'revert'
+                => t('.revert_transcription_conventions_description')
+                =button_tag t('.revert'), :work_id => @work.id, type: 'button', hidden: false, id: 'revert'
               -else
-                =button_tag 'Revert', :work_id => @work.id, type: 'button', hidden: true, id: 'revert'
+                =button_tag t('.revert'), :work_id => @work.id, type: 'button', hidden: true, id: 'revert'
                   
         tr
           td(colspan="2")
             =f.check_box :supports_translation, value: @work.supports_translation
             |&nbsp;
-            =f.label :supports_translation, "Support Translation"
+            =f.label :supports_translation, t('.support_translation')
             br
-            span.settings A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
+            span.settings= t('.support_translation_description')
         tr
           td(colspan="2")
-            =f.label :translation_instructions, class: 'above'
+            =f.label :translation_instructions, t('.translation_instructions'), class: 'above'
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
 
       h3
@@ -85,54 +86,60 @@
 
       table.form.settings style="display: none"
         tr
-          td(colspan="2") These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
+          td(colspan="2")= t('.additional_metadata_description')
         tr
-          th =f.label :author
+          th =f.label :author, t('.author')
           td =f.text_field :author, value: @work.author
         tr
-          th =f.label :location_of_composition, 'Place of Creation'
+          th =f.label :recipient, t('.recipient')
+          td =f.text_field :recipient, value: @work.recipient
+        tr
+          th =f.label :location_of_composition, t('.place_of_creation')
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
-          th =f.label :document_date, 'Document Date'
-          td =f.text_field :document_date, value: @work.document_date
+          th =f.label :document_date, t('.document_date')
+          td =f.text_field :document_date, value: @work.document_date, placeholder: 'yyyy-mm-dd'
         tr
-          th =f.label :genre
+          th.hidden= t('.document_date')
+          td =t('.document_date_hint')
+        tr
+          th =f.label :genre, t('.genre')
           td =f.text_field :genre, value: @work.genre
         tr
-          th =f.label :source_location, 'Source Location'
+          th =f.label :source_location, t('.source_location')
           td =f.text_field :source_location, value: @work.source_location
         tr
-          th =f.label :source_collection_name, 'Source Collection Name'
+          th =f.label :source_collection_name, t('.source_collection_name')
           td =f.text_field :source_collection_name, value: @work.source_collection_name
         tr
-          th =f.label :source_box_folder, 'Source Box/Folder'
+          th =f.label :source_box_folder, t('.source_box_folder')
           td =f.text_field :source_box_folder, value: @work.source_box_folder
         tr
           td(colspan="2")
             =f.check_box :in_scope, value: @work.in_scope
             |&nbsp;
-            =f.label :in_scope, "In Scope"
+            =f.label :in_scope, t('.in_scope')
         tr
           td(colspan="2")
-            =f.label :editorial_notes, class: 'above'
+            =f.label :editorial_notes, t('.editorial_notes'), class: 'above'
             =f.text_area :editorial_notes, rows: 5, value: @work.editorial_notes
         tr
           td(colspan="2")
-            =f.label :physical_description, class: 'above'
+            =f.label :physical_description, t('.physical_description'), class: 'above'
             =f.text_area :physical_description, rows: 5, value: @work.physical_description
         tr
           td(colspan="2")
-            =f.label :document_history, class: 'above'
+            =f.label :document_history, t('.document_history'), class: 'above'
             =f.text_area :document_history, rows: 5, value: @work.document_history
         tr
           td(colspan="2")
-            =f.label :permission_description, class: 'above'
+            =f.label :permission_description, t('.permission_description'), class: 'above'
             =f.text_area :permission_description, rows: 5, value: @work.permission_description
       .toolbar
         .toolbar_group
-          =link_to(work_delete_path(:work_id => @work.id), data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')
-            span Delete Work
-        .toolbar_group.aright =f.button 'Save Changes', class: 'big'
+          =link_to(work_delete_path(:work_id => @work.id), data: { :confirm => t('.confirm_delete_work') }, class: 'button')
+            span= t('.delete_work')
+        .toolbar_group.aright =f.button t('.save_changes'), class: 'big'
 
   aside.sidecol
 
@@ -140,19 +147,19 @@
       =link_to(user_profile_path(@work.owner), class: 'userpic')
         =profile_picture(@work.owner)
       .username
-        small Uploaded by
+        small= t('.uploaded_by')
         =link_to @work.owner.display_name, user_profile_path(@work.owner)
-    p.fglight The settings for this work are only accessible to work owners.
-    p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
+    p.fglight= t('.settings_only_work_owners')
+    p.fglight==t('.more_work_settings_info')
 
-    h4 Work Image
+    h4= t('.work_image')
     =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work), html: { multipart: true, class: 'image-form' }) do |f|
       =hidden_field_tag(:work_id, @work.id)
-      label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image")
+      label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image'))
         =f.file_field :picture, accept: 'image/*'
         -if @work.picture_url(:thumb)
-          =image_tag(@work.picture_url(:thumb), :alt => "work_thumbnail")
-    p.fglight A picture to be used to illustrate the work.  If no picture is uploaded, a page image will be used.
+          =image_tag(@work.picture_url(:thumb), :alt => t('.work_thumbnail'))
+    p.fglight= t('.work_image_description')
 
     hr
     =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work)) do |f|
@@ -160,20 +167,22 @@
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
-        =f.label :scribes_can_edit_titles, 'Allow collaborators to edit page titles'
+        =f.label :scribes_can_edit_titles, t('.collaborators_can_edit_titles'), style: "display: inline"
       p
         =f.check_box :restrict_scribes
         |&nbsp;
-        =f.label :restrict_scribes, 'Restrict collaborators'
-      small.legend =button_tag 'Apply', class: 'outline'
+        =f.label :restrict_scribes, t('.restrict_collaborators')
+      -if @work.restrict_scribes && @scribes.empty?
+        p.warning =t('.restricted_work_no_collaborators_warning')
+      small.legend =button_tag t('.apply'), class: 'outline'
 
     -if @work.restrict_scribes
-      h3 Allowed Collaborators
+      h3= t('.allowed_collaborators')
       =form_tag(add_scribe_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'user-select-form') do
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag 'Add'
+        =button_tag t('.add')
       -if @scribes.empty?
-        p.fglight No allowed collaborators selected
+        p.fglight= t('.no_allowed_collaborators_selected')
       -else
         -@scribes.each do |user|
           .user-label
@@ -182,7 +191,7 @@
             .username
               =link_to user.name_with_identifier, user_profile_path(user)
               small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
+              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: t('.remove')
 
 -content_for :javascript
   javascript:

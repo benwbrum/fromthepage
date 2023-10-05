@@ -1,68 +1,97 @@
+---
 en:
   shared:
     article_tabs:
-      overview: "Overview"
-      settings: "Settings"
-      versions: "Versions"
-    collection_tabs:
-      overview: "Overview"
-      statistics: "Statistics"
-      subjects: "Subjects"
-      review: "Review"
-      collaborators: "Collaborators"
-      settings: "Settings"
-      export: "Export"
-      add_work: "Add Work"
-      edit_fields: "Fields"
-      sets: "Sets"
-      works_list: "Works List"
-      facets: "Facets"
-      edit_metadata_fields: "Metadata Fields"
-    page_tabs:
-      overview: "Overview"
-      correct: "Correct"
-      transcribe: "Transcribe"
-      translate: "Translate"
-      versions: "Versions"
-      help: "Help"
-      settings: "Settings"
-      nav_info: "Page %{position} of %{size}"
-    work_tabs:
-      read: "Read"
-      about: "About"
-      contents: "Contents"
-      versions: "Versions"
-      print: "Print"
-      settings: "Settings"
-      pages: "Pages"
-      help: "Help"
-      download: "Download"
-    handsontable:
-      date_tooltip: "Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them)."
+      overview: Overview
+      settings: Settings
+      subject: subject
+      versions: Versions
+    breadcrumbs:
+      search_results: Search results
     codemirror:
-      abbr_description: "Marks abbreviations in a text with expansions in the expan attribute."
-      add_description: "Marks text inserted after-the-fact by the writer."
-      date_description: "Marks dates, with standardized form in the when attribute."
-      del_description: "Marks text that has been removed by erasure or strike-through."
-      expan_description: "Marks expanded abbreviations with original forms in the abbr attribute."
-      footnote_description: "Encloses the body of a footnote, with the footnote symbol in the marker attribute."
-      fig_description: "Indicates a figure or a horizontal line."
-      gap_description: "Marks a gap in the text, often due to damage"
-      head_description: "Marks headings within the text"
-      marginalia_description: "Marks text in the margins of the main text."
-      reg_description: "Marks a regularized form of the text, with original forms in the orig attribute."
-      s_description: "Marks text that has been struck through for any reason."
-      sub_description: "Subscript text."
-      sup_description: "Superscript text."
-      unclear_description: "Marks unclear text."
-      u_description: "Marks underlined text."      
+      abbr_description: Marks abbreviations in a text with expansions in the expan attribute.
+      add_description: Marks text inserted after-the-fact by the writer.
+      date_description: Marks dates, with standardized form in the when attribute.
+      del_description: Marks text that has been removed by erasure or strike-through.
+      expan_description: Marks expanded abbreviations with original forms in the abbr attribute.
+      fig_description: Indicates a figure or a horizontal line.
+      footnote_description: Encloses the body of a footnote, with the footnote symbol in the marker attribute.
+      gap_description: Marks a gap in the text, often due to damage
+      head_description: Marks headings within the text
+      marginalia_description: Marks text in the margins of the main text.
+      reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
+      s_description: Marks text that has been struck through for any reason.
+      sub_description: Subscript text.
+      sup_description: Superscript text.
+      u_description: Marks underlined text.
+      unclear_description: Marks unclear text.
+    collection_tabs:
+      add_work: Add Work
+      collaborators: Collaborators
+      collection: collection
+      edit_fields: Fields
+      edit_metadata_fields: Metadata Fields
+      export: Export
+      facets: Facets
+      forum: Forum
+      overview: Overview
+      review: Review
+      sets: Sets
+      settings: Settings
+      statistics: Statistics
+      subjects: Subjects
+      works_list: Works List
     description_tabs:
-      nav_info: "Work %{position} of %{size}"
-      overview: "Overview"
-      describe: "Metadata"
-      versions: "Versions"
-      help: "Help"
+      describe: Metadata
+      help: Help
       metadata: Metadata
+      nav_info: Work %{position} of %{size}
+      next_page: Next page
+      next_work: Next work
+      overview: Overview
+      previous_page: Previous page
+      previous_work: Previous work
+      versions: Versions
+    handsontable:
+      date_tooltip: Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them).
+    markup_help:
+      markup_help_description: '"Autolink" will suggest subjects certain words could be linked to or you can use double braces to link subjects. <code>[[Jane Doe]]</code> will link the text "Jane Doe" to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text "Jane" to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.'
+    osd_div:
+      brightness: Brightness
+      contrast: Contrast
+      full_page: Toggle full page
+      home: Go home
+      image_filters: Image filters
+      open_seadragon_needs_js: OpenSeadragon is not available unless JavaScript is enabled.
+      rotate_left: Rotate left
+      rotate_right: Rotate right
+      threshold: Threshold
+      zoom_in: Zoom in
+      zoom_out: Zoom out
+    page_tabs:
+      correct: Correct
+      describe_work: Describe work
+      help: Help
+      nav_info: Page %{position} of %{size}
+      next_page: Next page
+      overview: Overview
+      page: page
+      previous_page: Previous page
+      settings: Settings
+      transcribe: Transcribe
+      translate: Translate
+      versions: Versions
     review_breadcrumbs:
       dashboard: Review Dashboard
-
+      page: Page
+    validation_summary:
+      form: form
+    work_tabs:
+      about: About
+      contents: Contents
+      download: Download
+      help: Help
+      pages: Pages
+      read: Read
+      settings: Settings
+      work: Work

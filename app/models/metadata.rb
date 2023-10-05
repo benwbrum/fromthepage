@@ -59,11 +59,21 @@ class Metadata
         title: row['title'] }
         output_file(@rowset_errors)
       else
-        work.original_metadata=metadata.to_json
         title = metadata.detect{|e| e[:label] == 'title'}
-        if !title.blank? && title[:value] != work.title
-          work.title = title[:value]
+        if !title.blank?
+          if title[:value] != work.title
+            work.title = title[:value]
+          end
+          metadata.delete_if{|e| e[:label] == 'title'}
         end
+        identifier = metadata.detect{|e| e[:label] == 'identifier'}
+        if !identifier.blank?
+          if identifier[:value] != work.identifier
+            work.identifier = identifier[:value]
+          end
+          metadata.delete_if{|e| e[:label] == 'identifier'}
+        end
+        work.original_metadata=metadata.to_json
         work.save!
         success+=1
       end
@@ -104,10 +114,24 @@ class Metadata
 
   def self.create_example(collection)
     csv_string = CSV.generate(headers: true) do |csv|
-      csv << ['work_id', 'title', 'your metadata_field_one', 'your_metadata_field_two']
+      raw_metadata_strings = collection.works.pluck(:original_metadata)
+      metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
+
+      csv << ['work_id', 'title', 'identifier'] + metadata_headers + ['new metadata field 1', 'new metadata field 2'] 
 
       collection.works.each do |work|
-        csv << [work.id, work.title]
+        row = [work.id, work.title, work.identifier]
+        unless work.original_metadata.blank?
+          metadata = {}
+          JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
+
+          metadata_headers.each do |header|
+            # look up the value for this index
+            row << metadata[header]
+          end
+        end
+
+        csv << row
       end
     end
 

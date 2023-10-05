@@ -1,12 +1,15 @@
-Hi <%=@user.display_name%> --
+<%= t('user_mailer.greeting', user: @user.display_name) %>
 
-We just wanted to let you know that the following note has been added to a page you worked on in work <%=@page.work.title%>, in the collection <%=@page.collection.title%>.
+<%= t('.message', work: @page.work.title, collection: @page.collection.title) %>
 
 "<%=@note.body%>"
 
-You can view the note in <%=@page.collection.title%>: <%=@page.work.title%> at the URL: <%= collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)%>.
+<%= t('.text.view_note', collection: @page.collection.title, work: @page.work.title, url: (collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false))) %>
 
-Thanks, 
-FromThePage
+<% unless @note.collection.owner.display_name.blank? %>
+    <%= t('user_mailer.text.closing', from: @note.collection.owner.display_name) %>
+<% else %>
+    <%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
+<% end %>
 
-Turn off this notification at the URL: <%=update_profile_url(@user, only_path: false)%>
+<%= t('user_mailer.text.turn_off_notification', url: (update_profile_url(@user, only_path: false))) %>

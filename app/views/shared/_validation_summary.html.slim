@@ -1,5 +1,5 @@
 .validation
-  h5.validation_title #{pluralize errors.count, 'error'} prohibited the form from being saved:
+  h5.validation_title =t('errors.messages.not_saved', count: errors.count, resource: t('.form'))
   ul.validation_summary
     -errors.full_messages.each do |msg|
       li =msg

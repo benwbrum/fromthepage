@@ -11,8 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
 //= require jquery.ui.all
+//= require jquery_ujs
 //= require_tree ./plugins
 //= require user.js
 //= require handsontable.full.min
@@ -269,11 +269,6 @@ $(function() {
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
-    .on('beforeunload', function() {
-      if($('form[data-areyousure].dirty').length === 0) {
-        $('html').addClass('page-busy');
-      }
-    })
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
@@ -318,6 +313,7 @@ $(function() {
   });
 });
 
+
 //Enable and disable select options for field-based transcription
 function addOptions(selector, enabled_index){
   var parentTr = selector.parentElement.parentElement;
@@ -330,3 +326,24 @@ function addOptions(selector, enabled_index){
   }
 };
 
+//Default options for DataTables
+Object.assign(DataTable.defaults, {
+  // pagination count options
+  "lengthMenu": [ [10, 50, -1], [10, 50, "All"] ],
+
+  "drawCallback": function(oSettings) {
+    // don't show pagination if only one page
+    if (oSettings._iDisplayLength >= oSettings.fnRecordsDisplay() || oSettings._iDisplayLength == -1) {
+        $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+    } else {
+        $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+    }
+
+    // don't show pagination count selector if less than 10 items
+    if (oSettings.fnRecordsDisplay() < 10) {
+        $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+    } else {
+        $(oSettings.nTableWrapper).find('.dataTables_length').show();
+    }
+  }
+});

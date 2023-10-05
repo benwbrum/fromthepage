@@ -1,0 +1,56 @@
+---
+pt:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Titulo
+      document_set:
+        slug: URL
+        title: Titulo
+      work:
+        slug: URL
+        title: Titulo
+    errors:
+      models:
+        collection:
+          attributes:
+            slug:
+              blank: É necessário
+              invalid: deve ter pelo menos uma letra
+        document_set:
+          attributes:
+            slug:
+              blank: É necessário
+              invalid: deve ter pelo menos uma letra
+        work:
+          attributes:
+            slug:
+              blank: É necessário
+              invalid: deve ter pelo menos uma letra
+        xml_source_processor:
+          blank_subject_in: Assunto em branco em %{tag}
+          blank_tag_in: Tag em branco em %{tag}
+          blank_text_in: Texto em branco em %{tag}
+          subject_linking_error: 'Erro de vinculação de assunto:'
+          tags_should_not_use_3_brackets: As tags devem ser criadas usando 2 colchetes, não 3
+          unclosed_bracket_within: Colchete não fechado dentro de %{tag}
+          wrong_number_of_closing_braces: Número incorreto de chaves de fechamento após %{tag}
+    models:
+      bulk_export:
+        one: exportação a granel
+        other: exportações a granel
+      ia_leaf:
+        one: página
+        other: Páginas
+      page:
+        one: página
+        other: Páginas
+      work:
+        one: obra
+        other: obras
+  errors:
+    messages:
+      not_saved:
+        one: '1 erro proibiu que este %{resource} fosse guardado:'
+        other: "%{count} erros proibiram que este %{resource} fosse guardado:"

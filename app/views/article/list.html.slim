@@ -1,12 +1,12 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 3, :collection_id => @collection }})
 -if @categories.present?
   -if @page
-    -page_link = link_to('click here', transcribe_assign_categories_path(:page_id => @page.id))
-    .category-back-message =="Once you finish editing categories, #{page_link} to return back to &ldquo;#{@page.title}&rdquo; page."
+    -page_link = link_to(t('.click_here'), transcribe_assign_categories_path(:page_id => @page.id))
+    .category-back-message ==t('.category_back_message', page_link: page_link, page: @page.title)
 
   .collection-categories
     .category-tree
-      h3 Categories
+      h3= t('.categories')
       ==display_categories(@categories, nil) do |category|
         -ret = "<a href=\"#category-#{category.id}\" class=\"tree-item\">"
         -if category.children.any?
@@ -15,7 +15,7 @@
         -ret << "</a>"
       -if @uncategorized_articles.present?
         ul
-          li: a.tree-item(href="#category-none") Uncategorized
+          li: a.tree-item(href="#category-none") =t('.uncategorized')
 
     .category-articles
       -@categories.each do |category|
@@ -28,49 +28,61 @@
                 .headline_aside
                   dl.dropdown.right
                     dt.h5 tabindex=0
-                      span Actions
+                      span= t('.actions')
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd
-                      =link_to 'Edit Category', category_edit_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
-                      =link_to 'Add Child Category', category_add_new_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
-                      =link_to 'Add Root Category', category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
+                      =link_to t('.edit_category'), category_edit_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
+                      =link_to t('.add_child_category'), category_add_new_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
+                      =link_to t('.add_root_category'), category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
                       -if category.gis_enabled
-                        =link_to 'Disable GIS for Category', category_disable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
+                        =link_to t('.disable_gis_for_category'), category_disable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
                       -else
-                        =link_to 'Enable GIS for Category', category_enable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
+                        =link_to t('.enable_gis_for_category'), category_enable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
                       hr
-                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.slug, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+                      =link_to t('.delete_category'), { :controller => 'category', :action => 'delete', :collection_id => @collection.slug, :category_id => category.id }, class: 'fgred', data: { :confirm => t('.confirm_delete_category') }
                       hr
-                      =link_to 'Upload Subjects', article_upload_form_path(@collection.slug)
+                      =link_to t('.upload_subjects'), article_upload_form_path(@collection.slug)
 
           dd
             -if category.articles_list(@collection).empty?
-              p.acenter.fglight There are no subjects for the category selected
+              p.acenter.fglight= t('.there_are_no_subjects')
             -else
-              -category.articles_list(@collection).each do |article|
-                p[*language_attrs(@collection)]
-                  =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+              -@vertical_articles[category].each do |row|
+                -row.each do |article|
+                  -unless article.nil?
+                    p[*language_attrs(@collection)]
+                      =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+                  -else
+                    p.hidden
+                      a.hidden a
       -if @uncategorized_articles.present?
         dl.category-article#category-none
-          dt: h3 Uncategorized subjects
+          dt: h3= t('.uncategorized_subjects')
           dd
-            -@uncategorized_articles.each do |article|
-              p[*language_attrs(@collection)]
-                =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+            -@uncategorized_articles.each do |l|
+              -l.each do |article|
+                -unless article.nil?
+                  p[*language_attrs(@collection)]
+                    =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+                -else
+                  p.hidden
+                    a.hidden a
 -else
-  -add_category = link_to 'Create the first category', category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
+  -add_category = link_to t('.create_the_first_category'), category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
   .nodata
-    h4.nodata_title No Categories
+    h4.nodata_title= t('.no_categories')
     p.nodata_text
-      =="There are no subject categories in the collection.<br>"
-      =="#{add_category} you'll use to group subjects." if user_signed_in? && current_user.like_owner?(@collection)
-
-=render({ :partial => '/shared/collection_footer' })
+      ==t('.no_categories_message')
+      ==t('.create_category_message', link: add_category) if user_signed_in? && current_user.like_owner?(@collection)
 
 -content_for :javascript
   javascript:
     $(function() {
       $(window).on('hashchange', function() {
+        if (document.getElementsByClassName("category_modal")[0] !== undefined){
+          document.getElementsByClassName("category_modal")[0].classList.remove("visible");
+          location.reload();
+        }
         var selected = window.location.hash || $('.tree-item:first').attr('href');
         var $tree_item = $('.tree-item[href="'+selected+'"]');
 

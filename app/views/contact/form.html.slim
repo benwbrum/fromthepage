@@ -1,30 +1,30 @@
--content_for :page_title, 'Contact Us'
+-content_for :page_title, t('.contact_us')
 
 #contact
   section.signon
-    h1 Contact Us
-    p Want more information about FromThePage? Let us know how we can help.
+    h1= t('.contact_us')
+    p= t('.contact_us_description')
 
 
     =form_tag(send_contact_email_path) do |f|
       .signon_field
-        =label_tag :first_name
+        =label_tag :first_name, t('.first_name')
         =text_field_tag :first_name, nil, autofocus: true
       .signon_field
-        = label_tag :last_name
+        = label_tag :last_name, t('.last_name')
         = text_field_tag :last_name, nil, autofocus: true
       .signon_field
-        =label_tag email_param, 'Email address'
+        =label_tag email_param, t('.email_address')
         =email_field_tag email_param
       .signon_field
-        =label_tag :reason, 'Contact Reason'
-        =select_tag :reason, options_for_select(['', 'Product question', 'Large Institution quote', 'Free trial', 'Event', 'Press', 'Other'])
+        =label_tag :reason, t('.contact_reason')
+        =select_tag :reason, options_for_select(['', t('.product_question'), t('.large_institution_quote'), t('.free_trial'), t('.event'), t('.press'), t('.other')])
       .signon_field
-        =label_tag :more, 'Tell Us More About Your Project'
+        =label_tag :more, t('.tell_us_more')
         =text_area_tag :more
 
       <br>
-      =button_tag 'Submit', class: 'big'
+      =button_tag t('.submit'), class: 'big'
 
   javascript:  mixpanel.track("Contact Us");
 

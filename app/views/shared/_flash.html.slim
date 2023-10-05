@@ -1,0 +1,7 @@
+-flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
+.flash(class='flash-#{type}')
+  span.flash_message
+    -if flash_icon.keys.include? type
+      =svg_symbol flash_icon[type], class: 'icon'
+      span =message.html_safe
+  a.flash_close &times;

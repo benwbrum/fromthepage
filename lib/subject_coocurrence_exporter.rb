@@ -2,8 +2,9 @@ module SubjectCoocurrenceExporter
   class Exporter
     include Rails.application.routes.url_helpers
 
-    def initialize(collection)
+    def initialize(collection, article=nil)
       @collection=collection
+      @article=article
       @subjects = collection.articles.includes(:categories, :page_article_links).order('articles.title')
       @headers = [
         'Subject Title',

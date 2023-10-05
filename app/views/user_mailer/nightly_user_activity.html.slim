@@ -1,26 +1,26 @@
-p =t('.greet', user: @user_activity.user.display_name)
+p =t('user_mailer.greeting', user: @user_activity.user.display_name)
 
-p =t('.inform_activity')
+p =t('.message')
 
 
 -unless @user_activity.added_works.blank?
   h3(style="margin-bottom:0") =t('.new_works')
   -@user_activity.added_works.each do |work|
-    =t('.user_activity', owner: work.owner.display_name, work: work.title, collection: work.access_object(@user_activity.user).title)
-    span =link_to t('.click_here'), collection_read_work_url(work.collection.owner, work.collection, work, only_path: false)
-    =t('.to_view', collection: work.collection.title, work: work.title).html_safe
+    =t('.work_added', owner: work.owner.display_name, work: work.title, collection: work.access_object(@user_activity.user).title)
+    span =link_to t('user_mailer.click_here'), collection_read_work_url(work.collection.owner, work.collection, work, only_path: false)
+    =t('.html.to_view_work', collection: work.collection.title, work: work.title).html_safe
     p
 
 -unless @user_activity.active_note_pages.blank?
   p
   h3(style="margin-bottom:0") =t('.new_notes')
   -@user_activity.active_note_pages.each do |page|
-    =link_to t('.click_here'), collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)
-    =t('.view_note_on_page', page: page.title, collection: page.work.access_object(@user_activity.user).title, work: page.work.title).html_safe
+    =link_to t('user_mailer.click_here'), collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)
+    =t('.html.to_view_note', page: page.title, collection: page.work.access_object(@user_activity.user).title, work: page.work.title)
     p
 
-p =t('.thanks').html_safe
+p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
-span =link_to t('.click_here'), update_profile_url(@user_activity.user)
-=t('.turn_off_notification').html_safe
+span =link_to t('user_mailer.click_here'), update_profile_url(@user_activity.user)
+=t('user_mailer.html.turn_off_notification')

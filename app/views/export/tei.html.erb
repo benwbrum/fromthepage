@@ -31,7 +31,13 @@ xml:id="export">
 
       <% @user_contributions.each do |user| %>
         <respStmt xml:id="U<%= user[:user_id]%>">
-          <persName><%= user[:real_name] || user.display_name %></persName>
+          <persName
+            <% if user[:real_name].blank? %>
+              type="pseudonym"
+            <% end %>
+            >
+            <%= user.real_name.blank? ? user.display_name : user.real_name %>
+            </persName>
           <% if user[:edit_count] == 1 %>
             <resp>
               <%= t('export.tei.made_one_edit_on') %>
@@ -198,6 +204,17 @@ xml:id="export">
 
 
   <profileDesc>
+    <% unless @work.recipient.blank? %>
+      <correspDesc>
+        <correspAction type="sent">
+          <persName><%= @work.author %></persName>
+        </correspAction>
+        <correspAction type="received">
+          <persName><%= @work.recipient %></persName>
+        </correspAction>
+      </correspDesc>
+    <% end %>
+  
     <% unless @work.location_of_composition.blank? && @work.document_date.blank? %>
       <creation>
         <% unless @work.location_of_composition.blank? %>
@@ -248,9 +265,9 @@ xml:id="export">
       <div xml:id="original">
         <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
         <% if @work.sc_manifest %>
-          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
+          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>  
         <% else %>
-          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
         <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
@@ -274,7 +291,7 @@ xml:id="export">
         <% if @work.sc_manifest %>
           <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
         <% else %>
-          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
         <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
@@ -291,7 +308,7 @@ xml:id="export">
       <% if @work.sc_manifest %>
         <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
       <% else %>
-        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
       <% end %>
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">

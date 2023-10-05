@@ -8,7 +8,7 @@
       .big =raw(@work.description)
 
     -if @work.original_metadata.present?
-      h5 Metadata
+      h5= t('.metadata')
       .big =raw(html_metadata_from_work(@work))
 
     -if @work.physical_description.present?
@@ -30,7 +30,10 @@
     -if @work.author.present?
       h5 =t('.author_name')
       .big =@work.author
-
+      
+    -if @work.recipient.present?
+      h5 =t('.recipient_name')
+      .big =@work.recipient
 
     -if @work.document_date.present?
       h5 =t('.document_date')
@@ -59,9 +62,13 @@
     -if @work.editorial_notes.present?
       h5 =t('.editorial_notes')
       .big =@work.editorial_notes
-      
+
+    -if @work.uploaded_filename.present?
+      h5= t('.original_filename')
+      .big =@work.uploaded_filename
+
     -if @work.sc_manifest.present?
-      h5 IIIF Manifest 
+      h5= t('.iiif_manifest')
       .big =@work.sc_manifest.at_id
 
   aside.sidecol
@@ -75,5 +82,3 @@
     h5(style="margin-top:0")
       span.fgfaded =t('.number_of_pages').html_safe
       span =@work.pages.size
-
-=render({ :partial => '/shared/collection_footer' })

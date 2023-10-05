@@ -1,49 +1,168 @@
+---
 pt:
   statistics:
-    collection:
-      last_days_statistics: "Estatísticas dos últimos 7 dias"
-    recent_statistics:
-      collaborator: "Colaborador"
-      page: "Página"
-      page_edit: "Edição de página"
-      reference: "Referência"
-      new_subject: "Novo assunto"
-      note: "Nota"
-      ocr_correction: "Correção OCR"
-    collection_statistics:
-      work: "Trabalho"
-      page: "Página"
-      note: "Nota"
-      subject: "Assunto"
-      reference: "Referência"
-      collaborator: "Colaborador"
-      page: "Página"
-      page_edits: "edições de página"
-      ocr_correction: "Correção OCR"
-    collaborators:
-      collaborators: "Colaboradores"
-      mailing_list_export: "Exportação de lista de correio"
-      transcribing: "Transcrevendo"
-      no_transcribers: "Sem transcritores"
-      editing: "Editando"
-      no_editors: "Sem editores"
-      indexing: "Indexando"
-      no_indexers: "Sem indexadores"
-    statistics:
-      work: "trabalho"
-      total_page: "Página total"
-      active_page: "Página ativa"
-      note: "Nota"
-      subject: "Assunto"
-      reference: "Referência"
-      collaborator: "Colaborador"
-      page: "Página"
-      page_edits: "Edições de página"
-      ocr_correction: "Correção OCR"
-      last_days_statistics: "Estatísticas dos últimos 7 dias"
-      new_subject: "Novo assunto"
     collaborator_time:
-      collaborator_time: "Tempo do colaborador"
-      export_activity_as_csv: "Exportar atividade detalhada como CSV"
-      user_totals_for_dates: "Totais do usuário para datas"
-      no_activity_for_date_range: "Não há atividade para este intervalo de datas."
+      collaborator_time: Tempo do colaborador
+      collaborator_time_description: Uma planilha com o número de minutos que cada usuário contribuiu por dia no intervalo de datas.
+      collaborator_time_export_button: Exportar Planilha de Tempo do Colaborador
+      no_activity_for_date_range: Não há atividade para este intervalo de datas.
+      user_totals_for_dates: Totais do usuário para datas
+    collaborators:
+      collaborators: Colaboradores
+      editing: Editando
+      indexing: Indexando
+      mailing_list_export: Exportação de lista de correio
+      no_editors: Sem editores
+      no_indexers: Sem indexadores
+      no_reviewers: Sem revisores
+      no_transcribers: Sem transcritores
+      reviewing: Revendo
+      transcribing: Transcrevendo
+    collection:
+      last_days_statistics: Estatísticas dos últimos 7 dias
+    collection_statistics:
+      collaborator:
+        one: Colaborador
+        other: Colaboradores
+      incomplete_page:
+        one: Página incompleta
+        other: Páginas incompletas
+      lines_transcribed:
+        one: Linha de texto
+        other: Linhas de texto
+      note:
+        one: Nota
+        other: Notas
+      ocr_correction:
+        one: Correção OCR
+        other: Correções OCR
+      page:
+        one: Página
+        other: Páginas
+      page_edit:
+        one: Edição de página
+        other: Edições de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_needing_review:
+        one: Página precisando de revisão
+        other: Páginas que precisam de revisão
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traduzida
+        other: Páginas traduzidas
+      records_indexed:
+        one: Registro indexado
+        other: Registros indexados
+      reference:
+        one: Referência
+        other: Referências
+      subject:
+        one: Assunto
+        other: Assuntos
+      work:
+        one: Obra
+        other: Obras
+      work_transcribed:
+        one: Obra transcrita
+        other: Obras transcritas
+      works_described:
+        one: Obras descrita
+        other: Obras descritas
+    recent_statistics:
+      collaborator:
+        one: Colaborador
+        other: Colaboradores
+      new_subject:
+        one: Novo assunto
+        other: Novos assuntos
+      note:
+        one: Nota
+        other: Notas
+      ocr_correction:
+        one: Correção OCR
+        other: Correções OCR
+      page_edit:
+        one: Edição de página
+        other: Edições de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada como precisando de revisão
+        other: Páginas marcadas como precisando de revisão
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traduzida
+        other: Páginas traduzidas
+      reference:
+        one: Referência
+        other: Referências
+    statistics:
+      active_page:
+        one: Página ativa
+        other: Páginas ativas
+      collaborator:
+        one: Colaborador
+        other: Colaboradores
+      end_date: Data final
+      incomplete_page:
+        one: Página incompleta
+        other: Páginas incompletas
+      new_subject:
+        one: Novo assunto
+        other: Novos assuntos
+      note:
+        one: Nota
+        other: Notas
+      ocr_correction:
+        one: Correção OCR
+        other: Correções OCR
+      page_edit:
+        one: Edição de página
+        other: Edições de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada como precisando de revisão
+        other: Páginas marcadas como precisando de revisão
+      page_needing_review:
+        one: Página precisando de revisão
+        other: Páginas que precisam de revisão
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traduzida
+        other: Páginas traduzidas
+      reference:
+        one: Referência
+        other: Referências
+      select_new_date: Selecione um novo intervalo de datas
+      start_date: Data de início
+      statistics_from: Estatísticas de %{start_date} a %{end_date}
+      subject:
+        one: Assunto
+        other: Assuntos
+      total_page:
+        one: Página total
+        other: Páginas totais
+      update: Atualizar
+      work:
+        one: Obra
+        other: Obras

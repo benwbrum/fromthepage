@@ -1,0 +1,84 @@
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+
+                    <div class="col-lg-4 mobil">
+                        <a href="index.html" class="logo"><%= image_tag("footer-logo.svg") %></a>
+    
+                        <ul class="social-media">
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
+                            <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+
+
+                    <ul class="list">
+                        <li><%= link_to 'Transcription for Archives and Special Collections', special_collections_path %></li>
+                        <li><%= link_to 'Transcription for State & Provincial Archives', state_archives_path %></li>
+                        <li><%= link_to 'Transcription for Digital Scholarship', digital_scholarship_path %></li>
+                        <li><%= link_to 'Transcription for Public Libraries', public_libraries_path %></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 desktop">
+                    <a href="https://www.fromthepage.com" class="logo"><%= image_tag("footer-logo.svg") %></a>
+
+                    <ul class="social-media">
+                        <li><a href="https://twitter.com/_FromThePage_" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/FromThePageTranscription" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a href="https://www.youtube.com/fromthepage"><i class="fa fa-youtube-play" target="_blank"></i></a></li>
+                        <li><a href="https://www.instagram.com/_fromthepage_/"><i class="fa fa-instagram" target="_blank"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4">
+                    <ul class="menu">
+                        <li><%= link_to t('layouts.application.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.blog'), 'http://content.fromthepage.com', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.about'), 'https://content.fromthepage.com/about-us/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank' %></li>
+                        <li><%= link_to t('layouts.application.contact_us'), contact_path(contact_form_token) %></li>
+                        <% if request.original_url.include?("fromthepage.com") %></li>
+                            <li><%= link_to t('layouts.application.pricing'), pricing_path, target: '_blank' %></li>
+                        <% end %>
+                        <li><%= link_to 'Press', 'https://content.fromthepage.com/press/', target: '_blank' %></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <span class="copy">© <%= Time.now.year %> <%= link_to 'FromThePage.', root_path %> <%= t('layouts.application.all_rights_reserved') %></span>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- $ $ $ Script $ $ $ -->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+    <script>
+        AOS.init();
+    </script>
+
+    <%= javascript_include_tag 'landing/lightbox.min.js' %>
+    <%= javascript_include_tag 'landing/slick.min.js' %>
+    <%= javascript_include_tag 'landing/slider.js' %>
+    <%= javascript_include_tag 'landing/main.js' %>
+
+    <% if defined? INTERCOM_APP_ID %>
+      <% if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom_customer" %>
+      <% elsif controller_name=='static' && !INTERCOM_APP_ID.blank? %>
+        <%= render "/shared/intercom" %>
+      <% end %>
+    <% end %>

@@ -1,24 +1,23 @@
-Hi <%=@user_activity.user.display_name%> --
+<%= t('user_mailer.greeting', user: @user_activity.user.display_name) %>
 
-We just wanted to let you know that there's been activity in a collection that you worked on.
+<%= t('.message') %>
 
 <% unless @user_activity.added_works.blank? %>
-  New Works
+  <%= t('.new_works') %>
   <% @user_activity.added_works.each do |work| %>
-    <%=work.owner.display_name%> added <%=work.title%> to the collection <%=work.collection.title%>.
-    To view <%=work.collection.title%>: <%=work.title%>, visit the following URL: <%=collection_read_work_url(work.collection.owner, work.collection, work, only_path: false)%>
+    <%= t('.work_added', owner: work.owner.display_name, work: work.title, collection: work.collection.title) %>
+    <%= t('.text.to_view_work', collection: work.collection.title, work: work.title, url: (collection_read_work_url(work.collection.owner, work.collection, work, only_path: false))) %>
   <%end%>
 <%end%>
 
 <% unless @user_activity.active_note_pages.blank? %>
-  New Notes
+  <%= t('.new_notes') %>
   <% @user_activity.active_note_pages.each do |page| %>
-    A note has been added to a page you worked on in work <%=page.work.title%>, in the collection <%=page.collection.title%>.
-    To view the note on page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)%>
+    <%= t('.note_added', work: page.work.title, collection: page.work.collection.title) %>
+    <%= t('.text.to_view_note', work: page.work.title, page: page.title, url: (collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false))) %>
   <%end%>
 <%end%>
 
-Thanks,
-FromThePage
+<%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
 
-Turn off this notification at the URL: <%= update_profile_url(@user_activity.user)%>
+<%= t('user_mailer.text.turn_off_notification', url: update_profile_url(@user_activity.user)) %>

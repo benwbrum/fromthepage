@@ -1,0 +1,24 @@
+---
+en:
+  contact:
+    form:
+      contact_reason: Contact Reason
+      contact_us: Contact Us
+      contact_us_description: Want more information about FromThePage? Let us know how we can help.
+      email_address: Email address
+      event: Event
+      first_name: First name
+      free_trial: Free trial
+      large_institution_quote: Large Institution quote
+      last_name: Last name
+      other: Other
+      press: Press
+      product_question: Product question
+      submit: Submit
+      tell_us_more: Tell Us More About Your Project
+    send_email:
+      get_started_right_away: Get started right away with a FromThePage free trial.
+      start_free_trial: Start Free Trial
+      thank_you: Thank you
+      thank_you!: Thank You!
+      will_follow_up: A member of the team will follow up with you.

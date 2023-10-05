@@ -1,4 +1,4 @@
--tabs = [{ :name => t('Recent Activity'), :selected => 1, :options => {:action => 'guest' }}]
+-tabs = [{ :name => t('.recent_activity'), :selected => 1, :options => {:action => 'guest' }}]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -content_for :page_title, "#{selected_tab} - #{t('dashboard.plain')}"

@@ -1,13 +1,15 @@
-p Hi #{@user.display_name} --
+p= t('user_mailer.greeting', user: @user.display_name)
 
-p #{@collection.owner.display_name} added you as an authorized reviewer on #{@collection.title}.  You should be able to edit and approve any page needing review.
+p= t('.message', owner: @collection.owner.display_name, collection: @collection.title)
 
-span =link_to "Click here", collection_url(@collection.owner, @collection, only_path: false)
-|&nbsp; to view #{@collection.title}.
+span= link_to t('user_mailer.click_here'), (collection_url(@collection.owner, @collection, only_path: false))
+= t('.html.to_view', collection: @collection.title)
 
-p Thanks, 
-|FromThePage
+-unless @collection.owner.display_name.blank?
+    p== t('user_mailer.html.closing', from: @collection.owner.display_name)
+-else
+    p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
-span =link_to "Click here", update_profile_url(@user, only_path: false)
-|&nbsp; to turn off this notification.
+span =link_to t('user_mailer.click_here'), update_profile_url(@user, only_path: false)
+=t('user_mailer.html.turn_off_notification')

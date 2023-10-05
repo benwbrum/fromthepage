@@ -1,0 +1,59 @@
+---
+fr:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Titre
+      document_set:
+        slug: URL
+        title: Titre
+      work:
+        slug: URL
+        title: Titre
+    errors:
+      models:
+        collection:
+          attributes:
+            slug:
+              blank: est requis
+              invalid: doit avoir au moins une lettre
+        document_set:
+          attributes:
+            slug:
+              blank: est requis
+              invalid: doit avoir au moins une lettre
+        work:
+          attributes:
+            slug:
+              blank: est requis
+              invalid: doit avoir au moins une lettre
+        xml_source_processor:
+          blank_subject_in: Sujet vide dans %{tag}
+          blank_tag_in: Balise vide dans %{tag}
+          blank_text_in: Texte vide dans %{tag}
+          subject_linking_error: 'Erreur de lien de sujet :'
+          tags_should_not_use_3_brackets: Les balises doivent être créées en utilisant 2 crochets, pas 3
+          unclosed_bracket_within: Parenthèse non fermée dans %{tag}
+          wrong_number_of_closing_braces: Mauvais nombre d'accolades fermantes après %{tag}
+    models:
+      bulk_export:
+        one: exportation en masse
+        other: exportations en masse
+      ia_leaf:
+        one: page
+        other: pages
+      page:
+        one: page
+        other: pages
+      work:
+        one: œuvre
+        other: œuvres
+  errors:
+    messages:
+      expired: a expiré, veuillez en demander un nouveau
+      not_found: pas trouvé
+      not_saved:
+        one: '1 erreur interdit la sauvegarde du %{resource} :'
+        other: 'Les erreurs %{count} ont empêché la sauvegarde du %{resource} :'
+      not_signed: 'Impossible de se connecter en raison de l''erreur suivante :'

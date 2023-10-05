@@ -1,0 +1,14 @@
+---
+es:
+  article_version:
+    show:
+      description: Aquí puede ver todas las revisiones de temas y comparar los cambios que se han realizado en cada revisión. La columna de la izquierda muestra el título y la descripción del tema en la revisión seleccionada, la columna de la derecha muestra lo que se ha cambiado. El texto que no ha cambiado está <span>resaltado en blanco</span>, el texto eliminado está <del>resaltado en rojo</del> y el texto insertado está <ins>resaltado en color verde</ins>.
+      n_revisions:
+        one: 1 revisión
+        other: "%{count} revisiones"
+      no_description_provided: No se proporcionó descripción
+      no_versions_to_compare: No hay versiones para comparar
+      no_versions_to_compare_description: Este tema no ha sido descrito, por eso no tenemos versiones de artículos para comparar.
+      revision_changes: Cambios de revisión
+      untitled: Intitulado
+      user_at_time: "%{user} a %{time}"

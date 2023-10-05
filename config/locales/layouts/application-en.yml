@@ -1,22 +1,31 @@
+---
 en:
   layouts:
     application:
-      projects: "Projects"
-      find_a_project: "Find A Project"
-      sign_up: "Sign Up"
-      create_an_account: "Create An Account"
-      admin_dashboard: "Admin Dashboard"
-      owner_dashboard: "Owner Dashboard"
-      collaborator_dashboard: "Collaborator Dashboard"
-      your_profile: "Your Profile"
-      sign_out: "Sign Out"
-      sign_in: "Sign In"
-      undo_login_as: "Undo Login As"
-      documentation: "Documentation"
-      blog: "Blog"
-      about: "About"
-      terms_and_conditions: "Terms & Conditions"
-      privacy_policy: "Privacy Policy"
-      contact_us: "Contact Us"
-      pricing: "Pricing"
-      all_rights_reserved: "All rights reserved."
+      about: About
+      admin_dashboard: Admin Dashboard
+      all_rights_reserved: All rights reserved.
+      blog: Blog
+      collaborator_dashboard: Collaborator Dashboard
+      contact_us: Contact Us
+      create_an_account: Create An Account
+      documentation: Documentation
+      find_a_project: Find A Project
+      home: Home
+      internet_archive_difficulties: The Internet Archive is experiencing difficulties.  Please try again later.
+      owner_dashboard: Owner Dashboard
+      pricing: Pricing
+      privacy_policy: Privacy Policy
+      projects: Projects
+      recaptcha_validation_failed: ReCAPTCHA validation failed
+      sign_in: Sign In
+      sign_out: Sign Out
+      sign_up_to_transcribe: Sign Up To Transcribe
+      signed_in_as: Signed In As
+      terms_and_conditions: Terms & Conditions
+      transcription_for_archives_special_collections: Transcription for Archives and Special Collections
+      transcription_for_digital_scholarship: Transcription for Digital Scholarship
+      transcription_for_public_libraries: Transcription for Public Libraries
+      transcription_for_state_provincial_archives: Transcription for State & Provincial Archives
+      undo_login_as: Undo Login As
+      your_profile: Your Profile

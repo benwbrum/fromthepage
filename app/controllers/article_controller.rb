@@ -6,6 +6,7 @@ class ArticleController < ApplicationController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
   GIS_DECIMAL_PRECISION = 5
+  LIST_NUM_COLUMNS = 3
 
   def authorized?
     unless user_signed_in?
@@ -24,16 +25,35 @@ class ArticleController < ApplicationController
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
     if @collection.is_a?(DocumentSet)
-      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
+      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL').reorder(:title)
     else
-      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id))
+      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id)).reorder(:title)
+    end
+
+    # Create a 2D array of articles/subjects for each category
+    # where the articles are sorted alphabetically vertically
+    # instead of horizontally -- so, going down each column
+    @vertical_articles = {} # Holds articles for each category
+    @categories.each do |category|
+      articles = category.articles_list(@collection) # The articles for this category
+      @vertical_articles[category] = sort_vertically(articles)
+    end
+
+    # Do the same for uncategorized articles
+    if @uncategorized_articles.present?
+      @uncategorized_articles = sort_vertically(@uncategorized_articles)
     end
   end
 
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
-      @article.destroy
-      redirect_to collection_subjects_path(@collection.owner, @collection)
+      if @article.created_by_id == current_user.id || current_user.like_owner?(@collection)
+        @article.destroy 
+        redirect_to collection_subjects_path(@collection.owner, @collection)
+      else
+        flash.alert = t('.only_subject_owner_can_delete')
+        redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
+      end
     else
       flash.alert = t('.must_remove_referring_links')
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
@@ -54,7 +74,7 @@ class ArticleController < ApplicationController
         record_deed
         flash[:notice] = t('.subject_successfully_updated')
         if gis_truncated 
-          flash[:notice] << " (GIS coordinates truncated to #{GIS_DECIMAL_PRECISION} decimal " << "place".pluralize(GIS_DECIMAL_PRECISION) <<")"
+          flash[:notice] << t('.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION, count: GIS_DECIMAL_PRECISION)
         end
         redirect_to :action => 'edit', :article_id => @article.id
       else
@@ -93,12 +113,6 @@ class ArticleController < ApplicationController
   end
 
   def show
-    @categories = []
-    if params[:category_ids]
-      @categories = Category.find(params[:category_ids])
-      @article.graph_image = nil
-    end
-
     #if @article.graph_image && !params[:force]
     #   return
     #end
@@ -113,12 +127,6 @@ class ArticleController < ApplicationController
       '  ON from_links.article_id = a.id '+
       "WHERE to_links.article_id = #{@article.id} "+
       " AND from_links.article_id != #{@article.id} "
-    if params[:category_ids]
-      sql += " AND from_links.article_id IN "+
-        "(SELECT article_id "+
-        "FROM articles_categories "+
-        "WHERE category_id IN (#{params[:category_ids].join(',')}))"
-    end
     sql += "GROUP BY a.title, a.id "
     logger.debug(sql)
     article_links = Article.connection.select_all(sql)
@@ -179,7 +187,6 @@ class ArticleController < ApplicationController
 
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
-    @min_rank = min_rank
     @article.save!
     session[:col_id] = @collection.slug
   end
@@ -274,6 +281,7 @@ class ArticleController < ApplicationController
     deed.collection = @article.collection
     deed.user = current_user
     deed.save!
+    update_search_attempt_contributions
   end
 
   def combine_articles(from_article, to_article)
@@ -329,6 +337,24 @@ class ArticleController < ApplicationController
     if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
 
     if lat_dec > dec || lon_dec > dec then return true else return false end
+  end
+
+  def sort_vertically(articles)
+    rows = (articles.length().to_f / LIST_NUM_COLUMNS).ceil
+    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) } # 2D array of articles
+
+    row = 0
+    col = 0
+    articles.each do |article|
+      vertical_articles[row][col] = article
+      row+=1          # Go down a row each time
+      if row == rows  # When you reach the bottom, move to the next column
+        col+= 1
+        row = 0
+      end
+    end
+
+    return vertical_articles
   end
 
   private

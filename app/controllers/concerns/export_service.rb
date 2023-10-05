@@ -1,8 +1,26 @@
 module ExportService
   include AbstractXmlHelper
   include StaticSiteExporter
+  include OwnerExporter
+  include AdminExporter
+  include ContributorHelper
+  require 'subject_exporter'
+  require 'subject_details_exporter'
 
-  def add_readme_to_zip(dirname:, out:)
+
+  def path_from_work(work, original_filenames=false)
+    if original_filenames && !work.uploaded_filename.blank?
+      dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
+    else
+      dirname = work.slug.truncate(200, omission: "")
+    end
+
+    dirname
+  end
+
+
+  def add_readme_to_zip(work:, out:, by_work:, original_filenames:)
+    dirname = path_from_work(work)
     readme = "#{Rails.root}/doc/zip/README"
     file = File.open(readme, "r")
     path = File.join dirname, 'README.txt'
@@ -10,20 +28,25 @@ module ExportService
     out.write file.read
   end
 
-  def export_printable_to_zip(work, edition, output_format, dirname, out)
+  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+    return if work.pages.count == 0
+
+    dirname = path_from_work(work)
     case edition
     when "facing"
       path = File.join dirname, 'printable', "facing_edition.pdf"
     when "text"
       path = File.join dirname, 'printable', "text.#{output_format}"
+    when "text_only"
+      path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
-    tempfile = export_printable(work, edition, output_format)
+    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
-  def export_printable(work, edition, format)
+  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
     rendered_markdown = 
       ApplicationController.new.render_to_string(
@@ -33,7 +56,10 @@ module ExportService
           :collection => work.collection,
           :work => work,
           :edition_type => edition,
-          :output_type => format
+          :output_type => format,
+          :preserve_linebreaks => preserve_lb,
+          :include_metadata => include_metadata,
+          :include_contributors => include_contributors
         }
       )
 
@@ -57,7 +83,7 @@ module ExportService
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc --from markdown+superscript -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
+    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
@@ -68,38 +94,92 @@ module ExportService
 
 
 
-  def export_work_metadata_csv(dirname:, out:, collection:)
+  def export_owner_mailing_list_csv(out:, owner:)
+    path = "mailing_list.csv"
+    out.put_next_entry(path)
+    out.write(owner_mailing_list_csv(owner))
+  end
+
+  def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
+    path = "all_collaborator_time.csv"
+    out.put_next_entry(path)
+    out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
+  def export_admin_searches_csv(out:, report_arguments:)
+    path = "admin_searches.csv"
+    out.put_next_entry(path)
+    out.write(admin_searches_csv(report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
+  def export_collection_activity_csv(out:, collection:, report_arguments:)
+    path = "collection_detailed_activity.csv"
+    out.put_next_entry(path)
+    out.write(collection_activity_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
+  def export_collection_contributors_csv(out:, collection:, report_arguments:)
+    path = "collection_contributors_activity.csv"
+    out.put_next_entry(path)
+    out.write(collection_contributors_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+  end
+
+  def export_work_metadata_csv(out:, collection:)
     path = "work_metadata.csv"
     out.put_next_entry(path)
     out.write(export_work_metadata_as_csv(collection))
   end
 
-  def export_subject_csv(dirname:, out:, collection:)
+  def export_subject_csv(out:, collection:, work:)
     path = "subject_index.csv"
     out.put_next_entry(path)
-    out.write(collection.export_subject_index_as_csv)
+    out.write(collection.export_subject_index_as_csv(work))
   end
 
-  def export_table_csv_collection(dirname:, out:, collection:)
+  def export_subject_details_csv(out:, collection:)
+    path = "subject_details.csv"
+    out.put_next_entry(path)
+    out.write(collection.export_subject_details_as_csv)
+  end
+
+  def export_table_csv_collection(out:, collection:)
     path = "fields_and_tables.csv"
     out.put_next_entry(path)
     out.write(export_tables_as_csv(collection))
   end
 
-  def export_table_csv_work(dirname:, out:, work:)
-    path = File.join dirname, 'csv', "fields_and_tables.csv"
+  def export_table_csv_work(out:, work:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'csv', "fields_and_tables.csv")
+    else
+      path = File.join("fields_and_tables", "#{path_from_work(work, original_filenames)}.csv")
+    end
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
   end
 
-  def export_tei(dirname:, out:, export_user:)
-    path = File.join dirname, 'tei', "tei.xml"
-    out.put_next_entry path
-    out.write work_to_tei(@work, export_user)
+  def export_collection_notes_csv(out:, collection:)
+    path = "collection_notes.csv"
+    out.put_next_entry(path)
+    out.write(export_notes_as_csv(collection))
   end
 
-  def export_plaintext_transcript(name:, dirname:, out:)
-    path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
+  def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'tei', "tei.xml")
+    else
+      path = File.join("tei", "#{path_from_work(work, original_filenames)}.xml")
+    end
+    out.put_next_entry path
+    out.write work_to_tei(work, export_user)
+  end
+
+  def export_plaintext_transcript(work:, name:, out:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_transcript.txt")
+    else
+      path = File.join("plaintext_transcript_#{name}", "#{path_from_work(work, original_filenames)}.txt")
+    end
 
     case name
     when "verbatim"
@@ -116,8 +196,12 @@ module ExportService
     end
   end
 
-  def export_plaintext_translation(name:, dirname:, out:)
-    path = File.join dirname, 'plaintext', "#{name}_translation.txt"
+  def export_plaintext_translation(work:, name:, out:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_translation.txt")
+    else
+      path = File.join("plaintext_translation_#{name}", "#{path_from_work(work, original_filenames)}.txt")
+    end
 
     if @work.supports_translation?
       case name
@@ -133,8 +217,16 @@ module ExportService
     end
   end
 
-  def export_plaintext_transcript_pages(name:, dirname:, out:, page:)
-    path = File.join dirname, 'plaintext', "#{name}_transcript_pages", "#{page.title}.txt"
+  def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:, index:)
+    if by_work
+      if original_filenames == :zero_index
+        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{index}.txt")
+      else
+        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{page.title}.txt")
+      end
+    else
+      path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
+    end
 
     case name
     when "verbatim"
@@ -151,8 +243,12 @@ module ExportService
     end
   end
 
-  def export_plaintext_translation_pages(name:, dirname:, out:, page:)
-    path = File.join dirname, 'plaintext', "#{name}_translation_pages", "#{page.title}.txt"
+  def export_plaintext_translation_pages(name:, out:, page:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_translation_pages", "#{page.title}.txt")
+    else
+      path = File.join("plaintext_#{name}_translation_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
+    end
 
     if @work.supports_translation?
       case name
@@ -168,8 +264,12 @@ module ExportService
     end
   end
 
-  def export_view(name:, dirname:, out:, export_user:)
-    path = File.join dirname, 'html', "#{name}.html"
+  def export_view(work:, name:, out:, export_user:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'html', "#{name}.html")
+    else
+      path = File.join("html_#{name}", "#{path_from_work(work, original_filenames)}.html")
+    end
 
     case name
     when "full"
@@ -233,8 +333,13 @@ module ExportService
     end
   end
 
-  def export_html_full_pages(dirname:, out:, page:)
-    path = File.join dirname, 'html', 'full_pages', "#{page.title}.html"
+  def export_html_full_pages(out:, page:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(page.work, original_filenames), 'html', 'full_pages', "#{page.title}.html")
+    else
+      path = File.join("html_full_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
+    end
+
 
     out.put_next_entry path
 
@@ -276,20 +381,20 @@ private
           raw_field_index += 1
           raw_heading = "#{field.label} #{column.label}"
           @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
-          @headings << "#{raw_heading} (text)"
-          @headings << "#{raw_heading} (subject)"
+          @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+          @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
         end
         @raw_headings.delete(field_id)
       else
         raw_heading = field ? field.label : field_id
-        @headings << "#{raw_heading} (text)"
-        @headings << "#{raw_heading} (subject)"
+        @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+        @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
       end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
+      @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+      @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
     end
     @headings
   end
@@ -315,6 +420,7 @@ private
         'Pages Translated',
         'Pages Needing Review',
         'Pages Marked Blank',
+        'Contributors',
         'work_id'
       ]
 
@@ -326,7 +432,9 @@ private
 
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
-      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
+    
+        work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         row = [
           work.title,
           work.collection.title,
@@ -345,7 +453,9 @@ private
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
+          work_users,
           work.id
+          
         ]
 
         unless work.original_metadata.blank?
@@ -406,6 +516,7 @@ private
       page_cells = [
         'Work Title',
         'Work Identifier',
+        'FromThePage Identifier',
         'Page Title',
         'Page Position',
         'Page URL',
@@ -429,14 +540,14 @@ private
       end
 
       works.each do |w|
-        csv = generate_csv(w, csv, col_sections)
+        csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?)
       end
 
     end
     csv_string
   end
 
-  def generate_csv(work, csv, col_sections)
+  def generate_csv(work, csv, col_sections, transcription_field_flag)
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
@@ -453,6 +564,7 @@ private
         page_cells = [
           work.title,
           work.identifier,
+          work.id,
           page.title,
           page.position,
           page_url,
@@ -469,7 +581,7 @@ private
           #get cell data for a page with only one table
           page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
-            cell_data(cell_array, data_cells)
+            cell_data(cell_array, data_cells, transcription_field_flag)
             if has_spreadsheet
               running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
             end
@@ -495,7 +607,7 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, data_cells)
+              cell_data(cell_array, data_cells, transcription_field_flag)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
@@ -537,12 +649,12 @@ private
   end
 
 
-  def cell_data(array, data_cells)
+  def cell_data(array, data_cells, transcription_field_flag)
     array.each do |cell|
       index = index_for_cell(cell)
-      target = index *2
+      target = transcription_field_flag ? index : index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
+      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag
     end
   end
 
@@ -566,13 +678,175 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells)
+      cell_data(running_data, data_cells, true)
     end
 
     # return the current running data
     running_data
   end
 
+  def collection_activity_csv(collection, start_date, end_date)
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
 
+    recent_activity = collection.deeds.where({created_at: start_date...end_date})
+        .where(deed_type: DeedType.contributor_types)
 
+    headers = [
+      :date,
+      :user,
+      :user_real_name,
+      :user_email,
+      :deed_type,
+      :page_title,
+      :page_url,
+      :work_title,
+      :work_url,
+      :comment,
+      :subject_title,
+      :subject_url
+    ]
+
+    rows = recent_activity.map {|d|
+
+    note = ''
+    note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+
+      record = [
+        d.created_at,
+        d.user.display_name,
+        d.user.real_name,
+        d.user.email,
+        d.deed_type
+      ]
+
+      if d.deed_type == DeedType::ARTICLE_EDIT 
+        record += ['','','','','',]
+        record += [
+          d.article ? d.article.title : '[deleted]', 
+          d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
+        ]
+      else
+        unless d.deed_type == DeedType::COLLECTION_JOINED
+          pagedeeds = [
+            d.page.title,
+            collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+            d.work.title,
+            collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+            note,
+          ]
+          record += pagedeeds
+          record += ['','']
+        end
+      end
+      record
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+
+    csv
+  end
+
+  def collection_contributors_csv(collection, start_date, end_date)
+    id = collection.id
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    new_contributors(collection, start_date, end_date)
+
+    headers = [
+      :name, 
+      :user_real_name,
+      :email,
+      :minutes,
+      :pages_transcribed, 
+      :page_edits, 
+      :page_reviews,
+      :pages_translated, 
+      :ocr_corrections,
+      :notes, 
+    ]
+
+    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
+
+    stats = @active_transcribers.map do |user|
+      time_proportional = user_time_proportional[user.id]
+
+      id_data = [user.display_name, user.real_name, user.email]
+      time_data = [time_proportional]
+
+      user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
+
+      user_stats = [
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_REVIEWED },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
+        user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
+        user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
+      ]
+
+      id_data + time_data + user_stats
+    end
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      stats.each do |user|
+          records << user
+      end
+    end
+
+    csv
+  end
+
+  def export_notes_as_csv(collection)
+    headers = [
+      'Work Title',
+      'Work Identifier',
+      'FromThePage Identifier',
+      'Page Title',
+      'Page Position',
+      'Page URL',
+      'Page Contributors',
+      'Page Status',
+      'Note',
+      'Contributor',
+      'Date'
+    ]
+
+    notes = collection.notes.order(created_at: :desc)
+    rows = notes.map {|n|
+      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_contributors = n.page.deeds
+        .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
+      
+      [
+        n.work.title,
+        n.work.identifier,
+        n.work.id,
+        n.page.title,
+        n.page.position,
+        page_url,
+        page_contributors,
+        I18n.t("page.edit.page_status_#{n.page.status}"),
+        n.body,
+        "#{n.user.display_name}<#{n.user.email}>",
+        n.created_at
+      ]
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+  end
 end

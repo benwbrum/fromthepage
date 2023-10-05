@@ -1,0 +1,24 @@
+---
+pt:
+  contact:
+    form:
+      contact_reason: Motivo do contato
+      contact_us: Contate-nos
+      contact_us_description: Quer mais informações sobre FromThePage? Nos diga como podemos ajudar.
+      email_address: Endereço de email
+      event: Evento
+      first_name: Primeiro nome
+      free_trial: Teste grátis
+      large_institution_quote: Cotação de grande instituição
+      last_name: Sobrenome
+      other: Outro
+      press: Imprensa
+      product_question: Pergunta sobre o produto
+      submit: Enviar
+      tell_us_more: Conte-nos mais sobre seu projeto
+    send_email:
+      get_started_right_away: Comece imediatamente com uma avaliação gratuita do FromThePage.
+      start_free_trial: Iniciar avaliação gratuita
+      thank_you: obrigada
+      thank_you!: Obrigada!
+      will_follow_up: Um membro da equipe irá acompanhá-lo.

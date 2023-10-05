@@ -3,7 +3,7 @@
 # The "main" locale.
 base_locale: en
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
-# locales: [es, fr]
+locales: [en, es, pt, fr, de]
 ## Reporting locale, default: en. Available: en, ru.
 # internal_locale: en
 
@@ -18,7 +18,8 @@ data:
     ## Default:
     # - config/locales/%{locale}.yml
     ## More files:
-    # - config/locales/**/*.%{locale}.yml
+    - config/locales/**/*-%{locale}.yml
+    - config/locales/%{locale}.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
@@ -93,7 +94,7 @@ search:
 # translation:
 #   # Google Translate
 #   # Get an API key and set billing info at https://code.google.com/apis/console to use Google Translate
-#   google_translate_api_key: "AbC-dEf5"
+#   google_translate_api_key: env["GOOGLE_TRANSLATE_API_KEY"]
 #   # DeepL Pro Translate
 #   # Get an API key and subscription at https://www.deepl.com/pro to use DeepL Pro
 #   deepl_api_key: "48E92789-57A3-466A-9959-1A1A1A1A1A1A"
@@ -101,17 +102,42 @@ search:
 #   # deepl_version: "v2"
 
 ## Do not consider these keys missing:
-# ignore_missing:
-# - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
-# - '{devise,simple_form}.*'
+ignore_missing:
+  en: 
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'article.graph.title'
+    - 'thredded.*'
+  es: &NOT_EN
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'article.graph.title'
+    - 'admin.*'
+    - 'admin_mailer.*'
+    - 'thredded.*'
+  pt: *NOT_EN
+  fr: *NOT_EN
+  de: *NOT_EN
 
 ## Consider these keys used:
-# ignore_unused:
-# - 'activerecord.attributes.*'
-# - '{devise,kaminari,will_paginate}.*'
-# - 'simple_form.{yes,no}'
-# - 'simple_form.{placeholders,hints,labels}.*'
-# - 'simple_form.{error_notification,required}.:'
+ignore_unused:
+  - 'activerecord.{errors,attributes,models}.*'
+  - 'devise.*'
+  - 'errors.*'
+  - 'shared.codemirror.*'
+  - 'will_paginate.*'
+  - '{en,es,pt,fr,de}'
+  - '{time,date}.formats.*'
+  - 'deed.:'
+  - 'deed.deed.html.:'
+  - 'notes.note.html.:'
+  - 'display.list_pages.:'
+  - 'page.edit.page_status_*'
+  - 'quality_samplings.show.approval_delta_display_{0,1,2,3,4}'
+  - 'article.graph.dot.title'
+  - 'dashboard.owner_header.account_types.{legacy,staff,trial,individual_researcher,small_organization,large_institution}'
+  - 'collection.edit_buttons.*_label'
+  - 'collection.edit_buttons.*_description'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

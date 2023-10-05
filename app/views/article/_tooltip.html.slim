@@ -5,8 +5,8 @@ h5.tooltip_header =@article.title
 
 -unless @article.categories.empty?
   .tooltop_content.small
-    ="#{'Category'.pluralize(@article.categories.size)}: "
+    = t('.category', count: @article.categories.size)
     =@article.categories.map{ |c| c.title }.join(', ')
 
 .tooltip_footer.small
-  =link_to 'Explore this subject', collection_article_show_path(@collection.owner, @collection, @article.id)
+  =link_to t('.explore_this_subject'), collection_article_show_path(@collection.owner, @collection, @article.id)

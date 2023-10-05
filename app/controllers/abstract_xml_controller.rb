@@ -8,7 +8,10 @@ module AbstractXmlController
   ##############################################
 
   #constant - words to ignore when autolinking
-  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it"]
+  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it", 
+    'wife', 'husband','I','him','her','son','daughter']
+  STOPREGEX = /^\w\.?\$/
+
 
   def autolink(text)
     #find the list of articles
@@ -17,18 +20,25 @@ module AbstractXmlController
     else
       id = @collection.id
     end
-    sql = 'select distinct article_id, '+
-          'display_text '+
+
+    sql = 'select article_id, '+
+          'display_text, '+
+          'max(page_article_links.created_on) last_reference '+
           'from page_article_links ' +
           'inner join articles a '+
           'on a.id = article_id ' +
-          "where a.collection_id = #{id}"
-    logger.debug(sql)
-    matches =
-      Page.connection.select_all(sql).to_a
-    # Bug 18 -- longest possible match is best
-    matches.sort! { |x,y| x['display_text'].length <=> y['display_text'].length }
-    matches.reverse!
+          "where a.collection_id = #{id} "+
+          "group by article_id, display_text "+
+          "union "+
+          "select id article_id, "+
+          "title display_text, "+
+          "created_on last_reference "+
+          "from articles "+
+          "where collection_id = #{id}"
+
+
+    matches = Page.connection.select_all(sql).to_a
+    matches.sort! { |x,y| [y['display_text'].length, y['last_reference']] <=> [x['display_text'].length, x['last_reference']] }
     #for each article, check text to see if it needs to be linked
     for match in matches
       match_regex = Regexp.new('\b'+Regexp.escape(match['display_text'])+'\b', Regexp::IGNORECASE)
@@ -36,8 +46,8 @@ module AbstractXmlController
       logger.debug("DEBUG looking for #{match_regex}")
 
       #if the match is a stopword, ignore it and move to the next match
-      if display_text.in?(STOPWORDS)
-
+      if display_text.in?(STOPWORDS) || display_text.match(STOPREGEX)
+        # skip this one
       else
         #find the matches and substitute in as long as the text isn't already in a link
         text.gsub! match_regex do |m|

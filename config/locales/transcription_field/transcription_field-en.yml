@@ -1,53 +1,87 @@
+---
 en:
   transcription_field:
-    field_layout:
-      instructions: "Instructions"
-    multiselect_form:
-      save: Save
-      options_form_title: Multi select Options
-      options_form_description: Enter options for the multi select metadata field, with each option on a separate line
-    line_form:
-      field_options: "Field options (separate with semicolons)"
-      field_options_title: "Options for select fields."
-      percentage_width: "Width %"
-      percentage_title: "Percentage of the line width to use for this field."
-      page: "Page"
-      page_title: "For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)"
-    edit_metadata_fields:
-      edit_metadata_fields: "Edit Metadata Fields"
-    edit_fields:
-      edit_transcription_fields: "Edit Transcription Fields"
-      transcription_warning: "This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields."
-      add_additional_line: "Add Additional Line"
-      add_additional_field: "Add Additional Field"
-      save: "Save"
-      cancel: "Cancel"
-      done: "Done"
-      preview: "Fields Preview"
     add_columns:
-      starting_rows_must_not_be_blank: "Starting rows must not be blank."
-    edit_columns:
-      edit_spreadsheet_header: "Spreadsheet Configuration"
-      edit_spreadsheet_columns: "Column Configuration"
-      transcription_warning: "This project has already been partially transcribed. Adding columns is fine, but deleting or changing columns may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename columns."
-      add_additional_column: "Add Additional Column"
-      save: "Save"
-      cancel: "Cancel"
-      done: "Done"
-      preview: "Spreadsheet Preview"
-      start_rows_label: "Starting Row Count: "
-      start_rows_description: "Number of rows the spreadsheet should display initially. (Transcribers will be able to add additional rows if needed.)"
-    column_form:
-      column_options: "Column options (separate with semicolons)"
-      column_options_title: "Options for dropdown cells."
-      percentage_width: "Width %"
-      percentage_title: "Percentage of the line width to use for this field."
+      must_have_options_list: Select fields must have an options list. Please add options to any select fields and resave.
+      starting_rows_must_not_be_blank: Starting rows must not be blank.
     add_fields:
-      must_have_options_list: "Select fields must have an options list. Please add options to any select fields and resave."
-
+      must_have_options_list: Select fields must have an options list. Please add options to any select fields and resave.
+    choose_offset:
+      page_layout: Page layout
+      page_layout_description: Resize the rectangle on the image to surround the portion of the page containing a spreadsheet, then save your selection.
+      replace_image: Replace Image
+      replace_image_description: If the example image does not contain a spreadsheet, you can replace it with a different page from the collection, chosen at random.
+      save_selection: Save Selection
+    column_form:
+      column_options: Column options (separate with semicolons)
+      column_options_title: Options for dropdown cells.
+      input_type: Input type
+      label: Label
+    edit_columns:
+      add_additional_column: Add Additional Column
+      cancel: Cancel
+      disable_ruler: Disable Ruler
+      done: Done
+      edit_spreadsheet_columns: Column Configuration
+      edit_spreadsheet_header: Spreadsheet Configuration
+      enable_ruler: Enable Ruler
+      identify_rows: Identify Rows
+      identify_rows_description: Pages may have top and bottom margins, header or footer fields, or other text that should not be used when identifying where the rows are on the page.
+      page_layout: Page layout
+      preview: Spreadsheet Preview
+      save: Save
+      screen_ruler: Screen ruler
+      screen_ruler_description: To reduce improve usability and reduce transcriber errors, FromThePage can display a ruler on the page image that highlights the part of a page the user is transcribing. This is useful for consistently scanned documents written on pre-printed forms, but can be distracting or frustrating if documents are irregular and the screen ruler does not match.
+      start_rows_description: Number of rows the spreadsheet should display initially. (Transcribers will be able to add additional rows if needed.)
+      start_rows_label: 'Starting Row Count: '
+      transcription_warning: This project has already been partially transcribed. Adding columns is fine, but deleting or changing columns may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename columns.
     edit_field_form:
-      description_instructions_label: "Metadata Description Instructions"
-      data_entry_type_label: "Metadata Flow"
-      data_entry_type_text_and_metadata: "Users transcribe text and create metadata"
-      data_entry_type_metadata_only: "Users only create metadata"
-
+      add_additional_field: Add Additional Field
+      add_additional_line: Add Additional Line
+      cancel: Cancel
+      data_entry_type_label: Metadata Flow
+      data_entry_type_metadata_only: Users only create metadata
+      data_entry_type_text_and_metadata: Users transcribe text and create metadata
+      description_instructions_label: Metadata Description Instructions
+      done: Done
+      line: Line
+      preview: Preview
+      save: Save
+    edit_fields:
+      edit_transcription_fields: Edit Transcription Fields
+      transcription_warning: This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields.
+    edit_metadata_fields:
+      edit_metadata_fields: Edit Metadata Fields
+    field_layout:
+      instructions: Instructions
+    line_form:
+      field_options: Field options (separate with semicolons)
+      field_options_title: Options for select fields.
+      input_type: Input type
+      label: Label
+      page: Page
+      page_title: For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)
+      percentage_title: Percentage of the line width to use for this field.
+      percentage_width: Width %
+    metadata_field_layout:
+      instructions: Instructions
+    multiselect_form:
+      options_form_description: Enter options for the multi select metadata field, with each option on a separate line
+      options_form_title: Multi select Options
+      save: Save
+    new_column_form:
+      delete_column: Delete column
+      field_label: Field label
+      field_options: Field options
+      input_type: Input type
+      reorder_column: Reorder column
+    new_field_form:
+      configure_options: Configure Options
+      configure_spreadsheet: Configure Spreadsheet
+      delete_field: Delete field
+      field_label: Field label
+      field_options: Field options
+      input_type: Input type
+      page_number: Page Number
+      reorder_field: Reorder field
+      width_percentage: Width Percentage

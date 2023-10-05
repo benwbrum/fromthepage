@@ -1,0 +1,10 @@
+---
+es:
+  search_attempt:
+    show:
+      more: Más...
+      no_results: No se han encontrado resultados para <i>%{query}</i>
+      results_for: Resultados para <i>%{query}</i>
+      search: Buscar
+      search_for_collections: Buscar colecciones
+      search_for_collections_or_owners: Buscar colecciones o propietarios...

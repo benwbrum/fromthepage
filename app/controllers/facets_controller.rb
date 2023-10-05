@@ -93,7 +93,7 @@ class FacetsController < ApplicationController
       end
       FacetConfig.populate_facets(collection)
 
-      redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
+      redirect_to collection_facets_path(collection.owner, collection), notice: t('collection.facets.collection_facets_updated_successfully')
     else
       render('collection/facets', :locals => { :@metadata_coverages => collection.metadata_coverages, :@errors => errors })
     end

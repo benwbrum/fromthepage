@@ -1,5 +1,7 @@
 @import "base/ftp_color_scheme";
 
+
+
 // ---------------------------
 // TYPOGRAPHY
 // ---------------------------
@@ -109,6 +111,7 @@ $gapSize:                   20px;
 @import "sections/user";
 @import "sections/ia-import";
 @import "sections/iiif-import";
+@import "sections/search_attempt";
 
 @import "plugins/select2/core";
 
@@ -134,6 +137,126 @@ $gapSize:                   20px;
   margin-top: 10px;
 }
 
+
+$thredded-base-font-family: $fontFamily;
+$thredded-heading-font-family: $fontFamilyHead;
+
+$thredded-base-font-size: $fontSize;
+$thredded-font-size-small: $fontSizeSmall;
+$thredded-base-line-height: $lineHeight;
+
+$thredded-heading-line-height: $lineHeight;
+
+// $widthMax was in px
+$thredded-grid-container-max-width: 90rem;
+
+
+$thredded-button-background: $btnBackground;
+$thredded-button-color: $btnColor;
+$thredded-button-hover-background: darken($thredded-button-background, 15%) !default;
+$thredded-button-hover-color: $thredded-button-color !default;
+
+$thredded-button-light-background: lighten($thredded-button-background, 35%) !default;
+$thredded-button-light-color: darken($thredded-button-background, 15%) !default;
+$thredded-button-light-hover-background: darken($thredded-button-light-background, 15%) !default;
+$thredded-button-light-hover-color: darken($thredded-button-light-color, 15%) !default;
+
+
+$thredded-button-border-radius: $btnBorderRadius;
+$thredded-button-font-family: $btnFontFamily;
+$thredded-button-font-size: $btnFontSize;
+$thredded-button-font-weight: $btnFontWeight;
+$thredded-button-line-height: 1 !default;
+
+$thredded-messageboards-grid-item-border-color: rgba(#000, 0.15);
+
+$thredded-messageboard-title-font-size: $fontSize;
+$thredded-topic-header-font-size: $fontSize;
+$thredded-topic-header-font-size-tablet-and-up: $fontSize;
+
+
+@import "thredded";
+
+// ---------------------------
+// Thredded Overrides
+// ---------------------------
+
+
+
+.thredded--main-container {
+  // The padding and max-width are handled by the app's container.
+  max-width: none;
+  padding: 0;
+  @include thredded-media-tablet-and-up {
+    padding: 0;
+  }
+}
+
+
+.thredded--post--content {
+  font-size: $fontSize;
+  line-height: $lineHeight;
+  // TODO?
+  word-break: break-word;
+  a {
+    @extend %thredded--link;
+  }
+  p {
+    @extend %thredded--paragraph;
+  }
+  hr {
+    @extend %thredded--hr;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  table {
+    @extend %thredded--table;
+  }
+  blockquote {
+    @extend %thredded--blockquote;
+  }
+  pre {
+    overflow-x: auto;
+  }
+}
+
+.thredded--topic-header--follow-info {
+  @include thredded-media-desktop-and-up {
+    max-width: 35rem;
+  }
+}
+
+
+.thredded--topics--title {
+  @extend %thredded--heading;
+  display: inline;
+  font-size: $fontSize;
+  line-height: $lineHeight;
+}
+
+
+.thredded--main-navigation { 
+//  display: none; 
+}
+
+
+
+// our h3 are h1 in Thredded
+h1, .thredded--topic-header--title {
+  color: $fgH3;
+  font-size: $fontSizeH3;
+}
+
+// our h5 are h3 in Thredded
+h3, .thredded--post-form--title {
+  color: $fgH5;
+  font-size: $fontSizeH5;
+}
+
+
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
-@import "handsontable.min"
+@import "handsontable.min";
+@import "datatables.min";

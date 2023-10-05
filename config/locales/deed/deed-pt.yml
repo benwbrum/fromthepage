@@ -1,39 +1,58 @@
+---
 pt:
   deed:
+    article_edit: Artigo editado
+    collection_active: Coleção ativa
+    collection_inactive: Coleção inativa
+    collection_joined: Coleção associada
     deed:
       html:
-        added_work: "adicionou %{work}"
-        in_the_work: " na obra %{work}"
+        added_a_note_to_page: adicionou uma nota à página %{page}
+        added_work: adicionou %{work}
+        corrected_page: corrigiu a página %{page}
+        edited_article: editou o %{article} artigo
+        edited_page: editou a página %{page}
+        edited_translation_of_page: editou a tradução da página %{page}
         in_collection: " na %{collection} coleção"
-        added_a_note_to_page: "adicionou uma nota à página %{page}"
-        saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
-        transcribed_page: "transcreveu a página %{page}"
-        edited_page: "editou a página %{page}"
-        indexed_page: "indexou a página %{page}"
-        reviewed_page: "página revisada %{page} "
-        marked_page_as_blank: "marcou a página %{page} como em branco"
-        edited_article: "editou o %{article} artigo"
-        added_a_note_to_page: "adicionou uma nota à página %{page}"
-        translated_page: "traduziu a página %{page}"
-        edited_translation_of_page: "editou a tradução da página %{page}"
-        corrected_page: "corrigiu a página %{page}"
-        marked_page_as_needing_review: "marcou a página %{page} como precisando de revisão"
-        indexed_translation_of_page: "indexou a tradução da página %{page}"
-        marked_translation_page_as_needing_review: "marcou a página de tradução %{page} como precisando de revisão"
-        reviewed_translation: "tradução revisada da página %{page}"
-        added_work: "adicionou %{work}"
-        joined: "se juntou "
         in_the_work: " na obra %{work}"
-        in_collection: " na %{collection} coleção"
+        indexed_page: indexou a página %{page}
+        indexed_translation_of_page: indexou a tradução da página %{page}
+        joined: 'se juntou '
+        marked_page_as_blank: marcou a página %{page} como em branco
+        marked_page_as_needing_review: marcou a página %{page} como precisando de revisão
+        marked_translation_page_as_needing_review: marcou a página de tradução %{page} como precisando de revisão
+        reviewed_page: 'página revisada %{page} '
+        reviewed_translation: tradução revisada da página %{page}
         saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
-      this_collection: "esta coleção"
+        transcribed_page: transcreveu a página %{page}
+        translated_page: traduziu a página %{page}
+      this_collection: esta coleção
     deeds:
-      show_more: "Mostrar Mais"
-      time_ago_in_words: "Há %{time}"
+      show_more: Mostrar Mais
+    described_metadata: Metadados Descritos
+    edited_metadata: Descrição de metadados editada
     list:
-      activity_stream: "Fluxo de Atividade"
-      collection_title: "Coleção: %{title}"
-      user_title: "Usuário: %{title}"
-      newer_activity: "Atividade Mais Recente"
-      older_activity: "Atividade Mais Antiga"
-      time_ago_in_words: "Há %{time}"
+      activity_stream: Fluxo de Atividade
+      collection_title: 'Coleção: %{title}'
+      deed: Obra
+      newer_activity: Atividade mais recente
+      older_activity: Atividade mais antiga
+      owner_title: 'Proprietário: %{title}'
+      time: Tempo
+      time_ago_in_words: Há %{time}
+      type: Tipo
+      user_title: 'Usuário: %{title}'
+    needs_review: A página precisa de revisão
+    note_added: Nota adicionada
+    ocr_corrected: OCR de página corrigido
+    page_edit: Página editada
+    page_indexed: Página indexada
+    page_marked_blank: Página marcada em branco
+    page_reviewed: Página revisada
+    page_transcription: Página transcrita
+    page_translated: Página traduzida
+    page_translation_edit: Página de tradução editada
+    translation_indexed: Página de tradução indexada
+    translation_review: A página de tradução precisa de revisão
+    translation_reviewed: Tradução revisada
+    work_added: Obra adicionada

@@ -1,34 +1,21 @@
+---
 en:
+  authentication_failed: Authentication failed
   dashboard:
-    plain: "Dashboard"
-    collaborator: "Collaborator Dashboard"
-  unauthorized_collection: "You do not have access to %{project}.  Please log in or contact the project owner to be added."
-  en: "English"
-  es: "Español"
-  pt: "Português"
+    collaborator: Collaborator Dashboard
+    plain: Dashboard
+  date:
+    formats:
+      default: "%b %d, %Y"
+  de: Deutsch
+  en: English
+  es: Español
+  fr: Français
+  message_boards_are_disabled: The forum for %{project} has been disabled.
+  pt: Português
+  time:
+    formats:
+      default: "%b %d, %Y %I:%M %p"
+      short: "%m/%d/%Y at %I:%M %p"
   time_ago_in_words: "%{time} ago"
-  activerecord:
-    attributes:
-      collection:
-        slug: "URL"
-      work:
-        slug: "URL"
-      document_set:
-        slug: "URL"
-    errors:
-      models:
-        collection:
-          attributes:
-            slug:
-              blank: "is required"
-              invalid: "must have at least one letter"
-        work:
-          attributes:
-            slug:
-              blank: "is required"
-              invalid: "must have at least one letter"
-        document_set:
-          attributes:
-            slug:
-              blank: "is required"
-              invalid: "must have at least one letter"
+  unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.

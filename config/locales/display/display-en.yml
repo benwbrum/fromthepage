@@ -1,62 +1,97 @@
+---
 en:
   display:
-    correct: "Correct"
-    transcribe: "Transcribe"
-    blank_page: "Blank page"
-    review: "Review"
-    translate: "Translate"
-    completed: "Completed"
     display_page:
-      facsimile: "Facsimile"
-      translation: "Translation"
-      show_transcription: "Show Transcription"
-      transcription: "Transcription"
-      show_translation: "Show Translation"
-      mark_the_page_blank: "mark the page blank"
-      this_page_is_blank: "This page is blank"
-      this_page_is_not: "This page is not %{text_type}"
-      please_help_this_page: "Please %{help_link} this page"
+      collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
+      collection_is_not_active: This project is not active. Please contact the project owner with any questions.
+      corrected: corrected
+      facsimile: Facsimile
+      help_correct: help correct
+      help_transcribe: help transcribe
+      help_translate: help translate
+      mark_the_page_blank: mark the page blank
       or_mark_blank: "<br>or %{mark_blank}"
-      collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
-      collection_is_not_active: "This project is not active. Please contact the project owner with any questions."
-      page_notes: "Notes and Questions"
-    multi_page:
-      search_in_collection: "Search in collection..."
-      search: "Search"
-      view_all_pages: "View All Pages"
-      pages_need_transcription: "Pages That Need Transcription"
-      pages_need_review: "Pages That Need Review"
-      pages_need_indexing: "Pages That Need Indexing"
-      pages_need_translation: "Pages That Need Translation"
-      translations_need_review: "Translations That Need Review"
-      translations_need_indexing: "Translations That Need Indexing"
-      search_for: "Search for %{search_string}"
-      categories: "Categories"
-      describe: Create Metadata
-    pages_view:
-      no_pages_found: "No pages found"
-      unable_to_find_pages: "We were unable to find any pages matching your request"
-      this_page_is_blank: "This page is blank"
-      this_page_is_not: "This page is not %{status}, please %{help} this page"
-      this_page_is_incomplete: "This page is incomplete"
-      collection_is_not_active: "This project is not active. Please contact the project owner with any questions."
-      collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
-      this_page_is_blank: "This page is blank"
-      help_translate: "help translate"
-      page_not_translated: "This page is not translated, please %{help_translate} this page"
-      corrected: "corrected"
-      transcribed: "transcribed"
-      help_transcribe: "help transcribe"
-      last_edit: "Last edit %{edit_time} ago by %{user_link}"
-      review_metadata: Review Metadata
-      pages_needing_completion: Pages needing completion
-      no_pages_needing_transcription_found_these_pages_are_incomplete: No pages need transcription from scratch.  These pages have been partially transcribed but need to be completed.
-      help_complete: "Edit this page"
-
+      page_notes: Notes and Questions
+      please_help_this_page: Please %{help_link} this page
+      show_transcription: Show Transcription
+      show_translation: Show Translation
+      this_page_is_blank: This page is blank
+      this_page_is_not: This page is not %{text_type}
+      transcribed: transcribed
+      transcription: Transcription
+      translated: translated
+      translation: Translation
     list_pages:
-      no_pages_found: "No pages found"
-      no_pages_in_work: "This work does not contain any pages yet, go to %{link} to create a new page"
-      page_title: "Page Title"
-      user_notes: "User Notes"
-      actions: "Actions"
-      no_notes: "No notes"
+      actions: Actions
+      blank_page: Blank Page
+      completed: Completed
+      correct: Correct
+      describe: Describe
+      index: Index
+      metadata: Metadata
+      n_notes:
+        one: 1 note
+        other: "%{count} notes"
+      no_notes: No notes
+      no_pages_found: No pages found
+      no_pages_in_work: This work does not contain any pages yet, go to %{link} to create a new page
+      page_title: Page Title
+      pages_tab: Pages tab
+      review: Review
+      transcribe: Transcribe
+      translate: Translate
+      user_notes: User Notes
+    multi_page:
+      categories: Categories
+      describe: Create Metadata
+      pages_need_indexing: Pages That Need Indexing
+      pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
+      pages_need_translation: Pages That Need Translation
+      search: Search
+      search_for: Search for %{search_string}
+      search_in_collection: Search in collection...
+      search_in_collection_1: Search in collection
+      search_in_work: Search in work...
+      translations_need_indexing: Translations That Need Indexing
+      translations_need_review: Translations That Need Review
+      view_all_pages: View All Pages
+    pages_view:
+      collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
+      corrected: corrected
+      help_complete: Edit this page
+      help_correct: help correct
+      help_transcribe: help transcribe
+      help_translate: help translate
+      last_edit: Last edit %{edit_time} ago by %{user_link}
+      no_pages_found: No pages found
+      no_pages_needing_transcription_found_these_pages_are_incomplete: No pages need transcription from scratch.  These pages have been partially transcribed but need to be completed.
+      page_not_translated: This page is not translated, please %{help_translate} this page
+      pages_needing_completion: Pages needing completion
+      review_metadata: Review Metadata
+      this_page_is_blank: This page is blank
+      this_page_is_incomplete: This page is incomplete
+      this_page_is_not: This page is not %{status}, please %{help} this page
+      transcribed: transcribed
+      translation: Translation
+      unable_to_find_pages: We were unable to find any pages matching your request
+    read_all_works:
+      pages: Pages
+      pages_that_mention: Pages That Mention %{article}
+    read_work:
+      pages: Pages
+      pages_need_indexing: Pages That Need Indexing
+      pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
+      pages_need_translation: Pages That Need Translation
+      translations_need_indexing: Translations That Need Indexing
+      translations_need_review: Translations That Need Review
+  display_helper:
+    page_action:
+      blank_page: Blank page
+      completed: Completed
+      correct: Correct
+      index: Index
+      review: Review
+      transcribe: Transcribe
+      translate: Translate

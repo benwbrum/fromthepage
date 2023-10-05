@@ -47,10 +47,26 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+  def messageboards_enabled
+    false
+  end
+
+  def messageboards_enabled?
+    self.messageboards_enabled
+  end
+
   def uniquify_slug
     if Collection.where(slug: self.slug).exists?
       self.slug = self.slug+'-set'
     end
+  end
+
+  def metadata_coverages
+    self.collection.metadata_coverages
+  end
+
+  def enable_spellcheck
+    self.collection.enable_spellcheck
   end
 
   def reviewers
@@ -106,6 +122,11 @@ class DocumentSet < ApplicationRecord
     subjects.export
   end
 
+  def export_subject_distribution_as_csv(subject)
+    subjects = SubjectDistributionExporter::Exporter.new(self, subject)
+
+    subjects.export
+  end
 
   def articles
     Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
@@ -124,7 +145,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def deeds
-    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work)
+    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work).reorder('deeds.created_at DESC')
   end
 
   def restricted
@@ -275,7 +296,21 @@ class DocumentSet < ApplicationRecord
     nil
   end
 
-  def api_access # API access is only controlled by public/private for document sets
-    false
+  def api_access 
+    collection.api_access
   end
+
+  def institution_signature
+    self.collection.institution_signature
+  end
+
+  def most_recent_deed_created_at
+    self.collection.most_recent_deed_created_at
+  end
+
+  def user_help
+    self.collection.owner.help
+  end
+
+  public :user_help
 end

@@ -11,7 +11,7 @@
             =f.text_area :welcome_text, rows: 12, value: @email_text
         tr
           td(colspan="2")
-            =f.label :flag_denylist, "Terms to flag as potential abusive content:", class: 'above'
+            =f.label :flag_denylist, t('.flag_blacklist'), class: 'above'
             =f.text_area :flag_denylist, rows: 12, value: @flag_denylist
         tr
           td(colspan="2")

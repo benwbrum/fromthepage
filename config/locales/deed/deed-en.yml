@@ -1,41 +1,60 @@
+---
 en:
   deed:
+    article_edit: Article Edited
+    collection_active: Collection Active
+    collection_inactive: Collection Inactive
+    collection_joined: Collection Joined
     deed:
       html:
-        added_work: "added %{work}"
-        in_the_work: " in the work %{work}"
-        in_collection: " in %{collection} collection"
-        added_a_note_to_page: "added a note to page %{page}"
+        added_a_note_to_page: added a note to %{page}
+        added_work: added %{work}
+        corrected_page: corrected %{page}
+        described_metadata: described metadata
+        edited_article: edited %{article}
+        edited_metadata: edited metadata
+        edited_page: edited %{page}
+        edited_translation_of_page: edited the translation of %{page}
+        in_collection: " in %{collection}"
+        in_the_work: " in %{work}"
+        indexed_page: indexed %{page}
+        indexed_translation_of_page: indexed the translation of %{page}
+        joined: 'joined '
+        marked_page_as_blank: marked %{page} as blank
+        marked_page_as_needing_review: marked %{page} as needing review
+        marked_translation_page_as_needing_review: marked translation %{page} as needing review
+        reviewed_page: 'reviewed %{page} '
+        reviewed_translation: reviewed translation of %{page}
         saying_deed: ", saying &ldquo;%{title}&rdquo;"
-        transcribed_page: "transcribed page %{page}"
-        transcribed_page: "transcribed page %{page}"
-        edited_page: "edited page %{page}"
-        indexed_page: "indexed page %{page}"
-        reviewed_page: "reviewed page %{page} "
-        marked_page_as_blank: "marked page %{page} as blank"
-        edited_article: "edited %{article} article"
-        added_a_note_to_page: "added a note to page %{page}"
-        translated_page: "translated page %{page}"
-        edited_translation_of_page: "edited the translation of page %{page}"
-        corrected_page: "corrected page %{page}"
-        marked_page_as_needing_review: "marked page %{page} as needing review"
-        indexed_translation_of_page: "indexed the translation of page %{page}"
-        marked_translation_page_as_needing_review: "marked translation page %{page} as needing review"
-        reviewed_translation: "reviewed translation of page %{page}"
-        added_work: "added %{work}"
-        in_the_work: " in the work %{work}"
-        in_collection: " in %{collection} collection"
-        joined: "joined "
-        described_metadata: "described metadata"
-        edited_metadata: "edited metadata"
-      this_collection: "this collection"
+        this_collection: this collection
+        transcribed_page: transcribed %{page}
+        translated_page: translated %{page}
     deeds:
-      show_more: "Show More"
-      time_ago_in_words: "%{time} ago"
+      show_more: Show More
+    described_metadata: Described Metadata
+    edited_metadata: Edited Metadata Description
     list:
-      activity_stream: "Activity Stream"
-      collection_title: "Collection: %{title}"
-      user_title: "User: %{title}"
-      newer_activity: "Newer Activity"
-      older_activity: "Older Activity"
+      activity_stream: Activity Stream
+      collection_title: 'Collection: %{title}'
+      deed: Deed
+      newer_activity: Newer Activity
+      older_activity: Older Activity
+      owner_title: 'Owner: %{title}'
+      time: Time
       time_ago_in_words: "%{time} ago"
+      type: Type
+      user_title: 'User: %{title}'
+    needs_review: Page Needs Review
+    note_added: Note Added
+    ocr_corrected: Page OCR Corrected
+    page_edit: Page Edited
+    page_indexed: Page Indexed
+    page_marked_blank: Page Marked Blank
+    page_reviewed: Page Reviewed
+    page_transcription: Page Transcribed
+    page_translated: Page Translated
+    page_translation_edit: Translation Page Edited
+    translation_indexed: Translation Page Indexed
+    translation_review: Translation Page Needs Review
+    translation_reviewed: Translation Reviewed
+    work_added: Work Added

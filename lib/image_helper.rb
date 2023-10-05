@@ -63,7 +63,7 @@ module ImageHelper
   end
       
   
-  MAX_FILE_SIZE = 1000000
+  MAX_FILE_SIZE = 2000000
 
   def self.compress_files_in_dir(dirname)
     files = Dir.glob(File.join(dirname, "*.*"))
@@ -74,7 +74,7 @@ module ImageHelper
     if needs_compression?(filename)
       extension = File.extname(filename)
       working_file = File.join(File.dirname(filename),"resizing.#{extension}")
-      9.downto(1).each do |decile|
+      9.downto(2).each do |decile|
         GC.start
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)

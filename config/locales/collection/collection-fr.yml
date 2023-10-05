@@ -1,0 +1,364 @@
+---
+fr:
+  collection:
+    approve_all:
+      approved_n_pages: "%{page_count} pages approuvées."
+    collection_works:
+      most_recent_activity: Activité la plus récente
+      n_pages:
+        one: '1 page :'
+        other: "%{count} pages :"
+      progress: Progrès
+      work_title: Titre de œuvre
+    complete: complet
+    contributor_activity:
+      recent_notes: Notes récentes
+      recent_ocr_correction: Correction d'OCR récente
+      recent_pages_needing_review: Pages récentes à revoir
+      recent_subject_indexing: Indexation des sujets récents
+      recent_subjects: Sujets récents
+      recent_transcriptions: Transcriptions récentes
+      recent_translation_subject_indexing: Indexation par sujet des traductions récentes
+      recent_translations: Traductions récentes
+      recent_translations_needing_review: Traductions récentes nécessitant une révision
+      recent_works_added: Œuvres récents ajoutés
+    contributors:
+      contributions: Contributions entre %{start_deed} et %{end_deed}
+      end_date: Date de fin
+      select_new_date: Sélectionnez une nouvelle plage de dates
+      start_date: Date de début
+      update: Mise à jour
+    contributors_body:
+      active_collaborators: Collaborateurs actifs
+      all_collaborator_emails: Tous les e-mails des collaborateurs
+      collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
+      collaborators: Collaborateurs
+      detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
+      export_activity_as_csv: Exporter toutes les activités sous forme de feuille de calcul
+      export_activity_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque action.
+      export_activity_as_csv_header: Activité d'exportation
+      export_as_csv: Exporter l'activité de l'utilisateur sous forme de feuille de calcul
+      export_as_csv_description: Téléchargez une feuille de calcul avec une ligne répertoriant chaque utilisateur ainsi que son temps et son activité.
+      find_project_newsletters_recommendations: Trouvez des recommandations pour les newsletters du projet.
+      new_collaborators: Nouveaux collaborateurs
+      no_activity_this_time_frame: Aucune activité pendant cette période
+      no_collaborators: Aucun collaborateur
+      time_on_this: Temps sur cette collection
+      total_time: 'Durée totale : %{hours} heures, %{minutes} minutes.'
+      user: Utilisateur
+      view_activity: Afficher l'activité
+    corrected: corrigée
+    create:
+      notice: La collection a été créée
+    disable_ocr:
+      notice: La correction d'OCR a été désactivée pour toutes les œuvres.
+    edit:
+      add_a_new_work: Ajouter une nouvelle œuvre
+      add_another_work_under: Vous pouvez ajouter une autre œuvre sous %{start_project}
+      add_button: Ajouter
+      alert: Veuillez configurer les champs ou choisir la transcription basée sur le document sous Type de transcription.
+      api_access: Accès API
+      api_access_description: Autoriser l'accès aux transcriptions via l'API IIIF
+      authorized_reviewers: Examinateurs autorisés
+      blank_collection: Effacer collection
+      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      block: Bloquer les utilisateurs
+      block_users_description: Empêchez les utilisateurs individuels d'accéder à la collection.
+      block_users_modal_description: L'accès à la collection a été bloqué pour ces utilisateurs. La collection ne leur sera pas visible, comme si elle avait été marquée comme privée ou supprimée. L'ajout d'utilisateurs à cette liste ne les avertira pas qu'ils ont été bloqués.
+      blocked_users: Utilisateurs bloqués
+      close_api: Fermer l'API
+      collection_active_message: Ceci est une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
+      collection_collaborators: Collaborateurs de la collection
+      collection_collaborators_description: Les collaborateurs peuvent transcrire et éditer des collections privées.
+      collection_image: Image de la collection
+      collection_inactive_message: Il s'agit d'une collection inactive. Activer une collection permet aux utilisateurs de modifier le contenu de cette collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
+      collection_link: Lien de collection
+      collection_owners: Propriétaires de collections
+      collection_owners_description: Les propriétaires peuvent ajouter des œuvres à la collection et télécharger des images de page ainsi que transcrire et lire des œuvres de la collection.
+      collection_privacy: Confidentialité des collections
+      collection_public_message: La collection peut être consultée par n'importe qui sur Internet. Vous pouvez rendre la collection privée pour limiter sa visibilité aux propriétaires.
+      collection_restricted_message: La collection ne peut être vue que par les propriétaires listés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
+      collection_reviewers: Examinateurs autorisés
+      collection_reviewers_description: Ces utilisateurs pourront réviser et approuver les transcriptions, ainsi que les modifier.
+      collection_status: État de la collection
+      confirm_blank_collection: Êtes-vous sûr?
+      confirm_delete_collection: Voulez-vous vraiment supprimer cette collection ? Après la suppression, vous ne pourrez pas le récupérer !
+      current_url: L'URL actuelle de cette collection est %{current_url}. Si vous souhaitez modifier la section de collection de l'URL, veuillez utiliser des lettres minuscules et des tirets entre les mots.
+      default_orientation: Sélectionnez l'orientation de transcription de page par défaut
+      delete_collection: Supprimer la collection
+      description: Description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
+      disable_document_sets: Désactiver les jeux de documents
+      disable_facets: Désactiver les facettes
+      disable_message_boards: Désactiver le forum
+      disable_ocr: Désactiver la OCR
+      document_sets: Jeux de documents
+      document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
+      done: Terminer
+      edit_authorized_reviewers: Modifier les réviseurs autorisés
+      edit_buttons: Configurer les boutons
+      edit_collaborators: Modifier les collaborateurs
+      edit_fields: Champs
+      edit_metadata_fields: Modifier les champs
+      edit_owners: Modifier les propriétaires
+      edit_profile: Changez ceci dans votre profil d'utilisateur
+      editor_buttons: Boutons de l'éditeur
+      editor_buttons_description: Choisissez les boutons de balisage à afficher dans l'éditeur de transcription.
+      enable_document_sets: Activer les jeux de documents
+      enable_facets: Activer les facettes
+      enable_field_based_transcription: Activer la transcription basée sur les champs
+      enable_message_boards: Activer le forum
+      enable_metadata_description: Activer la description des métadonnées
+      enable_ocr: Activer OCR
+      enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
+      field_based_transcription: Transcription basée sur les champs
+      footer: Bas de page
+      help: Texte de la page d'aide
+      hide_completed: Masquer les œuvres terminés par défaut
+      link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
+      make_collection_active: Rendre la collection active
+      make_collection_inactive: Rendre la collection inactive
+      make_collection_private: Rendre la collection privée
+      make_collection_public: Rendre la collection publique
+      message_boards: Forum
+      message_boards_description: Un forum permet aux collaborateurs de discuter de sujets entre eux et avec les porteurs de projet via des babillards électroniques.
+      metadata: Métadonnées
+      metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
+      metadata_entry: Description des métadonnées
+      metadata_facets: Facettes des métadonnées
+      metadata_facets_description: Autoriser les utilisateurs à parcourir les œuvres de cette collection via les métadonnées.
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
+      no_document_sets_in_collection: Cette collection ne contient aucun jeux de documents.
+      no_image: Pas d'image
+      ocr_correction: Correction d'OCR
+      ocr_correction_description: Activez ou désactivez la correction d'OCR pour toutes les œuvres de cette collection.
+      open_api: Ouvrir l'API
+      page_needing_transcription: 'Ce lien enverra les transcripteurs directement vers une page nécessitant une transcription : %{current_url}'
+      page_on_the_bottom: Page en bas
+      page_on_the_left: Page à gauche
+      page_on_the_right: Page de droite
+      page_on_the_top: Page en haut
+      picture_to_be_used_message: Une image à utiliser pour illustrer la description de la collection.
+      remove_collaborator: Supprimer un collaborateur
+      remove_owner: Supprimer le propriétaire
+      remove_reviewer: Supprimer l'examinateur
+      restrict_completed_works: Restreindre les œuvres terminés
+      restricted_completed_works: Œuvres terminés restreints
+      restricted_completed_works_description: Ce bouton limitera les œuvres %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque œuvre.
+      revert_document_based_transcription: Revenir à la transcription basée sur des documents
+      revert_metadata_description: Désactiver Description
+      review_type: Type de révision
+      review_type_optional: " Facultatif : les collaborateurs peuvent demander la révision de leurs transcriptions."
+      review_type_required: " Obligatoire : toutes les transcriptions initiales seront marquées comme nécessitant une révision. (La révision peut être effectuée par n'importe qui.)"
+      review_type_restricted: " Restreint : toutes les transcriptions doivent être révisées, et seuls les réviseurs autorisés peuvent approuver les transcriptions."
+      save_changes: Sauvegarder les modifications
+      start_a_project: Démarrer un projet
+      subjects_enabled: Activer l'indexation des sujets
+      suggestions_help_tab: Suggestions pour votre onglet d'aide.
+      suggestions_transcription_conventions: Suggestions pour vos conventions de transcription.
+      text_language: Sélectionnez la langue du texte de transcription
+      title: Titre
+      transcription_conventions: Conventions de transcription
+      transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
+      transcription_type: Type de transcription
+      transcription_type_description: Chaque page peut avoir une zone de saisie de texte libre (par défaut) ou plusieurs champs de saisie courts conçus pour les formulaires. Toutes les pages de la collection ont le même type d'entrées de transcription. La dictée vocale n'est pas prise en charge et sera désactivée.
+      unblock_user: Débloquer l'utilisateur
+      update_footer_message: Vous pouvez mettre à jour le pied de page en modifiant le profil de %{owner}
+      upload_image: Télécharger une image
+      upload_metadata: Télécharger les métadonnées
+      url: URL
+      user_download: Autoriser les utilisateurs à télécharger des œuvres.
+      voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
+    edit_buttons:
+      abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan. (Forme alternative de la balise expan.)
+      abbr_label: Abréviation
+      add_description: Marque le texte inséré après coup par l'auteur.
+      add_label: Ajout
+      date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
+      date_label: Date
+      del_description: Marque le texte qui a été supprimé par effacement ou barré.
+      del_label: Effacement
+      description: FromThePage peut prendre en charge le balisage dans les transcriptions dans les formulaires TEI-XML ou HTML. Nous vous recommandons de ne pas configurer plus de six boutons à afficher sur l'éditeur de transcription. Demandez-vous si d'autres systèmes pourront utiliser ce type de majoration ; si seul le texte brut est pris en charge, les projets doivent utiliser les conventions typographiques au lieu du balisage.
+      expan_description: Marque les abréviations développées avec des formes originales dans l'attribut orig. (Forme alternative de la balise abbr.)
+      expan_label: Expansion
+      fig_description: Indique un chiffre ou une ligne horizontale.
+      fig_label: Chiffre
+      footnote_description: Entoure le corps d'une note de bas de page, avec le symbole de note de bas de page dans l'attribut marqueur.
+      footnote_label: note de bas de page
+      gap_description: Marque un vide dans le texte, souvent dû à des dommages
+      gap_label: Écart
+      head_description: Marque un titre dans le texte.
+      head_label: Titre
+      heading: Configuration de l'éditeur de transcription
+      html: "(HTML)"
+      i_description: Marquez le texte en italique.
+      i_label: Italique
+      lb_description: Marque les sauts de ligne
+      lb_label: Saut de ligne
+      markup_preference_description: Certaines balises ont des formes équivalentes en HTML et TEI-XML. Choisissez une préférence pour déterminer quelle forme de balise est insérée lorsqu'un utilisateur appuie sur le bouton.
+      markup_preference_label: Style de balisage
+      prefer_html: Préférez le HTML
+      prefer_tei: Préférer TEI
+      reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
+      reg_label: Régularisation
+      s_description: Marque le texte qui a été barré pour une raison quelconque.
+      s_label: Barré
+      save: sauvegarder
+      sub_description: Texte en indice.
+      sub_label: Indice
+      sup_description: Texte en exposant.
+      sup_label: Exposant
+      tei: " (TEI-XML)"
+      u_description: Marque le texte souligné.
+      u_label: Souligner
+      unclear_description: Marque le texte peu clair.
+      unclear_label: Pas clair
+    enable_ocr:
+      notice: La correction d'OCR a été activée pour toutes les œuvres.
+    facet_form:
+      current_filters: Filtres actuels
+      filter: Filtre
+      reset_all_filters: Réinitialiser tous les filtres
+      search: Chercher
+    facets:
+      collection_facets_updated_successfully: Les facettes de la collection ont été mises à jour avec succès
+      field_label: Étiquette de champ
+      label: Étiquette
+      metadata_facets: Facettes des métadonnées
+      metadata_facets_description: Configurez les facettes des métadonnées en examinant les métadonnées de votre collection et en étiquetant les champs à afficher pour les transcripteurs.
+      occurrences: Occurrences
+      order: Ordre
+      translate: Traduire
+      type: Taper
+    indexed: indexé
+    localize:
+      label: Facette
+      metadata_facets_localize_description: Fournissez des étiquettes spécifiques à la langue pour chaque facette.
+      save: sauvegarder
+      translate_facets: Traduire les étiquettes de facette
+      translation: Traduction
+    needs_review: a besoin d'une révision
+    needs_review_pages:
+      pages_need_review: Pages à réviser
+      project_by: Projet par
+      return_to_collection: Retour à la collection
+    needs_transcription_pages:
+      pages_need_transcription: Pages nécessitant une transcription
+      project_by: Projet par
+      return_to_collection: Retour à la collection
+    new:
+      collection_description: Description de la collection
+      collection_description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
+      create_collection: Créer une collection
+      create_new_collection: Créer une nouvelle collection
+      enter_collection_title: Pour créer une nouvelle collection, commencez par entrer le titre de la collection. À l'étape suivante, vous pourrez ajouter des œuvres à la collection.
+      individual_researcher_limited_account: Les comptes de chercheurs individuels sont limités à une seule collection. Pour mettre à niveau votre compte, contactez support@fromthepage.com.
+      title: Titre
+    new_mobile_user:
+      email_me: Envoyez-moi un lien par e-mail
+      message: Il semble que vous consultiez cette page sur un appareil mobile. Il est plus facile de retranscrire cette collection sur un écran plus grand.
+    one_off_list:
+      date: Date
+      filter_contributions: Filtre
+      no_contributions_need_review: Aucune contribution n'a besoin d'être examinée
+      one_off_description: Ces contributions ont été faites par des utilisateurs qui n'ont édité qu'une seule page. Ils peuvent nécessiter une attention particulière.
+      one_off_title: Cotisations uniques
+      review: Révision
+      title: Page (Œuvre)
+      user: Utilisateur
+    quality_sampling: Échantillonnage de qualité
+    recent_contributor_list:
+      date: Date de la première cotisation
+      filter_users: Filtre
+      no_contributions_need_review: Aucune contribution n'a besoin d'une révision
+      number_of_contributions: Contributions totales
+      recent_contributor_description: Ces collaborateurs ont commencé à travailler sur le projet récemment, mais leur contributions n'a jamais été révisées.
+      recent_contributor_title: Contributeurs récents
+      review: Révision
+      user: Utilisateur
+    reviewer_dashboard:
+      one_off_contributions: Contributions uniques
+      pages_needing_review: Pages à réviser
+      quality_sampling: Échantillonnage de qualité
+      quality_sampling_desc: Les échantillonnages de qualité vous permettent de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un œuvre particulier.
+      total_page: Nombre total de pages
+      transcribed_page: Page transcrite
+      unreviewed_contributors: Nouveaux contributeurs
+      works_to_review: Œuvres à revoir
+    show:
+      about: À propos
+      add_a_new_work: Ajouter une nouvelle œuvre
+      all_complete: Toutes les œuvres sont entièrement transcrites.
+      help_create_metadata: Aide
+      help_transcribe_or_correct: Aide
+      n_pages:
+        one: '1 page :'
+        other: "%{count} pages :"
+      pages_need_correction: Pages à corriger
+      pages_need_correction_or_transcription: Pages nécessitant une correction ou une transcription
+      pages_need_review: Pages à réviser
+      pages_need_transcription: Pages nécessitant une transcription
+      project_by: Projet par
+      recent_edits: Modifications récentes
+      recent_notes: Notes récentes
+      restricted_collaboratoration: La collaboration est restreinte.
+      search: Chercher
+      search_by_title: Rechercher par titre ou métadonnées...
+      search_by_title_1: Rechercher par titre
+      search_the_text: Rechercher dans le texte...
+      search_the_text_1: Rechercher le texte
+      show_more: Voir plus
+      start_creating_transcribing: Commencez à créer des métadonnées
+      start_transcribing: Commencer à transcrire
+      subject_categories: Catégories de sujets
+      this_work_has_not_been_described: Ce œuvre a besoin de meilleures métadonnées.
+      this_work_has_pages_that_need_work: Certaines pages ont encore besoin d'amélioration.
+      time_ago_in_words: Il y a %{time}
+      user_wrote_note: "%{user} a écrit %{note}"
+      works: Œuvres
+    start_transcribing:
+      notice: Désolé, mais il n'y a pas de pages de qualification dans cette collection.
+    transcribed: transcrite
+    translated: traduite
+    update:
+      notice: La collection a été mise à jour
+    update_buttons:
+      editor_buttons_updated: Boutons de l'éditeur mis à jour
+    upload:
+      acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
+      image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse au bon ordre des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
+      page_image_guidelines: Directives relatives aux images de page
+    user_contribution_list:
+      approve_all: Tout approuver
+      date: Date
+      email: 'Courriel : %{email}'
+      filter_contributions: Filtre
+      no_contributions: Aucune contribution
+      notes: Remarques
+      quality_score: 'Niveau de qualité :'
+      real_name: 'Nom : %{user}'
+      review: Révision
+      title: Page (Œuvre)
+      user_contribution_description: Pages nécessitant une révision par l'utilisateur %{user_name}
+      user_profile: Profil de l'utilisateur
+    works_list:
+      works: Œuvres
+    works_to_review:
+      and_n_more: et %{n} de plus
+      contributors: Contributeurs
+      description: Fonctionne avec les pages nécessitant une révision
+      filter_works: Filtre
+      incomplete: Incomplet
+      last_activity: Dernière Activité
+      no_works_need_review: Aucun œuvres à revoir
+      notes: Remarques
+      review: Révision
+      title: Titre
+      total: Total
+  collection_helper:
+    link:
+      incomplete_works: Œuvres incomplets
+      show_all: Afficher tout

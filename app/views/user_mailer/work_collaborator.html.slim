@@ -1,13 +1,15 @@
-p Hi #{@user.display_name} --
+p= t('user_mailer.greeting', user: @user.display_name)
 
-p We just wanted to let you know that #{@work.owner.display_name} added you as a collaborator on  #{@work.collection.title} - #{@work.title}.
+p= t('.message', owner: @work.owner.display_name, collection: @work.collection.title, work: @work.title)
 
-span =link_to "Click here", collection_read_work_url(@work.owner, @work.collection, @work, only_path: false)
-|&nbsp; to view #{@work.collection.title} - #{@work.title}.
+span =link_to t('user_mailer.click_here'), collection_read_work_url(@work.owner, @work.collection, @work, only_path: false)
+= t('.html.to_view', collection: @work.collection.title, work: @work.title)
 
-p Thanks, 
-|FromThePage
+-unless @work.collection.owner.display_name.blank?
+    p== t('user_mailer.html.closing', from: @work.collection.owner.display_name)
+-else
+    p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
-span =link_to "Click here", update_profile_url(@user, only_path: false)
-|&nbsp; to turn off this notification.
+span =link_to t('user_mailer.click_here'), update_profile_url(@user, only_path: false)
+= t('user_mailer.html.turn_off_notification')

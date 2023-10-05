@@ -89,4 +89,20 @@ RSpec.describe Collection, type: :model do
       end
     end
   end
+
+  describe '#enable_messageboards' do
+    context 'when messageboard_group is nil' do
+      let(:collection) { create(:collection, messageboard_group: nil) }
+
+      it 'creates a messageboard group and default messageboards' do
+        expect {
+          collection.enable_messageboards
+        }.to change(Thredded::MessageboardGroup, :count).by(1)
+         .and change(Thredded::Messageboard, :count).by(2)
+
+        expect(collection.messageboards_enabled).to be true
+      end
+    end
+  end
+
 end

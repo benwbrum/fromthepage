@@ -1,5 +1,14 @@
 Fromthepage::Application.routes.draw do
-  root :to => 'static#splash'
+  # TODO make the URL fall under user and collection profile
+  scope ':user_slug' do
+    scope ':collection_id' do
+      mount Thredded::Engine => '/forum'
+    end
+  end
+
+
+  root to: redirect('/landing')
+  get '/landing', to: 'static#landing_page' 
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -22,7 +31,12 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  scope 'notes', as: 'notes' do
+    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
+  end
   resources :notes
+
+
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
@@ -31,7 +45,9 @@ Fromthepage::Application.routes.draw do
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
     get 'flag_list', to: 'admin#flag_list'
+    get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'
@@ -63,23 +79,24 @@ Fromthepage::Application.routes.draw do
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
-    get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
+    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+    get ':collection_id/block_users', to: 'collection#block_users', as: 'block_users'
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
+    get 'disable_messageboards', to: 'collection#disable_messageboards'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
@@ -87,11 +104,15 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
+    post 'remove_block_user', to: 'collection#remove_block_user'
     post 'create', to: 'collection#create'
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
+    get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
+    post ':collection_id/email_link', to: 'collection#email_link', as: 'email_link'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
@@ -161,6 +182,8 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    post ':collection_id/work_create_ajax', to: 'bulk_export#create_for_work_ajax', as: 'create_for_work_ajax'
+    post '/owner_create', to: 'bulk_export#create_for_owner', as: 'create_for_owner'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
@@ -186,9 +209,14 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
+  end
+
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
+    get ':id', to: 'search_attempt#show', as: 'show'
   end
 
   scope 'category', as: 'category' do
@@ -214,7 +242,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -313,17 +340,12 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-  scope 'statistics', as: 'statistics' do
-    get 'export_csv', to: 'statistics#export_csv'
-  end
-
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do
@@ -353,8 +375,14 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get '/iiif/:page_id/notes', :to => 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
+  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas', as: 'iiif_canvas'
   get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
+  get '/iiif/:work_id/structured', :to => 'iiif#structured_data_endpoint', as: 'iiif_work_strucured_data'
+  get '/iiif/:work_id/structured/:page_id', :to => 'iiif#structured_data_endpoint', as: 'iiif_page_strucured_data'
+  get '/iiif/:collection_id/structured/config/work', :to => 'iiif#structured_data_work_config_endpoint', as: 'iiif_work_strucured_data_config'
+  get '/iiif/:collection_id/structured/config/page', :to => 'iiif#structured_data_page_config_endpoint', as: 'iiif_page_strucured_data_config'
+  get '/iiif/structured/config/field/:transcription_field_id', :to => 'iiif#structured_data_field_config_endpoint', as: 'iiif_strucured_data_field_config'
+  get '/iiif/structured/config/column/:spreadsheet_column_id', :to => 'iiif#structured_data_column_config_endpoint', as: 'iiif_strucured_data_column_config'
   get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
   # {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
@@ -417,6 +445,12 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/signup', to: 'static#signup', as: :signup 
+  get '/special_collections', to: 'static#transcription_archives', as: :special_collections
+  get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
+  get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
+  get '/state_archives', to: 'static#state_archives', as: :state_archives
+
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -424,6 +458,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
     resources :collection, path: '', only: [:show] do
+      get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
@@ -432,10 +467,12 @@ Fromthepage::Application.routes.draw do
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
       get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'page-notes/:work_id/:page_id', as: 'forum_page', to: 'display#display_page'
       get 'review/one_off/:page_id', as: 'oneoff_review_page', to: 'transcribe#display_page'
       get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
       patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
+      patch 'review/user/:user_id/approve_all/:quality_sampling_id', as: 'user_review_approve_all', to: 'collection#approve_all'
 
       resources :quality_samplings
       post 'quality_sampling/initialize', as: 'initialize_sample', to: 'quality_samplings#initialize_sample'
@@ -457,13 +494,15 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
+    
+
       #work related routes
       #have to use match because it must be both get and post
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
-        get 'print', on: :member
+        get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
@@ -507,10 +546,11 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
 
       #article related routes
-      match 'article/:article_id', to: 'article#show', via: [:get, :post], as: 'article_show'
+      get 'article/:article_id', to: 'article#show', as: 'article_show'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'
+      get 'article/:article_id/subject_distribution', to: 'export#subject_distribution_csv', as: 'subject_distribution'
     end
   end
 

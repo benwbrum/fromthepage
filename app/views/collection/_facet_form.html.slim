@@ -8,14 +8,14 @@
 
 
 -unless params[:search].nil?
-  h5 Current Filters
+  h5= t('.current_filters')
   -[:s0, :s1, :s2, :s3, :s4, :s5, :s6, :s7, :s8, :s9].each do |filter_name|
     - filter = @search.filter(filter_name)
     .ul
       - filter.selected.each do |entity|
         .li
           = link_to "[x] #{entity}", filter.remove(entity).path
-  =link_to "Reset All Filters", "?", class: 'button reset-button'
+  =link_to t('.reset_all_filters'), "?", class: 'button reset-button'
 
 h3 =t('.filter')
 
@@ -31,7 +31,7 @@ h3 =t('.filter')
             =f.text_field :date, readonly: true, id: "facet_search_facet_config_date_#{count}"
             =f.hidden_field :label, value: facet_config.label, id: "facet_config_label_#{count}"
             =f.hidden_field :date_order, value: facet_config.order, id: "facet_config_order_#{count}"
-            =f.button "Search", id: "slider-search#{count}"
+            =f.button t('.search'), id: "slider-search#{count}"
             div id="slider#{count += 1}"
 -@collection.facet_configs.order(:order).each do |facet_config|
   -if !facet_config.label.blank? && facet_config.input_type == "text"

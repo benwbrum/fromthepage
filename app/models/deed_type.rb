@@ -31,26 +31,26 @@ class DeedType
   # groups of deed types and also their human-readable names. Any new deed type
   # constant should also be added here.
   TYPES = {
-    PAGE_TRANSCRIPTION => 'Page Transcribed',
-    PAGE_EDIT => 'Page Edited',
-    PAGE_INDEXED => 'Page Indexed',
-    PAGE_MARKED_BLANK => 'Page Marked Blank',
-    ARTICLE_EDIT => 'Article Edited',
-    NOTE_ADDED => 'Note Added',
-    PAGE_TRANSLATED => 'Page Translated',
-    PAGE_TRANSLATION_EDIT => 'Translation Page Edited',
-    OCR_CORRECTED => 'Page OCR Corrected',
-    NEEDS_REVIEW => 'Page Needs Review',
-    TRANSLATION_REVIEW => 'Translation Page Needs Review',
-    TRANSLATION_INDEXED => 'Translation Page Indexed',
-    WORK_ADDED => 'Work Added',
-    COLLECTION_ACTIVE => 'Collection Active',
-    COLLECTION_INACTIVE => 'Collection Inactive',
-    COLLECTION_JOINED => 'Collection Joined',
-    PAGE_REVIEWED => 'Page Reviewed',
-    TRANSLATION_REVIEWED => 'Translation Reviewed',
-    DESCRIBED_METADATA => 'Described Metadata',
-    EDITED_METADATA => 'Edited Metadata Description'
+    PAGE_TRANSCRIPTION => 'deed.page_transcription',
+    PAGE_EDIT => 'deed.page_edit',
+    PAGE_INDEXED => 'deed.page_indexed',
+    PAGE_MARKED_BLANK => 'deed.page_marked_blank',
+    ARTICLE_EDIT => 'deed.article_edit',
+    NOTE_ADDED => 'deed.note_added',
+    PAGE_TRANSLATED => 'deed.page_translated',
+    PAGE_TRANSLATION_EDIT => 'deed.page_translation_edit',
+    OCR_CORRECTED => 'deed.ocr_corrected',
+    NEEDS_REVIEW => 'deed.needs_review',
+    TRANSLATION_REVIEW => 'deed.translation_review',
+    TRANSLATION_INDEXED => 'deed.translation_indexed',
+    WORK_ADDED => 'deed.work_added',
+    COLLECTION_ACTIVE => 'deed.collection_active',
+    COLLECTION_INACTIVE => 'deed.collection_inactive',
+    COLLECTION_JOINED => 'deed.collection_joined',
+    PAGE_REVIEWED => 'deed.page_reviewed',
+    TRANSLATION_REVIEWED => 'deed.translation_reviewed',
+    DESCRIBED_METADATA => 'deed.described_metadata',
+    EDITED_METADATA => 'deed.edited_metadata' 
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
@@ -109,10 +109,23 @@ class DeedType
       ]
     end
 
+    def collection_joins
+      [
+        COLLECTION_JOINED
+      ]
+    end
+
     def transcriptions_or_corrections_no_edits
       [
         PAGE_TRANSCRIPTION,
         OCR_CORRECTED
+      ]
+    end
+
+    def metadata_creation_or_edits
+      [
+        DESCRIBED_METADATA,
+        EDITED_METADATA
       ]
     end
 

@@ -43,6 +43,7 @@ module SubjectDetailsExporter
           csv << row
         end
       end
+
       csv_string
     end
 

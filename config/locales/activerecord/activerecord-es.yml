@@ -1,0 +1,56 @@
+---
+es:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Título
+      document_set:
+        slug: URL
+        title: Título
+      work:
+        slug: URL
+        title: Título
+    errors:
+      models:
+        collection:
+          attributes:
+            slug:
+              blank: es requerido
+              invalid: debe tener al menos una letra
+        document_set:
+          attributes:
+            slug:
+              blank: es requerido
+              invalid: debe tener al menos una letra
+        work:
+          attributes:
+            slug:
+              blank: es requerido
+              invalid: debe tener al menos una letra
+        xml_source_processor:
+          blank_subject_in: Sujeto en blanco en %{tag}
+          blank_tag_in: Etiqueta en blanco en %{tag}
+          blank_text_in: Texto en blanco en %{tag}
+          subject_linking_error: 'Error de vinculación de asunto:'
+          tags_should_not_use_3_brackets: Las etiquetas deben crearse usando 2 corchetes, no 3
+          unclosed_bracket_within: Corchete no cerrado dentro de %{tag}
+          wrong_number_of_closing_braces: Número incorrecto de llaves de cierre después de %{tag}
+    models:
+      bulk_export:
+        one: exportación a granel
+        other: exportaciones a granel
+      ia_leaf:
+        one: página
+        other: paginas
+      page:
+        one: página
+        other: paginas
+      work:
+        one: obra
+        other: obras
+  errors:
+    messages:
+      not_saved:
+        one: '1 error prohibió que se guardara este %{resource}:'
+        other: 'Los errores de %{count} prohibieron que se guardara este %{resource}:'

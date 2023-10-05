@@ -1,103 +1,87 @@
+---
 en:
   export:
-    update_contentdm_credentials:
-      updating_contentdm_message: "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
-    index:
-      export_all_works: "Export All Works"
-      export_all_works_description: "Choose formats and granularities to export the entire collection in a zip file."
-      export_to_contentdm: "Export to CONTENTdm"
-      export_to_contentdm_description: "Click the button to export completed transcripts from the entire collection to CONTENTdm."
-      export_individual_works: "Export Individual Works"
-      export_individual_works_description: "You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats of a work and page granularity."
-      work_title: "Work Title"
-      pages: "Pages"
-      indexed: "Indexed"
-      review: "Review"
-      progress: "Progress"
-      export_as: "Export As"
-      plain_text: "Plain text"
-      table_csv: "Table CSV"
-      more: "More"
-      more_export_formats: "Additional export formats"
-      export_subject_index: "Export Subjects"
-      export_subject_index_description: "Click the button to export subject indexes from the entire collection in a single CSV file.  (The export process could take some time to complete, so please wait until you get the File Save dialog.)"
-      export_subjects_as_csv: "Export Index as CSV"
-      export_subject_details: "Export Subject Details"
-      export_subject_details_description: "Click the button to export a CSV file with an row for each subject in the collection. (The export process could take some time to complete, so please wait until you get the File Save dialog.)"
-      export_subject_details_as_csv: "Export Subjects as CSV"
-      export_subject_coocurrence: "Export Subject Coocurrence"
-      export_subject_coocurrence_description: "Click the button to export a CSV file with an row for each combination of subjects in the collection which are mentioned within the same page. (The export process could take some time to complete, so please wait until you get the File Save dialog.)"
-      export_subject_coocurrence_as_csv: "Export Coocurrences as CSV"
-      export_all_tables: "Export All Tables"
-      export_all_tables_description: "Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog."
-      export_all_table_data_as_csv: "Export All Table Data as CSV"
-      iiif_api_description: "We also have a IIIF-based API for programmatically exporting transcripts from your collections. Learn more %{link}"
-      iiif_collection_api_endpoint: "IIIF Collection API Endpoint: %{link}"
-      export_work_metadata: "Export Work Metadata"
-      export_work_metadata_as_csv: "Export Work Metadata As CSV" 
-      export_work_metadata_description: "Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work."
     edit_contentdm_credentials:
-      contentdm_credentials: "CONTENTdm Credentials"
-      contentdm_credentials_description: "Enter your CONTENTdm license key and your login credentials to export to CONTENTdm"
-      connect: "Connect"
+      connect: Connect
+      contentdm_credentials: CONTENTdm Credentials
+      contentdm_credentials_description: Enter your CONTENTdm license key and your login credentials to export to CONTENTdm
+      contentdm_password: CONTENTdm password
+      contentdm_user_name: CONTENTdm username
+      license_key: License key
+    facing_edition:
+      contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+    index:
+      api: API
+      export_all_works: Export All Works
+      export_all_works_description: Choose formats and granularities to export the entire collection in a zip file.
+      export_as: Export As
+      export_individual_works: Export Individual Works
+      export_individual_works_description: You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats of a work and page granularity.
+      export_to_contentdm: Export to CONTENTdm
+      export_to_contentdm_description: Click the button to export completed transcripts from the entire collection to CONTENTdm.
+      here: here
+      html: HTML
+      iiif: IIIF
+      iiif_api_description: We also have a IIIF-based API for programmatically exporting transcripts from your collections. Learn more %{link}
+      iiif_collection_api_endpoint: 'IIIF Collection API Endpoint: %{link}'
+      indexed: Indexed
+      more: More
+      more_export_formats: Additional export formats
+      n_pages:
+        one: 1 page
+        other: "%{count} pages"
+      pages: Pages
+      plain_text: Plain text
+      progress: Progress
+      review: Review
+      table_csv: Table CSV
+      tei: TEI
+      work_title: Work Title
     show:
-      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-      identifier: "Identifier: %{work}"
-      fromthepage_version: "FromThePage version: %{version}"
-      page_transcripts: "Page Transcripts"
-      notes: "Notes:"
-      page_edit_history: "Page Edit History:"
-      page_translations: "Page Translations"
-      subjects_and_indices: "Subjects and Indices"
-      categories: "Categories:"
-      pages: "Pages:"
-    facing_edition:
-      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-      identifier: "Identifier: %{work}"
-      fromthepage_version: "FromThePage version: %{version}"
-      page_transcripts: "Page Transcripts"
-      notes: "Notes:"
-      page_edit_history: "Page Edit History:"
-      page_translations: "Page Translations"
-      subjects_and_indices: "Subjects and Indices"
-      categories: "Categories:"
-      pages: "Pages:"
+      categories: 'Categories:'
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      fromthepage_version: 'FromThePage version: %{version}'
+      identifier: 'Identifier: %{work}'
+      notes: 'Notes:'
+      page_edit_history: 'Page Edit History:'
+      page_transcripts: Page Transcripts
+      page_translations: Page Translations
+      pages: 'Pages:'
+      subjects_and_indices: Subjects and Indices
     tei:
-      edition_created: "Edition created from new transcripts of this manuscript."
-      initial_upload: "Initial upload of this work's facsimile images and metadata to FromThePage for editing"
-      administrator: "Administrator of the %{collection} transcription project on FromThePage"
-      made_one_edit_on: "made one edit on"
-      made_edits_between: "made %{count} edits between"
-      dynamic_tei_export: "Dynamic TEI export from FromThePage (version %{version})"
-      empty_transcript: "Empty transcript -- probably initial upload of page facsimile."
-      changes_to_page_transcript: "Changes to page transcript."
-      single_proof_by: "Single Proof by:"
-      double_proof_by: "Double Proof by:"
+      administrator: Administrator of the %{collection} transcription project on FromThePage
+      changes_to_page_transcript: Changes to page transcript.
+      double_proof_by: 'Double Proof by:'
+      dynamic_tei_export: Dynamic TEI export from FromThePage (version %{version})
+      edition_created: Edition created from new transcripts of this manuscript.
+      empty_transcript: Empty transcript -- probably initial upload of page facsimile.
+      initial_upload: Initial upload of this work's facsimile images and metadata to FromThePage for editing
+      made_edits_between: made %{count} edits between
+      made_one_edit_on: made one edit on
+      single_proof_by: 'Single Proof by:'
     text:
-      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-      identifier: "Identifier: %{work}"
-      fromthepage_version: "FromThePage version: %{version}"
-      page_transcripts: "Page Transcripts"
-      notes: "Notes:"
-      page_translations: "Page Translations"
-      subjects_and_indices: "Subjects and Indices"
-      categories: "Categories:"
-      pages: "Pages:"
+      categories: 'Categories:'
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      fromthepage_version: 'FromThePage version: %{version}'
+      identifier: 'Identifier: %{work}'
+      notes: 'Notes:'
+      page_transcripts: Page Transcripts
+      page_translations: Page Translations
+      pages: 'Pages:'
+      subjects_and_indices: Subjects and Indices
     transcript:
-      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-      identifier: "Identifier: %{work}"
-      fromthepage_version: "FromThePage version: %{version}"
-      page_transcripts: "Page Transcripts"
-      notes: "Notes:"
-      page_translations: "Page Translations"
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      fromthepage_version: 'FromThePage version: %{version}'
+      identifier: 'Identifier: %{work}'
+      notes: 'Notes:'
+      page_transcripts: Page Transcripts
+      page_translations: Page Translations
     translation:
-      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-      identifier: "Identifier: %{work}"
-      fromthepage_version: "FromThePage version: %{version}"
-      page_translations: "Page Translations"
-      notes: "Notes:"
-    facing_edition:
-      html:
-        export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
-        fromthepage_version: "FromThePage version: %{version}"
-
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
+      fromthepage_version: 'FromThePage version: %{version}'
+      identifier: 'Identifier: %{work}'
+      notes: 'Notes:'
+      page_translations: Page Translations
+    update_contentdm_credentials:
+      updating_contentdm_message: Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear.

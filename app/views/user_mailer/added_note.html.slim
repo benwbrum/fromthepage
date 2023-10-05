@@ -1,15 +1,17 @@
-p Hi #{@user.display_name} --
+p= t('user_mailer.greeting', user: @user.display_name)
 
-p We just wanted to let you know that the following note has been added to a page you worked on in work #{@page.work.title}, in the collection #{@page.collection.title}.
+p= t('.message', work: @page.work.title, collection: @page.collection.title)
 
 p "#{@note.body}"
 
-span =link_to "Click here", collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
-|&nbsp; to view the note in #{@page.collection.title}: #{@page.work.title}.
+span =link_to t('user_mailer.click_here'), collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
+span =t('.html.view_note', collection: @page.collection.title, work: @page.work.title)
 
-p Thanks, 
-|FromThePage
+-unless @note.collection.owner.display_name.blank?
+    p== t('user_mailer.html.closing', from: @note.collection.owner.display_name)
+-else
+    p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))
 
 p
-span =link_to "Click here", update_profile_url(@user, only_path: false)
-|&nbsp; to turn off this notification.
+span =link_to t('user_mailer.click_here'), update_profile_url(@user, only_path: false)
+=t('user_mailer.html.turn_off_notification')

@@ -19,7 +19,7 @@ describe "different user role logins" do
     click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
-    expect(page).to have_content('3 errors prohibited this user from being saved')
+    expect(page).to have_content('3 errors prohibited the user from being saved')
     page.fill_in 'User Name', with: 'alexander'
     page.fill_in 'Email Address', with: 'alexander@test.com'
     page.fill_in 'Password', with: @password
@@ -27,7 +27,7 @@ describe "different user role logins" do
     page.fill_in 'Real Name', with: 'Alexander'
     click_button('Create Account')
     new_user_count = User.all.count
-    expect(page.current_path).to eq root_path
+    expect(page.current_path).to eq dashboard_watchlist_path
     expect(new_user_count).to eq (user_count + 1)
   end
 
@@ -92,9 +92,7 @@ describe "different user role logins" do
     expect(page).to have_content("Owner Dashboard")
     @collections.each do |c|
       expect(page).to have_content(c.title)
-      c.works.each do |w|
-        expect(page).to have_content(w.title)
-      end
+      expect(page).to have_content("#{c.works.count} works")
     end
     @sets.each do |s|
       expect(page).to have_content(s.title)
@@ -116,7 +114,7 @@ describe "different user role logins" do
     expect(page.current_path).to eq admin_path
     expect(page).to have_content("Administration")
     visit root_path
-    click_link('Owner Dashboard')
+    click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_selector('a', text: 'Admin Dashboard')
   end

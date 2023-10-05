@@ -8,25 +8,31 @@
           th =f.label :title, t('.title')
           td.w100 =f.text_field :title, value: @collection.title
         tr.big
-          th =f.label :slug, 'URL'
+          th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @collection.slug
         tr
-          th.hidden URL
+          th.hidden =t('.url')
           td
-            p.nomargin.settings =t('.current_url', current_url: "<b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>").html_safe
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
         tr
           td(colspan="2")
             =f.label :intro_block, t('.description'), class: "above"
+            br: i =t('.description_message')
             =f.text_area :intro_block, rows: 10, value: @collection.intro_block
         tr
           td(colspan="2")
             =f.label :footer_block, t('.footer'), class: "above"
-            =f.text_area :footer_block, rows: 5, value: @collection.footer_block
-            p.nomargin.settings =link_to t('.learn_more_footer'), "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
+            - if current_user == @collection.owner
+                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = link_to t('.edit_profile'), user_profile_path(current_user)
+            - else
+                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
+                p.nomargin.settings = t('.update_footer_message', owner: @collection.owner.display_name)
         -if @collection.text_entry?
           tr
             td(colspan="2")
               =f.label :transcription_conventions, t('.transcription_conventions'), class: "above"
+              br: i =t('.transcription_conventions_message')
               =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
               p.nomargin.settings =link_to t('.suggestions_transcription_conventions'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
         tr
@@ -64,6 +70,12 @@
 
         -if @ssl && !@collection.field_based && @collection.text_entry?
           tr
+          td(colspan="2")
+              =f.check_box :enable_spellcheck
+              =f.label :enable_spellcheck, t('.enable_spellcheck')
+
+        -if @ssl && !@collection.field_based && @collection.text_entry?
+          tr
             td(colspan="2")
               =f.check_box :voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')
@@ -71,7 +83,7 @@
           tr
             td(colspan="2")
               h3
-                =f.label :review_type, t('review_type')
+                =f.label :review_type, t('.review_type')
               =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
               =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
               br
@@ -88,7 +100,7 @@
                       =profile_picture(user)
                     .username
                       =link_to user.display_name, user_profile_path(user)
-                =link_to('Edit Authorized Reviewers',collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+                =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
                 
 
       .toolbar
@@ -111,7 +123,7 @@
 
     -if @collection.text_entry?
       h3 =t('.collection_link')
-      p =t('.page_needing_transcription', current_url:  "<b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/start_transcribing</b>").html_safe
+      p =t('.page_needing_transcription', current_url:  "<b>#{collection_start_transcribing_url(@collection.owner.slug, @collection.slug)}</b>").html_safe
 
     h3 =t('.collection_privacy')
     -if @collection.restricted
@@ -128,7 +140,7 @@
     -if @collection.restricted
       h3 =t('.collection_collaborators')
       p =t('.collection_collaborators_description')
-      p =link_to('Edit Collaborators', collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+      p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
       -@collaborators.each do |user|
         .user-label
           =profile_picture(user)
@@ -148,12 +160,17 @@
 
     h3 =t('.collection_owners')
     p =t('.collection_owners_description')
-    p =link_to('Edit Owners', collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+    p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
     -@owners.each do |user|
       .user-label
         =profile_picture(user)
         .username
           =link_to user.display_name, user_profile_path(user)
+    
+    - unless @collection.restricted
+      h3 =t('.blocked_users')
+      p =t('.block_users_description')
+      p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
 
 
     -if @collection.text_entry?
@@ -167,16 +184,23 @@
           span =t('.revert_document_based_transcription')
         =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
 
-      h3 =t('.metadata_entry')
-      -if @collection.metadata_entry?
-        =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
-        =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
-          span =t('.revert_from_description_to_transcription')
-      -else
-        =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
-          span =t('.enable_metadata_description')    
+    h3 =t('.metadata_entry')
+    -if @collection.metadata_entry?
+      =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
+      =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
+        span =t('.revert_metadata_description')
+    -else
+      =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
+        span =t('.enable_metadata_description')    
 
-
+    h3 =t('.message_boards')
+    p =t('.message_boards_description')
+    -if @collection.messageboards_enabled?
+      =link_to(collection_disable_messageboards_path(:collection_id => @collection.id), class: 'button')
+        span =t('.disable_message_boards')
+    -else
+      =link_to(collection_enable_messageboards_path(:collection_id => @collection.id), class: 'button')
+        span =t('.enable_message_boards')
 
     -if !@collection.field_based && @collection.text_entry?
       h3 =t('.editor_buttons')
@@ -243,13 +267,11 @@
       -if @collection.text_entry?
         h3 =t('.blank_collection')
         p =t('.blank_collection_description')
-        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
+        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
           span =t('.blank_collection')
       h3 =t('.delete_collection')
       =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
         span =t('.delete_collection')
-
-=render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
   javascript:

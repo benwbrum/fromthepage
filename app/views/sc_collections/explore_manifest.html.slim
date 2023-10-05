@@ -1,18 +1,21 @@
 .columns
   article.maincol
-    h4 Manifest: #{{@sc_manifest.label}}
+    h4= t('.manifest', sc_manifest: (@sc_manifest.label))
     -if @sc_collection
-      p Collection: #{@sc_collection.label}
-    -if @sc_manifest.service.description
-      p Description: #{{@sc_manifest.service.description}}
-		
-    -if @sc_manifest.service.metadata
-      p Metadata: #{{html_metadata(@sc_manifest.service.metadata)}}
-
-    -if @sc_manifest.service.license
-      p License: #{@sc_manifest.service.license}
+      p= t('.collection', sc_collection: (@sc_collection.label))
+    -if @sc_manifest.description
+      p== t('.description', description: @sc_manifest.html_description)
+	  -if @sc_manifest.metadata
+      p== t('.metadata', metadata: (html_metadata(@sc_manifest.metadata)))
+	
+    -if @sc_manifest.v3?
+      -unless @sc_manifest.requiredStatement.blank?
+        p Required Statement: #{@sc_manifest.requiredStatement}
+    -else 
+      -if @sc_manifest.service.license
+        p= t('.license', license: (@sc_manifest.service.license))
     p 
-      'Id: 
+      =t('.id')
       =link_to @sc_manifest.at_id, @sc_manifest.at_id
 
     =form_for(:sc_manifest, url: sc_collections_convert_manifest_path, html: {class: 'iiif-select-form manifest-form'}) do |f|
@@ -21,14 +24,17 @@
       	=hidden_field_tag :sc_collection_id, @sc_collection.id
       =hidden_field_tag :at_id, @sc_manifest.at_id
       -new_collection = @collection ? @collection.id : nil
-      =f.select(:collection_id, target_collection_options(new_collection), {prompt: '- Select a collection to import into -'}, {required: true, 'aria-label' => 'Select a collection to import into'})
-      =f.button 'Import Manifest'
+      =f.select(:collection_id, target_collection_options(new_collection), {prompt: t('.select_a_collection_to_import_into')}, {required: true, 'aria-label' => t('.select_a_collection_to_import_into_label')})
+      =f.button t('.import_manifest')
       -if ContentdmTranslator.iiif_manifest_is_cdm?(@sc_manifest.at_id)
-        =label_tag :contentdm_ocr, 'Import OCR text from CONTENTdm'
+        =label_tag :contentdm_ocr, t('.import_ocr_text')
         =check_box_tag :contentdm_ocr
+      -elsif @sc_manifest.has_annotations?
+        =label_tag :annotation_ocr, 'Import text from annotations'
+        =check_box_tag :annotation_ocr
 
         -unless @sc_manifest.service.sequences.empty?
-          h5 Canvases:
+          h5= t('.canvases')
           ul
             -@sc_manifest.service.sequences.first.canvases.each do |json_canvas|
               li

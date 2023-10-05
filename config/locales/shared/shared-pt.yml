@@ -1,57 +1,97 @@
+---
 pt:
   shared:
     article_tabs:
-      overview: "Resumo"
-      settings: "Configurações"
-      versions: "Versões"
-    collection_tabs:
-      overview: "Resumo"
-      statistics: "Estatisticas"
-      subjects: "Temas"
-      review: "Análise"
-      collaborators: "Colaboradores"
-      settings: "Configurações"
-      export: "Exportar"
-      add_work: "Adicionar Obra"
-      edit_fields: "Campos"
-      sets: "Conjuntos"
-      works_list: "Lista de Obras"
-      facets: "Facetas"
-    page_tabs:
-      overview: "Resumo"
-      correct: "Corrigir"
-      transcribe: "Transcrever"
-      translate: "Traduzir"
-      versions: "Versões"
-      help: "Ajuda"
-      settings: "Configurações"
-      nav_info: "Página %{position} de %{size}"
-    work_tabs:
-      read: "Ler"
-      about: "Sobre"
-      contents: "Conteudo"
-      versions: "Versões"
-      print: "Imprimir"
-      settings: "Configurações"
-      pages: "Páginas"
-      help: "Ajuda"
-      download: "Download"
-    handsontable:
-      date_tooltip: "As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles)."
+      overview: Resumo
+      settings: Configurações
+      subject: sujeito
+      versions: Versões
+    breadcrumbs:
+      search_results: Procurar Resultados
     codemirror:
-      abbr_description: "Marca as abreviações em um texto com expansões no atributo expan."
-      add_description: "Marca o texto inserido após o fato pelo escritor."
-      date_description: "Marca datas, com forma padronizada no atributo quando."
-      del_description: "Marca o texto que foi removido por apagamento ou tachado."
-      expan_description: "Marca abreviações expandidas com formas originais no atributo abbr."
-      footnote_description: "Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador."
-      fig_description: "Indica uma figura ou uma linha horizontal."
-      gap_description: "Marca uma lacuna no texto, geralmente devido a danos"
-      head_description: "Marca os títulos dentro do texto"
-      marginalia_description: "Marca o texto nas margens do texto principal."
-      reg_description: "Marca uma forma regularizada do texto, com formas originais no atributo original."
-      s_description: "Marca o texto que foi riscado por qualquer motivo."
-      sub_description: "Texto subscrito."
-      sup_description: "Superscript text."
-      unclear_description: "Marca um texto pouco claro"
-      u_description: "Marca o texto sublinhado"      
+      abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
+      add_description: Marca o texto inserido após o fato pelo escritor.
+      date_description: Marca datas, com forma padronizada no atributo quando.
+      del_description: Marca o texto que foi removido por apagamento ou tachado.
+      expan_description: Marca abreviações expandidas com formas originais no atributo abbr.
+      fig_description: Indica uma figura ou uma linha horizontal.
+      footnote_description: Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador.
+      gap_description: Marca uma lacuna no texto, geralmente devido a danos
+      head_description: Marca os títulos dentro do texto
+      marginalia_description: Marca o texto nas margens do texto principal.
+      reg_description: Marca uma forma regularizada do texto, com formas originais no atributo original.
+      s_description: Marca o texto que foi riscado por qualquer motivo.
+      sub_description: Texto subscrito.
+      sup_description: Superscript text.
+      u_description: Marca o texto sublinhado
+      unclear_description: Marca um texto pouco claro
+    collection_tabs:
+      add_work: Adicionar Obra
+      collaborators: Colaboradores
+      collection: coleção
+      edit_fields: Campos
+      edit_metadata_fields: Campos de metadados
+      export: Exportar
+      facets: Facetas
+      forum: Fórum
+      overview: Resumo
+      review: Análise
+      sets: Conjuntos
+      settings: Configurações
+      statistics: Estatisticas
+      subjects: Temas
+      works_list: Lista de Obras
+    description_tabs:
+      describe: Metadados
+      help: Ajuda
+      metadata: Metadados
+      nav_info: Obra %{position} de %{size}
+      next_page: Próxima página
+      next_work: Próxima obra
+      overview: Visão geral
+      previous_page: Página anterior
+      previous_work: Obra anterior
+      versions: Versões
+    handsontable:
+      date_tooltip: As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles).
+    markup_help:
+      markup_help_description: '"Autolink" sugerirá assuntos aos quais certas palavras podem ser vinculadas ou você pode usar chaves duplas para vincular assuntos. <code>[[Jane Doe]]</code> vinculará o texto "Jane Doe" ao assunto Jane Doe, enquanto <code>[[Jane Doe|Jane]]</code> vinculará o texto "Jane" ao assunto Jane Doe. Recomendamos que o link seja deixado para um editor após a transcrição inicial.'
+    osd_div:
+      brightness: Brilho
+      contrast: Contraste
+      full_page: Alternar página inteira
+      home: Ir para Página Inicial
+      image_filters: Filtros de imagem
+      open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
+      rotate_left: Vire à esquerda
+      rotate_right: Vire à direita
+      threshold: Limite
+      zoom_in: Mais Zoom
+      zoom_out: Reduzir o zoom
+    page_tabs:
+      correct: Corrigir
+      describe_work: Descrever obra
+      help: Ajuda
+      nav_info: Página %{position} de %{size}
+      next_page: Próxima página
+      overview: Resumo
+      page: página
+      previous_page: Página anterior
+      settings: Configurações
+      transcribe: Transcrever
+      translate: Traduzir
+      versions: Versões
+    review_breadcrumbs:
+      dashboard: Painel de revisão
+      page: Página
+    validation_summary:
+      form: Formato
+    work_tabs:
+      about: Sobre
+      contents: Conteúdo
+      download: Download
+      help: Ajuda
+      pages: Páginas
+      read: Ler
+      settings: Configurações
+      work: Obra

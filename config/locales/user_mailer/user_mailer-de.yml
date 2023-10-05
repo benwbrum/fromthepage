@@ -1,0 +1,74 @@
+---
+de:
+  user_mailer:
+    added_note:
+      html:
+        view_note: " um auf die Anmerkung in %{collection} zu antworten: %{work}."
+      message: Wir wollten Sie nur darüber informieren, dass die folgende Anmerkung zu einer Seite hinzugefügt wurde, an der Sie im Werk %{work} in der Sammlung %{collection} gearbeitet haben.
+      text:
+        view_note: 'Sie können auf die Anmerkung in %{collection} antworten: %{work} unter der URL: %{url}.'
+    bulk_export_finished:
+      html:
+        ready_message: wurde bearbeitet und steht unter %{this_link} bereit.
+      text:
+        ready_message: 'Ihr Export wurde verarbeitet und steht unter dieser URL bereit:'
+      this_link: diesem Link
+      your_export_is_ready: Ihr Export ist fertig!
+      your_export_of: Ihr Export von
+    click_here: Hier klicken,
+    collection_collaborator:
+      html:
+        to_view: " um %{collection} anzuzeigen"
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeitenden zu %{collection} hinzugefügt hat.
+      text:
+        to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+    collection_reviewer:
+      html:
+        to_view: " um %{collection} anzuzeigen"
+      message: "%{owner} hat Sie als autorisierte:n Reviewer:in zu %{collection} hinzugefügt. Es sollte nun möglich sein, jede Seite, die überprüft werden muss, zu bearbeiten und freizugeben."
+      text:
+        to_view: 'Um %{collection} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+    fromthepage: FromThePage
+    greeting: Hallo %{user} --
+    html:
+      closing: |
+        Danke, <br><br>
+        %{from}
+      turn_off_notification: " um diese Benachrichtigung zu deaktivieren"
+    new_mobile_user:
+      html:
+        continue_transcribing: " weiter zu transkribieren."
+      message: Willkommen bei %{collection}!
+      text:
+        continue_transcribing: 'Klicken Sie auf diese URL, um mit der Transkription fortzufahren: %{url}.'
+    new_owner:
+      welcome: Willkommen
+    nightly_user_activity:
+      html:
+        to_view_note: " um die seit Ihrer letzten Bearbeitung hinzugefügten Anmerkung auf Seite %{page} in %{collection}: %{work} anzuzeigen."
+        to_view_work: " um %{collection} anzuzeigen: %{work}"
+      message: Wir wollten Sie nur darüber informieren, dass in einer von Ihnen bearbeiteten Sammlung Aktivitäten stattgefunden haben.
+      new_notes: Neue Anmerkungen
+      new_works: Neue Werke
+      note_added: Es wurde eine Anmerkung zu einer Seite hinzugefügt, die Sie im Werk %{work} in der Sammlung %{collection} bearbeitet haben.
+      text:
+        to_view_note: 'Um die Anmerkung auf Seite %{work}: %{page} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+        to_view_work: 'Um %{collection}: %{work} anzuzeigen, besuchen Sie die folgende URL: %{url}'
+      work_added: "%{owner} hat %{work} zur Sammlung %{collection} hinzugefügt."
+    text:
+      closing: |-
+        Danke,
+        %{from}
+      turn_off_notification: 'Deaktivieren Sie diese Benachrichtigung unter der URL: %{url}'
+    upload_finished:
+      html:
+        message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht hier bereit:'
+      text:
+        message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht unter dieser URL bereit:'
+      your_upload_is_ready: Ihr Upload ist fertig!
+    work_collaborator:
+      html:
+        to_view: " um %{collection} - %{work} anzuzeigen."
+      message: Wir wollten Sie nur darüber informieren, dass %{owner} Sie als Mitarbeitenden zur %{collection}–%{work} hinzugefügt hat.
+      text:
+        to_view: 'Sie können %{collection}: %{work} unter der URL: %{url} anzeigen'

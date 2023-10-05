@@ -9,6 +9,7 @@ class Page < ApplicationRecord
   before_update :process_source
   before_update :populate_search
   before_update :update_line_count
+  before_save :calculate_last_editor
   before_save :calculate_approval_delta
   validate :validate_source, :validate_source_translation
 
@@ -210,6 +211,12 @@ class Page < ApplicationRecord
     end
   end
 
+  def calculate_last_editor
+    unless COMPLETED_STATUSES.include? self.status
+      self.last_editor = User.current_user
+    end
+  end
+
   def calculate_approval_delta
     if COMPLETED_STATUSES.include? self.status
       most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
@@ -240,6 +247,7 @@ class Page < ApplicationRecord
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
+    version.status = self.status
     unless User.current_user.nil?
       version.user = User.current_user
     else
@@ -255,7 +263,7 @@ class Page < ApplicationRecord
     end
     version.save!
 
-    self.update_column(:page_version_id, version.id)
+    self.update_column(:page_version_id, version.id) # set current_version
   end
 
   def update_sections_and_tables
@@ -333,21 +341,9 @@ class Page < ApplicationRecord
   # It should be called twice whenever a page is changed
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
-    Article.where("id in (select article_id "+
-                       "       from page_article_links "+
-                       "       where page_id = #{self.id})").update_all(:graph_image=>nil)
+    article_ids = self.page_article_links.pluck(:article_id)
+    Article.where(id: article_ids).update_all(:graph_image=>nil)
   end
-=begin
-Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
-Article.update_all('graph_image=NULL', "id in (select article_id from page_article_links  where page_id = 1)")
-It produces this SQL:
-UPDATE `articles` SET graph_image=NULL WHERE (id in (select article_id from page_article_links where page_id = 1))
-
-There is a more idiomatic ActiveRecord call:
-Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id).where('page_id = ?', 1))
-it produces this sql:
-UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
-=end
 
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
@@ -552,8 +548,14 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def formatted_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//expan").each { |n| n.replace(n['orig'])}
-    doc.xpath("//reg").each { |n| n.replace(n['orig'])}
+    doc.xpath("//expan").each do |n|
+      replacement = n['abbr'] || n['orig'] || n.text
+      n.replace(replacement)
+    end
+    doc.xpath("//reg").each do |n|
+      replacement = n['orig'] || n.text
+      n.replace(replacement)
+    end
     formatted_plaintext_doc(doc)
   end
 
@@ -577,45 +579,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = ""
-
-    # clean up in-cell line-breaks
-    table_element.xpath('//lb').each { |n| n.replace(' ')}
-
-    # calculate the widths of each column based on max(header, cell[0...end])
-    column_count = ([table_element.xpath("//th").count] + table_element.xpath('//tr').map{|e| e.xpath('td').count }).max
-    column_widths = {}
-    1.upto(column_count) do |column_index|
-      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map{|e| e.text().length}.max || 0)
-      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
-      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
-      column_widths[column_index] = [longest_cell, heading_length].max
-    end
-
-    # print the header as markdown
-    cell_strings = []
-    table_element.xpath("//th").each_with_index do |e,i|
-      cell_strings << e.text.rjust(column_widths[i+1], ' ')
-    end
-    text_table << cell_strings.join(' | ') << "\n"
-
-    # print the separator
-    text_table << column_count.times.map{|i| ''.rjust(column_widths[i+1], '-')}.join(' | ') << "\n"
-
-    # print each row as markdown
-    table_element.xpath('//tr').each do |row_element|
-      text_table << row_element.xpath('td').map do |e|
-        width = 80 #default for hand-coded tables
-        index = e.path.match(/.*td\[(\d+)\]/)
-        if index
-          width = column_widths[index[1].to_i] || 80 
-        else
-          width = column_widths.values.first
-        end
-        e.text.rjust(width, ' ') 
-      end.join(' | ') << "\n"
-    end
-
+    text_table = xml_table_to_markdown_table(table_element)
     table_element.replace(text_table)
   end
 

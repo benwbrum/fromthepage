@@ -54,7 +54,7 @@
 
 -description = xml_to_html(@page.xml_text)
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--tab_title = ([3,6].include? selected) ? "#{selected_tab.downcase} page" : "page #{selected_tab.downcase}"
+-tab_title = ([3,6].include? selected) ? "#{selected_tab.downcase} #{t('.page')}" : "#{t('.page')} #{selected_tab.downcase}"
 -page_title = @collection.present? ? "#{@page.title} (#{@collection.title}, #{@work.title})" : "#{@page.title} (#{@work.title})"
 -content_for :page_title, selected == 1 ? "#{page_title}" : "#{selected_tab} - #{page_title}"
 -content_for :meta_description, "#{page_title} - #{tab_title}. #{strip_tags(description).truncate(150, separator: ' ')}"
@@ -69,7 +69,11 @@
         -if @page != @work.pages.first
           -higher_item = @page.higher_item
           -unless higher_item.nil?
-            =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+            -if controller_name == 'transcribe'
+              -prev_path = collection_transcribe_page_path(@collection.owner, @collection, @work, higher_item.id)
+            -else
+              -prev_path = collection_display_page_path(@collection.owner, @collection, @work, higher_item.id)
+            =link_to(prev_path, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
         -else
           span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
@@ -78,14 +82,19 @@
 
         -if !@page.last?
           -lower_item = @page.lower_item
-          =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+          -if controller_name == 'transcribe'
+            -lower_path = collection_transcribe_page_path(@collection.owner, @collection, @work, lower_item.id)
+          -else
+            -lower_path = collection_display_page_path(@collection.owner, @collection, @work, lower_item.id)
+
+          =link_to(lower_path, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -elsif selected == 3 # if we're in "transcribe"
           -if @collection.metadata_entry?
-            =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Describe work', 'aria-label' => 'Describe work', onclick: 'unsavedTranscription(event);')
+            =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
           -else
-            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -else 
           span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'

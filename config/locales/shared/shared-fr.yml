@@ -1,0 +1,97 @@
+---
+fr:
+  shared:
+    article_tabs:
+      overview: Aperçu
+      settings: Réglages
+      subject: Sujet
+      versions: Versions
+    breadcrumbs:
+      search_results: Résultats de recherche
+    codemirror:
+      abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
+      add_description: Marque le texte inséré après coup par l'auteur.
+      date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
+      del_description: Marque le texte qui a été supprimé par effacement ou barré.
+      expan_description: Marque les abréviations développées avec les formes originales dans l'attribut abbr.
+      fig_description: Indique un chiffre ou une ligne horizontale.
+      footnote_description: Entoure le corps d'une note de bas de page, avec le symbole de note de bas de page dans l'attribut marqueur.
+      gap_description: Marque un vide dans le texte, souvent dû à des dommages
+      head_description: Marque les titres dans le texte
+      marginalia_description: Marque le texte dans les marges du texte principal.
+      reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
+      s_description: Marque le texte qui a été barré pour une raison quelconque.
+      sub_description: Texte en indice.
+      sup_description: Texte en exposant.
+      u_description: Marque le texte souligné.
+      unclear_description: Marque le texte peu clair.
+    collection_tabs:
+      add_work: Ajouter un œuvre
+      collaborators: Collaborateurs
+      collection: Collection
+      edit_fields: Champs
+      edit_metadata_fields: Champs de métadonnées
+      export: Exporter
+      facets: Facettes
+      forum: Forum
+      overview: Aperçu
+      review: Réviser
+      sets: Jeux
+      settings: Réglages
+      statistics: Statistiques
+      subjects: Sujets
+      works_list: Liste des œuvres
+    description_tabs:
+      describe: Métadonnées
+      help: Aide
+      metadata: Métadonnées
+      nav_info: Œuvre %{position} sur %{size}
+      next_page: Page suivante
+      next_work: Œuvre suivant
+      overview: Aperçu
+      previous_page: Page précédente
+      previous_work: Précédent œuvre
+      versions: Versions
+    handsontable:
+      date_tooltip: Les dates doivent être au format AAAA-MM-JJ (année à quatre chiffres, mois à deux chiffres, jour à deux chiffres, avec des traits d'union entre eux).
+    markup_help:
+      markup_help_description: '"Lien automatique" suggérera des sujets auxquels certains mots pourraient être liés ou vous pouvez utiliser des accolades doubles pour lier des sujets. <code>[[Jane Doe]]</code> liera le texte "Jane Doe" au sujet Jane Doe, tandis que <code>[[Jane Doe|Jane]]</code> liera le texte "Jane" au sujet Jane Doe. Nous recommandons que la liaison soit faite après la transcription initiale.'
+    osd_div:
+      brightness: Luminosité
+      contrast: Contraste
+      full_page: Basculer en pleine page
+      home: Rentrer chez soi
+      image_filters: Filtres d'images
+      open_seadragon_needs_js: OpenSeadragon n'est disponible que si JavaScript est activé.
+      rotate_left: Tourne à gauche
+      rotate_right: Tourner à droite
+      threshold: Seuillage
+      zoom_in: Agrandir
+      zoom_out: Dézoomer
+    page_tabs:
+      correct: Corriger
+      describe_work: Décrire l'œuvre
+      help: Aide
+      nav_info: Page %{position} sur %{size}
+      next_page: Page suivante
+      overview: Lire
+      page: page
+      previous_page: Page précédente
+      settings: Réglages
+      transcribe: Transcrire
+      translate: Traduire
+      versions: Versions
+    review_breadcrumbs:
+      dashboard: Tableau de bord de révision
+      page: Page
+    validation_summary:
+      form: formulaire
+    work_tabs:
+      about: À propos
+      contents: Contenu
+      download: Télécharger
+      help: Aide
+      pages: Pages
+      read: Lire
+      settings: Réglages
+      work: Œuvre

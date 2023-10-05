@@ -259,7 +259,11 @@ class TranscribeController  < ApplicationController
       display_page
       render :action => 'display_page'
     elsif params['autolink']
-      @page.source_text = autolink(@page.source_text)
+      autolinked_source_text = autolink(@page.source_text)
+      if Page.find(@page.id).source_text != autolinked_source_text
+        @page.source_text = autolinked_source_text
+        @autolinked_changed = true
+      end
       display_page
       render :action => 'display_page'
     end
@@ -385,8 +389,10 @@ class TranscribeController  < ApplicationController
     if current_user
       @page = Page.find(params[:page_id])
       @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+      render plain: ''
+    else
+      render plain: 'session expired', status: 401
     end
-    render plain: ''
   end
 
   def goto_next_untranscribed_page
@@ -523,6 +529,7 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSCRIPTION
     end
     deed.save!
+    update_search_attempt_contributions
   end
 
   def stub_deed
@@ -544,6 +551,7 @@ protected
     deed = stub_deed
     deed.deed_type = type
     deed.save!
+    update_search_attempt_contributions
   end
 
   def record_translation_deed
@@ -554,6 +562,7 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
+    update_search_attempt_contributions
   end
 
   private

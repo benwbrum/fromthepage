@@ -1,0 +1,30 @@
+<!-- Header -->
+    <header>
+        <div class="container">
+            <a href="/landing?logo=true" class="logo">
+                <%= image_tag("logo.svg") %>
+            </a>
+            <nav>
+                <ul class="menu">
+                    <li class="title"><h4>Menu</h4></li>
+                    <% if user_signed_in? %>
+                        <li><%= link_to t('layouts.application.find_a_project'), landing_page_path, class: 'header_link header_user' %></li>
+                        <li><%= link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link header_user' %></li>
+                    <% else %>
+                        <li class="mobil-btn">
+                            <%= link_to("Sign Up", signup_path, class: 'button') %>
+                        </li>
+                        <li>
+                            <%= link_to(t('layouts.application.sign_in'), new_user_session_path, class: 'header_link header_user') %>
+                        </li>
+                    <% end %>
+                </ul>
+                <a href="#" class="menu-trigger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </nav>
+        </div>
+    </header>
+    <!-- Header End -->

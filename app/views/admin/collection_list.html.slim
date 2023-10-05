@@ -4,7 +4,7 @@ h2 =t('.all_collections')
 .columns
   article.maincol
     -unless @collections.empty?
-      table#collections
+      table#collections.datagrid.striped 
         thead
           th Collection
           th Project Owner

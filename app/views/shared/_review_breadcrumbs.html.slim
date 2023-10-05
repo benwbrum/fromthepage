@@ -37,16 +37,16 @@
 
 -elsif selection == :quality_sampling_review_page
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
-  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
-  -path.push("Page #{@quality_sampling.index_within_sample(@page)+1} of #{@quality_sampling.sample_page_count}")
+  -path.push(link_to(t('collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
+  -path.push("#{t('.page')} #{@quality_sampling.index_within_sample(@page)+1} of #{@quality_sampling.sample_page_count}")
 
 -elsif selection == :quality_sampling
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
-  -path.push(t('.collection.quality_sampling'))
+  -path.push(t('collection.quality_sampling'))
 
 -elsif selection == :user_contribution_list_from_sampling
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
-  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
+  -path.push(link_to(t('collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
   -path.push(@user.display_name)
 
 -if path.present?

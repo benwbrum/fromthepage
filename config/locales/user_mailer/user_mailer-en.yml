@@ -1,13 +1,74 @@
+---
 en:
   user_mailer:
+    added_note:
+      html:
+        view_note: " to respond to the note in %{collection}: %{work}."
+      message: We just wanted to let you know that the following note has been added to a page you worked on in work %{work}, in the collection %{collection}.
+      text:
+        view_note: 'You can respond to the note in %{collection}: %{work} at the URL: %{url}.'
+    bulk_export_finished:
+      html:
+        ready_message: has been processed and is ready at %{this_link}.
+      text:
+        ready_message: 'Your export has been processed and is ready at this URL:'
+      this_link: this link
+      your_export_is_ready: Your export is ready!
+      your_export_of: 'Your export of '
+    click_here: Click here
+    collection_collaborator:
+      html:
+        to_view: " to view %{collection}"
+      message: We just wanted to let you know that %{owner} added you as a collaborator on %{collection}.
+      text:
+        to_view: 'To view %{collection}, visit the following URL: %{url}'
+    collection_reviewer:
+      html:
+        to_view: " to view %{collection}"
+      message: "%{owner} added you as an authorized reviewer on %{collection}.  You should be able to edit and approve any page needing review."
+      text:
+        to_view: 'To view %{collection}, visit the following URL: %{url}'
+    fromthepage: FromThePage
+    greeting: Hi %{user} --
+    html:
+      closing: |
+        Thanks, <br><br>
+        %{from}
+      turn_off_notification: " to turn off this notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " to continue transcribing."
+      message: Welcome to %{collection}!
+      text:
+        continue_transcribing: 'Click this URL to continue transcribing: %{url}.'
+    new_owner:
+      welcome: Welcome
     nightly_user_activity:
-      greet: "Hi %{user} --"
-      inform_activity: "We just wanted to let you know that there's been activity in a collection that you worked on."
-      new_works: "New Works"
-      user_activity: "%{owner} added %{work} to the collection %{collection}. "
-      click_here: "Click here"
-      to_view: "&nbsp; to view %{collection}: %{work}"
-      new_notes: "New Notes"
-      view_note_on_page: "&nbsp; to view the note on page %{page} in %{collection}: %{work}, which has been added since you worked on it."
-      thanks: "Thanks, <br><br> FromThePage"
-      turn_off_notification: "&nbsp; to turn off this notification."
+      html:
+        to_view_note: " to view the note on page %{page} in %{collection}: %{work}, which has been added since you worked on it."
+        to_view_work: " to view %{collection}: %{work}"
+      message: We just wanted to let you know that there's been activity in a collection that you worked on.
+      new_notes: New Notes
+      new_works: New Works
+      note_added: A note has been added to a page you worked on in work %{work}, in the collection %{collection}.
+      text:
+        to_view_note: 'To view the note on page %{work}: %{page}, visit the following URL: %{url}'
+        to_view_work: 'To view %{collection}: %{work}, visit the following URL: %{url}'
+      work_added: "%{owner} added %{work} to the collection %{collection}. "
+    text:
+      closing: |-
+        Thanks,
+        %{from}
+      turn_off_notification: 'Turn off this notification at the URL: %{url}'
+    upload_finished:
+      html:
+        message: Your upload of "%{file}" has been processed and is ready at
+      text:
+        message: 'Your upload of "%{file}" has been processed and is ready at this URL:'
+      your_upload_is_ready: Your upload is ready!
+    work_collaborator:
+      html:
+        to_view: " to view %{collection} - %{work}."
+      message: We just wanted to let you know that %{owner} added you as a collaborator on %{collection} - %{work}.
+      text:
+        to_view: 'You can view %{collection}: %{work} at the URL: %{url}'

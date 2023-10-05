@@ -1,22 +1,23 @@
+---
 pt:
   admin:
-    index:
-      last_deed_logged": "Última ação documentada há %{date} por %{author}"
-      database_version: "Versão da base de dados %{version}"
-      software_version: "Versão de software %{version}"
-    update_user:
-      user_profile_updated: "O perfil do usuário foi atualizado"
-    delete_user:
-      user_profile_deleted: "O perfil do usuário foi deletado"
-    expunge_user:
-      user_expunged: "Usuário %{user} foi eliminado"
     autoflag:
-      flag_message: "Procurando conteúdo adicional para marcar. Reveja esta página em poucos minutos."
+      flag_message: Procurando conteúdo adicional para marcar. Reveja esta página em poucos minutos.
     delete_upload:
-      uploaded_document_deleted: "O documento subido foi apagado"
-    process_upload:
-      uploaded_document_queued: "O documento subido está na fila para ser processado"
-    update:
-      admin_settings_updated: "A configuração da administração foi atualizada"
+      uploaded_document_deleted: O documento subido foi apagado
+    delete_user:
+      user_profile_deleted: O perfil do usuário foi deletado
     downgrade:
-      user_downgraded_successfully: "A conta do usuário foi rebaixada com sucesso"
+      user_downgraded_successfully: A conta do usuário foi rebaixada com sucesso
+    expunge_user:
+      user_expunged: Usuário %{user} foi eliminado
+    index:
+      database_version: Versão da base de dados %{version}
+      last_deed_logged: Última ação documentada há %{date} por %{author}
+      software_version: Versão de software %{version}
+    process_upload:
+      uploaded_document_queued: O documento subido está na fila para ser processado
+    update:
+      admin_settings_updated: A configuração da administração foi atualizada
+    update_user:
+      user_profile_updated: O perfil do usuário foi atualizado

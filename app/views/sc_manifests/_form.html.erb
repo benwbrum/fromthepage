@@ -1,15 +1,5 @@
 <%= form_for(@sc_manifest) do |f| %>
-  <% if @sc_manifest.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@sc_manifest.errors.count, "error") %> prohibited this sc_manifest from being saved:</h2>
-
-      <ul>
-      <% @sc_manifest.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= validation_summary @sc_manifest.errors %>
 
   <div class="field">
     <%= f.label :work_id %><br>

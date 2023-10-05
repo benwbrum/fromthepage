@@ -1,0 +1,364 @@
+---
+en:
+  collection:
+    approve_all:
+      approved_n_pages: Approved %{page_count} pages.
+    collection_works:
+      most_recent_activity: Most recent activity
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages; "
+      progress: Progress
+      work_title: Work title
+    complete: complete
+    contributor_activity:
+      recent_notes: Recent Notes
+      recent_ocr_correction: Recent OCR correction
+      recent_pages_needing_review: Recent Pages Needing Review
+      recent_subject_indexing: Recent Subject Indexing
+      recent_subjects: Recent Subjects
+      recent_transcriptions: Recent Transcriptions
+      recent_translation_subject_indexing: Recent Translation Subject Indexing
+      recent_translations: Recent Translations
+      recent_translations_needing_review: Recent Translations Needing Review
+      recent_works_added: Recent Works Added
+    contributors:
+      contributions: Contributions Between %{start_deed} and %{end_deed}
+      end_date: End date
+      select_new_date: Select a new date range
+      start_date: Start date
+      update: Update
+    contributors_body:
+      active_collaborators: Active Collaborators
+      all_collaborator_emails: All Collaborator Emails
+      collaborator_stats: Collaborator Stats %{start_deed} through %{end_deed}
+      collaborators: Collaborators
+      detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
+      export_activity_as_csv: Export All Activity as a Spreadsheet
+      export_activity_as_csv_description: Download a spreadsheet with a line listing each action.
+      export_activity_as_csv_header: Export activity
+      export_as_csv: Export User Activity as a Spreadsheet
+      export_as_csv_description: Download a spreadsheet with a line listing each user and their time and activity.
+      find_project_newsletters_recommendations: Find recommendations for project newsletters.
+      new_collaborators: New Collaborators
+      no_activity_this_time_frame: No activity in this time frame
+      no_collaborators: No Collaborators
+      time_on_this: Time on this collection
+      total_time: 'Total time: %{hours} hours, %{minutes} minutes.'
+      user: User
+      view_activity: View Activity
+    corrected: corrected
+    create:
+      notice: Collection has been created
+    disable_ocr:
+      notice: OCR correction has been disabled for all works.
+    edit:
+      add_a_new_work: Add a new work
+      add_another_work_under: You can add another work under %{start_project}
+      add_button: Add
+      alert: Please configure fields or choose document based transcription under Transcription Type.
+      api_access: API Access
+      api_access_description: Allow access to transcriptions via IIIF API
+      authorized_reviewers: Authorized reviewers
+      blank_collection: Blank Collection
+      blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+      block: Block Users
+      block_users_description: Block individual users from accessing the collection.
+      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
+      blocked_users: Blocked Users
+      close_api: Close API
+      collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      collection_collaborators: Collection Collaborators
+      collection_collaborators_description: Collaborators may transcribe and edit private collections.
+      collection_image: Collection Image
+      collection_inactive_message: This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      collection_link: Collection Link
+      collection_owners: Collection Owners
+      collection_owners_description: Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
+      collection_privacy: Collection Privacy
+      collection_public_message: The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners.
+      collection_restricted_message: The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
+      collection_reviewers: Authorized Reviewers
+      collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
+      collection_status: Collection Status
+      confirm_blank_collection: Are you sure?
+      confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
+      current_url: The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words.
+      default_orientation: Select the default page transcription orientation
+      delete_collection: Delete Collection
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      disable_document_sets: Disable Document Sets
+      disable_facets: Disable Facets
+      disable_message_boards: Disable Forum
+      disable_ocr: Disable OCR
+      document_sets: Document Sets
+      document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
+      done: Done
+      edit_authorized_reviewers: Edit Authorized Reviewers
+      edit_buttons: Configure Buttons
+      edit_collaborators: Edit Collaborators
+      edit_fields: Fields
+      edit_metadata_fields: Edit Fields
+      edit_owners: Edit Owners
+      edit_profile: Change this in your user profile
+      editor_buttons: Editor Buttons
+      editor_buttons_description: Choose mark-up buttons to appear on the transcription editor.
+      enable_document_sets: Enable Document Sets
+      enable_facets: Enable Facets
+      enable_field_based_transcription: Enable Field Based Transcription
+      enable_message_boards: Enable Forum
+      enable_metadata_description: Enable Metadata Description
+      enable_ocr: Enable OCR
+      enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
+      field_based_transcription: Field based transcription
+      footer: Footer
+      help: Basic Help Text
+      hide_completed: Hide completed works by default
+      link_help: Subject Linking Help Text (not displayed if subjects are disabled)
+      make_collection_active: Make Collection Active
+      make_collection_inactive: Make Collection Inactive
+      make_collection_private: Make Collection Private
+      make_collection_public: Make Collection Public
+      message_boards: Forum
+      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards.
+      metadata: Metadata
+      metadata_description: Upload metadata for items in this collection in bulk.
+      metadata_entry: Metadata Description
+      metadata_facets: Metadata Facets
+      metadata_facets_description: Allow users to browse works within this collection via metadata.
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
+      no_document_sets_in_collection: This collection does not have any document sets.
+      no_image: No Image
+      ocr_correction: OCR Correction
+      ocr_correction_description: Enable or disable OCR correction for all works in this collection.
+      open_api: Open API
+      page_needing_transcription: 'This link will send transcribers directly to a page needing transcription:  %{current_url}'
+      page_on_the_bottom: Page on the Bottom
+      page_on_the_left: Page on the Left
+      page_on_the_right: Page on the Right
+      page_on_the_top: Page on the Top
+      picture_to_be_used_message: A picture to be used to illustrate the collection description.
+      remove_collaborator: Remove collaborator
+      remove_owner: Remove owner
+      remove_reviewer: Remove Reviewer
+      restrict_completed_works: Restrict Completed Works
+      restricted_completed_works: Restricted Completed Works
+      restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
+      revert_document_based_transcription: Revert to Document Based Transcription
+      revert_metadata_description: Disable Description
+      review_type: Review Type
+      review_type_optional: " Optional: Collaborators may request review of their transcriptions."
+      review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
+      review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
+      save_changes: Save Changes
+      start_a_project: Start A Project
+      subjects_enabled: Enable subject indexing
+      suggestions_help_tab: Suggestions for your help tab.
+      suggestions_transcription_conventions: Suggestions for your transcription conventions.
+      text_language: Select the language of the transcription text
+      title: Title
+      transcription_conventions: Transcription Conventions
+      transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+      transcription_type: Transcription Type
+      transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
+      unblock_user: Unblock user
+      update_footer_message: You can update the footer by editing the profile for %{owner}
+      upload_image: Upload Image
+      upload_metadata: Upload Metadata
+      url: URL
+      user_download: Allow users to download works.
+      voice_recognition: Speech to text available for transcribing (not compatible with advanced editor)
+    edit_buttons:
+      abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
+      abbr_label: Abbreviation
+      add_description: Marks text inserted after-the-fact by the writer.
+      add_label: Addition
+      date_description: Marks dates, with standardized form in the when attribute.
+      date_label: Date
+      del_description: Marks text that has been removed by erasure or strike-through.
+      del_label: Deletion
+      description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
+      expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
+      expan_label: Expansion
+      fig_description: Indicates a figure or a horizontal line.
+      fig_label: Figure
+      footnote_description: Encloses the body of a footnote, with the footnote symbol in the marker attribute.
+      footnote_label: Footnote
+      gap_description: Marks a gap in the text, often due to damage
+      gap_label: Gap
+      head_description: Marks a heading in the text.
+      head_label: Heading
+      heading: Transcription Editor Configuration
+      html: " (HTML)"
+      i_description: Marks italicized text.
+      i_label: Italic
+      lb_description: Marks line breaks
+      lb_label: Line Break
+      markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
+      markup_preference_label: Mark-up Style
+      prefer_html: Prefer HTML
+      prefer_tei: Prefer TEI
+      reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
+      reg_label: Regularization
+      s_description: Marks text that has been struck through for any reason.
+      s_label: Strikethrough
+      save: Save
+      sub_description: Subscript text.
+      sub_label: Subscript
+      sup_description: Superscript text.
+      sup_label: Superscript
+      tei: " (TEI-XML)"
+      u_description: Marks underlined text.
+      u_label: Underline
+      unclear_description: Marks unclear text.
+      unclear_label: Unclear
+    enable_ocr:
+      notice: OCR correction has been enabled for all works.
+    facet_form:
+      current_filters: Current Filters
+      filter: Filter
+      reset_all_filters: Reset All Filters
+      search: Search
+    facets:
+      collection_facets_updated_successfully: Collection facets updated successfully
+      field_label: Field Label
+      label: Label
+      metadata_facets: Metadata Facets
+      metadata_facets_description: Configure metadata facets by reviewing the metadata in your collection and labelling fields to be displayed to transcribers.
+      occurrences: Occurrences
+      order: Order
+      translate: Translate
+      type: Type
+    indexed: indexed
+    localize:
+      label: Facet
+      metadata_facets_localize_description: Provide language-specific labels for each facet.
+      save: Save
+      translate_facets: Translate Facet Labels
+      translation: Translation
+    needs_review: needs review
+    needs_review_pages:
+      pages_need_review: Pages That Need Review
+      project_by: Project by
+      return_to_collection: Return to collection
+    needs_transcription_pages:
+      pages_need_transcription: Pages That Need Transcription
+      project_by: Project by
+      return_to_collection: Return to collection
+    new:
+      collection_description: Collection Description
+      collection_description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      create_collection: Create Collection
+      create_new_collection: Create New Collection
+      enter_collection_title: To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
+      individual_researcher_limited_account: Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com.
+      title: Title
+    new_mobile_user:
+      email_me: Email me a link
+      message: It looks like you're viewing this page on a mobile device. It's easier to transcribe this collection on a larger screen.
+    one_off_list:
+      date: Date
+      filter_contributions: Filter
+      no_contributions_need_review: No contributions need review
+      one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
+      one_off_title: One-off Contributions
+      review: Review
+      title: Page (Work)
+      user: User
+    quality_sampling: Quality Sampling
+    recent_contributor_list:
+      date: First Contribution Date
+      filter_users: Filter
+      no_contributions_need_review: No contributions need review
+      number_of_contributions: Total Contributions
+      recent_contributor_description: These collaborators have begun working on the project recently, but their work has never been reviewed.
+      recent_contributor_title: Recent Contributors
+      review: Review
+      user: User
+    reviewer_dashboard:
+      one_off_contributions: One-off Contributions
+      pages_needing_review: Pages to Review
+      quality_sampling: Quality Sampling
+      quality_sampling_desc: Quality samplings let you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work.
+      total_page: Total Page
+      transcribed_page: Transcribed Page
+      unreviewed_contributors: New Contributors
+      works_to_review: Works to Review
+    show:
+      about: About
+      add_a_new_work: Add a new work
+      all_complete: All works are fully transcribed.
+      help_create_metadata: Help out!
+      help_transcribe_or_correct: Help out!
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
+      pages_need_correction: Pages That Need Correction
+      pages_need_correction_or_transcription: Pages That Need Correction or Transcription
+      pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
+      project_by: Project by
+      recent_edits: Recent Edits
+      recent_notes: Recent Notes
+      restricted_collaboratoration: Collaboration is restricted.
+      search: Search
+      search_by_title: Search by title or metadata...
+      search_by_title_1: Search by title
+      search_the_text: Search the text...
+      search_the_text_1: Search the text
+      show_more: Show More
+      start_creating_transcribing: Start Creating Metadata
+      start_transcribing: Start Transcribing
+      subject_categories: Subject Categories
+      this_work_has_not_been_described: This work needs better metadata.
+      this_work_has_pages_that_need_work: Some pages still need work.
+      time_ago_in_words: "%{time} ago"
+      user_wrote_note: "%{user} wrote %{note}"
+      works: Works
+    start_transcribing:
+      notice: Sorry, but there are no qualifying pages in this collection.
+    transcribed: transcribed
+    translated: translated
+    update:
+      notice: Collection has been updated
+    update_buttons:
+      editor_buttons_updated: Editor Buttons Updated
+    upload:
+      acceptable_image_files: PNG, GIF, and JPG files are all acceptable.
+      image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
+      image_orientation_guidelines: Images should be oriented so that they are right-side-up.
+      page_image_guidelines: Page Image Guidelines
+    user_contribution_list:
+      approve_all: Approve All
+      date: Date
+      email: 'Email: %{email}'
+      filter_contributions: Filter
+      no_contributions: No contributions
+      notes: Notes
+      quality_score: 'Quality score:'
+      real_name: 'Real name: %{user}'
+      review: Review
+      title: Page (Work)
+      user_contribution_description: Pages needing review by user %{user_name}
+      user_profile: User profile
+    works_list:
+      works: Works
+    works_to_review:
+      and_n_more: and %{n} more
+      contributors: Contributors
+      description: Works with Pages Needing Review
+      filter_works: Filter
+      incomplete: Incomplete
+      last_activity: Last Activity
+      no_works_need_review: No works need review
+      notes: Notes
+      review: Review
+      title: Title
+      total: Total
+  collection_helper:
+    link:
+      incomplete_works: Incomplete works
+      show_all: Show all

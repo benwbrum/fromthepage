@@ -1,19 +1,42 @@
-
-    ul.collection-work-stats
-      li
-        span =t('.work_title')
-        span =t('.progress')
-        span.progress_bar
-      -@works.each do |w|
+table#works-list.collection-work-stats.datagrid.striped
+  thead
+    th =t('.work_title')
+    th =t('.progress')
+    th.progress_bar
+    th.nowrap =t('.most_recent_activity')
+  tbody
+    -@works.each do |w|
+      tr 
         -work_stats(w)
-        li
-          span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
-          span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
-
-          span
-            span.progress
-              -unless @collection.subjects_disabled
-                span(style="width:#{@progress_annotated}%")
+        td =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
+        td (data-order="#{w.work_statistic.complete}")
+          = t('.n_pages', count: w.work_statistic.total_pages) 
+          = @wording
+        td.w20
+          span.progress
+            -unless @collection.subjects_disabled
+              span(style="width:#{@progress_annotated}%")
               span(style="width:#{@progress_completed - @progress_annotated}%")
-              -unless @progress_review == 0
-                span(style="width:#{@progress_review}%")
+            -unless @progress_review == 0
+              span(style="width:#{@progress_review}%")
+            span(style="width:#{w.work_statistic.complete}%")
+        -most_recent_activity = w.deeds.first&.created_at || w.created_on
+        td.nowrap (data-order="#{most_recent_activity.to_i}")
+          =l(most_recent_activity, format: :short)
+
+-content_for :javascript
+  javascript:
+    $(document).ready( function () {
+      // initialize the works list datatable
+      $('#works-list').DataTable( {
+        // don't allow sorting on the progress bar column
+        'columnDefs': [ {
+          'targets': [2], 
+          'orderable': false, 
+        } ]
+      } );
+
+      // fix the layout of the pagination controls
+      $('select[name="works-list_length"]').parent().before('Show ');
+      $('select[name="works-list_length"]').parent().after(' entries');
+    } );

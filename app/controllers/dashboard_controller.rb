@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 class DashboardController < ApplicationController
   include AddWorkHelper
+  include OwnerExporter
   PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
@@ -33,13 +33,6 @@ class DashboardController < ApplicationController
     end
   end
 
-  def get_data
-    @collections = current_user.all_owner_collections
-    @notes = current_user.notes
-    @works = current_user.owner_works
-    @ia_works = current_user.ia_works
-    @document_sets = current_user.document_sets
-  end
 
   # Public Dashboard - list of all collections
   def index
@@ -81,6 +74,11 @@ class DashboardController < ApplicationController
 
   # Owner Dashboard - list of works
   def owner
+    collections = current_user.all_owner_collections
+    @active_collections = @collections.select { |c| c.active? }
+    @inactive_collections = @collections.select { |c| !c.active? }
+    # Needs to be active collections first, then inactive collections
+    @collections = @active_collections + @inactive_collections
   end
 
   # Owner Summary Statistics - statistics for all owned collections
@@ -220,8 +218,6 @@ class DashboardController < ApplicationController
     send_data( csv,
               :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
               :type => "application/csv")
-
-    cookies['download_finished'] = 'true'
   end
 
   private

@@ -1,30 +1,31 @@
   section.collection-stats
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter stats[:works]}") #{t('.work').pluralize(stats[:works])}
-      .counter(data-prefix="#{number_with_delimiter stats[:pages]}") #{t('.page').pluralize(stats[:pages])}
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::NOTE_ADDED]}") #{t('.note').pluralize(stats[DeedType::NOTE_ADDED])}
+      .counter(data-prefix="#{number_with_delimiter stats[:works]}") #{t('.work', count: stats[:works])}
+      .counter(data-prefix="#{number_with_delimiter stats[:pages]}") #{t('.page', count: stats[:pages])}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::NOTE_ADDED]}") #{t('.note', count: stats[DeedType::NOTE_ADDED])}
       -unless subjects_disabled
-        .counter(data-prefix="#{number_with_delimiter stats[:subjects]}") #{t('.subject').pluralize(stats[:subjects])}
-        .counter(data-prefix="#{number_with_delimiter stats[:mentions]}") #{t('.reference').pluralize(stats[:mentions])}
-      .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator').pluralize(stats[:contributors])}
+        .counter(data-prefix="#{number_with_delimiter stats[:subjects]}") #{t('.subject', count: stats[:subjects])}
+        .counter(data-prefix="#{number_with_delimiter stats[:mentions]}") #{t('.reference', count: stats[:mentions])}
+      .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator', count: stats[:contributors])}
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter stats[:pages_transcribed]}") #{t('.page').pluralize(stats[:pages_transcribed])} #{t('.transcribed')}
-      .counter(data-prefix="#{number_with_delimiter stats[:pages_incomplete]}") #{t('.incomplete_page').pluralize(stats[:pages_incomplete])}
-      .counter(data-prefix="#{number_with_delimiter stats[:pages_needing_review]}") #{t('.page').pluralize(stats[:pages_needing_review])} #{t('.needing_review')}
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page').pluralize(stats[DeedType::PAGE_REVIEWED])} #{t('.reviewed')}
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") #{t('.page')} #{t('.edit').pluralize(stats[DeedType::PAGE_EDIT])}
+      .counter(data-prefix="#{number_with_delimiter stats[:pages_transcribed]}") #{t('.page_transcribed', count: stats[:pages_transcribed])}
+      .counter(data-prefix="#{number_with_delimiter stats[:works_transcribed]}") #{t('.work_transcribed', count: stats[:works_transcribed])}
+      .counter(data-prefix="#{number_with_delimiter stats[:pages_incomplete]}") #{t('.incomplete_page', count: stats[:pages_incomplete])}
+      .counter(data-prefix="#{number_with_delimiter stats[:pages_needing_review]}") #{t('.page_needing_review', count: stats[:pages_needing_review])}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page_reviewed', count: stats[DeedType::PAGE_REVIEWED])}
+      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") #{t('.page_edit', count: stats[DeedType::PAGE_EDIT])}
       -unless subjects_disabled
-        .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_INDEXED]}") #{t('.page').pluralize(stats[DeedType::PAGE_INDEXED])} #{t('.indexed')}
+        .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_INDEXED]}") #{t('.page_indexed', count: stats[DeedType::PAGE_INDEXED])}
       -if @collection.works.where(supports_translation: true).exists?
-        .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSLATED])} #{t('.translated')}
+        .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page_translated', count: stats[DeedType::PAGE_TRANSLATED])} 
       -if @collection.works.where(ocr_correction: true).exists?
-        .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction').pluralize(stats[DeedType::OCR_CORRECTED])}
+        .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction', count: stats[DeedType::OCR_CORRECTED])}
       -if @collection.metadata_entry?      
-        .counter(data-prefix="#{number_with_delimiter stats[:descriptions]}") #{t('.works_described').pluralize(stats[:descriptions])}
+        .counter(data-prefix="#{number_with_delimiter stats[:descriptions]}") #{t('.works_described', count: stats[:descriptions])}
       -if stats[:line_count] > 0
         -if @collection.field_based
-          .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.records_indexed').pluralize(stats[:line_count])}
+          .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.records_indexed', count: stats[:line_count])}
         -else
-          .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.lines_transcribed').pluralize(stats[:line_count])}
+          .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.lines_transcribed', count: stats[:line_count])}
 
 

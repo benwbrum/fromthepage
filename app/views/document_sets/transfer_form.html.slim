@@ -44,8 +44,8 @@
             =label_tag "status_filter_completed", t('.completed')
     .toolbar
       .toolbar_group.aright
-        =submit_tag('Transfer')
-        =link_to('Cancel', document_sets_path(:collection_id => @collection), class: 'button')
+        =submit_tag(t('.transfer'))
+        =link_to(t('.cancel'), document_sets_path(:collection_id => @collection), class: 'button')
 
 
 

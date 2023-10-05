@@ -1,0 +1,364 @@
+---
+pt:
+  collection:
+    approve_all:
+      approved_n_pages: Páginas %{page_count} aprovadas.
+    collection_works:
+      most_recent_activity: Atividade mais recente
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
+      progress: Progresso
+      work_title: Título da obra
+    complete: completo
+    contributor_activity:
+      recent_notes: Notas Recentes
+      recent_ocr_correction: Correção de OCR recente
+      recent_pages_needing_review: Páginas Recentes para Revisar
+      recent_subject_indexing: Indexação Recente
+      recent_subjects: Temas Recentes
+      recent_transcriptions: Transcrições Recentes
+      recent_translation_subject_indexing: Indexação Recente de Tradução
+      recent_translations: Traduções Recentes
+      recent_translations_needing_review: Traduções Recentes para Revisar
+      recent_works_added: Recentes Obras Adicionadas
+    contributors:
+      contributions: Contribuições entre %{start_deed} e %{end_deed}
+      end_date: Data de finalizar
+      select_new_date: Selecionar um novo intervalo de datas
+      start_date: Data de iniciar
+      update: Atualizar
+    contributors_body:
+      active_collaborators: Colaboradores Ativos
+      all_collaborator_emails: Todos os e-mails dos Colaboradores
+      collaborator_stats: Estatísticas de Colaborador %{start_deed} até %{end_deed}
+      collaborators: Colaboradores
+      detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
+      export_activity_as_csv: Exportar todas as atividades como uma planilha
+      export_activity_as_csv_description: Baixe uma planilha com uma linha listando cada ação.
+      export_activity_as_csv_header: atividade de exportação
+      export_as_csv: Exportar atividade do usuário como uma planilha
+      export_as_csv_description: Baixe uma planilha com uma linha listando cada usuário e seu tempo e atividade.
+      find_project_newsletters_recommendations: Encontre recomendações para boletins de projetos.
+      new_collaborators: Novos Colaboradores
+      no_activity_this_time_frame: Nenhuma atividade neste período de tempo
+      no_collaborators: Sem Colaboradores
+      time_on_this: Tempo nesta coleção
+      total_time: 'Tempo Total: %{hours} horas, %{minutes} minutos.'
+      user: Do utilizador
+      view_activity: Visualizar Atividade
+    corrected: Corrigido
+    create:
+      notice: A coleção foi criada
+    disable_ocr:
+      notice: A correção de OCR foi desativada para todas as obras.
+    edit:
+      add_a_new_work: Adicionar uma nova obra
+      add_another_work_under: Você pode adicionar uma nova obra em %{start_project}
+      add_button: Adicionar
+      alert: Configure os campos ou escolha a transcrição baseada em documento em Tipo de transcrição.
+      api_access: Acesso API
+      api_access_description: Permitir o acesso a transcrições através de IIIF API
+      authorized_reviewers: Revisores autorizados
+      blank_collection: Repor Coleção em Branco
+      blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outros trabalhos sobre a coleção, como se fosse recentemente importado.
+      block: Bloquear usuários
+      block_users_description: Bloqueie o acesso de usuários individuais à coleção.
+      block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
+      blocked_users: Usuários bloqueados
+      close_api: Fechar API
+      collection_active_message: Esta é uma coleção ativa. Tornar uma coleção inativa impede os utilizadores de editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
+      collection_collaborators: Colaboradores da Coleção
+      collection_collaborators_description: Os colaboradores podem transcrever e editar coleções privadas.
+      collection_image: Imagem da Coleção
+      collection_inactive_message: Esta é uma coleção inativa. Tornar uma coleção ativa permite os utilizadores a editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
+      collection_link: Link da Coleção
+      collection_owners: Donos da Coleção
+      collection_owners_description: Os donos podem adicionar obras à coleção e subir imagens de página, bem como transcrever e ler obras na coleção.
+      collection_privacy: Privacidade da Coleção
+      collection_public_message: A coleção pode ser visualizada por qualquer pessoa na Internet. Você pode tornar a coleção privada para restringir a visualização apenas aos donos.
+      collection_restricted_message: A coleção só pode ser visualizada pelos donos listados abaixo. Você pode tornar a coleção publicamente acessível.
+      collection_reviewers: Revisores autorizados
+      collection_reviewers_description: Esses usuários poderão revisar e aprovar transcrições, bem como editá-las.
+      collection_status: Status da Coleção
+      confirm_blank_collection: Tem certeza?
+      confirm_delete_collection: Tem certeza que deseja apagar esta coleção? Depois de apagar não pode ser recuperada!
+      current_url: O URL atual desta coleção é %{current_url}. Se quiser editar a parte da obra no URL, por favor use letras minúsculas e traços entre as palavras.
+      default_orientation: Selecione a orientação da página predeterminada da transcrição
+      delete_collection: Apagar Coleção
+      description: Descrição
+      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      disable_document_sets: Desativar Conjuntos de Documentos
+      disable_facets: Desativar facetas
+      disable_message_boards: Desabilitar Fórum
+      disable_ocr: Desativar OCR
+      document_sets: Conjuntos de Documentos
+      document_sets_description: Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos.
+      done: Feito
+      edit_authorized_reviewers: Editar revisores autorizados
+      edit_buttons: Configurar botões
+      edit_collaborators: Editar colaboradores
+      edit_fields: Campos
+      edit_metadata_fields: Editar campos
+      edit_owners: Editar proprietários
+      edit_profile: Altere isso no seu perfil de usuário
+      editor_buttons: Botões do Editor
+      editor_buttons_description: Escolha os botões de marcação para aparecer no editor de transcrição.
+      enable_document_sets: Ativar Conjuntos de Documentos
+      enable_facets: Ativar facetas
+      enable_field_based_transcription: Ativar a Transcrição Baseada em Campos de Formulário
+      enable_message_boards: Ativar fórum
+      enable_metadata_description: Ativar descrição de metadados
+      enable_ocr: Ativar OCR
+      enable_spellcheck: Ativar verificação ortográfica (não é adequado para textos com ortografia irregular)
+      field_based_transcription: Transcrição baseada em campos de formulário
+      footer: Rodapé
+      help: Texto de Ajuda Básica
+      hide_completed: Automaticamente não mostrar as obras completadas
+      link_help: Texto de Ajuda para Vinculação de Temas (não mostrado se o uso de temas está desativado)
+      make_collection_active: Tornar a Coleção Ativa
+      make_collection_inactive: Tornar a Coleção Inativa
+      make_collection_private: Tornar a Coleção Privada
+      make_collection_public: Tornar a Coleção Pública
+      message_boards: Fórum
+      message_boards_description: Um fórum permite que os colaboradores discutam tópicos entre si e com os proprietários do projeto por meio de quadros de mensagens.
+      metadata: Metadados
+      metadata_description: Carregue metadados para itens desta coleção em massa.
+      metadata_entry: Descrição de metadados
+      metadata_facets: Facetas de metadados
+      metadata_facets_description: Permitir que os usuários naveguem por obras nesta coleção por meio de metadados.
+      n_contributions:
+        one: 1 contribuição
+        other: "%{count} contribuições"
+      no_document_sets_in_collection: Esta coleção não tem nenhum conjunto de documentos.
+      no_image: Sem Imagem
+      ocr_correction: Correcção de OCR
+      ocr_correction_description: Ativar ou desativar a correção de OCR para todas as obras desta coleção.
+      open_api: Abrir API
+      page_needing_transcription: 'Este link enviará transcritores diretamente para uma página que necessita de transcrição: %{current_url}'
+      page_on_the_bottom: Página Inferior
+      page_on_the_left: Página à Esquerda
+      page_on_the_right: Página à Direita
+      page_on_the_top: Página Superior
+      picture_to_be_used_message: Uma imagem para ilustrar a descrição da coleção.
+      remove_collaborator: Remover Colaborador
+      remove_owner: Remover Dono
+      remove_reviewer: Remover revisor
+      restrict_completed_works: Restringir obras concluídos
+      restricted_completed_works: Obras Concluídas Restritas
+      restricted_completed_works_description: Este botão restringirá os %{work_count} obras concluídos, mas não restritos atualmente aos proprietários do projeto ou colaboradores designados. Você pode alterar essa configuração e adicionar colaboradores na página de configurações de cada obra.
+      revert_document_based_transcription: Reverter para a Transcrição Baseada em Documento
+      revert_metadata_description: Desativar descrição
+      review_type: Tipo de revisão
+      review_type_optional: " Opcional: Os colaboradores podem solicitar a revisão de suas transcrições."
+      review_type_required: " Obrigatório: Todas as transcrições iniciais serão marcadas como precisando de revisão. (A revisão pode ser realizada por qualquer pessoa.)"
+      review_type_restricted: " Restrito: Todas as transcrições precisam de revisão e apenas revisores autorizados podem aprovar transcrições."
+      save_changes: Guardar Alterações
+      start_a_project: Iniciar um Projeto
+      subjects_enabled: Ativar indexação de assunto
+      suggestions_help_tab: Sugestões para a sua aba de ajuda.
+      suggestions_transcription_conventions: Sugestões para as suas convenções de transcrição.
+      text_language: Selecione o idioma da transcrição
+      title: Titulo
+      transcription_conventions: Convenções de Transcrição
+      transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
+      transcription_type: Tipo de Transcrição
+      transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
+      unblock_user: Desbloquear usuário
+      update_footer_message: Você pode atualizar o rodapé editando o perfil de %{owner}
+      upload_image: Subir Imagem
+      upload_metadata: Carregar metadados
+      url: URL
+      user_download: Permitir que os usuários baixem obras.
+      voice_recognition: Voz para texto disponível para a transcrição
+    edit_buttons:
+      abbr_description: Marca abreviações em um texto com expansões no atributo expand. (Forma alternativa de tag de expansão.)
+      abbr_label: Abreviação
+      add_description: Marca o texto inserido após o fato pelo escritor.
+      add_label: Adição
+      date_description: Marca datas, com formulário padronizado no atributo when.
+      date_label: Encontro
+      del_description: Marca o texto que foi removido por apagamento ou tachado.
+      del_label: Eliminação
+      description: FromThePage pode suportar marcação em transcrições em formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
+      expan_description: Marca abreviações expandidas com formas originais no atributo orig. (Forma alternativa de tag abbr.)
+      expan_label: Expansão
+      fig_description: Indica uma figura ou uma linha horizontal.
+      fig_label: Figura
+      footnote_description: Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador.
+      footnote_label: Nota de rodapé
+      gap_description: Marca uma lacuna no texto, muitas vezes devido a danos
+      gap_label: Lacuna
+      head_description: Marca um título no texto.
+      head_label: Cabeçalho
+      heading: Configuração do Editor de Transcrição
+      html: "(HTML)"
+      i_description: Marque o texto em itálico.
+      i_label: Itálico
+      lb_description: Marca quebras de linha
+      lb_label: Quebra de linha
+      markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
+      markup_preference_label: Estilo de marcação
+      prefer_html: Prefira HTML
+      prefer_tei: Prefira TEI
+      reg_description: Marca uma forma regularizada do texto, com formas originais no atributo orig.
+      reg_label: Regularização
+      s_description: Marca o texto que foi riscado por qualquer motivo.
+      s_label: Tachado
+      save: Salvar
+      sub_description: Texto subscrito.
+      sub_label: Subscrito
+      sup_description: Texto sobrescrito.
+      sup_label: Sobrescrito
+      tei: " (TEI-XML)"
+      u_description: Marca o texto sublinhado.
+      u_label: Sublinhado
+      unclear_description: Marca texto pouco claro.
+      unclear_label: Pouco claro
+    enable_ocr:
+      notice: A correção de OCR foi ativada para todas as obras.
+    facet_form:
+      current_filters: Filtros atuais
+      filter: Filtro
+      reset_all_filters: Redefinir todos os filtros
+      search: Procurar
+    facets:
+      collection_facets_updated_successfully: As facetas da coleção foram atualizadas com sucesso
+      field_label: Field Label
+      label: Rótulo
+      metadata_facets: Facetas de metadados
+      metadata_facets_description: Configure as facetas de metadados revisando os metadados em sua coleção e marcando os campos a serem exibidos aos transcritores.
+      occurrences: Ocorrências
+      order: Ordem
+      translate: Traduzir
+      type: Tipo
+    indexed: indexado
+    localize:
+      label: Faceta
+      metadata_facets_localize_description: Forneça rótulos específicos de idioma para cada faceta.
+      save: Salvar
+      translate_facets: Traduzir rótulos de atributo
+      translation: Tradução
+    needs_review: Precisa ser revisado
+    needs_review_pages:
+      pages_need_review: Páginas para Revisar
+      project_by: Projeto por
+      return_to_collection: Voltar à Coleção
+    needs_transcription_pages:
+      pages_need_transcription: Páginas que precisam de transcrição
+      project_by: Projeto por
+      return_to_collection: Voltar à Coleção
+    new:
+      collection_description: Descrição Da Colecção
+      collection_description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      create_collection: Criar Coleção
+      create_new_collection: Criar Nova Coleção
+      enter_collection_title: Para criar uma nova coleção, introduza o título da coleção. No próximo passo você poderá adicionar obras na coleção.
+      individual_researcher_limited_account: Uma Conta de Pesquisador Individual se limita a uma única coleção. Para fazer upgrade da sua conta entre em contato com support@fromthepage.com.
+      title: Titulo
+    new_mobile_user:
+      email_me: Envie-me um link por e-mail
+      message: Parece que você está visualizando esta página em um dispositivo móvel. É mais fácil transcrever esta coleção em uma tela maior.
+    one_off_list:
+      date: Encontro
+      filter_contributions: Filtro
+      no_contributions_need_review: Nenhuma contribuição precisa de revisão
+      one_off_description: Essas contribuições foram feitas por usuários que editaram apenas uma única página. Eles podem precisar de atenção especial.
+      one_off_title: Contribuições únicas
+      review: Análise
+      title: Página (Obra)
+      user: Do utilizador
+    quality_sampling: Amostragem de Qualidade
+    recent_contributor_list:
+      date: Data da Primeira Contribuição
+      filter_users: Filtro
+      no_contributions_need_review: Nenhuma contribuição precisa de revisão
+      number_of_contributions: Total de Contribuições
+      recent_contributor_description: Esses colaboradores começaram a trabalhar no projeto recentemente, mas seu trabalho nunca foi revisado.
+      recent_contributor_title: Contribuintes recentes
+      review: Análise
+      user: Do utilizador
+    reviewer_dashboard:
+      one_off_contributions: Contribuições únicas
+      pages_needing_review: Páginas para revisão
+      quality_sampling: Amostragem de Qualidade
+      quality_sampling_desc: As amostras de qualidade permitem que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou obra.
+      total_page: Página total
+      transcribed_page: Página transcrita
+      unreviewed_contributors: Novos colaboradores
+      works_to_review: Obras para Revisão
+    show:
+      about: Sobre
+      add_a_new_work: Adicionar uma nova obra
+      all_complete: Todas as obras estão totalmente transcritas.
+      help_create_metadata: Ajudar!
+      help_transcribe_or_correct: Ajudar!
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
+      pages_need_correction: Páginas que precisam de correção
+      pages_need_correction_or_transcription: Páginas que precisam de correção ou transcrição
+      pages_need_review: Páginas para Revisar
+      pages_need_transcription: Páginas que precisam de transcrição
+      project_by: Projeto por
+      recent_edits: Edições Recentes
+      recent_notes: Notas Recentes
+      restricted_collaboratoration: A colaboração é restrita.
+      search: Buscar
+      search_by_title: Buscar por título...
+      search_by_title_1: Pesquisar por título
+      search_the_text: Buscar o texto...
+      search_the_text_1: Pesquise o texto
+      show_more: Mostrar Mais
+      start_creating_transcribing: Start Creating Metadata
+      start_transcribing: Iniciar Transcrição
+      subject_categories: Categorias de Temas
+      this_work_has_not_been_described: Este obra precisa de melhores metadados.
+      this_work_has_pages_that_need_work: Algumas páginas ainda precisam de trabalho.
+      time_ago_in_words: Há %{time}
+      user_wrote_note: "%{user} escreveu %{note}"
+      works: Obras
+    start_transcribing:
+      notice: Desculpe, mas não há páginas com esses critérios nesta coleção.
+    transcribed: Transcrito
+    translated: traduzido
+    update:
+      notice: A coleção foi atualizada
+    update_buttons:
+      editor_buttons_updated: Botões do editor atualizados
+    upload:
+      acceptable_image_files: Arquivos PNG, GIF e JPG são todos aceitáveis.
+      image_naming_guidelines: 'As imagens devem ser nomeadas para que uma classificação alfabética resulte na ordem correta das páginas.<br> (Isso pode exigir "preenchimento zero" para qualquer número de página: <code>page_09.jpg, page_10.jpg</code> classificará corretamente, mas <code>page_9.jpg, page_10.jpg</code> não.)'
+      image_orientation_guidelines: As imagens devem ser orientadas para que fiquem com o lado certo para cima.
+      page_image_guidelines: Diretrizes de imagem da página
+    user_contribution_list:
+      approve_all: Aprovar tudo
+      date: Encontro
+      email: 'E-mail: %{email}'
+      filter_contributions: Filtro
+      no_contributions: Sem contribuições
+      notes: Notas
+      quality_score: 'Índice de qualidade:'
+      real_name: 'Nome verdadeiro: %{user}'
+      review: Análise
+      title: Página (Obra)
+      user_contribution_description: Páginas que precisam de revisão pelo usuário %{user_name}
+      user_profile: Perfil de usuário
+    works_list:
+      works: Obras
+    works_to_review:
+      and_n_more: e %{n} mais
+      contributors: Contribuintes
+      description: Funciona com páginas que precisam de revisão
+      filter_works: Filtro
+      incomplete: Incompleto
+      last_activity: ultima atividade
+      no_works_need_review: Nenhuma obra precisa de revisão
+      notes: Notas
+      review: Análise
+      title: Título
+      total: Total
+  collection_helper:
+    link:
+      incomplete_works: Obras incompletas
+      show_all: Mostre tudo

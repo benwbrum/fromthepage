@@ -1,22 +1,23 @@
+---
 es:
   admin:
-    index:
-      last_deed_logged: "Última acción registrada hace %{date} por %{author}"
-      database_version: "Versión de Base de Datos %{version}"
-      software_version: "Versión de software %{version}"
-    update_user:
-      user_profile_updated: "El perfil de usuario ha sido actualizado"
-    delete_user:
-      user_profile_deleted: "El perfil de usuario ha sido eliminado"
-    expunge_user:
-      user_expunged: "El usuario %{user} ha sido eliminado"
     autoflag:
-      flag_message: "Buscando contenido adicional para marcar. Visita esta página de nuevo en unos minutos."
+      flag_message: Buscando contenido adicional para marcar. Visita esta página de nuevo en unos minutos.
     delete_upload:
-      uploaded_document_deleted: "Se ha eliminado el documento subido"
-    process_upload:
-      uploaded_document_queued: "El documento subido se encuentra en cola para ser procesado"
-    update:
-      admin_settings_updated: "Se ha actualizado la configuración del administrador"
+      uploaded_document_deleted: Se ha eliminado el documento subido
+    delete_user:
+      user_profile_deleted: El perfil de usuario ha sido eliminado
     downgrade:
-      user_downgraded_successfully: "Los permisos del usuario fueron reducidos exitosamente"
+      user_downgraded_successfully: Los permisos del usuario fueron reducidos exitosamente
+    expunge_user:
+      user_expunged: El usuario %{user} ha sido eliminado
+    index:
+      database_version: Versión de Base de Datos %{version}
+      last_deed_logged: Última acción registrada hace %{date} por %{author}
+      software_version: Versión de software %{version}
+    process_upload:
+      uploaded_document_queued: El documento subido se encuentra en cola para ser procesado
+    update:
+      admin_settings_updated: Se ha actualizado la configuración del administrador
+    update_user:
+      user_profile_updated: El perfil de usuario ha sido actualizado

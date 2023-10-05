@@ -17,7 +17,8 @@ class Flagger
     initialize_denylist
     # look for suspicious strings
     @@denylist.each do |badness|
-      if content && content.match(/(.{,80})(\S+)(#{badness})(.{,80})/m)
+      badness.chomp!
+      if content && content.match(/(.{,80})(\S*)(#{badness})(.{,80})/m)
         # return a bad snippet if we find them
         prefix = $1
         domain = $2

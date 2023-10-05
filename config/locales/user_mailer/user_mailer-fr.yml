@@ -1,0 +1,74 @@
+---
+fr:
+  user_mailer:
+    added_note:
+      html:
+        view_note: " pour répondre à la note en %{collection} : %{work}."
+      message: Nous voulions simplement vous informer que la note suivante a été ajoutée à une page sur laquelle vous avez travaillé dans l'œuvre %{work}, dans la collection %{collection}.
+      text:
+        view_note: 'Vous pouvez répondre à la note dans %{collection} : %{work} à l''URL : %{url}.'
+    bulk_export_finished:
+      html:
+        ready_message: a été traité et est prêt à %{this_link}.
+      text:
+        ready_message: 'Votre exportation a été traitée et est prête à cette URL :'
+      this_link: ce lien
+      your_export_is_ready: Votre exportation est prête !
+      your_export_of: Votre exportation de
+    click_here: Cliquez ici
+    collection_collaborator:
+      html:
+        to_view: " pour voir %{collection}"
+      message: Nous voulions simplement vous informer que %{owner} vous a ajouté en tant que collaborateur sur %{collection}.
+      text:
+        to_view: 'Pour afficher %{collection}, visitez l''URL suivante : %{url}'
+    collection_reviewer:
+      html:
+        to_view: " pour voir %{collection}"
+      message: "%{owner} vous a ajouté en tant qu'examinateur autorisé sur %{collection}. Vous devriez pouvoir modifier et approuver toute page nécessitant une révision."
+      text:
+        to_view: 'Pour afficher %{collection}, visitez l''URL suivante : %{url}'
+    fromthepage: DeLaPage
+    greeting: Salut %{user} --
+    html:
+      closing: |
+        Merci, <br><br>
+        %{from}
+      turn_off_notification: " pour désactiver cette notification"
+    new_mobile_user:
+      html:
+        continue_transcribing: " continuer à transcrire."
+      message: Bienvenue sur %{collection} !
+      text:
+        continue_transcribing: 'Cliquez sur cette URL pour continuer la transcription : %{url}.'
+    new_owner:
+      welcome: Accueillir
+    nightly_user_activity:
+      html:
+        to_view_note: " pour afficher la note de la page %{page} dans %{collection} : %{work}, qui a été ajoutée depuis que vous y avez travaillé."
+        to_view_work: " pour afficher %{collection} : %{work}"
+      message: Nous voulions juste vous faire savoir qu'il y a eu une activité dans une collection sur laquelle vous avez travaillé.
+      new_notes: Nouveaux billets
+      new_works: Nouvelles œuvres
+      note_added: Une note a été ajoutée à une page sur laquelle vous avez travaillé dans l'œuvre %{work}, dans la collection %{collection}.
+      text:
+        to_view_note: 'Pour afficher la note sur la page %{work} : %{page}, visitez l''URL suivante : %{url}'
+        to_view_work: 'Pour afficher %{collection} : %{work}, visitez l''URL suivante : %{url}'
+      work_added: "%{owner} a ajouté %{work} à la collection %{collection}."
+    text:
+      closing: |-
+        Merci,
+        %{from}
+      turn_off_notification: 'Désactivez cette notification à l''URL : %{url}'
+    upload_finished:
+      html:
+        message: Votre téléchargement de "%{file}" a été traité et est prêt à
+      text:
+        message: 'Votre téléchargement de "%{file}" a été traité et est prêt à cette URL :'
+      your_upload_is_ready: Votre téléchargement est prêt !
+    work_collaborator:
+      html:
+        to_view: " pour afficher %{collection} - %{work}."
+      message: Nous voulions simplement vous informer que %{owner} vous a ajouté en tant que collaborateur sur %{collection} - %{work}.
+      text:
+        to_view: 'Vous pouvez voir %{collection} : %{work} à l''URL : %{url}'

@@ -841,7 +841,6 @@ button, .button, .dropdown dd a {
     top: 0;
     right: 0;
     z-index: 1;
-    width: 80px;
     position: absolute;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -936,7 +935,6 @@ button, .button, .dropdown dd a {
   button {
     top: 0;
     right: 0;
-    width: 60px;
     z-index: 9996;
     position: absolute;
     border-top-left-radius: 0;
@@ -1087,6 +1085,10 @@ button, .button, .dropdown dd a {
   }
 }
 
+.comment-bubble {
+  display: flow-root;
+  width: 70%;
+}
 
 // ---------------------------
 // VERSION COMPARE
@@ -1152,7 +1154,7 @@ button, .button, .dropdown dd a {
     padding-right: $gapSize / 2;
   }
   a {
-    display: block;
+    display: flex;
     overflow: hidden;
     line-height: 2.4;
     color: $bodyFgLight;
@@ -1166,9 +1168,12 @@ button, .button, .dropdown dd a {
       background-color: rgba(#000, 0.06);
     }
     time {
-      width: 7em;
+      width: 8em;
       display: inline-block;
     }
+  }
+  .image-wrap {
+    margin: 0px 10px;
   }
 }
 

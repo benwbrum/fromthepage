@@ -1,0 +1,105 @@
+---
+de:
+  article:
+    article_links:
+      n_pages_refer_to:
+        one: 1 Seite bezieht sich auf %{article}
+        other: "%{count} Seiten beziehen sich auf %{article}"
+      n_subjects_refer_to:
+        one: 1 Entität bezieht sich auf %{article}
+        other: "%{count} Entitäten beziehen sich auf %{article}"
+      show_pages_that_mention: Seiten in allen Werken anzeigen, die %{article} erwähnen
+    combine_duplicate:
+      selected_subjects_combined: Ausgewählte Entitäten kombiniert mit %{title}
+    delete:
+      must_remove_referring_links: Sie müssen alle verweisenden Links entfernen, bevor Sie diese Entität löschen.
+      only_subject_owner_can_delete: Nur der Betreffersteller oder Projekteigentümer kann dies löschen.
+    edit:
+      autolink: Autolink
+      categories: Kategorien
+      combine_selected: Auswahl kombinieren
+      confirm_delete_subject: Möchten Sie diese Entität wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
+      delete_subject: Entität löschen
+      description: Beschreibung
+      latitude: Breitengrad
+      longitude: Längengrad
+      microphone: Mikrofon
+      n_pages:
+        one: 1 Seite
+        other: "%{count} Seiten"
+      no_duplicates_found: Keine Duplikate gefunden
+      no_duplicates_found_description: Die Entität kommt innerhalb der Sammlung nur einmal vor, es wurden keine möglichen Duplikate zur Entität „%{article}“ gefunden.
+      possible_duplicates:
+        one: Mögliches Duplikat
+        other: Mögliche Duplikate
+      possible_duplicates_description: Bitte sehen Sie sich die Liste unterhalb an und wählen Sie die Entitäten aus, die kombiniert werden sollen. Duplikate werden neu zugeordnet, sodass alle vorhandenen Links auf die Entität „%{article}“ verweisen.
+      save_changes: Änderungen speichern
+      select_categories: Kategorien auswählen
+      title: Titel
+      uri: URI
+    graph:
+      dot:
+        title: Häufig in Verbindung mit %{subject} genannte Entitäten
+    list:
+      actions: Aktionen
+      add_child_category: Untergeordnete Kategorie hinzufügen
+      add_root_category: Root-Kategorie hinzufügen
+      categories: Kategorien
+      category_back_message: Wenn Sie mit der Bearbeitung der Kategorien fertig sind, klicken Sie %{page_link}, um zur Seite „%{page}“ zurückzukehren.
+      click_here: hier klicken
+      confirm_delete_category: Möchten Sie diese Kategorie und all ihre Unterkategorien wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
+      create_category_message: "%{link}, die zum Gruppieren von Entitäten verwendet wird."
+      create_the_first_category: Erste Kategorie erstellen
+      delete_category: Kategorie löschen
+      disable_gis_for_category: GIS für Kategorie deaktivieren
+      edit_category: Kategorie bearbeiten
+      enable_gis_for_category: GIS für Kategorie aktivieren
+      no_categories: Keine Kategorien
+      no_categories_message: Es sind keine Entitätskategorien in der Sammlung vorhanden.<br>
+      there_are_no_subjects: Es sind keine Entitäten für die ausgewählte Kategorie vorhanden
+      uncategorized: Nicht kategorisiert
+      uncategorized_subjects: Nicht kategorisierte Entitäten
+      upload_subjects: Entitäten hochladen
+    show:
+      all_uncategorized_subjects: Alle unkategorisierten Entitäten in der Sammlung
+      categories: Kategorien
+      description: Beschreibung
+      download: Download
+      download_description: Laden Sie eine Tabelle mit gemeinsam auftretenden Entiäten sowie mit den Werken, in denen sie vorkommen, herunter.
+      edit_description_description: Bearbeiten Sie die Beschreibung unter "Einstellungen".
+      export: Export
+      n_possible_duplicates:
+        one: 1 mögliches Duplikat
+        other: "%{count} mögliche Duplikate"
+      no_category_message: Diese Entität gehört keiner Kategorie an
+      references: Verweise
+      related_subjects: Verwandte Entitäten
+      related_subjects_1: Verwandte Entitäten
+      related_subjects_description: Der Graph zeigt alle weiteren Entitäten an, die auf denselben Seiten wie "%{article}" vorkommen. Wenn dieselbe Entität mehr als einmal auf einer Seite mit „%{article}“ vorkommt, erscheint diese im Graphen näher an „%{article}“ und weist außerdem eine dunklere Farbe auf. Je zentraler eine Entität ist, desto "verwandter" sind die Entitäten.
+      search_all_pages: Alle Seiten durchsuchen
+      search_all_pages_description: Durchsuchen Sie %{collection} nach Seiten mit Wörtern, die verwendet wurden, um <em>%{article}</em> zu verlinken
+      search_unlinked_pages: Nicht verlinkte Seiten durchsuchen
+      search_unlinked_pages_description: Suchen Sie nur nach Seiten, die nicht auf <em>%{article}</em> verlinken
+      see_also: 'Siehe auch:'
+      text_search: Textsuche
+    subject_upload:
+      csv_file_must_contain_headers: Die CSV-Datei muss Header für HEADING, ARTICLE, URI und CATEGORY enthalten
+    tooltip:
+      category:
+        one: 'Kategorie:'
+        other: 'Kategorien:'
+      explore_this_subject: Diese Entität erkunden
+    update:
+      gis_coordinates_truncated:
+        one: " (GIS-Koordinaten auf %{precision} Dezimalstelle gekürzt)"
+        other: " (GIS-Koordinaten auf %{precision} Dezimalstellen gekürzt)"
+      subject_successfully_updated: Entität wurde erfolgreich aktualisiert
+      subjects_auto_linking: Automatische Verlinkung für Entität abgeschlossen
+    upload_form:
+      browse: Durchsuchen
+      click_to_browse: Klicken Sie hier, um eine Datei zu durchsuchen...
+      csv_file_with: CSV-Datei mit einer Zeile pro Entität
+      example_csv: Beispiel-CSV
+      upload: Upload
+      upload_subjects: Entitäten hochladen
+      upload_subjects_description: Um Entitäten aus einer externen Normdatei zu erstellen, laden Sie eine %{link} hoch.

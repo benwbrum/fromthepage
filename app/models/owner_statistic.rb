@@ -20,15 +20,15 @@ module OwnerStatistic
       .where(status: Page::NEEDS_WORK_STATUSES).count
   end
   
-  def needs_review_count(last_days=nil)
+  def needs_review_count(days=nil)
     Page.where(work_id: self.owner_works.ids)
-      .where("#{last_days_clause(last_days, "edit_started_at")}")
+      .where(date_range_clause(days, "edit_started_at"))
       .where(status: Page::STATUS_NEEDS_REVIEW).count
   end
   
-  def review_count(last_days=nil)
+  def review_count(days=nil)
     Deed.where(work_id: self.owner_works.ids)
-      .where("#{last_days_clause(last_days)}")
+      .where(date_range_clause(days))
       .where(deed_type: DeedType::PAGE_REVIEWED).count
   end
 
@@ -40,50 +40,52 @@ module OwnerStatistic
     [self.all_owner_collections.ids]
   end
 
-  def subject_count(last_days=nil)
-    owner_subjects.where("#{last_days_clause(last_days, 'created_on')}").count
+  def subject_count(days=nil)
+    owner_subjects.where(date_range_clause(days, 'created_on')).count
   end
 
-  def mention_count(last_days=nil)
-    PageArticleLink.where(article_id: owner_subjects.ids).where("#{last_days_clause(last_days, 'created_on')}").count
+  def mention_count(days=nil)
+    PageArticleLink.where(article_id: owner_subjects.ids).where(date_range_clause(days, 'created_on')).count
   end
 
-  def contributor_count(last_days=nil)
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where("#{last_days_clause(last_days, 'deeds.created_at')}").distinct.count
+  def contributor_count(days=nil)
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids})
+      .where.not(deeds: {deed_type: DeedType::COLLECTION_JOINED})
+      .where(date_range_clause(days, 'deeds.created_at')).distinct.count
   end
 
-  def comment_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::NOTE_ADDED).where("#{last_days_clause(last_days)}").count
+  def comment_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::NOTE_ADDED).where(date_range_clause(days)).count
 
   end
 
-  def transcription_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where("#{last_days_clause(last_days)}").count
+  def transcription_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where(date_range_clause(days)).count
   end
 
-  def edit_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_EDIT).where("#{last_days_clause(last_days)}").count
+  def edit_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_EDIT).where(date_range_clause(days)).count
   end
 
-  def index_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_INDEXED).where("#{last_days_clause(last_days)}").count
+  def index_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_INDEXED).where(date_range_clause(days)).count
   end
 
-  def translation_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSLATED).where("#{last_days_clause(last_days)}").count
+  def translation_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSLATED).where(date_range_clause(days)).count
   end
 
-  def ocr_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::OCR_CORRECTED).where("#{last_days_clause(last_days)}").count
+  def ocr_count(days=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::OCR_CORRECTED).where(date_range_clause(days)).count
   end
 
-  def last_days_clause(last_days, column = "created_at")
-    clause = ""
-    if last_days
-      timeframe = last_days.days.ago
-      clause = "#{column} >= '#{timeframe}'"
+  def date_range_clause(days, column = "created_at")
+    if days.nil?
+      return ""
+    elsif days.is_a? Integer
+      days = (days.days.ago)..(Time.now)
     end
-    return clause
+    return {column.to_sym => days}
   end
 
   def all_collaborators
@@ -113,6 +115,10 @@ module OwnerStatistic
 
   def indexers_with_count
     contributor_deeds_by_type(DeedType::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
+  end
+
+  def reviewers_with_count
+    contributor_deeds_by_type(DeedType::PAGE_REVIEWED, self.all_collaborators, self.collection_ids)
   end
 
   #this is to prevent an error in the statistics view

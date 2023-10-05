@@ -1,149 +1,168 @@
+---
 en:
   admin:
-    index:
-      last_deed_logged: "Last deed logged %{date} ago by %{author}"
-      database_version: "Database Version %{version}"
-      software_version: "Software Version %{version}"
-    update_user:
-      user_profile_updated: "User profile has been updated"
-    delete_user:
-      user_profile_deleted: "User profile has been deleted"
-    expunge_user:
-      user_expunged: "User %{user} has been expunged"
     autoflag:
-      flag_message: "Looking for additional content to flag.  Revisit this page in a few minutes."
-    delete_upload:
-      uploaded_document_deleted: "Uploaded document has been deleted"
-    process_upload:
-      uploaded_document_queued: "Uploaded document has been queued for processing"
-    update:
-      admin_settings_updated: "Admin settings have been updated"
-    downgrade:
-      user_downgraded_successfully: "User downgraded successfully"
+      flag_message: Looking for additional content to flag.  Revisit this page in a few minutes.
     collection_activity:
-      collection: "Collection:"
+      collection: 'Collection:'
+      new_iiif_works: New IIIF Works
+      new_internet_archive_works: New Internet Archive Works
+      new_uploaded_works: New Uploaded Works
       owner: "&nbsp; Owner:"
-      new_iiif_works: "New IIIF Works"
-      new_internet_archive_works: "New Internet Archive Works"
-      new_uploaded_works: "New Uploaded Works"
-      upload_problems: "Upload Problems"
-    header:
-      administration: "Administration"
-      summary: "Summary"
-      owners: "Owners"
-      users: "Users"
-      abuse: "Abuse"
-      uploads: "Uploads"
-      logfile: "Logfile"
-      settings: "Settings"
+      upload_problems: Upload Problems
     collection_list:
-      all_collections: "All Collections"
-      create_a_collection: "create a collection"
-      you_dont_have_any_collections_yet: "You don't have any collections yet"
-      you_can: "You can %{new_collection}"
+      all_collections: All Collections
+      create_a_collection: create a collection
+      you_can: You can %{new_collection}
+      you_dont_have_any_collections_yet: You don't have any collections yet
+    delete_upload:
+      uploaded_document_deleted: Uploaded document has been deleted
+    delete_user:
+      user_profile_deleted: User profile has been deleted
+    downgrade:
+      user_downgraded_successfully: User downgraded successfully
     edit_user:
-      edit_user: "Edit User"
-      this_user_is_an_owner: "This user is an Owner"
-      individual_researcher: "Individual Researcher"
-      small_organization: "Small Organization"
-      large_institution: "Large Institution"
-      trial: "Trial"
-      legacy: "Legacy"
-      staff: "Staff"
-      start_date: "Start Date"
-      acct_expiration: "Acct Expiration"
-      downgrade: "Downgrade"
-      save_changes: "Save Changes"
+      acct_expiration: Acct Expiration
+      downgrade: Downgrade
+      edit_user: Edit User
+      individual_researcher: Individual Researcher
+      large_institution: Large Institution
+      legacy: Legacy
+      save_changes: Save Changes
+      small_organization: Small Organization
+      staff: Staff
+      start_date: Start Date
+      this_user_is_an_owner: This user is an Owner
+      trial: Trial
     expunge_confirmation:
-      expunge_user: "Expunge User"
-      expunge_user_description: "This will delete the user and all their contributions."
-      expunge_user_display_name: "Expunge %{user}"
-      user_contributions_to_be_deleted: "User contributions to be deleted"
+      expunge_user: Expunge User
+      expunge_user_description: This will delete the user and all their contributions.
+      expunge_user_display_name: Expunge %{user}
+      user_contributions_to_be_deleted: User contributions to be deleted
+    expunge_user:
+      user_expunged: User %{user} has been expunged
     flag_list:
-      flagged_abusive_content: "These activities have been flagged as possible abusive content.  OK marks items as valid content, Remove will delete the abusive content item, and Expunge User will remove the user who created the content and all their contributions.  Flag will use the list of terms in the Settings to automatically flag content."
-      find_potential_abusive_content: "Find potential abusive content"
-      user: "User"
-      item_date: "Item/Date"
-      content: "Content"
-      actions: "Actions"
-      ok: "OK"
-      mark_this_content_as_not_abusive: "Mark this content as not abusive."
-      remove: "Remove"
-      delete_the_abusive_content: "Delete the abusive content, leaving other contributions by the user untouched."
-      expunge_user: "Expunge User"
-      delete_the_user_and_remove_all_contributions: "Delete the user and remove all of their contributions."
-      ok_user: "OK User"
-      mark_this_users_content_as_not_abusive: "Mark this user's content as not abusive."
+      actions: Actions
+      content: Content
+      delete_the_abusive_content: Delete the abusive content, leaving other contributions by the user untouched.
+      delete_the_user_and_remove_all_contributions: Delete the user and remove all of their contributions.
+      expunge_user: Expunge User
+      find_potential_abusive_content: Find potential abusive content
+      flagged_abusive_content: These activities have been flagged as possible abusive content.  OK marks items as valid content, Remove will delete the abusive content item, and Expunge User will remove the user who created the content and all their contributions.  Flag will use the list of terms in the Settings to automatically flag content.
+      item_date: Item/Date
+      mark_this_content_as_not_abusive: Mark this content as not abusive.
+      mark_this_users_content_as_not_abusive: Mark this user's content as not abusive.
+      ok: OK
+      ok_user: OK User
+      remove: Remove
+      user: User
+    header:
+      abuse: Abuse
+      administration: Administration
+      exports: Exports
+      logfile: Logfile
+      owners: Owners
+      settings: Settings
+      summary: Summary
+      uploads: Uploads
+      users: Users
+    index:
+      database_version: Database Version %{version}
+      last_deed_logged: Last deed logged %{date} ago by %{author}
+      software_version: Software Version %{version}
     owner_list:
-      search_owners: "Search Owners..."
-      search: "Search"
-      search_users: "Search users"
-      owner_login: "Owner Login"
-      name_and_location: "Name &amp; Location"
-      acct_type: "Acct Type"
-      start_date: "Start Date"
-      acct_expiration: "Acct Expiration"
-      active_pages: "Active Pages"
-      total_pages: "Total Pages"
-      last_sign_in: "Last Sign In"
-      action: "Action"
-      login_as: "Login As"
-      edit: "Edit"
-      delete: "Delete"
-      are_you_sure: "Are you sure you want to delete user? After deleting you won't be able to recover it!"
+      acct_expiration: Acct Expiration
+      acct_type: Acct Type
+      action: Action
+      active_pages: Active Pages
+      are_you_sure: Are you sure you want to delete user? After deleting you won't be able to recover it!
+      collections: Collections
+      delete: Delete
+      edit: Edit
+      login_as: Login As
+      name_and_location: Name &amp; Location
+      owner_login: Owner Login
+      search: Search
+      search_owners: Search Owners...
+      search_users: Search users
+      start_date: Start Date
+      total_pages: Total Pages
+    process_upload:
+      uploaded_document_queued: Uploaded document has been queued for processing
+    searches:
+      clicks: Clicks
+      contributions: Contributions
+      date: Date
+      end_date: End date
+      export: Export
+      export_searches: Export searches
+      hits: Hits
+      owner: Owner
+      owner_filter: Filter to only transcribers
+      query: Query
+      search_type:
+        collection: Collection
+        collection-title: Title / Metadata
+        findaproject: Find a Project
+        work: Work
+      start_date: Start date
+      type: Type
+      user: User
     settings:
-      welcome_text: "Project owner welcome email text:"
-      flag_blacklist: "Terms to flag as potential abusive content:"
-      save_changes: "Save Changes"
+      flag_blacklist: 'Terms to flag as potential abusive content:'
+      save_changes: Save Changes
+      welcome_text: 'Project owner welcome email text:'
     tail_logfile:
-      last_lines_of_production_logfile: "Last %{lines} lines of production logfile"
-      last_lines_of_development_logfile: "Last %{lines} lines of development logfile"
+      last_lines_of_development_logfile: Last %{lines} lines of development logfile
+      last_lines_of_production_logfile: Last %{lines} lines of production logfile
+    update:
+      admin_settings_updated: Admin settings have been updated
+    update_user:
+      user_profile_updated: User profile has been updated
     uploads:
-      user: "User"
-      upload_details: "Upload Details"
-      date: "Date"
-      status: "Status"
-      process_upload: "Process Upload"
-      show_processing_log: "Show Processing Log"
-      delete_upload: "Delete Upload"
-      are_you_sure: "Are you sure you want to delete this document? After deleting you won't be able to recover it!"
+      are_you_sure: Are you sure you want to delete this document? After deleting you won't be able to recover it!
+      date: Date
+      delete_upload: Delete Upload
+      process_upload: Process Upload
+      show_processing_log: Show Processing Log
+      status: Status
+      upload_details: Upload Details
+      user: User
     user_list:
-      search_users_ellipsis: "Search Users..."
-      search: "Search"
-      search_users: "Search users"
-      user_login: "User Login"
-      owner: "Owner"
-      name_and_location: "Name &amp; Location"
-      registered: "Registered"
-      last_sign_in: "Last Sign In"
-      actions: "Actions"
-      visits: "Visits"
-      edit: "Edit"
-      expunge: "Expunge"
+      actions: Actions
+      edit: Edit
+      expunge: Expunge
+      name_and_location: Name &amp; Location
+      owner: Owner
+      registered: Registered
+      search: Search
+      search_users: Search users
+      search_users_ellipsis: Search Users...
+      user_login: User Login
+      visits: Visits
     user_visits:
-      site_visits_for_user: "Site visits for %{user}"
-      other_users: "Other Users"
-      last_sign_in: "Last Sign In"
-      duration: "Duration"
-      clicks: "Clicks"
-      contributions: "Contributions"
-      actions: "Actions"
-      details: "Details"
+      actions: Actions
+      clicks: Clicks
+      contributions: Contributions
+      details: Details
+      duration: Duration
+      other_users: Other Users
+      site_visits_for_user: Site visits for %{user}
     visit_actions:
-      actions_for_user: "Actions for %{user}'s site visit on %{date}"
-      other_visits: "Other Visits"
-      time: "Time"
-      screen: "Screen"
-      collection: "Collection"
-      work: "Work"
-      page: "Page"
-      subject: "Subject"
+      actions_for_user: Actions for %{user}'s site visit on %{date}
+      collection: Collection
+      other_visits: Other Visits
+      page: Page
+      screen: Screen
+      subject: Subject
+      time: Time
+      work: Work
     visit_deeds:
-      contributions_for_user: "Contributions for %{user}'s site visit on %{date}"
-      other_visits: "Other Visits"
+      contributions_for_user: Contributions for %{user}'s site visit on %{date}
+      other_visits: Other Visits
     work_list:
-      works_by_collection: "Works by Collection"
-      create_a_collection: "create a collection"
-      start_a_project: "start a project"
-      you_dont_have_any_works_yet: "You don't have any works yet"
-      you_can: "You can %{new_collection}"
+      create_a_collection: create a collection
+      start_a_project: start a project
+      works_by_collection: Works by Collection
+      you_can: You can %{new_collection}
+      you_dont_have_any_works_yet: You don't have any works yet

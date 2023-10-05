@@ -14,6 +14,14 @@ class QualitySamplingsController < ApplicationController
 
   # GET /quality_samplings/1
   def show
+    old_set_size = @quality_sampling.sample_set.size
+    @quality_sampling.calculate_set
+    new_set_size = @quality_sampling.sample_set.size
+    if new_set_size > old_set_size
+      @quality_sampling.save!
+      flash[:notice] = t('.sample_set_has_increased', increase: (new_set_size - old_set_size))
+    end
+
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
     # TODO sometimes work_samplings returns bad data -- why?
     @works = Work.where(id: @work_samplings.keys).sort{|a,b| a.id <=> b.id }
@@ -42,7 +50,7 @@ class QualitySamplingsController < ApplicationController
   # PATCH/PUT /quality_samplings/1
   def update
     if @quality_sampling.update(quality_sampling_params)
-      redirect_to @quality_sampling, notice: 'Quality sampling was successfully updated.'
+      redirect_to @quality_sampling, notice: t('.quality_sampling_updated')
     else
       render :edit
     end
@@ -51,7 +59,7 @@ class QualitySamplingsController < ApplicationController
   # DELETE /quality_samplings/1
   def destroy
     @quality_sampling.destroy
-    redirect_to quality_samplings_url, notice: 'Quality sampling was successfully destroyed.'
+    redirect_to quality_samplings_url, notice: t('.quality_sampling_destroyed')
   end
 
   private

@@ -22,28 +22,35 @@ class DisplayController < ApplicationController
       redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
     else
       if @review == 'review'
-        @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_review')
       elsif @review == 'transcription'
-        @pages = Page.where(work_id: params[:work_id]).needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @incomplete_pages = Page.where(work_id: params[:work_id]).needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @incomplete_pages = @work.pages.needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @incomplete_count = @incomplete_pages.count
+        @heading = t('.pages_need_transcription')
       elsif @review == 'index'
-        @pages = Page.where(work_id: params[:work_id]).needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_indexing')
       elsif @review == 'translation'
-        @pages = Page.where(work_id: params[:work_id]).needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_translation')
       elsif @review == 'translation_review'
-        @pages = Page.order('position').where(work_id: params[:work_id]).translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.translations_need_review')
       elsif @review == 'translation_index'
-        @pages = Page.order('position').where(work_id: params[:work_id]).needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.translations_need_indexing')
       else
-        @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = @work.pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages')
       end
     end
     session[:col_id] = @collection.slug
@@ -54,20 +61,21 @@ class DisplayController < ApplicationController
       # restrict to pages that include that subject
       @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @pages.distinct!
+      @heading = t('.pages_that_mention', article: @article.title)
     else
       @pages = Page.paginate :all, :page => params[:page],
                                         :order => 'work_id, position',
                                         :per_page => 5
+      @heading = t('.pages')
     end
     session[:col_id] = @collection.slug
   end
 
-  def search
-    redirect_to paged_search_path(request.params)
-  end
-
   def paged_search
     if @article
+      render plain: "This functionality has been disabled.  Please contact support@frothepage.com if you need it."
+      return
+
       session[:col_id] = @collection.slug
       # get the unique search terms
       terms = []
@@ -100,19 +108,16 @@ class DisplayController < ApplicationController
       end
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
-      @search_string = CGI::escapeHTML(params[:search_string])
-      # convert 'natural' search strings unless they're precise
-      unless @search_string.match(/["+-]/)
-        @search_string.gsub!(/\s+/, ' ')
-        @search_string = "+\"#{@search_string}\""
-        # @search_string.gsub!(/(\S+)/, '+\1*')
+      @search_attempt = SearchAttempt.find_by(slug: params[:id])
+      if session[:search_attempt_id] != @search_attempt.id
+        session[:search_attempt_id] = @search_attempt.id
       end
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @search_string).paginate(page: params[:page])
+      @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
+      @work = @search_attempt&.work
+      pages = @search_attempt.results
+      @pages = pages.paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end
-
-
-
 end

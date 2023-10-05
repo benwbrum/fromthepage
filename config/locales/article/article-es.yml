@@ -1,11 +1,105 @@
+---
 es:
   article:
-    delete:
-      must_remove_referring_links: "Debes eliminar todos los enlaces de referencia antes de eliminar este tema."
-    update:
-      subject_successfully_updated: "El tema se ha actualizado exitosamente"
-      subjects_auto_linking: "Proceso de auto-vinculación de temas completado"
+    article_links:
+      n_pages_refer_to:
+        one: 1 página se refiere a %{article}
+        other: "%{count} páginas se refieren a %{article}"
+      n_subjects_refer_to:
+        one: 1 sujeto se refiere a %{article}
+        other: "%{count} sujetos se refieren a %{article}"
+      show_pages_that_mention: Mostrar páginas que mencionen %{article} en todos las obras
     combine_duplicate:
-      selected_subjects_combined: "Asignaturas seleccionadas combinadas con %{title}"
+      selected_subjects_combined: Asignaturas seleccionadas combinadas con %{title}
+    delete:
+      must_remove_referring_links: Debes eliminar todos los enlaces de referencia antes de eliminar este tema.
+      only_subject_owner_can_delete: Solo el creador del tema o el propietario del proyecto puede eliminar esto.
+    edit:
+      autolink: Enlace automático
+      categories: Categorías
+      combine_selected: Combinar seleccionado
+      confirm_delete_subject: "¿Está seguro de que desea eliminar este asunto? ¡Después de borrar no podrás recuperarlo!"
+      delete_subject: Eliminar asunto
+      description: Descripción
+      latitude: Latitud
+      longitude: Longitud
+      microphone: Micrófono
+      n_pages:
+        one: 1 página
+        other: "%{count} páginas"
+      no_duplicates_found: No se encontraron duplicados
+      no_duplicates_found_description: El tema es único dentro de la colección, no se han encontrado posibles duplicados del tema "%{article}".
+      possible_duplicates:
+        one: Posible duplicado
+        other: Posibles duplicados
+      possible_duplicates_description: Revise la lista a continuación y seleccione los temas para combinar. Los duplicados se reasignarán para que todos los enlaces existentes apunten al asunto "%{article}".
+      save_changes: Guardar cambios
+      select_categories: Seleccionar categorías
+      title: Título
+      uri: URI
+    graph:
+      dot:
+        title: Temas mencionados frecuentemente con %{subject}
+    list:
+      actions: Comportamiento
+      add_child_category: Agregar categoría secundaria
+      add_root_category: Agregar categoría raíz
+      categories: Categorías
+      category_back_message: Una vez que termine de editar las categorías, %{page_link} para volver a la página "%{page}".
+      click_here: haga clic aquí
+      confirm_delete_category: "¿Está seguro de que desea eliminar esta categoría y todas sus subcategorías? ¡Después de borrar no podrás recuperarlo!"
+      create_category_message: "%{link} que usarás para agrupar materias."
+      create_the_first_category: Crear la primera categoría
+      delete_category: Eliminar categoría
+      disable_gis_for_category: Deshabilitar SIG para la categoría
+      edit_category: Editar categoria
+      enable_gis_for_category: Habilitar SIG para la categoría
+      no_categories: Sin categorías
+      no_categories_message: No hay categorías de temas en la colección.<br>
+      there_are_no_subjects: No hay asignaturas para la categoría seleccionada
+      uncategorized: Sin categorizar
+      uncategorized_subjects: Temas sin categorizar
+      upload_subjects: Subir materias
+    show:
+      all_uncategorized_subjects: Todos los temas sin categorizar en la colección.
+      categories: Categorías
+      description: Descripción
+      download: Descargar
+      download_description: Descargue una hoja de cálculo de temas coincidentes y obras en las que aparecen.
+      edit_description_description: Edite la descripción en la pestaña de configuración.
+      export: Exportar
+      n_possible_duplicates:
+        one: 1 posible duplicado
+        other: "%{count} posibles duplicados"
+      no_category_message: Este tema no pertenece a ninguna categoría.
+      references: Referencias
+      related_subjects: Temas relacionados
+      related_subjects_1: Temas relacionados
+      related_subjects_description: El gráfico muestra los otros temas mencionados en las mismas páginas que el tema "%{article}". Si el mismo tema aparece en una página con "%{article}" más de una vez, aparece más cerca de "%{article}" en el gráfico y se colorea en un tono más oscuro. Cuanto más cerca está un sujeto del centro, más "relacionados" están los sujetos.
+      search_all_pages: Buscar en todas las páginas
+      search_all_pages_description: Busque en el texto de %{collection} páginas que contengan palabras utilizadas para vincular a <em>%{article}</em>
+      search_unlinked_pages: Buscar páginas no vinculadas
+      search_unlinked_pages_description: Solo busque texto de páginas que no se vinculen a <em>%{article}</em>
+      see_also: 'Ver también:'
+      text_search: Búsqueda de texto
     subject_upload:
-      csv_file_must_contain_headers: "El archivo CSV debe contener encabezados para HEADING, ARTICLE, URI y CATEGORY. Estos términos quieren decir encabezado, artículo, Identificador Universal de Recursos, y categoría, respectivamente."
+      csv_file_must_contain_headers: El archivo CSV debe contener encabezados para HEADING, ARTICLE, URI y CATEGORY. Estos términos quieren decir encabezado, artículo, Identificador Universal de Recursos, y categoría, respectivamente.
+    tooltip:
+      category:
+        one: 'Categoría:'
+        other: 'Categorías:'
+      explore_this_subject: Explora este tema
+    update:
+      gis_coordinates_truncated:
+        one: " (Coordenadas SIG truncadas a %{precision} lugar decimal)"
+        other: " (Coordenadas SIG truncadas a %{precision} lugares decimales)"
+      subject_successfully_updated: El tema se ha actualizado exitosamente
+      subjects_auto_linking: Proceso de auto-vinculación de temas completado
+    upload_form:
+      browse: Navegar
+      click_to_browse: Haga clic para buscar un archivo...
+      csv_file_with: Archivo CSV con una fila por asunto
+      example_csv: CSV de ejemplo
+      upload: Subir
+      upload_subjects: Subir materias
+      upload_subjects_description: Para crear sujetos a partir de un archivo de autoridad externo, cargue un archivo %{link}.

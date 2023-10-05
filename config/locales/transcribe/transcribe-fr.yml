@@ -1,0 +1,89 @@
+---
+fr:
+  transcribe:
+    assign_categories:
+      assign_categories: Attribuer des catégories
+      continue: Continuer
+      manage_categories: Gérer les catégories
+      options: options
+      subject: 'Matière:'
+      uncategorized_subjects: Sujets non classés
+      uncategorized_subjects_mentioned: Vous avez des sujets non classés mentionnés dans la transcription de la page. Veuillez examiner les sujets ci-dessous et leur attribuer les catégories appropriées.
+    display_page:
+      alert: Cette page est en cours d'édition par un autre utilisateur !
+      always_show_fullscreen: Toujours afficher en plein écran
+      edit_transcription: Modifier la transcription
+      fullscreen: Plein écran
+      image_at_the_bottom: Image en bas
+      image_at_the_left: Image à gauche
+      image_at_the_right: Image à droite
+      image_at_the_top: Image en haut
+      layout: Disposition
+      mark_as_blank: Marquer comme vierge
+      mark_blank_warning: Cette page contient des données transcrites, mais vous la marquez comme vide. Voulez-vous continuer ?
+      microphone: Microphone
+      more_help: Plus de conseils...
+      needs_review: À besoin d'une révision
+      notes_and_questions: Notes et questions
+      this_page_marked_blank: Cette page est marquée comme vierge
+      this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.
+      this_page_marked_needs_review_workflow_version: Cette page doit être révisée. Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte, puis en approuvant le texte.
+      title: 'Titre:'
+    goto_next_untranscribed_page:
+      another_page_notice: Voici une autre page de cet ouvrage.
+      no_more_pages_notice: Il n'y a plus de pages à retranscrire dans cet ouvrage. Voici une autre page de cette collection.
+      notice: Il n'y a plus de pages à retranscrire dans cette collection.
+    guest:
+      collaboration_restricted_collection: La collaboration est restreinte pour cette collection. Veuillez contacter le propriétaire du projet si vous souhaitez aider à la transcription.
+      save_up_to_three_transcriptions: Vous pouvez enregistrer jusqu'à trois transcriptions en tant qu'invité ou vous inscrire maintenant.
+      sign_up_now: S'inscrire maintenant
+      sign_up_now_to_transcribe: Inscrivez-vous pour transcrire.
+      transcribe_as_guest: Transcrire en tant qu'invité
+    mark_page_blank:
+      saved_notice: Enregistré
+    save_buttons:
+      approve: Approuver
+      approve_to_transcribed_tooltip: Enregistrer et approuver cette page
+      autolink: Lien automatique
+      autolink_tooltip: Suggérer automatiquement des balises de sujet
+      done: Terminé
+      edit: Éditer
+      edit_tooltip: Modifier cette page
+      finish_to_needs_review_tooltip: Enregistrer une page terminée
+      finish_to_transcribed_tooltip: Enregistrer une page terminée
+      please_wait: S'il vous plaît, attendez...
+      preview: Aperçu
+      preview_tooltip: Aperçu de cette page
+      save_changes: Sauvegarder
+      save_to_incomplete_tooltip: Enregistrer une page incomplète
+      save_to_needs_review_tooltip: Enregistrez vos modifications
+      save_to_transcribed_tooltip: Enregistrez vos modifications
+    save_transcription:
+      error_message: 'Une erreur s''est produite lors de l''analyse du balisage dans votre relevé de notes. Ce type d''erreur se produit souvent s''il manque un crochet angulaire ou si une balise HTML est laissée ouverte. Vérifiez toutes les occurrences des symboles < ou > dans votre texte. (L''erreur de l''analyseur était : %{error_message})'
+      saved_notice: Enregistré
+      you_may_save_notice: Vous pouvez enregistrer jusqu'à %{guest_deed_count} transcriptions en tant qu'invité.
+    save_translation:
+      error_message: 'Une erreur s''est produite lors de l''analyse du balisage dans votre traduction. Ce type d''erreur se produit souvent s''il manque un crochet angulaire ou si une balise HTML est laissée ouverte. Vérifiez toutes les occurrences des symboles < ou > dans votre texte. (L''erreur de l''analyseur était : %{error_message})'
+      notice: Vous pouvez enregistrer jusqu'à %{guest_deed_count} transcriptions en tant qu'invité.
+    translate:
+      autolink: Lien automatique
+      corrected: corrigée
+      edit: Éditer
+      edit_translation: Modifier la traduction
+      help_correct: aider à corriger
+      help_transcribe: aider à transcrire
+      mark_as_blank: Marquer comme vierge
+      mark_the_page_blank: marquer la page comme vierge
+      microphone: Microphone
+      or_mark_blank: "<br>ou %{mark_blank}"
+      page_needs_review: À besoin d'une révision
+      page_notes: Notes et questions
+      please_help_this_page: Veuillez %{help_link} cette page
+      preview: Aperçu
+      save_changes: Sauvegarder
+      show_image: Afficher l'image
+      show_transcription: Afficher la Transcription
+      this_page_is_blank: Cette page est vierge
+      this_page_is_not: Cette page n'est pas %{text_type}
+      this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.
+      transcribed: transcrite

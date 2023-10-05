@@ -1,148 +1,221 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
+=render(partial: '/shared/export_breadcrumbs', locals: { selection: :export_all_works})
 
 .columns
   article.maincol
-    h2.nomargin Export All Works
+    h2.nomargin= t('.export_all_works')
     =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @bulk_export.errors
+      h4 =t('.file_organization')
       ul.bulk-export
         li
           .bulk-export_format
-            h5 HTML
-            p.nomargin This may be useful for preservation in other systems or as a starting point for display on another website.
+            h5= t('.organization')
+            p.nomargin= t('.organization_description')
+          .bulk-export_options
+            =f.label "organization_#{BulkExport::Organization::WORK_THEN_FORMAT}"
+              =f.radio_button :organization, BulkExport::Organization::WORK_THEN_FORMAT
+              span =t('.organization_work')
+            br
+            =f.label "organization_#{BulkExport::Organization::FORMAT_THEN_WORK}"
+              =f.radio_button :organization, BulkExport::Organization::FORMAT_THEN_WORK
+              span =t('.organization_format')
+        -if @uploaded_filename_available
+          li
+            .bulk-export_format
+              h5= t('.use_uploaded_filename')
+              p.nomargin= t('.use_uploaded_filename_description')
+            .bulk-export_options
+              =f.label :use_uploaded_filename
+                =f.check_box :use_uploaded_filename, value: @bulk_export.use_uploaded_filename
+                span= t('.use_uploaded_filename_label')
+
+      .container style="display: flex;"
+        h4 =t('.file_formats')
+        div id="check-box-div" style="margin-left: auto; margin-right: 11%;"
+          = check_box_tag "check_all", "1", false, id: "check-all"
+          label id="check-all-lable" style="margin-left: 2px;" Check All
+      ul.bulk-export
+        li
+          .bulk-export_format
+            h5= t('.html')
+            p.nomargin= t('.html_description')
           .bulk-export_options
             =f.label :html_page
               =f.check_box :html_page, value: @bulk_export.html_page
-              span One file per page
+              span= t('.one_file_per_page')
             =f.label :html_work
               =f.check_box :html_work, value: @bulk_export.html_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Verbatim Plaintext
-            p.nomargin This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
+            h5= t('.verbatim_plaintext')
+            p.nomargin= t('.verbatim_plaintext_description')
           .bulk-export_options
             =f.label :plaintext_verbatim_page
               =f.check_box :plaintext_verbatim_page, value: @bulk_export.plaintext_verbatim_page
-              span One file per page
+              span= t('.one_file_per_page')
             =f.label :plaintext_verbatim_work
               =f.check_box :plaintext_verbatim_work, value: @bulk_export.plaintext_verbatim_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Expanded Plaintext
-            p.nomargin Like the verbatim plaintext, this plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It differs from the verbatim text, in that normalization will be applied to all subjects mentioned, so that while the verbatim text may read “I greeted Mr. Jones and his wife this morning.”, the emended plaintext will read “I greeted James Jones and Elizabeth Smith Jones this morning”. This artificial text is useful for programmatic analysis, but is not meant to be read by humans.
+            h5= t('.expanded_plaintext')
+            p.nomargin= t('.expanded_plaintext_description')
           .bulk-export_options
             =f.label :plaintext_emended_page
               =f.check_box :plaintext_emended_page, value: @bulk_export.plaintext_emended_page
-              span One file per page
+              span= t('.one_file_per_page')
             =f.label :plaintext_emended_work
               =f.check_box :plaintext_emended_work, value: @bulk_export.plaintext_emended_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Search-optimized Plaintext
-            p.nomargin A plaintext version of the work optimized for full-text search. This version contains a verbatim plaintext transcript of each page (as described above), except that words broken by hyphenated newlines are joined together, and a list of the canonical names mentioned within each page is appended to the end of the page.
+            h5= t('.search_optimized_plaintext')
+            p.nomargin= t('.search_optimized_plaintext_description')
           .bulk-export_options
             =f.label :plaintext_searchable_page
               =f.check_box :plaintext_searchable_page, value: @bulk_export.plaintext_searchable_page
-              span One file per page
+              span= t('.one_file_per_page')
             =f.label :plaintext_searchable_work
               =f.check_box :plaintext_searchable_work, value: @bulk_export.plaintext_searchable_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 TEI XML
-            p.nomargin This may be useful to editors who plan to do further mark-up within TEI-XML editors like oXygen.
+            h5= t('.tei_xml')
+            p.nomargin= t('.tei_xml_description')
           .bulk-export_options
             =f.label :tei_work
               =f.check_box :tei_work, value: @bulk_export.tei_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Text PDF
-            p.nomargin A PDF file containing text transcripts.
+            h5= t('.text_pdf')
+            p.nomargin= t('.text_pdf_description')
           .bulk-export_options
             =f.label :text_pdf_work
               =f.check_box :text_pdf_work, value: @bulk_export.text_pdf_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Text DOCX
-            p.nomargin An MS-Word (.docx) file containing text transcripts.
+            h5= t('.text_only_pdf')
+            p.nomargin= t('.text_only_pdf_description')
+          .bulk-export_options
+            =f.label :text_only_pdf_work
+              =f.check_box :text_only_pdf_work, value: @bulk_export.text_only_pdf_work
+              span= t('.one_file_per_work')
+        li
+          .bulk-export_format
+            h5= t('.text_docx')
+            p.nomargin= t('.text_docx_description')
           .bulk-export_options
             =f.label :text_docx_work
               =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
-              span One file per work
+              span= t('.one_file_per_work')
+            #report-options 
+              =t('.format_options')
+              =f.label :preserve_linebreaks
+                =f.check_box 'report_arguments[preserve_linebreaks]', value: @bulk_export.report_arguments['preserve_linebreaks']
+                span= t('.preserve_linebreaks')
+
         li
           .bulk-export_format
-            h5 Facing Edition PDF
-            p.nomargin A PDF file containing images and transcripts on facing pages.
+            h5= t('.facing_edition_pdf')
+            p.nomargin= t('.facing_edition_pdf_description')
           .bulk-export_options
             =f.label :facing_edition_work
               =f.check_box :facing_edition_work, value: @bulk_export.facing_edition_work
-              span One file per work
+              span= t('.one_file_per_work')
         li
           .bulk-export_format
-            h5 Table/Field CSV
-            p.nomargin Exports a spreadsheet with field-based or tabular data.
+            h5= t('.table_field_csv')
+            p.nomargin= t('.table_field_csv_description')
           .bulk-export_options
             =f.label :table_csv_work
               =f.check_box :table_csv_work, value: @bulk_export.table_csv_work
-              span One file per work
+              span= t('.one_file_per_work')
             =f.label :table_csv_collection
               =f.check_box :table_csv_collection, value: @bulk_export.table_csv_collection
-              span One file per collection
+              span= t('.one_file_per_collection')
         li
           .bulk-export_format
-            h5 Subject CSV
-            p.nomargin A spreadsheet listing each place a subject is mentioned within a page within the collection
+            h5= t('.subject_details_csv')
+            p.nomargin= t('.subject_details_csv_description')
+          .bulk-export_options
+            =f.label :subject_details_csv_collection
+              =f.check_box :subject_details_csv_collection, value: @bulk_export.subject_details_csv_collection
+              span= t('.one_file_per_collection')
+        li
+          .bulk-export_format
+            h5= t('.subject_index_csv')
+            p.nomargin= t('.subject_index_csv_description')
           .bulk-export_options
             =f.label :subject_csv_collection
               =f.check_box :subject_csv_collection, value: @bulk_export.subject_csv_collection
-              span One file per collection
+              span= t('.one_file_per_collection')
         li
           .bulk-export_format
-            h5 Work Metadata CSV
-            p.nomargin A spreadsheet listing each work with page counts and metadata.
+            h5= t('.work_metadata_csv')
+            p.nomargin= t('.work_metadata_csv_description')
           .bulk-export_options
             =f.label :work_metadata_csv
               =f.check_box :work_metadata_csv, value: @bulk_export.work_metadata_csv
-              span One file per collection
+              span= t('.one_file_per_collection')
         li
           .bulk-export_format
-            h5 Static Site
-            p.nomargin A static Jekyll website containing the entire edition
+            h5= t('.static_site')
+            p.nomargin= t('.static_site_description')
           .bulk-export_options
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
-              span One site per collection
+              span= t('.one_site_per_collection')
+        li 
+          .bulk-export_format
+            h5= t('.notes_csv')
+            p.nomargin= t('.notes_csv_description')
+          .bulk-export_options
+            =f.label :notes_csv
+              =f.check_box :notes_csv, value: @bulk_export.notes_csv
+              span= t('.one_file_per_collection')
+            
 
       .toolbar
-        .toolbar_group.aright =f.button 'Start Export', class: 'big', 'data-start-export': ''
+        .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
 
   aside.sidecol
-    h4 Previous Exports
+    h4= t('.previous_exports')
     table.admin-grid.datagrid.striped
       thead
         tr
-          th Time
-          th Status
+          th= t('.time')
+          th= t('.status')
 
       tbody
         -@collection.bulk_exports.where.not(:status => BulkExport::Status::CLEANED).order(:created_at => :desc).each do |bulk_export|
           tr
             td.nowrap
-              =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+              =l(bulk_export.created_at.localtime, format: :short)
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
               -if bulk_export.status == BulkExport::Status::FINISHED
                 br
                 =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
 
+h2 =t('.export_work_metadata')
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
+      =svg_symbol '#icon-export', class: 'icon'
+      span =t('.export_work_metadata_as_csv')
+  span =t('.export_work_metadata_description')
+
 -content_for :javascript
   javascript:
+    $('#bulk_export_text_docx_work').change(function() {
+      $('#report-options').toggle(this.checked);
+    });
+
     $(function() {
       // Remove 'page_busy' spinner once download finished
       // Cookie should be set to 'true' in the controller method
@@ -155,5 +228,32 @@
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
+      $('#check-all').click(function() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkAll = this.checked;
+        const preserveLineBreak = document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked;
+
+        checkboxes.forEach(checkbox => {
+          if (checkbox.id !== 'check-all') {
+            checkbox.checked = checkAll;
+          }
+        });
+
+        if (checkAll) {
+          $('#report-options').show();
+          document.getElementById('check-all-lable').textContent = 'Uncheck All';
+          document.getElementById('check-box-div').style.marginRight = "9%";
+        } else {
+          $('#report-options').hide();
+          document.getElementById('check-all-lable').textContent = 'Check All';
+          document.getElementById('check-box-div').style.marginRight = "11%";
+        }
+
+        if (checkAll && preserveLineBreak) {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = true;
+        } else {
+          document.getElementById('bulk_export_report_arguments[preserve_linebreaks]').checked = false;
+        }
       });
     });

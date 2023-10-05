@@ -8,12 +8,12 @@ div.columns
           =render :partial => '/shared/osd_div'
   div.aside
     h2 =t('.page_layout')
-    p Resize the rectangle on the image to surround the portion of the page containing a spreadsheet, then click the blue "OK" button and save your selection.
+    p= t('.page_layout_description')
 
-    =link_to 'Save Selection', '#', class: 'button', id: 'save-selection-button'
+    =link_to t('.save_selection'), '#', class: 'button', id: 'save-selection-button'
 
-    p If the example image does not contain a spreadsheet, you can replace it with a different page from the collection, chosen at random.
-    =link_to 'Replace Image', transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
+    p= t('.replace_image_description')
+    =link_to t('.replace_image'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
 
 
 
@@ -23,7 +23,8 @@ div.columns
 -x_in_pixels = 0
 -w_in_pixels = @page.base_width
 -y_in_pixels = (@transcription_field.top_offset * @page.base_height).to_i
--h_in_pixels = ((1.0 - (@transcription_field.top_offset+@transcription_field.top_offset)) * @page.base_height).to_i
+-h_in_pixels = @page.base_height - ((@transcription_field.top_offset + @transcription_field.bottom_offset)*@page.base_height).to_i
+
 
 -content_for :javascript
   javascript:
@@ -41,25 +42,32 @@ div.columns
           "selector": {
             "type": "FragmentSelector",
             "conformsTo": "http://www.w3.org/TR/media-frags/",
-            "value": "xywh=#{x_in_pixels},#{y_in_pixels},#{w_in_pixels},#{h_in_pixels}"
+            "value": "xywh=pixel:#{x_in_pixels},#{y_in_pixels},#{w_in_pixels},#{h_in_pixels}"
           }
         }
       };
 
 
       // Initialize the Annotorious plugin
-      anno = OpenSeadragon.Annotorious(viewer);
+      anno = OpenSeadragon.Annotorious(
+        viewer,
+        {
+          allowEmpty: true,
+          //disableEditor: true
+        });
 
 
       anno.addAnnotation(sampleAnnotation);
 
       $('#save-selection-button').click(function(){
         annotations = anno.getAnnotations();
+        console.log("annotations.length = "+annotations.length);
         if (annotations.length < 1) {
           alert('At least one rectangle must be selected on the image.');
         };
 
         raw_selector = annotations[0]['target'].selector.value;
+
         $.post(
           "#{transcription_field_spreadsheet_column_save_offset_path(@transcription_field,@page)}", 
           {'selector': raw_selector}

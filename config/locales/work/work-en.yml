@@ -1,53 +1,207 @@
+---
 en:
   work:
-    # global values
-    undescribed: "No metadata."
-    incomplete: "Incomplete metadata."
-    needsreview: "Metadata needs review."
-    described: "Metadata completed."
-    show:
-      description: "Description"
-      physical_description: "Physical Description"
-      document_history: "Document History"
-      permission_description: "Permission Description"
-      location_of_composition: "Location of Composition"
-      author_name: "Author Name"
-      transcription_conventions: "Transcription Conventions"
-      uploaded_by: "Uploaded by"
-      transcription_version: "Transcription Version:&nbsp;"
-      number_of_pages: "Number of Pages:&nbsp;"
-      genre: "Genre"
-      metadata: "Metadata"
-      source_location: "Source Location"
-      source_collection_name: "Source Collection Name"
-      source_box_folder: "Source Box/Folder"
-      scope: "Scope"
-      out_of_scope: "Out of scope"
-      editorial_notes: "Editorial Notes"
-      document_date: "Document Date"
+    configurable_printout:
+      description: Export this work in a printable format
+      export: Export
+      file_format: File Format
+      file_format_description: File type for printable export
+      heading: Printout Configuration
+      include_contributors: Include Contributors
+      include_metadata: Include Metadata
+      preserve_linebreaks: Preserve Linebreaks
+      text_contents: Contents
+      text_contents_description: The printable export will include the text of the transcription, and can also include information about the contributors to the project or metadata about the work.
+      text_format: Text Formatting
+      text_format_description: Options for formatting text.
+      text_format_docx: MS Word (.docx)
+      text_format_pdf: PDF
+      word_wrap: Word Wrap
     create:
-      work_created: "Work created successfully"
-    update:
-      work_updated: "Work updated successfully"
-    edit:
-      additional_metadata: "Additional Metadata"
-    description_versions:
-      help_description: "View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color."
-      revision: "revision"
-      author_contributed_at: "%{author} at %{date}"
-      compared_with: "Compared with"
-    save_description:
-      work_described: "Your description has been saved"
+      work_created: Work created successfully
     describe:
-      edit_transcription: "Edit transcription"
-      save_changes: "Save"
-      done: "Done"
-      approve: "Approve"
-      approve_to_transcribed_tooltip: "Save and approve this metadata"
-      finish_to_needs_review_tooltip: "Save completed metadata"
-      finish_to_transcribed_tooltip: "Save completed metadata"
-      save_to_transcribed_tooltip: "Save your changes"
-      save_to_needs_review_tooltip: "Save your changes"
-      save_to_incomplete_tooltip: "Save incomplete metadata"
-
-
+      always_show_fullscreen: Always show fullscreen
+      approve: Approve
+      approve_to_transcribed_tooltip: Save and approve this metadata
+      done: Done
+      finish_to_needs_review_tooltip: Save completed metadata
+      finish_to_transcribed_tooltip: Save completed metadata
+      fullscreen: Fullscreen
+      image_at_the_bottom: Image at the bottom
+      image_at_the_left: Image at the left
+      image_at_the_right: Image at the right
+      image_at_the_top: Image at the top
+      layout: Layout
+      metadata: Metadata
+      needs_review: Needs review
+      notes_and_questions: Notes and questions
+      original_metadata: Original Metadata
+      page_images: Page images
+      save_changes: Save
+      save_to_incomplete_tooltip: Save incomplete metadata
+      save_to_needs_review_tooltip: Save your changes
+      save_to_transcribed_tooltip: Save your changes
+      text: Text
+      this_page_is_blank: This page is blank
+      view_original: View original
+    described: Metadata completed.
+    description_versions:
+      author_contributed_at: "%{author} at %{date}"
+      compared_with: Compared with
+      help_description: View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+      revision: revision
+    download:
+      analyze: Analyze
+      configurable_printout: Configurable Printout
+      configurable_printout_button: Configure
+      configurable_printout_description: PDF or MS Word export with configurable contents and formatting
+      docx_download_description: Download a DOCX version of this work.
+      download: Download
+      expanded_plaintext: Expanded Plaintext
+      expanded_plaintext_export_description: Export plaintext transcripts replacing verbatim text with canonical subject titles as a zip file containing one file per page.
+      experiment: Experiment
+      export: Export
+      facing_pdf: Facing PDF
+      facing_pdf_export_description: Download a PDF version of this work including images and text on facing pages.
+      html: HTML
+      html_export_description: Export transcripts as a zip file containing one HTML file per page.
+      iiif: IIIF
+      iiif_manifest: IIIF Manifest
+      iiif_manifest_description: IIIF Manifest URI for use in any IIIF client.
+      ms_word: MS Word
+      pdf: PDF
+      pdf_download_description: Download a PDF version of this work.
+      reuse: Reuse
+      searchable_plaintext: Searchable Plaintext
+      searchable_plaintext_export_description: Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the work.
+      table_field_csv: Table/Field CSV
+      table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
+      verbatim_plaintext: Verbatim Plaintext
+      verbatim_plaintext_export_description: Export verbatim, plaintext transcripts as a zip file containing one file per page.
+      verbatim_plaintext_zero_index: Transkribus Training Zip
+      verbatim_plaintext_zero_index_description: Zipfile containing zero-indexed plaintext files, suitable for import as training data for Transkribus
+      voyant: Voyant
+      voyant_analysis_description: Send the transcription of this work to a Voyant Tools for analysis.
+      warning_work_not_complete: 'Warning: this work may not be complete.'
+      word_trees: Word Trees
+      word_trees_analysis_description: Send the transcription of this work to Jason Davies' Word Trees visualizer for analysis.
+      zip_export_only_project_owners: Zip file export formats only accessible to project owners.
+    edit:
+      add: Add
+      additional_metadata: Additional metadata
+      additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
+      allowed_collaborators: Allowed Collaborators
+      apply: Apply
+      author: Author
+      collaborators_can_edit_titles: Allow collaborators to edit page titles
+      collection: Collection
+      confirm_delete_work: Are you sure you want to delete this work? After deleting you won\'t be able to recover it!
+      current_url: The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+      delete_work: Delete Work
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      document_date: Document Date
+      document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
+      document_history: Document history
+      editorial_notes: Editorial notes
+      enable_ocr_correction: Enable OCR Correction
+      enable_ocr_correction_description: A work may begin with OCR text that needs to be corrected. When checked, the Transcribe tab will be replaced by a Correct tab.
+      genre: Genre
+      identifier: Identifier
+      identifier_description: Identifier from systems outside of FromThePage, to be used correlating exports to external records. (This field is not visible to the public.)
+      in_scope: In Scope
+      more_work_settings_info: For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
+      no_allowed_collaborators_selected: No allowed collaborators selected
+      no_image: No Image
+      pages_are_meaningful: Pages Are Meaningful
+      pages_are_meaningful_description: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages). When checked, the work will have page titles prominently displayed.
+      permission_description: Permission description
+      physical_description: Physical description
+      place_of_creation: Place of Creation
+      recipient: Recipient
+      remove: Remove
+      restrict_collaborators: Restrict collaborators
+      restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
+      revert: Revert
+      revert_transcription_conventions_description: 'Revert transcription conventions to collection default '
+      save_changes: Save Changes
+      settings_only_work_owners: The settings for this work are only accessible to work owners.
+      source_box_folder: Source Box/Folder
+      source_collection_name: Source Collection Name
+      source_location: Source Location
+      support_translation: Enable Translation
+      support_translation_description: A work can be translated as well as transcribed. When checked, the work will have a Translation tab for each page.
+      transcription_conventions: Transcription conventions
+      transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+      translation_instructions: Translation instructions
+      upload_image: Upload Image
+      uploaded_by: Uploaded by
+      url: URL
+      work_image: Work Image
+      work_image_description: A picture to be used to illustrate the work. If no picture is uploaded, a page image will be used.
+      work_thumbnail: Work thumbnail
+      work_title: Work title
+    incomplete: Incomplete metadata.
+    metadata_overview:
+      notes_and_questions: Notes and questions
+      show_image: Show image
+      this_page_is_blank: This page is blank
+    needsreview: Metadata needs review.
+    new:
+      collection: Collection
+      create_empty_work: Create Empty Work
+      create_empty_work_description: This creates an empty work. Once you create the work you can add individual page images. If you have a zip file or pdf with multiple images, you should create the work and upload the file under %{start_project} instead.
+      create_work: Create Work
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      start_a_project: Start A Project
+      title: Title
+      work_description: A work is a single document like a letter, a diary, a field book, post card, or notebook.
+    pages_tab:
+      actions: Actions
+      add_new_page: Add New Page
+      confirm_delete_page: Are you sure you want to delete this page? After deleting you won't be able to recover it!
+      delete: Delete
+      featured_page: Featured Page
+      image_status: Image Status
+      make_featured_page: Make Featured Page
+      move_down: Move down
+      move_up: Move up
+      no_pages_found: No pages found
+      no_pages_found_description: This work does not contain any pages yet
+      page_title: Page Title
+      pages_tab_description: Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
+      position: Position
+      ready_to_transcribe: Ready to %{transcribe}
+      settings: Settings
+      transcribe: transcribe
+      upload: Upload
+      upload_page_image: "%{upload} page image"
+    save_description:
+      work_described: Your description has been saved
+    show:
+      author_name: Author Name
+      description: Description
+      document_date: Document Date
+      document_history: Document History
+      editorial_notes: Editorial Notes
+      genre: Genre
+      iiif_manifest: IIIF Manifest
+      location_of_composition: Location of Composition
+      metadata: Metadata
+      number_of_pages: Number of Pages:&nbsp;
+      original_filename: Original Filename
+      out_of_scope: Out of scope
+      permission_description: Permission Description
+      physical_description: Physical Description
+      recipient_name: Recipient Name
+      scope: Scope
+      source_box_folder: Source Box/Folder
+      source_collection_name: Source Collection Name
+      source_location: Source Location
+      uploaded_by: Uploaded by
+    undescribed: No metadata.
+    update:
+      work_updated: Work updated successfully

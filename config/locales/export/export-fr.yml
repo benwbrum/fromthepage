@@ -1,0 +1,87 @@
+---
+fr:
+  export:
+    edit_contentdm_credentials:
+      connect: Relier
+      contentdm_credentials: CONTENUdm Identifiants
+      contentdm_credentials_description: Entrez votre clé de licence CONTENTdm et vos identifiants de connexion pour exporter vers CONTENTdm
+      contentdm_password: Mot de passe CONTENTdm
+      contentdm_user_name: Nom d'utilisateur CONTENTdm
+      license_key: Clé de licence
+    facing_edition:
+      contributions_message: 'Ce document ne serait pas possible sans les contributions éditoriales des personnes suivantes :'
+      export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+    index:
+      api: API
+      export_all_works: Exporter toutes les œuvres
+      export_all_works_description: Choisir les formats et les granularités pour exporter toute la collection dans un fichier zip.
+      export_as: Exporter sous
+      export_individual_works: Exporter des œuvres individuelles
+      export_individual_works_description: Vous pouvez choisir d'exporter des œuvres individuelles dans plusieurs formats de fichiers. XHTML exporte une œuvre sous la forme d'un fichier XHTML d'une seule page avec des transcriptions, des commentaires d'utilisateurs, des articles de sujet et des HREF internes reliant les sujets et les pages. TEI exporte une œuvre sous la forme d'un document TEI-XML conforme à P5. Le texte est en clair. L'export zip vous donnera tous les formats d'une œuvre et la granularité des pages.
+      export_to_contentdm: Exporter vers CONTENTdm
+      export_to_contentdm_description: Cliquer sur le bouton pour exporter les transcriptions terminées de l'ensemble de la collection vers CONTENTdm.
+      here: ici
+      html: HTML
+      iiif: IIIF
+      iiif_api_description: Il y a également une API basée sur IIIF pour exporter par programme les transcriptions de vos collections. En savoir plus %{link}
+      iiif_collection_api_endpoint: 'Point de terminaison de l''API de collecte IIIF : %{link}'
+      indexed: Indexé
+      more: Voir plus
+      more_export_formats: Formats d'exportation supplémentaires
+      n_pages:
+        one: 1 page
+        other: "%{count}pages"
+      pages: pages
+      plain_text: Texte brut
+      progress: Progrès
+      review: Révision
+      table_csv: Tableau CSV
+      tei: TEI
+      work_title: Titre d'œuvre
+    show:
+      categories: 'Catégories :'
+      export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+      fromthepage_version: 'Version de la page : %{version}'
+      identifier: 'Identifiant : %{work}'
+      notes: 'Notes:'
+      page_edit_history: 'Historique des modifications de page :'
+      page_transcripts: Transcriptions de pages
+      page_translations: Traductions de pages
+      pages: 'Pages :'
+      subjects_and_indices: Sujets et indices
+    tei:
+      administrator: Administrateur du projet de transcription %{collection} sur FromThePage
+      changes_to_page_transcript: Modifications de la transcription de la page.
+      double_proof_by: 'Double preuve par :'
+      dynamic_tei_export: Export TEI dynamique depuis FromThePage (version %{version})
+      edition_created: Edition créée à partir de nouvelles transcriptions de ce manuscrit.
+      empty_transcript: Transcription vide – téléchargement initial du fac-similé de la page probablement.
+      initial_upload: Téléversement initial des images en fac-similé et des métadonnées de cette œuvre sur FromThePage pour modification
+      made_edits_between: effectué %{count} modifications entre
+      made_one_edit_on: fait une modification sur
+      single_proof_by: 'Preuve unique par :'
+    text:
+      categories: 'Catégories :'
+      export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+      fromthepage_version: 'Version de la page : %{version}'
+      identifier: 'Identifiant : %{work}'
+      notes: 'Notes:'
+      page_transcripts: Transcriptions de pages
+      page_translations: Traductions de pages
+      pages: 'Pages :'
+      subjects_and_indices: Sujets et indices
+    transcript:
+      export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+      fromthepage_version: 'Version de la page : %{version}'
+      identifier: 'Identifiant : %{work}'
+      notes: 'Notes:'
+      page_transcripts: Transcriptions de pages
+      page_translations: Traductions de pages
+    translation:
+      export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+      fromthepage_version: 'Version de la page : %{version}'
+      identifier: 'Identifiant : %{work}'
+      notes: 'Notes:'
+      page_translations: Traductions de pages
+    update_contentdm_credentials:
+      updating_contentdm_message: Mise à jour de CONTENTdm. Vous devriez recevoir un e-mail une fois la synchronisation terminée, puis vous devrez reconstruire votre index pour que les modifications apparaissent.

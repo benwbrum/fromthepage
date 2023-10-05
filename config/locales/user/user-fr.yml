@@ -1,0 +1,64 @@
+---
+fr:
+  user:
+    api_key:
+      api_key: clé API
+      api_key_description: Les <a href="https://content.fromthepage.com/api-keys/">clés API</a> permettent l'accès aux collections privées via le <a href="https://github.com/benwbrum/fromthepage /wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">API IIIF</a> ou <a href="http://content.fromthepage.com/bulk-export- api/">API d'exportation en masse</a>.
+      delete_key: Supprimer la clé
+      generate_key: Générer la clé
+      no_api_key_description: Votre compte n'a pas de clé API. Générez-en un pour activer l'accès à l'API.
+      your_api_key_description: 'Votre compte dispose de la clé API suivante, qui peut être utilisée pour accéder à vos collections privées :'
+    owner_profile:
+      api_keys: Clés API
+      edit_profile: Editer le profil
+      login_and_password: Connectez-vous et Mot de passe
+      next_image: Photo suivante
+      previous_image: Image précédente
+      website: Site Internet
+    profile:
+      contribution:
+        one: Contribution
+        other: Contributions
+      edit_profile: Editer le profil
+      last_seen: Vu pour la dernière fois %{date}
+      login_and_password: Connectez-vous et Mot de passe
+      newer_activity: Activité plus récente
+      older_activity: Activité plus ancienne
+      recent_activity_by: Activité récente par %{user_display_name}
+      user_deleted: Le profil utilisateur a été supprimé
+      user_since: Utilisateur depuis %{date}
+      users_profile_at_fromthepage: Profil de %{user} sur FromThePage. %{about}
+    update:
+      user_updated: Le profil utilisateur a été mis à jour
+    update_profile:
+      about_you: Au propos de vous
+      add_as_collaborator: Ajouté à la collection privée en tant que collaborateur
+      add_as_owner: Ajouté à la collection en tant que copropriétaire
+      add_as_reviewer: Ajouté à la collection en tant qu'examinateur autorisé
+      default_dictation_language: 'Langue de dictée par défaut :'
+      footer: Bas de chaque page
+      help: Texte de la page d'aide
+      interface_language: Langue de l'interface
+      learn_more_footer: En savoir plus sur la configuration du pied de page.
+      location: Emplacement
+      name: Nom
+      name_only_required: Votre nom est le seul champ obligatoire.
+      no_image: Pas d'image
+      ocrid_id: Identifiant OCRID
+      owner_stats: E-mails nocturnes avec activité de collecte détenue
+      page_edited: Note ajoutée en réponse à un commentaire que vous avez fait
+      picture: Image de profil
+      picture_to_be_used_message: Image à utiliser
+      select_notification: 'Sélectionnez les notifications suivantes que vous souhaitez recevoir :'
+      sign_up_url: 'URL d''inscription :'
+      suggestions_help_tab: Suggestions pour votre onglet d'aide.
+      update_profile: Mettre à jour le profil
+      update_user_profile: Mettre à jour le profil utilisateur
+      upload_image: Télécharger une image
+      url: URL
+      user_activity: E-mail de nuit avec l'activité dans les collections sur lesquelles vous avez travaillé
+      user_url: 'URL :'
+      website: Site Internet
+      where_are_you_from: D'où viens-tu?
+      your_blog_or_homepage: Votre blog ou votre page d'accueil
+      your_ocrid_id: Votre identifiant OCRID

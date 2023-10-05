@@ -1,15 +1,5 @@
 <%= form_for(@document_set) do |f| %>
-  <% if @document_set.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= t('.error_explanation', error_count: pluralize(@document_set.errors.count, "error") %></h2>
-
-      <ul>
-      <% @document_set.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= validation_summary @document_set.errors %>
 
   <div class="field">
     <%= f.label :is_public %><br>

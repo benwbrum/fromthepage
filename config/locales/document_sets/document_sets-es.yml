@@ -1,79 +1,108 @@
+---
 es:
   document_sets:
-    edit:
-      document_is_marked_public: "Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada."
-      current_url_for_this_work: "La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección del conjunto de documentos en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras."
-      description: "Descripción"
-      save_document_set: "Guardar Conjunto de Documentos"
-    form:
-      error_explanation: "%{error_count} prohibió que se guardara este document_set:"
-      # Because there is an underscore indicating a possible variable, "document_set" was not translated in the text. Should it be translated or left as is?
-    set_works:
-      work_title: "Título de la obra"
-      progress: "Progreso"
-      collaboration: "Colaboración"
-      remove_from_set: "Eliminar del conjunto"
-      restricted: "Restringido"
-      unrestricted: "No restringido"
-      remove_title_from_document_set: "Eliminar %{title} del Conjunto de Documentos"
-      remove_works: "Eliminar obras"
-    index:
-      document_sets_are_sub_sets: "Los conjuntos de documentos son subconjuntos de los documentos dentro de una colección. Tienen varios usos, incluyendo:"
-      focusing_transcriber_effort: "Concentrando el esfuerzo del transcriptor en un grupo particular de obras."
-      publishing_works_private_collection: " Publicando obras de una colección privada. (Cualquier obra de una colección privada que se agregue a un conjunto de documentos públicos será visible para el público.)"
-      aggregating_works_thematic_exhibits: "Agregando obras a exposiciones temáticas"
-      document_sets_for: "Conjuntos de Documentos para %{title}"
-      title: "Título"
-      privacy: "Privacidad"
-      actions: "Acciones"
-      public: "Público"
-      private: "Privado"
-      edit: "Editar"
-      delete: "Eliminar"
-      delete_document_set_confirm_message: "¿De verdad deseas eliminar este conjunto de documentos? Esto eliminará tu conjunto de documentos, pero no borrará ninguna de las obras en el conjunto de documentos."
-      create_a_document_set: "Crear un Conjunto de Documentos"
-      assign_works_to_document_sets: "Asignar Obras a Conjuntos de Documentos"
-      work: "Obras"
-      collaboration: "Colaboración"
-      restricted: "Restringido"
-      unrestricted: "No restringido"
-      save: "Guardar"
-      no_document_sets: "Esta colección no tiene conjuntos de documentos"
-      search_for_works: "Búsqueda de obras..."
-      search: "Búsqueda"
-    new:
-      create_new_document_set: "Crear Nuevo Conjunto de Documentos"
-      document_set_is_marked_public: "Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada."
-      description: "Descripción"
-      create_document_set: "Crear Conjunto de Documentos"
-    settings:
-      here: "aquí"
-      document_set_based_on: "Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos los trabajos y conjuntos de documentos dentro de esa colección haciendo clic en %{link}."
-      manage_works: "Administrar Obras"
-      search_for_works: "Búsqueda de obras..."
-      search: "Búsqueda"
-      work: "Obras"
-      collaboration: "Colaboración"
-      add: "Añadir"
-      restricted: "Restringido"
-      unrestricted: "No restringido"
-      add_work_title_to_document_set: "Añadir %{work_title} al Conjunto de Documentos"
-      save: "Guardar"
-      document_set_image: "Imagen del Conjunto de Documentos"
-      no_image: "No Hay Imagen"
-      upload_image: "Subir Imagen"
-      picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
-      document_set_privacy: "Privacidad del Conjunto de Documentos"
-      document_set_restricted: "El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente."
-      make_document_set_public: "Hacer Público el Conjunto de Documentos"
-      document_set_unrestricted: "El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores."
-      make_document_set_private: "Hacer Privado el Conjunto de Documentos"
-      document_set_collaborators: "Colaboradores del Conjunto de Documentos"
-      collaborators_may_transcribe: "Los colaboradores pueden transcribir y editar conjuntos de documentos privados."
-      add: "Añadir"
-      add_collaborator: "Añadir colaborador"
-      remove: "Eliminar"
     create:
-      document_created: "El documento ha sido creado"
+      document_created: El documento ha sido creado
+    edit:
+      current_url_for_this_work: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección del conjunto de documentos en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
+      description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
+      document_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      save_document_set: Guardar Conjunto de Documentos
+      title: Título
+      url: URL
+    index:
+      actions: Acciones
+      aggregating_works_thematic_exhibits: Agregando obras a exposiciones temáticas
+      assign_works_to_document_sets: Asignar Obras a Conjuntos de Documentos
+      create_a_document_set: Crear un Conjunto de Documentos
+      delete: Eliminar
+      delete_document_set_confirm_message: "¿De verdad deseas eliminar este conjunto de documentos? Esto eliminará tu conjunto de documentos, pero no borrará ninguna de las obras en el conjunto de documentos."
+      document_sets_are_sub_sets: 'Los conjuntos de documentos son subconjuntos de los documentos dentro de una colección. Tienen varios usos, incluyendo:'
+      document_sets_for: Conjuntos de Documentos para %{title}
+      edit: Editar
+      focusing_transcriber_effort: Concentrando el esfuerzo del transcriptor en un grupo particular de obras.
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
+      no_document_sets: Esta colección no tiene conjuntos de documentos
+      privacy: Privacidad
+      private: Privado
+      public: Público
+      publishing_works_private_collection: " Publicando obras de una colección privada. (Cualquier obra de una colección privada que se agregue a un conjunto de documentos públicos será visible para el público.)"
+      save: Guardar
+      search: Búsqueda
+      search_for_works: Búsqueda de obras...
+      status: Estado
+      title: Título
+      toggle_work_in_document_set: Alternar %{work} en el conjunto de documentos %{document_set}
+      transfer_works: Transferencia de obras
+      work: Obras
+    new:
+      create_document_set: Crear Conjunto de Documentos
+      create_new_document_set: Crear Nuevo Conjunto de Documentos
+      description: Descripción
+      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
+      document_set_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      public: Público
+      title: Título
+    set_works:
+      collaboration: Colaboración
+      most_recent_activity: Actividad más reciente
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
+      progress: Progreso
+      remove_from_set: Eliminar del conjunto
+      remove_title_from_document_set: Eliminar %{title} del Conjunto de Documentos
+      remove_works: Eliminar obras
+      restricted: Restringido
+      unrestricted: No restringido
+      work_title: Título de la obra
+    settings:
+      add: Añadir
+      add_collaborator: Añadir colaborador
+      add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
+      collaborators_may_transcribe: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
+      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
+      document_set_collaborators: Colaboradores del Conjunto de Documentos
+      document_set_image: Imagen del Conjunto de Documentos
+      document_set_privacy: Privacidad del Conjunto de Documentos
+      document_set_restricted: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
+      document_set_unrestricted: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
+      here: aquí
+      make_document_set_private: Hacer Privado el Conjunto de Documentos
+      make_document_set_public: Hacer Público el Conjunto de Documentos
+      manage_works: Administrar Obras
+      n_contributions:
+        one: 1 contribución
+        other: "%{count} contribuciones"
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas: pl"
+      no_image: No Hay Imagen
+      picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
+      remove: Eliminar
+      save: Guardar
+      search: Búsqueda
+      search_for_works: Búsqueda de obras...
+      status: Estado
+      upload_image: Subir Imagen
+      work: Obras
+    transfer:
+      source_and_target_can_not_be_the_same: El origen y el destino no pueden ser el mismo.
+    transfer_form:
+      all: todos las obras
+      cancel: Cancelar
+      completed: Solo obras terminadas
+      copy: Copiar (no crea obras duplicadas)
+      move: Muevete
+      source_set: Conjunto de documentos de origen
+      status_filter: que funciona
+      target_set: Conjunto de documentos de destino
+      transfer: Transferir
+      transfer_type_label: Tipo de transferencia
+      transfer_works: Transferencia de obras
+      transfer_works_description: Transferir obras entre conjuntos de documentos. (La copia colocará la mimsa obra dentro de dos conjuntos de documentos al mismo tiempo).
     update:
-      document_updated: "El documento ha sido actualizado"
+      document_updated: El documento ha sido actualizado

@@ -1,4 +1,8 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 1, :page_id => @page.id }})
+-if current_page?(collection_forum_page_path(@collection.owner, @collection, @page.work, @page))
+  =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
+  =render('thredded/shared/breadcrumbs')
+-else
+  =render({ :partial => '/shared/page_tabs', :locals => { :selected => 1, :page_id => @page.id }})
 
 .page-headlines
   .headline
@@ -9,7 +13,7 @@
       .page_status
         =t("page.edit.status")
         =t("page.edit.page_status_#{@page.translation_status}")
-      small.headline_aside =link_to t('.show_transcription'), { :translation => false, :page_id => @page.id }, class: 'button outline'
+      small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
     -else
       h3.headline_title =t('.transcription')
       .page_status
@@ -17,7 +21,7 @@
         =t("page.edit.page_status_#{@page.status}")
 
       -if @work.supports_translation
-        small.headline_aside =link_to t('.show_translation'), { :translation => true, :page_id => @page.id }, class: 'button outline'
+        small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
 .page-columns
   .page-column.page-imagescan
@@ -28,20 +32,20 @@
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
         -action = 'translate'
-        -help_word = 'help translate'
-        -text_type = 'translated'
+        -help_word = t('.help_translate')
+        -text_type = t('.translated')
 
       -elsif correction_mode?
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help correct'
-        -text_type = 'corrected'
+        -help_word = t('.help_correct')
+        -text_type = t('.corrected')
 
       -else
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help transcribe'
-        -text_type = 'transcribed'
+        -help_word = t('.help_transcribe')
+        -text_type = t('.transcribed')
 
       -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
 
@@ -72,8 +76,6 @@
 h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
-
-=render({ :partial => '/shared/collection_footer' })
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Display Page");

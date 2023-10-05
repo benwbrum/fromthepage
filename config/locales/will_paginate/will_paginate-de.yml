@@ -1,0 +1,19 @@
+---
+de:
+  will_paginate:
+    container_aria_label: Seitennummerierung
+    next_label: Weiter →
+    page_aria_label: Seite %{page}
+    page_entries_info:
+      multi_page: Anzeige von %{model} %{from} - %{to} von %{count} insgesamt
+      multi_page_html: Anzeige von %{model} <b>%{from} - %{to}</b> von <b>%{count}</b> insgesamt
+      single_page:
+        one: Anzeige von 1 %{model}
+        other: Anzeige aller %{count} %{model}
+        zero: Keine %{model} gefunden
+      single_page_html:
+        one: Anzeige von <b>1</b> %{model}
+        other: Anzeige <b>aller %{count}</b> %{model}
+        zero: Keine %{model} gefunden
+    page_gap: "&hellip;"
+    previous_label: "← Vorherige"

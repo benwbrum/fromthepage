@@ -1,120 +1,163 @@
+---
 en:
   dashboard:
-    plain: "Dashboard"
-    collaborator: "Collaborator"
     alphabetical_collections_and_document_sets:
-      start_transcribing: "Start Transcribing"
-      project_by: "Project by %{author}"
+      project_by: Project by %{author}
+      start_transcribing: Start Transcribing
     collections_list:
-      recent_activity: "Recent Activity"
-      collections: "Collections"
-      meta_description: "You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age."
-    hierarchical_collections_and_document_sets:
-      start_transcribing: "Start Transcribing"
-      project_by: "Project by %{author}"
-    landing_page:
-      previous_image: "Previous image"
-      next_image: "Next image"
-      transcribe_a_page: "Transcribe a page"
-      all_collections: "All Collections"
-      search_for_collections_or_owners: "Search for collections or owners..."
-      search: "Search"
-      search_for_collections: "Search for collections"
-      recent_activity: "Recent Activity"
-    watchlist:
-      projects_you_have_contributed_to: "Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on."
-      you_might_want_to_try: "You haven't participated in any projects yet.  You might want to try transcribing a page of "
-      try_transcribing_a_page: "You haven't participated in any projects yet.  Try transcribing a page from one of these "
-      collections: "collections"
-      private_collections_you_belong_to: "Private projects"
-      owned_by: "Owned by %{author}"
-      project_by: "Project by %{author}"
-      everyone_activity: "Everyone's Activity"
-      your_activity: "Your Activity"
-      time_ago_in_words: "%{time} ago"
-    owner:
-      see_all_works: "See All Works..."
-      start_a_project: "Start A Project"
-      total_work_count: "Total work count: %{count}"
-      you_can_add_another_work: "You can add another work under %{start_project}"
-      there_are_no_works: "There are no works in this collection yet"
-      you_can_upload_documents: "You can upload documents under %{start_project}"
-      document_sets: "Document Sets"
-      create_a_collection: "create a collection"
-      you_dont_have_any_collections: "You don't have any collections yet"
-      you_can_new_collection: "You can %{new_collection}"
-      your_activity: "Your Activity"
-    owner_header:
-      owner_dashboard: "Owner Dashboard"
-      create_a_collection: "Create a Collection"
-      start_a_project: "Start A Project"
-      your_collections: "Your Collections"
-      summary: "Summary"
-    upload:
-      upload_pdf_or_zip_file: "Upload PDF or ZIP File"
-      trial_accounts_are_limited: "Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account."
-      import_form_message: "Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project."
-      upload_file: "Upload file"
-      click_to_browse_a_file: "Click to browse a file..."
-      click_to_browse_files: "Click to browse files"
-      browse: "Browse"
-      use_image_filenames: " Use image filenames as page titles."
-      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
-      zip_files_may_contain: "ZIP files may contain folders containing images, PDFs, or folders containing pdfs."
-      each_folder_will_be_treated: "Each folder will be treated as a different document, so do not mix pages from different documents in the same folder."
-      each_pdf_will_be_treated: "Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF."
-      for_example_a_zip_file: "For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder."
-      to_specify_metadata: "To specify metadata along with images, include a %{link} file in each folder specifying fields for the work."
-      upload_file: "Upload File"
-    new_work:
-      import_a_iiif_manifest_or_collection: "Import a IIIF Manifest or Collection"
-      import_from_contentdm: "Import from CONTENTdm"
-      paste_in_the_url: "Paste in the URL of a compound object or a collection on your CONTENTdm site."
-      or_import_many: "Or "
-      import_many_link: "import several individual compound objects."
-      import_from_the_internet_archive: "Import from the Internet Archive"
-      import_from_archive_dot_org: "Import From Archive.org"
-      you_have_not_connected: "You have not connected any Omeka sites. Use the button below to create a new Omeka connection."
-      edit_site: "Edit Site"
-      delete_site: "Delete Site"
-      add_source: "Add Source"
-      page_image_guidelines: "Page Image Guidelines"
-      acceptable_formats: "PNG, GIF, and JPG files are all acceptable."
-      images_should_be_oriented: "Images should be oriented so that they are right-side-up."
-      images_should_be_split_down: "Images should be split down the spine, so that only one page is visible on an image.<br> (See the %{link} tool if you need to split two-page images.)"
-      images_should_be_named: "Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require \"zero-padding\" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)"
-    new_upload:
-      document_uploaded: "Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready."
-      reload_this_page: "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+      collections: Collections
+      meta_description: You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age.
+      recent_activity: Recent Activity
     create_work:
-      work_created: "Work created successfully"
+      work_created: Work created successfully
+    editor:
+      activity_stream: Activity Stream
+      article_in_the_work: "%{article} article in the %{collection} collection"
+      page_in_the_work: "%{page} page in the %{work} work"
+      revision_version: Revision %{version}
+      view_page: View Page
+      your_recent_article_edits: Your Recent Article Edits
+      your_recent_notes: Your Recent Notes
+      your_recent_page_edits: Your Recent Page Edits
+    editor_header:
+      your_projects: Your Projects
     empty:
-      create_empty_work: "Create Empty Work"
-      create_empty_work_description: "Use this option to create an empty work. You can then upload individual page images into the work."
+      add_new_collection: Add New Collection
+      create_empty_work: Create Empty Work
+      create_empty_work_description: Use this option to create an empty work. You can then upload individual page images into the work.
+      create_work: Create Work
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       select_a_collection: "- Select a collection -"
-      title: "Title"
-      description: "Description"
-      create_work: "Create Work"
-      add_new_collection: "Add New Collection"
+      title: Title
     exports:
-      exported_item: Exported Collection/Work
-      date: Export Date
-      status: Status
+      admin_searches: Searches
+      bulk_exports_description: This lists all bulk exports you have run. Exports are cleaned after a few days, and are no longer available for download
       configuration: Configuration (level)
-      plaintext_verbatim_page: Verbatim Plaintext (page)
-      plaintext_verbatim_work: Verbatim Plaintext (work)
+      create_bulk_export_description: Create a bulk export from the Export tab of a collection or the Download tab of a work.
+      date: Export Date
+      download: Download
+      exported_item: Exported Collection/Work
+      facing_edition_work: Facing Edition PDF (work)
+      html_page: HTML (page)
+      html_work: HTML (work)
+      notes_csv: Notes CSV (collection)
       plaintext_emended_page: Analytic Plaintext (page)
       plaintext_emended_work: Analytic Plaintext (work)
       plaintext_searchable_page: Searchable Plaintext (page)
       plaintext_searchable_work: Searchable Plaintext (work)
-      tei_work: TEX-XML (work)
-      html_page: HTML (page)
-      html_work: HTML (work)
+      plaintext_verbatim_page: Verbatim Plaintext (page)
+      plaintext_verbatim_work: Verbatim Plaintext (work)
+      refresh: Refresh
+      reload_this_page_to: Reload this page to update the list.
+      status: Status
       subject_csv_collection: Subject Index CSV (collection)
       table_csv_collection: Field/Table CSV (collection)
       table_csv_work: Field/Table CSV (work)
-      work_metadata_csv: Work Metadata (collection)
-      facing_edition_work: Facing Edition PDF (work)
-      text_pdf_work: Text PDF (work)
+      tei_work: TEX-XML (work)
       text_docx_work: MS Word .docx (work)
-
+      text_only_pdf_work: Text only PDF (work)
+      text_pdf_work: Text PDF (work)
+      work_metadata_csv: Work Metadata (collection)
+    guest_header:
+      recent_activity: Recent Activity
+    hierarchical_collections_and_document_sets:
+      project_by: Project by %{author}
+      start_transcribing: Start Transcribing
+    landing_page:
+      all_collections: All Collections
+      more: More...
+      next_image: Next image
+      previous_image: Previous image
+      recent_activity: Recent Activity
+      search: Search
+      search_for_collections: Search for collections
+      search_for_collections_or_owners: Search for collections or owners...
+      transcribe_a_page: Transcribe a page
+    new_upload:
+      document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
+      reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.
+    new_work:
+      acceptable_formats: PNG, GIF, and JPG files are all acceptable.
+      images_should_be_named: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
+      images_should_be_oriented: Images should be oriented so that they are right-side-up.
+      import: Import
+      import_a_iiif_manifest_or_collection: Import a IIIF Manifest or Collection
+      import_from_archive_dot_org: Import From Archive.org
+      import_from_contentdm: Import from CONTENTdm
+      import_from_the_internet_archive: Import from the Internet Archive
+      import_many_link: import several individual compound objects.
+      or_import_many: 'Or '
+      page_image_guidelines: Page Image Guidelines
+      paste_in_the_url: Paste in the URL of a compound object or a collection on your CONTENTdm site.
+    owner:
+      active_collections: Active Collections
+      create_a_collection: create a collection
+      document_sets: Document Sets
+      inactive_collections: Inactive Collections
+      n_works:
+        one: '1 work: '
+        other: "%{count} works: "
+      private: " (Private)"
+      public: " (Public)"
+      start_a_project: Start A Project
+      there_are_no_works: There are no works in this collection yet
+      you_can_new_collection: You can %{new_collection}
+      you_can_upload_documents: You can upload documents under %{start_project}
+      you_dont_have_any_collections: You don't have any collections yet
+      your_activity: Your Activity
+    owner_header:
+      account_type: "%{type} account"
+      account_types:
+        individual_researcher: Individual Researcher
+        large_institution: Large Institution
+        legacy: Legacy
+        small_organization: Small Organization
+        staff: Staff
+        trial: Trial
+      actions: Actions
+      collection:
+        one: Collection
+        other: Collections
+      create_a_collection: Create a Collection
+      current_subscription_expires: Current subscription expires %{date}
+      document_set:
+        one: Document Set
+        other: Document Sets
+      exports: Exports
+      owner_dashboard: Owner Dashboard
+      since: since %{date}
+      start_a_project: Start A Project
+      summary: Summary
+      to_upgrade_contact: To upgrade contact support@fromthepage.com
+      total_pages: 'Total pages: %{pages}'
+      work:
+        one: Work
+        other: Works
+      your_collections: Your Collections
+    upload:
+      acceptable_image_files: PNG, GIF, and JPG files are all acceptable.
+      browse: Browse
+      click_to_browse_a_file: Click to browse a file...
+      click_to_browse_files: Click to browse files
+      each_folder_will_be_treated: Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
+      each_pdf_will_be_treated: Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
+      for_example_a_zip_file: 'For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.'
+      image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
+      image_orientation_guidelines: Images should be oriented so that they are right-side-up.
+      import_form_message: Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
+      page_image_guidelines: Page Image Guidelines
+      select_a_collection: "- Select a collection -"
+      to_specify_metadata: To specify metadata along with images, include a %{link} file in each folder specifying fields for the work.
+      trial_accounts_are_limited: Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.
+      upload_file: Upload File
+      upload_pdf_or_zip_file: Upload PDF or ZIP File
+      use_image_filenames: " Use image filenames as page titles."
+      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
+      zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
+    watchlist:
+      collections: collections
+      private_collections_you_belong_to: Private projects
+      projects_you_have_contributed_to: Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
+      try_transcribing_a_page: 'You haven''t participated in any projects yet.  Try transcribing a page from one of these '
+      your_activity: Your Activity

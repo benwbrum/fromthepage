@@ -1,6 +1,6 @@
-Your upload is ready!
+<%= t('.your_upload_is_ready') %>
 
-Your upload has been processed and is ready at this URL:
+<%= t('.text.message', file: @document_upload.name) %>
 <%= url_for({
     controller: 'collection',
     action: 'show',

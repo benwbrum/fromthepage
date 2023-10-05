@@ -1,0 +1,21 @@
+---
+fr:
+  authentication_failed: Authentification échouée
+  dashboard:
+    collaborator: Tableau de bord des collaborateurs
+    plain: Tableau de bord
+  date:
+    formats:
+      default: "%d %b %Y"
+  de: Deutsch
+  en: English
+  es: Español
+  fr: Français
+  message_boards_are_disabled: Le forum pour %{project} a été désactivé.
+  pt: Português
+  time:
+    formats:
+      default: "%d %b %Y %Hh%M"
+      short: "%d/%m/%Y à %Hh%M"
+  time_ago_in_words: Il y a %{time}
+  unauthorized_collection: Vous n'avez pas accès à %{project}. Veuillez vous connecter ou contacter le propriétaire du projet à ajouter.

@@ -3,11 +3,13 @@
 
 h1 =t('.administration')
 .tabs
-  =active_link_to t('.summary'), admin_path, active: :exclusive
-  =active_link_to t('.owners'), admin_owner_list_path
-  =active_link_to t('.users'), admin_user_list_path
-  =active_link_to t('.abuse'), admin_flag_list_path
-  =active_link_to t('.uploads'), admin_uploads_path
-  =active_link_to t('.exports'), bulk_export_index_path
-  =active_link_to t('.logfile'), admin_tail_logfile_path
-  =active_link_to t('.settings'), admin_settings_path
+  =active_link_to t('.summary'), main_app.admin_path, active: :exclusive
+  =active_link_to t('.owners'), main_app.admin_owner_list_path
+  =active_link_to t('.users'), main_app.admin_user_list_path
+  =active_link_to t('.abuse'), main_app.admin_flag_list_path
+  =active_link_to t('.moderation'), main_app.admin_moderation_path
+  =active_link_to t('.uploads'), main_app.admin_uploads_path
+  =active_link_to t('.exports'), main_app.bulk_export_index_path
+  =active_link_to t('.searches'), main_app.admin_searches_path
+  =active_link_to t('.logfile'), main_app.admin_tail_logfile_path
+  =active_link_to t('.settings'), main_app.admin_settings_path

@@ -1,0 +1,37 @@
+---
+fr:
+  quality_samplings:
+    destroy:
+      quality_sampling_destroyed: L'échantillonnage de qualité a été détruit avec succès.
+    index:
+      description: L'échantillonnage de qualité vous permet de vérifier ponctuellement les contributions, en recueillant des données sur la qualité lorsque vous examinez chaque contribution.
+      new_sampling: Commencer l'échantillonnage
+    show:
+      actions: Actions
+      approval_delta_display_0: Très lent
+      approval_delta_display_1: Bas
+      approval_delta_display_2: Moyen
+      approval_delta_display_3: Haute
+      approval_delta_display_4: Très haut
+      description: L'échantillonnage de qualité vous permet de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un œuvre particulier. Ce nombre peut augmenter à mesure que d'autres pages sont transcrites.
+      not_applicable: N / A
+      not_fully_sampled_yet: Cet échantillon n'a pas encore été entièrement revu.
+      pages_in_sample: Pages dans l'échantillon
+      pages_in_sample_desc: Nombre de pages dans l'échantillon pour l'utilisateur ou l'œuvre.
+      pages_to_be_reviewed: Pages à réviser
+      pages_to_be_reviewed_desc: Nombre de pages qui doivent encore être révisées dans l'ensemble de la collection.
+      quality_score: Niveau de qualité
+      quality_score_desc: Pourcentage moyen de modifications nécessaires lors de l'approbation.
+      relative_corrections: Corrections relatives
+      relative_corrections_desc: Combien de corrections ont été nécessaires avant l'approbation, par rapport aux autres utilisateurs de cet échantillon ?
+      review: Examen
+      review_url: URL de révision
+      review_url_desc: URL qui permettra aux examinateurs d'approuver directement les contributions, sans afficher cet écran.
+      sample: Examiner l'échantillon
+      sample_field_size: 'Pages à réviser :'
+      sample_set_has_increased: L'ensemble d'échantillons a augmenté de %{increase} pages
+      sample_set_size: 'Taille du jeu d''échantillons :'
+      user: Donateur
+      work: Œuvre
+    update:
+      quality_sampling_updated: L'échantillonnage de qualité a été mis à jour avec succès.

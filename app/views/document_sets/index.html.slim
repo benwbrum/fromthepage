@@ -60,7 +60,7 @@ br
 
             -work_stats(work)
             td
-              span(title="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}")
+              span(title="#{t('.n_pages', count: work.work_statistic.total_pages)}#{@wording}")
                 .progress
                   -unless @collection.subjects_disabled
                     span(style="width:#{@progress_annotated}%")
@@ -73,7 +73,7 @@ br
             -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
-                =check_box_tag("work_assignment[#{work.slug}][#{document_set.slug}]", "true", ids.include?(document_set.id), {"title"=>"Toggle #{work.title} in Document Set #{document_set.title}"})
+                =check_box_tag("work_assignment[#{work.slug}][#{document_set.slug}]", "true", ids.include?(document_set.id), {"title"=>t('.toggle_work_in_document_set', work: work.title, document_set: document_set.title)})
     br
     =hidden_field_tag(:page, params[:page])
     =submit_tag t('.save')

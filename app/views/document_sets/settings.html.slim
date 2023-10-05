@@ -38,7 +38,7 @@
                      ocr
               td
                 -work_stats(work)
-                span(title="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}")
+                span(title="#{t('.n_pages', count: work.work_statistic.total_pages)}#{@wording}")
                   .progress
                     -unless @collection.subjects_disabled
                       span(style="width:#{@progress_annotated}%")
@@ -94,7 +94,7 @@
             =profile_picture(user)
           .username
             =link_to user.name_with_identifier, user_profile_path(user)
-            small =pluralize(contributions, 'contribution')
+            small =t('.n_contributions', count: contributions)
           -if user != @main_owner
             =link_to '', { :action => 'remove_set_collaborator', :user_id => user.id, :collection_id => @collection }, class: 'remove', title: t('.remove')
 

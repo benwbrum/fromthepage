@@ -2,37 +2,37 @@
 
 -if @selected_version.blank?
   .nodata
-    h4.nodata_title There are no versions to compare
-    p.nodata_text This subject hasn't been described, that's why we have no article versions to compare.
+    h4.nodata_title= t('.no_versions_to_compare')
+    p.nodata_text= t('.no_versions_to_compare_description')
 
 -else
-  -selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
+  -selected_version_date = l(@selected_version.created_on.localtime)
   -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
 
-  p.diff-help Here you can see all subject revisions and compare the changes have been made in each revision. Left column shows the subject title and description in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+  p.diff-help== t('.description')
 
   table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
     tr
-      th: h5 =pluralize(@article.article_versions.size, 'revision')
-      th =="#{selected_version_user} at #{selected_version_date}"
-      th Revision changes
+      th: h5 =t('.n_revisions', count: @article.article_versions.size)
+      th== t('.user_at_time', user: selected_version_user, time: selected_version_date)
+      th= t('.revision_changes')
     tr
       td.diff-list
         .scroll-container
           -@article.article_versions.each do |version|
             =link_to({ :action => 'show', :article_version_id => version.id }, class: ('selected' if version == @selected_version))
               =time_tag(version.created_on)
-                =version.created_on.strftime("%b %d, %Y")
+                =l(version.created_on.to_date)
               span =version.user.display_name
 
       td.diff-version
-        h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
-        div(data-diff-description="changed" data-empty="No description provided")
+        h4(data-diff-title="changed" data-empty=t('.untitled')) =@selected_version.title
+        div(data-diff-description="changed" data-empty=t('.no_description_provided'))
           =@selected_version.source_text
 
       td.diff-version
-        h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
-        div(data-diff-description="original" data-empty="No description provided")
+        h4(data-diff-title="original" data-empty=t('.untitled')) =(@previous_version.title rescue "")
+        div(data-diff-description="original" data-empty=t('.no_description_provided'))
           =(@previous_version.source_text rescue "")
 
   -content_for :javascript

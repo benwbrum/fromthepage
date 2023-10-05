@@ -1,10 +1,13 @@
-Hi <%=@user.display_name%> --
+<%= t('user_mailer.greeting', user: @user.display_name) %>
 
-We just wanted to let you know that <%=@work.owner.display_name%> added you as a collaborator on <%=@work.title%>.
+<%= t('.message', owner: @work.owner.display_name, collection: @work.collection.title, work: @work.title) %>
 
-You can view #{@work.collection.title}: #{@work.title} at the URL: <%=collection_read_work_url(@work.owner, @work.collection, @work, only_path: false)%>
+<%= t('.text.to_view', collection: @work.collection.title, work: @work.title, url: (collection_read_work_url(@work.owner, @work.collection, @work, only_path: false))) %>
 
-Thanks, 
-FromThePage
+<% unless @work.collection.owner.display_name.blank? %>
+    <%= t('user_mailer.text.closing', from: @work.collection.owner.display_name) %>
+<% else %>
+    <%= t('user_mailer.text.closing', from: t('user_mailer.fromthepage')) %>
+<% end %>
 
-Turn off this notification at the URL: <%=update_profile_url(@user, only_path: false)%>
+<%= t('user_mailer.text.turn_off_notification', url: update_profile_url(@user, only_path: false)) %>

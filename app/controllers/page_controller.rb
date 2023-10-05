@@ -77,7 +77,7 @@ class PageController < ApplicationController
 
   def update
     page = Page.find(params[:id])
-    attributes = page_params.to_h
+    attributes = page_params.to_h.except("base_image")
     if page_params[:status].blank?
       attributes['status'] = nil
     end   

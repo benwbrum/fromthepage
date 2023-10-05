@@ -1,0 +1,617 @@
+<%= render "shared/landingheader" %>
+<body>
+    <%= render "shared/landingbodyheader" %>
+
+
+    <!-- Home Main -->
+    <section class="home-main">
+        <div class="text">
+            <h2 data-aos="zoom-in" data-aos-duration="800" >Transcribe your material with a community of 5,000+ passionate, detail-oriented volunteers</h2>
+            <p data-aos="zoom-in" data-aos-duration="900">FromThePage is a crowdsourcing platform for archives and libraries where volunteers transcribe, index, and describe historic documents</p>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 ">
+                        <div class="card" data-aos="zoom-in" data-aos-duration="1000">
+                            <%= image_tag("materials/main-card01.png") %>
+                            <h4>Start engaging the public to transcribe your documents</h4>
+        
+                            <div class="bottom">
+                                <p>Upload 200 pages FREE</p>
+                                <% if signed_in? 
+                                    target_path = dashboard_role_path
+                                   else
+                                    target_path = users_new_trial_path
+                                   end %>
+
+                                <%= link_to 'Transcribe My Documents', target_path, class: 'button' %>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-lg-4 col-md-6 ">
+                        <div class="card second" data-aos="zoom-in" data-aos-duration="1100">
+                            <%= image_tag("materials/main-card02.png") %>
+                            <h4>I’m here to help libraries and archives transcribe their historic documents</h4>
+        
+                            <div class="bottom">
+                                <%= link_to "Become a Transcriber", new_user_registration_path, class: 'button' %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Main End -->
+
+    <!-- Home Logos -->
+    <section class="home-logos">
+        <div class="container">
+            <h2 class="title" data-aos="zoom-in" data-aos-duration="800">Trusted by</h2>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo01.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'500'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo02.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'600'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo03.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'700'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo04.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'800'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo05.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'900'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo06.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1000'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo07.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1100'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo08.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1200'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo09.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1300'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo10.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1400'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo11.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1500'}) %>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-3">
+                    <%= image_tag("materials/logo12.png", data: { 'aos'=>'zoom-in', 'aos-duration'=>'1600'}) %>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Home Logos End -->
+
+    <!-- Home Video -->
+    <section class="home-video">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="item">
+                        <video id="video" poster="<%=path_to_image('materials/video.webp')%>">
+                            <source src="<%=path_to_image('materials/video.mp4')%>">
+                        </video>
+
+                        <span class="button" id="videoButton">
+                            <i class="fa fa-play play"></i>
+                            <i class="fa fa-pause pause"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Video End -->
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="title">How it works</h2>
+            <ul>
+                <li>
+                    <span>01</span>
+                    <div class="icon" data-aos="zoom-in" data-aos-duration="500">
+                        <%= image_tag("materials/how01.png") %>
+                    </div>
+
+                    <div class="text" data-aos="zoom-in" data-aos-duration="700">
+                        <h4>Import</h4>
+                        <p>Upload or import from your DAMS</p>
+                    </div>
+                </li>
+
+                <li>
+                    <span>02</span>
+                    <div class="icon" data-aos="zoom-in" data-aos-duration="800">
+                        <%= image_tag("materials/how02.png") %>
+                    </div>
+
+                    <div class="text" data-aos="zoom-in" data-aos-duration="1000">
+                        <h4>Prepare</h4>
+                        <p>Configure type of project and level of review; Use our templates for transcriber help</p>
+                    </div>
+                </li>
+
+                <li>
+                    <span>03</span>
+                    <div class="icon" data-aos="zoom-in" data-aos-duration="1100">
+                        <%= image_tag("materials/how03.png") %>
+                    </div>
+
+                    <div class="text" data-aos="zoom-in" data-aos-duration="1300">
+                        <h4>Promote</h4>
+                        <p>To your community or ours</p>
+                    </div>
+                </li>
+
+                <li>
+                    <span>04</span>
+                    <div class="icon" data-aos="zoom-in" data-aos-duration="1400">
+                        <%= image_tag("materials/how04.png") %>
+                    </div>
+
+                    <div class="text" data-aos="zoom-in" data-aos-duration="1600">
+                        <h4>Manage</h4>
+                        <p>Nightly emails and In-app discussion with volunteers</p>
+                    </div>
+                </li>
+
+                <li>
+                    <span>05</span>
+                    <div class="icon" data-aos="zoom-in" data-aos-duration="1700">
+                        <%= image_tag("materials/how05.png") %>
+                    </div>
+
+                    <div class="text" data-aos="zoom-in" data-aos-duration="1900">
+                        <h4>Export</h4>
+                        <p>Export your transcripts in one of our many exports formats</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- How It Works End -->
+
+    <!-- Home Services -->
+    <section class="home-services">
+        <div class="container">
+            <h2 class="title" data-aos="zoom-in" data-aos-duration="800">We make it easy to get your documents transcribed</h2>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="500">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services01.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Transcription</h4>
+                            <p>Full text transcription interface with optional mark-up and annotation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="600">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services02.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Indexing</h4>
+                            <p>Configurable forms and spreadsheets for structured data</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="700">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services03.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Metadata Description </h4>
+                            <p>Create forms to describe whole documents, rather than pages</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="800">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services04.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Collaboration</h4>
+                            <p>Transcribers and staff interact on the “notes” section at the bottom of each page; each revision is saved as a separate version</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="900">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services05.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Multilingual</h4>
+                            <p>Interface available in multiple languages; transcribe in any language or script. </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services06.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Reviews</h4>
+                            <p>Multiple review configurations based on your quality needs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1100">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services07.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Private Projects</h4>
+                            <p>Collaborate privately among staff, a classroom or a research group</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1200">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services08.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Easy Import </h4>
+                            <p>Import directly from CONTENTdm, IIIF manifests, zip files of images, or PDFs </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1300">
+                        <div class="icon">
+                            <%= image_tag("materials/home-services09.png") %>
+                        </div>
+
+                        <div class="text">
+                            <h4>Easy Export </h4>
+                            <p>Word, PDF, plaintext, push to CONTENTdm, plus an API</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Services End -->
+
+    <!-- Home Count -->
+    <section class="home-count">
+        <%= image_tag("materials/count-top-bg.png", class: 'bg') %>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="800">
+                        <h4>Transcribers</h4>
+                        <p><%= Deed.where(created_at: (1.year.ago)..).select(:user_id).distinct.count %></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="900">
+                        <h4>Active Projects</h4>
+                        <p><%= Collection.joins(:owner).where("users.account_type" => ["Small Organization", "Individual Researcher", "Large Institution"]).where("users.owner" => true).where(is_active: true).count %></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1000">
+                        <h4>Pages Transcribed</h4>
+                        <p><%= number_with_delimiter Page.where.not(:status=>nil).count %></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-6">
+                    <div class="item" data-aos="zoom-in" data-aos-duration="1100">
+                        <h4>Institutions</h4>
+                        <p><%= User.where(account_type: ["Small Organization", "Individual Researcher", "Large Institution"]).where(owner: true).count %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Count End -->
+
+    <!-- Home Testimonials -->
+    <section class="home-testimonials" data-aos="zoom-in" data-aos-duration="1000">
+        <div class="container">
+             
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="loop">
+                        
+                    
+                                   <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>One of our motivations for partnering with FromThePage on this project was their commitment to IIIF support and integrations. We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level. Given the size of some of our collections, we worked with the team to expand FromThePage’s functional support for importing and exporting robust IIIF manifests. The fruits of efforts are now available to all FromThePage users.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+    
+                                    <div class="text">
+                                        <h4>Stanford University Archives team</h4>
+                                        <span>Stanford University</span>
+
+                                        <%= image_tag("materials/logo01.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/stanford-university-archives/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                      
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>"Using FromThePage, gave us a platform to easily share digital images of diaries that allowed our volunteers to engage more deeply with the content than even simply reading would allow. It provides our volunteers the opportunity to read the original words - in the original handwriting - of people who experienced the Holocaust as they were living through it.
+
+                                    FromThePage facilitates access beyond the image of a document to the text held within it. Transcription and translation allow these documents to become truly accessible to users who might not work with them otherwise due to access or language barriers."<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/RebeccaDillmeier.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Rebecca Dillmeier</h4>
+                                        <span>United States Holocaust Memorial Museum</span>
+
+                                        <%= image_tag("materials/logo08.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-ushmm/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>Using FromThePage has been a really brilliant experience for this project. Firstly, the project has had contributions from so many volunteers all over the world, which has meant that the cataloguing has been completed much more quickly than would be possible with individual volunteers working on site at The National Archives. Secondly, using the system and receiving feedback from volunteers has helped us to adjust and improve the cataloguing guidance we create for volunteers. Our methodology and practical approach to cataloguing this collection has been directly informed by the experience of using FromThePage and the valuable feedback of volunteers.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+    
+                                    <div class="text">
+                                        <h4>Keith Mitchell</h4>
+                                        <span>The National Archives (UK)</span>
+
+                                        <%= image_tag("materials/logo10.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-the-national-archives-uk/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>We're so glad we found FromThePage! We'd been looking for a program to facilitate this project for some time, and FromThePage ticked all the boxes for us: ability to import, host, and export documents and content, mechanisms to track progress, and ways to learn about how our collaborators were working on the project were all important to us.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/KellyRiddle.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Kelly Riddle</h4>
+                                        <span>LA County Library</span>
+
+                                        <%= image_tag("materials/logo05.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/la_county_library/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform, in part because of the shared volunteer traffic. In addition, the site’s ease of use allows us to work with volunteers who have vastly different backgrounds and abilities.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/VictoriaDuncan.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Victoria Duncan</h4>
+                                        <span>Indianapolis Public Library</span>
+
+                                        <%= image_tag("materials/logo06.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/indianapolis-public-library/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>We’ve trialled a couple of other crowd sourcing transcription platforms but have found FromThePage the easiest and most useful for our type of collection. The vast majority of our collection is manuscript materials and the set ups available on FromThePage – especially the field based function – are terrific. The projects and collections are very easy to set up, the volunteers find the programme easy to use, and Ben and Sara are super helpful and responsive if we need help or have any questions.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/JulanneNeal.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Julanne Neal</h4>
+                                        <span>Queensland State Archives</span>
+
+                                        <%= image_tag("materials/logo13.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-the-queensland-state-archives/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>FromThePage is lovely and intuitive (I don’t even want to think about the clunky piecemeal solution I was planning before we found FTP), and y’all are a delight to work with—responsive, patient, and always up for a challenge.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/MeredithMcDonough.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Meredith McDonough</h4>
+                                        <span>Alabama Department of Archives and History</span>
+
+                                        <%= image_tag("materials/logo12.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-adah/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>FromThePage has been a delight to use. We've gotten very good feedback from volunteers and partners from the transcribers' perspective. Support is super responsive and easy to work with, and has made migrations and integrations painless. For us, the IIIF manifest and Internet Archive import options are particularly appreciated. We have very limited staffing and Internet Archive is our main public-facing repository; IIIF and the Internet Archive importer make adding new collections to FromThePage a snap!<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/PatrickWallace.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Patrick Wallace</h4>
+                                        <span>Middlebury College</span>
+
+                                        <%= image_tag("materials/logo14.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-middlebury-college/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>Both building a project and participating in a project with FromThePage is straightforward, which is such a relief for this kind of work. There is so much to think about in terms of sustainability that not having to learn a bunch of code or a complicated platform is a godsend. I had one student say it was “soothing,” to work on our project on FromThePage, and that made me so happy. I don’t want it to be tedious and boring work, because the subject is so interesting! FromThePage lets the subject be the focus, and makes it easy to work. I lose track of time a lot when I work on the project and don’t want to stop.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/JuliaGearhart.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Julia Gearhart</h4>
+                                        <span>Princeton's Department of Art and Archaeology</span>
+
+                                        <%= image_tag("materials/logo15.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/an-interview-with-julia-gearhart-of-princetons-department-of-art-and-archaeology/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="item">
+                                <p><%= image_tag("icons/quote01.svg", class: 'top') %>My experience has been resoundingly positive. Since the very first day we uploaded our documents to the website, we’ve had volunteers from around the globe dive into the project. Additionally, using FromThePage provides a centralized place where I can send volunteers who are interested in transcribing, where I can answer questions quickly and easily, and where I can track progress on the project  Previously, I had been emailing chunks of records to people who were interested in transcribing, which was an extremely inefficient, difficult to track, and overly stressful method. Using From the Page has streamlined my entire operation and greatly improved the quality and speed of our transcriptions.<%= image_tag("icons/quote02.svg", class: 'bottom') %></p>
+    
+                                <div class="info">
+                                    <%= image_tag("materials/CamilleWestmont.png", class:'user') %>
+    
+                                    <div class="text">
+                                        <h4>Dr. Camille Westmont</h4>
+                                        <span>Sewanee: The University of the South</span>
+
+                                        <%= image_tag("materials/logo16.png") %>
+                                    </div>
+                                </div>
+
+                                <div class="button">
+                                    <a href="https://content.fromthepage.com/dr-camille-westmont-sewanee/" target="_blank">Read their story</a>
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Testimonials End -->
+
+    <!-- Home Start -->
+    <section class="home-start">
+        <div class="container">
+            <div class="text">
+                <h4>Start engaging the public to transcribe your documents</h4>
+
+                <div class="buttons">
+                    <a href="https://calendly.com/fromthepage/30-minute-meeting/" target="_blank">Schedule a Demo</a>
+                    <%= link_to 'Upload 200 pages FREE', users_new_trial_path, class: 'second' %>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Start End -->
+
+    <%= render "shared/landingfooter" %>
+
+</body>
+
+</html>

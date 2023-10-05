@@ -1,0 +1,164 @@
+---
+fr:
+  statistics:
+    collaborator_time:
+      collaborator_time: Temps de collaboration
+      collaborator_time_description: Une feuille de calcul du nombre de minutes que chaque utilisateur a contribué par jour dans la plage de dates.
+      collaborator_time_export_button: Exporter la feuille de calcul du temps des collaborateurs
+      no_activity_for_date_range: Il n'y a aucune activité pour cette plage de dates.
+      user_totals_for_dates: Totaux utilisateur pour les dates
+    collaborators:
+      collaborators: Collaborateurs
+      editing: Modification
+      indexing: Indexage
+      mailing_list_export: Exportation de la liste de diffusion
+      no_editors: Aucun éditeur
+      no_indexers: Aucun indexeur
+      no_reviewers: Aucun évaluateur
+      no_transcribers: Aucun transcripteur
+      reviewing: Révision
+      transcribing: Transcription
+    collection:
+      last_days_statistics: Statistiques des 7 derniers jours
+    collection_statistics:
+      collaborator:
+        one: Collaborateur
+        other: Collaborateurs
+      incomplete_page:
+        one: Page incomplète
+        other: Pages incomplètes
+      lines_transcribed:
+        one: Ligne de texte
+        other: Lignes de texte
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: Correction d'OCR
+        other: Corrections d'OCR
+      page:
+        one: Page
+        other: Pages
+      page_edit:
+        one: Modification
+        other: Modifications
+      page_indexed:
+        one: Page indexée
+        other: Pages indexées
+      page_needing_review:
+        one: Page ayant besoin d'une révision
+        other: Pages ayant besoin d'une révision
+      page_reviewed:
+        one: Page révisée
+        other: Pages révisées
+      page_transcribed:
+        one: Page transcrite
+        other: Pages transcrites
+      page_translated:
+        one: Page traduite
+        other: Pages traduites
+      records_indexed: Notice indexée
+      reference:
+        one: Référence
+        other: Références
+      subject:
+        one: Sujet
+        other: Sujets
+      work:
+        one: Œuvre
+        other: Œuvres
+      work_transcribed:
+        one: Œuvre transcrite
+        other: Œuvres transcrites
+      works_described: Œuvre décrite
+    recent_statistics:
+      collaborator:
+        one: Collaborateur
+        other: Collaborateurs
+      new_subject:
+        one: Nouveau sujet
+        other: Nouveaux sujets
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: Correction d'OCR
+        other: Corrections d'OCR
+      page_edit:
+        one: Modification
+        other: Modifications
+      page_indexed:
+        one: Page indexée
+        other: Pages indexées
+      page_marked_needing_review:
+        one: Page marquée comme ayant besoin d'une révision
+        other: Pages marquées comme ayant besoin d'une révision
+      page_reviewed:
+        one: Page révisée
+        other: Pages révisées
+      page_transcribed:
+        one: Page transcrite
+        other: Pages transcrites
+      page_translated:
+        one: Page traduite
+        other: Pages traduites
+      reference:
+        one: Référence
+        other: Références
+    statistics:
+      active_page:
+        one: Page active
+        other: Pages actives
+      collaborator:
+        one: Collaborateur
+        other: Collaborateurs
+      end_date: Date de fin
+      incomplete_page:
+        one: Page incomplète
+        other: Pages incomplètes
+      new_subject:
+        one: Nouveau sujet
+        other: Nouveaux sujets
+      note:
+        one: Note
+        other: Notes
+      ocr_correction:
+        one: Correction d'OCR
+        other: Corrections d'OCR
+      page_edit:
+        one: Modification
+        other: Modifications
+      page_indexed:
+        one: Page indexée
+        other: Pages indexées
+      page_marked_needing_review:
+        one: Page marquée comme ayant besoin d'une révision
+        other: Pages marquées comme ayant besoin d'une révision
+      page_needing_review:
+        one: Page ayant besoin d'une révision
+        other: Pages ayant besoin d'une révision
+      page_reviewed:
+        one: Page révisée
+        other: Pages révisées
+      page_transcribed:
+        one: Page transcrite
+        other: Pages transcrites
+      page_translated:
+        one: Page traduite
+        other: Pages traduites
+      reference:
+        one: Référence
+        other: Références
+      select_new_date: Sélectionnez une nouvelle plage de dates
+      start_date: Date de début
+      statistics_from: Statistiques de %{start_date} à %{end_date}
+      subject:
+        one: Sujet
+        other: Sujets
+      total_page:
+        one: Page totale
+        other: Pages totales
+      update: Mise à jour
+      work:
+        one: Œuvre
+        other: Œuvres

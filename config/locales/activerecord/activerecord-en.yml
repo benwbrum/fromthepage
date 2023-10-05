@@ -1,0 +1,56 @@
+---
+en:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Title
+      document_set:
+        slug: URL
+        title: Title
+      work:
+        slug: URL
+        title: Title
+    errors:
+      models:
+        collection:
+          attributes:
+            slug:
+              blank: is required
+              invalid: must have at least one letter
+        document_set:
+          attributes:
+            slug:
+              blank: is required
+              invalid: must have at least one letter
+        work:
+          attributes:
+            slug:
+              blank: is required
+              invalid: must have at least one letter
+        xml_source_processor:
+          blank_subject_in: Blank subject in %{tag}
+          blank_tag_in: Blank tag in %{tag}
+          blank_text_in: Blank text in %{tag}
+          subject_linking_error: 'Subject Linking Error: '
+          tags_should_not_use_3_brackets: Tags should be created using 2 brackets, not 3
+          unclosed_bracket_within: Unclosed bracket within %{tag}
+          wrong_number_of_closing_braces: Wrong number of closing braces after %{tag}
+    models:
+      bulk_export:
+        one: bulk export
+        other: bulk exports
+      ia_leaf:
+        one: page
+        other: pages
+      page:
+        one: page
+        other: pages
+      work:
+        one: work
+        other: works
+  errors:
+    messages:
+      not_saved:
+        one: '1 error prohibited the %{resource} from being saved:'
+        other: "%{count} errors prohibited the %{resource} from being saved:"

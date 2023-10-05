@@ -1,21 +1,31 @@
+---
 es:
   layouts:
     application:
-      projects: "Proyectos"
-      find_a_project: "Encontrar Un Proyecto"
-      sign_up: "Registrarse"
-      create_an_account: "Crear Una Cuenta"
-      admin_dashboard: "Panel de Control del Administrador"
-      owner_dashboard: "Panel de Control del Dueño"
-      collaborator_dashboard: "Panel de Control del Colaborador"
-      your_profile: "Tu Perfil"
-      sign_out: "Cerrar Sesión"
-      sign_in: "Iniciar Sesión"
-      undo_login_as: "Deshacer Inicio de Sesión Como"
-      documentation: "Documentación"
-      blog: "Blog"
-      about: "Acerca de"
-      terms_and_conditions: "Términos y Condiciones"
-      privacy_policy: "Política de Privacidad"
-      contact_us: "Contáctanos"
-      all_rights_reserved: "Todos los derechos reservados."
+      about: Acerca de
+      admin_dashboard: Panel de Control del Administrador
+      all_rights_reserved: Todos los derechos reservados.
+      blog: Blog
+      collaborator_dashboard: Panel de Control del Colaborador
+      contact_us: Contáctanos
+      create_an_account: Crear Una Cuenta
+      documentation: Documentación
+      find_a_project: Encontrar Un Proyecto
+      home: Página Inicial
+      internet_archive_difficulties: Internet Archive está experimentando dificultades. Por favor, inténtelo de nuevo más tarde.
+      owner_dashboard: Panel de Control del Dueño
+      pricing: Precios
+      privacy_policy: Política de Privacidad
+      projects: Proyectos
+      recaptcha_validation_failed: La validación de ReCAPTCHA falló
+      sign_in: Iniciar Sesión
+      sign_out: Cerrar Sesión
+      sign_up_to_transcribe: Regístrese para transcribir
+      signed_in_as: Registrado como
+      terms_and_conditions: Términos y Condiciones
+      transcription_for_archives_special_collections: Transcripción para Archivos y Colecciones Especiales
+      transcription_for_digital_scholarship: Transcripción para Beca Digital
+      transcription_for_public_libraries: Transcripción para Bibliotecas Públicas
+      transcription_for_state_provincial_archives: Transcripción para archivos estatales y provinciales
+      undo_login_as: Deshacer Inicio de Sesión Como
+      your_profile: Tu Perfil

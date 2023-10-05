@@ -1,92 +1,108 @@
+---
 en:
   document_sets:
-    edit:
-      document_is_marked_public: "If the document set is marked as public, works put within it will be readable even if the collection is marked as private."
-      current_url_for_this_work: "The current URL for this work is %{current_url}.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words."
-      description: "Description"
-      save_document_set: "Save Document Set"
-    form:
-      error_explanation: "%{error_count} prohibited this document_set from being saved:"
-    set_works:
-      work_title: "Work title"
-      progress: "Progress"
-      collaboration: "Collaboration"
-      remove_from_set: "Remove from set"
-      restricted: "Restricted"
-      unrestricted: "Unrestricted"
-      remove_title_from_document_set: "Remove %{title} from Document Set"
-      remove_works: "Remove works"
-    index:
-      document_sets_are_sub_sets: "Document sets are sub-sets of the documents in a collection.  They have several uses, including:"
-      focusing_transcriber_effort: "Focusing transcriber effort on a particular group of works."
-      publishing_works_private_collection: "Publishing works from a private collection. (Any works in a private collection which are added to a public document set will be visible to the public.)"
-      aggregating_works_thematic_exhibits: "Aggregating works into thematic exhibits"
-      document_sets_for: "Document Sets for %{title}"
-      title: "Title"
-      privacy: "Privacy"
-      actions: "Actions"
-      public: "Public"
-      private: "Private"
-      edit: "Edit"
-      delete: "Delete"
-      delete_document_set_confirm_message: "Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set."
-      create_a_document_set: "Create a Document Set"
-      assign_works_to_document_sets: "Assign Works to Document Sets"
-      work: "Work"
-      collaboration: "Collaboration"
-      restricted: "Restricted"
-      unrestricted: "Unrestricted"
-      save: "Save"
-      no_document_sets: "This collection has no document sets"
-      search_for_works: "Search for works..."
-      search: "Search"
-    new:
-      create_new_document_set: "Create New Document Set"
-      document_set_is_marked_public: "If the document set is marked as public, works put within it will be readable even if the collection is marked as private."
-      description: "Description"
-      create_document_set: "Create Document Set"
-    settings:
-      here: "here"
-      document_set_based_on: "This is a document set based on the <b>%{title}</b> collection.  You can manage all works and document sets within that collection by clicking %{link}."
-      manage_works: "Manage Works"
-      search_for_works: "Search for works..."
-      search: "Search"
-      work: "Work"
-      collaboration: "Collaboration"
-      add: "Add"
-      restricted: "Restricted"
-      unrestricted: "Unrestricted"
-      add_work_title_to_document_set: "Add %{work_title} to Document Set"
-      save: "Save"
-      document_set_image: "Document Set Image"
-      no_image: "No Image"
-      upload_image: "Upload Image"
-      picture_document_set_description: "A picture to be used to illustrate the document set description."
-      document_set_privacy: "Document Set Privacy"
-      document_set_restricted: "The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable."
-      make_document_set_public: "Make Document Set Public"
-      document_set_unrestricted: "The document set can be viewed by anyone on the internet. Any works put within a public document set will be readable, even if the parent collection is private.  You may make the document set private to restrict its visiblity to collaborators."
-      make_document_set_private: "Make Document Set Private"
-      document_set_collaborators: "Document Set Collaborators"
-      collaborators_may_transcribe: "Collaborators may transcribe and edit private document sets."
-      add: "Add"
-      add_collaborator: "Add Collaborator"
-      remove: "Remove"
     create:
-      document_created: "Document set has been created"
-    update:
-      document_updated: "Document set has been saved"
+      document_created: Document set has been created
+    edit:
+      current_url_for_this_work: The current URL for this work is %{current_url}.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words.
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      document_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
+      save_document_set: Save Document Set
+      title: Title
+      url: URL
+    index:
+      actions: Actions
+      aggregating_works_thematic_exhibits: Aggregating works into thematic exhibits
+      assign_works_to_document_sets: Assign Works to Document Sets
+      create_a_document_set: Create a Document Set
+      delete: Delete
+      delete_document_set_confirm_message: Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.
+      document_sets_are_sub_sets: 'Document sets are sub-sets of the documents in a collection.  They have several uses, including:'
+      document_sets_for: Document Sets for %{title}
+      edit: Edit
+      focusing_transcriber_effort: Focusing transcriber effort on a particular group of works.
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
+      no_document_sets: This collection has no document sets
+      privacy: Privacy
+      private: Private
+      public: Public
+      publishing_works_private_collection: Publishing works from a private collection. (Any works in a private collection which are added to a public document set will be visible to the public.)
+      save: Save
+      search: Search
+      search_for_works: Search for works...
+      status: Status
+      title: Title
+      toggle_work_in_document_set: Toggle %{work} in Document Set %{document_set}
+      transfer_works: Transfer Works
+      work: Work
+    new:
+      create_document_set: Create Document Set
+      create_new_document_set: Create New Document Set
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      document_set_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
+      public: Public
+      title: Title
+    set_works:
+      collaboration: Collaboration
+      most_recent_activity: Most recent activity
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
+      progress: Progress
+      remove_from_set: Remove from set
+      remove_title_from_document_set: Remove %{title} from Document Set
+      remove_works: Remove works
+      restricted: Restricted
+      unrestricted: Unrestricted
+      work_title: Work title
+    settings:
+      add: Add
+      add_collaborator: Add Collaborator
+      add_work_title_to_document_set: Add %{work_title} to Document Set
+      collaborators_may_transcribe: Collaborators may transcribe and edit private document sets.
+      document_set_based_on: This is a document set based on the <b>%{title}</b> collection.  You can manage all works and document sets within that collection by clicking %{link}.
+      document_set_collaborators: Document Set Collaborators
+      document_set_image: Document Set Image
+      document_set_privacy: Document Set Privacy
+      document_set_restricted: The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable.
+      document_set_unrestricted: The document set can be viewed by anyone on the internet. Any works put within a public document set will be readable, even if the parent collection is private.  You may make the document set private to restrict its visiblity to collaborators.
+      here: here
+      make_document_set_private: Make Document Set Private
+      make_document_set_public: Make Document Set Public
+      manage_works: Manage Works
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: pl"
+      no_image: No Image
+      picture_document_set_description: A picture to be used to illustrate the document set description.
+      remove: Remove
+      save: Save
+      search: Search
+      search_for_works: Search for works...
+      status: Status
+      upload_image: Upload Image
+      work: Work
     transfer:
       source_and_target_can_not_be_the_same: Source and target cannot be the same.
     transfer_form:
+      all: All works
+      cancel: Cancel
+      completed: Only completed works
+      copy: Copy (does not create duplicate works)
+      move: Move
+      source_set: Source Document Set
+      status_filter: Which works
+      target_set: Target Document Set
+      transfer: Transfer
+      transfer_type_label: Transfer Type
       transfer_works: Transfer Works
       transfer_works_description: Transfer works between document sets.  (Copying will place the same work within two document sets at the same time.)
-      transfer_type_label: Transfer Type
-      move: Move
-      copy: Copy (does not create duplicate works)
-      source_set: Source Document Set
-      target_set: Target Document Set
-      status_filter: Which works
-      all: All works
-      completed: Only completed works
-
+    update:
+      document_updated: Document set has been saved

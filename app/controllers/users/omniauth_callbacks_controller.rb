@@ -29,7 +29,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    flash[:error] = 'Authentication failed' 
+    flash[:error] = t('authentication_failed')
     redirect_to new_user_registration_url
   end
 end

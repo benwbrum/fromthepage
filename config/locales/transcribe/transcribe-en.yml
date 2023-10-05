@@ -1,91 +1,89 @@
+---
 en:
   transcribe:
     assign_categories:
-      uncategorized_subjects: "Uncategorized Subjects"
-      manage_categories: "Manage Categories"
-      uncategorized_subjects_mentioned: "You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them."
-      subject: "Subject: "
-      assign_categories: "Assign categories"
-      options: "options"
-      continue: "Continue"
-    save_buttons:
-      edit_transcription: "Edit transcription"
-      save_changes: "Save"
-      done: "Done"
-      approve: "Approve"
-      approve_to_transcribed_tooltip: "Save and approve this page"
-      finish_to_needs_review_tooltip: "Save a completed page"
-      finish_to_transcribed_tooltip: "Save a completed page"
-      save_to_transcribed_tooltip: "Save your changes"
-      save_to_needs_review_tooltip: "Save your changes"
-      save_to_incomplete_tooltip: "Save an incomplete page"
-      preview: "Preview"
-      edit: "Edit"
-      autolink: "Autolink"
-      preview_tooltip: "Preview this page"
-      edit_tooltip: "Edit this page"
-      autolink_tooltip: "Suggest subject tags automatically"
+      assign_categories: Assign categories
+      continue: Continue
+      manage_categories: Manage Categories
+      options: options
+      subject: 'Subject: '
+      uncategorized_subjects: Uncategorized Subjects
+      uncategorized_subjects_mentioned: You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
     display_page:
-      fullscreen: "Fullscreen"
-      image_at_the_left: "Image at the left"
-      image_at_the_right: "Image at the right"
-      image_at_the_top: "Image at the top"
-      image_at_the_bottom: "Image at the bottom"
-      always_show_fullscreen: "Always show in fullscreen"
-      mark_as_blank: "Mark as blank"
-      needs_review: "Needs Review"
-      save_changes: "Save Changes"
-      this_page_marked_needs_review: "This page has been marked as \"needs review\". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck \"needs review\" and save the page."
-      this_page_marked_needs_review_workflow_version: "This page needs review. You can improve this page by proofreading it against the original and adding or correcting the text, then approve the text."
-      this_page_marked_blank: "This page is marked blank"
-      microphone: "Microphone"
-      preview: "Preview"
-      edit: "Edit"
-      autolink: "Autolink"
-      title: "Title:"
-      edit_transcription: "Edit transcription"
-      save_changes: "Save"
-      done: "Done"
-      approve: "Approve"
-      more_help: "More help...."
-      alert: "This page is being edited by another user!"
-      notes_and_questions: "Notes and Questions"
-      autolink_tooltip: "Suggest subject links within the text"
-      preview_tooltip: "Preview the page without saving changes"
-      edit_tooltip: "Continue editing the page"
-    guest:
-      save_up_to_three_transcriptions: "You may save up to three transcriptions as a guest or sign up now."
-      transcribe_as_guest: "Transcribe as guest"
-      sign_up_now: "Sign Up Now"
-      sign_up_now_to_transcribe: "Sign up now to transcribe."
-      collaboration_restricted_collection: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
-    translate:
-      show_image: "Show Image"
-      mark_as_blank: "Mark as blank"
-      page_needs_review: "Page Needs Review"
-      save_changes: "Save Changes"
-      this_page_marked_needs_review: "This page has been marked as \"needs review\". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck \"needs review\" and save the page."
-      this_page_is_blank: "This page is blank"
-      mark_the_page_blank: "mark the page blank"
-      this_page_is_not: "This page is not %{text_type}"
-      please_help_this_page: "Please %{help_link} this page"
-      or_mark_blank: "<br>or %{mark_blank}"
-      microphone: "Microphone"
-      preview: "Preview"
-      edit: "Edit"
-      autolink: "Autolink"
-      edit_translation: "Edit translation"
-      page_notes: "Notes and Questions"
-    mark_page_blank:
-      saved_notice: "Saved"
-    save_transcription:
-      saved_notice: "Saved"
-      you_may_save_notice: "You may save up to %{guest_deed_count} transcriptions as a guest."
-      error_message: "There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})"
-    save_translation:
-      notice: "You may save up to %{guest_deed_count} transcriptions as a guest."
-      error_message: "There was an error parsing the mark-up in your translation.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})"
+      alert: This page is being edited by another user!
+      always_show_fullscreen: Always show in fullscreen
+      edit_transcription: Edit transcription
+      fullscreen: Fullscreen
+      image_at_the_bottom: Image at the bottom
+      image_at_the_left: Image at the left
+      image_at_the_right: Image at the right
+      image_at_the_top: Image at the top
+      layout: Layout
+      mark_as_blank: Mark as blank
+      mark_blank_warning: This page has transcribed data but you are marking it as blank. Do you want to continue?
+      microphone: Microphone
+      more_help: More help....
+      needs_review: Needs Review
+      notes_and_questions: Notes and Questions
+      this_page_marked_blank: This page is marked blank
+      this_page_marked_needs_review: This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+      this_page_marked_needs_review_workflow_version: This page needs review. You can improve this page by proofreading it against the original and adding or correcting the text, then approve the text.
+      title: 'Title:'
     goto_next_untranscribed_page:
-      notice: "There are no more pages to transcribe in this collection."
-      another_page_notice: "Here's another page in this work."
-      no_more_pages_notice: "There are no more pages to transcribe in this work. Here's another page in this collection."
+      another_page_notice: Here's another page in this work.
+      no_more_pages_notice: There are no more pages to transcribe in this work. Here's another page in this collection.
+      notice: There are no more pages to transcribe in this collection.
+    guest:
+      collaboration_restricted_collection: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
+      save_up_to_three_transcriptions: You may save up to three transcriptions as a guest or sign up now.
+      sign_up_now: Sign Up Now
+      sign_up_now_to_transcribe: Sign up now to transcribe.
+      transcribe_as_guest: Transcribe as guest
+    mark_page_blank:
+      saved_notice: Saved
+    save_buttons:
+      approve: Approve
+      approve_to_transcribed_tooltip: Save and approve this page
+      autolink: Autolink
+      autolink_tooltip: Suggest subject tags automatically
+      done: Done
+      edit: Edit
+      edit_tooltip: Edit this page
+      finish_to_needs_review_tooltip: Save a completed page
+      finish_to_transcribed_tooltip: Save a completed page
+      please_wait: Please wait...
+      preview: Preview
+      preview_tooltip: Preview this page
+      save_changes: Save
+      save_to_incomplete_tooltip: Save an incomplete page
+      save_to_needs_review_tooltip: Save your changes
+      save_to_transcribed_tooltip: Save your changes
+    save_transcription:
+      error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
+      saved_notice: Saved
+      you_may_save_notice: You may save up to %{guest_deed_count} transcriptions as a guest.
+    save_translation:
+      error_message: 'There was an error parsing the mark-up in your translation.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
+      notice: You may save up to %{guest_deed_count} transcriptions as a guest.
+    translate:
+      autolink: Autolink
+      corrected: corrected
+      edit: Edit
+      edit_translation: Edit translation
+      help_correct: help correct
+      help_transcribe: help transcribe
+      mark_as_blank: Mark as blank
+      mark_the_page_blank: mark the page blank
+      microphone: Microphone
+      or_mark_blank: "<br>or %{mark_blank}"
+      page_needs_review: Page Needs Review
+      page_notes: Notes and Questions
+      please_help_this_page: Please %{help_link} this page
+      preview: Preview
+      save_changes: Save Changes
+      show_image: Show Image
+      show_transcription: Show Transcription
+      this_page_is_blank: This page is blank
+      this_page_is_not: This page is not %{text_type}
+      this_page_marked_needs_review: This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+      transcribed: transcribed

@@ -11,6 +11,7 @@ class Work < ApplicationRecord
      "permission_description",
      "location_of_composition",
      "author",
+     "recipient",
      "identifier",
      "genre",
      "source_location",
@@ -21,6 +22,7 @@ class Work < ApplicationRecord
      "document_date",
      "uploaded_filename"]
   
+  before_destroy :cleanup_images # must precede pages association
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
@@ -50,7 +52,6 @@ class Work < ApplicationRecord
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
 
-  after_destroy :cleanup_images
 
   after_create :alert_intercom
 
@@ -212,7 +213,20 @@ class Work < ApplicationRecord
   end
 
   def document_date
-    Date.edtf(self[:document_date])
+    date = Date.edtf(self[:document_date])
+    
+    if self[:document_date].nil? # there is no document date
+      return nil
+    elsif date.nil? # the document date is invalid
+      return self[:document_date]
+    # assign date precision based on length of document_date string (edtf-ruby does not do this automatically)
+    elsif self[:document_date].length == 7 # YYYY-MM
+      date.month_precision!
+    elsif self[:document_date].length == 4 and not self[:document_date].include? "x" # YYYY
+      date.year_precision!
+    end
+    
+    return date.edtf
   end
 
   def document_date_is_edtf
@@ -266,10 +280,24 @@ class Work < ApplicationRecord
   end
 
   def cleanup_images
+    absolute_filenames = pages.map { |page| [page.base_image, page.thumbnail_filename]}.flatten
+    modern_filenames = absolute_filenames.map{|fn| fn.sub(/^.*uploaded/, File.join(Rails.root, "public", "images", "uploaded"))}
+    modern_filenames.each do |fn|
+      if File.exist?(fn)
+        File.delete(fn) if File.exist?(fn)
+      else
+        logger.debug "File #{fn} does not exist"
+      end
+    end
     new_dir_name = File.join(Rails.root, "public", "images", "uploaded", self.id.to_s)
     if Dir.exist?(new_dir_name)
-      Dir.glob(File.join(new_dir_name, "*")){|f| File.delete(f)}
-      Dir.rmdir(new_dir_name)
+      # test to see if the directory is empty
+      if Dir.glob(File.join(new_dir_name, "*")).empty?
+        # if it is, delete it
+        Dir.rmdir(new_dir_name)
+      else
+        logger.debug "Directory #{new_dir_name} is not empty; contents are #{Dir.glob(File.join(new_dir_name, "*")).sort.join(', ')}"
+      end
     end
   end
 

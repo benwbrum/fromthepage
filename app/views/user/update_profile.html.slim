@@ -1,8 +1,7 @@
-.litebox-embed(style="width:550px")
+.litebox-embed(style="width:570px")
   h1 =t('.update_user_profile')
   -if @user.owner
     p =t('.name_only_required')
-    h3 =t('.collection_image')
       =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
         =hidden_field_tag(:collection_id, @collection.id)
         label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
@@ -19,8 +18,8 @@
         th =f.label :real_name, t('.name')
         td.w100 =f.text_field :real_name
       tr
-        th =f.label :orcid, "ORCID ID"
-        td =f.text_field :orcid, :placeholder => 'Your ORCID ID'
+        th =f.label :orcid, t('.ocrid_id')
+        td =f.text_field :orcid, :placeholder => t('.your_ocrid_id')
       -if @user.owner
         tr
           th =f.label :picture, t('.picture')
@@ -29,30 +28,40 @@
             -if @user.picture_url(:thumb)
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
         tr
-          th URL: 
+          th= t('.user_url')
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
         tr
-          th Sign-up URL: 
+          th= t('.sign_up_url')
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}/sign_up
         tr
-          th =f.label :slug, "URL"
+          th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @user.slug
         tr
-          th =f.label :website
+          th =f.label :website, t('.website')
           td =f.text_field :website, :placeholder => t('.your_blog_or_homepage')
         tr
-          th =f.label :location
+          th =f.label :location, t('.location')
           td =f.text_field :location, :placeholder => t('.where_are_you_from')
         tr
           td(colspan="2")
             =f.label :about, t('.about_you'), class: 'above'
             =f.text_area :about, rows: 4
+        tr
+          td(colspan="2")
+            =f.label :help, t('.help'), class: "above"
+            =f.text_area :help, rows: 8, value: @user.help
+            p.nomargin.settings =link_to t('.suggestions_help_tab'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
+        tr
+          td(colspan="2")
+            =f.label :footer_block, t('.footer'), class: "above"
+            =f.text_area :footer_block, rows: 5, value: @user.footer_block
+            p.nomargin.settings =link_to t('.learn_more_footer'), "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
       tr  
         th =f.label :preferred_locale, t('.interface_language'), class: 'collection-label'
-        td =f.select :preferred_locale, options_for_select(I18n.available_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale), :include_blank => true
+        td =f.select :preferred_locale, options_for_select(@dropdown_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale), :include_blank => true
       tr  
         td(colspan="2")
           =label_tag :dictation_language, t('.default_dictation_language'), class: 'collection-label'

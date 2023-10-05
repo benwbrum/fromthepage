@@ -3,7 +3,7 @@
 -if @work.pages.empty?
   .nodata
     h4.nodata_title =t('.no_pages_found')
-    p.nodata_text == t('.no_pages_in_work', link: link_to('Pages tab', work_pages_tab_path(work_id: @work.id)))
+    p.nodata_text == t('.no_pages_in_work', link: link_to(t('.pages_tab'), work_pages_tab_path(work_id: @work.id)))
 -else
   -if @work.description.present? && !@work.ia_work
     .big =raw(@work.description.gsub(/Metadata:.*/m,""))
@@ -22,7 +22,7 @@
           -note_link_class = page.notes.empty? ? 'no-notes' : nil
           =link_to(display_display_page_path(:page_id => page.id, :anchor => 'notes'), class: note_link_class)
             =svg_symbol '#icon-comment', class: 'icon'
-            span =(page.notes.empty? ? t('.no_notes') : pluralize(page.notes.size, 'note'))
+            span =(page.notes.empty? ? t('.no_notes') : t('.n_notes', count: page.notes.size))
         td
           -page_action(page)
           =link_to @wording, @path, class: 'button small outline'
@@ -31,11 +31,8 @@
         td
           =link_to(describe_collection_work_path(@work.slug))
             =svg_symbol '#icon-page', class: 'icon'
-            span Metadata
+            span= t('.metadata')
         td.nowrap
           TODO
         td
-          =link_to 'Describe', describe_collection_work_path(@work.slug), class: 'button small outline'
-
-
-=render({ :partial => '/shared/collection_footer' })
+          =link_to t('.describe'), describe_collection_work_path(@work.slug), class: 'button small outline'

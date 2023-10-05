@@ -4,5 +4,6 @@ div.columns
   div.maincol
     h2 =t('.edit_transcription_fields')
     p 
+    -if @collection.table_cells.present?
       i =t('.transcription_warning')
     =render({partial: 'edit_field_form', locals: { field_type: TranscriptionField::FieldType::TRANSCRIPTION }})

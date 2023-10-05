@@ -1,11 +1,15 @@
+<% unless @edition_type == 'text_only'%>
+
 <%= @work.title %> {.work-title}
 =======================
 
 
 \newpage
+
+<% if @include_metadata %>
 ### Metadata
 <p>
-<%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+<%= t('export.facing_edition.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
 
 <% 
@@ -13,10 +17,13 @@
 %>
 <%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
 \newpage
+<% end %>
+
+<% end %>
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
 
-<% unless @edition_type == 'text'%>
+<% if @edition_type == 'facing'%>
 \newpage
   <% if @work.sc_manifest %>
 ![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
@@ -29,13 +36,19 @@
 <% end %>
 
 ### <%= page.title %>
-<%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
+<%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
+
+<% if @work.supports_translation && !page.xml_translation.blank?%>
+### <%= page.title %>
+<%= raw(xml_to_pandoc_md(page.xml_translation, @preserve_linebreaks, true)) %>
+<% end %>
 
 <% end %>
 
+<% if @edition_type != 'text_only' && @include_contributors %>
 
 \newpage
-This document would not be possible without the editorial contributions of the following people:
+<%= t('export.facing_edition.contributions_message') %>
 
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>
@@ -54,4 +67,5 @@ This document would not be possible without the editorial contributions of the f
   <%= contributor_names[0..-2].join(', ') %> and <%= contributor_names.last %>
 <% else %>
   <%= contributor_names.first %>
+<% end %>
 <% end %>

@@ -18,6 +18,7 @@ class BulkExportController < ApplicationController
     else
       @bulk_export.collection = @collection
     end
+    @uploaded_filename_available = @collection.works.where.not(uploaded_filename: nil).exists?
   end
 
   def create
@@ -28,33 +29,42 @@ class BulkExportController < ApplicationController
     else
       @bulk_export.collection = @collection
     end
+    @bulk_export.work = @work if params[:work_id]
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
 
     if @bulk_export.save!
       @bulk_export.submit_export_process
 
-      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+      flash[:info] = t('.export_running_message', email: (current_user.email))
     end
     redirect_to dashboard_exports_path
   end
 
   def create_for_work
+    create_for_work_actual
+    redirect_to dashboard_exports_path
+  end
+
+
+  def create_for_work_ajax
+    create_for_work_actual
+    ajax_redirect_to dashboard_exports_path
+  end
+
+  def create_for_owner
     @bulk_export = BulkExport.new(bulk_export_params)
-    if @collection.is_a? DocumentSet
-      @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
-    else
-      @bulk_export.collection = @collection
-    end
-    @bulk_export.work = @work
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
+    if bulk_export_params[:report_arguments]
+      @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
+    end
 
     if @bulk_export.save
       @bulk_export.submit_export_process
 
-      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+      flash[:info] = t('.export_running_message', email: (current_user.email))
     end
     redirect_to dashboard_exports_path
   end
@@ -67,7 +77,7 @@ class BulkExportController < ApplicationController
         :content_type => "application/zip")
       cookies['download_finished'] = 'true'
     else
-      flash[:info] = "This export download has been cleaned.  Please start a new one."
+      flash[:info] = t('.download_cleaned_message')
       redirect_to collection_export_path(@bulk_export.collection.owner, @bulk_export.collection)
     end
   end
@@ -89,17 +99,63 @@ class BulkExportController < ApplicationController
         :plaintext_emended_page, 
         :plaintext_emended_work, 
         :plaintext_searchable_page, 
-        :plaintext_searchable_work, 
+        :plaintext_searchable_work,
+        :plaintext_verbatim_zero_index_page,
         :tei_work, 
         :html_page, 
         :html_work, 
         :subject_csv_collection, 
+        :subject_details_csv_collection,
         :table_csv_work, 
         :table_csv_collection,
         :work_metadata_csv,
         :facing_edition_work,
         :text_docx_work,
         :text_pdf_work,
-        :static)
+        :text_only_pdf_work,
+        :organization,
+        :use_uploaded_filename,
+        :static,
+        :owner_mailing_list,
+        :owner_detailed_activity,
+        :collection_activity,
+        :collection_contributors,
+        :preserve_linebreaks,
+        :work_id,
+        :include_metadata, 
+        :include_contributors,
+        :notes_csv,
+        :admin_searches,
+        :report_arguments => [
+          :start_date, 
+          :end_date, 
+          :preserve_linebreaks, 
+          :include_metadata, 
+          :include_contributors])
+  end
+
+
+private
+  def create_for_work_actual
+    @bulk_export = BulkExport.new(bulk_export_params)
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
     end
+    @bulk_export.work = @work
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+    if bulk_export_params[:report_arguments]
+      @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
+    end
+
+    if @bulk_export.save
+      @bulk_export.submit_export_process
+
+      flash[:info] = t('.export_running_message', email: (current_user.email))
+    end
+  end
+
 end

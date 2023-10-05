@@ -1,25 +1,34 @@
 -tabs = [{\
   :name => t('.overview'),
   :selected => 1,
-  :path => "#{collection_path(@collection.owner, @collection)}",
+  :path => "#{main_app.collection_path(@collection.owner, @collection)}",
 },{\
   :name => t('.statistics'),
   :selected => 2,
-  :path => "#{collection_statistics_path(@collection.owner, @collection)}",
+  :path => "#{main_app.collection_statistics_path(@collection.owner, @collection)}",
 }]
 
 -unless @collection.subjects_disabled
   -tabs +=[{\
   :name => t('.subjects'),
   :selected => 3,
-  :path => "#{collection_subjects_path(@collection.owner, @collection)}",
+  :path => "#{main_app.collection_subjects_path(@collection.owner, @collection)}",
 }]
 
--if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type
+-if @collection.messageboards_enabled? && signed_in?
+  -tabs +=[{\
+  :name => t('.forum'),
+  :selected => 14,
+  :path => "#{Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group, user_slug: @collection.owner.slug, collection_id: @collection.slug)}",
+}]
+
+
+
+-if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type && @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count > 0
   -tabs +=[{\
   :name => t('.review'),
   :selected => 12,
-  :path => "#{collection_review_path(@collection.owner, @collection)}",
+  :path => "#{main_app.collection_review_path(@collection.owner, @collection)}",
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
@@ -27,47 +36,47 @@
     -tabs += [{\
       :name => t('.collaborators'),
       :selected => 4,
-      :path => "#{contributors_collection_path(@collection.owner, @collection)}",
+      :path => "#{main_app.contributors_collection_path(@collection.owner, @collection)}",
     }]
   -if @collection.is_a?(Collection)
     -tabs += [{\
       :name => t('.settings'),
       :selected => 5,
-      :path => "#{edit_collection_path(@collection.owner, @collection)}",
+      :path => "#{main_app.edit_collection_path(@collection.owner, @collection)}",
     }]
      
   -else
     -tabs += [{\
     :name => t('.settings'),
     :selected => 5,
-    :path => "#{collection_settings_path(@collection.owner, @collection)}",
+    :path => "#{main_app.collection_settings_path(@collection.owner, @collection)}",
     }]
 
   -tabs += [{\
         :name => t('.export'),
         :selected => 6,
-        :path => "#{collection_export_path(@collection.owner, @collection)}",
+        :path => "#{main_app.collection_export_path(@collection.owner, @collection)}",
      }]
     
   -if @collection.is_a?(Collection) && @collection.active?
     -tabs += [{\
       :name => t('.add_work'),
       :selected => 7,
-      :path => "#{new_work_collection_path(@collection.owner, @collection)}",
+      :path => "#{main_app.new_work_collection_path(@collection.owner, @collection)}",
       }]
       
   -if @collection.field_based
     -tabs += [{\
       :name => t('.edit_fields'),
       :selected => 10,
-      :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
+      :path => "#{main_app.collection_edit_fields_path(@collection.owner, @collection)}",
     }]
 
   -if @collection.metadata_entry?
     -tabs += [{\
       :name => t('.edit_metadata_fields'),
       :selected => 13,
-      :path => "#{collection_edit_metadata_fields_path(@collection.owner, @collection)}",
+      :path => "#{main_app.collection_edit_metadata_fields_path(@collection.owner, @collection)}",
     }]
 
     
@@ -76,25 +85,25 @@
     -tabs += [{\
       :name => t('.sets'),
       :selected => 8,
-      :path => "#{document_sets_path(:collection_id => @collection)}",
+      :path => "#{main_app.document_sets_path(:collection_id => @collection)}",
     }]
 
-  -tabs += [{\
-    :name => t('.works_list'),
-    :selected => 9,
-    :path => "#{collection_works_list_path(@collection.owner, @collection)}",
-  }]
   -if @collection.facets_enabled?
     -tabs += [{\
       :name => t('.facets'),
       :selected => 11,
-      :path => "#{collection_facets_path(@collection.owner, @collection)}",
+      :path => "#{main_app.collection_facets_path(@collection.owner, @collection)}",
     }]
+-tabs += [{\
+    :name => t('.works_list'),
+    :selected => 9,
+    :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
+  }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -content_for :page_title, selected == 1 ? @collection.title : "#{selected_tab} - #{@collection.title}"
--content_for :meta_description, "#{@collection.title} - collection #{selected_tab.downcase}. #{strip_tags(@collection.intro_block)}"
+-content_for :meta_description, "#{@collection.title} - #{t('.collection')} #{selected_tab.downcase}. #{strip_tags(@collection.intro_block)}"
 
 div
   -if @document_set

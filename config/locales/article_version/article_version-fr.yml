@@ -1,0 +1,14 @@
+---
+fr:
+  article_version:
+    show:
+      description: Ici, vous pouvez voir toutes les révisions de sujet et comparer les modifications apportées à chaque révision. La colonne de gauche affiche le titre et la description du sujet dans la révision sélectionnée, la colonne de droite indique ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
+      n_revisions:
+        one: 1 révision
+        other: "%{count} révisions"
+      no_description_provided: Aucune description fournie
+      no_versions_to_compare: Il n'y a pas de versions à comparer
+      no_versions_to_compare_description: Ce sujet n'a pas été décrit, c'est pourquoi nous n'avons pas de versions d'articles à comparer.
+      revision_changes: Changements de révision
+      untitled: Sans titre
+      user_at_time: "%{user} à %{time}"

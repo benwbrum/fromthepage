@@ -1,0 +1,97 @@
+---
+de:
+  display:
+    display_page:
+      collaboration_is_restricted: Die Mitarbeit an dieser Sammlung ist eingeschränkt. Bitte wenden Sie sich an den/die Projektinhaber:in, wenn Sie zur Transkription beitragen möchten.
+      collection_is_not_active: Dieses Projekt ist nicht aktiv. Bei Fragen wenden Sie sich bitte an den Projektverantwortlichen.
+      corrected: korrigiert
+      facsimile: Faksimile
+      help_correct: zu korrigieren
+      help_transcribe: zu transkribieren
+      help_translate: zu übersetzen
+      mark_the_page_blank: Seite als leer markieren
+      or_mark_blank: "<br>oder %{mark_blank}"
+      page_notes: Anmerkungen und Fragen
+      please_help_this_page: Bitte helfen Sie, diese Seite %{help_link}
+      show_transcription: Transkription anzeigen
+      show_translation: Übersetzung anzeigen
+      this_page_is_blank: Diese Seite ist leer
+      this_page_is_not: Diese Seite ist nicht %{text_type}
+      transcribed: transkribiert
+      transcription: Transkription
+      translated: übersetzt
+      translation: Übersetzung
+    list_pages:
+      actions: Aktionen
+      blank_page: Leere Seite
+      completed: Abgeschlossen
+      correct: Richtig
+      describe: Beschreiben
+      index: Index
+      metadata: Metadaten
+      n_notes:
+        one: 1 Anmerkung
+        other: "%{count} Anmerkungen"
+      no_notes: Keine Anmerkungen
+      no_pages_found: Keine Seiten gefunden
+      no_pages_in_work: Dieses Werk enthält noch keine Seiten, gehen Sie zu %{link}, um eine neue Seite zu erstellen
+      page_title: Seitentitel
+      pages_tab: Seiten-Tab
+      review: Review
+      transcribe: Transkribieren
+      translate: Übersetzen
+      user_notes: Anmerkungen von Mitarbeitenden
+    multi_page:
+      categories: Kategorien
+      describe: Metadaten erstellen
+      pages_need_indexing: Seiten, die indexiert werden müssen
+      pages_need_review: Seiten, die überprüft werden müssen
+      pages_need_transcription: Seiten, die transkribiert werden müssen
+      pages_need_translation: Seiten, die übersetzt werden müssen
+      search: Suche
+      search_for: Suche nach %{search_string}
+      search_in_collection: In Sammlung suchen...
+      search_in_collection_1: In Sammlung suchen
+      search_in_work: Suche im Werk...
+      translations_need_indexing: Übersetzungen, die indexiert werden müssen
+      translations_need_review: Übersetzungen, die überprüft werden müssen
+      view_all_pages: Alle Seiten anzeigen
+    pages_view:
+      collaboration_is_restricted: Die Mitarbeit an dieser Sammlung ist eingeschränkt. Bitte wenden Sie sich an den/die Projektinhaber:in, wenn Sie zur Transkription beitragen möchten.
+      corrected: korrigiert
+      help_complete: zu bearbeiten
+      help_correct: zu korrigieren
+      help_transcribe: zu transkribieren
+      help_translate: zu übersetzen
+      last_edit: Zuletzt bearbeitet vor %{edit_time} von %{user_link}
+      no_pages_found: Keine Seiten gefunden
+      no_pages_needing_transcription_found_these_pages_are_incomplete: Keine Seiten müssen von Grund auf neu transkribiert werden. Diese Seiten wurden teilweise transkribiert, müssen aber noch vervollständigt werden.
+      page_not_translated: Diese Seite ist nicht übersetzt, bitte helfen Sie, diese Seite %{help_translate}
+      pages_needing_completion: Seiten, die vervollständigt werden müssen
+      review_metadata: Metadaten überprüfen
+      this_page_is_blank: Diese Seite ist leer
+      this_page_is_incomplete: Diese Seite ist unvollständig
+      this_page_is_not: Diese Seite ist nicht %{status}, bitte %{help} diese Seite
+      transcribed: transkribiert
+      translation: Übersetzung
+      unable_to_find_pages: Wir konnten keine Seiten finden, die Ihrer Anfrage entsprechen
+    read_all_works:
+      pages: Seiten
+      pages_that_mention: Seiten, die %{article} erwähnen
+    read_work:
+      pages: Seiten
+      pages_need_indexing: Seiten, die indexiert werden müssen
+      pages_need_review: Seiten, die überprüft werden müssen
+      pages_need_transcription: Seiten, die transkribiert werden müssen
+      pages_need_translation: Seiten, die übersetzt werden müssen
+      translations_need_indexing: Übersetzungen, die indexiert werden müssen
+      translations_need_review: Übersetzungen, die überprüft werden müssen
+  display_helper:
+    page_action:
+      blank_page: Leere Seite
+      completed: Abgeschlossen
+      correct: Richtig
+      index: Index
+      review: Review
+      transcribe: Transkribieren
+      translate: Übersetzen

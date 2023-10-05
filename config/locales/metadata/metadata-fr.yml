@@ -1,0 +1,10 @@
+---
+fr:
+  metadata:
+    upload:
+      browse: Parcourir
+      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      template_file_anchor: ce fichier modèle
+      upload: Télécharger
+      upload_metadata: Télécharger les métadonnées
+      upload_metadata_description: Pour mettre à jour les métadonnées de plusieurs œuvres de cette collection, téléchargez une feuille de calcul avec une ligne par œuvre. Veuillez télécharger %{link} pour commencer.

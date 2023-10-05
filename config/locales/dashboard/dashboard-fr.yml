@@ -1,0 +1,163 @@
+---
+fr:
+  dashboard:
+    alphabetical_collections_and_document_sets:
+      project_by: Projet par %{author}
+      start_transcribing: Commencez à transcrire
+    collections_list:
+      collections: Collections
+      meta_description: Vous êtes libre de choisir parmi les nombreux projets intéressants hébergés sur FromThePage. Commencez à lire les écrits historiques qui ont déjà été transcrits par d'autres membres. Vous êtes les bienvenus pour aider l'un des grands projets à entrer dans l'ère numérique.
+      recent_activity: Activité récente
+    create_work:
+      work_created: Œuvre créée avec succès
+    editor:
+      activity_stream: Flux d'activité
+      article_in_the_work: "%{article} article dans la collection %{collection}"
+      page_in_the_work: "%{page} page dans l'ouvrage %{work}"
+      revision_version: Révision %{version}
+      view_page: Voir page
+      your_recent_article_edits: Vos modifications d'articles récentes
+      your_recent_notes: Vos notes récentes
+      your_recent_page_edits: Modifications récentes de votre page
+    editor_header:
+      your_projects: Vos projets
+    empty:
+      add_new_collection: Ajouter une nouvelle collection
+      create_empty_work: Créer une œuvre sans pages
+      create_empty_work_description: Utilisez cette option pour créer une œuvre sans pages. Vous pouvez ensuite téléverser des images de page individuelles dans l'œuvre.
+      create_work: Créer une œuvre
+      description: La description
+      description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
+      select_a_collection: "- Sélectionnez une collection -"
+      title: Titre
+    exports:
+      admin_searches: Recherches
+      bulk_exports_description: Cela répertorie toutes les exportations en masse que vous avez exécutées. Les exportations sont nettoyées après quelques jours et ne sont plus disponibles au téléchargement
+      configuration: Configuration (niveau)
+      create_bulk_export_description: Créez une exportation en bloc à partir de l'onglet Exporter d'une collection ou de l'onglet Télécharger d'une œuvre.
+      date: Date d'exportation
+      download: Télécharger
+      exported_item: Collection/œuvre exportée
+      facing_edition_work: Face à l'édition PDF (œuvre)
+      html_page: HTML (page)
+      html_work: HTML (œuvre)
+      notes_csv: Remarques CSV (collection)
+      plaintext_emended_page: Texte brut analytique (page)
+      plaintext_emended_work: Texte brut analytique (œuvre)
+      plaintext_searchable_page: Texte brut consultable (page)
+      plaintext_searchable_work: Texte brut consultable (œuvre)
+      plaintext_verbatim_page: Texte brut verbatim (page)
+      plaintext_verbatim_work: Texte brut verbatim (œuvre)
+      refresh: Rafraîchir
+      reload_this_page_to: Recharger cette page pour mettre à jour la liste.
+      status: Statut
+      subject_csv_collection: Index des sujets CSV (collection)
+      table_csv_collection: Champ/Table CSV (collection)
+      table_csv_work: Champ/Table CSV (œuvre)
+      tei_work: TEX-XML (œuvre)
+      text_docx_work: MS Word .docx (œuvre)
+      text_only_pdf_work: Texte PDF seulement (œuvre)
+      text_pdf_work: Texte PDF (œuvre)
+      work_metadata_csv: Métadonnées de œuvre (collection)
+    guest_header:
+      recent_activity: Activité récente
+    hierarchical_collections_and_document_sets:
+      project_by: Projet par %{author}
+      start_transcribing: Commencer à transcrire
+    landing_page:
+      all_collections: Toutes les collections
+      more: Voir plus
+      next_image: Image suivante
+      previous_image: Image précédente
+      recent_activity: Activité récente
+      search: Chercher
+      search_for_collections: Rechercher des collections
+      search_for_collections_or_owners: Rechercher des projets
+      transcribe_a_page: Transcrire une page
+    new_upload:
+      document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
+      reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
+    new_work:
+      acceptable_formats: Les fichiers PNG, GIF et JPG sont tous acceptables.
+      images_should_be_named: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      images_should_be_oriented: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
+      import: Importer
+      import_a_iiif_manifest_or_collection: Importer un manifeste ou une collection IIIF
+      import_from_archive_dot_org: Importer depuis Archive.org
+      import_from_contentdm: Importer depuis CONTENTdm
+      import_from_the_internet_archive: Importer à partir des archives Internet
+      import_many_link: importer plusieurs objets composés individuels.
+      or_import_many: 'Ou '
+      page_image_guidelines: Directives relatives aux images de page
+      paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
+    owner:
+      active_collections: Collections actives
+      create_a_collection: créer une collection
+      document_sets: Jeux de documents
+      inactive_collections: Collections inactives
+      n_works:
+        one: '1 œuvre :'
+        other: "%{count} fonctionne :"
+      private: " (Privé)"
+      public: " (Public)"
+      start_a_project: Démarrer un projet
+      there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
+      you_can_new_collection: Vous pouvez %{new_collection}
+      you_can_upload_documents: Vous pouvez téléverser des documents sous %{start_project}
+      you_dont_have_any_collections: Vous n'avez pas encore de collections
+      your_activity: Votre activité
+    owner_header:
+      account_type: Compte %{type}
+      account_types:
+        individual_researcher: chercheur individuel
+        large_institution: grand établissement
+        legacy: héritage
+        small_organization: petite organisation
+        staff: personnel
+        trial: essai
+      actions: Actions
+      collection:
+        one: Collection
+        other: Collections
+      create_a_collection: Créer une collection
+      current_subscription_expires: L'abonnement actuel expire %{date}
+      document_set:
+        one: Jeu de documents
+        other: Jeux de documents
+      exports: Exportations
+      owner_dashboard: Tableau de bord du propriétaire
+      since: depuis %{date}
+      start_a_project: Démarrer un projet
+      summary: Sommaire
+      to_upgrade_contact: Pour mettre à niveau, contactez support@fromthepage.com
+      total_pages: 'Nombre total de pages : %{pages}'
+      work:
+        one: Œuvre
+        other: Œuvres
+      your_collections: Vos collections
+    upload:
+      acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
+      browse: Parcourir
+      click_to_browse_a_file: Cliquer pour parcourir un fichier...
+      click_to_browse_files: Cliquer pour parcourir les fichiers
+      each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez pas les pages de différents documents dans le même dossier.
+      each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
+      for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
+      image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
+      import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
+      page_image_guidelines: Directives relatives aux images de page
+      select_a_collection: "- Sélectionner une collection -"
+      to_specify_metadata: Pour spécifier les métadonnées avec les images, incluez un fichier %{link} dans chaque dossier en spécifiant les champs pour l'œuvre.
+      trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
+      upload_file: Téléverser un fichier
+      upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
+      use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
+      use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
+      zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
+    watchlist:
+      collections: collections
+      private_collections_you_belong_to: Projets privés
+      projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
+      try_transcribing_a_page: 'Vous n''avez encore participé à aucun projet. Essayez de transcrire une page de l''une de ces '
+      your_activity: Votre activité

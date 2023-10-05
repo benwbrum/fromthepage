@@ -41,14 +41,14 @@
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help correct'
-        -text_type = 'corrected'
+        -help_word = t('.help_correct')
+        -text_type = t('.corrected')
 
       -else
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help transcribe'
-        -text_type = 'transcribed'
+        -help_word = t('.help_transcribe')
+        -text_type = t('.transcribed')
 
       .page-preview(*language_attrs(@collection))
         -if @page.status == Page::STATUS_BLANK
@@ -82,7 +82,6 @@ h2.legend =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
-=render({ :partial => '/shared/collection_footer' })
 -unless @collection.voice_recognition  
   =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
 
@@ -115,7 +114,7 @@ h2.legend =t('.page_notes')
         $('.page-imagescan').toggle(fromImage);
         $('.page-preview').toggle(!fromImage);
 
-        var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
+        var buttonText = (fromImage) ? "#{t('.show_transcription')}" : "#{t('.show_image')}";
         $('#toggleImage').html(buttonText);
       }
     });

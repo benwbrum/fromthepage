@@ -1,0 +1,168 @@
+---
+de:
+  statistics:
+    collaborator_time:
+      collaborator_time: Mitarbeiterzeit
+      collaborator_time_description: Eine Tabelle mit der Minutenanzahl, die jede:r Bearbeiter:in pro Tag im ausgewählten Datumsbereich beigetragen hat.
+      collaborator_time_export_button: Zeittabelle für Mitarbeitende exportieren
+      no_activity_for_date_range: In diesem Zeitraum gibt es keine Aktivitäten.
+      user_totals_for_dates: Gesamtzeitaufwand der Mitarbeitenden für Datumsauswahl
+    collaborators:
+      collaborators: Mitarbeitende
+      editing: Bearbeitung
+      indexing: Indexierung
+      mailing_list_export: Mailingliste exportieren
+      no_editors: Keine Bearbeitenden
+      no_indexers: Keine Indexierenden
+      no_reviewers: Keine Rezensenten
+      no_transcribers: Keine Transkribierenden
+      reviewing: Überprüfung
+      transcribing: Transkription
+    collection:
+      last_days_statistics: Statistik der letzten 7 Tage
+    collection_statistics:
+      collaborator:
+        one: Mitarbeitende:r
+        other: Mitarbeitende
+      incomplete_page:
+        one: Unvollständige Seite
+        other: Unvollständige Seiten
+      lines_transcribed:
+        one: Textzeile
+        other: Textzeilen
+      note:
+        one: Anmerkung
+        other: Anmerkungen
+      ocr_correction:
+        one: OCR-Korrektur
+        other: OCR-Korrekturen
+      page:
+        one: Seite
+        other: Seiten
+      page_edit:
+        one: Seitebearbeitung
+        other: Seitenbearbeitungen
+      page_indexed:
+        one: Seite indexiert
+        other: Seiten indexiert
+      page_needing_review:
+        one: Seite muss überprüft werden
+        other: Seiten müssen überprüft werden
+      page_reviewed:
+        one: Seite überprüft
+        other: Seiten überprüft
+      page_transcribed:
+        one: Seite transkribiert
+        other: Seiten transkribiert
+      page_translated:
+        one: Seite übersetzt
+        other: Seiten übersetzt
+      records_indexed:
+        one: Indexierter Datensatz
+        other: Indexierte Datensätze
+      reference:
+        one: Verweis
+        other: Verweise
+      subject:
+        one: Entität
+        other: Entitäten
+      work:
+        one: Werk
+        other: Werke
+      work_transcribed:
+        one: Werk transkribiert
+        other: Werke transkribiert
+      works_described:
+        one: Beschriebenes Werk
+        other: Beschriebene Werke
+    recent_statistics:
+      collaborator:
+        one: Mitarbeitende:r
+        other: Mitarbeitende
+      new_subject:
+        one: Neue Entität
+        other: Neue Entitäten
+      note:
+        one: Anmerkung
+        other: Anmerkungen
+      ocr_correction:
+        one: OCR-Korrektur
+        other: OCR-Korrekturen
+      page_edit:
+        one: Seitenbearbeitung
+        other: Seitenbearbeitungen
+      page_indexed:
+        one: Seite indexiert
+        other: Seiten indexiert
+      page_marked_needing_review:
+        one: Seite muss überprüft werden
+        other: Seiten müssen überprüft werden
+      page_reviewed:
+        one: Seite überprüft
+        other: Seiten überprüft
+      page_transcribed:
+        one: Seite transkribiert
+        other: Seiten transkribiert
+      page_translated:
+        one: Seite übersetzt
+        other: Seiten übersetzt
+      reference:
+        one: Verweis
+        other: Verweise
+    statistics:
+      active_page:
+        one: Aktive Seite
+        other: Aktive Seiten
+      collaborator:
+        one: Mitarbeitende:r
+        other: Mitarbeitende
+      end_date: Enddatum
+      incomplete_page:
+        one: Unvollständige Seite
+        other: Unvollständige Seiten
+      new_subject:
+        one: Neue Entität
+        other: Neue Entitäten
+      note:
+        one: Anmerkung
+        other: Anmerkungen
+      ocr_correction:
+        one: OCR-Korrektur
+        other: OCR-Korrekturen
+      page_edit:
+        one: Seitenbearbeitung
+        other: Seitenbearbeitungen
+      page_indexed:
+        one: Seite indexiert
+        other: Seiten indexiert
+      page_marked_needing_review:
+        one: Seite muss überprüft werden
+        other: Seiten müssen überprüft werden
+      page_needing_review:
+        one: Seite muss überprüft werden
+        other: Seiten müssen überprüft werden
+      page_reviewed:
+        one: Seite überprüft
+        other: Seiten überprüft
+      page_transcribed:
+        one: Seite transkribiert
+        other: Seiten transkribiert
+      page_translated:
+        one: Seite übersetzt
+        other: Seiten übersetzt
+      reference:
+        one: Verweis
+        other: Verweise
+      select_new_date: Neuen Datumsbereich auswählen
+      start_date: Startdatum
+      statistics_from: Statistiken von %{start_date} bis %{end_date}
+      subject:
+        one: Entität
+        other: Entitäten
+      total_page:
+        one: Seite insgesamt
+        other: Seiten insgesamt
+      update: Aktualisieren
+      work:
+        one: Werk
+        other: Werke

@@ -1,50 +1,64 @@
+---
 en:
   user:
+    api_key:
+      api_key: API Key
+      api_key_description: <a href="https://content.fromthepage.com/api-keys/">API keys</a> allow access to private collections via the <a href="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">IIIF API</a> or <a href="http://content.fromthepage.com/bulk-export-api/">bulk export API</a>.
+      delete_key: Delete Key
+      generate_key: Generate Key
+      no_api_key_description: Your account does not have an API key. Generate one to enable API access.
+      your_api_key_description: 'Your account has the following API key, which may be used to access your private collections:'
     owner_profile:
-      api_keys: "API Keys"
-      edit_profile: "Edit Profile"
-      login_and_password: "Login &amp; Password"
-      website: "Website"
-      previous_image: "Previous image"
-      next_image: "Next image"
+      api_keys: API Keys
+      edit_profile: Edit Profile
+      login_and_password: Login &amp; Password
+      next_image: Next image
+      previous_image: Previous image
+      website: Website
     profile:
-      edit_profile: "Edit Profile"
-      login_and_password: "Login &amp; Password"
-      user_since: "User since %{date}"
-      last_seen: "Last seen %{date}"
-      recent_activity_by: "Recent Activity by %{user_display_name}"
-      recent_notes: "Recent Notes"
-      date: "Date"
-      page: "Page"
-      note: "Note"
-      recent_page_edits: "Recent Page Edits"
-      work: "Work"
-      version: "Version"
-      no_work: "No work"
-      revision: "Revision %{version}"
-      recent_article_edits: "Recent Article Edits"
-      article: "Article"
-      categories: "Categories"
-      user_deleted: "User profile has been deleted"
       contribution:
-        one: "Contribution"
-        other: "Contributions"
-    update_profile:
-      update_user_profile: "Update User Profile"
-      name_only_required: "Your name is the only required field."
-      name: "Name"
-      your_blog_or_homepage: "Your blog or homepage"
-      where_are_you_from: "Where are you from?"
-      about_you: "About you"
-      default_dictation_language: "Default dictation language: "
-      select_notification: "Select which of the following notifications you want to receive:"
-      user_activity: "Nightly email with activity in collections you've worked on"
-      owner_stats: "Nightly emails with owned collection activity"
-      add_as_collaborator: "Added to private collection as a collaborator"
-      add_as_owner: "Added to collection as a co-owner"
-      add_as_reviewer: "Added to collection as an authorized reviewer"
-      page_edited: "Note added in response to a comment you made"
-      update_profile: "Update Profile"
-      picture: "Profile Picture"
+        one: Contribution
+        other: Contributions
+      edit_profile: Edit Profile
+      last_seen: Last seen %{date}
+      login_and_password: Login &amp; Password
+      newer_activity: Newer activity
+      older_activity: Older activity
+      recent_activity_by: Recent Activity by %{user_display_name}
+      user_deleted: User profile has been deleted
+      user_since: User since %{date}
+      users_profile_at_fromthepage: "%{user}'s profile at FromThePage. %{about}"
     update:
-      user_updated: "User profile has been updated"
+      user_updated: User profile has been updated
+    update_profile:
+      about_you: About you
+      add_as_collaborator: Added to private collection as a collaborator
+      add_as_owner: Added to collection as a co-owner
+      add_as_reviewer: Added to collection as an authorized reviewer
+      default_dictation_language: 'Default dictation language: '
+      footer: Footer
+      help: Basic Help Text
+      interface_language: Interface language
+      learn_more_footer: Learn more about configuring the footer.
+      location: Location
+      name: Name
+      name_only_required: Your name is the only required field.
+      no_image: No image
+      ocrid_id: OCRID ID
+      owner_stats: Nightly emails with owned collection activity
+      page_edited: Note added in response to a comment you made
+      picture: Profile Picture
+      picture_to_be_used_message: Picture to be used
+      select_notification: 'Select which of the following notifications you want to receive:'
+      sign_up_url: 'Sign-up URL:'
+      suggestions_help_tab: Suggestions for your help tab.
+      update_profile: Update Profile
+      update_user_profile: Update User Profile
+      upload_image: Upload image
+      url: URL
+      user_activity: Nightly email with activity in collections you've worked on
+      user_url: 'URL:'
+      website: Website
+      where_are_you_from: Where are you from?
+      your_blog_or_homepage: Your blog or homepage
+      your_ocrid_id: Your OCRID ID
