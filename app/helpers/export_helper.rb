@@ -10,7 +10,6 @@ module ExportHelper
     preprocessed.gsub!('&', '&amp;') # escape ampersands
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
-
     doc = REXML::Document.new(preprocessed)
     doc.elements.each_with_index("//footnote") do |e,i|
       marker = "#{i+1}" #e.attributes['marker'] || '*'
@@ -58,6 +57,12 @@ module ExportHelper
         e.replace_with(REXML::Text.new(" "))
       end
     end
+    if preserve_lb
+      doc.elements.each("//lb") do |e|
+        e.replace_with(REXML::Element.new("br"))
+      end
+    end
+
     html=''
     doc.write(html)
 
