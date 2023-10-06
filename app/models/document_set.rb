@@ -85,6 +85,10 @@ class DocumentSet < ApplicationRecord
     self.collection.text_entry?
   end
 
+  def metadata_only_entry?
+    self.collection.metadata_only_entry?
+  end
+
 
   def hide_completed
     self.collection.hide_completed
