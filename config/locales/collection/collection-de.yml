@@ -57,6 +57,7 @@ de:
       add_another_work_under: Sie können ein weiteres Werk unter %{start_project} hinzufügen
       add_button: Hinzufügen
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
+      alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
       api_access: API-Zugriff
       api_access_description: Zugriff auf Transkriptionen über die IIIF-API zulassen
       authorized_reviewers: Autorisierte Reviewer:innen
@@ -310,6 +311,7 @@ de:
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
+      start_creating_transcribing: Beginnen Sie mit der Erstellung von Metadaten
       start_transcribing: Mit der Transkription beginnen
       subject_categories: Entitätenkategorien
       this_work_has_not_been_described: Dieses Werk benötigt bessere Metadaten.

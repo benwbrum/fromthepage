@@ -177,6 +177,12 @@ class CollectionController < ApplicationController
       flash[:error] = t('unauthorized_collection', :project => @collection.title)
       redirect_to user_profile_path(@collection.owner)
     else
+      if @collection.alphabetize_works
+        order_clause = 'works.title ASC'
+      else
+        order_clause = 'work_statistics.complete ASC, work_statistics.transcribed_percentage ASC, work_statistics.needs_review_percentage DESC'
+      end
+
       @new_mobile_user = !!(session[:new_mobile_user])
       unless @collection.nil?
         if @collection.restricted
@@ -199,7 +205,7 @@ class CollectionController < ApplicationController
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
           #show all works
         elsif (params[:works] == 'show')
-          @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           #hide incomplete works
         elsif params[:works] == 'hide' || (@collection.hide_completed)
           #find ids of completed translation works
@@ -214,15 +220,15 @@ class CollectionController < ApplicationController
             ids += description_ids
           end
           
-          works = @collection.works.joins(:work_statistic).where(id: ids).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+          works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           
           if works.empty?
-            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           else
             @works = works
           end
         else
-          @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
         end
 
         if @collection.facets_enabled?
@@ -264,7 +270,7 @@ class CollectionController < ApplicationController
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
             #show all works
           elsif (params[:works] == 'show')
-            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
             #hide incomplete works
           elsif params[:works] == 'hide' || (@collection.hide_completed)
             #find ids of completed translation works
@@ -279,15 +285,15 @@ class CollectionController < ApplicationController
               ids += description_ids
             end
 
-            works = @collection.works.joins(:work_statistic).where(id: ids).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+            works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
 
             if works.empty?
-              @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+              @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
             else
               @works = works
             end
           else
-            @works = @collection.works.joins(:work_statistic).reorder('work_statistics.complete ASC', 'work_statistics.transcribed_percentage ASC', 'work_statistics.needs_review_percentage DESC').paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           end
 
           if @collection.facets_enabled?
@@ -694,6 +700,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id)
+    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works)
   end
 end
