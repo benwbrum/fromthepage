@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_142257) do
+ActiveRecord::Schema.define(version: 2023_10_05_131547) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -226,6 +226,11 @@ ActiveRecord::Schema.define(version: 2023_09_14_142257) do
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
     t.index ["thredded_messageboard_group_id"], name: "index_collections_on_thredded_messageboard_group_id"
+  end
+
+  create_table "collections_tags", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+    t.integer "collection_id"
+    t.integer "tag_id"
   end
 
   create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
@@ -719,6 +724,15 @@ ActiveRecord::Schema.define(version: 2023_09_14_142257) do
     t.index ["work_id"], name: "index_table_cells_on_work_id"
   end
 
+  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+    t.string "tag_type"
+    t.boolean "canonical"
+    t.string "ai_text"
+    t.string "message_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tex_figures", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.integer "page_id"
     t.integer "position"
@@ -1098,6 +1112,8 @@ ActiveRecord::Schema.define(version: 2023_09_14_142257) do
     t.integer "complete"
     t.integer "translation_complete"
     t.integer "line_count"
+    t.integer "transcribed_percentage"
+    t.integer "needs_review_percentage"
     t.index ["work_id", "line_count"], name: "index_work_statistics_on_work_id_and_line_count"
   end
 

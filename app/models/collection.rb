@@ -36,6 +36,7 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
+  has_and_belongs_to_many :tags
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }

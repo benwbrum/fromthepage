@@ -28,3 +28,6 @@ INTERCOM_ACCESS_TOKEN = ENV['INTERCOM_ACCESS_TOKEN']
 # Nice Levels for Rake Import. See `nice_rake.rb`
 NICE_RAKE_ENABLED = true
 NICE_RAKE_LEVEL = 10 # Values values -20 to 19 (only root can set less than 0)
+
+ENABLE_OPENAI = true
+OPENAI_ACCESS_TOKEN=ENV['OPENAI_ACCESS_TOKEN']
