@@ -300,6 +300,10 @@ class DocumentSet < ApplicationRecord
     collection.api_access
   end
 
+  def alphabetize_works
+    self.collection.alphabetize_works
+  end
+
   def institution_signature
     self.collection.institution_signature
   end
