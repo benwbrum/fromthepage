@@ -171,7 +171,7 @@ en:
       move_up: Move up
       no_pages_found: No pages found
       no_pages_found_description: This work does not contain any pages yet
-      no_works_found_description: There is no work present at this time
+      no_works_found_description: No works found.
       page_title: Page Title
       pages_tab_description: Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
       position: Position
