@@ -37,14 +37,9 @@ module ExportHelper
       n.replace("REPLACEMETABLE#{i}")
     end
 
-    # now back to REXML
-    # html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
-    # doc = REXML::Document.new("<html>#{html}</html>")
-    # doc.elements.each_with_index("//table") do |n,i|
-    #   n.replace_with(REXML::Text.new(markdown_tables[i]))
-    # end
-    html = doc.to_s
-    # html=postprocessed
+    postprocessed = doc.to_s
+    # do the conversions for linebreaks, italics, etc.
+    html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
     
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
@@ -55,11 +50,6 @@ module ExportHelper
     doc.elements.each("//span") do |e|
       if e.attributes['class'] == 'line-break'
         e.replace_with(REXML::Text.new(" "))
-      end
-    end
-    if preserve_lb
-      doc.elements.each("//lb") do |e|
-        e.replace_with(REXML::Element.new("br"))
       end
     end
 
