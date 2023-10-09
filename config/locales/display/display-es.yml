@@ -35,6 +35,7 @@ es:
       no_notes: No hay notas
       no_pages_found: No se encontró ninguna página
       no_pages_in_work: Esta obra aún no contiene ninguna página, ve a %{link} para crear una nueva página
+      no_works_found: No se encontraron obras
       page_title: Título de la Página
       pages_tab: Pestaña Páginas
       review: Revisar
