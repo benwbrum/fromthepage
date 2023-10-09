@@ -491,6 +491,7 @@ Fromthepage::Application.routes.draw do
       get 'works_list', as: :works_list, to: 'collection#works_list'
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
     

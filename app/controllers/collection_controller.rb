@@ -617,6 +617,14 @@ class CollectionController < ApplicationController
     @heading = t('.pages_need_review')
   end
 
+  def needs_metadata_works
+    if params['need_review']
+      @works = @collection.works.where(description_status: "needsreview")
+    else
+      @works = @collection.works.where(description_status: ["incomplete", "undescribed"])
+    end
+  end
+
   def start_transcribing
     page = find_untranscribed_page
     if page.nil?
