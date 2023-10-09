@@ -110,7 +110,7 @@ module ContentdmTranslator
 
 
   def self.iiif_manifest_is_cdm?(at_id)
-    at_id.match(/contentdm.oclc.org/)
+    at_id.match(/contentdm.oclc.org/) || at_id.match(/iiif\/info\/\w+\/\d+\/manifest.json/)
   end
 
   def self.cdm_item_info_from_iiif(at_id)
