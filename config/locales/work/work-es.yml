@@ -171,7 +171,7 @@ es:
       move_up: Ascender
       no_pages_found: No se encontraron páginas
       no_pages_found_description: Esta obra aún no contiene ninguna página.
-      no_works_found_description: No hay trabajo presente en este momento.
+      no_works_found_description: No hay obra presente en este momento.
       page_title: Título de la página
       pages_tab_description: Aquí se ve la lista de todas las páginas de la obra. Si deseas cambiar la posición de una página, use las flechas hacia arriba y hacia abajo a la derecha. Para crear una nueva página para esta obra, haga clic en el botón Agregar nueva página. Una vez creada una nueva página en blanco, búsquela en la lista a continuación y vaya a la configuración donde puede cargar la imagen de la página.
       position: Posición
