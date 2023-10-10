@@ -7,7 +7,7 @@
 -if @document_set && @document_set.title.present? && (@work || @article)
   -path.push(link_to @document_set.title, document_set_path(@document_set.owner, @document_set))
 -elsif @collection && @collection.title.present? && (@work || @article)
-  -if @collection.is_a?(DocumentSet) && !@collection.restricted && @collection.collection.restricted
+  -if @collection.is_a?(DocumentSet) && @collection.show_to?(current_user)
     -path.push(link_to @collection.collection.title, collection_path(@collection.collection.owner, @collection.collection))  
   -path.push(link_to @collection.title, collection_path(@collection.owner, @collection))
 -elsif @collection && @collection.title.present? && @collection.is_a?(DocumentSet)
