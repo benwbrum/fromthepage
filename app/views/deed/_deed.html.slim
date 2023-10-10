@@ -27,10 +27,13 @@
 
   -if(!deed.work.nil? && !deed.work.collection.nil? )
     -if access_object
-      -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
+      - if deed.collection.metadata_only_entry?
+        -work = link_to(deed.work.title, metadata_overview_collection_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
+      - else
+        -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
     -else
       -work = deed.work.title
-
+  
   -unless(deed.collection.nil?)
     -if prerender
       -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
