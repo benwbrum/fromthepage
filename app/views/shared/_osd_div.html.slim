@@ -1,5 +1,7 @@
 =javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.0.0/openseadragon.min.js"
 =javascript_include_tag "openseadragon-filtering.js"
+=javascript_include_tag "annotorious/annotorious-openseadragon.js"
+=javascript_include_tag "annotorious/annotorious-openseadragon-textlayer.js"
 
 
 .image-toolbar(id="image_toolbar")
@@ -30,6 +32,13 @@
     a#osd_next =svg_symbol "#icon-arrow-right", class: 'icon'
 
 .image-container(id="image_container")
+
+
+
+<div class="buttons">
+  <button id="toggle-locked">Lock for Copy &amp; Paste</button>
+  <button id="toggle-visibility">Toggle Layer Visiblity</button>
+</div>
 
 -content_for :javascript
   javascript:
@@ -108,6 +117,49 @@
             lastFocused = null;
           }
         }, 100);
+      });
+
+
+      var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
+        // make sure that the boxes over the text annotations are inert
+        pointerSelectAction: 'NONE'
+      });
+
+
+      anno.setFormatter(function() { 
+        // make the annotation boxes transparent rather than opaque
+        return { fillOpacity: 0 };
+      });
+
+
+      // set up the text layer plugin on Annotorious
+      var textlayer = OSDTextLayer.mountExtension(anno, {
+        label: OSDTextLayer.transcriptionLabel,
+        // make labels zoom with the page
+        mode: 'fixedPageSize',
+        // horizontal position for labels relative to boxes-- offsets are relative to this
+        // options are 'center', 'topleft', 'bottomleft'
+        position: 'center',
+        // Offset from position.  (offsetX is also an option)
+        offsetY: 50
+      });
+
+      textlayer.loadOCR('/alto-sample.xml');
+
+      const btnLocked = document.getElementById('toggle-locked');
+      btnLocked.addEventListener('click', () => {
+        if (textlayer.isLocked()) {
+          btnLocked.innerHTML = 'Lock for Copy &amp; Paste';
+          textlayer.setLocked(false);
+        } else {
+          btnLocked.innerHTML = 'Unlock';
+          textlayer.setLocked(true);
+        }
+      });
+
+
+      document.getElementById('toggle-visibility').addEventListener('click', () => {
+        textlayer.setVisible(!textlayer.isVisible());
       });
 
       $('[data-filter]').on('input', updateFilters);
