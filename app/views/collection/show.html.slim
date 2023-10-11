@@ -123,7 +123,11 @@
         =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
- 
+    
+    - if @collection.active? && @collection.metadata_only_entry?
+      =link_to t('collection.needs_review_pages.works_that_need_metadata'), collection_needs_metadata_path(@collection.owner, @collection), class: 'button review-button'
+      =link_to t('collection.needs_review_pages.review_metadata'), collection_needs_metadata_path(@collection.owner, @collection, need_review: true), class: 'button review-button'
+
     -if @collection.facets_enabled?
       =render(:partial => 'facet_form')
 

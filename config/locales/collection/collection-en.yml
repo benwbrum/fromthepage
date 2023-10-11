@@ -57,6 +57,7 @@ en:
       add_another_work_under: You can add another work under %{start_project}
       add_button: Add
       alert: Please configure fields or choose document based transcription under Transcription Type.
+      alphabetize_works: Display works alphabetically rather than in order of work needed.
       api_access: API Access
       api_access_description: Allow access to transcriptions via IIIF API
       authorized_reviewers: Authorized reviewers
@@ -244,6 +245,8 @@ en:
       pages_need_review: Pages That Need Review
       project_by: Project by
       return_to_collection: Return to collection
+      review_metadata: Review Metadata
+      works_that_need_metadata: Works That Need Metadata
     needs_transcription_pages:
       pages_need_transcription: Pages That Need Transcription
       project_by: Project by

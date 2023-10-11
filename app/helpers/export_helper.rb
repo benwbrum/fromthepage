@@ -10,7 +10,6 @@ module ExportHelper
     preprocessed.gsub!('&', '&amp;') # escape ampersands
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
-
     doc = REXML::Document.new(preprocessed)
     doc.elements.each_with_index("//footnote") do |e,i|
       marker = "#{i+1}" #e.attributes['marker'] || '*'
@@ -38,14 +37,9 @@ module ExportHelper
       n.replace("REPLACEMETABLE#{i}")
     end
 
-    # now back to REXML
-    # html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
-    # doc = REXML::Document.new("<html>#{html}</html>")
-    # doc.elements.each_with_index("//table") do |n,i|
-    #   n.replace_with(REXML::Text.new(markdown_tables[i]))
-    # end
-    html = doc.to_s
-    # html=postprocessed
+    postprocessed = doc.to_s
+    # do the conversions for linebreaks, italics, etc.
+    html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
     
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
@@ -58,6 +52,7 @@ module ExportHelper
         e.replace_with(REXML::Text.new(" "))
       end
     end
+
     html=''
     doc.write(html)
 

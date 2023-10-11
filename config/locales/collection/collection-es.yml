@@ -57,6 +57,7 @@ es:
       add_another_work_under: Puedes añadir otra obra en %{start_project}
       add_button: Añadir
       alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
+      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
       api_access: Acceso API
       api_access_description: Permitir acceso a transcripciones a través del API IIIF
       authorized_reviewers: revisores autorizados
@@ -244,6 +245,8 @@ es:
       pages_need_review: Páginas que Necesitan Revisión
       project_by: Proyecto de
       return_to_collection: Volver a la colección
+      review_metadata: Revisar metadatos
+      works_that_need_metadata: Trabajos que necesitan metadatos
     needs_transcription_pages:
       pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
