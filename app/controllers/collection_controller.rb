@@ -511,7 +511,7 @@ class CollectionController < ApplicationController
     if collection_params[:slug].blank?
       @collection.slug = @collection.title.parameterize
     end
-   
+    @collection.tags = Tag.where(id: params[:collection][:tags])
     if @collection.save
       flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
@@ -708,6 +708,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works)
+    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works, :tags)
   end
 end
