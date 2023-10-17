@@ -421,6 +421,7 @@ private
         'Pages Needing Review',
         'Pages Marked Blank',
         'Contributors',
+        'Contributors Name',
         'work_id'
       ]
 
@@ -435,6 +436,7 @@ private
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
     
         work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
+        contributors_real_names = work.deeds.map{ |d| "#{d.user.real_name}" }.uniq
         row = [
           work.title,
           work.collection.title,
@@ -454,6 +456,7 @@ private
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
           work_users,
+          contributors_real_names,
           work.id
           
         ]
