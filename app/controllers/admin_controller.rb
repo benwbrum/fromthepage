@@ -317,6 +317,43 @@ class AdminController < ApplicationController
     @end_date = max_date if max_date < @end_date
   end
 
+  def delete_tag
+    tag = Tag.find params[:tag_id]
+    tag.destroy
+
+    redirect_to :action => 'tag_list'
+  end
+
+  def show_tag
+    @tag = Tag.find params[:tag_id]
+    @collections = @tag.collections.order(:title)
+    @possible_duplicates = []
+    clean_text = @tag.ai_text.gsub(/^\W*/,'').gsub(/\W*$/,'')
+    Tag.where("ai_text like '%#{clean_text}%'").each do |t|
+      @possible_duplicates << t unless t == @tag
+    end
+
+  end
+
+  def merge_tag
+    target_tag = Tag.find params[:target_tag_id]
+    source_tag = Tag.find params[:source_tag_id]
+
+    target_tag.collections << source_tag.collections
+    target_tag.save
+
+    source_tag.destroy!
+
+    flash[:notice] = t('.tags_merged', target_tag: target_tag.ai_text, source_tag: source_tag.ai_text)
+
+    redirect_to admin_tags_show_path(target_tag.id)
+  end
+
+  def tag_list
+    @tag_to_count_map = Tag.joins(:collections_tags).group(:id).count
+    @tags = Tag.all.order(:canonical, :ai_text)
+  end
+
   private
 
   def user_params

@@ -1,0 +1,59 @@
+=render(:partial => 'header', :locals => { :selected => 2 })
+
+.columns
+  article.sidebar
+    h1 =@tag.ai_text
+
+    h3 AI Text
+    code =@tag.ai_text
+
+    h3 Status 
+    -if @tag.canonical
+      span Canonical
+    -else
+      span Not Canonical
+
+    h3 Type:
+    span =@tag.tag_type
+
+    h3 Messages:
+    span TODO
+  article.maincol
+    h2 =t('.possible_duplicates')
+    -if @possible_duplicates.empty?
+      p =t('.no_duplicates_found')
+    -else
+      table.tabular
+        thead
+          tr
+            th AI Text
+            th Status
+            th Type
+            th Actions
+        tbody
+          -@possible_duplicates.each do |candidate|
+            tr
+              td
+                code =link_to candidate.ai_text, admin_tags_show_path(candidate.id)
+              td 
+                =candidate.canonical ? 'Canonical' : 'Suggested'
+              td 
+                =candidate.tag_type
+              td 
+                span =link_to(raw("Merge <code>#{@tag.ai_text}</code> into <code>#{candidate.ai_text}</code>"),
+                  admin_tags_merge_path(@tag.id, candidate.id))
+                br
+                span =link_to(raw("Merge <code>#{candidate.ai_text}</code> into <code>#{@tag.ai_text}</code>"),
+                  admin_tags_merge_path(candidate.id, @tag.id))
+                  
+                /=link_to t('.merge'), admin_tags_merge_path(@tag.id, candidate.id), class: 'button'
+                /=link_to t('.delete'), admin_tags_delete_path(candidate.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
+
+
+h2 =t('.tagged_collections')
+.columns
+  article.maincol
+    -unless @collections.empty?
+      =render :partial => 'collection_list_datatable'
+    -else
+      i There are no collections tagged with #{@tag.ai_text}.
