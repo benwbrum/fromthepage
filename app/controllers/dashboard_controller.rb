@@ -136,6 +136,11 @@ class DashboardController < ApplicationController
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
 
+  def browse_tag
+    @tag = Tag.find(params[:tag_id])
+    @collections = @tag.collections.unrestricted.not_near_complete.has_intro_block.has_picture
+  end
+
   def landing_page
     if params[:search]
       # Get matching Collections and Docsets

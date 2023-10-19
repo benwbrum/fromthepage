@@ -8,6 +8,13 @@ class Tag < ApplicationRecord
     TASK='task'
   end
 
+  TAG_TYPES = [
+    TagType::DATE,
+    TagType::LANGUAGE,
+    TagType::SUBJECT,
+    TagType::TASK
+  ]
+
 
   def self.tag_by_subject(description, title)
     # get the subject tags

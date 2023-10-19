@@ -335,6 +335,16 @@ class AdminController < ApplicationController
 
   end
 
+  def edit_tag
+    @tag = Tag.find params[:tag_id]
+  end
+
+  def update_tag
+    @tag = Tag.find params[:tag_id]
+    @tag.update_attributes(tag_params)
+    redirect_to :action => 'tag_list'
+  end
+
   def merge_tag
     target_tag = Tag.find params[:target_tag_id]
     source_tag = Tag.find params[:source_tag_id]
@@ -355,6 +365,10 @@ class AdminController < ApplicationController
   end
 
   private
+  def tag_params
+    params.require(:tag).permit(:ai_text, :canonical, :tag_type)
+  end
+
 
   def user_params
     params.require(:user).permit(:real_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
