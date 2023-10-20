@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :load_html_blocks
   before_action :authorize_collection
   before_action :configure_permitted_parameters, if: :devise_controller?
-  skip_before_action :verify_authenticity_token, if: :codespaces_environment? && :devise_controller?
+  skip_before_action :verify_authenticity_token, if: codespaces_environment? && :devise_controller?
   before_action :set_current_user_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
