@@ -18,13 +18,6 @@ h2
             =t('dashboard.owner.n_works', count: collection.works.count)
           span
             =render({ :partial => 'shared/progress', :locals => { :collection => collection } })
-        br
-        -link_page = collection.next_untranscribed_page
-        -unless link_page.blank?
-          -if user_signed_in?
-            =link_to t('.transcribe_a_page'), collection_transcribe_page_path(collection.owner, collection, link_page.work, link_page), class: 'projects_link'
-          -else
-            =link_to t('.transcribe_a_page'), collection_guest_page_path(collection.owner, collection, link_page.work, link_page), class: 'projects_link'
 
 
         
