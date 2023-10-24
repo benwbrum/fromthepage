@@ -114,7 +114,7 @@ class DashboardController < ApplicationController
   # Collaborator Dashboard - watchlist
   def watchlist
     works = Work.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct
-    collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct.order_by_recent_activity.limit(5)
+    collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)

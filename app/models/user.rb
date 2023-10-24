@@ -30,6 +30,7 @@ class User < ApplicationRecord
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_collections, through: :collection_blocks, source: :collection
+  has_many :ahoy_activity_summaries
 
   has_and_belongs_to_many(:scribe_works,
                           :join_table => 'transcribe_authorizations',
