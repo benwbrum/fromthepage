@@ -436,7 +436,7 @@ private
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
     
         work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
-        contributors_real_names = work.deeds.map{ |d| "#{d.user.real_name}" }.uniq
+        contributors_real_names = work.deeds.map{ |d| d.user.real_name }.uniq.join(' | ')
         row = [
           work.title,
           work.collection.title,
