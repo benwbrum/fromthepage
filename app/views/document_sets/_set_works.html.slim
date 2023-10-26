@@ -17,7 +17,7 @@ table#works-list.collection-work-stats.datagrid.striped
     -@works.each do |w|
       tr.document_set
         -work_stats(w)
-        td =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
+        td =link_to w.title, collection_read_work_path(@collection.owner, @collection, w)
         td (data-order="#{w.work_statistic.complete}")
           = t('.n_pages', count: w.work_statistic.total_pages)
           = @wording
