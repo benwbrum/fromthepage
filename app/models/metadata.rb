@@ -124,10 +124,10 @@ class Metadata
       raw_metadata_strings = collection.works.pluck(:original_metadata)
       metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
 
-      csv << ['work_id', 'title', 'identifier'] + metadata_headers + ['new metadata field 1', 'new metadata field 2'] 
+      csv << ['work_id', 'title', 'identifier', 'description'] + metadata_headers + ['new metadata field 1', 'new metadata field 2'] 
 
       collection.works.each do |work|
-        row = [work.id, work.title, work.identifier]
+        row = [work.id, work.title, work.identifier, work.description]
         unless work.original_metadata.blank?
           metadata = {}
           JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
