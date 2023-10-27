@@ -73,6 +73,13 @@ class Metadata
           end
           metadata.delete_if{|e| e[:label] == 'identifier'}
         end
+        description = metadata.detect{|e| e[:label] == 'description'}
+        if !description.blank?
+          if description[:value] != work.description
+            work.description = description[:value]
+          end
+          metadata.delete_if{|e| e[:label] == 'description'}
+        end
         work.original_metadata=metadata.to_json
         work.save!
         success+=1
