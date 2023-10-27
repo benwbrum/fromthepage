@@ -23,9 +23,9 @@
 .columns.project-list
   article.maincol
     ul.tagcloud
-      -tagged_collections.each do |tag, collection_list|
-        li data-weight="#{collection_list.size}"
-          a title="#{collection_list.map{|c| c.title}.join(', ')}" =tag
+      -@tag_map.each do |ai_text, collection_count|
+        li data-weight="#{collection_count}"
+          =link_to(ai_text, browse_tag_path(ai_text))
 
     -if @search_results && @owners.empty?
       -@search_results.each do |sr|

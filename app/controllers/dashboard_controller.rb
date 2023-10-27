@@ -138,7 +138,7 @@ class DashboardController < ApplicationController
   end
 
   def browse_tag
-    @tag = Tag.find(params[:tag_id])
+    @tag = Tag.where(ai_text: params[:ai_text]).first
     @collections = @tag.collections.unrestricted.not_near_complete.has_intro_block.has_picture
   end
 
@@ -171,6 +171,9 @@ class DashboardController < ApplicationController
     docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     @collections = (docsets + colls).sample(8)
+
+    @tag_map = Tag.where(canonical: true).joins(:collections).where("collections.restricted" ==false).group(:ai_text).count
+
   end
 
 

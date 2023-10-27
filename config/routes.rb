@@ -356,7 +356,7 @@ Fromthepage::Application.routes.draw do
   get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
-  get 'browse_tag/:tag_id', to: 'dashboard#browse_tag', as: :browse_tag
+  get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
 
   scope 'feature', as: 'feature' do
     get ':feature/:value', to: 'user#feature_toggle' 
