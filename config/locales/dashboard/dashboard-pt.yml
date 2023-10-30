@@ -161,3 +161,12 @@ pt:
       projects_you_have_contributed_to: Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo.
       try_transcribing_a_page: 'Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes '
       your_activity: Sua Atividade
+      your_hours: Seu horário
+    your_hours:
+      contributions_between_dates: Contribuições entre %{start_date} e %{end_date}
+      select_new_date: Selecione um novo período
+      start_date: Data de início
+      end_date: Data final
+      update: Atualizar
+      hours_details_message: "%{user_name} contribuiu com %{time_duration} entre %{start_date} e %{end_date}"
+      

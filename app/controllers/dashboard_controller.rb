@@ -72,6 +72,33 @@ class DashboardController < ApplicationController
     @sc_collections = ScCollection.all
   end
 
+  def your_hours
+    if params['start_date'].present? && params['end_date'].present?
+      @start_date_hours = Date.parse(params['start_date'])
+      @end_date_hours = Date.parse(params['end_date'])
+    else
+      @start_date_hours = 7.days.ago.to_date
+      @end_date_hours = Date.today
+    end
+    debugger
+    @user_collections = Collection.where(
+      owner_user_id: current_user.id,
+      created_on: @start_date_hours..@end_date_hours
+    )
+  end
+  
+  def download_hours_letter
+    load_user_data
+    markdown_text = generate_markdown_text
+  
+    input_path = Rails.root.join('tmp', 'input.md').to_s
+    output_path = Rails.root.join('tmp', 'letter.pdf').to_s
+  
+    generate_pdf(input_path, output_path, markdown_text)
+  
+    send_generated_pdf(output_path)
+  end
+
   # Owner Dashboard - list of works
   def owner
     collections = current_user.all_owner_collections
@@ -237,5 +264,59 @@ class DashboardController < ApplicationController
 
   def work_params
     params.require(:work).permit(:title, :description, :collection_id)
+  end
+
+  def load_user_data
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @time_duration = params[:time_duration]
+    @user_collections = Collection.where(
+      owner_user_id: current_user.id,
+      created_on: @start_date..@end_date
+    )
+  end
+  
+  def generate_markdown_text
+    <<~MARKDOWN
+      ![Logo](app/assets/images/logo.png){width=300px style="display: block; margin: 0 auto;"}
+      
+      #{Time.now.to_date}\n
+      To Whom It May Concern:\n
+      This letter is to certify that #{current_user.real_name} has contributed #{@time_duration} to library
+      crowdsourcing efforts on From the Page (www.fromthepage.com) between #{@start_date} and #{@end_date}.
+      Through the website, volunteers can help transcribe historic documents in library collections,
+      thereby making them more searchable and accessible for future researchers. The From the Page website
+      tracks the time registered users are active on the site and reports a total number of active minutes.\n
+      \n
+      #{current_user.real_name} has worked on the following collections by the following institutions:c
+      
+      | Institutions  | Collection | Pages Count |
+      |--------------|------------|-------------|
+      #{generate_collection_rows(@user_collections)}
+      
+      Each volunteer helps make history more accessible. We appreciate #{current_user.display_name} contribution to
+      our crowdsourcing effort!\n
+      \n
+      Regards,\n
+      \n
+      Sara Brumfield\n
+      Partner, FromThePage
+    MARKDOWN
+  end
+  
+  def generate_collection_rows(user_collections)
+    user_collections.map do |collection|
+      "| #{collection.owner.display_name} | #{collection.title} | #{collection.pages.count} |"
+    end.join("\n")
+  end
+  
+  def generate_pdf(input_path, output_path, markdown_text)
+    File.write(input_path, markdown_text)
+  
+    system("pandoc #{input_path} -s --pdf-engine=xelatex -o #{output_path}")
+  end
+  
+  def send_generated_pdf(output_path)
+    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
   end
 end

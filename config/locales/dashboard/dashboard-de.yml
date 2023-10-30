@@ -161,3 +161,11 @@ de:
       projects_you_have_contributed_to: Projekte, an denen Sie mitgewirkt haben – durch Transkription, Bearbeitung oder Kommentierung –, werden hier mit der letzten Aktivität aufgelistet, damit Sie auf dem Laufenden bleiben.
       try_transcribing_a_page: Sie haben sich noch an keinem Projekt beteiligt. Versuchen Sie, eine Seite davon zu transkribieren
       your_activity: Ihre Aktivitäten
+      your_hours: Jouw uren
+    your_hours:
+      contributions_between_dates: Bijdragen tussen %{start_date} en %{end_date}
+      select_new_date: Selecteer een nieuw datumbereik
+      start_date: Begin datum
+      end_date: Einddatum
+      update: Update
+      hours_details_message: "%{user_name} heeft %{time_duration} bijgedragen tussen %{start_date} en %{end_date}"
