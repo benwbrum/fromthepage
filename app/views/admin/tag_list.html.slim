@@ -1,0 +1,40 @@
+=stylesheet_link_tag 'datatables.min'
+h2 =t('.all_tags')
+
+.columns
+  article.maincol
+    -unless @tags.empty?
+      table#tags.datagrid.striped 
+        thead
+          th AI Text
+          th Status
+          th Type
+          th Collections
+          th Message
+          th Actions
+        tbody
+          -@tags.each do |tag|
+            tr
+              td
+                code =link_to tag.ai_text, admin_tags_show_path(tag.id)
+                /=link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, :target => "_blank")
+              td 
+                =tag.canonical ? 'Canonical' : 'Suggested'
+              td 
+                =tag.tag_type
+              td
+                =@tag_to_count_map[tag.id]
+              td
+                i TODO
+              td 
+                =link_to t('.edit'), admin_tags_edit_path(tag.id), class: 'button'
+                =link_to t('.delete'), admin_tags_delete_path(tag.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
+
+
+
+-content_for :javascript
+  javascript:
+
+    $(document).ready( function() {
+        $('#tags').DataTable({ paging: false });
+    } );

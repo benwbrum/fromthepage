@@ -36,6 +36,7 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
+  has_and_belongs_to_many :tags
   has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -54,6 +55,7 @@ class Collection < ApplicationRecord
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
+  scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 

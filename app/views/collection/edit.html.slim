@@ -69,6 +69,11 @@
 
         tr
           td(colspan="2")
+            =f.label :tags, t('.subject_tags')
+            =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
+
+        tr
+          td(colspan="2")
             =f.label :default_orientation, t('.default_orientation')
             =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w50'}
 

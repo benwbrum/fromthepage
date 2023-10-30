@@ -66,6 +66,16 @@ Fromthepage::Application.routes.draw do
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
     patch 'expunge_user', :to => 'admin#expunge_user'
+    scope 'tags', as: 'tags' do
+      delete ':tag_id/delete', to: 'admin#delete_tag', as: 'delete'
+      get ':tag_id/edit', to: 'admin#edit_tag', as: 'edit'
+      get 'new', to: 'admin#new_tag'
+      post 'create', to: 'admin#create_tag'
+      patch ':tag_id/update', :to => 'admin#update_tag'
+      get 'index', to: 'admin#tag_list'
+      get ':tag_id', to: 'admin#show_tag', as: 'show'
+      get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
+    end
   end
 
   scope 'facets', as: 'facets' do
@@ -343,9 +353,10 @@ Fromthepage::Application.routes.draw do
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
+  get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
-  get 'demo', to: 'demo#index'
+  get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
 
   scope 'feature', as: 'feature' do
     get ':feature/:value', to: 'user#feature_toggle' 
