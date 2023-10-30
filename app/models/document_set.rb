@@ -85,6 +85,10 @@ class DocumentSet < ApplicationRecord
     self.collection.text_entry?
   end
 
+  def metadata_only_entry?
+    self.collection.metadata_only_entry?
+  end
+
 
   def hide_completed
     self.collection.hide_completed
@@ -296,8 +300,12 @@ class DocumentSet < ApplicationRecord
     nil
   end
 
-  def api_access # API access is only controlled by public/private for document sets
-    false
+  def api_access 
+    collection.api_access
+  end
+
+  def alphabetize_works
+    self.collection.alphabetize_works
   end
 
   def institution_signature
@@ -307,4 +315,10 @@ class DocumentSet < ApplicationRecord
   def most_recent_deed_created_at
     self.collection.most_recent_deed_created_at
   end
+
+  def user_help
+    self.collection.owner.help
+  end
+
+  public :user_help
 end

@@ -74,6 +74,8 @@ fr:
       reuse: Réutilisation
       searchable_plaintext: Texte brut optimisé pour la recherche
       searchable_plaintext_export_description: Exporter des transcriptions en texte brut optimisées pour la recherche en texte intégral sous forme de fichier zip contenant un fichier par page.
+      subject_index_csv: Índice de materias CSV
+      subject_index_csv_description: Une feuille de calcul répertoriant chaque endroit où un sujet est mentionné dans une page de l'œuvre.
       table_field_csv: Tableau/Champ CSV
       table_field_csv_export_description: Exporter toutes les données tabulaires, de feuilles de calcul ou basées sur des champs dans un seul fichier CSV.
       verbatim_plaintext: Texte brut verbatim
@@ -169,6 +171,7 @@ fr:
       move_up: Déplacer vers le haut
       no_pages_found: Aucune page trouvée
       no_pages_found_description: Ce œuvre ne contient pas encore de pages
+      no_works_found_description: Il n'y a aucune œuvre présente pour le moment
       page_title: Titre de la page
       pages_tab_description: Ici vous voyez la liste de toutes les pages de l'œuvre. Si vous souhaitez modifier la position d'une page, utilisez les flèches haut et bas à droite. Pour créer une nouvelle page pour ce œuvre, cliquez sur le bouton Ajouter une nouvelle page. Une fois une nouvelle page vierge créée, recherchez-la dans la liste ci-dessous et passez aux paramètres où vous pouvez télécharger l'image de la page.
       position: Position

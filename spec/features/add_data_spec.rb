@@ -107,6 +107,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "adds pages to an empty work" do
     visit dashboard_owner_path
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.maincol').find('a', text: @title).click
     page.find('.tabs').click_link("Pages")
     page.find('a', text: "Add New Page").click

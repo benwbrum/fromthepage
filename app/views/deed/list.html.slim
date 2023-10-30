@@ -14,26 +14,32 @@ h1 =t('.activity_stream')
   -else
     h3 =t('.user_title', title: @user.display_name)
 
-table.datagrid.striped
-  -@deeds.each do |d|
-    tr
-      td
-        =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
-          =profile_picture(d.user)
-      td.w100.toleft
-        -if @collection.nil?
-          -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
-            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+table.datagrid.striped#deeds-list
+  thead 
+    th
+    th= t('.deed')
+    th= t('.type')
+    th= t('.time')
+  tbody
+    -@deeds.each do |d|
+      tr
+        td
+          =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
+            =profile_picture(d.user)
+        td.w100.toleft
+          -if @collection.nil?
+            -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
+              =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+            -else
+              =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
           -else
-            =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
-        -else
-          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
-          
-      td
-        small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
-      td.nowrap
-        =time_tag(d.created_at, class: 'small fglight')
-          =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
+            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
+            
+        td
+          small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
+        td.nowrap (data-order="#{d.created_at.to_i}")
+          =time_tag(d.created_at, class: 'small fglight')
+            =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
 br
 small.legend
   =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }

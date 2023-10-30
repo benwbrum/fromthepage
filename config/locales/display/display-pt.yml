@@ -35,6 +35,7 @@ pt:
       no_notes: Sem notas
       no_pages_found: Nenhuma página encontrada
       no_pages_in_work: Esta obra ainda não contém nenhuma página; vá para %{link} para criar uma nova página
+      no_works_found: Nenhuma obra encontrada
       page_title: Título da Página
       pages_tab: Guia de páginas
       review: Análise
@@ -52,6 +53,7 @@ pt:
       search_for: Buscar por %{search_string}
       search_in_collection: Buscar na coleção...
       search_in_collection_1: Pesquisar na coleção
+      search_in_work: Pesquise em obra...
       translations_need_indexing: Traduções para Indexar
       translations_need_review: Traduções para Revisar
       view_all_pages: Ver Todas as Páginas

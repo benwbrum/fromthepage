@@ -8,9 +8,10 @@ class StatisticsController < ApplicationController
     @recent_stats = @collection.get_stats_hash(7.days.ago)
   #  @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
 
-    @users = User.all
+    @users = User.all # Really??? TODO: fix this
     @all_transcribers = build_user_array(DeedType::PAGE_TRANSCRIPTION)
     @all_editors      = build_user_array(DeedType::PAGE_EDIT)
+    @all_reviewers    = build_user_array(DeedType::PAGE_REVIEWED)
     @all_indexers     = build_user_array(DeedType::PAGE_INDEXED)
   end
 

@@ -2,7 +2,7 @@
 pt:
   work:
     configurable_printout:
-      description: Exporte este trabalho em um formato para impressão
+      description: Exporte esta obra em um formato para impressão
       export: Exportar
       file_format: Formato de arquivo
       file_format_description: Tipo de arquivo para exportação para impressão
@@ -11,14 +11,14 @@ pt:
       include_metadata: Incluir metadados
       preserve_linebreaks: Preservar quebras de linha
       text_contents: Conteúdo
-      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre o trabalho.
+      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
       text_format: Formatação de texto
       text_format_description: Opções para formatar texto.
       text_format_docx: MS Word (.docx)
       text_format_pdf: PDF
       word_wrap: Quebra de linha
     create:
-      work_created: Trabalho criado com sucesso
+      work_created: Obra criado com sucesso
     describe:
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
@@ -48,21 +48,21 @@ pt:
     description_versions:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
-      help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados de trabalho. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
+      help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados da obra. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
       revision: revisão
     download:
       analyze: Analisar
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
       configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
-      docx_download_description: Baixe uma versão DOCX deste trabalho.
+      docx_download_description: Baixe uma versão DOCX desta obra.
       download: Download
       expanded_plaintext: Texto simples expandido
       expanded_plaintext_export_description: Exporte transcrições de texto simples substituindo texto literal por títulos de assunto canônicos como um arquivo zip contendo um arquivo por página.
       experiment: Experimentar
       export: Exportar
       facing_pdf: PDF de frente
-      facing_pdf_export_description: Baixe uma versão em PDF deste trabalho incluindo imagens e texto nas páginas opostas.
+      facing_pdf_export_description: Baixe uma versão em PDF desta obra incluindo imagens e texto nas páginas opostas.
       html: HTML
       html_export_description: Exporte as transcrições como um arquivo zip contendo um arquivo HTML por página.
       iiif: IIIF
@@ -70,10 +70,12 @@ pt:
       iiif_manifest_description: IIIF Manifest URI para uso em qualquer cliente IIIF.
       ms_word: MS Word
       pdf: PDF
-      pdf_download_description: Baixe uma versão em PDF deste trabalho.
+      pdf_download_description: Baixe uma versão em PDF desta obra.
       reuse: Reuso
       searchable_plaintext: Texto simples pesquisável
       searchable_plaintext_export_description: Exporte transcrições de texto simples otimizadas para pesquisa de texto completo como um arquivo zip contendo um arquivo por página.
+      subject_index_csv: Índice de assunto CSV
+      subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro da obra.
       table_field_csv: CSV de tabela/campo
       table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
       verbatim_plaintext: Texto simples literal
@@ -81,23 +83,23 @@ pt:
       verbatim_plaintext_zero_index: Zip de treinamento Transkribus
       verbatim_plaintext_zero_index_description: Arquivo zip contendo arquivos de texto sem formatação indexados em zero, adequados para importação como dados de treinamento para o Transkribus.
       voyant: Voyant
-      voyant_analysis_description: Envie a transcrição deste trabalho para a Voyant Tools para análise.
-      warning_work_not_complete: 'Atenção: este trabalho pode não estar completo.'
+      voyant_analysis_description: Envie a transcrição desta obra para a Voyant Tools para análise.
+      warning_work_not_complete: 'Atenção: esta obra pode não estar completo.'
       word_trees: Árvores de palavras
-      word_trees_analysis_description: Envie a transcrição deste trabalho para o visualizador Word Trees de Jason Davies para análise.
+      word_trees_analysis_description: Envie a transcrição desta obra para o visualizador Árvores de Palavras de Jason Davies para análise.
       zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis apenas para proprietários de projetos.
     edit:
       add: Adicionar
       additional_metadata: Metadados adicionais
-      additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre deste trabalho e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
+      additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
       allowed_collaborators: Colaboradores permitidos
       apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
       collection: Coleção
-      confirm_delete_work: Tem certeza de que deseja excluir este trabalho? Após a exclusão, você não poderá recuperá-lo!
-      current_url: A URL atual para este trabalho é %{current_url}. Se você quiser editar a seção de trabalho do URL, use letras minúsculas e traços entre as palavras.
-      delete_work: Excluir trabalho
+      confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão, você não poderá recuperá-lo!
+      current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar a seção da obra do URL, use letras minúsculas e traços entre as palavras.
+      delete_work: Excluir obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       document_date: Data do documento
@@ -105,27 +107,27 @@ pt:
       document_history: Documento histórico
       editorial_notes: Notas editoriais
       enable_ocr_correction: Ativar correção de OCR
-      enable_ocr_correction_description: Um trabalho pode começar com texto OCR que precisa ser corrigido. Quando marcada, a guia Transcrever será substituída por uma guia Correta.
+      enable_ocr_correction_description: Uma obra pode começar com texto OCR que precisa ser corrigido. Quando marcada, a guia Transcrever será substituída por uma guia Correta.
       genre: Gênero
       identifier: Identificador
       identifier_description: Identificador de sistemas fora de FromThePage, para ser usado correlacionando exportações para registros externos. (Este campo não é visível ao público.)
       in_scope: Na mira
-      more_work_settings_info: Para obter mais informações sobre configurações de trabalho, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando um trabalho para Transcrição</a>.
+      more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
       no_allowed_collaborators_selected: Nenhum colaborador permitido selecionado
       no_image: Sem imagem
       pages_are_meaningful: As páginas são significativas
-      pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de um trabalho (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
+      pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
       permission_description: Descrição da permissão
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
       remove: Remover
       restrict_collaborators: Restringir colaboradores
-      restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar este trabalho. Adicione colaboradores para tornar o trabalho editável por outras pessoas.
+      restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
       revert: Reverter
       revert_transcription_conventions_description: Reverter convenções de transcrição para padrão de coleção
       save_changes: Salvar alterações
-      settings_only_work_owners: As configurações para este trabalho são acessíveis apenas aos proprietários do trabalho.
+      settings_only_work_owners: As configurações para esta obra são acessíveis apenas aos proprietários da obra.
       source_box_folder: Caixa/Pasta de Origem
       source_collection_name: Nome da coleção de origem
       source_location: Local de origem
@@ -137,10 +139,10 @@ pt:
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
       url: URL
-      work_image: Imagem de trabalho
-      work_image_description: Uma imagem a ser usada para ilustrar o trabalho. Se nenhuma imagem for carregada, uma imagem da página será usada.
-      work_thumbnail: Miniatura do trabalho
-      work_title: Título do trabalho
+      work_image: Imagem da obra
+      work_image_description: Uma imagem a ser usada para ilustrar a obra. Se nenhuma imagem for carregada, uma imagem da página será usada.
+      work_thumbnail: Miniatura da obra
+      work_title: Título da obra
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -149,9 +151,9 @@ pt:
     needsreview: Metadados precisam de revisão.
     new:
       collection: Coleção
-      create_empty_work: Criar trabalho vazio
-      create_empty_work_description: Isso cria um trabalho vazio. Depois de criar o trabalho, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar o trabalho e fazer upload do arquivo em %{start_project}.
-      create_work: Criar trabalho
+      create_empty_work: Criar obra vazia
+      create_empty_work_description: Isso cria uma obra vazio. Depois de criar a obra, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar a obra e fazer upload do arquivo em %{start_project}.
+      create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       start_a_project: Iniciar um projeto
@@ -168,9 +170,10 @@ pt:
       move_down: Mover para baixo
       move_up: Subir
       no_pages_found: Nenhuma página encontrada
-      no_pages_found_description: Este trabalho ainda não contém páginas
+      no_pages_found_description: Esta obra ainda não contém páginas
+      no_works_found_description: Não há nenhum obra presente neste momento
       page_title: Título da página
-      pages_tab_description: Aqui você vê a lista de todas as páginas do trabalho. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para este trabalho clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
+      pages_tab_description: Aqui você vê a lista de todas as páginas da obra. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para esta obra clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
       position: Posição
       ready_to_transcribe: Pronto para %{transcribe}
       settings: Definições
@@ -202,4 +205,4 @@ pt:
       uploaded_by: Subido por
     undescribed: Sem metadados.
     update:
-      work_updated: Trabalho atualizado com sucesso
+      work_updated: Obra atualizada com sucesso

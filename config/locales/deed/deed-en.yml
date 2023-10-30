@@ -31,16 +31,18 @@ en:
         translated_page: translated %{page}
     deeds:
       show_more: Show More
-      time_ago_in_words: "%{time} ago"
     described_metadata: Described Metadata
     edited_metadata: Edited Metadata Description
     list:
       activity_stream: Activity Stream
       collection_title: 'Collection: %{title}'
+      deed: Deed
       newer_activity: Newer Activity
       older_activity: Older Activity
       owner_title: 'Owner: %{title}'
+      time: Time
       time_ago_in_words: "%{time} ago"
+      type: Type
       user_title: 'User: %{title}'
     needs_review: Page Needs Review
     note_added: Note Added

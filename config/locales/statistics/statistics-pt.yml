@@ -14,7 +14,9 @@ pt:
       mailing_list_export: Exportação de lista de correio
       no_editors: Sem editores
       no_indexers: Sem indexadores
+      no_reviewers: Sem revisores
       no_transcribers: Sem transcritores
+      reviewing: Revendo
       transcribing: Transcrevendo
     collection:
       last_days_statistics: Estatísticas dos últimos 7 dias
@@ -65,11 +67,14 @@ pt:
         one: Assunto
         other: Assuntos
       work:
-        one: Trabalho
-        other: Trabalhos
+        one: Obra
+        other: Obras
+      work_transcribed:
+        one: Obra transcrita
+        other: Obras transcritas
       works_described:
-        one: Trabalho descrito
-        other: Trabalhos descritos
+        one: Obras descrita
+        other: Obras descritas
     recent_statistics:
       collaborator:
         one: Colaborador
@@ -159,5 +164,5 @@ pt:
         other: Páginas totais
       update: Atualizar
       work:
-        one: Trabalho
-        other: Trabalhos
+        one: Obra
+        other: Obras

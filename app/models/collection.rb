@@ -10,6 +10,8 @@ class Collection < ApplicationRecord
   friendly_id :slug_candidates, :use => [:slugged, :history]
   before_save :uniquify_slug
 
+  has_many :collection_blocks, dependent: :destroy
+  has_many :blocked_users, through: :collection_blocks, source: :user
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
   has_many :articles, :dependent => :destroy
@@ -34,6 +36,7 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
+  has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
@@ -74,6 +77,10 @@ class Collection < ApplicationRecord
 
   def metadata_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
+  end
+
+  def metadata_only_entry?
+    self.data_entry_type == DataEntryType::METADATA_ONLY
   end
   
   def subjects_enabled
@@ -141,8 +148,8 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subject_index_as_csv
-    subject_link = SubjectExporter::Exporter.new(self)
+  def export_subject_index_as_csv(work)
+    subject_link = SubjectExporter::Exporter.new(self, work)
 
     subject_link.export
   end
@@ -166,7 +173,8 @@ class Collection < ApplicationRecord
   end
 
   def show_to?(user)
-    (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    (!self.restricted && self.works.present? && self.collection_blocks.where(user_id: user&.id).none?
+    ) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def create_categories

@@ -74,6 +74,8 @@ en:
       reuse: Reuse
       searchable_plaintext: Searchable Plaintext
       searchable_plaintext_export_description: Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the work.
       table_field_csv: Table/Field CSV
       table_field_csv_export_description: Export all tabular, spreadsheet, or field-based data as a single CSV file.
       verbatim_plaintext: Verbatim Plaintext
@@ -169,6 +171,7 @@ en:
       move_up: Move up
       no_pages_found: No pages found
       no_pages_found_description: This work does not contain any pages yet
+      no_works_found_description: No works found.
       page_title: Page Title
       pages_tab_description: Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
       position: Position

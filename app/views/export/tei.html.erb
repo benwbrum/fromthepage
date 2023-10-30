@@ -241,6 +241,28 @@ xml:id="export">
       </langUsage>
     <%end%>
   </profileDesc>
+  <% unless @work.original_metadata.blank? && @work.metadata_description.blank? %>
+    <xenoData>
+      <iiifMetadata>
+        <% unless @work.original_metadata.blank? %>
+          <% JSON[@work.original_metadata].each do |element| %>
+            <element source="imported">
+              <label><%= element["label"] %></label>
+              <value><%= element["value"] %></value>
+            </element>
+          <% end %>
+        <% end %>
+        <% unless @work.metadata_description.blank? %>
+          <% JSON[@work.metadata_description].each do |element| %>
+            <element source="user-created">
+              <label><%= element["label"] %></label>
+              <value><%= element["value"] %></value>
+            </element>
+          <% end %>
+        <% end %>
+      </iiifMetadata>
+    </xenoData>
+  <% end %>
 
   <revisionDesc>
     <listChange ordered="true">

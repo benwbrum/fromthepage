@@ -35,6 +35,7 @@ en:
       no_notes: No notes
       no_pages_found: No pages found
       no_pages_in_work: This work does not contain any pages yet, go to %{link} to create a new page
+      no_works_found: No works found
       page_title: Page Title
       pages_tab: Pages tab
       review: Review
@@ -52,6 +53,7 @@ en:
       search_for: Search for %{search_string}
       search_in_collection: Search in collection...
       search_in_collection_1: Search in collection
+      search_in_work: Search in work...
       translations_need_indexing: Translations That Need Indexing
       translations_need_review: Translations That Need Review
       view_all_pages: View All Pages

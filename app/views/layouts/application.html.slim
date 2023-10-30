@@ -22,6 +22,8 @@ html lang="en-US"
     =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
     ="\n"
     =stylesheet_link_tag 'application'
+    -unless GA_ACCOUNT.blank?
+      =render :partial => '/layouts/ga'
     -unless MIXPANEL_ID.blank?
       =render :partial => '/layouts/mixpanel'
     -unless FACEBOOK_PIXEL_ID.blank?
@@ -35,11 +37,12 @@ html lang="en-US"
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo', title: t('.home'), 'aria-label' => t('.home')
+          =link_to main_app.landing_path(logo: true), class: 'logo', title: t('.home'), 'aria-label' => t('.home')
             -if USE_PNG_LOGO
               =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
               =svg_symbol '#logo', title: 'Home'
+            
         .toolbar_group
           -if !(Collection.all.count > 30)
             =link_to t('.projects'), main_app.dashboard_path, class: 'header_link'
@@ -145,6 +148,3 @@ html lang="en-US"
         =render :partial => '/shared/intercom_customer'
       -elsif controller_name=='static' && !INTERCOM_APP_ID.blank?
         =render :partial => '/shared/intercom'
-
-    -unless GA_ACCOUNT.blank?
-      =render :partial => '/layouts/ga'

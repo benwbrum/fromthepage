@@ -5,7 +5,7 @@ es:
       collaborator_time: Tiempo del colaborador
       collaborator_time_description: Una hoja de cálculo de la cantidad de minutos que cada usuario contribuyó por día en el intervalo de fechas.
       collaborator_time_export_button: Exportar hoja de cálculo de tiempo de colaborador
-      no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
+      no_activity_for_date_range: No hay actividad para este intervalo de fechas.
       user_totals_for_dates: Totales de usuarios para fechas
     collaborators:
       collaborators: Colaboradores
@@ -14,7 +14,9 @@ es:
       mailing_list_export: Exportación de listas de correo
       no_editors: Sin editores
       no_indexers: Sin índices
+      no_reviewers: Sin revisores
       no_transcribers: Sin transcriptores
+      reviewing: Revisando
       transcribing: Transcribiendo
     collection:
       last_days_statistics: Estadísticas de los últimos 7 días
@@ -65,11 +67,14 @@ es:
         one: Tema
         other: Temas
       work:
-        one: Trabajo
-        other: Trabajos
+        one: Obra
+        other: Obras
+      work_transcribed:
+        one: Obra transcrita
+        other: Obras transcritas
       works_described:
-        one: trabajo descrito
-        other: obras descritas
+        one: Obra descrita
+        other: Obras descritas
     recent_statistics:
       collaborator:
         one: Colaborador
@@ -159,5 +164,5 @@ es:
         other: Páginas totales
       update: Actualizar
       work:
-        one: Trabajo
-        other: Trabajos
+        one: Obra
+        other: Obras

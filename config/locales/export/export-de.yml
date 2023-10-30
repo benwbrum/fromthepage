@@ -20,9 +20,6 @@ de:
       export_individual_works_description: Sie können einzelne Werke in mehreren Dateiformaten exportieren. XHTML exportiert ein Werk als einseitige XHTML-Datei mit Transkripten, Benutzerkommentaren, Entitäten und internen HREFs, die Entitäten und Seiten verknüpfen. TEI exportiert ein Werk als P5-kompatibles TEI-XML-Dokument. Text ist Plaintext. Der ZIP-Export gibt Ihnen alle Formate eines Werks und Seiteneinzelheiten.
       export_to_contentdm: Export nach CONTENTdm
       export_to_contentdm_description: Klicken Sie auf den Button, um fertige Transkripte aus der gesamten Sammlung nach CONTENTdm zu exportieren.
-      export_work_metadata: Metadaten zum Werk exportieren
-      export_work_metadata_as_csv: Metadaten zum Werk als CSV exportieren
-      export_work_metadata_description: Exportieren Sie eine Tabelle mit einer Zeile für jedes Werk in der Sammlung und mit Spalten für Statistiken zu transkribierten Seiten und für die Metadaten für das Werk.
       here: hier
       html: HTML
       iiif: IIIF

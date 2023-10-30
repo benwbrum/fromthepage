@@ -31,6 +31,7 @@ en:
       select_a_collection: "- Select a collection -"
       title: Title
     exports:
+      admin_searches: Searches
       bulk_exports_description: This lists all bulk exports you have run. Exports are cleaned after a few days, and are no longer available for download
       configuration: Configuration (level)
       create_bulk_export_description: Create a bulk export from the Export tab of a collection or the Download tab of a work.
@@ -40,6 +41,7 @@ en:
       facing_edition_work: Facing Edition PDF (work)
       html_page: HTML (page)
       html_work: HTML (work)
+      notes_csv: Notes CSV (collection)
       plaintext_emended_page: Analytic Plaintext (page)
       plaintext_emended_work: Analytic Plaintext (work)
       plaintext_searchable_page: Searchable Plaintext (page)
@@ -89,13 +91,17 @@ en:
       page_image_guidelines: Page Image Guidelines
       paste_in_the_url: Paste in the URL of a compound object or a collection on your CONTENTdm site.
     owner:
+      active_collections: Active Collections
       create_a_collection: create a collection
       document_sets: Document Sets
-      see_all_works: See All Works...
+      inactive_collections: Inactive Collections
+      n_works:
+        one: '1 work: '
+        other: "%{count} works: "
+      private: " (Private)"
+      public: " (Public)"
       start_a_project: Start A Project
       there_are_no_works: There are no works in this collection yet
-      total_work_count: 'Total work count: %{count}'
-      you_can_add_another_work: You can add another work under %{start_project}
       you_can_new_collection: You can %{new_collection}
       you_can_upload_documents: You can upload documents under %{start_project}
       you_dont_have_any_collections: You don't have any collections yet

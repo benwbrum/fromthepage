@@ -2,7 +2,7 @@
 de:
   work:
     configurable_printout:
-      description: Exportieren Sie diese Arbeit in einem druckbaren Format
+      description: Exportieren Sie diese Werk in einem druckbaren Format
       export: Export
       file_format: Datei Format
       file_format_description: Dateityp für druckbaren Export
@@ -74,6 +74,8 @@ de:
       reuse: Nachnutzung
       searchable_plaintext: Durchsuchbarer Klartext
       searchable_plaintext_export_description: Exportieren Sie für die Volltextsuche optimierte Klartext-Transkripte als ZIP-Datei mit einer Datei pro Seite.
+      subject_index_csv: Entitätenindex CSV
+      subject_index_csv_description: Eine Tabelle, in der jede Stelle aufgeführt ist, an der ein Thema auf einer Seite des Werks erwähnt wird.
       table_field_csv: Tabelle/Felder CSV
       table_field_csv_export_description: Exportieren Sie alle tabellarischen, tabellen- oder feldbasierten Daten als eine einzige CSV-Datei.
       verbatim_plaintext: Wörtlicher Klartext
@@ -169,6 +171,7 @@ de:
       move_up: Hinaufschieben
       no_pages_found: Keine Seiten gefunden
       no_pages_found_description: Dieses Werk enthält noch keine Seiten
+      no_works_found_description: Zur Zeit sind keine Werke vorhanden
       page_title: Seitentitel
       pages_tab_description: Hier finden Sie eine Auflistung aller Seiten des Werkes. Wenn Sie die Position einer Seite ändern möchten, verwenden Sie die Aufwärts- und Abwärtspfeile auf der rechten Seite. Um eine neue Seite für dieses Werk zu erstellen, klicken Sie auf den Button "Neue Seite hinzufügen". Sobald eine neue leere Seite erstellt wurde, finden Sie sie am Ende der Liste und kommen zu den Einstellungen, wo Sie ein Faksimile hochladen können.
       position: Position

@@ -5,9 +5,11 @@
 
 
 \newpage
+
+<% if @include_metadata %>
 ### Metadata
 <p>
-<%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+<%= t('export.facing_edition.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
 
 <% 
@@ -15,6 +17,8 @@
 %>
 <%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
 \newpage
+<% end %>
+
 <% end %>
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
@@ -41,10 +45,10 @@
 
 <% end %>
 
-<% unless @edition_type == 'text_only'%>
+<% if @edition_type != 'text_only' && @include_contributors %>
 
 \newpage
-<%= t('.contributions_message') %>
+<%= t('export.facing_edition.contributions_message') %>
 
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>

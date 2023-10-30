@@ -100,6 +100,8 @@ GEM
       safely_block (>= 0.2.1)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
+    ajax-datatables-rails (1.0.0)
+      railties (>= 4.2)
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
@@ -315,7 +317,7 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.2)
     minitest (5.17.0)
     msgpack (1.5.4)
     multi_json (1.15.0)
@@ -326,7 +328,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (7.0.1)
     newrelic_rpm (9.2.2)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -377,11 +379,11 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (4.0.7)
-    puma (5.6.4)
+    puma (5.6.7)
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
-    racc (1.6.2)
+    racc (1.7.1)
     rack (2.2.6.4)
     rack-contrib (2.3.0)
       rack (~> 2.0)
@@ -470,7 +472,7 @@ GEM
       sshkit (>= 1.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
-    sanitize (6.0.1)
+    sanitize (6.0.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     sassc (2.4.0)
@@ -597,6 +599,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
+  ajax-datatables-rails (~> 1.0.0)
   autoprefixer-rails
   better_errors
   binding_of_caller

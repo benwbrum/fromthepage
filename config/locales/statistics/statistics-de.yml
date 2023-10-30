@@ -14,7 +14,9 @@ de:
       mailing_list_export: Mailingliste exportieren
       no_editors: Keine Bearbeitenden
       no_indexers: Keine Indexierenden
+      no_reviewers: Keine Rezensenten
       no_transcribers: Keine Transkribierenden
+      reviewing: Überprüfung
       transcribing: Transkription
     collection:
       last_days_statistics: Statistik der letzten 7 Tage
@@ -67,6 +69,9 @@ de:
       work:
         one: Werk
         other: Werke
+      work_transcribed:
+        one: Werk transkribiert
+        other: Werke transkribiert
       works_described:
         one: Beschriebenes Werk
         other: Beschriebene Werke

@@ -3,17 +3,23 @@
 
 -deeds.each do |d|
   .deed-short.small
-    =time_tag(d.created_at, class: 'legend legend-left')
-      =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
+    =timeago d.created_at, class: 'timeago legend legend-left'
     span.deed-short_content
         -if d.prerender
           ==show_prerender(d.prerender, I18n.locale)
         -else
           =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view, :suppress_collection => suppress_collection })
 
+-if @collection.nil? || (@collection.most_recent_deed_created_at && @collection.most_recent_deed_created_at > (Time.now - 1.year))
+  small.legend
+    =link_to t('.show_more'),
+      deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id] || options[:owner]),
+      class: 'button outline round',
+      id: 'show-more-deeds'
 
-small.legend
-  =link_to t('.show_more'),
-    deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id] || options[:owner]),
-    class: 'button outline round',
-    id: 'show-more-deeds'
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
+      $("time.timeago").timeago();
+    });

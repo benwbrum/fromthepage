@@ -13,6 +13,15 @@ fr:
       page_notes: Remarques sur les pages
       pages_and_notes_counts: "%{posts_count} notes sur %{topics_count} pages"
       total_notes: "%{count} remarques"
+    list:
+      collection: Collection
+      collection_title: Collecte : %{title}
+      note: Note
+      notes: Remarques
+      page: Page
+      time: Temps
+      user: Utilisateur
+      work: Œuvre
     note:
       cancel: Annuler
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?

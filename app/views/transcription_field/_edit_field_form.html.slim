@@ -68,6 +68,9 @@ div.fields-preview
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
               type: "PATCH",
               data: `${data}&line=${line}`,
+              success: function(response) {
+                window.location.reload();
+              }
             });
           }
         },

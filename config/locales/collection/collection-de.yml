@@ -4,11 +4,13 @@ de:
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     collection_works:
+      most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten;"
       progress: Fortschritt
       work_title: Werktitel
+    complete: vollständig
     contributor_activity:
       recent_notes: Neue Anmerkungen
       recent_ocr_correction: Kürzlich hinzugefügte OCR-Korrekturen
@@ -55,11 +57,16 @@ de:
       add_another_work_under: Sie können ein weiteres Werk unter %{start_project} hinzufügen
       add_button: Hinzufügen
       alert: Bitte passen Sie die Felder an oder wählen Sie unter Transkriptionstyp die dokumentbasierte Transkription aus.
+      alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
       api_access: API-Zugriff
       api_access_description: Zugriff auf Transkriptionen über die IIIF-API zulassen
       authorized_reviewers: Autorisierte Reviewer:innen
       blank_collection: Leere Sammlung
       blank_collection_description: Das Drücken dieses Buttons setzt die Sammlung zurück. Alle Transkriptionen und andere Arbeiten an der Sammlung werden gelöscht, als ob sie neu importiert worden wäre.
+      block: Benutzer blockieren
+      block_users_description: Bloqueie o acesso de usuários individuais à coleção.
+      block_users_modal_description: Esses usuários foram impedidos de acessar a coleção. A coleção não ficará visível para eles, como se tivesse sido marcada como privada ou excluída. Adicionar usuários a esta lista não os notificará de que foram bloqueados.
+      blocked_users: Usuários bloqueados
       close_api: API-Zugriff schließen
       collection_active_message: Dies ist eine aktive Sammlung. Wird eine Sammlung inaktiv gesetzt, verhindert dies, dass Mitarbeitende Inhalte innerhalb der Sammlung bearbeiten. Der Sammlungsstatus wirkt sich nicht auf die Privatsphäre-Einstellungen der Sammlung aus.
       collection_collaborators: Sammlungsmitarbeitende
@@ -158,6 +165,7 @@ de:
       transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseditor für jede Seite angezeigt, die transkribiert oder indexiert wird.
       transcription_type: Transkriptionstyp
       transcription_type_description: Jede Seite kann einen Bereich für eine freie Texteingabe (Standard) oder mehrere kurze Eingabefelder für Formulare haben. Alle Seiten in der Sammlung haben die gleiche Art von Transkriptionseinträgen. Spracheingabe wird nicht unterstützt und wird deaktiviert.
+      unblock_user: Nutzer entblockieren
       update_footer_message: Sie können die Fußzeile aktualisieren, indem Sie das Profil für %{owner} bearbeiten.
       upload_image: Bild hochladen
       upload_metadata: Metadaten hochladen
@@ -237,6 +245,8 @@ de:
       pages_need_review: Seiten, die überprüft werden müssen
       project_by: Projekt von
       return_to_collection: Zurück zur Sammlung
+      review_metadata: Überprüfen Sie Metadaten
+      works_that_need_metadata: Werke, die Metadaten benötigen
     needs_transcription_pages:
       pages_need_transcription: Seiten, die transkribiert werden müssen
       project_by: Projekt von
@@ -303,6 +313,7 @@ de:
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
+      start_creating_transcribing: Beginnen Sie mit der Erstellung von Metadaten
       start_transcribing: Mit der Transkription beginnen
       subject_categories: Entitätenkategorien
       this_work_has_not_been_described: Dieses Werk benötigt bessere Metadaten.
@@ -337,10 +348,6 @@ de:
       user_contribution_description: Seiten, die von Mitarbeiter:in %{user_name} überprüft werden müssen
       user_profile: Mitarbeitendenprofil
     works_list:
-      alphabetical: Alphabetisch
-      percent_complete: Prozent abgeschlossen
-      recent_activity: Letzte Aktivitäten
-      sort_works_by: Werke sortieren nach...
       works: Werke
     works_to_review:
       and_n_more: und %{n} mehr

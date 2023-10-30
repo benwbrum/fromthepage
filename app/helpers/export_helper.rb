@@ -1,5 +1,6 @@
 module ExportHelper
-
+  include XmlSourceProcessor
+ 
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
     # do some escaping of the document for markdown
@@ -8,7 +9,6 @@ module ExportHelper
     # preprocessed.gsub!("]","\\]")
     preprocessed.gsub!('&', '&amp;') # escape ampersands
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
-
 
     doc = REXML::Document.new(preprocessed)
     doc.elements.each_with_index("//footnote") do |e,i|
@@ -25,11 +25,22 @@ module ExportHelper
       e.replace_with(sup)
     end
 
-
-
     postprocessed = ""
     doc.write(postprocessed)
+
+
+    # use Nokogiri for doc
+    markdown_tables = []
+    doc = Nokogiri::XML(postprocessed)
+    doc.xpath("//table").each_with_index do |n,i|
+      markdown_tables << xml_table_to_markdown_table(n, true)
+      n.replace("REPLACEMETABLE#{i}")
+    end
+
+    postprocessed = doc.to_s
+    # do the conversions for linebreaks, italics, etc.
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
+    
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
     else
@@ -41,16 +52,21 @@ module ExportHelper
         e.replace_with(REXML::Text.new(" "))
       end
     end
+
     html=''
     doc.write(html)
 
     processed = "never ran"
 
-    cmd = "pandoc --from html --to markdown"
+    cmd = "pandoc --from html --to markdown+pipe_tables"
     Open3.popen2(cmd) do |stdin, stdout, t| 
       stdin.print(html)
       stdin.close
       processed = stdout.read
+    end
+
+    markdown_tables.each_with_index do |table,i|
+      processed.gsub!("REPLACEMETABLE#{i}", table)
     end
 
     return processed
@@ -69,6 +85,10 @@ module ExportHelper
       export_owner_detailed_activity_csv(out: out, owner: export_user, report_arguments: bulk_export.report_arguments)
     end
 
+    # admin-level exports
+    if bulk_export.admin_searches
+      export_admin_searches_csv(out: out, report_arguments: bulk_export.report_arguments)
+    end
 
     # collection-level exports
     if bulk_export.collection_activity
@@ -80,7 +100,7 @@ module ExportHelper
     end
 
     if bulk_export.subject_csv_collection
-      export_subject_csv(out: out, collection: bulk_export.collection)
+      export_subject_csv(out: out, collection: bulk_export.collection, work: works)
     end
 
     if bulk_export.subject_details_csv_collection
@@ -97,6 +117,10 @@ module ExportHelper
 
     if bulk_export.static
       export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.notes_csv
+      export_collection_notes_csv(out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
@@ -143,20 +167,22 @@ module ExportHelper
         end
 
         preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
+        include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
+        include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
         end
 
         # Page-specific exports
@@ -407,20 +433,23 @@ module ExportHelper
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
-
     my_display_html = ""
-    doc.elements.each_with_index("//p") do |e,i|
-      transform_links(e)
-      transform_expansions(e)
-      transform_regularizations(e)
-      transform_marginalia_and_catchwords(e)
-      transform_footnotes(e)
-      transform_lb(e)
-      e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-      if add_corrsp
-        e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+    tags = ['p']
+    tags.each do |tag|
+      doc.elements.each_with_index("//#{tag}") do |e,i|
+        transform_links(e)
+        transform_expansions(e)
+        transform_regularizations(e)
+        transform_marginalia_and_catchwords(e)
+        transform_footnotes(e)
+        transform_lb(e)
+        transform_tables(e)
+        e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+        if add_corrsp
+          e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+        end
+        my_display_html << e.to_s
       end
-      my_display_html << e.to_s
     end
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
@@ -489,6 +518,59 @@ module ExportHelper
       e.name='fw'
       e.add_attribute('type', 'catchword')
     end
+  end
+
+  def transform_tables(p_element)
+    # convert HTML tables to TEI tables
+    p_element_string = p_element.to_s
+    p_element.elements.each("//table") do |e|
+      unless e['rows'] || e['cols'] 
+        row_count = 0
+        max_column_count = 0
+        table = REXML::Element.new("table")
+        # does the table have a header?
+
+        if e.elements["thead"]
+          # convert the header into a row element with role="label"
+          header = REXML::Element.new("row")
+          header.add_attribute("role", "label")
+          e.elements.each("thead/tr/th") do |th|
+            # convert the th into a cell element
+            cell = REXML::Element.new("cell")
+            cell.add_attribute("role", "data")
+            th.children.each { |child| cell.add(child) }
+            header.add(cell)
+          end
+          table.add(header)
+        end
+        # now convert the body of the table
+        e.elements.each("tbody/tr") do |tr|
+          row = REXML::Element.new("row")
+          tr.elements.each("td") do |td|
+            cell = REXML::Element.new("cell")
+            cell.add_attribute("role", "data")
+            td.children.each { |child| cell.add(child) }
+            if cell.children.count > max_column_count
+              max_column_count = cell.children.count
+            end
+            row.add(cell)
+          end
+          row_count += 1
+          table.add(row)
+        end # end of tbody
+        table.add_attribute("rows", row_count)
+        table.add_attribute("cols", max_column_count)
+        e.replace_with(table)
+      end
+      
+    end # end of tables
+    # now delete any lb elements from tables elements in the document
+    p_element.elements.each("//table") do |table|
+      table.elements.each("//lb") do |lb|
+        lb.remove
+      end
+    end
+    
   end
 
   def transform_footnotes(p_element)

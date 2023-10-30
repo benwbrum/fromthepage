@@ -30,6 +30,9 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  scope 'notes', as: 'notes' do
+    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
+  end
   resources :notes
 
 
@@ -43,6 +46,7 @@ Fromthepage::Application.routes.draw do
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'
@@ -86,6 +90,7 @@ Fromthepage::Application.routes.draw do
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+    get ':collection_id/block_users', to: 'collection#block_users', as: 'block_users'
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
@@ -98,9 +103,11 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
+    post 'remove_block_user', to: 'collection#remove_block_user'
     post 'create', to: 'collection#create'
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
@@ -205,6 +212,12 @@ Fromthepage::Application.routes.draw do
     post 'create_work', to: 'dashboard#create_work'
   end
 
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
+    get ':id', to: 'search_attempt#show', as: 'show'
+  end
+
   scope 'category', as: 'category' do
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'
@@ -228,7 +241,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -331,8 +343,7 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do
@@ -479,6 +490,7 @@ Fromthepage::Application.routes.draw do
       get 'works_list', as: :works_list, to: 'collection#works_list'
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
     

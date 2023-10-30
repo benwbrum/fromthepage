@@ -124,3 +124,5 @@ gem 'stackprof'
 gem 'intercom', '~> 3.9.0'
 
 gem 'open3'
+
+gem 'ajax-datatables-rails', '~> 1.0.0'

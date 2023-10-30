@@ -53,6 +53,10 @@
           td(colspan="2")
             =f.check_box :hide_completed
             =f.label :hide_completed, t('.hide_completed')
+        tr
+          td(colspan="2")
+            =f.check_box :alphabetize_works
+            =f.label :alphabetize_works, t('.alphabetize_works')
         -if @collection.text_entry?
           tr
             td(colspan="2")
@@ -166,6 +170,11 @@
         =profile_picture(user)
         .username
           =link_to user.display_name, user_profile_path(user)
+    
+    - unless @collection.restricted
+      h3 =t('.blocked_users')
+      p =t('.block_users_description')
+      p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
 
 
     -if @collection.text_entry?
