@@ -1,0 +1,15 @@
+---
+pt:
+  pdf:
+    letter:
+      certification_text: Esta carta é para certificar que %{user_name} contribuiu com %{time_duration} para os esforços de crowdsourcing da biblioteca em From the Page (www.fromthepage.com) entre %{start_date} e %{end_date}. Através do site, voluntários podem ajudar a transcrever documentos históricos em acervos de bibliotecas, tornando-os mais pesquisáveis ​​e acessíveis para futuros pesquisadores. O site From the Page rastreia o tempo em que os usuários registrados estão ativos no site e informa um número total de minutos ativos.
+      institutions_header: "| Instituições | Coleção | Contagem de páginas |"
+      institutions_separator: "|--------------|------------|-------------|"
+      logo_text: "![Logo](app/assets/images/logo.png){width=300px style='display: block; margin: 0 auto;'}"
+      regards_text: Cumprimentos,
+      signature_text: |-
+        Sara Brumfield
+        Parceira, FromThePage
+      to_whom_it_may_concern: 'A quem possa interessar:'
+      volunteer_text: Cada voluntário ajuda a tornar a história mais acessível. Agradecemos a contribuição de %{user_display_name} para nosso esforço de crowdsourcing!
+      worked_on_collections: "%{user_name} trabalhou nas seguintes coleções das seguintes instituições"

@@ -80,7 +80,6 @@ class DashboardController < ApplicationController
       @start_date_hours = 7.days.ago.to_date
       @end_date_hours = Date.today
     end
-    debugger
     @user_collections = Collection.where(
       owner_user_id: current_user.id,
       created_on: @start_date_hours..@end_date_hours
@@ -278,31 +277,20 @@ class DashboardController < ApplicationController
   
   def generate_markdown_text
     <<~MARKDOWN
-      ![Logo](app/assets/images/logo.png){width=300px style="display: block; margin: 0 auto;"}
-      
+      #{I18n.t('pdf.letter.logo_text')}
+
       #{Time.now.to_date}\n
-      To Whom It May Concern:\n
-      This letter is to certify that #{current_user.real_name} has contributed #{@time_duration} to library
-      crowdsourcing efforts on From the Page (www.fromthepage.com) between #{@start_date} and #{@end_date}.
-      Through the website, volunteers can help transcribe historic documents in library collections,
-      thereby making them more searchable and accessible for future researchers. The From the Page website
-      tracks the time registered users are active on the site and reports a total number of active minutes.\n
-      \n
-      #{current_user.real_name} has worked on the following collections by the following institutions:c
-      
-      | Institutions  | Collection | Pages Count |
-      |--------------|------------|-------------|
+      #{I18n.t('pdf.letter.to_whom_it_may_concern')}\n
+      #{I18n.t('pdf.letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: @start_date, end_date: @end_date)}\n
+      #{I18n.t('pdf.letter.worked_on_collections', user_name: current_user.real_name)}\n
+      #{I18n.t('pdf.letter.institutions_header')}
+      #{I18n.t('pdf.letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
-      
-      Each volunteer helps make history more accessible. We appreciate #{current_user.display_name} contribution to
-      our crowdsourcing effort!\n
-      \n
-      Regards,\n
-      \n
-      Sara Brumfield\n
-      Partner, FromThePage
+      #{I18n.t('pdf.letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      #{I18n.t('pdf.letter.regards_text')}\n
+      #{I18n.t('pdf.letter.signature_text')}
     MARKDOWN
-  end
+  end  
   
   def generate_collection_rows(user_collections)
     user_collections.map do |collection|

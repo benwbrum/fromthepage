@@ -1,0 +1,15 @@
+---
+fr:
+  pdf:
+    letter:
+      certification_text: Cette lettre vise à certifier que %{user_name} a contribué %{time_duration} aux efforts de crowdsourcing de la bibliothèque sur From the Page (www.fromthepage.com) entre le %{start_date} et le %{end_date}. Grâce au site Web, les bénévoles peuvent aider à transcrire des documents historiques dans les collections de bibliothèques, les rendant ainsi plus consultables et accessibles aux futurs chercheurs. Le site Web From the Page suit la durée pendant laquelle les utilisateurs enregistrés sont actifs sur le site et rapporte le nombre total de minutes actives.
+      institutions_header: "| Établissements | Collecte | Nombre de pages |"
+      institutions_separator: "|--------------|------------|-------------|"
+      logo_text: "![Logo](app/assets/images/logo.png){width=300px style='display: block; margin: 0 auto;'}"
+      regards_text: Salutations,
+      signature_text: |-
+        Sara Brumfield
+        Partenaire, FromThePage
+      to_whom_it_may_concern: 'À qui cela peut concerner:'
+      volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
+      worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
