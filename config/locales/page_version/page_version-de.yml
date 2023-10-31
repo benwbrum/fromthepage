@@ -5,15 +5,8 @@ de:
       author_contributed_at: "%{author} am %{date}"
       compared_with: Im Vergleich zu
       help_description: Hier können Sie alle Seitenrevisionen sehen und die Änderungen vergleichen, die in jeder Revision vorgenommen wurden. Die linke Spalte zeigt den Seitentitel und die Transkription in der ausgewählten Revision, die rechte Spalte zeigt, was geändert wurde. Unveränderter Text wird <span>weiß hervorgehoben</span>, gelöschter Text wird <del>rot hervorgehoben</del> und eingefügter Text wird <ins>grün hervorgehoben</ins>.
-      n_revisions:
-        one: 1 Überarbeitung
-        other: "%{count} Überarbeitungen"
       no_transcription_provided: Keine Transkription vorhanden
       no_translation_provided: Keine Übersetzung vorhanden
-      page_version_status_blank: leer
-      page_version_status_incomplete: unvollständig
-      page_version_status_review: Rezension
-      page_version_status_transcribed: transkribiert
       translation: Übersetzung
       untitled: Ohne Titel
     show:

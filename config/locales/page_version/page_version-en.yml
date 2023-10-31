@@ -5,15 +5,8 @@ en:
       author_contributed_at: "%{author} at %{date}"
       compared_with: Compared with
       help_description: Here you can see all page revisions and compare the changes have been made in each revision. Left column shows the page title and transcription in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
-      n_revisions:
-        one: 1 revision
-        other: "%{count} revisions"
       no_transcription_provided: No transcription provided
       no_translation_provided: No translation provided
-      page_version_status_blank: blank
-      page_version_status_incomplete: incomplete
-      page_version_status_review: review
-      page_version_status_transcribed: transcribed
       translation: Translation
       untitled: Untitled
     show:
