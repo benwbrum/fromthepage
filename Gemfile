@@ -16,6 +16,7 @@ gem 'mysql2'
 gem 'text'
 gem 'thredded', '~> 1.0'
 gem "recaptcha", require: "recaptcha/rails"
+gem 'ruby-openai'
 
 gem 'acts_as_list'
 gem 'acts_as_tree'

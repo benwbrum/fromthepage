@@ -10,9 +10,9 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :authorized?, :only => [:new, :edit, :update, :delete]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
@@ -511,7 +511,8 @@ class CollectionController < ApplicationController
     if collection_params[:slug].blank?
       @collection.slug = @collection.title.parameterize
     end
-   
+    @collection.tags = Tag.where(id: params[:collection][:tags])
+
     if @collection.save
       flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
@@ -668,7 +669,6 @@ private
     unless user_signed_in?
       ajax_redirect_to dashboard_path
     end
-
     if @collection &&  !current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
@@ -708,6 +708,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works)
+    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works, :tags)
   end
 end
