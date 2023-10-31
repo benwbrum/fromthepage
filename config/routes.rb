@@ -534,6 +534,7 @@ Fromthepage::Application.routes.draw do
 
       get ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+      get ':work_id/review/:page_id', as: 'page_review', to: 'page_version#review'
       get ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
       get ':work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
       get ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'

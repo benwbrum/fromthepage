@@ -16,3 +16,19 @@ fr:
       page_version_status_transcribed: transcrit
       translation: Traduction
       untitled: Sans titre
+
+    review:
+      author_contributed_at: "%{author} le %{date}"
+      compared_with: Comparé à
+      help_description: Ici, vous pouvez voir toutes les révisions de page et comparer les modifications apportées à chaque révision. La colonne de gauche montre le titre de la page et la transcription dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
+      n_revisions:
+        one: 1 révision
+        other: "%{count} révisions"
+      no_transcription_provided: Aucune transcription fournie
+      no_translation_provided: Aucune traduction fournie
+      page_version_status_blank: vide
+      page_version_status_incomplete: incomplet
+      page_version_status_review: revoir
+      page_version_status_transcribed: transcrit
+      translation: Traduction
+      untitled: Sans titre

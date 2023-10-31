@@ -81,6 +81,7 @@ en:
       transcribe: Transcribe
       translate: Translate
       versions: Versions
+      review: Review
     review_breadcrumbs:
       dashboard: Review Dashboard
       page: Page

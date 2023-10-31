@@ -45,6 +45,12 @@
   :path => "#{collection_help_page_path(@collection.owner, @collection, @work, @page.id)}",
 }]
 
+-tabs += [{\
+  :name => t('.review'),
+  :selected => 8,
+  :path => "#{collection_page_review_path(@collection.owner, @collection, @work, @page.id)}",
+}]
+
 -if user_signed_in? && current_user.like_owner?(@work)
   -tabs += [{\
     :name => t('.settings'),
