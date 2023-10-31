@@ -142,7 +142,7 @@ describe "uploads data for collections", :order => :defined do
     sleep(1)
     page.fill_in 'document_set_title', with: "Test Document Set 1"
     page.find_button('Create Document Set').click
-    sleep(1)
+    sleep(3)
     expect(DocumentSet.last.is_public).to be true
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
@@ -159,6 +159,7 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'document_set_title', with: "Test Document Set 2"
     page.uncheck 'Public'
     page.find_button('Create Document Set').click
+    sleep(3)
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
     expect(page.find('h1')).to have_content("Test Document Set 2")
