@@ -1,7 +1,7 @@
 ---
 pt:
   page_version:
-    show:
+    review:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
       help_description: Aqui você pode ver todas as revisões da página e comparar as alterações que foram feitas em cada revisão. A coluna da esquerda mostra o título da página e a transcrição na revisão selecionada; a coluna da direita mostra o que foi alterado. O texto inalterado está <span>destacado em branco</span>, o texto apagado está <del>destacado em vermelho</del> e o texto inserido está <ins>destacado em verde</ins>.
@@ -16,8 +16,7 @@ pt:
       page_version_status_transcribed: transcrito
       translation: Tradução
       untitled: Sem título
-
-    review:
+    show:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
       help_description: Aqui você pode ver todas as revisões da página e comparar as alterações que foram feitas em cada revisão. A coluna da esquerda mostra o título da página e a transcrição na revisão selecionada; a coluna da direita mostra o que foi alterado. O texto inalterado está <span>destacado em branco</span>, o texto apagado está <del>destacado em vermelho</del> e o texto inserido está <ins>destacado em verde</ins>.
