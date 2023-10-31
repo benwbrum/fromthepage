@@ -164,8 +164,8 @@ de:
       your_hours: Jouw uren
     your_hours:
       contributions_between_dates: Bijdragen tussen %{start_date} en %{end_date}
+      end_date: Einddatum
+      hours_details_message: "%{user_name} heeft %{time_duration} bijgedragen tussen %{start_date} en %{end_date}"
       select_new_date: Selecteer een nieuw datumbereik
       start_date: Begin datum
-      end_date: Einddatum
       update: Update
-      hours_details_message: "%{user_name} heeft %{time_duration} bijgedragen tussen %{start_date} en %{end_date}"

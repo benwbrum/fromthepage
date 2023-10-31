@@ -164,8 +164,8 @@ en:
       your_hours: Your Hours
     your_hours:
       contributions_between_dates: Contributions between %{start_date} and %{end_date}
+      end_date: End date
+      hours_details_message: "%{user_name} has contributed %{time_duration} between %{start_date} and %{end_date}"
       select_new_date: Select a new date range
       start_date: Start date
-      end_date: End date
       update: Update
-      hours_details_message: "%{user_name} has contributed %{time_duration} between %{start_date} and %{end_date}"
