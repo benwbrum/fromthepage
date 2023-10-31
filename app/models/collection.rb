@@ -36,6 +36,7 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
+  has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
@@ -76,6 +77,10 @@ class Collection < ApplicationRecord
 
   def metadata_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
+  end
+
+  def metadata_only_entry?
+    self.data_entry_type == DataEntryType::METADATA_ONLY
   end
   
   def subjects_enabled

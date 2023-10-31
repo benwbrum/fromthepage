@@ -152,6 +152,8 @@ en:
       transcription_conventions: Transcription conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
     edit_look:
+      alphabetize_works: List works alphabetically.
+      alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.
       default_orientation: Default transcription screen orientation
       default_orientation_description: Filler Text The default page orientation for this collection. This setting can be overridden for individual works. Choose the orientation that best matches the majority of the works in this collection.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
@@ -276,6 +278,8 @@ en:
       pages_need_review: Pages That Need Review
       project_by: Project by
       return_to_collection: Return to collection
+      review_metadata: Review Metadata
+      works_that_need_metadata: Works That Need Metadata
     needs_transcription_pages:
       pages_need_transcription: Pages That Need Transcription
       project_by: Project by
@@ -342,6 +346,7 @@ en:
       search_the_text: Search the text...
       search_the_text_1: Search the text
       show_more: Show More
+      start_creating_transcribing: Start Creating Metadata
       start_transcribing: Start Transcribing
       subject_categories: Subject Categories
       this_work_has_not_been_described: This work needs better metadata.

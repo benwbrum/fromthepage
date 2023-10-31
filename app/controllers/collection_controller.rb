@@ -157,6 +157,12 @@ class CollectionController < ApplicationController
       flash[:error] = t('unauthorized_collection', :project => @collection.title)
       redirect_to user_profile_path(@collection.owner)
     else
+      if @collection.alphabetize_works
+        order_clause = 'works.title ASC'
+      else
+        order_clause = 'work_statistics.complete ASC, work_statistics.transcribed_percentage ASC, work_statistics.needs_review_percentage DESC'
+      end
+
       @new_mobile_user = !!(session[:new_mobile_user])
       unless @collection.nil?
         if @collection.restricted
@@ -173,12 +179,13 @@ class CollectionController < ApplicationController
             session[:search_attempt_id] = @search_attempt.id
           end
           @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
           #show all works
         elsif (params[:works] == 'show')
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           #hide incomplete works
         elsif params[:works] == 'hide' || (@collection.hide_completed)
           #find ids of completed translation works
@@ -192,16 +199,16 @@ class CollectionController < ApplicationController
             description_ids = @collection.works.incomplete_description.pluck(:id)
             ids += description_ids
           end
-
-          works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
-
+          
+          works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+          
           if works.empty?
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           else
             @works = works
           end
         else
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
         end
 
         if @collection.facets_enabled?
@@ -243,7 +250,7 @@ class CollectionController < ApplicationController
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
             #show all works
           elsif (params[:works] == 'show')
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
             #hide incomplete works
           elsif params[:works] == 'hide' || (@collection.hide_completed)
             #find ids of completed translation works
@@ -258,15 +265,15 @@ class CollectionController < ApplicationController
               ids += description_ids
             end
 
-            works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+            works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
 
             if works.empty?
-              @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+              @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
             else
               @works = works
             end
           else
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           end
 
           if @collection.facets_enabled?
@@ -586,6 +593,14 @@ class CollectionController < ApplicationController
     @heading = t('.pages_need_review')
   end
 
+  def needs_metadata_works
+    if params['need_review']
+      @works = @collection.works.where(description_status: "needsreview")
+    else
+      @works = @collection.works.where(description_status: ["incomplete", "undescribed"])
+    end
+  end
+
   def start_transcribing
     page = find_untranscribed_page
     if page.nil?
@@ -696,7 +711,9 @@ private
       :api_access, 
       :data_entry_type, 
       :field_based,
-      :is_active
+      :is_active, 
+      :search_attempt_id, 
+      :alphabetize_works
     )
   end
 end

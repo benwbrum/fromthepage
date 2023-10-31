@@ -21,6 +21,12 @@
             p =t('.user_download_description')
       tr
         td(colspan="2")
+          =f.check_box :alphabetize_works
+          =f.label :alphabetize_works
+            h3 =t('.alphabetize_works')
+            p =t('.alphabetize_works_description')
+      tr
+        td(colspan="2")
           =f.check_box :hide_completed
           =f.label :hide_completed
             h3 =t('.hide_completed')

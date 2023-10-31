@@ -128,3 +128,4 @@ gem 'open3'
 
 # Copy to clipboard
 gem 'clipboard-rails' 
+gem 'ajax-datatables-rails', '~> 1.0.0'

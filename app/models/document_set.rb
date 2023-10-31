@@ -85,6 +85,10 @@ class DocumentSet < ApplicationRecord
     self.collection.text_entry?
   end
 
+  def metadata_only_entry?
+    self.collection.metadata_only_entry?
+  end
+
 
   def hide_completed
     self.collection.hide_completed
@@ -298,6 +302,10 @@ class DocumentSet < ApplicationRecord
 
   def api_access 
     collection.api_access
+  end
+
+  def alphabetize_works
+    self.collection.alphabetize_works
   end
 
   def institution_signature

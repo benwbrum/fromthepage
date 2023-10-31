@@ -36255,7 +36255,11 @@ http_interactions:
   recorded_at: Thu, 25 May 2023 16:26:42 GMT
 - request:
     method: post
+<<<<<<< HEAD
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"css selector","value":".tabs"}'
@@ -36282,6 +36286,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:19 GMT
     body:
       encoding: UTF-8
@@ -36290,6 +36295,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:31 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"81acf697-d7a8-49e8-96dd-c6a6dd76760a"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:31 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -36336,7 +36351,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"e700f397-31cd-4b09-8715-5bb69efe0c20"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"81acf697-d7a8-49e8-96dd-c6a6dd76760a"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36360,6 +36379,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:19 GMT
     body:
       encoding: UTF-8
@@ -36368,6 +36388,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/e700f397-31cd-4b09-8715-5bb69efe0c20/elements
+=======
+      - Fri, 22 Sep 2023 21:31:31 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:31 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/81acf697-d7a8-49e8-96dd-c6a6dd76760a/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//a[./@href][((((./@id = ''Start A Project'')
@@ -36396,6 +36426,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:19 GMT
     body:
       encoding: UTF-8
@@ -36404,6 +36435,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:31 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"220b05d7-baf0-4a3e-a42a-9c9ae7e0577f"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:31 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -36450,7 +36491,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"96ab370b-6e76-42a4-9dcd-616d4a708d12"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"220b05d7-baf0-4a3e-a42a-9c9ae7e0577f"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36474,6 +36519,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:19 GMT
     body:
       encoding: UTF-8
@@ -36482,6 +36528,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/96ab370b-6e76-42a4-9dcd-616d4a708d12/click
+=======
+      - Fri, 22 Sep 2023 21:31:31 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:31 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/220b05d7-baf0-4a3e-a42a-9c9ae7e0577f/click
+>>>>>>> development
     body:
       encoding: UTF-8
       string: "{}"
@@ -36508,6 +36564,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:19 GMT
     body:
       encoding: UTF-8
@@ -36516,6 +36573,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:31 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:32 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"css selector","value":"#import-iiif-manifest"}'
@@ -36542,6 +36609,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36550,6 +36618,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"128ac234-ba8f-44a1-8754-c4cdc79b57df"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:32 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -36596,7 +36674,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"ad7659c8-4bf4-4d40-9dd0-5c7a822aed96"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"128ac234-ba8f-44a1-8754-c4cdc79b57df"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36620,6 +36702,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36628,6 +36711,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/ad7659c8-4bf4-4d40-9dd0-5c7a822aed96/click
+=======
+      - Fri, 22 Sep 2023 21:31:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:32 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/128ac234-ba8f-44a1-8754-c4cdc79b57df/click
+>>>>>>> development
     body:
       encoding: UTF-8
       string: "{}"
@@ -36654,6 +36747,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36662,6 +36756,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
@@ -36695,6 +36799,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36703,6 +36808,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -36749,7 +36864,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"c196537f-6d14-4166-a0a5-2819fa8c24d6"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36773,6 +36892,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36785,6 +36905,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
         *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"c196537f-6d14-4166-a0a5-2819fa8c24d6"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36808,6 +36942,7 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36820,6 +36955,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
         el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"c196537f-6d14-4166-a0a5-2819fa8c24d6"},["tagName","type"]]}'
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"},["tagName","type"]]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36843,6 +36992,7 @@ http_interactions:
       Content-Length:
       - '26'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36854,6 +37004,19 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"c196537f-6d14-4166-a0a5-2819fa8c24d6"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36877,6 +37040,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36885,6 +37049,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/c196537f-6d14-4166-a0a5-2819fa8c24d6/value
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/82b83f65-a962-4252-9fc0-ce97e2aaa8d3/value
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"value":["h","t","t","p"],"text":"http"}'
@@ -36911,6 +37085,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36919,11 +37094,25 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:33 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:33 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
         (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+<<<<<<< HEAD
         = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"c196537f-6d14-4166-a0a5-2819fa8c24d6"},"s://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f"]}'
+=======
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"82b83f65-a962-4252-9fc0-ce97e2aaa8d3"},"s://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f"]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -36947,6 +37136,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:20 GMT
     body:
       encoding: UTF-8
@@ -36955,6 +37145,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/c196537f-6d14-4166-a0a5-2819fa8c24d6/value
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/82b83f65-a962-4252-9fc0-ce97e2aaa8d3/value
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"value":["2","0","5"],"text":"205"}'
@@ -36981,6 +37181,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -36989,6 +37190,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//input[((((./@type = ''submit'') or (./@type
@@ -37033,6 +37244,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37041,6 +37253,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"23aac05b-4ec2-4f12-9b39-5f1a99287120"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37087,7 +37309,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"de2b822d-70e6-4e33-82b8-ff48be5c8c77"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"23aac05b-4ec2-4f12-9b39-5f1a99287120"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37111,6 +37337,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37123,6 +37350,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
         *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"de2b822d-70e6-4e33-82b8-ff48be5c8c77"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"23aac05b-4ec2-4f12-9b39-5f1a99287120"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37146,6 +37387,7 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37154,6 +37396,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/de2b822d-70e6-4e33-82b8-ff48be5c8c77/click
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/23aac05b-4ec2-4f12-9b39-5f1a99287120/click
+>>>>>>> development
     body:
       encoding: UTF-8
       string: "{}"
@@ -37180,6 +37432,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37188,6 +37441,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":"/html"}'
@@ -37214,6 +37477,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37222,6 +37486,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"28252697-4be9-43ad-92b5-166bf36ae733"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37268,7 +37542,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"3f82bcce-240f-4045-a56e-bd1035846d93"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"28252697-4be9-43ad-92b5-166bf36ae733"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37292,6 +37570,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37300,6 +37579,16 @@ http_interactions:
 - request:
     method: get
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/3f82bcce-240f-4045-a56e-bd1035846d93/text
+=======
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:34 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/28252697-4be9-43ad-92b5-166bf36ae733/text
+>>>>>>> development
     body:
       encoding: US-ASCII
       string: ''
@@ -37324,6 +37613,7 @@ http_interactions:
       Cache-Control:
       - no-cache
       Content-Length:
+<<<<<<< HEAD
       - '605'
       Date:
       - Mon, 18 Sep 2023 22:47:21 GMT
@@ -37335,6 +37625,19 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - '586'
+      Date:
+      - Fri, 22 Sep 2023 21:31:34 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJ2YWx1ZSI6IlByb2plY3RzRGFzaGJvYXJkXG5TaWduZWQgSW4gQXNcbk1hcmdhcmV0IFJlZWRcbkVOXG5Db2xsZWN0aW9uOiBDb3NpbidzIExpYnJhcnlcbklkOiBodHRwczovL2lpaWYuZHVyaGFtLmFjLnVrL21hbmlmZXN0cy90cmlmbGUvY29sbGVjdGlvbi8zMjE1MC90MmMwZzM1NGYyMDVcbk1hbmlmZXN0czpcbkltcG9ydCBPQ1IgdGV4dFxuLSBTZWxlY3QgYSBjb2xsZWN0aW9uIHRvIGltcG9ydCBpbnRvIC1cbkNTIFBpZXJjZVxuSW1wb3J0ZWQgQ29sbGVjdGlvblxuQ3JlYXRlIENvbGxlY3Rpb246IENvc2luJ3MgTGlicmFyeVxuQWRkIE5ldyBDb2xsZWN0aW9uXG5JbXBvcnQgQ2hlY2tlZCBNYW5pZmVzdHNcbiAgU2VsZWN0IGFsbCBtYW5pZmVzdHNcblJlc3BvbmNlIGF1IHRyYWljdMOpIGRlIGxhIHByZWRlc3RpbmF0aW9uLCBjb21wb3PDqSAuLi4gcGFyIGxlIHNpZXVyIENvdWV0IC4uLiBQYXIgTS4gQXJuYXVkIFNvcmJpblxuXG5Eb2N1bWVudGF0aW9uXG5CbG9nXG5BYm91dFxuVGVybXMgJiBDb25kaXRpb25zXG5Qcml2YWN5IFBvbGljeVxuwqkgMjAyMyBGcm9tVGhlUGFnZS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4ifQ==
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":"/html"}'
@@ -37361,6 +37664,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:21 GMT
     body:
       encoding: UTF-8
@@ -37369,6 +37673,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"28252697-4be9-43ad-92b5-166bf36ae733"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37415,7 +37729,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"3f82bcce-240f-4045-a56e-bd1035846d93"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"28252697-4be9-43ad-92b5-166bf36ae733"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37439,6 +37757,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37447,6 +37766,16 @@ http_interactions:
 - request:
     method: get
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/3f82bcce-240f-4045-a56e-bd1035846d93/text
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/28252697-4be9-43ad-92b5-166bf36ae733/text
+>>>>>>> development
     body:
       encoding: US-ASCII
       string: ''
@@ -37471,6 +37800,7 @@ http_interactions:
       Cache-Control:
       - no-cache
       Content-Length:
+<<<<<<< HEAD
       - '605'
       Date:
       - Mon, 18 Sep 2023 22:47:22 GMT
@@ -37482,6 +37812,19 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - '586'
+      Date:
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJ2YWx1ZSI6IlByb2plY3RzRGFzaGJvYXJkXG5TaWduZWQgSW4gQXNcbk1hcmdhcmV0IFJlZWRcbkVOXG5Db2xsZWN0aW9uOiBDb3NpbidzIExpYnJhcnlcbklkOiBodHRwczovL2lpaWYuZHVyaGFtLmFjLnVrL21hbmlmZXN0cy90cmlmbGUvY29sbGVjdGlvbi8zMjE1MC90MmMwZzM1NGYyMDVcbk1hbmlmZXN0czpcbkltcG9ydCBPQ1IgdGV4dFxuLSBTZWxlY3QgYSBjb2xsZWN0aW9uIHRvIGltcG9ydCBpbnRvIC1cbkNTIFBpZXJjZVxuSW1wb3J0ZWQgQ29sbGVjdGlvblxuQ3JlYXRlIENvbGxlY3Rpb246IENvc2luJ3MgTGlicmFyeVxuQWRkIE5ldyBDb2xsZWN0aW9uXG5JbXBvcnQgQ2hlY2tlZCBNYW5pZmVzdHNcbiAgU2VsZWN0IGFsbCBtYW5pZmVzdHNcblJlc3BvbmNlIGF1IHRyYWljdMOpIGRlIGxhIHByZWRlc3RpbmF0aW9uLCBjb21wb3PDqSAuLi4gcGFyIGxlIHNpZXVyIENvdWV0IC4uLiBQYXIgTS4gQXJuYXVkIFNvcmJpblxuXG5Eb2N1bWVudGF0aW9uXG5CbG9nXG5BYm91dFxuVGVybXMgJiBDb25kaXRpb25zXG5Qcml2YWN5IFBvbGljeVxuwqkgMjAyMyBGcm9tVGhlUGFnZS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4ifQ==
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//select[((((./@id = ''manifest_import'')
@@ -37511,6 +37854,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37519,6 +37863,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"8a5afdec-c52d-44ff-9540-203dc569a341"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37565,7 +37919,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"f7550f8d-bad4-465a-a110-056b8b8716ea"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"8a5afdec-c52d-44ff-9540-203dc569a341"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37589,6 +37947,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37601,6 +37960,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
         *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"f7550f8d-bad4-465a-a110-056b8b8716ea"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"8a5afdec-c52d-44ff-9540-203dc569a341"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37624,6 +37997,7 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37632,6 +38006,16 @@ http_interactions:
 - request:
     method: get
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/f7550f8d-bad4-465a-a110-056b8b8716ea/name
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/8a5afdec-c52d-44ff-9540-203dc569a341/name
+>>>>>>> development
     body:
       encoding: US-ASCII
       string: ''
@@ -37658,6 +38042,7 @@ http_interactions:
       Content-Length:
       - '18'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37666,6 +38051,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/f7550f8d-bad4-465a-a110-056b8b8716ea/elements
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":"select"}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/8a5afdec-c52d-44ff-9540-203dc569a341/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//option[(normalize-space(string(.)) = ''Create
@@ -37693,6 +38088,7 @@ http_interactions:
       Content-Length:
       - '12'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37701,6 +38097,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/f7550f8d-bad4-465a-a110-056b8b8716ea/elements
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/8a5afdec-c52d-44ff-9540-203dc569a341/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//option[contains(normalize-space(string(.)),
@@ -37728,6 +38134,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37736,6 +38143,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"3bfa2dda-5cd5-40e3-9715-8d6bc6aed270"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37782,7 +38199,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"665480b1-2353-4089-816a-3a775b99891d"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"3bfa2dda-5cd5-40e3-9715-8d6bc6aed270"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37806,6 +38227,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37818,6 +38240,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
         *, :checked'')\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"665480b1-2353-4089-816a-3a775b99891d"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *, :checked'')\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"3bfa2dda-5cd5-40e3-9715-8d6bc6aed270"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -37841,6 +38277,7 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37849,6 +38286,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/665480b1-2353-4089-816a-3a775b99891d/click
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Fri, 22 Sep 2023 21:31:35 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/3bfa2dda-5cd5-40e3-9715-8d6bc6aed270/click
+>>>>>>> development
     body:
       encoding: UTF-8
       string: "{}"
@@ -37875,6 +38322,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37883,6 +38331,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:35 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":".//input[((((./@type = ''submit'') or (./@type
@@ -37931,6 +38389,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -37939,6 +38398,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"e7bff98e-5c4c-46bf-818c-b3a8794f0449"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -37985,7 +38454,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"45e78dfe-e0b5-4e57-adcc-15469778a590"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"e7bff98e-5c4c-46bf-818c-b3a8794f0449"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -38009,6 +38482,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -38021,6 +38495,20 @@ http_interactions:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
         *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"45e78dfe-e0b5-4e57-adcc-15469778a590"}]}'
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"e7bff98e-5c4c-46bf-818c-b3a8794f0449"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -38044,6 +38532,7 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -38052,6 +38541,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/45e78dfe-e0b5-4e57-adcc-15469778a590/click
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/e7bff98e-5c4c-46bf-818c-b3a8794f0449/click
+>>>>>>> development
     body:
       encoding: UTF-8
       string: "{}"
@@ -38078,6 +38577,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:22 GMT
     body:
       encoding: UTF-8
@@ -38086,6 +38586,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"css selector","value":".flash_message"}'
@@ -38112,6 +38622,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:23 GMT
     body:
       encoding: UTF-8
@@ -38120,6 +38631,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"245f53c5-93a5-452e-9cc9-3d5707829f17"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -38166,7 +38687,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"046dee34-944c-4ae0-b166-dcdf8aebfea9"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"245f53c5-93a5-452e-9cc9-3d5707829f17"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -38190,6 +38715,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:23 GMT
     body:
       encoding: UTF-8
@@ -38198,6 +38724,16 @@ http_interactions:
 - request:
     method: get
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/046dee34-944c-4ae0-b166-dcdf8aebfea9/text
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:31:36 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/245f53c5-93a5-452e-9cc9-3d5707829f17/text
+>>>>>>> development
     body:
       encoding: US-ASCII
       string: ''
@@ -38224,15 +38760,26 @@ http_interactions:
       Content-Length:
       - '106'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:47:23 GMT
+=======
+      - Fri, 22 Sep 2023 21:31:36 GMT
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"value":"IIIF collection import is processing. Reload this page in
         a few minutes to see imported works."}'
+<<<<<<< HEAD
   recorded_at: Mon, 18 Sep 2023 22:47:23 GMT
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/elements
+=======
+  recorded_at: Fri, 22 Sep 2023 21:31:37 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/elements
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":"/html"}'
@@ -38259,6 +38806,7 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:48:18 GMT
     body:
       encoding: UTF-8
@@ -38267,6 +38815,16 @@ http_interactions:
 - request:
     method: post
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/execute/sync
+=======
+      - Fri, 22 Sep 2023 21:32:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"925d2a30-5623-458d-a9c8-bd238ff96a84"}]}'
+  recorded_at: Fri, 22 Sep 2023 21:32:32 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/execute/sync
+>>>>>>> development
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -38313,7 +38871,11 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+<<<<<<< HEAD
         d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"4f8565e9-2a4e-4c89-9799-fd73fe3d6eec"}]}'
+=======
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"925d2a30-5623-458d-a9c8-bd238ff96a84"}]}'
+>>>>>>> development
     headers:
       Accept:
       - application/json
@@ -38337,6 +38899,7 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:48:18 GMT
     body:
       encoding: UTF-8
@@ -38345,6 +38908,16 @@ http_interactions:
 - request:
     method: get
     uri: http://127.0.0.1:4444/session/a29a0886-98b9-4c29-a81d-d01b63be00fb/element/4f8565e9-2a4e-4c89-9799-fd73fe3d6eec/text
+=======
+      - Fri, 22 Sep 2023 21:32:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Fri, 22 Sep 2023 21:32:32 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:4444/session/8a1ebdfc-5f34-4633-a0e9-90c7eebc6597/element/925d2a30-5623-458d-a9c8-bd238ff96a84/text
+>>>>>>> development
     body:
       encoding: US-ASCII
       string: ''
@@ -38371,11 +38944,16 @@ http_interactions:
       Content-Length:
       - '439'
       Date:
+<<<<<<< HEAD
       - Mon, 18 Sep 2023 22:48:18 GMT
+=======
+      - Fri, 22 Sep 2023 21:32:32 GMT
+>>>>>>> development
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         eyJ2YWx1ZSI6IlByb2plY3RzRGFzaGJvYXJkXG5TaWduZWQgSW4gQXNcbk1hcmdhcmV0IFJlZWRcbkVOXG5Db3NpbidzIExpYnJhcnlcbk92ZXJ2aWV3XG5TdGF0aXN0aWNzXG5Db2xsYWJvcmF0b3JzXG5TZXR0aW5nc1xuRXhwb3J0XG5BZGQgV29ya1xuV29ya3MgTGlzdFxuV29ya3Ncbk5vIGVudHJpZXMgZm91bmRcbkFkZCBhIG5ldyB3b3JrXG5Qcm9qZWN0IGJ5XG5NYXJnYXJldCBSZWVkXG5TZWFyY2hcblNlYXJjaFxuUGFnZXMgVGhhdCBOZWVkIFRyYW5zY3JpcHRpb25QYWdlcyBUaGF0IE5lZWQgUmV2aWV3XG5SZWNlbnQgTm90ZXNcblNob3cgTW9yZVxuUmVjZW50IEVkaXRzXG5Eb2N1bWVudGF0aW9uXG5CbG9nXG5BYm91dFxuVGVybXMgJiBDb25kaXRpb25zXG5Qcml2YWN5IFBvbGljeVxuwqkgMjAyMyBGcm9tVGhlUGFnZS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4ifQ==
+<<<<<<< HEAD
   recorded_at: Mon, 18 Sep 2023 22:48:19 GMT
 - request:
     method: post
@@ -40501,4 +41079,7 @@ http_interactions:
       string: !binary |-
         eyJ2YWx1ZSI6IlByb2plY3RzRGFzaGJvYXJkXG5TaWduZWQgSW4gQXNcbk1hcmdhcmV0IFJlZWRcbkVOXG5Db3NpbidzIExpYnJhcnlcbk92ZXJ2aWV3XG5TdGF0aXN0aWNzXG5Db2xsYWJvcmF0b3JzXG5TZXR0aW5nc1xuRXhwb3J0XG5BZGQgV29ya1xuV29ya3MgTGlzdFxuV29ya3Ncbk5vIGVudHJpZXMgZm91bmRcbkFkZCBhIG5ldyB3b3JrXG5Qcm9qZWN0IGJ5XG5NYXJnYXJldCBSZWVkXG5TZWFyY2hcblNlYXJjaFxuUGFnZXMgVGhhdCBOZWVkIFRyYW5zY3JpcHRpb25QYWdlcyBUaGF0IE5lZWQgUmV2aWV3XG5SZWNlbnQgTm90ZXNcblNob3cgTW9yZVxuUmVjZW50IEVkaXRzXG5Eb2N1bWVudGF0aW9uXG5CbG9nXG5BYm91dFxuVGVybXMgJiBDb25kaXRpb25zXG5Qcml2YWN5IFBvbGljeVxuwqkgMjAyMyBGcm9tVGhlUGFnZS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4ifQ==
   recorded_at: Tue, 19 Sep 2023 16:58:53 GMT
+=======
+  recorded_at: Fri, 22 Sep 2023 21:32:32 GMT
+>>>>>>> development
 recorded_with: VCR 6.1.0

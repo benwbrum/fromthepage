@@ -20,6 +20,12 @@
             =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
           -else
             =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+        - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
+          p
+          -if user_signed_in?
+            =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+          -else
+            =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
@@ -117,7 +123,11 @@
         =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
- 
+    
+    - if @collection.active? && @collection.metadata_only_entry?
+      =link_to t('collection.needs_review_pages.works_that_need_metadata'), collection_needs_metadata_path(@collection.owner, @collection), class: 'button review-button'
+      =link_to t('collection.needs_review_pages.review_metadata'), collection_needs_metadata_path(@collection.owner, @collection, need_review: true), class: 'button review-button'
+
     -if @collection.facets_enabled?
       =render(:partial => 'facet_form')
 
@@ -133,7 +143,7 @@
           span.deed-short_content
             ==t('.user_wrote_note', user: user, note: text)
     small.legend
-      =link_to t('.show_more'), deed_notes_path(@collection.slug), class: 'button outline round'
+      =link_to t('.show_more'), notes_list_path(collection_id: @collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     -cache @collection.most_recent_deed_created_at do

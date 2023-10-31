@@ -31,6 +31,9 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  scope 'notes', as: 'notes' do
+    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
+  end
   resources :notes
 
 
@@ -229,7 +232,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -486,6 +488,7 @@ Fromthepage::Application.routes.draw do
       get 'works_list', as: :works_list, to: 'collection#works_list'
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
     
