@@ -76,6 +76,11 @@ class DashboardController < ApplicationController
     if params['start_date'].present? && params['end_date'].present?
       @start_date_hours = Date.parse(params['start_date'])
       @end_date_hours = Date.parse(params['end_date'])
+
+      if @start_date_hours > @end_date_hours
+        flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
+        redirect_to dashboard_your_hours_path
+      end
     else
       @start_date_hours = 7.days.ago.to_date
       @end_date_hours = Date.today
@@ -277,25 +282,32 @@ class DashboardController < ApplicationController
   
   def generate_markdown_text
     <<~MARKDOWN
-      #{I18n.t('pdf.letter.logo_text')}
-
-      #{Time.now.to_date}\n
+      #{I18n.t('pdf.letter.logo_text')}\n
+      
+      #{generated_format_date(Time.now.to_date.to_s)}\n
       #{I18n.t('pdf.letter.to_whom_it_may_concern')}\n
-      #{I18n.t('pdf.letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: @start_date, end_date: @end_date)}\n
+      #{I18n.t('pdf.letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
       #{I18n.t('pdf.letter.worked_on_collections', user_name: current_user.real_name)}\n
       #{I18n.t('pdf.letter.institutions_header')}
       #{I18n.t('pdf.letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
       #{I18n.t('pdf.letter.volunteer_text', user_display_name: current_user.display_name)}\n
       #{I18n.t('pdf.letter.regards_text')}\n
-      #{I18n.t('pdf.letter.signature_text')}
+      | 
+      | Sara Brumfield
+      | Partner, FromThePage
     MARKDOWN
-  end  
+  end
   
   def generate_collection_rows(user_collections)
     user_collections.map do |collection|
       "| #{collection.owner.display_name} | #{collection.title} | #{collection.pages.count} |"
     end.join("\n")
+  end
+
+  def generated_format_date(date)
+    date = Date.parse(date)
+    formatted_date = date.strftime("%B %d, %Y")
   end
   
   def generate_pdf(input_path, output_path, markdown_text)

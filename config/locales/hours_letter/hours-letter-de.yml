@@ -2,14 +2,11 @@
 de:
   pdf:
     letter:
-      certification_text: Mit diesem Schreiben wird bestätigt, dass %{user_name} zwischen %{start_date} und %{end_date} %{time_duration} zu den Crowdsourcing-Bemühungen der Bibliothek auf From the Page (www.fromthepage.com) beigetragen hat. Über die Website können Freiwillige dabei helfen, historische Dokumente in Bibliotheksbeständen zu transkribieren und sie so für zukünftige Forscher durchsuchbarer und zugänglicher zu machen. Die From the Page-Website verfolgt die Zeit, die registrierte Benutzer auf der Website aktiv sind, und meldet die Gesamtzahl der aktiven Minuten.
-      institutions_header: "| Institutionen | Sammlung | Seitenzahl |"
-      institutions_separator: "|--------------|------------|-------------|"
-      logo_text: "![Logo](app/assets/images/logo.png){width=300px style='display: block; margin: 0 auto;'}"
+      certification_text: Mit diesem Schreiben wird bestätigt, dass %{user_name} zwischen %{start_date} und %{end_date} %{time_duration} zu den Crowdsourcing-Bemühungen der Bibliothek auf FromthePage (www.fromthepage.com) beigetragen hat. Über die Website können Freiwillige dabei helfen, historische Dokumente in Bibliotheksbeständen zu transkribieren und sie so für zukünftige Forscher durchsuchbarer und zugänglicher zu machen. Die FromthePage-Website verfolgt die Zeit, die registrierte Benutzer auf der Website aktiv sind, und meldet die Gesamtzahl der aktiven Minuten.
+      institutions_header: "| **Institutionen** | **Sammlung** | **Seiten** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      logo_text: "![](app/assets/images/logo.png){width=300px style='display: block; margin: 0 auto;'}"
       regards_text: Grüße,
-      signature_text: |-
-        Sara Brumfield
-        Partnerin, FromThePage
       to_whom_it_may_concern: 'Wen es angeht:'
       volunteer_text: Jeder Freiwillige trägt dazu bei, die Geschichte zugänglicher zu machen. Wir freuen uns über den Beitrag von %{user_display_name} zu unserem Crowdsourcing-Bemühen!
       worked_on_collections: "%{user_name} hat an den folgenden Sammlungen der folgenden Institutionen gearbeitet:"
