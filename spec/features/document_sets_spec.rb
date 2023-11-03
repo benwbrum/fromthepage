@@ -437,6 +437,7 @@ describe "document sets", :order => :defined do
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable document sets') 
+    sleep(1)
     expect(page.find_link("Edit Sets")).to match_css('[disabled]')
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
   end

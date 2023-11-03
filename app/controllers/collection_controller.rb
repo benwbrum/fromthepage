@@ -133,24 +133,6 @@ class CollectionController < ApplicationController
     session[:new_mobile_user] = false
   end
 
-  def load_settings
-    @main_owner = @collection.owner
-    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
-    @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
-    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
-    @blocked_users = @collection.blocked_users.sort_by { |blocked_user| blocked_user.display_name }
-    if User.count > 100
-      @nonowners = []
-      @noncollaborators = []
-      @nonreviewers = []
-    else
-      @nonowners = User.order(:display_name) - @owners
-      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
-      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
-      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
-    end
-  end
 
   def show
     if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
@@ -716,4 +698,25 @@ private
       :alphabetize_works
     )
   end
+
+  def load_settings
+    @main_owner = @collection.owner
+    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
+    @works_not_in_collection = current_user.owner_works - @collection.works
+    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
+    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
+    @blocked_users = @collection.blocked_users.sort_by { |blocked_user| blocked_user.display_name }
+    if User.count > 100
+      @nonowners = []
+      @noncollaborators = []
+      @nonreviewers = []
+    else
+      @nonowners = User.order(:display_name) - @owners
+      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    end
+  end
+
+
 end

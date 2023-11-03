@@ -40,6 +40,7 @@ describe "forum tab for collection", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link('Look & Feel')
     page.check('Enable forums')
+    sleep(1)
     visit current_path # reload page to get the new forum tab
     page.find('.tabs').click_link("Forum")
     expect(page).to have_content("All Messageboards")
@@ -49,6 +50,7 @@ describe "forum tab for collection", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable forums')
+    sleep(1)
     visit current_path 
     expect(page.find('.tabs')).to_not have_content("Forum")
   end
