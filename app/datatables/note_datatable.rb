@@ -17,7 +17,17 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
   end
 
   def view_columns
-    @view_columns ||= {
+    if @collection.metadata_only_entry?
+      @view_columns ||= {
+      userpic:    { searchable: false, orderable: false },
+      user:       { source: "User.display_name"},      
+      note:       { source: "Note.title"},
+      work:       { source: "Work.title"},
+      collection: { source: "Collection.title" },
+      time:       { source: "Note.created_at" }
+    }
+    else
+      @view_columns ||= {
       userpic:    { searchable: false, orderable: false },
       user:       { source: "User.display_name"},      
       note:       { source: "Note.title"},
@@ -26,27 +36,47 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
       collection: { source: "Collection.title" },
       time:       { source: "Note.created_at" }
     }
+    end
   end
 
   def data
-    records.map do |record|
-      {
-        userpic:    userpic(record),
-        user:       link_to(record.user&.display_name, user_profile_path(record.user)),
-        note:       record.title,
-        page:       link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
-        work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
-        collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
-        time:       timestamp(record)
-      }
+    if @collection.metadata_only_entry?
+      records.map do |record|
+        {
+          userpic:    userpic(record),
+          user:       link_to(record.user&.display_name, user_profile_path(record.user)),
+          note:       record.title,
+          work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
+          collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
+          time:       timestamp(record)
+        }
+      end
+    else
+      records.map do |record|
+        {
+          userpic:    userpic(record),
+          user:       link_to(record.user&.display_name, user_profile_path(record.user)),
+          note:       record.title,
+          page:       link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
+          work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
+          collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
+          time:       timestamp(record)
+        }
+      end
     end
   end
 
   def get_raw_records
     if @collection
-      @collection.notes
-        .joins(:collection, :page, :work, :user)
-        .reorder('')
+      if @collection.metadata_only_entry?
+        @collection.notes
+          .joins(:collection, :work, :user)
+          .reorder('')
+      else
+        @collection.notes
+          .joins(:collection, :page, :work, :user)
+          .reorder('')
+      end
     else
       Note.includes(:collection).where("collections.restricted = 0")
         .joins(:collection, :page, :work, :user)
