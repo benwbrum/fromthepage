@@ -553,6 +553,11 @@ private
   def generate_csv(work, csv, col_sections, transcription_field_flag)
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
+
+      if page.status == "blank"
+        csv = generate_csv_for_blank_page(page, csv, [])
+      end
+      
       unless page.table_cells.empty?
         has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
@@ -579,7 +584,7 @@ private
         page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
         running_data = []
-
+        
         if page.sections.blank?
           #get cell data for a page with only one table
           page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
@@ -623,6 +628,29 @@ private
         end
       end
     end
+    return csv
+  end
+
+  def generate_csv_for_blank_page(page, csv, section_cells)
+    page_url = url_for({:controller => 'display', :action => 'display_page', :page_id => page.id, :only_path => false})
+  
+    page_cells = [
+      '',
+      '',
+      '',
+      page.title,
+      '',
+      page_url,
+      '',
+      '',
+      I18n.t("page.edit.page_status_#{page.status}")
+    ]
+  
+    page_metadata_cells = page_metadata_cells(page)
+    data_cells = Array.new(@headings.count, '')
+  
+    csv << (page_cells + page_metadata_cells + section_cells + data_cells)
+  
     return csv
   end
 
