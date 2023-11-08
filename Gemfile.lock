@@ -220,6 +220,8 @@ GEM
     faraday (2.5.1)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (3.0.0)
     ffi (1.15.5)
     flamegraph (0.9.5)
@@ -322,6 +324,7 @@ GEM
     msgpack (1.5.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
+    multipart-post (2.3.0)
     mustache (1.1.1)
     mysql2 (0.5.4)
     net-scp (1.2.1)
@@ -460,6 +463,9 @@ GEM
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
     rtl (0.6.0)
+    ruby-openai (5.1.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-saml (1.14.0)
       nokogiri (>= 1.10.5)
       rexml
@@ -659,6 +665,7 @@ DEPENDENCIES
   rmagick
   rspec-rails
   rtl
+  ruby-openai
   rubyzip
   rvm1-capistrano3
   sassc-rails

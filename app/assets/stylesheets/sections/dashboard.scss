@@ -359,6 +359,38 @@
   font-size: $fontSizeSmall;
 }
 
+
+// Tag browsing
+// Class displaying a collection div as a tile
+.collection-tile {
+  // display this div as a tile
+  display: inline-block;
+  // set the width of the tile
+  width: 20em;
+  // set the height of the tile
+  height: 200px;
+  // set the margin of the tile
+  margin: 0 0 1em 0;
+  // set the padding of the tile
+  padding: 2em 2em 2em 2em;
+  // set the box-sizing of the tile
+  box-sizing: border-box;
+  // set the transition of the tile
+  transition: border-color 0.3s;
+  // set the border of the tile
+  border-bottom: 1px dotted $borderColor;
+  // set the border of the tile
+  &:last-child {
+    // set the border of the tile
+    border: 0;
+    // set the margin of the tile
+    margin: 0;
+  }
+
+  
+}
+
+
 // ---------------------------
 // EDITOR SECTION
 // ---------------------------

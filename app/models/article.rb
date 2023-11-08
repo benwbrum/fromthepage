@@ -10,7 +10,7 @@ class Article < ApplicationRecord
   include XmlSourceProcessor
   #include ActiveModel::Dirty
 
-  before_update :process_source
+  before_save :process_source
 
   validates_presence_of :title
 
@@ -121,7 +121,9 @@ class Article < ApplicationRecord
   # tested
   def clear_links(type='does_not_apply')
     # clear out the existing links to this page
-    ArticleArticleLink.where("source_article_id = #{self.id}").delete_all
+    if self.id
+      ArticleArticleLink.where("source_article_id = #{self.id}").delete_all
+    end
   end
 
   # tested

@@ -1,8 +1,20 @@
 ---
 de:
   authentication_failed: Authentifizierung fehlgeschlagen
+  collection:
+    edit:
+      subject_tags: Betreff-Tags
   dashboard:
     collaborator: Mitarbeitenden-Dashboard
+    new_landing_page:
+      all_collections: Alle Sammlungen
+      next_image: Nächstes Bild
+      previous_image: Vorheriges Bild
+      recent_activity: Letzte Aktivität
+      search: Suchen
+      search_for_collections: Suchen Sie nach Sammlungen
+      search_for_collections_or_owners: Suchen Sie nach Sammlungen oder Besitzern
+      transcribe_a_page: Transkribieren Sie eine Seite
     plain: Dashboard
   date:
     formats:

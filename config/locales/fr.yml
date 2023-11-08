@@ -1,8 +1,20 @@
 ---
 fr:
   authentication_failed: Authentification échouée
+  collection:
+    edit:
+      subject_tags: Balises de sujet
   dashboard:
     collaborator: Tableau de bord des collaborateurs
+    new_landing_page:
+      all_collections: Toutes les collections
+      next_image: Image suivante
+      previous_image: Image précédente
+      recent_activity: Activité récente
+      search: Recherche
+      search_for_collections: Rechercher des collections
+      search_for_collections_or_owners: Rechercher des collections ou des propriétaires
+      transcribe_a_page: Transcrire une page
     plain: Tableau de bord
   date:
     formats:
