@@ -4,9 +4,9 @@ require 'contentdm_translator'
 RSpec.describe ContentdmTranslator do
     describe '#cdm_url_to_iiif' do
 
-        let(:item_url){ 'https://cdm123.contentdm.oclc.org/digital/collection/COL1D/id/123/' }
-        let(:collection_url){ 'https://cdm123.contentdm.oclc.org/digital/collection/COL1D/' }
-        let(:repository_url){ 'https://cdm123.contentdm.oclc.org/' }
+        let(:item_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
+        let(:collection_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
+        let(:repository_url){ 'https://digital.archives.alabama.gov' }
         
         let(:vanity_item){ 'http://www.digitalindy.org/cdm/compoundobject/collection/ahs/id/200/rec/3' }
         let(:vanity_collection){ 'http://www.digitalindy.org/cdm/landingpage/collection/ahs' }
