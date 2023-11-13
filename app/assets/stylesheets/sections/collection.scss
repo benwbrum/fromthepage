@@ -298,6 +298,31 @@
   }
 }
 
+.category-article dd {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.category-article dd p {
+  width: 33%;
+  display: flex;    
+}
+
+.category-article dd p a {
+  width: 100%;
+}
+
+.category-article dd p span {
+  width: 40%;
+}
+
+.grey-number {
+  color: grey;
+  margin-right: 5px;
+  font-size: medium;
+  padding-left: 10px;
+}
 
 // Collection stats
 
