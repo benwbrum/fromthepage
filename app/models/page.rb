@@ -1,4 +1,5 @@
 require 'search_translator'
+require 'transkribus/page_processor'
 class Page < ApplicationRecord
   ActiveRecord::Base.lock_optimistically = false
 
@@ -32,6 +33,7 @@ class Page < ApplicationRecord
   has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
   has_many :deeds, :dependent => :destroy
+  has_many :external_api_requests, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
@@ -537,7 +539,55 @@ class Page < ApplicationRecord
     users
   end
 
+  def has_alto?
+    File.exists?(alto_path)
+  end
+
+  def create_alto
+    if File.exists? original_htr_path
+      # convert the htr to alto
+      # write the alto to the alto path
+    else
+      # call a service to create HTR
+      PageProcessor.new(self).submit_process
+    end
+
+  end
+
+
+  def alto_xml
+    if has_alto?
+      File.read(alto_path)
+    else
+      ""
+    end
+  end
+
+  def alto_xml=(xml)
+    File.write(alto_path, xml)
+  end
+
+
+  def image_url_for_download
+    if sc_canvas
+      self.sc_canvas.sc_resource_id
+    elsif self.ia_leaf
+      self.ia_leaf.facsimile_url
+    else
+      file_to_url(self.canonical_facsimile_url)
+    end
+  end
+
   private
+
+  def alto_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")
+  end
+
+  def original_htr_path
+    '/not/implemented/yet/placeholder.xml'
+  end
+
 
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)

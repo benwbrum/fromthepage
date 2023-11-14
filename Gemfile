@@ -26,6 +26,7 @@ gem 'devise-encryptable'
 
 gem 'carrierwave'
 gem 'rubyzip'
+gem 'httparty'
 
 gem 'ahoy_matey'
 

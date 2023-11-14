@@ -1,4 +1,5 @@
 Fromthepage::Application.routes.draw do
+  resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
     scope ':collection_id' do

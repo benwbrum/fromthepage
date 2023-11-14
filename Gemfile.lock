@@ -243,6 +243,9 @@ GEM
       nokogiri (>= 1.4)
     htmlentities (4.3.4)
     http_accept_language (2.1.1)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     httpi (2.5.0)
       rack
       socksify
@@ -632,6 +635,7 @@ DEPENDENCIES
   friendly_id
   gravatar_image_tag
   http_accept_language
+  httparty
   i18n-tasks
   iiif-image-api!
   iiif-presentation!

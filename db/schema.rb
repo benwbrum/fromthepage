@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_05_131547) do
+ActiveRecord::Schema.define(version: 2023_11_08_204429) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(version: 2023_10_05_131547) do
     t.bigint "thredded_messageboard_group_id"
     t.boolean "messageboards_enabled"
     t.datetime "most_recent_deed_created_at"
+    t.boolean "alphabetize_works", default: true
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -322,6 +323,22 @@ ActiveRecord::Schema.define(version: 2023_10_05_131547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["collection_id"], name: "index_editor_buttons_on_collection_id"
+  end
+
+  create_table "external_api_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.integer "work_id"
+    t.integer "page_id"
+    t.string "engine"
+    t.string "status"
+    t.text "params"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_external_api_requests_on_collection_id"
+    t.index ["page_id"], name: "index_external_api_requests_on_page_id"
+    t.index ["user_id"], name: "index_external_api_requests_on_user_id"
+    t.index ["work_id"], name: "index_external_api_requests_on_work_id"
   end
 
   create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
@@ -1171,6 +1188,9 @@ ActiveRecord::Schema.define(version: 2023_10_05_131547) do
   add_foreign_key "collection_blocks", "users"
   add_foreign_key "collections", "thredded_messageboard_groups"
   add_foreign_key "editor_buttons", "collections"
+  add_foreign_key "external_api_requests", "collections"
+  add_foreign_key "external_api_requests", "users"
+  add_foreign_key "external_api_requests", "works"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"
