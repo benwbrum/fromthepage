@@ -17,7 +17,8 @@ module SubjectDetailsExporter
         'Article Text',
         'Number Occurrences',
         'Origin',
-        'Created'
+        'Created',
+        'Category_Hierarchy'
       ]  # research helpers may follow
     end
 
@@ -39,6 +40,7 @@ module SubjectDetailsExporter
           row << subject.page_article_links.count
           row << if subject.provenance.blank? then 'FromThePage' else subject.provenance end
           row << subject.created_on.iso8601
+          row << subject.formatted_category_hierarchy
 
           csv << row
         end
