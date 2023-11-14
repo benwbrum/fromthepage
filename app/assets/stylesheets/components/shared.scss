@@ -1232,13 +1232,14 @@ button, .button, .dropdown dd a {
   margin: 0 0 5rem 0;
   line-height: 2.5em;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
   li {
     --size: 9;
-    margin: 0;
+    margin: .5rem;
     font-family: $fontFamilyHead;
-    font-size: calc(var(--size) * 0.125em + 0.875em);
+    font-size: calc(var(--size) * 0.125em);
+    //font-size: calc(var(--size) * 0.125em + 0.875em);
     opacity: calc((20 - (9 - var(--size))) / 20);
 
     &[data-weight="0"] { --size: 0; }
@@ -1255,7 +1256,7 @@ button, .button, .dropdown dd a {
 
   a {
     display: block;
-    padding: 0 0.75rem;
+    padding: 0 1.5rem;
     text-decoration: none;
 
     &:hover {

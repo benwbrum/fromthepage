@@ -3,21 +3,26 @@
 .columns
   article.sidebar
     h1 =@tag.ai_text
+    =form_for(@tag, :url => { :action => 'update_tag' }) do |f|
+      =validation_summary @tag.errors
+      table.form
+        tr.big
+          th =f.label :ai_text, t('.ai_text')
+          td.w100 =f.text_field :ai_text
+        tr.big
+          th =f.label :tag_type, t('.tag_type')
+          td.w100 =f.select :tag_type, Tag::TAG_TYPES
+        tr.big
+          th =f.label :canonical, t('.canonical')
+          td.w100 =f.check_box :canonical
+      .toolbar
+        .toolbar_group.w100
+          =f.button t('.save'), :name => 'save', class: 'big'
+        .toolbar_group.aright
+          =link_to t('.cancel'), admin_tags_index_path, class: 'button'
+          =link_to t('.delete'), admin_tags_delete_path(@tag.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
 
-    h3 AI Text
-    code =@tag.ai_text
 
-    h3 Status 
-    -if @tag.canonical
-      span Canonical
-    -else
-      span Not Canonical
-
-    h3 Type:
-    span =@tag.tag_type
-
-    h3 Messages:
-    span TODO
   article.maincol
     h2 =t('.possible_duplicates')
     -if @possible_duplicates.empty?

@@ -27,7 +27,7 @@ h2 =t('.all_tags')
               td
                 i TODO
               td 
-                =link_to t('.edit'), admin_tags_edit_path(tag.id), class: 'button'
+                =link_to t('.edit'), admin_tags_show_path(tag.id), class: 'button'
                 =link_to t('.delete'), admin_tags_delete_path(tag.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
 
 

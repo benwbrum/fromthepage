@@ -24,8 +24,10 @@
   article.maincol
     ul.tagcloud
       -@tag_map.each do |ai_text, collection_count|
-        li data-weight="#{collection_count}"
-          =link_to(ai_text, browse_tag_path(ai_text))
+        li
+          /add the following to the li for different font sizes 
+          /data-weight="#{collection_count}"
+          =link_to(ai_text, browse_tag_path(ai_text), class: "button outline round")
 
     -if @search_results && @owners.empty?
       -@search_results.each do |sr|

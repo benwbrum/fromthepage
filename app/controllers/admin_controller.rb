@@ -335,10 +335,6 @@ class AdminController < ApplicationController
 
   end
 
-  def edit_tag
-    @tag = Tag.find params[:tag_id]
-  end
-
   def update_tag
     @tag = Tag.find params[:tag_id]
     @tag.update_attributes(tag_params)
