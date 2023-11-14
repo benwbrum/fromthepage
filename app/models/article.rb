@@ -31,7 +31,7 @@ class Article < ApplicationRecord
 
   scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages)}
 
-  has_many :pages, :through => :page_article_links
+  has_many :pages, through: :page_article_links, counter_cache: true
 
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
