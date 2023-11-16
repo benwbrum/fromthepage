@@ -372,19 +372,22 @@ private
     @page_metadata_headings = collection.page_metadata_fields
     @headings += @page_metadata_headings
 
+    input_types = collection.transcription_fields.pluck(:input_type)
+    spreadsheet_count = input_types.count("spreadsheet")
+
     #get headings from field-based
     field_headings.each do |field_id|
       field = TranscriptionField.where(:id => field_id).first
-      if field && field.input_type == 'spreadsheet'
-        raw_field_index = @raw_headings.index(field_id)
-        field.spreadsheet_columns.each do |column|
-          raw_field_index += 1
-          raw_heading = "#{field.label} #{column.label}"
-          @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
-          @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
-          @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
-        end
-        @raw_headings.delete(field_id)
+      if field && field.input_type == 'spreadsheet' && spreadsheet_count > 1
+          raw_field_index = @raw_headings.index(field_id)
+          field.spreadsheet_columns.each do |column|
+            raw_field_index += 1
+            raw_heading = "#{field.label} #{column.label}"
+            @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
+            @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
+            @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
+          end
+          @raw_headings.delete(field_id)
       else
         raw_heading = field ? field.label : field_id
         @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
@@ -543,15 +546,27 @@ private
       end
 
       works.each do |w|
-        csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?)
+        csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?, collection)
       end
 
     end
     csv_string
   end
 
-  def generate_csv(work, csv, col_sections, transcription_field_flag)
+  def generate_csv(work, csv, col_sections, transcription_field_flag, collection)
     all_deeds = work.deeds
+
+    if transcription_field_flag
+      renamed_cell_headings_count = 1
+      renamed_cell_headings = TableCell.where(work_id: work.id).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
+      input_types = collection.transcription_fields.pluck(:input_type)
+      spreadsheet_count = input_types.count("spreadsheet")
+      if spreadsheet_count == 1
+        renamed_cell_headings_count = renamed_cell_headings.count
+        position = input_types.index("spreadsheet")
+      end
+    end
+
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
         has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
@@ -583,21 +598,25 @@ private
         if page.sections.blank?
           #get cell data for a page with only one table
           page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
-            #get the cell data and add it to the array
-            cell_data(cell_array, data_cells, transcription_field_flag)
-            if has_spreadsheet
-              running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+            count = 0
+            while count < renamed_cell_headings_count
+              #get the cell data and add it to the array
+              cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
+              if has_spreadsheet && spreadsheet_count > 1
+                running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+              end
+              #shift cells over if any page has sections
+              if !col_sections
+                section_cells = []
+              else
+                section_cells = ["", "", ""]
+              end
+              # write the record to the CSV and start a new record
+              csv << (page_cells + page_metadata_cells + section_cells + data_cells)
+              #create a new array for the next row
+              data_cells = Array.new(@headings.count, "")
+              count = count + 1
             end
-            #shift cells over if any page has sections
-            if !col_sections
-              section_cells = []
-            else
-              section_cells = ["", "", ""]
-            end
-            # write the record to the CSV and start a new record
-            csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-            #create a new array for the next row
-            data_cells = Array.new(@headings.count, "")
           end
 
         else
@@ -610,7 +629,7 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, data_cells, transcription_field_flag)
+              cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
@@ -622,7 +641,7 @@ private
           end
         end
       end
-    end
+  end
     return csv
   end
 
@@ -652,12 +671,19 @@ private
   end
 
 
-  def cell_data(array, data_cells, transcription_field_flag)
+  def cell_data(array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
+    if transcription_field_flag
+      result = array.select { |element| element.transcription_field.input_type == 'spreadsheet' }
+    end
     array.each do |cell|
       index = index_for_cell(cell)
       target = transcription_field_flag ? index : index *2
+      if cell.transcription_field.input_type == "spreadsheet" && spreadsheet_count == 1
+        cell = result[count]
+        target = position
+      end
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag
+      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag 
     end
   end
 
