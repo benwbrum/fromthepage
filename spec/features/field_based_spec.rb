@@ -130,7 +130,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_export_path(@collection.owner, @collection)
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: work.title).find('.btnCsvTblExport').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+    expect(page.response_headers['Content-Type']).to eq 'text/csv'
   end
 
 
