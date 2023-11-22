@@ -554,34 +554,37 @@ private
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
 
+      has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
+
+      page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+      page_notes = page.notes
+        .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
+      page_contributors = all_deeds
+        .select{ |d| d.page_id == page.id}
+        .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
+
+      page_cells = [
+        work.title,
+        work.identifier,
+        work.id,
+        page.title,
+        page.position,
+        page_url,
+        page_contributors,
+        page_notes,
+        I18n.t("page.edit.page_status_#{page.status}")
+      ]
+      
+      page_metadata_cells = page_metadata_cells(page)
+      data_cells = Array.new(@headings.count, "")
+
       if page.status == "blank"
-        csv = generate_csv_for_blank_page(page, csv, [])
+        section_cells = []
+        csv << (page_cells + page_metadata_cells + section_cells + data_cells)
+        data_cells = Array.new(@headings.count, "")
       else
         unless page.table_cells.empty?
-          has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
-
-          page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-          page_notes = page.notes
-            .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
-          page_contributors = all_deeds
-            .select{ |d| d.page_id == page.id}
-            .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
-            .uniq.join('|')
-
-          page_cells = [
-            work.title,
-            work.identifier,
-            work.id,
-            page.title,
-            page.position,
-            page_url,
-            page_contributors,
-            page_notes,
-            I18n.t("page.edit.page_status_#{page.status}")
-          ]
-
-          page_metadata_cells = page_metadata_cells(page)
-          data_cells = Array.new(@headings.count, "")
           running_data = []
           
           if page.sections.blank?
@@ -628,29 +631,6 @@ private
         end
       end
     end
-    return csv
-  end
-
-  def generate_csv_for_blank_page(page, csv, section_cells)
-    page_url = url_for({:controller => 'display', :action => 'display_page', :page_id => page.id, :only_path => false})
-  
-    page_cells = [
-      '',
-      '',
-      '',
-      page.title,
-      '',
-      page_url,
-      '',
-      '',
-      I18n.t("page.edit.page_status_#{page.status}")
-    ]
-  
-    page_metadata_cells = page_metadata_cells(page)
-    data_cells = Array.new(@headings.count, '')
-  
-    csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-  
     return csv
   end
 
