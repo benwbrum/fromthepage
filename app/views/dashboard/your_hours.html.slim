@@ -33,4 +33,4 @@ h3 = t('.hours_details_message', user_name: current_user.real_name, time_duratio
           td= collection.title
           td= collection.pages.count
 
-  = button_to 'Download a Letter', dashboard_download_hours_letter_path(start_date: @start_date_hours, end_date: @end_date_hours, time_duration: @time_duration), method: :get, class: 'button-class'
+  = button_to t('.download_letter'), dashboard_download_hours_letter_path(start_date: @start_date_hours, end_date: @end_date_hours, time_duration: @time_duration), method: :get, class: 'button-class'

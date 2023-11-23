@@ -64,6 +64,14 @@ fr:
     hierarchical_collections_and_document_sets:
       project_by: Projet par %{author}
       start_transcribing: Commencer à transcrire
+    hours_letter:
+      certification_text: Cette lettre vise à certifier que %{user_name} a contribué %{time_duration} aux efforts de crowdsourcing de la bibliothèque sur FromThePage (www.fromthepage.com) entre le %{start_date} et le %{end_date}. Grâce au site Web, les bénévoles peuvent aider à transcrire des documents historiques dans les collections de bibliothèques, les rendant ainsi plus consultables et accessibles aux futurs chercheurs. Le site Web FromThePage suit la durée pendant laquelle les utilisateurs enregistrés sont actifs sur le site et rapporte le nombre total de minutes actives.
+      institutions_header: "| **Établissements** | **Collecte** | **pages** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Salutations,
+      to_whom_it_may_concern: 'À qui cela peut concerner:'
+      volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
+      worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
     landing_page:
       all_collections: Toutes les collections
       more: Voir plus
@@ -164,6 +172,7 @@ fr:
       your_hours: Vos horaires
     your_hours:
       contributions_between_dates: Contributions entre %{start_date} et %{end_date}
+      download_letter: Télécharger une lettre
       end_date: Date de fin
       hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
       select_new_date: Sélectionnez une nouvelle plage de dates

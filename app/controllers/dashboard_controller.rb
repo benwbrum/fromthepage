@@ -286,14 +286,14 @@ class DashboardController < ApplicationController
       &nbsp; &nbsp;
       \n#{generated_format_date(Time.now.to_date.to_s)}\n
       &nbsp; &nbsp;
-      \n#{I18n.t('pdf.letter.to_whom_it_may_concern')}\n
-      #{I18n.t('pdf.letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
-      #{I18n.t('pdf.letter.worked_on_collections', user_name: current_user.real_name)}\n
-      #{I18n.t('pdf.letter.institutions_header')}
-      #{I18n.t('pdf.letter.institutions_separator')}
+      \n#{I18n.t('dashboard.hours_letter.to_whom_it_may_concern')}\n
+      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
+      #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: current_user.real_name)}\n
+      #{I18n.t('dashboard.hours_letter.institutions_header')}
+      #{I18n.t('dashboard.hours_letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
-      #{I18n.t('pdf.letter.volunteer_text', user_display_name: current_user.display_name)}\n
-      #{I18n.t('pdf.letter.regards_text')}\n
+      #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      #{I18n.t('dashboard.hours_letter.regards_text')}\n
       | 
       | Sara Brumfield
       | Partner, FromThePage
