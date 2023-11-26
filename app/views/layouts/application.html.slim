@@ -28,6 +28,8 @@ html lang="en-US"
       =render :partial => '/layouts/mixpanel'
     -unless FACEBOOK_PIXEL_ID.blank?
       =render :partial => '/layouts/fb_pixel'
+    -unless CLARITY.blank?
+      =render :partial => '/layouts/clarity'
 
   body
     #flash_wrapper

@@ -163,5 +163,19 @@ class Article < ApplicationRecord
     end
     version.save!
   end
+
+  # Retrieve the hierarchy of categories for the article as a formatted string
+  def formatted_category_hierarchy
+    hierarchy_titles = categories.flat_map { |category| ancestors_and_self(category) }.pluck(:title)
+    hierarchy_titles.reverse.join(' -- ')
+  end
+
+  private
+
+  def ancestors_and_self(category)
+    ancestors = category.ancestors.reverse
+
+    [category] + ancestors
+  end
 end
 
