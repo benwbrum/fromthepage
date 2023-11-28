@@ -74,7 +74,6 @@ class PageProcessor
 
     # write to the page
     page.alto_xml = alto
-    page.save!
 
   end
 
