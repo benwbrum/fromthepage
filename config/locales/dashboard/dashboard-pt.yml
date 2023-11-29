@@ -64,6 +64,14 @@ pt:
     hierarchical_collections_and_document_sets:
       project_by: Projeto de %{author}
       start_transcribing: Iniciar Transcrição
+    hours_letter:
+      certification_text: Esta carta é para certificar que %{user_name} contribuiu com %{time_duration} para os esforços de crowdsourcing da biblioteca em FromThePage (www.fromthepage.com) entre %{start_date} e %{end_date}. Através do site, voluntários podem ajudar a transcrever documentos históricos em acervos de bibliotecas, tornando-os mais pesquisáveis ​​e acessíveis para futuros pesquisadores. O site FromThePage rastreia o tempo em que os usuários registrados estão ativos no site e informa um número total de minutos ativos.
+      institutions_header: "| **Instituições** | **Coleção** | **Páginas** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Cumprimentos,
+      to_whom_it_may_concern: 'A quem possa interessar:'
+      volunteer_text: Cada voluntário ajuda a tornar a história mais acessível. Agradecemos a contribuição de %{user_display_name} para nosso esforço de crowdsourcing!
+      worked_on_collections: "%{user_name} trabalhou nas seguintes coleções das seguintes instituições"
     landing_page:
       all_collections: Todas as Coleções
       more: Mais...
@@ -161,3 +169,12 @@ pt:
       projects_you_have_contributed_to: Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo.
       try_transcribing_a_page: 'Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes '
       your_activity: Sua Atividade
+      your_hours: Seu horário
+    your_hours:
+      contributions_between_dates: Contribuições entre %{start_date} e %{end_date}
+      download_letter: Baixe uma carta
+      end_date: Data final
+      hours_details_message: "%{user_name} contribuiu com %{time_duration} entre %{start_date} e %{end_date}"
+      select_new_date: Selecione um novo período
+      start_date: Data de início
+      update: Atualizar
