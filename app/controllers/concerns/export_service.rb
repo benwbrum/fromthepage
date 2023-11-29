@@ -553,71 +553,79 @@ private
   def generate_csv(work, csv, col_sections, transcription_field_flag)
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
-      unless page.table_cells.empty?
-        has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
-        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-        page_notes = page.notes
-          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
-        page_contributors = all_deeds
-          .select{ |d| d.page_id == page.id}
-          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
-          .uniq.join('|')
+      has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
-        page_cells = [
-          work.title,
-          work.identifier,
-          work.id,
-          page.title,
-          page.position,
-          page_url,
-          page_contributors,
-          page_notes,
-          I18n.t("page.edit.page_status_#{page.status}")
-        ]
+      page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+      page_notes = page.notes
+        .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
+      page_contributors = all_deeds
+        .select{ |d| d.page_id == page.id}
+        .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+        .uniq.join('|')
 
-        page_metadata_cells = page_metadata_cells(page)
+      page_cells = [
+        work.title,
+        work.identifier,
+        work.id,
+        page.title,
+        page.position,
+        page_url,
+        page_contributors,
+        page_notes,
+        I18n.t("page.edit.page_status_#{page.status}")
+      ]
+      
+      page_metadata_cells = page_metadata_cells(page)
+      data_cells = Array.new(@headings.count, "")
+
+      if page.status == "blank"
+        section_cells = []
+        csv << (page_cells + page_metadata_cells + section_cells + data_cells)
         data_cells = Array.new(@headings.count, "")
-        running_data = []
-
-        if page.sections.blank?
-          #get cell data for a page with only one table
-          page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
-            #get the cell data and add it to the array
-            cell_data(cell_array, data_cells, transcription_field_flag)
-            if has_spreadsheet
-              running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
-            end
-            #shift cells over if any page has sections
-            if !col_sections
-              section_cells = []
-            else
-              section_cells = ["", "", ""]
-            end
-            # write the record to the CSV and start a new record
-            csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-            #create a new array for the next row
-            data_cells = Array.new(@headings.count, "")
-          end
-
-        else
-          #get the table sections/headers and iterate cells within the sections
-          page.sections.each do |section|
-            section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
-            section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
-            section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
-            section_cells = [section_title_text, section_title_subjects, section_title_categories]
-            #group the table cells per section into rows
-            section.table_cells.group_by(&:row).each do |row, cell_array|
+      else
+        unless page.table_cells.empty?
+          running_data = []
+          
+          if page.sections.blank?
+            #get cell data for a page with only one table
+            page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
+              #shift cells over if any page has sections
+              if !col_sections
+                section_cells = []
+              else
+                section_cells = ["", "", ""]
+              end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(@headings.count, "")
+            end
+
+          else
+            #get the table sections/headers and iterate cells within the sections
+            page.sections.each do |section|
+              section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
+              section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
+              section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
+              section_cells = [section_title_text, section_title_subjects, section_title_categories]
+              #group the table cells per section into rows
+              section.table_cells.group_by(&:row).each do |row, cell_array|
+                #get the cell data and add it to the array
+                cell_data(cell_array, data_cells, transcription_field_flag)
+                if has_spreadsheet
+                  running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+                end
+                # write the record to the CSV and start a new record
+                csv << (page_cells + page_metadata_cells + section_cells + data_cells)
+                #create a new array for the next row
+                data_cells = Array.new(@headings.count, "")
+              end
             end
           end
         end
