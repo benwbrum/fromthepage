@@ -144,8 +144,12 @@
         offsetY: 50
       });
 
-      textlayer.loadOCR('/alto-sample.xml');
-      textlayer.setVisible(false);
+      if (#{@page.has_alto?})
+        textlayer.loadOCR('#{collection_alto_xml_url(@collection.owner, @collection, @page.work, @page)}');
+        textlayer.setVisible(true);
+      else
+        // TODO disable the textlayer and related buttons
+      end
 
       const btnLocked = document.getElementById('toggle-locked');
       btnLocked.addEventListener('click', () => {

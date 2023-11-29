@@ -556,6 +556,7 @@ Fromthepage::Application.routes.draw do
       # Page Annotations
       get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
+      get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
 
       #article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'
