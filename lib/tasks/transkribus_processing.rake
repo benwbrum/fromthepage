@@ -27,7 +27,9 @@ namespace :fromthepage do
 
     page_processor.run_process
 
-    if page_processor.status == ExternalApiRequest::Status::COMPLETED
+    
+    external_api_request = ExternalApiRequest.find external_api_request_id
+    if external_api_request.status == ExternalApiRequest::Status::COMPLETED
       print "page_processor completed successfully\n"
     else
       print "page_processor failed\n"

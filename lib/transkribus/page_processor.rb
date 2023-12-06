@@ -45,23 +45,46 @@ class PageProcessor
 
   def run_process
     # we should have both a page and an external_api_request
-    # first, call the transkribus api to submit the request
-    binding.pry
-    @external_api_request.status = ExternalApiRequest::Status::RUNNING
-    @external_api_request.save!
-    submit_response = authorized_transkribus_request { submit_processing_request(@page) }
-    process_id = submit_response.parsed_response['processId']
+    # if @external_api_request.status == ExternalApiRequest::Status::WAITING
+    #   # we've already submitted the request, so we just need to read the process id from the params
+    #   process_id = JSON.parse(@external_api_request.params)['process_id']
+    # else
+    #   # first, call the transkribus api to submit the request
+    #   @external_api_request.status = ExternalApiRequest::Status::RUNNING
+    #   @external_api_request.save!
+    #   submit_response = authorized_transkribus_request { submit_processing_request(@page) }
+    #   process_id = submit_response.parsed_response['processId']
 
-    @external_api_request.params = {process_id: process_id}.to_json
-    @external_api_request.status = ExternalApiRequest::Status::WAITING
-    @external_api_request.save!
-
+    #   @external_api_request.params = {process_id: process_id}.to_json
+    #   @external_api_request.status = ExternalApiRequest::Status::WAITING
+    #   @external_api_request.save!
+    # end
+    process_id = 7118122
     # then, check the status of the request until it's done
     status=nil
     iteration = 0    
     while status != 'FINISHED' do
       status_response = authorized_transkribus_request { get_processing_status(process_id) }
-      status = status_response.parsed_response['status']      
+      if status_response.code != 200
+        if status_response.code == 404
+          # transkribus has a possible bug where it returns a 404 when the process_id is finished
+          # so we'll just assume that's what happened
+          status = 'FINISHED'
+          break
+        else
+          print "error getting status for process_id=#{process_id}\n#{status_response.to_json}\n"
+          @external_api_request.status = ExternalApiRequest::Status::FAILED
+          @external_api_request.save!
+          return
+        end
+      end
+      status = status_response.parsed_response['status']
+      if status=='CANCELED'
+        print "process_id=#{process_id} was canceled, probably in the Transkribus UI\n"
+        @external_api_request.status = ExternalApiRequest::Status::FAILED
+        @external_api_request.save!
+        return
+      end
       sleep (2+iteration*5).seconds
       iteration += 1
       # break out of the loop if the iteration exceeds 1000
@@ -71,11 +94,14 @@ class PageProcessor
     # then, retrieve the result of the request
     alto_response = authorized_transkribus_request { get_processing_result(process_id) }
     alto = alto_response.parsed_response['alto']
-
+    page = @external_api_request.page
+    print page.id
     # write to the page
-    page.alto_xml = alto
+    page.alto_xml = alto.to_s
     page.save!
-
+    # mark the request as complete
+    @external_api_request.status = ExternalApiRequest::Status::COMPLETED
+    @external_api_request.save!
   end
 
 
@@ -136,8 +162,8 @@ class PageProcessor
     # return the result
     response = HTTParty.get(result_request_url,
       headers: { 
-        'accept' => 'application/json', 
-        'Content-Type' => 'application/json',
+        'accept' => 'application/xml', 
+        'Content-Type' => 'application/xml',
         'Authorization' => "Bearer #{@access_token}" 
       })
     pp response
