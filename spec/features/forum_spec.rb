@@ -19,23 +19,9 @@ describe "forum tab for collection", :order => :defined do
     User.find_each(&:save)
   end
 
-  it "starts a new project from tab and then enable its forum and access forum", :js => true do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select(@collection.title, :from => 'document_upload_collection_id')
+  it "visits a collection then enables its forum and access forum", :js => true do
+    visit collection_path(@collection.owner, @collection)
 
-    # workaround
-    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
-    page.execute_script(script)
-
-    attach_file('document_upload_file', './test_data/uploads/test.pdf')
-    click_button('Upload File')
-    title = find('h1').text
-    expect(title).to eq @collection.title
-    expect(page).to have_content("Document has been uploaded")
-    wait_for_upload_processing
-    sleep(10)
     # Goto settings tab enable forums and then visit forums tab
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Enable Forum').click
