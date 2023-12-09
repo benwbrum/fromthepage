@@ -34,6 +34,8 @@ h1 =t('dashboard.collaborator')
     h3 =t('.your_activity')
     =deeds_for({ :user_id => current_user.id, :limit => 10 })
 
+    = link_to t('.your_hours'), dashboard_your_hours_path
+
 -content_for :javascript
   javascript:
     $(document).ready(function() {
