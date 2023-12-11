@@ -1,5 +1,7 @@
 =javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.0.0/openseadragon.min.js"
 =javascript_include_tag "openseadragon-filtering.js"
+=javascript_include_tag "annotorious/annotorious-openseadragon.js"
+=javascript_include_tag "annotorious/annotorious-openseadragon-textlayer.js"
 
 
 .image-toolbar(id="image_toolbar")
@@ -25,11 +27,19 @@
         span.filter_label= t('.threshold')
         =range_field_tag 'filter-threshold', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
         span.filter_value 0
+
   -if @page.nil?
     a#osd_prev =svg_symbol "#icon-arrow-left", class: 'icon'
     a#osd_next =svg_symbol "#icon-arrow-right", class: 'icon'
 
+.ai-toolbar(id="ai_toolbar")
+  a#toggle-locked =svg_symbol "#icon-copy", class: 'icon'
+  a#toggle-visibility #{t('.ai_assist')}
+
 .image-container(id="image_container")
+
+
+
 
 -content_for :javascript
   javascript:
@@ -108,6 +118,66 @@
             lastFocused = null;
           }
         }, 100);
+      });
+
+
+      var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
+        // make sure that the boxes over the text annotations are inert
+        pointerSelectAction: 'NONE'
+      });
+
+
+      anno.setFormatter(function() { 
+        // make the annotation boxes transparent rather than opaque
+        return { fillOpacity: 0 };
+      });
+
+
+      // set up the text layer plugin on Annotorious
+      var textlayer = OSDTextLayer.mountExtension(anno, {
+        label: OSDTextLayer.transcriptionLabel,
+        // make labels zoom with the page
+        mode: 'fixedPageSize',
+        // horizontal position for labels relative to boxes-- offsets are relative to this
+        // options are 'center', 'topleft', 'bottomleft'
+        position: 'center',
+        // Offset from position.  (offsetX is also an option)
+        offsetY: 50
+      });
+
+      if (#{@page.has_alto?}) {
+        textlayer.loadOCR('#{collection_alto_xml_url(@collection.owner, @collection, @page.work, @page)}');
+        textlayer.setVisible(false);
+        $('#toggle-locked, #toggle-visibility').prop('disabled', false);
+        $('#toggle-locked').hide();
+      } else {
+        textlayer.setVisible(false);
+        // disable the buttons for the text layer
+        $('#toggle-locked, #toggle-visibility').prop('disabled', true);
+        // hide the buttons for the text layer
+        $('#toggle-locked, #toggle-visibility').hide();
+      };
+
+      const btnLocked = document.getElementById('toggle-locked');
+      btnLocked.addEventListener('click', () => {
+        if (textlayer.isLocked()) {
+          btnLocked.innerHTML = 'Lock for Copy &amp; Paste';
+          textlayer.setLocked(false);
+        } else {
+          btnLocked.innerHTML = 'Unlock';
+          textlayer.setLocked(true);
+        }
+      });
+
+
+      document.getElementById('toggle-visibility').addEventListener('click', () => {
+        textlayer.setVisible(!textlayer.isVisible());
+        if(textlayer.isVisible()) {
+          $('#toggle-locked').show();
+        } else {
+          $('#toggle-locked').hide();
+        }
+
       });
 
       $('[data-filter]').on('input', updateFilters);
