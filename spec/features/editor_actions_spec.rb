@@ -232,7 +232,7 @@ describe "editor actions" , :order => :defined do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
       page.find('.tabs').click_link("Translate")
-
+      expect(current_path).to eq collection_translate_page_path(@collection.owner, @collection, @work, @work.pages.first.id)
       page.click_button("Show Image")
       expect(page).to have_content('Show Transcription')
       expect(page).to have_selector('.page-imagescan')
