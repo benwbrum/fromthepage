@@ -234,6 +234,7 @@ describe "editor actions" , :order => :defined do
       page.find('.tabs').click_link("Translate")
       expect(current_path).to eq collection_translate_page_path(@collection.owner, @collection, @work, @work.pages.first.id)
       page.click_button("Show Image")
+      sleep(3)
       expect(page).to have_content('Show Transcription')
       expect(page).to have_selector('.page-imagescan')
       expect(page).to_not have_selector('.page-preview')
