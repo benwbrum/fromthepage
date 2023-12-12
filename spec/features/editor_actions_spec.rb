@@ -232,8 +232,33 @@ describe "editor actions" , :order => :defined do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
       page.find('.tabs').click_link("Translate")
-
+      print "\n\n\nInitial tab load before clicking show image:\n"
+      print page.text
+      print "\n\n\n"
+      print "Style of imagescan div, preview div, and toggle button before clicking show image:\n"
+      begin
+        print page.find('#toggleImage')[:style]
+        print page.find('.page-imagescan')[:style]
+        print page.find('.page-preview')[:style]
+      rescue Capybara::ElementNotFound => e
+        print e.message + "\n"
+      end
+      print "\n\n\n"
+      
       page.click_button("Show Image")
+      sleep(2)
+      print "\n\n\nPage contents after clicking show image:\n"
+      print page.text
+      print "\n\n\n"
+      print "Style of imagescan div, preview div, and toggle button before clicking show image:\n"
+      begin
+        print page.find('#toggleImage')[:style]
+        print page.find('.page-imagescan')[:style]
+        print page.find('.page-preview')[:style]
+      rescue Capybara::ElementNotFound => e
+        print e.message + "\n"
+      end
+      print "\n\n\n"
       expect(page).to have_content('Show Transcription')
       expect(page).to have_selector('.page-imagescan')
       expect(page).to_not have_selector('.page-preview')
