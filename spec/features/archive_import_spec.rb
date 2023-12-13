@@ -59,12 +59,13 @@ describe "IA import actions", :order => :defined do
     expect(first_page.source_text).not_to be_nil
   end
 
-  it "tests ocr correction" do
+  it "tests ocr correction", :js => true do
     @ocr_work = Work.find_by(title: @title)
     @ocr_page = @ocr_work.pages.first
     visit collection_read_work_path(@ocr_work.owner, @ocr_work.collection, @ocr_work)
     expect(page).to have_content("This page is not corrected, please help correct this page")
     page.find('.work-page_title', text: @ocr_page.title).click_link
+    sleep(3)
     fill_in_editor_field('Test OCR Correction')
     find('#finish_button_top').click
     expect(page).to have_content("Test OCR Correction")
@@ -73,7 +74,7 @@ describe "IA import actions", :order => :defined do
     expect(@ocr_page.status).to eq "transcribed" 
   end
 
-  it "checks ocr/transcribe statistics" do
+  it "checks ocr/transcribe statistics", :js => true do
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("Works")
     @collection.works.each do |w|

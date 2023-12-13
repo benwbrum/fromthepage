@@ -19,6 +19,10 @@ class PageController < ApplicationController
     end
   end
 
+  def alto_xml
+    render :plain => @page.alto_xml, :layout => false, :content_type => 'text/xml'
+  end
+  
   def delete
     @page.destroy
     flash[:notice] = t('.page_deleted')

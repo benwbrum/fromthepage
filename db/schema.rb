@@ -312,6 +312,22 @@ ActiveRecord::Schema.define(version: 2023_11_14_181654) do
     t.index ["collection_id"], name: "index_editor_buttons_on_collection_id"
   end
 
+  create_table "external_api_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.integer "work_id"
+    t.integer "page_id"
+    t.string "engine"
+    t.string "status"
+    t.text "params"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_external_api_requests_on_collection_id"
+    t.index ["page_id"], name: "index_external_api_requests_on_page_id"
+    t.index ["user_id"], name: "index_external_api_requests_on_user_id"
+    t.index ["work_id"], name: "index_external_api_requests_on_work_id"
+  end
+
   create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci", force: :cascade do |t|
     t.string "label"
     t.string "input_type"
@@ -1090,6 +1106,9 @@ ActiveRecord::Schema.define(version: 2023_11_14_181654) do
   add_foreign_key "collection_blocks", "users"
   add_foreign_key "collections", "thredded_messageboard_groups"
   add_foreign_key "editor_buttons", "collections"
+  add_foreign_key "external_api_requests", "collections"
+  add_foreign_key "external_api_requests", "users"
+  add_foreign_key "external_api_requests", "works"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"

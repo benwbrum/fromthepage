@@ -57,6 +57,7 @@ es:
     markup_help:
       markup_help_description: '"Autolink" sugerirá temas a los que se podrían vincular ciertas palabras o puede usar llaves dobles para vincular temas. <code>[[Jane Doe]]</code> vinculará el texto "Jane Doe" al asunto Jane Doe, mientras que <code>[[Jane Doe|Jane]]</code> vinculará el texto "Jane" al tema Jane Doe. Recomendamos que la vinculación se deje a un editor después de realizar la transcripción inicial.'
     osd_div:
+      ai_assist: Asistencia de IA
       brightness: Brillo
       contrast: Contraste
       full_page: Alternar página completa
