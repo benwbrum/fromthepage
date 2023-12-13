@@ -312,7 +312,11 @@ describe "editor actions" , :order => :defined do
       new_text = Page.find_by(id: test_page.id).source_text
       #because of the note, page.source_text should not have changed
       expect(new_text).to eq text
-      binding.pry
+      #save the note
+      print "\n\n\nPage contents before saving a note:\n"
+      print page.text
+      print "\n\n\n"
+#      find('#blankPageButton').click
       find('#save_note_button').click
       expect(test_page.notes.count).not_to be nil
     end
