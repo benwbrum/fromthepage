@@ -26,6 +26,7 @@ gem 'devise-encryptable'
 
 gem 'carrierwave'
 gem 'rubyzip'
+gem 'httparty'
 
 gem 'ahoy_matey'
 
@@ -70,6 +71,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'webmock', require: false

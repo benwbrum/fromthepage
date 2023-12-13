@@ -57,6 +57,7 @@ fr:
     markup_help:
       markup_help_description: '"Lien automatique" suggérera des sujets auxquels certains mots pourraient être liés ou vous pouvez utiliser des accolades doubles pour lier des sujets. <code>[[Jane Doe]]</code> liera le texte "Jane Doe" au sujet Jane Doe, tandis que <code>[[Jane Doe|Jane]]</code> liera le texte "Jane" au sujet Jane Doe. Nous recommandons que la liaison soit faite après la transcription initiale.'
     osd_div:
+      ai_assist: Assistance IA
       brightness: Luminosité
       contrast: Contraste
       full_page: Basculer en pleine page

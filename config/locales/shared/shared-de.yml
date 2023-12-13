@@ -57,6 +57,7 @@ de:
     markup_help:
       markup_help_description: '"Autolink" schlägt Entitäten vor, mit denen bestimmte Wörter verknüpft werden könnten. Sie können aber auch doppelte Klammern verwenden, um Entitäten zu verknüpfen. <code>[[Jane Doe]]</code> verknüpft den Text „Jane Doe“ mit der Entität Jane Doe, und <code>[[Jane Doe|Jane]]</code> den Text „Jane“ zur Entität Jane Doe. Wir empfehlen, die Verlinkungen erst dann von einem/einer Bearbeiter:in vornehmen zu lassen, sobald eine erste Fassung der Transkription fertig ist.'
     osd_div:
+      ai_assist: KI-Hilfe
       brightness: Helligkeit
       contrast: Kontrast
       full_page: Auf Vollbild umschalten

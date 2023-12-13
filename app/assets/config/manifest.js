@@ -21,4 +21,7 @@
 //= link landing/slick.min.js
 //= link landing/slider.js
 //= link datatables.min.js
+//= link annotorious/annotorious-openseadragon.js
+//= link annotorious/annotorious-openseadragon-textlayer.js
+
 
