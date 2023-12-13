@@ -1,6 +1,6 @@
 =javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.0.0/openseadragon.min.js"
 =javascript_include_tag "openseadragon-filtering.js"
-
+=javascript_include_tag "annotorious/annotorious-openseadragon.js"
 
 .image-toolbar(id="image_toolbar")
   a#osd_zoom_in =svg_symbol "#icon-zoom-in", class: 'icon'
@@ -109,6 +109,16 @@
           }
         }, 100);
       });
+
+      var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
+        // make sure that the boxes over the text annotations are inert
+        pointerSelectAction: 'NONE'
+      });
+      anno.setFormatter(function() { 
+        // make the annotation boxes transparent rather than opaque
+        return { fillOpacity: 0 };
+      });
+
 
       $('[data-filter]').on('input', updateFilters);
 
