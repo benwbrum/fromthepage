@@ -9,7 +9,7 @@ class PageProcessor
 
     # create a new page processor
     page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
-    page_processor.submit!
+    page_processor.submit_process
   end
 
   def initialize(page, external_api_request=nil, transkribus_username=nil, transkribus_password=nil)
@@ -18,7 +18,7 @@ class PageProcessor
     @transkribus_password = transkribus_password
     if external_api_request.nil?
       @external_api_request = ExternalApiRequest.new
-      @external_api_request.user = User.current_user
+      @external_api_request.user = page.collection.owner
       @external_api_request.collection = page.collection
       @external_api_request.page = page
       @external_api_request.work = page.work
@@ -45,21 +45,27 @@ class PageProcessor
 
   def run_process
     # we should have both a page and an external_api_request
-    # if @external_api_request.status == ExternalApiRequest::Status::WAITING
-    #   # we've already submitted the request, so we just need to read the process id from the params
-    #   process_id = JSON.parse(@external_api_request.params)['process_id']
-    # else
-    #   # first, call the transkribus api to submit the request
-    #   @external_api_request.status = ExternalApiRequest::Status::RUNNING
-    #   @external_api_request.save!
-    #   submit_response = authorized_transkribus_request { submit_processing_request(@page) }
-    #   process_id = submit_response.parsed_response['processId']
+    if @external_api_request.status == ExternalApiRequest::Status::WAITING
+      # we've already submitted the request, so we just need to read the process id from the params
+      process_id = JSON.parse(@external_api_request.params)['process_id']
+    else
+      # first, call the transkribus api to submit the request
+      @external_api_request.status = ExternalApiRequest::Status::RUNNING
+      @external_api_request.save!
+      submit_response = authorized_transkribus_request { submit_processing_request(@page) }
 
-    #   @external_api_request.params = {process_id: process_id}.to_json
-    #   @external_api_request.status = ExternalApiRequest::Status::WAITING
-    #   @external_api_request.save!
-    # end
-    process_id = 7118122
+      if submit_response.code != 200
+        print "error submitting request\n#{submit_response.to_json}\n"
+        @external_api_request.status = ExternalApiRequest::Status::FAILED
+        @external_api_request.save!
+        return
+      end
+      process_id = submit_response.parsed_response['processId']
+
+      @external_api_request.params = {process_id: process_id}.to_json
+      @external_api_request.status = ExternalApiRequest::Status::WAITING
+      @external_api_request.save!
+    end
     # then, check the status of the request until it's done
     status=nil
     iteration = 0    
