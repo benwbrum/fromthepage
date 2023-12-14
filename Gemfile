@@ -64,6 +64,7 @@ gem 'charlock_holmes'
 gem 'edtf'
 gem 'edtf-humanize'
 
+gem 'terser'
 group :assets do
   gem 'uglifier'
 end
