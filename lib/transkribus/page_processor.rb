@@ -68,7 +68,6 @@ class PageProcessor
 
     if status=='FINISHED'
       alto_response = authorized_transkribus_request { get_processing_result(process_id) }
-      binding.pry
       alto = alto_response.parsed_response['alto']
       page = @external_api_request.page
       print page.id
