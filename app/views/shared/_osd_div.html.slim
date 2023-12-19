@@ -153,7 +153,7 @@
     });
 
 
--unless @page.nil?
+-if @page && @page.has_alto?
   -content_for :javascript
     javascript:
       $(function() {
