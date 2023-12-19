@@ -4,7 +4,7 @@ class PageController < ApplicationController
   include ImageHelper
 
   protect_from_forgery :except => [:set_page_title]
-  before_action :authorized?
+  before_action :authorized?, :except => [:alto_xml]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
