@@ -68,12 +68,10 @@ class PageProcessor
 
     if status=='FINISHED'
       alto_response = authorized_transkribus_request { get_processing_result(process_id) }
-      alto = alto_response.parsed_response['alto']
-      page = @external_api_request.page
-      print page.id
+      alto = alto_response.body
       # write to the page
-      page.alto_xml = alto.to_s
-      page.save!
+      @page.alto_xml = alto.to_s
+      @page.save!
       # mark the request as complete
       @external_api_request.status = ExternalApiRequest::Status::COMPLETED
       @external_api_request.save!  
@@ -114,7 +112,7 @@ class PageProcessor
         }
       },
       "image": {
-        "imageUrl": "https://fromthepage.com#{page.image_url_for_download}"
+        "imageUrl": page.image_url_for_download
       },
     }
 
