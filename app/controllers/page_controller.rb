@@ -20,7 +20,16 @@ class PageController < ApplicationController
   end
 
   def alto_xml
-    render :plain => @page.alto_xml, :layout => false, :content_type => 'text/xml'
+    # Transkribus ALTO does not include an ID on the String element, but we need one for Annotorious
+    # we need to read the alto file and iterate over every string element, adding an ID attribute
+    raw_alto = @page.alto_xml
+    doc = Nokogiri::XML(raw_alto)
+
+    doc.search('String').each_with_index do |string, i|
+      string['ID'] = "string_#{i}"
+    end
+
+    render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
   end
   
   def delete
