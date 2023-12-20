@@ -8,6 +8,7 @@ namespace :fromthepage do
       print "TRANSKRIBUS_USERNAME and TRANSKRIBUS_PASSWORD must be set in the environment\n"
       return
     end
+
     ExternalApiRequest.where(engine: ExternalApiRequest::Engine::TRANSKRIBUS, status: ExternalApiRequest::Status::WAITING).each do |external_api_request|
       page = external_api_request.page
       page_processor = PageProcessor.new(page, external_api_request, transkribus_username, transkribus_password)
