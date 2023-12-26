@@ -1,16 +1,5 @@
 class PageProcessor
 
-  # factory method
-  def self.process_page(page, transkribus_username=nil, transkribus_password=nil)
-    # are any page processors already processing this page?
-    if page.external_api_requests.where(engine: ExternalApiRequest::Engine::TRANSKRIBUS, status: ExternalApiRequest::Status.running).exists?
-      return false
-    end
-
-    # create a new page processor
-    page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
-    page_processor.submit!
-  end
 
   def initialize(page, external_api_request=nil, transkribus_username=nil, transkribus_password=nil)
     @page = page
@@ -18,7 +7,7 @@ class PageProcessor
     @transkribus_password = transkribus_password
     if external_api_request.nil?
       @external_api_request = ExternalApiRequest.new
-      @external_api_request.user = User.current_user
+      @external_api_request.user = page.collection.owner
       @external_api_request.collection = page.collection
       @external_api_request.page = page
       @external_api_request.work = page.work
@@ -30,79 +19,67 @@ class PageProcessor
   end
 
 
-  # for now we're going to handle the logic here, rather than abstracting any of it to the external api request
-  # consider generalizing this when we have more requests
-  def submit_process
+  def begin_processing_page
+    # first, call the transkribus api to submit the request
+    @external_api_request.status = ExternalApiRequest::Status::RUNNING
     @external_api_request.save!
-    rake_call = "#{RAKE} fromthepage:run_transkribus_processing[#{@external_api_request.id}]  --trace >> #{log_file} 2>&1 &"
+    submit_response = authorized_transkribus_request { submit_processing_request(@page) }
 
-    # Nice-up the rake call if settings are present
-    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    if submit_response.code != 200
+      print "error submitting request\n#{submit_response.to_json}\n"
+      @external_api_request.status = ExternalApiRequest::Status::FAILED
+      @external_api_request.save!
+      return
+    end
+    process_id = submit_response.parsed_response['processId']
 
-    Rails.logger.info rake_call
-    system(rake_call)
+    @external_api_request.params = {process_id: process_id}.to_json
+    @external_api_request.status = ExternalApiRequest::Status::WAITING
+    @external_api_request.save!
   end
 
-  def run_process
-    # we should have both a page and an external_api_request
-    # if @external_api_request.status == ExternalApiRequest::Status::WAITING
-    #   # we've already submitted the request, so we just need to read the process id from the params
-    #   process_id = JSON.parse(@external_api_request.params)['process_id']
-    # else
-    #   # first, call the transkribus api to submit the request
-    #   @external_api_request.status = ExternalApiRequest::Status::RUNNING
-    #   @external_api_request.save!
-    #   submit_response = authorized_transkribus_request { submit_processing_request(@page) }
-    #   process_id = submit_response.parsed_response['processId']
-
-    #   @external_api_request.params = {process_id: process_id}.to_json
-    #   @external_api_request.status = ExternalApiRequest::Status::WAITING
-    #   @external_api_request.save!
-    # end
-    process_id = 7118122
-    # then, check the status of the request until it's done
-    status=nil
-    iteration = 0    
-    while status != 'FINISHED' do
-      status_response = authorized_transkribus_request { get_processing_status(process_id) }
-      if status_response.code != 200
-        if status_response.code == 404
-          # transkribus has a possible bug where it returns a 404 when the process_id is finished
-          # so we'll just assume that's what happened
-          status = 'FINISHED'
-          break
-        else
-          print "error getting status for process_id=#{process_id}\n#{status_response.to_json}\n"
-          @external_api_request.status = ExternalApiRequest::Status::FAILED
-          @external_api_request.save!
-          return
-        end
+  def check_status_and_update_page
+    if @external_api_request.params.nil?
+      print "no params for external API request #{@external_api_request.id}.  Skipping.\n"
+      return
+    end 
+    process_id = JSON.parse(@external_api_request.params)['process_id']
+    status_response = authorized_transkribus_request { get_processing_status(process_id) }
+    if status_response.code != 200
+      if status_response.code == 404
+        # transkribus has a possible bug where it returns a 404 when the process_id is finished
+        # so we'll just assume that's what happened
+        status = 'FINISHED'
+      else
+        print "error getting status for process_id=#{process_id}\n#{status_response.to_json}\n"
+        @external_api_request.status = ExternalApiRequest::Status::FAILED
+        @external_api_request.save!
+        return
       end
+    else
       status = status_response.parsed_response['status']
       if status=='CANCELED'
         print "process_id=#{process_id} was canceled, probably in the Transkribus UI\n"
         @external_api_request.status = ExternalApiRequest::Status::FAILED
         @external_api_request.save!
         return
-      end
-      sleep (2+iteration*5).seconds
-      iteration += 1
-      # break out of the loop if the iteration exceeds 1000
-      break if iteration > 1000
+      end  
     end
 
-    # then, retrieve the result of the request
-    alto_response = authorized_transkribus_request { get_processing_result(process_id) }
-    alto = alto_response.parsed_response['alto']
-    page = @external_api_request.page
-    print page.id
-    # write to the page
-    page.alto_xml = alto.to_s
-    page.save!
-    # mark the request as complete
-    @external_api_request.status = ExternalApiRequest::Status::COMPLETED
-    @external_api_request.save!
+    if status=='FINISHED'
+      alto_response = authorized_transkribus_request { get_processing_result(process_id) }
+      alto = alto_response.body.force_encoding('UTF-8') # HTTParty doesn't thinks the response is ASCII-8BIT but it's actually UTF-8
+      # write to the page
+      @page.alto_xml = alto
+      @page.save!
+      # mark the request as complete
+      @external_api_request.status = ExternalApiRequest::Status::COMPLETED
+      @external_api_request.save!  
+    end
+
   end
+
+
 
 
   private
@@ -135,7 +112,7 @@ class PageProcessor
         }
       },
       "image": {
-        "imageUrl": "https://fromthepage.com#{page.image_url_for_download}"
+        "imageUrl": page.image_url_for_download
       },
     }
 

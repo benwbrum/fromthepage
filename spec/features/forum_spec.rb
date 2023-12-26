@@ -21,7 +21,6 @@ describe "forum tab for collection", :order => :defined do
 
   it "visits a collection then enables its forum and access forum", :js => true do
     visit collection_path(@collection.owner, @collection)
-
     # Goto settings tab enable forums and then visit forums tab
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Enable Forum').click
