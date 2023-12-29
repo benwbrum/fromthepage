@@ -10,6 +10,7 @@ en:
         other: "%{count} pages; "
       progress: Progress
       work_title: Work title
+      works_that_need_transcription: Works That Need Transcription
     complete: complete
     contributor_activity:
       recent_notes: Recent Notes

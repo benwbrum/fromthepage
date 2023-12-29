@@ -10,6 +10,7 @@ fr:
         other: "%{count} pages :"
       progress: Progrès
       work_title: Titre de œuvre
+      works_that_need_transcription: Œuvres nécessitant une transcription
     complete: complet
     contributor_activity:
       recent_notes: Notes récentes
