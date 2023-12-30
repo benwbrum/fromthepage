@@ -541,19 +541,26 @@ class Page < ApplicationRecord
     users
   end
 
-  def has_alto?
-    File.exists?(alto_path)
+  def has_ai_plaintext?
+    File.exists?(ai_plaintext_path)
   end
 
-  def create_alto
-    if File.exists? original_htr_path
-      # convert the htr to alto
-      # write the alto to the alto path
+  def ai_plaintext
+    if has_ai_plaintext?
+      File.read(ai_plaintext_path)
     else
-      # call a service to create HTR
-      PageProcessor.new(self).submit_process
+      ""
     end
+  end
 
+  def ai_plaintext=(text)
+    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
+    File.write(ai_plaintext_path, text)
+  end
+  
+
+  def has_alto?
+    File.exists?(alto_path)
   end
 
 
@@ -582,6 +589,9 @@ class Page < ApplicationRecord
   end
 
   private
+  def ai_plaintext_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
+  end
 
   def alto_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")

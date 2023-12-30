@@ -63,7 +63,7 @@ gem 'charlock_holmes'
 
 gem 'edtf'
 gem 'edtf-humanize'
-
+gem 'diffy'
 gem 'terser'
 group :assets do
   gem 'uglifier'
