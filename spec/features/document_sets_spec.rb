@@ -24,15 +24,18 @@ describe "document sets", :order => :defined do
     @collection.hide_completed = false
     @collection.save
     #change work restrictions temporarily so they don't interfere with doc set permissions
-    work = Work.find_by(id: @set.works.first.id)
+    unless @owner.account_type == "Individual Researcher"
+      work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = false
     work.save!
+    end
   end
 
   it "edits a document set (start at collection level)" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
@@ -44,6 +47,7 @@ describe "document sets", :order => :defined do
     page.find_button('Save Document Set').click
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
     expect(page.find('h1')).to have_content(@document_sets.first.title)
+  end
   end
   
   it "makes a document set private" do
@@ -91,6 +95,7 @@ describe "document sets", :order => :defined do
       end
     end
     #check to view public document set
+      unless @owner.account_type == "Individual Researcher"
     page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.title)
@@ -115,6 +120,7 @@ describe "document sets", :order => :defined do
     visit collection_read_work_path(@owner, @collection, @collection.works.last)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
+    end
   end
 
   it "adds a collaborator" do
@@ -166,9 +172,11 @@ describe "document sets", :order => :defined do
     visit collection_read_work_path(@owner, @test_set, @test_set.works.first)
     expect(page.find('h1')).to have_content(@test_set.works.first.title)
     #check that the collaborator can't access other private doc set
-    visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
+    unless @owner.account_type == "Individual Researcher"
+      visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
+    end
   end
 
   it "checks notes on a public doc set/private collection" do
@@ -178,6 +186,7 @@ describe "document sets", :order => :defined do
     find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     note = Note.last
+      unless @owner.account_type = "Individual Researcher"
     visit collection_path(@set.owner, @set)
     page.find('a', text: "Test private note").click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
@@ -200,6 +209,7 @@ describe "document sets", :order => :defined do
     expect(page).to have_content "Test private note"    
     page.find('a', text: @set.works.first.pages.first.title).click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
+    end
   end
 
   it "cleans up test data" do
@@ -219,7 +229,8 @@ describe "document sets", :order => :defined do
 
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
-    work = @set.works.first
+    unless @owner.account_type = "Individual Researcher"
+      work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/settings"
@@ -238,6 +249,7 @@ describe "document sets", :order => :defined do
     click_button('Save Changes')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    end
   end
 
   it "checks document set breadcrumbs - collection" do
@@ -252,7 +264,8 @@ describe "document sets", :order => :defined do
 
   it "checks document set breadcrumbs - subjects" do
     login_as(@user, :scope => :user)
-    @article = @set.articles.first
+    unless @owner.account_type == "Individual Researcher"
+      @article = @set.articles.first
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
     page.find('.tabs').click_link("Subjects")
@@ -272,11 +285,13 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Versions")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    end
   end
 
   it "checks document set subject tabs" do
     login_as(@owner, :scope => :user)
-    @article = @set.articles.first
+    unless @owner.account_type == "Individual Researcher"
+      @article = @set.articles.first
     visit collection_article_show_path(@set.owner, @set, @article.id)
     expect(page).to have_content("Description")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
@@ -318,10 +333,12 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_article_show_path(@set.owner, @set, @article.id)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
+  end
 
   it "checks document set breadcrumbs - work" do
     login_as(@user, :scope => :user)
-    work = @set.works.first
+    unless @owner.account_type == "Individual Researcher"
+      work = @set.works.first
     @page = work.pages.first
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
@@ -349,11 +366,13 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
+    end
   end
 
   it "checks document set breadcrumbs - page level" do
     login_as(@user, :scope => :user)
-    work = @set.works.first
+    unless @owner.account_type = "Individual Researcher"
+      work = @set.works.first
     @page = work.pages.first
 
     #make sure it's right if you click on the page from the work
@@ -409,6 +428,7 @@ describe "document sets", :order => :defined do
 
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
+    end
   end
 
   it "checks doc set needs transcription/review buttons" do
@@ -435,17 +455,21 @@ describe "document sets", :order => :defined do
   it "disables document sets" do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
+    unless @owner.account_type == "Individual Researcher"
     page.find('.button', text: 'Disable Document Sets').click
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
+    end
   end
 
   it "enables document sets" do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
-    page.find('.button', text: 'Enable Document Sets').click
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.button', text: 'Enable Document Sets').click
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true
+    end
   end
 
   it "edits a document set slug" do
@@ -495,9 +519,11 @@ describe "document sets", :order => :defined do
     @collection.hide_completed = true
     @collection.save
     #resets work restrictions
-    work = Work.find_by(id: @set.works.first.id)
+    unless @owner.account_type == "Individual Researcher"
+      work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = true
     work.save!
+    end
   end
 
 end
