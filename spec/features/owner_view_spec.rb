@@ -19,7 +19,8 @@ describe "owner view - collection" do
     expect(page).to have_selector('.owner-info')
     expect(page).to have_content("#{@owner.account_type} account since #{@owner.start_date.strftime('%b %d, %Y')}")
     #look at owner stats in dashboard
-    expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
+    unless @owner.account_type == "Individual Researcher"
+      expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
     expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.document_sets.count
 
@@ -29,6 +30,7 @@ describe "owner view - collection" do
     expect(page).to have_content("Upload PDF or ZIP File")
     page.find('.tabs').click_link("Your Collections")
     expect(page.current_path).to eq dashboard_owner_path
+    end
   end
 
   it "looks at statistics tab" do

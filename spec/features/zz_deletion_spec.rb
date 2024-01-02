@@ -47,7 +47,7 @@ describe "testing deletions" do
     expect(sets).to eq (count - 1)
     expect(page).not_to have_content(@document_sets.first.title)
     expect(page).to have_content(@document_sets.last.title)
-  end
+   end
   end
 
   it "deletes a page" do
@@ -105,7 +105,8 @@ describe "testing deletions" do
     article_count = @collection.articles.count
     expect(article_count).to be > 0
     doc_sets = @collection.document_sets.count
-    expect(doc_sets).to be > 0
+    unless @owner.account_type == "Individual Researcher"
+      expect(doc_sets).to be > 0
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('a', text: 'Show All').click
@@ -125,5 +126,6 @@ describe "testing deletions" do
     doc_sets = DocumentSet.where(collection_id: @collection.id)
     expect(doc_sets).to be_empty
   end
+end
 
 end

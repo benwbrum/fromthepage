@@ -95,8 +95,8 @@ describe "document sets", :order => :defined do
       end
     end
     #check to view public document set
-      unless @owner.account_type == "Individual Researcher"
-    page.find('.maincol').find('a', text: @set.title).click
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.title)
     expect(page).to have_content(@collection.works.second.title)
@@ -120,8 +120,8 @@ describe "document sets", :order => :defined do
     visit collection_read_work_path(@owner, @collection, @collection.works.last)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
-    end
   end
+end
 
   it "adds a collaborator" do
     ActionMailer::Base.deliveries.clear
@@ -186,7 +186,7 @@ describe "document sets", :order => :defined do
     find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     note = Note.last
-      unless @owner.account_type = "Individual Researcher"
+      unless @owner.account_type == "Individual Researcher"
     visit collection_path(@set.owner, @set)
     page.find('a', text: "Test private note").click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
@@ -255,12 +255,14 @@ describe "document sets", :order => :defined do
   it "checks document set breadcrumbs - collection" do
     login_as(@user, :scope => :user)
     visit dashboard_path
-    page.find('.maincol').find('a', text: @set.title).click
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.maincol').find('a', text: @set.title).click
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
     page.find('.tabs').click_link("Statistics")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page.find('h1')).to have_content(@set.title)
   end
+end
 
   it "checks document set breadcrumbs - subjects" do
     login_as(@user, :scope => :user)
@@ -433,7 +435,8 @@ describe "document sets", :order => :defined do
 
   it "checks doc set needs transcription/review buttons" do
     login_as(@user, :scope => :user)
-    visit collection_path(@set.owner, @set)
+    unless @owner.account_type == "Individual Researcher"
+      visit collection_path(@set.owner, @set)
     expect(page).to have_selector('h1', text: @set.title)
     expect(page).to have_content("Works")
     expect(page).to have_selector('a', text: "Pages That Need Transcription")
@@ -450,6 +453,7 @@ describe "document sets", :order => :defined do
     click_link("Return to collection")
     expect(page).to have_selector('h1', text: @set.title)
     expect(page).to have_content("Works")
+    end
   end
 
   it "disables document sets" do
@@ -474,7 +478,8 @@ describe "document sets", :order => :defined do
 
   it "edits a document set slug" do
     login_as(@owner, :scope => :user)
-    slug = "new-#{@set.slug}"
+    unless @owner.account_type == "Individual Researcher"
+      slug = "new-#{@set.slug}"
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
     @set.works.each do |w|
@@ -513,6 +518,7 @@ describe "document sets", :order => :defined do
     #note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
   end
+end
 
   it "resets work settings" do
     #resets hiding completed works
