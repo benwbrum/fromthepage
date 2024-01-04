@@ -11,6 +11,7 @@ de:
     codemirror:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
+      ai_plaintext_caveat: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. Einige offensichtliche Fehler wurden durch 🤔-Symbole ersetzt, kniffligere Fehler werden jedoch möglicherweise nicht markiert. (Bitte löschen Sie diese Warnung.) -->"
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.

@@ -11,6 +11,7 @@ es:
     codemirror:
       abbr_description: Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan.
       add_description: Marca el texto insertado después por el escritor.
+      ai_plaintext_caveat: "<!-- El siguiente texto fue generado por inteligencia artificial y probablemente contenga errores. Algunos errores obvios se han reemplazado con símbolos 🤔, pero es posible que los más complicados no estén marcados. (Elimine esta advertencia). -->"
       date_description: Marca la fecha, con forma estandarizada según el atributo cuándo.
       del_description: Marca el texto que ha sido borrado o tachado.
       expan_description: Marcas las abreviaturas ampliadas con formularios originales en el atributo abbr.
