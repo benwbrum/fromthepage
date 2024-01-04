@@ -63,7 +63,7 @@ namespace :fromthepage do
     # do any additional processing here
     if diff_level != :none
       # normalize the plaintext
-      normalized_plaintext = TextNormalizer.normalize_prompt(plaintext)
+      normalized_plaintext = TextNormalizer.normalize_text(plaintext)
       # generate the diff
       new_plaintext = DiffTools.diff_and_replace(plaintext, normalized_plaintext, "🤔")
       if diff_level == :word

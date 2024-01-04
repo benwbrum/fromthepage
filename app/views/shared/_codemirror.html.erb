@@ -6,6 +6,23 @@
 <%=javascript_include_tag "codemirror/addon/hint/xml-hint"%>
 <%=javascript_include_tag "codemirror-buttons/buttons"%>
 
+<% if @page && !@page.ai_plaintext.blank? %>
+  <a href="#" id="copy-ai-plaintext" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top"><%= t('.copy_ai_plaintext') %></a>
+  <script>
+    var ai_plaintext = <%= raw(@page.ai_plaintext.to_json) %>;
+
+    function appendAiPlaintext(cm, pred) {
+      var currentText = cm.getValue();
+      // append ai_plaintext to the end of the current text
+      cm.setValue(currentText + ai_plaintext);
+    }; 
+    document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
+      appendAiPlaintext(myCodeMirror);
+    });
+
+  </script>
+<% end %>
+
 <script>
   var button_config = [
     <% @collection.editor_buttons.each do |button| %>
