@@ -31,23 +31,22 @@ describe "testing deletions" do
     expect(Deed.where(page_id: pages.ids)).to be_empty
   end
 
-  # TODO Make this pass in case of all account_types
-  # it "deletes a document set" do
-  #   count = @document_sets.count
-  #   visit dashboard_owner_path
-  #   page.find('.maincol').find('a', text: @collection.title).click
-  #   page.find('.tabs').click_link("Sets")
-  #   expect(page).to have_content("Document Sets for #{@collection.title}")
-  #   within(page.find('#sets')) do
-  #     within(page.find('tr', text: @document_sets.first.title)) do
-  #       page.find('a', text: 'Delete').click
-  #     end
-  #   end
-  #   sets = DocumentSet.all.count
-  #   expect(sets).to eq (count - 1)
-  #   expect(page).not_to have_content(@document_sets.first.title)
-  #   expect(page).to have_content(@document_sets.last.title)
-  # end
+  it "deletes a document set", skip: true do
+    count = @document_sets.count
+    visit dashboard_owner_path
+    page.find('.maincol').find('a', text: @collection.title).click
+    page.find('.tabs').click_link("Sets")
+    expect(page).to have_content("Document Sets for #{@collection.title}")
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @document_sets.first.title)) do
+        page.find('a', text: 'Delete').click
+      end
+    end
+    sets = DocumentSet.all.count
+    expect(sets).to eq (count - 1)
+    expect(page).not_to have_content(@document_sets.first.title)
+    expect(page).to have_content(@document_sets.last.title)
+  end
 
   it "deletes a page" do
     work = @collection.works.first
