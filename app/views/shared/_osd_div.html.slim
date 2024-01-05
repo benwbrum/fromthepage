@@ -34,7 +34,7 @@
 
 -if @page && @page.has_alto?
   .ai-toolbar(id="ai_toolbar")
-    a#toggle-locked =svg_symbol "#icon-copy", class: 'icon'
+    a#toggle-locked =svg_symbol "#icon-clipboard", class: 'icon'
     a#toggle-visibility #{t('.ai_assist')}
 
 .image-container(id="image_container")
@@ -196,10 +196,10 @@
         const btnLocked = document.getElementById('toggle-locked');
         btnLocked.addEventListener('click', () => {
           if (textlayer.isLocked()) {
-            btnLocked.innerHTML = 'Lock for Copy &amp; Paste';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-clipboard", class: "icon"}';
             textlayer.setLocked(false);
           } else {
-            btnLocked.innerHTML = 'Unlock';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-cursor-text", class: "icon"}';
             textlayer.setLocked(true);
           }
         });
