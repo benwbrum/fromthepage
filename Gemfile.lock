@@ -202,6 +202,7 @@ GEM
       devise (>= 4.7.0)
       railties (>= 5.2.0)
     diff-lcs (1.5.0)
+    diffy (3.4.2)
     docile (1.4.0)
     easy_translate (0.5.1)
       thread
@@ -632,6 +633,7 @@ DEPENDENCIES
   devise
   devise-encryptable
   devise_masquerade (~> 1.2.0)
+  diffy
   easy_translate
   edtf
   edtf-humanize

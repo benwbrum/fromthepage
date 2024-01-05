@@ -196,10 +196,10 @@
         const btnLocked = document.getElementById('toggle-locked');
         btnLocked.addEventListener('click', () => {
           if (textlayer.isLocked()) {
-            btnLocked.innerHTML = '#{svg_symbol "#icon-clipboard", class: "icon"}}';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-clipboard", class: "icon"}';
             textlayer.setLocked(false);
           } else {
-            btnLocked.innerHTML = '#{svg_symbol "#icon-cursor-text", class: "icon"}}';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-cursor-text", class: "icon"}';
             textlayer.setLocked(true);
           }
         });
