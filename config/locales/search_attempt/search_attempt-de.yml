@@ -3,8 +3,8 @@ de:
   search_attempt:
     show:
       more: Mehr...
-      no_results: Für <i>%{query}</i> wurden keine Ergebnisse gefunden
-      results_for: Ergebnisse für <i>%{query}</i>
+      no_results: Keine Ergebnisse für
+      results_for: Ergebnisse für 
       search: Suchen
       search_for_collections: Suchen Sie nach Sammlungen
       search_for_collections_or_owners: Suche nach Sammlungen oder Besitzern...
