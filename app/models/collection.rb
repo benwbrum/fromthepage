@@ -52,6 +52,7 @@ class Collection < ApplicationRecord
 
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
   scope :unrestricted, -> { where(restricted: false)}
+  scope :restricted, -> { where(restricted: true)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
