@@ -53,8 +53,8 @@ class DashboardController < ApplicationController
       cds = public_collections + public_document_sets
     end
     if user_signed_in?
-      cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
-      cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.all_owner_collections.restricted.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.document_sets.restricted.includes(:owner, next_untranscribed_page: :work)
 
       cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
@@ -149,7 +149,17 @@ class DashboardController < ApplicationController
     collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
-    @collections = (collections + recent_collections + document_sets).uniq.sort { |a, b| a.title <=> b.title }.take(5)
+    @collections = (collections + recent_collections + document_sets)
+               .uniq
+               .sort_by do |collection|
+                 if collection.is_a?(Collection)
+                   collection.created_on
+                 elsif collection.is_a?(DocumentSet)
+                   collection.created_at
+                 end
+               end
+               .reverse
+               .take(10)
   end
 
 
