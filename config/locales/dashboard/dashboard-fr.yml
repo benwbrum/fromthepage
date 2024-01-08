@@ -31,6 +31,7 @@ fr:
       select_a_collection: "- Sélectionnez une collection -"
       title: Titre
     exports:
+      admin_searches: Recherches
       bulk_exports_description: Cela répertorie toutes les exportations en masse que vous avez exécutées. Les exportations sont nettoyées après quelques jours et ne sont plus disponibles au téléchargement
       configuration: Configuration (niveau)
       create_bulk_export_description: Créez une exportation en bloc à partir de l'onglet Exporter d'une collection ou de l'onglet Télécharger d'une œuvre.
@@ -40,6 +41,7 @@ fr:
       facing_edition_work: Face à l'édition PDF (œuvre)
       html_page: HTML (page)
       html_work: HTML (œuvre)
+      notes_csv: Remarques CSV (collection)
       plaintext_emended_page: Texte brut analytique (page)
       plaintext_emended_work: Texte brut analytique (œuvre)
       plaintext_searchable_page: Texte brut consultable (page)
@@ -62,6 +64,14 @@ fr:
     hierarchical_collections_and_document_sets:
       project_by: Projet par %{author}
       start_transcribing: Commencer à transcrire
+    hours_letter:
+      certification_text: Cette lettre vise à certifier que %{user_name} a contribué %{time_duration} aux efforts de crowdsourcing de la bibliothèque sur FromThePage (www.fromthepage.com) entre le %{start_date} et le %{end_date}. Grâce au site Web, les bénévoles peuvent aider à transcrire des documents historiques dans les collections de bibliothèques, les rendant ainsi plus consultables et accessibles aux futurs chercheurs. Le site Web FromThePage suit la durée pendant laquelle les utilisateurs enregistrés sont actifs sur le site et rapporte le nombre total de minutes actives.
+      institutions_header: "| **Établissements** | **Collecte** | **pages** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Salutations,
+      to_whom_it_may_concern: 'À qui cela peut concerner:'
+      volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
+      worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
     landing_page:
       all_collections: Toutes les collections
       more: Voir plus
@@ -89,13 +99,17 @@ fr:
       page_image_guidelines: Directives relatives aux images de page
       paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
+      active_collections: Collections actives
       create_a_collection: créer une collection
       document_sets: Jeux de documents
-      see_all_works: Voir toutes les oeuvres...
+      inactive_collections: Collections inactives
+      n_works:
+        one: '1 œuvre :'
+        other: "%{count} fonctionne :"
+      private: " (Privé)"
+      public: " (Public)"
       start_a_project: Démarrer un projet
       there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
-      total_work_count: 'Nombre total de œuvres : %{count}'
-      you_can_add_another_work: Vous pouvez ajouter une autre œuvre sous %{start_project}
       you_can_new_collection: Vous pouvez %{new_collection}
       you_can_upload_documents: Vous pouvez téléverser des documents sous %{start_project}
       you_dont_have_any_collections: Vous n'avez pas encore de collections
@@ -149,7 +163,16 @@ fr:
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
     watchlist:
       collections: collections
-      private_collections_you_belong_to: Projets privés
+      private_collections_you_belong_to: Collections privées sur lesquelles vous êtes collaborateur
       projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
       try_transcribing_a_page: 'Vous n''avez encore participé à aucun projet. Essayez de transcrire une page de l''une de ces '
       your_activity: Votre activité
+      your_hours: Vos horaires
+    your_hours:
+      contributions_between_dates: Contributions entre %{start_date} et %{end_date}
+      download_letter: Télécharger une lettre
+      end_date: Date de fin
+      hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
+      select_new_date: Sélectionnez une nouvelle plage de dates
+      start_date: Date de début
+      update: Mise à jour

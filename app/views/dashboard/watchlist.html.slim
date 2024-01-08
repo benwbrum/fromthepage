@@ -3,7 +3,7 @@ h1 =t('dashboard.collaborator')
 .columns
   article.maincol
     -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
-      h2 =t('.private_collections_you_belong_to')
+      h3 =t('.private_collections_you_belong_to')
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
@@ -15,7 +15,15 @@ h1 =t('dashboard.collaborator')
         -if c.show_to?(current_user)
           h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
           -cache c.most_recent_deed_created_at do
-            =render(:partial => 'collection/recent_deeds', locals: {:collection => c})
+            -c.deeds.includes(:page, :user, :work).limit(5).each do |d|
+              //- Hide collection link
+              -d.collection = nil
+              .user-bubble
+                =link_to(user_profile_path(d.user))
+                  =profile_picture(d.user)
+                .user-bubble_content
+                  =timeago d.created_at
+                  p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
       =t('.try_transcribing_a_page')
       =link_to t('.collections'), dashboard_path
@@ -25,3 +33,12 @@ h1 =t('dashboard.collaborator')
   aside.sidecol
     h3 =t('.your_activity')
     =deeds_for({ :user_id => current_user.id, :limit => 10 })
+
+    = link_to t('.your_hours'), dashboard_your_hours_path
+
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $("time.timeago").timeago("setLocale", '#{I18n.locale}');
+      $("time.timeago").timeago();
+    });

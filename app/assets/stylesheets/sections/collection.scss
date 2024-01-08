@@ -298,6 +298,32 @@
   }
 }
 
+.category-article dd {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.category-article dd p {
+  width: 33%;
+  display: flex;    
+}
+
+.category-article dd p a {
+  width: 100%;
+  text-decoration: none;
+}
+
+.category-article dd p span {
+  width: 40%;
+}
+
+.grey-number {
+  color: grey;
+  margin-right: 5px;
+  font-size: medium;
+  padding-left: 10px;
+}
 
 // Collection stats
 
@@ -360,11 +386,9 @@
 .collection-work-stats {
   padding: 0;
   width: 100%;
-  display: table;
-  list-style: none;
   margin: 1em 0 0 0;
   border-top: 1px solid rgba(#000, 0.08);
-  li {
+  tr {
     margin: 0;
     display: table-row;
     > span {

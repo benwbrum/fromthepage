@@ -35,6 +35,7 @@ de:
       no_notes: Keine Anmerkungen
       no_pages_found: Keine Seiten gefunden
       no_pages_in_work: Dieses Werk enthält noch keine Seiten, gehen Sie zu %{link}, um eine neue Seite zu erstellen
+      no_works_found: Keine Werke gefunden
       page_title: Seitentitel
       pages_tab: Seiten-Tab
       review: Review
@@ -52,6 +53,7 @@ de:
       search_for: Suche nach %{search_string}
       search_in_collection: In Sammlung suchen...
       search_in_collection_1: In Sammlung suchen
+      search_in_work: Suche im Werk...
       translations_need_indexing: Übersetzungen, die indexiert werden müssen
       translations_need_review: Übersetzungen, die überprüft werden müssen
       view_all_pages: Alle Seiten anzeigen

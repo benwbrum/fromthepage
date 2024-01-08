@@ -1,4 +1,5 @@
 require 'search_translator'
+require 'transkribus/page_processor'
 class Page < ApplicationRecord
   ActiveRecord::Base.lock_optimistically = false
 
@@ -32,6 +33,7 @@ class Page < ApplicationRecord
   has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
   has_many :deeds, :dependent => :destroy
+  has_many :external_api_requests, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
@@ -218,24 +220,26 @@ class Page < ApplicationRecord
   end
 
   def calculate_approval_delta
-    if COMPLETED_STATUSES.include? self.status
-      most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
-      if most_recent_not_approver_version
-        old_transcription = most_recent_not_approver_version.transcription || ''
-      else
-        old_transcription = ''
-      end
-      new_transcription = self.source_text
+    if source_text_changed?
+      if COMPLETED_STATUSES.include? self.status
+        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+        if most_recent_not_approver_version
+          old_transcription = most_recent_not_approver_version.transcription || ''
+        else
+          old_transcription = ''
+        end
+        new_transcription = self.source_text
 
-      if new_transcription.blank? && old_transcription.blank?
-        self.approval_delta = nil
-      else
-        self.approval_delta = 
-          Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
-            (old_transcription.size + new_transcription.size).to_f
+        if new_transcription.blank? && old_transcription.blank?
+          self.approval_delta = nil
+        else
+          self.approval_delta = 
+            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
+              (old_transcription.size + new_transcription.size).to_f
+        end
+      else # zero out deltas if the page is not complete
+        self.approval_delta = nil 
       end
-    else # zero out deltas if the page is not complete
-      self.approval_delta = nil 
     end
   end
 
@@ -247,6 +251,7 @@ class Page < ApplicationRecord
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
+    version.status = self.status
     unless User.current_user.nil?
       version.user = User.current_user
     else
@@ -536,7 +541,66 @@ class Page < ApplicationRecord
     users
   end
 
+  def has_ai_plaintext?
+    File.exists?(ai_plaintext_path)
+  end
+
+  def ai_plaintext
+    if has_ai_plaintext?
+      File.read(ai_plaintext_path)
+    else
+      ""
+    end
+  end
+
+  def ai_plaintext=(text)
+    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
+    File.write(ai_plaintext_path, text)
+  end
+  
+
+  def has_alto?
+    File.exists?(alto_path)
+  end
+
+
+  def alto_xml
+    if has_alto?
+      File.read(alto_path)
+    else
+      ""
+    end
+  end
+
+  def alto_xml=(xml)
+    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
+    File.write(alto_path, xml)
+  end
+
+
+  def image_url_for_download
+    if sc_canvas
+      self.sc_canvas.sc_resource_id
+    elsif self.ia_leaf
+      self.ia_leaf.facsimile_url
+    else
+      file_to_url(self.canonical_facsimile_url)
+    end
+  end
+
   private
+  def ai_plaintext_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
+  end
+
+  def alto_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")
+  end
+
+  def original_htr_path
+    '/not/implemented/yet/placeholder.xml'
+  end
+
 
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
@@ -578,45 +642,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = ""
-
-    # clean up in-cell line-breaks
-    table_element.xpath('//lb').each { |n| n.replace(' ')}
-
-    # calculate the widths of each column based on max(header, cell[0...end])
-    column_count = ([table_element.xpath("//th").count] + table_element.xpath('//tr').map{|e| e.xpath('td').count }).max
-    column_widths = {}
-    1.upto(column_count) do |column_index|
-      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map{|e| e.text().length}.max || 0)
-      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
-      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
-      column_widths[column_index] = [longest_cell, heading_length].max
-    end
-
-    # print the header as markdown
-    cell_strings = []
-    table_element.xpath("//th").each_with_index do |e,i|
-      cell_strings << e.text.rjust(column_widths[i+1], ' ')
-    end
-    text_table << cell_strings.join(' | ') << "\n"
-
-    # print the separator
-    text_table << column_count.times.map{|i| ''.rjust(column_widths[i+1], '-')}.join(' | ') << "\n"
-
-    # print each row as markdown
-    table_element.xpath('//tr').each do |row_element|
-      text_table << row_element.xpath('td').map do |e|
-        width = 80 #default for hand-coded tables
-        index = e.path.match(/.*td\[(\d+)\]/)
-        if index
-          width = column_widths[index[1].to_i] || 80 
-        else
-          width = column_widths.values.first
-        end
-        e.text.rjust(width, ' ') 
-      end.join(' | ') << "\n"
-    end
-
+    text_table = xml_table_to_markdown_table(table_element)
     table_element.replace(text_table)
   end
 

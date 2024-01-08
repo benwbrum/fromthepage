@@ -3,21 +3,8 @@
   article.maincol
     div.collection-work-list
       h2 =t('.works')
-      =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, id: 'sort-works', class: 'row-alignment') do
-        =select_tag "sort_by", options_for_select([t('.alphabetical'), t('.recent_activity'), t('.percent_complete')]), prompt: t('.sort_works_by')
-        =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
 
     -if @collection.is_a?(Collection)
       =render 'collection_works'
     -elsif @collection.is_a?(DocumentSet)
       =render 'document_sets/set_works'
-    
-    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
-
--content_for :javascript
-  javascript:
-    $(function() {
-      $('#sort-works').on('change', function(){
-        this.submit();
-      });
-    });

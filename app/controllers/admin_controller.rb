@@ -278,7 +278,97 @@ class AdminController < ApplicationController
     @collections = Collection.where(messageboards_enabled:true)
   end
 
+  def searches
+    if params[:filter] == 'nonowner' # Only transcriber searches
+      searches = SearchAttempt.where(owner: false)
+    elsif params[:filter] == 'findaproject'
+      searches = SearchAttempt.where(search_type: 'findaproject')
+    elsif params[:filter] == 'collectionwork'
+      searches = SearchAttempt.where.not(search_type: 'findaproject')
+    elsif params[:filter] == 'collection'
+      searches = SearchAttempt.where(search_type: 'collection')
+    elsif params[:filter] == 'collection-title'
+      searches = SearchAttempt.where(search_type: 'collection-title')
+    elsif params[:filter] == 'work'
+      searches = SearchAttempt.where(search_type: 'work')
+    else
+      searches = SearchAttempt.all
+    end
+    @searches = searches.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+
+    this_week = SearchAttempt.where('created_at > ?', 1.week.ago)
+    unless this_week.empty?
+      by_visit = this_week.joins(:visit).group('visits.id')
+      @find_a_project_searches_per_day = (this_week.where(search_type: 'findaproject').count / 7.0).round(2)
+      @collection_work_searches_per_day = (this_week.where.not(search_type: 'findaproject').count / 7.0).round(2)
+      @find_a_project_average_hits = this_week.where(search_type: 'findaproject').average(:hits).round(2)
+      @collection_work_average_hits = this_week.where.not(search_type: 'findaproject').average(:hits).round(2)
+      @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
+      @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1) 
+      @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+    end
+
+    start_d = params[:start_date]
+    end_d = params[:end_date]
+    max_date = 1.day.ago.end_of_day
+    @start_date = start_d&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
+    @end_date = end_d&.to_datetime&.end_of_day || max_date
+    @end_date = max_date if max_date < @end_date
+  end
+
+  def delete_tag
+    tag = Tag.find params[:tag_id]
+    tag.destroy
+
+    redirect_to :action => 'tag_list'
+  end
+
+  def show_tag
+    @tag = Tag.find params[:tag_id]
+    @collections = @tag.collections.order(:title)
+    @possible_duplicates = []
+    clean_text = @tag.ai_text.gsub(/^\W*/,'').gsub(/\W*$/,'')
+    Tag.where("ai_text like '%#{clean_text}%'").each do |t|
+      @possible_duplicates << t unless t == @tag
+    end
+
+  end
+
+  def edit_tag
+    @tag = Tag.find params[:tag_id]
+  end
+
+  def update_tag
+    @tag = Tag.find params[:tag_id]
+    @tag.update_attributes(tag_params)
+    redirect_to :action => 'tag_list'
+  end
+
+  def merge_tag
+    target_tag = Tag.find params[:target_tag_id]
+    source_tag = Tag.find params[:source_tag_id]
+
+    target_tag.collections << source_tag.collections
+    target_tag.save
+
+    source_tag.destroy!
+
+    flash[:notice] = t('.tags_merged', target_tag: target_tag.ai_text, source_tag: source_tag.ai_text)
+
+    redirect_to admin_tags_show_path(target_tag.id)
+  end
+
+  def tag_list
+    @tag_to_count_map = Tag.joins(:collections_tags).group(:id).count
+    @tags = Tag.all.order(:canonical, :ai_text)
+  end
+
   private
+  def tag_params
+    params.require(:tag).permit(:ai_text, :canonical, :tag_type)
+  end
+
 
   def user_params
     params.require(:user).permit(:real_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)

@@ -92,9 +92,7 @@ describe "different user role logins" do
     expect(page).to have_content("Owner Dashboard")
     @collections.each do |c|
       expect(page).to have_content(c.title)
-      c.works.each do |w|
-        expect(page).to have_content(w.title)
-      end
+      expect(page).to have_content("#{c.works.count} works")
     end
     @sets.each do |s|
       expect(page).to have_content(s.title)

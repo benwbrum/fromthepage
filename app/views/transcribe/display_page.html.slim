@@ -14,7 +14,7 @@
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 - if @autolinked_changed
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
-=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
+=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, id: 'custom_form_id' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
@@ -104,6 +104,12 @@ h2.legend =t('.notes_and_questions')
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
 =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
+#custom-alert
+  #custom-alert-box
+    p Are you sure you want to blank out this page?
+    button#cancelButton Cancel
+    button#blankPageButton Blank out this page
+
 -unless @current_user_alerted
   -unless current_user.slug.nil?
     -content_for :javascript
@@ -176,7 +182,99 @@ h2.legend =t('.notes_and_questions')
       });
     });
 
+    $(function() {
 
+        let allowFormSubmission = false;
+
+        function showCustomAlert(message) {
+            // Show the custom alert
+            $("#custom-alert-box p").text(message);
+            $("#custom-alert").show();
+        }
+
+        function hideCustomAlert() {
+            // Hide the custom alert
+            $("#custom-alert").hide();
+        }
+
+        function allowFormToSubmit() {
+            // Allow form submission
+            allowFormSubmission = true;
+            // Submit the form
+            $("#custom_form_id").submit();
+        }
+
+        function restrictFormSubmission() {
+            // Restrict form submission
+            allowFormSubmission = false;
+            // Show the custom alert
+            showCustomAlert();
+        }
+
+      $('form').submit(function(event) {
+        var isMarkedBlank = $('#page_mark_blank').is(':checked');
+        var hasTranscribedvalue = $('.page-editarea_textarea').length < 0;
+        var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;
+        var hasFieldContent = false;
+        var hasFilledCells = false;
+
+        // Check if spreadsheet have content
+        if (typeof hot !== 'undefined') {
+          var data = hot.getData();
+          for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < data[i].length; j++) {
+              if (data[i][j] !== null && data[i][j] !== '') {
+                hasFilledCells = true;
+                break;
+              }
+            }
+            if (hasFilledCells) {
+              break;
+            }
+          }
+        }
+
+      // Check if fields have content
+        $('.field-wrapper .field-input').each(function() {
+          var content = $(this).val().trim();
+          if (content !== '') {
+            hasFieldContent = true;
+            return false;
+          }
+        });
+
+        if (isMarkedBlank && (hasTranscribedText || hasFieldContent || hasFilledCells)) {
+          if (!allowFormSubmission) {
+            event.preventDefault();
+            // Show the custom alert
+
+            var confirmation = showCustomAlert("#{j(t('.mark_blank_warning'))}");
+
+            if (!confirmation) {
+              return false;
+            }
+          }          
+        } else {
+          hideCustomAlert();
+          allowFormToSubmit();
+        }
+
+      });
+      $("#cancelButton").click(function() {
+          hideCustomAlert();
+      });
+
+      // Handle blank page button click
+      $("#blankPageButton").click(function() {
+          allowFormToSubmit();
+          hideCustomAlert();
+      });
+
+      // Handle finish_button_top click
+      $("#finish_button_top").click(function() {
+          restrictFormSubmission();
+      });
+    });
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet

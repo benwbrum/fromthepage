@@ -6,9 +6,13 @@ fr:
       settings: Réglages
       subject: Sujet
       versions: Versions
+    breadcrumbs:
+      search_results: Résultats de recherche
     codemirror:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
       add_description: Marque le texte inséré après coup par l'auteur.
+      ai_plaintext_caveat: "<!-- Le texte suivant a été généré par l'intelligence artificielle et contient probablement des erreurs. Certaines erreurs évidentes ont été remplacées par des symboles 🤔, mais les plus délicates ne peuvent pas être marquées. (Veuillez supprimer cet avertissement.) -->"
+      copy_ai_plaintext: Texte IA
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       del_description: Marque le texte qui a été supprimé par effacement ou barré.
       expan_description: Marque les abréviations développées avec les formes originales dans l'attribut abbr.
@@ -55,6 +59,7 @@ fr:
     markup_help:
       markup_help_description: '"Lien automatique" suggérera des sujets auxquels certains mots pourraient être liés ou vous pouvez utiliser des accolades doubles pour lier des sujets. <code>[[Jane Doe]]</code> liera le texte "Jane Doe" au sujet Jane Doe, tandis que <code>[[Jane Doe|Jane]]</code> liera le texte "Jane" au sujet Jane Doe. Nous recommandons que la liaison soit faite après la transcription initiale.'
     osd_div:
+      ai_assist: Assistance IA
       brightness: Luminosité
       contrast: Contraste
       full_page: Basculer en pleine page

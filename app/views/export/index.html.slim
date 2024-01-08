@@ -82,15 +82,6 @@ p.big
 
   =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
-
-h2 =t('.export_work_metadata')
-p.big
-  span.fright(style="margin-left: 30px")
-    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
-      =svg_symbol '#icon-export', class: 'icon'
-      span =t('.export_work_metadata_as_csv')
-  span =t('.export_work_metadata_description')
-
 h2= t('.api')
 p
   =t('.iiif_api_description', link: link_to(t('.here'), 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')).html_safe

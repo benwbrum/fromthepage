@@ -13,11 +13,11 @@ pt:
       approval_delta_display_2: Média
       approval_delta_display_3: Alto
       approval_delta_display_4: Muito alto
-      description: A amostragem de qualidade permite que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou trabalho. Esse número pode crescer à medida que mais páginas são transcritas.
+      description: A amostragem de qualidade permite que você verifique as contribuições aleatoriamente e avalie as páginas a serem revisadas com base na quantidade de texto corrigido para um determinado usuário ou obra. Esse número pode crescer à medida que mais páginas são transcritas.
       not_applicable: N / D
       not_fully_sampled_yet: Esta amostra ainda não foi totalmente revisada.
       pages_in_sample: Páginas na amostra
-      pages_in_sample_desc: Número de páginas na amostra para o usuário ou trabalho.
+      pages_in_sample_desc: Número de páginas na amostra para o usuário ou obra.
       pages_to_be_reviewed: Páginas para revisão
       pages_to_be_reviewed_desc: Número de páginas que ainda precisam de revisão em toda a coleção.
       quality_score: Índice de qualidade
@@ -32,6 +32,6 @@ pt:
       sample_set_has_increased: O conjunto de amostras aumentou em %{increase} páginas
       sample_set_size: 'Tamanho do conjunto de amostra:'
       user: Contribuinte
-      work: Trabalhar
+      work: Obra
     update:
       quality_sampling_updated: A amostragem de qualidade foi atualizada com sucesso.

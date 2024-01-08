@@ -6,9 +6,13 @@ pt:
       settings: Configurações
       subject: sujeito
       versions: Versões
+    breadcrumbs:
+      search_results: Procurar Resultados
     codemirror:
       abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
       add_description: Marca o texto inserido após o fato pelo escritor.
+      ai_plaintext_caveat: "<!-- O texto a seguir foi gerado por inteligência artificial e provavelmente contém erros. Alguns erros óbvios foram substituídos por símbolos 🤔, mas os mais complicados podem não ser marcados. (Por favor, exclua este aviso.) -->"
+      copy_ai_plaintext: Texto de IA
       date_description: Marca datas, com forma padronizada no atributo quando.
       del_description: Marca o texto que foi removido por apagamento ou tachado.
       expan_description: Marca abreviações expandidas com formas originais no atributo abbr.
@@ -43,22 +47,23 @@ pt:
       describe: Metadados
       help: Ajuda
       metadata: Metadados
-      nav_info: Trabalho %{position} de %{size}
+      nav_info: Obra %{position} de %{size}
       next_page: Próxima página
-      next_work: Próximo trabalho
+      next_work: Próxima obra
       overview: Visão geral
       previous_page: Página anterior
-      previous_work: Trabalho prévio
+      previous_work: Obra anterior
       versions: Versões
     handsontable:
       date_tooltip: As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles).
     markup_help:
       markup_help_description: '"Autolink" sugerirá assuntos aos quais certas palavras podem ser vinculadas ou você pode usar chaves duplas para vincular assuntos. <code>[[Jane Doe]]</code> vinculará o texto "Jane Doe" ao assunto Jane Doe, enquanto <code>[[Jane Doe|Jane]]</code> vinculará o texto "Jane" ao assunto Jane Doe. Recomendamos que o link seja deixado para um editor após a transcrição inicial.'
     osd_div:
+      ai_assist: Assistência de IA
       brightness: Brilho
       contrast: Contraste
       full_page: Alternar página inteira
-      home: Ir para casa
+      home: Ir para Página Inicial
       image_filters: Filtros de imagem
       open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
       rotate_left: Vire à esquerda
@@ -68,7 +73,7 @@ pt:
       zoom_out: Reduzir o zoom
     page_tabs:
       correct: Corrigir
-      describe_work: Descreva o trabalho
+      describe_work: Descrever obra
       help: Ajuda
       nav_info: Página %{position} de %{size}
       next_page: Próxima página
@@ -86,10 +91,10 @@ pt:
       form: Formato
     work_tabs:
       about: Sobre
-      contents: Conteudo
+      contents: Conteúdo
       download: Download
       help: Ajuda
       pages: Páginas
       read: Ler
       settings: Configurações
-      work: Trabalhar
+      work: Obra

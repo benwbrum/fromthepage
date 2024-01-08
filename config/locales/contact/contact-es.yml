@@ -16,3 +16,9 @@ es:
       product_question: Pregunta sobre el producto
       submit: Enviar
       tell_us_more: Cuéntanos más sobre tu proyecto
+    send_email:
+      get_started_right_away: Comience de inmediato con una prueba gratuita de FromThePage.
+      start_free_trial: Empieza la prueba gratuita
+      thank_you: Gracias
+      thank_you!: "¡Gracias!"
+      will_follow_up: Un miembro del equipo se pondrá en contacto contigo.

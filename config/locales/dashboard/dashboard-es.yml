@@ -23,14 +23,15 @@ es:
       your_projects: Tus Proyectos
     empty:
       add_new_collection: Agregar nueva colección
-      create_empty_work: Crear trabajo vacío
-      create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en el trabajo.
-      create_work: Crear trabajo
+      create_empty_work: Crear obra vacío
+      create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en la obra.
+      create_work: Crear obra
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       select_a_collection: "- Seleccione una colección -"
       title: Título
     exports:
+      admin_searches: Búsquedas
       bulk_exports_description: Aquí se enumeran todas las exportaciones masivas que ha realizado. Las exportaciones se limpian después de unos días y ya no están disponibles para descargar
       configuration: Configuración (nivel)
       create_bulk_export_description: Cree una exportación masiva desde la pestaña Exportar de una colección o la pestaña Descargar de una obra.
@@ -40,6 +41,7 @@ es:
       facing_edition_work: Edición enfrentada PDF (obra)
       html_page: HTML (página)
       html_work: HTML (obra)
+      notes_csv: Notas CSV (colección)
       plaintext_emended_page: Texto sin formato analítico (página)
       plaintext_emended_work: Texto sin formato analítico (obra)
       plaintext_searchable_page: Texto sin formato que se puede buscar (página)
@@ -56,12 +58,20 @@ es:
       text_docx_work: MS Word .docx (obra)
       text_only_pdf_work: Texto PDF sencillo (obra)
       text_pdf_work: Texto PDF (obra)
-      work_metadata_csv: Metadatos de trabajo (colección)
+      work_metadata_csv: Metadatos de obra (colección)
     guest_header:
       recent_activity: Actividad reciente
     hierarchical_collections_and_document_sets:
       project_by: Proyecto por %{author}
       start_transcribing: Comenzar a Transcribir
+    hours_letter:
+      certification_text: Esta carta es para certificar que %{user_name} ha contribuido %{time_duration} a los esfuerzos de crowdsourcing de la biblioteca en FromThePage (www.fromthepage.com) entre %{start_date} y %{end_date}. A través del sitio web, los voluntarios pueden ayudar a transcribir documentos históricos en las colecciones de la biblioteca, haciéndolos más fáciles de buscar y accesibles para futuros investigadores. El sitio web FromThePage rastrea el tiempo que los usuarios registrados están activos en el sitio e informa una cantidad total de minutos activos.
+      institutions_header: "| **Instituciones** | **Colección** | **paginas** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Saludos,
+      to_whom_it_may_concern: 'A quien le interese:'
+      volunteer_text: Cada voluntario ayuda a hacer la historia más accesible. ¡Apreciamos la contribución de %{user_display_name} a nuestro esfuerzo de crowdsourcing!
+      worked_on_collections: "%{user_name} ha trabajado en las siguientes colecciones de las siguientes instituciones:"
     landing_page:
       all_collections: Todas las Colecciones
       more: Más...
@@ -89,19 +99,23 @@ es:
       page_image_guidelines: Guías para Imagen de Página
       paste_in_the_url: Pega el URL del objeto compuesto de tu sitio CONTENTdm.
     owner:
+      active_collections: Colecciones activas
       create_a_collection: crear una colección
       document_sets: Conjuntos de Documentos
-      see_all_works: Consulte Todas las Obras...
+      inactive_collections: Colecciones inactivas
+      n_works:
+        one: '1 obra:'
+        other: "%{count} obras:"
+      private: " (Privado)"
+      public: " (Público)"
       start_a_project: Iniciar Un Proyecto
       there_are_no_works: Todavía no hay obras en esta colección
-      total_work_count: 'Recuento total de obras: %{count}'
-      you_can_add_another_work: Puedes añadir otra obra bajo %{start_project}
       you_can_new_collection: Puedes %{new_collection}
       you_can_upload_documents: Puedes subir documentos en %{start_project}
       you_dont_have_any_collections: No hay colecciones todavía
       your_activity: Tu Actividad
     owner_header:
-      account_type: Cuenta %{type}
+      account_type: "%{type} cuenta"
       account_types:
         individual_researcher: investigador individual
         large_institution: institución grande
@@ -124,7 +138,7 @@ es:
       summary: Resumen
       total_pages: 'Páginas totales: %{pages}'
       work:
-        one: Trabajar
+        one: Obra
         other: Obras
       your_collections: Tus Colecciones
     upload:
@@ -134,7 +148,7 @@ es:
       click_to_browse_files: Haz clic para consultar los archivos...
       each_folder_will_be_treated: Cada carpeta se tratará como un documento diferente, por lo tanto, no mezcle páginas de documentos diferentes en la misma carpeta.
       each_pdf_will_be_treated: Cada PDF se tratará como su propio documento, por lo tanto, no divida las páginas del mismo documento entre más de un PDF.
-      for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último trabajo con las 5 imágenes de la carpeta.'
+      for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último obra con las 5 imágenes de la carpeta.'
       image_naming_guidelines: 'Las imágenes se deben nombrar de modo que una ordenación alfabética resulte en el orden de página correcto.<br> (Esto puede requerir "relleno con ceros" para cualquier número de página: <code>page_09.jpg, page_10.jpg</code> ordenará correctamente, pero <code>page_9.jpg, page_10.jpg</code> no).'
       image_orientation_guidelines: Las imágenes deben estar orientadas de manera que queden boca arriba.
       import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto.
@@ -149,7 +163,16 @@ es:
       zip_files_may_contain: Los archivos ZIP pueden contener carpetas con imágenes, PDFs o carpetas que contengan archivos PDF.
     watchlist:
       collections: colecciones
-      private_collections_you_belong_to: Colecciones Privadas a las que Perteneces
+      private_collections_you_belong_to: Colecciones privadas en las que eres colaboradora
       projects_you_have_contributed_to: Los proyectos a los que has contribuido -- transcribiendo, editando o comentando -- se enumerarán aquí con su actividad más reciente para que puedas mantenerte al día con lo que está sucediendo.
       try_transcribing_a_page: 'Aún no has participado en ningún proyecto.  Intenta transcribir una página de uno de estos '
       your_activity: Tu Actividad
+      your_hours: Your Hours
+    your_hours:
+      contributions_between_dates: Contribuciones entre %{start_date} y %{end_date}
+      download_letter: Descargar una carta
+      end_date: Fecha final
+      hours_details_message: "%{user_name} ha contribuido %{time_duration} entre %{start_date} y %{end_date}"
+      select_new_date: Seleccione un nuevo rango de fechas
+      start_date: Fecha de inicio
+      update: Actualizar

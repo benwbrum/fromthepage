@@ -1,0 +1,10 @@
+-path = []
+
+-if selection == :export_all_works
+  -path.push(link_to(t('shared.collection_tabs.export'), collection_export_path(@collection.owner, @collection)))
+  -path.push(t('bulk_export.new.export_all_works'))
+
+-if path.present?
+  ul.breadcrumbs
+    -path.each do |item|
+      li ==item

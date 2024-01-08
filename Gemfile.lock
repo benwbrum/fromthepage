@@ -100,6 +100,8 @@ GEM
       safely_block (>= 0.2.1)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
+    ajax-datatables-rails (1.0.0)
+      railties (>= 4.2)
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
@@ -152,6 +154,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    capybara-webkit (1.15.1)
+      capybara (>= 2.3, < 4.0)
+      json
     carrierwave (2.2.0)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -197,6 +202,7 @@ GEM
       devise (>= 4.7.0)
       railties (>= 5.2.0)
     diff-lcs (1.5.0)
+    diffy (3.4.2)
     docile (1.4.0)
     easy_translate (0.5.1)
       thread
@@ -218,6 +224,8 @@ GEM
     faraday (2.5.1)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (3.0.0)
     ffi (1.15.5)
     flamegraph (0.9.5)
@@ -239,6 +247,9 @@ GEM
       nokogiri (>= 1.4)
     htmlentities (4.3.4)
     http_accept_language (2.1.1)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     httpi (2.5.0)
       rack
       socksify
@@ -315,18 +326,19 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.2)
     minitest (5.17.0)
     msgpack (1.5.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
+    multipart-post (2.3.0)
     mustache (1.1.1)
     mysql2 (0.5.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (7.0.1)
     newrelic_rpm (9.2.2)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -377,11 +389,11 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (4.0.7)
-    puma (5.6.4)
+    puma (5.6.7)
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
-    racc (1.6.2)
+    racc (1.7.1)
     rack (2.2.6.4)
     rack-contrib (2.3.0)
       rack (~> 2.0)
@@ -458,6 +470,9 @@ GEM
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
     rtl (0.6.0)
+    ruby-openai (5.1.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-saml (1.14.0)
       nokogiri (>= 1.10.5)
       rexml
@@ -470,7 +485,7 @@ GEM
       sshkit (>= 1.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
-    sanitize (6.0.1)
+    sanitize (6.0.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     sassc (2.4.0)
@@ -532,6 +547,8 @@ GEM
       tins (~> 1.0)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
+    terser (1.1.20)
+      execjs (>= 0.3.0, < 3)
     text (1.3.1)
     thor (1.2.1)
     thread (0.2.2)
@@ -597,6 +614,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
+  ajax-datatables-rails (~> 1.0.0)
   autoprefixer-rails
   better_errors
   binding_of_caller
@@ -607,6 +625,7 @@ DEPENDENCIES
   capistrano-bundler (~> 1.6)
   capistrano-rails (~> 1.4)
   capybara
+  capybara-webkit
   carrierwave
   charlock_holmes
   coveralls
@@ -614,6 +633,7 @@ DEPENDENCIES
   devise
   devise-encryptable
   devise_masquerade (~> 1.2.0)
+  diffy
   easy_translate
   edtf
   edtf-humanize
@@ -623,6 +643,7 @@ DEPENDENCIES
   friendly_id
   gravatar_image_tag
   http_accept_language
+  httparty
   i18n-tasks
   iiif-image-api!
   iiif-presentation!
@@ -655,6 +676,7 @@ DEPENDENCIES
   rmagick
   rspec-rails
   rtl
+  ruby-openai
   rubyzip
   rvm1-capistrano3
   sassc-rails
@@ -663,6 +685,7 @@ DEPENDENCIES
   shoulda
   slim
   stackprof
+  terser
   text
   thredded (~> 1.0)
   uglifier

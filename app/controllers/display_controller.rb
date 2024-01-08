@@ -71,10 +71,6 @@ class DisplayController < ApplicationController
     session[:col_id] = @collection.slug
   end
 
-  def search
-    redirect_to paged_search_path(request.params)
-  end
-
   def paged_search
     if @article
       render plain: "This functionality has been disabled.  Please contact support@frothepage.com if you need it."
@@ -112,19 +108,16 @@ class DisplayController < ApplicationController
       end
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
-      @search_string = CGI::escapeHTML(params[:search_string])
-      # convert 'natural' search strings unless they're precise
-      unless @search_string.match(/["+-]/)
-        @search_string.gsub!(/\s+/, ' ')
-        @search_string = "+\"#{@search_string}\""
-        # @search_string.gsub!(/(\S+)/, '+\1*')
+      @search_attempt = SearchAttempt.find_by(slug: params[:id])
+      if session[:search_attempt_id] != @search_attempt.id
+        session[:search_attempt_id] = @search_attempt.id
       end
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @search_string).paginate(page: params[:page])
+      @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
+      @work = @search_attempt&.work
+      pages = @search_attempt.results
+      @pages = pages.paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end
-
-
-
 end

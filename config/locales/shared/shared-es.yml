@@ -6,9 +6,13 @@ es:
       settings: Configuración
       subject: tema
       versions: Versiones
+    breadcrumbs:
+      search_results: Resultados de la búsqueda
     codemirror:
       abbr_description: Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan.
       add_description: Marca el texto insertado después por el escritor.
+      ai_plaintext_caveat: "<!-- El siguiente texto fue generado por inteligencia artificial y probablemente contenga errores. Algunos errores obvios se han reemplazado con símbolos 🤔, pero es posible que los más complicados no estén marcados. (Elimine esta advertencia). -->"
+      copy_ai_plaintext: Texto de IA
       date_description: Marca la fecha, con forma estandarizada según el atributo cuándo.
       del_description: Marca el texto que ha sido borrado o tachado.
       expan_description: Marcas las abreviaturas ampliadas con formularios originales en el atributo abbr.
@@ -43,22 +47,23 @@ es:
       describe: Metadatos
       help: Ayuda
       metadata: metadatos
-      nav_info: Trabajo %{position} de %{size}
+      nav_info: Obra %{position} de %{size}
       next_page: Siguiente página
-      next_work: Siguiente trabajo
+      next_work: Siguiente obra
       overview: Visión general
       previous_page: Pagina anterior
-      previous_work: Trabajo previo
+      previous_work: Obra previa
       versions: Versiones
     handsontable:
-      date_tooltip: Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del dá, con guiones que separen los números).
+      date_tooltip: Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del día, con guiones que separen los números).
     markup_help:
       markup_help_description: '"Autolink" sugerirá temas a los que se podrían vincular ciertas palabras o puede usar llaves dobles para vincular temas. <code>[[Jane Doe]]</code> vinculará el texto "Jane Doe" al asunto Jane Doe, mientras que <code>[[Jane Doe|Jane]]</code> vinculará el texto "Jane" al tema Jane Doe. Recomendamos que la vinculación se deje a un editor después de realizar la transcripción inicial.'
     osd_div:
+      ai_assist: Asistencia de IA
       brightness: Brillo
       contrast: Contraste
       full_page: Alternar página completa
-      home: Vete a casa
+      home: Vete a la Página Inicial
       image_filters: filtros de imagen
       open_seadragon_needs_js: OpenSeadragon no está disponible a menos que JavaScript esté habilitado.
       rotate_left: Girar a la izquierda
@@ -68,7 +73,7 @@ es:
       zoom_out: Disminuir el zoom
     page_tabs:
       correct: Corregir
-      describe_work: Describir el trabajo
+      describe_work: Describir la obra
       help: Ayuda
       nav_info: Página %{position} de %{size}
       next_page: Siguiente página
@@ -89,7 +94,7 @@ es:
       contents: Contenido
       download: Descargar
       help: Ayuda
-      pages: Paginas
+      pages: Páginas
       read: Leer
       settings: Configuración
-      work: Trabajar
+      work: Obra

@@ -1,4 +1,5 @@
 Fromthepage::Application.routes.draw do
+  resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
     scope ':collection_id' do
@@ -30,6 +31,9 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  scope 'notes', as: 'notes' do
+    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
+  end
   resources :notes
 
 
@@ -43,6 +47,7 @@ Fromthepage::Application.routes.draw do
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
     get 'uploads', to: 'admin#uploads'
+    get 'searches', to: 'admin#searches'
     get 'tail_logfile', to: 'admin#tail_logfile'
     get 'settings', to: 'admin#settings'
     get 'user_visits', to: 'admin#user_visits'
@@ -61,6 +66,16 @@ Fromthepage::Application.routes.draw do
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
     patch 'expunge_user', :to => 'admin#expunge_user'
+    scope 'tags', as: 'tags' do
+      delete ':tag_id/delete', to: 'admin#delete_tag', as: 'delete'
+      get ':tag_id/edit', to: 'admin#edit_tag', as: 'edit'
+      get 'new', to: 'admin#new_tag'
+      post 'create', to: 'admin#create_tag'
+      patch ':tag_id/update', :to => 'admin#update_tag'
+      get 'index', to: 'admin#tag_list'
+      get ':tag_id', to: 'admin#show_tag', as: 'show'
+      get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
+    end
   end
 
   scope 'facets', as: 'facets' do
@@ -86,6 +101,7 @@ Fromthepage::Application.routes.draw do
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+    get ':collection_id/block_users', to: 'collection#block_users', as: 'block_users'
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
@@ -98,9 +114,11 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
+    post 'remove_block_user', to: 'collection#remove_block_user'
     post 'create', to: 'collection#create'
     get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
@@ -203,6 +221,14 @@ Fromthepage::Application.routes.draw do
     get 'exports', to: 'dashboard#exports'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
+    get 'your_hours', to: 'dashboard#your_hours'
+    get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
+  end
+
+  scope 'search_attempt', as: 'search_attempt' do
+    get 'create', to: 'search_attempt#create'
+    get 'click', to: 'search_attempt#click'
+    get ':id', to: 'search_attempt#show', as: 'show'
   end
 
   scope 'category', as: 'category' do
@@ -228,7 +254,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -330,10 +355,10 @@ Fromthepage::Application.routes.draw do
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
+  get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  post 'display_search', to: 'display#search'
-  get 'paged_search', to: 'display#paged_search'
-  get 'demo', to: 'demo#index'
+  get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
+  get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
 
   scope 'feature', as: 'feature' do
     get ':feature/:value', to: 'user#feature_toggle' 
@@ -479,6 +504,7 @@ Fromthepage::Application.routes.draw do
       get 'works_list', as: :works_list, to: 'collection#works_list'
       get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
     
@@ -531,6 +557,7 @@ Fromthepage::Application.routes.draw do
       # Page Annotations
       get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
+      get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
 
       #article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'

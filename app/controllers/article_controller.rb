@@ -47,8 +47,13 @@ class ArticleController < ApplicationController
 
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
-      @article.destroy
-      redirect_to collection_subjects_path(@collection.owner, @collection)
+      if @article.created_by_id == current_user.id || current_user.like_owner?(@collection)
+        @article.destroy 
+        redirect_to collection_subjects_path(@collection.owner, @collection)
+      else
+        flash.alert = t('.only_subject_owner_can_delete')
+        redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
+      end
     else
       flash.alert = t('.must_remove_referring_links')
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
@@ -276,6 +281,7 @@ class ArticleController < ApplicationController
     deed.collection = @article.collection
     deed.user = current_user
     deed.save!
+    update_search_attempt_contributions
   end
 
   def combine_articles(from_article, to_article)

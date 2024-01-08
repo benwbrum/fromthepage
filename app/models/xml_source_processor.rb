@@ -279,11 +279,14 @@ module XmlSourceProcessor
 
   def process_any_sections(line)
     6.downto(2) do |depth|
-      line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
-        verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
-        safe_verbatim=verbatim.gsub(/"/, "&quot;")
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
-        @sections << Section.new(:title => wiki_title.last, :depth => depth)
+      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |section_match|
+        wiki_title = section_match[1].strip
+        if wiki_title.length > 0
+          verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title)
+          safe_verbatim = verbatim.gsub(/"/, "&quot;")
+          line = line.sub(section_match.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title}</entryHeading>")
+          @sections << Section.new(:title => wiki_title, :depth => depth)
+        end
       end
     end
 
@@ -369,6 +372,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
+        article.created_by_id = User.current_user.id if User.current_user.present?
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode
@@ -474,6 +478,61 @@ EOF
 
     text
   end
+
+
+  def pipe_tables_formatting(text)
+    # since Pandoc Pipe Tables extension requires pipe characters at the beginning and end of each line we must add them
+    # to the beginning and end of each line
+    text.split("\n").map{|line| "|#{line}|"}.join("\n")
+  end
+
+  def xml_table_to_markdown_table(table_element, pandoc_format=false)
+    text_table = ""
+
+    # clean up in-cell line-breaks
+    table_element.xpath('//lb').each { |n| n.replace(' ')}
+
+    # calculate the widths of each column based on max(header, cell[0...end])
+    column_count = ([table_element.xpath("//th").count] + table_element.xpath('//tr').map{|e| e.xpath('td').count }).max
+    column_widths = {}
+    1.upto(column_count) do |column_index|
+      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map{|e| e.text().length}.max || 0)
+      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
+      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
+      column_widths[column_index] = [longest_cell, heading_length].max
+    end
+
+    # print the header as markdown
+    cell_strings = []
+    table_element.xpath("//th").each_with_index do |e,i|
+      cell_strings << e.text.rjust(column_widths[i+1], ' ')
+    end
+    text_table << cell_strings.join(' | ') << "\n"
+
+    # print the separator
+    text_table << column_count.times.map{|i| ''.rjust(column_widths[i+1], '-')}.join(' | ') << "\n"
+
+    # print each row as markdown
+    table_element.xpath('//tr').each do |row_element|
+      text_table << row_element.xpath('td').map do |e|
+        width = 80 #default for hand-coded tables
+        index = e.path.match(/.*td\[(\d+)\]/)
+        if index
+          width = column_widths[index[1].to_i] || 80 
+        else
+          width = column_widths.values.first
+        end
+        e.text.rjust(width, ' ') 
+      end.join(' | ') << "\n"
+    end
+    if pandoc_format
+      text_table = pipe_tables_formatting(text_table)
+    end
+
+    text_table
+  end
+
+
 
   def debug(msg)
     logger.debug("DEBUG: #{msg}")

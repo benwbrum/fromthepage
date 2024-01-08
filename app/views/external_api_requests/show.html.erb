@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @external_api_request.user_id %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @external_api_request.collection_id %>
+</p>
+
+<p>
+  <strong>Work:</strong>
+  <%= @external_api_request.work_id %>
+</p>
+
+<p>
+  <strong>Page:</strong>
+  <%= @external_api_request.page_id %>
+</p>
+
+<p>
+  <strong>Engine:</strong>
+  <%= @external_api_request.engine %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @external_api_request.status %>
+</p>
+
+<p>
+  <strong>Params:</strong>
+  <%= @external_api_request.params %>
+</p>
+
+<%= link_to 'Edit', edit_external_api_request_path(@external_api_request) %> |
+<%= link_to 'Back', external_api_requests_path %>

@@ -10,5 +10,9 @@ es:
         other: "%{count} revisiones"
       no_transcription_provided: No se proporcionó transcripción
       no_translation_provided: No se proporcionó traducción
+      page_version_status_blank: blanco
+      page_version_status_incomplete: incompleto
+      page_version_status_review: revisar
+      page_version_status_transcribed: transcrito
       translation: Traducción
       untitled: Intitulado
