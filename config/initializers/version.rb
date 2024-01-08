@@ -1,3 +1,3 @@
 class Fromthepage::Application
-  Version = '22.10'
+  Version = '24.1'
 end
