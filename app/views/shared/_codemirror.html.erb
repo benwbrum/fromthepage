@@ -16,6 +16,7 @@
       var currentText = cm.getValue();
       // append ai_plaintext to the end of the current text
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
+      cm.markClean();
     }; 
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
       appendAiPlaintext(myCodeMirror);

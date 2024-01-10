@@ -22,9 +22,12 @@ namespace :fromthepage do
       if page.has_alto?
         # if it does, read the ALTO XML and generate AI Plaintext
         raw_alto = page.alto_xml
-        # save the plaintext
-        page.ai_plaintext = generate_plaintext(raw_alto, diff_level)
-        page.save!
+        plaintext = generate_plaintext(raw_alto, diff_level)
+        if !plaintext.blank?
+          # save the plaintext
+          page.ai_plaintext = generate_plaintext(raw_alto, diff_level)
+          page.save!
+        end
       end
     end
   end
@@ -52,7 +55,9 @@ namespace :fromthepage do
         plaintext = generate_plaintext(raw_alto, diff_level)
         # do any additional processing here
         # save the plaintext without creating derivatives
-        page.update_column(:source_text, plaintext)
+        if !plaintext.blank?
+          page.update_column(:source_text, plaintext)
+        end
       end
     end
   end
@@ -60,6 +65,10 @@ namespace :fromthepage do
   def generate_plaintext(raw_alto, diff_level)
     # convert the alto to plaintext, using the same method as when we ingest XML files
     plaintext = AltoTransformer.plaintext_from_alto_xml(raw_alto)
+    # some pages are blank, so they will have no word characters in the plaintext
+    # we want to skip those pages
+    return nil if !plaintext.match(/\w/m)
+
     # do any additional processing here
     if diff_level != :none
       # normalize the plaintext
