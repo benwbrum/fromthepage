@@ -16,7 +16,7 @@ class IaLeaf < ApplicationRecord
   end
 
   def iiif_image_info_url
-    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}$#{leaf_number}/info.json"
+    "https://iiif.archive.org/iiif/#{ia_work.book_id}$#{leaf_number}/info.json"
   end
 
 end
