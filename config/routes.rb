@@ -254,7 +254,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'deed', as: 'deed' do
-    get 'list', to: 'deed#list'
+    get 'listing', to: 'deed#list', as: :list
   end
 
   scope 'static', as: 'static' do
