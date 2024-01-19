@@ -59,7 +59,6 @@ pt:
       restricted: Restringido
       unrestricted: Não Restringido
       work_title: Título da obra
-      works_that_need_transcription: Obras que precisam de transcrição
     settings:
       add: Adicionar
       add_collaborator: Adicionar Colaborador
