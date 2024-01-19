@@ -42,19 +42,15 @@ en:
       learn_more_footer: Learn more about configuring the footer.
       location: Location
       name: Name
-      name_only_required: Your name is the only required field.
-      no_image: No image
       ocrid_id: OCRID ID
       owner_stats: Nightly emails with owned collection activity
       page_edited: Note added in response to a comment you made
       picture: Profile Picture
-      picture_to_be_used_message: Picture to be used
       select_notification: 'Select which of the following notifications you want to receive:'
       sign_up_url: 'Sign-up URL:'
       suggestions_help_tab: Suggestions for your help tab.
       update_profile: Update Profile
       update_user_profile: Update User Profile
-      upload_image: Upload image
       url: URL
       user_activity: Nightly email with activity in collections you've worked on
       user_url: 'URL:'
