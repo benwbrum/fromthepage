@@ -65,8 +65,12 @@ class CollectionController < ApplicationController
   def approve_all
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    page_count = @pages.count
     @pages.update_all(status: Page::STATUS_TRANSCRIBED)
-    flash[:notice] = t('.approved_n_pages', page_count: @pages.count)
+    @collection.works.each do |work|
+      work.work_statistic.recalculate({ type: Page::STATUS_NEEDS_REVIEW }) if work.work_statistic
+    end
+    flash[:notice] = t('.approved_n_pages', page_count: page_count)
     redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))
   end
 
