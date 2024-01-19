@@ -134,6 +134,7 @@ describe "uploads data for collections", :order => :defined do
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Settings")
+    sleep 1
     page.find('.side-tabs').click_link("Look & Feel")
     page.check('Enable document sets')
     page.click_link('Edit Sets')

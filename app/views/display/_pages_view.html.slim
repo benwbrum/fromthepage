@@ -50,7 +50,7 @@
         h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
 
       .work-page_text[*language_attrs(@collection)]
-        -transcription = xml_to_html(page.xml_text, false)
+        -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
         -if @search_string
           -transcription = highlight_search_terms(transcription, @search_string)
         -if current_user
@@ -61,7 +61,7 @@
         -if page.status == Page::STATUS_BLANK
           p.nodata_text ==t('.this_page_is_blank')
         -elsif transcription.present?
-          -if page.status == Page::STATUS_INCOMPLETE
+          -if (page.status == Page::STATUS_INCOMPLETE && @collection.active?)
             .incomplete_transcription
               ==transcription.force_encoding('utf-8')
             .incomplete_text

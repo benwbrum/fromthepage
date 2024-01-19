@@ -16,6 +16,7 @@ gem 'mysql2'
 gem 'text'
 gem 'thredded', '~> 1.0'
 gem "recaptcha", require: "recaptcha/rails"
+gem 'ruby-openai'
 
 gem 'acts_as_list'
 gem 'acts_as_tree'
@@ -25,6 +26,7 @@ gem 'devise-encryptable'
 
 gem 'carrierwave'
 gem 'rubyzip'
+gem 'httparty'
 
 gem 'ahoy_matey'
 
@@ -61,7 +63,8 @@ gem 'charlock_holmes'
 
 gem 'edtf'
 gem 'edtf-humanize'
-
+gem 'diffy'
+gem 'terser'
 group :assets do
   gem 'uglifier'
 end
@@ -69,6 +72,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'webmock', require: false

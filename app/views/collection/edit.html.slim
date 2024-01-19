@@ -29,6 +29,11 @@
           b#transcriber-url =collection_start_transcribing_url(@collection.owner.slug, @collection.slug)
           a.clipboard-btn (data-clipboard-target='#transcriber-url' aria-label=t('.copy_url') title=t('.copy_url'))
             =svg_symbol '#icon-copy', class: 'icon'
+
+      tr
+        td(colspan="2")
+          =f.label :tags, t('.subject_tags')
+          =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
       tr 
         th
           h3 =t('.collection_image')

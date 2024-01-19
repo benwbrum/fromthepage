@@ -53,8 +53,8 @@ class DashboardController < ApplicationController
       cds = public_collections + public_document_sets
     end
     if user_signed_in?
-      cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
-      cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.all_owner_collections.restricted.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.document_sets.restricted.includes(:owner, next_untranscribed_page: :work)
 
       cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
@@ -70,6 +70,37 @@ class DashboardController < ApplicationController
     @document_upload = DocumentUpload.new
     @document_upload.collection = @collection
     @sc_collections = ScCollection.all
+  end
+
+  def your_hours
+    if params['start_date'].present? && params['end_date'].present?
+      @start_date_hours = Date.parse(params['start_date'])
+      @end_date_hours = Date.parse(params['end_date'])
+
+      if @start_date_hours > @end_date_hours
+        flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
+        redirect_to dashboard_your_hours_path
+      end
+    else
+      @start_date_hours = 7.days.ago.to_date
+      @end_date_hours = Date.today
+    end
+    @user_collections = Collection.where(
+      owner_user_id: current_user.id,
+      created_on: @start_date_hours..@end_date_hours
+    )
+  end
+  
+  def download_hours_letter
+    load_user_data
+    markdown_text = generate_markdown_text
+  
+    input_path = Rails.root.join('tmp', 'input.md').to_s
+    output_path = Rails.root.join('tmp', 'letter.pdf').to_s
+  
+    generate_pdf(input_path, output_path, markdown_text)
+  
+    send_generated_pdf(output_path)
   end
 
   # Owner Dashboard - list of works
@@ -118,7 +149,17 @@ class DashboardController < ApplicationController
     collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
-    @collections = (collections + recent_collections + document_sets).uniq.sort { |a, b| a.title <=> b.title }.take(5)
+    @collections = (collections + recent_collections + document_sets)
+               .uniq
+               .sort_by do |collection|
+                 if collection.is_a?(Collection)
+                   collection.created_on
+                 elsif collection.is_a?(DocumentSet)
+                   collection.created_at
+                 end
+               end
+               .reverse
+               .take(10)
   end
 
 
@@ -137,7 +178,33 @@ class DashboardController < ApplicationController
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
 
+  def browse_tag
+    @tag = Tag.where(ai_text: params[:ai_text]).first
+    @collections = @tag.collections.unrestricted.not_near_complete.has_intro_block.has_picture
+  end
+
   def landing_page
+    if params[:search]
+      # Get matching Collections and Docsets
+      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+
+      # Get user_ids from the resulting search
+      search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
+
+      # Get matching users and users from Collections and DocSets search
+      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
+    else
+      # Get random Collections and DocSets from paying users
+      @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
+
+      # Sampled Randomly down to 8 items for Carousel
+      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+      @collections = (docsets + colls).sample(8)
+    end
+  end
+
+  def new_landing_page
     # Get random Collections and DocSets from paying users
     @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
 
@@ -145,6 +212,62 @@ class DashboardController < ApplicationController
     docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     @collections = (docsets + colls).sample(8)
+
+    @tag_map = Tag.where(canonical: true).joins(:collections).where("collections.restricted" ==false).group(:ai_text).count
+
+  end
+
+
+  def collaborator_time_export
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+
+    start_date = start_date.to_date
+    end_date = end_date.to_date
+
+    dates = (start_date..end_date)
+
+    headers = [
+      "Username",
+      "Email",
+    ]
+
+    headers += dates.map{|d| d.strftime("%b %d, %Y")}
+
+    # Get Row Data (Users)
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+
+
+    contributor_ids_for_dates = AhoyActivitySummary
+      .where(collection_id: owner_collections)
+      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      contributors.each do |user|
+        row = [user.display_name, user.email]
+
+        activity = AhoyActivitySummary
+          .where(user_id: user.id)
+          .where(collection_id: owner_collections)
+          .where('date BETWEEN ? AND ?', start_date, end_date)
+          .group(:date)
+          .sum(:minutes)
+          .transform_keys{ |k| k.to_date }
+
+        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
+
+        row += user_activity
+
+        records << row
+      end
+    end
+
+    send_data( csv,
+              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+              :type => "application/csv")
   end
 
   private
@@ -155,5 +278,56 @@ class DashboardController < ApplicationController
 
   def work_params
     params.require(:work).permit(:title, :description, :collection_id)
+  end
+
+  def load_user_data
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @time_duration = params[:time_duration]
+    @user_collections = Collection.where(
+      owner_user_id: current_user.id,
+      created_on: @start_date..@end_date
+    )
+  end
+  
+  def generate_markdown_text
+    <<~MARKDOWN
+      ![](app/assets/images/logo.png){width=300px style='display: block; margin-left: 300px auto;'}  
+      &nbsp; &nbsp;
+      \n#{generated_format_date(Time.now.to_date.to_s)}\n
+      &nbsp; &nbsp;
+      \n#{I18n.t('dashboard.hours_letter.to_whom_it_may_concern')}\n
+      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
+      #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: current_user.real_name)}\n
+      #{I18n.t('dashboard.hours_letter.institutions_header')}
+      #{I18n.t('dashboard.hours_letter.institutions_separator')}
+      #{generate_collection_rows(@user_collections)}
+      #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      #{I18n.t('dashboard.hours_letter.regards_text')}\n
+      | 
+      | Sara Brumfield
+      | Partner, FromThePage
+    MARKDOWN
+  end
+  
+  def generate_collection_rows(user_collections)
+    user_collections.map do |collection|
+      "| #{collection.owner.display_name} | #{collection.title} | #{collection.pages.count} |"
+    end.join("\n")
+  end
+
+  def generated_format_date(date)
+    date = Date.parse(date)
+    formatted_date = date.strftime("%B %d, %Y")
+  end
+  
+  def generate_pdf(input_path, output_path, markdown_text)
+    File.write(input_path, markdown_text)
+  
+    system("pandoc #{input_path} -s --pdf-engine=xelatex -o #{output_path}")
+  end
+  
+  def send_generated_pdf(output_path)
+    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
   end
 end

@@ -317,7 +317,58 @@ class AdminController < ApplicationController
     @end_date = max_date if max_date < @end_date
   end
 
+  def delete_tag
+    tag = Tag.find params[:tag_id]
+    tag.destroy
+
+    redirect_to :action => 'tag_list'
+  end
+
+  def show_tag
+    @tag = Tag.find params[:tag_id]
+    @collections = @tag.collections.order(:title)
+    @possible_duplicates = []
+    clean_text = @tag.ai_text.gsub(/^\W*/,'').gsub(/\W*$/,'')
+    Tag.where("ai_text like '%#{clean_text}%'").each do |t|
+      @possible_duplicates << t unless t == @tag
+    end
+
+  end
+
+  def edit_tag
+    @tag = Tag.find params[:tag_id]
+  end
+
+  def update_tag
+    @tag = Tag.find params[:tag_id]
+    @tag.update_attributes(tag_params)
+    redirect_to :action => 'tag_list'
+  end
+
+  def merge_tag
+    target_tag = Tag.find params[:target_tag_id]
+    source_tag = Tag.find params[:source_tag_id]
+
+    target_tag.collections << source_tag.collections
+    target_tag.save
+
+    source_tag.destroy!
+
+    flash[:notice] = t('.tags_merged', target_tag: target_tag.ai_text, source_tag: source_tag.ai_text)
+
+    redirect_to admin_tags_show_path(target_tag.id)
+  end
+
+  def tag_list
+    @tag_to_count_map = Tag.joins(:collections_tags).group(:id).count
+    @tags = Tag.all.order(:canonical, :ai_text)
+  end
+
   private
+  def tag_params
+    params.require(:tag).permit(:ai_text, :canonical, :tag_type)
+  end
+
 
   def user_params
     params.require(:user).permit(:real_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)

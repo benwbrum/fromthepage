@@ -28,6 +28,8 @@ html lang="en-US"
       =render :partial => '/layouts/mixpanel'
     -unless FACEBOOK_PIXEL_ID.blank?
       =render :partial => '/layouts/fb_pixel'
+    -unless CLARITY.blank?
+      =render :partial => '/layouts/clarity'
 
   body
     #flash_wrapper
@@ -113,11 +115,11 @@ html lang="en-US"
         .footer_nav
           =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
           =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
-          =link_to t('.about'), 'https://content.fromthepage.com/about-us/'
+          =link_to t('.about'), 'https://content.fromthepage.com/about/'
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           -if request.original_url.include?("fromthepage.com")
-            =link_to t('.contact_us'), main_app.contact_path(contact_form_token)
+            =link_to t('.contact_us'), 'https://share.hsforms.com/1j-A-148OQoCAcTuay4RLkgc869n'
             =link_to t('.pricing'), main_app.pricing_path
             =link_to t('.transcription_for_archives_special_collections'), main_app.special_collections_path
             =link_to t('.transcription_for_state_provincial_archives'), main_app.state_archives_path

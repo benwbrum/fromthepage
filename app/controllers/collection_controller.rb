@@ -11,8 +11,8 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]                              
-  before_action :authorized?, :only => edit_actions + [:new, :update, :delete]
 
+  before_action :authorized?, :only => [:new, :edit, :update, :delete]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
@@ -455,6 +455,8 @@ class CollectionController < ApplicationController
 
     @collection.attributes = collection_params
     updated_fields = updated_fields_hash
+    @collection.tags = Tag.where(id: params[:collection][:tags])
+
     if @collection.save
       if request.xhr?
         render json: { 
@@ -626,7 +628,6 @@ private
     unless user_signed_in?
       ajax_redirect_to dashboard_path
     end
-
     if @collection &&  !current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
@@ -695,7 +696,8 @@ private
       :field_based,
       :is_active, 
       :search_attempt_id, 
-      :alphabetize_works
+      :alphabetize_works,
+      :tags
     )
   end
 

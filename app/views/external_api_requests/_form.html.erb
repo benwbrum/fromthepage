@@ -1,0 +1,52 @@
+<%= form_with(model: external_api_request, local: true) do |form| %>
+  <% if external_api_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(external_api_request.errors.count, "error") %> prohibited this external_api_request from being saved:</h2>
+
+      <ul>
+        <% external_api_request.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :collection_id %>
+    <%= form.text_field :collection_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_id %>
+    <%= form.text_field :work_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :page_id %>
+    <%= form.text_field :page_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :engine %>
+    <%= form.text_field :engine %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.text_field :status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :params %>
+    <%= form.text_area :params %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

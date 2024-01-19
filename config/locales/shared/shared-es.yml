@@ -11,6 +11,8 @@ es:
     codemirror:
       abbr_description: Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan.
       add_description: Marca el texto insertado después por el escritor.
+      ai_plaintext_caveat: "<!-- El siguiente texto fue generado por inteligencia artificial y probablemente contenga errores. Algunos errores obvios se han reemplazado con símbolos 🤔, pero es posible que los más complicados no estén marcados. (Elimine esta advertencia). -->"
+      copy_ai_plaintext: Texto de IA
       date_description: Marca la fecha, con forma estandarizada según el atributo cuándo.
       del_description: Marca el texto que ha sido borrado o tachado.
       expan_description: Marcas las abreviaturas ampliadas con formularios originales en el atributo abbr.
@@ -57,6 +59,7 @@ es:
     markup_help:
       markup_help_description: '"Autolink" sugerirá temas a los que se podrían vincular ciertas palabras o puede usar llaves dobles para vincular temas. <code>[[Jane Doe]]</code> vinculará el texto "Jane Doe" al asunto Jane Doe, mientras que <code>[[Jane Doe|Jane]]</code> vinculará el texto "Jane" al tema Jane Doe. Recomendamos que la vinculación se deje a un editor después de realizar la transcripción inicial.'
     osd_div:
+      ai_assist: Asistencia de IA
       brightness: Brillo
       contrast: Contraste
       full_page: Alternar página completa

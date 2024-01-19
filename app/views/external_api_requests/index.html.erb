@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>External Api Requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Collection</th>
+      <th>Work</th>
+      <th>Page</th>
+      <th>Engine</th>
+      <th>Status</th>
+      <th>Params</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @external_api_requests.each do |external_api_request| %>
+      <tr>
+        <td><%= external_api_request.user_id %></td>
+        <td><%= external_api_request.collection_id %></td>
+        <td><%= external_api_request.work_id %></td>
+        <td><%= external_api_request.page_id %></td>
+        <td><%= external_api_request.engine %></td>
+        <td><%= external_api_request.status %></td>
+        <td><%= external_api_request.params %></td>
+        <td><%= link_to 'Show', external_api_request %></td>
+        <td><%= link_to 'Edit', edit_external_api_request_path(external_api_request) %></td>
+        <td><%= link_to 'Destroy', external_api_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New External Api Request', new_external_api_request_path %>

@@ -31,7 +31,7 @@ class Article < ApplicationRecord
 
   scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages)}
 
-  has_many :pages, :through => :page_article_links
+  has_many :pages, through: :page_article_links, counter_cache: true
 
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
@@ -162,6 +162,20 @@ class Article < ApplicationRecord
       version.version = previous_version.first.version + 1
     end
     version.save!
+  end
+
+  # Retrieve the hierarchy of categories for the article as a formatted string
+  def formatted_category_hierarchy
+    hierarchy_titles = categories.flat_map { |category| ancestors_and_self(category) }.pluck(:title)
+    hierarchy_titles.reverse.join(' -- ')
+  end
+
+  private
+
+  def ancestors_and_self(category)
+    ancestors = category.ancestors.reverse
+
+    [category] + ancestors
   end
 end
 

@@ -1222,3 +1222,44 @@ button, .button, .dropdown dd a {
     margin-left: 2rem;
   }
 }
+
+
+.tagcloud {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 0 5rem 0;
+  line-height: 2.5em;
+  align-items: center;
+  justify-content: center;
+
+  li {
+    --size: 9;
+    margin: 0;
+    font-family: $fontFamilyHead;
+    font-size: calc(var(--size) * 0.125em + 0.875em);
+    opacity: calc((20 - (9 - var(--size))) / 20);
+
+    &[data-weight="0"] { --size: 0; }
+    &[data-weight="1"] { --size: 1; }
+    &[data-weight="2"] { --size: 2; }
+    &[data-weight="3"] { --size: 3; }
+    &[data-weight="4"] { --size: 4; }
+    &[data-weight="5"] { --size: 5; }
+    &[data-weight="6"] { --size: 6; }
+    &[data-weight="7"] { --size: 7; }
+    &[data-weight="8"] { --size: 8; }
+    &[data-weight="9"] { --size: 9; }
+  }
+
+  a {
+    display: block;
+    padding: 0 0.75rem;
+    text-decoration: none;
+
+    &:hover {
+      color: $fgHover;
+    }
+  }
+}

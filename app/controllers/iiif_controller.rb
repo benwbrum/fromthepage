@@ -677,14 +677,14 @@ private
     if page.sc_canvas
       page.sc_canvas.sc_canvas_id
     elsif page.ia_leaf
-      "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
+      "https://iiif.archive.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
     else
       url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
     end
   end
 
   def manifest_uri_from_ia(ia_work)
-    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
+    "https://iiif.archive.org/iiif/#{ia_work.book_id}/manifest.json"
   end
 
   def region_from_page(page)
@@ -746,7 +746,7 @@ private
   end
 
   def canvas_from_ia_page(page)
-    id_base = "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
+    id_base = "https://iiif.archive.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
 
     canvas = IIIF::Presentation::Canvas.new
     canvas.label = page.title

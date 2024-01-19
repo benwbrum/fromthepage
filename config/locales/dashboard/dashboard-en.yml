@@ -64,6 +64,14 @@ en:
     hierarchical_collections_and_document_sets:
       project_by: Project by %{author}
       start_transcribing: Start Transcribing
+    hours_letter:
+      certification_text: This letter is to certify that %{user_name} has contributed %{time_duration} to library crowdsourcing efforts on FromThePage (www.fromthepage.com) between %{start_date} and %{end_date}. Through the website, volunteers can help transcribe historic documents in library collections, thereby making them more searchable and accessible for future researchers. The FromThePage website tracks the time registered users are active on the site and reports a total number of active minutes.
+      institutions_header: "| **Institutions** | **Collection** | **Pages** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Regards,
+      to_whom_it_may_concern: 'To Whom It May Concern:'
+      volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name} contribution to our crowdsourcing effort!
+      worked_on_collections: "%{user_name} has worked on the following collections by the following institutions:"
     landing_page:
       all_collections: All Collections
       more: More...
@@ -157,7 +165,16 @@ en:
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
     watchlist:
       collections: collections
-      private_collections_you_belong_to: Private projects
+      private_collections_you_belong_to: Private collections you're a collaborator on
       projects_you_have_contributed_to: Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
       try_transcribing_a_page: 'You haven''t participated in any projects yet.  Try transcribing a page from one of these '
       your_activity: Your Activity
+      your_hours: Your Hours
+    your_hours:
+      contributions_between_dates: Contributions between %{start_date} and %{end_date}
+      download_letter: Download a Letter
+      end_date: End date
+      hours_details_message: "%{user_name} has contributed %{time_duration} between %{start_date} and %{end_date}"
+      select_new_date: Select a new date range
+      start_date: Start date
+      update: Update
