@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+ruby "2.7.3"
+
+gem 'rails', '6.1.7.6'
 
 gem 'will_paginate'
 gem 'rmagick'
