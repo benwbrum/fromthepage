@@ -54,7 +54,6 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that a restricted user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-#    binding.pry
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 

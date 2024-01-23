@@ -32,7 +32,7 @@ describe "Metadata Description" do
     page.check("Enable metadata description")
     sleep(1)
     button = page.find_link 'Edit Metadata Form'
-    expect(button.disabled?).to be(false)
+    expect(button['disabled']).not_to eq('disabled')
     expect(Collection.find(@collection.id).data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
 
     visit edit_collection_path(@owner, @collection)
@@ -40,8 +40,7 @@ describe "Metadata Description" do
     page.uncheck("Enable metadata description")
     sleep(1)
     button = page.find_link 'Edit Metadata Form'
-    binding.pry
-    expect(button.disabled?).to be(true)
+    expect(button['disabled']).to eq('disabled')
     expect(Collection.find(@collection.id).data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
   end
 
