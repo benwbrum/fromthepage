@@ -42,19 +42,15 @@ es:
       learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       location: Ubicación
       name: Nombre
-      name_only_required: Tu nombre es el único campo obligatorio.
-      no_image: Sin imágen
       ocrid_id: ID OCRID
       owner_stats: Correos electrónicos nocturnos con la actividad de la colección propia
       page_edited: Nota añadida en respuesta a un comentario que hiciste
       picture: Imagen de perfil
-      picture_to_be_used_message: Imagen a utilizar
       select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
       sign_up_url: 'URL de registro:'
       suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       update_profile: Actualizar Perfil
       update_user_profile: Actualizar Perfil de Usuario
-      upload_image: Cargar imagen
       url: URL
       user_activity: Correo electrónico nocturno con la actividad de colecciones en las que has trabajado
       user_url: 'URL:'

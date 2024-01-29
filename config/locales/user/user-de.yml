@@ -42,19 +42,15 @@ de:
       learn_more_footer: Erfahren Sie mehr über die Konfiguration der Fußzeile.
       location: Standort
       name: Name
-      name_only_required: Ihr Name ist das einzige Pflichtfeld.
-      no_image: Kein Bild
       ocrid_id: OCRID-ID
       owner_stats: Nächtliche E-Mails mit Aktivätsverlauf von eigenen Sammlungen
       page_edited: Antwort auf einen Ihrer Kommentar hinzugefügt
       picture: Profilbild
-      picture_to_be_used_message: Zu verwendendes Bild
       select_notification: 'Wählen Sie, welche der folgenden Benachrichtigungen Sie erhalten möchten:'
       sign_up_url: 'URL für Registrierung:'
       suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
       update_profile: Profil aktualisieren
       update_user_profile: Benutzerprofil aktualisieren
-      upload_image: Bild hochladen
       url: URL
       user_activity: Nächtliche E-Mails mit Aktivätsverlauf von Sammlungen, die Sie bearbeitet haben
       user_url: 'URL:'
