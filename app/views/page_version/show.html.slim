@@ -7,18 +7,19 @@ p.diff-help =t('.help_description').html_safe
 
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
-    th: h5.nomargin =t('.n_revisions', count: @page.page_versions.size)
+    th: h5.nomargin = t('.n_revisions', count: @page.page_versions.select { |version| version.content_changed? }.size)
     th = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
     th
       =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
         =hidden_field_tag :page_version_id, @selected_version.id
         =label_tag :compare_version_id, t('.compared_with')
-        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
+        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.select { |version| version.content_changed? }, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
   tr
 
     td.diff-list
       .scroll-container
         -@page.page_versions.each do |version|
+         - if version.content_changed?
           =link_to(page_version_show_path(:page_version_id => version.id), class: ('selected' if version == @selected_version))
             =time_tag(version.created_on)
               =l(version.created_on.to_date)

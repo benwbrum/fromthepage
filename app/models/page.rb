@@ -244,31 +244,39 @@ class Page < ApplicationRecord
   end
 
   def create_version
-    version = PageVersion.new
-    version.page = self
-    version.title = self.title
-    version.transcription = self.source_text
-    version.xml_transcription = self.xml_text
-    version.source_translation = self.source_translation
-    version.xml_translation = self.xml_translation
-    version.status = self.status
-    unless User.current_user.nil?
-      version.user = User.current_user
-    else
-      version.user = User.find_by(id: self.work.owner_user_id)
-    end
-    # now do the complicated version update thing
-    version.work_version = self.work.transcription_version
-    self.work.increment!(:transcription_version)
-
-    previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
-    if previous_version
-      version.page_version = previous_version.page_version + 1
-    end
-    version.save!
-
-    self.update_column(:page_version_id, version.id) # set current_version
+      return unless self.saved_change_to_source_text? || self.saved_change_to_title? || self.saved_changes.present?
+      
+      version = PageVersion.new
+      version.page = self
+      version.title = self.title
+      version.transcription = self.source_text
+      version.xml_transcription = self.xml_text
+      version.source_translation = self.source_translation
+      version.xml_translation = self.xml_translation
+      version.status = self.status
+    
+      # Add other attributes as needed
+    
+      unless User.current_user.nil?
+        version.user = User.current_user
+      else
+        version.user = User.find_by(id: self.work.owner_user_id)
+      end
+    
+      # now do the complicated version update thing
+      version.work_version = self.work.transcription_version
+      self.work.increment!(:transcription_version)
+    
+      previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
+      if previous_version
+        version.page_version = previous_version.page_version + 1
+      end
+      version.save!
+    
+      self.update_column(:page_version_id, version.id) # set current_version
+    
   end
+  
 
   def update_sections_and_tables
     if @sections
