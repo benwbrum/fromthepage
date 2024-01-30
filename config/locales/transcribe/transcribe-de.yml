@@ -46,6 +46,8 @@ de:
       approve_to_transcribed_tooltip: Diese Seite speichern und freigeben
       autolink: Autolink
       autolink_tooltip: Entitäten-Tags automatisch vorschlagen
+      copy_ai_plaintext: KI-Text
+      copy_ai_plaintext_tooltip: Kopieren Sie KI-generierten Text in den Editor
       done: Fertig
       edit: Bearbeiten
       edit_tooltip: Bearbeite diese Seite

@@ -11,6 +11,8 @@ de:
     codemirror:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
+      ai_plaintext_caveat: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. Einige offensichtliche Fehler wurden durch 🤔-Symbole ersetzt, kniffligere Fehler werden jedoch möglicherweise nicht markiert. (Bitte löschen Sie diese Warnung.) -->"
+      copy_ai_plaintext: KI-Text
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.
@@ -57,6 +59,7 @@ de:
     markup_help:
       markup_help_description: '"Autolink" schlägt Entitäten vor, mit denen bestimmte Wörter verknüpft werden könnten. Sie können aber auch doppelte Klammern verwenden, um Entitäten zu verknüpfen. <code>[[Jane Doe]]</code> verknüpft den Text „Jane Doe“ mit der Entität Jane Doe, und <code>[[Jane Doe|Jane]]</code> den Text „Jane“ zur Entität Jane Doe. Wir empfehlen, die Verlinkungen erst dann von einem/einer Bearbeiter:in vornehmen zu lassen, sobald eine erste Fassung der Transkription fertig ist.'
     osd_div:
+      ai_assist: KI-Hilfe
       brightness: Helligkeit
       contrast: Kontrast
       full_page: Auf Vollbild umschalten

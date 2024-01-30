@@ -27,7 +27,7 @@ set :linked_files, %w{config.ru config/database.yml config/environments/producti
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded", "public/images/fordham", "public/images/zebrapedia"]
+set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded", "public/images/fordham", "public/images/zebrapedia", "public/text"]
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

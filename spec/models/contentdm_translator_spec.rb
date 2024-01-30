@@ -4,9 +4,9 @@ require 'contentdm_translator'
 RSpec.describe ContentdmTranslator do
     describe '#cdm_url_to_iiif' do
 
-        let(:item_url){ 'https://cdm123.contentdm.oclc.org/digital/collection/COL1D/id/123/' }
-        let(:collection_url){ 'https://cdm123.contentdm.oclc.org/digital/collection/COL1D/' }
-        let(:repository_url){ 'https://cdm123.contentdm.oclc.org/' }
+        let(:item_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
+        let(:collection_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
+        let(:repository_url){ 'https://digital.archives.alabama.gov' }
         
         let(:vanity_item){ 'http://www.digitalindy.org/cdm/compoundobject/collection/ahs/id/200/rec/3' }
         let(:vanity_collection){ 'http://www.digitalindy.org/cdm/landingpage/collection/ahs' }
@@ -18,15 +18,15 @@ RSpec.describe ContentdmTranslator do
         end
         it "returns an good iiif url for an item" do
             url = ContentdmTranslator.cdm_url_to_iiif(item_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D:123/manifest.json')
+            expect(url).to eq('https://cdm17217.contentdm.oclc.org/iiif/info/supreme_court/7076/manifest.json')
         end
         it "returns an good iiif url for collection" do
             url = ContentdmTranslator.cdm_url_to_iiif(collection_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D/manifest.json')
+            expect(url).to eq('https://cdm17217.contentdm.oclc.org/iiif/info/supreme_court/manifest.json')
         end
         it "returns an good iiif url for repository" do
             url = ContentdmTranslator.cdm_url_to_iiif(repository_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/manifest.json')
+            expect(url).to eq('https://cdm17217.contentdm.oclc.org/iiif/info/manifest.json')
         end
         context "for vanity URL" do
             around(:each) do |example|

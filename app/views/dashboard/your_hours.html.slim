@@ -1,0 +1,36 @@
+- @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
+h1 = t('.contributions_between_dates', start_date: l(@start_date_hours), end_date: l(@end_date_hours))
+
+h2 = t('.select_new_date')
+
+=form_tag(dashboard_your_hours_path, method: "get") do
+  =label_tag(:start_date, t('.start_date'))
+  |  
+  =date_field_tag(:start_date, @start_date_hours, style: "width:35%")
+  |&nbsp; &nbsp; &nbsp;
+  =label_tag(:end_date, t('.end_date'))
+  |  
+  =date_field_tag(:end_date, @end_date_hours, style: "width:35%")
+  |&nbsp; &nbsp; &nbsp;
+  =submit_tag(t('.update'))
+
+h3 = t('.hours_details_message', user_name: current_user.real_name, time_duration: @time_duration, start_date: l(@start_date_hours), end_date: l(@end_date_hours))
+
+-if @user_collections.present?
+  table.admin-grid.datagrid.striped
+    thead
+      tr
+        th
+          = "Institutions"
+        th 
+          = "Collection"
+        th 
+          = "Pages"
+    tbody
+      - @user_collections.each do |collection|
+        tr
+          td= collection.owner.display_name
+          td= collection.title
+          td= collection.pages.count
+
+  = button_to t('.download_letter'), dashboard_download_hours_letter_path(start_date: @start_date_hours, end_date: @end_date_hours, time_duration: @time_duration), method: :get, class: 'button-class'

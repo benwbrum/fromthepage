@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+ruby "2.7.3"
+
+gem 'rails', '6.1.7.6'
 
 gem 'will_paginate'
 gem 'rmagick'
@@ -26,6 +28,7 @@ gem 'devise-encryptable'
 
 gem 'carrierwave'
 gem 'rubyzip'
+gem 'httparty'
 
 gem 'ahoy_matey'
 
@@ -62,7 +65,8 @@ gem 'charlock_holmes'
 
 gem 'edtf'
 gem 'edtf-humanize'
-
+gem 'diffy'
+gem 'terser'
 group :assets do
   gem 'uglifier'
 end
@@ -70,6 +74,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'webmock', require: false
