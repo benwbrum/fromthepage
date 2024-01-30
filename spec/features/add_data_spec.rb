@@ -134,7 +134,8 @@ describe "uploads data for collections", :order => :defined do
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Settings")
-    page.find('.button', text: 'Enable Document Sets').click
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.button', text: 'Enable Document Sets').click
     expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: "Test Document Set 1"
@@ -161,17 +162,20 @@ describe "uploads data for collections", :order => :defined do
     expect(DocumentSet.last.is_public).to be false
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
+    end
   end
 
   it "adds works to document sets" do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @set_collection.title).click
-    page.find('.tabs').click_link("Sets")
+    unless @owner.account_type == "Individual Researcher"
+      page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
     page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
     page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
     page.find_button('Save').click
+    end
   end
 
 end
