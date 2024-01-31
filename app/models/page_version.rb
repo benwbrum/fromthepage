@@ -5,6 +5,21 @@ class PageVersion < ApplicationRecord
 
   after_create :check_content
 
+    def check_content
+    if content_changed?
+      Flag.check_page(self)
+    end
+  end
+
+  def content_changed?
+    previous_version = self.prev
+    return true unless previous_version
+
+    %i[title transcription xml_transcription source_translation xml_translation].any? do |attribute|
+      self[attribute] != previous_version[attribute]
+    end
+  end
+
   def check_content
     Flag.check_page(self)
   end
