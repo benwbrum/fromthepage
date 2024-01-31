@@ -42,19 +42,15 @@ pt:
       learn_more_footer: Saiba mais sobre a configuração do rodapé.
       location: Localização
       name: Nome
-      name_only_required: O seu nome é o único campo requerido.
-      no_image: Sem imagem
       ocrid_id: ID OCRID
       owner_stats: Um e-mail cada noite com a atividade nas coleções que você controla
       page_edited: Nota adicionada em resposta a um comentário que você fez
       picture: Foto do perfil
-      picture_to_be_used_message: Imagem a ser usada
       select_notification: 'Selecione quais das seguintes notificações você gostaria de receber:'
       sign_up_url: 'URL de inscrição:'
       suggestions_help_tab: Sugestões para a sua aba de ajuda.
       update_profile: Atualizar Perfil
       update_user_profile: Atualizar Perfil do Usuário
-      upload_image: Enviar Imagem
       url: URL
       user_activity: Um e-mail cada noite com a atividade nas coleções nas quais você colabora
       user_url: 'URL:'

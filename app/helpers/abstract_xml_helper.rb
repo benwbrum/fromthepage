@@ -8,7 +8,7 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil, highlight_article_id=nil)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -39,7 +39,7 @@ module AbstractXmlHelper
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
-            if params[:article_id] && id == params[:article_id]
+            if highlight_article_id && id == highlight_article_id
               anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting
             end
           end

@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+ruby "2.7.3"
+
+gem 'rails', '6.1.7.6'
 
 gem 'will_paginate'
 gem 'rmagick'
@@ -36,7 +38,7 @@ gem "user_agent_parser"
 gem 'pry'
 gem 'oink'
 
-gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
+gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
 gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 

@@ -240,7 +240,7 @@ class CollectionController < ApplicationController
           @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
 
           @date_ranges = []
-          date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
+          date_configs = @collection.facet_configs.where(input_type: 'date').where.not(order: nil).order(order: :asc)
           if date_configs.size > 0
             collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
             date_configs.each do |facet_config|
@@ -305,7 +305,7 @@ class CollectionController < ApplicationController
             @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
 
             @date_ranges = []
-            date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
+            date_configs = @collection.facet_configs.where(input_type: 'date').where.not(order: nil).order(order: :asc)
             if date_configs.size > 0
               collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
               date_configs.each do |facet_config|

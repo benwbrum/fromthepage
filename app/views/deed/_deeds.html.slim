@@ -10,7 +10,7 @@
         -else
           =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view, :suppress_collection => suppress_collection })
 
--if @collection.nil? || (@collection.most_recent_deed_created_at && @collection.most_recent_deed_created_at > (Time.now - 1.year))
+-if !@collection.nil? && (@collection.most_recent_deed_created_at && @collection.most_recent_deed_created_at > (Time.now - 1.year))
   small.legend
     =link_to t('.show_more'),
       deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id] || options[:owner]),
