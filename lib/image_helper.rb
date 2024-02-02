@@ -78,7 +78,7 @@ module ImageHelper
         GC.start
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)
-        compressed.write(working_file) { self.quality = percent}
+        compressed.write(working_file) { |options| options.quality = percent}
         p "Compressed file is now #{File.size(working_file)} at quality #{percent}"
 
         unless needs_compression? working_file
