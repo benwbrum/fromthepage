@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :load_html_blocks
   before_action :authorize_collection
   before_action :configure_permitted_parameters, if: :devise_controller?
+  skip_before_action :verify_authenticity_token, if: (:devise_controller? && :codespaces_environment?)
   before_action :set_current_user_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
@@ -432,6 +433,9 @@ private
   def check_recaptcha(options)
     return verify_recaptcha(options) if RECAPTCHA_ENABLED
     true
+  end
+  def codespaces_environment?
+    Rails.env.development? && ENV["CODESPACES"] == "true"
   end
 # class ApplicationController < ActionController::Base
 #   protect_from_forgery

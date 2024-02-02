@@ -4,7 +4,7 @@ class PageController < ApplicationController
   include ImageHelper
 
   protect_from_forgery :except => [:set_page_title]
-  before_action :authorized?
+  before_action :authorized?, :except => [:alto_xml]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -19,6 +19,19 @@ class PageController < ApplicationController
     end
   end
 
+  def alto_xml
+    # Transkribus ALTO does not include an ID on the String element, but we need one for Annotorious
+    # we need to read the alto file and iterate over every string element, adding an ID attribute
+    raw_alto = @page.alto_xml
+    doc = Nokogiri::XML(raw_alto)
+
+    doc.search('String').each_with_index do |string, i|
+      string['ID'] = "string_#{i}"
+    end
+
+    render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
+  end
+  
   def delete
     @page.destroy
     flash[:notice] = t('.page_deleted')

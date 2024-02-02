@@ -217,13 +217,14 @@
       =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
         span =t('.edit_buttons')
 
-    h3 =t('.document_sets')
-    p =t('.document_sets_description')
-    -if !@collection.supports_document_sets
-      p =t('.no_document_sets_in_collection')
-      =link_to(collection_enable_document_sets_path(:collection_id => @collection.id), class: 'button')
+    - if current_user.account_type != "Individual Researcher"
+     h3 =t('.document_sets')
+     p =t('.document_sets_description')
+     -if !@collection.supports_document_sets
+       p =t('.no_document_sets_in_collection')
+       =link_to(collection_enable_document_sets_path(:collection_id => @collection.id), class: 'button')
         span =t('.enable_document_sets')
-    -else
+     -else
       =link_to(collection_disable_document_sets_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_document_sets')
 

@@ -10,7 +10,23 @@ module DashboardHelper
     end
   end
 
-
+  def time_spent_in_date_range(user_id, start_date, end_date)
+    minutes_worked = minutes_worked_in_range(user_id, start_date, end_date)
+  
+    formatted_time(minutes_worked)
+  end
+  
+  def minutes_worked_in_range(user_id, start_date, end_date)
+    AhoyActivitySummary
+      .where(user_id: user_id)
+      .where("created_at >= ? AND created_at <= ?", start_date, end_date)
+      .sum(:minutes)
+  end
+  
+  def formatted_time(total_minutes)
+    hours, minutes = total_minutes.divmod(60)
+    "#{hours} hours and #{minutes} minutes"
+  end
 
   # this fetches a hash of tags with arrays of collections as elements
   def tagged_collections
@@ -3153,5 +3169,4 @@ private
    "spanish-6ea54ce4-5bf8-4bba-9ce3-183a852ccf35",
    "spanish-1251c206-1442-4602-8335-0eea6b752788"],
  "Greek"=>["greek"]}
-
 end

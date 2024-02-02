@@ -69,7 +69,7 @@ Rails.application.configure do
 
   # Allow codespaces host
   unless ENV["CODESPACE_NAME"].nil?
-    config.hosts << ENV["CODESPACE_NAME"]+"-3000.preview.app.github.dev"
+    config.hosts << ENV["CODESPACE_NAME"]+"-3000.app.github.dev"
   end
 
   # location of system calls on this machine
