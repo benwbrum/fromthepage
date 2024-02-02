@@ -673,8 +673,12 @@ private
 
   def cell_data(array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
     if transcription_field_flag
-      result = array.select { |element| element.transcription_field.input_type == 'spreadsheet' }
+      result = array.select do |element|
+        transcription_field = element.transcription_field
+        transcription_field && transcription_field.input_type == 'spreadsheet'
+      end
     end
+
     array.each do |cell|
       index = index_for_cell(cell)
       target = transcription_field_flag ? index : index *2
