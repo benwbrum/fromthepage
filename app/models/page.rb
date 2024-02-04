@@ -592,7 +592,10 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      file_to_url(self.canonical_facsimile_url)
+      uri = URI.parse(file_to_url(self.canonical_facsimile_url))
+      uri.scheme = 'https'
+      uri.host = Rails.application.config.action_mailer.default_url_options[:host]
+      uri.to_s
     end
   end
 
