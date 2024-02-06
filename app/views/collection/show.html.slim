@@ -139,7 +139,7 @@
         -if @collection.metadata_only_entry?
           -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
         -else
-          -if @collection.data_entry_type == 'text_and_metadata'
+          -if @collection.text_and_metadata_entry?
             -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
           -else
             -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
