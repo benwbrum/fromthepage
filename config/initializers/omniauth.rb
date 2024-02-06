@@ -72,7 +72,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://saml.dts.utah.gov/sso/SSORedirect/metaAlias/fromthepage',
           issuer: 'https://fromthepage.com',
           attribute_statements: { 
-            external_id: ['mail'], //no external id number so reusing email address 
+            external_id: ['mail'],
             email: ['mail'],
             name: ['fullname'] 
           }
