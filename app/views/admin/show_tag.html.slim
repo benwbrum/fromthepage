@@ -16,8 +16,12 @@
     h3 Type:
     span =@tag.tag_type
 
-    h3 Messages:
-    span TODO
+    h3 Actions:
+    span
+      =link_to t('.edit'), admin_tags_edit_path(@tag.id), class: 'button'
+      =link_to t('.delete'), admin_tags_delete_path(@tag.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
+  
+
   article.maincol
     h2 =t('.possible_duplicates')
     -if @possible_duplicates.empty?
@@ -45,7 +49,7 @@
                 br
                 span =link_to(raw("Merge <code>#{candidate.ai_text}</code> into <code>#{@tag.ai_text}</code>"),
                   admin_tags_merge_path(candidate.id, @tag.id))
-                  
+
                 /=link_to t('.merge'), admin_tags_merge_path(@tag.id, candidate.id), class: 'button'
                 /=link_to t('.delete'), admin_tags_delete_path(candidate.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
 
