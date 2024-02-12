@@ -131,7 +131,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: work.title).find('.btnCsvTblExport').click
     content_type = page.response_headers['Content-Type']
-    expect(['text/plain', 'text/csv']).to include(content_type)    
+    expect(['text/plain; charset=utf-8', 'text/csv']).to include(content_type)    
   end
 
 
