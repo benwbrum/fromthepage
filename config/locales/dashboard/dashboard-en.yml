@@ -70,7 +70,7 @@ en:
       institutions_separator: "|--------------|------------|-------------:|"
       regards_text: Regards,
       to_whom_it_may_concern: 'To Whom It May Concern:'
-      volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name} contribution to our crowdsourcing effort!
+      volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name}\'s contribution to our crowdsourcing effort!
       worked_on_collections: "%{user_name} has worked on the following collections by the following institutions:"
     landing_page:
       all_collections: All Collections
