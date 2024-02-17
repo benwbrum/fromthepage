@@ -7,7 +7,6 @@
 <%=javascript_include_tag "codemirror-buttons/buttons"%>
 
 <% if @page && !@page.ai_plaintext.blank? %>
-  <a href="#" id="copy-ai-plaintext" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top"><%= t('.copy_ai_plaintext') %></a>
   <script>
     var ai_plaintext = <%= raw(@page.ai_plaintext.to_json) %>;
     var ai_plaintext_caveat = <%= raw(t('.ai_plaintext_caveat').to_json) %>;
