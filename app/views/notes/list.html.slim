@@ -32,6 +32,7 @@ table.datagrid.striped#notes-list(data-source="#{source}")
   -content_for :javascript
     javascript: 
       $(document).ready ( function() {
+
         showCollection = true;
       })
 -content_for :javascript
@@ -40,6 +41,7 @@ table.datagrid.striped#notes-list(data-source="#{source}")
       // initialize the notes list datatable
       $('#notes-list').DataTable( {
         // server-side processing
+      
         "serverSide": true,
         "ajax": {
           "url": $('#deeds-list').data('source')
@@ -48,7 +50,7 @@ table.datagrid.striped#notes-list(data-source="#{source}")
           {"data": "userpic", "name": "userpic"},
           {"data": "user", "name": "user"},
           {"data": "note", "name": "note"},
-          {"data": "page", "name": "page"},
+          {"data": "page", "name": "page", "defaultContent": ""},
           {"data": "work", "name": "work"},
           {"data": "collection", "name": "collection"},
           {"data": "time", "name": "time"}
