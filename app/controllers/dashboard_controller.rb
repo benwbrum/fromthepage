@@ -338,6 +338,11 @@ class DashboardController < ApplicationController
   end
   
   def send_generated_pdf(output_path)
-    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
+    # spew the output to the browser
+    send_data(File.read(output_path), 
+      filename: File.basename("letter.pdf"), 
+      :content_type => "application/pdf")
+    cookies['download_finished'] = 'true'
   end
+
 end
