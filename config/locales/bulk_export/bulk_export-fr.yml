@@ -5,6 +5,8 @@ fr:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
     create_for_owner:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
+    create_for_work:
+      export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} une fois terminé.
     create_for_work_actual:
       export_running_message: Exportation en cours. Un e-mail sera envoyé à %{email} à la fin.
     download:
