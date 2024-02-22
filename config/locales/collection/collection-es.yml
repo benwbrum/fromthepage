@@ -4,6 +4,7 @@ es:
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     collection_works:
+      all_works: Todo funciona
       most_recent_activity: Actividad más reciente
       n_pages:
         one: '1 página:'

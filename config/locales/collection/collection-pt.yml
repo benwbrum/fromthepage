@@ -4,6 +4,7 @@ pt:
     approve_all:
       approved_n_pages: Páginas %{page_count} aprovadas.
     collection_works:
+      all_works: Todas as obras
       most_recent_activity: Atividade mais recente
       n_pages:
         one: '1 página:'

@@ -4,6 +4,7 @@ de:
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     collection_works:
+      all_works: Alles funktioniert
       most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'

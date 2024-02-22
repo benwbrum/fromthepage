@@ -4,6 +4,7 @@ en:
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     collection_works:
+      all_works: All Works
       most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
