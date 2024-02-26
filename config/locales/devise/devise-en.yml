@@ -103,6 +103,7 @@ en:
     sign_up: Sign Up
     user_name: User Name
     user_name_message: You'll use this name to log in. It will be shown publicly.
+    we_never_sell: We take your personal information seriously and respect your privacy. We never sell your data to anyone. Check out our Privacy Policy for more information.
   errors:
     messages:
       expired: has expired, please request a new one
