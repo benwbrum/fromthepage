@@ -1,3 +1,8 @@
+-if !params[:only_transcribed].present?
+  =link_to t('.works_that_need_transcription'), main_app.collection_works_list_path(@collection.owner, @collection, only_transcribed: true), class: 'btn button'
+-else
+  =link_to t('.all_works'), main_app.collection_works_list_path(@collection.owner, @collection), class: 'btn button'
+
 table#works-list.collection-work-stats.datagrid.striped
   thead
     th =t('.work_title')

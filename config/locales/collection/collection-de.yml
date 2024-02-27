@@ -4,12 +4,14 @@ de:
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     collection_works:
+      all_works: Alles funktioniert
       most_recent_activity: Neueste Aktivität
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten;"
       progress: Fortschritt
       work_title: Werktitel
+      works_that_need_transcription: Werke, die einer Transkription bedürfen
     complete: vollständig
     contributor_activity:
       recent_notes: Neue Anmerkungen

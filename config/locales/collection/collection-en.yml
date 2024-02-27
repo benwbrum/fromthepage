@@ -4,12 +4,14 @@ en:
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     collection_works:
+      all_works: All Works
       most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
         other: "%{count} pages; "
       progress: Progress
       work_title: Work title
+      works_that_need_transcription: Works That Need Transcription
     complete: complete
     contributor_activity:
       recent_notes: Recent Notes
