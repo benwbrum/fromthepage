@@ -103,6 +103,7 @@ pt:
     sign_up: Inscrever-se
     user_name: Nome de usuário
     user_name_message: Você usará esse nome para fazer login. Ele será exibido publicamente.
+    we_never_sell: Levamos suas informações pessoais a sério e respeitamos sua privacidade. Nunca vendemos seus dados a ninguém. Confira nossa Política de Privacidade para mais informações.
   errors:
     messages:
       expired: expirou, por favor solicite um novo

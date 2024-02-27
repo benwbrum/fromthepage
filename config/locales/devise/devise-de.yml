@@ -103,6 +103,7 @@ de:
     sign_up: Registrieren
     user_name: Benutzername
     user_name_message: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
+    we_never_sell: Wir nehmen Ihre persönlichen Daten ernst und respektieren Ihre Privatsphäre. Wir verkaufen Ihre Daten niemals an Dritte. Weitere Informationen finden Sie in unserer Datenschutzerklärung.
   errors:
     messages:
       expired: abgelaufen, bitte neu anfordern

@@ -5,6 +5,8 @@ section.signon
   p
     ==t('.message', schedule_a_kickoff_call: (link_to t('.schedule_a_kickoff_call'), 'https://calendly.com/fromthepage/30-minute-meeting/'))
     <br><br>
+    i= t('devise.we_never_sell')
+    <br><br>
     ==t('.just_want_to_transcribe', sign_up_here: (link_to t('.sign_up_here'), new_user_registration_path))
 
 
@@ -36,7 +38,3 @@ section.signon
       =f.label :receive_activity_emails, t('devise.receive_activity_emails')
     <br>
     =f.button t('devise.create_account'), class: 'big'
-
-<script async src="https://tally.so/widgets/embed.js"></script>
-
-<script> window.TallyConfig = {"formId": "meagrk", "popup": {"autoClose": 0, "doNotShowAfterSubmit": true}};</script>

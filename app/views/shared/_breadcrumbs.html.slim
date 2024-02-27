@@ -11,7 +11,8 @@
     -path.push(link_to @collection.collection.title, collection_path(@collection.collection.owner, @collection.collection))  
   -path.push(link_to @collection.title, collection_path(@collection.owner, @collection))
 -elsif @collection && @collection.title.present? && @collection.is_a?(DocumentSet)
-  -path.push(link_to @collection.collection.title, collection_path(@collection.collection.owner, @collection.collection))
+  -if @collection.is_public? && !@collection.collection.restricted? || current_user&.collaborator?(@collection)
+    -path.push(link_to @collection.collection.title, collection_path(@collection.collection.owner, @collection.collection))
 
 -if search_attempt && search_attempt.search_type == "collection-title" && (@work || @page || @article)
   -path.push(link_to t('.search_results'), collection_path(@collection.owner, @collection.slug, search_attempt_id: search_attempt.id))
