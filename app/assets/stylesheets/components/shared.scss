@@ -1177,6 +1177,22 @@ button, .button, .dropdown dd a {
   }
 }
 
+.osd-block{
+  height: calc(100vh - 74px - 3rem);
+}
+
+.diff-versions tbody tr{
+  display: flex;
+}
+
+.diff-versions tbody tr td {
+  width: 50%;
+}
+
+.version-review tbody tr td:nth-child(2).diff-version {
+ display: none; 
+}
+
 .diff-version {
   width: 50%;
   padding: $gapSize;

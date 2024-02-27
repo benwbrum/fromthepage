@@ -11,4 +11,7 @@ class PageVersionController < ApplicationController
     render 'show'
   end
 
+  def review
+    render 'review'
+  end
 end
