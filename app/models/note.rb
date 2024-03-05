@@ -29,7 +29,11 @@ class Note < ApplicationRecord
 
   def email_users
     if SMTP_ENABLED
-      previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+      if collection.metadata_only_entry?
+        previous_users = User.joins(:notes).where(notes: {id: self.work.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+      else
+        previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+      end
       previous_users.each do |user|
         #send email regarding previous note, if it isn't the same user
         if (user.id != self.user_id && self.work.access_object(user))

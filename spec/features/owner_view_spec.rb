@@ -21,8 +21,6 @@ describe "owner view - collection" do
     #look at owner stats in dashboard
     expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
-    expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.document_sets.count
-
     #look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'

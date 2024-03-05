@@ -37,13 +37,14 @@
           =f.label :messageboards_enabled
             h3 =t('.enable_forums')
             p =t('.forums_description')
-      tr 
-        td(colspan="2")
-          =f.check_box :supports_document_sets
-          =f.label :supports_document_sets
-            h3.settings-label =t('.enable_document_sets')
-            =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
-            p =t('.document_sets_description')
+      -if current_user.account_type != "Individual Researcher"
+        tr 
+          td(colspan="2")
+            =f.check_box :supports_document_sets
+            =f.label :supports_document_sets
+              h3.settings-label =t('.enable_document_sets')
+              =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
+              p =t('.document_sets_description')
       tr 
         td(colspan="2")
           h3 =t('.metadata')

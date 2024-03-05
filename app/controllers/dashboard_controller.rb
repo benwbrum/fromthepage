@@ -94,13 +94,23 @@ class DashboardController < ApplicationController
   def download_hours_letter
     load_user_data
     markdown_text = generate_markdown_text
+
+    # write the string to a temp directory
+    temp_dir = File.join(Rails.root, 'public', 'printable')
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "letter_#{time_stub}"
+    md_file = File.join(temp_dir, "#{file_stub}.md")
+    output_file = File.join(temp_dir, "#{file_stub}.pdf")
+    
+    generate_pdf(md_file, output_file, markdown_text)
   
-    input_path = Rails.root.join('tmp', 'input.md').to_s
-    output_path = Rails.root.join('tmp', 'letter.pdf').to_s
-  
-    generate_pdf(input_path, output_path, markdown_text)
-  
-    send_generated_pdf(output_path)
+    send_generated_pdf(output_file)
+
   end
 
   # Owner Dashboard - list of works
@@ -328,6 +338,11 @@ class DashboardController < ApplicationController
   end
   
   def send_generated_pdf(output_path)
-    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
+    # spew the output to the browser
+    send_data(File.read(output_path), 
+      filename: File.basename("letter.pdf"), 
+      :content_type => "application/pdf")
+    cookies['download_finished'] = 'true'
   end
+
 end

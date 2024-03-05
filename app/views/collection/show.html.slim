@@ -133,10 +133,16 @@
 
     h3 =t('.recent_notes')
     -@collection.notes.active.limit(10).each do |note|
-      -if note.page
+      -if note.page || note.work
         -user = link_to note.user.display_name, user_profile_path(note.user)
         -note_title = strip_tags(note.title)
-        -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.page.work, note.page)
+        -if @collection.metadata_only_entry?
+          -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+        -else
+          -if @collection.text_and_metadata_entry?
+            -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+          -else
+            -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
         .deed-short.small
           =time_tag(note.created_at, class: 'legend legend-left')
             =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))

@@ -50,6 +50,7 @@ en:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Sign in with your Institution
+        utah_id: UtahID
       destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.
       edit:
         confirm_delete_account: Are you sure you want to delete your account? After deleting the account you won't be able to recover it!
@@ -102,6 +103,7 @@ en:
     sign_up: Sign Up
     user_name: User Name
     user_name_message: You'll use this name to log in. It will be shown publicly.
+    we_never_sell: We take your personal information seriously and respect your privacy. We never sell your data to anyone. Check out our Privacy Policy for more information.
   errors:
     messages:
       expired: has expired, please request a new one

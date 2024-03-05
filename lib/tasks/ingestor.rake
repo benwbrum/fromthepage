@@ -269,7 +269,7 @@ namespace :fromthepage do
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
-    # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
+    # at this point, the new dir should have exactly what we want-- only image files that are adequately compressed.
     ls = Dir.glob(File.join(new_dir_name, "*")).sort
     numeric_pages, alpha_numeric_pages = ls.partition { |page| File.basename(page).to_i.positive? }
     sorted_numeric_pages = numeric_pages.sort_by { |page| File.basename(page).to_i }

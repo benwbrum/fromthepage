@@ -329,7 +329,7 @@ class AdminController < ApplicationController
     @collections = @tag.collections.order(:title)
     @possible_duplicates = []
     clean_text = @tag.ai_text.gsub(/^\W*/,'').gsub(/\W*$/,'')
-    Tag.where("ai_text like '%#{clean_text}%'").each do |t|
+    Tag.where("regexp_replace(upper(ai_text), '[^A-Z0-9]', '') like regexp_replace(upper('%#{clean_text}%'), '[^A-Z0-9]', '')").each do |t|
       @possible_duplicates << t unless t == @tag
     end
 

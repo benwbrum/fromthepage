@@ -65,7 +65,18 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             email: ['mail'],
             name: ['givenname_sn'] 
           }
-        }                
+        }  
+      elsif identity_provider_id == 'utah'
+        options = {
+          idp_cert: ENV['IDP_CERT_UTAH'],
+          idp_sso_target_url: 'https://saml.dts.utah.gov/sso/SSORedirect/metaAlias/fromthepage',
+          issuer: 'https://fromthepage.com',
+          attribute_statements: { 
+            external_id: ['mail'],
+            email: ['mail'],
+            name: ['fullname'] 
+          }
+        }              
       elsif identity_provider_id == 'samling'
         options = {
           idp_sso_target_url: 'https://capriza.github.io/samling/samling.html',

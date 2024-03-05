@@ -2,6 +2,8 @@
 
 section.signon
   h1= t('devise.sign_up')
+  small
+    i= t('devise.we_never_sell')
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field

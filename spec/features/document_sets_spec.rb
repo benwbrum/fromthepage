@@ -501,9 +501,11 @@ describe "document sets", :order => :defined do
     @collection.hide_completed = true
     @collection.save
     #resets work restrictions
-    work = Work.find_by(id: @set.works.first.id)
+    unless @owner.account_type == "Individual Researcher"
+      work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = true
     work.save!
+    end
   end
 
 end

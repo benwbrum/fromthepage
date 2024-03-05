@@ -1,14 +1,5 @@
 .litebox-embed(style="width:570px")
   h1 =t('.update_user_profile')
-  -if @user.owner
-    p =t('.name_only_required')
-      =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
-        =hidden_field_tag(:collection_id, @collection.id)
-        label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
-          =f.file_field :picture, accept: 'image/*'
-          -if @collection.picture_url(:thumb)
-            =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
-      p.fglight =t('.picture_to_be_used_message')
 
   =form_for(@user, { :url => { :action => 'update' }}) do |f|
     =hidden_field_tag :user_id, @user.id

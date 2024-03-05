@@ -1,19 +1,16 @@
--links = @article.show_links(@collection)
+-links = @article.show_links(@collection).sort { |a, b| [a.page.work.title.downcase, a.page.position, a.text_type] <=> [b.page.work.title.downcase, b.page.position, b.text_type] }
 -unless links.empty?
   h5 =t('.n_pages_refer_to', count: (links.map{|link| link.page_id}.uniq.size), article: @article.title)
   p =link_to t('.show_pages_that_mention', article: @article.title), controller: 'display', action: 'read_all_works', article_id: @article.id
   ul.article-links
-    -seen_pages=[]
     -links.each do |link|
-      -unless seen_pages.include? link.page_id
-        -seen_pages << link.page_id
-        li
-          -parameter = link.text_type == "translation" ? true : false
-          =svg_symbol '#icon-page', class: 'icon'
-          =link_to link.page.title, collection_display_page_path(@collection.owner, @collection, link.page.work, link.page, translation: parameter)
-          =="&nbsp;&mdash;&nbsp;#{link.display_text}"
-          -if parameter
-            =="&nbsp(#{link.text_type})"
+      li
+        -parameter = link.text_type == "translation" ? true : false
+        =svg_symbol '#icon-page', class: 'icon'
+        =link_to link.page.title, collection_display_page_path(@collection.owner, @collection, link.page.work, link.page, translation: parameter)
+        =="&nbsp;&mdash;&nbsp;#{link.display_text}"
+        -if parameter
+          =="&nbsp(#{link.text_type})"
 
 
 -unless @article.target_article_links.empty?

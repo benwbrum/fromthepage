@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "uploads data for collections", :order => :defined do
@@ -179,5 +178,4 @@ describe "uploads data for collections", :order => :defined do
     page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
     page.find_button('Save').click
   end
-
 end
