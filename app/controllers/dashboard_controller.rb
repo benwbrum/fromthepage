@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
   include AddWorkHelper
+  include DashboardHelper
   include OwnerExporter
   PAGES_PER_SCREEN = 20
 
@@ -338,24 +339,4 @@ class DashboardController < ApplicationController
       :content_type => "application/pdf")
     cookies['download_finished'] = 'true'
   end
-
-  def time_spent_in_date_range(user_id, start_date, end_date)
-    minutes_worked = minutes_worked_in_range(user_id, start_date, end_date)
-  
-    formatted_time(minutes_worked)
-  end
-  
-  def minutes_worked_in_range(user_id, start_date, end_date)
-    AhoyActivitySummary
-      .where(user_id: user_id)
-      .where("created_at >= ? AND created_at <= ?", start_date, end_date)
-      .sum(:minutes)
-  end
-  
-  def formatted_time(total_minutes)
-    hours, minutes = total_minutes.divmod(60)
-    "#{hours} hours and #{minutes} minutes"
-  end
-
-
 end
