@@ -41,7 +41,7 @@ describe "Metadata Description" do
     sleep(1)
     button = page.find_link 'Edit Metadata Form'
     expect(button['disabled']).to eq('disabled')
-    expect(Collection.find(@collection.id).data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
+    expect(@collection.data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
   end
 
 
@@ -59,17 +59,21 @@ describe "Metadata Description" do
 
       visit collection_path(@owner, @collection)
       page.find('.tabs').click_link("Metadata Fields")
-      page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'First field')
-      page.find('#new-fields tr[3]').fill_in('transcription_fields__percentage', with: 20)
-      page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Second field')
-      page.find('#new-fields tr[4]').select('textarea', from: 'transcription_fields__input_type')
-      page.find('#new-fields tr[5]').fill_in('transcription_fields__label', with: 'Third field')
-      page.find('#new-fields tr[5]').select('select', from: 'transcription_fields__input_type')
+      page.find('#new-fields tr:nth-child(3)').fill_in('transcription_fields__label', with: 'First field')
+      page.find('#new-fields tr:nth-child(3)').fill_in('transcription_fields__percentage', with: 20)
+      page.find('#new-fields tr:nth-child(4)').fill_in('transcription_fields__label', with: 'Second field')
+      page.find('#new-fields tr:nth-child(4)').select('textarea', from: 'transcription_fields__input_type')
+      page.find('#new-fields tr:nth-child(5)').fill_in('transcription_fields__label', with: 'Third field')
+      page.find('#new-fields tr:nth-child(5)').select('select', from: 'transcription_fields__input_type')
       old_field_count = TranscriptionField.all.count
       click_button 'Save'
+      # this creates "First field" and "Second field" but does not create the third field.
+      # is that expected behavior?  Does the third field fail validation?
       expect(page).to have_content("Select fields must have an options list.")
-      expect(TranscriptionField.last.input_type).to eq "text"
+      # the last field creatied should be "Second field", with a textarea datatype
+      expect(TranscriptionField.last.input_type).to eq "textarea"
       expect(TranscriptionField.last.field_type).to eq TranscriptionField::FieldType::METADATA
+      # if the third field failed validation, the field count should be old_field_count + 2, not 3.
       expect(TranscriptionField.all.count).to eq old_field_count + 3
       expect(TranscriptionField.first.percentage).to eq 20
 
