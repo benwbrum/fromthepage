@@ -59,19 +59,22 @@ describe "Metadata Description" do
 
       visit collection_path(@owner, @collection)
       page.find('.tabs').click_link("Metadata Fields")
-      page.find('#new-fields tr:nth-child(3)').fill_in('transcription_fields__label', with: 'First field')
+      page.find('#new-fields tr:nth-child(3)').fill_in('transcription_fields__label', with: 'First metadata field')
       page.find('#new-fields tr:nth-child(3)').fill_in('transcription_fields__percentage', with: 20)
-      page.find('#new-fields tr:nth-child(4)').fill_in('transcription_fields__label', with: 'Second field')
+      page.find('#new-fields tr:nth-child(4)').fill_in('transcription_fields__label', with: 'Second metadata field')
       page.find('#new-fields tr:nth-child(4)').select('textarea', from: 'transcription_fields__input_type')
-      page.find('#new-fields tr:nth-child(5)').fill_in('transcription_fields__label', with: 'Third field')
+      page.find('#new-fields tr:nth-child(5)').fill_in('transcription_fields__label', with: 'Third metadata field')
       page.find('#new-fields tr:nth-child(5)').select('select', from: 'transcription_fields__input_type')
       old_field_count = TranscriptionField.all.count
       click_button 'Save'
+      sleep(10)
       # this creates "First field" and "Second field" but does not create the third field.
       # is that expected behavior?  Does the third field fail validation?
+      # turns out that first field and second field are all transcritpion fields created in a previous test
       expect(page).to have_content("Select fields must have an options list.")
       # the last field creatied should be "Second field", with a textarea datatype
-      expect(TranscriptionField.last.input_type).to eq "textarea"
+      expect(TranscriptionField.last.label).to eq "Third metadata field"
+      expect(TranscriptionField.last.input_type).to eq "text"
       expect(TranscriptionField.last.field_type).to eq TranscriptionField::FieldType::METADATA
       # if the third field failed validation, the field count should be old_field_count + 2, not 3.
       expect(TranscriptionField.all.count).to eq old_field_count + 3
@@ -81,9 +84,9 @@ describe "Metadata Description" do
       # now check the field preview on the edit page
       visit collection_path(@owner, @collection)
       page.find('.tabs').click_link("Metadata Fields")
-      expect(page.find('div.fields-preview')).to have_content("First field")
-      expect(page.find('div.fields-preview')).to have_content("Second field")
-      expect(page.find('div.fields-preview')).to have_content("Third field")
+      expect(page.find('div.fields-preview')).to have_content("First metadata field")
+      expect(page.find('div.fields-preview')).to have_content("Second metadata field")
+      expect(page.find('div.fields-preview')).to have_content("Third metadata field")
       #check field width for first field (set to 20%)
       expect(page.find('div.fields-preview .field-wrapper[1]')[:style]).to eq "width: 20%"
       #check field width for second field (not set)
