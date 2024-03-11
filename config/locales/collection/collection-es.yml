@@ -198,6 +198,8 @@ es:
       i_label: Itálico
       lb_description: Marca saltos de línea
       lb_label: Salto de línea
+      marginalia_description: Incluye notas o marcas en los márgenes del texto principal.
+      marginalia_label: Nota marginal
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML

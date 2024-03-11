@@ -107,8 +107,8 @@ en:
       i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
-      marginalina_description: 
-      marginalina_label: Marginalia
+      marginalia_description: Encloses notes or markings in the margins of the main text.
+      marginalia_label: Marginalia
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML

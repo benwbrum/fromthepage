@@ -198,6 +198,8 @@ de:
       i_label: Kursiv
       lb_description: Markiert Zeilenumbrüche
       lb_label: Zeilenumbruch
+      marginalia_description: Fügt Notizen oder Markierungen an den Rändern des Haupttextes ein.
+      marginalia_label: Marginalien
       markup_preference_description: Einige Tags haben Entsprechungen in HTML und TEI-XML. Wählen Sie eine Einstellung aus, um festzulegen, welche Tag-Form eingefügt wird, wenn ein:e Mitarbeitende:r den Button nutzt.
       markup_preference_label: Mark-up-Stil
       prefer_html: Bevorzugt HTML

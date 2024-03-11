@@ -198,6 +198,8 @@ pt:
       i_label: Itálico
       lb_description: Marca quebras de linha
       lb_label: Quebra de linha
+      marginalia_description: Inclui notas ou marcações nas margens do texto principal.
+      marginalia_label: Marginália
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
       markup_preference_label: Estilo de marcação
       prefer_html: Prefira HTML

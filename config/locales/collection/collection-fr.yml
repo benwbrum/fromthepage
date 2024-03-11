@@ -198,6 +198,8 @@ fr:
       i_label: Italique
       lb_description: Marque les sauts de ligne
       lb_label: Saut de ligne
+      marginalia_description: Inclus des notes ou des marquages dans les marges du texte principal.
+      marginalia_label: Notes marginales
       markup_preference_description: Certaines balises ont des formes équivalentes en HTML et TEI-XML. Choisissez une préférence pour déterminer quelle forme de balise est insérée lorsqu'un utilisateur appuie sur le bouton.
       markup_preference_label: Style de balisage
       prefer_html: Préférez le HTML
