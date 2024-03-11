@@ -6276,4 +6276,2848 @@ http_interactions:
       encoding: UTF-8
       string: '{"value":null}'
   recorded_at: Thu, 07 Mar 2024 19:17:04 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/element/00f2cf4a-1b28-4759-94c0-d6c25c42fd78/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"00f2cf4a-1b28-4759-94c0-d6c25c42fd78"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/element/00f2cf4a-1b28-4759-94c0-d6c25c42fd78/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"9028a960-aed6-492a-9540-7969e2a2e240"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:31:38 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"9028a960-aed6-492a-9540-7969e2a2e240"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:31:39 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/701721f3-4990-480c-9391-891f5447a045/element/9028a960-aed6-492a-9540-7969e2a2e240/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:31:38 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:31:39 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/element/44d614b5-5602-48c3-9c1e-febf25031c3d/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"44d614b5-5602-48c3-9c1e-febf25031c3d"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/element/44d614b5-5602-48c3-9c1e-febf25031c3d/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"52e7681a-57c2-4bf5-98cd-f6eee0bb23b5"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:44:50 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"52e7681a-57c2-4bf5-98cd-f6eee0bb23b5"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:44:51 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/de13fe37-4e14-41a0-837d-b3d23f0bd8b1/element/52e7681a-57c2-4bf5-98cd-f6eee0bb23b5/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:44:50 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:44:51 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/element/a078fd69-ccb4-499f-921c-e9402f0a34bd/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"a078fd69-ccb4-499f-921c-e9402f0a34bd"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/element/a078fd69-ccb4-499f-921c-e9402f0a34bd/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"42058fb7-3942-47bd-8759-5db6b10142b1"}]}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"42058fb7-3942-47bd-8759-5db6b10142b1"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/6878d5f8-9cc3-4d83-90b6-a44800ce50d8/element/42058fb7-3942-47bd-8759-5db6b10142b1/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 13:57:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 13:57:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"}]}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/element/4ed9a3ff-9eca-43cb-bd76-b92e1867db5a/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"4ed9a3ff-9eca-43cb-bd76-b92e1867db5a"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/element/4ed9a3ff-9eca-43cb-bd76-b92e1867db5a/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 14:56:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"9bbe89bf-ca65-4275-bbc3-8e2b6c21f5ed"}]}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"9bbe89bf-ca65-4275-bbc3-8e2b6c21f5ed"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 14:56:46 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/4bac5adf-7da9-402e-b718-5909cb03fb12/element/9bbe89bf-ca65-4275-bbc3-8e2b6c21f5ed/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 14:56:46 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 14:56:47 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"}]}'
+  recorded_at: Mon, 11 Mar 2024 15:40:24 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 15:40:24 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 15:40:24 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 15:40:24 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/element/cce782a2-d300-46a5-b4a5-1c3303e1c80f/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"cce782a2-d300-46a5-b4a5-1c3303e1c80f"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/element/cce782a2-d300-46a5-b4a5-1c3303e1c80f/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"5f3ff84d-936f-4cc4-ad79-87e0c3b7f895"}]}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"5f3ff84d-936f-4cc4-ad79-87e0c3b7f895"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/310128b5-7192-46ad-99de-f0eac015f257/element/5f3ff84d-936f-4cc4-ad79-87e0c3b7f895/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 15:40:24 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 15:40:25 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
+        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
+        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
+        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
+        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
+        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
+        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
+        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
+        or (./@type = ''file'')))]"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '635'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"}]}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '160'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '15'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":false}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"},["tagName","type"]]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '247'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '26'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":["INPUT","text"]}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '122'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/element/943a0926-cdb9-46a5-ad10-6efa4e2295bb/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["h","t","t","p"],"text":"http"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '41'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
+        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"943a0926-cdb9-46a5-ad10-6efa4e2295bb"},"s://cdm16488.contentdm.oclc.org/digital/collection/MPD01/i"]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '360'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/element/943a0926-cdb9-46a5-ad10-6efa4e2295bb/value
+    body:
+      encoding: UTF-8
+      string: '{"value":["d","/","2"],"text":"d/2"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '36'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/elements
+    body:
+      encoding: UTF-8
+      string: '{"using":"css selector","value":"#cdm_import"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '46'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '90'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"089ac7df-fad6-48e1-883b-0b4b8dd48e70"}]}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/execute/sync
+    body:
+      encoding: UTF-8
+      string: '{"script":"/* isDisplayed */return ((function(){function d(t,e,n){function
+        r(t){var e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
+        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
+        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
+        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
+        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
+        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
+        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
+        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
+        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
+        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
+        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
+        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
+        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
+        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
+        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
+        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
+        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
+        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
+        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
+        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
+        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
+        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
+        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
+        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
+        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
+        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
+        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
+        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
+        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
+        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
+        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
+        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
+        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
+        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
+        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
+        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
+        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
+        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
+        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
+        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
+        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
+        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
+        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"089ac7df-fad6-48e1-883b-0b4b8dd48e70"}]}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '5084'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":true}'
+  recorded_at: Mon, 11 Mar 2024 16:03:28 GMT
+- request:
+    method: post
+    uri: http://127.0.0.1:4444/session/2d6c61f9-ad9f-4ce7-b444-34546a4251be/element/089ac7df-fad6-48e1-883b-0b4b8dd48e70/click
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - selenium/4.9.0 (ruby linux)
+      Content-Length:
+      - '2'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '14'
+      Date:
+      - Mon, 11 Mar 2024 16:03:27 GMT
+    body:
+      encoding: UTF-8
+      string: '{"value":null}'
+  recorded_at: Mon, 11 Mar 2024 16:03:29 GMT
 recorded_with: VCR 6.2.0

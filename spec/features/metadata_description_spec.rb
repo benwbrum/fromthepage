@@ -6,8 +6,6 @@ describe "Metadata Description" do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second
-
-    DatabaseCleaner.start
   end
   before :each do
     login_as(@owner, :scope => :user)
@@ -15,9 +13,6 @@ describe "Metadata Description" do
   end
 
 
-  after :all do
-    DatabaseCleaner.clean
-  end
 
   # factory code from work spec
   # let(:work_no_ocr){ create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: false) }
@@ -88,11 +83,9 @@ describe "Metadata Description" do
       expect(page.find('div.fields-preview')).to have_content("Second metadata field")
       expect(page.find('div.fields-preview')).to have_content("Third metadata field")
       #check field width for first field (set to 20%)
-      expect(page.find('div.fields-preview .field-wrapper[1]')[:style]).to eq "width: 20%"
+      expect(page.find('div.fields-preview .field-wrapper:nth-child(1)')[:style]).to eq "width: 20%;"
       #check field width for second field (not set)
-      expect(page.find('div.fields-preview .field-wrapper[2]')[:style]).not_to eq "width: 20%"
-
-      # TODO separate and figure out the db cleaner business
+      expect(page.find('div.fields-preview .field-wrapper:nth-child(2)')[:style]).not_to eq "width: 20%;"
     end
 
   end
