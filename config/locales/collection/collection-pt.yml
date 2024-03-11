@@ -198,15 +198,17 @@ pt:
       i_label: Itálico
       lb_description: Marca quebras de linha
       lb_label: Quebra de linha
+      marginalia_description: Inclui notas ou marcações nas margens do texto principal.
+      marginalia_label: Marginália
       markup_preference_description: Algumas tags possuem formas equivalentes em HTML e TEI-XML. Escolha uma preferência para determinar qual forma de tag é inserida quando um usuário pressiona o botão.
       markup_preference_label: Estilo de marcação
       prefer_html: Prefira HTML
       prefer_tei: Prefira TEI
       reg_description: Marca uma forma regularizada do texto, com formas originais no atributo orig.
       reg_label: Regularização
-      s_description: Marca o texto que foi riscado por qualquer motivo.
-      s_label: Tachado
       save: Salvar
+      strike_description: Marca o texto que foi riscado por qualquer motivo.
+      strike_label: Tachado
       sub_description: Texto subscrito.
       sub_label: Subscrito
       sup_description: Texto sobrescrito.
