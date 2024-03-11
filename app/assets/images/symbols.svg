@@ -168,6 +168,11 @@
     <path fill="currentColor" d="M5 3h6v10H5z"/>
   </symbol>
 
+  <symbol id="icon-fit-width" viewBox="0 0 16 16">
+    <path fill="none" stroke="currentColor" d="M1.5 1.5h13v13h-13z" />
+    <path fill="currentColor" d="M 13,5.8510914 V 10.148909 H 3 V 5.8510914 Z" />
+  </symbol>
+
   <symbol id="icon-rotate-left" viewBox="0 0 16 16">
     <path fill="currentColor" d="M3 6h8v9H3z"/>
     <path fill="none" stroke="currentColor" d="M14.5 9A6.5 6.5 0 0 0 8 2.5"/>
