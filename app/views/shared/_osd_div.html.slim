@@ -8,6 +8,7 @@
   a#osd_zoom_in =svg_symbol "#icon-zoom-in", class: 'icon'
   a#osd_zoom_out =svg_symbol "#icon-zoom-out", class: 'icon'
   a#osd_home =svg_symbol "#icon-fit-view", class: 'icon'
+  a#osd_fit_width =svg_symbol "#icon-fit-width", class: 'icon'
   a#osd_fullpage =svg_symbol "#icon-expand", class: 'icon'
   a#osd_rotate_left =svg_symbol "#icon-rotate-left", class: 'icon'
   a#osd_rotate_right =svg_symbol "#icon-rotate-right", class: 'icon'
@@ -118,6 +119,10 @@
             lastFocused = null;
           }
         }, 100);
+      });
+
+      document.getElementById('osd_fit_width').addEventListener('click', function() {
+        viewer.viewport.fitHorizontally();
       });
 
       $('[data-filter]').on('input', updateFilters);
