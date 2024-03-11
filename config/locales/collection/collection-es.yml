@@ -198,15 +198,17 @@ es:
       i_label: Itálico
       lb_description: Marca saltos de línea
       lb_label: Salto de línea
+      marginalia_description: Incluye notas o marcas en los márgenes del texto principal.
+      marginalia_label: Nota marginal
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
       prefer_tei: Preferir TEI
       reg_description: Marca una forma regularizada del texto, con formas originales en el atributo orig.
       reg_label: regularización
-      s_description: Marca el texto que ha sido tachado por cualquier motivo.
-      s_label: tachado
       save: Ahorrar
+      strike_description: Marca el texto que ha sido tachado por cualquier motivo.
+      strike_label: tachado
       sub_description: Texto de subíndice.
       sub_label: Subíndice
       sup_description: Texto en superíndice.
