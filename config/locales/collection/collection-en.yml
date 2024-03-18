@@ -198,15 +198,17 @@ en:
       i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
+      marginalia_description: Encloses notes or markings in the margins of the main text.
+      marginalia_label: Marginalia
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML
       prefer_tei: Prefer TEI
       reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
       reg_label: Regularization
-      s_description: Marks text that has been struck through for any reason.
-      s_label: Strikethrough
       save: Save
+      strike_description: Marks text that has been struck through for any reason.
+      strike_label: Strikethrough
       sub_description: Subscript text.
       sub_label: Subscript
       sup_description: Superscript text.
