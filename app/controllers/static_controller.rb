@@ -8,7 +8,7 @@ class StaticController < ApplicationController
   end
 
   def metadata
-    render :file => 'static/metadata.yml', :layout => false, :content_type => "text/plain"
+    render :file => Rails.root.join('app/views/static', 'metadata.yml'), :layout => false, :content_type => "text/plain"
   end
 
   def landing_page
