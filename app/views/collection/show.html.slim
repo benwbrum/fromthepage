@@ -96,14 +96,15 @@
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
-      -if @collection.is_a?(DocumentSet)
-        =hidden_field_tag('document_set_id', @collection.slug)
-      -else
-        =hidden_field_tag('collection_id', @collection.slug)
-      =search_field_tag :search, nil, placeholder: t('.search_the_text'), "aria-label" => t('.search_the_text_1')
-      =button_tag t('.search')
-      =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
+    -if @collection.works.count < 1000
+      =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
+        -if @collection.is_a?(DocumentSet)
+          =hidden_field_tag('document_set_id', @collection.slug)
+        -else
+          =hidden_field_tag('collection_id', @collection.slug)
+        =search_field_tag :search, nil, placeholder: t('.search_the_text'), "aria-label" => t('.search_the_text_1')
+        =button_tag t('.search')
+        =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
 
     =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       -if @collection.is_a?(DocumentSet)
