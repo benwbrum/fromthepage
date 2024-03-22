@@ -310,11 +310,7 @@ xml:id="export">
       <div xml:id="translation">
         <% @context.translation_mode = true %>
         <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
-        <% if @work.sc_manifest %>
-          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
-        <% else %>
-          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
-        <% end %>
+          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.image_url_for_download %>"/>   
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
@@ -327,11 +323,7 @@ xml:id="export">
       </div>
     <% else %>
       <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
-      <% if @work.sc_manifest %>
-        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
-      <% else %>
-        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/default.jpg" %>"/>
-      <% end %>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.image_url_for_download %>"/>      
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
       <% end%>
