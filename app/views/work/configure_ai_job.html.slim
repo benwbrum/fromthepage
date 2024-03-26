@@ -1,0 +1,32 @@
+h2.nomargin =t('.heading')
+p =t('.description')
+=form_with(url: run_ai_job_collection_work_path, model: @ai_job, local: true) do |f|
+  =f.hidden_field :collection_id, value: @collection.slug
+  =f.hidden_field :work_id, value: @work.slug
+
+  / job type: HTR or Normalization
+  =f.hidden_field :job_type, value: AiJob::JobType::HTR
+  =f.hidden_field :engine, value: AiJob::Engine::TRANSKRIBUS
+
+
+  / are these parameters to be stored?  we should not store credentials
+  .ai-job_credentials
+  =f.label :transkribus_username
+    =f.label :transkribus_username, t('.transkribus_username')
+    =f.text_field :transkribus_username
+
+  .ai-job_credentials
+  =f.label :transkribus_password
+    =f.label :transkribus_password, t('.transkribus_password')
+    =f.password_field :transkribus_password
+
+  .ai-job_credentials
+  / model
+  .ai-job_credentials
+  =f.label :transkribus_model_id
+    =f.label :transkribus_model_id, t('.transkribus_model_id')
+    =f.text_field :transkribus_model_id
+
+  br
+  =f.submit t('.run')
+

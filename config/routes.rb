@@ -517,6 +517,8 @@ Fromthepage::Application.routes.draw do
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
         get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
+        get 'configure_ai_job', on: :member, as: :configure_ai_job, to: 'work#configure_ai_job'
+        post 'run_ai_job', on: :member, as: :run_ai_job, to: 'work#run_ai_job'
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update

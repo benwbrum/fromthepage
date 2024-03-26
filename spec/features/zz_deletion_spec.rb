@@ -32,6 +32,7 @@ describe "testing deletions" do
   end
 
   it "deletes a document set", skip: true do
+    binding.pry
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click

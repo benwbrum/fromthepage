@@ -38,6 +38,7 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
   has_and_belongs_to_many :tags
   has_many :ahoy_activity_summaries
+  has_many :ai_jobs, -> { where(work_id: nil).order('created_at DESC') }, :dependent => :destroy
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
