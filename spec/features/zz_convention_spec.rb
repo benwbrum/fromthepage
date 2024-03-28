@@ -52,12 +52,12 @@ describe "convention related tasks", :order => :defined do
     expect(convention_work.transcription_conventions).to eq @work_convention
   end
 
-  it "changes conventions at collection level but not work level" do
+  it "changes conventions at collection level but not work level", js: true do
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Help Text")
     page.fill_in 'collection_transcription_conventions', with: @new_convention
-    click_button 'Save Changes'
     #check unchanged work for collection conventions
     work2 = @collection.works.first
     page2 = work2.pages.second
