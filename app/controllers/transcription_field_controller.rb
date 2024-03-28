@@ -95,7 +95,7 @@ class TranscriptionFieldController < ApplicationController
         redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
       end
     else
-      redirect_to edit_collection_path(@collection.owner, @collection)
+      redirect_to edit_tasks_collection_path(@collection.owner, @collection)
     end
   end
 

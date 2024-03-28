@@ -91,12 +91,6 @@ Fromthepage::Application.routes.draw do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
     get 'show', to: 'collection#show', as: 'show'
-    get 'toggle_collection_active', to: 'collection#toggle_collection_active'
-    get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'enable_fields', to: 'collection#enable_fields'
-    get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
-    get 'enable_document_sets', to: 'collection#enable_document_sets'
-    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
@@ -106,14 +100,10 @@ Fromthepage::Application.routes.draw do
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
-    get 'disable_document_sets', to: 'collection#disable_document_sets'
-    get 'disable_messageboards', to: 'collection#disable_messageboards'
-    get 'disable_fields', to: 'collection#disable_fields'
-    get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
+    get 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
@@ -500,6 +490,13 @@ Fromthepage::Application.routes.draw do
       post 'search'
 
       get 'edit', on: :member
+      get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
+      get 'edit/look', on: :member, to: 'collection#edit_look'
+      get 'edit/privacy', on: :member, to: 'collection#edit_privacy'
+      get 'edit/help', on: :member, to: 'collection#edit_help'
+      get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
+      get 'edit/danger', on: :member, to: 'collection#edit_danger'
+
       get 'new_work', on: :member
       get 'collaborators', on: :member, to: 'collection#contributors', as: :contributors
       get 'works_list', as: :works_list, to: 'collection#works_list'
