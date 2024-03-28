@@ -155,7 +155,7 @@ en:
       alphabetize_works: List works alphabetically.
       alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.
       default_orientation: Default transcription screen orientation
-      default_orientation_description: Filler Text The default page orientation for this collection. This setting can be overridden for individual works. Choose the orientation that best matches the majority of the works in this collection.
+      default_orientation_description: Choose the orientation that best matches the majority of the works in this collection.  Users will be able to change the orientation to one that they prefer.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
       edit_document_sets: Edit Sets
       edit_facets: Edit Facets
@@ -177,7 +177,7 @@ en:
       spellcheck_description: Not suitable for texts with irregular spelling.
       upload_metadata: Upload Metadata
       user_download: Allow users to download works
-      user_download_description: Filler Text Allow users to download works in this collection. Please note that this setting does not affect the ability of users to download individual pages.
+      user_download_description: Adds a user-visible Download tab to each work, which lets users export the document transcription in researcher-friendly formats like Microsoft Word or PDF.
       voice_recognition: Enable speech to text
       voice_recognition_description: Not compatible with advanced editor.
     edit_privacy:
@@ -211,7 +211,7 @@ en:
       collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
       edit_authorized_reviewers: Edit Authorized Reviewers
       review_type: Review type
-      review_type_description: Filler Text Choose the type of review that will be performed on transcriptions in this collection.
+      review_type_description: Choose the type of review that will be performed on transcriptions in this collection.
       review_type_optional: Optional
       review_type_optional_description: Collaborators may request review of their transcriptions.
       review_type_required: Required
@@ -231,22 +231,22 @@ en:
       alert: Please configure fields or choose document based transcription under Transcription Type.
       disable_ocr: Disable OCR Correction
       document_based_transcription: Document-based transcription
-      document_based_transcription_description: Filler Text Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription". Voice dictation is not supported and will be disabled.
+      document_based_transcription_description: Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription".
       edit_buttons: Configure Buttons
       edit_fields: Edit Fields
       edit_metadata_fields: Edit Metadata Form
       enable_metadata_description: Enable metadata description
       enable_ocr: Enable OCR Correction
       field_based_transcription: Field-based transcription
-      field_based_transcription_description: Filler Text Each page in the collection will have multiple short entry fields designed for forms. Also known as "field based transcription". Voice dictation is not supported and will be disabled.
-      metadata_description_description: Filler Text Metadata description is used to describe the metadata fields for the collection. It will be displayed on the metadata entry page.
+      field_based_transcription_description: Each page in the collection will have multiple short entry fields designed for forms. You will need to configure which fields will be displayed.
+      metadata_description_description: Metadata description is used to create structured metadata about works in the collection.  You will need to configure which metadata fields will be displayed.
       ocr_correction: OCR Correction
       ocr_description: Enable or disable OCR correction for all works in this collection.
       save_changes: Save Changes
       subjects_enabled: Enable subject indexing
-      subjects_enabled_description: Filler Text Subjects are used to index works in the collection. They are displayed on the work page and can be used to browse works in the collection.
+      subjects_enabled_description: Subjects are used to index pages in the collection.
       text_language: Transcription text language
-      text_language_description: Filler Text This setting will be used to determine the language of the text for voice recognition.
+      text_language_description: This setting will be used to determine the language of the text for correctly displaying right-to-left or left-to-right scripts.
       transcription_type: Transcription type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
     enable_ocr:

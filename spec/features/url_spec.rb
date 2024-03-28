@@ -73,6 +73,7 @@ describe "URL tests" do
     page.find('.tabs').click_link("Settings")
     expect(page).to have_field('collection[slug]', with: @collection.slug)
     page.fill_in 'collection_slug', with: "new-#{@collection.slug}"
+    page.find('h1', text: @collection.title).click
     expect(page).to have_selector('h1', text: @collection.title)
     expect(page).to have_content("Title")
     expect(Collection.find_by(id: @collection.id).slug).to eq "#{slug}"

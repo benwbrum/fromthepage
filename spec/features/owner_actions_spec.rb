@@ -265,9 +265,8 @@ describe "owner actions", :order => :defined do
   it "changes the collection's default language", js: true do
     visit edit_collection_path(@owner, @rtl_collection)
     page.find('.side-tabs').click_link("Task Configuration")
-    expect(page).to have_selector('#collection_text_language')
-    select('Arabic', from: 'collection_text_language')
-    #note: this is just to make sure it's on the settings page again
+    first('.select2-container', minimum: 1).click
+    find('.select2-dropdown input.select2-search__field').send_keys("Arabic", :enter)
     expect(page).to have_content('Transcription type')
     expect(Collection.find(3).text_language).to eq 'ara'
   end
