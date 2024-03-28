@@ -57,7 +57,7 @@ es:
       collection_image: Imagen de la Colección
       collection_image_description: Una imagen que se utilizará para ilustrar la descripción de la colección.
       copy_url: Copiar al portapapeles
-      current_url: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección de la obra en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
+      current_url: 'La URL actual de esta colección:'
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       done: Hecho

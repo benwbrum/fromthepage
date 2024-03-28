@@ -57,7 +57,7 @@ de:
       collection_image: Profilbild der Sammlung
       collection_image_description: Ein Bild zur Veranschaulichung der Sammlungsbeschreibung.
       copy_url: In die Zwischenablage kopieren
-      current_url: Die aktuelle URL für diese Sammlung ist %{current_url}. Wenn Sie in der URL den Abschnitt zur Sammlung bearbeiten möchten, verwenden Sie bitte Kleinbuchstaben und Bindestriche zwischen den Wörtern.
+      current_url: 'Die aktuelle URL für diese Sammlung:'
       description: Beschreibung
       description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
       done: Erledigt
