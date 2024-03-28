@@ -61,6 +61,7 @@ en:
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       done: Done
+      footer: Footer
       footer_description: This text will be displayed at the bottom of every page in the collection.
       footer_edit: Edit this footer in %{link}.
       footer_edit_link: your user profile
@@ -139,6 +140,7 @@ en:
       confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
       danger_zone_description: This section contains settings that have irreversible consequences. Please use caution when changing these settings.
       delete_collection: Delete Collection
+      delete_collection_description: Pressing this button will delete the collection and all its contents. This action cannot be undone.
       destroy_everything: Destroy everything
       inactive: Inactive
       save_changes: Save Changes
@@ -165,6 +167,7 @@ en:
       enable_spellcheck: Enable spell-check
       forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
       hide_completed: Hide completed works by default
+      hide_completed_description: Hide works that are fully transcribed or translated by default.
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_facets_description: Allow users to browse works within this collection via metadata.
