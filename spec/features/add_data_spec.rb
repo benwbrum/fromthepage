@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "uploads data for collections", :order => :defined do
@@ -128,18 +127,22 @@ describe "uploads data for collections", :order => :defined do
     #testing the cancel button involves ajax
   end
 
-  it "adds new document sets" do
+  it "adds new document sets", js: true do
     @owner = User.find_by(login: OWNER)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Settings")
-    unless @owner.account_type == "Individual Researcher"
-      page.find('.button', text: 'Enable Document Sets').click
+    sleep 1
+    page.find('.side-tabs').click_link("Look & Feel")
+    page.check('Enable document sets')
+    page.click_link('Edit Sets')
     expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
+    sleep(1)
     page.fill_in 'document_set_title', with: "Test Document Set 1"
     page.find_button('Create Document Set').click
+    sleep(3)
     expect(DocumentSet.last.is_public).to be true
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
@@ -156,26 +159,23 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'document_set_title', with: "Test Document Set 2"
     page.uncheck 'Public'
     page.find_button('Create Document Set').click
+    sleep(3)
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
     expect(page.find('h1')).to have_content("Test Document Set 2")
     expect(DocumentSet.last.is_public).to be false
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
-    end
   end
 
   it "adds works to document sets" do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @set_collection.title).click
-    unless @owner.account_type == "Individual Researcher"
-      page.find('.tabs').click_link("Sets")
+    page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
     page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
     page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
     page.find_button('Save').click
-    end
   end
-
 end
