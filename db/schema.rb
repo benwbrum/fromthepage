@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_31_150510) do
+ActiveRecord::Schema.define(version: 2024_03_26_200815) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "date"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end
 
-  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "title"
     t.text "source_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "base_image"
