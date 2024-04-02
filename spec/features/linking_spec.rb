@@ -262,9 +262,9 @@ describe "subject linking" do
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Ada Lovelace")
     click_link("Ada Lovelace")
-    expect(page.find('.article-links').find('li')).to have_content("Ada Lovelace")
-    expect(page.find('.article-links')).to have_selector('li', count: 1)
-    expect(page.find('.article-links')).not_to have_selector('li', count: 2)
+    expect(page.find('.article-links').first('li')).to have_content("Ada Lovelace")
+    expect(page.find('.article-links')).to have_selector('li', count: 2)
+    expect(page.find('.article-links')).not_to have_selector('li', count: 1)
   end
 
 end

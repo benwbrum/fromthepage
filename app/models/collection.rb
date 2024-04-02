@@ -29,7 +29,7 @@ class Collection < ApplicationRecord
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
-  has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
+  has_many :facet_configs, -> { order(input_type: :asc, order: :asc) }, through: :metadata_coverages
   has_many :table_cells, through: :transcription_fields
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -52,6 +52,7 @@ class Collection < ApplicationRecord
 
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
   scope :unrestricted, -> { where(restricted: false)}
+  scope :restricted, -> { where(restricted: true)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
@@ -83,6 +84,10 @@ class Collection < ApplicationRecord
 
   def metadata_only_entry?
     self.data_entry_type == DataEntryType::METADATA_ONLY
+  end
+
+  def text_and_metadata_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA
   end
   
   def subjects_enabled

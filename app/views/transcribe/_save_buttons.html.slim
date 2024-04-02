@@ -1,5 +1,7 @@
 .flex-toolbar_group
   -unless @preview_xml
+    -if @page && !@page.ai_plaintext.blank? && @collection.text_entry?
+      =button_tag t('.copy_ai_plaintext'), type: 'button', id: 'copy-ai-plaintext', title: "#{t('.copy_ai_plaintext_tooltip')}"
     =button_tag t('.preview'), :name => 'preview', type: 'submit', title: "#{t('.preview_tooltip')}"
   -else
     =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"

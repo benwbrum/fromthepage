@@ -50,6 +50,7 @@ de:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Melden Sie sich bei Ihrer Institution an
+        utah_id: UtahID
       destroyed: Auf Wiedersehen! Ihr Konto wurde erfolgreich gekündigt. Wir hoffen, Sie bald wiederzusehen.
       edit:
         confirm_delete_account: Möchten Sie Ihr Konto wirklich löschen? Nach dem Löschen des Kontos können Sie es nicht wiederherstellen!
@@ -102,6 +103,7 @@ de:
     sign_up: Registrieren
     user_name: Benutzername
     user_name_message: Dies ist der Namen, den Sie bei der Anmeldung verwenden. Er wird öffentlich angezeigt.
+    we_never_sell: Wir nehmen Ihre persönlichen Daten ernst und respektieren Ihre Privatsphäre. Wir verkaufen Ihre Daten niemals an Dritte. Weitere Informationen finden Sie in unserer Datenschutzerklärung.
   errors:
     messages:
       expired: abgelaufen, bitte neu anfordern

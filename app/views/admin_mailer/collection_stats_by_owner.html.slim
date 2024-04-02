@@ -5,7 +5,7 @@ h2.nomargin =t('.recent_activity')
 - unless @activity.collaborators.blank?
   h3 =t('.you_have_new_collaborators')
   - @activity.collaborators.each do |user|
-    a href="mailto:#{user.email}" #{user.email}<br />
+    a href="mailto:#{user.email}" "#{user.email} #{user.login}"<br />
   p 
     =t('.you_may_consider', link: link_to("How to write a welcome email", "https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/")).html_safe
 

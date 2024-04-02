@@ -244,31 +244,39 @@ class Page < ApplicationRecord
   end
 
   def create_version
-    version = PageVersion.new
-    version.page = self
-    version.title = self.title
-    version.transcription = self.source_text
-    version.xml_transcription = self.xml_text
-    version.source_translation = self.source_translation
-    version.xml_translation = self.xml_translation
-    version.status = self.status
-    unless User.current_user.nil?
-      version.user = User.current_user
-    else
-      version.user = User.find_by(id: self.work.owner_user_id)
-    end
-    # now do the complicated version update thing
-    version.work_version = self.work.transcription_version
-    self.work.increment!(:transcription_version)
-
-    previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
-    if previous_version
-      version.page_version = previous_version.page_version + 1
-    end
-    version.save!
-
-    self.update_column(:page_version_id, version.id) # set current_version
+      return unless self.saved_change_to_source_text? || self.saved_change_to_title? || self.saved_changes.present?
+      
+      version = PageVersion.new
+      version.page = self
+      version.title = self.title
+      version.transcription = self.source_text
+      version.xml_transcription = self.xml_text
+      version.source_translation = self.source_translation
+      version.xml_translation = self.xml_translation
+      version.status = self.status
+    
+      # Add other attributes as needed
+    
+      unless User.current_user.nil?
+        version.user = User.current_user
+      else
+        version.user = User.find_by(id: self.work.owner_user_id)
+      end
+    
+      # now do the complicated version update thing
+      version.work_version = self.work.transcription_version
+      self.work.increment!(:transcription_version)
+    
+      previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
+      if previous_version
+        version.page_version = previous_version.page_version + 1
+      end
+      version.save!
+    
+      self.update_column(:page_version_id, version.id) # set current_version
+    
   end
+  
 
   def update_sections_and_tables
     if @sections
@@ -541,19 +549,26 @@ class Page < ApplicationRecord
     users
   end
 
-  def has_alto?
-    File.exists?(alto_path)
+  def has_ai_plaintext?
+    File.exists?(ai_plaintext_path)
   end
 
-  def create_alto
-    if File.exists? original_htr_path
-      # convert the htr to alto
-      # write the alto to the alto path
+  def ai_plaintext
+    if has_ai_plaintext?
+      File.read(ai_plaintext_path)
     else
-      # call a service to create HTR
-      PageProcessor.new(self).submit_process
+      ""
     end
+  end
 
+  def ai_plaintext=(text)
+    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
+    File.write(ai_plaintext_path, text)
+  end
+  
+
+  def has_alto?
+    File.exists?(alto_path)
   end
 
 
@@ -577,11 +592,17 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      file_to_url(self.canonical_facsimile_url)
+      uri = URI.parse(file_to_url(self.canonical_facsimile_url).gsub(" ","+"))
+      uri.scheme = 'https'
+      uri.host = Rails.application.config.action_mailer.default_url_options[:host]
+      uri.to_s
     end
   end
 
   private
+  def ai_plaintext_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
+  end
 
   def alto_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")

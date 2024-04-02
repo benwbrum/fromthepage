@@ -50,6 +50,7 @@ pt:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Igreja de Jesus Cristo dos Santos dos Últimos Dias
         sign_in_with_institution: Faça login com sua instituição
+        utah_id: UtahID
       destroyed: Tchau! A sua conta foi cancelada com sucesso. Esperamos voltar a ver você em breve.
       edit:
         confirm_delete_account: Tem certeza de que deseja excluir sua conta? Depois de excluir a conta, você não poderá recuperá-la!
@@ -102,6 +103,7 @@ pt:
     sign_up: Inscrever-se
     user_name: Nome de usuário
     user_name_message: Você usará esse nome para fazer login. Ele será exibido publicamente.
+    we_never_sell: Levamos suas informações pessoais a sério e respeitamos sua privacidade. Nunca vendemos seus dados a ninguém. Confira nossa Política de Privacidade para mais informações.
   errors:
     messages:
       expired: expirou, por favor solicite um novo

@@ -432,17 +432,23 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Works")
   end
 
-  it "disables document sets" do
+  it "disables document sets", js: true do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
-    page.find('.button', text: 'Disable Document Sets').click
+    page.find('.side-tabs').click_link('Look & Feel')
+    page.uncheck('Enable document sets') 
+    sleep(1)
+    expect(page.find_link("Edit Sets")).to match_css('[disabled]')
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
   end
 
-  it "enables document sets" do
+  it "enables document sets", js: true do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
-    page.find('.button', text: 'Enable Document Sets').click
+    page.find('.side-tabs').click_link('Look & Feel')
+    page.check("Enable document sets")
+    expect(page.find_link("Edit Sets")).not_to match_css('[disabled]')
+    page.click_link('Edit Sets')
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true
@@ -495,9 +501,11 @@ describe "document sets", :order => :defined do
     @collection.hide_completed = true
     @collection.save
     #resets work restrictions
-    work = Work.find_by(id: @set.works.first.id)
+    unless @owner.account_type == "Individual Researcher"
+      work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = true
     work.save!
+    end
   end
 
 end

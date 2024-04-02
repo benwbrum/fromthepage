@@ -18,7 +18,7 @@ describe "display marked as blank" do
       })
 
     # Visit page
-    visit 'deed/list'
+    visit 'deed/listing'
     expect(page).to have_content('Page Marked Blank')
 
     # Tear down Factories

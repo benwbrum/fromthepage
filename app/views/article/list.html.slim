@@ -67,7 +67,7 @@
                   p[*language_attrs(@collection)]
                     = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
                       = article.title
-                      = content_tag :span, "(#{article.pages.count})", class: 'grey-number'
+                      = content_tag :span, "(#{article.pages_count})", class: 'grey-number'
                 -else
                   p.hidden
                     a.hidden a

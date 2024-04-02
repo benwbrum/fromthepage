@@ -165,7 +165,7 @@ fr:
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
     watchlist:
       collections: collections
-      private_collections_you_belong_to: Projets privés
+      private_collections_you_belong_to: Collections privées sur lesquelles vous êtes collaborateur
       projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
       try_transcribing_a_page: 'Vous n''avez encore participé à aucun projet. Essayez de transcrire une page de l''une de ces '
       your_activity: Votre activité

@@ -17,6 +17,7 @@
 //= require user.js
 //= require handsontable.full.min
 //= require datatables.min
+//= require clipboard
 
 ;(function($, window, document, undefined) {
 

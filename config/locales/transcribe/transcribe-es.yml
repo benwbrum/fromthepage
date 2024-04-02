@@ -46,6 +46,8 @@ es:
       approve_to_transcribed_tooltip: Guardar y aprobar esta página
       autolink: Enlace automático
       autolink_tooltip: Sugerir etiquetas de asunto automáticamente
+      copy_ai_plaintext: Texto de IA
+      copy_ai_plaintext_tooltip: Copie el texto generado por IA al editor
       done: Terminado
       edit: Editar
       edit_tooltip: Edita esta página

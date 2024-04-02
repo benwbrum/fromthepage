@@ -74,8 +74,7 @@
         previousButton: "osd_prev",
         nextButton: "osd_next",
         maxZoomPixelRatio: 10,
-        visibilityRatio: 1,
-        fitBounds: true,
+        visibilityRatio: 0.5,
         preserveViewport: true,
         showReferenceStrip: #{@page.nil?},
         referenceStripScroll: 'vertical',
@@ -159,15 +158,14 @@
       $(function() {
         
         var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
-          // make sure that the boxes over the text annotations are inert
-          pointerSelectAction: 'NONE'
-        });
-        anno.setFormatter(function() { 
-          // make the annotation boxes transparent rather than opaque
-          return { fillOpacity: 0 };
+          pointerSelectAction: 'NONE',
+          style: {
+            fillOpacity: 0,
+            strokeOpacity: 0
+          }
         });
 
-
+      
         // set up the text layer plugin on Annotorious
         var textlayer = OSDTextLayer.mountExtension(anno, {
           label: OSDTextLayer.transcriptionLabel,
@@ -196,10 +194,10 @@
         const btnLocked = document.getElementById('toggle-locked');
         btnLocked.addEventListener('click', () => {
           if (textlayer.isLocked()) {
-            btnLocked.innerHTML = '#{svg_symbol "#icon-clipboard", class: "icon"}}';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-clipboard", class: "icon"}';
             textlayer.setLocked(false);
           } else {
-            btnLocked.innerHTML = '#{svg_symbol "#icon-cursor-text", class: "icon"}}';
+            btnLocked.innerHTML = '#{svg_symbol "#icon-cursor-text", class: "icon"}';
             textlayer.setLocked(true);
           }
         });

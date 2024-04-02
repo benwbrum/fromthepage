@@ -3,7 +3,7 @@ h1 =t('dashboard.collaborator')
 .columns
   article.maincol
     -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
-      h2 =t('.private_collections_you_belong_to')
+      h3 =t('.private_collections_you_belong_to')
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds

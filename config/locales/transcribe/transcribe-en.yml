@@ -46,6 +46,8 @@ en:
       approve_to_transcribed_tooltip: Save and approve this page
       autolink: Autolink
       autolink_tooltip: Suggest subject tags automatically
+      copy_ai_plaintext: AI Text
+      copy_ai_plaintext_tooltip: Copy AI-generated text to the editor
       done: Done
       edit: Edit
       edit_tooltip: Edit this page

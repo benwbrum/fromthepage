@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 13 Dec 2023 22:06:44 GMT
+      - Thu, 28 Mar 2024 14:02:25 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -42,7 +42,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 13 Dec 2023 22:06:44 GMT
+      - Thu, 28 Mar 2024 14:02:25 GMT
       Vary:
       - Accept-Encoding
       Content-Length:
@@ -138,7 +138,7 @@ http_interactions:
         Voice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/wchs/manifest.json","@type":"sc:Collection","label":"Warren
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/twv/manifest.json","@type":"sc:Collection","label":"The
         Weekly View"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/modalTesting/manifest.json","@type":"sc:Collection","label":"JW_Modal_testing"}]}'
-  recorded_at: Wed, 13 Dec 2023 22:06:44 GMT
+  recorded_at: Thu, 28 Mar 2024 14:02:25 GMT
 - request:
     method: get
     uri: https://cdm17308.contentdm.oclc.org/iiif/info/ahs/200/manifest.json
@@ -158,7 +158,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:25 GMT
       Server:
       - Apache
       Content-Type:
@@ -185,7 +185,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:25 GMT
       Content-Length:
       - '8128'
     body:
@@ -411,7 +411,7 @@ http_interactions:
         1964, inside back cover","images":[{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/198/annotation/a198","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/198/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/198","width":3109,"height":4186,"tiles":[{"width":3109,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3109,"height":4186},"on":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/198/canvas/c198"}],"width":3109,"height":4186},{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199/canvas/c199","@type":"sc:Canvas","label":"Accolade,
         1964, back cover","images":[{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199/annotation/a199","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199","width":3084,"height":4200,"tiles":[{"width":3084,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":3084,"height":4200},"on":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199/canvas/c199"}],"width":3084,"height":4200}]}],"structures":[{"@id":"https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/200/range/r0","@type":"sc:Range","label":"Accolade,
         1964","ranges":[],"canvases":["https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/0/canvas/c0","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/1/canvas/c1","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/2/canvas/c2","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/3/canvas/c3","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/4/canvas/c4","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/5/canvas/c5","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/6/canvas/c6","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/7/canvas/c7","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/8/canvas/c8","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/9/canvas/c9","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/10/canvas/c10","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/11/canvas/c11","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/12/canvas/c12","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/13/canvas/c13","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/14/canvas/c14","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/15/canvas/c15","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/16/canvas/c16","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/17/canvas/c17","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/18/canvas/c18","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/19/canvas/c19","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/20/canvas/c20","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/21/canvas/c21","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/22/canvas/c22","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/23/canvas/c23","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/24/canvas/c24","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/25/canvas/c25","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/26/canvas/c26","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/27/canvas/c27","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/28/canvas/c28","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/29/canvas/c29","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/30/canvas/c30","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/31/canvas/c31","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/32/canvas/c32","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/33/canvas/c33","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/34/canvas/c34","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/35/canvas/c35","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/36/canvas/c36","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/37/canvas/c37","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/38/canvas/c38","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/39/canvas/c39","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/40/canvas/c40","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/41/canvas/c41","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/42/canvas/c42","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/43/canvas/c43","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/44/canvas/c44","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/45/canvas/c45","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/46/canvas/c46","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/47/canvas/c47","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/48/canvas/c48","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/49/canvas/c49","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/50/canvas/c50","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/51/canvas/c51","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/52/canvas/c52","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/53/canvas/c53","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/54/canvas/c54","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/55/canvas/c55","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/56/canvas/c56","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/57/canvas/c57","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/58/canvas/c58","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/59/canvas/c59","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/60/canvas/c60","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/61/canvas/c61","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/62/canvas/c62","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/63/canvas/c63","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/64/canvas/c64","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/65/canvas/c65","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/66/canvas/c66","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/67/canvas/c67","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/68/canvas/c68","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/69/canvas/c69","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/70/canvas/c70","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/71/canvas/c71","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/72/canvas/c72","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/73/canvas/c73","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/74/canvas/c74","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/75/canvas/c75","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/76/canvas/c76","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/77/canvas/c77","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/78/canvas/c78","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/79/canvas/c79","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/80/canvas/c80","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/81/canvas/c81","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/82/canvas/c82","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/83/canvas/c83","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/84/canvas/c84","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/85/canvas/c85","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/86/canvas/c86","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/87/canvas/c87","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/88/canvas/c88","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/89/canvas/c89","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/90/canvas/c90","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/91/canvas/c91","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/92/canvas/c92","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/93/canvas/c93","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/94/canvas/c94","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/95/canvas/c95","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/96/canvas/c96","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/97/canvas/c97","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/98/canvas/c98","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/99/canvas/c99","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/100/canvas/c100","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/101/canvas/c101","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/102/canvas/c102","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/103/canvas/c103","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/104/canvas/c104","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/105/canvas/c105","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/106/canvas/c106","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/107/canvas/c107","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/108/canvas/c108","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/109/canvas/c109","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/110/canvas/c110","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/111/canvas/c111","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/112/canvas/c112","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/113/canvas/c113","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/114/canvas/c114","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/115/canvas/c115","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/116/canvas/c116","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/117/canvas/c117","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/118/canvas/c118","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/119/canvas/c119","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/120/canvas/c120","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/121/canvas/c121","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/122/canvas/c122","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/123/canvas/c123","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/124/canvas/c124","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/125/canvas/c125","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/126/canvas/c126","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/127/canvas/c127","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/128/canvas/c128","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/129/canvas/c129","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/130/canvas/c130","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/131/canvas/c131","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/132/canvas/c132","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/133/canvas/c133","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/134/canvas/c134","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/135/canvas/c135","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/136/canvas/c136","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/137/canvas/c137","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/138/canvas/c138","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/139/canvas/c139","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/140/canvas/c140","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/141/canvas/c141","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/142/canvas/c142","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/143/canvas/c143","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/144/canvas/c144","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/145/canvas/c145","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/146/canvas/c146","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/147/canvas/c147","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/148/canvas/c148","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/149/canvas/c149","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/150/canvas/c150","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/151/canvas/c151","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/152/canvas/c152","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/153/canvas/c153","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/154/canvas/c154","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/155/canvas/c155","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/156/canvas/c156","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/157/canvas/c157","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/158/canvas/c158","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/159/canvas/c159","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/160/canvas/c160","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/161/canvas/c161","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/162/canvas/c162","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/163/canvas/c163","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/164/canvas/c164","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/165/canvas/c165","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/166/canvas/c166","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/167/canvas/c167","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/168/canvas/c168","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/169/canvas/c169","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/170/canvas/c170","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/171/canvas/c171","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/172/canvas/c172","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/173/canvas/c173","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/174/canvas/c174","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/175/canvas/c175","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/176/canvas/c176","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/177/canvas/c177","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/178/canvas/c178","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/179/canvas/c179","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/180/canvas/c180","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/181/canvas/c181","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/182/canvas/c182","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/183/canvas/c183","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/184/canvas/c184","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/185/canvas/c185","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/186/canvas/c186","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/187/canvas/c187","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/188/canvas/c188","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/189/canvas/c189","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/190/canvas/c190","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/191/canvas/c191","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/192/canvas/c192","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/193/canvas/c193","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/194/canvas/c194","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/195/canvas/c195","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/196/canvas/c196","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/197/canvas/c197","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/198/canvas/c198","https://cdm17308.contentdm.oclc.org/digital/iiif/ahs/199/canvas/c199"],"viewingHint":"top"}]}'
-  recorded_at: Wed, 13 Dec 2023 22:06:45 GMT
+  recorded_at: Thu, 28 Mar 2024 14:02:25 GMT
 - request:
     method: get
     uri: https://cdm17308.contentdm.oclc.org/iiif/info/ahs/manifest.json
@@ -431,7 +431,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:36 GMT
       Server:
       - Apache
       Content-Type:
@@ -458,7 +458,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:36 GMT
       Content-Length:
       - '687'
     body:
@@ -528,7 +528,7 @@ http_interactions:
         Lancer; Vol. 12, No. 18"},{"@type":"sc:Manifest","@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ahs/10905/manifest.json","label":"The
         Lancer; Vol. 12, No. 17"},{"@type":"sc:Manifest","@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ahs/10910/manifest.json","label":"The
         Lancer; Vol. 12, No. 1"}],"total":63}'
-  recorded_at: Wed, 13 Dec 2023 22:06:45 GMT
+  recorded_at: Thu, 28 Mar 2024 14:02:36 GMT
 - request:
     method: get
     uri: https://cdm17308.contentdm.oclc.org/iiif/info/manifest.json
@@ -548,7 +548,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:36 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -573,7 +573,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 13 Dec 2023 22:06:45 GMT
+      - Thu, 28 Mar 2024 14:02:36 GMT
       Content-Length:
       - '1638'
       Content-Type:
@@ -667,5 +667,5 @@ http_interactions:
         Voice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/wchs/manifest.json","@type":"sc:Collection","label":"Warren
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/twv/manifest.json","@type":"sc:Collection","label":"The
         Weekly View"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/modalTesting/manifest.json","@type":"sc:Collection","label":"JW_Modal_testing"}]}'
-  recorded_at: Wed, 13 Dec 2023 22:06:45 GMT
-recorded_with: VCR 6.1.0
+  recorded_at: Thu, 28 Mar 2024 14:02:36 GMT
+recorded_with: VCR 6.2.0

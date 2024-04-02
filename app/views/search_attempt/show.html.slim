@@ -5,9 +5,13 @@ section.search(style='width: 50%; float: right;')
     =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
 -if @search_results.empty? && @owners.empty?
-  h3.search_heading ==t('.no_results', query: @search_attempt.query)
+  h3.search_heading 
+    =t('.no_results')
+    i =@search_attempt.query
 -else
-  h2.search-heading ==t('.results_for', query: @search_attempt.query)
+  h2.search-heading 
+    =t('.results_for')
+    i =@search_attempt.query
 
 .columns.project-list
   article.maincol

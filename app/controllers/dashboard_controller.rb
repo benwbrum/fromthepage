@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
   include AddWorkHelper
+  include DashboardHelper
   include OwnerExporter
   PAGES_PER_SCREEN = 20
 
@@ -53,8 +54,8 @@ class DashboardController < ApplicationController
       cds = public_collections + public_document_sets
     end
     if user_signed_in?
-      cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
-      cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.all_owner_collections.restricted.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.document_sets.restricted.includes(:owner, next_untranscribed_page: :work)
 
       cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
@@ -73,34 +74,33 @@ class DashboardController < ApplicationController
   end
 
   def your_hours
-    if params['start_date'].present? && params['end_date'].present?
-      @start_date_hours = Date.parse(params['start_date'])
-      @end_date_hours = Date.parse(params['end_date'])
-
-      if @start_date_hours > @end_date_hours
-        flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
-        redirect_to dashboard_your_hours_path
-      end
-    else
-      @start_date_hours = 7.days.ago.to_date
-      @end_date_hours = Date.today
+    load_user_hours_data
+    if @start_date_hours > @end_date_hours
+      flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
+      redirect_to dashboard_your_hours_path
     end
-    @user_collections = Collection.where(
-      owner_user_id: current_user.id,
-      created_on: @start_date_hours..@end_date_hours
-    )
   end
   
   def download_hours_letter
-    load_user_data
+    load_user_hours_data
+    @time_duration=params[:time_duration]
     markdown_text = generate_markdown_text
+
+    # write the string to a temp directory
+    temp_dir = File.join(Rails.root, 'public', 'printable')
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "letter_#{time_stub}"
+    md_file = File.join(temp_dir, "#{file_stub}.md")
+    output_file = File.join(temp_dir, "#{file_stub}.pdf")
+    
+    generate_pdf(md_file, output_file, markdown_text)
   
-    input_path = Rails.root.join('tmp', 'input.md').to_s
-    output_path = Rails.root.join('tmp', 'letter.pdf').to_s
-  
-    generate_pdf(input_path, output_path, markdown_text)
-  
-    send_generated_pdf(output_path)
+    send_generated_pdf(output_file)
   end
 
   # Owner Dashboard - list of works
@@ -149,7 +149,17 @@ class DashboardController < ApplicationController
     collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
-    @collections = (collections + recent_collections + document_sets).uniq.sort { |a, b| a.title <=> b.title }.take(5)
+    @collections = (collections + recent_collections + document_sets)
+               .uniq
+               .sort_by do |collection|
+                 if collection.is_a?(Collection)
+                   collection.created_on
+                 elsif collection.is_a?(DocumentSet)
+                   collection.created_at
+                 end
+               end
+               .reverse
+               .take(10)
   end
 
 
@@ -270,29 +280,35 @@ class DashboardController < ApplicationController
     params.require(:work).permit(:title, :description, :collection_id)
   end
 
-  def load_user_data
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
-    @time_duration = params[:time_duration]
-    @user_collections = Collection.where(
-      owner_user_id: current_user.id,
-      created_on: @start_date..@end_date
-    )
+  def load_user_hours_data
+    if params['start_date'].present? && params['end_date'].present?
+      @start_date_hours = Date.parse(params['start_date'])
+      @end_date_hours = Date.parse(params['end_date'])
+    else
+      @start_date_hours = 7.days.ago.to_date
+      @end_date_hours = Date.today
+    end
+    @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
+
+    raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
+    @collection_id_to_page_count = raw.select{|collection_id, page_id| !page_id.nil? }.map{|collection_id, page_id| collection_id}.tally
+    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
   end
   
   def generate_markdown_text
     <<~MARKDOWN
       ![](app/assets/images/logo.png){width=300px style='display: block; margin-left: 300px auto;'}  
       &nbsp; &nbsp;
-      \n#{generated_format_date(Time.now.to_date.to_s)}\n
+      \n#{generated_format_date(Time.now.to_date)}\n
       &nbsp; &nbsp;
       \n#{I18n.t('dashboard.hours_letter.to_whom_it_may_concern')}\n
-      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
+      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date_hours), end_date: generated_format_date(@end_date_hours))}\n
       #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: current_user.real_name)}\n
       #{I18n.t('dashboard.hours_letter.institutions_header')}
       #{I18n.t('dashboard.hours_letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
       #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      |
       #{I18n.t('dashboard.hours_letter.regards_text')}\n
       | 
       | Sara Brumfield
@@ -302,12 +318,11 @@ class DashboardController < ApplicationController
   
   def generate_collection_rows(user_collections)
     user_collections.map do |collection|
-      "| #{collection.owner.display_name} | #{collection.title} | #{collection.pages.count} |"
+      "| #{collection.owner.display_name} | #{collection.title} | #{@collection_id_to_page_count[collection.id]} |"
     end.join("\n")
   end
 
   def generated_format_date(date)
-    date = Date.parse(date)
     formatted_date = date.strftime("%B %d, %Y")
   end
   
@@ -318,6 +333,10 @@ class DashboardController < ApplicationController
   end
   
   def send_generated_pdf(output_path)
-    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
+    # spew the output to the browser
+    send_data(File.read(output_path), 
+      filename: File.basename("letter.pdf"), 
+      :content_type => "application/pdf")
+    cookies['download_finished'] = 'true'
   end
 end
