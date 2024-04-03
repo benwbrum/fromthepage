@@ -16,6 +16,7 @@ class CollectionController < ApplicationController
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
@@ -561,7 +562,11 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    @works = @collection.works.includes(:work_statistic).order(:title)
+    if params[:only_transcribed].present?
+      @works = @collection.works.joins(:work_statistic).where("work_statistics.transcribed_percentage < ?", 100).where("work_statistics.needs_review = ?", 0).order(:title)
+    else
+      @works = @collection.works.includes(:work_statistic).order(:title)
+    end
   end
 
   def needs_transcription_pages
@@ -724,5 +729,9 @@ private
     end
   end
 
+  private
+  def permit_only_transcribed_works_flag
+    params.permit(:only_transcribed)
+  end  
 
 end
