@@ -119,9 +119,9 @@ class IiifController < ApplicationController
     if domain.include? '.'
       # this is an actual domain
       if terminus_a_quo && terminus_ad_quem
-        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic)
       elsif terminus_a_quo
-        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ? AND work_statistics.last_edit_at >= ?", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
       else
         works = Work.joins(:sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").includes(:work_statistic, :sc_manifest)
       end
@@ -131,9 +131,9 @@ class IiifController < ApplicationController
       user = User.find(domain)
       if user && user.owner
         if terminus_a_quo && terminus_ad_quem
-          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ?", user.id).where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ?", user.id).where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic, :sc_manifest)
         elsif terminus_a_quo
-          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ? AND work_statistics.last_edit_at >= ?", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
         else
           works = Work.joins(:collection).where("collections.owner_user_id = ?", user.id).includes(:work_statistic, :sc_manifest)
         end        

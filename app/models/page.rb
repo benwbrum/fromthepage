@@ -40,7 +40,7 @@ class Page < ApplicationRecord
   after_save :update_tex_figures
   after_save do
     work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
-    work.work_statistic.update_last_edit_date if self.source_text_changed? or self.source_translation_changed?
+    work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
   end
 
   after_initialize :defaults

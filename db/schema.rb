@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_31_150510) do
+ActiveRecord::Schema.define(version: 2024_03_26_200815) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -32,6 +32,21 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["user_id", "name"], name: "index_ahoy_events_on_user_id_and_name"
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
+  end
+
+  create_table "ai_jobs", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.string "job_type"
+    t.string "engine"
+    t.string "parameters"
+    t.string "status"
+    t.integer "work_id", null: false
+    t.integer "collection_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_ai_jobs_on_collection_id"
+    t.index ["user_id"], name: "index_ai_jobs_on_user_id"
+    t.index ["work_id"], name: "index_ai_jobs_on_work_id"
   end
 
   create_table "article_article_links", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -336,6 +351,8 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.text "params"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ai_job_id"
+    t.index ["ai_job_id"], name: "index_external_api_requests_on_ai_job_id"
     t.index ["collection_id"], name: "index_external_api_requests_on_collection_id"
     t.index ["page_id"], name: "index_external_api_requests_on_page_id"
     t.index ["user_id"], name: "index_external_api_requests_on_user_id"
@@ -574,7 +591,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end
 
-  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "title"
     t.text "source_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "base_image"
@@ -599,6 +616,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.float "approval_delta"
     t.integer "last_editor_user_id"
     t.datetime "last_note_updated_at"
+    t.datetime "updated_at"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"
@@ -1132,6 +1150,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.integer "line_count"
     t.integer "transcribed_percentage"
     t.integer "needs_review_percentage"
+    t.datetime "last_edit_at"
     t.index ["work_id", "line_count"], name: "index_work_statistics_on_work_id_and_line_count"
   end
 
@@ -1180,6 +1199,9 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
 
+  add_foreign_key "ai_jobs", "collections"
+  add_foreign_key "ai_jobs", "users"
+  add_foreign_key "ai_jobs", "works"
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"
@@ -1189,6 +1211,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_150510) do
   add_foreign_key "collection_blocks", "users"
   add_foreign_key "collections", "thredded_messageboard_groups"
   add_foreign_key "editor_buttons", "collections"
+  add_foreign_key "external_api_requests", "ai_jobs"
   add_foreign_key "external_api_requests", "collections"
   add_foreign_key "external_api_requests", "users"
   add_foreign_key "external_api_requests", "works"
