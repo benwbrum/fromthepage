@@ -39,6 +39,7 @@ describe "collection statistics", :order => :defined do
     click_link "Historia del Paraguay", match: :first
     expect(page).to have_content("Settings")
     click_link "Settings"
+    page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Owners'
     select("jose - jose@example.org", from: "user_id").select_option
     within(".user-select-form") do

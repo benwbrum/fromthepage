@@ -10,10 +10,13 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]                              
+
   before_action :authorized?, :only => [:new, :edit, :update, :delete]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
@@ -94,31 +97,8 @@ class CollectionController < ApplicationController
     end
 
     flash[:notice] = t('.editor_buttons_updated')
-    ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
+    ajax_redirect_to(edit_tasks_collection_path(@collection.owner, @collection))
 
-  end
-
-
-  def enable_messageboards
-    @collection.enable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def disable_messageboards
-    @collection.disable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def enable_document_sets
-    @collection.supports_document_sets = true
-    @collection.save!
-    redirect_to document_sets_path(collection_id: @collection)
-  end
-
-  def disable_document_sets
-    @collection.supports_document_sets = false
-    @collection.save!
-    redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
   def facets
@@ -158,23 +138,6 @@ class CollectionController < ApplicationController
     session[:new_mobile_user] = false
   end
 
-  def load_settings
-    @main_owner = @collection.owner
-    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
-    @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
-    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
-    if User.count > 100
-      @nonowners = []
-      @noncollaborators = []
-      @nonreviewers = []
-    else
-      @nonowners = User.order(:display_name) - @owners
-      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
-      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
-      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
-    end
-  end
 
   def show
     if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
@@ -411,42 +374,31 @@ class CollectionController < ApplicationController
   def publish_collection
     @collection.restricted = false
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
-  def toggle_collection_active
-    @collection.is_active = !@collection.active?
-    @collection.save!
-
+  def toggle_collection_active(is_active)
     # Register New Deed for In/Active
     deed = Deed.new
     deed.collection = @collection
     deed.user = current_user
-    if @collection.active?
+    if is_active
       deed.deed_type = DeedType::COLLECTION_ACTIVE
     else
       deed.deed_type = DeedType::COLLECTION_INACTIVE
     end
     deed.save!
-
-    redirect_to action: 'edit', collection_id: @collection.id
-  end
-
-  def toggle_collection_api_access
-    @collection.api_access = !@collection.api_access
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def restrict_collection
     @collection.restricted = true
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def restrict_transcribed
     @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def enable_fields
@@ -455,24 +407,6 @@ class CollectionController < ApplicationController
     @collection.language = nil
     @collection.save!
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
-  end
-
-  def disable_fields
-    @collection.field_based = false
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
-  end
-
-  def enable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_AND_METADATA
-    @collection.save!
-    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
-  end
-
-  def disable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_ONLY
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
   end
 
   def delete
@@ -485,44 +419,70 @@ class CollectionController < ApplicationController
   end
 
   def edit
+  end
+
+  def edit_tasks
     @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
-    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
-    #array of languages
-    array = Collection::LANGUAGE_ARRAY
-
-    #set language to default if it doesn't exist
-
-    lang = !@collection.language.blank? ? @collection.language : "en-US"
-    #find the language portion of the language/dialect or set to nil
-    part = lang.split('-').first
-    #find the index of the language in the array (transform to integer)
-    @lang_index = array.size.times.select {|i| array[i].include?(part)}[0]
-    #then find the index of the nested dialect within the language array
-    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
-    #transform to integer and subtract 2 because of how the array is nested
-    @dialect_index = !int.nil? ? int-2 : nil
     if @collection.field_based && !@collection.transcription_fields.present? 
       flash.now[:info] = t('.alert') 
     end
   end
 
+  def edit_look
+    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
+  end
+
   def update
-    @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
-    params[:collection].delete(:subjects_enabled)
+    # Convert incoming params to fit the model
+    if collection_params[:subjects_enabled].present?
+      params[:collection][:subjects_disabled] = (collection_params[:subjects_enabled] == '1') ? false : true
+      params[:collection].delete(:subjects_enabled)
+    end
+    if collection_params[:data_entry_type].present?
+      params[:collection][:data_entry_type] = (collection_params[:data_entry_type] == '1') ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
+    end
+
+    # Default slug to title if blank
+    if collection_params[:slug] == ""
+      params[:collection][:slug] = @collection.title.parameterize
+    end
+
+    # Call methods to enable/disable features if the fields have changed
+    if collection_params[:messageboards_enabled].present? && collection_params[:messageboards_enabled] != @collection.messageboards_enabled
+      collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
+    end
+    if collection_params[:is_active].present? && collection_params[:is_active] != @collection.is_active
+      toggle_collection_active(collection_params[:is_active] == "true")
+    end
+    if collection_params[:field_based] == "1" && !@collection.field_based
+      enable_fields
+    end
 
     @collection.attributes = collection_params
-
-    if collection_params[:slug].blank?
-      @collection.slug = @collection.title.parameterize
-    end
+    updated_fields = updated_fields_hash
     @collection.tags = Tag.where(id: params[:collection][:tags])
 
     if @collection.save
-      flash[:notice] = t('.notice')
-      redirect_to action: 'edit', collection_id: @collection.id
+      if request.xhr?
+        render json: { 
+          success: true,
+          updated_field: updated_fields
+        }
+      else
+        flash[:notice] = t('.notice')
+        redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
+      end
     else
-      edit # load the appropriate variables
-      render action: 'edit'
+      if request.xhr?
+        render json: { 
+          success: false,
+          errors: @collection.errors.full_messages
+        }
+      else
+        edit # load the appropriate variables
+        edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
+        render action: edit_action
+      end
     end
   end
 
@@ -602,7 +562,11 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    @works = @collection.works.includes(:work_statistic).order(:title)
+    if params[:only_transcribed].present?
+      @works = @collection.works.joins(:work_statistic).where("work_statistics.transcribed_percentage < ?", 100).where("work_statistics.needs_review = ?", 0).order(:title)
+    else
+      @works = @collection.works.includes(:work_statistic).order(:title)
+    end
   end
 
   def needs_transcription_pages
@@ -647,13 +611,13 @@ class CollectionController < ApplicationController
   def enable_ocr
     @collection.enable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def disable_ocr
     @collection.disable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def email_link
@@ -711,7 +675,63 @@ private
     end
   end
 
-  def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id, :alphabetize_works, :tags)
+  def updated_fields_hash
+    @collection.changed.to_h {|field| [field, @collection.send(field)]}
   end
+
+  def collection_params
+    params.require(:collection).permit(
+      :title, 
+      :slug, 
+      :intro_block, 
+      :transcription_conventions, 
+      :help, 
+      :link_help, 
+      :subjects_disabled, 
+      :subjects_enabled, 
+      :review_type, 
+      :hide_completed, 
+      :text_language, 
+      :default_orientation, 
+      :voice_recognition, 
+      :picture, 
+      :user_download, 
+      :enable_spellcheck, 
+      :messageboards_enabled,
+      :facets_enabled, 
+      :supports_document_sets,
+      :api_access, 
+      :data_entry_type, 
+      :field_based,
+      :is_active, 
+      :search_attempt_id, 
+      :alphabetize_works,
+      :tags
+    )
+  end
+
+  def load_settings
+    @main_owner = @collection.owner
+    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
+    @works_not_in_collection = current_user.owner_works - @collection.works
+    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
+    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
+    @blocked_users = @collection.blocked_users.sort_by { |blocked_user| blocked_user.display_name }
+    if User.count > 100
+      @nonowners = []
+      @noncollaborators = []
+      @nonreviewers = []
+    else
+      @nonowners = User.order(:display_name) - @owners
+      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    end
+  end
+
+  private
+  def permit_only_transcribed_works_flag
+    params.permit(:only_transcribed)
+  end  
+
 end
