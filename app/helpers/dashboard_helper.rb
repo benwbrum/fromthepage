@@ -39,7 +39,7 @@ module DashboardHelper
     AhoyActivitySummary
       .where(user_id: user_id)
       .where.not(collection_id: nil)
-      .where("created_at >= ? AND created_at <= ?", start_date, end_date)
+      .where("date >= ? AND date <= ?", start_date, end_date)
       .sum(:minutes)
   end
   
