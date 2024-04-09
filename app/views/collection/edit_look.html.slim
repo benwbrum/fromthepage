@@ -1,0 +1,94 @@
+=javascript_include_tag "settings"
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+.collection-meta-wrapper
+  =render({ :partial => 'edit_tabs', :locals => { :selected => 3}})
+
+  .collection-settings-wrapper
+    =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
+      =validation_summary @collection.errors
+      =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+      table.form.collection-settings
+        tr
+          td(colspan="2")
+            =f.label :default_orientation
+              h3(style="display:inline-block") =t('.default_orientation')
+              =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w20'}
+              p =t('.default_orientation_description')
+        tr
+          td(colspan="2")
+            =f.check_box :user_download, disabled: !@collection.text_entry?
+            =f.label :user_download, disabled: !@collection.text_entry?
+              h3 =t('.user_download')
+              p =t('.user_download_description')
+        tr
+          td(colspan="2")
+            =f.check_box :alphabetize_works
+            =f.label :alphabetize_works
+              h3 =t('.alphabetize_works')
+              p =t('.alphabetize_works_description')
+        tr
+          td(colspan="2")
+            =f.check_box :hide_completed
+            =f.label :hide_completed
+              h3 =t('.hide_completed')
+              p =t('.hide_completed_description')
+        tr 
+          td(colspan="2")
+            =f.check_box :messageboards_enabled
+            =f.label :messageboards_enabled
+              h3 =t('.enable_forums')
+              p =t('.forums_description')
+        -if current_user.account_type != "Individual Researcher"
+          tr 
+            td(colspan="2")
+              =f.check_box :supports_document_sets
+              =f.label :supports_document_sets
+                h3.settings-label =t('.enable_document_sets')
+                =link_to t('.edit_document_sets'), document_sets_path(collection_id: @collection), disabled: !@collection.supports_document_sets?, class: 'button inline-btn exits', id: 'document-sets-edit', 'aria-label' => t('.edit_document_sets')
+                p =t('.document_sets_description')
+        tr 
+          td(colspan="2")
+            h3 =t('.metadata')
+            =link_to(collection_metadata_upload_path(@collection.id), class: 'button action-btn', :data => { litebox: { hash: 'upload-metadata' }})
+              span =t('.upload_metadata')
+            p =t('.metadata_description')
+        tr 
+          td(colspan="2")
+            -researcher = current_user.account_type == "Individual Researcher"
+            =f.check_box :facets_enabled, disabled: researcher
+            =f.label :facets_enabled
+              h3.settings-label =t('.enable_metadata_facets')
+              =link_to t('.edit_facets'), collection_facets_path(@collection.owner, @collection), disabled: !@collection.facets_enabled? || researcher, class: 'button inline-btn exits', id: 'facets-edit', 'aria-label' => t('.edit_facets')
+              p =t('.metadata_facets_description')
+              i =t('.not_available_researcher') if researcher
+        tr 
+          td(colspan="2")
+              =f.check_box :enable_spellcheck, disabled: !@collection.text_entry? || @collection.field_based?
+              =f.label :enable_spellcheck
+                h3 =t('.enable_spellcheck')
+                p =t('.spellcheck_description')
+        tr
+          td(colspan="2")
+            =f.check_box :voice_recognition, disabled: !@collection.text_entry? || @collection.field_based?, onchange: 'showLang(event)'
+            =f.label :voice_recognition
+              h3 =t('.voice_recognition')
+              p =t('.voice_recognition_description')
+
+-content_for :javascript
+  javascript: 
+    $(document).ready(function() {
+      $('input[type=checkbox][name="collection[facets_enabled]"]').change(function() {
+        if ($(this).is(':checked')) {
+          $('#facets-edit').removeAttr('disabled');
+        } else {
+          $('#facets-edit').attr('disabled', 'disabled');
+        }
+      });
+      $('input[type=checkbox][name="collection[supports_document_sets]"]').change(function() {
+        if ($(this).is(':checked')) {
+          $('#document-sets-edit').removeAttr('disabled');
+        } else {
+          $('#document-sets-edit').attr('disabled', 'disabled');
+        }
+      });
+    });

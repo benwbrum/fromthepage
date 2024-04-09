@@ -81,6 +81,10 @@ class WorkStatistic < ApplicationRecord
     (pct_translated + pct_translation_annotated).round(2)
   end
 
+  def update_last_edit_date
+    self.update(last_edit_at: Time.now)
+  end
+
   def recalculate(_options = {})
     recalculate_from_hash
     recalculate_parent_statistics

@@ -414,6 +414,9 @@
 
 
 // Collection settings
+.collection-meta-wrapper {
+  overflow: auto;
+}
 
 .collection-works-manage {
   .action {
@@ -430,19 +433,203 @@
   }
 }
 
+.collection-settings-wrapper {
+  width: 80%;
+  float: left;
+  padding-left: 2%;
+  border-left: 1px solid rgba(#000, 0.15);
+}
+
 .collection-settings {
-  td input[type="checkbox"] {
-    margin-right: 5px;
-    margin-top: 10px;
+  border-collapse: separate;
+  border-spacing: 0.25em 0.5em;
+
+  th {
+    white-space: normal !important;
+    vertical-align: top;
   }
-  td select {
-    margin-top: 10px;
+  td:nth-child(1), th { 
+    width: 30%;
+  }
+  td:nth-child(2) {
+    width: 70%;
+  }
+  p {
+    margin: 0;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 7px; // align with label
+    vertical-align: top;
+  }
+  select, .inline-btn, .select2 {
+    margin-left: 1em;
+    display: inline-block;
+
+    &.select2-hidden-accessible {
+      display: none;
+    }
+  }
+  .action-btn {
+    margin-bottom: 0.5em;
+  }
+  td label {
+    vertical-align: top;
+    width: 95%;
   }
   .collection-label {
     margin-right: 10px;
   }
+  .settings-label {
+    display: inline-block;
+  }
+  .image-form label {
+    width: 150px;
+  }
+  .button[disabled] {
+    pointer-events: none;
+  }
 }
 
+.side-tabs {
+  $textColor: #322;
+  float: left;
+  padding-right: 2%;
+  font-family: $fontFamilyHead;
+  font-size: $fontSizeBig;
+  a {
+    display: block;
+    margin: 0 0 1em 0;
+    text-decoration: none;
+    color: rgba($textColor, 0.65);
+    &:hover {
+      text-decoration: underline;
+    }
+    &.active {
+      color: $textColor;
+      cursor: default;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .icon {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+.image-upload {
+  height: auto !important;
+  min-height: 50px;
+  max-height: 150px;
+  width: auto !important;
+  min-width: 120px;
+  max-width: 150px;
+}
+
+.users-list {
+  $bgColor: mix($themeLight, $bodyBg, 50);
+  background-color: $bgColor;
+  border: 1px solid $bgColor;
+  border-radius: 16px;
+  padding: 1em;
+  display: inline-block;
+  width: 100%;
+  overflow: none;
+  position: relative;
+
+  .expand-btn {
+    color: $bodyFgLight;
+    text-decoration: none;
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    width: fit-content;
+
+    .no-display {
+      display: none;
+    }
+    .icon {
+      transform: rotate(0deg);
+      transition: transform 0.3s;
+    }
+  }
+  .user-label {
+    float: left;
+    min-width: 40%;
+    width: fit-content;
+
+    &:nth-child(n+6) {
+      display: none;
+    }
+    &:nth-child(5) {
+      margin-right: 60px; // prevent overlap with expand button
+    }
+    a {
+      padding-right: 1em;
+    }
+  }
+  
+  &.expanded {
+    .user-label {
+      display: inline-block;
+      &:nth-child(5) {
+        margin-right: 0; // expand button is gone
+      }
+    }
+    .expand-btn .icon {
+      transform: rotate(-180deg);
+      transition: transform 0.3s;
+    }
+  }
+
+  .nodata {
+    margin: 0;
+    padding: 20px;
+    border: none;
+    background-color:inherit;
+  }
+
+  &.disabled {
+    $disabledBg: mix($bodyBg, gray, 90);
+    $disabledFg: mix($bodyFgLight, $disabledBg, 70);
+    background-color: $disabledBg;
+    a, h3 {
+      text-decoration: none;
+      color: $disabledFg;
+    }
+  }
+}
+
+.danger-warning {
+  background-color: mix($bgRed, red, 90);
+  border: 1px solid $bgRed;
+  border-radius: 16px;
+  padding: 1em;
+  color: $fgRed;
+  .icon {
+    margin-right: 0.5em;
+  }
+}
+
+.footer-preview {
+  $bgColor: mix($themeLight, $bodyBg, 50);
+  background-color: $bgColor;
+  border-radius: 16px;
+  padding: 1em;
+  
+  text-align: center;
+  color: $bodyFgLight;
+}
+
+.clipboard-btn {
+  color: inherit;
+  .icon {
+    margin-left: 0.5em;
+  }
+}
 
 // Collection export
 

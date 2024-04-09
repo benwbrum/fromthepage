@@ -20,6 +20,8 @@ describe "testing deletions" do
     col = @collections.first
     visit collection_path(col.owner, col)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     expect(page).to have_content("Blank Collection")
     page.find('a', text: 'Blank Collection').click
     expect(page.current_path).to eq("/collection/show")
@@ -114,6 +116,8 @@ end
       expect(page).to have_content(w.title)
     end
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     expect(page).to have_selector('a', text: 'Delete Collection')
     page.find('a', text: 'Delete Collection').click
     del_count = @owner.all_owner_collections.count

@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2024_03_22_133557) do
+=======
+ActiveRecord::Schema.define(version: 2024_03_26_200815) do
+>>>>>>> development
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -591,7 +595,11 @@ ActiveRecord::Schema.define(version: 2024_03_22_133557) do
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end
 
+<<<<<<< HEAD
   create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+=======
+  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+>>>>>>> development
     t.string "title"
     t.text "source_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "base_image"
@@ -616,6 +624,7 @@ ActiveRecord::Schema.define(version: 2024_03_22_133557) do
     t.float "approval_delta"
     t.integer "last_editor_user_id"
     t.datetime "last_note_updated_at"
+    t.datetime "updated_at"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"
