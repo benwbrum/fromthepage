@@ -162,7 +162,7 @@ class Work < ApplicationRecord
   end
 
   def verbatim_transcription_plaintext
-    self.pages.map { |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
+    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map{ |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
   end
 
   def verbatim_translation_plaintext
@@ -170,7 +170,7 @@ class Work < ApplicationRecord
   end
 
   def emended_transcription_plaintext
-    self.pages.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
+    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
   end
 
   def emended_translation_plaintext
@@ -178,7 +178,7 @@ class Work < ApplicationRecord
   end
 
   def searchable_plaintext
-    self.pages.map { |page| page.search_text}.join("\n\n\n")
+    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map { |page| page.search_text}.join("\n\n\n")
   end
 
   def suggest_next_page_title

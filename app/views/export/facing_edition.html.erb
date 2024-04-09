@@ -36,7 +36,9 @@
 <% end %>
 
 ### <%= page.title %>
+<% if page.status != Page::STATUS_BLANK %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
+<% end %>
 
 <% if @work.supports_translation && !page.xml_translation.blank?%>
 ### <%= page.title %>

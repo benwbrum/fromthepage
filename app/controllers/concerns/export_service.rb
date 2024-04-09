@@ -231,15 +231,15 @@ module ExportService
     case name
     when "verbatim"
       out.put_next_entry path
-      out.write page.verbatim_transcription_plaintext
+      out.write page.verbatim_transcription_plaintext if page.status != Page::STATUS_BLANK
     when "expanded"
       if page.collection.subjects_disabled
         out.put_next_entry path
-        out.write page.emended_transcription_plaintext
+        out.write page.emended_transcription_plaintext if page.status != Page::STATUS_BLANK
       end
     when "searchable"
       out.put_next_entry path
-      out.write page.search_text      
+      out.write page.search_text if page.status != Page::STATUS_BLANK
     end
   end
 
@@ -254,11 +254,11 @@ module ExportService
       case name
       when "verbatim"
         out.put_next_entry path
-        out.write page.verbatim_translation_plaintext
+        out.write page.verbatim_translation_plaintext if page.status != Page::STATUS_BLANK
       when "expanded"
         if page.collection.subjects_disabled
           out.put_next_entry path
-          out.write page.emended_translation_plaintext
+          out.write page.emended_translation_plaintext if page.status != Page::STATUS_BLANK
         end
       end
     end
@@ -344,7 +344,7 @@ module ExportService
     out.put_next_entry path
 
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
-    out.write page_view
+    out.write page_view if page.status != Page::STATUS_BLANK
   end
 
 
