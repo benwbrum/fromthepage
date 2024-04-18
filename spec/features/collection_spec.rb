@@ -22,17 +22,33 @@ describe "collection settings js tasks", :order => :defined do
     @article = @collection.articles.first
   end
 
-  it "sets collection to private" do
+  it "sets collection to private", js: true do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    #check to see if Collaborators are visible
-    expect(page).not_to have_content("Collection Collaborators")
-    expect(page).not_to have_content("API Access")
+    page.find('.side-tabs').click_link("Privacy & Access")
+
+    expect(@collection.is_public).to eq true
+    expect(page).to have_content("Collection privacy: Public")
+    #check to see if Collaborators & API access are disabled
+    expect(page.find('#users-list-collaborators')).to match_css('.disabled')
+    expect(page.find_link('Edit Collaborators')).to match_css('[disabled]')
+    expect(page).to have_field('collection[api_access]', disabled: true)
+    #check to see if Blocked Users is enabled
+    expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
+    expect(page.find_link('Block Users')).not_to match_css('[disabled]')
+
     page.click_link('Make Collection Private')
-    #check to see if Collaborators are visible
-    expect(page).to have_content("Collection Collaborators")
-    expect(page).to have_content("API Access")
+    @collection.reload
+    expect(@collection.is_public).to eq false
+    expect(page).to have_content("Collection privacy: Private")
+    #check to see if Collaborators & API access are enabled
+    expect(page.find('#users-list-collaborators')).not_to match_css('.disabled')
+    expect(page.find_link('Edit Collaborators')).not_to match_css('[disabled]')
+    expect(page).to have_field('collection[api_access]', disabled: false)
+    #check to see if Blocked Users is disabled
+    expect(page.find('#users-list-blocked')).to match_css('.disabled')
+    expect(page.find_link('Block Users')).to match_css('[disabled]')
   end
 
   it "checks that a restricted user can't view the collection" do
@@ -46,6 +62,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Privacy & Access")
     #this user should not get an email (notifications turned off)
     page.click_link 'Edit Collaborators'
     select(@rest_user.name_with_identifier, from: 'collaborator_id')
@@ -84,6 +101,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Privacy & Access")
     page.click_link 'Edit Collaborators'
     page.find('.user-label', text: @rest_user.display_name).find('button').click
     page.find('.user-label', text: @notify_user.display_name).find('button').click
@@ -101,6 +119,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Privacy & Access")
     #this user should not get an email (notifications turned off)
     page.click_link 'Edit Owners'
     select(@rest_user.name_with_identifier, from: 'user_id')
@@ -128,6 +147,8 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.tabs')).to have_selector('a', text: 'Export')
     expect(page.find('.tabs')).to have_selector('a', text: 'Collaborators')
     expect(page.find('.tabs')).to have_selector('a', text: 'Add Work')
+    page.click_link("Settings")
+    expect(page.find('.side-tabs')).not_to have_selector('a', text: 'Danger Zone')
     visit dashboard_owner_path
     expect(page).to have_content("Owner Dashboard")
     expect(page).not_to have_selector('.owner-info')
@@ -137,6 +158,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Privacy & Access")
     page.click_link 'Edit Owners'
     page.find('.user-label', text: @rest_user.display_name).find('button').click
     page.find('.user-label', text: @notify_user.display_name).find('button').click
@@ -149,10 +171,11 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
-  it "sets collection to public" do
+  it "sets collection to public", js: true do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Privacy & Access")
     page.click_link("Make Collection Public")
   end
   
@@ -167,11 +190,15 @@ describe "collection settings js tasks", :order => :defined do
       expect(page).to have_link('Transcribe')
     end
 
-    it "toggles collection inactive" do
+    it "toggles collection inactive", js: true do
       login_as(@owner, :scope => :user)
       visit collection_path(@collection.owner, @collection)
       page.find('.tabs').click_link("Settings")
-      page.click_link("Make Collection Inactive")
+      page.find('.side-tabs').click_link("Danger Zone")
+      expect(page).to have_content("Collection status: Active")
+      page.choose("collection_is_active_false")
+      sleep 0.5
+      expect(page).to have_content("Collection status: Inactive")
     end
 
     it "logs a deed when marked inactive" do
@@ -185,11 +212,14 @@ describe "collection settings js tasks", :order => :defined do
       expect(page).to have_content('not active')
     end
 
-    it "toggles collection active" do
+    it "toggles collection active", js: true do
       login_as(@owner, :scope => :user)
       visit collection_path(@collection.owner, @collection)
       page.find('.tabs').click_link("Settings")
-      page.click_link("Make Collection Active")
+      page.find('.side-tabs').click_link("Danger Zone")
+      page.choose("collection_is_active_true")
+      sleep 0.5
+      expect(page).to have_content("Collection status: Active")
     end
 
     it "logs a deed when marked active" do
@@ -318,35 +348,41 @@ describe "collection spec (isolated)" do
 
     it 'shows OCR section' do
       visit edit_collection_path(@owner, collection_ocr_mixed)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       expect(page).to have_content("OCR Correction")
     end
     it 'shows mixed OCR section buttons' do
       visit edit_collection_path(@owner, collection_ocr_mixed)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       expect(page).to have_content("Enable OCR")
       expect(page).to have_content("Disable OCR")
     end
     it 'only shows enable OCR section buttons when all disabled' do
       visit edit_collection_path(@owner, collection_ocr_false)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_false.title)
       expect(page).to have_content("Enable OCR")
       expect(page).not_to have_content("Disable OCR")
     end
     it 'only shows disable OCR section buttons when all disabled' do
       visit edit_collection_path(@owner, collection_ocr_true)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_true.title)
       expect(page).to have_content("Disable OCR")
       expect(page).not_to have_content("Enable OCR")
     end
     it 'enables ocr' do
       visit edit_collection_path(@owner, collection_ocr_mixed)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       click_link('Enable OCR')
       expect(page).to have_content("OCR correction has been enabled for all works.")
     end
     it 'disables ocr' do
       visit edit_collection_path(@owner, collection_ocr_mixed)
+      page.find('.side-tabs').click_link('Task Configuration')
       expect(page).to have_content(collection_ocr_mixed.title)
       click_link('Disable OCR')
       expect(page).to have_content("OCR correction has been disabled for all works.")

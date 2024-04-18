@@ -26,7 +26,7 @@ class MetadataController < ApplicationController
 
     flash[:alert] = feedback
 
-    ajax_redirect_to edit_collection_path(collection.owner, collection)
+    ajax_redirect_to edit_look_collection_path(collection.owner, collection)
   end
 
   def csv_error

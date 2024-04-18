@@ -40,6 +40,7 @@ class Page < ApplicationRecord
   after_save :update_tex_figures
   after_save do
     work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
+    work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
   end
 
   after_initialize :defaults
@@ -592,7 +593,10 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      file_to_url(self.canonical_facsimile_url)
+      uri = URI.parse(file_to_url(self.canonical_facsimile_url).gsub(" ","+"))
+      uri.scheme = 'https'
+      uri.host = Rails.application.config.action_mailer.default_url_options[:host]
+      uri.to_s
     end
   end
 

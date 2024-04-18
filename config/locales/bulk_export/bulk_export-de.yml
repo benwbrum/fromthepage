@@ -5,6 +5,8 @@ de:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_owner:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_work_actual:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     download:

@@ -30,7 +30,7 @@
   <% elsif page.ia_leaf %>
 ![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
   <% else %>
-![<%= page.title %>](<%= root_url %><%= file_to_url(page.canonical_facsimile_url) %>)
+![<%= page.title %>](<%= main_app.root_url %><%= file_to_url(page.canonical_facsimile_url) %>)
   <% end %>
 \newpage
 <% end %>

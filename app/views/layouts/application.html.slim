@@ -108,8 +108,8 @@ html lang="en-US"
           =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
       =yield.force_encoding 'UTF-8'
 
-    =(yield :content_below).force_encoding 'UTF-8'
-    =render({ :partial => '/shared/user_collection_footer' })
+      =(yield :content_below).force_encoding 'UTF-8'
+      =render({ :partial => '/shared/user_collection_footer' })
     footer.footer
       .footer_links
         .footer_nav

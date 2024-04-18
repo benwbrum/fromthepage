@@ -1,0 +1,71 @@
+=javascript_include_tag "settings"
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+.collection-meta-wrapper
+  =render({ :partial => 'edit_tabs', :locals => { :selected => 4}})
+
+  .collection-settings-wrapper
+    =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
+      =validation_summary @collection.errors
+      =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+      table.form.collection-settings
+        tr 
+          th(colspan="2")
+            h3.settings-label
+              =t('.collection_privacy')
+              i =@collection.is_public ? t('.public') : t('.private')
+            -if @collection.restricted
+              =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button inline-btn')
+                =svg_symbol '#icon-unlock', class: 'icon'
+                span =t('.make_collection_public')
+            -else
+              =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button inline-btn')
+                =svg_symbol '#icon-lock', class: 'icon'
+                span =t('.make_collection_private')
+        tr 
+          td(colspan="2")
+            -if @collection.restricted
+              p =t('.collection_restricted_description')
+            -else
+              p =t('.collection_public_description')
+        tr: td
+        tr
+          th 
+            h3.settings-label =t('.collection_collaborators')
+            p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
+            p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !@collection.restricted, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+          td
+            =render 'users_list', users: @collaborators, type: 'collaborators', disabled: !@collection.restricted
+        tr 
+          th
+            h3.settings-label =t('.collection_owners')
+            p.settings-label  ="(#{@owners.count})" unless @owners.empty?
+            p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+          td
+            =render 'users_list', users: @owners, type: 'owners'
+        tr
+          th 
+            h3.settings-label =t('.blocked_users')
+            p.settings-label ="(#{@blocked_users.count})" unless @blocked_users.empty?
+            p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
+          td
+            =render 'users_list', users: @blocked_users, type: 'blocked', disabled: @collection.restricted
+        tr: td
+        tr
+          td(colspan="2")
+            h3 =t('.api_access')
+            p =t('.api_access_description')
+        tr
+          td(colspan="2")
+            =f.radio_button :api_access, true, disabled: !@collection.restricted, :checked => (@collection.api_access || !@collection.restricted)
+            =f.label :api_access_true
+              .big =t('.open_api')
+            br
+            =f.radio_button :api_access, false, disabled: !@collection.restricted, :checked => !(@collection.api_access || !@collection.restricted)
+            =f.label :api_access_false
+              .big =t('.closed_api')
+        tr 
+          td(colspan="2")
+            h3 =t('.restrict_editing')
+            =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits', disabled: @collection.works.empty? || !@collection.text_entry?)
+              span =t('.restrict_completed_works')
+            p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)

@@ -282,12 +282,12 @@ describe "needs review", :order => :defined do
     # expect(page.find('#page_mark_blank')).not_to be_checked
   end
 
-  it "sets a collection to needs review workflow" do
+  it "sets a collection to needs review workflow", js: true do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Quality Control")
     page.choose('collection_review_type_required')
-    find('#collection_settings_save').click
     review_page = @work.pages.first
     expect(review_page.status).to be_nil
     expect(review_page.translation_status).to be_nil

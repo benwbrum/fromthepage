@@ -9,7 +9,7 @@ p =t('.description')
         .edit-buttons_format
           h5
             =t(".#{key}_label")
-          p.nomargin =t(".#{key}_description")
+          p.nomargin ==t(".#{key}_description")
         .edit-buttons_options
           =f.label key
             =check_box_tag key, '1', buttons.include?(key)

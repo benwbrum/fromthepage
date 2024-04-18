@@ -4,12 +4,14 @@ es:
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     collection_works:
+      all_works: Todo funciona
       most_recent_activity: Actividad más reciente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
       work_title: Título de la obra
+      works_that_need_transcription: Obras que necesitan transcripción
     complete: completo
     contributor_activity:
       recent_notes: Notas Recientes
@@ -53,133 +55,43 @@ es:
     disable_ocr:
       notice: La corrección OCR se ha deshabilitado para todas las obras.
     edit:
-      add_a_new_work: Añadir una obra nueva
-      add_another_work_under: Puedes añadir otra obra en %{start_project}
       add_button: Añadir
-      alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
-      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
-      api_access: Acceso API
-      api_access_description: Permitir acceso a transcripciones a través del API IIIF
-      authorized_reviewers: revisores autorizados
-      blank_collection: Colección en Blanco
-      blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
-      block: Bloquear usuarios
-      block_users_description: Bloquee el acceso de usuarios individuales a la colección.
-      block_users_modal_description: A estos usuarios se les ha bloqueado el acceso a la colección. La colección no será visible para ellos, como si hubiera sido marcada como privada o eliminada. Agregar usuarios a esta lista no les notificará que han sido bloqueados.
-      blocked_users: Usuarios bloqueados
-      close_api: Cerrar API
-      collection_active_message: Esta es una colección activa. Hacer inactiva una colección impide que los usuarios editen contenido dentro de la colección. El estado de la colección no afecta la configuración de privacidad de la misma.
-      collection_collaborators: Colaboradores de la Colección
-      collection_collaborators_description: Los colaboradores pueden transcribir y editar colecciones privadas.
       collection_image: Imagen de la Colección
-      collection_inactive_message: Esta es una colección inactiva. Hacer activa una colección le permite a los usuarios editar contenido dentro de la colección. El estado de la colección no afecta la configuración de privacidad de la misma.
-      collection_link: Enlace de la Colección
-      collection_owners: Dueños de la Colección
-      collection_owners_description: Los dueños pueden añadir obras a la colección y subir imágenes de páginas, así como transcribir y leer obras en la colección.
-      collection_privacy: Privacidad de la Colección
-      collection_public_message: La colección puede ser vista por cualquier persona en Internet. Puedes hacer que la colección sea privada para restringir su visibilidad a los dueños.
-      collection_restricted_message: La colección solo puede ser vista por los dueños enumerados a continuación. Es posible cambiar esto para que la colección sea legible públicamente.
-      collection_reviewers: Revisores autorizados
-      collection_reviewers_description: Estos usuarios podrán revisar y aprobar las transcripciones, así como editarlas.
-      collection_status: Estado de la Colección
-      confirm_blank_collection: "¿Estás seguro?"
-      confirm_delete_collection: "¿Estás seguro de que deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
-      current_url: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección de la obra en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
-      default_orientation: Selecciona la orientación predeterminada para la página de transcripción
-      delete_collection: Eliminar Colección
+      collection_image_description: Una imagen que se utilizará para ilustrar la descripción de la colección.
+      copy_url: Copiar al portapapeles
+      current_url: 'La URL actual de esta colección:'
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
-      disable_document_sets: Deshabilitar Conjuntos de Documentos
-      disable_facets: Deshabilitar facetas
-      disable_message_boards: Desactivar foro
-      disable_ocr: Deshabilitar OCR
-      document_sets: Conjuntos de Documentos
-      document_sets_description: Los conjuntos de documentos son subconjuntos de las obras en esta colección que se pueden utilizar para darle foco a un proyecto de edición o para crear una exposición pública sobre un enfoque particular de los documentos.
       done: Hecho
-      edit_authorized_reviewers: Editar revisores autorizados
-      edit_buttons: Configurar botones
-      edit_collaborators: Editar colaboradores
-      edit_fields: Campos
-      edit_metadata_fields: Editar campos
-      edit_owners: Editar propietarios
-      edit_profile: Cambia esto en tu perfil de usuario
-      editor_buttons: Botones del editor
-      editor_buttons_description: Elija los botones de marcado para que aparezcan en el editor de transcripción.
-      enable_document_sets: Habilitar Conjuntos de Documentos
-      enable_facets: Habilitar facetas
-      enable_field_based_transcription: Habilitar transcripción basada en campos
-      enable_message_boards: Habilitar foro
-      enable_metadata_description: Habilitar descripción de metadatos
-      enable_ocr: Habilitar OCR
-      enable_spellcheck: Habilitar el corrector ortográfico (no apto para textos con ortografía irregular)
-      field_based_transcription: Transcripción basada en campos
       footer: Pie de página
-      help: Texto de Ayuda Básica
-      hide_completed: Ocultar obras completadas de forma predeterminada
-      link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
-      make_collection_active: Hacer Activa la Colección
-      make_collection_inactive: Hacer Inactiva la Colección
-      make_collection_private: Hacer Privada la Colección
-      make_collection_public: Hacer Pública la Colección
-      message_boards: Foro
-      message_boards_description: Un foro permite a los colaboradores discutir temas entre ellos y con los propietarios de proyectos a través de tableros de mensajes.
-      metadata: metadatos
-      metadata_description: Cargue los metadatos de los elementos de esta colección de forma masiva.
-      metadata_entry: Metadatos Descripción
-      metadata_facets: Facetas de metadatos
-      metadata_facets_description: Permita a los usuarios buscar obras dentro de esta colección a través de metadatos.
+      footer_description: Este texto se mostrará en la parte inferior de cada página de la colección.
+      footer_edit: Edite este pie de página en %{link}.
+      footer_edit_link: tu perfil de usuario
+      footer_edit_nonprimary: Edite este pie de página en la cuenta de la organización.
+      less: Muestra menos
       n_contributions:
         one: 1 contribución
         other: "%{count} contribuciones"
-      no_document_sets_in_collection: Esta colección no tiene ningún conjunto de documentos.
+      n_more: "%{count} más"
       no_image: No Hay Imagen
-      ocr_correction: Corrección OCR
-      ocr_correction_description: Habilitar o deshabilitar corrección OCR para todas las obras en esta colección.
-      open_api: Abrir API
-      page_needing_transcription: 'Este enlace enviará los transcriptores directamente a una página que necesite transcripción: %{current_url}'
-      page_on_the_bottom: Página de Abajo
-      page_on_the_left: Página a la Izquierda
-      page_on_the_right: Página a la Derecha
-      page_on_the_top: Página de Arriba
-      picture_to_be_used_message: La imagen se utilizará para ilustrar la descripción de la colección.
       remove_collaborator: Eliminar colaborador
       remove_owner: Eliminar dueño
       remove_reviewer: Eliminar revisor
-      restrict_completed_works: Restringir obras terminadas
-      restricted_completed_works: Obras Terminadas Restringidos
-      restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.
-      revert_document_based_transcription: Revertir a Transcripción Basada en el Documento
-      revert_metadata_description: Deshabilitar Descripción
-      review_type: Tipo de revisión
-      review_type_optional: " Opcional: Los colaboradores pueden solicitar la revisión de sus transcripciones."
-      review_type_required: " Obligatorio: todas las transcripciones iniciales se marcarán como que necesitan revisión. (La revisión puede ser realizada por cualquier persona)."
-      review_type_restricted: " Restringido: todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones."
       save_changes: Guardar Cambios
-      start_a_project: Iniciar Un Proyecto
-      subjects_enabled: Habilitar indexación de materias
-      suggestions_help_tab: Sugerencias para la pestaña de ayuda.
-      suggestions_transcription_conventions: Sugerencias para las convenciones de transcripción.
-      text_language: Selecciona el idioma para texto de transcripción
       title: Título
-      transcription_conventions: Convenciones de Transcripción
-      transcription_conventions_message: Estas instrucciones se mostrarán debajo del formulario de transcripción para cada página que se transcriba o indexe.
-      transcription_type: Tipo de Transcripción
-      transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
+      transcriber_url: 'Este enlace enviará a los transcriptores directamente a una página que necesita transcripción:'
       unblock_user: Desbloquear usuario
-      update_footer_message: Puede actualizar el pie de página editando el perfil de %{owner}
       upload_image: Subir Imagen
-      upload_metadata: Subir metadatos
       url: URL
-      user_download: Permitir a los usuarios descargar obras.
-      voice_recognition: Voz a texto disponible para transcribir
+      url_description: Utilice letras minúsculas y guiones entre cualquier palabra.
     edit_buttons:
       abbr_description: Marca abreviaturas en un texto con expansiones en el atributo expan. (Forma alternativa de etiqueta de expansión).
       abbr_label: Abreviatura
-      add_description: Marca el texto insertado después del hecho por el escritor.
+      add_description: Marca el texto insertado después del hecho por el escritor. <br><i>Recomendado</i>
       add_label: Suma
       date_description: Marca fechas, con forma estandarizada en el atributo when.
       date_label: Fecha
-      del_description: Marca el texto que ha sido eliminado por borrado o tachado.
+      del_description: Marca el texto que ha sido eliminado por borrado o tachado. <br><i>Recomendado</i>
       del_label: Supresión
       description: FromThePage puede admitir el marcado dentro de las transcripciones en formularios TEI-XML o HTML. Recomendamos configurar no más de seis botones para que aparezcan en el editor de transcripción. Considere si otros sistemas podrán usar este tipo de margen; si solo se admite texto sin formato, los proyectos deben usar convenciones tipográficas en lugar de marcado.
       expan_description: Marca abreviaturas expandidas con formas originales en el atributo orig. (Forma alternativa de etiqueta abbr.)
@@ -198,15 +110,17 @@ es:
       i_label: Itálico
       lb_description: Marca saltos de línea
       lb_label: Salto de línea
+      marginalia_description: Incluye notas o marcas en los márgenes del texto principal.
+      marginalia_label: Nota marginal
       markup_preference_description: Algunas etiquetas tienen formas equivalentes en HTML y TEI-XML. Elija una preferencia para determinar qué forma de etiqueta se inserta cuando un usuario presiona el botón.
       markup_preference_label: Estilo de marcado
       prefer_html: Preferir HTML
       prefer_tei: Preferir TEI
       reg_description: Marca una forma regularizada del texto, con formas originales en el atributo orig.
       reg_label: regularización
-      s_description: Marca el texto que ha sido tachado por cualquier motivo.
-      s_label: tachado
       save: Ahorrar
+      strike_description: Marca el texto que ha sido tachado por cualquier motivo. <br><i>Recomendado</i>
+      strike_label: tachado
       sub_description: Texto de subíndice.
       sub_label: Subíndice
       sup_description: Texto en superíndice.
@@ -214,8 +128,132 @@ es:
       tei: " (TEI-XML)"
       u_description: Marca el texto subrayado.
       u_label: Subrayar
-      unclear_description: Marca texto poco claro.
+      unclear_description: Marca texto poco claro. <br><i>Recomendado</i>
       unclear_label: Poco claro
+    edit_danger:
+      active: Activo
+      blank_collection: Colección en Blanco
+      blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
+      clear_transcripts: Borrar transcripciones
+      collection_active_description: Esta es una colección activa. Desactivar una colección impide que los usuarios editen contenido dentro de la colección. El estado de la colección no afecta la configuración de privacidad de la colección.
+      collection_inactive_description: Esta es una colección inactiva. Activar una colección permite a los usuarios editar contenido dentro de esta colección. El estado de la colección no afecta la configuración de privacidad de la colección.
+      collection_status: Estado de la Colección
+      confirm_blank_collection: "¿Estás seguro?"
+      confirm_delete_collection: "¿Estás seguro de que deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
+      danger_zone_description: Esta sección contiene configuraciones que tienen consecuencias irreversibles. Tenga cuidado al cambiar esta configuración.
+      delete_collection: Eliminar Colección
+      delete_collection_description: Al presionar este botón se eliminará la colección y todo su contenido. Esta acción no se puede deshacer.
+      destroy_everything: Destruir todo
+      inactive: Inactivo
+      save_changes: Guardar Cambios
+    edit_help:
+      help: Texto de Ayuda Básica
+      link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
+      link_help_description: No se muestra si los sujetos están deshabilitados.
+      save_changes: Guardar Cambios
+      suggestions_help_tab: Sugerencias para la pestaña de ayuda.
+      suggestions_transcription_conventions: Sugerencias para las convenciones de transcripción.
+      transcription_conventions: Convenciones de Transcripción
+      transcription_conventions_description: Estas instrucciones se mostrarán debajo del formulario de transcripción de cada página que se transcriba o indexe.
+    edit_look:
+      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
+      alphabetize_works_description: La visualización funciona alfabéticamente en lugar de en orden de cantidad de trabajo restante.
+      default_orientation: Selecciona la orientación predeterminada para la página de transcripción
+      default_orientation_description: Elija la orientación que mejor se adapte a la mayoría de las obras de esta colección. Los usuarios podrán cambiar la orientación a la que prefieran.
+      document_sets_description: Los conjuntos de documentos son subconjuntos de las obras en esta colección que se pueden utilizar para darle foco a un proyecto de edición o para crear una exposición pública sobre un enfoque particular de los documentos.
+      edit_document_sets: Editar conjuntos
+      edit_facets: Editar facetas
+      enable_document_sets: Habilitar Conjuntos de Documentos
+      enable_forums: Habilitar foros
+      enable_metadata_facets: Habilitar facetas de metadatos
+      enable_spellcheck: Habilitar el corrector ortográfico (no apto para textos con ortografía irregular)
+      forums_description: Permite a los colaboradores discutir temas entre sí y con los propietarios del proyecto a través de foros de mensajes.
+      hide_completed: Ocultar obras completadas de forma predeterminada
+      hide_completed_description: Ocultar obras que estén completamente transcritas o traducidas de forma predeterminada.
+      metadata: metadatos
+      metadata_description: Cargue los metadatos de los elementos de esta colección de forma masiva.
+      metadata_facets_description: Permita a los usuarios buscar obras dentro de esta colección a través de metadatos.
+      not_available_researcher: No disponible para cuentas de investigadores.
+      page_on_the_bottom: Página de Abajo
+      page_on_the_left: Página a la Izquierda
+      page_on_the_right: Página a la Derecha
+      page_on_the_top: Página de Arriba
+      save_changes: Guardar Cambios
+      spellcheck_description: No apto para textos con ortografía irregular.
+      upload_metadata: Subir metadatos
+      user_download: Permitir a los usuarios descargar obras.
+      user_download_description: Agrega una pestaña Descargar visible para el usuario a cada trabajo, que permite a los usuarios exportar la transcripción del documento en formatos fáciles de usar para los investigadores, como Microsoft Word o PDF.
+      voice_recognition: Voz a texto disponible para transcribir
+      voice_recognition_description: No compatible con el editor avanzado.
+    edit_privacy:
+      api_access: Acceso API
+      api_access_description: Permitir acceso a transcripciones a través del API IIIF
+      block: Bloquear usuarios
+      block_users_modal_description: A estos usuarios se les ha bloqueado el acceso a la colección. La colección no será visible para ellos, como si hubiera sido marcada como privada o eliminada. Agregar usuarios a esta lista no les notificará que han sido bloqueados.
+      blocked_users: Usuarios bloqueados
+      closed_api: API cerrada
+      collection_collaborators: Colaboradores de la Colección
+      collection_collaborators_description: Los colaboradores pueden transcribir y editar colecciones privadas.
+      collection_owners: Dueños de la Colección
+      collection_owners_description: Los dueños pueden añadir obras a la colección y subir imágenes de páginas, así como transcribir y leer obras en la colección.
+      collection_privacy: Privacidad de la Colección
+      collection_public_description: Cualquier persona en Internet puede ver la colección. Puedes hacer que la colección sea privada para restringir su visibilidad a los propietarios.
+      collection_restricted_description: La colección sólo puede ser vista por los propietarios y colaboradores que se enumeran a continuación. Puede hacer que la colección sea legible públicamente.
+      edit_collaborators: Editar colaboradores
+      edit_owners: Editar propietarios
+      make_collection_private: Hacer Privada la Colección
+      make_collection_public: Hacer Pública la Colección
+      open_api: Abrir API
+      private: Privado
+      public: Público
+      restrict_completed_works: Restringir obras terminadas
+      restrict_editing: Restringir edición
+      restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.
+      save_changes: Guardar Cambios
+    edit_quality_control:
+      authorized_reviewers: revisores autorizados
+      collection_reviewers: Revisores autorizados
+      collection_reviewers_description: Estos usuarios podrán revisar y aprobar las transcripciones, así como editarlas.
+      edit_authorized_reviewers: Editar revisores autorizados
+      review_type: Tipo de revisión
+      review_type_description: Elija el tipo de revisión que se realizará en las transcripciones de esta colección.
+      review_type_optional: " Opcional: Los colaboradores pueden solicitar la revisión de sus transcripciones."
+      review_type_optional_description: Los colaboradores podrán solicitar la revisión de sus transcripciones.
+      review_type_required: " Obligatorio: todas las transcripciones iniciales se marcarán como que necesitan revisión. (La revisión puede ser realizada por cualquier persona)."
+      review_type_required_description: Todas las transcripciones iniciales se marcarán como que necesitan revisión. (Cualquiera puede realizar la revisión).
+      review_type_restricted: " Restringido: todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones."
+      review_type_restricted_description: Todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones.
+      save_changes: Guardar Cambios
+    edit_tabs:
+      danger_zone: Zona peligrosa
+      general: General
+      help_text: texto de ayuda
+      look_feel: Mira y siente
+      privacy_access: Privacidad y acceso
+      quality_control: Control de calidad
+      task_configuration: Configuración de tareas
+    edit_tasks:
+      alert: Configure los campos o elija la transcripción basada en documentos en Tipo de transcripción.
+      disable_ocr: Deshabilitar OCR
+      document_based_transcription: Transcripción basada en documentos
+      document_based_transcription_description: Cada página de la colección tendrá un área única de entrada de texto de formato libre para la transcripción. También conocida como "transcripción basada en documentos".
+      edit_buttons: Configurar botones
+      edit_fields: Campos
+      edit_metadata_fields: Editar campos
+      enable_metadata_description: Habilitar descripción de metadatos
+      enable_ocr: Habilitar OCR
+      field_based_transcription: Transcripción basada en campos
+      field_based_transcription_description: Cada página de la colección tendrá múltiples campos de entrada cortos diseñados para formularios. Deberá configurar qué campos se mostrarán.
+      metadata_description_description: La descripción de metadatos se utiliza para crear metadatos estructurados sobre las obras de la colección. Deberá configurar qué campos de metadatos se mostrarán.
+      ocr_correction: Corrección OCR
+      ocr_description: Habilite o deshabilite la corrección OCR para todas las obras de esta colección.
+      save_changes: Guardar Cambios
+      subjects_enabled: Habilitar indexación de materias
+      subjects_enabled_description: Los temas se utilizan para indexar páginas de la colección.
+      text_language: Selecciona el idioma para texto de transcripción
+      text_language_description: Esta configuración se utilizará para determinar el idioma del texto para mostrar correctamente las escrituras de derecha a izquierda o de izquierda a derecha.
+      transcription_type: Tipo de Transcripción
+      transcription_type_description: Cada página puede tener un área para entrada de texto de formato libre (este es el valor predeterminado) o varios campos de entrada cortos diseñados para formularios. Todas las páginas de la colección tienen el mismo tipo de entradas de transcripción. El dictado de voz no es compatible y se deshabilitará.
     enable_ocr:
       notice: La corrección OCR ha sido habilitada para todas las obras.
     facet_form:
@@ -347,6 +385,11 @@ es:
       title: Página (Obra)
       user_contribution_description: Páginas que necesitan revisión por parte del usuario %{user_name}
       user_profile: Perfil del usuario
+    users_list:
+      no_users_blocked: Ningún usuario bloqueado
+      no_users_collaborators: Sin colaboradores
+      no_users_owners: Sin dueños
+      no_users_reviewers: Sin revisores
     works_list:
       works: Obras
     works_to_review:

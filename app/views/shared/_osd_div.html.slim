@@ -158,15 +158,14 @@
       $(function() {
         
         var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
-          // make sure that the boxes over the text annotations are inert
-          pointerSelectAction: 'NONE'
-        });
-        anno.setFormatter(function() { 
-          // make the annotation boxes transparent rather than opaque
-          return { fillOpacity: 0 };
+          pointerSelectAction: 'NONE',
+          style: {
+            fillOpacity: 0,
+            strokeOpacity: 0
+          }
         });
 
-
+      
         // set up the text layer plugin on Annotorious
         var textlayer = OSDTextLayer.mountExtension(anno, {
           label: OSDTextLayer.transcriptionLabel,

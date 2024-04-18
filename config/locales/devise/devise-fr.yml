@@ -50,6 +50,7 @@ fr:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Church of Jesus Christ of Latter Day Saints
         sign_in_with_institution: Connectez-vous avec votre établissement
+        utah_id: UtahID
       destroyed: Au revoir! Votre compte a été annulé avec succès. Nous espérons vous revoir bientôt.
       edit:
         confirm_delete_account: Êtes-vous sûr de vouloir supprimer votre compte ? Après avoir supprimé le compte, vous ne pourrez pas le récupérer !
@@ -102,3 +103,4 @@ fr:
     sign_up: S'inscrire
     user_name: Nom d'utilisateur
     user_name_message: Vous utiliserez ce nom pour vous connecter. Il sera affiché publiquement.
+    we_never_sell: Nous prenons vos informations personnelles au sérieux et respectons votre vie privée. Nous ne vendons jamais vos données à personne. Consultez notre Politique de confidentialité pour plus d’informations.

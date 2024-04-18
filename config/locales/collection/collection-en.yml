@@ -4,12 +4,14 @@ en:
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     collection_works:
+      all_works: All Works
       most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
         other: "%{count} pages; "
       progress: Progress
       work_title: Work title
+      works_that_need_transcription: Works That Need Transcription
     complete: complete
     contributor_activity:
       recent_notes: Recent Notes
@@ -53,133 +55,43 @@ en:
     disable_ocr:
       notice: OCR correction has been disabled for all works.
     edit:
-      add_a_new_work: Add a new work
-      add_another_work_under: You can add another work under %{start_project}
       add_button: Add
-      alert: Please configure fields or choose document based transcription under Transcription Type.
-      alphabetize_works: Display works alphabetically rather than in order of work needed.
-      api_access: API Access
-      api_access_description: Allow access to transcriptions via IIIF API
-      authorized_reviewers: Authorized reviewers
-      blank_collection: Blank Collection
-      blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
-      block: Block Users
-      block_users_description: Block individual users from accessing the collection.
-      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
-      blocked_users: Blocked Users
-      close_api: Close API
-      collection_active_message: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
-      collection_collaborators: Collection Collaborators
-      collection_collaborators_description: Collaborators may transcribe and edit private collections.
-      collection_image: Collection Image
-      collection_inactive_message: This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
-      collection_link: Collection Link
-      collection_owners: Collection Owners
-      collection_owners_description: Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
-      collection_privacy: Collection Privacy
-      collection_public_message: The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners.
-      collection_restricted_message: The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
-      collection_reviewers: Authorized Reviewers
-      collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
-      collection_status: Collection Status
-      confirm_blank_collection: Are you sure?
-      confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
-      current_url: The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words.
-      default_orientation: Select the default page transcription orientation
-      delete_collection: Delete Collection
+      collection_image: Collection image
+      collection_image_description: A picture to be used to illustrate the collection description.
+      copy_url: Copy to clipboard
+      current_url: 'The current URL for this collection:'
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
-      disable_document_sets: Disable Document Sets
-      disable_facets: Disable Facets
-      disable_message_boards: Disable Forum
-      disable_ocr: Disable OCR
-      document_sets: Document Sets
-      document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
       done: Done
-      edit_authorized_reviewers: Edit Authorized Reviewers
-      edit_buttons: Configure Buttons
-      edit_collaborators: Edit Collaborators
-      edit_fields: Fields
-      edit_metadata_fields: Edit Fields
-      edit_owners: Edit Owners
-      edit_profile: Change this in your user profile
-      editor_buttons: Editor Buttons
-      editor_buttons_description: Choose mark-up buttons to appear on the transcription editor.
-      enable_document_sets: Enable Document Sets
-      enable_facets: Enable Facets
-      enable_field_based_transcription: Enable Field Based Transcription
-      enable_message_boards: Enable Forum
-      enable_metadata_description: Enable Metadata Description
-      enable_ocr: Enable OCR
-      enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
-      field_based_transcription: Field based transcription
       footer: Footer
-      help: Basic Help Text
-      hide_completed: Hide completed works by default
-      link_help: Subject Linking Help Text (not displayed if subjects are disabled)
-      make_collection_active: Make Collection Active
-      make_collection_inactive: Make Collection Inactive
-      make_collection_private: Make Collection Private
-      make_collection_public: Make Collection Public
-      message_boards: Forum
-      message_boards_description: A forum allows collaborators to discuss topics with each other and project owners via message boards.
-      metadata: Metadata
-      metadata_description: Upload metadata for items in this collection in bulk.
-      metadata_entry: Metadata Description
-      metadata_facets: Metadata Facets
-      metadata_facets_description: Allow users to browse works within this collection via metadata.
+      footer_description: This text will be displayed at the bottom of every page in the collection.
+      footer_edit: Edit this footer in %{link}.
+      footer_edit_link: your user profile
+      footer_edit_nonprimary: Edit this footer in the organization account.
+      less: Show less
       n_contributions:
         one: 1 contribution
         other: "%{count} contributions"
-      no_document_sets_in_collection: This collection does not have any document sets.
+      n_more: "%{count} more "
       no_image: No Image
-      ocr_correction: OCR Correction
-      ocr_correction_description: Enable or disable OCR correction for all works in this collection.
-      open_api: Open API
-      page_needing_transcription: 'This link will send transcribers directly to a page needing transcription:  %{current_url}'
-      page_on_the_bottom: Page on the Bottom
-      page_on_the_left: Page on the Left
-      page_on_the_right: Page on the Right
-      page_on_the_top: Page on the Top
-      picture_to_be_used_message: A picture to be used to illustrate the collection description.
       remove_collaborator: Remove collaborator
       remove_owner: Remove owner
       remove_reviewer: Remove Reviewer
-      restrict_completed_works: Restrict Completed Works
-      restricted_completed_works: Restricted Completed Works
-      restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
-      revert_document_based_transcription: Revert to Document Based Transcription
-      revert_metadata_description: Disable Description
-      review_type: Review Type
-      review_type_optional: " Optional: Collaborators may request review of their transcriptions."
-      review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
-      review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
       save_changes: Save Changes
-      start_a_project: Start A Project
-      subjects_enabled: Enable subject indexing
-      suggestions_help_tab: Suggestions for your help tab.
-      suggestions_transcription_conventions: Suggestions for your transcription conventions.
-      text_language: Select the language of the transcription text
       title: Title
-      transcription_conventions: Transcription Conventions
-      transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
-      transcription_type: Transcription Type
-      transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
+      transcriber_url: 'This link will send transcribers directly to a page needing transcription:'
       unblock_user: Unblock user
-      update_footer_message: You can update the footer by editing the profile for %{owner}
       upload_image: Upload Image
-      upload_metadata: Upload Metadata
       url: URL
-      user_download: Allow users to download works.
-      voice_recognition: Speech to text available for transcribing (not compatible with advanced editor)
+      url_description: Please use lowercase letters and dashes between any words.
     edit_buttons:
       abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
       abbr_label: Abbreviation
-      add_description: Marks text inserted after-the-fact by the writer.
+      add_description: Marks text inserted after-the-fact by the writer. <br><i>Recommended</i>
       add_label: Addition
       date_description: Marks dates, with standardized form in the when attribute.
       date_label: Date
-      del_description: Marks text that has been removed by erasure or strike-through.
+      del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
       del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
       expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
@@ -198,15 +110,17 @@ en:
       i_label: Italic
       lb_description: Marks line breaks
       lb_label: Line Break
+      marginalia_description: Encloses notes or markings in the margins of the main text.
+      marginalia_label: Marginalia
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML
       prefer_tei: Prefer TEI
       reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
       reg_label: Regularization
-      s_description: Marks text that has been struck through for any reason.
-      s_label: Strikethrough
       save: Save
+      strike_description: Marks text that has been struck through for any reason. <br><i>Recommended</i>
+      strike_label: Strikethrough
       sub_description: Subscript text.
       sub_label: Subscript
       sup_description: Superscript text.
@@ -214,8 +128,132 @@ en:
       tei: " (TEI-XML)"
       u_description: Marks underlined text.
       u_label: Underline
-      unclear_description: Marks unclear text.
+      unclear_description: Marks unclear text. <br><i>Recommended</i>
       unclear_label: Unclear
+    edit_danger:
+      active: Active
+      blank_collection: Blank Collection
+      blank_collection_description: Pressing this button will reset the collection to a blank state. It will delete all transcriptions and other work on the collection, as though it was newly imported.
+      clear_transcripts: Clear transcripts
+      collection_active_description: This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      collection_inactive_description: This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      collection_status: 'Collection status: '
+      confirm_blank_collection: Are you sure?
+      confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
+      danger_zone_description: This section contains settings that have irreversible consequences. Please use caution when changing these settings.
+      delete_collection: Delete Collection
+      delete_collection_description: Pressing this button will delete the collection and all its contents. This action cannot be undone.
+      destroy_everything: Destroy everything
+      inactive: Inactive
+      save_changes: Save Changes
+    edit_help:
+      help: Basic help text
+      link_help: Subject linking help text
+      link_help_description: Not displayed if subjects are disabled.
+      save_changes: Save Changes
+      suggestions_help_tab: Suggestions for your help tab.
+      suggestions_transcription_conventions: Suggestions for your transcription conventions.
+      transcription_conventions: Transcription conventions
+      transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+    edit_look:
+      alphabetize_works: List works alphabetically.
+      alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.
+      default_orientation: Default transcription screen orientation
+      default_orientation_description: Choose the orientation that best matches the majority of the works in this collection.  Users will be able to change the orientation to one that they prefer.
+      document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
+      edit_document_sets: Edit Sets
+      edit_facets: Edit Facets
+      enable_document_sets: Enable document sets
+      enable_forums: Enable forums
+      enable_metadata_facets: Enable metadata facets
+      enable_spellcheck: Enable spell-check
+      forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
+      hide_completed: Hide completed works by default
+      hide_completed_description: Hide works that are fully transcribed or translated by default.
+      metadata: Metadata
+      metadata_description: Upload metadata for items in this collection in bulk.
+      metadata_facets_description: Allow users to browse works within this collection via metadata.
+      not_available_researcher: Not available for researcher accounts.
+      page_on_the_bottom: Image on the bottom
+      page_on_the_left: Image on the left
+      page_on_the_right: Image on the right
+      page_on_the_top: Image on the top
+      save_changes: Save Changes
+      spellcheck_description: Not suitable for texts with irregular spelling.
+      upload_metadata: Upload Metadata
+      user_download: Allow users to download works
+      user_download_description: Adds a user-visible Download tab to each work, which lets users export the document transcription in researcher-friendly formats like Microsoft Word or PDF.
+      voice_recognition: Enable speech to text
+      voice_recognition_description: Not compatible with advanced editor.
+    edit_privacy:
+      api_access: API access
+      api_access_description: Allow access to transcriptions via IIIF API.
+      block: Block Users
+      block_users_modal_description: These users have been blocked from access to the collection. The collection will not be visible to them, as if it had been marked private or deleted. Adding users to this list will not notify them that they have been blocked.
+      blocked_users: Blocked users
+      closed_api: Closed API
+      collection_collaborators: Collection collaborators
+      collection_collaborators_description: Collaborators may transcribe and edit private collections.
+      collection_owners: Collection owners
+      collection_owners_description: Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
+      collection_privacy: 'Collection privacy: '
+      collection_public_description: The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners.
+      collection_restricted_description: The collection can only be viewed by the owners and collaborators listed below. You may make the collection publicly readable.
+      edit_collaborators: Edit Collaborators
+      edit_owners: Edit Owners
+      make_collection_private: Make Collection Private
+      make_collection_public: Make Collection Public
+      open_api: Open API
+      private: Private
+      public: Public
+      restrict_completed_works: Restrict Completed Works
+      restrict_editing: Restrict editing
+      restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
+      save_changes: Save Changes
+    edit_quality_control:
+      authorized_reviewers: Authorized reviewers
+      collection_reviewers: Authorized Reviewers
+      collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
+      edit_authorized_reviewers: Edit Authorized Reviewers
+      review_type: Review type
+      review_type_description: Choose the type of review that will be performed on transcriptions in this collection.
+      review_type_optional: Optional
+      review_type_optional_description: Collaborators may request review of their transcriptions.
+      review_type_required: Required
+      review_type_required_description: All initial transcriptions will be marked as needing review. (Review may be performed by anyone.)
+      review_type_restricted: Restricted
+      review_type_restricted_description: All transcriptions need review, and only authorized reviewers may approve transcriptions.
+      save_changes: Save Changes
+    edit_tabs:
+      danger_zone: Danger Zone
+      general: General
+      help_text: Help Text
+      look_feel: Look & Feel
+      privacy_access: Privacy & Access
+      quality_control: Quality Control
+      task_configuration: Task Configuration
+    edit_tasks:
+      alert: Please configure fields or choose document based transcription under Transcription Type.
+      disable_ocr: Disable OCR Correction
+      document_based_transcription: Document-based transcription
+      document_based_transcription_description: Each page in the collection will have a single free-form text entry area for transcription. Also known as "document based transcription".
+      edit_buttons: Configure Buttons
+      edit_fields: Edit Fields
+      edit_metadata_fields: Edit Metadata Form
+      enable_metadata_description: Enable metadata description
+      enable_ocr: Enable OCR Correction
+      field_based_transcription: Field-based transcription
+      field_based_transcription_description: Each page in the collection will have multiple short entry fields designed for forms. You will need to configure which fields will be displayed.
+      metadata_description_description: Metadata description is used to create structured metadata about works in the collection.  You will need to configure which metadata fields will be displayed.
+      ocr_correction: OCR Correction
+      ocr_description: Enable or disable OCR correction for all works in this collection.
+      save_changes: Save Changes
+      subjects_enabled: Enable subject indexing
+      subjects_enabled_description: Subjects are used to index pages in the collection.
+      text_language: Transcription text language
+      text_language_description: This setting will be used to determine the language of the text for correctly displaying right-to-left or left-to-right scripts.
+      transcription_type: Transcription type
+      transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
     enable_ocr:
       notice: OCR correction has been enabled for all works.
     facet_form:
@@ -347,6 +385,11 @@ en:
       title: Page (Work)
       user_contribution_description: Pages needing review by user %{user_name}
       user_profile: User profile
+    users_list:
+      no_users_blocked: No blocked users
+      no_users_collaborators: No collaborators
+      no_users_owners: No owners
+      no_users_reviewers: No reviewers
     works_list:
       works: Works
     works_to_review:

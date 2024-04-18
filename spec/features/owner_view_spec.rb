@@ -70,6 +70,7 @@ describe "owner view - collection" do
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content(@collection.title)
+    expect(page).to have_content("Danger Zone")
   end
 
   it "looks at export tab" do

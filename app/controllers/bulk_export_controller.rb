@@ -43,6 +43,8 @@ class BulkExportController < ApplicationController
   end
 
   def create_for_work
+    # i18n-tasks isn't smart enough to follow the method call here so we need to do this to get tests to pass
+    throwaway = t('.export_running_message', email: (current_user.email))
     create_for_work_actual
     redirect_to dashboard_exports_path
   end
