@@ -682,7 +682,7 @@ private
     array.each do |cell|
       index = index_for_cell(cell)
       target = transcription_field_flag ? index : index *2
-      if cell.transcription_field.input_type == "spreadsheet" && spreadsheet_count == 1
+      if cell.transcription_field && cell.transcription_field.input_type == "spreadsheet" && spreadsheet_count == 1
         cell = result[count]
         target = position
       end
