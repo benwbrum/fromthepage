@@ -38,7 +38,8 @@ module DashboardHelper
   def minutes_worked_in_range(user_id, start_date, end_date)
     AhoyActivitySummary
       .where(user_id: user_id)
-      .where("created_at >= ? AND created_at <= ?", start_date, end_date)
+      .where.not(collection_id: nil)
+      .where("date >= ? AND date <= ?", start_date, end_date)
       .sum(:minutes)
   end
   

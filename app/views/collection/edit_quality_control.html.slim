@@ -1,0 +1,54 @@
+=javascript_include_tag "settings"
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+.collection-meta-wrapper
+  =render({ :partial => 'edit_tabs', :locals => { :selected => 6}})
+
+  .collection-settings-wrapper
+    =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
+      =validation_summary @collection.errors
+      =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+      table.form.collection-settings
+        tr
+          td(colspan="2")
+            h3 =t('.review_type')
+            p =t('.review_type_description')
+        tr 
+          td(colspan="2")
+            =f.radio_button :review_type, Collection::ReviewType::OPTIONAL, disabled: !@collection.text_entry?
+            =f.label "review_type_#{Collection::ReviewType::OPTIONAL}"
+              h3 =t('.review_type_optional')
+              p =t('.review_type_optional_description')
+        tr 
+          td(colspan="2")
+            =f.radio_button :review_type, Collection::ReviewType::REQUIRED, disabled: !@collection.text_entry?
+            =f.label "review_type_#{Collection::ReviewType::REQUIRED}"
+              h3 =t('.review_type_required')
+              p =t('.review_type_required_description')
+        tr 
+          td(colspan="2")
+            =f.radio_button :review_type, Collection::ReviewType::RESTRICTED, disabled: !@collection.text_entry?
+            =f.label "review_type_#{Collection::ReviewType::RESTRICTED}"
+              h3 =t('.review_type_restricted')
+              p =t('.review_type_restricted_description')
+        tr: td
+        tr
+          th 
+            h3.settings-label =t('.authorized_reviewers')
+            p.settings-label ="(#{@reviewers.count})" unless @reviewers.empty?
+            p =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', id: 'edit-reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED) || !@collection.text_entry?, :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+          td
+            =render 'users_list', users: @reviewers, type: 'reviewers', disabled: !(@collection.review_type == Collection::ReviewType::RESTRICTED) || !@collection.text_entry?
+
+-content_for :javascript
+  javascript: 
+    $(document).ready(function() {
+      $('input[type=radio][name="collection[review_type]"]').change(function() {
+        if ($(this).val() == 'restricted') {
+          $('#edit-reviewers').removeAttr('disabled');
+          $('#users-list-reviewers').removeClass('disabled');
+        } else {
+          $('#edit-reviewers').attr('disabled', 'disabled');
+          $('#users-list-reviewers').addClass('disabled');
+        }
+      });
+    });

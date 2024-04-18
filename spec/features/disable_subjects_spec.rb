@@ -14,12 +14,12 @@ describe "disable subject linking", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "disables subject indexing in a collection" do
+  it "disables subject indexing in a collection", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_content("Enable subject indexing")
     uncheck('collection_subjects_enabled')
-    click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be true
@@ -87,12 +87,12 @@ describe "disable subject linking", :order => :defined do
     expect(page).not_to have_selector('a', text: 'Short Subject')
   end
 
-  it "enables subject indexing" do
+  it "enables subject indexing", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_content("Enable subject indexing")
     check('collection_subjects_enabled')
-    click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be false
