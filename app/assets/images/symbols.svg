@@ -106,6 +106,10 @@
     <path fill="currentColor" d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/>
   </symbol>
 
+  <symbol id="icon-fit-width" viewBox="0 0 16 16">
+    <path fill="none" stroke="currentColor" d="M1.5 1.5h13v13h-13z" />
+    <path fill="currentColor" d="M 13,5.8510914 V 10.148909 H 3 V 5.8510914 Z" />
+  </symbol>
 
   <symbol id="icon-export" viewBox="0 0 16 16">
     <path fill="currentColor" d="M11,7c-3.57,0-4.64,0.44-6.5,3.5c0,0-0.08-6.5,6.5-6.5V1l5,4.5L11,10V7z M12,11.79V12H2V5h2.34 c0.18-0.24,0.38-0.47,0.6-0.7C5.46,3.78,6.05,3.35,6.69,3H1C0.45,3,0,3.45,0,4v9c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1V9.99 L12,11.79z"/>
