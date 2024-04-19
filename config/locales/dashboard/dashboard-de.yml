@@ -52,6 +52,7 @@ de:
       reload_this_page_to: Laden Sie diese Seite neu, um die Liste zu aktualisieren.
       status: Status
       subject_csv_collection: Entitätsindex CSV (Sammlung)
+      subject_details_csv_collection: Betreffdetails CSV (Sammlung)
       table_csv_collection: Feld/Tabellen CSV (Sammlung)
       table_csv_work: Feld/Tabellen CSV (Werk)
       tei_work: TEX-XML (Werk)
