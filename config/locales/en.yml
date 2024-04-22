@@ -31,3 +31,4 @@ en:
       short: "%m/%d/%Y at %I:%M %p"
   time_ago_in_words: "%{time} ago"
   unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.
+  unsaved_changes_confirmation: You have unsaved changes. Are you sure you want to leave this screen?

@@ -31,3 +31,4 @@ es:
       short: "%d/%m/%Y a las %I:%M %p"
   time_ago_in_words: Hace %{time}
   unauthorized_collection: No tienes acceso a %{project}. Inicie sesión o comuníquese con el propietario del proyecto para ser agregado.
+  unsaved_changes_confirmation: Tiene cambios sin guardar. ¿Estás seguro de que quieres salir de esta pantalla?

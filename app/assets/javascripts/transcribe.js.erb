@@ -91,7 +91,7 @@ function unsavedNotes(e){
 
 //check for unsaved transcriptions before changing page
 function unsavedTranscription(e){
-  var msg = "You have unsaved changes. Please save or discard your work before going to the next page.";
+  var msg = "<%=I18n.t('.unsaved_changes_confirmation')%>";
   var inputs = $('textarea').add($('.field-input'));
   checkForUnsaved(inputs, msg, e, false);
 }
@@ -101,16 +101,18 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
   inputs.each(function(){
     if (this.type == 'select-one' || this.type == 'select-multiple'){
       if(!(this.options[this.selectedIndex].defaultSelected) && (this.value != this.options[0].value)){
-        e.preventDefault();
-        alert(msg);
-        return false;
+        if(!confirm(msg)) {
+          e.preventDefault();
+        }
+        return false
       }
     }
     else {
       if (this.value != this.defaultValue){
-        e.preventDefault();
-        alert(msg);
-        return false;
+        if(!confirm(msg)) {
+          e.preventDefault();
+        }
+        return false
       };
     };
   });
@@ -120,13 +122,13 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
     // the advanced editor is in use
     var autolinkedSourceTextField = document.querySelector('input[name="autolinked_source_text"]');
     if (!myCodeMirror.isClean() || autolinkedSourceTextField) {
+      if(!confirm(msg)) {
         e.preventDefault();
-        alert(msg);
-        return false;      
+      }
+      return false
     };
   };
 }
-
 //Check for unsaved changes if user tries to navigate to project page
 window.addEventListener('DOMContentLoaded', function() {
   var breadcrumbs = document.querySelector('ul.breadcrumbs');
