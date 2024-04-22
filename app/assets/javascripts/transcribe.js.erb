@@ -91,7 +91,7 @@ function unsavedNotes(e){
 
 //check for unsaved transcriptions before changing page
 function unsavedTranscription(e){
-  var msg = "<%=I18n.t('.unsaved_changes_confirmation')%>";
+  var msg = "<%=I18n.t('unsaved_changes_confirmation')%>";
   var inputs = $('textarea').add($('.field-input'));
   checkForUnsaved(inputs, msg, e, false);
 }
