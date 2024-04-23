@@ -3,6 +3,11 @@
 
 <%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
 <div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
+<style>
+  .handsontable td.htInvalid {
+    background-color: yellow !important;
+  }
+</style>
 
 <script>
 
@@ -187,4 +192,6 @@
   window.onscroll = function (e) {
     freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
   } 
+  // flag any cells that don't match the format
+  hot.validateCells();
 </script>
