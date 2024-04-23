@@ -26,11 +26,13 @@
       <div id="page-<%=page.id%>">
         <h3><a name="page-<%=page.id%>"><%= page.title %></a></h3>
         <div class="page-content">
-          <% if @target == :jekyll %>
-            <% puts page.id %>
-            <%= raw(xml_to_html(page.xml_text, false, :jekyll)) %>
-          <% else %>
-            <%= raw(xml_to_html(page.xml_text, true, true)) %>
+          <% if page.status != Page::STATUS_BLANK %>
+            <% if @target == :jekyll %>
+              <% puts page.id %>
+              <%= raw(xml_to_html(page.xml_text, false, :jekyll)) %>
+            <% else %>
+              <%= raw(xml_to_html(page.xml_text, true, true)) %>
+            <% end %>
           <% end %>
         </div>
 

@@ -52,6 +52,7 @@ pt:
       reload_this_page_to: Recarregue esta página para atualizar a lista.
       status: Status
       subject_csv_collection: Índice de assuntos CSV (coleção)
+      subject_details_csv_collection: Detalhes do assunto CSV (coleção)
       table_csv_collection: Campo/Tabela CSV (coleção)
       table_csv_work: Campo/Tabela CSV (obra)
       tei_work: TEX-XML (obra)

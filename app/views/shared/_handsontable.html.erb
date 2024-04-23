@@ -85,12 +85,6 @@
     data = null;
   };
 
-  // var data = [
-  //   ["", "Ford", "Tesla", "Toyota", "Honda"],
-  //   ["2017", 10, 11, 12, 13],
-  //   ["2018", 20, 11, 14, 13],
-  //   ["2019", 30, 15, 12, 13]
-  // ];
 
   function highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
     // first calculate against a 100% high canvas
@@ -173,9 +167,24 @@
     },
   });
 
-  // $(container).data('hot-object', hot);
-      // actually call it
 
-  //alert("highlightRow(rowNum, <%= transcription_field.starting_rows %>, 0.1, 0.1);");
+    function freezeTableColumn(topEl, tableEl, columnEl) {
+    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
+    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
 
+    if(stickyHeight > tablePosTop) {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = (stickyHeight - tablePosTop) + 'px';
+        item.style.zIndex = 103;
+      })
+    } else {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = '0px';
+      })
+    }
+  }
+
+  window.onscroll = function (e) {
+    freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
+  } 
 </script>

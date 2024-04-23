@@ -40,8 +40,8 @@ namespace :fromthepage do
       collection.pages.each do |page|
         if page_filter=='all' || (page_filter=='unprocessed' && !page.has_alto?)
           print "#{page.id} "
-          # page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
-          # page_processor.begin_processing_page
+          page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
+          page_processor.begin_processing_page
         end
       end
     end
@@ -68,8 +68,8 @@ namespace :fromthepage do
       work.pages.each do |page|
         if page_filter=='all' || (page_filter=='unprocessed' && !page.has_alto?)
           print "#{page.id} "
-          # page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
-          # page_processor.begin_processing_page
+          page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
+          page_processor.begin_processing_page
         end
       end
     end
