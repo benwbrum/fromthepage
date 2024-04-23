@@ -52,6 +52,7 @@ en:
       reload_this_page_to: Reload this page to update the list.
       status: Status
       subject_csv_collection: Subject Index CSV (collection)
+      subject_details_csv_collection: Subject Details CSV (collection)
       table_csv_collection: Field/Table CSV (collection)
       table_csv_work: Field/Table CSV (work)
       tei_work: TEX-XML (work)
