@@ -24,13 +24,25 @@ namespace :fromthepage do
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
         print "TRANSKRIBUS_USERNAME and TRANSKRIBUS_PASSWORD must be set in the environment\n"
-        return
+        exit
       end
       if args.collection_id.match(/^\d+$/)
-        collection = Collection.find args.collection_id.to_i
+        collection = Collection.where(id: args.collection_id.to_i).first
       else
-        collection = Collection.find args.collection_id
+        collection = Collection.where(slug: args.collection_id).first
       end
+      if collection.nil?
+        collection = DocumentSet.where(slug: args.collection_id).first
+        if collection.nil?
+          collection = DocumentSet.where(id: args.collection_id.to_i).first
+        end
+      end
+      if collection.nil?
+        print "Collection or Document Set not found\n"
+        exit
+      end
+
+
       if args.page_filter.nil?
         page_filter = "all"
       else
