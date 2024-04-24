@@ -1,0 +1,67 @@
+<%= form_with(model: ai_result) do |form| %>
+  <% if ai_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(ai_result.errors.count, "error") %> prohibited this ai_result from being saved:</h2>
+
+      <ul>
+        <% ai_result.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :job_type %>
+    <%= form.text_field :job_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :engine %>
+    <%= form.text_field :engine %>
+  </div>
+
+  <div class="field">
+    <%= form.label :parameters %>
+    <%= form.text_field :parameters %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.text_field :status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :result %>
+    <%= form.text_field :result %>
+  </div>
+
+  <div class="field">
+    <%= form.label :page_id %>
+    <%= form.text_field :page_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_id %>
+    <%= form.text_field :work_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :collection_id %>
+    <%= form.text_field :collection_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ai_job_id %>
+    <%= form.text_field :ai_job_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

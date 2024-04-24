@@ -3,6 +3,8 @@ class ExternalApiRequest < ApplicationRecord
   belongs_to :collection
   belongs_to :work
   belongs_to :page
+  belongs_to :ai_job
+  has_one :ai_result
 
 
   module Status

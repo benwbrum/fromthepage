@@ -1,0 +1,37 @@
+=render(:partial => 'admin/header', :locals => { :selected => 3 })
+
+
+p#notice= notice
+
+p
+  strong Job type:
+  = @ai_job.job_type
+
+p
+  strong Engine:
+  = @ai_job.engine
+
+p
+  strong Parameters:
+  = @ai_job.parameters
+
+p
+  strong Status:
+  = @ai_job.status
+
+p
+  strong Page:
+  = @ai_job.page_id
+
+p
+  strong Work:
+  = @ai_job.work_id
+
+p
+  strong Collection:
+  = @ai_job.collection_id
+
+p
+  strong User:
+  = ai_job.user.display_name
+

@@ -1,8 +1,6 @@
 class BulkExportController < ApplicationController
   before_action :set_bulk_export, only: [:show, :edit, :download]
 
-  PAGES_PER_SCREEN = 20
-
   def index
     @bulk_exports = BulkExport.all.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end

@@ -3,7 +3,6 @@ class DashboardController < ApplicationController
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
-  PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]

@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2024_03_22_133557) do
-=======
-ActiveRecord::Schema.define(version: 2024_03_26_200815) do
->>>>>>> development
+ActiveRecord::Schema.define(version: 2024_04_23_210227) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -41,16 +37,39 @@ ActiveRecord::Schema.define(version: 2024_03_26_200815) do
   create_table "ai_jobs", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "job_type"
     t.string "engine"
-    t.string "parameters"
+    t.text "parameters"
     t.string "status"
-    t.integer "work_id", null: false
+    t.integer "page_id"
+    t.integer "work_id"
     t.integer "collection_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["collection_id"], name: "index_ai_jobs_on_collection_id"
+    t.index ["page_id"], name: "index_ai_jobs_on_page_id"
     t.index ["user_id"], name: "index_ai_jobs_on_user_id"
     t.index ["work_id"], name: "index_ai_jobs_on_work_id"
+  end
+
+  create_table "ai_results", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.string "task_type"
+    t.string "engine"
+    t.string "parameters"
+    t.string "result"
+    t.integer "page_id"
+    t.integer "work_id"
+    t.integer "collection_id", null: false
+    t.integer "user_id", null: false
+    t.integer "ai_job_id", null: false
+    t.integer "external_api_request_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ai_job_id"], name: "index_ai_results_on_ai_job_id"
+    t.index ["collection_id"], name: "index_ai_results_on_collection_id"
+    t.index ["external_api_request_id"], name: "index_ai_results_on_external_api_request_id"
+    t.index ["page_id"], name: "index_ai_results_on_page_id"
+    t.index ["user_id"], name: "index_ai_results_on_user_id"
+    t.index ["work_id"], name: "index_ai_results_on_work_id"
   end
 
   create_table "article_article_links", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -595,11 +614,7 @@ ActiveRecord::Schema.define(version: 2024_03_26_200815) do
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end
 
-<<<<<<< HEAD
-  create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
-=======
   create_table "pages", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
->>>>>>> development
     t.string "title"
     t.text "source_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "base_image"
@@ -1208,8 +1223,15 @@ ActiveRecord::Schema.define(version: 2024_03_26_200815) do
   end
 
   add_foreign_key "ai_jobs", "collections"
+  add_foreign_key "ai_jobs", "pages"
   add_foreign_key "ai_jobs", "users"
   add_foreign_key "ai_jobs", "works"
+  add_foreign_key "ai_results", "ai_jobs"
+  add_foreign_key "ai_results", "collections"
+  add_foreign_key "ai_results", "external_api_requests"
+  add_foreign_key "ai_results", "pages"
+  add_foreign_key "ai_results", "users"
+  add_foreign_key "ai_results", "works"
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"
