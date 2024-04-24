@@ -501,7 +501,7 @@ GEM
       rspec-support (~> 3.12)
     rspec-support (3.13.1)
     rtl (0.6.0)
-    ruby-openai (6.3.1)
+    ruby-openai (6.5.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
