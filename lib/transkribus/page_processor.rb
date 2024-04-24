@@ -126,7 +126,6 @@ class PageProcessor
     processing_request_url = "https://transkribus.eu/processing/v1/processes"
 
     # now send the request data to the url as a POST request
-    binding.pry
     response = HTTParty.post(processing_request_url,
       body: request.to_json,
       headers: { 
