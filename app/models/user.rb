@@ -25,6 +25,8 @@ class User < ApplicationRecord
   has_many :ia_works
   has_many :visits
   has_many :bulk_exports
+  has_many :document_uploads
+  has_many :external_api_requests
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
