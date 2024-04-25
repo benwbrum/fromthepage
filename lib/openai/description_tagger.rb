@@ -2,10 +2,13 @@ module DescriptionTagger
   def self.tag_description_by_subject(description, tags, title="")
     client = OpenAI::Client.new
     prompt = prompt_by_subject(description, tags, title)
-    response = client.completions(
+    response = client.chat(
       parameters: {
-        model: "gpt-3.5-turbo-instruct",
-        prompt: prompt,
+        model: "gpt-3.5-turbo-16k",
+        messages: [
+          {role: "system", content: "You are a metadata librarian with experience classifying documents by subject."},
+          {role: "user", content: prompt}
+        ],
         max_tokens: 100,
         n: 1,
         temperature: 0.0,
@@ -21,7 +24,7 @@ module DescriptionTagger
       return []
     end
 
-    raw_text = response['choices'].first['text']
+    raw_text = response['choices'].first['message']['content']
 
     response_tags = []
     print raw_text
