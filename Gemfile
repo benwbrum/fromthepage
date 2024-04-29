@@ -127,8 +127,8 @@ gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
-gem 'intercom', '~> 3.9.0'
 gem 'newrelic_rpm'
+gem 'bento-sdk', github: "bentonow/bento-ruby-sdk", branch: "master"
 
 gem 'open3'
 

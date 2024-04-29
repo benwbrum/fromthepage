@@ -65,7 +65,7 @@ class RegistrationsController < Devise::RegistrationsController
       if @user.owner
         @user.account_type="Trial"
         @user.save
-        alert_intercom
+        alert_bento
       end
     else
       clean_up_passwords resource
@@ -104,12 +104,9 @@ class RegistrationsController < Devise::RegistrationsController
   def choose_saml
   end
 
-
-  def alert_intercom()
-    if INTERCOM_ACCESS_TOKEN
-        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
-        contact = intercom.users.create(email: current_user.email)
-        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}])
+  def alert_bento()
+    if defined? BENTO_ENABLED && BENTO_ENABLED
+      $bento.track(identity: {email: current_user.email}, event: '$action', details: {action_information: "signed_up_for_trial"})
     end
   end
 
