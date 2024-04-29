@@ -105,7 +105,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def alert_bento()
-    if defined? BENTO_ENABLED && BENTO_ENABLED
+    if defined?(BENTO_ENABLED) && BENTO_ENABLED
       $bento.track(identity: {email: current_user.email}, event: '$action', details: {action_information: "signed_up_for_trial"})
     end
   end

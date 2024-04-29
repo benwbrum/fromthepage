@@ -440,7 +440,7 @@ class Work < ApplicationRecord
   end
 
   def alert_bento
-    if defined? BENTO_ENABLED && BENTO_ENABLED
+    if defined?(BENTO_ENABLED) && BENTO_ENABLED
       if self.owner.owner_works.count == 1
         $bento.track(identity: {email: self.owner.email}, event: '$action', details: {action_information: "first-upload"})
       end

@@ -145,7 +145,7 @@ html lang="en-US"
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
-    -if defined? BENTO_ENABLED && BENTO_ENABLED
+    -if defined?(BENTO_ENABLED) && BENTO_ENABLED
         =render :partial => '/shared/bento'
         -if (user_signed_in? && current_user.owner?) || controller_name=='static'
           =render :partial => '/shared/bento_chat'
