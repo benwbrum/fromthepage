@@ -74,7 +74,7 @@ namespace :fromthepage do
   
   def unzip_tree(temp_dir)
     print "unzip_tree(#{temp_dir})\n"
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "\tunzip_tree considering #{path}\n"
       if Dir.exist? path
@@ -96,7 +96,7 @@ namespace :fromthepage do
   
   def unpdf_tree(temp_dir, ocr)
     print "unpdf_tree(#{temp_dir})\n"
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "\tunpdf_tree considering #{path})\n"
       if Dir.exist? path
@@ -123,7 +123,7 @@ namespace :fromthepage do
 
   def untiff_tree(temp_dir)
     print "convert tiffs from tree(#{temp_dir})\n"
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "\tuntiff_tree considering #{path})\n"
       if Dir.exist? path
@@ -172,7 +172,7 @@ namespace :fromthepage do
     end    
     
     # now process this directory if it contains image files
-    image_files = Dir.glob(File.join(clean_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    image_files = Dir.glob(File.join(clean_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}")).sort
     if image_files.length > 0
       print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
@@ -220,7 +220,7 @@ namespace :fromthepage do
       end
     rescue StandardError => e
       document_upload.update(status: DocumentUpload::Status::ERROR)
-      logger.info "YML/YAML Failed: Exception: #{e.message}"
+      print "\n\nYML/YAML Failed: Exception: #{e.message}"
       return
     end
 
