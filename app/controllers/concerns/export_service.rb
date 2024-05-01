@@ -378,7 +378,7 @@ private
     #get headings from field-based
     field_headings.each do |field_id|
       field = TranscriptionField.where(:id => field_id).first
-      if field && field.input_type == 'spreadsheet' && spreadsheet_count > 1
+      if field && field.input_type == 'spreadsheet'
           raw_field_index = @raw_headings.index(field_id)
           field.spreadsheet_columns.each do |column|
             raw_field_index += 1
@@ -558,14 +558,18 @@ private
 
     if transcription_field_flag
       renamed_cell_headings_count = 1
+      # This is a Chesterton's Fence variable -- originally it appears to have been designed
+      # for field-based projects in which some field labels had been changed halfway through
+      # the transcription process.  As a result, it sees spreadsheet columns as "renamed" fields.
+      # We think that there is some work-around code further down to support supreadsheets.
       renamed_cell_headings = TableCell.where(work_id: work.id).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
       input_types = collection.transcription_fields.pluck(:input_type)
       spreadsheet_count = input_types.count("spreadsheet")
-      if spreadsheet_count == 1
-        renamed_cell_headings_count = renamed_cell_headings.count
-        position = input_types.index("spreadsheet")
-      end
+      position = input_types.index("spreadsheet")
+    else
+      renamed_cell_headings_count = 0
     end
+    spreadsheet_field_ids = work.collection.transcription_fields.where(input_type: 'spreadsheet').order(:line_number).pluck(:id)
 
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
@@ -596,14 +600,27 @@ private
         running_data = []
 
         if page.sections.blank?
-          #get cell data for a page with only one table
-          page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
+          if has_spreadsheet
+            grouped_hash = {}
+            spreadsheet_rows_and_ids = page.table_cells.where("transcription_field_id in (?)", spreadsheet_field_ids).pluck(:transcription_field_id, :row).uniq
+            spreadsheet_rows_and_ids.each_with_index do |field_id_and_row, i|
+              # find the cells with this id and row
+              transcription_field_id = field_id_and_row[0]
+              row = field_id_and_row[1]
+              grouped_hash[i+1] = page.table_cells.where(row: row, transcription_field_id: transcription_field_id).to_a
+            end
+            grouped_hash[1] += page.table_cells.where("transcription_field_id not in (?)", spreadsheet_field_ids).to_a
+          else
+            grouped_hash = page.table_cells.includes(:transcription_field).group_by(&:row) 
+          end
+
+          grouped_hash.each do |row, cell_array|
             count = 0
             while count < renamed_cell_headings_count
               #get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
-              if has_spreadsheet && spreadsheet_count > 1
-                running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+              if has_spreadsheet
+                running_data = process_header_footer_data(data_cells, running_data, cell_array, count, position, spreadsheet_count, row)
               end
               #shift cells over if any page has sections
               if !col_sections
@@ -621,7 +638,7 @@ private
 
         else
           #get the table sections/headers and iterate cells within the sections
-          page.sections.each do |section|
+          page.sections.each_with_index do |section,rownum|
             section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
             section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
             section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
@@ -629,7 +646,7 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
+              cell_data(cell_array, data_cells, transcription_field_flag, rownum, position, 0)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
@@ -682,16 +699,12 @@ private
     array.each do |cell|
       index = index_for_cell(cell)
       target = transcription_field_flag ? index : index *2
-      if cell.transcription_field && cell.transcription_field.input_type == "spreadsheet" && spreadsheet_count == 1
-        cell = result[count]
-        target = position
-      end
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag 
     end
   end
 
-  def process_header_footer_data(data_cells, running_data, cell_array, rownum)
+  def process_header_footer_data(data_cells, running_data, cell_array, count, position, spreadsheet_count, rownum)
     # assume that we are a spreadsheet already
 
     # create running data if it's our first time
@@ -711,7 +724,7 @@ private
     else
       # are we in row 2 or greater?
       # fill data cells from running header/footer data
-      cell_data(running_data, data_cells, true)
+      cell_data(running_data, data_cells, true, count, position, spreadsheet_count)
     end
 
     # return the current running data
