@@ -1,6 +1,29 @@
 class AiJobsController < ApplicationController
   before_action :set_ai_job, only: [:show, :edit, :update, :destroy]
 
+
+  def new_ai_job_collection
+    @ai_job = AiJob.new
+    @ai_job.collection = @collection
+    @ai_job.user = current_user
+  end
+
+  def run_ai_job_collection
+
+  end
+
+  def new_ai_job_work
+    @ai_job = AiJob.new
+    @ai_job.work = @work
+    @ai_job.collection = @collection
+    @ai_job.user = current_user
+  end
+
+  def run_ai_job_work
+
+  end
+
+
   # GET /ai_jobs
   def index
     @ai_jobs = AiJob.all.paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)

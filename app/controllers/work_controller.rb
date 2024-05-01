@@ -25,20 +25,6 @@ class WorkController < ApplicationController
     end
   end
 
-  # todo move these to a separate ai job controller
-  def configure_ai_job
-    @ai_job = AiJob.new
-    @ai_job.work = @work
-    @ai_job.collection = @collection
-    @ai_job.user = current_user
-  end
-
-
-  def run_ai_job
-    binding.pry
-
-
-  end
 
   def configurable_printout
     @bulk_export = BulkExport.new
