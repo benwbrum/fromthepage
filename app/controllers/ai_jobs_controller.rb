@@ -17,6 +17,7 @@ class AiJobsController < ApplicationController
     @ai_job.work = @work
     @ai_job.collection = @collection
     @ai_job.user = current_user
+    render :new
   end
 
   def run_ai_job_work
@@ -46,11 +47,16 @@ class AiJobsController < ApplicationController
   def create
     @ai_job = AiJob.new(ai_job_params)
     @ai_job.user = current_user
-    @ai_job.collection = Collection.find(5)  # TODO -- change this once we are out of the admin screen
-    @ai_job.status = ExternalApiRequest::Status::QUEUED
+    @ai_job.collection = @collection
+    @ai_job.work = @work
 
     if @ai_job.save!
-      redirect_to @ai_job, notice: 'Ai job was successfully created.'
+      flash[:notice]='AI B'
+      if @work
+        redirect_to collection_work_edit_path(@collection.owner, @collection, @work)
+      else
+        redirect_to collection_edit_path(@collection.owner, @collection)
+      end
     else
       render :new
     end

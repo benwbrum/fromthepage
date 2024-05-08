@@ -1,23 +1,27 @@
 = form_with(model: ai_job) do |form|
+  =hidden_field_tag :collection_id, value: @collection.id
+  =hidden_field_tag :work_id, value: @work.id
+
   - if ai_job.errors.any?
     #error_explanation
-      h2 = pluralize(ai_job.errors.count, "error") + " prohibited this ai_job from being saved:"
-      ul
-        - ai_job.errors.each do |error|
-          li = error.full_message
+    h2 = pluralize(ai_job.errors.count, "error") + " prohibited this ai_job from being saved:"
+    ul
+      - ai_job.errors.each do |error|
+        li = error.full_message
 
   .field
     = form.label :job_type
-    = form.select :job_type, AiJob::JobType.all.map { |type| [type, type] }
+    = form.select :job_type, AiJob::JobType.all.map { |type| [type, type] }, class: 'form-control'
 
-  .field
-    = form.label :engine
-    = form.select :engine, AiJob::Engine.all.map { |engine| [engine, engine] }
+  / TODO: add type-specific engine options when we support non-Transkribus engines
+  / .field
+  /   = form.label :engine
+  /   = form.select :engine, AiJob::Engine.all.map { |engine| [engine, engine] }, class: 'form-control'
 
-  .field
-    = form.label :parameters
-    = form.text_field :parameters
+  / .field
+  /   = form.label :parameters
+  /   = form.text_field :parameters, class: 'form-control'
 
 
   .actions
-    = form.submit
+    = form.submit(class: 'btn btn-primary')

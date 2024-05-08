@@ -54,7 +54,7 @@ class Work < ApplicationRecord
   after_save :update_next_untranscribed_pages
 
 
-  after_create :alert_intercom
+  after_create :alert_bento
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
@@ -440,12 +440,10 @@ class Work < ApplicationRecord
     end
   end
 
-
-  def alert_intercom
-    if (defined? INTERCOM_ACCESS_TOKEN) && INTERCOM_ACCESS_TOKEN
+  def alert_bento
+    if defined?(BENTO_ENABLED) && BENTO_ENABLED
       if self.owner.owner_works.count == 1
-        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
-        intercom.events.create(event_name: "first-upload", email: self.owner.email, created_at: Time.now.to_i)
+        $bento.track(identity: {email: self.owner.email}, event: '$action', details: {action_information: "first-upload"})
       end
     end
   end

@@ -20,6 +20,7 @@ describe "disable subject linking", :order => :defined do
     page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_content("Enable subject indexing")
     uncheck('collection_subjects_enabled')
+    sleep(3)
     #have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be true

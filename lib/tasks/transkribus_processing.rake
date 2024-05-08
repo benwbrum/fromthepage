@@ -19,28 +19,47 @@ namespace :fromthepage do
     end
 
     desc "Process an entire collection: collection_id, [all|unprocessed]"
-    task :process_collection, [:collection_id, :page_filter] => :environment do |t,args|
+    task :process_collection, [:collection_id, :page_filter, :model_id] => :environment do |t,args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
         print "TRANSKRIBUS_USERNAME and TRANSKRIBUS_PASSWORD must be set in the environment\n"
-        return
+        exit
       end
       if args.collection_id.match(/^\d+$/)
-        collection = Collection.find args.collection_id.to_i
+        collection = Collection.where(id: args.collection_id.to_i).first
       else
-        collection = Collection.find args.collection_id
+        collection = Collection.where(slug: args.collection_id).first
       end
+      if collection.nil?
+        collection = DocumentSet.where(slug: args.collection_id).first
+        if collection.nil?
+          collection = DocumentSet.where(id: args.collection_id.to_i).first
+        end
+      end
+      if collection.nil?
+        print "Collection or Document Set not found\n"
+        exit
+      end
+
+
       if args.page_filter.nil?
         page_filter = "all"
       else
         page_filter = args.page_filter
       end
 
+      if args.model_id.blank?
+        model_id = PageProcessor::Model::TEXT_TITAN_I
+      else
+        model_id=args.model_id.to_i
+      end
+
+
       collection.pages.each do |page|
         if page_filter=='all' || (page_filter=='unprocessed' && !page.has_alto?)
           print "#{page.id} "
-          page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password)
+          page_processor = PageProcessor.new(page, nil, transkribus_username, transkribus_password, model_id)
           page_processor.begin_processing_page
         end
       end
