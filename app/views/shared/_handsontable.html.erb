@@ -152,6 +152,9 @@
     afterCreateRow: updateHotHeight,
     afterRemoveRow: updateHotHeight,
     afterChange: function(changes, source) {
+       if(source === 'edit') {
+        sendActiveEditing()
+      };
       document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
       if (changes) {
         var rowsCount = this.countRows();

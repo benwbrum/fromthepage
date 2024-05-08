@@ -118,6 +118,10 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
+    // track editing for volunteer hours
+    myCodeMirror.on("change", function(instance, changeObj) {
+      sendActiveEditing()
+    });
     
     // give codeMirror with class of respective text direction
     myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
