@@ -190,12 +190,12 @@
   }
 
   window.onscroll = function (e) {
-    if(Cookies.get('transcribe_layout_mode') === 'ttb') {
+    if(Cookies && (Cookies.get('transcribe_layout_mode') === 'ttb' || Cookies.get('transcribe_layout_mode') === undefined)) {
       freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
     } else {
       freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top')
     }
-  }  
+  }
   // flag any cells that don't match the format
   hot.validateCells();
 </script>
