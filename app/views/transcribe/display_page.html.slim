@@ -158,14 +158,17 @@ h2.legend =t('.notes_and_questions')
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
 
-        window.removeEventListener('scroll', freezeTableColumn);
-        window.addEventListener('scroll', function (e) {
-          if(mode === 'ttb') {
-            freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
-          } else {
-            freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
-          } 
-        });
+
+        if (typeof freezeTableColumn !== "undefined") {
+          window.removeEventListener('scroll', freezeTableColumn);
+          window.addEventListener('scroll', function (e) {
+            if(mode === 'ttb') {
+              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+            } else {
+              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
+            } 
+          });
+        }
 
         $('[data-layout-mode]').attr('data-layout-mode', mode);
 
