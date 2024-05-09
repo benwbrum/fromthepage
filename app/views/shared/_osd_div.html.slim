@@ -121,6 +121,10 @@
         }, 100);
       });
 
+      document.getElementById('osd_fit_width').addEventListener('click', function() {
+        viewer.viewport.fitHorizontally();
+      });
+
       $('[data-filter]').on('input', updateFilters);
 
       var filters = {
