@@ -144,6 +144,38 @@ h2.legend =t('.notes_and_questions')
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
+
+
+    $('.field-wrapper .field-input').each(function() {
+      $(this).change(function() {
+        sendActiveEditing()
+      })
+      $(this).keyup(function() {
+        sendActiveEditing()
+      })
+    });
+
+
     $(function() {
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');

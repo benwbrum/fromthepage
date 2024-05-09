@@ -523,6 +523,7 @@ Fromthepage::Application.routes.draw do
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
         get 'metadata_overview', on: :member
+        get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
