@@ -89,6 +89,27 @@ h2.legend =t('.page_notes')
 -content_for :javascript
   javascript:
 
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
+
     var lang = "#{@collection.language}";
     var fromImage = JSON.parse("#{@fromImage}") || false;
     function updateTranscriptionOrImageDisplay(){
