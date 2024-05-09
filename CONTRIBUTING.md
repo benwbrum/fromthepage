@@ -16,5 +16,5 @@ All pull requests should be linked to an issue, ideally using closing keywords.
 
 ## Coding conventions
 * Indentation is via two spaces.  
-* We prefer [slim templates](https://slim-template.github.io/), but ERB is acceptible.
+* We prefer [slim templates](https://slim-template.github.io/), but ERB is acceptable.
 
