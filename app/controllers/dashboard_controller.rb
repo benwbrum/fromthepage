@@ -178,11 +178,6 @@ class DashboardController < ApplicationController
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
 
-  def browse_tag
-    @tag = Tag.where(ai_text: params[:ai_text]).first
-    @collections = @tag.collections.unrestricted.not_near_complete.has_intro_block.has_picture
-  end
-
   def landing_page
     if params[:search]
       # Get matching Collections and Docsets
@@ -213,10 +208,13 @@ class DashboardController < ApplicationController
     colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     @collections = (docsets + colls).sample(8)
 
-    @tag_map = Tag.where(canonical: true).joins(:collections).where("collections.restricted" ==false).group(:ai_text).count
-
+    @tag_map = Tag.featured_tags.group(:ai_text).count
   end
 
+  def browse_tag
+    @tag = Tag.where(ai_text: params[:ai_text]).first
+    @collections = @tag.collections.unrestricted.has_intro_block.has_picture
+  end
 
   def collaborator_time_export
     start_date = params[:start_date]
