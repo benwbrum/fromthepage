@@ -45,6 +45,7 @@ de:
     multi_page:
       categories: Kategorien
       describe: Metadaten erstellen
+      pages_need_completion: Seiten, die vervollständigt werden müssen
       pages_need_indexing: Seiten, die indexiert werden müssen
       pages_need_review: Seiten, die überprüft werden müssen
       pages_need_transcription: Seiten, die transkribiert werden müssen
@@ -81,6 +82,7 @@ de:
       pages_that_mention: Seiten, die %{article} erwähnen
     read_work:
       pages: Seiten
+      pages_need_completion: Seiten, die vervollständigt werden müssen
       pages_need_indexing: Seiten, die indexiert werden müssen
       pages_need_review: Seiten, die überprüft werden müssen
       pages_need_transcription: Seiten, die transkribiert werden müssen
