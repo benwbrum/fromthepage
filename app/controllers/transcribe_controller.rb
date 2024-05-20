@@ -63,7 +63,7 @@ class TranscribeController  < ApplicationController
       record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       flash[:notice] = t('.saved_notice')
-      redirect_to redirect_path 
+      redirect_to redirect_path
       return false
     elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
       @page.status = nil
@@ -102,7 +102,7 @@ class TranscribeController  < ApplicationController
         record_deed(DeedType::NEEDS_REVIEW)
       end
     else
-      if params[:page]['needs_review'] == '1'        
+      if params[:page]['needs_review'] == '1'
         unless @page.status == Page::STATUS_NEEDS_REVIEW
           @page.status = Page::STATUS_NEEDS_REVIEW
           record_deed(DeedType::NEEDS_REVIEW)
@@ -133,7 +133,7 @@ class TranscribeController  < ApplicationController
     end
 
     @page.attributes = page_params unless page_params.empty?
-    #if page has been marked blank, call the mark_blank code 
+    #if page has been marked blank, call the mark_blank code
     unless params[:page]['needs_review'] == '1'
       mark_page_blank(redirect: 'transcribe') or return
     end
@@ -143,7 +143,7 @@ class TranscribeController  < ApplicationController
       message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
 
-      if params['save_to_incomplete'] && params[:page]['needs_review'] != '1' 
+      if params['save_to_incomplete'] && params[:page]['needs_review'] != '1'
         @page.status = Page::STATUS_INCOMPLETE
       elsif params['save_to_needs_review']
         @page.status = Page::STATUS_NEEDS_REVIEW
@@ -203,16 +203,17 @@ class TranscribeController  < ApplicationController
             redirect_to collection_one_off_list_path(@collection.owner, @collection)
           elsif params[:flow] =~ /user-contributions/ && @page.status != Page::STATUS_NEEDS_REVIEW
             user_slug = params[:flow].sub('user-contributions ', '')
-            redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)       
+            redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)
           elsif @quality_sampling
             next_page = @quality_sampling.next_unsampled_page
             if next_page
-              redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, next_page.id, flow: "quality-sampling")            
+              redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, next_page.id, flow: "quality-sampling")
             else
               redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)
             end
           else
-            redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
+            page_id = @page.last? ? @page.id : @page.lower_item.id
+            redirect_to :action => 'assign_categories', page_id: page_id, collection_id: @collection
           end
         else
           log_transcript_error(message)
@@ -434,7 +435,7 @@ class TranscribeController  < ApplicationController
     redirect_to next_page_path
   end
 
-protected
+  protected
 
   TRANSLATION="TRANSLATION"
   TRANSCRIPTION="TRANSCRIPTION"
