@@ -292,7 +292,8 @@
 
 .fields-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  // flex-wrap: wrap;
 
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -314,6 +315,9 @@
     label {
       display: block;
       text-align: left;
+      display: flex;
+      min-height: 42px;
+      align-items: flex-end;
     }
   }
 
