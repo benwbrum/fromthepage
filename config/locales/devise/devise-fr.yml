@@ -5,6 +5,16 @@ fr:
     create_account: Créer un compte
     display_name: Organisation
     email_address: Adresse e-mail
+    errors:
+      keys:
+        email: E-mail
+        login: Nom d'utilisateur
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+      messages:
+        login:
+          exclusion: n'est pas valide
+          format: ne peut pas contenir de crochets angulaires (<, >) ou d'espaces
     failure:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n'est pas encore activé.

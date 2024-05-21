@@ -5,6 +5,16 @@ de:
     create_account: Benutzerkonto erstellen
     display_name: Organisationsname
     email_address: E-Mail-Adresse
+    errors:
+      keys:
+        email: E-Mail
+        login: Benutzername
+        password: Passwort
+        password_confirmation: Passwort Bestätigung
+      messages:
+        login:
+          exclusion: ist ungültig
+          format: darf keine spitzen Klammern (<, >) oder Leerzeichen enthalten
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.

@@ -63,7 +63,6 @@ class User < ApplicationRecord
 
   has_many :metadata_description_versions, :dependent => :destroy
 
-
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
@@ -71,10 +70,14 @@ class User < ApplicationRecord
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
 
-  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^<>]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
+  validates :login, presence: true,
+                    uniqueness: { case_sensitive: false },
+                    format: { with: /\A[^<> ]*\z/, message: I18n.t('devise.errors.messages.login.format') },
+                    exclusion: { in: %w[transcribe translate work collection deed],
+                                 message: I18n.t('devise.errors.messages.login.exclusion') }
+
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
-
 
   before_validation :update_display_name
 
@@ -140,8 +143,8 @@ class User < ApplicationRecord
 
     # create users if they don't exist
     unless user
-      email = data['email3'] unless data['email3'].blank? 
-      email = data['email2'] unless data['email2'].blank? 
+      email = data['email3'] unless data['email3'].blank?
+      email = data['email2'] unless data['email2'].blank?
       email = data['email'] unless data['email'].blank?
       login = email.gsub(/@.*/,'')
       # avoid duplicate logins
@@ -282,7 +285,7 @@ class User < ApplicationRecord
       collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
-    
+
       (filtered_public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
       (filtered_public_collections+public_sets)

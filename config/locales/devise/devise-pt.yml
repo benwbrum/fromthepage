@@ -5,6 +5,16 @@ pt:
     create_account: Criar uma conta
     display_name: Nome em Exibição
     email_address: Endereço de email
+    errors:
+      keys:
+        email: Email
+        login: Nome de usuário
+        password: Senha
+        password_confirmation: Confirmação da senha
+      messages:
+        login:
+          exclusion: não é válido
+          format: não pode conter sinais de maior ou menor (<, >) ou espaços
     failure:
       already_authenticated: Você já entrou na sua conta.
       inactive: A sua conta ainda não foi ativada.
