@@ -39,6 +39,7 @@ pt:
       send_paranoid_instructions: Se o seu endereço de e-mail existe em nossa base de dados, você receberá um link de recuperação de senha no seu e-mail em poucos minutos.
       updated: A sua senha foi alterada com sucesso. Você já entrou na sua conta.
       updated_not_active: A sua senha foi alterada com sucesso.
+      validation: O comprimento mínimo da senha é de 6 caracteres
     real_name: Nome real
     real_name_message: Os projetos podem usar isso ao dar crédito a você. Deixe em branco se não quiser ser creditado.
     receive_activity_emails: Receba e-mails de atividades
