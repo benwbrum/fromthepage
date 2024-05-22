@@ -115,7 +115,8 @@
         setTimeout(function() {
           if (lastFocused) {
             lastFocused.focus();
-            lastFocused.setSelectionRange(lastFocused.selectionStart, lastFocused.selectionEnd);
+            if(typeof lastFocused.setSelectionRange !== 'undefined')
+              lastFocused.setSelectionRange(lastFocused.selectionStart, lastFocused.selectionEnd);
             lastFocused = null;
           }
         }, 100);
