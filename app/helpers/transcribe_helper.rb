@@ -1,4 +1,24 @@
 module TranscribeHelper
+  # Get the current tab's path when moving from page to page
+  def get_active_tab_path(tab, owner, collection, work, item)
+    case tab
+    when 'display'
+      collection_display_page_path(owner, collection, work, item)
+    when 'transcribe'
+      collection_transcribe_page_path(owner, collection, work, item)
+    when 'transcribe-translate'
+      collection_translate_page_path(owner, collection, work, item)
+    when 'transcribe-help'
+      collection_help_page_path(owner, collection, work, item)
+    when 'page_version'
+      collection_page_version_path(owner, collection, work, item)
+    when 'page'
+      collection_edit_page_path(owner, collection, work, item)
+    else
+      collection_transcribe_page_path(owner, collection, work, item)
+    end
+  end
+
   def excerpt_subject(page, title, options = {})
     options[:text_type] ||= 'transcription'
     options[:radius] ||= 3
