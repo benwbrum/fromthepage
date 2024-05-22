@@ -117,6 +117,7 @@ class DisplayController < ApplicationController
       @work = @search_attempt&.work
       pages = @search_attempt.results
       @pages = pages.paginate(page: params[:page])
+      @search_string = "\"#{params[:id].split("-")[0]}\""
     end
     logger.debug "DEBUG #{@search_string}"
   end

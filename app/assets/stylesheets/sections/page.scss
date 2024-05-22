@@ -292,7 +292,8 @@
 
 .fields-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: stretch;
+  // flex-wrap: wrap;
 
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -301,6 +302,8 @@
   .field-wrapper {
     margin-bottom: 10px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 
     &:not(:last-child) {
       padding-right: 5px;
@@ -312,8 +315,11 @@
     }
 
     label {
-      display: block;
       text-align: left;
+      display: flex;
+      word-break: break-word;
+      flex: 1;
+      align-items: flex-end;
     }
   }
 
