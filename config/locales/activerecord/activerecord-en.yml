@@ -3,6 +3,7 @@ en:
   activerecord:
     attributes:
       collection:
+        intro_block: Description
         slug: URL
         title: Title
       document_set:

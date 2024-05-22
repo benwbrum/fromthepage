@@ -57,6 +57,8 @@ class Work < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
+  validates :description, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
+                          length: { maximum: 16.megabytes - 1 }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
