@@ -63,7 +63,6 @@ function startDictation(target){
 
   recognition.start();
   recognition.onresult = function(e){
-    console.log(form.find('textarea'))
     var transcript = ''
     if(typeof myCodeMirror !== 'undefined') {
       transcript = myCodeMirror.getValue();
