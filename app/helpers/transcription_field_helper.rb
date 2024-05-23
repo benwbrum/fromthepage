@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TranscriptionFieldHelper
   def field_order(collection)
     @fields = collection.transcription_fields.order(:line_number).order(:position).group_by(&:line_number)
@@ -22,4 +24,35 @@ module TranscriptionFieldHelper
     @field_array = array.zip(@values)
   end
 
+  def generate_field_input(field, cell)
+    input_name = formatted_field_name(field)
+
+    label = label_tag(field.label.parameterize, field.label.titleize)
+
+    content = cell&.content
+
+    case field.input_type
+    when 'text'
+      input = text_field_tag(input_name, content, class: 'field-input')
+    when 'date'
+      input = text_field_tag(input_name, content, class: 'field-input edtf',
+                                                  data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"' })
+    when 'select'
+      options = field.options&.split(';')
+      input = select_tag(input_name, options_for_select(options, content), class: 'field-input')
+    when 'description'
+      input = hidden_field_tag(input_name, content, class: 'field-input')
+    when 'alt text'
+      input = text_area_tag(input_name, content, class: 'field-input alt-text', maxlength: '255') +
+              content_tag(:div, class: 'character-count')
+    else
+      input = text_area_tag(input_name, content, class: 'field-input')
+    end
+
+    label + input
+  end
+
+  def formatted_field_name(field)
+    "fields[#{field.id}][#{field.label.parameterize}]"
+  end
 end
