@@ -216,7 +216,7 @@ class DashboardController < ApplicationController
 
   def browse_tag
     @tag = Tag.where(ai_text: params[:ai_text]).first
-    @collections = @tag.collections.unrestricted.has_intro_block.has_picture
+    @collections = @tag.collections.unrestricted.has_intro_block.has_picture.not_empty
   end
 
   def collaborator_time_export
