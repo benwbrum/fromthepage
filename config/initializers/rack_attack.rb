@@ -30,6 +30,8 @@ class Rack::Attack
 
   ### Prevent Brute-Force Login Attacks ###
 
+  # BWB this has not been a problem for us
+
   # The most common brute-force login attack is a brute-force password
   # attack where an attacker simply tries a large number of emails and
   # passwords to see if any credentials match.
@@ -40,11 +42,11 @@ class Rack::Attack
   # Throttle POST requests to /login by IP address
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
-  throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/login' && req.post?
-      req.ip
-    end
-  end
+  # throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
+  #   if req.path == '/login' && req.post?
+  #     req.ip
+  #   end
+  # end
 
   # Throttle POST requests to /login by email param
   #
@@ -54,13 +56,13 @@ class Rack::Attack
   # throttle logins for another user and force their login requests to be
   # denied, but that's not very common and shouldn't happen to you. (Knock
   # on wood!)
-  throttle('logins/email', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/login' && req.post?
-      # Normalize the email, using the same logic as your authentication process, to
-      # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
-      req.params['email'].to_s.downcase.gsub(/\s+/, "").presence
-    end
-  end
+  # throttle('logins/email', limit: 5, period: 20.seconds) do |req|
+  #   if req.path == '/login' && req.post?
+  #     # Normalize the email, using the same logic as your authentication process, to
+  #     # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
+  #     req.params['email'].to_s.downcase.gsub(/\s+/, "").presence
+  #   end
+  # end
 
   ### Custom Throttle Response ###
 
