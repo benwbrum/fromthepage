@@ -4,7 +4,7 @@ class Tag < ApplicationRecord
 
   # return tags that are canonical and have collections that are unrestricted and have a picture and intro block
   def self.featured_tags
-    joins(:collections).where(canonical: true).merge(Collection.unrestricted.has_intro_block.has_picture)
+    joins(:collections).where(canonical: true).merge(Collection.unrestricted.has_intro_block.has_picture.not_empty)
   end
     
 
