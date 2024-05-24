@@ -215,7 +215,7 @@ class DashboardController < ApplicationController
   end
 
   def browse_tag
-    @tag = Tag.where(ai_text: params[:ai_text]).first
+    @tag = Tag.find_by(ai_text: params[:ai_text])
     @collections = @tag.collections.unrestricted.has_intro_block.has_picture.not_empty
   end
 
