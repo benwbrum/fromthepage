@@ -299,7 +299,12 @@ class TranscribeController  < ApplicationController
 
   def translate
     session[:col_id] = @collection.slug
+    @controller_path = 'translate'
     @fromImage = cookies[:fromImage] || false
+  end
+
+  def help
+    @controller_path = 'help'
   end
 
   def save_translation
