@@ -64,9 +64,9 @@ function startDictation(target){
   recognition.start();
   recognition.onresult = function(e){
     var transcript = ''
-    if(typeof myCodeMirror !== 'undefined') {
+    if(typeof myCodeMirror !== 'undefined' && form.find('.CodeMirror').length > 0) {
       transcript = myCodeMirror.getValue();
-    } else if(form.find('textarea')) {
+    } else if(form.find('textarea').length > 0) {
       transcript = form.find('textarea').val();
     }
 
@@ -76,9 +76,9 @@ function startDictation(target){
       }
     }
     
-    if(typeof myCodeMirror !== 'undefined') {
+    if(typeof myCodeMirror !== 'undefined' && form.find('.CodeMirror').length > 0) {
       myCodeMirror.setValue(transcript);
-    } else if(form.find('textarea')) {
+    } else if(form.find('textarea').length > 0) {
       form.find('textarea').val(transcript)
     }
   };
