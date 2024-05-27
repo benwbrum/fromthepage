@@ -9,7 +9,7 @@ class Rack::Attack
   # safelisting). It must implement .increment and .write like
   # ActiveSupport::Cache::Store
 
-  # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new 
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new 
 
   ### Throttle Spammy Clients ###
 
@@ -27,6 +27,25 @@ class Rack::Attack
   throttle('req/ip', limit: 300, period: 5.minutes) do |req|
     req.ip # unless req.path.start_with?('/assets')
   end
+
+  # see https://github.com/benwbrum/fromthepage/issues/4130
+  ### Throttle requests by agent ClaudeBot 
+  throttle('requests by agent ClaudeBot', limit: 6, period: 1.minute) do |req|
+    req.user_agent.match?(/ClaudeBot/)
+  end
+
+  ### Throttle requests by agent ByteDance
+  throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
+    req.user_agent.match?(/Bytespider/)
+  end
+
+  ### Throttle requests by low-rent SEO bots
+  throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
+    req.user_agent.match?(/SemrushBot/) ||
+    req.user_agent.match?(/DataForSeoBot/)
+  end
+
+    
 
   ### Prevent Brute-Force Login Attacks ###
 
