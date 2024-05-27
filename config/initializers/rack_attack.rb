@@ -31,18 +31,17 @@ class Rack::Attack
   # see https://github.com/benwbrum/fromthepage/issues/4130
   ### Throttle requests by agent ClaudeBot 
   throttle('requests by agent ClaudeBot', limit: 6, period: 1.minute) do |req|
-    req.user_agent.match?(/ClaudeBot/)
+    req.user_agent&.match?(/ClaudeBot/)
   end
 
   ### Throttle requests by agent ByteDance
   throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
-    req.user_agent.match?(/Bytespider/)
+    req.user_agent&.match?(/Bytespider/)
   end
 
   ### Throttle requests by low-rent SEO bots
-  throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
-    req.user_agent.match?(/SemrushBot/) ||
-    req.user_agent.match?(/DataForSeoBot/)
+  throttle('requests by various SEO bots', limit: 15, period: 1.minute) do |req|
+    req.user_agent&.match?(/(SemrushBot|AhrefsBot|DataForSeoBot|AhrefsBot|DotBot|MJ12bot|PetalBot)/)
   end
 
     
