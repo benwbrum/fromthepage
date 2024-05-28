@@ -9,7 +9,17 @@ class Rack::Attack
   # safelisting). It must implement .increment and .write like
   # ActiveSupport::Cache::Store
 
-  # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new 
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new 
+
+
+
+  # Always allow requests from localhost, so tests can run
+  # (blocklist & throttles are skipped)
+  # BWB -- turn this off for testing locally
+  Rack::Attack.safelist('allow from localhost') do |req|
+    # Requests are allowed if the return value is truthy
+    '127.0.0.1' == req.ip || '::1' == req.ip
+  end
 
   ### Throttle Spammy Clients ###
 
@@ -27,6 +37,24 @@ class Rack::Attack
   throttle('req/ip', limit: 300, period: 5.minutes) do |req|
     req.ip # unless req.path.start_with?('/assets')
   end
+
+  # see https://github.com/benwbrum/fromthepage/issues/4130
+  ### Throttle requests by agent ClaudeBot 
+  throttle('requests by agent ClaudeBot', limit: 6, period: 1.minute) do |req|
+    req.user_agent&.match?(/ClaudeBot/)
+  end
+
+  ### Throttle requests by agent ByteDance
+  throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
+    req.user_agent&.match?(/Bytespider/)
+  end
+
+  ### Throttle requests by low-rent SEO bots
+  throttle('requests by various SEO bots', limit: 15, period: 1.minute) do |req|
+    req.user_agent&.match?(/(SemrushBot|AhrefsBot|DataForSeoBot|AhrefsBot|DotBot|MJ12bot|PetalBot)/)
+  end
+
+    
 
   ### Prevent Brute-Force Login Attacks ###
 
