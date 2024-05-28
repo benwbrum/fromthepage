@@ -16,10 +16,10 @@ class Rack::Attack
   # Always allow requests from localhost, so tests can run
   # (blocklist & throttles are skipped)
   # BWB -- turn this off for testing locally
-  Rack::Attack.safelist('allow from localhost') do |req|
-    # Requests are allowed if the return value is truthy
-    '127.0.0.1' == req.ip || '::1' == req.ip
-  end
+  # Rack::Attack.safelist('allow from localhost') do |req|
+  #   # Requests are allowed if the return value is truthy
+  #   '127.0.0.1' == req.ip || '::1' == req.ip
+  # end
 
   ### Throttle Spammy Clients ###
 
@@ -34,24 +34,14 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', limit: 300, period: 5.minutes) do |req|
+  throttle('req/ip', limit: 3000, period: 5.minutes) do |req|
     req.ip # unless req.path.start_with?('/assets')
   end
 
+
   # see https://github.com/benwbrum/fromthepage/issues/4130
-  ### Throttle requests by agent ClaudeBot 
-  throttle('requests by agent ClaudeBot', limit: 6, period: 1.minute) do |req|
-    req.user_agent&.match?(/ClaudeBot/)
-  end
-
-  ### Throttle requests by agent ByteDance
-  throttle('requests by agent ByteDance', limit: 6, period: 1.minute) do |req|
-    req.user_agent&.match?(/Bytespider/)
-  end
-
-  ### Throttle requests by low-rent SEO bots
-  throttle('requests by various SEO bots', limit: 15, period: 1.minute) do |req|
-    req.user_agent&.match?(/(SemrushBot|AhrefsBot|DataForSeoBot|AhrefsBot|DotBot|MJ12bot|PetalBot)/)
+  Rack::Attack.blocklist('block bad bots') do |req|
+    req.user_agent&.match?(/(ClaudeBot|Bytespider|SemrushBot|AhrefsBot|DataForSeoBot|AhrefsBot|DotBot|MJ12bot|PetalBot)/)
   end
 
     
