@@ -105,6 +105,7 @@ en:
       document_date: Document Date
       document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
       document_history: Document history
+      document_sets: Document Sets
       editorial_notes: Editorial notes
       enable_ocr_correction: Enable OCR Correction
       enable_ocr_correction_description: A work may begin with OCR text that needs to be corrected. When checked, the Transcribe tab will be replaced by a Correct tab.
