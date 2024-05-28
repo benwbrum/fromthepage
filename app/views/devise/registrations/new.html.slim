@@ -17,6 +17,7 @@ section.signon
     .signon_field
       =f.label :password, t('devise.password')
       =f.password_field :password, autocomplete: 'off'
+      small#password-validation style='color: red;'
     .signon_field
       =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'
@@ -39,3 +40,21 @@ section.signon
   =render 'devise/shared/links'
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Sign Up");
+
+- content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      var passwordField = document.getElementById('user_password');
+      var passwordValidation = document.getElementById('password-validation');
+
+      passwordField.addEventListener('input', function() {
+        var password = passwordField.value;
+
+        if (password.length < 6 && password.length > 0) {
+          passwordValidation.textContent = "#{t('devise.passwords.validation')}";
+        }
+        else {
+          passwordValidation.textContent = '';
+        }
+      });
+    });
