@@ -72,9 +72,10 @@ class User < ApplicationRecord
 
   validates :login, presence: true,
                     uniqueness: { case_sensitive: false },
-                    format: { with: /\A[^<> ]*\z/, message: I18n.t('devise.errors.messages.login.format') },
+                    format: { with: /\A[^<> ]*\z/,
+                              message: ->(_, _) { I18n.t('devise.errors.messages.login.format') } },
                     exclusion: { in: %w[transcribe translate work collection deed],
-                                 message: I18n.t('devise.errors.messages.login.exclusion') }
+                                 message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
 
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
