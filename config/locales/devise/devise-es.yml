@@ -5,6 +5,16 @@ es:
     create_account: Crear una cuenta
     display_name: Nombre para mostrar
     email_address: Dirección de correo electrónico
+    errors:
+      keys:
+        email: Correo electrónico
+        login: Nombre de usuario
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+      messages:
+        login:
+          exclusion: ist ungültig
+          format: darf keine spitzen Klammern (<, >) oder Leerzeichen enthalten
     failure:
       already_authenticated: Ya has iniciado sesión.
       inactive: Tu cuenta aún no ha sido activada.

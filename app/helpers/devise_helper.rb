@@ -4,7 +4,7 @@ module DeviseHelper
     flash_alerts = []
     error_key = 'errors.messages.not_saved'
 
-    if !flash.empty?
+    unless flash.empty?
       error_key = 'errors.messages.not_signed'
 
       if flash[:error]
@@ -21,8 +21,13 @@ module DeviseHelper
       flash.clear
     end
 
-    return "" if resource.errors.empty? && flash_alerts.empty?
-    errors = resource.errors.empty? ? flash_alerts : resource.errors.full_messages
+    return '' if resource.errors.empty? && flash_alerts.empty?
+
+    errors = if resource.errors.empty?
+               flash_alerts
+             else
+               resource.errors.messages.map { |key, msg| "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}" }
+             end
 
     messages = errors.map { |msg| content_tag(:li, msg) }.join
 
