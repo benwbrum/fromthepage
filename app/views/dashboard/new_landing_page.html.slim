@@ -19,11 +19,12 @@
 
 .columns.project-list
   article.maincol
-    ul.tagcloud
-      -@tag_map.each do |ai_text, collection_count|
-        -if collection_count > 0
-          li data-weight="#{collection_count}"
-            =link_to(ai_text, browse_tag_path(ai_text))
+    -unless params[:search]
+      ul.tagcloud
+        -@tag_map.each do |ai_text, collection_count|
+          -if collection_count > 0
+            li data-weight="#{collection_count}"
+              =link_to(ai_text, browse_tag_path(ai_text))
 
     -if @search_results && @owners.empty?
       -@search_results.each do |sr|
@@ -37,33 +38,25 @@
                 h5 =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
                   =truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+    -[@org_owners, @individual_owners].each do |owners|
+      -owners.each do |owner|
+        -if params[:search]
+          -projects = @search_results.select{ |p| p.owner_user_id == owner.id }
+        -else
+          -projects = (owner.random_collections + owner.random_document_sets).sample(3)
+        -unless projects.blank?
+          .project-list_projects
+            .projects-owner
+              h3.projects-owner_title
+                =link_to owner.display_name, user_profile_path(owner)
+              -if owner.about.present?
+                .description
+                  =owner.about
 
-    -@owners.each do |owner|
-      -if params[:search]
-        -projects = @search_results.select{ |p| p.owner_user_id == owner.id }
-      -else
-        -projects = (owner.random_collections + owner.random_document_sets).sample(3)
-      -unless projects.blank?
-        .project-list_projects
-          .projects-owner
-            h3.projects-owner_title
-              =link_to owner.display_name, user_profile_path(owner)
-            -if owner.about.present?
-              .description
-                =owner.about
-
-          .projects
-            -projects.each do |project|
-              -snippet = truncate(Loofah.fragment(project.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
-              div.projects_details
-                -unless project.picture.blank?
-                  .projects_details_image
-                    =image_tag(project.picture_url(:thumb), alt: project.title)
-                .projects_collection
-                  h5 =link_to project.title, collection_path(owner, project)
-                  -unless snippet.empty?
-                    .projects_collection_snippet = snippet
-            .projects_link =link_to t('dashboard.landing_page.more'), user_profile_path(owner)
+            .projects
+              -projects.each do |project|
+                =render 'dashboard/project_details', project: project, owner: owner
+              .projects_link =link_to t('dashboard.landing_page.more'), user_profile_path(owner)
 
     .project-list_link
       =link_to t('.all_collections'), collections_list_path

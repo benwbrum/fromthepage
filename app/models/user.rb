@@ -66,6 +66,8 @@ class User < ApplicationRecord
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Organization', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
