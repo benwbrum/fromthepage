@@ -15,10 +15,11 @@ class Rack::Attack
 
   # Always allow requests from localhost, so tests can run
   # (blocklist & throttles are skipped)
-  # BWB -- turn this off for testing locally
-  Rack::Attack.safelist('allow from localhost') do |req|
-    # Requests are allowed if the return value is truthy
-    '127.0.0.1' == req.ip || '::1' == req.ip
+  if Rails.env.test?
+    Rack::Attack.safelist('allow from localhost') do |req|
+      # Requests are allowed if the return value is truthy
+      '127.0.0.1' == req.ip || '::1' == req.ip
+    end
   end
 
   ### Throttle Spammy Clients ###

@@ -46,8 +46,6 @@ module Fromthepage
       end
     end
 
-    # turn on rack-attack
-    config.middleware.use Rack::Attack
   end
 
 

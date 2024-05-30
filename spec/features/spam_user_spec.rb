@@ -47,7 +47,7 @@ describe "Spam user safeguards" do
     first(:link, 'Sign In').click
     click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
-    fill_in 'User Name', with: login
+    fill_in 'Username', with: login
     fill_in 'Email Address', with: "#{login}@test.com"
     fill_in 'Password', with: 'password'
     fill_in 'Confirm Password', with: 'password'
