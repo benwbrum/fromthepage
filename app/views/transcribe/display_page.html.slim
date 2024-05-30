@@ -65,7 +65,7 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}")
+  .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
     .page-column.page-imagescan
       =render :partial => '/shared/osd_div'
 
@@ -141,6 +141,38 @@ h2.legend =t('.notes_and_questions')
 
 -content_for :javascript
   javascript:
+    var splitter = null;
+
+    function applySplitter(mode) {
+      if(splitter) {
+        splitter.destroy();
+      }
+
+      splitter = $('#splitter').split({
+        orientation: (mode === 'rtl' || mode === 'ltr')?'vertical':'horizontal',
+        limit: 10,
+        position: '50%', // if there is no percentage it interpret it as pixels
+        onDrag: function(event) {
+
+          if(mode === 'rtl') {
+            var left_width = $('.left_panel').width();
+            var right_width = $('.right_panel').width();
+
+            $('.right_panel').width(left_width);
+            $('.left_panel').width(right_width);
+          }
+
+          if(mode === 'btt') {
+            var top_height = $('.top_panel').height();
+            var bottom_height = $('.bottom_panel').height();
+
+            $('.top_panel').height(bottom_height);
+            $('.bottom_panel').height(top_height);
+          }
+        }
+      });
+    }
+
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
@@ -184,6 +216,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         }
+
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -211,6 +245,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         };
+
+        applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -225,6 +261,13 @@ h2.legend =t('.notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
+
+
+      if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
+        applySplitter(Cookies.get('transcribe_layout_mode'));
+      } else {
+        applySplitter('ltr');
+      }
     });
 
     $(function() {
