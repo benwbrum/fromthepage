@@ -56,29 +56,31 @@ function startDictation(target){
   recognizing = true;
   button = target;
   var form = $(button.form);
-  var voiceData = form.find('textarea');
   voiceSpan = form.find('.voice-info');
   if (voiceSpan.hasClass('voice-error')){
     voiceSpan.removeClass('voice-error');
   }
-  var initialText
-
-  if (voiceData.text() != '') {
-    initialText = voiceData.text() + '\n';
-  } else {
-    initialText = '';
-  }
-  var final_transcript = initialText;
-  var interim_transcript = initialText;
 
   recognition.start();
   recognition.onresult = function(e){
+    var transcript = ''
+    if(typeof myCodeMirror !== 'undefined') {
+      transcript = myCodeMirror.getValue();
+    } else if(form.find('textarea')) {
+      transcript = form.find('textarea').val();
+    }
+
     for (var i = e.resultIndex; i < e.results.length; ++i){
       if (e.results[i].isFinal){
-        final_transcript += e.results[i][0].transcript;
+        transcript += e.results[i][0].transcript;
       }
     }
-    voiceData.text(final_transcript);
+    
+    if(typeof myCodeMirror !== 'undefined') {
+      myCodeMirror.setValue(transcript);
+    } else if(form.find('textarea')) {
+      form.find('textarea').val(transcript)
+    }
   };
 }
 
