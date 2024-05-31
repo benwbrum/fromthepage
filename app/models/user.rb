@@ -389,4 +389,12 @@ class User < ApplicationRecord
     save
   end
 
+  def organization?
+    self.owner? && self.account_type != 'Staff'
+  end
+
+  def staff?
+    self.account_type == 'Staff'
+  end
+
 end

@@ -125,23 +125,24 @@ class UserController < ApplicationController
   end
 
   def profile
-    #find the user if it isn't already set
-    unless @user
-      @user = User.friendly.find(params[:id])
-    end
+    # Find the user if it isn't already set
+    @user ||= User.friendly.find(params[:id])
+
     if !@user.deleted || current_user.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
-      @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
-      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      @collection_ids = @collections_and_document_sets.map(&:id)
+      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection)
+                    .order('created_at DESC').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     else
       flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
     end
-    if @user.owner?
-      collections = @user.all_owner_collections.carousel
-      sets = @user.document_sets.carousel
-      @carousel_collections = (collections + sets).sample(8)
-    end
+
+    return unless @user.owner?
+
+    collections = @user.all_owner_collections.carousel
+    sets = @user.document_sets.carousel
+    @carousel_collections = (collections + sets).sample(8)
   end
 
   private
