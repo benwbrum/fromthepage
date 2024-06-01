@@ -21,7 +21,7 @@ class Work < ApplicationRecord
      "editorial_notes",
      "document_date",
      "uploaded_filename"]
-  
+
   before_destroy :cleanup_images # must precede pages association
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -209,12 +209,12 @@ class Work < ApplicationRecord
     else
       # the edtf-ruby gem has some gaps in coverage for e.g. seasons
       self[:document_date] = date_as_edtf.to_s
-    end      
+    end
   end
 
   def document_date
     date = Date.edtf(self[:document_date])
-    
+
     if self[:document_date].nil? # there is no document date
       return nil
     elsif date.nil? # the document date is invalid
@@ -225,7 +225,7 @@ class Work < ApplicationRecord
     elsif self[:document_date].length == 4 and not self[:document_date].include? "x" # YYYY
       date.year_precision!
     end
-    
+
     return date.edtf
   end
 
@@ -449,7 +449,7 @@ class Work < ApplicationRecord
 
   def save_metadata
     # this is costly, so only execute if the relevant value has actually changed
-    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
@@ -482,5 +482,9 @@ class Work < ApplicationRecord
       # now update the work_facet
       FacetConfig.update_facets(self)
     end
+  end
+
+  def user_can_transcribe?(user)
+    !self.restrict_scribes || user&.like_owner?(self) || self.scribes.include?(user)
   end
 end
