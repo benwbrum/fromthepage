@@ -18,6 +18,7 @@
 //= require handsontable.full.min
 //= require datatables.min
 //= require clipboard
+//= require select_all
 
 ;(function($, window, document, undefined) {
 
@@ -289,6 +290,8 @@ $(function() {
   $('[data-assign-categories]').categoriesSelect();
 
   $('[data-multi-select]').multiSelect();
+
+  $('[data-select-all]').selectAll();
 
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {

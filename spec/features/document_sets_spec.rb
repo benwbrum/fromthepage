@@ -29,23 +29,37 @@ describe "document sets", :order => :defined do
     work.save!
   end
 
-  it "edits a document set (start at collection level)" do
-    login_as(@owner, :scope => :user)
+  it 'edits a document set (start at collection level)', js: true do
+    login_as(@owner, scope: :user)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
+    page.find('.tabs').click_link('Sets')
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
       within(page.find('tr', text: @document_sets.first.title)) do
-          page.find('a', text: 'Edit').click
+        page.find('a', text: 'Edit').click
       end
     end
-    page.fill_in 'document_set_title', with: "Edited Test Document Set 1"
+    page.fill_in 'document_set_title', with: 'Edited Test Document Set 1'
     page.find_button('Save Document Set').click
-    expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
+    expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
+
+    # Set all checkboxes off
+    page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
+      checkbox.set(false)
+    end
+
+    # Click select all
+    page.find('input[type="checkbox"][data-select-all="works"]', visible: false).check
+    expect(page.find('input[type="checkbox"][data-select-all="works"]', visible: false)).to be_checked
+
+    # Expect all checkboxes are true
+    page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
+      expect(checkbox).to be_checked
+    end
   end
-  
+
   it "makes a document set private" do
     login_as(@owner, :scope => :user)
     #create an additional document set to make private
@@ -185,9 +199,9 @@ describe "document sets", :order => :defined do
 
     # test activity stream for set
     visit collection_path(@set.owner, @set)
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     find("#show-more-deeds").click
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     page.find('a', text: @set.works.first.pages.first.title).click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
 
@@ -195,9 +209,9 @@ describe "document sets", :order => :defined do
     # test activity stream for collection
     login_as(@owner, :scope => :user)
     visit collection_path(@set.owner, @set.collection)
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     find("#show-more-deeds").click
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     page.find('a', text: @set.works.first.pages.first.title).click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
   end
@@ -436,7 +450,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
-    page.uncheck('Enable document sets') 
+    page.uncheck('Enable document sets')
     sleep(1)
     expect(page.find_link("Edit Sets")).to match_css('[disabled]')
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
@@ -475,7 +489,7 @@ describe "document sets", :order => :defined do
     @set.works.each do |w|
       expect(page).to have_content w.title
     end
-    #check the old path 
+    #check the old path
     #(this variable is stored at the beginning of the test, so it's the original)
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
