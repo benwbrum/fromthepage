@@ -45,11 +45,11 @@ class AiJobsController < ApplicationController
 
   # POST /ai_jobs
   def create
+    binding.pry
     @ai_job = AiJob.new(ai_job_params)
     @ai_job.user = current_user
     @ai_job.collection = @collection
     @ai_job.work = @work
-
     if @ai_job.save!
       flash[:notice]='AI B'
       if @work

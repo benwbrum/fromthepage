@@ -1,6 +1,6 @@
 = form_with(model: ai_job) do |form|
-  =hidden_field_tag :collection_id, value: @collection.id
-  =hidden_field_tag :work_id, value: @work.id
+  =hidden_field_tag :collection_id, @collection.slug
+  =hidden_field_tag :work_id, @work.slug
 
   - if ai_job.errors.any?
     #error_explanation

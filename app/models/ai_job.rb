@@ -29,6 +29,7 @@ class AiJob < ApplicationRecord
     end
   end
 
+  # TODO re-write in light of 
   module Status
     QUEUED = 'queued'
     RUNNING = 'running'
@@ -68,6 +69,11 @@ class AiJob < ApplicationRecord
     end
   end
 
+  # main loop -- to be run in background by a rake task; other tasks will be run inline
+  def process
+
+
+  end
 
   # parameters should be stored as a jsonified hash (but consider using job-type specific accessors)
   def parameters
@@ -80,5 +86,22 @@ class AiJob < ApplicationRecord
   def parameters=(value)
     self[:parameters] = value.to_json
   end
+
   
+private
+  def all_requests_finished?
+
+  end
+
+  def any_requests_errored?
+
+  end
+
+
+  def needs_ai_text?
+
+  end
+
+
+
 end
