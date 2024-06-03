@@ -105,7 +105,7 @@ de:
       document_date: Datum des Dokuments
       document_date_hint: Datum des Dokuments ist im EDTF-Format anzugeben (z. B. 1843, 2001-02, 1643-06-30)
       document_history: Dokumentenverlauf
-      document_sets: Dokumentensätze
+      document_sets: Dokumentensets
       editorial_notes: Editorische Anmerkungen
       enable_ocr_correction: OCR-Korrektur aktivieren
       enable_ocr_correction_description: Ein Werk kann mit OCR-Text beginnen, der korrigiert werden muss. Wenn diese Option aktiviert ist, wird der Tab Transkription durch den Tab Korrektur ersetzt.
