@@ -26,7 +26,7 @@
             li data-weight="#{collection_count}"
               =link_to(ai_text, browse_tag_path(ai_text))
 
-    -if @search_results && @owners.empty?
+    -if @search_results && @org_owners.empty? && @individual_owners.empty?
       -@search_results.each do |sr|
         .project-list_projects
           .projects-owner
