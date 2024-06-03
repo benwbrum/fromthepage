@@ -11,7 +11,7 @@ class TranscriptionField < ApplicationRecord
   validates :options, presence: true, if: Proc.new { |field| field.input_type == 'select' }, on: [:create, :update]
   validates :percentage, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 100 }
   validates :page_number, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 1000 }
-  validates :label, format: { without: /[\[\]\{\}]/, message: "cannot contain '{', '}', '[' or ']'" }
+  validates :label, format: { without: /[\[\]]/, message: "cannot contain '[' or ']'" }
 
   module FieldType
     TRANSCRIPTION = 'transcription'

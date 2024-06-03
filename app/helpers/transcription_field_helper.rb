@@ -27,7 +27,7 @@ module TranscriptionFieldHelper
   def generate_field_input(field, cell)
     input_name = formatted_field_name(field)
 
-    label = label_tag(field.label.parameterize, field.label.titleize)
+    label = label_tag(field.label.parameterize, field.label)
 
     content = cell&.content
 
