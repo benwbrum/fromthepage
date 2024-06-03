@@ -259,6 +259,26 @@ h3, .thredded--post-form--title {
   font-size: $fontSizeH5;
 }
 
+// hide header, footer, title in monitor view mode
+.monitor-view {
+  padding: 0;
+
+  .wrapper {
+    padding: 0;
+    max-width: 100%;
+
+    .page-imagescan {
+      height: 100vh;
+    }
+  }
+
+  header,
+  .breadcrumbs,
+  .collection-footer,
+  footer {
+    display: none;
+  }
+}
 
 @import "datepicker/datepicker";
 @import "jquery.ui.all";

@@ -23,6 +23,9 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
+        a.button.outline(data-monitor-toggle)
+          =svg_symbol "#icon-expand", class: 'icon'
+          span.hide-l =t('Monitor')
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
@@ -209,6 +212,8 @@ h2.legend =t('.notes_and_questions')
 
 
     $(function() {
+      var imageWindow = null;
+
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
@@ -218,6 +223,31 @@ h2.legend =t('.notes_and_questions')
         }
 
         applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      });
+
+      function openImageMonitor() {
+        imageWindow = window.open("#{collection_monitor_view_path(@collection.owner, @collection, @page.work)}", 'ImageWindow', width='100%',height='100%');
+        var monitorCloseDetect = setInterval(function() {   
+          if(imageWindow.closed) {  
+              clearInterval(monitorCloseDetect);  
+              $('[data-monitor-toggle]').removeClass('pressed');
+          }  
+        }, 1000);
+      }
+
+      $('[data-monitor-toggle]').on('click', function() {
+        if($(this).hasClass('pressed')) {
+          $(this).removeClass('pressed');
+          Cookies.set('monitor_view_on', 'false', { expires: 365 });
+
+          if(imageWindow) {
+            imageWindow.close();
+          }
+        } else {
+          $(this).addClass('pressed');
+          openImageMonitor();
+          Cookies.set('monitor_view_on', 'true', { expires: 365 });
+        }
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -267,6 +297,11 @@ h2.legend =t('.notes_and_questions')
         applySplitter(Cookies.get('transcribe_layout_mode'));
       } else {
         applySplitter('ltr');
+      }
+
+      if(Cookies && (Cookies.get('monitor_view_on') === 'true')) {
+        openImageMonitor();
+        $('[data-monitor-toggle]').addClass('pressed');
       }
     });
 
