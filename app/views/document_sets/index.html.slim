@@ -50,6 +50,7 @@ br
           th =t('.status')
           -@collection.document_sets.each do |document_set|
             th
+              =check_box_tag(nil, nil, false, style: 'margin-right: 5px;', data: { select_all: "document_set_#{document_set.id}" })
               =document_set.title
               /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
       tbody
@@ -74,7 +75,7 @@ br
             -@collection.document_sets.each do |document_set|
               td
                 =hidden_field_tag "work_assignment[#{work.slug}][#{document_set.slug}]", false
-                =check_box_tag("work_assignment[#{work.slug}][#{document_set.slug}]", "true", ids.include?(document_set.id), {"title"=>t('.toggle_work_in_document_set', work: work.title, document_set: document_set.title)})
+                =check_box_tag("work_assignment[#{work.slug}][#{document_set.slug}]", "true", ids.include?(document_set.id), title: t('.toggle_work_in_document_set', work: work.title, document_set: document_set.title), class: "document_set_#{document_set.id}")
     br
     =hidden_field_tag(:page, params[:page])
     =submit_tag t('.save')
