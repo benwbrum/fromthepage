@@ -22,17 +22,35 @@
 .splitter_panel .vsplitter {
     cursor: col-resize;
     z-index: 900;
-    width: 4px;
+    width: 2px;
     box-sizing: border-box;
-    border-left: 4px dashed #9d9d9d;
+    border-left: 2px dashed $inputDisabledColor;
+    transition: 0.2s border-color, 0.2s border-style;
+    margin-left: -1px;
+}
+
+.splitter_panel .vsplitter:active,
+.splitter_panel .vsplitter:hover {
+    border-left-style: solid;
+    border-color: $btnGreenBackground;
+    border-left-width: 3px;
+}
+
+.splitter_panel .hsplitter:active,
+.splitter_panel .hsplitter:hover {
+    border-top-style: solid;
+    border-color: $btnGreenBackground;
+    border-top-width: 3px;
 }
 
 .splitter_panel .hsplitter {
     cursor: row-resize;
     z-index: 800;
-    height: 4px;
+    height: 2px;
     box-sizing: border-box;
-    border-top: 4px dashed #9d9d9d;
+    border-top: 2px dashed $inputDisabledColor;
+    transition: 0.2s border-color, 0.2s border-style;
+    margin-top: -1px;
 }
 
 .splitter_panel .vsplitter.splitter-invisible,
@@ -87,7 +105,6 @@
 .splitter_panel .right_panel {
     padding: 10px;
 }
-
 
 .splitter_panel .bottom_panel {
     bottom: 0;

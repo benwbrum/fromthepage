@@ -280,6 +280,13 @@ h3, .thredded--post-form--title {
   }
 }
 
+// extra class for custom OSD icons
+#osd_monitor svg {
+  width: 20px;
+  height: 20px;
+  margin-top: -2px;
+}
+
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
 @import "handsontable.min";

@@ -23,9 +23,6 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
-        a.button.outline(data-monitor-toggle)
-          =svg_symbol "#icon-expand", class: 'icon'
-          span.hide-l =t('Monitor')
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
@@ -147,6 +144,8 @@ h2.legend =t('.notes_and_questions')
     var splitter = null;
 
     function applySplitter(mode) {
+      var position = '50%'
+
       if(splitter) {
         splitter.destroy();
       }
@@ -154,8 +153,9 @@ h2.legend =t('.notes_and_questions')
       splitter = $('#splitter').split({
         orientation: (mode === 'rtl' || mode === 'ltr')?'vertical':'horizontal',
         limit: 10,
-        position: '50%', // if there is no percentage it interpret it as pixels
+        position, // if there is no percentage it interpret it as pixels
         onDrag: function(event) {
+          Cookies.set('drag_position', splitter.position(), { expires: 365 });
 
           if(mode === 'rtl') {
             var left_width = $('.left_panel').width();
@@ -174,7 +174,35 @@ h2.legend =t('.notes_and_questions')
           }
         }
       });
+
+      if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
+        position = parseFloat(Cookies.get('drag_position'));
+        splitter.position(position);
+
+        if(mode === 'rtl') {
+          var left_width = $('.left_panel').width();
+          var right_width = $('.right_panel').width();
+
+          $('.right_panel').width(left_width);
+          $('.left_panel').width(right_width);
+        }
+
+        if(mode === 'btt') {
+          var top_height = $('.top_panel').height();
+          var bottom_height = $('.bottom_panel').height();
+
+          $('.top_panel').height(bottom_height);
+          $('.bottom_panel').height(top_height);
+        }
+      }
+
+      $('.vsplitter').attr('title', 'Drag this to change the editor and image viewer');
+      $('.hsplitter').attr('title', 'Drag this to change the editor and image viewer');
     }
+
+    window.addEventListener('resize', function(event) {
+      applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+    })
 
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
@@ -225,35 +253,10 @@ h2.legend =t('.notes_and_questions')
         applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
-      function openImageMonitor() {
-        imageWindow = window.open("#{collection_monitor_view_path(@collection.owner, @collection, @page.work)}", 'ImageWindow', width='100%',height='100%');
-        var monitorCloseDetect = setInterval(function() {   
-          if(imageWindow.closed) {  
-              clearInterval(monitorCloseDetect);  
-              $('[data-monitor-toggle]').removeClass('pressed');
-          }  
-        }, 1000);
-      }
-
-      $('[data-monitor-toggle]').on('click', function() {
-        if($(this).hasClass('pressed')) {
-          $(this).removeClass('pressed');
-          Cookies.set('monitor_view_on', 'false', { expires: 365 });
-
-          if(imageWindow) {
-            imageWindow.close();
-          }
-        } else {
-          $(this).addClass('pressed');
-          openImageMonitor();
-          Cookies.set('monitor_view_on', 'true', { expires: 365 });
-        }
-      });
-
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
-
+        Cookies.set('drag_position', 0, { expires: 365 });
 
         if (typeof freezeTableColumn !== "undefined") {
           window.removeEventListener('scroll', freezeTableColumn);
@@ -292,16 +295,10 @@ h2.legend =t('.notes_and_questions')
         $('#page_needs_review').prop('checked', false);
       });
 
-
       if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
         applySplitter(Cookies.get('transcribe_layout_mode'));
       } else {
         applySplitter('ltr');
-      }
-
-      if(Cookies && (Cookies.get('monitor_view_on') === 'true')) {
-        openImageMonitor();
-        $('[data-monitor-toggle]').addClass('pressed');
       }
     });
 
