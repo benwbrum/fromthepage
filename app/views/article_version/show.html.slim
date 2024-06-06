@@ -7,7 +7,10 @@
 
 -else
   -selected_version_date = l(@selected_version.created_on.localtime)
-  -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
+  -if @selected_version.user
+    -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(user_id: @selected_version.user.id))
+  -else
+    -selected_version_user = t('.user_deleted')
 
   p.diff-help== t('.description')
 
