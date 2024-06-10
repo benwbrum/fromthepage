@@ -50,18 +50,21 @@ class TranscribeController  < ApplicationController
 
   def mark_page_blank(options = { redirect: 'display' })
     redirect_path = case options[:redirect]
-      when 'transcribe'
-        collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page.id)
-      else
-        collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-      end
+                    when 'transcribe'
+                      save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
+                                            params[:save_to_transcribed]
+                      page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
+                      collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
+                    else
+                      collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+                    end
 
     if params[:page]['mark_blank'] == '1'
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
-      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
+      @work.work_statistic&.recalculate({ type: 'blank' })
       flash[:notice] = t('.saved_notice')
       redirect_to redirect_path
       return false
@@ -69,7 +72,7 @@ class TranscribeController  < ApplicationController
       @page.status = nil
       @page.translation_status = nil
       @page.save
-      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
+      @work.work_statistic&.recalculate({ type: 'blank' })
       flash[:notice] = t('.saved_notice')
       redirect_to redirect_path
       return false
