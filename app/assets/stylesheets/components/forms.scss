@@ -76,7 +76,7 @@ input[type="week"] {
   // Disabled state
   &[disabled] {
     opacity: 0.8;
-    color: #888;
+    color: $inputDisabledColor;
     background-color: $inputDisabledBackground;
   }
 
