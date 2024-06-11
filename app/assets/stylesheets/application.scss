@@ -114,6 +114,7 @@ $gapSize:                   20px;
 @import "sections/search_attempt";
 
 @import "plugins/select2/core";
+@import "plugins/splitter";
 
 #welcome-message {
   width: 480px;
@@ -293,4 +294,3 @@ h3, .thredded--post-form--title {
 @import "datatables.min";
 @import "annotorious/annotorious-openseadragon.css";
 @import "annotorious/annotorious-openseadragon-textlayer.css";
-@import "splitter";
