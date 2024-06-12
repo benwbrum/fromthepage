@@ -178,6 +178,8 @@ fr:
       page_on_the_left: Page à gauche
       page_on_the_right: Page de droite
       page_on_the_top: Page en haut
+      refresh_metadata: Rafraîchir les métadonnées
+      refresh_metadata_description: Actualisez les métadonnées des manifestes IIIF d'origine.
       save_changes: Sauvegarder les modifications
       spellcheck_description: Ne convient pas aux textes à l'orthographe irrégulière.
       upload_metadata: Télécharger les métadonnées

@@ -119,8 +119,9 @@ Fromthepage::Application.routes.draw do
     scope 'metadata', as: 'metadata' do
       get ':id/example', to: 'metadata#example', as: :example
       get ':id/upload', to: 'metadata#upload', as: :upload
-      get 'csv_error', to:'metadata#csv_error'
+      get 'csv_error', to: 'metadata#csv_error'
       post 'create', to: 'metadata#create'
+      post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
 
     scope 'editor_button', as: 'editor_button' do

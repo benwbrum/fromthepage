@@ -1,6 +1,8 @@
 ---
 pt:
   metadata:
+    refresh:
+      is_processing: A importação da coleção IIIF está em processamento. Recarregue esta página em alguns minutos para ver as obras importadas.
     upload:
       browse: Navegar
       click_to_browse_a_file: Clique para procurar um arquivo...

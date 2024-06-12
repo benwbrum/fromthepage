@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]                              
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
@@ -186,9 +186,9 @@ class CollectionController < ApplicationController
             description_ids = @collection.works.incomplete_description.pluck(:id)
             ids += description_ids
           end
-          
+
           works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
-          
+
           if works.empty?
             @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           else
@@ -423,8 +423,8 @@ class CollectionController < ApplicationController
 
   def edit_tasks
     @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
-    if @collection.field_based && !@collection.transcription_fields.present? 
-      flash.now[:info] = t('.alert') 
+    if @collection.field_based && !@collection.transcription_fields.present?
+      flash.now[:info] = t('.alert')
     end
   end
 
@@ -464,7 +464,7 @@ class CollectionController < ApplicationController
 
     if @collection.save
       if request.xhr?
-        render json: { 
+        render json: {
           success: true,
           updated_field: updated_fields
         }
@@ -474,7 +474,7 @@ class CollectionController < ApplicationController
       end
     else
       if request.xhr?
-        render json: { 
+        render json: {
           success: false,
           errors: @collection.errors.full_messages
         }
@@ -681,30 +681,30 @@ private
 
   def collection_params
     params.require(:collection).permit(
-      :title, 
-      :slug, 
-      :intro_block, 
-      :transcription_conventions, 
-      :help, 
-      :link_help, 
-      :subjects_disabled, 
-      :subjects_enabled, 
-      :review_type, 
-      :hide_completed, 
-      :text_language, 
-      :default_orientation, 
-      :voice_recognition, 
-      :picture, 
-      :user_download, 
-      :enable_spellcheck, 
+      :title,
+      :slug,
+      :intro_block,
+      :transcription_conventions,
+      :help,
+      :link_help,
+      :subjects_disabled,
+      :subjects_enabled,
+      :review_type,
+      :hide_completed,
+      :text_language,
+      :default_orientation,
+      :voice_recognition,
+      :picture,
+      :user_download,
+      :enable_spellcheck,
       :messageboards_enabled,
-      :facets_enabled, 
+      :facets_enabled,
       :supports_document_sets,
-      :api_access, 
-      :data_entry_type, 
+      :api_access,
+      :data_entry_type,
       :field_based,
-      :is_active, 
-      :search_attempt_id, 
+      :is_active,
+      :search_attempt_id,
       :alphabetize_works,
       :tags
     )
@@ -732,6 +732,6 @@ private
   private
   def permit_only_transcribed_works_flag
     params.permit(:only_transcribed)
-  end  
+  end
 
 end
