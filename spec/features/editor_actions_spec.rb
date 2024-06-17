@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 FIELD_XML = <<EOF
-<?xml version='1.0' encoding='UTF-8'?>    
+<?xml version='1.0' encoding='UTF-8'?>
       <page>
         <p><span class='field__label'>Last Name: </span>Mitchell</p><p><span class='field__label'>First Name: </span>John</p><p><span class='field__label'>Middle Name: </span></p><p><span class='field__label'>Suffix or Title: </span></p><p><span class='field__label'>Home Town: </span>Pinson</p><p><span class='field__label'>Home County: </span>Jefferson</p><p><span class='field__label'>Home State: </span>Alabama</p><p><span class='field__label'>Race: </span>Caucasian</p><p><span class='field__label'>Gender: </span></p><p><span class='field__label'>Branch: </span>Army</p><p><span class='field__label'>Service Number: </span>14208593</p><p><span class='field__label'>See Also: </span></p><p><span class='field__label'>Notes: </span></p><p/>
       </page>
@@ -9,7 +9,7 @@ EOF
 
 
 describe "editor actions" , :order => :defined do
-  context "Factory" do 
+  context "Factory" do
     before :all do
       @user = User.find_by(login: USER)
     end
@@ -69,7 +69,7 @@ describe "editor actions" , :order => :defined do
       expect(page_fact.search_text).to match("Mitchell First")
     end
   end
-  
+
   context "Legacy Group" do
     before :all do
       @owner = User.find_by(login: OWNER)
@@ -134,7 +134,7 @@ describe "editor actions" , :order => :defined do
     it "looks at a collection" do
       visit dashboard_watchlist_path
       page.find('h4', text: @collection.title).click_link(@collection.title)
-      expect(page).to have_content("Works")    
+      expect(page).to have_content("Works")
       expect(page).to have_content(@work.title)
       expect(page).not_to have_content("Collection Footer")
       #check the tabs in the collection
@@ -220,7 +220,7 @@ describe "editor actions" , :order => :defined do
       click_button('Save Changes')
       expect(page).to have_content("Test Translation")
     end
-    
+
     it "translation displays transcription text by default", :js => true do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
@@ -244,7 +244,7 @@ describe "editor actions" , :order => :defined do
     #     print e.message + "\n"
     #   end
     #   print "\n\n\n"
-      
+
     #   page.click_button("Show Image")
     #   sleep(2)
     #   print "\n\n\nPage contents after clicking show image:\n"
@@ -263,7 +263,7 @@ describe "editor actions" , :order => :defined do
     #   expect(page).to have_selector('.page-imagescan')
     #   expect(page).to_not have_selector('.page-preview')
     # end
-    
+
     it "checks a plain user profile" do
       login_as(@user, :scope => :user)
       visit dashboard_path
@@ -304,7 +304,7 @@ describe "editor actions" , :order => :defined do
       text = Page.find_by(id: test_page.id).source_text
       fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in_editor_field "Attempt to save"
-      message = accept_alert do
+      message = dismiss_confirm do
         find('#finish_button_top').click
       end
       sleep(2)
