@@ -13,7 +13,7 @@ describe "IA import actions", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "imports a work from IA", :js => true do
     ia_work_count = IaWork.all.count
@@ -53,25 +53,26 @@ describe "IA import actions", :order => :defined do
     click_button('Publish Work')
     new_work = Work.find_by(title: @title)
     first_page = new_work.pages.first
-    expect(new_work.ocr_correction).to be 
+    expect(new_work.ocr_correction).to be
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.source_text).not_to be_nil
   end
 
-  it "tests ocr correction", :js => true do
+  it 'tests ocr correction', js: true do
     @ocr_work = Work.find_by(title: @title)
     @ocr_page = @ocr_work.pages.first
     visit collection_read_work_path(@ocr_work.owner, @ocr_work.collection, @ocr_work)
-    expect(page).to have_content("This page is not corrected, please help correct this page")
+    expect(page).to have_content('This page is not corrected, please help correct this page')
     page.find('.work-page_title', text: @ocr_page.title).click_link
     sleep(3)
     fill_in_editor_field('Test OCR Correction')
     find('#finish_button_top').click
-    expect(page).to have_content("Test OCR Correction")
-    expect(page.find('.tabs')).to have_content("Correct")
+    page.find('a.page-nav_prev').click
+    expect(page).to have_content('Test OCR Correction')
+    expect(page.find('.tabs')).to have_content('Correct')
     @ocr_page = @ocr_work.pages.first
-    expect(@ocr_page.status).to eq "transcribed" 
+    expect(@ocr_page.status).to eq 'transcribed'
   end
 
   it "checks ocr/transcribe statistics", :js => true do
