@@ -105,6 +105,7 @@ fr:
       document_date: Date du document
       document_date_hint: La date du document est au format EDTF (par exemple, 1843, 2001-02, 1643-06-30)
       document_history: Historique du document
+      document_sets: Ensembles de documents
       editorial_notes: Notes éditoriales
       enable_ocr_correction: Activer la correction d'OCR
       enable_ocr_correction_description: Un œuvre peut commencer par un texte océrisé qui doit être corrigé. Lorsqu'il est coché, l'onglet Transcrire sera remplacé par un onglet Corriger.

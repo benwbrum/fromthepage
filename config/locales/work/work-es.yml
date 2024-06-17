@@ -105,6 +105,7 @@ es:
       document_date: Fecha del documento
       document_date_hint: La fecha del documento está en el formato EDTF (por ejemplo, 1843, 2001-02, 1643-06-30)
       document_history: Historia del documento
+      document_sets: Conjuntos de documentos
       editorial_notes: Notas editoriales
       enable_ocr_correction: Habilitar la corrección OCR
       enable_ocr_correction_description: Una obra puede comenzar con texto OCR que necesita ser corregido. Cuando está marcada, la pestaña Transcribir será reemplazada por una pestaña Corregir.

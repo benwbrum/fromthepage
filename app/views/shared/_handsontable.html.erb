@@ -146,6 +146,7 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    autoWrapCol: true,
     manualColumnResize: true,
     manualRowResize: true,
     startRows: <%= transcription_field.starting_rows %>,
@@ -173,6 +174,11 @@
           <%= transcription_field.bottom_offset %>);
       <% end %>
     },
+    modifyColWidth: function(width, col) {
+      if (width > 300) {
+        return 300
+      }
+    }
   });
 
 
