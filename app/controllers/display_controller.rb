@@ -25,6 +25,10 @@ class DisplayController < ApplicationController
         @pages = @work.pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
         @heading = t('.pages_need_review')
+      elsif @review == 'incomplete'
+        @pages = @work.pages.incomplete.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
+        @heading = t('.pages_need_completion')
       elsif @review == 'transcription'
         @pages = @work.pages.needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count

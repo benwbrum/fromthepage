@@ -50,13 +50,14 @@ class Page < ApplicationRecord
 
   serialize :metadata, Hash
 
-  scope :review, -> { where(status: 'review')}
-  scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: [nil])  }
-  scope :needs_completion, -> { where(status: [STATUS_INCOMPLETE])  }
-  scope :needs_translation, -> { where(translation_status: nil)}
-  scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
-  scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
+  scope :review, -> { where(status: 'review') }
+  scope :incomplete, -> { where(status: 'incomplete') }
+  scope :translation_review, -> { where(translation_status: 'review') }
+  scope :needs_transcription, -> { where(status: [nil]) }
+  scope :needs_completion, -> { where(status: [STATUS_INCOMPLETE]) }
+  scope :needs_translation, -> { where(translation_status: nil) }
+  scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed') }
+  scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed') }
 
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -145,7 +146,7 @@ class Page < ApplicationRecord
 
   def base_height
     if self[:base_height].blank?
-      if self.sc_canvas 
+      if self.sc_canvas
         self.sc_canvas.height
       elsif self.ia_leaf
         self.ia_leaf.page_h
@@ -159,7 +160,7 @@ class Page < ApplicationRecord
 
   def base_width
     if self[:base_width].blank?
-      if self.sc_canvas 
+      if self.sc_canvas
         self.sc_canvas.width
       elsif self.ia_leaf
         self.ia_leaf.page_w
@@ -234,19 +235,19 @@ class Page < ApplicationRecord
         if new_transcription.blank? && old_transcription.blank?
           self.approval_delta = nil
         else
-          self.approval_delta = 
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
+          self.approval_delta =
+            Text::Levenshtein.distance(old_transcription, new_transcription).to_f /
               (old_transcription.size + new_transcription.size).to_f
         end
       else # zero out deltas if the page is not complete
-        self.approval_delta = nil 
+        self.approval_delta = nil
       end
     end
   end
 
   def create_version
       return unless self.saved_change_to_source_text? || self.saved_change_to_title? || self.saved_changes.present?
-      
+
       version = PageVersion.new
       version.page = self
       version.title = self.title
@@ -255,29 +256,29 @@ class Page < ApplicationRecord
       version.source_translation = self.source_translation
       version.xml_translation = self.xml_translation
       version.status = self.status
-    
+
       # Add other attributes as needed
-    
+
       unless User.current_user.nil?
         version.user = User.current_user
       else
         version.user = User.find_by(id: self.work.owner_user_id)
       end
-    
+
       # now do the complicated version update thing
       version.work_version = self.work.transcription_version
       self.work.increment!(:transcription_version)
-    
+
       previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
       if previous_version
         version.page_version = previous_version.page_version + 1
       end
       version.save!
-    
+
       self.update_column(:page_version_id, version.id) # set current_version
-    
+
   end
-  
+
 
   def update_sections_and_tables
     if @sections
@@ -395,7 +396,7 @@ class Page < ApplicationRecord
     checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
 
     formatted << "</thead><tbody>"
-    # write out 
+    # write out
     parsed_cell_data = JSON.parse(cell_data.values.first)
     parsed_cell_data.each_with_index do |row, rownum|
       unless this_and_following_rows_empty?(parsed_cell_data, rownum)
@@ -566,7 +567,7 @@ class Page < ApplicationRecord
     FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
     File.write(ai_plaintext_path, text)
   end
-  
+
 
   def has_alto?
     File.exists?(alto_path)
@@ -645,7 +646,7 @@ class Page < ApplicationRecord
 
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
-    doc.xpath("//lb[@break='no']").each do |n| 
+    doc.xpath("//lb[@break='no']").each do |n|
       if n.text.blank?
         sigil = '-'
       else

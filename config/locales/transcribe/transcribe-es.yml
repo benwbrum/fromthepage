@@ -58,8 +58,7 @@ es:
       preview_tooltip: Vista previa de esta página
       save_changes: Guardar Cambios
       save_to_incomplete_tooltip: Guardar una página incompleta
-      save_to_needs_review_tooltip: SGuardar tus cambios
-      save_to_transcribed_tooltip: Guardar tus cambios
+      save_to_needs_review_tooltip: Guardar tus cambios
     save_transcription:
       error_message: 'Se produjo un error al analizar el formato en la transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja una etiqueta de HTML abierta. Verifica cualquier instancia de < or=""> símbolos en el texto. (El error del analizador fue: %{error_message})'
       saved_notice: Guardado

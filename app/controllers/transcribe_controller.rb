@@ -96,7 +96,7 @@ class TranscribeController  < ApplicationController
         end
         return
       end
-    elsif params['save_to_needs_review']
+    elsif params['done_to_needs_review'] && @page.work.collection.review_workflow
       unless @page.status == Page::STATUS_NEEDS_REVIEW
         # don't log a deed if the page was already in needs review
         @page.status = Page::STATUS_NEEDS_REVIEW
@@ -150,8 +150,10 @@ class TranscribeController  < ApplicationController
       # leave the status alone if it's needs review, but otherwise set it to transcribed
       if save_to_incomplete && params[:page]['needs_review'] != '1'
         @page.status = Page::STATUS_INCOMPLETE
-      elsif save_to_needs_review
+      elsif params[:done_to_needs_review] && @page.work.collection.review_workflow
         @page.status = Page::STATUS_NEEDS_REVIEW
+      elsif save_to_needs_review
+        @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
       elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
         @page.status = Page::STATUS_TRANSCRIBED
       else
@@ -178,7 +180,6 @@ class TranscribeController  < ApplicationController
             @page.clear_article_graphs
 
             new_link_count = @page.page_article_links.where(text_type: 'transcription').count
-            logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
 
             record_deed(DeedType::PAGE_INDEXED) if old_link_count.zero? && new_link_count.positive?
 
@@ -199,8 +200,9 @@ class TranscribeController  < ApplicationController
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
             else
-              session[:user_return_to] = collection_transcribe_page_path(@collection.owner,
-                                                                         @collection, @work, @page.id)
+              session[:user_return_to] = collection_transcribe_page_path(
+                @collection.owner, @collection, @work, @page.id
+              )
               redirect_to new_user_registration_path, resource: current_user
               return
             end

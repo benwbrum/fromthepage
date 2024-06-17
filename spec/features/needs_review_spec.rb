@@ -232,7 +232,7 @@ describe "needs review", :order => :defined do
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
     expect(page).to have_content("Change Review Text")
     expect(page).to have_content("Transcription")
-    expect(Page.find_by(id: @page4.id).status).to eq ('transcribed')
+    expect(Page.find_by(id: @page4.id).status).to eq ('incomplete')
     expect(Page.find_by(id: @page5.id).status).to eq ('review')
   end
 
@@ -306,5 +306,4 @@ describe "needs review", :order => :defined do
     expect(page).to have_content('Translation Needs Review Workflow Text')
     expect(Page.find_by(id: review_page.id).translation_status).to eq ('review')
   end
-
 end

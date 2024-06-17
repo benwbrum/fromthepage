@@ -45,6 +45,7 @@ fr:
     multi_page:
       categories: Catégories
       describe: Créer des métadonnées
+      pages_need_completion: Pages à compléter
       pages_need_indexing: Pages à indexer
       pages_need_review: Pages à réviser
       pages_need_transcription: Pages nécessitant une transcription
@@ -81,6 +82,7 @@ fr:
       pages_that_mention: Pages qui mentionnent %{article}
     read_work:
       pages: Pages
+      pages_need_completion: Pages à compléter
       pages_need_indexing: Pages à indexer
       pages_need_review: Pages à réviser
       pages_need_transcription: Pages nécessitant une transcription
