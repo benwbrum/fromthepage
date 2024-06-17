@@ -14,7 +14,7 @@ pt:
       messages:
         login:
           exclusion: não é válido
-          format: não pode conter sinais de maior ou menor (<, >) ou espaços
+          format: não pode conter colchetes angulares (<, >)
     failure:
       already_authenticated: Você já entrou na sua conta.
       inactive: A sua conta ainda não foi ativada.
