@@ -72,7 +72,7 @@ class User < ApplicationRecord
 
   validates :login, presence: true,
                     uniqueness: { case_sensitive: false },
-                    format: { with: /\A[^<> ]*\z/,
+                    format: { with: /\A[^<>]*\z/,
                               message: ->(_, _) { I18n.t('devise.errors.messages.login.format') } },
                     exclusion: { in: %w[transcribe translate work collection deed],
                                  message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
