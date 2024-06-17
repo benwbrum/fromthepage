@@ -89,6 +89,8 @@
               =f.text_field :title
           -if !@collection.field_based
             =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
+            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
+            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
@@ -101,8 +103,6 @@ h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
 
--text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
-=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 #custom-alert
   #custom-alert-box
@@ -144,6 +144,38 @@ h2.legend =t('.notes_and_questions')
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
+
+
+    $('.field-wrapper .field-input').each(function() {
+      $(this).change(function() {
+        sendActiveEditing()
+      })
+      $(this).keyup(function() {
+        sendActiveEditing()
+      })
+    });
+
+
     $(function() {
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
@@ -157,6 +189,19 @@ h2.legend =t('.notes_and_questions')
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+
+
+        if (typeof freezeTableColumn !== "undefined") {
+          window.removeEventListener('scroll', freezeTableColumn);
+          window.addEventListener('scroll', function (e) {
+            if(mode === 'ttb') {
+              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+            } else {
+              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
+            } 
+          });
+        }
+
         $('[data-layout-mode]').attr('data-layout-mode', mode);
 
         if (typeof viewer !== 'undefined') {

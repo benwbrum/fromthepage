@@ -1,31 +1,34 @@
 namespace :fromthepage do
-  desc "nightly collection activity (new works and new notes) sent to users"
-  task :nightly_user_activity => :environment do
-    
+  desc 'nightly collection activity (new works and new notes) sent to users'
+  task nightly_user_activity: :environment do
     # Work_Added Deeds within the last 24 Hours
     recently_added_works = Deed.past_day
-      .where({deed_type: DeedType::WORK_ADDED})
+                               .where({ deed_type: DeedType::WORK_ADDED })
+
     # Collections that have recently had works added to them
     new_works_collections = Collection.joins(:deeds)
-      .merge(recently_added_works)
-      .distinct
+                                      .merge(recently_added_works)
+                                      .distinct
+
     # All users related to these criteria
     all_collection_scribes = User.joins(:deeds)
-      .where({deeds: {collection_id: new_works_collections.ids}})
-      .distinct
-    
+                                 .where({deeds: {collection_id: new_works_collections.ids}})
+                                 .distinct
+
     # Note_Added Deeds within the last 24 Hours
     recently_added_notes = Deed.past_day
-      .where({deed_type: DeedType::NOTE_ADDED})
+                               .where({ deed_type: DeedType::NOTE_ADDED })
+
     # Pages that have recently had notes added to them
     new_notes_pages = Page.joins(:deeds)
-      .merge(recently_added_notes)
-      .distinct
+                          .merge(recently_added_notes)
+                          .distinct
+
     # All users related to these criteria
     all_page_scribes = User.joins(:deeds)
-      .where({deeds: {page_id: new_notes_pages.ids}})
-      .distinct
-    
+                           .where({ deeds: { page_id: new_notes_pages.ids } })
+                           .distinct
+
     # All users that should get an email (union of the above)
     all_users = all_collection_scribes | all_page_scribes
 
@@ -42,7 +45,7 @@ namespace :fromthepage do
           print "SMTP Failed: Exception: #{e.message} \n"
         end
       end
-    end # end SMTP
+    end
+    # end SMTP
   end
-
 end

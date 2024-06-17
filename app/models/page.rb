@@ -594,8 +594,17 @@ class Page < ApplicationRecord
       self.ia_leaf.facsimile_url
     else
       uri = URI.parse(file_to_url(self.canonical_facsimile_url).gsub(" ","+"))
-      uri.scheme = 'https'
-      uri.host = Rails.application.config.action_mailer.default_url_options[:host]
+      # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
+      raw_host = Rails.application.config.action_mailer.default_url_options[:host]
+      host = raw_host.split(":")[0]
+      uri.host = host
+      port = raw_host.split(":")[1]
+      if port
+        uri.scheme = 'http'
+        uri.port = port
+      else
+        uri.scheme = 'https'
+      end
       uri.to_s
     end
   end

@@ -1,7 +1,10 @@
 class PageProcessor
+  module Model
+    TEXT_TITAN_I=51170
+    ENGLISH_EAGLE_I=53042
+  end
 
-
-  def initialize(page, external_api_request=nil, transkribus_username=nil, transkribus_password=nil)
+  def initialize(page, external_api_request=nil, transkribus_username=nil, transkribus_password=nil, model_id=Model::TEXT_TITAN_I)
     @page = page
     @transkribus_username = transkribus_username
     @transkribus_password = transkribus_password
@@ -11,6 +14,7 @@ class PageProcessor
       @external_api_request.collection = page.collection
       @external_api_request.page = page
       @external_api_request.work = page.work
+      @external_api_request.params = {model_id: model_id}
       @external_api_request.engine = ExternalApiRequest::Engine::TRANSKRIBUS
       @external_api_request.status = ExternalApiRequest::Status::QUEUED
     else
@@ -23,7 +27,8 @@ class PageProcessor
     # first, call the transkribus api to submit the request
     @external_api_request.status = ExternalApiRequest::Status::RUNNING
     @external_api_request.save!
-    submit_response = authorized_transkribus_request { submit_processing_request(@page) }
+    model_id = @external_api_request.params['model_id']
+    submit_response = authorized_transkribus_request { submit_processing_request(@page,model_id) }
 
     if submit_response.code != 200
       print "error submitting request\n#{submit_response.to_json}\n"
@@ -33,17 +38,19 @@ class PageProcessor
     end
     process_id = submit_response.parsed_response['processId']
 
-    @external_api_request.params = {process_id: process_id}.to_json
+    old_params = @external_api_request.params
+    old_params['process_id'] = process_id
+    @external_api_request.params = old_params
     @external_api_request.status = ExternalApiRequest::Status::WAITING
     @external_api_request.save!
   end
 
   def check_status_and_update_page
-    if @external_api_request.params.nil?
+    if @external_api_request.params.blank?
       print "no params for external API request #{@external_api_request.id}.  Skipping.\n"
       return
     end 
-    process_id = JSON.parse(@external_api_request.params)['process_id']
+    process_id = @external_api_request.params['process_id']
     status_response = authorized_transkribus_request { get_processing_status(process_id) }
     if status_response.code != 200
       if status_response.code == 404
@@ -104,11 +111,11 @@ class PageProcessor
     return response
   end
 
-  def submit_processing_request(page)
+  def submit_processing_request(page,model_id)
     request = {
       "config": {
         "textRecognition": {
-          "htrId": 51170 # text titan
+          "htrId": model_id
         }
       },
       "image": {

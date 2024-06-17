@@ -9,7 +9,7 @@ Fromthepage::Application.routes.draw do
 
 
   root to: redirect('/landing')
-  get '/landing', to: 'static#landing_page' 
+  get '/landing', to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -129,8 +129,6 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
-
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
     get 'update_featured_page', to: 'work#update_featured_page'
@@ -139,7 +137,8 @@ Fromthepage::Application.routes.draw do
     get 'revert', to: 'work#revert'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
-    patch 'update_work', :to => 'work#update_work'
+    patch 'update_work', to: 'work#update_work'
+    get 'document_sets_select', to: 'work#document_sets_select'
   end
 
   scope 'page', as: 'page' do
@@ -345,15 +344,15 @@ Fromthepage::Application.routes.draw do
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
-  get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
-  get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
+  get 'oldfindaproject', to: 'dashboard#landing_page', as: :old_landing_page
+  get 'findaproject', to: 'dashboard#new_landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
 
   scope 'feature', as: 'feature' do
-    get ':feature/:value', to: 'user#feature_toggle' 
-    get ':feature', to: 'user#feature_toggle' 
+    get ':feature/:value', to: 'user#feature_toggle'
+    get ':feature', to: 'user#feature_toggle'
   end
 
 
@@ -448,7 +447,7 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
-  get '/signup', to: 'static#signup', as: :signup 
+  get '/signup', to: 'static#signup', as: :signup
   get '/special_collections', to: 'static#transcription_archives', as: :special_collections
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
@@ -505,7 +504,7 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-    
+
 
       #work related routes
       #have to use match because it must be both get and post
@@ -523,6 +522,7 @@ Fromthepage::Application.routes.draw do
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
         get 'metadata_overview', on: :member
+        get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

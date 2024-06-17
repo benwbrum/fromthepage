@@ -37,7 +37,7 @@ table.admin-grid.datagrid.striped
               -if document.status == DocumentUpload::Status::NEW
                 =link_to(t('.process_upload'), { :action => 'process_upload', :id => document.id })
                 hr
-              -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED
+              -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED || document.status == DocumentUpload::Status::ERROR
                 =link_to(t('.show_processing_log'), admin_view_processing_log_path(:id => document.id), target: '_blank')
                 hr
               =link_to(t('.delete_upload'), admin_delete_upload_path(:id => document.id), class: 'fgred', data: { confirm: t('.are_you_sure') })

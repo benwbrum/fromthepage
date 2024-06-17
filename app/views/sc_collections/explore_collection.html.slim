@@ -1,7 +1,7 @@
 .columns
   article.maincol
     h4= t('.collection', sc_collection: (@sc_collection.label))
-    .iiif-import 
+    .iiif-import
       p= t('.id', id: (@sc_collection.at_id))
 
     .iiif-collection
@@ -24,7 +24,7 @@
     -unless @sc_collection.v3?
       -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
         p= t('.this_collection_is_divided')
-        -if @sc_collection.service['first']  
+        -if @sc_collection.service['first']
           =link_to t('.first_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['first']['@id'] || @sc_collection.service['first'])}
         -if @sc_collection.service['next']
           =link_to t('.next_page'), {:action => 'explore_collection', :at_id => (@sc_collection.service['next']['@id']||@sc_collection.service['next'])}
@@ -45,7 +45,7 @@
           =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: t('.select_a_collection_to_import_into'), required: true, 'aria-label' => t('.select_a_collection')
           =button_tag t('.import_checked_manifests')
 
-        =check_box_tag("select_all", 1, true)
+        =check_box_tag("select_all", 1, true, data: { select_all: 'manifest_checks' })
         |&nbsp;&nbsp;
         =label_tag 'select_all', t('.select_all_manifests')
 
@@ -93,20 +93,3 @@
               };
           });
         });
-
-        $(function(){
-          $('#select_all').on('change', function(){
-            if (this.checked){
-              $('.manifest_checks').prop('checked', true);
-            } else if (!this.checked) {
-              $('.manifest_checks').prop('checked', false);
-            }
-          });
-        });
-
-        $(function(){
-          $('.manifest_checks').on('click', function(){
-            $('#select_all').prop('checked', false);
-          });
-        });
-

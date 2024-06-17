@@ -86,7 +86,7 @@ html lang="en-US"
           dl.dropdown.right
             dt.header_link.header_locale tabindex=0
               span
-                <img src="/assets/icons/globe.svg" alt="">
+                =image_tag("icons/globe.svg", alt: "Globe Icon")
                 big =" " + locale.to_s.split("-")[0].upcase
             dd
               -@dropdown_locales.each do |locale_option|
@@ -145,8 +145,7 @@ html lang="en-US"
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
-    -if defined? INTERCOM_APP_ID
-      -if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank?
-        =render :partial => '/shared/intercom_customer'
-      -elsif controller_name=='static' && !INTERCOM_APP_ID.blank?
-        =render :partial => '/shared/intercom'
+    -if defined?(BENTO_ENABLED) && BENTO_ENABLED
+        =render :partial => '/shared/bento'
+        -if (user_signed_in? && current_user.owner?) || controller_name=='static'
+          =render :partial => '/shared/bento_chat'

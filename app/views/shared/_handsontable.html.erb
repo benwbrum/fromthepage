@@ -3,6 +3,11 @@
 
 <%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
 <div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
+<style>
+  .handsontable td.htInvalid {
+    background-color: yellow !important;
+  }
+</style>
 
 <script>
 
@@ -141,12 +146,16 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    autoWrapCol: true,
     manualColumnResize: true,
     manualRowResize: true,
     startRows: <%= transcription_field.starting_rows %>,
     afterCreateRow: updateHotHeight,
     afterRemoveRow: updateHotHeight,
     afterChange: function(changes, source) {
+       if(source === 'edit') {
+        sendActiveEditing()
+      };
       document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
       if (changes) {
         var rowsCount = this.countRows();
@@ -165,6 +174,11 @@
           <%= transcription_field.bottom_offset %>);
       <% end %>
     },
+    modifyColWidth: function(width, col) {
+      if (width > 300) {
+        return 300
+      }
+    }
   });
 
 
@@ -185,6 +199,12 @@
   }
 
   window.onscroll = function (e) {
-    freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
-  } 
+    if(Cookies && (Cookies.get('transcribe_layout_mode') === 'ttb' || Cookies.get('transcribe_layout_mode') === undefined)) {
+      freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
+    } else {
+      freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top')
+    }
+  }
+  // flag any cells that don't match the format
+  hot.validateCells();
 </script>

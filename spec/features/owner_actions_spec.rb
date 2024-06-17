@@ -89,7 +89,7 @@ describe "owner actions", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, '#document-upload').click
-    page.select 'Add New Collection', from: 'document_upload_collection_id' 
+    page.select 'Add New Collection', from: 'document_upload_collection_id'
 
     within(page.find('.litebox-embed')) do
       expect(page).to have_content('Create New Collection')

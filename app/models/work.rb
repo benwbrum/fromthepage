@@ -21,7 +21,7 @@ class Work < ApplicationRecord
      "editorial_notes",
      "document_date",
      "uploaded_filename"]
-  
+
   before_destroy :cleanup_images # must precede pages association
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -53,10 +53,12 @@ class Work < ApplicationRecord
   after_save :update_next_untranscribed_pages
 
 
-  after_create :alert_intercom
+  after_create :alert_bento
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
+  validates :description, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
+                          length: { maximum: 16.megabytes - 1 }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
@@ -209,12 +211,12 @@ class Work < ApplicationRecord
     else
       # the edtf-ruby gem has some gaps in coverage for e.g. seasons
       self[:document_date] = date_as_edtf.to_s
-    end      
+    end
   end
 
   def document_date
     date = Date.edtf(self[:document_date])
-    
+
     if self[:document_date].nil? # there is no document date
       return nil
     elsif date.nil? # the document date is invalid
@@ -225,7 +227,7 @@ class Work < ApplicationRecord
     elsif self[:document_date].length == 4 and not self[:document_date].include? "x" # YYYY
       date.year_precision!
     end
-    
+
     return date.edtf
   end
 
@@ -439,19 +441,17 @@ class Work < ApplicationRecord
     end
   end
 
-
-  def alert_intercom
-    if (defined? INTERCOM_ACCESS_TOKEN) && INTERCOM_ACCESS_TOKEN
+  def alert_bento
+    if defined?(BENTO_ENABLED) && BENTO_ENABLED
       if self.owner.owner_works.count == 1
-        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
-        intercom.events.create(event_name: "first-upload", email: self.owner.email, created_at: Time.now.to_i)
+        $bento.track(identity: {email: self.owner.email}, event: '$action', details: {action_information: "first-upload"})
       end
     end
   end
 
   def save_metadata
     # this is costly, so only execute if the relevant value has actually changed
-    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
@@ -484,5 +484,9 @@ class Work < ApplicationRecord
       # now update the work_facet
       FacetConfig.update_facets(self)
     end
+  end
+
+  def user_can_transcribe?(user)
+    !self.restrict_scribes || user&.like_owner?(self) || self.scribes.include?(user)
   end
 end
