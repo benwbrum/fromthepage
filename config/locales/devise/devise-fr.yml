@@ -14,7 +14,7 @@ fr:
       messages:
         login:
           exclusion: n'est pas valide
-          format: ne peut pas contenir de crochets angulaires (<, >) ou d'espaces
+          format: ne peut pas contenir de chevrons (<, >)
     failure:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n'est pas encore activé.

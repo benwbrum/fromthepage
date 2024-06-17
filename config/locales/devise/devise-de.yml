@@ -14,7 +14,7 @@ de:
       messages:
         login:
           exclusion: ist ungültig
-          format: darf keine spitzen Klammern (<, >) oder Leerzeichen enthalten
+          format: darf keine spitzen Klammern (<, >) enthalten
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.

@@ -40,6 +40,10 @@ class Collection < ApplicationRecord
   has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :intro_block, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
+                          length: { maximum: 16.megabytes - 1 }
+  validates :footer_block, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
+                           length: { maximum: 16.megabytes - 1 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
@@ -89,12 +93,12 @@ class Collection < ApplicationRecord
   def text_and_metadata_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA
   end
-  
+
   def subjects_enabled
     !subjects_disabled
   end
 
-  module ReviewType 
+  module ReviewType
     OPTIONAL = 'optional'
     REQUIRED = 'required'
     RESTRICTED = 'restricted'
