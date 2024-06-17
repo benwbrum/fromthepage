@@ -51,9 +51,7 @@ class TranscribeController  < ApplicationController
   def mark_page_blank(options = { redirect: 'display' })
     redirect_path = case options[:redirect]
                     when 'transcribe'
-                      save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
-                                            params[:save_to_transcribed]
-                      page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
+                      page_id = @page.last? ? @page.id : @page.lower_item.id
                       collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
                     else
                       collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
