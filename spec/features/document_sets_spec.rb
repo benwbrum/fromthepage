@@ -8,7 +8,7 @@ describe "document sets", :order => :defined do
     @rest_user = User.find_by(login: REST_USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
-    #set up the restricted user not to be emailed
+    # set up the restricted user not to be emailed
     notification = Notification.find_by(user_id: @rest_user.id)
     notification.add_as_collaborator = false
     notification.save!
@@ -425,25 +425,25 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
 
-  it "checks doc set needs transcription/review buttons" do
-    login_as(@user, :scope => :user)
+  it 'checks doc set needs transcription/review buttons' do
+    login_as(@user, scope: :user)
     visit collection_path(@set.owner, @set)
     expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
-    expect(page).to have_selector('a', text: "Pages That Need Transcription")
-    expect(page).to have_selector('a', text: "Pages That Need Review")
-    click_link("Pages That Need Transcription")
-    expect(page).to have_selector('h3', text: "Pages That Need Transcription")
-    expect(page).to have_content("No pages found")
-    click_link("Return to collection")
+    expect(page).to have_content('Works')
+    expect(page).to have_selector('a', text: 'Pages That Need Transcription')
+    expect(page).to have_selector('a', text: 'Pages That Need Review')
+    click_link('Pages That Need Transcription')
+    expect(page).to have_selector('h4', text: 'Pages needing completion')
+    expect(page).to have_content('No pages need transcription from scratch.')
+    click_link('Return to collection')
     expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
-    click_link("Pages That Need Review")
-    expect(page).to have_selector('h3', text: "Pages That Need Review")
-    expect(page).to have_content("No pages found")
-    click_link("Return to collection")
+    expect(page).to have_content('Works')
+    click_link('Pages That Need Review')
+    expect(page).to have_selector('h3', text: 'Pages That Need Review')
+    expect(page).to have_content('No pages found')
+    click_link('Return to collection')
     expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
+    expect(page).to have_content('Works')
   end
 
   it "disables document sets", js: true do
