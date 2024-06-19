@@ -65,7 +65,8 @@ en:
       fit_width: Fit width
       full_page: Toggle full page
       home: Go home
-      monitor: Open in a new window
+      monitor_open: Open in a new window
+      monitor_close: Close window
       image_filters: Image filters
       open_seadragon_needs_js: OpenSeadragon is not available unless JavaScript is enabled.
       rotate_left: Rotate left

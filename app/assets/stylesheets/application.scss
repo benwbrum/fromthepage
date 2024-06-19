@@ -282,10 +282,17 @@ h3, .thredded--post-form--title {
 }
 
 // extra class for custom OSD icons
-#osd_monitor svg {
+#osd_monitor_open svg {
   width: 20px;
   height: 20px;
   margin-top: -2px;
+}
+
+#osd_monitor_close svg {
+  width: 20px;
+  height: 20px;
+  transform: rotateZ(180deg);
+  margin-top: -1px;
 }
 
 @import "datepicker/datepicker";

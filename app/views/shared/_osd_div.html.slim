@@ -10,7 +10,9 @@
   a#osd_home =svg_symbol "#icon-fit-view", class: 'icon'
   a#osd_fit_width(title="#{t('.fit_width')}") =svg_symbol "#icon-fit-width", class: 'icon'
   -if !@is_monitor_view
-    a#osd_monitor(title="#{t('.monitor')}") =svg_symbol "#icon-window", class: 'icon'
+    a#osd_monitor_open(title="#{t('.monitor_open')}") =svg_symbol "#icon-window", class: 'icon open'
+  -else
+    a#osd_monitor_close(title="#{t('.monitor_close')}") =svg_symbol "#close-window", class: 'icon close'
   a#osd_fullpage =svg_symbol "#icon-expand", class: 'icon'
   a#osd_rotate_left =svg_symbol "#icon-rotate-left", class: 'icon'
   a#osd_rotate_right =svg_symbol "#icon-rotate-right", class: 'icon'
@@ -94,12 +96,16 @@
       });
 
       viewer.addHandler('viewport-change', function() {
+        var zoomLevel = viewer.viewport.getZoom();
+        localStorage.setItem('prevZoomLevel', zoomLevel);
         var bounds = viewer.viewport.getBounds();
         localStorage['json_bounds'] = JSON.stringify(bounds);
       });
 
       viewer.addHandler('open', function() {
         var json_bounds = localStorage['json_bounds'];
+        var zoomLevel = localStorage.getItem('prevZoomLevel');
+
         if (json_bounds) {
           var bounds = JSON.parse(json_bounds);
           var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -107,6 +113,11 @@
         } else {
           viewer.raiseEvent('reset-bounds');
         }
+
+        if (zoomLevel) {
+          viewer.viewport.zoomTo(zoomLevel);
+        }
+
       });
 
       viewer.addHandler('canvas-press', function() {
@@ -143,15 +154,21 @@
         viewer.viewport.fitHorizontally();
       });
 
-      if(document.getElementById('osd_monitor')) {
-        document.getElementById('osd_monitor').addEventListener('click', function() {
+      if(document.getElementById('osd_monitor_open')) {
+        document.getElementById('osd_monitor_open').addEventListener('click', function() {
           if(!imageWindow) {
             openImageMonitor();
           }
         });
       }
 
-      if(Cookies && (Cookies.get('monitor_view_on') === 'true') && document.getElementById('osd_monitor')) {
+      if(document.getElementById('osd_monitor_close')) {
+        document.getElementById('osd_monitor_close').addEventListener('click', function() {
+          window.close();
+        });
+      }
+
+      if(Cookies && (Cookies.get('monitor_view_on') === 'true') && document.getElementById('osd_monitor_open')) {
         openImageMonitor();
       }
 
