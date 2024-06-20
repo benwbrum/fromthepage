@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: document_sets
+#
+#  id                         :integer          not null, primary key
+#  default_orientation        :string(255)
+#  description                :text(65535)
+#  is_public                  :boolean
+#  pct_completed              :integer
+#  picture                    :string(255)
+#  slug                       :string(255)
+#  title                      :string(255)
+#  works_count                :integer          default(0)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  collection_id              :integer
+#  next_untranscribed_page_id :integer
+#  owner_user_id              :integer
+#
+# Indexes
+#
+#  index_document_sets_on_collection_id  (collection_id)
+#  index_document_sets_on_owner_user_id  (owner_user_id)
+#  index_document_sets_on_slug           (slug) UNIQUE
+#
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
 

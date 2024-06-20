@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: quality_samplings
+#
+#  id            :integer          not null, primary key
+#  sample_set    :text(16777215)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  collection_id :integer          not null
+#  user_id       :integer          not null
+#
+# Indexes
+#
+#  index_quality_samplings_on_collection_id  (collection_id)
+#  index_quality_samplings_on_user_id        (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class QualitySampling < ApplicationRecord
   belongs_to :user
   belongs_to :collection

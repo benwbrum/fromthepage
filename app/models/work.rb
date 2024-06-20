@@ -1,3 +1,58 @@
+# == Schema Information
+#
+# Table name: works
+#
+#  id                              :integer          not null, primary key
+#  author                          :string(255)
+#  created_on                      :datetime
+#  description                     :text(16777215)
+#  description_status              :string(255)      default("undescribed")
+#  document_date                   :string(255)
+#  document_history                :text(16777215)
+#  editorial_notes                 :text(65535)
+#  featured_page                   :integer
+#  genre                           :string(255)
+#  identifier                      :string(255)
+#  in_scope                        :boolean          default(TRUE)
+#  location_of_composition         :string(255)
+#  metadata_description            :text(65535)
+#  most_recent_deed_created_at     :datetime
+#  ocr_correction                  :boolean          default(FALSE)
+#  original_metadata               :text(65535)
+#  pages_are_meaningful            :boolean          default(TRUE)
+#  permission_description          :text(16777215)
+#  physical_description            :text(16777215)
+#  picture                         :string(255)
+#  recipient                       :string(255)
+#  restrict_scribes                :boolean          default(FALSE)
+#  scribes_can_edit_titles         :boolean          default(FALSE)
+#  searchable_metadata             :text(65535)
+#  slug                            :string(255)
+#  source_box_folder               :string(255)
+#  source_collection_name          :string(255)
+#  source_location                 :string(255)
+#  supports_translation            :boolean          default(FALSE)
+#  title                           :string(255)
+#  transcription_conventions       :text(16777215)
+#  transcription_version           :integer          default(0)
+#  translation_instructions        :text(65535)
+#  uploaded_filename               :string(255)
+#  collection_id                   :integer
+#  metadata_description_version_id :integer
+#  next_untranscribed_page_id      :integer
+#  owner_user_id                   :integer
+#
+# Indexes
+#
+#  index_works_on_collection_id                    (collection_id)
+#  index_works_on_metadata_description_version_id  (metadata_description_version_id)
+#  index_works_on_owner_user_id                    (owner_user_id)
+#  index_works_on_slug                             (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
+#
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]

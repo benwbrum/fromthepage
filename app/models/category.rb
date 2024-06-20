@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: categories
+#
+#  id            :integer          not null, primary key
+#  created_on    :datetime
+#  gis_enabled   :boolean          default(FALSE), not null
+#  title         :string(255)
+#  collection_id :integer
+#  parent_id     :integer
+#
+# Indexes
+#
+#  index_categories_on_collection_id  (collection_id)
+#  index_categories_on_parent_id      (parent_id)
+#
 class Category < ApplicationRecord
   extend ActsAsTree::TreeWalker
 
