@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: ia_works
+#
+#  id             :integer          not null, primary key
+#  archive_format :string(255)      default("zip")
+#  collection     :string(255)
+#  contributor    :string(255)
+#  creator        :string(255)
+#  description    :string(1024)
+#  detail_url     :string(255)
+#  djvu_file      :string(255)
+#  ia_path        :string(255)
+#  image_count    :string(255)
+#  image_format   :string(255)      default("jp2")
+#  notes          :string(255)
+#  scandata_file  :string(255)
+#  server         :string(255)
+#  sponsor        :string(255)
+#  subject        :string(255)
+#  title          :string(255)
+#  title_leaf     :integer
+#  use_ocr        :boolean          default(FALSE)
+#  zip_file       :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  book_id        :string(255)
+#  user_id        :integer
+#  work_id        :integer
+#
 class IaWork < ApplicationRecord
   require 'open-uri'
 

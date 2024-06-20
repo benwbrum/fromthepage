@@ -117,6 +117,7 @@ GEM
     akami (1.3.2)
       gyoku (>= 0.4.0)
       nokogiri
+    annotaterb (4.9.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
@@ -659,6 +660,7 @@ DEPENDENCIES
   acts_as_tree
   ahoy_matey
   ajax-datatables-rails (~> 1.0.0)
+  annotaterb
   autoprefixer-rails
   bento-sdk!
   better_errors

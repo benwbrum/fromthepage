@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: work_statistics
+#
+#  id                      :integer          not null, primary key
+#  annotated_pages         :integer
+#  blank_pages             :integer          default(0)
+#  complete                :integer
+#  corrected_pages         :integer
+#  incomplete_pages        :integer          default(0)
+#  last_edit_at            :datetime
+#  line_count              :integer
+#  needs_review            :integer
+#  needs_review_percentage :integer
+#  total_pages             :integer
+#  transcribed_pages       :integer
+#  transcribed_percentage  :integer
+#  translated_annotated    :integer
+#  translated_blank        :integer
+#  translated_pages        :integer
+#  translated_review       :integer
+#  translation_complete    :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#  work_id                 :integer
+#
+# Indexes
+#
+#  index_work_statistics_on_work_id_and_line_count  (work_id,line_count)
+#
 class WorkStatistic < ApplicationRecord
   belongs_to :work, optional: true
 

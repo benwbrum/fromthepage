@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: article_versions
+#
+#  id          :integer          not null, primary key
+#  created_on  :datetime
+#  source_text :text(16777215)
+#  title       :string(255)
+#  version     :integer          default(0)
+#  xml_text    :text(16777215)
+#  article_id  :integer
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_article_versions_on_article_id  (article_id)
+#  index_article_versions_on_user_id     (user_id)
+#
 class ArticleVersion < ApplicationRecord
   belongs_to :article, optional: true
   belongs_to :user, optional: true

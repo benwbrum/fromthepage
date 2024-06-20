@@ -1,3 +1,31 @@
+# == Schema Information
+#
+# Table name: flags
+#
+#  id                 :integer          not null, primary key
+#  comment            :text(65535)
+#  content_at         :datetime
+#  provenance         :string(255)
+#  snippet            :text(65535)
+#  status             :string(255)      default("unconfirmed")
+#  created_at         :datetime
+#  updated_at         :datetime
+#  article_version_id :integer
+#  auditor_user_id    :integer
+#  author_user_id     :integer
+#  note_id            :integer
+#  page_version_id    :integer
+#  reporter_user_id   :integer
+#
+# Indexes
+#
+#  index_flags_on_article_version_id  (article_version_id)
+#  index_flags_on_auditor_user_id     (auditor_user_id)
+#  index_flags_on_author_user_id      (author_user_id)
+#  index_flags_on_note_id             (note_id)
+#  index_flags_on_page_version_id     (page_version_id)
+#  index_flags_on_reporter_user_id    (reporter_user_id)
+#
 require 'flagger'
 
 class Flag < ApplicationRecord

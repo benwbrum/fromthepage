@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: notes
+#
+#  id            :integer          not null, primary key
+#  body          :text(16777215)
+#  depth         :integer
+#  title         :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  collection_id :integer
+#  page_id       :integer
+#  parent_id     :integer
+#  user_id       :integer
+#  work_id       :integer
+#
+# Indexes
+#
+#  index_notes_on_page_id  (page_id)
+#
 class Note < ApplicationRecord
   # Notes are comments on pages.  In the future they may
   # be comments on works, comments on image fragments,
