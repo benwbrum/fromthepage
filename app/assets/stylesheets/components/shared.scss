@@ -691,6 +691,12 @@ button, .button, .dropdown dd a {
   }
 }
 
+.table-responsive {
+  overflow: auto;
+  width: 100%;
+  position: relative;
+}
+
 .datagrid {
   border: 0;
   width: 100%;
@@ -1118,14 +1124,12 @@ button, .button, .dropdown dd a {
   width: 100%;
   table-layout: fixed;
   border-collapse: separate;
-  th {
+  .diff-title {
     padding: 10px 0;
     line-height: 30px;
     color: $bodyFgFaded;
-    &:first-child {
-      width: 25%;
-      padding-left: 10px;
-    }
+    height: 35px;
+
     form {
       position: relative;
       padding-left: 115px;
@@ -1147,6 +1151,7 @@ button, .button, .dropdown dd a {
 
 .diff-list {
   height: 100%;
+  width: 15%;
   border-width: 0 1px 0 0;
   .scroll-container {
     //max-height: 100%;
@@ -1177,15 +1182,116 @@ button, .button, .dropdown dd a {
   }
 }
 
+.diff-layout {
+  display: flex;
+  justify-content: end;
+
+  span {
+    background-color: $btnBackground;
+    width: 2em;
+    height: 2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5px;
+    row-gap: 5px;
+
+    &::after,
+    &::before {
+      content: '';
+      display: block;
+      border-radius: 2px;
+      background-color: mix($btnColor, #FFF, 30%);
+    }
+
+    &.active::after,
+    &.active::before {
+      content: '';
+      display: block;
+      border-radius: 2px;
+      background-color: $btnBackground;
+    }
+
+    &.diff-vertical {
+      &::after,
+      &:before {
+        width: 4px;
+        height: 1.2em;
+      }
+    }
+
+    &.diff-horizontal {
+      flex-direction: column;
+      &::before,
+      &::after {
+        height: 4px;
+        width: 1.2em;
+      }
+    }
+
+    &.active {
+      background-color: $btnColor;
+    }
+  }
+}
+
 .diff-version {
   width: 50%;
-  padding: $gapSize;
-  border-width: 1px 0;
+  padding-left: $gapSize;
+  // border-width: 1px 0;
+  border: none !important;
   background-clip: padding-box;
-  background-color: mix($bodyBg, #FFF, 30%);
+  // background-color: mix($bodyBg, #FFF, 30%);
+
+  .versions-wrapper {
+    display: flex;
+    column-gap: $gapSize;
+    row-gap: $gapSize;
+
+    &.horizantal {
+      flex-direction: column;
+    }
+
+    .version-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+
+      .version-content {
+        padding: 20px;
+        flex: 1;
+        background-color: mix($bodyBg, #FFF, 30%);
+
+        table {
+          th {
+            border: solid 1px #eeddbb;
+            opacity: 0.6;
+            font-weight: bold;
+            max-width: 150px;
+            background-color: #eeddbb;
+          }
+
+          td {
+            border-color: #eeddbb;
+            height: 40px;
+            vertical-align: middle;
+          }
+        }
+      }
+
+      &.right {
+        .version-content {
+          background-color: mix($bodyBg, #000, 96%);
+        }
+      }
+    }
+  }
+
   &:last-child {
-    border-right-width: 1px;
-    background-color: mix($bodyBg, #000, 96%);
+    // border-right-width: 1px;
+    // background-color: mix($bodyBg, #000, 96%);
   }
   p {
     margin: $lineHeight+em 0 0 0;
