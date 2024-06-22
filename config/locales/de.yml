@@ -31,3 +31,4 @@ de:
       short: "%m/%d/%Y um %I:%M %p"
   time_ago_in_words: Vor %{time}
   unauthorized_collection: Sie haben keinen Zugriff auf %{project}. Bitte loggen Sie sich ein oder kontaktieren Sie den/die Projektinhaber:in, damit diese:r Sie hinzufügt.
+  unsaved_changes_confirmation: Sie haben nicht gespeicherte Änderungen. Möchten Sie diesen Bildschirm wirklich verlassen?

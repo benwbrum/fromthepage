@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: transcription_fields
+#
+#  id            :integer          not null, primary key
+#  bottom_offset :float(24)        default(1.0)
+#  field_type    :string(255)      default("transcription")
+#  input_type    :string(255)
+#  label         :string(255)
+#  line_number   :integer
+#  options       :text(65535)
+#  page_number   :integer
+#  percentage    :integer
+#  position      :integer
+#  row_highlight :boolean          default(FALSE)
+#  starting_rows :integer
+#  top_offset    :float(24)        default(0.0)
+#  collection_id :integer
+#
 class TranscriptionField < ApplicationRecord
   belongs_to :collection, optional: true
 

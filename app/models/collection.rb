@@ -1,3 +1,56 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id                             :integer          not null, primary key
+#  alphabetize_works              :boolean          default(TRUE)
+#  api_access                     :boolean          default(FALSE)
+#  created_on                     :datetime
+#  data_entry_type                :string(255)      default("text")
+#  default_orientation            :string(255)
+#  description_instructions       :text(65535)
+#  enable_spellcheck              :boolean          default(FALSE)
+#  facets_enabled                 :boolean          default(FALSE)
+#  field_based                    :boolean          default(FALSE)
+#  footer_block                   :text(16777215)
+#  help                           :text(65535)
+#  hide_completed                 :boolean          default(TRUE)
+#  intro_block                    :text(16777215)
+#  is_active                      :boolean          default(TRUE)
+#  language                       :string(255)
+#  license_key                    :string(255)
+#  link_help                      :text(65535)
+#  messageboard_slug              :string(255)
+#  messageboards_enabled          :boolean
+#  most_recent_deed_created_at    :datetime
+#  pct_completed                  :integer
+#  picture                        :string(255)
+#  restricted                     :boolean          default(FALSE)
+#  review_type                    :string(255)      default("optional")
+#  slug                           :string(255)
+#  subjects_disabled              :boolean          default(TRUE)
+#  supports_document_sets         :boolean          default(FALSE)
+#  text_language                  :string(255)
+#  title                          :string(255)
+#  transcription_conventions      :text(65535)
+#  user_download                  :boolean          default(FALSE)
+#  voice_recognition              :boolean          default(FALSE)
+#  works_count                    :integer          default(0)
+#  next_untranscribed_page_id     :integer
+#  owner_user_id                  :integer
+#  thredded_messageboard_group_id :bigint
+#
+# Indexes
+#
+#  index_collections_on_owner_user_id                   (owner_user_id)
+#  index_collections_on_restricted                      (restricted)
+#  index_collections_on_slug                            (slug) UNIQUE
+#  index_collections_on_thredded_messageboard_group_id  (thredded_messageboard_group_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (thredded_messageboard_group_id => thredded_messageboard_groups.id)
+#
 require 'csv'
 require 'subject_exporter'
 require 'subject_details_exporter'

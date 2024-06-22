@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: sc_manifests
+#
+#  id                   :integer          not null, primary key
+#  first_sequence_label :string(255)
+#  label                :text(65535)
+#  metadata             :text(65535)
+#  version              :string(255)      default("2")
+#  created_at           :datetime
+#  updated_at           :datetime
+#  at_id                :string(255)
+#  collection_id        :integer
+#  first_sequence_id    :string(255)
+#  sc_collection_id     :integer
+#  sc_id                :string(255)
+#  work_id              :integer
+#
+# Indexes
+#
+#  index_sc_manifests_on_sc_collection_id  (sc_collection_id)
+#  index_sc_manifests_on_work_id           (work_id)
+#
 class ScManifest < ApplicationRecord
   belongs_to :work, optional: true
   belongs_to :sc_collection, optional: true

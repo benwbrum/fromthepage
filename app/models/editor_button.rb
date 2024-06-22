@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: editor_buttons
+#
+#  id            :integer          not null, primary key
+#  key           :string(255)
+#  prefer_html   :boolean
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  collection_id :integer          not null
+#
+# Indexes
+#
+#  index_editor_buttons_on_collection_id  (collection_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id)
+#
 class EditorButton < ApplicationRecord
   belongs_to :collection
 

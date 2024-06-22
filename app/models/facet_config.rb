@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: facet_configs
+#
+#  id                   :integer          not null, primary key
+#  input_type           :string(255)
+#  label                :string(255)
+#  order                :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  metadata_coverage_id :integer          not null
+#
+# Indexes
+#
+#  index_facet_configs_on_metadata_coverage_id  (metadata_coverage_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (metadata_coverage_id => metadata_coverages.id)
+#
 class FacetConfig < ApplicationRecord
   belongs_to :metadata_coverage
   validates :order, numericality: true, allow_blank: true

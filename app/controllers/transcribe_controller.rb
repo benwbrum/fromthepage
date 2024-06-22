@@ -153,7 +153,15 @@ class TranscribeController  < ApplicationController
       elsif params[:done_to_needs_review] && @page.work.collection.review_workflow
         @page.status = Page::STATUS_NEEDS_REVIEW
       elsif save_to_needs_review
-        @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
+        if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)
+          skip_re_review = @collection.owner == current_user ||
+                           @collection.reviewers.ids.include?(current_user.id) ||
+                           Deed.where(deed_type: DeedType::COMPLETED_TYPES, user_id: current_user.id, page_id: @page.id).any?
+
+          @page.status = skip_re_review ? Page::STATUS_TRANSCRIBED : Page::STATUS_NEEDS_REVIEW
+        else
+          @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
+        end
       elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
         @page.status = Page::STATUS_TRANSCRIBED
       else
@@ -225,8 +233,10 @@ class TranscribeController  < ApplicationController
           else
             save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
                                   params[:save_to_transcribed]
-            page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
-            redirect_to action: 'assign_categories', page_id: page_id, collection_id: @collection
+
+            next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
+            redirect_to action: 'assign_categories', page_id: @page.id,
+                        collection_id: @collection, next_page_id: next_page_id
           end
         else
           log_transcript_error(message)
@@ -285,29 +295,29 @@ class TranscribeController  < ApplicationController
 
   def assign_categories
     @text_type = params[:text_type]
-    #no reason to check articles if subjects disabled
+    @next_page_id = params[:next_page_id] || @page.id
+
+    # no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
 
       # Separate translationa and transcription links
-      left, right = @page.page_article_links.partition{|x| x.text_type == 'translation' }
+      left, right = @page.page_article_links.partition { |x| x.text_type == 'translation' }
 
-      if @text_type == 'translation'
-        unassigned_links = left.select{|link| link.article.categories.empty? }
-      else
-        unassigned_links = right.select{|link| link.article.categories.empty? }
-      end
+      unassigned_links = (@text_type == 'translation' ? left : right).select { |link| link.article.categories.empty? }
+
       unless unassigned_links.empty?
-        @unassigned_articles = unassigned_links.map{|link| link.article }.uniq
-        render :action => 'assign_categories'
+        @unassigned_articles = unassigned_links.map(&:article).uniq
+        render action: 'assign_categories'
         return
       end
     end
+
     # no uncategorized articles found, skip to display
     if @text_type == 'translation'
-      redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
+      redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @next_page_id)
     else
-      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @next_page_id)
     end
   end
 

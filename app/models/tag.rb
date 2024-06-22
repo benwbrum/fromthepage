@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: tags
+#
+#  id          :integer          not null, primary key
+#  ai_text     :string(255)
+#  canonical   :boolean
+#  message_key :string(255)
+#  tag_type    :string(255)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 class Tag < ApplicationRecord
   require 'openai/description_tagger'
   has_and_belongs_to_many :collections
