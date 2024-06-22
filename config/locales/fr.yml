@@ -31,3 +31,4 @@ fr:
       short: "%d/%m/%Y à %Hh%M"
   time_ago_in_words: Il y a %{time}
   unauthorized_collection: Vous n'avez pas accès à %{project}. Veuillez vous connecter ou contacter le propriétaire du projet à ajouter.
+  unsaved_changes_confirmation: Vous avez des changements non enregistrés. Êtes-vous sûr de vouloir quitter cet écran ?
