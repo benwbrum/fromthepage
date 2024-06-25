@@ -65,6 +65,8 @@ de:
       fit_width: Passformweite
       full_page: Auf Vollbild umschalten
       home: Zum Ausgangsbild zurückkehren
+      monitor_open: In einem neuen Fenster öffnen
+      monitor_close: Fenster schließen
       image_filters: Bildfilter
       open_seadragon_needs_js: OpenSeadragon ist nur verfügbar, wenn JavaScript aktiviert ist.
       rotate_left: Nach links drehen

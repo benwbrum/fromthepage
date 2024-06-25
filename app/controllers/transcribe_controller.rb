@@ -45,6 +45,11 @@ class TranscribeController  < ApplicationController
     end unless @page.edit_started_at.nil?
   end
 
+  def monitor_view
+    @is_monitor_view = true
+    @collection = page.collection unless @collection
+  end
+
   def guest
   end
 
