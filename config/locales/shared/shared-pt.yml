@@ -65,9 +65,9 @@ pt:
       fit_width: Ajustar largura
       full_page: Alternar página inteira
       home: Ir para Página Inicial
-      monitor_open: Abrir em uma nova janela
-      monitor_close: Janela fechada
       image_filters: Filtros de imagem
+      monitor_close: Janela fechada
+      monitor_open: Abrir em uma nova janela
       open_seadragon_needs_js: O OpenSeadragon não está disponível a menos que o JavaScript esteja ativado.
       rotate_left: Vire à esquerda
       rotate_right: Vire à direita
