@@ -1140,6 +1140,10 @@ button, .button, .dropdown dd a {
         margin-top: -0.5em;
         position: absolute;
       }
+
+      select {
+        max-width: 250px;
+      }
     }
   }
   td {
