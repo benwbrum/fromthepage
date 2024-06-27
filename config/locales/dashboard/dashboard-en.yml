@@ -138,8 +138,8 @@ en:
       since: since %{date}
       start_a_project: Start A Project
       summary: Summary
-      to_upgrade_contact: To upgrade contact support@fromthepage.com
       total_pages: 'Total pages: %{pages}'
+      upgrade: Upgrade
       work:
         one: Work
         other: Works
