@@ -36,7 +36,7 @@
     .page-review
       =t('.this_page_marked_needs_review')
 
-  .page-columns
+  .page-columns(id="splitter")
     .page-column
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
@@ -138,4 +138,10 @@ h2.legend =t('.page_notes')
         Cookies.set('fromImage', fromImage, { expires: 365, path: '/' });
       });
 
+    });
+
+    $('#splitter').split({
+      orientation: 'vertical',
+      limit: 10,
+      position: '50%'
     });
