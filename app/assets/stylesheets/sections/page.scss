@@ -273,7 +273,7 @@
     height: auto !important;
 
     &-buttonsPanel:not(:empty) {
-      top: 74px;
+      top: 80px;
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
@@ -281,10 +281,10 @@
       padding-bottom: 5px;
       background-color: $bodyBg;
 
-      [data-layout-mode='ttb'] & {
-        padding-top: 8px;
-        top: calc(74px + (100vh - 74px - 3rem) / 2);
-      }
+      // [data-layout-mode='ttb'] & {
+      //   padding-top: 8px;
+      //   top: calc(74px + (100vh - 74px - 3rem) / 2);
+      // }
 
       button {
         padding: 0 4px;
