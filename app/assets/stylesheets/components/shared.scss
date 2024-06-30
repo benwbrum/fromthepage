@@ -691,6 +691,12 @@ button, .button, .dropdown dd a {
   }
 }
 
+.table-responsive {
+  overflow: auto;
+  width: 100%;
+  position: relative;
+}
+
 .datagrid {
   border: 0;
   width: 100%;
@@ -704,6 +710,26 @@ button, .button, .dropdown dd a {
     background: rgba(#000, 0.1);
     &.wrapped { word-wrap: break-word;}
   }
+
+  th.fixed {
+    background-color: #e1dcd3;
+  }
+
+  td.fixed {
+    background-color: #faf5eb;
+  }
+
+  td.fixed,
+  th.fixed {
+    width: 150px;
+    min-width: 150px;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 3;
+    left: 0;
+    box-shadow: 2px 0px 0px 0px rgba(0,0,0,0.1);
+  }
+
   td {
     padding: 10px;
     word-wrap: break-word;

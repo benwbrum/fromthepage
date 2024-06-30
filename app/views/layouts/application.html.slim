@@ -31,7 +31,7 @@ html lang="en-US"
     -unless CLARITY.blank?
       =render :partial => '/layouts/clarity'
 
-  body
+  body class="#{'monitor-view' if @is_monitor_view}"
     #flash_wrapper
       -flash.each do |type, message|
         =render :partial => '/shared/flash', :locals => { type: type, message: message }

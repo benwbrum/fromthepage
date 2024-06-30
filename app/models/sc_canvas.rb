@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: sc_canvases
+#
+#  id                 :integer          not null, primary key
+#  annotations        :text(16777215)
+#  height             :integer
+#  sc_canvas_label    :string(255)
+#  sc_service_context :string(255)
+#  width              :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  page_id            :integer
+#  sc_canvas_id       :string(255)
+#  sc_id              :string(255)
+#  sc_manifest_id     :integer
+#  sc_resource_id     :string(255)
+#  sc_service_id      :string(255)
+#
+# Indexes
+#
+#  index_sc_canvases_on_page_id         (page_id)
+#  index_sc_canvases_on_sc_manifest_id  (sc_manifest_id)
+#
 class ScCanvas < ApplicationRecord
   self.table_name = "sc_canvases"
 

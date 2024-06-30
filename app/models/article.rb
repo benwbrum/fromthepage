@@ -6,6 +6,30 @@
 #      t.column :created_on, :datetime
 #      t.column :lock_version, :integer, :default => 0
 #    end
+# == Schema Information
+#
+# Table name: articles
+#
+#  id            :integer          not null, primary key
+#  created_on    :datetime
+#  graph_image   :string(255)
+#  latitude      :decimal(7, 5)
+#  lock_version  :integer          default(0)
+#  longitude     :decimal(8, 5)
+#  pages_count   :integer          default(0)
+#  provenance    :string(255)
+#  source_text   :text(16777215)
+#  title         :string(255)
+#  uri           :string(255)
+#  xml_text      :text(16777215)
+#  collection_id :integer
+#  created_by_id :integer
+#
+# Indexes
+#
+#  fk_rails_35e2f292e3              (created_by_id)
+#  index_articles_on_collection_id  (collection_id)
+#
 class Article < ApplicationRecord
   include XmlSourceProcessor
   #include ActiveModel::Dirty

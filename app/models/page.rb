@@ -1,3 +1,42 @@
+# == Schema Information
+#
+# Table name: pages
+#
+#  id                      :integer          not null, primary key
+#  approval_delta          :float(24)
+#  base_height             :integer
+#  base_image              :string(255)
+#  base_width              :integer
+#  created_on              :datetime
+#  edit_started_at         :datetime
+#  last_note_updated_at    :datetime
+#  line_count              :integer
+#  lock_version            :integer          default(0)
+#  metadata                :text(65535)
+#  position                :integer
+#  search_text             :text(65535)
+#  shrink_factor           :integer
+#  source_text             :text(16777215)
+#  source_translation      :text(16777215)
+#  status                  :string(255)
+#  title                   :string(255)
+#  translation_status      :string(255)
+#  xml_text                :text(16777215)
+#  xml_translation         :text(16777215)
+#  updated_at              :datetime
+#  edit_started_by_user_id :integer
+#  last_editor_user_id     :integer
+#  page_version_id         :integer
+#  work_id                 :integer
+#
+# Indexes
+#
+#  index_pages_on_edit_started_by_user_id                 (edit_started_by_user_id)
+#  index_pages_on_status_and_work_id                      (status,work_id)
+#  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
+#  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
+#
 require 'search_translator'
 require 'transkribus/page_processor'
 class Page < ApplicationRecord

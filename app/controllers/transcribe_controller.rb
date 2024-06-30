@@ -45,6 +45,11 @@ class TranscribeController  < ApplicationController
     end unless @page.edit_started_at.nil?
   end
 
+  def monitor_view
+    @is_monitor_view = true
+    @collection = page.collection unless @collection
+  end
+
   def guest
   end
 
@@ -153,7 +158,15 @@ class TranscribeController  < ApplicationController
       elsif params[:done_to_needs_review] && @page.work.collection.review_workflow
         @page.status = Page::STATUS_NEEDS_REVIEW
       elsif save_to_needs_review
-        @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
+        if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)
+          skip_re_review = @collection.owner == current_user ||
+                           @collection.reviewers.ids.include?(current_user.id) ||
+                           Deed.where(deed_type: DeedType::COMPLETED_TYPES, user_id: current_user.id, page_id: @page.id).any?
+
+          @page.status = skip_re_review ? Page::STATUS_TRANSCRIBED : Page::STATUS_NEEDS_REVIEW
+        else
+          @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
+        end
       elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
         @page.status = Page::STATUS_TRANSCRIBED
       else

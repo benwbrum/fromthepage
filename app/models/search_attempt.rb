@@ -1,3 +1,32 @@
+# == Schema Information
+#
+# Table name: search_attempts
+#
+#  id              :integer          not null, primary key
+#  clicks          :integer          default(0)
+#  contributions   :integer          default(0)
+#  hits            :integer          default(0)
+#  owner           :boolean          default(FALSE)
+#  query           :string(255)
+#  search_type     :string(255)
+#  slug            :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  collection_id   :integer
+#  document_set_id :bigint
+#  user_id         :integer
+#  visit_id        :integer
+#  work_id         :integer
+#
+# Indexes
+#
+#  index_search_attempts_on_collection_id    (collection_id)
+#  index_search_attempts_on_document_set_id  (document_set_id)
+#  index_search_attempts_on_slug             (slug) UNIQUE
+#  index_search_attempts_on_user_id          (user_id)
+#  index_search_attempts_on_visit_id         (visit_id)
+#  index_search_attempts_on_work_id          (work_id)
+#
 class SearchAttempt < ApplicationRecord
     belongs_to :user, optional: true
     belongs_to :collection, optional: true

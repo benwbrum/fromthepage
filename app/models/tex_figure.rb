@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: tex_figures
+#
+#  id         :integer          not null, primary key
+#  position   :integer
+#  source     :text(65535)
+#  created_at :datetime
+#  updated_at :datetime
+#  page_id    :integer
+#
+# Indexes
+#
+#  index_tex_figures_on_page_id  (page_id)
+#
 class TexFigure < ApplicationRecord
   belongs_to :page, optional: true
   acts_as_list :scope => :page
