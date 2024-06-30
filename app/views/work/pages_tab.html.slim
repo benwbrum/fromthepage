@@ -19,7 +19,7 @@
       th= t('.position')
     -@work.pages.each do |page|
       tr
-        td.w100 =link_to page.title, { controller: 'display', action: 'display_page', page_id: page.id }
+        td.w100 =link_to page.title, collection_display_page_path(@collection.owner, @collection, @work, page.id)
         -unless @work.ia_work || @work.sc_manifest
           td.nowrap.fgfaded
             -if page.base_image.empty?
