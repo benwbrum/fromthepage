@@ -24,8 +24,9 @@
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
 .page-columns(id="splitter")
-  .page-column.page-imagescan
-    =render :partial => '/shared/osd_div'
+  .page-column
+    .page-imagescan
+      =render :partial => '/shared/osd_div'
 
   .page-column
     .page-preview[*language_attrs(@collection)]

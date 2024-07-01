@@ -141,9 +141,9 @@
   width: 100%;
   display: flex;
   min-height: 50vh;
-  max-height: 100vh;
+  // max-height: calc((100vh - 74px - 4rem));
   position: relative;
-  height: calc((100vh - 74px - 4rem));
+  // height: calc((100vh - 74px - 4rem));
 
 
   .page-column:last-child {
@@ -174,7 +174,7 @@
   }
 
   &[data-layout-mode='btt'] {
-    // flex-direction: column-reverse;
+    flex-direction: column-reverse;
 
     .page-column:first-child {
       bottom: 0 !important;
@@ -193,7 +193,7 @@
   z-index: 0;
   min-width: 0;
   min-height: 0;
-  // flex: 1 1 50%;
+  flex: 1 1 50%;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
