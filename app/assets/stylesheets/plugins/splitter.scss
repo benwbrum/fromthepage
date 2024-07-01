@@ -27,6 +27,7 @@
     border-left: 2px dashed $inputDisabledColor;
     transition: 0.2s border-color, 0.2s border-style;
     margin-left: -1px;
+    display: none; // Disable splitter temporarily
 }
 
 .splitter_panel .vsplitter:active,
@@ -51,6 +52,7 @@
     border-top: 2px dashed $inputDisabledColor;
     transition: 0.2s border-color, 0.2s border-style;
     margin-top: -1px;
+    display: none; // Disable splitter temporarily
 }
 
 .splitter_panel .vsplitter.splitter-invisible,
