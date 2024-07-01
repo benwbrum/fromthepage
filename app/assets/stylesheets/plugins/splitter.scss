@@ -27,6 +27,7 @@
     border-left: 2px dashed $inputDisabledColor;
     transition: 0.2s border-color, 0.2s border-style;
     margin-left: -1px;
+    display: none; // Disable splitter temporarily
 }
 
 .splitter_panel .vsplitter:active,
@@ -51,6 +52,7 @@
     border-top: 2px dashed $inputDisabledColor;
     transition: 0.2s border-color, 0.2s border-style;
     margin-top: -1px;
+    display: none; // Disable splitter temporarily
 }
 
 .splitter_panel .vsplitter.splitter-invisible,
@@ -66,7 +68,7 @@
 .splitter_panel .bottom_panel,
 .splitter_panel .horizontal_panel,
 .splitter_panel .vertical_panel {
-    position: absolute;
+    position: static;
     // overflow: auto;
 }
 
@@ -74,14 +76,14 @@
 .splitter_panel .left_panel,
 .splitter_panel .right_panel,
 .splitter_panel .vertical_panel {
-    height: 100%;
+    // height: 100%;
 }
 
 .splitter_panel .hsplitter,
 .splitter_panel .top_panel,
 .splitter_panel .bottom_panel,
 .splitter_panel .horizontal_panel {
-    width: 100%;
+    // width: 100%;
 }
 
 .splitter_panel .top_panel,
