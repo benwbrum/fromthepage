@@ -147,7 +147,7 @@
 
 
   .page-column:last-child {
-    // margin: 0 0 0 2rem;
+    margin: 0 0 0 2rem;
   }
 
   &[data-layout-mode='rtl'] {
@@ -159,7 +159,7 @@
     }
 
     .page-column:last-child {
-      // margin: 0 2rem 0 0;
+      margin: 0 2rem 0 0;
       left: 0 !important;
       right: auto !important;
     }
@@ -169,7 +169,7 @@
     flex-direction: column;
 
     .page-column:last-child {
-      // margin: 2rem 0 0 0;
+      margin: 2rem 0 0 0;
     }
   }
 
