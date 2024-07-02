@@ -351,3 +351,18 @@ Object.assign(DataTable.defaults, {
     }
   }
 });
+
+// prevent double confirmation popup when deleting topic in forum
+$(document).ready(function() {
+  const deleteTopicBtn = ($('input[data-confirm]'))
+  const confirmTxt = $('input[data-confirm]').attr('data-confirm');
+
+  $('input[data-confirm]').removeAttr('data-confirm');
+  $(deleteTopicBtn).on('click', function(){
+    event.preventDefault();
+    var confirmation = confirm(confirmTxt);
+    if (confirmation) {
+      $(this).closest('form').submit();
+    }
+  })
+})

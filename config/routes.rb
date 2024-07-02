@@ -522,6 +522,7 @@ Fromthepage::Application.routes.draw do
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
         get 'metadata_overview', on: :member
+        get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
       end
 

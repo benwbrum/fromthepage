@@ -66,8 +66,9 @@
         =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
-    .page-column.page-imagescan
-      =render :partial => '/shared/osd_div'
+    .page-column
+      .page-imagescan
+        =render :partial => '/shared/osd_div'
 
     .page-column
       -if @page.status == Page::STATUS_BLANK
@@ -155,6 +156,12 @@ h2.legend =t('.notes_and_questions')
         limit: 10,
         position, // if there is no percentage it interpret it as pixels
         onDrag: function(event) {
+          if(typeof myCodeMirror !== 'undefined') {
+            myCodeMirror.refresh();
+          }
+          if(typeof hot !== 'undefined') {
+            hot.render();
+          }
           Cookies.set('drag_position', splitter.position(), { expires: 365 });
 
           if(mode === 'rtl') {
@@ -174,6 +181,13 @@ h2.legend =t('.notes_and_questions')
           }
         }
       });
+
+      if(typeof myCodeMirror !== 'undefined') {
+        myCodeMirror.refresh();
+      }
+      if(typeof hot !== 'undefined') {
+        hot.render();
+      }
 
       if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
         position = parseFloat(Cookies.get('drag_position'));
@@ -298,7 +312,7 @@ h2.legend =t('.notes_and_questions')
       if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
         applySplitter(Cookies.get('transcribe_layout_mode'));
       } else {
-        applySplitter('ltr');
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       }
     });
 

@@ -44,7 +44,10 @@
 
 .image-container(id="image_container")
 
-div data-image-window-path-value=collection_monitor_view_path(@collection.owner, @collection, @work, @page)
+-if @page
+  div data-image-window-path-value=collection_monitor_view_path(@collection.owner, @collection, @work, @page)
+- else
+  div data-image-window-path-value=metadata_overview_monitor_collection_work_path(@work.slug)
 
 -content_for :javascript
   javascript:

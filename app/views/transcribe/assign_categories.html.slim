@@ -22,7 +22,7 @@ p.big =t('.uncategorized_subjects_mentioned')
 
 span.legend
   -if @text_type == 'translation'
-    -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @next_page_id)
+    -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
   -else
-    -next_path =collection_transcribe_page_path(@collection.owner, @collection, @work, @next_page_id)
+    -next_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
   =link_to t('.continue'), next_path, class: 'button outline round'

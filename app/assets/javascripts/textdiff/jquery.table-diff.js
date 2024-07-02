@@ -9,7 +9,7 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
 
   $ = jQuery;
 
-  $.fn.extend1({
+  $.fn.extend({
     prettyTableDiff: function(options) {
       var dmp, settings;
       settings = {

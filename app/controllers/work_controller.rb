@@ -25,7 +25,11 @@ class WorkController < ApplicationController
     end
   end
 
-
+  def metadata_overview_monitor
+    @is_monitor_view = true
+    @collection = @collection
+    render :template => "transcribe/monitor_view"
+  end
 
   def configurable_printout
     @bulk_export = BulkExport.new
