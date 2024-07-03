@@ -186,6 +186,7 @@
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
 
+    console.log(stickyHeight, tablePosTop)
     if(stickyHeight > tablePosTop) {
       document.querySelectorAll(columnEl).forEach(function(item) {
         item.style.top = (stickyHeight - tablePosTop) + 'px';
