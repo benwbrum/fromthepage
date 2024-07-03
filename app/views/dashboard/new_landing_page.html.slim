@@ -26,7 +26,7 @@
             li data-weight="#{collection_count}"
               =link_to(ai_text, browse_tag_path(ai_text))
 
-    -if @search_results && @org_owners.empty? && @individual_owners.empty?
+    -if @search_results && @org_owners.empty? && @individual_owners.empty? # show search results instead of owner listing
       -@search_results.each do |sr|
         .project-list_projects
           .projects-owner
@@ -38,28 +38,38 @@
                 h5 =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
                   =truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
-    -[@org_owners, @individual_owners].each do |owners|
-      -owners.each do |owner|
-        -if params[:search]
-          -projects = @search_results.select{ |p| p.owner_user_id == owner.id }
-        -else
-          -projects = (owner.random_collections + owner.random_document_sets).sample(3)
-        -unless projects.blank?
-          .project-list_projects
-            .projects-owner
-              h3.projects-owner_title
-                =link_to owner.display_name, user_profile_path(owner)
-              -if owner.about.present?
-                .description
-                  =owner.about
+    -else # show listing of all organizations and individual owners
+      -[@org_owners, @individual_owners].each do |owners|
+        -owners.each do |owner|
+          -projects = (owner.random_collections+owner.random_document_sets)
+          -if projects.count > 0
+            .project-list_projects
+              .projects-owner
+                h3.projects-owner_title
+                  =link_to owner.display_name, user_profile_path(owner)
+                -if owner.picture.present?
+                  .projects_details_image
+                    =image_tag(owner.picture_url(:thumb), alt: owner.display_name)
+                -else # find a thumbnail from their collections
+                  / display the most common tags for projects by this owner
+                  -project = projects.first
+                  -if project.picture.present?
+                    .projects_details_image
+                      =image_tag(project.picture_url(:thumb), alt: project.title)
+                -if owner.about.present?
+                  .description
+                    =owner.about
+                -tag_map = projects.map{|p| p.tags.canonical}.flatten.group_by{|t| t}.map{|k,v| [k.ai_text, v.size]}.sort_by{|k,v| v}.reverse
+                -if tag_map.present?
+                  ul.tagcloud
+                    -tag_map.each do |ai_text, collection_count|
+                      -if collection_count > 0
+                        li data-weight="#{collection_count}"
+                          -link_text = "#{ai_text} (#{collection_count})"
+                          =link_to(link_text, browse_tag_path(ai_text))
 
-            .projects
-              -projects.each do |project|
-                =render 'dashboard/project_details', project: project, owner: owner
-              .projects_link =link_to t('dashboard.landing_page.more'), user_profile_path(owner)
-
-    .project-list_link
-      =link_to t('.all_collections'), collections_list_path
+      .project-list_link
+        =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do

@@ -118,9 +118,12 @@ class DocumentSet < ApplicationRecord
     self.collection.text_and_metadata_entry?
   end
 
-
   def hide_completed
     self.collection.hide_completed
+  end
+
+  def tags
+    self.collection.tags
   end
 
   def review_workflow
