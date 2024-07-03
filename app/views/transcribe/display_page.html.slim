@@ -276,7 +276,7 @@ h2.legend =t('.notes_and_questions')
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
             if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+              freezeTableColumn('.top_panel', '.spreadsheet', '.ht_clone_top');
             } else {
               freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
             } 

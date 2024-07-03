@@ -146,9 +146,9 @@
   // height: calc((100vh - 74px - 4rem));
 
 
-  .page-column:last-child {
-    margin: 0 0 0 2rem;
-  }
+  // .page-column:last-child {
+  //   margin: 0 0 0 2rem;
+  // }
 
   &[data-layout-mode='rtl'] {
     flex-direction: row-reverse;
@@ -273,7 +273,7 @@
     height: auto !important;
 
     &-buttonsPanel:not(:empty) {
-      top: 80px;
+      top: 73px;
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
@@ -310,6 +310,7 @@
 .fields-row {
   display: flex;
   align-items: stretch;
+  column-gap: 5px;
   // flex-wrap: wrap;
 
   &:not(:last-child) {
@@ -321,10 +322,6 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
-    &:not(:last-child) {
-      padding-right: 5px;
-    }
 
     &.spreadsheet {
       padding: 0;
