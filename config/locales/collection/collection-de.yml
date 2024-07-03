@@ -184,7 +184,7 @@ de:
       user_download: Mitarbeitenden erlauben, Werke herunterzuladen.
       user_download_description: Fügt jedem Werk eine für den Benutzer sichtbare Download-Registerkarte hinzu, mit der Benutzer die Dokumenttranskription in für Forscher benutzerfreundliche Formate wie Microsoft Word oder PDF exportieren können.
       voice_recognition: Spracherkennung (Speech-to-text) zum Transkribieren verfügbar (nicht kompatibel mit erweitertem Editor)
-      voice_recognition_description: Nicht kompatibel mit dem erweiterten Editor.
+      voice_recognition_description: Nur mit dem Chrome-Webbrowser verfügbar.
     edit_privacy:
       api_access: API-Zugriff
       api_access_description: Zugriff auf Transkriptionen über die IIIF-API zulassen

@@ -25,7 +25,11 @@ class WorkController < ApplicationController
     end
   end
 
-
+  def metadata_overview_monitor
+    @is_monitor_view = true
+    @collection = @collection
+    render :template => "transcribe/monitor_view"
+  end
 
   def configurable_printout
     @bulk_export = BulkExport.new
@@ -50,7 +54,7 @@ class WorkController < ApplicationController
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
 
-    if params['save_to_incomplete'] && !needs_review_checkbox_checked 
+    if params['save_to_incomplete'] && !needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::INCOMPLETE
     elsif params['save_to_needs_review'] || needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
@@ -117,7 +121,7 @@ class WorkController < ApplicationController
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
     @collections = current_user.collections
-    #set subjects to true if there are any articles/page_article_links
+    # set subjects to true if there are any articles/page_article_links
     @subjects = !@work.articles.blank?
   end
 
@@ -182,7 +186,7 @@ class WorkController < ApplicationController
     if work_params[:slug].blank?
       @work.slug = @work.title.parameterize
     end
-    
+
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
@@ -246,6 +250,12 @@ class WorkController < ApplicationController
     redirect_back fallback_location: @work
   end
 
+  def document_sets_select
+    document_sets = current_user.document_sets.where(collection_id: params[:collection_id])
+
+    render partial: 'document_sets_select', locals: { document_sets: document_sets }
+  end
+
   protected
 
   def record_deed(work, deed_type, user)
@@ -262,23 +272,23 @@ class WorkController < ApplicationController
 
   def work_params
     params.require(:work).permit(
-      :title, 
-      :description, 
-      :collection_id, 
-      :supports_translation, 
-      :slug, 
-      :ocr_correction, 
+      :title,
+      :description,
+      :collection_id,
+      :supports_translation,
+      :slug,
+      :ocr_correction,
       :transcription_conventions,
-      :author, 
+      :author,
       :recipient,
-      :location_of_composition, 
-      :identifier, 
-      :pages_are_meaningful, 
-      :physical_description, 
-      :document_history, 
-      :permission_description, 
+      :location_of_composition,
+      :identifier,
+      :pages_are_meaningful,
+      :physical_description,
+      :document_history,
+      :permission_description,
       :translation_instructions,
-      :scribes_can_edit_titles, 
+      :scribes_can_edit_titles,
       :restrict_scribes,
       :picture,
       :genre,
@@ -287,6 +297,8 @@ class WorkController < ApplicationController
       :source_box_folder,
       :in_scope,
       :editorial_notes,
-      :document_date)
+      :document_date,
+      document_set_ids: []
+    )
   end
 end

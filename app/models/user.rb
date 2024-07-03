@@ -1,3 +1,57 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                        :integer          not null, primary key
+#  about                     :text(65535)
+#  account_type              :string(255)
+#  activity_email            :boolean
+#  admin                     :boolean          default(FALSE)
+#  api_key                   :string(255)
+#  current_sign_in_at        :datetime
+#  current_sign_in_ip        :string(255)
+#  deleted                   :boolean          default(FALSE)
+#  dictation_language        :string(255)      default("en-US")
+#  display_name              :string(255)
+#  email                     :string(255)
+#  encrypted_password        :string(255)      default(""), not null
+#  footer_block              :text(16777215)
+#  guest                     :boolean
+#  help                      :text(65535)
+#  last_sign_in_at           :datetime
+#  last_sign_in_ip           :string(255)
+#  location                  :string(255)
+#  login                     :string(255)
+#  orcid                     :string(255)
+#  owner                     :boolean          default(FALSE)
+#  paid_date                 :datetime
+#  password_salt             :string(255)      default(""), not null
+#  picture                   :string(255)
+#  preferred_locale          :string(255)
+#  provider                  :string(255)
+#  real_name                 :string(255)
+#  remember_created_at       :datetime
+#  remember_token            :string(255)
+#  remember_token_expires_at :datetime
+#  reset_password_sent_at    :datetime
+#  reset_password_token      :string(255)
+#  sign_in_count             :integer          default(0), not null
+#  slug                      :string(255)
+#  sso_issuer                :string(255)
+#  start_date                :datetime
+#  uid                       :string(255)
+#  website                   :string(255)
+#  created_at                :datetime
+#  updated_at                :datetime
+#  external_id               :string(255)
+#
+# Indexes
+#
+#  index_users_on_deleted               (deleted)
+#  index_users_on_login                 (login)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_slug                  (slug) UNIQUE
+#
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -74,7 +128,7 @@ class User < ApplicationRecord
 
   validates :login, presence: true,
                     uniqueness: { case_sensitive: false },
-                    format: { with: /\A[^<> ]*\z/,
+                    format: { with: /\A[^<>]*\z/,
                               message: ->(_, _) { I18n.t('devise.errors.messages.login.format') } },
                     exclusion: { in: %w[transcribe translate work collection deed],
                                  message: ->(_, _) { I18n.t('devise.errors.messages.login.exclusion') } }
@@ -389,6 +443,14 @@ class User < ApplicationRecord
   def set_default_footer_block
     self.footer_block = "For questions about this project, contact at."
     save
+  end
+
+  def organization?
+    self.owner? && self.account_type != 'Staff'
+  end
+
+  def staff?
+    self.account_type == 'Staff'
   end
 
 end

@@ -14,7 +14,7 @@ es:
       messages:
         login:
           exclusion: ist ungültig
-          format: darf keine spitzen Klammern (<, >) oder Leerzeichen enthalten
+          format: no puede contener corchetes angulares (<, >)
     failure:
       already_authenticated: Ya has iniciado sesión.
       inactive: Tu cuenta aún no ha sido activada.

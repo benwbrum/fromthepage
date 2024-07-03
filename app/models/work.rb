@@ -1,3 +1,58 @@
+# == Schema Information
+#
+# Table name: works
+#
+#  id                              :integer          not null, primary key
+#  author                          :string(255)
+#  created_on                      :datetime
+#  description                     :text(16777215)
+#  description_status              :string(255)      default("undescribed")
+#  document_date                   :string(255)
+#  document_history                :text(16777215)
+#  editorial_notes                 :text(65535)
+#  featured_page                   :integer
+#  genre                           :string(255)
+#  identifier                      :string(255)
+#  in_scope                        :boolean          default(TRUE)
+#  location_of_composition         :string(255)
+#  metadata_description            :text(65535)
+#  most_recent_deed_created_at     :datetime
+#  ocr_correction                  :boolean          default(FALSE)
+#  original_metadata               :text(65535)
+#  pages_are_meaningful            :boolean          default(TRUE)
+#  permission_description          :text(16777215)
+#  physical_description            :text(16777215)
+#  picture                         :string(255)
+#  recipient                       :string(255)
+#  restrict_scribes                :boolean          default(FALSE)
+#  scribes_can_edit_titles         :boolean          default(FALSE)
+#  searchable_metadata             :text(65535)
+#  slug                            :string(255)
+#  source_box_folder               :string(255)
+#  source_collection_name          :string(255)
+#  source_location                 :string(255)
+#  supports_translation            :boolean          default(FALSE)
+#  title                           :string(255)
+#  transcription_conventions       :text(16777215)
+#  transcription_version           :integer          default(0)
+#  translation_instructions        :text(65535)
+#  uploaded_filename               :string(255)
+#  collection_id                   :integer
+#  metadata_description_version_id :integer
+#  next_untranscribed_page_id      :integer
+#  owner_user_id                   :integer
+#
+# Indexes
+#
+#  index_works_on_collection_id                    (collection_id)
+#  index_works_on_metadata_description_version_id  (metadata_description_version_id)
+#  index_works_on_owner_user_id                    (owner_user_id)
+#  index_works_on_slug                             (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
+#
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
@@ -21,7 +76,7 @@ class Work < ApplicationRecord
      "editorial_notes",
      "document_date",
      "uploaded_filename"]
-  
+
   before_destroy :cleanup_images # must precede pages association
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -57,6 +112,8 @@ class Work < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
+  validates :description, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
+                          length: { maximum: 16.megabytes - 1 }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
@@ -209,12 +266,12 @@ class Work < ApplicationRecord
     else
       # the edtf-ruby gem has some gaps in coverage for e.g. seasons
       self[:document_date] = date_as_edtf.to_s
-    end      
+    end
   end
 
   def document_date
     date = Date.edtf(self[:document_date])
-    
+
     if self[:document_date].nil? # there is no document date
       return nil
     elsif date.nil? # the document date is invalid
@@ -225,7 +282,7 @@ class Work < ApplicationRecord
     elsif self[:document_date].length == 4 and not self[:document_date].include? "x" # YYYY
       date.year_precision!
     end
-    
+
     return date.edtf
   end
 
@@ -449,7 +506,7 @@ class Work < ApplicationRecord
 
   def save_metadata
     # this is costly, so only execute if the relevant value has actually changed
-    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
@@ -482,5 +539,9 @@ class Work < ApplicationRecord
       # now update the work_facet
       FacetConfig.update_facets(self)
     end
+  end
+
+  def user_can_transcribe?(user)
+    !self.restrict_scribes || user&.like_owner?(self) || self.scribes.include?(user)
   end
 end

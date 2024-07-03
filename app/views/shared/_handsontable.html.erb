@@ -122,7 +122,7 @@
   };
 
   var getHotHeight = function(rows) {
-    return rows * 23 + 25 + 2;
+    return rows * 23 + 40;
   };
 
   var updateHotHeight = function() {
@@ -146,13 +146,14 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    autoWrapCol: true,
     manualColumnResize: true,
     manualRowResize: true,
     startRows: <%= transcription_field.starting_rows %>,
     afterCreateRow: updateHotHeight,
     afterRemoveRow: updateHotHeight,
     afterChange: function(changes, source) {
-       if(source === 'edit') {
+      if(source === 'edit') {
         sendActiveEditing()
       };
       document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
@@ -173,10 +174,15 @@
           <%= transcription_field.bottom_offset %>);
       <% end %>
     },
+    modifyColWidth: function(width, col) {
+      if (width > 300) {
+        return 300
+      }
+    }
   });
 
 
-    function freezeTableColumn(topEl, tableEl, columnEl) {
+  function freezeTableColumn(topEl, tableEl, columnEl) {
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
 

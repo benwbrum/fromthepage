@@ -38,8 +38,12 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options = config.action_mailer.default_url_options =  { host: 'localhost:3000' }
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.delivery_method = :postmark
+
+  config.action_mailer.postmark_settings = {
+    api_token: ''
+  }
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

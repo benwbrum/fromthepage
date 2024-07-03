@@ -184,7 +184,7 @@ en:
       user_download: Allow users to download works
       user_download_description: Adds a user-visible Download tab to each work, which lets users export the document transcription in researcher-friendly formats like Microsoft Word or PDF.
       voice_recognition: Enable speech to text
-      voice_recognition_description: Not compatible with advanced editor.
+      voice_recognition_description: Only available with the Chrome web browser.
     edit_privacy:
       api_access: API access
       api_access_description: Allow access to transcriptions via IIIF API.

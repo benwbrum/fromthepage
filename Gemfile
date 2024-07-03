@@ -19,6 +19,7 @@ gem 'text'
 gem 'thredded', '~> 1.0'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'ruby-openai'
+gem 'postmark-rails'
 
 gem 'acts_as_list'
 gem 'acts_as_tree'
@@ -84,19 +85,18 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'launchy'
-  gem 'pry-byebug'
-  gem 'factory_bot_rails'
-  gem 'pry-awesome_print' # makes console output easy to read
-  gem 'better_errors' # creates console in browser for errors
-  gem 'binding_of_caller' # goes with better_errors
-  # Supporting gem for RailsPanel
-  # https://github.com/dejan/rails_panel
+  gem 'annotaterb'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'bullet'
-  gem 'listen'
-  gem 'i18n-tasks'
   gem 'easy_translate'
+  gem 'factory_bot_rails'
+  gem 'i18n-tasks'
+  gem 'launchy'
+  gem 'listen'
+  gem 'pry-awesome_print'
+  gem 'pry-byebug'
+  gem 'rspec-rails'
 end
 
 # Use SassC for stylesheets
@@ -134,5 +134,5 @@ gem 'bento-sdk', github: "bentonow/bento-ruby-sdk", branch: "master"
 gem 'open3'
 
 # Copy to clipboard
-gem 'clipboard-rails' 
+gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
