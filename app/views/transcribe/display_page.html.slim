@@ -66,9 +66,8 @@
         =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
-    .page-column
-      .page-imagescan
-        =render :partial => '/shared/osd_div'
+    .page-column.page-imagescan
+      =render :partial => '/shared/osd_div'
 
     .page-column
       -if @page.status == Page::STATUS_BLANK
@@ -215,7 +214,7 @@ h2.legend =t('.notes_and_questions')
     }
 
     window.addEventListener('resize', function(event) {
-      applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
     })
 
     //set language for voice to text
@@ -264,7 +263,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         }
 
-        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -293,7 +292,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         };
 
-        applySplitter(mode);
+        // applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -310,9 +309,9 @@ h2.legend =t('.notes_and_questions')
       });
 
       if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
-        applySplitter(Cookies.get('transcribe_layout_mode'));
+        // applySplitter(Cookies.get('transcribe_layout_mode'));
       } else {
-        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       }
     });
 
