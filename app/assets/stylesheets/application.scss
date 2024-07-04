@@ -114,7 +114,6 @@ $gapSize:                   20px;
 @import "sections/search_attempt";
 
 @import "plugins/select2/core";
-@import "plugins/splitter";
 
 #welcome-message {
   width: 480px;
@@ -293,6 +292,69 @@ h3, .thredded--post-form--title {
   height: 20px;
   transform: rotateZ(180deg);
   margin-top: -1px;
+}
+
+// Splitter CSS
+.page-columns {
+  .splitter {
+    cursor: col-resize;
+    background-color: #ebe4d8;
+    position: relative;
+
+    &:hover {
+      background-color: #d0bb88;
+    }
+
+    &:hover::before {
+      background-color: #7d6b43;
+    }
+  }
+
+  &[data-layout-mode='rtl'],
+  &[data-layout-mode='ltr'] {
+    .splitter {
+      width: 3px;
+      height: calc(100vh - 74px - 3rem);
+      position: sticky;
+      top: 80px;
+    }
+
+    .splitter::before {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      content: '';
+      background-color: #dac28a;
+      width: 5px;
+      left: 50%;
+      height: 40px;
+      border-radius: 2px;
+      display: block;
+    }
+  }
+
+  &[data-layout-mode='ttb'],
+  &[data-layout-mode='btt'] {
+    
+    .splitter {
+      height: 3px;
+      width: 100%;
+      display: none; // Enable when Horizontal Splitter is complete
+    }
+
+    .splitter::before {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      content: '';
+      background-color: #dac28a;
+      height: 5px;
+      left: 50%;
+      width: 40px;
+      border-radius: 2px;
+      display: block;
+    }
+  } 
 }
 
 @import "datepicker/datepicker";

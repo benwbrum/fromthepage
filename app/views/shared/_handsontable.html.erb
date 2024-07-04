@@ -186,7 +186,6 @@
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
 
-    console.log(stickyHeight, tablePosTop)
     if(stickyHeight > tablePosTop) {
       document.querySelectorAll(columnEl).forEach(function(item) {
         item.style.top = (stickyHeight - tablePosTop) + 'px';
@@ -200,7 +199,7 @@
   }
 
   window.onscroll = function (e) {
-    if(Cookies && (Cookies.get('transcribe_layout_mode') === 'ttb' || Cookies.get('transcribe_layout_mode') === undefined)) {
+    if(typeof Cookies !== 'undefined' && (Cookies.get('transcribe_layout_mode') === 'ttb' || Cookies.get('transcribe_layout_mode') === undefined)) {
       freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top')
     } else {
       freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top')

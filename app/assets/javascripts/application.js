@@ -366,3 +366,112 @@ $(document).ready(function() {
     }
   })
 })
+
+function refreshEditors() {
+  if(typeof hot !== 'undefined') {
+    hot.updateSettings({});
+  }
+
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.refresh();
+  }
+}
+
+const ResizableSplitter = {
+  init: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, options = {}) {
+    const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
+
+    const splitter = document.querySelector(splitterSelector);
+    const panel1 = document.querySelector(panel1Selector);
+    const panel2 = document.querySelector(panel2Selector);
+    
+    let startX;
+    let startWidthPanel1;
+    let startWidthPanel2;
+
+    // Function to calculate initial widths based on initial position
+    const calculateInitialWidths = function(position) {
+      const totalWidth = panel1.offsetWidth + panel2.offsetWidth;
+      const initialWidth = typeof position === 'string' && position.includes('%')
+        ? parseFloat(position) / 100 * window.innerWidth
+        : parseFloat(position);
+
+      const widthPanel1 = initialWidth;
+      const widthPanel2 = window.innerWidth - initialWidth;
+
+      return {
+        widthPanel1,
+        widthPanel2
+      };
+    };
+
+    const { widthPanel1, widthPanel2 } = calculateInitialWidths(initialPosition);
+
+    panel1.style.flex = `${widthPanel1}px`;
+    panel2.style.flex = `${widthPanel2}px`;
+
+    // Function to handle mouse move
+    const onMouseMove = function(e) {
+      const deltaX = e.clientX - startX;
+      const totalWidth = panel1.offsetWidth + panel2.offsetWidth;
+      const newWidthPanel1 = startWidthPanel1 + deltaX;
+      const newWidthPanel2 = startWidthPanel2 - deltaX;
+
+      panel1.style.flex = `${newWidthPanel1}px`;
+      panel2.style.flex = `${newWidthPanel2}px`;
+
+      if (typeof onPositionChange === 'function') {
+        const currentPosition = (newWidthPanel1 / totalWidth) * 100;
+        onPositionChange(currentPosition);
+      }
+
+      if (typeof onDrag === 'function') {
+        onDrag(newWidthPanel1, newWidthPanel2);
+      }
+    };
+
+    // Function to handle mouse up
+    const onMouseUp = function() {
+      if (typeof onChanged === 'function') {
+        onChanged(panel1.offsetWidth, panel2.offsetWidth);
+      }
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    // Function to handle mouse down
+    const onMouseDown = function(e) {
+      startX = e.clientX;
+      startWidthPanel1 = panel1.offsetWidth;
+      startWidthPanel2 = panel2.offsetWidth;
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    };
+
+    splitter.addEventListener('mousedown', onMouseDown);
+
+    // Handle window resize event
+    const handleWindowResize = function() {
+      const totalWidth = panel1.offsetWidth + panel2.offsetWidth;
+      const newWidthPanel1 = (panel1.offsetWidth / totalWidth) * window.innerWidth;
+      const newWidthPanel2 = window.innerWidth - newWidthPanel1;
+
+      panel1.style.flex = `${newWidthPanel1 / window.innerWidth}`;
+      panel2.style.flex = `${newWidthPanel2 / window.innerWidth}`;
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    // Initial adjustment on load
+    handleWindowResize();
+
+    // Method to remove event listeners
+    this.destroy = function() {
+      splitter.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }
+}

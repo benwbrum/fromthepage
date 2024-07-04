@@ -66,10 +66,11 @@
         =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
-    .page-column.page-imagescan
-      =render :partial => '/shared/osd_div'
-
-    .page-column
+    .page-column.page-imagescan(id="leftColumn")
+      .page-imagescan
+        =render :partial => '/shared/osd_div'
+    .splitter(id="splitter")
+    .page-column(id="rightColumn")
       -if @page.status == Page::STATUS_BLANK
         .page-preview[*language_attrs(@collection)]
           .centered
@@ -141,82 +142,6 @@ h2.legend =t('.notes_and_questions')
 
 -content_for :javascript
   javascript:
-    var splitter = null;
-
-    function applySplitter(mode) {
-      var position = '50%'
-
-      if(splitter) {
-        splitter.destroy();
-      }
-
-      splitter = $('#splitter').split({
-        orientation: (mode === 'rtl' || mode === 'ltr')?'vertical':'horizontal',
-        limit: 10,
-        position, // if there is no percentage it interpret it as pixels
-        onDrag: function(event) {
-          if(typeof myCodeMirror !== 'undefined') {
-            myCodeMirror.refresh();
-          }
-          if(typeof hot !== 'undefined') {
-            hot.render();
-          }
-          Cookies.set('drag_position', splitter.position(), { expires: 365 });
-
-          if(mode === 'rtl') {
-            var left_width = $('.left_panel').width();
-            var right_width = $('.right_panel').width();
-
-            $('.right_panel').width(left_width);
-            $('.left_panel').width(right_width);
-          }
-
-          if(mode === 'btt') {
-            var top_height = $('.top_panel').height();
-            var bottom_height = $('.bottom_panel').height();
-
-            $('.top_panel').height(bottom_height);
-            $('.bottom_panel').height(top_height);
-          }
-        }
-      });
-
-      if(typeof myCodeMirror !== 'undefined') {
-        myCodeMirror.refresh();
-      }
-      if(typeof hot !== 'undefined') {
-        hot.render();
-      }
-
-      if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
-        position = parseFloat(Cookies.get('drag_position'));
-        splitter.position(position);
-
-        if(mode === 'rtl') {
-          var left_width = $('.left_panel').width();
-          var right_width = $('.right_panel').width();
-
-          $('.right_panel').width(left_width);
-          $('.left_panel').width(right_width);
-        }
-
-        if(mode === 'btt') {
-          var top_height = $('.top_panel').height();
-          var bottom_height = $('.bottom_panel').height();
-
-          $('.top_panel').height(bottom_height);
-          $('.bottom_panel').height(top_height);
-        }
-      }
-
-      $('.vsplitter').attr('title', 'Drag this to change the editor and image viewer');
-      $('.hsplitter').attr('title', 'Drag this to change the editor and image viewer');
-    }
-
-    window.addEventListener('resize', function(event) {
-      // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
-    })
-
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
@@ -254,6 +179,34 @@ h2.legend =t('.notes_and_questions')
 
     $(function() {
       var imageWindow = null;
+      var resizableSplitter = Object.create(ResizableSplitter);
+
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = mode === 'ltr'?'#leftColumn':'#rightColumn';
+        const rightPanel = mode === 'ltr'?'#rightColumn':'#leftColumn';
+
+        if(resizableSplitter && resizableSplitter.destroy) {
+          resizableSplitter.destroy()
+        }
+
+        resizableSplitter.init('#splitter', leftPanel, rightPanel, {
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('splitterPos', pos)
+
+            // re-render spreedsheet & codemirror
+            refreshEditors();
+          },
+          initialPosition: (window.localStorage.getItem('splitterPos') || 50) + '%'
+        });
+
+        // re-render spreedsheet & codemirror
+        refreshEditors();
+      }
+
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
 
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
@@ -263,7 +216,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         }
 
-        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -275,7 +228,7 @@ h2.legend =t('.notes_and_questions')
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
             if(mode === 'ttb') {
-              freezeTableColumn('.top_panel', '.spreadsheet', '.ht_clone_top');
+              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
             } else {
               freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
             } 
@@ -292,7 +245,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         };
 
-        // applySplitter(mode);
+        applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {

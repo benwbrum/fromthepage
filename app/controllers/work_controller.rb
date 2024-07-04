@@ -27,7 +27,6 @@ class WorkController < ApplicationController
 
   def metadata_overview_monitor
     @is_monitor_view = true
-    @collection = @collection
     render :template => "transcribe/monitor_view"
   end
 
