@@ -1,13 +1,12 @@
 require 'contentdm_translator'
-namespace :fromthepage do 
-
-  desc "Export transcripts for completed works to CONTENTdm"
-  task :cdm_transcript_export, [:collection_id] => :environment do |t, args|
+namespace :fromthepage do
+  desc 'Export transcripts for completed works to CONTENTdm'
+  task :cdm_transcript_export, [:collection_id] => :environment do |_t, args|
     collection_id = args.collection_id.to_i
     collection = Collection.find(collection_id)
-    username = ENV['contentdm_username']
-    password = ENV['contentdm_password']
-    license = ENV['contentdm_license']
+    username = ENV.fetch('contentdm_username', nil)
+    password = ENV.fetch('contentdm_password', nil)
+    license = ENV.fetch('contentdm_license', nil)
 
     collection.works.joins(:sc_manifest, :work_statistic).each do |work|
       if work.work_statistic.complete >= 99
@@ -22,14 +21,10 @@ namespace :fromthepage do
     if SMTP_ENABLED
       begin
         SystemMailer.cdm_sync_finished(collection).deliver!
-#        UserMailer.cdm_sync_finished(collection).deliver!
+      #        UserMailer.cdm_sync_finished(collection).deliver!
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
-
-
   end
-
-
 end

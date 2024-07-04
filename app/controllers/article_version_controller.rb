@@ -3,7 +3,7 @@ class ArticleVersionController < ApplicationController
   before_action :set_versions
 
   def set_versions
-    @selected_version = @article_version.present? ? @article_version : @article.article_versions.first
+    @selected_version = @article_version.presence || @article.article_versions.first
     @previous_version = @selected_version.prev if @selected_version.present?
   end
 

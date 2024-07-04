@@ -23,7 +23,7 @@ h1 =t('dashboard.collaborator')
                   =profile_picture(d.user)
                 .user-bubble_content
                   =timeago d.created_at
-                  p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+                  p =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true })
     -else
       =t('.try_transcribing_a_page')
       =link_to t('.collections'), dashboard_path

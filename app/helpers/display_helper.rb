@@ -1,4 +1,5 @@
 module DisplayHelper
+
   include AbstractXmlHelper
 
   def has_translation?
@@ -15,13 +16,13 @@ module DisplayHelper
   end
 
   def correction_mode?
-    if @page.work.ocr_correction
-      true
-    end
+    return false unless @page.work.ocr_correction
+
+    true
   end
 
   def notes_for(commentable)
-    render({ :partial => 'note/notes', :locals => { :commentable => commentable }})
+    render({ partial: 'note/notes', locals: { commentable: } })
   end
 
   def page_action(page)
@@ -44,20 +45,20 @@ module DisplayHelper
       elsif page.translation_status == Page::STATUS_NEEDS_REVIEW
         @wording = t('.review')
       elsif page.translation_status == Page::STATUS_TRANSLATED
-        unless @collection.subjects_disabled
-          @wording = t('.index')
-        else
+        if @collection.subjects_disabled
           @wording = t('.completed')
+        else
+          @wording = t('.index')
         end
       elsif page.translation_status == Page::STATUS_INDEXED
         @wording = t('.completed')
         @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       end
     elsif page.status == Page::STATUS_TRANSCRIBED
-      unless @collection.subjects_disabled
-        @wording = t('.index')
-      else
+      if @collection.subjects_disabled
         @wording = t('.completed')
+      else
+        @wording = t('.index')
       end
     elsif page.status == Page::STATUS_INDEXED
       @wording = t('.completed')

@@ -1,4 +1,5 @@
 class CreateCollectionBlocks < ActiveRecord::Migration[6.0]
+
   def change
     create_table :collection_blocks do |t|
       t.integer :collection_id, null: false
@@ -20,4 +21,5 @@ class CreateCollectionBlocks < ActiveRecord::Migration[6.0]
     change_column :collection_blocks, :user_id, :bigint
     drop_table :collection_blocks
   end
+
 end

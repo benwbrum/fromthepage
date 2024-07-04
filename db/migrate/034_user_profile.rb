@@ -1,4 +1,5 @@
 class UserProfile < ActiveRecord::Migration[5.0]
+
   def self.up
     add_column :users, :location, :string
     add_column :users, :website, :string
@@ -10,4 +11,5 @@ class UserProfile < ActiveRecord::Migration[5.0]
     remove_column :users, :website
     remove_column :users, :about
   end
+
 end

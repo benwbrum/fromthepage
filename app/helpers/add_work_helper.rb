@@ -1,9 +1,10 @@
 module AddWorkHelper
+
   include ErrorHelper
 
   def new_work
     @document_upload = DocumentUpload.new
-    @document_upload.collection=@collection
+    @document_upload.collection = @collection
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
   end
@@ -20,13 +21,13 @@ module AddWorkHelper
     if @document_upload.save
       if SMTP_ENABLED
         begin
-          flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
+          flash[:info] = t('dashboard.new_upload.document_uploaded', email: @document_upload.user.email)
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+          flash[:info] = t('dashboard.new_upload.reload_this_page')
         end
       else
-        flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+        flash[:info] = t('dashboard.new_upload.reload_this_page')
       end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
@@ -48,15 +49,16 @@ module AddWorkHelper
     @collections = current_user.all_owner_collections
 
     if @work.save
-      flash[:notice] = t('work_created', scope: [:dashboard, :create_work])
+      flash[:notice] = t('dashboard.create_work.work_created')
       record_deed
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
+      ajax_redirect_to(work_pages_tab_path(work_id: @work.id, anchor: 'create-page'))
     else
       render action: 'empty_work'
     end
   end
 
   protected
+
   def record_deed
     deed = Deed.new
     deed.work = @work

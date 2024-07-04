@@ -1,4 +1,5 @@
 class WorkSearch < FortyFacets::FacetSearch
+
   model 'WorkFacet'
 
   facet :s0, name: 'Text 0'
@@ -17,4 +18,5 @@ class WorkSearch < FortyFacets::FacetSearch
   range :d2, name: 'Date 2'
 
   facet [:work, :collection_id]
+
 end

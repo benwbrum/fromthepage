@@ -4,10 +4,10 @@ FactoryBot.define do
     page_version { nil }
     article_version { nil }
     note { nil }
-    provenance { "MyString" }
-    status { "MyString" }
-    snippet { "MyText" }
-    comment { "MyText" }
+    provenance { 'MyString' }
+    status { 'MyString' }
+    snippet { 'MyText' }
+    comment { 'MyText' }
     reporter_user { nil }
     auditor_user { nil }
   end

@@ -1,4 +1,5 @@
 class CreateSearchAttempts < ActiveRecord::Migration[5.0]
+
   def change
     create_table :search_attempts do |t|
       t.timestamps
@@ -12,4 +13,5 @@ class CreateSearchAttempts < ActiveRecord::Migration[5.0]
       t.boolean :owner, default: false
     end
   end
+
 end

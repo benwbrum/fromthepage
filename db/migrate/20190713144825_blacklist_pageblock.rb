@@ -1,4 +1,5 @@
 class BlacklistPageblock < ActiveRecord::Migration[5.0]
+
   BLACKLIST = [
     'href',
     '.info',
@@ -9,12 +10,13 @@ class BlacklistPageblock < ActiveRecord::Migration[5.0]
   ]
 
   def change
-    PageBlock.where(:controller => 'admin', :view => 'flag_blacklist').delete_all
-  	pb = PageBlock.new
+    PageBlock.where(controller: 'admin', view: 'flag_blacklist').delete_all
+    pb = PageBlock.new
     pb.view = 'flag_blacklist'
     pb.controller = 'admin'
     pb.html = BLACKLIST.join("\n")
 
     pb.save!
   end
+
 end

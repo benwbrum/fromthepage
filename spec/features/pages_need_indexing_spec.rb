@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "Pages need indexing" do
+describe 'Pages need indexing' do
   INDEXING_BUTTON_TEXT = 'Pages That Need Indexing'
 
-  scenario "when a collection has indexing disabled" do
+  scenario 'when a collection has indexing disabled' do
     collection = create(:collection, :with_pages, subjects_disabled: true)
 
     visit "/#{collection.owner.login}/#{collection.slug}"
@@ -19,7 +19,7 @@ describe "Pages need indexing" do
     User.destroy(user_id)
   end
 
-  scenario "when a collection has indexing enabled" do
+  scenario 'when a collection has indexing enabled' do
     collection = create(:collection, :with_pages, subjects_disabled: false)
 
     visit "/#{collection.owner.login}/#{collection.slug}"

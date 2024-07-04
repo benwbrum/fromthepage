@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "display marked as blank" do
+describe 'display marked as blank' do
   let(:deed_type) { DeedType::PAGE_MARKED_BLANK }
 
   it 'shows pages marked blank in main Activity Feed page' do
@@ -10,12 +10,12 @@ describe "display marked as blank" do
     work = create(:work, owner_user_id: user.id, collection_id: collection.id)
     page1 = create(:page, work_id: work.id)
     deed = create(:deed, {
-      deed_type: deed_type,
+      deed_type:,
       page_id: page1.id,
       work_id: work.id,
       collection_id: collection.id,
       user_id: user.id
-      })
+    })
 
     # Visit page
     visit 'deed/listing'
@@ -36,12 +36,12 @@ describe "display marked as blank" do
     work = create(:work, owner_user_id: user.id, collection_id: collection.id)
     page1 = create(:page, work_id: work.id)
     deed = create(:deed, {
-      deed_type: deed_type,
+      deed_type:,
       page_id: page1.id,
       work_id: work.id,
       collection_id: collection.id,
       user_id: user.id
-      })
+    })
 
     # Visit page
     visit 'collections'
@@ -62,12 +62,12 @@ describe "display marked as blank" do
     work = create(:work, owner_user_id: user.id, collection_id: collection.id)
     page1 = create(:page, work_id: work.id)
     deed = create(:deed, {
-      deed_type: deed_type,
+      deed_type:,
       page_id: page1.id,
       work_id: work.id,
       collection_id: collection.id,
       user_id: user.id
-      })
+    })
 
     # Visit page
     visit "#{user.login}/#{collection.slug}"

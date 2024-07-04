@@ -6,26 +6,25 @@ pt:
     collection_inactive: Coleção inativa
     collection_joined: Coleção associada
     deed:
-      html:
-        added_a_note_to_page: adicionou uma nota à página %{page}
-        added_work: adicionou %{work}
-        corrected_page: corrigiu a página %{page}
-        edited_article: editou o %{article} artigo
-        edited_page: editou a página %{page}
-        edited_translation_of_page: editou a tradução da página %{page}
-        in_collection: " na %{collection} coleção"
-        in_the_work: " na obra %{work}"
-        indexed_page: indexou a página %{page}
-        indexed_translation_of_page: indexou a tradução da página %{page}
-        joined: 'se juntou '
-        marked_page_as_blank: marcou a página %{page} como em branco
-        marked_page_as_needing_review: marcou a página %{page} como precisando de revisão
-        marked_translation_page_as_needing_review: marcou a página de tradução %{page} como precisando de revisão
-        reviewed_page: 'página revisada %{page} '
-        reviewed_translation: tradução revisada da página %{page}
-        saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
-        transcribed_page: transcreveu a página %{page}
-        translated_page: traduziu a página %{page}
+      added_a_note_to_page: adicionou uma nota à página %{page}
+      added_work: adicionou %{work}
+      corrected_page: corrigiu a página %{page}
+      edited_article: editou o %{article} artigo
+      edited_page: editou a página %{page}
+      edited_translation_of_page: editou a tradução da página %{page}
+      in_collection: " na %{collection} coleção"
+      in_the_work: " na obra %{work}"
+      indexed_page: indexou a página %{page}
+      indexed_translation_of_page: indexou a tradução da página %{page}
+      joined: 'se juntou '
+      marked_page_as_blank: marcou a página %{page} como em branco
+      marked_page_as_needing_review: marcou a página %{page} como precisando de revisão
+      marked_translation_page_as_needing_review: marcou a página de tradução %{page} como precisando de revisão
+      reviewed_page: 'página revisada %{page} '
+      reviewed_translation: tradução revisada da página %{page}
+      saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
+      transcribed_page: transcreveu a página %{page}
+      translated_page: traduziu a página %{page}
       this_collection: esta coleção
     deeds:
       show_more: Mostrar Mais

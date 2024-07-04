@@ -1,4 +1,23 @@
 class SearchAttemptController < ApplicationController
+
+  def show
+    @search_attempt = SearchAttempt.find_by(slug: params[:id])
+
+    if @search_attempt.nil?
+      flash[:error] = t('search_attempt.not_found')
+      redirect_to landing_page_path
+    else
+      session[:search_attempt_id] = @search_attempt.id if session[:search_attempt_id] != @search_attempt.id
+
+      # Get matching Collections and Docsets
+      @search_results = @search_attempt.results
+      # Get user_ids from the resulting search
+      search_user_ids = User.search(@search_attempt.query).pluck(:id) + @search_results.map(&:owner_user_id)
+      # Get matching users and users from Collections and DocSets search
+      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
+    end
+  end
+
   def create
     owner = current_user.nil? ? false : current_user.owner
     query = params[:search]
@@ -34,26 +53,6 @@ class SearchAttemptController < ApplicationController
     ajax_redirect_to(@search_attempt.results_link)
   end
 
-  def show
-    @search_attempt = SearchAttempt.find_by(slug: params[:id])
-
-    unless @search_attempt.nil?
-      if session[:search_attempt_id] != @search_attempt.id
-        session[:search_attempt_id] = @search_attempt.id
-      end
-
-      # Get matching Collections and Docsets
-      @search_results = @search_attempt.results
-      # Get user_ids from the resulting search
-      search_user_ids = User.search(@search_attempt.query).pluck(:id) + @search_results.map(&:owner_user_id)
-      # Get matching users and users from Collections and DocSets search
-      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
-    else
-      flash[:error] = "Search attempt not found"
-      redirect_to landing_page_path
-    end
-  end
-
   # Called from any search result link by ajax
   def click
     if session[:search_attempt_id].present?
@@ -61,6 +60,7 @@ class SearchAttemptController < ApplicationController
       search_attempt.increment!(:clicks)
     end
 
-    return head :ok
+    head :ok
   end
+
 end

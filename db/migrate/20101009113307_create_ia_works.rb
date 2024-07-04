@@ -1,10 +1,11 @@
 class CreateIaWorks < ActiveRecord::Migration[5.0]
+
   def self.up
     create_table :ia_works do |t|
       # known beforehand
       t.string :detail_url
       t.integer :user_id
-      t.integer :work_id #foreign key to FromThePage works
+      t.integer :work_id # foreign key to FromThePage works
 
       t.string :server
       t.string :ia_path
@@ -24,7 +25,6 @@ class CreateIaWorks < ActiveRecord::Migration[5.0]
       # derived from other fiels
       t.integer :title_leaf
 
-
       t.timestamps
     end
   end
@@ -32,4 +32,5 @@ class CreateIaWorks < ActiveRecord::Migration[5.0]
   def self.down
     drop_table :ia_works
   end
+
 end

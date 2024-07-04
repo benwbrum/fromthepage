@@ -1,4 +1,5 @@
 class CreateTableCells < ActiveRecord::Migration[5.0]
+
   def change
     create_table :table_cells do |t|
       t.references :work, index: true
@@ -11,4 +12,5 @@ class CreateTableCells < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

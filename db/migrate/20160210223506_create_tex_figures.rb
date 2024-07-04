@@ -1,4 +1,5 @@
 class CreateTexFigures < ActiveRecord::Migration[5.0]
+
   def change
     create_table :tex_figures do |t|
       t.references :page, index: true
@@ -8,4 +9,5 @@ class CreateTexFigures < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

@@ -1,0 +1,93 @@
+Style/RedundantInitialize:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
+
+Style/EndlessMethod:
+  EnforcedStyle: disallow
+
+Style/Documentation:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+Style/FloatDivision:
+  EnforcedStyle: fdiv
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
+  SingleLineConditionsOnly: false
+  IncludeTernaryExpressions: false
+
+Style/DateTime:
+  Enabled: true
+
+# End Accepted
+
+# TODO
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/OpenStructUse:
+  Enabled: false
+
+Style/SingleArgumentDig:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/CaseLikeIf:
+  Enabled: false
+
+Style/HashExcept:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+  EnforcedStyle: compact
+
+Style/RedundantSort:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false

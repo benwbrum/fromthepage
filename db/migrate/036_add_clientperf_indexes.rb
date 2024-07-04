@@ -1,5 +1,5 @@
-
 class AddClientperfIndexes < ActiveRecord::Migration[5.0]
+
   def self.up
     add_index :clientperf_uris, :uri
     add_index :clientperf_results, :clientperf_uri_id
@@ -9,4 +9,5 @@ class AddClientperfIndexes < ActiveRecord::Migration[5.0]
     remove_index :clientperf_uris, :uri
     remove_index :clientperf_results, :clientperf_uri_id
   end
+
 end

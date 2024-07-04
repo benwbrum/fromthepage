@@ -15,5 +15,5 @@
 #
 #  ahoy_activity_day_user_collection  (date,collection_id,user_id,activity) UNIQUE
 #
-class AhoyActivitySummary < ActiveRecord::Base
+class AhoyActivitySummary < ApplicationRecord
 end

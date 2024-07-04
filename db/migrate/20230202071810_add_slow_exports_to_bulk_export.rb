@@ -1,4 +1,5 @@
 class AddSlowExportsToBulkExport < ActiveRecord::Migration[6.0]
+
   def change
     # there is no place to add this to the export UI
     add_column :bulk_exports, :owner_mailing_list, :boolean
@@ -9,4 +10,5 @@ class AddSlowExportsToBulkExport < ActiveRecord::Migration[6.0]
     # arguments (currently start date/end date in contributors tab)
     add_column :bulk_exports, :report_arguments, :string
   end
+
 end

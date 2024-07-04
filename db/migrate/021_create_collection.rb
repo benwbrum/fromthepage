@@ -1,8 +1,9 @@
 class CreateCollection < ActiveRecord::Migration[5.0]
+
   def self.up
     # collection table
     create_table :collections do |t|
-      t.column :title, :string, :limit => 255
+      t.column :title, :string, limit: 255
       t.column :owner_user_id, :integer
       t.column :created_on, :datetime
     end
@@ -20,4 +21,5 @@ class CreateCollection < ActiveRecord::Migration[5.0]
     # article fk
     remove_column :articles, :collection_id
   end
+
 end

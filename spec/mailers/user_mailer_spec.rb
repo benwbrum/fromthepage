@@ -2,8 +2,7 @@ require 'spec_helper'
 
 RSpec.describe UserMailer, type: :mailer do
   describe 'nightly_user_activity' do
-
-    context "inside the mailer email" do
+    context 'inside the mailer email' do
       it 'renders the subject' do
         user = build_stubbed(:user)
         user_activity = UserMailer::Activity.build(user)
@@ -44,14 +43,13 @@ RSpec.describe UserMailer, type: :mailer do
       end
 
       it 'displays New Works in email' do
-        new_works_heading = "New Works"
+        new_works_heading = 'New Works'
         user = create(:user)
         collection = create(:collection, owner_user_id: user.id)
         work = create(:work, collection_id: collection.id, owner_user_id: user.id)
 
         user_activity = UserMailer::Activity.build(user)
-        allow(user_activity).to receive(:has_contributions?).and_return(true)
-        allow(user_activity).to receive(:added_works).and_return([work])
+        allow(user_activity).to receive_messages(has_contributions?: true, added_works: [work])
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
@@ -63,16 +61,16 @@ RSpec.describe UserMailer, type: :mailer do
         collection.destroy
         user.destroy
       end
+
       it 'displays New Notes in email' do
-        new_notes_heading = "New Notes"
+        new_notes_heading = 'New Notes'
         user = create(:user)
         collection = create(:collection, owner_user_id: user.id)
         work = create(:work, collection_id: collection.id)
         page = create(:page, work_id: work.id)
 
         user_activity = UserMailer::Activity.build(user)
-        allow(user_activity).to receive(:has_contributions?).and_return(true)
-        allow(user_activity).to receive(:active_note_pages).and_return([page])
+        allow(user_activity).to receive_messages(has_contributions?: true, active_note_pages: [page])
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 

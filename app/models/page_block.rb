@@ -16,5 +16,7 @@
 #  index_page_blocks_on_controller_and_view  (controller,view)
 #
 class PageBlock < ApplicationRecord
+
   attr_accessor :rendered_html
+
 end

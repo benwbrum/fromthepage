@@ -14,9 +14,9 @@ default: &default
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
   pool: 5
-  username: root
-  password:
-  socket: /var/run/mysqld/mysqld.sock
+  username: <%= ENV.fetch("DATABASE_USERNAME") { 'root' } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { nil } %>
+  socket: <%= ENV.fetch("DATABASE_SOCKET") { '/var/run/mysqld/mysqld.sock' } %>
   strict: false
   variables:
     sql_mode: TRADITIONAL
@@ -24,8 +24,8 @@ default: &default
 
 development:
   <<: *default
-  username: rails
-  password: rails
+  username: <%= ENV.fetch("DEVELOPMENT_DATABASE_USERNAME") { 'rails' } %>
+  password: <%= ENV.fetch("DEVELOPMENT_DATABASE_PASSWORD") { 'rails' } %>
   database: diary_development
 
 # Warning: The database defined as "test" will be erased and

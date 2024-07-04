@@ -1,4 +1,5 @@
 class CreateDocumentSets < ActiveRecord::Migration[5.0]
+
   def change
     create_table :document_sets do |t|
       t.boolean :is_public
@@ -11,4 +12,5 @@ class CreateDocumentSets < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

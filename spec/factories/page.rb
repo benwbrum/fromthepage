@@ -4,14 +4,14 @@ FactoryBot.define do
     sequence(:position) { |n| n }
 
     trait :with_links do
-      page_article_links { build_stubbed_list :page_article_link, 2 }
+      page_article_links { build_stubbed_list(:page_article_link, 2) }
     end
 
     trait :transcribed do
       status { Page::STATUS_TRANSCRIBED }
     end
-    factory :transcribed_page, :traits => [:transcribed]
-    factory :page_with_links, :traits => [:with_links]
+    factory :transcribed_page, traits: [:transcribed]
+    factory :page_with_links, traits: [:with_links]
   end
 end
 

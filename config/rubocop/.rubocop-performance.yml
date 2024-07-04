@@ -1,0 +1,20 @@
+Performance/Count:
+  Enabled: false
+
+Performance/Detect:
+  Enabled: false
+
+Performance/MapCompact:
+  Enabled: false
+
+Performance/TimesMap:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false
+
+Performance/RedundantEqualityComparisonBlock:
+  Enabled: false
+
+Performance/CollectionLiteralInLoop:
+  Enabled: false

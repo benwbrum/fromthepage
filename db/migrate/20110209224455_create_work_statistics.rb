@@ -1,4 +1,5 @@
 class CreateWorkStatistics < ActiveRecord::Migration[5.0]
+
   def self.up
     create_table :work_statistics do |t|
       t.integer     :work_id
@@ -21,4 +22,5 @@ class CreateWorkStatistics < ActiveRecord::Migration[5.0]
   def self.down
     drop_table :work_statistics
   end
+
 end

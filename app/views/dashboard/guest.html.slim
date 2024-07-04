@@ -7,7 +7,7 @@
       -snippet = to_snippet(c.intro_block)
       -unless snippet.empty?
         p.collection_snippet =snippet
-        br 
+        br
       -c.deeds.includes(:user, :page, :work).limit(5).each do |d|
         //- Hide collection link
         -d.collection = nil
@@ -17,4 +17,4 @@
           .user-bubble_content
             =time_tag d.created_at
               =time_ago_in_words d.created_at
-            p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+            p =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true })

@@ -1,4 +1,5 @@
 class CreateMetadataCoverages < ActiveRecord::Migration[5.0]
+
   def change
     create_table :metadata_coverages do |t|
       t.string :key
@@ -8,4 +9,5 @@ class CreateMetadataCoverages < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

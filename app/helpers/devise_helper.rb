@@ -23,22 +23,22 @@ module DeviseHelper
 
     return '' if resource.errors.empty? && flash_alerts.empty?
 
-    errors = if resource.errors.empty?
-               flash_alerts
-             else
-               resource.errors.messages.map do |key, msg|
-                 if key == :reset_password_token
-                   I18n.t('devise.errors.messages.reset_password.invalid_token')
-                 else
-                   "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}"
-                 end
-               end
-             end
+    if resource.errors.empty?
+      errors = flash_alerts
+    else
+      errors = resource.errors.messages.map do |key, msg|
+        if key == :reset_password_token
+          I18n.t('devise.errors.messages.reset_password.invalid_token')
+        else
+          "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}"
+        end
+      end
+    end
 
     messages = errors.map { |msg| content_tag(:li, msg) }.join
 
     if error_key
-      sentence = I18n.t(error_key, :count => errors.count, :resource => resource.class.model_name.human.downcase)
+      sentence = I18n.t(error_key, count: errors.count, resource: resource.class.model_name.human.downcase)
       html = <<-HTML
       <div class="validation">
         <h5 class="validation_title">#{sentence}</h5>

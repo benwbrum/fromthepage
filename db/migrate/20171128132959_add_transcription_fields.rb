@@ -1,4 +1,5 @@
 class AddTranscriptionFields < ActiveRecord::Migration[5.0]
+
   def change
     add_column :collections, :field_based, :boolean, default: false
 
@@ -11,4 +12,5 @@ class AddTranscriptionFields < ActiveRecord::Migration[5.0]
       t.column :position, :integer
     end
   end
+
 end

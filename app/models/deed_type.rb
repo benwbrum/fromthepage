@@ -2,6 +2,7 @@
 # be a transcription, translation, page edit, etc.
 
 class DeedType
+
   # These constants are called individually in several parts of the app for
   # specific deed types. Their values are stored as identifiers in the deeds.deed_type
   # table field. Ex: deed.deed_type = 'page_trans' Changing these values will
@@ -22,7 +23,7 @@ class DeedType
   COLLECTION_ACTIVE = 'coll_act'
   COLLECTION_INACTIVE = 'coll_inact'
   COLLECTION_JOINED = 'coll_join'
-  PAGE_REVIEWED = "pg_revd"
+  PAGE_REVIEWED = 'pg_revd'
   TRANSLATION_REVIEWED = 'xlat_revd'
   DESCRIBED_METADATA = 'md_desc'
   EDITED_METADATA = 'md_edit'
@@ -64,6 +65,7 @@ class DeedType
   # This `class << self` inherited group replaces the need to call `self.` on
   # all of the class methods inside. Ex: `def all_types` vs `def self.all_types`
   class << self
+
     def all_types
       TYPES.keys
     end
@@ -162,7 +164,9 @@ class DeedType
     end
 
     def generate_zero_counts_hash
-      DeedType::TYPES.each_with_object({}) { |(k, v), returned_hash| returned_hash[k] = 0 }
+      DeedType::TYPES.each_with_object({}) { |(k, _v), returned_hash| returned_hash[k] = 0 }
     end
+
   end
+
 end

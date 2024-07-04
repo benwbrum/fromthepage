@@ -1,15 +1,16 @@
 module TextNormalizer
+
   def self.normalize_text(raw_text)
     client = OpenAI::Client.new
     prompt = normalize_prompt(raw_text)
     response = client.chat(
       parameters: {
-        model: "gpt-3.5-turbo-16k",
+        model: 'gpt-3.5-turbo-16k',
         messages: [
-          {role: "system", content: "You are a scholarly editor who is preparing historical documents for publication."},
-          {role: "user", content: prompt}
+          { role: 'system', content: 'You are a scholarly editor who is preparing historical documents for publication.' },
+          { role: 'user', content: prompt }
         ],
-        max_tokens: 10000,
+        max_tokens: 10_000,
         n: 1,
         temperature: 0.0,
         top_p: 1.0,
@@ -19,7 +20,7 @@ module TextNormalizer
     )
     print prompt
     print "\n"
-    if response['choices'].nil? || response['choices'].empty? || response['choices'].first['message'].nil?
+    if response['choices'].blank? || response['choices'].first['message'].nil?
       print "\nERROR  Response from OpenAI was not actionable:\n"
       pp response
       return []
@@ -27,22 +28,15 @@ module TextNormalizer
 
     text = response['choices'].first['message']['content']
 
-
     print text
     print "\n\n\n"
     text.sub(/\ATEXT\s/m, '')
   end
 
-
-
-private
-
   def self.normalize_prompt(raw_text)
-    @@normalize_prompt ||= File.read(File.join(Rails.root, 'lib', 'openai', 'normalizer_prompt.txt'))
+    @@normalize_prompt ||= Rails.root.join('lib', 'openai', 'normalizer_prompt.txt').read
 
-    prompt = @@normalize_prompt.gsub("{{text}}", raw_text) 
-
-    prompt
+    @@normalize_prompt.gsub('{{text}}', raw_text)
   end
 
 end

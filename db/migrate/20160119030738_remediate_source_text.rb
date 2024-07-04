@@ -1,8 +1,10 @@
 class RemediateSourceText < ActiveRecord::Migration[5.0]
+
   def change
     pages = Page.where("source_text LIKE '%</link>%'")
     pages.each do |page|
-      page.update_column(:source_text, page.source_text.gsub(/\<link target_title="(..+?)">(.+?)<\/link>/, "[[\\1|\\2]]")) 
+      page.update_column(:source_text, page.source_text.gsub(%r{<link target_title="(..+?)">(.+?)</link>}, '[[\\1|\\2]]'))
     end
   end
+
 end

@@ -1,33 +1,35 @@
 # handles administrative tasks for the work object
 class WorkController < ApplicationController
+
   # require 'ftools'
   include XmlSourceProcessor
 
-  protect_from_forgery :except => [:set_work_title,
-                                   :set_work_description,
-                                   :set_work_physical_description,
-                                   :set_work_document_history,
-                                   :set_work_permission_description,
-                                   :set_work_location_of_composition,
-                                   :set_work_author,
-                                   :set_work_transcription_conventions]
+  protect_from_forgery except: [
+    :set_work_title,
+    :set_work_description,
+    :set_work_physical_description,
+    :set_work_document_history,
+    :set_work_permission_description,
+    :set_work_location_of_composition,
+    :set_work_author,
+    :set_work_transcription_conventions
+  ]
   # tested
-  before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
+  before_action :authorized?, only: [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :configurable_printout]
+  layout proc { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout]
 
   def authorized?
-    if !user_signed_in? || !current_user.owner
-      ajax_redirect_to dashboard_path
-    elsif @work && !current_user.like_owner?(@work)
-      ajax_redirect_to dashboard_path
-    end
+    return false unless (!user_signed_in? || !current_user.owner) || (@work && !current_user.like_owner?(@work))
+
+    ajax_redirect_to dashboard_path
   end
 
   def metadata_overview_monitor
     @is_monitor_view = true
-    render :template => "transcribe/monitor_view"
+
+    render template: 'transcribe/monitor_view'
   end
 
   def configurable_printout
@@ -39,7 +41,6 @@ class WorkController < ApplicationController
     @bulk_export.report_arguments['include_metadata'] = true
     @bulk_export.report_arguments['preserve_linebreaks'] = false
   end
-
 
   def describe
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
@@ -60,26 +61,19 @@ class WorkController < ApplicationController
       @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
     elsif (params['save_to_transcribed'] && !needs_review_checkbox_checked) || params['approve_to_transcribed']
       @work.description_status = Work::DescriptionStatus::DESCRIBED
-    else
-      # unexpected state
     end
 
-
-
     if @work.save
-      # TODO record_description_deed(@work)
+      # TODO: record_description_deed(@work)
       if @work.saved_change_to_description_status?
         record_deed(@work, DeedType::DESCRIBED_METADATA, current_user)
       else
         record_deed(@work, DeedType::EDITED_METADATA, current_user)
       end
 
-      flash[:notice] = t('.work_described')
-      render :describe
-    else
-      render :describe
+      flash.now[:notice] = t('.work_described')
     end
-
+    render :describe
   end
 
   def description_versions
@@ -87,25 +81,21 @@ class WorkController < ApplicationController
     # @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
     selected_version_id = params[:metadata_description_version_id]
     if selected_version_id
-      @selected_version= MetadataDescriptionVersion.find(selected_version_id)
+      @selected_version = MetadataDescriptionVersion.find(selected_version_id)
     else
-      @selected_version= @work.metadata_description_versions.first
+      @selected_version = @work.metadata_description_versions.first
     end
     # NB: Unlike in page versions (which are created when we first create the page), metadata description versions may be nil
     compare_version_id = params[:compare_version_id]
     if compare_version_id
       @previous_version = MetadataDescriptionVersion.find(compare_version_id)
+    elsif @selected_version.version_number > 1
+      @previous_version = @work.metadata_description_versions.second
     else
-      if @selected_version.version_number > 1
-        @previous_version = @work.metadata_description_versions.second
-      else
-        @previous_version = @selected_version
-      end
+      @previous_version = @selected_version
     end
     # again, both may be blank here
   end
-
-
 
   def delete
     @work.destroy
@@ -122,31 +112,32 @@ class WorkController < ApplicationController
     @nonscribes = User.all - @scribes
     @collections = current_user.collections
     # set subjects to true if there are any articles/page_article_links
-    @subjects = !@work.articles.blank?
+    @subjects = @work.articles.present?
+  end
+
+  def pages_tab
   end
 
   def add_scribe
     @work.scribes << @user
-    if @user.notification.add_as_collaborator
-      if SMTP_ENABLED
-        begin
-          UserMailer.work_collaborator(@user, @work).deliver!
-        rescue StandardError => e
-          print "SMTP Failed: Exception: #{e.message}"
-        end
+    if @user.notification.add_as_collaborator && SMTP_ENABLED
+      begin
+        UserMailer.work_collaborator(@user, @work).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
       end
     end
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to action: 'edit', work_id: @work.id
   end
 
   def remove_scribe
     @work.scribes.delete(@user)
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to action: 'edit', work_id: @work.id
   end
 
   def update_work
     @work.update(work_params)
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to action: 'edit', work_id: @work.id
   end
 
   # tested
@@ -161,7 +152,7 @@ class WorkController < ApplicationController
     if @work.save
       record_deed(@work, DeedType::WORK_ADDED, work.owner)
       flash[:notice] = t('.work_created')
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
+      ajax_redirect_to(work_pages_tab_path(work_id: @work.id, anchor: 'create-page'))
     else
       render :new
     end
@@ -171,8 +162,8 @@ class WorkController < ApplicationController
     @work = Work.find(params[:id].to_i)
     id = @work.collection_id
     @collection = @work.collection if @collection.nil?
-    #check the work transcription convention against the collection version
-    #if they're the same, don't update that attribute of the work
+    # check the work transcription convention against the collection version
+    # if they're the same, don't update that attribute of the work
     params_convention = params[:work][:transcription_conventions]
     collection_convention = @work.collection.transcription_conventions
 
@@ -182,57 +173,49 @@ class WorkController < ApplicationController
       @work.attributes = work_params
     end
 
-    #if the slug field param is blank, set slug to original candidate
-    if work_params[:slug].blank?
-      @work.slug = @work.title.parameterize
-    end
+    # if the slug field param is blank, set slug to original candidate
+    @work.slug = @work.title.parameterize if work_params[:slug].blank?
 
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
         flash[:notice] = t('.work_updated')
-        #find new collection to properly redirect
+        # find new collection to properly redirect
         col = Collection.find_by(id: @work.collection_id)
         redirect_to edit_collection_work_path(col.owner, col, @work)
       else
         @scribes = @work.scribes
         @nonscribes = User.all - @scribes
         @collections = current_user.collections
-        #set subjects to true if there are any articles/page_article_links
-        @subjects = !@work.articles.blank?
+        # set subjects to true if there are any articles/page_article_links
+        @subjects = @work.articles.present?
         render :edit
       end
+    elsif @work.save
+      flash[:notice] = t('.work_updated')
+      redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
     else
-      if @work.save
-        flash[:notice] = t('.work_updated')
-        redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
-      else
-        @scribes = @work.scribes
-        @nonscribes = User.all - @scribes
-        @collections = current_user.collections
-        #set subjects to true if there are any articles/page_article_links
-        @subjects = !@work.articles.blank?
-        render :edit
-      end
+      @scribes = @work.scribes
+      @nonscribes = User.all - @scribes
+      @collections = current_user.collections
+      # set subjects to true if there are any articles/page_article_links
+      @subjects = @work.articles.present?
+      render :edit
     end
   end
 
   def change_collection(work)
     record_deed(work, DeedType::WORK_ADDED, work.owner)
-    unless work.articles.blank?
-      #delete page_article_links for this work
+    if work.articles.present?
+      # delete page_article_links for this work
       page_ids = work.pages.ids
       links = PageArticleLink.where(page_id: page_ids)
       links.destroy_all
 
-      #remove links from pages in this work
+      # remove links from pages in this work
       work.pages.each do |p|
-        unless p.source_text.nil?
-          p.remove_transcription_links(p.source_text)
-        end
-        unless p.source_translation.nil?
-          p.remove_translation_links(p.source_translation)
-        end
+        p.remove_transcription_links(p.source_text) unless p.source_text.nil?
+        p.remove_translation_links(p.source_translation) unless p.source_translation.nil?
       end
       work.save!
     end
@@ -242,7 +225,7 @@ class WorkController < ApplicationController
   def revert
     work = Work.find_by(id: params[:work_id])
     work.update_attribute(:transcription_conventions, nil)
-    render :plain => work.collection.transcription_conventions
+    render plain: work.collection.transcription_conventions
   end
 
   def update_featured_page
@@ -253,7 +236,7 @@ class WorkController < ApplicationController
   def document_sets_select
     document_sets = current_user.document_sets.where(collection_id: params[:collection_id])
 
-    render partial: 'document_sets_select', locals: { document_sets: document_sets }
+    render partial: 'document_sets_select', locals: { document_sets: }
   end
 
   protected
@@ -301,4 +284,5 @@ class WorkController < ApplicationController
       document_set_ids: []
     )
   end
+
 end

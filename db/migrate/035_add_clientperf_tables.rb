@@ -1,5 +1,5 @@
-
 class AddClientperfTables < ActiveRecord::Migration[5.0]
+
   def self.up
     create_table :clientperf_uris do |t|
       t.string :uri
@@ -17,4 +17,5 @@ class AddClientperfTables < ActiveRecord::Migration[5.0]
     drop_table :clientperf_uris
     drop_table :clientperf_results
   end
+
 end

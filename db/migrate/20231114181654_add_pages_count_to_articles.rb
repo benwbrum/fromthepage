@@ -1,4 +1,5 @@
 class AddPagesCountToArticles < ActiveRecord::Migration[6.0]
+
   def up
     add_column :articles, :pages_count, :integer, default: 0
 
@@ -12,4 +13,5 @@ class AddPagesCountToArticles < ActiveRecord::Migration[6.0]
   def down
     remove_column :articles, :pages_count
   end
+
 end

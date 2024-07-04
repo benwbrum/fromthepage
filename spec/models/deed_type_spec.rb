@@ -25,7 +25,7 @@ RSpec.describe DeedType, type: :model do
     it 'returns an array of machine-readable type names' do
       type = DeedType::PAGE_TRANSCRIPTION
       expect(DeedType.contributor_types).to include(type)
-      expect(DeedType.contributor_types).to be_a_kind_of(Array)
+      expect(DeedType.contributor_types).to be_a(Array)
     end
 
     it 'excludes the "Work Added" type' do

@@ -1,4 +1,5 @@
 class UpdateEditorButtonKey < ActiveRecord::Migration[6.0]
+
   def up
     EditorButton.where(key: 's').update_all(key: 'strike')
   end
@@ -6,4 +7,5 @@ class UpdateEditorButtonKey < ActiveRecord::Migration[6.0]
   def down
     EditorButton.where(key: 'strike').update_all(key: 's')
   end
+
 end

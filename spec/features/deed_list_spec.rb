@@ -1,8 +1,6 @@
-
 require 'spec_helper'
 
-describe "collection settings js tasks", :order => :defined do
-
+describe 'collection settings js tasks', order: :defined do
   # it "Deed view displays public deeds" do
   #   visit collections_list_path
   #   page.click_link("Show More")
@@ -10,14 +8,14 @@ describe "collection settings js tasks", :order => :defined do
   # end
   # it "Deed view hides deeds for private collections" do
   #   visit collections_list_path
-    
+
   #   csp = Collection.find(1)
   #   csp.restricted = true
   #   csp.save
 
   #   page.click_link("Show More")
   #   expect(page).to_not have_content("eleanor transcribed 2 in MS_641-642 in CS Pierce")
-    
+
   #   # We need to enable transactional fixtures so we don't have to reset this stuff all the time
   #   csp.restricted = false
   #   csp.save
@@ -25,19 +23,18 @@ describe "collection settings js tasks", :order => :defined do
   # it "Deed view shows deeds to private collections to owners" do
   #   owner = User.find_by(login: OWNER)
   #   login_as(owner, :scope => :user)
-    
+
   #   visit collections_list_path
-    
+
   #   csp = Collection.find(1)
   #   csp.restricted = true
   #   csp.save
 
   #   page.click_link("Show More")
   #   expect(page).to have_content("eleanor transcribed 2 in MS_641-642 in CS Pierce")
-    
+
   #   # We need to enable transactional fixtures so we don't have to reset this stuff all the time
   #   csp.restricted = false
   #   csp.save
   # end
-
 end

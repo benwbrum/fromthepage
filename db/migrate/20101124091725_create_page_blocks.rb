@@ -1,4 +1,5 @@
 class CreatePageBlocks < ActiveRecord::Migration[5.0]
+
   def self.up
     create_table :page_blocks do |t|
       t.string  :controller
@@ -22,90 +23,89 @@ class CreatePageBlocks < ActiveRecord::Migration[5.0]
   # display blocks on each screen
   # if the user is an admin, add an edit help link to the display
   def self.populate
-    make_block "account", "login", "Account Login Help", "right", ACCOUNT_LOGIN
-    make_block "account", "signup", "Account Sign-up Help", "right", ACCOUNT_SIGNUP
+    make_block 'account', 'login', 'Account Login Help', 'right', ACCOUNT_LOGIN
+    make_block 'account', 'signup', 'Account Sign-up Help', 'right', ACCOUNT_SIGNUP
 
-    make_block "admin", "edit_user", "Admin Edit User Help"
-    make_block "admin", "error_list", "Admin Error List Help", "top"
-    make_block "admin", "interaction_list", "Admin Interaction List Help", "top"
-    make_block "admin", "session_list", "Admin Session List Help", "top"
-    make_block "admin", "tail_logfile", "Admin Tail Logfile Help", "top"
+    make_block 'admin', 'edit_user', 'Admin Edit User Help'
+    make_block 'admin', 'error_list', 'Admin Error List Help', 'top'
+    make_block 'admin', 'interaction_list', 'Admin Interaction List Help', 'top'
+    make_block 'admin', 'session_list', 'Admin Session List Help', 'top'
+    make_block 'admin', 'tail_logfile', 'Admin Tail Logfile Help', 'top'
 
-    make_block "article", "edit", "Article Edit Help"
-    make_block "article", "graph", "Article Graph Help"
-    make_block "article", "list", "Article List Help"
-    make_block "article", "show", "Article Display Help"
+    make_block 'article', 'edit', 'Article Edit Help'
+    make_block 'article', 'graph', 'Article Graph Help'
+    make_block 'article', 'list', 'Article List Help'
+    make_block 'article', 'show', 'Article Display Help'
 
-    make_block "article_version", "show", "Article Version Display Help"
-    make_block "article_version", "list", "Article Version List Help"
+    make_block 'article_version', 'show', 'Article Version Display Help'
+    make_block 'article_version', 'list', 'Article Version List Help'
 
-    make_block "category", "manage", "Category Management Help"
+    make_block 'category', 'manage', 'Category Management Help'
 
-    make_block "collection", "edit", "Collection Editing Help"
-    make_block "collection", "new", "Collection Creation Help"
-    make_block "collection", "show", "Collection Viewing Help"
+    make_block 'collection', 'edit', 'Collection Editing Help'
+    make_block 'collection', 'new', 'Collection Creation Help'
+    make_block 'collection', 'show', 'Collection Viewing Help'
 
-    make_block "dashboard", "main_dashboard", "Dashboard Help (Left Side)", "left"
-    make_block "dashboard", "main_dashboard", "Dashboard Help (Right Side)"
+    make_block 'dashboard', 'main_dashboard', 'Dashboard Help (Left Side)', 'left'
+    make_block 'dashboard', 'main_dashboard', 'Dashboard Help (Right Side)'
 
-    make_block "deed", "list", "Deed (User Activity) List Help"
+    make_block 'deed', 'list', 'Deed (User Activity) List Help'
 
-    make_block "display", "display_page", "Single Page Reading Help (Left Side)", "left"
-    make_block "display", "display_page", "Single Page Reading Help (Right Side)"
-    make_block "display", "list_pages", "Work Table of Contents Help"
-    make_block "display", "search", "Search Help"
+    make_block 'display', 'display_page', 'Single Page Reading Help (Left Side)', 'left'
+    make_block 'display', 'display_page', 'Single Page Reading Help (Right Side)'
+    make_block 'display', 'list_pages', 'Work Table of Contents Help'
+    make_block 'display', 'search', 'Search Help'
 
-    make_block "ia", "import_work", "Internet Archive Import Book Help"
-    make_block "ia", "manage", "Internet Archive Manage Book Help", 'right', IA_MANAGE
+    make_block 'ia', 'import_work', 'Internet Archive Import Book Help'
+    make_block 'ia', 'manage', 'Internet Archive Manage Book Help', 'right', IA_MANAGE
 
-    make_block "page", "edit", "Single Page Settings Help", "right", PAGE_EDIT
-    make_block "page", "new", "Single Page Creation Help"
-    make_block "page", "image_tab", "Single Page Image Help"
+    make_block 'page', 'edit', 'Single Page Settings Help', 'right', PAGE_EDIT
+    make_block 'page', 'new', 'Single Page Creation Help'
+    make_block 'page', 'image_tab', 'Single Page Image Help'
 
-    make_block "page_block", "list", "Page Block List Help", "right", PAGE_BLOCK_LIST
-    make_block "page_block", "edit", "Page Block Edit Help", 'right', PAGE_BLOCK_EDIT
+    make_block 'page_block', 'list', 'Page Block List Help', 'right', PAGE_BLOCK_LIST
+    make_block 'page_block', 'edit', 'Page Block Edit Help', 'right', PAGE_BLOCK_EDIT
 
-    make_block "page_version", "list", "Single Page Version List Help"
-    make_block "page_version", "show", "Single Page Version Display Help"
+    make_block 'page_version', 'list', 'Single Page Version List Help'
+    make_block 'page_version', 'show', 'Single Page Version Display Help'
 
-    make_block "static", "splash", "Splash Page Left Block", "left", STATIC_SPLASH_LEFT
-    make_block "static", "splash", "Splash Page Right Block", "right", STATIC_SPLASH_RIGHT
+    make_block 'static', 'splash', 'Splash Page Left Block', 'left', STATIC_SPLASH_LEFT
+    make_block 'static', 'splash', 'Splash Page Right Block', 'right', STATIC_SPLASH_RIGHT
 
-    make_block "transcribe", "assign_categories", "Assign Categories Help (Left Side)", "left", TRANSCRIBE_ASSIGN_CATEGORIES
-    make_block "transcribe", "assign_categories", "Assign Categories Help (Right Side)"
-    make_block "transcribe", "display_page", "Transcription Page Help (Right Side)"
-    make_block "transcribe", "display_page", "Transcription Page Help (Left Side)", "left"
+    make_block 'transcribe', 'assign_categories', 'Assign Categories Help (Left Side)', 'left', TRANSCRIBE_ASSIGN_CATEGORIES
+    make_block 'transcribe', 'assign_categories', 'Assign Categories Help (Right Side)'
+    make_block 'transcribe', 'display_page', 'Transcription Page Help (Right Side)'
+    make_block 'transcribe', 'display_page', 'Transcription Page Help (Left Side)', 'left'
 
-    make_block "user", "profile", "User Profile View Help"
-    make_block "user", "update_profile", "User Profile Edit Help"
-    make_block "user", "versions", "User Edit List Help"
+    make_block 'user', 'profile', 'User Profile View Help'
+    make_block 'user', 'update_profile', 'User Profile Edit Help'
+    make_block 'user', 'versions', 'User Edit List Help'
 
-    make_block "work", "edit", "Work Settings Help", "right", WORK_EDIT
-    make_block "work", "new", "Work Creation Help"
-    make_block "work", "pages_tab", "Work Page List Help"
-    make_block "work", "scribes_tab", "Work Access Help"
-    make_block "work", "show", "Work About Help"
-    make_block "work", "versions", "Work Versions Help"
-
+    make_block 'work', 'edit', 'Work Settings Help', 'right', WORK_EDIT
+    make_block 'work', 'new', 'Work Creation Help'
+    make_block 'work', 'pages_tab', 'Work Page List Help'
+    make_block 'work', 'scribes_tab', 'Work Access Help'
+    make_block 'work', 'show', 'Work About Help'
+    make_block 'work', 'versions', 'Work Versions Help'
   end
 
-  def self.make_block(controller, view, description, tag="right", default=nil)
+  def self.make_block(controller, view, description, tag = 'right', default = nil)
     pb = PageBlock.new
-    pb.controller=controller
-    pb.view=view
-    pb.tag=tag
-    pb.description=description
-    pb.html=default
+    pb.controller = controller
+    pb.view = view
+    pb.tag = tag
+    pb.description = description
+    pb.html = default
     pb.save!
   end
 
-  PAGE_BLOCK_LIST = <<PAGEBLOCKLIST
-<p>Edit a page block to customize the HTML to be displayed to users viewing that page.</p>
-PAGEBLOCKLIST
+  PAGE_BLOCK_LIST = <<~PAGEBLOCKLIST
+    <p>Edit a page block to customize the HTML to be displayed to users viewing that page.</p>
+  PAGEBLOCKLIST
 
- PAGE_BLOCK_EDIT =<<PAGEBLOCKEDIT
-<p>Enter HTML code to be displayed whenever users view this page</p>
-PAGEBLOCKEDIT
+  PAGE_BLOCK_EDIT = <<~PAGEBLOCKEDIT
+    <p>Enter HTML code to be displayed whenever users view this page</p>
+  PAGEBLOCKEDIT
 
   IA_MANAGE = <<IAMANAGE
 		<p>
@@ -225,69 +225,63 @@ ACCOUNTSIGNUP
       </p>
 PAGEEDIT
 
-  STATIC_SPLASH_LEFT = <<STATICSPLASHLEFT
-  <div class="splash-block">
+  STATIC_SPLASH_LEFT = <<~STATICSPLASHLEFT
+      <div class="splash-block">
 
-<h3>What is FromThePage?</h3>
+    <h3>What is FromThePage?</h3>
 
-<p>
-FromThePage is free software that allows volunteers to collaborate to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. Because FromThePage runs in your browser, you can read and transcribe materials from anywhere -- including tablets and smart phones. The resulting text is hosted on the web, making documents easy to read and search.
-</p>
+    <p>
+    FromThePage is free software that allows volunteers to collaborate to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. Because FromThePage runs in your browser, you can read and transcribe materials from anywhere -- including tablets and smart phones. The resulting text is hosted on the web, making documents easy to read and search.
+    </p>
 
-<p>
-<b>Features of FromThePage include:</b>
-  <ul>
-    <li><b>Wiki-style editing:</b> Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
-    </li>
-    <li><b>Version Control:</b> Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
-    </li>
-    <li><b>Wikilinks:</b> Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
-    </li>
-    <li><b>Presentation:</b>  Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject.
-    </li>
-    <li><b>Automatic Markup:</b> FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
-    </li>
-    <li><b>Integrations:</b> FromThePage integrates easily with systems where your documents are already loaded, including the Internet Archive and Omeka.
-    </li>
-    <li><b>Translation:</b> FromThePage supports foreign language material which can be transcribed in full UTF-8. A translator's workflow allows creation of parallel texts.
-    </li>
-    <li><b>OCR Correction:</b> Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
-    </li>
-  </ul>
-</p>
-</div>
-STATICSPLASHLEFT
+    <p>
+    <b>Features of FromThePage include:</b>
+      <ul>
+        <li><b>Wiki-style editing:</b> Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
+        </li>
+        <li><b>Version Control:</b> Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
+        </li>
+        <li><b>Wikilinks:</b> Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
+        </li>
+        <li><b>Presentation:</b>  Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject.
+        </li>
+        <li><b>Automatic Markup:</b> FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
+        </li>
+        <li><b>Integrations:</b> FromThePage integrates easily with systems where your documents are already loaded, including the Internet Archive and Omeka.
+        </li>
+        <li><b>Translation:</b> FromThePage supports foreign language material which can be transcribed in full UTF-8. A translator's workflow allows creation of parallel texts.
+        </li>
+        <li><b>OCR Correction:</b> Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
+        </li>
+      </ul>
+    </p>
+    </div>
+  STATICSPLASHLEFT
 
+  STATIC_SPLASH_RIGHT = <<~STATICSPLASHRIGHT
+    <div class="splash-block">
+    <h3>How do I get started?</h3>
+    <p>
+    <b>Start reading: </b>
+    </p>
+    <p>
+    See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection">Your First User and Collection</a> on our wiki.
 
+    <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
+    </p>
+    <p>
+    Need help?  We offer the <a href="http://fromthepage.com/static/run_server">following services to help you run your FromThePage project</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
+    #{'  '}
+    </p>
+    </div>
 
-
-
-  STATIC_SPLASH_RIGHT = <<STATICSPLASHRIGHT
-<div class="splash-block">
-<h3>How do I get started?</h3>
-<p>
-<b>Start reading: </b>
-</p>
-<p>
-See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection">Your First User and Collection</a> on our wiki.
-
-<a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
-</p>
-<p>
-Need help?  We offer the <a href="http://fromthepage.com/static/run_server">following services to help you run your FromThePage project</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
-  
-</p>
-</div>
-
-STATICSPLASHRIGHT
-
+  STATICSPLASHRIGHT
 
   TRANSCRIBE_ASSIGN_CATEGORIES = <<ASSIGNCATEGORIES
       <p>
         Assign categories to the subjects mentioned in this page:
       </p>
 ASSIGNCATEGORIES
-
 
   WORK_EDIT = <<WORKEDIT
       <p>
@@ -298,4 +292,5 @@ ASSIGNCATEGORIES
   <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work for Transcription</a>.
       </p>
 WORKEDIT
+
 end

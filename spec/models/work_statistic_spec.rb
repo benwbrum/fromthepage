@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe WorkStatistic, type: :model do
   context 'WorkStatistic initialization' do
     let(:work) { create(:work) }
+
     it 'New works set initial stats to zero' do
       stats = work.work_statistic
       # Total Pages
@@ -23,161 +24,190 @@ RSpec.describe WorkStatistic, type: :model do
       expect(stats.translation_complete).to eq(0)
     end
   end
+
   context 'computed attributes/method' do
     let(:ws) { build_stubbed(:work_statistic) }
+
     describe '#pct_transcribed' do
       it 'returns 0 for 0/3 pages transcribed' do
         ws.total_pages = 3
         ws.transcribed_pages = 0
         expect(ws.pct_transcribed).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 pages transcribed' do
         ws.total_pages = 3
         ws.transcribed_pages = 1
         expect(ws.pct_transcribed).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 pages transcribed' do
         ws.total_pages = 3
         ws.transcribed_pages = 3
         expect(ws.pct_transcribed).to eq(100)
       end
     end
+
     describe '#pct_corrected' do
       it 'returns 0 for 0/3 pages OCR Corrected' do
         ws.total_pages = 3
         ws.corrected_pages = 0
         expect(ws.pct_corrected).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 pages OCR Corrected' do
         ws.total_pages = 3
         ws.corrected_pages = 1
         expect(ws.pct_corrected).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 pages OCR Corrected' do
         ws.total_pages = 3
         ws.corrected_pages = 3
         expect(ws.pct_corrected).to eq(100)
       end
     end
+
     describe '#pct_translated' do
       it 'returns 0 for 0/3 pages translated' do
         ws.total_pages = 3
         ws.translated_pages = 0
         expect(ws.pct_translated).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 pages translated' do
         ws.total_pages = 3
         ws.translated_pages = 1
         expect(ws.pct_translated).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 pages translated' do
         ws.total_pages = 3
         ws.translated_pages = 3
         expect(ws.pct_translated).to eq(100)
       end
     end
+
     describe '#pct_annotated' do
       it 'returns 0 for 0/3 pages annotated' do
         ws.total_pages = 3
         ws.annotated_pages = 0
         expect(ws.pct_annotated).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 pages annotated' do
         ws.total_pages = 3
         ws.annotated_pages = 1
         expect(ws.pct_annotated).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 pages annotated' do
         ws.total_pages = 3
         ws.annotated_pages = 3
         expect(ws.pct_annotated).to eq(100)
       end
     end
+
     describe '#pct_translation_annotated' do
       it 'returns 0 for 0/3 translations annotated' do
         ws.total_pages = 3
         ws.translated_annotated = 0
         expect(ws.pct_translation_annotated).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 translations annotated' do
         ws.total_pages = 3
         ws.translated_annotated = 1
         expect(ws.pct_translation_annotated).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 translations annotated' do
         ws.total_pages = 3
         ws.translated_annotated = 3
         expect(ws.pct_translation_annotated).to eq(100)
       end
     end
+
     describe '#pct_needs_review' do
       it 'returns 0 for 0/3 pages need review' do
         ws.total_pages = 3
         ws.needs_review = 0
         expect(ws.pct_needs_review).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 pages need review' do
         ws.total_pages = 3
         ws.needs_review = 1
         expect(ws.pct_needs_review).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 pages need review' do
         ws.total_pages = 3
         ws.needs_review = 3
         expect(ws.pct_needs_review).to eq(100)
       end
     end
+
     describe '#pct_translation_needs_review' do
       it 'returns 0 for 0/3 translations needing review' do
         ws.total_pages = 3
         ws.translated_review = 0
         expect(ws.pct_translation_needs_review).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 translations needing review' do
         ws.total_pages = 3
         ws.translated_review = 1
         expect(ws.pct_translation_needs_review).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 translations needing review' do
         ws.total_pages = 3
         ws.translated_review = 3
         expect(ws.pct_translation_needs_review).to eq(100)
       end
     end
+
     describe '#pct_blank' do
       it 'returns 0 for 0/3 blank pages' do
         ws.total_pages = 3
         ws.blank_pages = 0
         expect(ws.pct_blank).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 blank pages' do
         ws.total_pages = 3
         ws.blank_pages = 1
         expect(ws.pct_blank).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 blank pages' do
         ws.total_pages = 3
         ws.blank_pages = 3
         expect(ws.pct_blank).to eq(100)
       end
     end
+
     describe '#pct_translation_blank' do
       it 'returns 0 for 0/3 blank translations' do
         ws.total_pages = 3
         ws.translated_blank = 0
         expect(ws.pct_translation_blank).to eq(0)
       end
+
       it 'returns 33.33% for 1/3 blank translations' do
         ws.total_pages = 3
         ws.translated_blank = 1
         expect(ws.pct_translation_blank).to eq(33.33)
       end
+
       it 'returns 100% for 3/3 blank translations' do
         ws.total_pages = 3
         ws.translated_blank = 3
         expect(ws.pct_translation_blank).to eq(100)
       end
     end
+
     describe '#pct_transcribed_or_blank' do
       it 'returns 0 for 0/3 translated or blank' do
         ws.total_pages = 3
@@ -185,12 +215,14 @@ RSpec.describe WorkStatistic, type: :model do
         ws.transcribed_pages = 0
         expect(ws.pct_transcribed_or_blank).to eq(0)
       end
+
       it 'returns 66.66% for (2/3) one blank and one transcribed' do
         ws.total_pages = 3
         ws.blank_pages = 1
         ws.transcribed_pages = 1
         expect(ws.pct_transcribed_or_blank).to eq(66.66)
       end
+
       it 'returns 100% for (3/3) one blank and two transcribed' do
         ws.total_pages = 3
         ws.blank_pages = 1
@@ -198,6 +230,7 @@ RSpec.describe WorkStatistic, type: :model do
         expect(ws.pct_transcribed_or_blank).to eq(100)
       end
     end
+
     describe '#pct_translated_or_blank' do
       it 'returns 0 for 0/3 none translated or blank' do
         ws.total_pages = 3
@@ -205,12 +238,14 @@ RSpec.describe WorkStatistic, type: :model do
         ws.translated_pages = 0
         expect(ws.pct_translated_or_blank).to eq(0)
       end
+
       it 'returns 66.66% for (2/3) one translated and one translated_blank' do
         ws.total_pages = 3
         ws.translated_blank = 1
         ws.translated_pages = 1
         expect(ws.pct_translated_or_blank).to eq(66.66)
       end
+
       it 'returns 100% for 3/3 XXX' do
         ws.total_pages = 3
         ws.translated_blank = 1
@@ -218,6 +253,7 @@ RSpec.describe WorkStatistic, type: :model do
         expect(ws.pct_translated_or_blank).to eq(100)
       end
     end
+
     describe '#pct_completed' do
       let(:work_ocr) { build_stubbed(:work, ocr_correction: true) }
 
@@ -232,6 +268,7 @@ RSpec.describe WorkStatistic, type: :model do
 
           expect(ws.pct_completed).to eq(0)
         end
+
         it 'returns 66.66% for 2/3 complete' do
           ws.work = work
           ws.total_pages = 3
@@ -240,6 +277,7 @@ RSpec.describe WorkStatistic, type: :model do
 
           expect(ws.pct_completed).to eq(66.66)
         end
+
         it 'returns 100% for 3/3 complete' do
           ws.work = work
           ws.total_pages = 3
@@ -249,6 +287,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.pct_completed).to eq(100)
         end
       end
+
       context 'OCR Enabled' do
         let(:work) { build_stubbed(:work, ocr_correction: true) }
 
@@ -260,6 +299,7 @@ RSpec.describe WorkStatistic, type: :model do
 
           expect(ws.pct_completed).to eq(0)
         end
+
         it 'returns 66.66% for 2/3 complete' do
           ws.work = work
           ws.total_pages = 3
@@ -268,6 +308,7 @@ RSpec.describe WorkStatistic, type: :model do
 
           expect(ws.pct_completed).to eq(66.66)
         end
+
         it 'returns 100% for 3/3 complete' do
           ws.work = work
           ws.total_pages = 3
@@ -278,6 +319,7 @@ RSpec.describe WorkStatistic, type: :model do
         end
       end
     end
+
     describe '#pct_translation_completed' do
       it 'returns 0 for 0/3 XXX translation completed' do
         ws.total_pages = 3
@@ -285,12 +327,14 @@ RSpec.describe WorkStatistic, type: :model do
         ws.translated_annotated = 0
         expect(ws.pct_translation_completed).to eq(0)
       end
+
       it 'returns 66.66% for 2/3 translation completed' do
         ws.total_pages = 3
         ws.translated_pages = 1
         ws.translated_annotated = 1
         expect(ws.pct_translation_completed).to eq(66.66)
       end
+
       it 'returns 100% for 3/3 XXX translation completed' do
         ws.total_pages = 3
         ws.translated_pages = 2
@@ -299,11 +343,12 @@ RSpec.describe WorkStatistic, type: :model do
       end
     end
   end
+
   context 'update methods' do
     let(:work) { create(:work) }
     let(:ws) do
       create(:work_statistic,
-             work: work)
+        work:)
     end
 
     describe '#recalculate' do
@@ -314,70 +359,77 @@ RSpec.describe WorkStatistic, type: :model do
       it 'recalculates without params' do
         ws.recalculate
       end
+
       it 'recalculates with all page status types' do
         # Ensures compatibility with old API
-        statuses = %w[
-          transcribed
-          corrected
-          translated
-          blank
-          indexed
-          review
+        statuses = [
+          'transcribed',
+          'corrected',
+          'translated',
+          'blank',
+          'indexed',
+          'review'
         ]
         statuses.each do |status|
           ws.recalculate(type: status)
         end
       end
+
       context 'transcription stats' do
         it 'updates total pages' do
           ws.recalculate
           expect(ws.total_pages).to eq(0)
 
-          create(:page, work: work)
+          create(:page, work:)
           ws.recalculate
           expect(ws.total_pages).to eq(1)
         end
+
         it 'updates transcribed_pages' do
           ws.recalculate
           expect(ws.transcribed_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
+          create(:page, work:, status: Page::STATUS_TRANSCRIBED)
           ws.recalculate
           expect(ws.transcribed_pages).to eq(1)
         end
+
         it 'updates blank_pages' do
           ws.recalculate
           expect(ws.blank_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_BLANK)
+          create(:page, work:, status: Page::STATUS_BLANK)
           ws.recalculate
           expect(ws.blank_pages).to eq(1)
         end
+
         it 'updates annotated_pages' do
           ws.recalculate
           expect(ws.annotated_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_INDEXED)
+          create(:page, work:, status: Page::STATUS_INDEXED)
           ws.recalculate
           expect(ws.annotated_pages).to eq(1)
         end
+
         it 'updates needs_review' do
           ws.recalculate
           expect(ws.needs_review).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work:, status: Page::STATUS_NEEDS_REVIEW)
           ws.recalculate
           expect(ws.needs_review).to eq(1)
         end
+
         context 'with OCR diabled (default)' do
           it 'updates complete' do
             ws.recalculate
             expect(ws.complete).to eq(0)
 
-            create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_INDEXED)
-            create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            create(:page, work:, status: Page::STATUS_TRANSCRIBED)
+            create(:page, work:, status: Page::STATUS_BLANK)
+            create(:page, work:, status: Page::STATUS_INDEXED)
+            create(:page, work:, status: Page::STATUS_NEEDS_REVIEW)
             ws.recalculate
 
             # Corrected and Transcribed are synonymous and
@@ -387,22 +439,23 @@ RSpec.describe WorkStatistic, type: :model do
             expect(ws.complete).to eq(75)
           end
         end
+
         context 'with OCR enabled' do
           let(:work) { create(:work, ocr_correction: true) }
           let(:ws) do
             create(:work_statistic,
-                   work: work)
+              work:)
           end
 
           it 'updates complete' do
             ws.recalculate
             expect(ws.complete).to eq(0)
 
-            create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_INDEXED)
-            create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            create(:page, work:, status: Page::STATUS_TRANSCRIBED)
+            create(:page, work:, status: Page::STATUS_BLANK)
+            create(:page, work:, status: Page::STATUS_BLANK)
+            create(:page, work:, status: Page::STATUS_INDEXED)
+            create(:page, work:, status: Page::STATUS_NEEDS_REVIEW)
             ws.recalculate
 
             # Corrected and Transcribed are synonymous and
@@ -413,47 +466,52 @@ RSpec.describe WorkStatistic, type: :model do
           end
         end
       end
+
       context 'translation stats' do
         it 'updates translated_pages' do
           ws.recalculate
           expect(ws.translated_pages).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_TRANSLATED)
+          create(:page, work:, translation_status: Page::STATUS_TRANSLATED)
           ws.recalculate
           expect(ws.translated_pages).to eq(1)
         end
+
         it 'updates translated_blank' do
           ws.recalculate
           expect(ws.translated_blank).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_BLANK)
+          create(:page, work:, translation_status: Page::STATUS_BLANK)
           ws.recalculate
           expect(ws.translated_blank).to eq(1)
         end
+
         it 'updates translated_annotated' do
           ws.recalculate
           expect(ws.translated_annotated).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_INDEXED)
+          create(:page, work:, translation_status: Page::STATUS_INDEXED)
           ws.recalculate
           expect(ws.translated_annotated).to eq(1)
         end
+
         it 'updates translated_review' do
           ws.recalculate
           expect(ws.translated_review).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work:, translation_status: Page::STATUS_NEEDS_REVIEW)
           ws.recalculate
           expect(ws.translated_review).to eq(1)
         end
+
         it 'updates translation_complete' do
           ws.recalculate
           expect(ws.translation_complete).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_TRANSLATED)
-          create(:page, work: work, translation_status: Page::STATUS_BLANK)
-          create(:page, work: work, translation_status: Page::STATUS_INDEXED)
-          create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work:, translation_status: Page::STATUS_TRANSLATED)
+          create(:page, work:, translation_status: Page::STATUS_BLANK)
+          create(:page, work:, translation_status: Page::STATUS_INDEXED)
+          create(:page, work:, translation_status: Page::STATUS_NEEDS_REVIEW)
           ws.recalculate
 
           expect(ws.translation_complete).to eq(75)

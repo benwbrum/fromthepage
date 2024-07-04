@@ -1,8 +1,9 @@
-class NoteDatatable < AjaxDatatablesRails::ActiveRecord 
+class NoteDatatable < AjaxDatatablesRails::ActiveRecord
+
   extend Forwardable
 
-  def_delegators :@view, 
-    :link_to, 
+  def_delegators :@view,
+    :link_to,
     :time_tag,
     :time_ago_in_words,
     :collection_display_page_path,
@@ -13,29 +14,29 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
   def initialize(params, options = {})
     @view = options[:view_context]
     @collection = Collection.find(options[:collection_id]) if options[:collection_id]
-    super 
+    super
   end
 
   def view_columns
     if @collection.metadata_only_entry?
       @view_columns ||= {
-      userpic:    { searchable: false, orderable: false },
-      user:       { source: "User.display_name"},      
-      note:       { source: "Note.title"},
-      work:       { source: "Work.title"},
-      collection: { source: "Collection.title" },
-      time:       { source: "Note.created_at" }
-    }
+        userpic: { searchable: false, orderable: false },
+        user: { source: 'User.display_name' },
+        note: { source: 'Note.title' },
+        work: { source: 'Work.title' },
+        collection: { source: 'Collection.title' },
+        time: { source: 'Note.created_at' }
+      }
     else
       @view_columns ||= {
-      userpic:    { searchable: false, orderable: false },
-      user:       { source: "User.display_name"},      
-      note:       { source: "Note.title"},
-      page:       { source: "Page.title"},
-      work:       { source: "Work.title"},
-      collection: { source: "Collection.title" },
-      time:       { source: "Note.created_at" }
-    }
+        userpic: { searchable: false, orderable: false },
+        user: { source: 'User.display_name' },
+        note: { source: 'Note.title' },
+        page: { source: 'Page.title' },
+        work: { source: 'Work.title' },
+        collection: { source: 'Collection.title' },
+        time: { source: 'Note.created_at' }
+      }
     end
   end
 
@@ -43,24 +44,24 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
     if @collection.metadata_only_entry?
       records.map do |record|
         {
-          userpic:    userpic(record),
-          user:       link_to(record.user&.display_name, user_profile_path(record.user)),
-          note:       record.title,
-          work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
+          userpic: userpic(record),
+          user: link_to(record.user&.display_name, user_profile_path(record.user)),
+          note: record.title,
+          work: link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
           collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
-          time:       timestamp(record)
+          time: timestamp(record)
         }
       end
     else
       records.map do |record|
         {
-          userpic:    userpic(record),
-          user:       link_to(record.user&.display_name, user_profile_path(record.user)),
-          note:       record.title,
-          page:       record.page.nil? ? '' : link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
-          work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
+          userpic: userpic(record),
+          user: link_to(record.user&.display_name, user_profile_path(record.user)),
+          note: record.title,
+          page: record.page.nil? ? '' : link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
+          work: link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
           collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
-          time:       timestamp(record)
+          time: timestamp(record)
         }
       end
     end
@@ -68,14 +69,9 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
 
   def get_raw_records
     if @collection
-      @collection.notes
-        .joins(:collection, :work, :user)
-        .left_outer_joins(:page)
-        .reorder('')
+      @collection.notes.joins(:collection, :work, :user).left_outer_joins(:page).reorder('')
     else
-      Note.includes(:collection).where("collections.restricted = 0")
-        .joins(:collection, :page, :work, :user)
-        .reorder('')
+      Note.includes(:collection).where('collections.restricted = 0').joins(:collection, :page, :work, :user).reorder('')
     end
   end
 
@@ -83,7 +79,7 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
 
   def userpic(record)
     link_to user_profile_path(record.user) do
-      ActionController::Base.new.render_to_string("shared/_profile_picture", :locals => { :user => record.user, :gravatar_size => nil })
+      ActionController::Base.new.render_to_string('shared/_profile_picture', locals: { user: record.user, gravatar_size: nil })
     end
   end
 

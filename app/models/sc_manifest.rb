@@ -22,25 +22,23 @@
 #  index_sc_manifests_on_work_id           (work_id)
 #
 class ScManifest < ApplicationRecord
+
   belongs_to :work, optional: true
   belongs_to :sc_collection, optional: true
   belongs_to :collection, optional: true
 
   has_many :sc_canvases
 
-  attr_accessor :service
-  attr_accessor :v3_hash
-
+  attr_accessor :service, :v3_hash
 
   def self.manifest_for_at_id(at_id)
     connection = URI.open(at_id)
     manifest_json = connection.read
-    #manifest_json = TEST_MANIFEST
+    # manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)
 
-    if service['@type'] == "sc:Collection"
-      raise ArgumentError, "#{at_id} contains a collection, not an item"
-    end
+    raise ArgumentError, "#{at_id} contains a collection, not an item" if service['@type'] == 'sc:Collection'
+
     sc_manifest = ScManifest.new
     sc_manifest.at_id = at_id
     sc_manifest.label = ScManifest.cleanup_label(service.label)
@@ -50,9 +48,7 @@ class ScManifest < ApplicationRecord
   end
 
   def self.manifest_for_v3_hash(v3)
-    if v3.is_a? String
-      v3 = JSON.parse(v3)
-    end
+    v3 = JSON.parse(v3) if v3.is_a? String
     sc_manifest = ScManifest.new
     sc_manifest.at_id = v3['id']
     sc_manifest.label = v3['label'].values.first.first
@@ -64,17 +60,16 @@ class ScManifest < ApplicationRecord
   end
 
   def v3?
-    self.version == '3'
+    version == '3'
   end
 
   def requiredStatement
     if v3?
       v3_hash['requiredStatement']
     else
-      ""
+      ''
     end
   end
-
 
   def metadata
     if v3?
@@ -88,14 +83,13 @@ class ScManifest < ApplicationRecord
     if v3?
       summary = v3_hash['summary']
       if summary.blank?
-        ""
+        ''
       else
         ScManifest.pluck_language_value v3_hash['summary']
       end
     else
       service.description
     end
-
   end
 
   def convert_with_sc_collection(user, sc_collection, annotation_ocr)
@@ -114,36 +108,34 @@ class ScManifest < ApplicationRecord
   def convert_with_no_collection(user, annotation_ocr)
     collection = Collection.new
     collection.owner = user
-    collection.title = self.label.truncate(255, separator: ' ', omission: '')
+    collection.title = label.truncate(255, separator: ' ', omission: '')
     collection.save!
     convert_with_collection(user, collection, nil, annotation_ocr)
   end
 
   def items
-    if self.v3?
+    if v3?
       @v3_hash['items']
     else
-      self.service.sequences.first.canvases
+      service.sequences.first.canvases
     end
   end
 
-  def convert_with_collection(user, collection, document_set=nil, annotation_ocr=false)
-    self.save!
+  def convert_with_collection(user, collection, document_set = nil, annotation_ocr = false)
+    save!
 
     work = Work.new
     work.owner = user
-    work.title = self.label
-    work.description = self.html_description
+    work.title = label
+    work.description = html_description
     work.collection = collection
-    if self.metadata
-      work.original_metadata = normalize_metadata(self.metadata).to_json
-    end
-    work.ocr_correction=annotation_ocr
+    work.original_metadata = normalize_metadata(metadata).to_json if metadata
+    work.ocr_correction = annotation_ocr
 
     work.save!
 
-    unless self.items.empty?
-      self.items.each do |canvas|
+    unless items.empty?
+      items.each do |canvas|
         sc_canvas = manifest_canvas_to_sc_canvas(canvas)
         page = sc_canvas_to_page(sc_canvas, annotation_ocr)
         work.pages << page
@@ -155,11 +147,9 @@ class ScManifest < ApplicationRecord
     record_deed(work)
 
     self.work = work
-    self.save!
+    save!
 
-    if document_set
-      document_set.works << work
-    end
+    document_set.works << work if document_set
 
     work
   end
@@ -167,71 +157,60 @@ class ScManifest < ApplicationRecord
   def self.cleanup_label(label)
     label = flatten_element(label)
     new_label = label.truncate(255, separator: ' ', omission: '')
-    new_label.gsub!("&quot;", "'")
-    new_label.gsub!("&amp;", "&")
-    new_label.gsub!("&apos;", "'")
+    new_label.gsub!('&quot;', "'")
+    new_label.gsub!('&amp;', '&')
+    new_label.gsub!('&apos;', "'")
 
     new_label
   end
 
-
   def self.pluck_language_value(raw)
     if raw.is_a? Hash
       raw = raw.values.first
-      if raw.is_a? Array
-        raw = raw.first
-      end
+      raw = raw.first if raw.is_a? Array
     end
     raw
   end
 
   def normalize_metadata(raw)
-    if (raw)
-      raw.map do |hash|
-        # test for v3-style elements
-        label = hash['label'] || hash['@label']
-        label= ScManifest.pluck_language_value(label)
-        value = hash['value'] || hash['@value']
-        value = ScManifest.pluck_language_value(value)
-        { 'label' => label, 'value' => value}
-      end
+    return unless raw
+
+    raw.map do |hash|
+      # test for v3-style elements
+      label = hash['label'] || hash['@label']
+      label = ScManifest.pluck_language_value(label)
+      value = hash['value'] || hash['@value']
+      value = ScManifest.pluck_language_value(value)
+      { 'label' => label, 'value' => value }
     end
   end
 
   def self.flatten_element(element)
-    if element.is_a? Array
-      element = element.first
-    end
-    if element.is_a? Hash
-      element = element['@value'] || element['value']
-    end
+    element = element.first if element.is_a? Array
+    element = element['@value'] || element['value'] if element.is_a? Hash
     element
   end
 
-
-  def sc_canvas_to_page(sc_canvas, annotation_ocr=false)
+  def sc_canvas_to_page(sc_canvas, annotation_ocr = false)
     page = Page.new
     page.title = ScManifest.flatten_element(sc_canvas.sc_canvas_label)
-    if annotation_ocr && sc_canvas.has_annotation?
-      page.source_text=sc_canvas.annotation_text_for_source
-    end
+    page.source_text = sc_canvas.annotation_text_for_source if annotation_ocr && sc_canvas.has_annotation?
 
     page
   end
 
-
   def has_annotations?
     return false if v3?
 
-    self.service.sequences.first.canvases.detect do |canvas|
-      canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
+    service.sequences.first.canvases.detect do |canvas|
+      canvas.other_content&.detect { |e| e['@type'] == 'sc:AnnotationList' }
     end
   end
 
   def manifest_canvas_to_sc_canvas(canvas)
     sc_canvas = ScCanvas.new
-    sc_canvas.sc_manifest =             self
-    if self.v3?
+    sc_canvas.sc_manifest = self
+    if v3?
       annotation_page = canvas['items'].first
       annotation = annotation_page['items'].first
       body = annotation['body']
@@ -241,7 +220,7 @@ class ScManifest < ApplicationRecord
         image_service = nil
       end
 
-      sc_canvas.sc_canvas_id =            canvas['id']
+      sc_canvas.sc_canvas_id = canvas['id']
       if image_service
         sc_canvas.sc_service_id =           image_service['@id'] || image_service['id']
         sc_canvas.sc_service_context =      image_service['profile']
@@ -255,12 +234,10 @@ class ScManifest < ApplicationRecord
       sc_canvas.sc_service_id =           canvas.images.first.resource.service['@id']
       sc_canvas.sc_resource_id =          canvas.images.first.resource['@id']
       sc_canvas.sc_service_context = canvas.images.first.resource.service['@context']
-      sc_canvas.sc_canvas_label =         canvas.label
+      sc_canvas.sc_canvas_label = canvas.label
       sc_canvas.height = canvas.height
       sc_canvas.width = canvas.width
-      if canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
-        sc_canvas.annotations = canvas.other_content.to_json
-      end
+      sc_canvas.annotations = canvas.other_content.to_json if canvas.other_content&.detect { |e| e['@type'] == 'sc:AnnotationList' }
     end
 
     sc_canvas.save!
@@ -268,25 +245,21 @@ class ScManifest < ApplicationRecord
   end
 
   def html_description
-    description=self.description
-    unless description.blank?
-      description = ScManifest.flatten_element(self.description) + "\n<br /><br />\n"
-    end
+    description = self.description
+    description = "#{ScManifest.flatten_element(self.description)}\n<br /><br />\n" if description.present?
 
     description
   end
-
 
   def self.lang_keys_from_hash(hash)
     # expecting label/value pairs
     hash.first[1].keys
   end
 
-
   def self.lang_keys_from_object(object)
     lang_keys = []
     if object.is_a? Array
-      lang_keys = object.map{ |hash| lang_keys_from_hash(hash) }.flatten
+      lang_keys = object.map { |hash| lang_keys_from_hash(hash) }.flatten
     else
       lang_keys = lang_keys_from_hash(hash)
     end
@@ -303,4 +276,5 @@ class ScManifest < ApplicationRecord
     deed.user = work.owner
     deed.save!
   end
+
 end

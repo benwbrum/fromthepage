@@ -1,4 +1,5 @@
 class CreateBulkExports < ActiveRecord::Migration[5.0]
+
   def change
     create_table :bulk_exports do |t|
       t.references :user, null: false, foreign_key: true
@@ -20,4 +21,5 @@ class CreateBulkExports < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

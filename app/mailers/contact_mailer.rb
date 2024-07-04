@@ -1,4 +1,5 @@
 class ContactMailer < ActionMailer::Base
+
   default from: SENDING_EMAIL_ADDRESS
 
   def contact(first_name:, last_name:, reason:, email:, more:)
@@ -9,6 +10,7 @@ class ContactMailer < ActionMailer::Base
     @more = more
 
     mail to:      ADMIN_EMAILS,
-         subject: "New contact us form submission from #{email}"
+      subject: "New contact us form submission from #{email}"
   end
+
 end

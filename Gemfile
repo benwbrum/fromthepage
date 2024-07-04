@@ -1,25 +1,27 @@
 source 'https://rubygems.org'
 
-ruby "2.7.3"
+ruby '3.3.3'
 
-gem 'rails', '6.1.7.6'
+gem 'rails', '~> 7.1.3'
 
-gem 'will_paginate'
-gem 'rmagick'
-gem 'nokogiri'
-gem "capistrano", "~> 3.10", require: false
-gem "capistrano-rails", "~> 1.4", require: false
+gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
-gem 'rvm1-capistrano3', require: false
+gem 'capistrano-rails', '~> 1.4', require: false
+gem 'html-pipeline', '~> 2.14'
 gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
-gem 'savon', '~> 2.12.0'
 gem 'mysql2'
-gem 'text'
-gem 'thredded', '~> 1.0'
-gem "recaptcha", require: "recaptcha/rails"
-gem 'ruby-openai'
+gem 'nkf'
+gem 'nokogiri'
 gem 'postmark-rails'
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'rmagick'
+gem 'ruby-openai'
+gem 'rvm1-capistrano3', require: false
+gem 'savon', '~> 2.12.0'
+gem 'text'
+gem 'thredded', '~> 1.1'
+gem 'will_paginate'
 
 gem 'acts_as_list'
 gem 'acts_as_tree'
@@ -28,28 +30,28 @@ gem 'devise'
 gem 'devise-encryptable'
 
 gem 'carrierwave'
-gem 'rubyzip'
 gem 'httparty'
 gem 'rack-attack'
+gem 'rubyzip'
 
 gem 'ahoy_matey'
 
-gem "browser", "~> 2.0"
-gem "user_agent_parser"
+gem 'browser', '~> 2.0'
+gem 'user_agent_parser'
 
-gem 'pry'
 gem 'oink'
+gem 'pry'
 
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
-gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
-gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
+gem 'iiif-presentation'
+gem 'riiif'
 
-gem 'omniauth-saml'
+gem 'omniauth', '~> 2.0'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth', '~> 1.9.2'
+gem 'omniauth-saml'
 
-gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
 gem 'bootsnap', require: false
 
@@ -59,29 +61,29 @@ gem 'active_link_to'
 
 gem 'warning'
 
-gem 'rails-i18n', '~> 6.0.0'
 gem 'http_accept_language'
+gem 'rails-i18n'
 
-gem 'forty_facets'
 gem 'charlock_holmes'
+gem 'forty_facets'
 
+gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
-gem 'diffy'
 gem 'terser'
 group :assets do
   gem 'uglifier'
 end
 
 group :test do
-  gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'coveralls', require: false
+  gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda'
-  gem 'webmock', require: false
   gem 'vcr'
-  gem 'coveralls', require: false
+  gem 'webmock', require: false
 end
 
 group :development, :test do
@@ -91,12 +93,18 @@ group :development, :test do
   gem 'bullet'
   gem 'easy_translate'
   gem 'factory_bot_rails'
+  gem 'fuubar'
   gem 'i18n-tasks'
   gem 'launchy'
   gem 'listen'
   gem 'pry-awesome_print'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'rubocop'
+  gem 'rubocop-factory_bot'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
 end
 
 # Use SassC for stylesheets
@@ -109,17 +117,17 @@ gem 'autoprefixer-rails'
 gem 'slim'
 
 # Gravatar Image Tag
-gem 'gravatar_image_tag'
+gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 
-#Admin masquerade as a user
+# Admin masquerade as a user
 gem 'devise_masquerade', '~> 1.2.0'
 
-#friendly routes
+# friendly routes
 gem 'friendly_id'
 
-#support right to left languages
-gem 'rtl'
+# support right to left languages
 gem 'iso-639'
+gem 'rtl'
 
 # Profiling for use in prod
 gem 'flamegraph'
@@ -128,11 +136,11 @@ gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
+gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 gem 'newrelic_rpm'
-gem 'bento-sdk', github: "bentonow/bento-ruby-sdk", branch: "master"
 
 gem 'open3'
 
 # Copy to clipboard
-gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
+gem 'clipboard-rails'

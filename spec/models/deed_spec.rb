@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Deed, type: :model do
-  context "associations" do
+  context 'associations' do
     it { should belong_to(:article).optional }
     it { should belong_to(:collection).optional }
     it { should belong_to(:note).optional }
@@ -10,7 +10,7 @@ RSpec.describe Deed, type: :model do
     it { should belong_to(:work).optional }
   end
 
-  context "validations" do
+  context 'validations' do
     it { should validate_inclusion_of(:deed_type).in_array(DeedType.all_types) }
   end
 
@@ -21,9 +21,9 @@ RSpec.describe Deed, type: :model do
       allow_any_instance_of(Deed).to receive(:calculate_prerender)
       allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
 
-      first_deed = create(:deed, deed_type: deed_type)
+      first_deed = create(:deed, deed_type:)
       sleep 0.5
-      second_deed = create(:deed, deed_type: deed_type)
+      second_deed = create(:deed, deed_type:)
 
       expect(Deed.order_by_recent_activity.first).to eq(second_deed)
 
@@ -38,9 +38,9 @@ RSpec.describe Deed, type: :model do
 
     it 'returns deeds by all active users' do
       inactive_user = create(:user, deleted: true)
-      inactive_user_deed = create(:deed, deed_type: deed_type, user_id: inactive_user.id)
+      inactive_user_deed = create(:deed, deed_type:, user_id: inactive_user.id)
       active_user = create(:user)
-      active_user_deed = create(:deed, deed_type: deed_type, user_id: active_user.id)
+      active_user_deed = create(:deed, deed_type:, user_id: active_user.id)
 
       expect(Deed.active).to include(active_user_deed)
       expect(Deed.active).to_not include(inactive_user_deed)
@@ -54,15 +54,15 @@ RSpec.describe Deed, type: :model do
   end
 
   describe '.past_day' do
-    let(:old_date) { 2.day.ago }
+    let(:old_date) { 2.days.ago }
     let(:deed_type) { DeedType.all_types.first }
 
     it 'returns deeds created within the past day' do
       allow_any_instance_of(Deed).to receive(:calculate_prerender)
       allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
 
-      old_deed = create(:deed, deed_type: deed_type, created_at: old_date)
-      deed_from_today = create(:deed, deed_type: deed_type)
+      old_deed = create(:deed, deed_type:, created_at: old_date)
+      deed_from_today = create(:deed, deed_type:)
 
       expect(Deed.past_day).to include(deed_from_today)
       expect(Deed.past_day).to_not include(old_deed)
@@ -77,7 +77,7 @@ RSpec.describe Deed, type: :model do
     let(:deed_type) { DeedType.all_types.first }
 
     it 'returns the human-readable name for the deed type' do
-      deed = build(:deed, deed_type: deed_type)
+      deed = build(:deed, deed_type:)
       human_readable_name = DeedType::TYPES[deed_type]
 
       expect(deed.deed_type_name).to eq(human_readable_name)

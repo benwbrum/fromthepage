@@ -22,6 +22,8 @@
 #  index_page_article_links_on_page_id     (page_id)
 #
 class PageArticleLink < ApplicationRecord
+
   belongs_to :page, optional: true
   belongs_to :article, optional: true
+
 end

@@ -8,7 +8,7 @@
         -if d.prerender
           ==show_prerender(d.prerender, I18n.locale)
         -else
-          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view, :suppress_collection => suppress_collection })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => long_view, :suppress_collection => suppress_collection })
 
 -if !@collection.nil? && (@collection.most_recent_deed_created_at && @collection.most_recent_deed_created_at > (Time.now - 1.year))
   small.legend

@@ -9,7 +9,7 @@ table.datagrid.striped
         =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
           =profile_picture(d.user)
       td.w100.toleft
-        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true })
       td
         small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
       td.nowrap

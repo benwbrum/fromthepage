@@ -74,5 +74,4 @@ RSpec.describe CollectionHelper, type: :helper do
       expect(is_a_private_document_set?(collection_or_doc_set)).to be false
     end
   end
-
 end

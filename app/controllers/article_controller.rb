@@ -1,6 +1,6 @@
 class ArticleController < ApplicationController
-  before_action :authorized?, :except => [:list, :show, :tooltip, :graph]
 
+  before_action :authorized?, except: [:list, :show, :tooltip, :graph]
 
   include AbstractXmlController
 
@@ -9,9 +9,9 @@ class ArticleController < ApplicationController
   LIST_NUM_COLUMNS = 3
 
   def authorized?
-    unless user_signed_in?
-      redirect_to dashboard_path
-    end
+    return false if user_signed_in?
+
+    redirect_to dashboard_path
   end
 
   def tooltip
@@ -25,9 +25,10 @@ class ArticleController < ApplicationController
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
     if @collection.is_a?(DocumentSet)
-      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL').reorder(:title)
+      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').
+        where(ac: { category_id: nil }).reorder(:title)
     else
-      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id)).reorder(:title)
+      @uncategorized_articles = @collection.articles.where.not(id: @collection.articles.joins(:categories).pluck(:id)).reorder(:title)
     end
 
     # Create a 2D array of articles/subjects for each category
@@ -40,15 +41,15 @@ class ArticleController < ApplicationController
     end
 
     # Do the same for uncategorized articles
-    if @uncategorized_articles.present?
-      @uncategorized_articles = sort_vertically(@uncategorized_articles)
-    end
+    return if @uncategorized_articles.blank?
+
+    @uncategorized_articles = sort_vertically(@uncategorized_articles)
   end
 
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
       if @article.created_by_id == current_user.id || current_user.like_owner?(@collection)
-        @article.destroy 
+        @article.destroy
         redirect_to collection_subjects_path(@collection.owner, @collection)
       else
         flash.alert = t('.only_subject_owner_can_delete')
@@ -60,85 +61,31 @@ class ArticleController < ApplicationController
     end
   end
 
-  def update
-    old_title = @article.title
-    gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
-
-    @article.attributes = article_params
-    if params['save']
-      #process_source_for_article
-      if @article.save
-        if old_title != @article.title
-          rename_article(old_title, @article.title)
-        end
-        record_deed
-        flash[:notice] = t('.subject_successfully_updated')
-        if gis_truncated 
-          flash[:notice] << t('.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION, count: GIS_DECIMAL_PRECISION)
-        end
-        redirect_to :action => 'edit', :article_id => @article.id
-      else
-        render :action => 'edit'
-      end
-    elsif params['autolink']
-      @article.source_text = autolink(@article.source_text)
-      flash[:notice] = t('.subjects_auto_linking')
-      redirect_to :action => 'edit', :article_id => @article.id
-    end
-  end
-
-  def article_category
-    status = params[:status]
-    if status == 'true'
-      @article.categories << @category
-    else
-      @article.categories.delete(@category)
-    end
-    render :plain => "success"
-  end
-
-  def combine_duplicate
-    #@article contains "to" article
-    params[:from_article_ids].each do |from_article_id|
-      from_article = Article.find(from_article_id)
-      combine_articles(from_article, @article)
-    end
-
-    flash[:notice] = t('.selected_subjects_combined', title: @article.title)
-    redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
-  end
-
-  def graph
-    redirect_to :action => :show, :article_id => @article.id
-  end
-
   def show
-    #if @article.graph_image && !params[:force]
+    # if @article.graph_image && !params[:force]
     #   return
-    #end
+    # end
     sql =
-      'SELECT count(*) as link_count, '+
-      'a.title as title, '+
-      'a.id as article_id '+
-      'FROM page_article_links to_links '+
-      'INNER JOIN page_article_links from_links '+
-      '  ON to_links.page_id = from_links.page_id '+
-      'INNER JOIN articles a '+
-      '  ON from_links.article_id = a.id '+
-      "WHERE to_links.article_id = #{@article.id} "+
-      " AND from_links.article_id != #{@article.id} "
-    sql += "GROUP BY a.title, a.id "
+      'SELECT count(*) as link_count, ' \
+      'a.title as title, ' \
+      'a.id as article_id ' \
+      'FROM page_article_links to_links ' \
+      'INNER JOIN page_article_links from_links   ' \
+      'ON to_links.page_id = from_links.page_id ' \
+      'INNER JOIN articles a   ' \
+      'ON from_links.article_id = a.id ' \
+      "WHERE to_links.article_id = #{@article.id}  " \
+      "AND from_links.article_id != #{@article.id} "
+    sql += 'GROUP BY a.title, a.id '
     logger.debug(sql)
     article_links = Article.connection.select_all(sql)
     link_total = 0
     link_max = 0
-    count_per_rank = { 0 => 0}
+    count_per_rank = { 0 => 0 }
     article_links.each do |l|
       link_count = l['link_count'].to_i
       link_total += link_count
-      if link_count > link_max
-        link_max = link_count
-      end
+      link_max = link_count if link_count > link_max
       # initialize for this rank if necessary
       if count_per_rank[link_count]
         # set this rank
@@ -146,12 +93,12 @@ class ArticleController < ApplicationController
       else
         count_per_rank[link_count] = 1
       end
-      #logger.debug("DEBUG: \tcount_per_rank[#{link_count}]=#{count_per_rank[link_count]}\n")
+      # logger.debug("DEBUG: \tcount_per_rank[#{link_count}]=#{count_per_rank[link_count]}\n")
     end
 
-    #logger.debug("DEBUG: count per rank=#{count_per_rank.inspect}\n")
+    # logger.debug("DEBUG: count per rank=#{count_per_rank.inspect}\n")
 
-    min_rank=0
+    min_rank = 0
     # now we know how many articles each link count has, as well as the size
     if params[:min_rank]
       # use the min rank from the params
@@ -161,7 +108,7 @@ class ArticleController < ApplicationController
       num_articles = article_links.count
       while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
         # remove the outer rank
-        #logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")
+        # logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")
         num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
         min_rank += 1
         logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
@@ -169,17 +116,17 @@ class ArticleController < ApplicationController
     end
 
     dot_source =
-      render_to_string(:partial => "graph.dot",
-                       :layout => false,
-                       :locals => { :article_links => article_links,
-                                    :link_total => link_total,
-                                    :link_max => link_max,
-                                    :min_rank => min_rank })
+      render_to_string(partial: 'graph.dot',
+        layout: false,
+        locals: {
+          article_links:,
+          link_total:,
+          link_max:,
+          min_rank:
+        })
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    File.open(dot_file, "w") do |f|
-      f.write(dot_source)
-    end
+    File.write(dot_file, dot_source)
     dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
     dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
 
@@ -191,16 +138,62 @@ class ArticleController < ApplicationController
     session[:col_id] = @collection.slug
   end
 
+  def update
+    old_title = @article.title
+    gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
+
+    @article.attributes = article_params
+    if params['save']
+      # process_source_for_article
+      if @article.save
+        rename_article(old_title, @article.title) if old_title != @article.title
+        record_deed
+        flash[:notice] = t('.subject_successfully_updated')
+        flash[:notice] << t('.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION, count: GIS_DECIMAL_PRECISION) if gis_truncated
+        redirect_to action: 'edit', article_id: @article.id
+      else
+        render action: 'edit'
+      end
+    elsif params['autolink']
+      @article.source_text = autolink(@article.source_text)
+      flash[:notice] = t('.subjects_auto_linking')
+      redirect_to action: 'edit', article_id: @article.id
+    end
+  end
+
+  def article_category
+    status = params[:status]
+    if status == 'true'
+      @article.categories << @category
+    else
+      @article.categories.delete(@category)
+    end
+    render plain: 'success'
+  end
+
+  def combine_duplicate
+    # @article contains "to" article
+    params[:from_article_ids].each do |from_article_id|
+      from_article = Article.find(from_article_id)
+      combine_articles(from_article, @article)
+    end
+
+    flash[:notice] = t('.selected_subjects_combined', title: @article.title)
+    redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
+  end
+
+  def graph
+    redirect_to action: :show, article_id: @article.id
+  end
 
   # display the article upload form
   def upload_form
   end
 
-
   def find_or_create_category(collection, title)
-    category = collection.categories.where(:title => title).first
+    category = collection.categories.where(title:).first
     if category.nil?
-      category = Category.new(:title => title)
+      category = Category.new(title:)
       collection.categories << category
     end
 
@@ -211,21 +204,20 @@ class ArticleController < ApplicationController
   def subject_upload
     @collection = Collection.find params[:upload][:collection_id]
     # read the file
-    file = params[:upload][:file].tempfile
+    params[:upload][:file].tempfile
 
-#    csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
+    #    csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
     begin
-      csv = CSV.read(params[:upload][:file].tempfile, :headers=>true)
-    rescue
+      csv = CSV.read(params[:upload][:file].tempfile, headers: true)
+    rescue StandardError
       contents = File.read(params[:upload][:file].tempfile)
       detection = CharlockHolmes::EncodingDetector.detect(contents)
 
-      csv = CSV.read(params[:upload][:file].tempfile, 
-                      :encoding => "bom|#{detection[:encoding]}",
-                      :liberal_parsing => true,
-                      :headers => true)
+      csv = CSV.read(params[:upload][:file].tempfile,
+        encoding: "bom|#{detection[:encoding]}",
+        liberal_parsing: true,
+        headers: true)
     end
-
 
     provenance = params[:upload][:file].original_filename + " (uploaded #{Time.now} UTC)"
     # check the values
@@ -233,7 +225,7 @@ class ArticleController < ApplicationController
       # create subjects if heading checks out
       csv.each do |row|
         title = row['HEADING']
-        article = @collection.articles.where(:title => title).first || Article.new(:title => title, :provenance => provenance)
+        article = @collection.articles.where(title:).first || Article.new(title:, provenance:)
         article.collection = @collection
         article.source_text = row['ARTICLE']
         article.uri = row['URI']
@@ -242,31 +234,30 @@ class ArticleController < ApplicationController
       end
       # redirect to subject list
       redirect_to collection_subjects_path(@collection.owner, @collection)
-    else      
+    else
       # flash message and redirect to upload form on problems
       flash[:error] = t('.csv_file_must_contain_headers')
-      redirect_to article_upload_form_path(@collection)    
+      redirect_to article_upload_form_path(@collection)
     end
   end
 
-
   def upload_example
-    example = File.read(File.join(Rails.root, 'app', 'views', 'static', 'subject_example.csv'))
-    send_data example, filename: "subject_example.csv"
+    example = Rails.root.join('app', 'views', 'static', 'subject_example.csv').read
+    send_data example, filename: 'subject_example.csv'
   end
 
   protected
 
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
-    for link in @article.page_article_links
+    @article.page_article_links.each do |link|
       source_text = link.page.source_text
       link.page.rename_article_links(old_name, new_name)
       link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
-    for link in @article.target_article_links
+    @article.target_article_links.each do |link|
       source_text = link.article.source_text
       link.article.rename_article_links(old_name, new_name)
       link.article.save!
@@ -287,32 +278,30 @@ class ArticleController < ApplicationController
   def combine_articles(from_article, to_article)
     # rename the article to something bizarre in case they have the same name
     old_from_title = from_article.title
-    from_article.title = 'TO_BE_DELETED:'+old_from_title
+    from_article.title = "TO_BE_DELETED:#{old_from_title}"
     from_article.save!
 
     # walk through all pages referring to from_article
     # walk through all pages referring to this
-    for link in from_article.page_article_links
+    from_article.page_article_links.each do |link|
       source_text = link.page.source_text
       link.page.rename_article_links(old_from_title, to_article.title)
       link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
-    for link in from_article.target_article_links
+    from_article.target_article_links.each do |link|
       source_text = link.source_article.source_text
       link.source_article.rename_article_links(old_from_title, to_article.title)
       link.source_article.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.source_article.source_text}\n")
     end
 
-    for link in from_article.source_article_links
-      link.destroy
-    end
+    from_article.source_article_links.each(&:destroy)
     # thankfully, rename_article_links is source-agnostic!
 
     # change links
-    Deed.where(:article_id => from_article.id).update_all("article_id='#{to_article.id}'")
+    Deed.where(article_id: from_article.id).update_all("article_id='#{to_article.id}'")
 
     # append old from_article text to to_article text
     if from_article.source_text
@@ -328,33 +317,35 @@ class ArticleController < ApplicationController
   end
 
   def gis_truncated?(params, dec)
-    unless params[:latitude] || params[:longitude] then return false end
+    return false unless params[:latitude] || params[:longitude]
 
     lat = params[:latitude].split('.')
     lon = params[:longitude].split('.')
 
-    if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
-    if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
+    lat.length == 2 ? (lat_dec = lat.last.length) : (lat_dec = 0)
+    lon.length == 2 ? (lon_dec = lon.last.length) : (lon_dec = 0)
 
-    if lat_dec > dec || lon_dec > dec then return true else return false end
+    return true if lat_dec > dec || lon_dec > dec
+
+    false
   end
 
   def sort_vertically(articles)
-    rows = (articles.length().to_f / LIST_NUM_COLUMNS).ceil
+    rows = articles.length.fdivLIST_NUM_COLUMNS.ceil
     vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) } # 2D array of articles
 
     row = 0
     col = 0
     articles.each do |article|
       vertical_articles[row][col] = article
-      row+=1          # Go down a row each time
-      if row == rows  # When you reach the bottom, move to the next column
-        col+= 1
+      row += 1 # Go down a row each time
+      if row == rows # When you reach the bottom, move to the next column
+        col += 1
         row = 0
       end
     end
 
-    return vertical_articles
+    vertical_articles
   end
 
   private
@@ -362,4 +353,5 @@ class ArticleController < ApplicationController
   def article_params
     params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude)
   end
+
 end

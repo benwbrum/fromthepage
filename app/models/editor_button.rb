@@ -18,9 +18,11 @@
 #  fk_rails_...  (collection_id => collections.id)
 #
 class EditorButton < ApplicationRecord
+
   belongs_to :collection
 
   module Keys
+
     ABBR = 'abbr'
     ADD = 'add'
     DATE = 'date'
@@ -39,6 +41,7 @@ class EditorButton < ApplicationRecord
     UNCLEAR = 'unclear'
     UNDERLINE = 'u'
     ITALIC = 'i'
+
   end
 
   BUTTON_MAP = {
@@ -62,31 +65,29 @@ class EditorButton < ApplicationRecord
     Keys::UNDERLINE => ['<hi rend="underline">', '<u>']
   }
 
-
   def open_tag
-    tags = BUTTON_MAP[self.key]
-    if self.prefer_html && tags.size > 1
+    tags = BUTTON_MAP[key]
+    if prefer_html && tags.size > 1
       tags[1].html_safe
     else
       tags[0].html_safe
     end
   end
 
-
   def close_tag
-    ('</' + open_tag.sub('<', '').sub(/\s.*/, '').sub('>','') + '>').html_safe
+    "</#{open_tag.sub('<', '').sub(/\s.*/, '').sub('>', '')}>".html_safe
   end
 
   def cursor_offset
-    self.close_tag.length
+    close_tag.length
   end
 
   def has_attribute
-    open_tag.match /\s/
+    open_tag.match(/\s/)
   end
 
   def hotkey
-    "Ctrl-E"
+    'Ctrl-E'
   end
 
 end

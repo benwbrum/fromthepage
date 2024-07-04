@@ -15,7 +15,7 @@ h1 =t('.activity_stream')
     h3 =t('.user_title', title: @user.display_name)
 
 table.datagrid.striped#deeds-list
-  thead 
+  thead
     th
     th= t('.deed')
     th= t('.type')
@@ -29,12 +29,12 @@ table.datagrid.striped#deeds-list
         td.w100.toleft
           -if @collection.nil?
             -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
-              =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+              =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true })
             -else
-              =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
+              =raw(strip_tags(render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true })))
           -else
-            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
-            
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
+
         td
           small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
         td.nowrap (data-order="#{d.created_at.to_i}")

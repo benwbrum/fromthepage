@@ -1,16 +1,17 @@
 class DocumentSetsController < ApplicationController
+
   before_action :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update, :transfer_form]
+  layout proc { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :edit, :update, :transfer_form]
 
   def authorized?
-    unless user_signed_in? && @collection && current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
-    end
+    return false if user_signed_in? && @collection && current_user.like_owner?(@collection)
+
+    ajax_redirect_to dashboard_path
   end
 
   def transfer_form
@@ -22,7 +23,7 @@ class DocumentSetsController < ApplicationController
 
     if source_set == target_set
       flash[:error] = t('.source_and_target_can_not_be_the_same')
-      render :action => 'transfer_form', :layout => false
+      render action: 'transfer_form', layout: false
       flash.clear
     else
       if params[:status_filter] == 'all'
@@ -32,26 +33,21 @@ class DocumentSetsController < ApplicationController
       end
 
       works.each do |work|
-        unless work.document_sets.include? target_set
-          work.document_sets << target_set
-        end
-        if params[:transfer_type] == 'move'
-          work.document_sets.delete(source_set)
-        end
+        work.document_sets << target_set unless work.document_sets.include? target_set
+        work.document_sets.delete(source_set) if params[:transfer_type] == 'move'
       end
 
-      ajax_redirect_to document_sets_path(:collection_id => @collection)
+      ajax_redirect_to document_sets_path(collection_id: @collection)
     end
   end
-
 
   def index
     page = params[:page]
     page = 1 if page.blank?
     if params[:search]
-      @works = @collection.search_works(params[:search]).order(:title).paginate(page: page, per_page: 20)
+      @works = @collection.search_works(params[:search]).order(:title).paginate(page:, per_page: 20)
     else
-      @works = @collection.works.order(:title).paginate(page: page, per_page: 20)
+      @works = @collection.works.order(:title).paginate(page:, per_page: 20)
     end
   end
 
@@ -71,11 +67,11 @@ class DocumentSetsController < ApplicationController
 
   def create
     @document_set = DocumentSet.new(document_set_params)
-    if current_user.account_type != "Staff"
-      @document_set.owner = current_user
-    else
-      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+    if current_user.account_type == 'Staff'
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != 'Staff' }
       @document_set.owner = extant_collection.owner
+    else
+      @document_set.owner = current_user
     end
     if @document_set.save
       flash[:notice] = t('.document_created')
@@ -83,7 +79,6 @@ class DocumentSetsController < ApplicationController
     else
       render action: 'new'
     end
-
   end
 
   def assign_works
@@ -103,10 +98,8 @@ class DocumentSetsController < ApplicationController
   end
 
   def assign_to_set
-    unless @collection
-      @collection = DocumentSet.friendly.find(params[:collection_id])
-    end
-    new_ids = params[:work].keys.map {|id| id.to_i}
+    @collection ||= DocumentSet.friendly.find(params[:collection_id])
+    new_ids = params[:work].keys.map(&:to_i)
     ids = @collection.work_ids + new_ids
     @collection.work_ids = ids
     @collection.save!
@@ -115,7 +108,7 @@ class DocumentSetsController < ApplicationController
 
   def remove_from_set
     @collection = DocumentSet.friendly.find(params[:collection_id])
-    ids = params[:work].keys.map {|id| id.to_i}
+    ids = params[:work].keys.map(&:to_i)
     new_ids = @collection.work_ids - ids
     @collection.work_ids = new_ids
     @collection.save!
@@ -125,16 +118,14 @@ class DocumentSetsController < ApplicationController
   def update
     @document_set.attributes = document_set_params
 
-    if document_set_params[:slug].blank?
-      @document_set.slug = @document_set.title.parameterize
-    end
+    @document_set.slug = @document_set.title.parameterize if document_set_params[:slug].blank?
 
     if @document_set.save
       flash[:notice] = t('.document_updated')
-      unless request.referrer.include?("/settings")
-        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+      if request.referer.include?('/settings')
+        redirect_to request.referer
       else
-        redirect_to request.referrer
+        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
       end
     else
       settings
@@ -143,27 +134,27 @@ class DocumentSetsController < ApplicationController
   end
 
   def settings
-    #works not yet in document set
+    # works not yet in document set
     if params[:search]
-      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
+      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(
+        page: params[:page], per_page: 20
+      )
     else
       @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     end
-    #document set edit needs the @document set variable
-    @document_set = @collection unless @document_set
+    # document set edit needs the @document set variable
+    @document_set ||= @collection
     @collaborators = @document_set.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators
   end
 
   def add_set_collaborator
     @collection.collaborators << @user
-    if @user.notification.add_as_collaborator
-      if SMTP_ENABLED
-        begin
-          UserMailer.collection_collaborator(@user, @collection).deliver!
-        rescue StandardError => e
-          print "SMTP Failed: Exception: #{e.message}"
-        end
+    if @user.notification.add_as_collaborator && SMTP_ENABLED
+      begin
+        UserMailer.collection_collaborator(@user, @collection).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
       end
     end
     redirect_to collection_settings_path(@collection.owner, @collection)
@@ -194,15 +185,14 @@ class DocumentSetsController < ApplicationController
   private
 
   def set_document_set
-    unless (defined? @document_set) && @document_set
-      id = params[:document_set_id] || params[:id]
-      @document_set = DocumentSet.friendly.find(id)
-    end
+    return if (defined? @document_set) && @document_set
+
+    id = params[:document_set_id] || params[:id]
+    @document_set = DocumentSet.friendly.find(id)
   end
 
   def document_set_params
     params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
   end
-
 
 end

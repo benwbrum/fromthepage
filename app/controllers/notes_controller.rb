@@ -1,6 +1,15 @@
 class NotesController < ApplicationController
+
   include ActionView::Helpers::TextHelper
   PAGES_PER_SCREEN = 20
+
+  def show
+    @note = Note.find(params[:id])
+  end
+
+  def edit
+    @note = Note.find(params[:id])
+  end
 
   def create
     @note = Note.new(note_params)
@@ -14,11 +23,13 @@ class NotesController < ApplicationController
     @note.user = current_user
 
     respond_to do |format|
-      if not user_signed_in?
+      if !user_signed_in?
         format.html { redirect_back fallback_location: root_path, flash: { error: t('.must_be_logged') } }
       elsif @note.save
         record_deed
-        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]) }, status: :created }
+        format.json do
+          render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]) }, status: :created
+        end
         format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_created') }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
@@ -31,7 +42,7 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     respond_to do |format|
       if @note.update(note_params)
-        note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
+        note_body = sanitize(@note.body, tags: ['strong', 'b', 'em', 'i', 'a'], attributes: ['href'])
 
         format.json { render json: { html: simple_format(note_body) }, status: :ok }
         format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_updated') }
@@ -52,14 +63,6 @@ class NotesController < ApplicationController
     end
   end
 
-  def edit
-    @note = Note.find(params[:id])
-  end
-
-  def show
-    @note = Note.find(params[:id])
-  end
-
   def record_deed
     deed = Deed.new
     deed.note = @note
@@ -74,19 +77,20 @@ class NotesController < ApplicationController
   end
 
   def discussions
-    @pages = @collection.pages.where.not(last_note_updated_at: nil).reorder(last_note_updated_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @pages = @collection.pages.where.not(last_note_updated_at: nil).reorder(last_note_updated_at: :desc).paginate page: params[:page],
+      per_page: PAGES_PER_SCREEN
   end
 
   def list
     respond_to do |format|
       format.html
-      format.json { 
+      format.json do
         render json: NoteDatatable.new(
-          params, 
-          view_context: view_context, 
+          params,
+          view_context:,
           collection_id: params[:collection_id]
-        ) 
-      }
+        )
+      end
     end
   end
 
@@ -95,4 +99,5 @@ class NotesController < ApplicationController
   def note_params
     params.require(:note).permit(:body)
   end
+
 end

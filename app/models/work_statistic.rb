@@ -29,10 +29,11 @@
 #  index_work_statistics_on_work_id_and_line_count  (work_id,line_count)
 #
 class WorkStatistic < ApplicationRecord
+
   belongs_to :work, optional: true
 
   def pct_transcribed
-    raw = self[:transcribed_pages].to_f / self[:total_pages] * 100
+    raw = self[:transcribed_pages].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
@@ -44,13 +45,13 @@ class WorkStatistic < ApplicationRecord
   end
 
   def pct_corrected
-    raw = self[:corrected_pages].to_f / self[:total_pages] * 100
+    raw = self[:corrected_pages].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
 
   def pct_translated
-    raw = self[:translated_pages].to_f / self[:total_pages] * 100
+    raw = self[:translated_pages].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
@@ -68,25 +69,25 @@ class WorkStatistic < ApplicationRecord
   end
 
   def pct_needs_review
-    raw = self[:needs_review].to_f / self[:total_pages] * 100
+    raw = self[:needs_review].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
 
   def pct_translation_needs_review
-    raw = self[:translated_review].to_f / self[:total_pages] * 100
+    raw = self[:translated_review].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
 
   def pct_blank
-    raw = self[:blank_pages].to_f / self[:total_pages] * 100
+    raw = self[:blank_pages].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
 
   def pct_translation_blank
-    raw = self[:translated_blank].to_f / self[:total_pages] * 100
+    raw = self[:translated_blank].fdiv(self[:total_pages]) * 100
     raw = 0.0 if raw.nan?
     [[0, raw].max, 100].min.round(2)
   end
@@ -112,7 +113,7 @@ class WorkStatistic < ApplicationRecord
   end
 
   def update_last_edit_date
-    self.update(last_edit_at: Time.now)
+    update(last_edit_at: Time.now)
   end
 
   def recalculate(_options = {})
@@ -120,7 +121,7 @@ class WorkStatistic < ApplicationRecord
     recalculate_parent_statistics
   end
 
-  def recalculate_from_hash(stats=nil)
+  def recalculate_from_hash(stats = nil)
     stats = get_stats_hash if stats.nil?
 
     self[:total_pages] = stats[:total]
@@ -153,14 +154,16 @@ class WorkStatistic < ApplicationRecord
       line_count: work.pages.sum(:line_count)
     }
   end
+
   private
 
   # current logic to recalculate statistics for parent document set and parent collection
   def recalculate_parent_statistics
     # save completed information for collections/document sets
     work.collection&.calculate_complete
-    unless work.document_sets.empty?
-      work.document_sets.each(&:calculate_complete)
-    end
+    return if work.document_sets.empty?
+
+    work.document_sets.each(&:calculate_complete)
   end
+
 end

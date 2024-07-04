@@ -1,6 +1,7 @@
 class CreateTranscribeAuthorizations < ActiveRecord::Migration[5.0]
+
   def self.up
-    create_table :transcribe_authorizations, :id => false  do |t|
+    create_table :transcribe_authorizations, id: false do |t|
       # t.column :name, :string
       t.column :user_id, :integer
       t.column :work_id, :integer
@@ -14,4 +15,5 @@ class CreateTranscribeAuthorizations < ActiveRecord::Migration[5.0]
 
     remove_column :works, :owner_user_id
   end
+
 end

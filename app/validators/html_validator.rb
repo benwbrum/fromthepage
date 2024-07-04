@@ -1,4 +1,5 @@
 class HtmlValidator < ActiveModel::EachValidator
+
   def validate_each(record, attribute, value)
     return unless value&.match?(/<[^>]+>/) # Regex to check if it follows html syntax
 
@@ -9,4 +10,5 @@ class HtmlValidator < ActiveModel::EachValidator
       record.errors.add(attribute, message)
     end
   end
+
 end

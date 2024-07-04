@@ -1,4 +1,5 @@
 module TranscribeHelper
+
   # Get the current tab's path when moving from page to page
   def get_active_tab_path(tab, owner, collection, work, item)
     case tab
@@ -23,14 +24,14 @@ module TranscribeHelper
     options[:text_type] ||= 'transcription'
     options[:radius] ||= 3
 
-    search_text = case options[:text_type]
-                  when 'translation'
-                    page.source_translation
-                  when 'transcription'
-                    page.source_text
-                  else
-                    "[[#{title}]]"
-                  end
+    case options[:text_type]
+    when 'translation'
+      search_text = page.source_translation
+    when 'transcription'
+      search_text = page.source_text
+    else
+      search_text = "[[#{title}]]"
+    end
     subject_context(search_text, title, options[:radius])
   end
 
@@ -50,7 +51,7 @@ module TranscribeHelper
 
       # Generate a list of \n indexes including 0 index and final index
       newlines = [0]
-      text.to_enum(:scan, /\n/).each { |_m,| newlines.push $`.size }
+      text.to_enum(:scan, /\n/).each { |_m,| newlines.push ::Regexp.last_match.pre_match.size }
       newlines.push(text.length)
 
       ## Sensible index defaults
@@ -58,9 +59,9 @@ module TranscribeHelper
       post = text.length - 1
 
       # Separate the \n before and after the main match (ignore \n in the title)
-      left, right = newlines.uniq
-                            .reject { |idx| idx > pivot && idx < end_index }
-                            .partition { |idx| idx < pivot }
+      left, right = newlines.uniq.
+        reject { |idx| idx > pivot && idx < end_index }.
+        partition { |idx| idx < pivot }
 
       # Set new pre/post indexes based on line radius
       pre = left.last(line_radius).min + 1 unless left.empty?
@@ -80,21 +81,20 @@ module TranscribeHelper
         sources += osd_source(page, work)
       end
       sources
-    else
-      if page.sc_canvas
-        if page.sc_canvas.sc_service_id
-          service_id = page.sc_canvas.sc_service_id.sub(/\/$/,'')
-          ["#{service_id}/info.json"]
-        else
-          [{type: 'image', url: page.sc_canvas.sc_resource_id}.to_json]
-        end
-      elsif page.ia_leaf
-        [page.ia_leaf.iiif_image_info_url]
-      elsif browser.platform.ios? && browser.webkit?
-        ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+    elsif page.sc_canvas
+      if page.sc_canvas.sc_service_id
+        service_id = page.sc_canvas.sc_service_id.sub(%r{/$}, '')
+        ["#{service_id}/info.json"]
       else
-        [{type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json]
+        [{ type: 'image', url: page.sc_canvas.sc_resource_id }.to_json]
       end
+    elsif page.ia_leaf
+      [page.ia_leaf.iiif_image_info_url]
+    elsif browser.platform.ios? && browser.webkit?
+      ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+    else
+      [{ type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json]
     end
   end
+
 end

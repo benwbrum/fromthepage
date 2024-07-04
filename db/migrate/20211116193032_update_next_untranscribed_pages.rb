@@ -1,14 +1,12 @@
 class UpdateNextUntranscribedPages < ActiveRecord::Migration[6.0]
+
   def change
-    Work.all.each do |work|
-      work.set_next_untranscribed_page
-    end
+    Work.all.each(&:set_next_untranscribed_page)
 
     Collection.all.each do |collection|
-      collection.document_sets.each do |document_set|
-        document_set.set_next_untranscribed_page
-      end
+      collection.document_sets.each(&:set_next_untranscribed_page)
       collection.set_next_untranscribed_page
     end
   end
+
 end

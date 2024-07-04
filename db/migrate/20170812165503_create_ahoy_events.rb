@@ -1,4 +1,5 @@
 class CreateAhoyEvents < ActiveRecord::Migration[5.0]
+
   def change
     create_table :ahoy_events do |t|
       t.integer :visit_id
@@ -16,4 +17,5 @@ class CreateAhoyEvents < ActiveRecord::Migration[5.0]
     add_index :ahoy_events, [:user_id, :name]
     add_index :ahoy_events, [:name, :time]
   end
+
 end

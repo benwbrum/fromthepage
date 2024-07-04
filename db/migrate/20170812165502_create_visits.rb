@@ -1,4 +1,5 @@
 class CreateVisits < ActiveRecord::Migration[5.0]
+
   def change
     create_table :visits do |t|
       t.string :visit_token
@@ -54,4 +55,5 @@ class CreateVisits < ActiveRecord::Migration[5.0]
     add_index :visits, [:visit_token], unique: true
     add_index :visits, [:user_id]
   end
+
 end

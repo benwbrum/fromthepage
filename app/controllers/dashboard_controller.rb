@@ -1,5 +1,5 @@
-# frozen_string_literal: true
 class DashboardController < ApplicationController
+
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
@@ -9,15 +9,24 @@ class DashboardController < ApplicationController
     only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+    only: [
+      :owner,
+      :staging,
+      :upload,
+      :new_upload,
+      :startproject,
+      :empty_work,
+      :create_work,
+      :summary,
+      :exports
+    ]
 
   before_action :remove_col_id
 
   def authorized?
-    unless user_signed_in? && current_user.owner
-      redirect_to dashboard_path
-    end
+    return false if user_signed_in? && current_user.owner
+
+    redirect_to dashboard_path
   end
 
   def dashboard_role
@@ -34,7 +43,6 @@ class DashboardController < ApplicationController
     end
   end
 
-
   # Public Dashboard - list of all collections
   def index
     if Collection.all.count > 1000
@@ -44,7 +52,7 @@ class DashboardController < ApplicationController
     end
   end
 
-  def collections_list(private_only=false)
+  def collections_list(private_only = false)
     if private_only
       cds = []
     else
@@ -60,7 +68,7 @@ class DashboardController < ApplicationController
       cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
     end
-    @collections_and_document_sets = cds.sort { |a,b| a.slug <=> b.slug }
+    @collections_and_document_sets = cds.sort { |a, b| a.slug <=> b.slug }
   end
 
   # Owner Dashboard - start project
@@ -75,24 +83,24 @@ class DashboardController < ApplicationController
 
   def your_hours
     load_user_hours_data
-    if @start_date_hours > @end_date_hours
-      flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
-      redirect_to dashboard_your_hours_path
-    end
+    return unless @start_date_hours > @end_date_hours
+
+    flash[:error] = 'Invalid date range. Please make sure the end date is greater than the start date.'
+    redirect_to dashboard_your_hours_path
   end
 
   def download_hours_letter
     load_user_hours_data
-    @time_duration=params[:time_duration]
+    @time_duration = params[:time_duration]
     markdown_text = generate_markdown_text
 
     # write the string to a temp directory
-    temp_dir = File.join(Rails.root, 'public', 'printable')
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+    temp_dir = Rails.public_path.join('printable')
+    FileUtils.mkdir_p(temp_dir)
 
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/, '')
     temp_dir = File.join(temp_dir, time_stub)
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+    FileUtils.mkdir_p(temp_dir)
 
     file_stub = "letter_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
@@ -105,9 +113,9 @@ class DashboardController < ApplicationController
 
   # Owner Dashboard - list of works
   def owner
-    collections = current_user.all_owner_collections
-    @active_collections = @collections.select { |c| c.active? }
-    @inactive_collections = @collections.select { |c| !c.active? }
+    current_user.all_owner_collections
+    @active_collections = @collections.select(&:active?)
+    @inactive_collections = @collections.reject(&:active?)
     # Needs to be active collections first, then inactive collections
     @collections = @active_collections + @inactive_collections
   end
@@ -120,53 +128,52 @@ class DashboardController < ApplicationController
     max_date = 1.day.ago
 
     # Give a week fo data if there are no dates
-    @start_date = start_d&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
-    @end_date = end_d&.to_datetime&.end_of_day || max_date
+    @start_date = start_d.present? ? Time.zone.parse(start_d).beginning_of_day : 1.week.ago.beginning_of_day
+    @end_date = end_d.present? ? Time.zone.parse(end_d).end_of_day : max_date
     @end_date = max_date if max_date < @end_date
 
     @statistics_object = current_user
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
 
     # Stats
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
-    contributor_ids_for_dates = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
+    owner_collections = current_user.all_owner_collections.map(&:id)
+    contributor_ids_for_dates = AhoyActivitySummary.
+      where(collection_id: owner_collections).
+      where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
     @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
 
-    @activity = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date)
-        .group(:user_id)
-        .sum(:minutes)
+    @activity = AhoyActivitySummary.
+      where(collection_id: owner_collections).
+      where('date BETWEEN ? AND ?', @start_date, @end_date).
+      group(:user_id).
+      sum(:minutes)
   end
 
   # Collaborator Dashboard - watchlist
   def watchlist
     works = Work.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct
-    recent_collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).where('deeds.created_at > ?', Time.now-2.days).distinct.order_by_recent_activity.limit(5)
+    recent_collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).where('deeds.created_at > ?',
+      Time.now - 2.days).distinct.order_by_recent_activity.limit(5)
     collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
-    @collections = (collections + recent_collections + document_sets)
-               .uniq
-               .sort_by do |collection|
-                 if collection.is_a?(Collection)
-                   collection.created_on
-                 elsif collection.is_a?(DocumentSet)
-                   collection.created_at
-                 end
-               end
-               .reverse
-               .take(10)
+    @collections = (collections + recent_collections + document_sets).
+      uniq.
+      sort_by do |collection|
+      if collection.is_a?(Collection)
+        collection.created_on
+      elsif collection.is_a?(DocumentSet)
+        collection.created_at
+      end
+    end.
+      reverse.
+      take(10)
   end
-
 
   def exports
-    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
   end
-
 
   # Collaborator Dashboard - activity
   def editor
@@ -203,8 +210,8 @@ class DashboardController < ApplicationController
     @search_results = search_results(params[:search])
 
     # Get random Collections and DocSets from paying users
-    @owners = User.findaproject_owners.order(:display_name).joins(:collections)
-                  .left_outer_joins(:document_sets).includes(:collections)
+    @owners = User.findaproject_owners.order(:display_name).joins(:collections).
+      left_outer_joins(:document_sets).includes(:collections)
 
     # Sampled Randomly down to 8 items for Carousel
     docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
@@ -229,36 +236,35 @@ class DashboardController < ApplicationController
     dates = (start_date..end_date)
 
     headers = [
-      "Username",
-      "Email",
+      'Username',
+      'Email'
     ]
 
-    headers += dates.map{|d| d.strftime("%b %d, %Y")}
+    headers += dates.map { |d| d.strftime('%b %d, %Y') }
 
     # Get Row Data (Users)
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    owner_collections = current_user.all_owner_collections.map(&:id)
 
-
-    contributor_ids_for_dates = AhoyActivitySummary
-      .where(collection_id: owner_collections)
-      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+    contributor_ids_for_dates = AhoyActivitySummary.
+      where(collection_id: owner_collections).
+      where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
 
     contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       contributors.each do |user|
         row = [user.display_name, user.email]
 
-        activity = AhoyActivitySummary
-          .where(user_id: user.id)
-          .where(collection_id: owner_collections)
-          .where('date BETWEEN ? AND ?', start_date, end_date)
-          .group(:date)
-          .sum(:minutes)
-          .transform_keys{ |k| k.to_date }
+        activity = AhoyActivitySummary.
+          where(user_id: user.id).
+          where(collection_id: owner_collections).
+          where('date BETWEEN ? AND ?', start_date, end_date).
+          group(:date).
+          sum(:minutes).
+          transform_keys(&:to_date)
 
-        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
+        user_activity = dates.map { |d| activity[d.to_date] || 0 }
 
         row += user_activity
 
@@ -266,9 +272,9 @@ class DashboardController < ApplicationController
       end
     end
 
-    send_data( csv,
-              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-              :type => "application/csv")
+    send_data(csv,
+      filename: "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+      type: 'application/csv')
   end
 
   private
@@ -287,13 +293,13 @@ class DashboardController < ApplicationController
       @end_date_hours = Date.parse(params['end_date'])
     else
       @start_date_hours = 7.days.ago.to_date
-      @end_date_hours = Date.today
+      @end_date_hours = Time.zone.today
     end
     @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
 
     raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
-    @collection_id_to_page_count = raw.select{|collection_id, page_id| !page_id.nil? }.map{|collection_id, page_id| collection_id}.tally
-    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
+    @collection_id_to_page_count = raw.compact.map { |collection_id, _page_id| collection_id }.tally
+    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort { |a, b| a.owner.display_name <=> b.owner.display_name }
   end
 
   def generate_markdown_text
@@ -324,7 +330,7 @@ class DashboardController < ApplicationController
   end
 
   def generated_format_date(date)
-    formatted_date = date.strftime("%B %d, %Y")
+    date.strftime('%B %d, %Y')
   end
 
   def generate_pdf(input_path, output_path, markdown_text)
@@ -336,8 +342,8 @@ class DashboardController < ApplicationController
   def send_generated_pdf(output_path)
     # spew the output to the browser
     send_data(File.read(output_path),
-      filename: File.basename("letter.pdf"),
-      :content_type => "application/pdf")
+      filename: File.basename('letter.pdf'),
+      content_type: 'application/pdf')
     cookies['download_finished'] = 'true'
   end
 
@@ -346,4 +352,5 @@ class DashboardController < ApplicationController
 
     Collection.search(search_key).unrestricted + DocumentSet.search(search_key).unrestricted
   end
+
 end

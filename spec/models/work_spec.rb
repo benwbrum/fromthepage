@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'spec_helper'
 
 RSpec.describe Work, type: :model do
@@ -24,13 +22,16 @@ RSpec.describe Work, type: :model do
       expect(work.supports_indexing?).to be false
     end
   end
+
   describe '#set/update_next_untranscribed_page' do
     let(:work) { create(:work, owner_user_id: 1) }
-    it "sets nil with no pages" do
+
+    it 'sets nil with no pages' do
       work.set_next_untranscribed_page
-      expect(work.next_untranscribed_page).to eq(nil)
+      expect(work.next_untranscribed_page).to be_nil
     end
-    it "sets untranscribed page to lowest positioned untrancribed page" do
+
+    it 'sets untranscribed page to lowest positioned untrancribed page' do
       page_ten = create(:page, work_id: work.id, status: nil, position: 10)
       create(:page, work_id: work.id, status: Page::STATUS_TRANSCRIBED, position: 5)
       work.set_next_untranscribed_page
@@ -43,11 +44,11 @@ RSpec.describe Work, type: :model do
       expect(work.next_untranscribed_page).to eq(page_one)
     end
 
-    it "sets nil with no untranscribed pages" do
+    it 'sets nil with no untranscribed pages' do
       create(:page, work_id: work.id, status: Page::STATUS_TRANSCRIBED)
       work.set_next_untranscribed_page
 
-      expect(work.next_untranscribed_page).to eq(nil)
+      expect(work.next_untranscribed_page).to be_nil
     end
   end
 end

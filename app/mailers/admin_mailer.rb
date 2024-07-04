@@ -1,4 +1,5 @@
 class AdminMailer < ActionMailer::Base
+
   include ContributorHelper
   helper ContributorHelper
   include ApplicationHelper
@@ -6,31 +7,29 @@ class AdminMailer < ActionMailer::Base
 
   before_action :add_inline_attachments!
 
-  default from: "FromThePage <support@fromthepage.com>"
-  layout "admin_mailer"
-  
-  def contributor_stats(collection_id, start_date, end_date, email)
+  default from: 'FromThePage <support@fromthepage.com>'
+  layout 'admin_mailer'
 
+  def contributor_stats(collection_id, start_date, end_date, email)
     new_contributors(collection_id, start_date, end_date)
 
-    mail from: SENDING_EMAIL_ADDRESS, to: email, subject: "New Transcription Information "
+    mail from: SENDING_EMAIL_ADDRESS, to: email, subject: 'New Transcription Information '
   end
 
   def owner_stats
     owner_expirations
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Owner Expiration Information "
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: 'Owner Expiration Information '
   end
 
   def email_stats(hours)
-    
-    #call method from contributors helper
+    # call method from contributors helper
     show_email_stats(hours)
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
   def collection_stats_by_owner(activity)
     @activity = activity
-    mail from: SENDING_EMAIL_ADDRESS, to: @activity.owner.email, subject: "Recent Activity in Your Collections"
+    mail from: SENDING_EMAIL_ADDRESS, to: @activity.owner.email, subject: 'Recent Activity in Your Collections'
   end
 
   def iiif_collection_import_failed(user_id, collection_id, errors)
@@ -49,56 +48,63 @@ class AdminMailer < ActionMailer::Base
   def cdm_bulk_import_failed(cdm_bulk_export, errors)
     user_email = cdm_bulk_export.user.email
     @errors = errors
-    mail to: user_email, subject: "CONTENTdm Bulk Import Errors"
+    mail to: user_email, subject: 'CONTENTdm Bulk Import Errors'
   end
 
   def cdm_bulk_import_succeeded(cdm_bulk_export)
     user_email = cdm_bulk_export.user.email
     @collection = cdm_bulk_export.collection_or_document_set
-    mail to: user_email, subject: "CONTENTdm Bulk Import Complete"
+    mail to: user_email, subject: 'CONTENTdm Bulk Import Complete'
   end
 
   def weekly_trial_cohort(file)
-    attachments.inline["weekly_cohort.csv"] = File.read(file)
-    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Trial Cohort")
+    attachments.inline['weekly_cohort.csv'] = File.read(file)
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: 'Weekly Trial Cohort')
   end
 
   def weekly_transcriber_cohort(file)
-    attachments.inline["weekly_transcriber_cohort.csv"] = File.read(file)
-    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Weekly Transcriber Cohort")
+    attachments.inline['weekly_transcriber_cohort.csv'] = File.read(file)
+    mail(from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: 'Weekly Transcriber Cohort')
   end
 
   class OwnerCollectionActivity
+
     attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity
-    
+
     def initialize(owner, activity_since)
       @owner = owner
       @since = activity_since
       @collections = owner.all_owner_collections_updated_since(activity_since)
       @collaborators = owner.new_collaborators_since(activity_since)
-      @comments = Deed
-        .where(collection: @collections)
-        .where('created_at > ?', activity_since)
-        .where(deed_type: DeedType::NOTE_ADDED)
-      @activity = Deed.includes(:collection)
-        .where(collection: @collections)
-        .where('created_at > ?', activity_since)
-        .where.not(deed_type: DeedType::NOTE_ADDED)
-        .group_by{ |d| d.collection.title }
+      @comments = Deed.
+        where(collection: @collections).
+        where('created_at > ?', activity_since).
+        where(deed_type: DeedType::NOTE_ADDED)
+      @activity = Deed.includes(:collection).
+        where(collection: @collections).
+        where('created_at > ?', activity_since).
+        where.not(deed_type: DeedType::NOTE_ADDED).
+        group_by { |d| d.collection.title }
     end
-    
+
     class << self
-      def build(owner, activity_since=1.day.ago)
+
+      def build(owner, activity_since = 1.day.ago)
         AdminMailer::OwnerCollectionActivity.new(owner, activity_since)
       end
+
     end
+
   end
+
   private
+
   def admin_emails
-    User.where(:admin => true).to_a.map { |u| u.email }
+    User.where(admin: true).to_a.map(&:email)
   end
-  
+
   def add_inline_attachments!
-    attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+    attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end
+
 end

@@ -1,4 +1,5 @@
 class CreateWorkFacets < ActiveRecord::Migration[5.0]
+
   def change
     create_table :work_facets do |t|
       t.string :s0, limit: 512
@@ -19,4 +20,5 @@ class CreateWorkFacets < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

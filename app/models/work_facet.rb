@@ -29,5 +29,7 @@
 #  fk_rails_...  (work_id => works.id)
 #
 class WorkFacet < ApplicationRecord
+
   belongs_to :work
+
 end

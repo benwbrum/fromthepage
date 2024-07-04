@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class DocumentUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
@@ -39,7 +37,7 @@ class DocumentUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list
-    %w(zip pdf)
+    ['zip', 'pdf']
   end
 
   # Override the filename of the uploaded files:

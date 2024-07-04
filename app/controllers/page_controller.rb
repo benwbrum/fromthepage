@@ -1,19 +1,18 @@
 # handles administrative tasks for the page object
 class PageController < ApplicationController
+
   require 'image_helper'
   include ImageHelper
 
-  protect_from_forgery :except => [:set_page_title]
-  before_action :authorized?, :except => [:alto_xml]
+  protect_from_forgery except: [:set_page_title]
+  before_action :authorized?, except: [:alto_xml]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout proc { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create]
 
   def authorized?
     if user_signed_in?
-      if @work
-        redirect_to dashboard_path unless current_user.like_owner?(@work)
-      end
+      redirect_to dashboard_path if @work && !current_user.like_owner?(@work)
     else
       redirect_to dashboard_path
     end
@@ -29,13 +28,13 @@ class PageController < ApplicationController
       string['ID'] = "string_#{i}"
     end
 
-    render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
+    render plain: doc.to_xml, layout: false, content_type: 'text/xml'
   end
-  
+
   def delete
     @page.destroy
     flash[:notice] = t('.page_deleted')
-    redirect_to work_pages_tab_path(:work_id => @work.id)
+    redirect_to work_pages_tab_path(work_id: @work.id)
   end
 
   # image functions
@@ -48,15 +47,14 @@ class PageController < ApplicationController
     redirect_back fallback_location: @page
   end
 
-
   # reordering functions
   def reorder_page
-    if(params[:direction]=='up')
+    if params[:direction] == 'up'
       @page.move_higher
     else
       @page.move_lower
     end
-    redirect_to work_pages_tab_path(:work_id => @work.id)
+    redirect_to work_pages_tab_path(work_id: @work.id)
   end
 
   # new page functions
@@ -74,14 +72,12 @@ class PageController < ApplicationController
     if @page.save
       flash[:notice] = t('.page_created')
 
-      if page_params[:base_image]
-        process_uploaded_file(@page, page_params[:base_image])
-      end
+      process_uploaded_file(@page, page_params[:base_image]) if page_params[:base_image]
 
       if subaction == 'save_and_new'
-        ajax_redirect_to({ :controller => 'dashboard', :action => 'startproject', :anchor => 'create-work' })
+        ajax_redirect_to({ controller: 'dashboard', action: 'startproject', anchor: 'create-work' })
       else
-        ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+        ajax_redirect_to({ controller: 'work', action: 'pages_tab', work_id: @work.id, anchor: 'create-page' })
       end
     else
       render :new
@@ -90,21 +86,16 @@ class PageController < ApplicationController
 
   def update
     page = Page.find(params[:id])
-    attributes = page_params.to_h.except("base_image")
-    if page_params[:status].blank?
-      attributes['status'] = nil
-    end   
+    attributes = page_params.to_h.except('base_image')
+    attributes['status'] = nil if page_params[:status].blank?
     page.update_columns(attributes) # bypass page version callbacks
     flash[:notice] = t('.page_updated')
-    page.work.work_statistic.recalculate if page.work.work_statistic
+    page.work.work_statistic&.recalculate
 
-    if params[:page][:base_image]
-      process_uploaded_file(page, page_params[:base_image])
-    end
+    process_uploaded_file(page, page_params[:base_image]) if params[:page][:base_image]
 
     redirect_back fallback_location: page
   end
-
 
   private
 
@@ -113,23 +104,21 @@ class PageController < ApplicationController
     filename = "#{Rails.root}/public/images/working/upload/#{page.id}.jpg"
 
     dirname = File.dirname(filename)
-    unless Dir.exist? dirname
-      FileUtils.mkdir_p(dirname)
-    end
+    FileUtils.mkdir_p(dirname)
 
     FileUtils.mv(image_file.tempfile, filename)
-    FileUtils.chmod("u=wr,go=r", filename)
+    FileUtils.chmod('u=wr,go=r', filename)
     page.base_image = filename
     page.shrink_factor = 0
     set_dimensions(page)
-    #reduce_by_one(page)
+    # reduce_by_one(page)
   end
 
   def reduce_by_one(page)
     page.shrink_factor = page.shrink_factor + 1
     shrink_file(page.scaled_image(0),
-                page.scaled_image(page.shrink_factor),
-                page.shrink_factor)
+      page.scaled_image(page.shrink_factor),
+      page.shrink_factor)
     page.save!
   end
 
@@ -137,7 +126,6 @@ class PageController < ApplicationController
     image = Magick::ImageList.new(page.base_image)
     page.base_width = image.columns
     page.base_height = image.rows
-    image = nil
     page.save!
   end
 

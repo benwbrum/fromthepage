@@ -1,4 +1,5 @@
 class CreateScManifests < ActiveRecord::Migration[5.0]
+
   def change
     create_table :sc_manifests do |t|
       t.references :work, index: true
@@ -12,4 +13,5 @@ class CreateScManifests < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

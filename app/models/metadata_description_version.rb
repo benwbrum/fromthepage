@@ -21,11 +21,12 @@
 #  fk_rails_...  (work_id => works.id)
 #
 class MetadataDescriptionVersion < ApplicationRecord
+
   belongs_to :user
   belongs_to :work
 
   def display
-    self.created_at.strftime("%b %d, %Y") + " - " + self.user.display_name + " (#{self.version_number})"
+    "#{created_at.strftime('%b %d, %Y')} - #{user.display_name} (#{version_number})"
   end
 
 end

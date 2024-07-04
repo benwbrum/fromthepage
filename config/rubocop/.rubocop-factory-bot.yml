@@ -1,0 +1,17 @@
+FactoryBot/AttributeDefinedStatically:
+  Enabled: false
+
+FactoryBot/CreateList:
+  Enabled: false
+
+FactoryBot/FactoryClassName:
+  Enabled: false
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false
+
+FactoryBot/IdSequence:
+  Enabled: false
+
+FactoryBot/ExcessiveCreateList:
+  Enabled: false

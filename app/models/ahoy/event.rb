@@ -16,14 +16,16 @@
 #  index_ahoy_events_on_visit_id_and_name  (visit_id,name)
 #
 module Ahoy
-  class Event < ActiveRecord::Base
+  class Event < ApplicationRecord
+
     include Ahoy::Properties
 
-    self.table_name = "ahoy_events"
+    self.table_name = 'ahoy_events'
 
     belongs_to :visit, optional: true
     belongs_to :user, optional: true
 
-    serialize :properties, JSON
+    serialize :properties, coder: JSON
+
   end
 end

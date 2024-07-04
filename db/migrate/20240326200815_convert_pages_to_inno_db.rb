@@ -1,4 +1,5 @@
 class ConvertPagesToInnoDb < ActiveRecord::Migration[5.0]
+
   def up
     # Recreate full-text index on search_text column
     execute 'ALTER TABLE pages DROP INDEX pages_search_text_index;'
@@ -20,4 +21,5 @@ class ConvertPagesToInnoDb < ActiveRecord::Migration[5.0]
     # Recreate full-text index on search_text column
     execute 'ALTER TABLE pages ADD FULLTEXT pages_search_text_index (search_text);'
   end
+
 end

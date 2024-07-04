@@ -1,4 +1,5 @@
 class AddMetadataFieldsToWork < ActiveRecord::Migration[6.0]
+
   def change
     add_column :works, :genre, :string
     add_column :works, :source_location, :string
@@ -8,4 +9,5 @@ class AddMetadataFieldsToWork < ActiveRecord::Migration[6.0]
     add_column :works, :editorial_notes, :text
     add_column :works, :document_date, :string
   end
+
 end

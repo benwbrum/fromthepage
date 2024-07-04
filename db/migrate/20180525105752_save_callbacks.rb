@@ -1,4 +1,5 @@
 class SaveCallbacks < ActiveRecord::Migration[5.0]
+
   def change
     # # initialize the new column before recalculations happen
     # WorkStatistic.update_all(:complete => 0, :translation_complete => 0)
@@ -23,7 +24,6 @@ class SaveCallbacks < ActiveRecord::Migration[5.0]
     # # from 20180316133826_update_collection_statistics
     # Collection.all.each { |c| c.calculate_complete }
     # DocumentSet.all.each {|d| d.calculate_complete}
-
-
   end
+
 end

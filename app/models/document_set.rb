@@ -24,52 +24,55 @@
 #  index_document_sets_on_slug           (slug) UNIQUE
 #
 class DocumentSet < ApplicationRecord
+
   include DocumentSetStatistic
 
   extend FriendlyId
-  friendly_id :slug_candidates, :use => [:slugged, :history]
+  friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
   # validate :slug_uniqueness_across_objects
 
   mount_uploader :picture, PictureUploader
 
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_user_id', optional: true
   belongs_to :collection, optional: true
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
+  belongs_to :next_untranscribed_page, class_name: 'Page', optional: true
 
   has_many :pages, through: :works
 
   has_many :document_set_works
   has_many :works, -> { order 'title' }, through: :document_set_works
 
-  has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
+  has_and_belongs_to_many :collaborators, class_name: 'User', join_table: :document_set_collaborators
 
-  has_many :bulk_exports, :dependent => :delete_all
+  has_many :bulk_exports, dependent: :delete_all
 
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(is_public: true)}
-  scope :restricted, -> { where(is_public: false)}
-  scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder(Arel.sql("RAND()"))}
+  scope :unrestricted, -> { where(is_public: true) }
+  scope :restricted, -> { where(is_public: false) }
+  scope :carousel, -> {
+                     where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: { picture: nil }).where.not(description: [nil, '']).where(is_public: true).reorder(Arel.sql('RAND()'))
+                   }
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
   scope :random_sample, -> (sample_size = 5) do
     carousel
-    reorder(Arel.sql("RAND()")) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql("RAND()"))
+    reorder(Arel.sql('RAND()')) unless sample_size > 1
+    limit(sample_size).reorder(Arel.sql('RAND()'))
   end
 
   def show_to?(user)
-    self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    is_public? || user&.like_owner?(self) || user&.collaborator?(self)
   end
 
   def intro_block
-    self.description
+    description
   end
 
   def messageboards_enabled
@@ -77,71 +80,44 @@ class DocumentSet < ApplicationRecord
   end
 
   def messageboards_enabled?
-    self.messageboards_enabled
+    messageboards_enabled
   end
 
   def uniquify_slug
-    if Collection.where(slug: self.slug).exists?
-      self.slug = self.slug+'-set'
-    end
+    return unless Collection.exists?(slug:)
+
+    self.slug = "#{slug}-set"
   end
 
-  def metadata_coverages
-    self.collection.metadata_coverages
-  end
+  delegate :metadata_coverages, to: :collection
 
-  def enable_spellcheck
-    self.collection.enable_spellcheck
-  end
+  delegate :enable_spellcheck, to: :collection
 
-  def reviewers
-    self.collection.reviewers
-  end
+  delegate :reviewers, to: :collection
 
-  def facet_configs
-    self.collection.facet_configs
-  end
+  delegate :facet_configs, to: :collection
 
-  def text_entry?
-    self.collection.text_entry?
-  end
+  delegate :text_entry?, to: :collection
 
   def metadata_entry?
-    self.collection.text_entry?
+    collection.text_entry?
   end
 
-  def metadata_only_entry?
-    self.collection.metadata_only_entry?
-  end
+  delegate :metadata_only_entry?, to: :collection
 
-  def text_and_metadata_entry?
-    self.collection.text_and_metadata_entry?
-  end
+  delegate :text_and_metadata_entry?, to: :collection
 
+  delegate :hide_completed, to: :collection
 
-  def hide_completed
-    self.collection.hide_completed
-  end
+  delegate :review_workflow, to: :collection
 
-  def review_workflow
-    self.collection.review_workflow
-  end
+  delegate :review_type, to: :collection
 
-  def review_type
-    self.collection.review_type
-  end
+  delegate :user_download, to: :collection
 
-  def user_download
-    self.collection.user_download
-  end
+  delegate :subjects_disabled, to: :collection
 
-  def subjects_disabled
-    self.collection.subjects_disabled
-  end
-
-  def editor_buttons
-    self.collection.editor_buttons
-  end
+  delegate :editor_buttons, to: :collection
 
   def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
@@ -162,93 +138,65 @@ class DocumentSet < ApplicationRecord
   end
 
   def articles
-    Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
+    Article.joins(:pages).where(pages: { work_id: works.ids }).distinct
   end
 
-  def categories
-    self.collection.categories
-  end
+  delegate :categories, to: :collection
 
   def supports_document_sets
     false
   end
 
   def notes
-    Note.where(work_id: self.works.ids).order('created_at DESC')
+    Note.where(work_id: works.ids).order('created_at DESC')
   end
 
   def deeds
-    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work).reorder('deeds.created_at DESC')
+    collection.deeds.where(work_id: works.ids).joins(:work).includes(:work).reorder('deeds.created_at DESC')
   end
 
   def restricted
-    !self.is_public
+    !is_public
   end
 
-  def active?
-    self.collection.active?
-  end
+  delegate :active?, to: :collection
 
-  def footer_block
-    self.collection.footer_block
-  end
+  delegate :footer_block, to: :collection
 
-  def help
-    self.collection.help
-  end
+  delegate :help, to: :collection
 
-  def link_help
-    self.collection.link_help
-  end
+  delegate :link_help, to: :collection
 
-  def voice_recognition
-    self.collection.voice_recognition
-  end
+  delegate :voice_recognition, to: :collection
 
-  def language
-    self.collection.language
-  end
+  delegate :language, to: :collection
 
-  def text_language
-    self.collection.text_language
-  end
+  delegate :text_language, to: :collection
 
-  def field_based
-    self.collection.field_based
-  end
+  delegate :field_based, to: :collection
 
-  def picture_url(thumb=nil)
-    if self.picture.blank?
-      self.collection.picture.url(thumb)
+  def picture_url(thumb = nil)
+    if picture.blank?
+      collection.picture.url(thumb)
     else
-      self.picture.url(thumb)
+      picture.url(thumb)
     end
   end
 
-  def transcription_fields
-    self.collection.transcription_fields
-  end
+  delegate :transcription_fields, to: :collection
 
-  def metadata_fields
-    self.collection.metadata_fields
-  end
+  delegate :metadata_fields, to: :collection
 
-  def description_instructions
-    self.collection.description_instructions
-  end
+  delegate :description_instructions, to: :collection
 
-  def text_entry?
-    self.collection.text_entry?
-  end
+  delegate :text_entry?, to: :collection
 
-  def metadata_entry?
-    self.collection.metadata_entry?
-  end
+  delegate :metadata_entry?, to: :collection
 
   def set_next_untranscribed_page
     first_work = works.order_by_incomplete.first
-    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
-    page_id = first_page.nil? ? nil : first_page.id
+    first_page = first_work&.next_untranscribed_page
+    page_id = first_page&.id
 
     update_columns(next_untranscribed_page_id: page_id)
   end
@@ -257,21 +205,21 @@ class DocumentSet < ApplicationRecord
     return nil unless has_untranscribed_pages?
     return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
 
-    public = works
-      .where.not(next_untranscribed_page_id: nil)
-      .unrestricted
-      .order_by_incomplete
+    public = works.
+      where.not(next_untranscribed_page_id: nil).
+      unrestricted.
+      order_by_incomplete
 
     return public.first.next_untranscribed_page unless public.empty?
 
-    private = works
-      .where.not(next_untranscribed_page_id: nil)
-      .restricted
-      .order_by_incomplete
+    private = works.
+      where.not(next_untranscribed_page_id: nil).
+      restricted.
+      order_by_incomplete
 
-    wk = private.find{ |w| user.can_transcribe?(w) }
+    wk = private.find { |w| user.can_transcribe?(w) }
 
-    wk.nil? ? nil : wk.next_untranscribed_page
+    wk&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
@@ -279,13 +227,13 @@ class DocumentSet < ApplicationRecord
   end
 
   def slug_candidates
-    if self.slug
+    if slug
       [:slug]
     else
-    [
-      :title,
-      [:title, :id]
-    ]
+      [
+        :title,
+        [:title, :id]
+      ]
     end
   end
 
@@ -298,11 +246,11 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
+    works.where('title LIKE ? OR searchable_metadata like ?', "%#{search}%", "%#{search}%")
   end
 
   def search_collection_works(search)
-    self.collection.search_works(search)
+    collection.search_works(search)
   end
 
   def self.search(search)
@@ -321,33 +269,25 @@ class DocumentSet < ApplicationRecord
     end
   end
 
-  def facets_enabled?
-    self.collection.facets_enabled?
-  end
+  delegate :facets_enabled?, to: :collection
 
-  def sc_collection # association does not exist for document sets
+  # association does not exist for document sets
+  def sc_collection
     nil
   end
 
-  def api_access 
-    collection.api_access
-  end
+  delegate :api_access, to: :collection
 
-  def alphabetize_works
-    self.collection.alphabetize_works
-  end
+  delegate :alphabetize_works, to: :collection
 
-  def institution_signature
-    self.collection.institution_signature
-  end
+  delegate :institution_signature, to: :collection
 
-  def most_recent_deed_created_at
-    self.collection.most_recent_deed_created_at
-  end
+  delegate :most_recent_deed_created_at, to: :collection
 
   def user_help
-    self.collection.owner.help
+    collection.owner.help
   end
 
   public :user_help
+
 end

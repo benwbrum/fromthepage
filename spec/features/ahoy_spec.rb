@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'Ahoy' do
-
   before :each do
     DatabaseCleaner.start
   end

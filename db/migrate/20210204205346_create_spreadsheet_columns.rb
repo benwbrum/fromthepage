@@ -1,4 +1,5 @@
 class CreateSpreadsheetColumns < ActiveRecord::Migration[5.0]
+
   def change
     create_table :spreadsheet_columns do |t|
       t.references :transcription_field, null: false, foreign_key: true
@@ -11,4 +12,5 @@ class CreateSpreadsheetColumns < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

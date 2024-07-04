@@ -1,4 +1,5 @@
 class SetCreatedByForArticles < ActiveRecord::Migration[6.0]
+
   def change
     Article.all.each do |article|
       if article.collection_id.present?
@@ -7,4 +8,5 @@ class SetCreatedByForArticles < ActiveRecord::Migration[6.0]
       end
     end
   end
+
 end

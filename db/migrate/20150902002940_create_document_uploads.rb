@@ -1,4 +1,5 @@
 class CreateDocumentUploads < ActiveRecord::Migration[5.0]
+
   def change
     create_table :document_uploads do |t|
       t.references :user, index: true
@@ -8,4 +9,5 @@ class CreateDocumentUploads < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

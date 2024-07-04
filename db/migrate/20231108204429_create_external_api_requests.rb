@@ -1,4 +1,5 @@
 class CreateExternalApiRequests < ActiveRecord::Migration[5.0]
+
   def change
     create_table :external_api_requests do |t|
       t.references :user, null: false, foreign_key: true
@@ -12,4 +13,5 @@ class CreateExternalApiRequests < ActiveRecord::Migration[5.0]
       t.timestamps
     end
   end
+
 end

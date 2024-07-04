@@ -1,4 +1,5 @@
 class AddTranscribedPercentageToWorkStatistics < ActiveRecord::Migration[6.0]
+
   def up
     add_column :work_statistics, :transcribed_percentage, :integer
 
@@ -10,4 +11,5 @@ class AddTranscribedPercentageToWorkStatistics < ActiveRecord::Migration[6.0]
   def down
     remove_column :work_statistics, :transcribed_percentage
   end
+
 end

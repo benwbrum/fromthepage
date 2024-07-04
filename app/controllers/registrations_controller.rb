@@ -1,9 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
 
-  def new
-    super
-  end
-
   def owner_new
     @owner = User.where(slug: params[:user_slug]).first
     new
@@ -13,32 +9,22 @@ class RegistrationsController < Devise::RegistrationsController
     new
   end
 
-  def destroy
-    resource.soft_delete
-    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message :notice, :destroyed if is_flashing_format?
-    yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name)}
-  end
-
   def create
-    unless params[:owner_slug].blank?
-      @owner = User.where(slug: params[:owner_slug]).first
-    end
+    @owner = User.where(slug: params[:owner_slug]).first if params[:owner_slug].present?
 
-    #merge the new user information into the guest user id to change into normal user
-    if current_user && current_user.guest?
+    # merge the new user information into the guest user id to change into normal user
+    if current_user&.guest?
       @user = current_user
       @user.update(sign_up_params)
       @user.guest = false
-      
+
     else
       @user = build_resource(sign_up_params)
     end
 
-    #this is the default Devise code
+    # this is the default Devise code
     yield resource if block_given?
-      
+
     if check_recaptcha(model: @user) && @user.save
       # Record the `joined` deed based on Ahoy Visit
       join_collection = joined_from_collection(current_visit.id)
@@ -57,22 +43,18 @@ class RegistrationsController < Devise::RegistrationsController
         expire_data_after_sign_in!
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
-      #set the guest_user_id of the session to nil for user login/out
-      if session[:guest_user_id]
-        session[:guest_user_id] = nil
-      end
-      
+      # set the guest_user_id of the session to nil for user login/out
+      session[:guest_user_id] = nil if session[:guest_user_id]
+
       if @user.owner
-        @user.account_type="Trial"
+        @user.account_type = 'Trial'
         @user.save
         alert_bento
       end
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
-      if @validatable
-        @minimum_password_length = resource_class.password_length.min
-      end
+      @minimum_password_length = resource_class.password_length.min if @validatable
       respond_with resource
     end
   end
@@ -81,49 +63,54 @@ class RegistrationsController < Devise::RegistrationsController
     @user.login = sign_up_params[:login]
     @user.email = sign_up_params[:email]
     @user.real_name = sign_up_params[:real_name]
-    unless sign_up_params[:password].blank?
-      @user.password=sign_up_params[:password]
-      @user.password_confirmation=sign_up_params[:password_confirmation]
+    if sign_up_params[:password].present?
+      @user.password = sign_up_params[:password]
+      @user.password_confirmation = sign_up_params[:password_confirmation]
     end
 
     if @user.save
       bypass_sign_in(@user)
       flash[:notice] = t('user.update.user_updated')
-      ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
+      ajax_redirect_to({ controller: 'user', action: 'profile', user_id: @user.slug, anchor: '' })
     else
-      render :controller => 'user', :action => 'edit'
+      render controller: 'user', action: 'edit'
     end
   end
 
+  def destroy
+    resource.soft_delete
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message :notice, :destroyed if is_flashing_format?
+    yield resource if block_given?
+    respond_with_navigational(resource) { redirect_to after_sign_out_path_for(resource_name) }
+  end
 
   def set_saml
     institution = saml_provider_param
-    redirect_to user_omniauth_authorize_path(institution)  #go to users/auth/saml/instution_name
+    redirect_to user_omniauth_authorize_path(institution) # go to users/auth/saml/instution_name
   end
 
   def choose_saml
   end
 
-  def alert_bento()
-    if defined?(BENTO_ENABLED) && BENTO_ENABLED
-      $bento.track(identity: {email: current_user.email}, event: '$action', details: {action_information: "signed_up_for_trial"})
-    end
+  def alert_bento
+    return unless defined?(BENTO_ENABLED) && BENTO_ENABLED
+
+    $bento.track(identity: { email: current_user.email }, event: '$action', details: { action_information: 'signed_up_for_trial' })
   end
 
-  #redirect new sign up back to starting page
-  def after_sign_up_path_for(resource)
+  # redirect new sign up back to starting page
+  def after_sign_up_path_for(_resource)
     if @user.owner
       # Always send new owners to their dashboard for analytics purposes
-      "#{dashboard_owner_path}#freetrial" 
-    else
+      "#{dashboard_owner_path}#freetrial"
+    elsif session[:user_return_to] && landing_pages.exclude?(session[:user_return_to])
       # New users should be returned to where they were or to their dashboard/watchlist
-      if session[:user_return_to] && !landing_pages.include?(session[:user_return_to])
-        session[:user_return_to]
-      elsif @owner
-        user_profile_path(@owner)
-      else
-        dashboard_watchlist_path
-      end
+      session[:user_return_to]
+    elsif @owner
+      user_profile_path(@owner)
+    else
+      dashboard_watchlist_path
     end
   end
 
@@ -133,13 +120,15 @@ class RegistrationsController < Devise::RegistrationsController
 
   def check_recaptcha(options)
     return verify_recaptcha(options) if RECAPTCHA_ENABLED
+
     true
   end
 
   private
 
   def sign_up_params
-    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password,
+      :password_confirmation)
   end
 
   def saml_provider_param
@@ -147,9 +136,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def joined_from_collection(visit_id)
-    first_event = Ahoy::Event.where(visit_id: visit_id).first
-    collection = first_event.properties["collection_id"] || nil
-    return collection
+    first_event = Ahoy::Event.where(visit_id:).first
+    first_event.properties['collection_id'] || nil
   end
 
   def landing_pages
@@ -162,6 +150,5 @@ class RegistrationsController < Devise::RegistrationsController
       state_archives_path
     ]
   end
-
 
 end

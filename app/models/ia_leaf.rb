@@ -19,7 +19,8 @@
 #  index_ia_leaves_on_page_id  (page_id)
 #
 class IaLeaf < ApplicationRecord
-  self.table_name = "ia_leaves"
+
+  self.table_name = 'ia_leaves'
   belongs_to :ia_work, optional: true
   belongs_to :page, optional: true
 

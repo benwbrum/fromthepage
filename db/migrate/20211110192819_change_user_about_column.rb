@@ -7,4 +7,5 @@ class ChangeUserAboutColumn < ActiveRecord::Migration[5.0]
   def down
     change_column :users, :about, :string
   end
+
 end

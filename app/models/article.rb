@@ -31,29 +31,29 @@
 #  index_articles_on_collection_id  (collection_id)
 #
 class Article < ApplicationRecord
+
   include XmlSourceProcessor
-  #include ActiveModel::Dirty
+  # include ActiveModel::Dirty
 
   before_save :process_source
 
-  validates_presence_of :title
+  validates :title, presence: true
 
-  validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90}
-  validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
-
+  validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+  validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
 
   has_and_belongs_to_many :categories, -> { distinct }
   belongs_to :collection, optional: true
-  has_many(:target_article_links, :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink')
+  has_many(:target_article_links, foreign_key: 'target_article_id', class_name: 'ArticleArticleLink')
   scope :target_article_links, -> { include 'source_article' }
-  scope :target_article_links, -> { order "articles.title ASC" }
+  scope :target_article_links, -> { order 'articles.title ASC' }
 
-  has_many(:source_article_links, :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink')
+  has_many(:source_article_links, foreign_key: 'source_article_id', class_name: 'ArticleArticleLink')
   has_many(:page_article_links)
   scope :page_article_links, -> { includes(:page) }
-  scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
+  scope :page_article_links, -> { order('pages.work_id, pages.position ASC') }
 
-  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages)}
+  scope :pages_for_this_article, -> { order('pages.work_id, pages.position ASC').includes(:pages) }
 
   has_many :pages, through: :page_article_links, counter_cache: true
 
@@ -62,37 +62,35 @@ class Article < ApplicationRecord
   after_save :create_version
 
   def link_list
-    self.page_article_links.includes(:page).order("pages.work_id, pages.title")
+    page_article_links.includes(:page).order('pages.work_id, pages.title')
   end
 
-  #needed for document sets to correctly display articles
+  # needed for document sets to correctly display articles
   def show_links(collection)
-    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids})
+    page_article_links.includes(:page).where(pages: { work_id: collection.works.ids })
   end
 
   def page_list
-    self.pages.order("pages.work_id, pages.position")
+    pages.order('pages.work_id, pages.position')
   end
 
   def source_text
     self[:source_text] || ''
   end
 
-
   def self.delete_orphan_articles
     # don't delete orphan articles with contents
-    Article.delete_all("source_text IS NULL AND id NOT IN (select article_id from page_article_links)")
+    Article.delete_all('source_text IS NULL AND id NOT IN (select article_id from page_article_links)')
   end
 
   #######################
   # Related Articles
   #######################
   def related_article_ranks
-
   end
 
   def gis_enabled?
-    self.categories.where(:gis_enabled => true).present?
+    categories.where(gis_enabled: true).present?
   end
 
   #######################
@@ -100,13 +98,13 @@ class Article < ApplicationRecord
   #######################
   # tested
   def possible_duplicates
-    logger.debug "------------------------------"
-    logger.debug "article.possible_duplicates"
+    logger.debug '------------------------------'
+    logger.debug 'article.possible_duplicates'
     # take each element of this article name
-    words = self.title.tr(',.', ' ').split(' ')
+    words = title.tr(',.', ' ').split
     # sort it by word length, longest to shortest
     words.keep_if { |word| word.match(/\w\w/) }
-    words.sort! { |x,y| x.length <=> y.length }
+    words.sort! { |x, y| x.length <=> y.length }
     words.reverse!
     # for each word
     all_matches = []
@@ -119,7 +117,7 @@ class Article < ApplicationRecord
       # logger.debug("@collection.id: #{self.collection.id}")
 
       current_matches =
-        self.collection.articles.where("id <> ? AND title like ?", self.id, "%#{word}%" )
+        collection.articles.where('id <> ? AND title like ?', id, "%#{word}%")
       # current_matches.delete self
       #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
@@ -133,31 +131,30 @@ class Article < ApplicationRecord
     end
     #    logger.debug("DEBUG: found #{all_matches.size} matches:")
     #    logger.debug("DEBUG: #{all_matches.inspect}")
-    logger.debug("at the end of article.possible_duplicates")
-    logger.debug("--------------------------------------")
-    return all_matches
+    logger.debug('at the end of article.possible_duplicates')
+    logger.debug('--------------------------------------')
+    all_matches
   end
-
 
   #######################
   # XML Source support
   #######################
   # tested
-  def clear_links(type='does_not_apply')
+  def clear_links(_type = 'does_not_apply')
     # clear out the existing links to this page
-    if self.id
-      ArticleArticleLink.where("source_article_id = #{self.id}").delete_all
-    end
+    return unless id
+
+    ArticleArticleLink.where("source_article_id = #{id}").delete_all
   end
 
   # tested
-  def create_link(article, display_text, text_type)
+  def create_link(article, display_text, _text_type)
     link = ArticleArticleLink.new
     link.source_article = self
     link.target_article = article
     link.display_text = display_text
     link.save!
-    return link.id
+    link.id
   end
 
   #######################
@@ -165,26 +162,21 @@ class Article < ApplicationRecord
   #######################
   # tested
   def create_version
-
-    unless self.saved_change_to_title? || self.saved_change_to_source_text?
-      return
-    end
+    return unless saved_change_to_title? || saved_change_to_source_text?
 
     version = ArticleVersion.new
     # copy article data
-    version.title = self.title
-    version.xml_text = self.xml_text
-    version.source_text = self.source_text
+    version.title = title
+    version.xml_text = xml_text
+    version.source_text = source_text
     # set foreign keys
     version.article = self
     version.user = User.current_user
 
     # now do the complicated version update thing
 
-    previous_version = ArticleVersion.where(["article_id = ?", self.id]).order("version DESC").all
-    if previous_version.first
-      version.version = previous_version.first.version + 1
-    end
+    previous_version = ArticleVersion.where(article_id: id).order('version DESC').all
+    version.version = previous_version.first.version + 1 if previous_version.first
     version.save!
   end
 
@@ -201,5 +193,5 @@ class Article < ApplicationRecord
 
     [category] + ancestors
   end
-end
 
+end

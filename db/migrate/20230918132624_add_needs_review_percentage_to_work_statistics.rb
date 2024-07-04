@@ -1,4 +1,5 @@
 class AddNeedsReviewPercentageToWorkStatistics < ActiveRecord::Migration[6.0]
+
   def up
     add_column :work_statistics, :needs_review_percentage, :integer
 
@@ -10,4 +11,5 @@ class AddNeedsReviewPercentageToWorkStatistics < ActiveRecord::Migration[6.0]
   def down
     remove_column :work_statistics, :needs_review_percentage
   end
+
 end

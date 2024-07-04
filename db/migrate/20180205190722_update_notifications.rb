@@ -1,4 +1,5 @@
 class UpdateNotifications < ActiveRecord::Migration[5.0]
+
   def change
     # 2019-05-14 BWB Moved to incompatibilities script
     #
@@ -17,4 +18,5 @@ class UpdateNotifications < ActiveRecord::Migration[5.0]
     #   end
     # end
   end
+
 end

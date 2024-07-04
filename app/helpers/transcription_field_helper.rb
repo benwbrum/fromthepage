@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
 module TranscriptionFieldHelper
+
   def field_order(collection)
     @fields = collection.transcription_fields.order(:line_number).order(:position).group_by(&:line_number)
   end
@@ -11,12 +10,12 @@ module TranscriptionFieldHelper
 
   def field_layout(array)
     count = array.count
-    @width = (100.0 / count).round(5) unless count == nil
-    ids = array.map {|a| a.id}
+    @width = (100.0 / count).round(5) unless count.nil?
+    ids = array.map(&:id)
     @values = []
     if @page
       ids.each do |id|
-        @values << @page.table_cells.find_by(transcription_field_id: id) || nil
+        (@values << @page.table_cells.find_by(transcription_field_id: id)) || nil
       end
     else
       @values = Array.new(ids.count, nil)
@@ -36,7 +35,7 @@ module TranscriptionFieldHelper
       input = text_field_tag(input_name, content, class: 'field-input')
     when 'date'
       input = text_field_tag(input_name, content, class: 'field-input edtf',
-                                                  data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"' })
+        data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"' })
     when 'select'
       options = field.options&.split(';')
       input = select_tag(input_name, options_for_select(options, content), class: 'field-input')
@@ -55,4 +54,5 @@ module TranscriptionFieldHelper
   def formatted_field_name(field)
     "fields[#{field.id}][#{field.label.parameterize}]"
   end
+
 end
