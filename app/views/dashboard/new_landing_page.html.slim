@@ -64,9 +64,9 @@
                   ul.tagcloud
                     -tag_map.each do |ai_text, collection_count|
                       -if collection_count > 0
-                        li data-weight="#{collection_count}"
+                        li 
                           -link_text = "#{ai_text} (#{collection_count})"
-                          =link_to(link_text, browse_tag_path(ai_text))
+                          =link_to(link_text, tagged_user_profile_path(owner.slug, ai_text))
 
       .project-list_link
         =link_to t('.all_collections'), collections_list_path

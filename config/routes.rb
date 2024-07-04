@@ -455,6 +455,7 @@ Fromthepage::Application.routes.draw do
 
 
   resources :document_sets, except: [:show, :create, :edit]
+  get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
@@ -503,7 +504,6 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
-
 
 
       #work related routes
