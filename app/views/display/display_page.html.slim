@@ -23,7 +23,7 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns
+.page-columns(data-layout-mode="ltr")
   .page-column(id="leftColumn")
     .page-imagescan
       =render :partial => '/shared/osd_div'
