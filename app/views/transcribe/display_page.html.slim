@@ -65,10 +65,9 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
+  .page-columns(data-layout-mode="#{@layout_mode}")
     .page-column.page-imagescan(id="leftColumn")
-      .page-imagescan
-        =render :partial => '/shared/osd_div'
+      =render :partial => '/shared/osd_div'
     .splitter(id="splitter")
     .page-column(id="rightColumn")
       -if @page.status == Page::STATUS_BLANK
@@ -182,14 +181,14 @@ h2.legend =t('.notes_and_questions')
       var resizableSplitter = Object.create(ResizableSplitter);
 
       function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
-        const leftPanel = mode === 'ltr'?'#leftColumn':'#rightColumn';
-        const rightPanel = mode === 'ltr'?'#rightColumn':'#leftColumn';
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
 
         if(resizableSplitter && resizableSplitter.destroy) {
           resizableSplitter.destroy()
         }
 
-        resizableSplitter.init('#splitter', leftPanel, rightPanel, {
+        resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
           onPositionChange: function (pos) {
             window.localStorage.setItem('splitterPos', pos)
 
@@ -228,9 +227,9 @@ h2.legend =t('.notes_and_questions')
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
             if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top', mode);
             } else {
-              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
+              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top', mode);
             } 
           });
         }

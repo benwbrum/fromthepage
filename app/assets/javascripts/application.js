@@ -378,7 +378,7 @@ function refreshEditors() {
 }
 
 const ResizableSplitter = {
-  init: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, options = {}) {
+  initVertical: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
     const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
 
     const splitter = document.querySelector(splitterSelector);
@@ -388,6 +388,8 @@ const ResizableSplitter = {
     let startX;
     let startWidthPanel1;
     let startWidthPanel2;
+
+    splitter.style.top = '0px';
 
     // Function to calculate initial widths based on initial position
     const calculateInitialWidths = function(position) {
@@ -466,6 +468,126 @@ const ResizableSplitter = {
 
     // Initial adjustment on load
     handleWindowResize();
+
+    // Method to remove event listeners
+    this.destroy = function() {
+      splitter.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  },
+
+  initHorizontal: function(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
+    const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
+
+    const splitter = document.querySelector(splitterSelector);
+    const panel1 = document.querySelector(panel1Selector);
+    const panel2 = document.querySelector(panel2Selector);
+
+    let startY;
+    let startHeightPanel1;
+    let startHeightPanel2;
+
+    // Function to calculate initial heights based on initial position
+    const calculateInitialHeights = function(position) {
+      const totalHeight = panel1.parentElement.offsetHeight;
+      const initialHeight = typeof position === 'string' && position.includes('%')
+        ? parseFloat(position) / 100 * totalHeight
+        : parseFloat(position);
+
+      const heightPanel1 = initialHeight;
+      const heightPanel2 = totalHeight - initialHeight;
+
+      return {
+        heightPanel1,
+        heightPanel2
+      };
+    };
+
+    const { heightPanel1, heightPanel2 } = calculateInitialHeights(initialPosition);
+
+    panel1.style.flex = mode === 'ttb'?`${heightPanel1}px`:'auto';
+    panel2.style.flex = mode === 'ttb'?`auto`:`${heightPanel2}px`;
+
+    if(mode === 'ttb') {
+      const elementTop = panel1.parentElement.offsetTop - window.scrollTop
+      splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
+    } else {
+      splitter.style.bottom = `${panel2.clientHeight}px`
+      splitter.style.top = `auto`;
+    }
+
+    // Function to handle mouse move
+    const onMouseMove = function(e) {
+      const deltaY = e.clientY - startY;
+      let newHeightPanel1 = startHeightPanel1;
+
+      if(mode === 'ttb') {
+        newHeightPanel1 = startHeightPanel1 + deltaY;
+      } else {
+        newHeightPanel1 = startHeightPanel1 - deltaY;
+      }
+
+      if(mode === 'ttb') {
+        panel1.style.flex = `${newHeightPanel1}px`;
+      } else {
+        panel2.style.flex = `${newHeightPanel1}px`;
+      }
+
+      if (typeof onPositionChange === 'function') {
+        const totalHeight = panel1.parentElement.offsetHeight;
+        const currentPosition = (newHeightPanel1 / totalHeight) * 100;
+        onPositionChange(currentPosition);
+      }
+
+      if (typeof onDrag === 'function') {
+        onDrag(newHeightPanel1, heightPanel2);
+      }
+
+      if(mode === 'ttb') {
+        const elementTop = panel1.parentElement.offsetTop - window.scrollTop
+        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
+      } else {
+        splitter.style.bottom = `${panel2.clientHeight}px`
+        splitter.style.top = `auto`;
+      }
+    };
+
+    // Function to handle mouse up
+    const onMouseUp = function() {
+      if (typeof onChanged === 'function') {
+        onChanged(panel1.offsetHeight, panel2.offsetHeight);
+      }
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    // Function to handle mouse down
+    const onMouseDown = function(e) {
+      startY = e.clientY;
+      if(mode === 'ttb') {
+        startHeightPanel1 = panel1.offsetHeight;
+      } else {
+        startHeightPanel1 = panel2.offsetHeight;
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    };
+
+    splitter.addEventListener('mousedown', onMouseDown);
+
+    window.addEventListener('scroll', function(){
+      if(mode === 'ttb') {
+        const elementTop = panel1.parentElement.offsetTop - window.scrollTop
+        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
+      } else {
+        splitter.style.bottom = `${panel2.clientHeight}px`
+        splitter.style.top = `auto`;
+      }
+    })
 
     // Method to remove event listeners
     this.destroy = function() {

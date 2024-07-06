@@ -143,8 +143,6 @@
   width: 100%;
   display: flex;
   min-height: 50vh;
-  column-gap: 1.5rem;
-  row-gap: 1.5rem;
   position: relative;
 
   &[data-layout-mode='rtl'] {
@@ -209,7 +207,7 @@
   [data-layout-mode='ttb'] &,
   [data-layout-mode='btt'] & {
     flex-basis: auto;
-    height: calc((100vh - 74px - 3rem) / 2);
+    max-height: calc(50vh);
   }
 }
 

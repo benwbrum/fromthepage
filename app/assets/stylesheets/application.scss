@@ -298,25 +298,37 @@ h3, .thredded--post-form--title {
 .page-columns {
   .splitter {
     cursor: col-resize;
-    background-color: #ebe4d8;
+    background-color: #faf5eb;
     position: relative;
 
-    &:hover {
-      background-color: #d0bb88;
+    &:hover::after {
+      background-color: #d0bb88 !important;
     }
 
     &:hover::before {
-      background-color: #7d6b43;
+      background-color: #9a8964 !important;
     }
   }
 
   &[data-layout-mode='rtl'],
   &[data-layout-mode='ltr'] {
     .splitter {
-      width: 3px;
+      width: 20px;
       height: calc(100vh - 74px - 3rem);
       position: sticky;
-      top: 80px;
+      top: 80px !important;
+    }
+
+    .splitter::after {
+      position: absolute;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      content: '';
+      background-color: #ebe4d8;
+      z-index: 0;
     }
 
     .splitter::before {
@@ -330,6 +342,7 @@ h3, .thredded--post-form--title {
       height: 40px;
       border-radius: 2px;
       display: block;
+      z-index: 1;
     }
   }
 
@@ -337,9 +350,24 @@ h3, .thredded--post-form--title {
   &[data-layout-mode='btt'] {
     
     .splitter {
+      cursor: row-resize;
+      height: 20px;
+      width: 100%;
+      z-index: 99;
+      position: sticky;
+    }
+
+    .splitter::after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       height: 3px;
       width: 100%;
-      display: none; // Enable when Horizontal Splitter is complete
+      content: '';
+      background-color: #ebe4d8;
+      display: block;
+      left: 0;
+      z-index: 100;
     }
 
     .splitter::before {
@@ -353,6 +381,7 @@ h3, .thredded--post-form--title {
       width: 40px;
       border-radius: 2px;
       display: block;
+      z-index: 101;
     }
   } 
 }
