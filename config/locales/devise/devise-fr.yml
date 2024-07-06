@@ -5,6 +5,16 @@ fr:
     create_account: Créer un compte
     display_name: Organisation
     email_address: Adresse e-mail
+    errors:
+      keys:
+        email: E-mail
+        login: Nom d'utilisateur
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+      messages:
+        login:
+          exclusion: n'est pas valide
+          format: ne peut pas contenir de chevrons (<, >)
     failure:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n'est pas encore activé.
@@ -39,6 +49,7 @@ fr:
       send_paranoid_instructions: Si votre adresse e-mail existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse e-mail dans quelques minutes.
       updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant inscrit.
       updated_not_active: Votre mot de passe a été changé avec succès.
+      validation: La longueur minimale du mot de passe est de 6 caractères
     real_name: Nom
     real_name_message: Les projets peuvent l'utiliser lorsqu'ils vous citent. Laissez ce champ vide si vous ne souhaitez pas être crédité.
     receive_activity_emails: Recevoir des e-mails d'activité

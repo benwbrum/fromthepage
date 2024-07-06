@@ -66,6 +66,8 @@ fr:
       full_page: Basculer en pleine page
       home: Rentrer chez soi
       image_filters: Filtres d'images
+      monitor_close: Fermer la fenêtre
+      monitor_open: Ouvrir dans une nouvelle fenêtre
       open_seadragon_needs_js: OpenSeadragon n'est disponible que si JavaScript est activé.
       rotate_left: Tourne à gauche
       rotate_right: Tourner à droite

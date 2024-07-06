@@ -184,7 +184,7 @@ pt:
       user_download: Permitir que os usuários baixem obras.
       user_download_description: Adiciona uma guia de download visível ao usuário a cada trabalho, que permite aos usuários exportar a transcrição do documento em formatos fáceis de pesquisar, como Microsoft Word ou PDF.
       voice_recognition: Voz para texto disponível para a transcrição
-      voice_recognition_description: Não é compatível com editor avançado.
+      voice_recognition_description: Disponível apenas com o navegador Chrome.
     edit_privacy:
       api_access: Acesso API
       api_access_description: Permitir o acesso a transcrições através de IIIF API

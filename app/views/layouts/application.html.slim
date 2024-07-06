@@ -31,7 +31,7 @@ html lang="en-US"
     -unless CLARITY.blank?
       =render :partial => '/layouts/clarity'
 
-  body
+  body class="#{'monitor-view' if @is_monitor_view}"
     #flash_wrapper
       -flash.each do |type, message|
         =render :partial => '/shared/flash', :locals => { type: type, message: message }
@@ -86,7 +86,7 @@ html lang="en-US"
           dl.dropdown.right
             dt.header_link.header_locale tabindex=0
               span
-                <img src="/assets/icons/globe.svg" alt="">
+                =image_tag("icons/globe.svg", alt: "Globe Icon")
                 big =" " + locale.to_s.split("-")[0].upcase
             dd
               -@dropdown_locales.each do |locale_option|

@@ -5,6 +5,16 @@ en:
     create_account: Create Account
     display_name: Organization Name
     email_address: Email Address
+    errors:
+      keys:
+        email: Email
+        login: Username
+        password: Password
+        password_confirmation: Password confirmation
+      messages:
+        login:
+          exclusion: is invalid
+          format: can't contain angle brackets (<, >)
     failure:
       already_authenticated: You are already signed in.
       inactive: Your account is not activated yet.
@@ -39,6 +49,7 @@ en:
       send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
       updated: Your password has been changed successfully. You are now signed in.
       updated_not_active: Your password has been changed successfully.
+      validation: Minimum password length is 6 characters
     real_name: Real Name
     real_name_message: Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
     receive_activity_emails: Receive activity emails
@@ -101,7 +112,7 @@ en:
         sign_up_new_account: Sign up for a new account
     sign_in: Sign In
     sign_up: Sign Up
-    user_name: User Name
+    user_name: Username
     user_name_message: You'll use this name to log in. It will be shown publicly.
     we_never_sell: We take your personal information seriously and respect your privacy. We never sell your data to anyone. Check out our Privacy Policy for more information.
   errors:

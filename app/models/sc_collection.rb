@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: sc_collections
+#
+#  id            :integer          not null, primary key
+#  label         :string(255)
+#  version       :string(255)      default("2")
+#  created_at    :datetime
+#  updated_at    :datetime
+#  at_id         :string(255)
+#  collection_id :integer
+#  parent_id     :integer
+#
+# Indexes
+#
+#  index_sc_collections_on_collection_id  (collection_id)
+#
 class ScCollection < ApplicationRecord
   belongs_to :collection, optional: true
   has_many :sc_manifests

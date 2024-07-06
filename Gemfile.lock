@@ -117,6 +117,7 @@ GEM
     akami (1.3.2)
       gyoku (>= 0.4.0)
       nokogiri
+    annotaterb (4.9.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
@@ -412,6 +413,11 @@ GEM
       ast (~> 2.4.1)
       racc
     pkg-config (1.5.6)
+    postmark (1.25.1)
+      json
+    postmark-rails (0.22.1)
+      actionmailer (>= 3.0.0)
+      postmark (>= 1.21.3, < 2.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -428,6 +434,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.7.3)
     rack (2.2.9)
+    rack-attack (6.7.0)
+      rack (>= 1.0, < 4)
     rack-contrib (2.4.0)
       rack (< 4)
     rack-mini-profiler (3.3.1)
@@ -657,6 +665,7 @@ DEPENDENCIES
   acts_as_tree
   ahoy_matey
   ajax-datatables-rails (~> 1.0.0)
+  annotaterb
   autoprefixer-rails
   bento-sdk!
   better_errors
@@ -707,10 +716,12 @@ DEPENDENCIES
   omniauth-multi-provider (~> 0.2.1)
   omniauth-saml
   open3
+  postmark-rails
   pry
   pry-awesome_print
   pry-byebug
   puma
+  rack-attack
   rack-mini-profiler
   rack-reverse-proxy
   rails (= 6.1.7.6)

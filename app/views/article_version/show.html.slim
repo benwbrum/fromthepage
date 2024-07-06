@@ -7,7 +7,10 @@
 
 -else
   -selected_version_date = l(@selected_version.created_on.localtime)
-  -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
+  -if @selected_version.user
+    -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(user_id: @selected_version.user.id))
+  -else
+    -selected_version_user = t('.user_deleted')
 
   p.diff-help== t('.description')
 
@@ -23,7 +26,7 @@
             =link_to({ :action => 'show', :article_version_id => version.id }, class: ('selected' if version == @selected_version))
               =time_tag(version.created_on)
                 =l(version.created_on.to_date)
-              span =version.user.display_name
+              span =version.user&.display_name || t('.user_deleted')
 
       td.diff-version
         h4(data-diff-title="changed" data-empty=t('.untitled')) =@selected_version.title

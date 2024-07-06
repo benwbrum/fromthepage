@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: ai_jobs
+#
+#  id            :integer          not null, primary key
+#  engine        :string(255)
+#  job_type      :string(255)
+#  parameters    :text(65535)
+#  status        :string(255)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  collection_id :integer          not null
+#  page_id       :integer
+#  user_id       :integer          not null
+#  work_id       :integer
+#
+# Indexes
+#
+#  index_ai_jobs_on_collection_id  (collection_id)
+#  index_ai_jobs_on_page_id        (page_id)
+#  index_ai_jobs_on_user_id        (user_id)
+#  index_ai_jobs_on_work_id        (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id)
+#  fk_rails_...  (page_id => pages.id)
+#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (work_id => works.id)
+#
 class AiJob < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :work, optional: true

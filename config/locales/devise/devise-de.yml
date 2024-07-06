@@ -5,6 +5,16 @@ de:
     create_account: Benutzerkonto erstellen
     display_name: Organisationsname
     email_address: E-Mail-Adresse
+    errors:
+      keys:
+        email: E-Mail
+        login: Benutzername
+        password: Passwort
+        password_confirmation: Passwort Bestätigung
+      messages:
+        login:
+          exclusion: ist ungültig
+          format: darf keine spitzen Klammern (<, >) enthalten
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
@@ -39,6 +49,7 @@ de:
       send_paranoid_instructions: Wenn Ihre E-Mail-Adresse in unserer Datenbank vorhanden ist, erhalten Sie in wenigen Minuten einen Link zur Passwortwiederherstellung an Ihre E-Mail-Adresse.
       updated: Ihr Passwort wurde erfolgreich geändert. Sie sind jetzt angemeldet.
       updated_not_active: Ihr Passwort wurde erfolgreich geändert.
+      validation: Mindestlänge des Passworts beträgt 6 Zeichen
     real_name: Offizieller Name
     real_name_message: Projekte können dies verwenden, um eine Referenz zu Ihnen herzustellen. Lassen Sie dieses Feld leer, wenn Sie nicht referenziert werden möchten.
     receive_activity_emails: Mails zu Aktivitäten erhalten

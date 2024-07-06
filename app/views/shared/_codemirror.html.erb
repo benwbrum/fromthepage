@@ -53,7 +53,7 @@
   ];
 
   var fromthepage_tags = {
-    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "span", "a", "i"],
+    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "head", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "span", "a", "i"],
     abbr: { attrs: { expan: null}},
     add: { children: ["u", "s", "hi"] },
     cb: { attrs: { "n": null } },
@@ -61,6 +61,7 @@
     expan: {attrs: { abbr: null }},
     figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
     footnote: { attrs: { marker: null } },
+    head: { attrs: { depth: 2 }},
     hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
     ins: { children: ["u", "s", "hi"]},
     lb: { attrs: { "break": "no"}},
@@ -117,6 +118,10 @@
       spellcheck: <%= @collection.enable_spellcheck %>,
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
+    });
+    // track editing for volunteer hours
+    myCodeMirror.on("change", function(instance, changeObj) {
+      sendActiveEditing()
     });
     
     // give codeMirror with class of respective text direction

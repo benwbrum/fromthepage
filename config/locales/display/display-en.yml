@@ -45,6 +45,7 @@ en:
     multi_page:
       categories: Categories
       describe: Create Metadata
+      pages_need_completion: Pages That Need Completion
       pages_need_indexing: Pages That Need Indexing
       pages_need_review: Pages That Need Review
       pages_need_transcription: Pages That Need Transcription
@@ -81,6 +82,7 @@ en:
       pages_that_mention: Pages That Mention %{article}
     read_work:
       pages: Pages
+      pages_need_completion: Pages That Need Completion
       pages_need_indexing: Pages That Need Indexing
       pages_need_review: Pages That Need Review
       pages_need_transcription: Pages That Need Transcription

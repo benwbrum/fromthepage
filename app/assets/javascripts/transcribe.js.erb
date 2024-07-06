@@ -56,29 +56,31 @@ function startDictation(target){
   recognizing = true;
   button = target;
   var form = $(button.form);
-  var voiceData = form.find('textarea');
   voiceSpan = form.find('.voice-info');
   if (voiceSpan.hasClass('voice-error')){
     voiceSpan.removeClass('voice-error');
   }
-  var initialText
-
-  if (voiceData.text() != '') {
-    initialText = voiceData.text() + '\n';
-  } else {
-    initialText = '';
-  }
-  var final_transcript = initialText;
-  var interim_transcript = initialText;
 
   recognition.start();
   recognition.onresult = function(e){
+    var transcript = ''
+    if(typeof myCodeMirror !== 'undefined' && form.find('.CodeMirror').length > 0) {
+      transcript = myCodeMirror.getValue();
+    } else if(form.find('textarea').length > 0) {
+      transcript = form.find('textarea').val();
+    }
+
     for (var i = e.resultIndex; i < e.results.length; ++i){
       if (e.results[i].isFinal){
-        final_transcript += e.results[i][0].transcript;
+        transcript += e.results[i][0].transcript;
       }
     }
-    voiceData.text(final_transcript);
+    
+    if(typeof myCodeMirror !== 'undefined' && form.find('.CodeMirror').length > 0) {
+      myCodeMirror.setValue(transcript);
+    } else if(form.find('textarea').length > 0) {
+      form.find('textarea').val(transcript)
+    }
   };
 }
 
@@ -91,7 +93,7 @@ function unsavedNotes(e){
 
 //check for unsaved transcriptions before changing page
 function unsavedTranscription(e){
-  var msg = "You have unsaved changes. Please save or discard your work before going to the next page.";
+  var msg = "<%=I18n.t('unsaved_changes_confirmation')%>";
   var inputs = $('textarea').add($('.field-input'));
   checkForUnsaved(inputs, msg, e, false);
 }
@@ -101,16 +103,18 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
   inputs.each(function(){
     if (this.type == 'select-one' || this.type == 'select-multiple'){
       if(!(this.options[this.selectedIndex].defaultSelected) && (this.value != this.options[0].value)){
-        e.preventDefault();
-        alert(msg);
-        return false;
+        if(!confirm(msg)) {
+          e.preventDefault();
+        }
+        return false
       }
     }
     else {
       if (this.value != this.defaultValue){
-        e.preventDefault();
-        alert(msg);
-        return false;
+        if(!confirm(msg)) {
+          e.preventDefault();
+        }
+        return false
       };
     };
   });
@@ -120,13 +124,13 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
     // the advanced editor is in use
     var autolinkedSourceTextField = document.querySelector('input[name="autolinked_source_text"]');
     if (!myCodeMirror.isClean() || autolinkedSourceTextField) {
+      if(!confirm(msg)) {
         e.preventDefault();
-        alert(msg);
-        return false;      
+      }
+      return false
     };
   };
 }
-
 //Check for unsaved changes if user tries to navigate to project page
 window.addEventListener('DOMContentLoaded', function() {
   var breadcrumbs = document.querySelector('ul.breadcrumbs');

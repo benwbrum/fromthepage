@@ -7,7 +7,7 @@
     =render 'edit'
 
     h2#manage =t('.manage_works')
-    
+
     =form_tag(collection_settings_path(@collection.owner, @collection), method: :get, enforce_utf8: false, class: 'collection-search') do
       =validation_summary @collection.errors
       =hidden_field_tag('collection_id', @collection.slug)
@@ -24,14 +24,16 @@
           tr
             th =t('.work')
             th =t('.status')
-            th =t('.add')
+            th
+              =check_box_tag(nil, nil, false, style: 'margin: 0 5px 0 7px;', data: { select_all: 'works' })
+              =t('.add')
         tbody
           -@works.each do |work|
             tr
               td
                 =work.title
                 -if work.supports_translation
-                  span 
+                  span
                     translate
                 -if work.ia_work && work.ia_work.use_ocr
                   span
@@ -50,7 +52,7 @@
                       span(style="width:#{@progress_review}%")
 
               td.document_set
-                =check_box_tag("work[#{work.id}]", "work[#{work.id}]", false, {"title" => t('.add_work_title_to_document_set', work_title: work.title)})
+                =check_box_tag("work[#{work.id}]", "work[#{work.id}]", false, { title: t('.add_work_title_to_document_set', work_title: work.title), class: 'works' })
       br
       .aright
         =submit_tag t('.save')

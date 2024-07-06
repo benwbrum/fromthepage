@@ -65,9 +65,10 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}")
-    .page-column.page-imagescan
-      =render :partial => '/shared/osd_div'
+  .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
+    .page-column
+      .page-imagescan
+        =render :partial => '/shared/osd_div'
 
     .page-column
       -if @page.status == Page::STATUS_BLANK
@@ -141,10 +142,120 @@ h2.legend =t('.notes_and_questions')
 
 -content_for :javascript
   javascript:
+    var splitter = null;
+
+    function applySplitter(mode) {
+      var position = '50%'
+
+      if(splitter) {
+        splitter.destroy();
+      }
+
+      splitter = $('#splitter').split({
+        orientation: (mode === 'rtl' || mode === 'ltr')?'vertical':'horizontal',
+        limit: 10,
+        position, // if there is no percentage it interpret it as pixels
+        onDrag: function(event) {
+          if(typeof myCodeMirror !== 'undefined') {
+            myCodeMirror.refresh();
+          }
+          if(typeof hot !== 'undefined') {
+            hot.render();
+          }
+          Cookies.set('drag_position', splitter.position(), { expires: 365 });
+
+          if(mode === 'rtl') {
+            var left_width = $('.left_panel').width();
+            var right_width = $('.right_panel').width();
+
+            $('.right_panel').width(left_width);
+            $('.left_panel').width(right_width);
+          }
+
+          if(mode === 'btt') {
+            var top_height = $('.top_panel').height();
+            var bottom_height = $('.bottom_panel').height();
+
+            $('.top_panel').height(bottom_height);
+            $('.bottom_panel').height(top_height);
+          }
+        }
+      });
+
+      if(typeof myCodeMirror !== 'undefined') {
+        myCodeMirror.refresh();
+      }
+      if(typeof hot !== 'undefined') {
+        hot.render();
+      }
+
+      if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
+        position = parseFloat(Cookies.get('drag_position'));
+        splitter.position(position);
+
+        if(mode === 'rtl') {
+          var left_width = $('.left_panel').width();
+          var right_width = $('.right_panel').width();
+
+          $('.right_panel').width(left_width);
+          $('.left_panel').width(right_width);
+        }
+
+        if(mode === 'btt') {
+          var top_height = $('.top_panel').height();
+          var bottom_height = $('.bottom_panel').height();
+
+          $('.top_panel').height(bottom_height);
+          $('.bottom_panel').height(top_height);
+        }
+      }
+
+      $('.vsplitter').attr('title', 'Drag this to change the editor and image viewer');
+      $('.hsplitter').attr('title', 'Drag this to change the editor and image viewer');
+    }
+
+    window.addEventListener('resize', function(event) {
+      applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+    })
+
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
+
+
+    $('.field-wrapper .field-input').each(function() {
+      $(this).change(function() {
+        sendActiveEditing()
+      })
+      $(this).keyup(function() {
+        sendActiveEditing()
+      })
+    });
+
+
     $(function() {
+      var imageWindow = null;
+
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
@@ -152,20 +263,25 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         }
+
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+        Cookies.set('drag_position', 0, { expires: 365 });
 
-        window.removeEventListener('scroll', freezeTableColumn);
-        window.addEventListener('scroll', function (e) {
-          if(mode === 'ttb') {
-            freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
-          } else {
-            freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
-          } 
-        });
+        if (typeof freezeTableColumn !== "undefined") {
+          window.removeEventListener('scroll', freezeTableColumn);
+          window.addEventListener('scroll', function (e) {
+            if(mode === 'ttb') {
+              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+            } else {
+              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
+            } 
+          });
+        }
 
         $('[data-layout-mode]').attr('data-layout-mode', mode);
 
@@ -176,6 +292,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         };
+
+        applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -190,6 +308,12 @@ h2.legend =t('.notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
+
+      if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
+        applySplitter(Cookies.get('transcribe_layout_mode'));
+      } else {
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      }
     });
 
     $(function() {

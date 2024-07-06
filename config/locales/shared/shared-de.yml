@@ -66,6 +66,8 @@ de:
       full_page: Auf Vollbild umschalten
       home: Zum Ausgangsbild zurückkehren
       image_filters: Bildfilter
+      monitor_close: Fenster schließen
+      monitor_open: In einem neuen Fenster öffnen
       open_seadragon_needs_js: OpenSeadragon ist nur verfügbar, wenn JavaScript aktiviert ist.
       rotate_left: Nach links drehen
       rotate_right: Nach rechts drehen

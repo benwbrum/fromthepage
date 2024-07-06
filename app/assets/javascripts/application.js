@@ -18,6 +18,7 @@
 //= require handsontable.full.min
 //= require datatables.min
 //= require clipboard
+//= require select_all
 
 ;(function($, window, document, undefined) {
 
@@ -290,6 +291,8 @@ $(function() {
 
   $('[data-multi-select]').multiSelect();
 
+  $('[data-select-all]').selectAll();
+
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
     e.preventDefault();
@@ -348,3 +351,18 @@ Object.assign(DataTable.defaults, {
     }
   }
 });
+
+// prevent double confirmation popup when deleting topic in forum
+$(document).ready(function() {
+  const deleteTopicBtn = ($('input[data-confirm]'))
+  const confirmTxt = $('input[data-confirm]').attr('data-confirm');
+
+  $('input[data-confirm]').removeAttr('data-confirm');
+  $(deleteTopicBtn).on('click', function(){
+    event.preventDefault();
+    var confirmation = confirm(confirmTxt);
+    if (confirmation) {
+      $(this).closest('form').submit();
+    }
+  })
+})

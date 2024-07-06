@@ -59,7 +59,6 @@ en:
       save_changes: Save
       save_to_incomplete_tooltip: Save an incomplete page
       save_to_needs_review_tooltip: Save your changes
-      save_to_transcribed_tooltip: Save your changes
     save_transcription:
       error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
       saved_notice: Saved
