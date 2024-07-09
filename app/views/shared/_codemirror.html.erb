@@ -124,12 +124,7 @@
       sendActiveEditing()
     });
 
-    var canonicalSubjectTitles = [
-      "James A. Smith",
-      "John J. Jones",
-      "planting",
-      "Paula Hosen"
-    ];
+    var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
 
     // display hint of subject linking
     function showSubjectLinkHint(editor, change) {
