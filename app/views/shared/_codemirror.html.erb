@@ -123,6 +123,56 @@
     myCodeMirror.on("change", function(instance, changeObj) {
       sendActiveEditing()
     });
+
+    var canonicalSubjectTitles = [
+      "James A. Smith",
+      "John J. Jones",
+      "planting",
+      "Paula Hosen"
+    ];
+
+    // display hint of subject linking
+    function showSubjectLinkHint(editor, change) {
+      var suggestions = [];
+      var cursor = editor.getCursor();
+      var start = cursor.ch - 1;
+      var nextChar = change.text[0];
+
+      if (nextChar !== "[") {
+        suggestions = canonicalSubjectTitles.filter(item => item.toString().includes(nextChar));
+        if (suggestions.length > 0) {
+          editor.showHint({
+            completeSingle: false,
+            hint: function() {
+              return {
+                list: suggestions.map(String),
+                from: CodeMirror.Pos(cursor.line, start),
+                to: CodeMirror.Pos(cursor.line, cursor.ch + 9999)
+              };
+            }
+          });
+        }
+        editor.off("inputRead", showSubjectLinkHint);
+      }
+    }
+
+    // bind autocomplete event
+    myCodeMirror.on("change", function(editor, change) {
+      var cursor = myCodeMirror.getCursor();
+      var token = myCodeMirror.getTokenAt(cursor);
+      var lastTwoChars = myCodeMirror.getRange({line: cursor.line, ch: cursor.ch - 2}, cursor);
+
+      // Show subject link autocomplete
+      if (lastTwoChars === '[[') {
+        editor.showHint({
+          hint: function() {
+            editor.on("inputRead", showSubjectLinkHint);
+          }
+        });
+      } else {
+        editor.off("inputRead", showSubjectLinkHint);
+      }
+    });
     
     // give codeMirror with class of respective text direction
     myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
