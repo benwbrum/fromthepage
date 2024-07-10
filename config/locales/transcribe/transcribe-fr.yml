@@ -56,7 +56,8 @@ fr:
       please_wait: S'il vous plaît, attendez...
       preview: Aperçu
       preview_tooltip: Aperçu de cette page
-      save_changes: Sauvegarder
+      save: Sauvegarder
+      save_changes: Enregistrer le brouillon
       save_to_incomplete_tooltip: Enregistrer une page incomplète
       save_to_needs_review_tooltip: Enregistrez vos modifications
       save_to_transcribed_tooltip: Enregistrez vos modifications
