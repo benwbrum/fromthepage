@@ -134,7 +134,7 @@
       var nextChar = change.text[0];
 
       if (nextChar !== "[") {
-        suggestions = canonicalSubjectTitles.filter(item => item.toString().includes(nextChar));
+        suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(nextChar.toLowerCase()));
         if (suggestions.length > 0) {
           editor.showHint({
             completeSingle: false,
