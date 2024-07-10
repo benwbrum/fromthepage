@@ -80,6 +80,7 @@ Rails.application.configure do
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 

@@ -98,6 +98,7 @@ Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   RAKE = '/usr/bin/env rake'
   NEATO = '/usr/bin/neato'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 #  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
 #  Disable IIIF search while Pontiiif is down
 #  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'

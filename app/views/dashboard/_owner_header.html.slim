@@ -43,20 +43,20 @@
     -account_type_key = current_user.account_type.downcase.tr(' ', '_')
     =t('.account_type', type: t(".account_types.#{account_type_key}"))
     -unless (current_user.start_date == nil)
-      span 
+      span
         |&nbsp;
         =t('.since', date: l(current_user.start_date.to_date))
     -unless (current_user.paid_date == nil)
-      span 
+      span
         |&nbsp;&middot;&nbsp;
         =t('.current_subscription_expires', date: l(current_user.paid_date.to_date))
-    span 
+    span
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)
-    -if (current_user.account_type == 'Trial') 
-      span 
-        |&nbsp;&middot;&nbsp; 
-        =t('.to_upgrade_contact')
+    -if (current_user.account_type == 'Trial') && UPGRADE_FORM_LINK
+      span
+        |&nbsp;&nbsp;
+        =link_to t('.upgrade'), UPGRADE_FORM_LINK, class: 'button outline', target: '_blank'
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") =t('.collection', count: @collections.length)
