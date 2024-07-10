@@ -42,6 +42,7 @@ class WorkController < ApplicationController
 
 
   def describe
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 

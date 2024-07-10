@@ -510,13 +510,18 @@ const ResizableSplitter = {
     panel1.style.flex = mode === 'ttb'?`${heightPanel1}px`:'auto';
     panel2.style.flex = mode === 'ttb'?`auto`:`${heightPanel2}px`;
 
-    if(mode === 'ttb') {
-      const elementTop = panel1.parentElement.offsetTop - window.scrollTop
-      splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
-    } else {
-      splitter.style.bottom = `${panel2.clientHeight}px`
-      splitter.style.top = `auto`;
+    const resetSplitterPos = () => {
+      if(mode === 'ttb') {
+        const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
+        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`;
+        splitter.style.bottom = `auto`;
+      } else {
+        splitter.style.bottom = `${panel2.clientHeight}px`
+        splitter.style.top = `auto`;
+      }
     }
+
+    resetSplitterPos();
 
     // Function to handle mouse move
     const onMouseMove = function(e) {
@@ -545,13 +550,7 @@ const ResizableSplitter = {
         onDrag(newHeightPanel1, heightPanel2);
       }
 
-      if(mode === 'ttb') {
-        const elementTop = panel1.parentElement.offsetTop - window.scrollTop
-        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
-      } else {
-        splitter.style.bottom = `${panel2.clientHeight}px`
-        splitter.style.top = `auto`;
-      }
+      resetSplitterPos();
     };
 
     // Function to handle mouse up
@@ -579,21 +578,14 @@ const ResizableSplitter = {
 
     splitter.addEventListener('mousedown', onMouseDown);
 
-    window.addEventListener('scroll', function(){
-      if(mode === 'ttb') {
-        const elementTop = panel1.parentElement.offsetTop - window.scrollTop
-        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`
-      } else {
-        splitter.style.bottom = `${panel2.clientHeight}px`
-        splitter.style.top = `auto`;
-      }
-    })
+    window.addEventListener('scroll', resetSplitterPos);
 
     // Method to remove event listeners
     this.destroy = function() {
       splitter.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('scroll', resetSplitterPos);
     };
   }
 }

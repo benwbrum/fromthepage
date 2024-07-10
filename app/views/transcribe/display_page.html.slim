@@ -259,12 +259,6 @@ h2.legend =t('.notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-
-      if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
-        // applySplitter(Cookies.get('transcribe_layout_mode'));
-      } else {
-        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
-      }
     });
 
     $(function() {

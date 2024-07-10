@@ -144,19 +144,11 @@
   display: flex;
   min-height: 50vh;
   position: relative;
+  column-gap: 2rem;
+  row-gap: 2rem;
 
   &[data-layout-mode='rtl'] {
     flex-direction: row-reverse;
-
-    .page-column:first-child {
-      right: 0 !important;
-      left: auto !important;
-    }
-
-    .page-column:last-child {
-      left: 0 !important;
-      right: auto !important;
-    }
   }
 
   &[data-layout-mode='ttb'] {
@@ -165,15 +157,12 @@
 
   &[data-layout-mode='btt'] {
     flex-direction: column-reverse;
+  }
 
-    .page-column:first-child {
-      bottom: 0 !important;
-      top: auto !important;
-    }
-
-    .page-column:last-child {
-      top: 0 !important;
-      bottom: auto !important;
+  &[data-layout-mode='btt'],
+  &[data-layout-mode='ttb'] {
+    .cm-editor {
+      min-height: 30vh;
     }
   }
 }

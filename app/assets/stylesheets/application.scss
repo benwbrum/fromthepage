@@ -313,6 +313,8 @@ h3, .thredded--post-form--title {
   &[data-layout-mode='rtl'],
   &[data-layout-mode='ltr'] {
     .splitter {
+      margin-left: -2rem;
+      margin-right: -2rem;
       width: 20px;
       height: calc(100vh - 74px - 3rem);
       position: sticky;
@@ -350,6 +352,8 @@ h3, .thredded--post-form--title {
   &[data-layout-mode='btt'] {
     
     .splitter {
+      margin-top: -2rem;
+      margin-bottom: -2rem;
       cursor: row-resize;
       height: 20px;
       width: 100%;
