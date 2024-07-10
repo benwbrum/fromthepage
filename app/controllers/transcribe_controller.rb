@@ -165,7 +165,7 @@ class TranscribeController  < ApplicationController
 
           @page.status = skip_re_review ? Page::STATUS_TRANSCRIBED : Page::STATUS_NEEDS_REVIEW
         else
-          @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_INCOMPLETE
+          @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_TRANSCRIBED
         end
       elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
         @page.status = Page::STATUS_TRANSCRIBED
