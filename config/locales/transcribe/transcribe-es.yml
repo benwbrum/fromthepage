@@ -3,6 +3,7 @@ es:
   transcribe:
     assign_categories:
       assign_categories: Asignar categorías
+      cancel: Cancelar
       continue: Continuar
       manage_categories: Administrar Categorías
       options: Opciones
