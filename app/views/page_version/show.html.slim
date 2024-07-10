@@ -5,18 +5,16 @@
 
 p.diff-help =t('.help_description').html_safe
 
+div.diff-layout
+  span.diff-vertical.active
+  span.diff-horizontal
+
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
-  tr
-    th: h5.nomargin = t('.n_revisions', count: @page.page_versions.select { |version| version.content_changed? }.size)
-    th = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
-    th
-      =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
-        =hidden_field_tag :page_version_id, @selected_version.id
-        =label_tag :compare_version_id, t('.compared_with')
-        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.select { |version| version.content_changed? }, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
   tr
 
     td.diff-list
+      div.diff-title
+        h5 = t('.n_revisions', count: @page.page_versions.select { |version| version.content_changed? }.size)
       .scroll-container
         -@page.page_versions.each do |version|
          - if version.content_changed?
@@ -28,69 +26,90 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
-      - if @selected_version&.page_version && @previous_version&.page_version
-        - if @selected_version.page_version > @previous_version.page_version
-          h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
-          div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-            == xml_to_html(@selected_version.xml_transcription)
-          - if @work.supports_translation
-            hr
-            h4= t('.translation')
-            div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-              == xml_to_html(@selected_version.xml_translation)
-        - else
-          h4(data-diff-title="changed" data-empty=t('.untitled')) = @previous_version.title.presence || ""
-          div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-            == xml_to_html(@previous_version.xml_transcription)
-          - if @work.supports_translation
-            hr
-            h4= t('.translation')
-            div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-              == xml_to_html(@previous_version.xml_translation)
-      - else
-        h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
-        div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-          == xml_to_html(@selected_version&.xml_transcription)
-        - if @work.supports_translation
-          hr
-          h4= t('.translation')
-          div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-            == xml_to_html(@selected_version&.xml_translation)
-
-    td.diff-version[*language_attrs(@collection)]
-      - if @selected_version&.page_version && @previous_version&.page_version
-        - if @selected_version.page_version > @previous_version.page_version
-          h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
-          div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-            == xml_to_html(@previous_version.xml_transcription)
-          - if @work.supports_translation
-            hr
-            h4= t('.translation')
-            div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-              == xml_to_html(@previous_version.xml_translation)
-        - else
-          h4(data-diff-title="original" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
-          div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-            == xml_to_html(@selected_version.xml_transcription)
-          - if @work.supports_translation
-            hr
-            h4= t('.translation')
-            div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-              == xml_to_html(@selected_version.xml_translation)
-      - else
-        h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
-        div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-          == xml_to_html(@previous_version&.xml_transcription)
-        - if @work.supports_translation
-          hr
-          h4= t('.translation')
-          div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-            == xml_to_html(@previous_version&.xml_translation)
+      div.versions-wrapper
+        div.version-col
+          div.diff-title
+            = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
+          div.version-content
+            - if @selected_version&.page_version && @previous_version&.page_version
+              - if @selected_version.page_version > @previous_version.page_version
+                h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
+                div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+                  == xml_to_html(@selected_version.xml_transcription)
+                - if @work.supports_translation
+                  hr
+                  h4= t('.translation')
+                  div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+                    == xml_to_html(@selected_version.xml_translation)
+              - else
+                h4(data-diff-title="changed" data-empty=t('.untitled')) = @previous_version.title.presence || ""
+                div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+                  == xml_to_html(@previous_version.xml_transcription)
+                - if @work.supports_translation
+                  hr
+                  h4= t('.translation')
+                  div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+                    == xml_to_html(@previous_version.xml_translation)
+            - else
+              h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
+              div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
+                == xml_to_html(@selected_version&.xml_transcription)
+              - if @work.supports_translation
+                hr
+                h4= t('.translation')
+                div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
+                  == xml_to_html(@selected_version&.xml_translation)
+        div.version-col.right
+          div.diff-title
+            =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+              =hidden_field_tag :page_version_id, @selected_version.id
+              =label_tag :compare_version_id, t('.compared_with')
+              =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.select { |version| version.content_changed? }, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
+          div.version-content
+            - if @selected_version&.page_version && @previous_version&.page_version
+              - if @selected_version.page_version > @previous_version.page_version
+                h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
+                div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+                  == xml_to_html(@previous_version.xml_transcription)
+                - if @work.supports_translation
+                  hr
+                  h4= t('.translation')
+                  div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+                    == xml_to_html(@previous_version.xml_translation)
+              - else
+                h4(data-diff-title="original" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
+                div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+                  == xml_to_html(@selected_version.xml_transcription)
+                - if @work.supports_translation
+                  hr
+                  h4= t('.translation')
+                  div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+                    == xml_to_html(@selected_version.xml_translation)
+            - else
+              h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
+              div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
+                == xml_to_html(@previous_version&.xml_transcription)
+              - if @work.supports_translation
+                hr
+                h4= t('.translation')
+                div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
+                  == xml_to_html(@previous_version&.xml_translation)
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'
   javascript:
     $(function() {
+      $('span.diff-vertical').click(function(){
+        $('.versions-wrapper').removeClass('horizantal');
+        $('span.diff-horizontal').removeClass('active');
+        $(this).addClass('active');
+      })
+      $('span.diff-horizontal').click(function(){
+        $('.versions-wrapper').addClass('horizantal');
+        $('span.diff-vertical').removeClass('active');
+        $(this).addClass('active');
+      })
+
       // Check if we have tables for the diff
       var table1 = $('[data-diff-transcription=original] table');
       var table2 = $('[data-diff-transcription=changed] table');

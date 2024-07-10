@@ -87,6 +87,8 @@
   z-index: 999;
   padding: 2rem 0;
   position: sticky;
+  height: 73px;
+  box-sizing: border-box;
   background-color: $bodyBg;
 
   label { margin-right: 6px; }
@@ -141,14 +143,16 @@
   width: 100%;
   display: flex;
   min-height: 50vh;
-  max-height: 100vh;
+  column-gap: 2rem;
+  row-gap: 2rem;
+  // max-height: calc((100vh - 74px - 4rem));
   position: relative;
-  height: calc((100vh - 74px - 4rem));
+  // height: calc((100vh - 74px - 4rem));
 
 
-  .page-column:last-child {
-    // margin: 0 0 0 2rem;
-  }
+  // .page-column:last-child {
+  //   margin: 0 0 0 2rem;
+  // }
 
   &[data-layout-mode='rtl'] {
     flex-direction: row-reverse;
@@ -159,7 +163,7 @@
     }
 
     .page-column:last-child {
-      // margin: 0 2rem 0 0;
+      margin: 0 2rem 0 0;
       left: 0 !important;
       right: auto !important;
     }
@@ -168,13 +172,13 @@
   &[data-layout-mode='ttb'] {
     flex-direction: column;
 
-    .page-column:last-child {
-      // margin: 2rem 0 0 0;
-    }
+    // .page-column:last-child {
+    //   margin: 2rem 0 0 0;
+    // }
   }
 
   &[data-layout-mode='btt'] {
-    // flex-direction: column-reverse;
+    flex-direction: column-reverse;
 
     .page-column:first-child {
       bottom: 0 !important;
@@ -193,7 +197,7 @@
   z-index: 0;
   min-width: 0;
   min-height: 0;
-  // flex: 1 1 50%;
+  flex: 1 1 50%;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
@@ -273,7 +277,7 @@
     height: auto !important;
 
     &-buttonsPanel:not(:empty) {
-      top: 74px;
+      top: 73px;
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
@@ -281,10 +285,10 @@
       padding-bottom: 5px;
       background-color: $bodyBg;
 
-      [data-layout-mode='ttb'] & {
-        padding-top: 8px;
-        top: calc(74px + (100vh - 74px - 3rem) / 2);
-      }
+      // [data-layout-mode='ttb'] & {
+      //   padding-top: 8px;
+      //   top: calc(74px + (100vh - 74px - 3rem) / 2);
+      // }
 
       button {
         padding: 0 4px;
@@ -310,6 +314,7 @@
 .fields-row {
   display: flex;
   align-items: stretch;
+  column-gap: 5px;
   // flex-wrap: wrap;
 
   &:not(:last-child) {
@@ -321,10 +326,6 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
-    &:not(:last-child) {
-      padding-right: 5px;
-    }
 
     &.spreadsheet {
       padding: 0;

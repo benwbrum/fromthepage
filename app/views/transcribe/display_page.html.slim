@@ -155,6 +155,12 @@ h2.legend =t('.notes_and_questions')
         limit: 10,
         position, // if there is no percentage it interpret it as pixels
         onDrag: function(event) {
+          if(typeof myCodeMirror !== 'undefined') {
+            myCodeMirror.refresh();
+          }
+          if(typeof hot !== 'undefined') {
+            hot.render();
+          }
           Cookies.set('drag_position', splitter.position(), { expires: 365 });
 
           if(mode === 'rtl') {
@@ -174,6 +180,13 @@ h2.legend =t('.notes_and_questions')
           }
         }
       });
+
+      if(typeof myCodeMirror !== 'undefined') {
+        myCodeMirror.refresh();
+      }
+      if(typeof hot !== 'undefined') {
+        hot.render();
+      }
 
       if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
         position = parseFloat(Cookies.get('drag_position'));
@@ -201,7 +214,7 @@ h2.legend =t('.notes_and_questions')
     }
 
     window.addEventListener('resize', function(event) {
-      applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
     })
 
     //set language for voice to text
@@ -250,7 +263,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         }
 
-        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -262,7 +275,7 @@ h2.legend =t('.notes_and_questions')
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
             if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
+              freezeTableColumn('.top_panel', '.spreadsheet', '.ht_clone_top');
             } else {
               freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
             } 
@@ -279,7 +292,7 @@ h2.legend =t('.notes_and_questions')
           hot.updateSettings({});
         };
 
-        applySplitter(mode);
+        // applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -296,9 +309,9 @@ h2.legend =t('.notes_and_questions')
       });
 
       if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
-        applySplitter(Cookies.get('transcribe_layout_mode'));
+        // applySplitter(Cookies.get('transcribe_layout_mode'));
       } else {
-        applySplitter('ltr');
+        // applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       }
     });
 

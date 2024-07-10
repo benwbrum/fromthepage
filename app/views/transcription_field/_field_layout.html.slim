@@ -8,7 +8,8 @@
         -if @field_preview && @field_preview[field.id]
           -cell = @field_preview[field.id].first
         -if field.input_type == 'spreadsheet'
-          .field-wrapper.spreadsheet
+          -span_width = !field.percentage.blank? ? field.percentage : @width
+          .field-wrapper.spreadsheet(style="width: #{span_width}%")
             =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
         -else
           -span_width = !field.percentage.blank? ? field.percentage : @width

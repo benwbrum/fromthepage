@@ -142,6 +142,8 @@
         -else
           -if @collection.text_and_metadata_entry?
             -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+          -elsif note.page.nil?
+            -text = truncate(note_title, :length => 100)
           -else
             -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
         .deed-short.small

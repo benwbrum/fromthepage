@@ -122,7 +122,7 @@
   };
 
   var getHotHeight = function(rows) {
-    return rows * 23 + 25 + 2;
+    return rows * 23 + 40;
   };
 
   var updateHotHeight = function() {
@@ -153,7 +153,7 @@
     afterCreateRow: updateHotHeight,
     afterRemoveRow: updateHotHeight,
     afterChange: function(changes, source) {
-       if(source === 'edit') {
+      if(source === 'edit') {
         sendActiveEditing()
       };
       document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
@@ -182,10 +182,11 @@
   });
 
 
-    function freezeTableColumn(topEl, tableEl, columnEl) {
+  function freezeTableColumn(topEl, tableEl, columnEl) {
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
 
+    console.log(stickyHeight, tablePosTop)
     if(stickyHeight > tablePosTop) {
       document.querySelectorAll(columnEl).forEach(function(item) {
         item.style.top = (stickyHeight - tablePosTop) + 'px';
