@@ -23,15 +23,15 @@
 # Indexes
 #
 #  index_deeds_on_article_id                                        (article_id)
-#  index_deeds_on_collection_id_and_created_at                      (collection_id,created_at DESC)
-#  index_deeds_on_collection_id_and_deed_type_and_created_at        (collection_id,deed_type,created_at DESC)
-#  index_deeds_on_created_at_and_collection_id                      (created_at DESC,collection_id)
+#  index_deeds_on_collection_id_and_created_at                      (collection_id,created_at)
+#  index_deeds_on_collection_id_and_deed_type_and_created_at        (collection_id,deed_type,created_at)
+#  index_deeds_on_created_at_and_collection_id                      (created_at,collection_id)
 #  index_deeds_on_note_id                                           (note_id)
 #  index_deeds_on_page_id                                           (page_id)
-#  index_deeds_on_user_id_and_created_at                            (user_id,created_at DESC)
+#  index_deeds_on_user_id_and_created_at                            (user_id,created_at)
 #  index_deeds_on_visit_id                                          (visit_id)
-#  index_deeds_on_work_id_and_created_at                            (work_id,created_at DESC)
-#  index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at  (work_id,deed_type,user_id,created_at DESC)
+#  index_deeds_on_work_id_and_created_at                            (work_id,created_at)
+#  index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at  (work_id,deed_type,user_id,created_at)
 #
 class Deed < ApplicationRecord
   belongs_to :article, optional: true

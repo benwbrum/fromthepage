@@ -8,6 +8,7 @@
 #  status        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  ai_job_id     :integer
 #  collection_id :integer          not null
 #  page_id       :integer
 #  user_id       :integer          not null
@@ -15,6 +16,7 @@
 #
 # Indexes
 #
+#  index_external_api_requests_on_ai_job_id      (ai_job_id)
 #  index_external_api_requests_on_collection_id  (collection_id)
 #  index_external_api_requests_on_page_id        (page_id)
 #  index_external_api_requests_on_user_id        (user_id)
@@ -22,6 +24,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (ai_job_id => ai_jobs.id)
 #  fk_rails_...  (collection_id => collections.id)
 #  fk_rails_...  (user_id => users.id)
 #  fk_rails_...  (work_id => works.id)
