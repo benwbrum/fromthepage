@@ -69,12 +69,8 @@
           -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user&.can_review?(@collection)
             =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen"
 
-
-
-
-
     .page-columns(data-layout-mode="#{@layout_mode}")
-      .page-column
+      .page-column.page-imagescan(id="leftColumn")
         .page-preview(*language_attrs(@collection))
           .work-page_content
             -@work.pages.each do |page|
@@ -94,8 +90,8 @@
           .big =raw(html_metadata_from_work(@work))
 
 
-
-      .page-column
+      .splitter(id="splitter")
+      .page-column(id="rightColumn")
         -if @collection.description_instructions.present?
           .fgfaded ==@collection.description_instructions
         .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
@@ -111,6 +107,36 @@ h2.legend =t('.notes_and_questions')
 -content_for :javascript
   javascript:
     $(function() {
+      var imageWindow = null;
+      var resizableSplitter = Object.create(ResizableSplitter);
+
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+
+        if(resizableSplitter && resizableSplitter.destroy) {
+          resizableSplitter.destroy()
+        }
+
+        resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('splitterPos', pos)
+
+            // re-render spreedsheet & codemirror
+            refreshEditors();
+          },
+          initialPosition: (window.localStorage.getItem('splitterPos') || 50) + '%'
+        });
+
+        // re-render spreedsheet & codemirror
+        refreshEditors();
+      }
+
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
+
       var fromImage = true;
       updateDisplay(fromImage);
 
@@ -138,6 +164,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         }
+
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -152,6 +180,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         };
+
+        applySplitter(mode);
       });
 
 
