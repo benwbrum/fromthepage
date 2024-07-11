@@ -377,6 +377,18 @@ function refreshEditors() {
   }
 }
 
+function undoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.undo();
+  }
+}
+
+function redoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.redo();
+  }
+}
+
 const ResizableSplitter = {
   initVertical: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
     const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;

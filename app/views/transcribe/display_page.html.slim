@@ -48,6 +48,15 @@
           span =t('.always_show_fullscreen')
 
       .flex-toolbar_group.push-right
+
+      -if !@collection.field_based
+        .flex-toolbar_group.undo-buttons.push-right
+          div.button.outline.undo_button(onclick="undoCodeMirror()")
+            =svg_symbol '#icon-arrow-undo', class: 'icon'
+          div.button.outline.redo_button(onclick="redoCodeMirror()")
+            =svg_symbol '#icon-arrow-redo', class: 'icon'
+
+      .flex-toolbar_group
         =f.label 'mark_blank', t('.mark_as_blank')
         =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
 
