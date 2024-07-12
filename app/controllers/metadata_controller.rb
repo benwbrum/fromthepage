@@ -10,7 +10,6 @@ class MetadataController < ApplicationController
   def create
     metadata_file = params[:metadata]['file'].tempfile
 
-
     collection = Collection.find(params[:metadata][:collection_id])
     metadata = Metadata.new(metadata_file: metadata_file, collection: collection)
     result = metadata.process_csv
@@ -21,11 +20,30 @@ class MetadataController < ApplicationController
     if row_errors > 0
       feedback = "Your upload has finished processing. #{rows} works were updated successfully; #{row_errors} rows encountered errors. Download the error file here: #{link}"
     else
-      feedback = "Your upload has finished processing. #{rows} works were updated successfully."      
+      feedback = "Your upload has finished processing. #{rows} works were updated successfully."
     end
 
     flash[:alert] = feedback
 
+    ajax_redirect_to edit_look_collection_path(collection.owner, collection)
+  end
+
+  def refresh
+    collection = Collection.find(params[:id])
+
+    # Make sure import logs folder exists
+    unless Dir.exist?("#{Rails.root}/public/metadata/refresh/log")
+      FileUtils.mkdir_p("#{Rails.root}/public/metadata/refresh/log")
+    end
+
+    # Create logfile for collection
+    log_file = "#{Rails.root}/public/metadata/refresh/log/#{collection.id}_#{Time.current.to_i}_refresh_collection.log"
+
+    rake_call = "#{RAKE} fromthepage:refresh_metadata[#{collection.id},collection] --trace >> #{log_file} 2>&1 &"
+    logger.info rake_call
+    system(rake_call)
+
+    flash[:notice] = t('.is_processing')
     ajax_redirect_to edit_look_collection_path(collection.owner, collection)
   end
 

@@ -178,6 +178,8 @@ es:
       page_on_the_left: Página a la Izquierda
       page_on_the_right: Página a la Derecha
       page_on_the_top: Página de Arriba
+      refresh_metadata: Actualizar metadatos
+      refresh_metadata_description: Actualice los metadatos de los manifiestos IIIF originales.
       save_changes: Guardar Cambios
       spellcheck_description: No apto para textos con ortografía irregular.
       upload_metadata: Subir metadatos
