@@ -59,6 +59,7 @@ de:
       save_changes: Speichern
       save_to_incomplete_tooltip: Eine unvollständige Seite speichern
       save_to_needs_review_tooltip: Änderungen speichern
+      save_to_transcribed_tooltip: Änderungen speichern
     save_transcription:
       error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
       saved_notice: Gespeichert
