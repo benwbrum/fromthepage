@@ -8,7 +8,7 @@ FactoryBot.define do
     end
 
     trait :transcribed do
-      status { Page::STATUS_TRANSCRIBED }
+      status { :transcribed }
     end
     factory :transcribed_page, :traits => [:transcribed]
     factory :page_with_links, :traits => [:with_links]

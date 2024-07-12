@@ -178,7 +178,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.side-tabs').click_link("Privacy & Access")
     page.click_link("Make Collection Public")
   end
-  
+
   context "inactive collection" do
 
     # Current Deed Counts for comparison
@@ -207,7 +207,7 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "transcribing doesn't work for inactive collections" do
-      unstarted_page = @page.work.pages.where(status: nil).first
+      unstarted_page = @page.work.pages.where(status: :new).first
       visit collection_display_page_path(@collection.owner, @collection, @page.work, unstarted_page)
       expect(page).to have_content('not active')
     end
