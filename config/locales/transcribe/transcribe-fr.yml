@@ -59,6 +59,7 @@ fr:
       save_changes: Sauvegarder
       save_to_incomplete_tooltip: Enregistrer une page incomplète
       save_to_needs_review_tooltip: Enregistrez vos modifications
+      save_to_transcribed_tooltip: Enregistrez vos modifications
     save_transcription:
       error_message: 'Une erreur s''est produite lors de l''analyse du balisage dans votre relevé de notes. Ce type d''erreur se produit souvent s''il manque un crochet angulaire ou si une balise HTML est laissée ouverte. Vérifiez toutes les occurrences des symboles < ou > dans votre texte. (L''erreur de l''analyseur était : %{error_message})'
       saved_notice: Enregistré
