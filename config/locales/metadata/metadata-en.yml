@@ -1,6 +1,8 @@
 ---
 en:
   metadata:
+    refresh:
+      is_processing: Metadata refresh is processing.
     upload:
       browse: Browse
       click_to_browse_a_file: Click to browse a file...

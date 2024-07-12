@@ -178,6 +178,8 @@ en:
       page_on_the_left: Image on the left
       page_on_the_right: Image on the right
       page_on_the_top: Image on the top
+      refresh_metadata: Refresh Metadata
+      refresh_metadata_description: Refresh metadata from original IIIF manifests.
       save_changes: Save Changes
       spellcheck_description: Not suitable for texts with irregular spelling.
       upload_metadata: Upload Metadata

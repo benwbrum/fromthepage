@@ -15,6 +15,8 @@ de:
         login:
           exclusion: ist ungültig
           format: darf keine spitzen Klammern (<, >) enthalten
+        reset_password:
+          invalid_token: Ihr Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Fordern Sie ein weiteres Link zum Zurücksetzen des Passworts an, um fortzufahren.
     failure:
       already_authenticated: Sie sind bereits angemeldet.
       inactive: Ihr Benutzerkonto ist noch nicht aktiviert.
