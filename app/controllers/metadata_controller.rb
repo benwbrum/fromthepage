@@ -33,7 +33,7 @@ class MetadataController < ApplicationController
 
     # Make sure import logs folder exists
     unless Dir.exist?("#{Rails.root}/public/metadata/refresh/log")
-      Dir.mkdir("#{Rails.root}/public/metadata/refresh/log")
+      FileUtils.mkdir_p("#{Rails.root}/public/metadata/refresh/log")
     end
 
     # Create logfile for collection
