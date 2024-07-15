@@ -178,6 +178,8 @@ de:
       page_on_the_left: Seite links
       page_on_the_right: Seite rechts
       page_on_the_top: Seite ganz oben
+      refresh_metadata: Metadaten aktualisieren
+      refresh_metadata_description: Aktualisieren Sie die Metadaten aus den ursprünglichen IIIF-Manifesten.
       save_changes: Änderungen speichern
       spellcheck_description: Nicht geeignet für Texte mit unregelmäßiger Schreibweise.
       upload_metadata: Metadaten hochladen

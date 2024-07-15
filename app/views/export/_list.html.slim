@@ -55,7 +55,7 @@
           -unless work.table_cells.blank?
             -if work.table_cells.count < 10000
               td.nowrap
-                =link_to controller: 'export', action: 'table_csv', work_id: work.id, class: 'btnCsvTblExport btnExport'
+                =link_to export_table_csv_path(work_id: work.id), class: 'btnCsvTblExport btnExport'
                   =svg_symbol '#icon-export', class: 'icon'
                   span =t('export.index.table_csv')
           td.nowrap

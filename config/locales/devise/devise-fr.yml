@@ -15,6 +15,8 @@ fr:
         login:
           exclusion: n'est pas valide
           format: ne peut pas contenir de chevrons (<, >)
+        reset_password:
+          invalid_token: Votre lien de réinitialisation de mot de passe est invalide ou a expiré. Demandez un autre mot de passe de réinitialisation pour continuer.
     failure:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n'est pas encore activé.

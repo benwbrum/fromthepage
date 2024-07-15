@@ -178,6 +178,8 @@ pt:
       page_on_the_left: Página à Esquerda
       page_on_the_right: Página à Direita
       page_on_the_top: Página Superior
+      refresh_metadata: Atualizar metadados
+      refresh_metadata_description: Atualize os metadados dos manifestos originais do IIIF.
       save_changes: Guardar Alterações
       spellcheck_description: Não é adequado para textos com ortografia irregular.
       upload_metadata: Carregar metadados

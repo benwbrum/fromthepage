@@ -101,7 +101,7 @@ class TranscribeController  < ApplicationController
         end
         return
       end
-    elsif params['done_to_needs_review'] && @page.work.collection.review_workflow
+    elsif params['save_to_needs_review'] && @page.work.collection.review_workflow
       unless @page.status == Page::STATUS_NEEDS_REVIEW
         # don't log a deed if the page was already in needs review
         @page.status = Page::STATUS_NEEDS_REVIEW
@@ -148,14 +148,13 @@ class TranscribeController  < ApplicationController
     save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
     save_to_transcribed = params[:save_to_transcribed] || params[:done_to_transcribed]
     approve_to_transcribed = params[:approve_to_transcribed]
-
+    
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       message = log_transcript_attempt
-
       # leave the status alone if it's needs review, but otherwise set it to transcribed
       if save_to_incomplete && params[:page]['needs_review'] != '1'
         @page.status = Page::STATUS_INCOMPLETE
-      elsif params[:done_to_needs_review] && @page.work.collection.review_workflow
+      elsif save_to_needs_review && @page.work.collection.review_workflow
         @page.status = Page::STATUS_NEEDS_REVIEW
       elsif save_to_needs_review
         if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)

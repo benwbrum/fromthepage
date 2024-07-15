@@ -291,6 +291,10 @@ GEM
     inline_svg (1.9.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
+    interactor (3.1.2)
+    interactor-rails (2.2.1)
+      interactor (~> 3.0)
+      rails (>= 4.2)
     iso-639 (0.3.6)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
@@ -700,6 +704,7 @@ DEPENDENCIES
   i18n-tasks
   iiif-image-api!
   iiif-presentation!
+  interactor-rails (~> 2.0)
   iso-639
   jquery-rails
   jquery-ui-sass-rails
