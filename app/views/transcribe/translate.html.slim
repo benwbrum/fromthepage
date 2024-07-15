@@ -36,8 +36,8 @@
     .page-review
       =t('.this_page_marked_needs_review')
 
-  .page-columns(id="splitter")
-    .page-column
+  .page-columns(data-layout-mode="ltr")
+    .page-column(id="leftColumn")
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
@@ -68,7 +68,8 @@
                 ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
       .page-imagescan(style=("display:none" unless @fromImage))
         =render :partial => '/shared/osd_div'
-    .page-column
+    .splitter(id="splitter")
+    .page-column(id="rightColumn")
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
@@ -140,8 +141,5 @@ h2.legend =t('.page_notes')
 
     });
 
-    $('#splitter').split({
-      orientation: 'vertical',
-      limit: 10,
-      position: '50%'
-    });
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');

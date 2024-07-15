@@ -439,7 +439,7 @@ describe "document sets", :order => :defined do
     expect(page).to have_content('Works')
     click_link('Pages That Need Review')
     expect(page).to have_selector('h3', text: 'Pages That Need Review')
-    expect(page).to have_content(@set.works.first.pages.first.title)
+    expect(page).to have_content('No pages found')
     click_link('Return to collection')
     expect(page).to have_selector('h1', text: @set.title)
     expect(page).to have_content('Works')

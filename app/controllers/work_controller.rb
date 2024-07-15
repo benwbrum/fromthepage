@@ -27,7 +27,6 @@ class WorkController < ApplicationController
 
   def metadata_overview_monitor
     @is_monitor_view = true
-    @collection = @collection
     render :template => "transcribe/monitor_view"
   end
 
@@ -43,6 +42,7 @@ class WorkController < ApplicationController
 
 
   def describe
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 

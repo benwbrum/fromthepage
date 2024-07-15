@@ -119,8 +119,9 @@ Fromthepage::Application.routes.draw do
     scope 'metadata', as: 'metadata' do
       get ':id/example', to: 'metadata#example', as: :example
       get ':id/upload', to: 'metadata#upload', as: :upload
-      get 'csv_error', to:'metadata#csv_error'
+      get 'csv_error', to: 'metadata#csv_error'
       post 'create', to: 'metadata#create'
+      post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
 
     scope 'editor_button', as: 'editor_button' do
@@ -163,6 +164,7 @@ Fromthepage::Application.routes.draw do
   scope 'export', as: 'export' do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
+    get 'list', to: 'export#list'
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'

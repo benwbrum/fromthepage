@@ -15,6 +15,8 @@ pt:
         login:
           exclusion: não é válido
           format: não pode conter colchetes angulares (<, >)
+        reset_password:
+          invalid_token: O link de redefinição de senha é inválido ou expirou. Solicite outra redefinição de senha para continuar.
     failure:
       already_authenticated: Você já entrou na sua conta.
       inactive: A sua conta ainda não foi ativada.

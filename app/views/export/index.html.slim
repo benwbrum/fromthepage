@@ -22,65 +22,17 @@ p.big
 -if @collection.text_entry?
   h2 =t('.export_individual_works')
   p.big =t('.export_individual_works_description')
-  table.datagrid
-    tr
-      th.w80 =t('.work_title')
-      th =t('.pages')
-      -unless @collection.subjects_disabled
-        th =t('.indexed')
-      th #{@header}
-      th =t('.review')
-      th.w100 =t('.progress')
-      th(colspan="6") =t('.export_as')
 
-    -for work in @works
-      -work_stats(work)
+  =form_tag export_list_path(collection_id: @collection.id), method: :get, enforce_utf8: false, id: 'collection-search', class: 'dataTables_wrapper' do
+    =hidden_field_tag :sort, params[:sort]
+    =hidden_field_tag :order, params[:order]
+    .dataTables_length
+      label =select_tag :per_page, options_for_select(pagination_options_collection, params[:per_page] || '15'), class: 'field-input'
+    section.collection-search(style='width: 30%; float: right;')
+      =search_field_tag :search, params[:search], placeholder: 'Search...'
+      =button_tag 'Search', id: 'collection-search-submit'
 
-      tr
-        td.big =link_to work.title, display_read_work_path(:work_id => work.id)
-        td.nowrap.fgfaded =t('.n_pages', count: work.work_statistic.total_pages)
-        -unless @collection.subjects_disabled
-          td.nowrap.fgfaded.tocenter ="#{@progress_annotated}%"
-        td.nowrap.fgfaded.tocenter ="#{@progress_completed}%"
-        td.nowrap.fgfaded.tocenter ="#{@progress_review}%"
-        td
-          .progress
-            -unless @collection.subjects_disabled
-              span(style="width:#{@progress_annotated}%")
-              span(style="width:#{@progress_completed - @progress_annotated}%")
-              span(style="width:#{@progress_review}%")
-
-            -else
-              span(style="width:#{@progress_completed}%")
-              span(style="width:#{@progress_review}%")
-
-        td.nowrap
-          =link_to(export_show_path(:work_id => work.id))
-            =svg_symbol '#icon-export', class: 'icon'
-            span= t('.html')
-        td.nowrap
-          =link_to(export_work_plaintext_verbatim_path(:work_id => work.id))
-            =svg_symbol '#icon-export', class: 'icon'
-            span =t('.plain_text')
-        td.nowrap
-          =link_to(export_tei_path(work.slug))
-            =svg_symbol '#icon-export', class: 'icon'
-            span= t('.tei')
-        td.nowrap
-          =link_to iiif_manifest_path(work.id)
-            =svg_symbol '#icon-export', class: 'icon'
-            span= t('.iiif')
-        -unless work.table_cells.blank?
-          -if work.table_cells.count < 10000
-            td.nowrap
-              =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
-                =svg_symbol '#icon-export', class: 'icon'
-                span =t('.table_csv')
-        td.nowrap
-          =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('.more_export_formats')
-            span =t('.more')
-
-  =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+    = render partial: 'list', locals: { collection: @collection, works: @works, header: @header }
 
 h2= t('.api')
 p
@@ -106,3 +58,68 @@ p
         }, 1000);
       });
     });
+
+    $(document).ready( function () {
+      // initialize the works list datatable
+      const collectionSearchForm = $('#collection-search');
+      const worksListTable = $('#works-list');
+
+      const sortInput = $('#sort');
+      const orderInput = $('#order');
+      const perPageSelect = $('#per_page');
+      const collectionSearchSubmitButton = $('#collection-search-submit');
+
+      initializeTable();
+
+      function initializeTable() {
+        $('th.sorting').on('click', triggerSorting);
+      }
+
+      function triggerSorting(event) {
+        sortInput.val($(event.target).data('sort'));
+        let newOrder = orderInput.val() === 'asc' ? 'desc' : 'asc';
+        orderInput.val(newOrder);
+
+        submitForm();
+      }
+
+      // Handle change per_page
+      perPageSelect.on('change', function(event) {
+        event.preventDefault();
+
+        submitForm();
+      });
+
+      // Handle submit button click
+      collectionSearchSubmitButton.on('click', function(event) {
+        event.preventDefault();
+
+        submitForm();
+      });
+
+      function submitForm(event) {
+        $('html').addClass('page-busy');
+
+        const formData = collectionSearchForm.serialize();
+
+        const queryParams = new URLSearchParams(formData).toString();
+        const newUrl = `${window.location.pathname}?${queryParams}`;
+        history.pushState(null, '', newUrl);
+
+        $.ajax({
+          url: collectionSearchForm.attr('action'),
+          type: collectionSearchForm.attr('method'),
+          data: formData,
+          success: function(response) {
+            worksListTable.html(response);
+            initializeTable();
+
+            $('html').removeClass('page-busy');
+          },
+          error: function(xhr, status, error) {
+            $('html').removeClass('page-busy');
+            console.error('Error fetching document sets:', error);
+          }
+        })
+      }
+    } );

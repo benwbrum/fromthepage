@@ -12,8 +12,10 @@
   -if @page.status.blank? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
     =button_tag t('.save_changes'), name: 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}", data: { disable_with: t('.please_wait') }, onclick: 'unsavedNotes(event);'
 
-  -if [Page::STATUS_NEEDS_REVIEW, Page::STATUS_INDEXED, Page::STATUS_TRANSCRIBED].include?(@page.status)
+  -if [Page::STATUS_NEEDS_REVIEW].include?(@page.status)
     =button_tag t('.save_changes'), name: 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}", data: { disable_with: t('.please_wait') }
+  -elsif [Page::STATUS_INDEXED, Page::STATUS_TRANSCRIBED].include?(@page.status)
+    =button_tag t('.save_changes'), name: 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}", data: { disable_with: t('.please_wait') }
 
   -if [nil, "", Page::STATUS_INCOMPLETE].include?(@page.status)
     -if @collection.review_workflow

@@ -143,52 +143,26 @@
   width: 100%;
   display: flex;
   min-height: 50vh;
+  position: relative;
   column-gap: 2rem;
   row-gap: 2rem;
-  // max-height: calc((100vh - 74px - 4rem));
-  position: relative;
-  // height: calc((100vh - 74px - 4rem));
-
-
-  // .page-column:last-child {
-  //   margin: 0 0 0 2rem;
-  // }
 
   &[data-layout-mode='rtl'] {
     flex-direction: row-reverse;
-
-    .page-column:first-child {
-      right: 0 !important;
-      left: auto !important;
-    }
-
-    .page-column:last-child {
-      margin: 0 2rem 0 0;
-      left: 0 !important;
-      right: auto !important;
-    }
   }
 
   &[data-layout-mode='ttb'] {
     flex-direction: column;
-
-    // .page-column:last-child {
-    //   margin: 2rem 0 0 0;
-    // }
   }
 
   &[data-layout-mode='btt'] {
     flex-direction: column-reverse;
+  }
 
-    .page-column:first-child {
-      bottom: 0 !important;
-      top: auto !important;
-    }
-
-    .page-column:last-child {
-      // margin: 0 0 2rem 0;
-      top: 0 !important;
-      bottom: auto !important;
+  &[data-layout-mode='btt'],
+  &[data-layout-mode='ttb'] {
+    .cm-editor {
+      min-height: 30vh;
     }
   }
 }
@@ -222,7 +196,7 @@
   [data-layout-mode='ttb'] &,
   [data-layout-mode='btt'] & {
     flex-basis: auto;
-    height: calc((100vh - 74px - 3rem) / 2);
+    max-height: calc(50vh);
   }
 }
 

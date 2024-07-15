@@ -23,12 +23,12 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns(id="splitter")
-  .page-column
+.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
     .page-imagescan
       =render :partial => '/shared/osd_div'
-
-  .page-column
+  .splitter(id="splitter")
+  .page-column(id="rightColumn")
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
@@ -83,8 +83,5 @@ h2.legend#notes =t('.page_notes')
 
 -content_for :javascript
   javascript:
-    $('#splitter').split({
-      orientation: 'vertical',
-      limit: 10,
-      position: '50%'
-    });
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
