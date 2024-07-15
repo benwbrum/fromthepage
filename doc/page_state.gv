@@ -1,0 +1,79 @@
+digraph page_status_fsm {
+  label="Page Status FSM, UI and Actions";
+//  rotate=90;
+
+  subgraph optional_flow {
+    label="Review Optional Workflow";
+
+    untranscribed[
+      label="Untranscribed",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+      // TODO shade to look initial?  In progress? Not complete?
+    ];
+
+
+    save_to_untranscribed[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+    untranscribed -> save_to_untranscribed;
+
+    incomplete[
+      label="Incomplete",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+    ];
+
+    save_to_untranscribed -> incomplete;
+
+    save_to_incomplete[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+    incomplete -> save_to_incomplete;
+    save_to_incomplete -> incomplete;
+
+ 
+    blank[
+      label="Blank",
+      // TODO what do we show here already?
+      xlabel="\rTODO: What do we show here?"
+    ];
+
+    needs_review[
+      label="Needs Review",
+      xlabel="\rButtons: Save, Done(?)\rChecks: Mark Blank, (un)Mark for Review"
+    ]
+
+    done_to_untranscribed[
+      label="Done\nButton",
+      shape=diamond
+    ];
+
+    done_to_incomplete[
+      label="Done\nButton",
+      shape=diamond
+    ];
+
+
+
+    transcribed[
+      label="Transcribed",
+      xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    ];
+
+
+    untranscribed -> done_to_untranscribed;
+    done_to_untranscribed -> transcribed;
+
+    indexed[
+      label="Indexed",
+      xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    ];
+
+    // TODO deal with translation
+
+  };
+  // TODO subgraphs for each review workflow
+}
