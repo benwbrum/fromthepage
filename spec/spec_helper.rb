@@ -5,8 +5,9 @@ require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
+
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear!('rails')
 
 DatabaseCleaner.strategy = :transaction
 
@@ -85,9 +86,10 @@ RSpec.configure do |config|
 end
 
 Capybara.configure do |config|
-  config.asset_host = "http://localhost:3000"
+  config.asset_host = 'http://localhost:3000'
   config.raise_server_errors = false
 end
+
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
