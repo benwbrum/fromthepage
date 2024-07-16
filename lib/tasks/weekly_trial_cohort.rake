@@ -2,7 +2,7 @@ namespace :fromthepage do
   desc "weekly trial cohort"
   task :weekly_trial_cohort => :environment do
     # generate a csv file of users who signed up in the last week and write it out to a temporary file
-    TARGET_ACTIONS = ['static#landing_page', 'registrations#new_trial', 'registrations#create', 'collection#create']
+    target_actions = AhoyActivitySummary::WEEKLY_TRIAL_COHORT_TARGET_ACTIONS
     TEMP_FILE='/tmp/conversion_cohorts.csv'
     week_cohorts=[]
     current_day=Date.new(2023,2,12)
@@ -19,7 +19,7 @@ namespace :fromthepage do
       previous_visits = nil
       previous_actions=nil
       registrations_create_count = nil
-      TARGET_ACTIONS.each do |action|
+      target_actions.each do |action|
         if previous_visits
           visits = Ahoy::Event.where(time: start_day..end_day, name: action, visit_id: previous_visits).pluck(:visit_id).uniq
           action_count = visits.count
@@ -36,7 +36,7 @@ namespace :fromthepage do
           f.print("#{pct}\t")
         end
         f.print("#{action_count}\t")
- 
+
         # we'll need this later for TTFPT
         if action == 'registrations#create'
           registrations_create_count = action_count

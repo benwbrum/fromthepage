@@ -15,8 +15,8 @@ default: &default
   collation: utf8mb4_unicode_ci
   pool: 5
   username: root
-  password:
-  socket: /var/run/mysqld/mysqld.sock
+  password: <%= ENV['MYSQL_ROOT_PASSWORD'] %>
+  socket: <%= ENV['MYSQL_SOCKET'] %>
   strict: false
   variables:
     sql_mode: TRADITIONAL
@@ -25,7 +25,7 @@ default: &default
 development:
   <<: *default
   username: rails
-  password: rails
+  password: <%= ENV['MYSQL_DEV_PASSWORD'] %>
   database: diary_development
 
 # Warning: The database defined as "test" will be erased and
@@ -34,6 +34,7 @@ development:
 test:
   <<: *default
   database: diary_test
+  host: 127.0.0.1
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
