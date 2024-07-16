@@ -57,18 +57,17 @@ module AhoyActivityUtils
     exclude_actions = AhoyActivitySummary::WEEKLY_TRIAL_COHORT_TARGET_ACTIONS +
                       AhoyActivitySummary::WEEKLY_TRANSCRIBER_COHORT_TARGET_ACTIONS
 
-    Ahoy::Event
-      .where('time < ?', keep_after_date)
-      .where.not(name: exclude_actions)
-      .in_batches(of: 1_000)
-      .each(&:destroy_all)
 
-    Visit
-      .left_joins(:ahoy_events)
-      .where('started_at < ?', keep_after_date)
-      .where(ahoy_events: { id: nil })
-      .in_batches(of: 1_000)
-      .each(&:destroy_all)
+    Ahoy::Event.where('time < ?', keep_after_date)
+                .where.not(name: exclude_actions)
+                .in_batches(of: 1_000)
+                .delete_all
+
+    Visit.left_joins(:ahoy_events)
+                .where('started_at < ?', keep_after_date)
+                .where(ahoy_events: { id: nil })
+                .in_batches(of: 1_000)
+                .delete_all
   end
 
   def self.total_contiguous_seconds(times_and_names, tolerance=90.minutes)
