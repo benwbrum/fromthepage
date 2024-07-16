@@ -82,8 +82,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-webkit'
-  gem 'coveralls', require: false
+  gem 'coveralls_reborn', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda'
@@ -96,6 +95,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bullet'
+  gem 'dotenv-rails'
   gem 'easy_translate'
   gem 'factory_bot_rails'
   gem 'i18n-tasks'
@@ -105,6 +105,8 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails'
 end
+
+gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
 
 # Use SassC for stylesheets
 gem 'sassc-rails'
