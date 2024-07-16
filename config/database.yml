@@ -11,22 +11,20 @@
 #
 default: &default
   adapter: mysql2
-  encoding: utf8mb4
-  collation: utf8mb4_unicode_ci
+  encoding: utf8
   pool: 5
-  username: root
-  password:
+  username: rails
+  password: rails
   socket: /var/run/mysqld/mysqld.sock
   strict: false
   variables:
     sql_mode: TRADITIONAL
 
-
 development:
   <<: *default
-  username: rails
-  password: rails
-  database: diary_development
+  # database: diary_development
+  database: diary2_development
+  # database: zebrapedia
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

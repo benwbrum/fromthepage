@@ -1,23 +1,34 @@
 digraph page_status_fsm {
-  label="Page Status FSM, UI and Actions";
+//  label="Page Status FSM, UI and Actions";
 //  rotate=90;
 
-  subgraph optional_flow {
+//  subgraph optional_flow {
     label="Review Optional Workflow";
+    overlap=false;
+    splines=true;
+    rankdir="TB";
 
-    untranscribed[
+    start[
       label="Untranscribed",
       xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
       // TODO shade to look initial?  In progress? Not complete?
     ];
-
+    { rank=source; start; }
 
     save_to_untranscribed[
       label="Save\nButton",
       shape=diamond
     ];
 
-    untranscribed -> save_to_untranscribed;
+    start -> save_to_untranscribed;
+
+    mark_blank_to_untranscribed[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
+
+
+
 
     incomplete[
       label="Incomplete",
@@ -31,8 +42,15 @@ digraph page_status_fsm {
       shape=diamond
     ];
 
+
     incomplete -> save_to_incomplete;
     save_to_incomplete -> incomplete;
+
+
+    mark_blank_to_incomplete[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
 
  
     blank[
@@ -40,6 +58,15 @@ digraph page_status_fsm {
       // TODO what do we show here already?
       xlabel="\rTODO: What do we show here?"
     ];
+
+    
+    start -> mark_blank_to_untranscribed;
+    mark_blank_to_untranscribed -> blank;
+
+    incomplete -> mark_blank_to_incomplete;
+    mark_blank_to_incomplete -> blank;
+
+
 
     needs_review[
       label="Needs Review",
@@ -55,7 +82,23 @@ digraph page_status_fsm {
       label="Done\nButton",
       shape=diamond
     ];
+    
 
+
+    mark_needs_review_to_untranscribed[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+    mark_needs_review_to_incomplete[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+    mark_needs_review_to_transcribed[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
 
 
     transcribed[
@@ -63,17 +106,35 @@ digraph page_status_fsm {
       xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
     ];
 
+    start -> mark_needs_review_to_untranscribed;
+    mark_needs_review_to_untranscribed -> needs_review;
+    incomplete -> mark_needs_review_to_incomplete;
+    mark_needs_review_to_incomplete -> needs_review;
+    transcribed -> mark_needs_review_to_transcribed;
+    mark_needs_review_to_transcribed -> needs_review;
 
-    untranscribed -> done_to_untranscribed;
-    done_to_untranscribed -> transcribed;
-
-    indexed[
-      label="Indexed",
-      xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    unmark_needs_review_to_needs_review[
+      label="Unmark\nNeeds Review\n&\nSave or Done",
+      shape=diamond
     ];
+
+
+    needs_review -> unmark_needs_review_to_needs_review;
+    unmark_needs_review_to_needs_review -> transcribed;
+
+
+    start -> done_to_untranscribed;
+    done_to_untranscribed -> transcribed;
+    incomplete -> done_to_incomplete;
+    done_to_incomplete -> transcribed;
+
+    //indexed[
+    //  label="Indexed",
+    //  xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    //];
 
     // TODO deal with translation
 
-  };
+//  };
   // TODO subgraphs for each review workflow
 }
