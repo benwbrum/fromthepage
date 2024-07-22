@@ -32,6 +32,7 @@
 # Indexes
 #
 #  index_pages_on_edit_started_by_user_id                 (edit_started_by_user_id)
+#  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
 #  pages_search_text_index                                (search_text)
@@ -56,9 +57,8 @@ class Page < ApplicationRecord
   acts_as_list :scope => :work
   belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
 
-
-  has_many :page_article_links, :dependent => :destroy
-  has_many :articles, :through => :page_article_links
+  has_many :page_article_links, dependent: :destroy
+  has_many :articles, through: :page_article_links
   has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
 
   belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
@@ -529,7 +529,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
     end
   end
 
