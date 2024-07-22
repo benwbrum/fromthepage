@@ -2,6 +2,8 @@
 
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 6, :page_id => @page.id }})
 
+=render({ :partial => '/shared/insert_table_modal' })
+
 =form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }, :html => { class: 'page-editor' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors

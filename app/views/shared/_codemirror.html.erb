@@ -28,6 +28,13 @@
 
 <script>
   var button_config = [
+    {
+      class: 'insertTableBtn',
+      label: '<%= svg_symbol("#icon-table") %> table',
+      callback: function (cm) {
+        return false
+      }
+    },
     <% @collection.editor_buttons.each do |button| %>
       {
         hotkey: '<%= button.hotkey %>',
@@ -119,11 +126,47 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
-    // track editing for volunteer hours
-    myCodeMirror.on("change", function(instance, changeObj) {
-      sendActiveEditing()
-    });
-    
-    // give codeMirror with class of respective text direction
-    myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+  // track editing for volunteer hours
+  myCodeMirror.on("change", function(instance, changeObj) {
+    sendActiveEditing()
+  });
+  
+  // give codeMirror with class of respective text direction
+  myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+
+  // open the modal
+  function openTableModal() {
+    document.getElementById('tableModal').style.display = 'block';
+  }
+
+  // close the modal
+  function closeTableModal() {
+    document.getElementById('tableModal').style.display = 'none';
+  }
+
+  // generate a Markdown table
+  function generateTable(rows, cols) {
+    let table = '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    table += '| ' + Array(cols).fill('---').join(' | ') + ' |\n';
+    for (let i = 0; i < rows - 1; i++) {
+      table += '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    }
+    return table;
+  }
+
+  // insert table into CodeMirror
+  function insertTable() {
+    const rows = parseInt(document.getElementById('rows').value);
+    const cols = parseInt(document.getElementById('columns').value);
+    const tableMarkdown = generateTable(rows, cols);
+    myCodeMirror.replaceSelection(tableMarkdown);
+    closeTableModal();
+  }
+
+  // event listeners
+  document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
+  document.getElementById('insertTableOk').addEventListener('click', insertTable);
+  document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
 </script>

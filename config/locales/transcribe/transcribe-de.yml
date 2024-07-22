@@ -1,5 +1,11 @@
 ---
 de:
+  shared:
+    insert_table_modal:
+      ok: OK
+      cancel: Annuleren
+      rows: Reihen
+      columns: Säulen
   transcribe:
     assign_categories:
       assign_categories: Kategorien zuweisen

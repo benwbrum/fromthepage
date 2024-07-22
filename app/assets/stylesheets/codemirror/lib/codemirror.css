@@ -342,3 +342,16 @@ div.CodeMirror-dragcursors {
 
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
+
+button.insertTableBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  column-gap: 3px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+  }
+}

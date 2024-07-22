@@ -1,0 +1,50 @@
+<!-- Modal for table configuration -->
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+    }
+
+    .buttons {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        column-gap: 5px;
+    }
+
+    .item {
+        margin-bottom: 10px;
+    }
+</style>
+<div id="tableModal" class="modal">
+    <div class="modal-content">
+        <div class="item">
+            <label for="rows"><%= t('.rows') %>:</label>
+            <input type="number" id="rows" min="1" value="2">
+        </div>
+        <div class="item">
+            <label for="columns"><%= t('.columns') %>:</label>
+            <input type="number" id="columns" min="1" value="2">
+        </div>
+        <div class="buttons">
+            <button id="insertTableOk"><%= t('.ok') %></button>
+            <button id="insertTableCancel"><%= t('.cancel') %></button>
+        </div>
+    </div>
+</div>
