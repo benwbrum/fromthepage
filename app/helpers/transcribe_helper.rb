@@ -19,6 +19,10 @@ module TranscribeHelper
     end
   end
 
+  def canonical_subjects_for_autocomplete
+    @collection.articles.pluck(:title)
+  end
+
   def excerpt_subject(page, title, options = {})
     options[:text_type] ||= 'transcription'
     options[:radius] ||= 3

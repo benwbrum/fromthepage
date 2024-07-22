@@ -44,8 +44,7 @@ class NotesController < ApplicationController
 
   def destroy
     @note = Note.find(params[:id])
-    @note.deed.delete
-    @note.delete
+    @note.destroy
     respond_to do |format|
       format.json { head :no_content }
       format.html { redirect_back fallback_location: root_path, notice: t('.note_has_been_deleted') }
