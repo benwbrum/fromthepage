@@ -31,7 +31,10 @@ class Note < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :work, optional: true
   belongs_to :collection, optional: true
-  has_one :deed, :dependent => :destroy
+
+  has_many :deeds, dependent: :destroy
+  has_one :deed, -> { order(created_at: :desc) }
+
   has_many :flags
 
   after_save :email_users
