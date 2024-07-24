@@ -2,10 +2,10 @@
 es:
   shared:
     insert_table_modal:
-      ok: De acuerdo
       cancel: Cancelar
-      rows: Filas
       columns: Columnas
+      ok: De acuerdo
+      rows: Filas
   transcribe:
     assign_categories:
       assign_categories: Asignar categorías
