@@ -74,6 +74,8 @@ fr:
       threshold: Seuillage
       zoom_in: Agrandir
       zoom_out: Dézoomer
+    page_navigation:
+      nav_info: Page %{position} sur %{size}
     page_tabs:
       correct: Corriger
       describe_work: Décrire l'œuvre

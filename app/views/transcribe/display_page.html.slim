@@ -47,6 +47,9 @@
           |&nbsp;
           span =t('.always_show_fullscreen')
 
+      .flex-toolbar_group.page-navigator
+        =render({ :partial => '/shared/page_navigation', :locals => { :selected => 3, :page_id => @page.id }})
+
       .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
         =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})

@@ -74,6 +74,8 @@ pt:
       threshold: Limite
       zoom_in: Mais Zoom
       zoom_out: Reduzir o zoom
+    page_navigation:
+      nav_info: Página %{position} de %{size}
     page_tabs:
       correct: Corrigir
       describe_work: Descrever obra

@@ -74,6 +74,8 @@ es:
       threshold: Límite
       zoom_in: Acercarse
       zoom_out: Disminuir el zoom
+    page_navigation:
+      nav_info: Página %{position} de %{size}
     page_tabs:
       correct: Corregir
       describe_work: Describir la obra

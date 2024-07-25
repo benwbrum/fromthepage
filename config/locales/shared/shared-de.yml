@@ -74,6 +74,8 @@ de:
       threshold: Schwelleneffekt
       zoom_in: Hineinzoomen
       zoom_out: Rauszoomen
+    page_navigation:
+      nav_info: Seite %{position} von %{size}
     page_tabs:
       correct: Korrektur
       describe_work: Werk beschreiben
