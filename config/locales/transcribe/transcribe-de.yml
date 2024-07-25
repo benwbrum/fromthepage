@@ -56,7 +56,8 @@ de:
       please_wait: Einen Moment...
       preview: Vorschau
       preview_tooltip: Vorschau dieser Seite
-      save_changes: Speichern
+      save: Speichern
+      save_changes: Entwurf speichern
       save_to_incomplete_tooltip: Eine unvollständige Seite speichern
       save_to_needs_review_tooltip: Änderungen speichern
       save_to_transcribed_tooltip: Änderungen speichern

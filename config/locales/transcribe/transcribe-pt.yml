@@ -56,7 +56,8 @@ pt:
       please_wait: Por favor, espere...
       preview: Visualizar
       preview_tooltip: Visualizar esta página
-      save_changes: Salvar
+      save: Salvar
+      save_changes: Salvar rascunho
       save_to_incomplete_tooltip: Salvar uma página incompleta
       save_to_needs_review_tooltip: Salve suas alterações
       save_to_transcribed_tooltip: Salve suas alterações
