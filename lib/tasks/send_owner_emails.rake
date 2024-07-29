@@ -9,7 +9,7 @@ namespace :fromthepage do
 	    if owner.notification.owner_stats
         activity = AdminMailer::OwnerCollectionActivity.build(owner)
         unless activity.collections.blank?
-		      begin
+          begin
             AdminMailer.collection_stats_by_owner(activity).deliver!
           rescue Postmark::InactiveRecipientError => e
             puts "An exception was raised while trying to notify: #{e.message}"
