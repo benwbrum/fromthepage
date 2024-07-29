@@ -20,8 +20,6 @@ gem 'rvm1-capistrano3', require: false
 gem 'savon', '~> 2.12.0'
 gem 'text'
 gem 'thredded', '~> 1.0'
-gem "recaptcha", require: "recaptcha/rails"
-gem 'ruby-openai'
 gem 'postmark-rails'
 gem 'will_paginate'
 
