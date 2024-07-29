@@ -28,6 +28,8 @@ class TranscribeController  < ApplicationController
   end
 
   def display_page
+    rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
+
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
@@ -128,6 +130,7 @@ class TranscribeController  < ApplicationController
 
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
+    old_article_ids = @page.articles.pluck(:id)
 
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) if params[:quality_sampling_id].present?
 
@@ -148,7 +151,7 @@ class TranscribeController  < ApplicationController
     save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
     save_to_transcribed = params[:save_to_transcribed] || params[:done_to_transcribed]
     approve_to_transcribed = params[:approve_to_transcribed]
-    
+
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       message = log_transcript_attempt
       # leave the status alone if it's needs review, but otherwise set it to transcribed
@@ -240,7 +243,7 @@ class TranscribeController  < ApplicationController
 
             next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
             redirect_to action: 'assign_categories', page_id: @page.id,
-                        collection_id: @collection, next_page_id: next_page_id
+                        collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
           end
         else
           log_transcript_error(message)
@@ -304,6 +307,7 @@ class TranscribeController  < ApplicationController
     # no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
+      @new_article_ids = @page.articles.where.not(id: params[:old_article_ids]).pluck(:id)
 
       # Separate translationa and transcription links
       left, right = @page.page_article_links.partition { |x| x.text_type == 'translation' }
@@ -337,6 +341,8 @@ class TranscribeController  < ApplicationController
 
   def save_translation
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
+    old_article_ids = @page.articles.pluck(:id)
+
     @page.attributes = page_params
 
     #check to see if the page is marked blank
@@ -382,7 +388,8 @@ class TranscribeController  < ApplicationController
             end
           end
 
-          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :text_type => 'translation'
+          redirect_to action: 'assign_categories', page_id: @page.id,
+                      collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
         else
           log_translation_error(message)
           render :action => 'translate'
@@ -607,6 +614,11 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  def rollback_article_categories(destroy_ids, unset_ids)
+    Article.where(id: destroy_ids, provenance: nil).destroy_all if destroy_ids
+    Article.where(id: unset_ids).update(categories: []) if unset_ids
+  end
 
   def page_params
     params.require(:page).permit(:source_text, :source_translation, :title)

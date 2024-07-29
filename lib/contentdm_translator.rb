@@ -192,8 +192,10 @@ module ContentdmTranslator
   def self.cdm_collection(at_id)
     if at_id.match(/.*iiif\/info\//)
       at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
-    else
+    elsif at_id.match(/.*iiif\/2\//)
       at_id.sub(/.*iiif\/2\//, '').sub(/:.*/,'')
+    else # match https://cdm17168.contentdm.oclc.org/iiif/WFP:997/manifest.json
+      at_id.sub(/.*iiif\//, '').sub(/:.*/,'')
     end
   end
 
