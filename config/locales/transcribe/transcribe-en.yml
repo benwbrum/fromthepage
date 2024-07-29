@@ -3,6 +3,7 @@ en:
   transcribe:
     assign_categories:
       assign_categories: Assign categories
+      cancel: Cancel
       continue: Continue
       manage_categories: Manage Categories
       options: options
