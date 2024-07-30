@@ -18,9 +18,9 @@
 #  shrink_factor           :integer
 #  source_text             :text(16777215)
 #  source_translation      :text(16777215)
-#  status                  :string(255)
+#  status                  :string(255)      default("new"), not null
 #  title                   :string(255)
-#  translation_status      :string(255)
+#  translation_status      :string(255)      default("new"), not null
 #  xml_text                :text(16777215)
 #  xml_translation         :text(16777215)
 #  updated_at              :datetime
@@ -32,12 +32,14 @@
 # Indexes
 #
 #  index_pages_on_edit_started_by_user_id                 (edit_started_by_user_id)
+#  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
 #  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
+
 class Page < ApplicationRecord
   ActiveRecord::Base.lock_optimistically = false
 
@@ -82,51 +84,49 @@ class Page < ApplicationRecord
 
   after_initialize :defaults
   after_destroy :update_work_stats
-  #after_destroy :delete_deeds
+  # after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   serialize :metadata, Hash
 
-  scope :review, -> { where(status: 'review') }
-  scope :incomplete, -> { where(status: 'incomplete') }
-  scope :translation_review, -> { where(translation_status: 'review') }
-  scope :needs_transcription, -> { where(status: [nil]) }
-  scope :needs_completion, -> { where(status: [STATUS_INCOMPLETE]) }
-  scope :needs_translation, -> { where(translation_status: nil) }
-  scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed') }
-  scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed') }
+  STATUS_VALUES = {
+    new: 'new',
+    blank: 'blank',
+    incomplete: 'incomplete',
+    indexed: 'indexed',
+    needs_review: 'review',
+    transcribed: 'transcribed',
+    translated: 'translated'
+  }.freeze
+
+  enum status: STATUS_VALUES, _prefix: :status
+  enum translation_status: STATUS_VALUES, _prefix: :translation_status
+
+  scope :review, -> { where(status: :needs_review) }
+  scope :incomplete, -> { where(status: :incomplete) }
+  scope :translation_review, -> { where(translation_status: :needs_review) }
+  scope :needs_transcription, -> { where(status: :new) }
+  scope :needs_completion, -> { where(status: :incomplete) }
+  scope :needs_translation, -> { where(translation_status: :new) }
+  scope :needs_index, -> { where.not(status: [:new, :indexed]) }
+  scope :needs_translation_index, -> { where.not(translation_status: [:new, :indexed]) }
 
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
     TRANSLATION = 'translation'
   end
 
-  STATUS_TRANSCRIBED = 'transcribed'
-  STATUS_INCOMPLETE = 'incomplete'
-  STATUS_BLANK = 'blank'
-  STATUS_NEEDS_REVIEW = 'review'
-  STATUS_INDEXED = 'indexed'
-  STATUS_TRANSLATED = 'translated'
-
-  ALL_STATUSES = [
-    nil,
-    STATUS_INCOMPLETE,
-    STATUS_TRANSCRIBED,
-    STATUS_NEEDS_REVIEW,
-    STATUS_INDEXED,
-    STATUS_TRANSLATED,
-    STATUS_BLANK
-  ]
-
-  MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
-  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
-  COMPLETED_STATUSES = [STATUS_TRANSCRIBED, STATUS_TRANSLATED, STATUS_INDEXED, STATUS_BLANK]
-  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_NEEDS_REVIEW]
-
-  NEEDS_WORK_STATUSES = [
-    nil,
-    STATUS_INCOMPLETE
-  ]
+  ALL_STATUSES = STATUS_VALUES.values
+  MAIN_STATUSES = ALL_STATUSES - [STATUS_VALUES[:translated]]
+  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_VALUES[:incomplete], STATUS_VALUES[:transcribed]]
+  COMPLETED_STATUSES = [
+    STATUS_VALUES[:blank],
+    STATUS_VALUES[:indexed],
+    STATUS_VALUES[:transcribed],
+    STATUS_VALUES[:translated]
+  ].freeze
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_VALUES[:needs_review]]
+  NEEDS_WORK_STATUSES = [STATUS_VALUES[:new], STATUS_VALUES[:incomplete]].freeze
 
   # tested
   def collection
@@ -550,7 +550,7 @@ class Page < ApplicationRecord
     self.update_columns(source_text: remove_square_braces(text))
     @text_dirty = true
     process_source
-    self.status = 'transcribed'
+    self.status = STATUS_VALUES[:transcribed]
     self.save!
   end
 
@@ -558,13 +558,13 @@ class Page < ApplicationRecord
     self.update_columns(source_translation: remove_square_braces(text))
     @translation_dirty = true
     process_source
-    self.status = 'translated'
+    self.status = STATUS_VALUES[:translated]
     self.save!
   end
 
   def validate_blank_page
-    unless self.status == Page::STATUS_BLANK
-      self.status = nil if self.source_text.blank?
+    unless self.status_blank?
+      self.status = STATUS_VALUES[:new] if self.source_text.blank?
     end
   end
 

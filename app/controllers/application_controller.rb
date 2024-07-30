@@ -350,7 +350,7 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
-    if page.status == nil
+    if page.status_new?
       if user_signed_in?
         collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
       else

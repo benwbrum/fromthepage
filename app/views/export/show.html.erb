@@ -5,7 +5,7 @@
     <head>
       <title> <%= @work.title %></title>
     </head>
-    
+
     <body>
     <h1 class="work-title"><%= @work.title %></h1>
     <div class="export-metadata"><%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
@@ -26,7 +26,7 @@
       <div id="page-<%=page.id%>">
         <h3><a name="page-<%=page.id%>"><%= page.title %></a></h3>
         <div class="page-content">
-          <% if page.status != Page::STATUS_BLANK %>
+          <% unless page.status_blank? %>
             <% if @target == :jekyll %>
               <% puts page.id %>
               <%= raw(xml_to_html(page.xml_text, false, :jekyll)) %>
@@ -44,7 +44,7 @@
                 <div>
                   <p><span class="page-note-username"><%=note.user.display_name%></span></p>
                   <p class="page-note-content"><%= sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))%></p>
-                    
+
                 </div>
               <% end %>
             </div>
@@ -72,7 +72,7 @@
     <% if @work.supports_translation %>
       <hr />
       <h2 class="divider"><%= t('.page_translations') %></h2>
-  
+
       <div class="pages">
         <% @work.pages.each do |page| %>
         <div id="translation-<%=page.id%>">
@@ -89,7 +89,7 @@
               <div>
                 <p><span class="page-note-username"><%=note.user.display_name%></span></p>
                 <p class="page-note-content"><%= sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))%></p>
-                  
+
               </div>
             <% end %>
           </div>
@@ -141,7 +141,7 @@
           <br />
           <% end %>
         </div>
-      <% end %>  
+      <% end %>
   <% end %>
 <% unless @target == :jekyll %>
     </body>

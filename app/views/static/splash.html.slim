@@ -74,7 +74,7 @@ section.quotes
     =link_to 'Learn More', about_path, class: 'button big learn-more'
 
 section#transcription_count
-  span#count #{number_with_delimiter Page.where.not(:status=>nil).count}
+  span#count #{number_with_delimiter Page.where.not(status: :new).count}
   p Pages Transcribed with FromThePage
 
 section.spotlight

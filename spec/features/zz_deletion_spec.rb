@@ -13,7 +13,7 @@ describe "testing deletions" do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "blanks out the data in a collection" do
     #note, don't use last collection because it causes problems with later tests
@@ -27,7 +27,7 @@ describe "testing deletions" do
     expect(page.current_path).to eq("/collection/show")
     pages = Page.where(work_id: col.works.ids)
     pages.each do |p|
-      expect(p.status).to be_nil
+      expect(p.status_new?).to be_truthy
       expect(p.page_versions.first.page_version).to eq 0
     end
     expect(Deed.where(page_id: pages.ids)).to be_empty

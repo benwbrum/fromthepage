@@ -38,7 +38,7 @@ class QualitySampling < ApplicationRecord
   # end
 
   def current_field
-    self.collection.pages.where(status: Page::STATUS_NEEDS_REVIEW)
+    self.collection.pages.where(status: :needs_review)
   end
 
   def calculate_set
@@ -90,7 +90,7 @@ class QualitySampling < ApplicationRecord
   end
 
   def needs_review_pages
-    Page.where(status: Page::STATUS_NEEDS_REVIEW).where(id: sample_set)
+    Page.where(status: :needs_review).where(id: sample_set)
   end
 
   def next_unsampled_page
@@ -142,13 +142,13 @@ class QualitySampling < ApplicationRecord
     # replace reviewed page count with pages needing review
 
 
-    # for works: 
+    # for works:
     ## total page count should be the total pages in the work
-    ## approval delta should be the total/average for the pages in the work that have one and 
+    ## approval delta should be the total/average for the pages in the work that have one and
     ##    are in a completed state (since reviewed pages can be opened again)
     ## corrected_page_count should be pages in completed state with approval delta > 0
-    #  replace reviewed_page_count with pages needing review. 
-    ## 
+    #  replace reviewed_page_count with pages needing review.
+    ##
     Page.where(id:sample_set).each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
       user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
