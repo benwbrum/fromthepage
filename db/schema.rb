@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_10_132602) do
+ActiveRecord::Schema.define(version: 2024_07_23_000320) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -587,11 +587,11 @@ ActiveRecord::Schema.define(version: 2024_07_10_132602) do
     t.integer "lock_version", default: 0
     t.text "xml_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.integer "page_version_id"
-    t.string "status"
+    t.string "status", default: "new", null: false
     t.text "source_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "search_text", collation: "utf8mb4_unicode_ci"
-    t.string "translation_status"
+    t.string "translation_status", default: "new", null: false
     t.text "metadata"
     t.datetime "edit_started_at"
     t.integer "edit_started_by_user_id"

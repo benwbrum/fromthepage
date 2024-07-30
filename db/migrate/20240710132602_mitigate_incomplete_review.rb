@@ -5,9 +5,9 @@ class MitigateIncompleteReview < ActiveRecord::Migration[6.1]
     print "#{Time.now}\tRemediating #{pages_to_remediate.count} pages\n"
     pages_to_remediate.each do |page|
       if page.page_article_links.present?
-        page.update_columns(status: Page::STATUS_INDEXED)
+        page.update_columns(status: Page.statuses[:indexed])
       else
-        page.update_columns(status: Page::STATUS_TRANSCRIBED)
+        page.update_columns(status: Page.statuses[:transcribed])
       end
     end
   end

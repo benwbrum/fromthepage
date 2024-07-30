@@ -184,10 +184,10 @@
                             </div>
                         </div>
 
-             
 
-                  
- 
+
+
+
                     </div>
                 </div>
             </div>
@@ -510,24 +510,24 @@
                             </div>
                         </div>
 
-                       
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/digital-case02.png", class: 'second-img') %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>Sewanee: The University of the South is transcribing names of thousands imprisoned at the Lone Rock Stockade; highlighting the brutality of one place within a state-wide and region-wide practice. So far over 2800 names, 80% belonging to African Americans, have been documented through transcription work using FromThePage. Given the difficulties encountered in conducting genealogical research on African American communities, these documents could serve as a rich resource for modern descendants. Find out more <a href="#">here</a>.</span>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
 
-                        
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/digital-case03.png") %>
@@ -535,8 +535,8 @@
                             </div>
                         </div>
 
-                      
-                     
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/digital-case04.png") %>
@@ -544,7 +544,7 @@
                             </div>
                         </div>
 
-                      
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/digital-case05.png") %>
@@ -552,25 +552,25 @@
                             </div>
                         </div>
 
-                      
-                   
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/digital-case06.png", class: 'second-img') %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>Princeton's Department of Art and Archaeology used FromThePage to create an open dataset of 25 expedition notebooks of Howard Crosby Butler’s early 1900’s surveys of archaeological sites in Syria. This created access to documentation of the endangered or destroyed archaeological sites. The goal was to open this understudied material to yield meaningful findings, including for those interested in cultural heritage in Syria. To increase access, it is also being translated into Arabic; read more <a href="#">here</a>.</span>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
 
-                       
-                        
-                     
+
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/digital-case07.png") %>
@@ -578,26 +578,26 @@
                             </div>
                         </div>
 
-                       
-                   
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/digital-case08.png", class: 'second-img') %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>Dr. Laura Morreale, an scholar of medieval francophonie and Italian historiographies uses FromThePage to make unknown or little-known text more accessible to scholars, students, and the general public. This work combines collaboration, transcription, digital humanities, and handwritten medieval manuscripts in non-English languages, often in a difficult or unfamiliar hand. Using FromThePage as a research and a pedagogical tool has made medieval sources easier to read, understand, and disseminate; learn more <a href="#">here</a>.</span>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
 
-             
-                        
+
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -662,7 +662,7 @@
                             </div>
                         </div>
 
-           
+
 
                     </div>
                 </div>
@@ -675,7 +675,7 @@
     <section class="crowd-schedule">
         <div class="container">
             <div class="title">
-                <h4><%= number_with_delimiter Page.where.not(:status=>nil).count %></h4>
+                <h4><%= number_with_delimiter Page.where.not(status: :new).count %></h4>
                 <p>Pages — and counting!</p>
             </div>
 

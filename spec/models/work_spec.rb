@@ -31,20 +31,20 @@ RSpec.describe Work, type: :model do
       expect(work.next_untranscribed_page).to eq(nil)
     end
     it "sets untranscribed page to lowest positioned untrancribed page" do
-      page_ten = create(:page, work_id: work.id, status: nil, position: 10)
-      create(:page, work_id: work.id, status: Page::STATUS_TRANSCRIBED, position: 5)
+      page_ten = create(:page, work_id: work.id, status: :new, position: 10)
+      create(:page, work_id: work.id, status: :transcribed, position: 5)
       work.set_next_untranscribed_page
 
       expect(work.next_untranscribed_page).to eq(page_ten)
 
-      page_one = create(:page, work_id: work.id, status: nil, position: 1)
+      page_one = create(:page, work_id: work.id, status: :new, position: 1)
       work.set_next_untranscribed_page
 
       expect(work.next_untranscribed_page).to eq(page_one)
     end
 
     it "sets nil with no untranscribed pages" do
-      create(:page, work_id: work.id, status: Page::STATUS_TRANSCRIBED)
+      create(:page, work_id: work.id, status: :transcribed)
       work.set_next_untranscribed_page
 
       expect(work.next_untranscribed_page).to eq(nil)

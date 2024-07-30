@@ -36,7 +36,7 @@
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+        -if !@page.status_blank? && @collection.voice_recognition
           .voice-recognition
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
@@ -49,18 +49,18 @@
 
       .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
+        =f.check_box('mark_blank', {checked: @page.status_blank?})
 
       -if !@collection.review_workflow
         .flex-toolbar_group
           =f.label 'needs_review', t('.needs_review')
-          =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
+          =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
       =render(:partial => 'save_buttons')
 
-  -if @page.status == Page::STATUS_NEEDS_REVIEW && current_user.can_review?(@collection)
+  -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
-      -if @collection.review_workflow 
+      -if @collection.review_workflow
         =t('.this_page_marked_needs_review_workflow_version')
       -else
         =t('.this_page_marked_needs_review')
@@ -70,7 +70,7 @@
       =render :partial => '/shared/osd_div'
     .splitter(id="splitter")
     .page-column(id="rightColumn")
-      -if @page.status == Page::STATUS_BLANK
+      -if @page.status_blank?
         .page-preview[*language_attrs(@collection)]
           .centered
             .centered_content
@@ -89,7 +89,7 @@
               =f.text_field :title
           -if !@collection.field_based
             =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
-            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
+            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
             =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
@@ -230,7 +230,7 @@ h2.legend =t('.notes_and_questions')
               freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top', mode);
             } else {
               freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top', mode);
-            } 
+            }
           });
         }
 
@@ -332,7 +332,7 @@ h2.legend =t('.notes_and_questions')
             if (!confirmation) {
               return false;
             }
-          }          
+          }
         } else {
           hideCustomAlert();
           allowFormToSubmit();
