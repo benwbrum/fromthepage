@@ -34,10 +34,10 @@ table.admin-grid.datagrid.striped
               span Actions
               =svg_symbol '#icon-list', class: 'icon'
             dd
-              -if document.status == DocumentUpload::Status::NEW
+              -if document.status == 'new'
                 =link_to(t('.process_upload'), { :action => 'process_upload', :id => document.id })
                 hr
-              -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED || document.status == DocumentUpload::Status::ERROR
+              -if document.status_processing? || document.status_finished? || document.status_error?
                 =link_to(t('.show_processing_log'), admin_view_processing_log_path(:id => document.id), target: '_blank')
                 hr
               =link_to(t('.delete_upload'), admin_delete_upload_path(:id => document.id), class: 'fgred', data: { confirm: t('.are_you_sure') })
