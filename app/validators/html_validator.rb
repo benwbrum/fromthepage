@@ -3,7 +3,10 @@ class HtmlValidator < ActiveModel::EachValidator
     return unless value&.match?(/<[^>]+>/) # Regex to check if it follows html syntax
 
     begin
-      REXML::Document.new("<html>#{value}</html>")
+      preprocessed = value || ''
+      preprocessed.gsub!('&', '&amp;')
+      preprocessed.gsub!(/&(amp;)+/, '&amp;')
+      REXML::Document.new("<html>#{preprocessed}</html>")
     rescue REXML::ParseException
       message = options[:message] || :html_syntax_error
       record.errors.add(attribute, message)
