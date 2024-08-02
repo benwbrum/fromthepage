@@ -153,7 +153,15 @@ describe "Devise" do
       click_button('Sign In')
       expect(page.current_path).to eq old_path
     end
-    it "redirects owner back to user dashboard/watchlist if original path was nil" do
+    it "redirects owner back to user dashboard/watchlist if original path was nil and user has no collection" do
+      visit new_user_session_path
+      page.fill_in 'Login', with: owner.login
+      page.fill_in 'Password', with: owner.password
+      click_button('Sign In')
+      expect(page.current_path).to eq dashboard_startproject_path
+    end
+    it "redirects owner back to user dashboard/watchlist if original path was nil and user has collection" do
+      _collection = create(:collection, owner_user_id: owner.id)
       visit new_user_session_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Password', with: owner.password

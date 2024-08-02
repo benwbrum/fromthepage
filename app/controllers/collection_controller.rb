@@ -40,9 +40,9 @@ class CollectionController < ApplicationController
   def reviewer_dashboard
     # works which have at least one page needing review
     @total_pages=@collection.pages.count
-    @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+    @pages_needing_review=@collection.pages.where(status: :needs_review).count
     @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
-    @works_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).pluck(:work_id).uniq.count
+    @works_to_review = @collection.pages.where(status: :needs_review).pluck(:work_id).uniq.count
   end
 
   def works_to_review
@@ -62,16 +62,16 @@ class CollectionController < ApplicationController
     unless params[:quality_sampling_id].blank?
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => @user.id)
   end
 
   def approve_all
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => @user.id)
     page_count = @pages.count
-    @pages.update_all(status: Page::STATUS_TRANSCRIBED)
+    @pages.update_all(status: :transcribed)
     @collection.works.each do |work|
-      work.work_statistic.recalculate({ type: Page::STATUS_NEEDS_REVIEW }) if work.work_statistic
+      work.work_statistic.recalculate({ type: Page.statuses[:needs_review] }) if work.work_statistic
     end
     flash[:notice] = t('.approved_n_pages', page_count: page_count)
     redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))

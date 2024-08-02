@@ -65,19 +65,19 @@ class TranscribeController  < ApplicationController
                     end
 
     if params[:page]['mark_blank'] == '1'
-      @page.status = Page::STATUS_BLANK
-      @page.translation_status = Page::STATUS_BLANK
+      @page.status = :blank
+      @page.translation_status = :blank
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
-      @work.work_statistic&.recalculate({ type: 'blank' })
+      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
       flash[:notice] = t('.saved_notice')
       redirect_to redirect_path
       return false
-    elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
-      @page.status = nil
-      @page.translation_status = nil
+    elsif @page.status_blank? && params[:page]['mark_blank'] == '0'
+      @page.status = :new
+      @page.translation_status = :new
       @page.save
-      @work.work_statistic&.recalculate({ type: 'blank' })
+      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
       flash[:notice] = t('.saved_notice')
       redirect_to redirect_path
       return false
@@ -88,39 +88,39 @@ class TranscribeController  < ApplicationController
 
   def needs_review
     if params[:type] == 'translation'
-      if @page.work.collection.review_workflow == true && @page.translation_status == nil
-        @page.translation_status = Page::STATUS_NEEDS_REVIEW
+      if @page.work.collection.review_workflow == true && @page.translation_status_new?
+        @page.translation_status = :needs_review
         record_deed(DeedType::TRANSLATION_REVIEW)
       elsif params[:page]['needs_review'] == '1'
-        unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
-          @page.translation_status = Page::STATUS_NEEDS_REVIEW
+        unless @page.translation_status_needs_review?
+          @page.translation_status = :needs_review
           record_deed(DeedType::TRANSLATION_REVIEW)
         end
       else
-        if @page.translation_status == Page::STATUS_NEEDS_REVIEW
-          @page.translation_status = nil
+        if @page.translation_status_needs_review?
+          @page.translation_status = :new
           record_deed(DeedType::TRANSLATION_REVIEWED)
         end
         return
       end
     elsif params['save_to_needs_review'] && @page.work.collection.review_workflow
-      unless @page.status == Page::STATUS_NEEDS_REVIEW
+      unless @page.status_needs_review?
         # don't log a deed if the page was already in needs review
-        @page.status = Page::STATUS_NEEDS_REVIEW
+        @page.status = :needs_review
         record_deed(DeedType::NEEDS_REVIEW)
       end
     else
       if params[:page]['needs_review'] == '1'
-        unless @page.status == Page::STATUS_NEEDS_REVIEW
-          @page.status = Page::STATUS_NEEDS_REVIEW
+        unless @page.status_needs_review?
+          @page.status = :needs_review
           record_deed(DeedType::NEEDS_REVIEW)
         end
         #if @page.translation_status == 'blank'
         #  @page.translation_status = nil
         #end
       else
-        if @page.status == Page::STATUS_NEEDS_REVIEW
-          @page.status = nil
+        if @page.status_needs_review?
+          @page.status = :new
           record_deed(DeedType::PAGE_REVIEWED)
           return
         end
@@ -156,24 +156,24 @@ class TranscribeController  < ApplicationController
       message = log_transcript_attempt
       # leave the status alone if it's needs review, but otherwise set it to transcribed
       if save_to_incomplete && params[:page]['needs_review'] != '1'
-        @page.status = Page::STATUS_INCOMPLETE
+        @page.status = :incomplete
       elsif save_to_needs_review && @page.work.collection.review_workflow
-        @page.status = Page::STATUS_NEEDS_REVIEW
+        @page.status = :needs_review
       elsif save_to_needs_review
         if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)
           skip_re_review = @collection.owner == current_user ||
                            @collection.reviewers.ids.include?(current_user.id) ||
                            Deed.where(deed_type: DeedType::COMPLETED_TYPES, user_id: current_user.id, page_id: @page.id).any?
 
-          @page.status = skip_re_review ? Page::STATUS_TRANSCRIBED : Page::STATUS_NEEDS_REVIEW
+          @page.status = skip_re_review ? :transcribed : :needs_review
         else
-          @page.status = params[:page]['needs_review'] == '1' ? Page::STATUS_NEEDS_REVIEW : Page::STATUS_TRANSCRIBED
+          @page.status = params[:page]['needs_review'] == '1' ? :needs_review : :transcribed
         end
       elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
-        @page.status = Page::STATUS_TRANSCRIBED
+        @page.status = :transcribed
       else
         # old code; possibly dead
-        @page.status = Page::STATUS_TRANSCRIBED unless @page.status == Page::STATUS_NEEDS_REVIEW
+        @page.status = :transcribed unless @page.status_needs_review?
       end
 
       begin
@@ -199,10 +199,10 @@ class TranscribeController  < ApplicationController
             record_deed(DeedType::PAGE_INDEXED) if old_link_count.zero? && new_link_count.positive?
 
             if new_link_count.positive? &&
-               @page.status != Page::STATUS_NEEDS_REVIEW &&
-               @page.status != Page::STATUS_INCOMPLETE
+               !@page.status_needs_review? &&
+               !@page.status_incomplete?
 
-              @page.update_columns(status: Page::STATUS_INDEXED)
+              @page.update_columns(status: Page.statuses[:indexed])
             end
           end
 
@@ -223,9 +223,9 @@ class TranscribeController  < ApplicationController
             end
           end
 
-          if params[:flow] == 'one-off' && @page.status != Page::STATUS_NEEDS_REVIEW
+          if params[:flow] == 'one-off' && !@page.status_needs_review?
             redirect_to collection_one_off_list_path(@collection.owner, @collection)
-          elsif params[:flow] =~ /user-contributions/ && @page.status != Page::STATUS_NEEDS_REVIEW
+          elsif params[:flow] =~ /user-contributions/ && !@page.status_needs_review?
             user_slug = params[:flow].sub('user-contributions ', '')
             redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)
           elsif @quality_sampling
@@ -353,10 +353,9 @@ class TranscribeController  < ApplicationController
 
     if params['save']
       message = log_translation_attempt
-      #leave the status alone if it's needs review, but otherwise set it to translated
-      unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
-        @page.translation_status = Page::STATUS_TRANSLATED
-      end
+      # leave the status alone if it's needs review, but otherwise set it to translated
+      @page.translation_status = :translated unless @page.translation_status_needs_review?
+
       begin
         if @page.save
           log_translation_success
@@ -368,8 +367,8 @@ class TranscribeController  < ApplicationController
             if old_link_count == 0 && new_link_count > 0
               record_deed(DeedType::TRANSLATION_INDEXED)
             end
-            if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
-              @page.update_columns(translation_status: Page::STATUS_INDEXED)
+            if new_link_count > 0 && !@page.translation_status_needs_review?
+              @page.update_columns(translation_status: Page.translation_statuses[:indexed])
             end
           end
 

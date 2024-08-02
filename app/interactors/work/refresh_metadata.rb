@@ -19,6 +19,7 @@ class Work::RefreshMetadata
     finalize
   rescue => e
     @errors << "Error: #{e}"
+    context.errors = @errors
     context.fail!
   end
 

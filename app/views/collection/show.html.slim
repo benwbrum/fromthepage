@@ -117,8 +117,8 @@
 
     -if @collection.active? && @collection.text_entry?
       ruby:
-        pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [nil, Page::STATUS_INCOMPLETE]).count
-        pages_need_review_count = Page.where(work_id: @collection.work_ids, status: Page::STATUS_NEEDS_REVIEW).count
+        pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
+        pages_need_review_count = Page.where(work_id: @collection.work_ids, status: :needs_review).count
       -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
         =link_to t('.pages_need_correction_or_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
       -elsif @collection.works.where(:ocr_correction => true).present?

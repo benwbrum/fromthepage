@@ -160,12 +160,12 @@ class Collection < ApplicationRecord
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
-    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
+    self.pages.where(status: :needs_review).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
   end
 
   def never_reviewed_users
     users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
-    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => Page::STATUS_NEEDS_REVIEW).pluck(:user_id).uniq
+    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => 'review').pluck(:user_id).uniq
     unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
   end
 
@@ -297,7 +297,9 @@ class Collection < ApplicationRecord
     #for each page, delete page versions, update all attributes, save
     pages.each do |p|
       p.page_versions.destroy_all
-      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
+      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil,
+                       status: Page.statuses[:new], source_translation: nil, xml_translation: nil,
+                       translation_status: Page.translation_statuses[:new], search_text: "\n\n\n\n")
       p.save!
     end
 

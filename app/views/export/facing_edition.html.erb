@@ -12,7 +12,7 @@
 <%= t('export.facing_edition.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
 
-<% 
+<%
   xml_metadata = @work.merge_metadata.map{|e| "#{e['label']}: #{e['value']}"}.join("<lb/>\n")
 %>
 <%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
@@ -36,7 +36,7 @@
 <% end %>
 
 ### <%= page.title %>
-<% if page.status != Page::STATUS_BLANK %>
+<% unless page.status_blank? %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
 <% end %>
 
@@ -55,7 +55,7 @@
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>
 <% contributor_ids.each do |user_id| %>
-  <% user = User.find(user_id) 
+  <% user = User.find(user_id)
     if user.real_name.blank?
       name = user.display_name
     else
