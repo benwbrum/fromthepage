@@ -69,10 +69,14 @@ class Deed < ApplicationRecord
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
       renderer = ApplicationController.renderer.new
       locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
-      self.prerender = locales.to_h { |locale| 
-        [ locale, 
-          renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true, locale: locale })
-        ] 
+      self.prerender = locales.to_h { |locale|
+        [ locale,
+          renderer.render(
+            partial: 'deed/deed',
+            locals: { deed: self, long_view: false, prerender: true, locale: locale },
+            formats: [:html]
+          )
+        ]
       }.to_json
     end
   end
@@ -82,7 +86,11 @@ class Deed < ApplicationRecord
     locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
     self.prerender_mailer = locales.to_h { |locale|
       [ locale,
-        renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true, locale: locale })
+        renderer.render(
+          partial: 'deed/deed',
+          locals: { deed: self, long_view: true, prerender: true, mailer: true, locale: locale },
+          formats: [:html]
+        )
       ]
     }.to_json
   end

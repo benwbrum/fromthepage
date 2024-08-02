@@ -48,7 +48,7 @@ class ArticleController < ApplicationController
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
       if @article.created_by_id == current_user.id || current_user.like_owner?(@collection)
-        @article.destroy 
+        @article.destroy
         redirect_to collection_subjects_path(@collection.owner, @collection)
       else
         flash.alert = t('.only_subject_owner_can_delete')
@@ -73,7 +73,7 @@ class ArticleController < ApplicationController
         end
         record_deed
         flash[:notice] = t('.subject_successfully_updated')
-        if gis_truncated 
+        if gis_truncated
           flash[:notice] << t('.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION, count: GIS_DECIMAL_PRECISION)
         end
         redirect_to :action => 'edit', :article_id => @article.id
@@ -168,13 +168,11 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_source =
-      render_to_string(:partial => "graph.dot",
-                       :layout => false,
-                       :locals => { :article_links => article_links,
-                                    :link_total => link_total,
-                                    :link_max => link_max,
-                                    :min_rank => min_rank })
+    dot_source = render_to_string(
+      partial: 'graph', layout: false,
+      locals: { article_links: article_links, link_total: link_total, link_max: link_max, min_rank: min_rank },
+      formats: [:dot]
+    )
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
@@ -220,7 +218,7 @@ class ArticleController < ApplicationController
       contents = File.read(params[:upload][:file].tempfile)
       detection = CharlockHolmes::EncodingDetector.detect(contents)
 
-      csv = CSV.read(params[:upload][:file].tempfile, 
+      csv = CSV.read(params[:upload][:file].tempfile,
                       :encoding => "bom|#{detection[:encoding]}",
                       :liberal_parsing => true,
                       :headers => true)
@@ -242,10 +240,10 @@ class ArticleController < ApplicationController
       end
       # redirect to subject list
       redirect_to collection_subjects_path(@collection.owner, @collection)
-    else      
+    else
       # flash message and redirect to upload form on problems
       flash[:error] = t('.csv_file_must_contain_headers')
-      redirect_to article_upload_form_path(@collection)    
+      redirect_to article_upload_form_path(@collection)
     end
   end
 

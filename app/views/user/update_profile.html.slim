@@ -1,7 +1,7 @@
 .litebox-embed(style="width:570px")
   h1 =t('.update_user_profile')
 
-  =form_for(@user, { :url => { :action => 'update' }}) do |f|
+  =form_for @user, url: { action: 'update' } do |f|
     =hidden_field_tag :user_id, @user.id
     =validation_summary @user.errors
     table.form
@@ -14,7 +14,7 @@
       -if @user.owner
         tr
           th =f.label :picture, t('.picture')
-          td 
+          td
             =f.file_field :picture, accept: 'image/*'
             -if @user.picture_url(:thumb)
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
@@ -50,39 +50,40 @@
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
-      tr  
+      tr
         th =f.label :preferred_locale, t('.interface_language'), class: 'collection-label'
         td =f.select :preferred_locale, options_for_select(@dropdown_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale), :include_blank => true
-      tr  
+      tr
         td(colspan="2")
           =label_tag :dictation_language, t('.default_dictation_language'), class: 'collection-label'
-      tr  
+      tr
         td(colspan="2")
           =select_tag :dictation_language, {}, {onchange:'updateCountry()', class: 'w30'}
           |&nbsp;
           =select_tag :dialect, {}, {class: 'w40'}
 
-    p.email_notifications =t('.select_notification')
-    table.form.email_notifications
-      tr
-        td =f.check_box("notifications[user_activity]", {checked: @user.notification.user_activity})
-        th =f.label :user_activity, t('.user_activity')
-      -if @user.owner
+    =f.fields_for :notification do |nf|
+      p.email_notifications =t('.select_notification')
+      table.form.email_notifications
         tr
-          td =f.check_box("notifications[owner_stats]", {checked: @user.notification.owner_stats})
-          th =f.label :owner_stats, t('.owner_stats')
-      tr
-        td =f.check_box("notifications[add_as_collaborator]", {checked: @user.notification.add_as_collaborator})
-        th =f.label :add_as_collaborator, t('.add_as_collaborator')
-      tr
-        td =f.check_box("notifications[add_as_reviewer]", {checked: @user.notification.add_as_reviewer})
-        th =f.label :add_as_reviewer, t('.add_as_reviewer')
-      tr
-        td =f.check_box("notifications[add_as_owner]", {checked: @user.notification.add_as_owner})
-        th =f.label :add_as_owner, t('.add_as_owner')
-      tr
-        td =f.check_box("notifications[note_added]", {checked: @user.notification.note_added})
-        th =f.label :page_edited, t('.page_edited')
+          td =nf.check_box :user_activity
+          th =nf.label :user_activity, t('.user_activity')
+        -if @user.owner
+          tr
+            td =nf.check_box :owner_stats
+            th =nf.label :owner_stats, t('.owner_stats')
+        tr
+          td =nf.check_box :add_as_collaborator
+          th =nf.label :add_as_collaborator, t('.add_as_collaborator')
+        tr
+          td =nf.check_box :add_as_reviewer
+          th =nf.label :add_as_reviewer, t('.add_as_reviewer')
+        tr
+          td =nf.check_box :add_as_owner
+          th =nf.label :add_as_owner, t('.add_as_owner')
+        tr
+          td =nf.check_box :note_added
+          th =nf.label :page_edited, t('.page_edited')
 
     .toolbar
       .toolbar_group.aright =f.button t('.update_profile')
@@ -91,12 +92,12 @@ javascript:
   $(function(){
     var initialLang = "#{@lang_index}";
     var initialDialect = "#{@dialect_index}";
-    
+
     console.log("Init Lang: ", initialLang, " Initial Dialect: ", initialDialect)
-    
+
     for (var i = 0; i < langs.length; i++) {
       dictation_language.options[i] = new Option(langs[i][0], i);
     }
-    
+
     findDefault(initialLang, initialDialect);
   });

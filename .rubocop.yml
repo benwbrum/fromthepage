@@ -1,0 +1,5 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+inherit_from: config/rubocop/.rubocop.yml

@@ -1,17 +1,19 @@
-# frozen_string_literal: true
-
 source 'https://rubygems.org'
 
-ruby '2.7.3'
+ruby '3.3.3'
 
-gem 'rails', '6.1.7.6'
+gem 'rails', '~> 7.1.3'
 
 gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'capistrano-rails', '~> 1.4', require: false
+gem 'html-pipeline', '~> 2.14'
+gem 'interactor-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
 gem 'mysql2'
+gem 'net-pop', github: 'ruby/net-pop'
+gem 'nkf'
 gem 'nokogiri'
 gem 'postmark-rails'
 gem 'recaptcha', require: 'recaptcha/rails'
@@ -20,7 +22,7 @@ gem 'ruby-openai'
 gem 'rvm1-capistrano3', require: false
 gem 'savon', '~> 2.12.0'
 gem 'text'
-gem 'thredded', '~> 1.0'
+gem 'thredded', '~> 1.1'
 gem 'will_paginate'
 
 gem 'acts_as_list'
@@ -43,10 +45,10 @@ gem 'oink'
 gem 'pry'
 
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
-gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
-gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
+gem 'iiif-presentation'
+gem 'riiif'
 
-gem 'omniauth', '~> 1.9.2'
+gem 'omniauth', '~> 2.0'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
 gem 'omniauth-saml'
@@ -62,7 +64,7 @@ gem 'active_link_to'
 gem 'warning'
 
 gem 'http_accept_language'
-gem 'rails-i18n', '~> 6.0.0'
+gem 'rails-i18n'
 
 gem 'charlock_holmes'
 gem 'forty_facets'
@@ -71,9 +73,6 @@ gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
 gem 'terser'
-
-gem 'interactor-rails', '~> 2.0'
-
 group :assets do
   gem 'uglifier'
 end
@@ -93,18 +92,21 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bullet'
-  gem 'dotenv-rails'
   gem 'easy_translate'
   gem 'factory_bot_rails'
+  gem 'fuubar'
   gem 'i18n-tasks'
   gem 'launchy'
   gem 'listen'
   gem 'pry-awesome_print'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'rubocop'
+  gem 'rubocop-factory_bot'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
 end
-
-gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
 
 # Use SassC for stylesheets
 gem 'sassc-rails'
@@ -116,7 +118,7 @@ gem 'autoprefixer-rails'
 gem 'slim'
 
 # Gravatar Image Tag
-gem 'gravatar_image_tag'
+gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 
 # Admin masquerade as a user
 gem 'devise_masquerade', '~> 1.2.0'
@@ -141,6 +143,5 @@ gem 'newrelic_rpm'
 gem 'open3'
 
 # Copy to clipboard
-gem 'clipboard-rails'
-
 gem 'ajax-datatables-rails', '~> 1.0.0'
+gem 'clipboard-rails'

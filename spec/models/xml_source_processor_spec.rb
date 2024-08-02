@@ -1,76 +1,78 @@
 require 'spec_helper'
 
-SOURCE_TEXT = "With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]"
-EXPECTED_XML = <<EOF
-<?xml version='1.0' encoding='UTF-8'?>    
-      <page>
-        <p>With an <link link_id='1' target_id='1' target_title='Old Subject'>old subject</link> and a short <link link_id='2' target_id='1' target_title='Old Subject'>Old Subject</link>. With a <link link_id='3' target_id='2' target_title='New Text Link'>new links</link> and a <link link_id='4' target_id='3' target_title='New Short Text Link'>New Short Text Link</link></p>
-      </page>
+SOURCE_TEXT = 'With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]'
+EXPECTED_XML = <<~EOF
+  <?xml version='1.0' encoding='UTF-8'?>
+        <page>
+          <p>With an <link link_id='1' target_id='1' target_title='Old Subject'>old subject</link> and a short <link link_id='2' target_id='1' target_title='Old Subject'>Old Subject</link>. With a <link link_id='3' target_id='2' target_title='New Text Link'>new links</link> and a <link link_id='4' target_id='3' target_title='New Short Text Link'>New Short Text Link</link></p>
+        </page>
 EOF
 
-EXPECTED_XML_DISABLED = <<EOF
-<?xml version='1.0' encoding='UTF-8'?>    
-      <page>
-        <p>With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]</p>
-      </page>
+EXPECTED_XML_DISABLED = <<~EOF
+  <?xml version='1.0' encoding='UTF-8'?>
+        <page>
+          <p>With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]</p>
+        </page>
 EOF
 
 SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u000C charac\u0014ters and a tab\t"
-EXPECTED_XML_ILLEGAL_CHARS = <<EOF
-<?xml version='1.0' encoding='UTF-8'?>    
-      <page>
-        <p> With a lo ad of illegal   charac ters and a tab\t</p>
-      </page>
+EXPECTED_XML_ILLEGAL_CHARS = <<~EOF
+  <?xml version='1.0' encoding='UTF-8'?>
+        <page>
+          <p> With a lo ad of illegal   charac ters and a tab\t</p>
+        </page>
 EOF
 
 RSpec.describe XmlSourceProcessor, type: :model do
   describe '#wiki_to_xml' do
-  
-  before :each do
-    DatabaseCleaner.clean_with(:truncation)
-  end
+    before :each do
+      DatabaseCleaner.clean_with(:truncation)
+    end
 
-  let(:collection){ build_stubbed(:collection ) }
-  let(:work)      { build_stubbed(:work, collection: collection) }
-  let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT)}
-  let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
-    
+    let(:collection) { build_stubbed(:collection) }
+    let(:work)      { build_stubbed(:work, collection:) }
+    let(:page)      { build_stubbed(:page, work:, source_text: SOURCE_TEXT) }
+    let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection:) }
+
     context 'subject linking not disabled (default)' do
       it 'builds the xml document' do
         expect(work.collection).to eq(collection)
         xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
         expect(Article.all.count).to eq(3)
         expect(PageArticleLink.all.count).to eq(4)
-        expect(xml).to eq(EXPECTED_XML)
+        expect(Nokogiri::XML(xml).to_s).to eq(Nokogiri::XML(EXPECTED_XML).to_s)
       end
     end
+
     context 'subject linking disabled' do
       it 'builds the xml document' do
         collection.subjects_disabled = true
 
         xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
-        expect(xml).to eq(EXPECTED_XML_DISABLED)
+        expect(Nokogiri::XML(xml).to_s).to eq(Nokogiri::XML(EXPECTED_XML_DISABLED).to_s)
         expect(Article.all.count).to eq(0)
         expect(PageArticleLink.all.count).to eq(0)
       end
     end
   end
+
   describe '#valid_xml_from_source' do
-    let(:collection){ build_stubbed(:collection ) }
-    let(:work)      { build_stubbed(:work, collection: collection) }
-    let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT_ILLEGAL_CHARS)}
+    let(:collection) { build_stubbed(:collection) }
+    let(:work)      { build_stubbed(:work, collection:) }
+    let(:page)      { build_stubbed(:page, work:, source_text: SOURCE_TEXT_ILLEGAL_CHARS) }
 
     it 'builds the xml document' do
       expect(work.collection).to eq(collection)
       xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
-      expect(xml).to eq(EXPECTED_XML_ILLEGAL_CHARS)
+      expect(Nokogiri::XML(xml).to_s).to eq(Nokogiri::XML(EXPECTED_XML_ILLEGAL_CHARS).to_s)
     end
   end
+
   describe '#rename_article_links' do
     let(:page_full_link) do
       build_stubbed(
         :page, source_text: '[[Old Title|old title verbatim]]',
-              source_translation: '[[Old Translation|old translation verbatim]]'
+        source_translation: '[[Old Translation|old translation verbatim]]'
       )
     end
     let(:page_short_link) do
@@ -84,10 +86,10 @@ RSpec.describe XmlSourceProcessor, type: :model do
       build_stubbed(:page, source_text: "[[Old\nTitle]]")
     end
     let(:page_multilink) do
-      build_stubbed(:page, source_text: "[[Old Title]][[Unchanged]]")
+      build_stubbed(:page, source_text: '[[Old Title]][[Unchanged]]')
     end
     let(:page_full_link_paren) do
-      build_stubbed(:page, source_text: "[[Old Title (Parenthetical)|old title parenthetical]]")
+      build_stubbed(:page, source_text: '[[Old Title (Parenthetical)|old title parenthetical]]')
     end
 
     it 'should rename links in the format [[Title|verbatim]]' do
@@ -117,17 +119,17 @@ RSpec.describe XmlSourceProcessor, type: :model do
     end
 
     it 'should rename links that contained parentheses [[Old Title (Parenthetical)| old title parenthetical]]' do
-      expected = "[[New Title|old title parenthetical]]"
+      expected = '[[New Title|old title parenthetical]]'
       page_full_link_paren.rename_article_links('Old Title (Parenthetical)', 'New Title')
       expect(page_full_link_paren.source_text).to eq(expected)
     end
-
 
     it 'should rename links in both transcription and translation texts' do
       expected = '[[New Translation|old translation verbatim]]'
       page_full_link.rename_article_links('Old Translation', 'New Translation')
       expect(page_full_link.source_translation).to eq(expected)
     end
+
     it 'should only change links containing Old Title' do
       expected = '[[New Title|Old Title]][[Unchanged]]'
       page_multilink.rename_article_links('Old Title', 'New Title')

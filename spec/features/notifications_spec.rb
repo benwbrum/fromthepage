@@ -14,7 +14,7 @@ describe "notifications" , :order => :defined do
     login_as(@owner, :scope => :user)
     visit user_profile_path(@owner)
     page.find('a.button', text: 'Edit Profile').click
-    page.uncheck('user_notifications[note_added]')
+    page.uncheck('user[notification_attributes][note_added]')
     click_button('Update Profile')
     expect(page.current_path).to eq user_profile_path(@owner)
     #reset owner object for updated information
@@ -50,7 +50,7 @@ describe "notifications" , :order => :defined do
     login_as(@admin, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
     fill_in('Write a new note or ask a question...', with: "Final note")
-    find('#save_note_button').click    
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     #user should receive an email, but owner should not
     expect(ActionMailer::Base.deliveries).not_to be_empty

@@ -38,8 +38,7 @@ de:
       title: Titel
       uri: URI
     graph:
-      dot:
-        title: Häufig in Verbindung mit %{subject} genannte Entitäten
+      title: Häufig in Verbindung mit %{subject} genannte Entitäten
     list:
       actions: Aktionen
       add_child_category: Untergeordnete Kategorie hinzufügen

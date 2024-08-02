@@ -324,7 +324,11 @@ class ApplicationController < ActionController::Base
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
-      dashboard_owner_path
+      if current_user.collections.any?
+        dashboard_owner_path
+      else
+        dashboard_startproject_path
+      end
     else
       dashboard_watchlist_path
     end

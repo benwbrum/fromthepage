@@ -1,0 +1,54 @@
+require:
+  - rubocop-rspec
+  - rubocop-rails
+  - rubocop-factory_bot
+
+inherit_from:
+  - .rubocop-factory-bot.yml
+  - .rubocop-layout.yml
+  - .rubocop-lint.yml
+  - .rubocop-metrics.yml
+  - .rubocop-naming.yml
+  - .rubocop-rails.yml
+  - .rubocop-rspec.yml
+  - .rubocop-style.yml
+
+AllCops:
+  TargetRubyVersion: 3.1.4
+  Exclude:
+    - vendor/bundle/**/*
+    - lib/tasks/**/*
+    - !ruby/regexp /spina/
+    - !ruby/regexp /bin\//
+    - !ruby/regexp /Rakefile/
+    - !ruby/regexp /initializers/
+    - !ruby/regexp /config/
+    - !ruby/regexp /schema.rb/
+
+  StyleGuideBaseURL: https://rubystyle.guide
+  NewCops: enable
+  DocumentationBaseURL: https://docs.rubocop.org/rubocop
+  ActiveSupportExtensionsEnabled: true
+
+Metrics/BlockLength:
+  Max: 200
+  AllowedMethods: ['draw', 'included', 'describe', 'context', 'shared_examples']
+  Exclude:
+    - !ruby/regexp /helpers/
+    - !ruby/regexp /routes.rb/
+    - !ruby/regexp /seeds/
+
+Security/YAMLLoad:
+  Enabled: false
+
+Security/Open:
+  Enabled: false
+
+Lint/EmptyBlock:
+  Enabled: true
+  AllowEmptyLambdas: true
+  Exclude:
+    - !ruby/regexp /spec/
+
+Security/Eval:
+  Enabled: true

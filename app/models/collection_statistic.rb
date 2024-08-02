@@ -95,11 +95,11 @@ module CollectionStatistic
   def timeframe(start_date, end_date, column='created_at')
     timeframe_clause = ""
     if start_date && end_date
-      timeframe_clause = "#{column} BETWEEN '#{start_date.to_s(:db)}' AND '#{end_date.to_s(:db)}'"
+      timeframe_clause = "#{column} BETWEEN '#{start_date.to_s}' AND '#{end_date.to_s}'"
     elsif start_date
-      timeframe_clause = "#{column} >= '#{start_date.to_s(:db)}'"
+      timeframe_clause = "#{column} >= '#{start_date.to_s}'"
     elsif end_date
-      timeframe_clause = "#{column} <= '#{end_date.to_s(:db)}'"
+      timeframe_clause = "#{column} <= '#{end_date.to_s}'"
     else
     end
 

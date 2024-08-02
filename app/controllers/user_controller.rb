@@ -46,18 +46,15 @@ class UserController < ApplicationController
     redirect_back :fallback_location => dashboard_role_path
   end
 
-
   NOTOWNER = "NOTOWNER"
   def update
-
     # spam check
     if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
       logger.error("Possible spam: deleting user #{@user.email}")
       @user.destroy!
       redirect_to dashboard_path
     else
-      params_hash = user_params.except(:notifications)
-      notifications_hash = user_params[:notifications]
+      params_hash = user_params
       params_hash.delete_if { |k,v| v == NOTOWNER }
       params_hash[:dictation_language] = params[:dialect]
 
@@ -68,13 +65,12 @@ class UserController < ApplicationController
       else
         @user.update(params_hash)
       end
-        @user.notification.update(notifications_hash)
 
       if @user.save!
         flash[:notice] = t('.user_updated')
-        ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
+        ajax_redirect_to({ action: 'profile', user_id: @user.slug, anchor: '' })
       else
-        render :action => 'update_profile'
+        render action: 'update_profile'
       end
     end
   end
@@ -157,9 +153,27 @@ class UserController < ApplicationController
     end
   end
 
-
   def user_params
-    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
+    params.require(:user).permit(
+      :picture,
+      :real_name,
+      :orcid,
+      :slug,
+      :website,
+      :location,
+      :about,
+      :preferred_locale,
+      :help,
+      :footer_block,
+      notification_attributes: [
+        :user_activity,
+        :owner_stats,
+        :add_as_collaborator,
+        :add_as_owner,
+        :note_added,
+        :add_as_reviewer
+      ]
+    )
   end
 
 end

@@ -1,0 +1,17 @@
+Lint:
+  Enabled: true
+
+Lint/EmptyWhen:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - !ruby/regexp /spec\//
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+  Exclude:
+    - !ruby/regexp /spec\//
+
+Lint/RedundantSafeNavigation:
+  Enabled: false

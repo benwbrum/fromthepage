@@ -82,7 +82,9 @@ class User < ApplicationRecord
   has_many :document_uploads
   has_many :external_api_requests
   has_many :flags, :foreign_key => "author_user_id"
-  has_one :notification, :dependent => :destroy
+
+  has_one :notification, dependent: :destroy
+  accepts_nested_attributes_for :notification
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_collections, through: :collection_blocks, source: :collection

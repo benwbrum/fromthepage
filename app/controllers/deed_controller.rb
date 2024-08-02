@@ -32,12 +32,12 @@ class DeedController < ApplicationController
 
     # Scope for date
     if params[:start_date]
-      start_date = params[:start_date].to_datetime.to_s(:db)
+      start_date = params[:start_date].to_datetime.to_s
       @deed = @deed.where("created_at >= ?", start_date)
     end
-    
+
     if params[:end_date]
-      end_date = params[:end_date].to_datetime.to_s(:db)
+      end_date = params[:end_date].to_datetime.to_s
       @deed = @deed.where("created_at <= ?", end_date)
     end
 

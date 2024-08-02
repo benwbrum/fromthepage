@@ -38,8 +38,7 @@ fr:
       title: Titre
       uri: URI
     graph:
-      dot:
-        title: Sujets fréquemment mentionnés avec %{subject}
+      title: Sujets fréquemment mentionnés avec %{subject}
     list:
       actions: Actions
       add_child_category: Ajouter une sous-catégorie
