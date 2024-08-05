@@ -180,7 +180,6 @@
       small.legend =button_tag t('.apply'), class: 'outline'
 
     -if @work.restrict_scribes
-      h3= t('.allowed_collaborators')
       p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { litebox: { hash: 'edit-scribes', noscroll: false }})
 
 -content_for :javascript
