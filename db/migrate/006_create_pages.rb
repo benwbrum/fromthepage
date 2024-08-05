@@ -20,6 +20,10 @@ class CreatePages < ActiveRecord::Migration[5.0]
       t.column :created_on, :datetime
       t.column :position, :integer
       t.column :lock_version, :integer, :default => 0
+
+      # enum backsupport
+      t.column :status, :string, length: 10, default: :new
+      t.column :translation_status, :string, length: 10, default: :new
     end
   end
 

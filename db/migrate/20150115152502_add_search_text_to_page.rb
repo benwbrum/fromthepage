@@ -7,7 +7,7 @@ class AddSearchTextToPage < ActiveRecord::Migration[5.0]
       # the following looks odd, but we want to skip the callbacks which are
       # usually fired by page.save! since we don't want phantom page versions
       # or deeds or interactions
-      page.update_columns({:search_text => page.search_text}) 
+      page.update_columns({:search_text => page.search_text})
     end
     # create new index
     execute "CREATE FULLTEXT INDEX pages_search_text_index ON pages (search_text);"
