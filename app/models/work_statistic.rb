@@ -120,21 +120,21 @@ class WorkStatistic < ApplicationRecord
     recalculate_parent_statistics
   end
 
-  def recalculate_from_hash(stats=nil)
+  def recalculate_from_hash(stats = nil)
     stats = get_stats_hash if stats.nil?
 
     self[:total_pages] = stats[:total]
 
-    self[:transcribed_pages]  = stats[:transcription][Page::STATUS_TRANSCRIBED] || 0
-    self[:corrected_pages]    = stats[:transcription][Page::STATUS_TRANSCRIBED] || 0
-    self[:blank_pages]        = stats[:transcription][Page::STATUS_BLANK] || 0
-    self[:annotated_pages]    = stats[:transcription][Page::STATUS_INDEXED] || 0
-    self[:needs_review]       = stats[:transcription][Page::STATUS_NEEDS_REVIEW] || 0
+    self[:transcribed_pages]  = stats[:transcription][Page.statuses[:transcribed]] || 0
+    self[:corrected_pages]    = stats[:transcription][Page.statuses[:transcribed]] || 0
+    self[:blank_pages]        = stats[:transcription][Page.statuses[:blank]] || 0
+    self[:annotated_pages]    = stats[:transcription][Page.statuses[:indexed]] || 0
+    self[:needs_review]       = stats[:transcription][Page.statuses[:needs_review]] || 0
 
-    self[:translated_pages]     = stats[:translation][Page::STATUS_TRANSLATED] || 0
-    self[:translated_blank]     = stats[:translation][Page::STATUS_BLANK] || 0
-    self[:translated_annotated] = stats[:translation][Page::STATUS_INDEXED] || 0
-    self[:translated_review]    = stats[:translation][Page::STATUS_NEEDS_REVIEW] || 0
+    self[:translated_pages]     = stats[:translation][Page.translation_statuses[:translated]] || 0
+    self[:translated_blank]     = stats[:translation][Page.translation_statuses[:blank]] || 0
+    self[:translated_annotated] = stats[:translation][Page.translation_statuses[:indexed]] || 0
+    self[:translated_review]    = stats[:translation][Page.translation_statuses[:needs_review]] || 0
 
     self[:complete]                = pct_completed
     self[:transcribed_percentage]  = pct_semi_transcribed.round
@@ -146,13 +146,21 @@ class WorkStatistic < ApplicationRecord
   end
 
   def get_stats_hash
+    status_counts = work.pages.group(:status).count
+    status_counts_with_values = status_counts.transform_keys { |key| Page.statuses.stringify_keys[key] }
+
+    translation_status_counts = work.pages.group(:translation_status).count
+    translation_status_counts_with_values =
+      translation_status_counts.transform_keys { |key| Page.translation_statuses.stringify_keys[key] }
+
     {
-      transcription: work.pages.group(:status).count,
-      translation: work.pages.group(:translation_status).count,
+      transcription: status_counts_with_values,
+      translation: translation_status_counts_with_values,
       total: work.pages.count,
       line_count: work.pages.sum(:line_count)
     }
   end
+
   private
 
   # current logic to recalculate statistics for parent document set and parent collection

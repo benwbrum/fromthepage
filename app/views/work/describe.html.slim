@@ -12,7 +12,7 @@
     .page-toolbar
       .flex-toolbar
         .flex-toolbar_group
-          /if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+          /if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists?
             /button#toggleImage.button.outline type="button" =t('.show_image')
           a.button.outline(data-fullscreen-toggle)
             =svg_symbol "#icon-expand", class: 'icon'
@@ -79,7 +79,7 @@
 
               .work-page_text[*language_attrs(@collection)]
                 -transcription = xml_to_html(page.xml_text, false)
-                -if page.status == Page::STATUS_BLANK
+                -if page.status_blank?
                   p.nodata_text ==t('.this_page_is_blank')
                 -elsif transcription.present?
                   ==transcription.force_encoding('utf-8')

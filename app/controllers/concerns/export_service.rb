@@ -48,9 +48,9 @@ module ExportService
 
   def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
-    rendered_markdown = 
+    rendered_markdown =
       ApplicationController.new.render_to_string(
-        :template => '/export/facing_edition.html', 
+        :template => '/export/facing_edition.html',
         :layout => false,
         :assigns => {
           :collection => work.collection,
@@ -76,7 +76,7 @@ module ExportService
     if format == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
     elsif format == 'doc'
-      output_file = File.join(temp_dir, "#{file_stub}.docx")      
+      output_file = File.join(temp_dir, "#{file_stub}.docx")
     end
 
     File.write(md_file, rendered_markdown)
@@ -231,15 +231,15 @@ module ExportService
     case name
     when "verbatim"
       out.put_next_entry path
-      out.write page.verbatim_transcription_plaintext if page.status != Page::STATUS_BLANK
+      out.write page.verbatim_transcription_plaintext unless page.status_blank?
     when "expanded"
       if page.collection.subjects_disabled
         out.put_next_entry path
-        out.write page.emended_transcription_plaintext if page.status != Page::STATUS_BLANK
+        out.write page.emended_transcription_plaintext unless page.status_blank?
       end
     when "searchable"
       out.put_next_entry path
-      out.write page.search_text if page.status != Page::STATUS_BLANK
+      out.write page.search_text unless page.status_blank?
     end
   end
 
@@ -254,11 +254,11 @@ module ExportService
       case name
       when "verbatim"
         out.put_next_entry path
-        out.write page.verbatim_translation_plaintext if page.status != Page::STATUS_BLANK
+        out.write page.verbatim_translation_plaintext unless page.status_blank?
       when "expanded"
         if page.collection.subjects_disabled
           out.put_next_entry path
-          out.write page.emended_translation_plaintext if page.status != Page::STATUS_BLANK
+          out.write page.emended_translation_plaintext unless page.status_blank?
         end
       end
     end
@@ -274,10 +274,10 @@ module ExportService
     case name
     when "full"
       full_view = ApplicationController.new.render_to_string(
-        :template => 'export/show', 
-        :formats => [:html], 
-        :work_id => @work.id, 
-        :layout => false, 
+        :template => 'export/show',
+        :formats => [:html],
+        :work_id => @work.id,
+        :layout => false,
         :encoding => 'utf-8',
         :assigns => {
           :collection => @work.collection,
@@ -288,10 +288,10 @@ module ExportService
       out.write full_view
     when "text"
       text_view = ApplicationController.new.render_to_string(
-        :template => 'export/text', 
-        :formats => [:html], 
-        :work_id => @work.id, 
-        :layout => false, 
+        :template => 'export/text',
+        :formats => [:html],
+        :work_id => @work.id,
+        :layout => false,
         :encoding => 'utf-8',
         :assigns => {
           :collection => @work.collection,
@@ -302,10 +302,10 @@ module ExportService
       out.write text_view
     when "transcript"
       transcript_view = ApplicationController.new.render_to_string(
-        :template => 'export/transcript', 
-        :formats => [:html], 
-        :work_id => @work.id, 
-        :layout => false, 
+        :template => 'export/transcript',
+        :formats => [:html],
+        :work_id => @work.id,
+        :layout => false,
         :encoding => 'utf-8',
         :assigns => {
           :collection => @work.collection,
@@ -317,10 +317,10 @@ module ExportService
     when "translation"
       if @work.supports_translation?
         translation_view = ApplicationController.new.render_to_string(
-          :template => 'export/translation', 
-          :formats => [:html], 
-          :work_id => @work.id, 
-          :layout => false, 
+          :template => 'export/translation',
+          :formats => [:html],
+          :work_id => @work.id,
+          :layout => false,
           :encoding => 'utf-8',
           :assigns => {
             :collection => @work.collection,
@@ -344,7 +344,7 @@ module ExportService
     out.put_next_entry path
 
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
-    out.write page_view if page.status != Page::STATUS_BLANK
+    out.write page_view unless page.status_blank?
   end
 
 
@@ -363,7 +363,7 @@ private
     orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
     renamed_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
     markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
-    cell_headings = orphan_cell_headings + markdown_cell_headings 
+    cell_headings = orphan_cell_headings + markdown_cell_headings
 
     @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
     @indexable_headings = @raw_headings.map { |e| e.is_a?(String) ? e.downcase : e }
@@ -406,10 +406,10 @@ private
   def export_work_metadata_as_csv(collection)
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       static_headers = [
-        'Title', 
-        'Collection', 
-        'Document Sets', 
-        'Uploaded Filename', 
+        'Title',
+        'Collection',
+        'Document Sets',
+        'Uploaded Filename',
         'FromThePage ID',
         'FromThePage Slug',
         'FromThePage URL',
@@ -437,7 +437,7 @@ private
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
-    
+
         work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         contributors_real_names = work.deeds.map{ |d| d.user.real_name }.uniq.join(' | ')
         row = [
@@ -461,7 +461,7 @@ private
           work_users,
           contributors_real_names,
           work.id
-          
+
         ]
 
         unless work.original_metadata.blank?
@@ -485,14 +485,14 @@ private
           collection.metadata_fields.each do |field|
             element = metadata.detect{|candidate| candidate['transcription_field_id'] == field.id}
             if element
-              value = element['value'] 
+              value = element['value']
               if value.is_a? Array
                 value = value.join("; ")
               end
-              row << value 
+              row << value
             else
               row << nil
-            end 
+            end
           end
         end
 
@@ -611,7 +611,7 @@ private
             end
             grouped_hash[1] += page.table_cells.where("transcription_field_id not in (?)", spreadsheet_field_ids).to_a
           else
-            grouped_hash = page.table_cells.includes(:transcription_field).group_by(&:row) 
+            grouped_hash = page.table_cells.includes(:transcription_field).group_by(&:row)
           end
 
           grouped_hash.each do |row, cell_array|
@@ -700,7 +700,7 @@ private
       index = index_for_cell(cell)
       target = transcription_field_flag ? index : index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag 
+      data_cells[target+1] ||= XmlSourceProcessor.cell_to_subject(cell.content) unless transcription_field_flag
     end
   end
 
@@ -708,7 +708,7 @@ private
     # assume that we are a spreadsheet already
 
     # create running data if it's our first time
-    if running_data.nil? 
+    if running_data.nil?
       running_data = []
     end
 
@@ -718,7 +718,7 @@ private
         if cell.transcription_field
           unless cell.transcription_field.input_type == 'spreadsheet'
             running_data << cell
-          end 
+          end
         end
       end
     else
@@ -766,10 +766,10 @@ private
         d.deed_type
       ]
 
-      if d.deed_type == DeedType::ARTICLE_EDIT 
+      if d.deed_type == DeedType::ARTICLE_EDIT
         record += ['','','','','',]
         record += [
-          d.article ? d.article.title : '[deleted]', 
+          d.article ? d.article.title : '[deleted]',
           d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
         ]
       else
@@ -807,16 +807,16 @@ private
     new_contributors(collection, start_date, end_date)
 
     headers = [
-      :name, 
+      :name,
       :user_real_name,
       :email,
       :minutes,
-      :pages_transcribed, 
-      :page_edits, 
+      :pages_transcribed,
+      :page_edits,
       :page_reviews,
-      :pages_translated, 
+      :pages_translated,
       :ocr_corrections,
-      :notes, 
+      :notes,
     ]
 
     user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
@@ -872,7 +872,7 @@ private
       page_contributors = n.page.deeds
         .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
         .uniq.join('|')
-      
+
       [
         n.work.title,
         n.work.identifier,

@@ -1,5 +1,6 @@
 name: "CI"
 on:
+  push: {}
   pull_request: {}
 jobs:
   test:
@@ -43,5 +44,12 @@ jobs:
         uses: coactions/setup-xvfb@v1
         with:
           run: bundle exec rspec spec
+        env:
+          COVERAGE: 'true'
+          CI: 'true'
       - name: Run Coveralls
-        run: bundle exec coveralls push
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: "./coverage/lcov.info"
