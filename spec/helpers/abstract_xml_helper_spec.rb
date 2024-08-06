@@ -7,8 +7,10 @@ RSpec.describe AbstractXmlHelper, type: :helper do
 
   before do
     @collection = Collection.first
+    @a_tag_with_attr = '<a href="http://example.com" target="_blank"> A tag with preserved target</a>'
 
     @xml_text = "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n \
+    #{@a_tag_with_attr}\n \
     <p>guide the reader <lb/>to the correct pron<lb break='no'/>ounciation \
     [sic].</p><p>I am Dear Sir<lb/>Yours Faith<lb break='no'>:</lb>fully<lb/>Samuel Gason</p>\n \
     </page>\n"
@@ -23,6 +25,11 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     expect(xml_to_html(@xml_text, false, true)).to include("pron<span class=\"line-break\"></span>ounciation")
     expect(xml_to_html(@xml_text, false, true)).to include("Faith<span class=\"line-break\"></span>fully")
   end
+
+  it 'returns a <a> tag with preserved href and target attributes' do
+    expect(xml_to_html(@xml_text, true, true)).to include(@a_tag_with_attr)
+  end
+
 
   context "with params" do
     let(:params) { { action: "read_work" } }

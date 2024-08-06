@@ -2,9 +2,34 @@ module AbstractXmlHelper
   require 'rexml/document'
 
   SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
+  SANITIZE_ALLOWED_ATTRIBUTES = [
+    'abbr',
+    'break',
+    'class',
+    'data-tooltip',
+    'datetime',
+    'depth',
+    'expan',
+    'href',
+    'id',
+    'marker',
+    'name',
+    'orig',
+    'position',
+    'rend',
+    'src',
+    'style',
+    'target',
+    'target_id',
+    'target_title',
+    'time',
+    'title',
+    'type',
+    'when'
+  ]
 
   def source_to_html(source)
-    html = source.gsub(/\n/, "<br/>")
+    html = source.gsub(/\n/, '<br/>')
     return html
   end
 
@@ -155,7 +180,7 @@ module AbstractXmlHelper
       # convert to a span
       depth = e.attributes["depth"]
       title = e.attributes["title"]
-      
+
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -163,7 +188,7 @@ module AbstractXmlHelper
 
     doc.elements.each("//head") do |e|
       # convert to a span
-      depth = 2      
+      depth = 2
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -268,13 +293,13 @@ module AbstractXmlHelper
     if @page
       doc.elements.each("//texFigure") do |e|
         position = e.attributes["position"]
-        
+
         span = REXML::Element.new('img')
         span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + "?timestamp=" + Time.now.to_i.to_s))
-        
+
         e.replace_with(span)
       end
-      
+
     end
 
     # now our doc is correct - what do we do with it?
@@ -286,7 +311,11 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')
 
-    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+    ActionController::Base.helpers.sanitize(
+      my_display_html.strip,
+      tags: SANITIZE_ALLOWED_TAGS,
+      attributes: SANITIZE_ALLOWED_ATTRIBUTES
+    ).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
   end
 
 end
