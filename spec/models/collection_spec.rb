@@ -3,6 +3,22 @@
 require 'spec_helper'
 
 RSpec.describe Collection, type: :model do
+  describe 'validations' do
+    context 'html validations' do
+      let(:invalid_html) { '<p>Missing end tags' }
+      let(:valid_html) { "<p>With \n special character &\n\n</p>" }
+      let(:collection) { create(:collection) }
+
+      it 'validates html syntax' do
+        collection.intro_block = invalid_html
+        expect(collection.valid?).to be_falsey
+
+        collection.intro_block = valid_html
+        expect(collection.valid?).to be_truthy
+      end
+    end
+  end
+
   describe '#is_public' do
     it 'returns true if a collection is not restricted' do
       user = build_stubbed(:user)
@@ -18,7 +34,6 @@ RSpec.describe Collection, type: :model do
       expect(collection.is_public).to be false
     end
   end
-
 
   describe '#set_next_untranscribed_page' do
     let(:collection){ create(:collection, works: []) }
@@ -60,7 +75,6 @@ RSpec.describe Collection, type: :model do
       expect(collection.next_untranscribed_page).to eq(page_incomplete)
     end
   end
-
 
   context 'OCR Settings' do
     before :each do
