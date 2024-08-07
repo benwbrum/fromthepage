@@ -1,12 +1,16 @@
 class HtmlValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    return unless value&.match?(/<[^>]+>/) # Regex to check if it follows html syntax
+    preprocessed = value.dup || ''
+    preprocessed.gsub!('&', '&amp;')
+    preprocessed.gsub!(/&(amp;)+/, '&amp;')
 
-    begin
-      REXML::Document.new("<html>#{value}</html>")
-    rescue REXML::ParseException
-      message = options[:message] || :html_syntax_error
-      record.errors.add(attribute, message)
+    validation = Nokogiri::XML("<html>#{preprocessed}</html>")
+
+    return if validation.errors.blank?
+
+    record.errors.add(attribute, I18n.t('errors.html_syntax_error'))
+    validation.errors.each do |error|
+      record.errors.add(attribute, error.message)
     end
   end
 end

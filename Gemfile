@@ -80,10 +80,11 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'coveralls_reborn', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda'
+  gem 'simplecov',      require: false
+  gem 'simplecov-lcov', require: false
   gem 'vcr'
   gem 'webmock', require: false
 end
