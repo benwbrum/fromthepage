@@ -93,10 +93,8 @@ class Collection < ApplicationRecord
   has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :intro_block, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
-                          length: { maximum: 16.megabytes - 1 }
-  validates :footer_block, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
-                           length: { maximum: 16.megabytes - 1 }
+  validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions

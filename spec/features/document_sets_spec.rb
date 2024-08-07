@@ -70,11 +70,11 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page.find('h1')).to have_content("Test Document Set 3")
     expect(DocumentSet.last.is_public).to be true
-    expect(page).not_to have_content("Document Set Collaborators")
+    expect(page).not_to have_content('Allowed Collaborators')
     #make the set private
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
-    expect(page).to have_content("Document Set Collaborators")
+    expect(page).to have_content('Allowed Collaborators')
     #manually assign works until have the jqery test set
     id = @collection.works.third.id
     DocumentSet.last.work_ids = id
@@ -137,13 +137,14 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@test_set.owner, @test_set)
     page.find('.tabs').click_link("Settings")
-    #this user should not receive an email (notifications off)
-    select(@rest_user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    page.click_link 'Edit Collaborators'
+    # this user should not receive an email (notifications off)
+    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).to be_empty
-    #this user should receive an email
-    select(@user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    # this user should receive an email
+    select(@user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
