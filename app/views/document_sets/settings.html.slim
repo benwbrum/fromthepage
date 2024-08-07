@@ -82,8 +82,10 @@
         span =t('.make_document_set_private')
 
     -if @collection.restricted
-      h3 =t('.document_set_collaborators')
-      p =link_to(t('.edit_collaborators'), collection_edit_set_collaborators_path(document_set_id: @document_set.slug), id: 'edit-set-collaborators-button', class: 'button', data: { litebox: { hash: 'edit-set-collaborators', noscroll: false }})
+      .allowed-collaborators
+        h3 =t('.document_set_collaborators')
+        p =link_to(t('.edit_collaborators'), collection_edit_set_collaborators_path(document_set_id: @document_set.slug), id: 'edit-set-collaborators-button', class: 'button', data: { litebox: { hash: 'edit-set-collaborators', noscroll: false }})
+      =render 'collection/users_list', users: @collaborators, type: 'collaborators'
 
 -content_for :javascript
   javascript:

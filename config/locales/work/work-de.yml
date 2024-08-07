@@ -91,6 +91,7 @@ de:
     edit:
       additional_metadata: Zusätzliche Metadaten
       additional_metadata_description: Diese Metadatenfelder werden in der Projektinfo dieses Werkes und in TEI-Exporten angezeigt, beeinträchtigen jedoch nicht die Funktionalität von FromThePage.
+      allowed_collaborators: Erlaubte Mitwirkende
       apply: Anwenden
       author: Autor:in
       collaborators_can_edit_titles: Erlauben Sie Mitarbeitenden, Seitentitel zu bearbeiten

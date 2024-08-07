@@ -70,11 +70,11 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page.find('h1')).to have_content("Test Document Set 3")
     expect(DocumentSet.last.is_public).to be true
-    expect(page).not_to have_content("Document Set Collaborators")
+    expect(page).not_to have_content('Allowed Collaborators')
     #make the set private
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
-    expect(page).to have_content("Document Set Collaborators")
+    expect(page).to have_content('Allowed Collaborators')
     #manually assign works until have the jqery test set
     id = @collection.works.third.id
     DocumentSet.last.work_ids = id

@@ -67,7 +67,7 @@ fr:
       add: Ajouter
       add_work_title_to_document_set: Ajouter %{work_title} au jeu de documents
       document_set_based_on: Il s'agit d'un ensemble de documents basé sur la collection <b>%{title}</b>. Vous pouvez gérer tous les œuvres et ensembles de documents de cette collection en cliquant sur %{link}.
-      document_set_collaborators: Collaborateurs de l'ensemble de documents
+      document_set_collaborators: Collaborateurs autorisés
       document_set_image: Image du jeu de documents
       document_set_privacy: Confidentialité de l'ensemble de documents
       document_set_restricted: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.

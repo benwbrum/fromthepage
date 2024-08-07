@@ -67,7 +67,7 @@ es:
       add: Añadir
       add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
       document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
-      document_set_collaborators: Colaboradores del Conjunto de Documentos
+      document_set_collaborators: Colaboradores permitidos
       document_set_image: Imagen del Conjunto de Documentos
       document_set_privacy: Privacidad del Conjunto de Documentos
       document_set_restricted: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.

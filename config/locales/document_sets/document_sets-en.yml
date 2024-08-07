@@ -67,7 +67,7 @@ en:
       add: Add
       add_work_title_to_document_set: Add %{work_title} to Document Set
       document_set_based_on: This is a document set based on the <b>%{title}</b> collection.  You can manage all works and document sets within that collection by clicking %{link}.
-      document_set_collaborators: Document Set Collaborators
+      document_set_collaborators: Allowed Collaborators
       document_set_image: Document Set Image
       document_set_privacy: Document Set Privacy
       document_set_restricted: The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable.

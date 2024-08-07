@@ -91,6 +91,7 @@ pt:
     edit:
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
+      allowed_collaborators: Colaboradores permitidos
       apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas

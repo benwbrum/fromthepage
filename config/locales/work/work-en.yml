@@ -91,6 +91,7 @@ en:
     edit:
       additional_metadata: Additional metadata
       additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
+      allowed_collaborators: Allowed Collaborators
       apply: Apply
       author: Author
       collaborators_can_edit_titles: Allow collaborators to edit page titles

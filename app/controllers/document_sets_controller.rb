@@ -164,7 +164,8 @@ class DocumentSetsController < ApplicationController
       @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     end
     # document set edit needs the @document set variable
-    @document_set = @collection unless @document_set
+    @document_set ||= @collection
+    @collaborators = @document_set.collaborators
   end
 
   def add_set_collaborator

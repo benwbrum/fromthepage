@@ -67,7 +67,7 @@ de:
       add: Hinzufügen
       add_work_title_to_document_set: "%{work_title} zum Dokumentenset hinzufügen"
       document_set_based_on: Dies ist ein Dokumentenset basierend auf der Sammlung <b>%{title}</b>. Sie können alle Werke und Dokumentensets innerhalb dieser Sammlung verwalten, indem Sie auf %{link} klicken.
-      document_set_collaborators: Mitarbeitende an Dokumentensets
+      document_set_collaborators: Erlaubte Mitwirkende
       document_set_image: Dokumentenset-Bild
       document_set_privacy: Privatsphäre-Einstellungen für Dokumentensets
       document_set_restricted: Das Dokumentenset kann nur von den unterhalb angeführten Mitarbeitenden eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.

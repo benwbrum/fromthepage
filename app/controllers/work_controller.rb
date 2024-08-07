@@ -129,6 +129,7 @@ class WorkController < ApplicationController
     @collections = current_user.collections
     # set subjects to true if there are any articles/page_article_links
     @subjects = !@work.articles.blank?
+    @scribes = @work.scribes
   end
 
   def edit_scribes
