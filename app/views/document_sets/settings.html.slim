@@ -82,23 +82,10 @@
         span =t('.make_document_set_private')
 
     -if @collection.restricted
-      h3 =t('.document_set_collaborators')
-      p.fglight =t('.collaborators_may_transcribe')
-      =form_tag({ :action => 'add_set_collaborator' }, class: 'user-select-form') do
-        =hidden_field_tag :collection_id, @collection.slug
-        =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag t('.add')
-        =label_tag 'user_id', t('.add_collaborator'), class: 'hidden'
-      -@collaborators.each do |user|
-        -contributions = user.deeds.where(collection_id: @collection.slug).count
-        .user-label
-          .userpic
-            =profile_picture(user)
-          .username
-            =link_to user.name_with_identifier, user_profile_path(user)
-            small =t('.n_contributions', count: contributions)
-          -if user != @main_owner
-            =link_to '', { :action => 'remove_set_collaborator', :user_id => user.id, :collection_id => @collection }, class: 'remove', title: t('.remove')
+      .allowed-collaborators
+        h3 =t('.document_set_collaborators')
+        p =link_to(t('.edit_collaborators'), collection_edit_set_collaborators_path(document_set_id: @document_set.slug), id: 'edit-set-collaborators-button', class: 'button', data: { litebox: { hash: 'edit-set-collaborators', noscroll: false }})
+      =render 'collection/users_list', users: @collaborators, type: 'collaborators'
 
 -content_for :javascript
   javascript:

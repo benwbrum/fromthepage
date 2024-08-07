@@ -89,7 +89,6 @@ pt:
       word_trees_analysis_description: Envie a transcrição desta obra para o visualizador Árvores de Palavras de Jason Davies para análise.
       zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis apenas para proprietários de projetos.
     edit:
-      add: Adicionar
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
       allowed_collaborators: Colaboradores permitidos
@@ -106,6 +105,8 @@ pt:
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
       document_sets: Conjuntos de documentos
+      done: Feito
+      edit_collaborators: Editar colaboradores
       editorial_notes: Notas editoriais
       enable_ocr_correction: Ativar correção de OCR
       enable_ocr_correction_description: Uma obra pode começar com texto OCR que precisa ser corrigido. Quando marcada, a guia Transcrever será substituída por uma guia Correta.
@@ -114,7 +115,6 @@ pt:
       identifier_description: Identificador de sistemas fora de FromThePage, para ser usado correlacionando exportações para registros externos. (Este campo não é visível ao público.)
       in_scope: Na mira
       more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
-      no_allowed_collaborators_selected: Nenhum colaborador permitido selecionado
       no_image: Sem imagem
       pages_are_meaningful: As páginas são significativas
       pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
@@ -122,7 +122,6 @@ pt:
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
-      remove: Remover
       restrict_collaborators: Restringir colaboradores
       restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
       revert: Reverter
@@ -144,6 +143,10 @@ pt:
       work_image_description: Uma imagem a ser usada para ilustrar a obra. Se nenhuma imagem for carregada, uma imagem da página será usada.
       work_thumbnail: Miniatura da obra
       work_title: Título da obra
+    edit_scribes:
+      remove_collaborator: Remover colaborador
+      work_collaborators: Colaboradores de trabalho
+      work_collaborators_description: Os colaboradores podem transcrever e editar trabalhos privados.
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas

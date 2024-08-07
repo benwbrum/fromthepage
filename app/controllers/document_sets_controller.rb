@@ -5,7 +5,7 @@ class DocumentSetsController < ApplicationController
   respond_to :html
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update, :transfer_form]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :edit, :update, :transfer_form, :edit_set_collaborators, :search_collaborators]
 
   def authorized?
     unless user_signed_in? && @collection && current_user.like_owner?(@collection)
@@ -44,7 +44,6 @@ class DocumentSetsController < ApplicationController
     end
   end
 
-
   def index
     page = params[:page]
     page = 1 if page.blank?
@@ -67,6 +66,21 @@ class DocumentSetsController < ApplicationController
 
   def edit
     respond_with(@document_set)
+  end
+
+  def edit_set_collaborators
+    @collaborators = @document_set.collaborators
+    @noncollaborators = User.where.not(id: @collaborators.select(:id)).order(:display_name).limit(100)
+  end
+
+  def search_collaborators
+    query = "%#{params[:term].to_s.downcase}%"
+    excluded_ids = @document_set.collaborators.pluck(:id) + [@document_set.owner.id]
+    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                .where.not(id: excluded_ids)
+                .limit(100)
+
+    render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
   end
 
   def create
@@ -143,35 +157,36 @@ class DocumentSetsController < ApplicationController
   end
 
   def settings
-    #works not yet in document set
+    # works not yet in document set
     if params[:search]
       @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     else
       @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     end
-    #document set edit needs the @document set variable
-    @document_set = @collection unless @document_set
+    # document set edit needs the @document set variable
+    @document_set ||= @collection
     @collaborators = @document_set.collaborators
-    @noncollaborators = User.order(:display_name) - @collaborators
   end
 
   def add_set_collaborator
-    @collection.collaborators << @user
-    if @user.notification.add_as_collaborator
-      if SMTP_ENABLED
-        begin
-          UserMailer.collection_collaborator(@user, @collection).deliver!
-        rescue StandardError => e
-          print "SMTP Failed: Exception: #{e.message}"
-        end
+    collaborator = User.find(params[:collaborator_id])
+    @collection.collaborators << collaborator
+    if collaborator.notification.add_as_collaborator && SMTP_ENABLED
+      begin
+        UserMailer.collection_collaborator(collaborator, @collection).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
       end
     end
-    redirect_to collection_settings_path(@collection.owner, @collection)
+
+    redirect_to collection_edit_set_collaborators_path(@collection.owner, @collection, @document_set)
   end
 
   def remove_set_collaborator
-    @collection.collaborators.delete(@user)
-    redirect_to collection_settings_path(@collection.owner, @collection)
+    collaborator = User.find(params[:collaborator_id])
+    @collection.collaborators.delete(collaborator)
+
+    redirect_to collection_edit_set_collaborators_path(@collection.owner, @collection, @document_set)
   end
 
   def publish_set
