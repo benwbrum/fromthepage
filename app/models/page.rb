@@ -18,9 +18,9 @@
 #  shrink_factor           :integer
 #  source_text             :text(16777215)
 #  source_translation      :text(16777215)
-#  status                  :string(255)
+#  status                  :string(255)      default("new"), not null
 #  title                   :string(255)
-#  translation_status      :string(255)
+#  translation_status      :string(255)      default("new"), not null
 #  xml_text                :text(16777215)
 #  xml_translation         :text(16777215)
 #  updated_at              :datetime
@@ -72,6 +72,7 @@ class Page < ApplicationRecord
   has_many :tex_figures, :dependent => :destroy
   has_many :deeds, :dependent => :destroy
   has_many :external_api_requests, :dependent => :destroy
+  has_many :page_processing_jobs, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables

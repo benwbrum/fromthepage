@@ -34,7 +34,8 @@ class AiJob < ApplicationRecord
   belongs_to :collection
   belongs_to :user
   has_many :ai_results
-  has_many :external_api_requests
+  has_many :external_api_requests # TODO: this should be through the page processing jobs
+  has_many :page_processing_jobs
   before_create :set_task_specific_params
   before_create :set_defaults
   after_create :run_rake_task
@@ -59,7 +60,7 @@ class AiJob < ApplicationRecord
     end
   end
 
-  # TODO re-write in light of 
+  # states for the whole API job
   module Status
     QUEUED = 'queued'
     RUNNING = 'running'
@@ -113,24 +114,68 @@ class AiJob < ApplicationRecord
     JSON.parse(self[:parameters])
   end
 
+  # task_class_name is the name of a subclass of PageProcessingTask.
+  # it will include any module names, e.g. 'OpenAi::AiTextPageProcessingTask'
+  def task_parameters(task_class_name)
+    self.parameters[task_class_name]
+  end
+
+
   def parameters=(value)
     self[:parameters] = value.to_json
   end
 
-  
-private
-  def all_requests_finished?
 
+
+  # fininite state machine transitions
+  def start
+    self.status = Status::QUEUED
+    self.save
+    # launch background task
   end
 
-  def any_requests_errored?
+  def submit_page_processes
+    self.status = Status::RUNNING
+    self.save
 
+    # loop through all the pages for this job and get them started
+    pages = []
+    if self.page # this job is page specific
+      pages = [self.page]
+    elsif self.work # this job is work specific
+      pages = self.work.pages
+    elsif self.collection # this job is collection specific
+      pages = self.collection.pages
+      # TODO: handle page sets
+    end
+
+    # now create a page process for each page
+    # (these will be harvested and run by a background job)
+    pages.each do |page|
+      PageProcessingJob.create(ai_job: self, page: page, status: PageProcessingJob::Status::QUEUED)
+    end
+
+    self.status=Status::WAITING
+    self.save
   end
 
 
-  def needs_ai_text?
-
+  # this will be a call-back by the child processes
+  def update_status
+    # check the status of all child page processing jobs and update our status accordingly
+    if self.page_processing_jobs.where.not(status: PageProcessingJob::Status::COMPLETED).exists?
+      if self.page_processing_jobs.where(status: PageProcessingJob::Status::FAILED).exists?
+        self.status = Status::FAILED
+      else
+        self.status = Status::RUNNING
+      end
+    else
+      self.status = Status::COMPLETED
+    end
+    self.save 
   end
+
+
 
 
 

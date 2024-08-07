@@ -239,6 +239,8 @@ GEM
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
+    faker (3.4.2)
+      i18n (>= 1.8.11, < 2)
     faraday (2.8.1)
       base64
       faraday-net_http (>= 2.0, < 3.1)
@@ -691,6 +693,7 @@ DEPENDENCIES
   edtf
   edtf-humanize
   factory_bot_rails
+  faker
   flamegraph
   forty_facets
   friendly_id

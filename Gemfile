@@ -82,6 +82,7 @@ group :test do
   gem 'webmock', require: false
   gem 'vcr'
   gem 'coveralls', require: false
+  gem 'faker'
 end
 
 group :development, :test do
