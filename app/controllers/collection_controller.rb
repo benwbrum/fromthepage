@@ -1,5 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
@@ -12,7 +13,24 @@ class CollectionController < ApplicationController
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
-  before_action :authorized?, :only => [:new, :edit, :update, :delete]
+  before_action :authorized?, only: [
+    :new,
+    :edit,
+    :update,
+    :delete,
+    :create,
+    :edit_owner,
+    :remove_owner,
+    :add_owner,
+    :edit_collaborators,
+    :remove_collaborator,
+    :add_collaborator,
+    :edit_reviewers,
+    :remove_reviewer,
+    :add_reviewer,
+    :new_mobile_user,
+    :search_users
+  ]
   before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
@@ -32,17 +50,21 @@ class CollectionController < ApplicationController
   end
 
   def search_users
-    query = "%#{params[:term]}%"
-    users = User.where("real_name like ? or email like ?", query, query)
-    render json: { results: users.map{|u| {text: "#{u.display_name} #{u.email}", id: u.id}}}
+    query = "%#{params[:term].to_s.downcase}%"
+    excluded_ids = @collection.collaborators.pluck(:id) + [@collection.owner.id]
+    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                .where.not(id: excluded_ids)
+                .limit(100)
+
+    render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
   end
 
   def reviewer_dashboard
     # works which have at least one page needing review
     @total_pages=@collection.pages.count
-    @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+    @pages_needing_review=@collection.pages.where(status: :needs_review).count
     @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
-    @works_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).pluck(:work_id).uniq.count
+    @works_to_review = @collection.pages.where(status: :needs_review).pluck(:work_id).uniq.count
   end
 
   def works_to_review
@@ -62,16 +84,16 @@ class CollectionController < ApplicationController
     unless params[:quality_sampling_id].blank?
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => @user.id)
   end
 
   def approve_all
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => @user.id)
     page_count = @pages.count
-    @pages.update_all(status: Page::STATUS_TRANSCRIBED)
+    @pages.update_all(status: :transcribed)
     @collection.works.each do |work|
-      work.work_statistic.recalculate({ type: Page::STATUS_NEEDS_REVIEW }) if work.work_statistic
+      work.work_statistic.recalculate({ type: Page.statuses[:needs_review] }) if work.work_statistic
     end
     flash[:notice] = t('.approved_n_pages', page_count: page_count)
     redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))
@@ -330,16 +352,17 @@ class CollectionController < ApplicationController
   end
 
   def add_collaborator
-    @user = User.find_by(id: params[:collaborator_id])
-    @collection.collaborators << @user
-    if @user.notification.add_as_collaborator
-      send_email(@user, @collection)
-    end
+    collaborator = User.find_by(id: params[:collaborator_id])
+    @collection.collaborators << collaborator
+    send_email(collaborator, @collection) if collaborator.notification.add_as_collaborator
+
     redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def remove_collaborator
-    @collection.collaborators.delete(@user)
+    collaborator = User.find_by(id: params[:collaborator_id])
+    @collection.collaborators.delete(collaborator)
+
     redirect_to collection_edit_collaborators_path(@collection)
   end
 
@@ -712,24 +735,23 @@ private
 
   def load_settings
     @main_owner = @collection.owner
-    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
+    @owners = ([@main_owner] + @collection.owners).sort_by(&:display_name)
     @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
-    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
-    @blocked_users = @collection.blocked_users.sort_by { |blocked_user| blocked_user.display_name }
-    if User.count > 100
-      @nonowners = []
-      @noncollaborators = []
-      @nonreviewers = []
-    else
-      @nonowners = User.order(:display_name) - @owners
-      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
-      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
-      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
-    end
+    @collaborators = @collection.collaborators
+    @reviewers = @collection.reviewers
+    @blocked_users = @collection.blocked_users.sort_by(&:display_name)
+
+    collection_owner_ids = @owners.pluck(:id)
+    @nonowners = User.where.not(id: collection_owner_ids).order(:display_name).limit(100)
+    @noncollaborators = User.where.not(id: @collaborators.pluck(:id) + collection_owner_ids).order(:display_name).limit(100)
+    @nonreviewers = User.where.not(id: @reviewers.pluck(:id) + collection_owner_ids).order(:display_name).limit(100)
+
+    @collaborators = @collaborators.sort_by(&:display_name)
+    @reviewers = @reviewers.sort_by(&:display_name)
   end
 
   private
+
   def permit_only_transcribed_works_flag
     params.permit(:only_transcribed)
   end

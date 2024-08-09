@@ -107,13 +107,11 @@ class Work < ApplicationRecord
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
 
-
   after_create :alert_bento
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
-  validates :description, html: { message: ->(_, _) { I18n.t('errors.html_syntax_error') } },
-                          length: { maximum: 16.megabytes - 1 }
+  validates :description, html: true, length: { maximum: 16.megabytes - 1 }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
@@ -219,7 +217,7 @@ class Work < ApplicationRecord
   end
 
   def verbatim_transcription_plaintext
-    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map{ |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
+    self.pages.select{ |page| !page.status_blank? }.map{ |page| page.verbatim_transcription_plaintext }.join("\n\n\n")
   end
 
   def verbatim_translation_plaintext
@@ -227,7 +225,7 @@ class Work < ApplicationRecord
   end
 
   def emended_transcription_plaintext
-    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
+    self.pages.select{|page| !page.status_blank? }.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
   end
 
   def emended_translation_plaintext
@@ -235,7 +233,7 @@ class Work < ApplicationRecord
   end
 
   def searchable_plaintext
-    self.pages.select{|page| page.status != Page::STATUS_BLANK}.map { |page| page.search_text}.join("\n\n\n")
+    self.pages.select{|page| !page.status_blank? }.map { |page| page.search_text}.join("\n\n\n")
   end
 
   def suggest_next_page_title

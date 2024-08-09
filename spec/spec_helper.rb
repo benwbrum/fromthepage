@@ -1,13 +1,11 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] ||= 'test'
+require_relative 'support/simplecov_profile'
+
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
-
-require 'coveralls'
-Coveralls.wear!('rails')
 
 DatabaseCleaner.strategy = :transaction
 

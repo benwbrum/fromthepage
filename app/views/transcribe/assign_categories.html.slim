@@ -1,3 +1,14 @@
+ruby:
+  if @text_type == 'translation'
+    cancel_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id,
+      rollback_unset_ids: @unassigned_articles.pluck(:id), rollback_delete_ids: @new_article_ids)
+    continue_path = collection_translate_page_path(@collection.owner, @collection, @work, @next_page_id)
+  else
+    cancel_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id,
+      rollback_unset_ids: @unassigned_articles.pluck(:id), rollback_delete_ids: @new_article_ids)
+    continue_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @next_page_id)
+  end
+
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 .headline
@@ -21,8 +32,5 @@ p.big =t('.uncategorized_subjects_mentioned')
         option(data-level=level value=c.id selected=selected aria-label=t('.options') *language_attrs(@collection)) =c.title
 
 span.legend
-  -if @text_type == 'translation'
-    -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
-  -else
-    -next_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
-  =link_to t('.continue'), next_path, class: 'button outline round'
+  =link_to t('.cancel'), cancel_path, class: 'button outline round', style: 'margin: 0 0.5rem';
+  =link_to t('.continue'), continue_path, class: 'button outline round', style: 'margin: 0 0.5rem';

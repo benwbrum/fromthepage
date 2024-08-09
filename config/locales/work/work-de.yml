@@ -89,10 +89,9 @@ de:
       word_trees_analysis_description: Senden Sie die Transkription dieses Werkes zur Analyse an Jason Davies Word Trees Visualizer.
       zip_export_only_project_owners: ZIP-Datei-Exportformate, auf die nur Projektinhaber:innen zugreifen können.
     edit:
-      add: Hinzufügen
       additional_metadata: Zusätzliche Metadaten
       additional_metadata_description: Diese Metadatenfelder werden in der Projektinfo dieses Werkes und in TEI-Exporten angezeigt, beeinträchtigen jedoch nicht die Funktionalität von FromThePage.
-      allowed_collaborators: Freigeschaltete Mitarbeitende
+      allowed_collaborators: Erlaubte Mitwirkende
       apply: Anwenden
       author: Autor:in
       collaborators_can_edit_titles: Erlauben Sie Mitarbeitenden, Seitentitel zu bearbeiten
@@ -106,6 +105,8 @@ de:
       document_date_hint: Datum des Dokuments ist im EDTF-Format anzugeben (z. B. 1843, 2001-02, 1643-06-30)
       document_history: Dokumentenverlauf
       document_sets: Dokumentensets
+      done: Erledigt
+      edit_collaborators: Mitarbeiter bearbeiten
       editorial_notes: Editorische Anmerkungen
       enable_ocr_correction: OCR-Korrektur aktivieren
       enable_ocr_correction_description: Ein Werk kann mit OCR-Text beginnen, der korrigiert werden muss. Wenn diese Option aktiviert ist, wird der Tab Transkription durch den Tab Korrektur ersetzt.
@@ -114,7 +115,6 @@ de:
       identifier_description: Identifier von Systemen außerhalb von FromThePage, der verwendet werden soll, um Exporte externen Datensätzen zuzuordnen. (Dieses Feld ist nicht öffentlich sichtbar.)
       in_scope: Im Scope
       more_work_settings_info: Weitere Informationen zu den Einstellungen für das Werk finden Sie im Wiki-Artikel <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transkription</a>.
-      no_allowed_collaborators_selected: Keine freigeschalteten Mitarbeitenden ausgewählt
       no_image: Kein Bild
       pages_are_meaningful: Seitenaufteilung berücksichtigen
       pages_are_meaningful_description: Seiten können sinnvolle semantische Unterteilungen eines Werkes sein (z. B. in einer Zeitschrift mit einem Datum für jede Seite), oder aber auch nicht (wie in Briefen oder Büchern, wo der Text nicht basierend auf Seiten in Abschnitte unterteilt werden sollte). Wenn diese Option aktiviert ist, werden die Seitentitel des Werkes gut sichtbar angezeigt.
@@ -122,7 +122,6 @@ de:
       physical_description: Physische Beschreibung
       place_of_creation: Entstehungsort
       recipient: Rezipient
-      remove: Entfernen
       restrict_collaborators: Mitarbeit einschränken
       restricted_work_no_collaborators_warning: Nur Projektinhaber:innen können dieses Werk bearbeiten. Fügen Sie Mitarbeitende hinzu, damit das Werk von anderen bearbeitet werden kann.
       revert: Zurücksetzen
@@ -144,6 +143,10 @@ de:
       work_image_description: Ein Bild zur Veranschaulichung des Werkes. Wenn kein Bild hochgeladen wird, wird eines der Faksimiles verwendet.
       work_thumbnail: Vorschaubild des Werkes
       work_title: Werkstitel
+    edit_scribes:
+      remove_collaborator: Mitarbeiter entfernen
+      work_collaborators: Arbeitskollaborateure
+      work_collaborators_description: Mitarbeiter können private Arbeiten transkribieren und bearbeiten.
     incomplete: Unvollständige Metadaten.
     metadata_overview:
       notes_and_questions: Anmerkungen und Fragen

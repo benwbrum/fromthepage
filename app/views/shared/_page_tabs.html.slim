@@ -37,6 +37,7 @@
   :name => t('.versions'),
   :selected => 2,
   :path => "#{collection_page_version_path(@collection.owner, @collection, @work, @page.id)}",
+  :opts => { :rel => 'nofollow' },
 }]
 
 -tabs += [{\
@@ -94,9 +95,9 @@
           -else
             =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-        -else 
+        -else
           span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
 .tabs
   -for tab in tabs
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
-        a.active =tab[:name]
+    = link_to_unless(tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]) do
+      a.active= tab[:name]

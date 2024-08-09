@@ -181,11 +181,6 @@ GEM
     clipboard-rails (1.7.1)
     coderay (1.1.3)
     concurrent-ruby (1.2.3)
-    coveralls_reborn (0.28.0)
-      simplecov (~> 0.22.0)
-      term-ansicolor (~> 1.7)
-      thor (~> 1.2)
-      tins (~> 1.32)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -351,7 +346,6 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.6)
     minitest (5.22.3)
-    mize (0.5.0)
     msgpack (1.7.2)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -570,6 +564,7 @@ GEM
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
+    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     slim (5.2.1)
       temple (~> 0.10.0)
@@ -595,11 +590,7 @@ GEM
       net-ssh (>= 2.8.0)
     ssrf_filter (1.1.2)
     stackprof (0.2.26)
-    sync (0.5.0)
     temple (0.10.3)
-    term-ansicolor (1.10.4)
-      mize (~> 0.5)
-      tins (~> 1.0)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
     terser (1.2.2)
@@ -632,9 +623,6 @@ GEM
     tilt (2.3.0)
     timeago_js (3.0.2.2)
     timeout (0.4.1)
-    tins (1.33.0)
-      bigdecimal
-      sync
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
@@ -687,7 +675,6 @@ DEPENDENCIES
   carrierwave
   charlock_holmes
   clipboard-rails
-  coveralls_reborn
   database_cleaner
   devise
   devise-encryptable
@@ -747,6 +734,8 @@ DEPENDENCIES
   savon (~> 2.12.0)
   selenium-webdriver
   shoulda
+  simplecov
+  simplecov-lcov
   slim
   stackprof
   terser

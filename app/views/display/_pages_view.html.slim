@@ -20,7 +20,7 @@
     -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
       =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button', onclick: "resultClicked();"
 
-  .work-page 
+  .work-page
     .work-page_thumbnail
       -if page.ia_leaf
         =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page), onclick: "resultClicked();")
@@ -30,13 +30,13 @@
         =link_to(image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page), onclick: "resultClicked();")
       span
         span.progress
-          -if page.status.nil?
+          -if page.status_new?
             -progress_pct = 0
-          -elsif page.status == Page::STATUS_INCOMPLETE
+          -elsif page.status_incomplete?
             -progress_pct = 33
             span(style="width:0%")
             span(style="width:0%")
-          -elsif page.status == Page::STATUS_NEEDS_REVIEW
+          -elsif page.status_needs_review?
             -progress_pct = 67
             span(style="width:0%")
           -else
@@ -58,10 +58,10 @@
         -else
           -action = page_params(page)
 
-        -if page.status == Page::STATUS_BLANK
+        -if page.status_blank?
           p.nodata_text ==t('.this_page_is_blank')
         -elsif transcription.present?
-          -if (page.status == Page::STATUS_INCOMPLETE && @collection.active?)
+          -if (page.status_incomplete? && @collection.active?)
             .incomplete_transcription
               ==transcription.force_encoding('utf-8')
             .incomplete_text
@@ -81,7 +81,7 @@
                 -help = link_to(t('.help_transcribe'), action, onclick: "resultClicked();")
               p.nodata_text == t('.this_page_is_not', status: status, help: help)
             -else
-              p.nodata_text 
+              p.nodata_text
           -else
             p.nodata_text == t('.collaboration_is_restricted')
 

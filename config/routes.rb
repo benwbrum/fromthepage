@@ -135,6 +135,8 @@ Fromthepage::Application.routes.draw do
     get 'update_featured_page', to: 'work#update_featured_page'
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
+    get ':collection_id/:work_id/edit_scribes', to: 'work#edit_scribes', as: 'edit_scribes'
+    get ':collection_id/:work_id/search_scribes', to: 'work#search_scribes', as: 'search_scribes'
     get 'revert', to: 'work#revert'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
@@ -316,9 +318,10 @@ Fromthepage::Application.routes.draw do
     get 'restrict_set', to: 'document_sets#restrict_set'
     get 'destroy', to: 'document_sets#destroy'
     get 'publish_set', to: 'document_sets#publish_set'
-    get 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
+    post 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
     post 'assign_to_set', to: 'document_sets#assign_to_set'
     post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
+    get 'search_collaborators', to: 'document_sets#search_collaborators'
   end
 
   scope 'transcription_field', as: 'transcription_field' do
@@ -465,6 +468,7 @@ Fromthepage::Application.routes.draw do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
+      get 'settings/:document_set_id/edit_set_collaborators', to: 'document_sets#edit_set_collaborators', as: 'edit_set_collaborators'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'works_to_review', as: :works_to_review, to: 'collection#works_to_review'
@@ -519,7 +523,7 @@ Fromthepage::Application.routes.draw do
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
-        get 'remove_scribe', on: :member
+        post 'remove_scribe', on: :member
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member

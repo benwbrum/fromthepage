@@ -89,7 +89,6 @@ en:
       word_trees_analysis_description: Send the transcription of this work to Jason Davies' Word Trees visualizer for analysis.
       zip_export_only_project_owners: Zip file export formats only accessible to project owners.
     edit:
-      add: Add
       additional_metadata: Additional metadata
       additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
       allowed_collaborators: Allowed Collaborators
@@ -106,6 +105,8 @@ en:
       document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
       document_history: Document history
       document_sets: Document Sets
+      done: Done
+      edit_collaborators: Edit Collaborators
       editorial_notes: Editorial notes
       enable_ocr_correction: Enable OCR Correction
       enable_ocr_correction_description: A work may begin with OCR text that needs to be corrected. When checked, the Transcribe tab will be replaced by a Correct tab.
@@ -114,7 +115,6 @@ en:
       identifier_description: Identifier from systems outside of FromThePage, to be used correlating exports to external records. (This field is not visible to the public.)
       in_scope: In Scope
       more_work_settings_info: For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
-      no_allowed_collaborators_selected: No allowed collaborators selected
       no_image: No Image
       pages_are_meaningful: Pages Are Meaningful
       pages_are_meaningful_description: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages). When checked, the work will have page titles prominently displayed.
@@ -122,7 +122,6 @@ en:
       physical_description: Physical description
       place_of_creation: Place of Creation
       recipient: Recipient
-      remove: Remove
       restrict_collaborators: Restrict collaborators
       restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
       revert: Revert
@@ -144,6 +143,10 @@ en:
       work_image_description: A picture to be used to illustrate the work. If no picture is uploaded, a page image will be used.
       work_thumbnail: Work thumbnail
       work_title: Work title
+    edit_scribes:
+      remove_collaborator: Remove collaborator
+      work_collaborators: Work collaborators
+      work_collaborators_description: Collaborators may transcribe and edit private works.
     incomplete: Incomplete metadata.
     metadata_overview:
       notes_and_questions: Notes and questions
