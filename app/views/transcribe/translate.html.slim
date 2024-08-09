@@ -15,14 +15,6 @@
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
-      -if !@collection.field_based 
-       -if !@collection.voice_recognition
-        .flex-toolbar_group.undo-buttons
-          div.button.outline.undo_button(onclick="undoCodeMirror()")
-            =svg_symbol '#icon-arrow-undo', class: 'icon'
-          div.button.outline.redo_button(onclick="redoCodeMirror()")
-            =svg_symbol '#icon-arrow-redo', class: 'icon'
-
       .flex-toolbar_group.push-right
 
       .flex-toolbar_group
