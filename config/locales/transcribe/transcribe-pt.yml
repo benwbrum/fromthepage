@@ -9,6 +9,7 @@ pt:
   transcribe:
     assign_categories:
       assign_categories: Atribuir categorias
+      cancel: Cancelar
       continue: Continuar
       manage_categories: Controlar Categorias
       options: opções

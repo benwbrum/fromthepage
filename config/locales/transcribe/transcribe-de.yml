@@ -9,6 +9,7 @@ de:
   transcribe:
     assign_categories:
       assign_categories: Kategorien zuweisen
+      cancel: Stornieren
       continue: Weitermachen
       manage_categories: Kategorien verwalten
       options: Optionen

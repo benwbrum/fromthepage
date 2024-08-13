@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_10_132602) do
+ActiveRecord::Schema.define(version: 2024_07_23_000320) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.datetime "date"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2024_07_10_132602) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "article_article_links", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "article_article_links", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "source_article_id"
     t.integer "target_article_id"
     t.string "display_text"
@@ -113,7 +113,6 @@ ActiveRecord::Schema.define(version: 2024_07_10_132602) do
     t.boolean "collection_activity"
     t.boolean "collection_contributors"
     t.string "report_arguments"
-    t.boolean "plaintext_verbatim_zero_index_page", default: false
     t.boolean "admin_searches"
     t.boolean "notes_csv"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
@@ -587,11 +586,11 @@ ActiveRecord::Schema.define(version: 2024_07_10_132602) do
     t.integer "lock_version", default: 0
     t.text "xml_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.integer "page_version_id"
-    t.string "status"
+    t.string "status", default: "new", null: false
     t.text "source_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "search_text", collation: "utf8mb4_unicode_ci"
-    t.string "translation_status"
+    t.string "translation_status", default: "new", null: false
     t.text "metadata"
     t.datetime "edit_started_at"
     t.integer "edit_started_by_user_id"

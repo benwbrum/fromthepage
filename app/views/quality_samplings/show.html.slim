@@ -21,7 +21,7 @@
           th =t('.actions')
       -@users.each do |user|
         -page_sampling = @user_samplings[user.id]
-        -pages_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
+        -pages_to_review = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => user.id).count
         tr
           td
             =user.display_name
@@ -57,7 +57,7 @@
           th =t('.actions')
       -@works.each do |work|
         -page_sampling = @work_samplings[work.id]
-        -pages_to_review = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+        -pages_to_review = work.pages.where(status: :needs_review).count
         tr
           td
             =work.title
@@ -73,7 +73,7 @@
           -else
             td =t('.not_applicable')
             td =t('.not_applicable')
-          td 
+          td
             -if pages_to_review > 0
               =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 

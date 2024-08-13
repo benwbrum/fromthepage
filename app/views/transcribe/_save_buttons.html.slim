@@ -9,19 +9,19 @@
     =button_tag t('.autolink'), name: 'autolink', type: 'submit', title: "#{t('.autolink_tooltip')}"
 
   / check status of page and configuration of collection
-  -if @page.status.blank? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+  -if @page.status_new? || @page.status_incomplete? || @page.status_blank?
     =button_tag t('.save_changes'), name: 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}", data: { disable_with: t('.please_wait') }, onclick: 'unsavedNotes(event);'
 
-  -if [Page::STATUS_NEEDS_REVIEW].include?(@page.status)
+  -if @page.status_needs_review?
     =button_tag t('.save_changes'), name: 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}", data: { disable_with: t('.please_wait') }
-  -elsif [Page::STATUS_INDEXED, Page::STATUS_TRANSCRIBED].include?(@page.status)
+  -elsif [Page.statuses[:indexed], Page.statuses[:transcribed]].include?(@page.status)
     =button_tag t('.save_changes'), name: 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}", data: { disable_with: t('.please_wait') }
 
-  -if [nil, "", Page::STATUS_INCOMPLETE].include?(@page.status)
+  -if [Page.statuses[:new], Page.statuses[:incomplete]].include?(@page.status)
     -if @collection.review_workflow
       =button_tag t('.done'), name: 'done_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}", class: "bggreen", data: { disable_with: t('.please_wait') }
     -else
       =button_tag t('.done'), name: 'done_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}", class: "bggreen", data: { disable_with: t('.please_wait') }
 
-  -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW && current_user.can_review?(@collection)
+  -if @collection.review_workflow && @page.status_needs_review? && current_user.can_review?(@collection)
     =button_tag t('.approve'), name: 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen", data: { disable_with: t('.please_wait') }

@@ -11,6 +11,10 @@ fr:
       save_document_set: Enregistrer le jeu de documents
       title: Titre
       url: URL
+    edit_set_collaborators:
+      remove_collaborator: Supprimer un collaborateur
+      set_collaborators: Collaborateurs de l'ensemble de documents
+      set_collaborators_description: Les collaborateurs peuvent transcrire et éditer des ensembles de documents privés.
     index:
       actions: Actions
       aggregating_works_thematic_exhibits: Regroupement des œuvres dans des expositions thématiques
@@ -61,28 +65,24 @@ fr:
       work_title: Titre de œuvre
     settings:
       add: Ajouter
-      add_collaborator: Ajouter un collaborateur
       add_work_title_to_document_set: Ajouter %{work_title} au jeu de documents
-      collaborators_may_transcribe: Les collaborateurs peuvent transcrire et éditer des ensembles de documents privés.
       document_set_based_on: Il s'agit d'un ensemble de documents basé sur la collection <b>%{title}</b>. Vous pouvez gérer tous les œuvres et ensembles de documents de cette collection en cliquant sur %{link}.
-      document_set_collaborators: Collaborateurs de l'ensemble de documents
+      document_set_collaborators: Collaborateurs autorisés
       document_set_image: Image du jeu de documents
       document_set_privacy: Confidentialité de l'ensemble de documents
       document_set_restricted: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
       document_set_unrestricted: L'ensemble de documents peut être consulté par n'importe qui sur Internet. Toutes les œuvres placées dans un ensemble de documents publics seront lisibles, même si la collection parente est privée. Vous pouvez rendre le jeu de documents privé pour limiter sa visibilité aux collaborateurs.
+      done: Fait
+      edit_collaborators: Modifier les collaborateurs
       here: ici
       make_document_set_private: Rendre l'ensemble de documents privé
       make_document_set_public: Rendre l'ensemble de documents public
       manage_works: Gérer les œuvres
-      n_contributions:
-        one: 1 cotisation
-        other: "%{count} cotisations"
       n_pages:
         one: '1 page :'
         other: "%{count} pages : pl"
       no_image: Pas d'image
       picture_document_set_description: Image à utiliser pour illustrer la description du jeu de documents.
-      remove: Retirer
       save: sauvegarder
       search: Chercher
       search_for_works: Rechercher des oeuvres...

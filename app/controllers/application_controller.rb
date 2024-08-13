@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     end
 
     # append region to locale
-    related_locales = http_accept_language.user_preferred_languages.select do |loc| 
+    related_locales = http_accept_language.user_preferred_languages.select do |loc|
       loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
       I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
     end
@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
   def guest_transcription
 
     return head(:forbidden) unless GUEST_TRANSCRIPTION_ENABLED
-    
+
     if check_recaptcha(model: @page, :attribute => :errors)
       User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
@@ -198,7 +198,7 @@ class ApplicationController < ActionController::Base
     elsif !DocumentSet.find_by(slug: id).nil?
       @collection = DocumentSet.find_by(slug: id)
     elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id) 
+      @collection = Collection.find_by(slug: id)
     end
 
     # check to make sure URLs haven't gotten scrambled
@@ -324,7 +324,11 @@ class ApplicationController < ActionController::Base
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
-      dashboard_owner_path
+      if current_user.collections.any?
+        dashboard_owner_path
+      else
+        dashboard_startproject_path
+      end
     else
       dashboard_watchlist_path
     end
@@ -350,7 +354,7 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
-    if page.status == nil
+    if page.status_new?
       if user_signed_in?
         collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
       else

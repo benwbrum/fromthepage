@@ -175,26 +175,16 @@
         =f.check_box :restrict_scribes
         |&nbsp;
         =f.label :restrict_scribes, t('.restrict_collaborators')
-      -if @work.restrict_scribes && @scribes.empty?
+      -if @work.restrict_scribes && @work.scribes.empty?
         p.warning =t('.restricted_work_no_collaborators_warning')
       small.legend =button_tag t('.apply'), class: 'outline'
 
     -if @work.restrict_scribes
-      h3= t('.allowed_collaborators')
-      =form_tag(add_scribe_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'user-select-form') do
-        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag t('.add')
-      -if @scribes.empty?
-        p.fglight= t('.no_allowed_collaborators_selected')
-      -else
-        -@scribes.each do |user|
-          .user-label
-            .userpic
-              =profile_picture(user)
-            .username
-              =link_to user.name_with_identifier, user_profile_path(user)
-              small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: t('.remove')
+      .allowed-collaborators
+        h3 =t('.allowed_collaborators')
+        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { litebox: { hash: 'edit-scribes', noscroll: false }})
+      =render 'collection/users_list', users: @scribes, type: 'collaborators'
+
 
 -content_for :javascript
   javascript:

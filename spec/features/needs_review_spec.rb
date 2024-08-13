@@ -30,44 +30,44 @@ describe "needs review", :order => :defined do
     logout(@owner)
   end
 
-  it "marks pages blank" do
+  it 'marks pages blank' do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
-    expect(@page1.status).to be_nil
-    expect(@page2.status).to be_nil
+    expect(@page1.status_new?).to be_truthy
+    expect(@page2.status_new?).to be_truthy
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     page.check('page_mark_blank')
     find('#save_button_top').click
     page.find('a.page-nav_prev').click
     expect(page).to have_content("This page is marked blank")
-    expect(Page.find_by(id: @page1.id).status).to eq ('blank')
-    expect(Page.find_by(id: @page1.id).translation_status).to eq ('blank')
+    expect(Page.find_by(id: @page1.id).status_blank?).to be_truthy
+    expect(Page.find_by(id: @page1.id).translation_status_blank?).to be_truthy
     page.find('.page-nav_next').click
     page.find('.tabs').click_link("Overview")
     expect(page).to have_content(@page2.title)
     expect(page).to have_content("This page is not transcribed")
     page.find('a', text: 'mark the page blank').click
     expect(page).to have_content("This page is blank")
-    expect(Page.find_by(id: @page2.id).status).to eq ('blank')
-    expect(Page.find_by(id: @page2.id).translation_status).to eq ('blank')
- end
+    expect(Page.find_by(id: @page2.id).status_blank?).to be_truthy
+    expect(Page.find_by(id: @page2.id).translation_status_blank?).to be_truthy
+  end
 
-  it "marks translated pages as blank" do
+  it 'marks translated pages as blank' do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@work.title)
-    expect(@page3.translation_status).to be_nil
+    expect(@page3.translation_status_new?).to be_truthy
     page.find('.work-page_title', text: @page3.title).click_link(@page3.title)
-    page.find('.tabs').click_link("Translate")
+    page.find('.tabs').click_link('Translate')
     page.check('page_mark_blank')
     click_button('Save Changes')
-    expect(page).to have_content("This page is blank")
-    expect(Page.find_by(id: @page3.id).translation_status).to eq ('blank')
+    expect(page).to have_content('This page is blank')
+    expect(Page.find_by(id: @page3.id).translation_status_blank?).to be_truthy
   end
 
   it 'marks pages as needing review' do
     visit collection_path(@collection.owner, @collection)
-    expect(@page4.status).to be_nil
-    expect(@page5.status).to be_nil
+    expect(@page4.status_new?).to be_truthy
+    expect(@page5.status_new?).to be_truthy
     expect(page).to have_content(@collection.title)
     page.find('.collection-work_title', text: @work.title).click_link @work.title
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
@@ -78,7 +78,7 @@ describe "needs review", :order => :defined do
     page.click_link('Overview')
     expect(page).to have_content('Review Text')
     expect(page).to have_content('Transcription')
-    expect(Page.find_by(id: @page4.id).status).to eq ('review')
+    expect(Page.find_by(id: @page4.id).status_needs_review?).to be_truthy
     page.find('.page-nav_next').click
     expect(page).to have_content(@page5.title)
     page.find('.tabs').click_link('Transcribe')
@@ -87,22 +87,22 @@ describe "needs review", :order => :defined do
     find('#save_button_top').click
     expect(page).to have_content('Review Text 2')
     expect(page).to have_content('Transcription')
-    expect(Page.find_by(id: @page5.id).status).to eq ('review')
+    expect(Page.find_by(id: @page5.id).status_needs_review?).to be_truthy
   end
 
-  it "marks translated pages as needing review" do
+  it 'marks translated pages as needing review' do
     visit "/display/display_page?page_id=#{@page6.id}"
-    expect(@page6.translation_status).to be_nil
-    page.find('.tabs').click_link("Translate")
-    fill_in_editor_field "Review Translate Text"
+    expect(@page6.translation_status_new?).to be_truthy
+    page.find('.tabs').click_link('Translate')
+    fill_in_editor_field 'Review Translate Text'
     page.check('page_needs_review')
     find('#save_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
-    page.click_link("Overview")
+    page.click_link('Overview')
     page.click_link('Show Translation')
-    expect(page).to have_content("Review Translate Text")
-    expect(page).to have_content("Translation")
-    expect(Page.find_by(id: @page6.id).translation_status).to eq ('review')
+    expect(page).to have_content('Review Translate Text')
+    expect(page).to have_content('Translation')
+    expect(Page.find_by(id: @page6.id).translation_status_needs_review?).to be_truthy
   end
 
   it "filters list of review pages" do
@@ -221,7 +221,7 @@ describe "needs review", :order => :defined do
   it "marks pages as no longer needing review" do
     @page4 = @work.pages.fourth
     visit collection_path(@collection.owner, @collection)
-    expect(@page4.status).to eq ('review')
+    expect(@page4.status_needs_review?).to be_truthy
     expect(page).to have_content(@collection.title)
     page.find('.collection-work_title', text: @work.title).click_link
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
@@ -232,14 +232,14 @@ describe "needs review", :order => :defined do
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
     expect(page).to have_content("Change Review Text")
     expect(page).to have_content("Transcription")
-    expect(Page.find_by(id: @page4.id).status).to eq ('transcribed')
-    expect(Page.find_by(id: @page5.id).status).to eq ('review')
+    expect(Page.find_by(id: @page4.id).status_transcribed?).to be_truthy
+    expect(Page.find_by(id: @page5.id).status_needs_review?).to be_truthy
   end
 
   it "marks translated pages as no longer needing review" do
     @page6 = @work.pages.last
     visit "/display/display_page?page_id=#{@page6.id}"
-    expect(@page6.translation_status).to eq ('review')
+    expect(@page6.translation_status_needs_review?).to be_truthy
     page.find('.tabs').click_link("Translate")
     fill_in_editor_field "Change Review Translate Text"
     page.uncheck('page_needs_review')
@@ -249,14 +249,14 @@ describe "needs review", :order => :defined do
     page.click_link('Show Translation')
     expect(page).to have_content("Change Review Translate Text")
     expect(page).to have_content("Translation")
-    expect(Page.find_by(id: @page6.id).translation_status).to eq ('translated')
+    expect(Page.find_by(id: @page6.id).translation_status_translated?).to be_truthy
   end
 
   it "marks pages not blank" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content("This page is blank")
     @page1 = @work.pages.first
-    expect(@page1.status).to eq ('blank')
+    expect(@page1.status_blank?).to be_truthy
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     expect(page).to have_content("This page is blank")
@@ -264,13 +264,13 @@ describe "needs review", :order => :defined do
     page.uncheck('page_mark_blank')
     find('#save_button_top').click
     expect(page).not_to have_content("This page is blank")
-    expect(Page.find_by(id: @page1.id).status).to be_nil
-    expect(Page.find_by(id: @page1.id).translation_status).to be_nil
+    expect(Page.find_by(id: @page1.id).status_new?).to be_truthy
+    expect(Page.find_by(id: @page1.id).translation_status_new?).to be_truthy
   end
 
   it "checks needs review/blank checkboxes", :js => true do
     @page1 = @work.pages.first
-    expect(@page1.status).to be_nil
+    expect(@page1.status_new?).to be_truthy
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, @page1.id)
     expect(page.find('#page_needs_review')).not_to be_checked
     expect(page.find('#page_mark_blank')).not_to be_checked
@@ -290,20 +290,20 @@ describe "needs review", :order => :defined do
     page.find('.side-tabs').click_link('Quality Control')
     page.choose('collection_review_type_required')
     review_page = @work.pages.first
-    expect(review_page.status).to be_nil
-    expect(review_page.translation_status).to be_nil
+    expect(review_page.status_new?).to be_truthy
+    expect(review_page.translation_status_new?).to be_truthy
 
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     fill_in_editor_field 'Needs Review Workflow Text'
     find('#finish_button_top').click
     page.find('a.page-nav_prev').click
     expect(page).to have_content('Needs Review Workflow Text')
-    expect(Page.find_by(id: review_page.id).status).to eq ('review')
+    expect(Page.find_by(id: review_page.id).status_needs_review?).to be_truthy
 
     visit collection_translate_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     fill_in_editor_field 'Translation Needs Review Workflow Text'
     find('#save_button_top').click
     expect(page).to have_content('Translation Needs Review Workflow Text')
-    expect(Page.find_by(id: review_page.id).translation_status).to eq ('review')
+    expect(Page.find_by(id: review_page.id).translation_status_needs_review?).to be_truthy
   end
 end

@@ -1,0 +1,44 @@
+.litebox-embed(style="width:450px")
+
+  h3 =t('document_sets.edit_set_collaborators.set_collaborators')
+  p.fglight =t('document_sets.edit_set_collaborators.set_collaborators_description')
+  =form_tag(document_sets_add_set_collaborator_path, class: 'user-select-form') do
+    =hidden_field_tag :user_id, @collection.owner.slug
+    =hidden_field_tag :collection_id, @collection.slug
+    =hidden_field_tag :document_set_id, @document_set.slug
+    -options = options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier')
+    =select_tag 'collaborator_id', options, include_blank: true
+    =button_tag t('document_sets.settings.add'), class: 'add_collaborator'
+  -@collaborators.each do |user|
+    .user-label
+      .userpic
+        =profile_picture(user)
+      .username
+        =link_to user.name_with_identifier, user_profile_path(user)
+        small =user.email
+      =form_tag(document_sets_remove_set_collaborator_path) do
+        =hidden_field_tag :user_id, @collection.owner.slug
+        =hidden_field_tag :collection_id, @collection.slug
+        =hidden_field_tag :document_set_id, @document_set.slug
+        =hidden_field_tag :collaborator_id, user.id
+        =button_tag '', class: 'remove', title: t('document_sets.edit_set_collaborators.remove_collaborator'), 'aria-label': t('document_sets.edit_set_collaborators.remove_collaborator')
+  .toolbar
+    .toolbar_group.aright
+      =link_to(t('document_sets.settings.done'), collection_settings_path(@collection.owner, @document_set), class: 'button')
+
+javascript:
+  $('#collaborator_id').select2({
+    placeholder: 'Add new collaborator...',
+    ajax: {
+      url: '#{document_sets_search_collaborators_path(@collection, @document_set)}',
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        var query = {
+          term: params.term,
+          document_set_id: "#{@document_set.slug}"
+        }
+        return query;
+      }
+    }
+  });

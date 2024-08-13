@@ -46,6 +46,8 @@ module Fromthepage
       end
     end
 
+    # Load rake tasks
+    Rails.application.load_tasks
   end
 
 

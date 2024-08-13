@@ -24,7 +24,7 @@
 
 
 
--if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type && @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count > 0
+-if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type && @collection.pages.where(status: :needs_review).count > 0
   -tabs +=[{\
   :name => t('.review'),
   :selected => 12,
@@ -44,7 +44,7 @@
       :selected => 5,
       :path => "#{main_app.edit_collection_path(@collection.owner, @collection)}",
     }]
-     
+
   -else
     -tabs += [{\
     :name => t('.settings'),
@@ -57,14 +57,14 @@
         :selected => 6,
         :path => "#{main_app.collection_export_path(@collection.owner, @collection)}",
      }]
-    
+
   -if @collection.is_a?(Collection) && @collection.active?
     -tabs += [{\
       :name => t('.add_work'),
       :selected => 7,
       :path => "#{main_app.new_work_collection_path(@collection.owner, @collection)}",
       }]
-      
+
   -if @collection.field_based
     -tabs += [{\
       :name => t('.edit_fields'),
@@ -79,7 +79,7 @@
       :path => "#{main_app.collection_edit_metadata_fields_path(@collection.owner, @collection)}",
     }]
 
-    
+
 
   -if @collection.supports_document_sets
     -tabs += [{\

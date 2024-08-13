@@ -13,6 +13,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
 gem 'mysql2'
 gem 'nokogiri'
+gem 'postmark-rails'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'rmagick'
 gem 'ruby-openai'
@@ -20,9 +21,6 @@ gem 'rvm1-capistrano3', require: false
 gem 'savon', '~> 2.12.0'
 gem 'text'
 gem 'thredded', '~> 1.0'
-gem "recaptcha", require: "recaptcha/rails"
-gem 'ruby-openai'
-gem 'postmark-rails'
 gem 'will_paginate'
 
 gem 'acts_as_list'
@@ -82,10 +80,11 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'coveralls_reborn', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda'
+  gem 'simplecov',      require: false
+  gem 'simplecov-lcov', require: false
   gem 'vcr'
   gem 'webmock', require: false
 end
