@@ -94,6 +94,7 @@ fr:
       del_description: Marque le texte qui a été supprimé par effacement ou barré. <br><i>Recommandé</i>
       del_label: Effacement
       description: FromThePage peut prendre en charge le balisage dans les transcriptions dans les formulaires TEI-XML ou HTML. Nous vous recommandons de ne pas configurer plus de six boutons à afficher sur l'éditeur de transcription. Demandez-vous si d'autres systèmes pourront utiliser ce type de majoration ; si seul le texte brut est pris en charge, les projets doivent utiliser les conventions typographiques au lieu du balisage.
+      documentation: Documentation
       expan_description: Marque les abréviations développées avec des formes originales dans l'attribut orig. (Forme alternative de la balise abbr.)
       expan_label: Expansion
       fig_description: Indique un chiffre ou une ligne horizontale.
@@ -125,6 +126,8 @@ fr:
       sub_label: Indice
       sup_description: Texte en exposant.
       sup_label: Exposant
+      table_description: Insère un tableau de démarques de lignes et de colonnes spécifiées par le transcripteur
+      table_label: Tableau
       tei: " (TEI-XML)"
       u_description: Marque le texte souligné.
       u_label: Souligner

@@ -94,6 +94,7 @@ es:
       del_description: Marca el texto que ha sido eliminado por borrado o tachado. <br><i>Recomendado</i>
       del_label: Supresión
       description: FromThePage puede admitir el marcado dentro de las transcripciones en formularios TEI-XML o HTML. Recomendamos configurar no más de seis botones para que aparezcan en el editor de transcripción. Considere si otros sistemas podrán usar este tipo de margen; si solo se admite texto sin formato, los proyectos deben usar convenciones tipográficas en lugar de marcado.
+      documentation: Documentación
       expan_description: Marca abreviaturas expandidas con formas originales en el atributo orig. (Forma alternativa de etiqueta abbr.)
       expan_label: Expansión
       fig_description: Indica una figura o una línea horizontal.
@@ -125,6 +126,8 @@ es:
       sub_label: Subíndice
       sup_description: Texto en superíndice.
       sup_label: Sobrescrito
+      table_description: Inserta una tabla de rebajas de filas y columnas especificadas por el transcriptor
+      table_label: Mesa
       tei: " (TEI-XML)"
       u_description: Marca el texto subrayado.
       u_label: Subrayar

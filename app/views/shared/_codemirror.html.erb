@@ -29,8 +29,17 @@
 <script>
   var button_config = [
     {
-      class: 'insertTableBtn',
-      label: '<%= svg_symbol("#icon-table") %> table',
+      class: 'undoBtn',
+      label: '<%= svg_symbol("#icon-arrow-undo") %>',
+      title: '<%= t(".undo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
+    {
+      class: 'redoBtn',
+      label: '<%= svg_symbol("#icon-arrow-redo") %>',
+      title: '<%= t(".redo_description") %>',
       callback: function (cm) {
         return false
       }
@@ -40,20 +49,25 @@
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
-        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
+        title: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
-          var selection = cm.getSelection();
-          cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
-          if (!selection) {
-            var cursorPos = cm.getCursor();
-            cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
-          }
-          <% if button.has_attribute %>
-            else {
+          var key = '<%= "#{button.key}" %>';
+          if(key === 'table') {
+            openTableModal()
+          } else {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
+            if (!selection) {
               var cursorPos = cm.getCursor();
-              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
             }
-          <% end %>
+            <% if button.has_attribute %>
+              else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              }
+            <% end %>
+          }
         }
       },
     <% end %>
@@ -166,7 +180,7 @@
   }
 
   // event listeners
-  document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
+  // document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
   document.getElementById('insertTableOk').addEventListener('click', insertTable);
   document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
     // track editing for volunteer hours
@@ -256,4 +270,7 @@
     
     // give codeMirror with class of respective text direction
     myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
-</script>
+
+    document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
+    document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
+  </script>

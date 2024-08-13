@@ -586,15 +586,17 @@ li.CodeMirror-hint-active {
   color: #fff;
 }
 
-button.insertTableBtn {
+button.undoBtn,
+button.redoBtn  {
   position: relative;
   display: flex;
   align-items: center;
   column-gap: 3px;
+  justify-content: center;
+  width: 40px;
 
   svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 2px;
+    width: 18px;
+    height: 18px;
   }
 }
