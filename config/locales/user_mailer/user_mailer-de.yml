@@ -35,6 +35,10 @@ de:
         Danke, <br><br>
         %{from}
       turn_off_notification: " um diese Benachrichtigung zu deaktivieren"
+    metadata_csv_import_finished:
+      fail: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert; bei %{error_count} Zeilen sind Fehler aufgetreten.
+      subject: Der Import Ihrer Metadaten-CSV ist abgeschlossen.
+      success: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert.
     new_mobile_user:
       html:
         continue_transcribing: " weiter zu transkribieren."

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Work::RefreshMetadata do
+describe Work::Metadata::Refresh do
   let(:owner) { User.find_by(login: OWNER) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
