@@ -33,6 +33,10 @@ pt:
     html:
       closing: "Obrigado, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
+    metadata_csv_import_finished:
+      fail: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso; %{error_count} linhas encontraram erros.
+      subject: A importação dos metadados CSV foi concluída.
+      success: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso.
     new_mobile_user:
       html:
         continue_transcribing: " para continuar a transcrição."

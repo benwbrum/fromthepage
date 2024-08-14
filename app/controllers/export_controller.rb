@@ -85,9 +85,12 @@ class ExportController < ApplicationController
   end
 
   def work_metadata_csv
+    filename = params[:filename] ? "#{params[:filename]}.csv" : "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
+    result = Work::Metadata::ExportCsv.call(collection: @collection, works: @collection.works)
+
     send_data(
-      export_work_metadata_as_csv(@collection),
-      filename: "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+      result.csv_string,
+      filename: filename,
       type: 'application/csv'
     )
     cookies['download_finished'] = 'true'
