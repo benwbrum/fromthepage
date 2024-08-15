@@ -1,6 +1,6 @@
+@import "bootstrap.min";
+@import "fontawesome.min";
 @import "base/ftp_color_scheme";
-
-
 
 // ---------------------------
 // TYPOGRAPHY
@@ -241,8 +241,8 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 }
 
 
-.thredded--main-navigation { 
-//  display: none; 
+.thredded--main-navigation {
+//  display: none;
 }
 
 
@@ -350,7 +350,7 @@ h3, .thredded--post-form--title {
 
   &[data-layout-mode='ttb'],
   &[data-layout-mode='btt'] {
-    
+
     .splitter {
       margin-top: -2rem;
       margin-bottom: -2rem;
@@ -387,7 +387,7 @@ h3, .thredded--post-form--title {
       display: block;
       z-index: 101;
     }
-  } 
+  }
 }
 
 @import "datepicker/datepicker";
