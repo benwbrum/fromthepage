@@ -28,12 +28,28 @@
 
 <script>
   var button_config = [
+    {
+      class: 'undoBtn',
+      label: '<%= svg_symbol("#icon-arrow-undo") %>',
+      title: '<%= t(".undo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
+    {
+      class: 'redoBtn',
+      label: '<%= svg_symbol("#icon-arrow-redo") %>',
+      title: '<%= t(".redo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
     <% @collection.editor_buttons.each do |button| %>
       {
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
-        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
+        title: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
           var selection = cm.getSelection();
           cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
@@ -206,4 +222,7 @@
     
     // give codeMirror with class of respective text direction
     myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+    document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
+    document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
 </script>

@@ -16,6 +16,8 @@
             span.voice-info
 
       .flex-toolbar_group.push-right
+
+      .flex-toolbar_group
         =f.label 'mark_blank', t('.mark_as_blank')
         =f.check_box('mark_blank', {checked: @page.status_blank?})
 
