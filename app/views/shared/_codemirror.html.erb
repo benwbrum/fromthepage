@@ -44,6 +44,22 @@
         return false
       }
     },
+    {
+      class: 'undoBtn',
+      label: '<%= svg_symbol("#icon-arrow-undo") %>',
+      title: '<%= t(".undo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
+    {
+      class: 'redoBtn',
+      label: '<%= svg_symbol("#icon-arrow-redo") %>',
+      title: '<%= t(".redo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
     <% @collection.editor_buttons.each do |button| %>
       {
         hotkey: '<%= button.hotkey %>',
