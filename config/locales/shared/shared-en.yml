@@ -76,6 +76,11 @@ en:
       threshold: Threshold
       zoom_in: Zoom in
       zoom_out: Zoom out
+    page_navigation:
+      describe_work: Describe work
+      nav_info: Page %{position} of %{size}
+      next_page: Next page
+      previous_page: Previous page
     page_tabs:
       correct: Correct
       describe_work: Describe work

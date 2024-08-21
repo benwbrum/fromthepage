@@ -67,7 +67,7 @@
 
 -@display_context ||= ''
 
-.headline
+div(class=('headline' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')))
   h1.headline_title =@page.title
   .headline_aside
     -unless @display_context == 'preview'

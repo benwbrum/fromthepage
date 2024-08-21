@@ -212,6 +212,7 @@ h2.legend =t('.notes_and_questions')
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
+        $('.headline').toggleClass('fullscreen');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
