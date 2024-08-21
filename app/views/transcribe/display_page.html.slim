@@ -229,11 +229,7 @@ h2.legend =t('.notes_and_questions')
         if (typeof freezeTableColumn !== "undefined") {
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
-            if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top', mode);
-            } else {
-              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top', mode);
-            }
+            freezeTableColumn();
           });
         }
 

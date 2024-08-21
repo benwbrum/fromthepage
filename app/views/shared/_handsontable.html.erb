@@ -181,30 +181,12 @@
     }
   });
 
-
-  function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
-    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
-    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-
-    if(stickyHeight > tablePosTop) {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
-        item.style.zIndex = 103;
-      })
-    } else {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = '0px';
-      })
+  window.addEventListener('load', function() {
+    window.onscroll = function (e) {
+      freezeTableColumn();
     }
-  }
+  })
 
-  window.onscroll = function (e) {
-    if(typeof Cookies !== 'undefined' && (Cookies.get('transcribe_layout_mode') === 'ttb' || Cookies.get('transcribe_layout_mode') === undefined)) {
-      freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top', Cookies.get('transcribe_layout_mode'))
-    } else {
-      freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top')
-    }
-  }
   // flag any cells that don't match the format
   hot.validateCells();
 </script>
