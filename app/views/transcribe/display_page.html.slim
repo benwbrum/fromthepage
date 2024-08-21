@@ -11,6 +11,9 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
+
+=render({ :partial => '/shared/insert_table_modal' })
+
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 - if @autolinked_changed
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)

@@ -36,6 +36,7 @@ class EditorButton < ApplicationRecord
     STRIKE = 'strike'
     SUB = 'sub'
     SUP = 'sup'
+    TABLE = 'table'
     UNCLEAR = 'unclear'
     UNDERLINE = 'u'
     ITALIC = 'i'
@@ -58,6 +59,7 @@ class EditorButton < ApplicationRecord
     Keys::STRIKE => ['<hi rend="str">', '<strike>'],
     Keys::SUB => ['<hi rend="sub">', '<sub>'],
     Keys::SUP => ['<hi rend="sup">', '<sup>'],
+    Keys::TABLE => [''],
     Keys::UNCLEAR => ['<unclear>'],
     Keys::UNDERLINE => ['<hi rend="underline">', '<u>']
   }

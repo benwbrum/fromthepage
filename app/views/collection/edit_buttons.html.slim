@@ -14,6 +14,9 @@ p =t('.description')
           =f.label key
             =check_box_tag key, '1', buttons.include?(key)
             span
+              -if EditorButton::BUTTON_MAP[key][0] == ''
+                code
+                  =="| H1 | H2 |<br/>|----|----|<br/>| C1 | C2 |<br/>| C3 | C4 |"
               -if EditorButton::BUTTON_MAP[key].size > 1
                 code
                   =EditorButton::BUTTON_MAP[key][0]

@@ -552,7 +552,6 @@ span.CodeMirror-selectedtext {
   background: none;
 }
 
-
 .CodeMirror-hints {
   position: absolute;
   z-index: 100;
@@ -586,7 +585,6 @@ li.CodeMirror-hint-active {
   background: #08f;
   color: #fff;
 }
-
 
 button.undoBtn,
 button.redoBtn  {

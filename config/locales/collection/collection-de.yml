@@ -94,6 +94,7 @@ de:
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde. <br><i>Empfohlen</i>
       del_label: Streichung
       description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Mark-up verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
+      documentation: Dokumentation
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im orig-Attribut (Alternative Form des abbr-Tags).
       expan_label: Erweiterung
       fig_description: Kennzeichnet eine Abbildung oder eine horizontale Linie.
@@ -125,6 +126,8 @@ de:
       sub_label: Subskript
       sup_description: Hochgestellter Text.
       sup_label: Supskript
+      table_description: Fügt eine Markdown-Tabelle mit vom Transkribierer angegebenen Zeilen und Spalten ein
+      table_label: Tisch
       tei: " (TEI-XML)"
       u_description: Markiert unterstrichenen Text.
       u_label: Unterstrichen
