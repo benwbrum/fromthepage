@@ -622,8 +622,12 @@ class Page < ApplicationRecord
   end
 
   def alto_xml=(xml)
-    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
-    File.write(alto_path, xml)
+    if xml.blank?
+      FileUtils.rm(alto_path) if File.exists?(alto_path)
+    else
+      FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
+      File.write(alto_path, xml)
+    end
   end
 
 

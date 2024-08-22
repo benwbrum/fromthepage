@@ -30,16 +30,26 @@ module OpenAi
       diff_level = ai_job.parameters[self.class.name]['diff_level'].to_sym || :none
       self.status=Status::RUNNING
       self.save
-
-      if page.has_alto?
-        # if it does, read the ALTO XML and generate AI Plaintext
-        raw_alto = page.alto_xml
-        # TODO move to ai_result
-        plaintext = generate_plaintext(raw_alto, diff_level)
-        if !plaintext.blank?
-          # save the plaintext
-          page.ai_plaintext = generate_plaintext(raw_alto, diff_level)
+      begin
+        if page.has_alto?
+          # if it does, read the ALTO XML and generate AI Plaintext
+          raw_alto = page.alto_xml
+          # TODO move to ai_result
+          plaintext = generate_plaintext(raw_alto, diff_level)
+          if !plaintext.blank?
+            # save the plaintext
+            page.ai_plaintext = plaintext
+          end
         end
+      rescue => e
+        # log the error
+        Rails.logger.error "Error processing page #{page.id} for AI Text task #{id}" 
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.join("\n")
+
+        self.status=Status::FAILED
+        self.save
+        return
       end
 
       self.status=Status::COMPLETED
