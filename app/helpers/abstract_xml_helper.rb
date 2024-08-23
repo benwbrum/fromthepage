@@ -2,6 +2,7 @@ module AbstractXmlHelper
   require 'rexml/document'
 
   SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
+  SANITIZE_ALLOWED_ATTRIBUTES = %w(id name class data-tooltip title src alt width height style href)
 
   def source_to_html(source)
     html = source.gsub(/\n/, "<br/>")
@@ -286,7 +287,7 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')
 
-    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS, :attributes => SANITIZE_ALLOWED_ATTRIBUTES).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
   end
 
 end
