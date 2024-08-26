@@ -555,7 +555,7 @@ class Page < ApplicationRecord
     self.update_columns(source_translation: remove_square_braces(text))
     @translation_dirty = true
     process_source
-    self.status = :translated
+    self.translation_status = :translated
     self.save!
   end
 
