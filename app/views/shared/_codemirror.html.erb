@@ -28,25 +28,46 @@
 
 <script>
   var button_config = [
+    {
+      class: 'undoBtn',
+      label: '<%= svg_symbol("#icon-arrow-undo") %>',
+      title: '<%= t(".undo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
+    {
+      class: 'redoBtn',
+      label: '<%= svg_symbol("#icon-arrow-redo") %>',
+      title: '<%= t(".redo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
     <% @collection.editor_buttons.each do |button| %>
       {
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
-        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
+        title: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
-          var selection = cm.getSelection();
-          cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
-          if (!selection) {
-            var cursorPos = cm.getCursor();
-            cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
-          }
-          <% if button.has_attribute %>
-            else {
+          var key = '<%= "#{button.key}" %>';
+          if(key === 'table') {
+            openTableModal()
+          } else {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
+            if (!selection) {
               var cursorPos = cm.getCursor();
-              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
             }
-          <% end %>
+            <% if button.has_attribute %>
+              else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              }
+            <% end %>
+          }
         }
       },
     <% end %>
@@ -119,6 +140,49 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
+
+  // track editing for volunteer hours
+  myCodeMirror.on("change", function(instance, changeObj) {
+    sendActiveEditing()
+  });
+  
+  // give codeMirror with class of respective text direction
+  myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+
+  // open the modal
+  function openTableModal() {
+    document.getElementById('tableModal').style.display = 'block';
+  }
+
+  // close the modal
+  function closeTableModal() {
+    document.getElementById('tableModal').style.display = 'none';
+  }
+
+  // generate a Markdown table
+  function generateTable(rows, cols) {
+    let table = '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    table += '| ' + Array(cols).fill('---').join(' | ') + ' |\n';
+    for (let i = 0; i < rows - 1; i++) {
+      table += '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    }
+    return table;
+  }
+
+  // insert table into CodeMirror
+  function insertTable() {
+    const rows = parseInt(document.getElementById('rows').value);
+    const cols = parseInt(document.getElementById('columns').value);
+    const tableMarkdown = generateTable(rows, cols);
+    myCodeMirror.replaceSelection(tableMarkdown);
+    closeTableModal();
+  }
+
+  // event listeners
+  // document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
+  document.getElementById('insertTableOk').addEventListener('click', insertTable);
+  document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
     // track editing for volunteer hours
     myCodeMirror.on("change", function(instance, changeObj) {
       sendActiveEditing()
@@ -206,4 +270,7 @@
     
     // give codeMirror with class of respective text direction
     myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
-</script>
+
+    document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
+    document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
+  </script>

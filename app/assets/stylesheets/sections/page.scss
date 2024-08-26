@@ -65,6 +65,7 @@
     box-sizing: border-box;
     padding: 0 3rem 3rem 3rem;
 
+    .page-navigator,
     .auto-fullscreen {
       display: inline-block;
     }
@@ -74,6 +75,7 @@
     }
   }
 
+  .page-navigator,
   .auto-fullscreen {
     display: none;
   }
@@ -101,7 +103,6 @@
     .hide-m { display: none; }
   }
 }
-
 
 #blankPageButton {
   margin: 0px 10px;
