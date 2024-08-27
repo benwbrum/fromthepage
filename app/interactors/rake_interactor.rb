@@ -18,6 +18,8 @@ class RakeInteractor
     $stdout = log_buffer
 
     begin
+      Rake.application.init
+      Rake.application.load_rakefile
       Rake::Task[@task_name].reenable
       Rake::Task[@task_name].invoke(*@args.values)
     rescue => e
@@ -31,6 +33,8 @@ class RakeInteractor
       File.open(@log_file, 'a') do |f|
         f.puts log_buffer.string
       end
+
+      Rake::Task.clear
     end
   end
 end
