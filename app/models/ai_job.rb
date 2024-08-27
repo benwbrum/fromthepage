@@ -39,6 +39,7 @@ class AiJob < ApplicationRecord
   before_create :set_task_specific_params
   before_create :set_defaults
   after_create :run_rake_task
+  serialize :parameters, Hash
 
 
   module JobType
@@ -106,25 +107,11 @@ class AiJob < ApplicationRecord
 
   end
 
-  # parameters should be stored as a jsonified hash (but consider using job-type specific accessors)
-  def parameters
-    if self[:parameters].nil?
-      return {}
-    end
-    JSON.parse(self[:parameters])
-  end
-
   # task_class_name is the name of a subclass of PageProcessingTask.
   # it will include any module names, e.g. 'OpenAi::AiTextPageProcessingTask'
   def task_parameters(task_class_name)
     self.parameters[task_class_name]
   end
-
-
-  def parameters=(value)
-    self[:parameters] = value.to_json
-  end
-
 
 
   # fininite state machine transitions
