@@ -3,6 +3,6 @@ class DocumentUpload::ProcessJob < ApplicationJob
 
   def perform(id, log_file)
     args = { id: id }
-    RakeInteractor.new(task_name: 'fromthepage:process_document_upload', args: args, log_file: log_file).call
+    RakeInteractor.call(task_name: 'fromthepage:process_document_upload', args: args, log_file: log_file)
   end
 end

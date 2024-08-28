@@ -14,9 +14,6 @@ namespace :fromthepage do
       ImageHelper.compress_file(pathname)
     end
   end
-  IMAGE_FILE_EXTENSIONS = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG']
-  IMAGE_FILE_EXTENSIONS_PATTERN = /jpg|JPG|jpeg|JPEG|png|PNG/
-  TIFF_FILE_EXTENSIONS_PATTERN = /tif|TIF|tiff|TIFF/
 
   desc "Process a document upload"
   task :process_document_upload, [:document_upload_id] => :environment do |t,args|
@@ -182,25 +179,6 @@ namespace :fromthepage do
 
   end
 
-  ALLOWLIST =  [
-   "title",
-   "identifier",
-   "description",
-   "restrict_scribes",
-   "physical_description",
-   "document_history",
-   "permission_description",
-   "location_of_composition",
-   "author",
-   "transcription_conventions",
-   "scribes_can_edit_titles",
-   "supports_translation",
-   "translation_instructions",
-   "pages_are_meaningful",
-   "document_set",
-   "slug"
-  ]
-
 
   def convert_to_work(document_upload, path)
     print "convert_to_work creating database record for #{path}\n"
@@ -229,7 +207,7 @@ namespace :fromthepage do
     User.current_user=document_upload.user
     document_sets = []
     if yaml
-      yaml.keep_if { |e| ALLOWLIST.include? e }
+      yaml.keep_if { |e| INGESTOR_ALLOWLIST.include? e }
       print "\tconvert_to_work allowlisted metadata.yml values \n#{yaml.to_s}\n"
       document_sets = document_sets_from_yaml(yaml, document_upload.collection)
       yaml.delete("document_set")
