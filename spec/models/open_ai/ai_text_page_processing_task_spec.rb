@@ -13,7 +13,9 @@ RSpec.describe OpenAi::AiTextPageProcessingTask, type: :model do
   describe '#process_page' do
     context 'when the page has ALTO XML' do
       before do
+        binding.pry
         allow(task).to receive(:generate_plaintext).and_return('Generated plaintext')
+        binding.pry
         ai_job.parameters = { described_class.name => { 'diff_level' => :none } }
         ai_job.save!
         page.alto_xml = '<alto>...</alto>'
