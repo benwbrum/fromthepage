@@ -67,7 +67,7 @@ module CollectionStatistic
         :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).where(timeframe(start_date, end_date,'pages.edit_started_at')).count,
         :works_transcribed    => self.works.joins(:work_statistic).where(work_statistics: { complete: 100 }).where(timeframe(start_date, end_date, 'work_statistics.updated_at')).count,
         :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
-        :pages_needing_review => self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
+        :pages_needing_review => self.pages.where(status: :needs_review).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
         :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
         :line_count           => self.line_count
       }

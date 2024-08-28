@@ -1,8 +1,15 @@
 ---
 pt:
+  shared:
+    insert_table_modal:
+      cancel: Cancelar
+      columns: Colunas
+      ok: OK
+      rows: Linhas
   transcribe:
     assign_categories:
       assign_categories: Atribuir categorias
+      cancel: Cancelar
       continue: Continuar
       manage_categories: Controlar Categorias
       options: opções
@@ -59,6 +66,7 @@ pt:
       save_changes: Salvar
       save_to_incomplete_tooltip: Salvar uma página incompleta
       save_to_needs_review_tooltip: Salve suas alterações
+      save_to_transcribed_tooltip: Salve suas alterações
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
       saved_notice: Guardada

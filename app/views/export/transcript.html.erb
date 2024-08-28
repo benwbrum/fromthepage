@@ -24,7 +24,7 @@
       <div id="page-<%=page.id%>">
         <h3><%= page.title %></h3>
         <div class="page-content">
-          <% if page.status != Page::STATUS_BLANK %>
+          <% unless page.status_blank? %>
             <%= raw(xml_to_html(page.xml_text, true, true)) %>
           <% end %>
         </div>

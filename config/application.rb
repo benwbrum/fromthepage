@@ -45,7 +45,6 @@ module Fromthepage
         load override
       end
     end
-
   end
 
 

@@ -57,7 +57,7 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
           userpic:    userpic(record),
           user:       link_to(record.user&.display_name, user_profile_path(record.user)),
           note:       record.title,
-          page:       link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
+          page:       record.page.nil? ? '' : link_to(record.page.title, collection_display_page_path(record.collection.owner, record.collection, record.work, record.page)),
           work:       link_to(record.work.title, collection_read_work_path(record.collection.owner, record.collection, record.work)),
           collection: link_to(record.collection.title, collection_path(record.collection.owner, record.collection)),
           time:       timestamp(record)
@@ -68,15 +68,10 @@ class NoteDatatable < AjaxDatatablesRails::ActiveRecord
 
   def get_raw_records
     if @collection
-      if @collection.metadata_only_entry?
-        @collection.notes
-          .joins(:collection, :work, :user)
-          .reorder('')
-      else
-        @collection.notes
-          .joins(:collection, :page, :work, :user)
-          .reorder('')
-      end
+      @collection.notes
+        .joins(:collection, :work, :user)
+        .left_outer_joins(:page)
+        .reorder('')
     else
       Note.includes(:collection).where("collections.restricted = 0")
         .joins(:collection, :page, :work, :user)

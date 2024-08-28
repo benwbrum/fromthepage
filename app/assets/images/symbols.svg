@@ -137,6 +137,14 @@
     <polygon fill="currentColor" points="14,7 5.41,7 9.71,2.71 8.29,1.29 1.59,8 8.29,14.71 9.71,13.29 5.41,9 14,9"/>
   </symbol>
 
+  <symbol id="icon-arrow-undo" viewBox="0 0 24 24" fill="none">
+    <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g > <path d="M4 7H15C16.8692 7 17.8039 7 18.5 7.40193C18.9561 7.66523 19.3348 8.04394 19.5981 8.49999C20 9.19615 20 10.1308 20 12C20 13.8692 20 14.8038 19.5981 15.5C19.3348 15.9561 18.9561 16.3348 18.5 16.5981C17.8039 17 16.8692 17 15 17H8.00001M4 7L7 4M4 7L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+  </symbol>
+
+  <symbol id="icon-arrow-redo" viewBox="0 0 24 24" fill="none">
+    <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g > <path d="M20 7H9.00001C7.13077 7 6.19615 7 5.5 7.40193C5.04395 7.66523 4.66524 8.04394 4.40193 8.49999C4 9.19615 4 10.1308 4 12C4 13.8692 4 14.8038 4.40192 15.5C4.66523 15.9561 5.04394 16.3348 5.5 16.5981C6.19615 17 7.13077 17 9 17H16M20 7L17 4M20 7L17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+  </symbol>
+
   <symbol id="icon-arrow-right" viewBox="0 0 16 16">
     <polygon fill="currentColor" points="2,7 10.59,7 6.29,2.71 7.71,1.29 14.41,8 7.71,14.71 6.29,13.29 10.59,9 2,9"/>
   </symbol>
@@ -286,4 +294,13 @@
   <symbol id="icon-copy" viewBox="0 -960 960 960">
     <path fill="currentColor" d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Z"/>
   </symbol>
+
+  <symbol id="icon-table" viewBox="0 0 24 24" fill="none">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <path d="M9 4L9 20M15 4L15 20M3 9H21M3 15H21M6.2 20H17.8C18.9201 20 19.4802 20 19.908 19.782C20.2843 19.5903 20.5903 19.2843 20.782 18.908C21 18.4802 21 17.9201 21 16.8V7.2C21 6.0799 21 5.51984 20.782 5.09202C20.5903 4.71569 20.2843 4.40973 19.908 4.21799C19.4802 4 18.9201 4 17.8 4H6.2C5.07989 4 4.51984 4 4.09202 4.21799C3.71569 4.40973 3.40973 4.71569 3.21799 5.09202C3 5.51984 3 6.07989 3 7.2V16.8C3 17.9201 3 18.4802 3.21799 18.908C3.40973 19.2843 3.71569 19.5903 4.09202 19.782C4.51984 20 5.07989 20 6.2 20Z" stroke="#553322" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+  <symbol>
+
 </svg>

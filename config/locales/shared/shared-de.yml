@@ -21,12 +21,14 @@ de:
       gap_description: Markiert eine Lücke im Text, oft aufgrund von Beschädigungen
       head_description: Markiert Überschriften im Text
       marginalia_description: Markiert Text am Seitenrand (außerhalb des Haupttextes).
+      redo_description: Die letzte rückgängig gemachte Aktion wiederherstellen.
       reg_description: Markiert eine normalisierte Schreibung mit Originalform im orig-Attribut.
       s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
       sub_description: Tiefgestellter Text.
       sup_description: Hochgestellter Text.
       u_description: Markiert unterstrichenen Text.
       unclear_description: Markiert unklaren Text.
+      undo_description: Die letzte Aktion rückgängig machen.
     collection_tabs:
       add_work: Werk hinzufügen
       collaborators: Mitarbeitende
@@ -74,6 +76,11 @@ de:
       threshold: Schwelleneffekt
       zoom_in: Hineinzoomen
       zoom_out: Rauszoomen
+    page_navigation:
+      describe_work: Beschreiben Sie die Arbeit
+      nav_info: Seite %{position} von %{size}
+      next_page: Nächste Seite
+      previous_page: Vorherige Seite
     page_tabs:
       correct: Korrektur
       describe_work: Werk beschreiben

@@ -1,6 +1,8 @@
 ---
 de:
   metadata:
+    refresh:
+      is_processing: Die IIIF-Sammlung wird importiert. Laden Sie diese Seite in wenigen Minuten neu, um importierte Werke zu sehen.
     upload:
       browse: Durchsuchen
       click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...

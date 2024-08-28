@@ -68,11 +68,12 @@ describe "IA import actions", :order => :defined do
     sleep(3)
     fill_in_editor_field('Test OCR Correction')
     find('#finish_button_top').click
+    sleep(3)
     page.find('a.page-nav_prev').click
     expect(page).to have_content('Test OCR Correction')
     expect(page.find('.tabs')).to have_content('Correct')
     @ocr_page = @ocr_work.pages.first
-    expect(@ocr_page.status).to eq 'transcribed'
+    expect(@ocr_page.status_transcribed?).to be_truthy
   end
 
   it "checks ocr/transcribe statistics", :js => true do

@@ -1,0 +1,55 @@
+name: "CI"
+on:
+  push: {}
+  pull_request: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: diary_test
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      RAILS_ENV: test
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_SOCKET: /tmp/mysql.sock
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.3
+          bundler-cache: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y ghostscript poppler-utils graphviz
+          bundle install --jobs 4 --retry 3
+      - name: Create db
+        run: bundle exec rake db:create
+      - name: Migrate
+        run: bundle exec rake db:migrate
+      - name: Load fixtures
+        run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+      - name: Run RuboCop
+        run: bundle exec rubocop
+        continue-on-error: true
+      - name: Run tests
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: bundle exec rspec spec
+        env:
+          COVERAGE: 'true'
+          CI: 'true'
+      - name: Run Coveralls
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: "./coverage/lcov.info"

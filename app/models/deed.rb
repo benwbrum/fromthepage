@@ -89,13 +89,13 @@ class Deed < ApplicationRecord
 
   def update_collections_most_recent_deed
     if self.collection
-      self.collection.update(most_recent_deed_created_at: self.created_at)
+      self.collection.update_columns(most_recent_deed_created_at: self.created_at)
     end
   end
 
   def update_works_most_recent_deed
     if self.work
-      self.work.update(most_recent_deed_created_at: self.created_at)
+      self.work.update_columns(most_recent_deed_created_at: self.created_at)
     end
   end
 
