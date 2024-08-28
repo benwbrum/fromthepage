@@ -13,9 +13,7 @@ RSpec.describe OpenAi::AiTextPageProcessingTask, type: :model do
   describe '#process_page' do
     context 'when the page has ALTO XML' do
       before do
-        binding.pry
         allow(task).to receive(:generate_plaintext).and_return('Generated plaintext')
-        binding.pry
         ai_job.parameters = { described_class.name => { 'diff_level' => :none } }
         ai_job.save!
         page.alto_xml = '<alto>...</alto>'
@@ -54,12 +52,17 @@ RSpec.describe OpenAi::AiTextPageProcessingTask, type: :model do
         ai_job.save!
         page.alto_xml=File.read(File.join(Rails.root, 'spec/fixtures/files/example_alto.xml'))
         page.save!
-        allow(TextNormalizer).to receive(:normalize_text).and_raise(StandardError)
+        allow(TextNormalizer).to receive(:normalize_text).and_raise(StandardError, 'error message')
       end
 
       it 'records an error as task status' do
         task.process_page
         expect(task.status).to eq('failed')
+      end
+
+      it 'records an error in the task details' do
+        task.process_page
+        expect(task.details['error']).to eq('error message')
       end
     end
 

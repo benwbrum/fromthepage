@@ -3,6 +3,7 @@
 # Table name: page_processing_tasks
 #
 #  id                     :integer          not null, primary key
+#  details                :text(65535)
 #  position               :integer
 #  status                 :string(255)
 #  type                   :string(255)

@@ -3,6 +3,7 @@
 # Table name: page_processing_tasks
 #
 #  id                     :integer          not null, primary key
+#  details                :text(65535)
 #  position               :integer
 #  status                 :string(255)
 #  type                   :string(255)
@@ -24,6 +25,7 @@ class PageProcessingTask < ApplicationRecord
   has_one :page, through: :page_processing_job
   has_one :ai_job, through: :page_processing_job
   has_many :external_api_requests
+  serialize :details, Hash
 
 
   module Status
