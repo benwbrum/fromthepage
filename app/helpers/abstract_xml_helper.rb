@@ -37,6 +37,7 @@ module AbstractXmlHelper
             else
               anchor.add_attribute("href", "#article-#{id}")
             end
+            anchor.add_attribute("title", title)
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
@@ -47,8 +48,8 @@ module AbstractXmlHelper
         else
           # preview mode for this link
           anchor.add_attribute("href", "#")
+          anchor.add_attribute("title", title)
         end
-        anchor.add_attribute("title", title)
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
