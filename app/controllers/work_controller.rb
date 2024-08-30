@@ -63,6 +63,7 @@ class WorkController < ApplicationController
   def save_description
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
 
     if params['save_to_incomplete'] && !needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::INCOMPLETE
