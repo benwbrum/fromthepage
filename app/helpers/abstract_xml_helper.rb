@@ -3,6 +3,7 @@ module AbstractXmlHelper
 
   SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
   SANITIZE_ALLOWED_ATTRIBUTES = %w(id name class data-tooltip title src alt width height style href)
+  SANITIZE_SINGLE_QUOTE_TAGS = %w(b strong i em u s mark q code pre kbd)
 
   def source_to_html(source)
     html = source.gsub(/\n/, "<br/>")
@@ -157,7 +158,7 @@ module AbstractXmlHelper
       # convert to a span
       depth = e.attributes["depth"]
       title = e.attributes["title"]
-      
+
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -165,7 +166,7 @@ module AbstractXmlHelper
 
     doc.elements.each("//head") do |e|
       # convert to a span
-      depth = 2      
+      depth = 2
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -270,13 +271,20 @@ module AbstractXmlHelper
     if @page
       doc.elements.each("//texFigure") do |e|
         position = e.attributes["position"]
-        
+
         span = REXML::Element.new('img')
         span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + "?timestamp=" + Time.now.to_i.to_s))
-        
+
         e.replace_with(span)
       end
-      
+
+    end
+
+    # \textquotesingle fix
+    SANITIZE_SINGLE_QUOTE_TAGS.each do |tag|
+      doc.elements.each("//#{tag}") do |e|
+        e.text = e.text.gsub("'", "`")
+      end
     end
 
     # now our doc is correct - what do we do with it?
