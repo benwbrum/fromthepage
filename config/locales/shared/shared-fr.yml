@@ -21,12 +21,14 @@ fr:
       gap_description: Marque un vide dans le texte, souvent dû à des dommages
       head_description: Marque les titres dans le texte
       marginalia_description: Marque le texte dans les marges du texte principal.
+      redo_description: Refaire la dernière action annulée
       reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
       s_description: Marque le texte qui a été barré pour une raison quelconque.
       sub_description: Texte en indice.
       sup_description: Texte en exposant.
       u_description: Marque le texte souligné.
       unclear_description: Marque le texte peu clair.
+      undo_description: Annuler la dernière action
     collection_tabs:
       add_work: Ajouter un œuvre
       collaborators: Collaborateurs
@@ -74,6 +76,11 @@ fr:
       threshold: Seuillage
       zoom_in: Agrandir
       zoom_out: Dézoomer
+    page_navigation:
+      describe_work: Décrire le travail
+      nav_info: Page %{position} sur %{size}
+      next_page: Page suivante
+      previous_page: Page précédente
     page_tabs:
       correct: Corriger
       describe_work: Décrire l'œuvre

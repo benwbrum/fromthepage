@@ -17,6 +17,7 @@
 //= require user.js
 //= require handsontable.full.min
 //= require datatables.min
+//= require bootstrap.bundle.min
 //= require clipboard
 //= require select_all
 
@@ -377,6 +378,18 @@ function refreshEditors() {
   }
 }
 
+function undoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.undo();
+  }
+}
+
+function redoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.redo();
+  }
+}
+
 const ResizableSplitter = {
   initVertical: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
     const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
@@ -384,7 +397,7 @@ const ResizableSplitter = {
     const splitter = document.querySelector(splitterSelector);
     const panel1 = document.querySelector(panel1Selector);
     const panel2 = document.querySelector(panel2Selector);
-    
+
     let startX;
     let startWidthPanel1;
     let startWidthPanel2;
@@ -587,5 +600,34 @@ const ResizableSplitter = {
       document.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('scroll', resetSplitterPos);
     };
+  }
+}
+
+function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
+  if($('[data-layout-set]').length) {
+    var mode = $('.page-columns').attr('data-layout-mode');
+    var topEl = '';
+    var tableEl = '.spreadsheet';
+    var columnEl = '.ht_clone_top';
+
+    if(mode === 'ttb') {
+      topEl = '.page-imagescan'
+    } else {
+      topEl = '.page-toolbar'
+    }
+
+    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
+    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
+
+    if(stickyHeight > tablePosTop) {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
+        item.style.zIndex = 103;
+      })
+    } else {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = '0px';
+      })
+    }
   }
 }

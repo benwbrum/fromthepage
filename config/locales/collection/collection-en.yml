@@ -94,6 +94,7 @@ en:
       del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
       del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
+      documentation: Documentation
       expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
       expan_label: Expansion
       fig_description: Indicates a figure or a horizontal line.
@@ -125,6 +126,8 @@ en:
       sub_label: Subscript
       sup_description: Superscript text.
       sup_label: Superscript
+      table_description: Inserts a markdown table of transcriber specified rows and columns
+      table_label: Table
       tei: " (TEI-XML)"
       u_description: Marks underlined text.
       u_label: Underline

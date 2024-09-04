@@ -1,5 +1,11 @@
 ---
 es:
+  shared:
+    insert_table_modal:
+      cancel: Cancelar
+      columns: Columnas
+      ok: De acuerdo
+      rows: Filas
   transcribe:
     assign_categories:
       assign_categories: Asignar categorías

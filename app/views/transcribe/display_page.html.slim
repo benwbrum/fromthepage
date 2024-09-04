@@ -11,6 +11,9 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
+
+=render({ :partial => '/shared/insert_table_modal' })
+
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 - if @autolinked_changed
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
@@ -48,6 +51,8 @@
           span =t('.always_show_fullscreen')
 
       .flex-toolbar_group.push-right
+
+      .flex-toolbar_group
         =f.label 'mark_blank', t('.mark_as_blank')
         =f.check_box('mark_blank', {checked: @page.status_blank?})
 
@@ -210,6 +215,7 @@ h2.legend =t('.notes_and_questions')
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
+        $('.headline').toggleClass('fullscreen');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
@@ -226,11 +232,7 @@ h2.legend =t('.notes_and_questions')
         if (typeof freezeTableColumn !== "undefined") {
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
-            if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top', mode);
-            } else {
-              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top', mode);
-            }
+            freezeTableColumn();
           });
         }
 

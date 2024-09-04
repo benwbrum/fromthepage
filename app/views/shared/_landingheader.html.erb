@@ -13,9 +13,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <%= stylesheet_link_tag 'bootstrap.min', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'fontawesome.min', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'bootstrap.bundle.min', 'data-turbolinks-track': 'reload' %>
+
     <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Crete+Round&family=Lora:wght@400;500;600;700&display=swap" %>
     <%= stylesheet_link_tag 'optimize' %>
