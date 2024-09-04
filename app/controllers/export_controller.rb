@@ -230,7 +230,7 @@ class ExportController < ApplicationController
   def sort_filtered_data
     return if params[:sort].blank?
 
-    direction = params[:order].downcase == 'desc' ? 'DESC' : 'ASC'
+    direction = params[:order]&.downcase == 'desc' ? 'DESC' : 'ASC'
 
     case params[:sort].downcase
     when 'title'

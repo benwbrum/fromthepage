@@ -13,9 +13,8 @@ describe ExportController do
 
   describe '#index' do
     let(:action_path) { collection_export_path(owner, collection) }
-    let(:params) { {} }
 
-    let(:subject) { get action_path, params: params }
+    let(:subject) { get action_path }
 
     it 'renders status and template' do
       login_as owner
@@ -24,31 +23,11 @@ describe ExportController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:index)
     end
-
-    context 'with search params' do
-      let(:params) { { search: work.title, sort: 'title', order: 'desc', per_page: '-1' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:index)
-      end
-    end
   end
 
   describe '#list' do
-    let(:action_path) { export_list_path }
-    let(:params) do
-      {
-        collection_id: collection.id,
-        search: work.title,
-        sort: 'title',
-        order: 'desc',
-        per_page: '-1'
-      }
-    end
+    let(:action_path) { export_list_path(collection_id: collection.id) }
+    let(:params) { { search: work.title, per_page: '-1' } }
 
     let(:subject) { get action_path, params: params }
 
@@ -58,6 +37,66 @@ describe ExportController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(partial: '_list')
+    end
+
+    context 'sort by title' do
+      let(:params) { { search: work.title, sort: 'title' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: '_list')
+      end
+    end
+
+    context 'sort by page count' do
+      let(:params) { { search: work.title, sort: 'page_count', order: 'asc' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: '_list')
+      end
+    end
+
+    context 'sort by indexed count' do
+      let(:params) { { search: work.title, sort: 'indexed_count' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: '_list')
+      end
+    end
+
+    context 'sort by completed count' do
+      let(:params) { { search: work.title, sort: 'indexed_count' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: '_list')
+      end
+    end
+
+    context 'sort by reviewed count' do
+      let(:params) { { search: work.title, sort: 'reviewed_count' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: '_list')
+      end
     end
   end
 
