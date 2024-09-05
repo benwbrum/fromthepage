@@ -1,6 +1,6 @@
 class PagesHaveStatus < ActiveRecord::Migration[5.0]
   def self.up
-    unless Page.columns_hash['status']
+    unless column_exists?(:pages, :status)
       add_column :pages, :status, :string, :length => 10
     end
 
