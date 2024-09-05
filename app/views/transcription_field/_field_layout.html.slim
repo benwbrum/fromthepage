@@ -17,7 +17,7 @@
             -if field.input_type == "instruction"
               div id=formatted_field_name(field) class="field-instructions"
                 h5 =t('.instructions')
-                p ==field.label.titleize
+                p ==field.label
             -else
               =generate_field_input(field, cell)
 
