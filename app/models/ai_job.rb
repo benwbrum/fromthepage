@@ -38,7 +38,7 @@ class AiJob < ApplicationRecord
   has_many :page_processing_jobs
   before_create :set_task_specific_params
   before_create :set_defaults
-  after_create :run_rake_task
+  # after_create :run_rake_task
 
 
   module JobType
@@ -59,6 +59,7 @@ class AiJob < ApplicationRecord
       [TRANSKRIBUS, OPEN_AI]
     end
   end
+
 
   # states for the whole API job
   module Status
@@ -81,7 +82,7 @@ class AiJob < ApplicationRecord
     if self.job_type == JobType::HTR
       self.engine = Engine::TRANSKRIBUS
       self.parameters = {
-        'model_id' => PageProcessor::Model::TEXT_TITAN_I,
+        'model_id' => Transkribus::Model::TEXT_TITAN_I,
       }
     elsif self.job_type == JobType::AI_TEXT
       self.engine = Engine::OPEN_AI
@@ -92,13 +93,13 @@ class AiJob < ApplicationRecord
   end
 
   # TODO make this make sense
-  def run_rake_task
-    if self.job_type == JobType::HTR
-      Rake::Task['transkribus_processing:process_page'].invoke(self.page_id)
-    elsif self.job_type == JobType::AI_TEXT
-      Rake::Task['open_ai:process_page'].invoke(self.page_id)
-    end
-  end
+  # def run_rake_task
+  #   if self.job_type == JobType::HTR
+  #     Rake::Task['transkribus_processing:process_page'].invoke(self.page_id)
+  #   elsif self.job_type == JobType::AI_TEXT
+  #     Rake::Task['open_ai:process_page'].invoke(self.page_id)
+  #   end
+  # end
 
   # main loop -- to be run in background by a rake task; other tasks will be run inline
   def process

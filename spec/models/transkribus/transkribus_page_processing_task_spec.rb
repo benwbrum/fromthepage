@@ -13,14 +13,16 @@ RSpec.describe Transkribus::TranskribusPageProcessingTask, type: :model do
   describe '#process_page' do
     context 'when the status is QUEUED' do
       before do
+        ai_job.parameters = { described_class.name => { 'model_id' => 5 } }
+        ai_job.save!
         task.status = PageProcessingJob::Status::QUEUED
-        allow(task).to receive(:launch_processing_job)
       end
 
       
       context 'when submit_processing_request returns a response with HTTP code 200' do
-        it 'launching the processing job changes the status to RUNNING' do
-          expect(task).to receive(:launch_processing_job)
+        it 'launching the processing job changes the status to WAITING' do
+          response =  instance_double(HTTParty::Response, code: 200, body: '{"process_id": "32"}', parsed_response: { 'process_id' => '32' })
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
           expect(task).not_to receive(:check_status)
           expect(task).not_to receive(:fetch_alto)
           task.process_page
@@ -29,33 +31,77 @@ RSpec.describe Transkribus::TranskribusPageProcessingTask, type: :model do
       end
 
       context 'when submit_processing_request returns a response with HTTP code 429' do
-        it 'sets the status to FAILED'
+        it 'sets the status to FAILED' do
+          response =  instance_double(HTTParty::Response, code: 429)
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          expect(task).not_to receive(:check_status)
+          expect(task).not_to receive(:fetch_alto)
+          task.process_page
+          expect(task.status).to eq(PageProcessingJob::Status::FAILED)
+        end
       end
 
       context 'when submit_processing_request returns a response with a different HTTP code' do
-        it 'sets the status to FAILED'
-        it 'saves the error details'
+        it 'sets the status to FAILED' do
+          response =  instance_double(HTTParty::Response, code: 500)
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          expect(task).not_to receive(:check_status)
+          expect(task).not_to receive(:fetch_alto)
+          task.process_page
+          expect(task.status).to eq(PageProcessingJob::Status::FAILED)
+        end
+
+
+        it 'saves the error details' do
+          response =  instance_double(HTTParty::Response, code: 500, parsed_response: { 'error' => 'Internal server error' })
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          expect(task).not_to receive(:check_status)
+          expect(task).not_to receive(:fetch_alto)
+          task.process_page
+          expect(task.details['error']).to eq(response.to_json)
+        end
       end
     end
 
     context 'when the status is WAITING' do
       context 'when authorized_transkribus_request returns a response with HTTP code 200 and contents FINISHED' do
-        it 'fetches the ALTO XML'
-        it 'sets the status to COMPLETED'
+        it 'fetches the ALTO XML' do
+          task.status = PageProcessingJob::Status::WAITING
+          response =  instance_double(HTTParty::Response, code: 200, parsed_response: { 'status' => 'FINISHED' })
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          expect(task).to receive(:fetch_alto)
+          task.process_page
+        end
+
+
+
+        it 'sets the status to COMPLETED' do
+          task.status = PageProcessingJob::Status::WAITING
+          response =  instance_double(HTTParty::Response, code: 200, parsed_response: { 'status' => 'FINISHED' })
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          allow(task).to receive(:fetch_alto)
+          task.process_page
+          expect(task.status).to eq(PageProcessingJob::Status::COMPLETED)
+        end
+
       end
       context 'when authorized_transkribus_request returns a response with HTTP code 200 and contents not FINISHED' do
-        it 'sets the status to WAITING'
+        it 'sets the status to WAITING' do
+          task.status = PageProcessingJob::Status::WAITING
+          response =  instance_double(HTTParty::Response, code: 200, parsed_response: { 'status' => 'RUNNING' })
+          allow(task).to receive(:authorized_transkribus_request).and_return(response)
+          expect(task).not_to receive(:fetch_alto)
+          task.process_page
+          expect(task.status).to eq(PageProcessingJob::Status::WAITING)
+        end
       end
-      context 'when authorized_transkribus_request returns a failure code' do
-        it 'sets the status to FAILED'
-        it 'saves the error details'
-      end
+
     end
 
 
     context 'when the status is RUNNING' do
       before do
-        task.status = Status::RUNNING
+        task.status = PageProcessingJob::Status::RUNNING
       end
 
       it 'does nothing' do
@@ -63,13 +109,13 @@ RSpec.describe Transkribus::TranskribusPageProcessingTask, type: :model do
         expect(task).not_to receive(:check_status)
         expect(task).not_to receive(:fetch_alto)
         task.process_page
-        expect(task.status).to eq(Status::RUNNING)
+        expect(task.status).to eq(PageProcessingJob::Status::RUNNING)
       end
     end
 
     context 'when the status is FAILED' do
       before do
-        task.status = Status::FAILED
+        task.status = PageProcessingJob::Status::FAILED
       end
 
       it 'does nothing' do
@@ -77,22 +123,24 @@ RSpec.describe Transkribus::TranskribusPageProcessingTask, type: :model do
         expect(task).not_to receive(:check_status)
         expect(task).not_to receive(:fetch_alto)
         task.process_page
-        expect(task.status).to eq(Status::FAILED)
+        expect(task.status).to eq(PageProcessingJob::Status::FAILED)
       end
     end
 
     context 'when the status is WAITING' do
       before do
-        task.status = Status::WAITING
-        allow(task).to receive(:check_status).and_return(Response::READY)
+        task.status = PageProcessingJob::Status::WAITING
+        # allow(task).to receive(:check_status).and_return(Transkribus::Response::READY)
         allow(task).to receive(:fetch_alto)
       end
 
       it 'checks the job status and performs the corresponding actions' do
-        expect(task).to receive(:check_status).and_return(Response::READY)
+        response =  instance_double(HTTParty::Response, code: 200, parsed_response: { 'status' => 'FINISHED' })
+        allow(task).to receive(:authorized_transkribus_request).and_return(response)
+
         expect(task).to receive(:fetch_alto)
         task.process_page
-        expect(task.status).to eq(Status::COMPLETED)
+        expect(task.status).to eq(PageProcessingJob::Status::COMPLETED)
       end
     end
   end

@@ -40,7 +40,6 @@ class PageProcessingTask < ApplicationRecord
 
 
   def process_page
-
   end
 
 

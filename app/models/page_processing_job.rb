@@ -23,7 +23,7 @@ class PageProcessingJob < ApplicationRecord
   belongs_to :ai_job
   belongs_to :page
   has_many :page_processing_tasks
-  before_create :create_tasks
+  after_create :create_tasks
 
   module Status
     QUEUED = 'queued' # everything should start as queued
@@ -41,11 +41,11 @@ class PageProcessingJob < ApplicationRecord
   # when the page processing job is created, read the ai job task configuration and create tasks
   def create_tasks
     if ai_job.job_type == AiJob::JobType::HTR || ai_job.job_type == AiJob::JobType::HTR_AND_AI_TEXT
-      self.page_processing_tasks << Transkribus::TranskribusPageProcessingTask.new
+      self.page_processing_tasks << Transkribus::TranskribusPageProcessingTask.new(status: PageProcessingTask::Status::QUEUED)
     end
 
     if ai_job.job_type == AiJob::JobType::AI_TEXT || ai_job.job_type == AiJob::JobType::HTR_AND_AI_TEXT
-      self.page_processing_tasks << OpenAi::OpenAiPageProcessingTask.new
+      self.page_processing_tasks << OpenAi::AiTextPageProcessingTask.new(status: PageProcessingTask::Status::QUEUED)
     end
   end
 
@@ -70,31 +70,44 @@ class PageProcessingJob < ApplicationRecord
     
     # reload us from the database to refresh status
     self.page_processing_tasks.each do |task|
-      # TODO reload from the db 
-      if task.status == Status::FAILED
+      # reload from the db 
+      task.reload
+      if task.status == PageProcessingTask::Status::FAILED
         # update status and bail out
         self.status = Status::FAILED
         self.save
         return
       end
 
-      if task.status == Status::COMPLETED
-        continue # move to the next task
+      if task.status == PageProcessingTask::Status::COMPLETED
+        next # move to the next task
       end
 
+      # if the task is in the RETRY status, duplicate it and run the new task
+      if task.status == PageProcessingTask::Status::RETRY
+        # duplicate the task attributes
+        new_task = task.dup
+        # set the status to QUEUED
+        new_task.status = PageProcessingTask::Status::QUEUED
+        new_task.save
+        # run this task instead
+        task = new_task
+      end
+
+  
       # now the task is in a non-completed statue
       # actually run the next step in this task
       task.process_page
       # the task's status should have been updated
       # if the task has completed, the loop should continue naturally
-      if task.status == Status::FAILED
+      if task.status == PageProcessingTask::Status::FAILED
         # update status and bail out
         self.status = Status::FAILED
         self.save
         return
-      elsif task.status == Status::WAITING
+      elsif task.status == PageProcessingTask::Status::WAITING
         # update status and bail out
-        self.status = Status::WAITING
+        self.status = PageProcessingTask::Status::WAITING
         self.save
         return
       end
