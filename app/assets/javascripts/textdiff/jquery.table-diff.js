@@ -20,35 +20,38 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
         debug: false
       };
       settings = $.extend(settings, options);
-      $.fn.prettyTextDiff.debug("Options: ", settings, settings);
+      $.fn.prettyTableDiff.debug("Options: ", settings, settings);
       dmp = new diff_match_patch();
       return this.each(function() {
         var changed, diff_as_html, diffs, original;
-        original = $(settings.originalContainer, this).html().trim(); // Use html() instead of text() to preserve table structure
-        $.fn.prettyTextDiff.debug("Original text found: ", original, settings);
-        changed = $(settings.changedContainer, this).html().trim(); // Use html() instead of text() to preserve table structure
-        $.fn.prettyTextDiff.debug("Changed text found: ", changed, settings);
+        original = ($(settings.originalContainer, this).html() || '').trim(); // Use html() instead of text() to preserve table structure
+        $.fn.prettyTableDiff.debug("Original text found: ", original, settings);
+        changed = ($(settings.changedContainer, this).html() || '').trim(); // Use html() instead of text() to preserve table structure
+        $.fn.prettyTableDiff.debug("Changed text found: ", changed, settings);
         diffs = dmp.diff_main(original, changed);
         if (settings.cleanup) {
           dmp.diff_cleanupSemantic(diffs);
         }
-        $.fn.prettyTextDiff.debug("Diffs: ", diffs, settings);
+        $.fn.prettyTableDiff.debug("Diffs: ", diffs, settings);
         diff_as_html = $.map(diffs, function(diff) {
-          return $.fn.prettyTextDiff.createHTML(diff);
+          return $.fn.prettyTableDiff.createHTML(diff);
         });
-        $(settings.diffContainer, this).html(diff_as_html.join(''));
+        $(settings.diffContainer, this).html(
+          dmp.diff_prettyHtml(diffs)
+            .replace(/&para;/g, '')
+        );
         return this;
       });
     }
   });
 
-  $.fn.prettyTextDiff.debug = function(message, object, settings) {
+  $.fn.prettyTableDiff.debug = function(message, object, settings) {
     if (settings.debug) {
       return console.log(message, object);
     }
   };
 
-  $.fn.prettyTextDiff.createHTML = function(diff) {
+  $.fn.prettyTableDiff.createHTML = function(diff) {
     var data, html, operation, pattern_amp, pattern_lt, pattern_gt, pattern_para, text;
     html = [];
     pattern_amp = /&/g;
