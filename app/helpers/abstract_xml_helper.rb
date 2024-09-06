@@ -316,15 +316,11 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')
 
-<<<<<<< HEAD
     ActionController::Base.helpers.sanitize(
       my_display_html.strip,
       tags: SANITIZE_ALLOWED_TAGS,
       attributes: SANITIZE_ALLOWED_ATTRIBUTES
     ).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
-=======
-    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS, :attributes => SANITIZE_ALLOWED_ATTRIBUTES).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
->>>>>>> development
   end
 
 end
