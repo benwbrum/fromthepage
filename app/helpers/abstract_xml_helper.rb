@@ -2,14 +2,17 @@ module AbstractXmlHelper
   require 'rexml/document'
 
   SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
+
   SANITIZE_ALLOWED_ATTRIBUTES = [
     'abbr',
+    'alt',
     'break',
     'class',
     'data-tooltip',
     'datetime',
     'depth',
     'expan',
+    'height',
     'href',
     'id',
     'marker',
@@ -25,7 +28,8 @@ module AbstractXmlHelper
     'time',
     'title',
     'type',
-    'when'
+    'when',
+    'width'
   ]
 
   def source_to_html(source)
@@ -61,6 +65,7 @@ module AbstractXmlHelper
             else
               anchor.add_attribute("href", "#article-#{id}")
             end
+            anchor.add_attribute("title", title)
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
@@ -71,8 +76,8 @@ module AbstractXmlHelper
         else
           # preview mode for this link
           anchor.add_attribute("href", "#")
+          anchor.add_attribute("title", title)
         end
-        anchor.add_attribute("title", title)
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
@@ -311,11 +316,15 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')
 
+<<<<<<< HEAD
     ActionController::Base.helpers.sanitize(
       my_display_html.strip,
       tags: SANITIZE_ALLOWED_TAGS,
       attributes: SANITIZE_ALLOWED_ATTRIBUTES
     ).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+=======
+    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS, :attributes => SANITIZE_ALLOWED_ATTRIBUTES).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+>>>>>>> development
   end
 
 end

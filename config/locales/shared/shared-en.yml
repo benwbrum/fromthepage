@@ -21,12 +21,14 @@ en:
       gap_description: Marks a gap in the text, often due to damage
       head_description: Marks headings within the text
       marginalia_description: Marks text in the margins of the main text.
+      redo_description: Redo the last undone action
       reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
       s_description: Marks text that has been struck through for any reason.
       sub_description: Subscript text.
       sup_description: Superscript text.
       u_description: Marks underlined text.
       unclear_description: Marks unclear text.
+      undo_description: Undo the last action
     collection_tabs:
       add_work: Add Work
       collaborators: Collaborators
@@ -74,6 +76,11 @@ en:
       threshold: Threshold
       zoom_in: Zoom in
       zoom_out: Zoom out
+    page_navigation:
+      describe_work: Describe work
+      nav_info: Page %{position} of %{size}
+      next_page: Next page
+      previous_page: Previous page
     page_tabs:
       correct: Correct
       describe_work: Describe work

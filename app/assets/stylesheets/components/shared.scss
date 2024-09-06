@@ -428,6 +428,10 @@
       margin-left: 0.5rem;
     }
 
+    &.page-navigator {
+      margin-left: auto;
+    }
+
     &.push-left {
       margin-right: auto;
     }
@@ -523,6 +527,17 @@ a.label:hover {
   display: table;
   white-space: nowrap;
   margin-bottom: $gapSize;
+
+  &.fullscreen {
+    .headline_aside {
+      position: fixed;
+      top: 20px;
+      z-index: 10000;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
   > * {
     padding: 0 $gapSize;
     display: table-cell;

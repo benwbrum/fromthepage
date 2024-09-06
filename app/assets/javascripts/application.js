@@ -123,8 +123,7 @@ $.fn.tooltip = function(s) {
     var url = $element.data('tooltip');
     var $tooltip = $('<div>').addClass('tooltip');
 
-    $element.on('click.Tooltip', function(e) {
-      e.preventDefault();
+    function showTooltip() {
       var offset = $element.offset();
       var pos_top = offset.top + $element.height();
       var pos_left = offset.left;
@@ -143,13 +142,25 @@ $.fn.tooltip = function(s) {
           $tooltip.html('<small>error :(</small>');
         });
       }
+    }
+
+    $element.on('mouseenter', function(e) {
+      e.preventDefault();
+      showTooltip();
+
+      $tooltip.off('mouseleave');
+      $tooltip.on('mouseleave', function(e){
+        $(this).remove();
+      })
     });
 
     // Close if clicked outside
-    $(document).on('click.Tooltip', function(e) {
-      if($(e.target).closest($element).length === 0) {
-        $tooltip.remove();
-      }
+    $element.on('mouseleave', function(e) {
+      setTimeout(function() {
+        if (!$tooltip.is(':hover')) {
+          $tooltip.remove();
+        }
+      }, 100);
     });
   });
 };
@@ -377,6 +388,18 @@ function refreshEditors() {
   }
 }
 
+function undoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.undo();
+  }
+}
+
+function redoCodeMirror() {
+  if(typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.redo();
+  }
+}
+
 const ResizableSplitter = {
   initVertical: function makeResiableSplitter(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
     const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
@@ -587,5 +610,34 @@ const ResizableSplitter = {
       document.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('scroll', resetSplitterPos);
     };
+  }
+}
+
+function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
+  if($('[data-layout-set]').length) {
+    var mode = $('.page-columns').attr('data-layout-mode');
+    var topEl = '';
+    var tableEl = '.spreadsheet';
+    var columnEl = '.ht_clone_top';
+
+    if(mode === 'ttb') {
+      topEl = '.page-imagescan'
+    } else {
+      topEl = '.page-toolbar'
+    }
+
+    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
+    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
+  
+    if(stickyHeight > tablePosTop) {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
+        item.style.zIndex = 103;
+      })
+    } else {
+      document.querySelectorAll(columnEl).forEach(function(item) {
+        item.style.top = '0px';
+      })
+    }
   }
 }

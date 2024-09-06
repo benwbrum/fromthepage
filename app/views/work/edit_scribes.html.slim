@@ -1,0 +1,41 @@
+.litebox-embed(style="width:450px")
+
+  h3 =t('work.edit_scribes.work_collaborators')
+  p.fglight =t('work.edit_scribes.work_collaborators_description')
+  =form_tag(add_scribe_collection_work_path(@collection.owner), class: 'user-select-form') do
+    =hidden_field_tag :user_id, @collection.owner.slug
+    =hidden_field_tag :collection_id, @collection.slug
+    =hidden_field_tag :work_id, @work.slug
+    -options = options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier')
+    =select_tag 'scribe_id', options, include_blank: true
+    =button_tag t('collection.edit.add_button'), class: 'add_scribe'
+  -@scribes.each do |user|
+    .user-label
+      .userpic
+        =profile_picture(user)
+      .username
+        =link_to user.name_with_identifier, user_profile_path(user)
+        small =user.email
+      =form_tag(remove_scribe_collection_work_path(@collection.owner, @collection.slug, @work.slug)) do
+        =hidden_field_tag :scribe_id, user.id
+        =button_tag '', class: 'remove', title: t('work.edit_scribes.remove_collaborator'), 'aria-label': t('work.edit_scribes.remove_collaborator')
+  .toolbar
+    .toolbar_group.aright
+      =link_to(t('work.edit.done'), edit_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'button')
+
+javascript:
+  $('#scribe_id').select2({
+    placeholder: 'Add new collaborator...',
+    ajax: {
+      url: '#{work_search_scribes_path(@collection, @work)}',
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        var query = {
+          term: params.term,
+          work_id: "#{@work.slug}"
+        }
+        return query;
+      }
+    }
+  });
