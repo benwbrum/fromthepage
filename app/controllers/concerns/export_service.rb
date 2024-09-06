@@ -71,7 +71,6 @@ module ExportService
 
     file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
-    tex_file = File.join(temp_dir, "#{file_stub}.tex")
 
     if format == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
@@ -84,19 +83,7 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
 
-    # Convert to tex
-    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{tex_file} #{md_file} --verbose --abbreviations=/dev/null -V colorlinks=true > #{log_file} 2>&1"
-    puts cmd
-    logger.info(cmd)
-    system(cmd)
-
-    # Preprocess
-    tex_content = File.read(tex_file)
-    modified_content = tex_content.gsub('\textquotesingle ', "'")
-    File.open(tex_file, 'w') { |file| file.write(modified_content) }
-
-    # Convert to final format
-    cmd = "pandoc -o #{output_file} #{tex_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true > #{log_file} 2>&1"
+    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
