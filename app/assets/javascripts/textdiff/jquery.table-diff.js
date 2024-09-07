@@ -36,10 +36,7 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
         diff_as_html = $.map(diffs, function(diff) {
           return $.fn.prettyTableDiff.createHTML(diff);
         });
-        $(settings.diffContainer, this).html(
-          dmp.diff_prettyHtml(diffs)
-            .replace(/&para;/g, '')
-        );
+        $(settings.diffContainer, this).html(diff_as_html.join(''));
         return this;
       });
     }
