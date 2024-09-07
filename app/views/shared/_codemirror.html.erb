@@ -122,7 +122,7 @@
   var myCodeMirror = CodeMirror.fromTextArea(
     document.getElementById("<%= textarea %>"),
     {
-      lineNumbers: true,
+      lineNumbers: <%= show_line_numbers %>,
       mode: "xml",
       extraKeys: {
         "'<'": completeAfter,
@@ -140,14 +140,15 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
-
-  // track editing for volunteer hours
-  myCodeMirror.on("change", function(instance, changeObj) {
-    sendActiveEditing()
-  });
   
   // give codeMirror with class of respective text direction
   myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+  if("<%= height %>") {
+    myCodeMirror.getWrapperElement().style.maxHeight = "<%= height %>px";
+    myCodeMirror.getWrapperElement().style.minHeight = "<%= height %>px";
+    document.querySelector('.CodeMirror-buttonsPanel').style.top = 0;
+  }
 
 
   // open the modal
@@ -181,96 +182,99 @@
 
   // event listeners
   // document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
-  document.getElementById('insertTableOk').addEventListener('click', insertTable);
-  document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
-    // track editing for volunteer hours
-    myCodeMirror.on("change", function(instance, changeObj) {
+
+  if(document.getElementById('insertTableOk'))
+    document.getElementById('insertTableOk').addEventListener('click', insertTable);
+
+  if(document.getElementById('insertTableCancel'))
+    document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
+
+  // track editing for volunteer hours
+  myCodeMirror.on("change", function(instance, changeObj) {
+    if(typeof(sendActiveEditing) !== 'undefined')
       sendActiveEditing()
-    });
+  });
 
-    var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
-    var subjectAutoListStartAt = null;
-    var isAutoCompleteTriggered = false;
+  var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
+  var subjectAutoListStartAt = null;
+  var isAutoCompleteTriggered = false;
 
-    // Helper function to count the number of open and closed brackets
-    function countBrackets(text) {
-      let openCount = 0;
-      let closeCount = 0;
+  // Helper function to count the number of open and closed brackets
+  function countBrackets(text) {
+    let openCount = 0;
+    let closeCount = 0;
 
-      for (let i = 0; i < text.length; i++) {
-        if (text[i] === '[' && text[i+1] === '[') {
-          openCount++;
-        }
-        if (text[i] === ']' && text[i+1] === ']') {
-          closeCount++;
-        }
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === '[' && text[i+1] === '[') {
+        openCount++;
       }
-
-      return { openCount, closeCount };
-    }
-
-    // display hint of subject linking
-    function showSubjectLinkHint(editor, change) {
-      if(subjectAutoListStartAt) {
-        var suggestions = [];
-        var cursor = editor.getCursor();
-        var start = cursor.ch - 2; // the start of the hint range
-        var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
-
-        suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
-  
-        editor.showHint({
-          completeSingle: false,
-          hint: function() {
-            return {
-              list: suggestions.map(String),
-              from: CodeMirror.Pos(cursor.line, subjectAutoListStartAt),
-              to: CodeMirror.Pos(cursor.line, cursor.ch)
-            };
-          }
-        });
+      if (text[i] === ']' && text[i+1] === ']') {
+        closeCount++;
       }
     }
 
-    // bind autocomplete event
-    myCodeMirror.on("change", function(editor, change) {
-      var cursor = myCodeMirror.getCursor();
-      var token = myCodeMirror.getTokenAt(cursor);
-      var lastTwoChars = myCodeMirror.getRange({line: cursor.line, ch: cursor.ch - 2}, cursor);
+    return { openCount, closeCount };
+  }
 
-      // Check for opening and closing brackets
-      const text = editor.getValue();
-      const { openCount, closeCount } = countBrackets(text);
+  // display hint of subject linking
+  function showSubjectLinkHint(editor, change) {
+    if(subjectAutoListStartAt) {
+      var suggestions = [];
+      var cursor = editor.getCursor();
+      var start = cursor.ch - 2; // the start of the hint range
+      var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
 
-      // Always show hints on change, but avoid adding multiple listeners
-      if(subjectAutoListStartAt && isAutoCompleteTriggered && openCount > closeCount)
-        showSubjectLinkHint(editor);
+      suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
 
-      // Only trigger autocomplete if there are unclosed "[[" brackets
-      if (lastTwoChars === '[[') {
-        if(!isAutoCompleteTriggered) {
-          isAutoCompleteTriggered = true;
-          subjectAutoListStartAt = cursor.ch;
-          editor.on("inputRead", showSubjectLinkHint);
+      editor.showHint({
+        completeSingle: false,
+        hint: function() {
+          return {
+            list: suggestions.map(String),
+            from: CodeMirror.Pos(cursor.line, subjectAutoListStartAt),
+            to: CodeMirror.Pos(cursor.line, cursor.ch)
+          };
         }
-      }
+      });
+    }
+  }
 
-      if (openCount > closeCount) {
-        if(!isAutoCompleteTriggered) {
-          isAutoCompleteTriggered = true;
-          editor.on("inputRead", showSubjectLinkHint);
-        }
-      }
+  // bind autocomplete event
+  myCodeMirror.on("change", function(editor, change) {
+    var cursor = myCodeMirror.getCursor();
+    var token = myCodeMirror.getTokenAt(cursor);
+    var lastTwoChars = myCodeMirror.getRange({line: cursor.line, ch: cursor.ch - 2}, cursor);
 
-      if (openCount === closeCount) {
-        isAutoCompleteTriggered = false;
-        editor.off("inputRead", showSubjectLinkHint);
-      }
-    });
-    
-    // give codeMirror with class of respective text direction
-    myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+    // Check for opening and closing brackets
+    const text = editor.getValue();
+    const { openCount, closeCount } = countBrackets(text);
 
-    document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
-    document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
-  </script>
+    // Always show hints on change, but avoid adding multiple listeners
+    if(subjectAutoListStartAt && isAutoCompleteTriggered && openCount > closeCount)
+      showSubjectLinkHint(editor);
+
+    // Only trigger autocomplete if there are unclosed "[[" brackets
+    if (lastTwoChars === '[[') {
+      if(!isAutoCompleteTriggered) {
+        isAutoCompleteTriggered = true;
+        subjectAutoListStartAt = cursor.ch;
+        editor.on("inputRead", showSubjectLinkHint);
+      }
+    }
+
+    if (openCount > closeCount) {
+      if(!isAutoCompleteTriggered) {
+        isAutoCompleteTriggered = true;
+        editor.on("inputRead", showSubjectLinkHint);
+      }
+    }
+
+    if (openCount === closeCount) {
+      isAutoCompleteTriggered = false;
+      editor.off("inputRead", showSubjectLinkHint);
+    }
+  });
+
+  document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
+  document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
+</script>
