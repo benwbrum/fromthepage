@@ -51,4 +51,4 @@ tags
 /**/svg-source
 
 .env
-config/locales/.DS_Store
+.DS_Store
