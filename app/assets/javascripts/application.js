@@ -17,7 +17,6 @@
 //= require user.js
 //= require handsontable.full.min
 //= require datatables.min
-//= require bootstrap.bundle.min
 //= require clipboard
 //= require select_all
 
