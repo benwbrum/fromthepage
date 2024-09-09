@@ -5,7 +5,6 @@
 //= link datepicker/datepicker.js
 //= link application.css
 //= link bootstrap.min.css
-//= link fontawesome.min.css
 //= link optimize.css
 //= link main.css.map
 //= link main.css

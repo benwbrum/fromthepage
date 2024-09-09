@@ -283,7 +283,9 @@ module AbstractXmlHelper
     # \textquotesingle fix
     SANITIZE_SINGLE_QUOTE_TAGS.each do |tag|
       doc.elements.each("//#{tag}") do |e|
-        e.text = e.text.gsub("'", "`")
+        if e.text
+          e.text = e.text.gsub("'", "`")
+        end
       end
     end
 
