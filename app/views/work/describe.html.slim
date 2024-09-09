@@ -83,7 +83,7 @@
                   p.nodata_text ==t('.this_page_is_blank')
                 -elsif transcription.present?
                   ==transcription.force_encoding('utf-8')
-        .page-imagescan
+        .page-imagescan.page-image
           =render :partial => '/shared/osd_div'
         .page-original
           h5= t('.original_metadata')
@@ -149,7 +149,7 @@ h2.legend =t('.notes_and_questions')
       });
 
       function updateDisplay(){
-        $('.page-imagescan').toggle(fromImage);
+        $('.page-image').toggle(fromImage);
         $('.page-preview').toggle(!fromImage);
 
         var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
@@ -191,17 +191,17 @@ h2.legend =t('.notes_and_questions')
 
         switch(mode) {
           case 'image':
-            $('.page-imagescan').toggle(true);
+            $('.page-image').toggle(true);
             $('.page-preview').toggle(false);
             $('.page-original').toggle(false);
             break;
           case 'metadata':
-            $('.page-imagescan').toggle(false);
+            $('.page-image').toggle(false);
             $('.page-preview').toggle(false);
             $('.page-original').toggle(true);
             break;
           case 'transcript':
-            $('.page-imagescan').toggle(false);
+            $('.page-image').toggle(false);
             $('.page-preview').toggle(true);
             $('.page-original').toggle(false);
             break;

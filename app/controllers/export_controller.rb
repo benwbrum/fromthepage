@@ -70,7 +70,6 @@ class ExportController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
-
   def subject_coocurrence_csv
     send_data(@collection.export_subject_coocurrence_as_csv,
               :filename => "fromthepage_subject_coocurrence_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
@@ -231,7 +230,7 @@ class ExportController < ApplicationController
   def sort_filtered_data
     return if params[:sort].blank?
 
-    direction = params[:order].downcase == 'desc' ? 'DESC' : 'ASC'
+    direction = params[:order]&.downcase == 'desc' ? 'DESC' : 'ASC'
 
     case params[:sort].downcase
     when 'title'
