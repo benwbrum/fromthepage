@@ -1,0 +1,15 @@
+{
+	"mappings": {
+		"properties": {
+			"db_id": {
+				"type": "integer"
+			},
+			"title": {
+				"type": "text"
+			},
+			"searchable_metadata": {
+				"type": "text"
+			}
+		}
+	}
+}

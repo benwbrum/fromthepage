@@ -1,0 +1,39 @@
+{
+	"mappings": {
+		"properties": {
+			"db_id": {
+				"type": "integer"
+			},
+			"work_id": {
+				"type": "integer"
+			},
+			"canonical_entities": {
+				"type": "text"
+			},
+			"entity_names": {
+				"type": "text"
+			},
+			"language": {
+				"type": "keyword"
+			},
+			"search_text": {
+				"type": "text"
+			},
+			"source_text": {
+				"type": "text",
+				"fields": {
+					"search": {
+						"type": "text",
+						"analyzer": "general"
+					}
+				}
+			},
+			"source_translation": {
+				"type": "text"
+			},
+			"title": {
+				"type": "text"
+			}
+		}
+	}
+}

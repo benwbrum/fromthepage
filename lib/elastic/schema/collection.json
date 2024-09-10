@@ -1,0 +1,21 @@
+{
+	"mappings": {
+		"properties": {
+			"db_id": {
+				"type": "integer"
+			},
+			"intro_block": {
+				"type": "text"
+			},
+			"language": {
+				"type": "keyword"
+			},
+			"slug": {
+				"type": "text"
+			},
+			"title": {
+				"type": "text"
+			}
+		}
+	}
+}
