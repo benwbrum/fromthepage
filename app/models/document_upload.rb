@@ -51,11 +51,7 @@ class DocumentUpload < ApplicationRecord
   private
 
   def upload_dir
-    if self.file && self.file.path
-      File.dirname(self.file.path)
-    else
-      "/tmp/fromthepage_rake.log"
-    end
+    File.dirname(self.file.path)
   end
 
 end
