@@ -8,10 +8,14 @@ FactoryBot.define do
 
     factory :owner do
       owner { true }
+      sequence(:display_name) { |n| "owner_#{n}_login" }
+      sequence(:login) { |n| "owner_#{n}_login" }
     end
 
     factory :admin do
       admin { true }
+      sequence(:display_name) { |n| "admin_#{n}_login" }
+      sequence(:login) { |n| "admin_#{n}_login" }
     end
   end
 end
