@@ -154,6 +154,10 @@ Fromthepage::Application.routes.draw do
     post 'create', to: 'page#create'
   end
 
+  resources :page, except: [:index, :show] do
+    # TODO Clean up page scopes
+  end
+
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'tooltip', to: 'article#tooltip'

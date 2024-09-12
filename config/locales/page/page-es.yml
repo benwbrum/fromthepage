@@ -5,7 +5,10 @@ es:
       page_created: Página creada con suceso
     delete:
       page_deleted: La página ha sido eliminada
-    edit:
+    edit_tabs:
+      general: General
+      htr: HTR
+    form:
       browse: Navegar
       click_to_browse_a_file: Haz clic para consultar un archivo...
       created: Creado %{date}

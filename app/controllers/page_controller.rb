@@ -31,11 +31,19 @@ class PageController < ApplicationController
 
     render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
   end
-  
+
   def delete
+    # We will deprecate this soon, and use convention destroy
     @page.destroy
     flash[:notice] = t('.page_deleted')
     redirect_to work_pages_tab_path(:work_id => @work.id)
+  end
+
+  def destroy
+    page = Page.find(params[:id])
+    page.destroy
+    flash[:notice] = t('.page_deleted')
+    redirect_to work_pages_tab_path(work_id: page.work_id)
   end
 
   # image functions
@@ -47,7 +55,6 @@ class PageController < ApplicationController
     set_dimensions(@page)
     redirect_back fallback_location: @page
   end
-
 
   # reordering functions
   def reorder_page
@@ -88,23 +95,31 @@ class PageController < ApplicationController
     end
   end
 
-  def update
-    page = Page.find(params[:id])
-    attributes = page_params.to_h.except("base_image")
-    if page_params[:status].blank?
-      attributes['status'] = nil
-    end   
-    page.update_columns(attributes) # bypass page version callbacks
-    flash[:notice] = t('.page_updated')
-    page.work.work_statistic.recalculate if page.work.work_statistic
-
-    if params[:page][:base_image]
-      process_uploaded_file(page, page_params[:base_image])
-    end
-
-    redirect_back fallback_location: page
+  def edit
+    # Edit route
   end
 
+  def update
+    @result = Page::Update.call(page: Page.find(params[:id]), page_params: page_params)
+
+    if request.xhr?
+      render json: {
+        success: @result.success?,
+        errors: @result.errors
+      }
+    else
+      @page = @result.page
+      @work = @page.work
+      @collection = @work.collection
+
+      if @result.success?
+        flash[:notice] = t('.page_updated')
+        redirect_to collection_edit_page_path(@collection.owner, @collection, @work, @page)
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
+  end
 
   private
 

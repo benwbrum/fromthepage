@@ -5,7 +5,10 @@ pt:
       page_created: Esta página foi criada com sucesso
     delete:
       page_deleted: Esta página foi eliminada
-    edit:
+    edit_tabs:
+      general: Em geral
+      htr: HTR
+    form:
       browse: Navegar
       click_to_browse_a_file: Clique para navegar num arquivo...
       created: Criada %{date}
