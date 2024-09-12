@@ -388,6 +388,10 @@ h3, .thredded--post-form--title {
   }
 }
 
+.bs {
+  @import "bootstrap.min";
+}
+
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
 @import "handsontable.min";
