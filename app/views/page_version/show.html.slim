@@ -6,8 +6,13 @@
 p.diff-help =t('.help_description').html_safe
 
 div.diff-layout
-  span.diff-vertical.active
-  span.diff-horizontal
+  div
+    span.diff-vertical.active
+    span.diff-horizontal
+  div.divider
+  div
+    span.view-code
+      =svg_symbol '#icon-code'
 
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
@@ -35,30 +40,48 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
               - if @selected_version.page_version > @previous_version.page_version
                 h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
                 div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-                  == xml_to_html(@selected_version.xml_transcription)
+                  div.source-code
+                    == @selected_version.xml_transcription
+                  div.html-code
+                    == xml_to_html(@selected_version.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-                    == xml_to_html(@selected_version.xml_translation)
+                    div.source-code
+                      == @selected_version.xml_translation
+                    div.html-code
+                      == xml_to_html(@selected_version.xml_translation)
               - else
                 h4(data-diff-title="changed" data-empty=t('.untitled')) = @previous_version.title.presence || ""
                 div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-                  == xml_to_html(@previous_version.xml_transcription)
+                  div.source-code
+                    == @previous_version.xml_transcription
+                  div.html-code
+                    == xml_to_html(@previous_version.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-                    == xml_to_html(@previous_version.xml_translation)
+                    div.source-code
+                      == @previous_version.xml_translation
+                    div.html-code
+                      == xml_to_html(@previous_version.xml_translation)
             - else
               h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
               div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-                == xml_to_html(@selected_version&.xml_transcription)
+                div.source-code
+                  == @selected_version.xml_transcription
+                div.html-code
+                  == xml_to_html(@selected_version.xml_transcription)
               - if @work.supports_translation
                 hr
                 h4= t('.translation')
                 div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
-                  == xml_to_html(@selected_version&.xml_translation)
+                  div.source-code
+                    == @selected_version.xml_translation
+                  div.html-code
+                    == xml_to_html(@selected_version.xml_translation)
         div.version-col.right
           div.diff-title
             =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
@@ -70,35 +93,66 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
               - if @selected_version.page_version > @previous_version.page_version
                 h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
                 div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-                  == xml_to_html(@previous_version.xml_transcription)
+                  div.source-code
+                    == @previous_version.xml_transcription
+                  div.html-code
+                    == xml_to_html(@previous_version.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-                    == xml_to_html(@previous_version.xml_translation)
+                    div.source-code
+                      == @previous_version.xml_translation
+                    div.html-code
+                      == xml_to_html(@previous_version.xml_translation)
               - else
                 h4(data-diff-title="original" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
                 div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-                  == xml_to_html(@selected_version.xml_transcription)
+                  div.source-code
+                    == @selected_version.xml_transcription
+                  div.html-code
+                    == xml_to_html(@selected_version.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-                    == xml_to_html(@selected_version.xml_translation)
+                    div.source-code
+                      == @selected_version.xml_translation
+                    div.html-code
+                      == xml_to_html(@selected_version.xml_translation)
             - else
               h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
               div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-                == xml_to_html(@previous_version&.xml_transcription)
+                div.source-code
+                  == @previous_version.xml_transcription
+                div.html-code
+                  == xml_to_html(@previous_version.xml_transcription)
               - if @work.supports_translation
                 hr
                 h4= t('.translation')
                 div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
-                  == xml_to_html(@previous_version&.xml_translation)
+                  div.source-code
+                    == @previous_version.xml_translation
+                  div.html-code
+                    == xml_to_html(@previous_version.xml_translation)
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'
   javascript:
     $(function() {
+      var sourceCode = "#{@selected_version.xml_transcription}";
+
+      $('span.view-code').click(function(){
+        $(this).toggleClass('active');
+
+        if($(this).hasClass('active')) {
+          $('div.source-code').show();
+          $('div.html-code').hide();
+        } else {
+          $('div.source-code').hide();
+          $('div.html-code').show();
+        }
+      })
       $('span.diff-vertical').click(function(){
         $('.versions-wrapper').removeClass('horizantal');
         $('span.diff-horizontal').removeClass('active');
@@ -116,9 +170,14 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
       if((table1?.length > 0) || (table2?.length > 0)){
         $('.diff-versions')
           .prettyTableDiff({
-            changedContainer:  '[data-diff-transcription=changed]',
-            originalContainer: '[data-diff-transcription=original]',
-            diffContainer:     '[data-diff-transcription=original]'
+            changedContainer:  '[data-diff-transcription=changed] div.html-code',
+            originalContainer: '[data-diff-transcription=original] div.html-code',
+            diffContainer:     '[data-diff-transcription=original] div.html-code'
+          })
+          .prettyTableDiff({
+            changedContainer:  '[data-diff-transcription=changed] div.source-code',
+            originalContainer: '[data-diff-transcription=original] div.source-code',
+            diffContainer:     '[data-diff-transcription=original] div.source-code'
           })
         var divElement = document.querySelector('[data-diff-transcription="original"]');
         var HTMLtext = ``;
@@ -152,15 +211,25 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
          originalContainer: '[data-diff-title=original]',
          diffContainer:     '[data-diff-title=original]'
        })
-       .prettyTextDiff({
-         changedContainer:  '[data-diff-transcription=changed]',
-         originalContainer: '[data-diff-transcription=original]',
-         diffContainer:     '[data-diff-transcription=original]'
+       .prettyHTMLDiff({
+         changedContainer:  '[data-diff-transcription=changed] div.html-code',
+         originalContainer: '[data-diff-transcription=original] div.html-code',
+         diffContainer:     '[data-diff-transcription=original] div.html-code'
+       })
+       .prettyHTMLDiff({
+         changedContainer:  '[data-diff-translation=changed] div.html-code',
+         originalContainer: '[data-diff-translation=original] div.html-code',
+         diffContainer:     '[data-diff-translation=original] div.html-code'
        })
        .prettyTextDiff({
-         changedContainer:  '[data-diff-translation=changed]',
-         originalContainer: '[data-diff-translation=original]',
-         diffContainer:     '[data-diff-translation=original]'
+         changedContainer:  '[data-diff-transcription=changed] div.source-code',
+         originalContainer: '[data-diff-transcription=original] div.source-code',
+         diffContainer:     '[data-diff-transcription=original] div.source-code'
+       })
+       .prettyTextDiff({
+         changedContainer:  '[data-diff-translation=changed] div.source-code',
+         originalContainer: '[data-diff-translation=original] div.source-code',
+         diffContainer:     '[data-diff-translation=original] div.source-code'
        });
       }
       // Awful workaround to make sure containers

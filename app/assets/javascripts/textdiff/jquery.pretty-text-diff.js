@@ -25,9 +25,9 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
       dmp = new diff_match_patch();
       return this.each(function() {
         var changed, diff_as_html, diffs, original;
-        original = ($(settings.originalContainer, this).text() || "").trim();
+        original = ($(settings.originalContainer, this).html() || "").trim();
         $.fn.prettyTextDiff.debug("Original HTML found: ", original, settings);
-        changed = ($(settings.changedContainer, this).text() || "").trim();
+        changed = ($(settings.changedContainer, this).html() || "").trim();
         $.fn.prettyTextDiff.debug("Changed HTML found: ", changed, settings);
         diffs = dmp.diff_main(original, changed);
 
@@ -39,10 +39,7 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
           return $.fn.prettyTextDiff.createHTML(diff);
         });
 
-        $(settings.diffContainer, this).html(
-          dmp.diff_prettyHtml(diffs)
-            .replace(/&para;/g, '')
-        );
+        $(settings.diffContainer, this).html(dmp.diff_prettyHtml(diffs));
         return this;
       });
     }
