@@ -1,10 +1,10 @@
-require 'elasticsearch'
 require 'json'
+require 'elastic_util'
 
 namespace :fromthepage do
   desc "Initialize Elasticsearch configuration and create indexes"
   task :es_init, [] => :environment do |t,args|
-    client = get_es_client()
+    client = ElasticUtil.get_client()
     # Template
     template_body = get_es_config(['schema', 'template.json'])
     client.indices.put_template(
@@ -48,7 +48,7 @@ namespace :fromthepage do
 
   desc "Delete all configuration and indices created by init"
   task :es_reset, [] => :environment do |t,args|
-    client = get_es_client()
+    client = ElasticUtil.get_client()
 
     client.indices.delete_template(name: 'fromthepage')
     client.ingest.delete_pipeline(id: 'multilingual')
@@ -70,17 +70,6 @@ namespace :fromthepage do
     else
       return JSON.parse(src)
     end
-  end
-
-  def get_es_client()
-    cloud_id = ENV['ELASTIC_CLOUD_ID']
-    api_key = ENV['ELASTIC_API_KEY']
-
-    return Elasticsearch::Client.new(
-      log: true,
-      cloud_id: cloud_id,
-      api_key: api_key
-    )
   end
 
 end
