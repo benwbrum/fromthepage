@@ -12,12 +12,10 @@ module ElasticUtil
     bulk_action = {
       index: {
         _index: index,
-        _id: body['_id']
+        _id: body[:_id],
+        data: body.except(:_id)
       }
     }
-
-    body.delete(:_id)
-    bulk_action[:index][:data] = body
 
     return bulk_action
   end
