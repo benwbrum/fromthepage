@@ -8,4 +8,18 @@ module ElasticUtil
     )
   end
 
+  def self.gen_bulk_action(index, body)
+    bulk_action = {
+      index: {
+        _index: index,
+        _id: body['_id']
+      }
+    }
+
+    body.delete(:_id)
+    bulk_action[:index][:data] = body
+
+    return bulk_action
+  end
+
 end

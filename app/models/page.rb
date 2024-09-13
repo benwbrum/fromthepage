@@ -128,6 +128,14 @@ class Page < ApplicationRecord
   NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_VALUES[:needs_review]]
   NEEDS_WORK_STATUSES = [STATUS_VALUES[:new], STATUS_VALUES[:incomplete]].freeze
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      search_text: self.search_text,
+      content_en: self.source_text
+    }
+  end
+
   # tested
   def collection
     work.collection
