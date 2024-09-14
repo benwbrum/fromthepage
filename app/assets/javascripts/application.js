@@ -407,7 +407,7 @@ const ResizableSplitter = {
     const splitter = document.querySelector(splitterSelector);
     const panel1 = document.querySelector(panel1Selector);
     const panel2 = document.querySelector(panel2Selector);
-    
+
     let startX;
     let startWidthPanel1;
     let startWidthPanel2;
@@ -628,7 +628,7 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
 
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-  
+
     if(stickyHeight > tablePosTop) {
       document.querySelectorAll(columnEl).forEach(function(item) {
         item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';

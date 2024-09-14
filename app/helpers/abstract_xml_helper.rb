@@ -32,6 +32,8 @@ module AbstractXmlHelper
     'width'
   ]
 
+  SANITIZE_SINGLE_QUOTE_TAGS = %w(b strong i em u s mark q code pre kbd)
+
   def source_to_html(source)
     html = source.gsub(/\n/, '<br/>')
     return html
@@ -305,6 +307,18 @@ module AbstractXmlHelper
         e.replace_with(span)
       end
 
+<<<<<<< HEAD
+=======
+    end
+
+    # \textquotesingle fix
+    SANITIZE_SINGLE_QUOTE_TAGS.each do |tag|
+      doc.elements.each("//#{tag}") do |e|
+        if e.text
+          e.text = e.text.gsub("'", "`")
+        end
+      end
+>>>>>>> development
     end
 
     # now our doc is correct - what do we do with it?
