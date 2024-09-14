@@ -2,6 +2,8 @@
 
 =render({ :partial => '/shared/article_tabs', :locals => { :selected => 4, :article_id => @article.id }})
 
+=render({ :partial => '/shared/insert_table_modal' })
+
 .article-columns.columns
   article.maincol
     =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
@@ -23,6 +25,7 @@
                 span.voice-info.article-voice
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
+              =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
 
 
 
@@ -38,6 +41,7 @@
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
       =t('.categories')
+      br
       select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label=t('.select_categories') multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if @article.categories.include?(c)
