@@ -307,8 +307,6 @@ module AbstractXmlHelper
         e.replace_with(span)
       end
 
-<<<<<<< HEAD
-=======
     end
 
     # \textquotesingle fix
@@ -318,7 +316,6 @@ module AbstractXmlHelper
           e.text = e.text.gsub("'", "`")
         end
       end
->>>>>>> development
     end
 
     # now our doc is correct - what do we do with it?
