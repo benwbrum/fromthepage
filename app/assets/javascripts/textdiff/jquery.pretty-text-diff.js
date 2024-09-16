@@ -25,11 +25,12 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
       dmp = new diff_match_patch();
       return this.each(function() {
         var changed, diff_as_html, diffs, original;
-        original = $(settings.originalContainer, this).text().trim();
-        $.fn.prettyTextDiff.debug("Original text found: ", original, settings);
-        changed = $(settings.changedContainer, this).text().trim();
-        $.fn.prettyTextDiff.debug("Changed  text found: ", changed, settings);
+        original = ($(settings.originalContainer, this).text() || "").trim();
+        $.fn.prettyTextDiff.debug("Original HTML found: ", original, settings);
+        changed = ($(settings.changedContainer, this).text() || "").trim();
+        $.fn.prettyTextDiff.debug("Changed HTML found: ", changed, settings);
         diffs = dmp.diff_main(original, changed);
+
         if (settings.cleanup) {
           dmp.diff_cleanupSemantic(diffs);
         }
@@ -37,7 +38,11 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
         diff_as_html = $.map(diffs, function(diff) {
           return $.fn.prettyTextDiff.createHTML(diff);
         });
-        $(settings.diffContainer, this).html(diff_as_html.join(''));
+
+        $(settings.diffContainer, this).html(
+          dmp.diff_prettyHtml(diffs)
+            .replace(/&para;/g, '')
+        );
         return this;
       });
     }
@@ -50,21 +55,28 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
   };
 
   $.fn.prettyTextDiff.createHTML = function(diff) {
-    var data, html, operation, pattern_amp, pattern_gt, pattern_lt, pattern_para, text;
+    var data, html, operation, text;
     html = [];
-    pattern_amp = /&/g;
-    pattern_lt = /</g;
-    pattern_gt = />/g;
-    pattern_para = /\n/g;
-    operation = diff[0]; data = diff[1];
-    text = data.replace(pattern_amp, '&amp;').replace(pattern_lt, '&lt;').replace(pattern_gt, '&gt;').replace(pattern_para, '<br>');
+    operation = diff[0];
+    data = diff[1];
+    text = data
     switch (operation) {
       case DIFF_INSERT:
-        return '<ins>' + text + '</ins>';
+        // Add logic to handle tables
+        if (data.startsWith("<td>")) {
+          return '<td><ins>' + text + '</ins></td>';
+        } else {
+          return '<ins>' + text + '</ins>';
+        }
       case DIFF_DELETE:
-        return '<del>' + text + '</del>';
+        // Add logic to handle tables
+        if (data.startsWith("<td>")) {
+          return '<td><del>' + text + '</del></td>';
+        } else {
+          return '<del>' + text + '</del>';
+        }
       case DIFF_EQUAL:
-        return '<span>' + text + '</span>';
+        return text ;
     }
   };
 
