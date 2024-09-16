@@ -5,6 +5,10 @@ fr:
       page_created: Page créée avec succès
     delete:
       page_deleted: La page a été supprimée
+    destroy:
+      page_deleted: La page a été supprimée
+    edit:
+      status: 'Statut:'
     edit_tabs:
       general: Général
       htr: HTR
@@ -19,10 +23,10 @@ fr:
       page_image: Image de la page
       page_position: 'Position de la page : %{position}'
       page_status: Statut de la page
-      page_status_: Non-trancrite
       page_status_blank: Page vierge
       page_status_incomplete: Incomplet
       page_status_indexed: Indexé
+      page_status_new: Non-trancrite
       page_status_review: À besoin d'une révision
       page_status_transcribed: Complet
       page_status_translated: Traduit
@@ -31,7 +35,6 @@ fr:
       rotate_clockwise: Tourner dans le sens horaire
       rotate_counterclockwise: Tourner dans le sens antihoraire
       save_changes: Sauvegarder les modifications
-      status: 'Statut:'
     new:
       add_new_page: Ajouter une nouvelle page
       browse: Parcourir
