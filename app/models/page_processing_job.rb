@@ -22,7 +22,7 @@
 class PageProcessingJob < ApplicationRecord
   belongs_to :ai_job
   belongs_to :page
-  has_many :page_processing_tasks
+  has_many :page_processing_tasks, dependent: :destroy
   after_create :create_tasks
 
   module Status
@@ -93,11 +93,11 @@ class PageProcessingJob < ApplicationRecord
         # run this task instead
         task = new_task
       end
-
   
       # now the task is in a non-completed statue
       # actually run the next step in this task
       task.process_page
+
       # the task's status should have been updated
       # if the task has completed, the loop should continue naturally
       if task.status == PageProcessingTask::Status::FAILED

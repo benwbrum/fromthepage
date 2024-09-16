@@ -35,11 +35,12 @@ class AiJob < ApplicationRecord
   belongs_to :user
   has_many :ai_results
   has_many :external_api_requests # TODO: this should be through the page processing jobs
-  has_many :page_processing_jobs
+  has_many :page_processing_jobs, dependent: :destroy
   before_create :set_task_specific_params
   before_create :set_defaults
   # after_create :run_rake_task
 
+  serialize :parameters, Hash
 
   module JobType
     HTR = 'htr'
@@ -92,30 +93,15 @@ class AiJob < ApplicationRecord
     end
   end
 
-  # TODO make this make sense
-  # def run_rake_task
-  #   if self.job_type == JobType::HTR
-  #     Rake::Task['transkribus_processing:process_page'].invoke(self.page_id)
-  #   elsif self.job_type == JobType::AI_TEXT
-  #     Rake::Task['open_ai:process_page'].invoke(self.page_id)
+ 
+  # # TODO change to a hash serialization like we do with work.metadata already and get rid of this code
+  # # parameters should be stored as a jsonified hash (but consider using job-type specific accessors)
+  # def parameters
+  #   if self[:parameters].nil?
+  #     return {}
   #   end
+  #   JSON.parse(self[:parameters])
   # end
-
-  # main loop -- to be run in background by a rake task; other tasks will be run inline
-  def process
-
-
-  end
-
-
-  # TODO change to a hash serialization like we do with work.metadata already and get rid of this code
-  # parameters should be stored as a jsonified hash (but consider using job-type specific accessors)
-  def parameters
-    if self[:parameters].nil?
-      return {}
-    end
-    JSON.parse(self[:parameters])
-  end
 
   # task_class_name is the name of a subclass of PageProcessingTask.
   # it will include any module names, e.g. 'OpenAi::AiTextPageProcessingTask'
@@ -124,9 +110,9 @@ class AiJob < ApplicationRecord
   end
 
 
-  def parameters=(value)
-    self[:parameters] = value.to_json
-  end
+  # def parameters=(value)
+  #   self[:parameters] = value.to_json
+  # end
 
 
 

@@ -34,21 +34,6 @@ module Transkribus
   end
 
   class TranskribusPageProcessingTask < PageProcessingTask
-    # # TODO get rid of external API request -- this is no longer needed since the 
-    # def initialize(page, external_api_request=nil, transkribus_username=nil, transkribus_password=nil, model_id=Model::TEXT_TITAN_I)
-    #   if external_api_request.nil?
-    #     @external_api_request = ExternalApiRequest.new
-    #     @external_api_request.user = page.collection.owner
-    #     @external_api_request.collection = page.collection
-    #     @external_api_request.page = page
-    #     @external_api_request.work = page.work
-    #     @external_api_request.params = {model_id: model_id}
-    #     @external_api_request.engine = ExternalApiRequest::Engine::TRANSKRIBUS
-    #     @external_api_request.status = ExternalApiRequest::Status::QUEUED
-    #   else
-    #     @external_api_request = external_api_request
-    #   end
-    # end
 
     def transkribus_username
       TRANSKRIBUS_USERNAME
@@ -99,30 +84,42 @@ module Transkribus
 
     # TODO get rid of external API request -- this is no longer needed since the
     def launch_processing_job
-      # first, call the transkribus api to submit the request
-      model_id = self.ai_job.parameters[self.class.name]['model_id']
-      submit_response = authorized_transkribus_request { submit_processing_request(page,model_id) }
+      begin
+        # first, call the transkribus api to submit the request
+        model_id = self.ai_job.parameters[self.class.name]['model_id']
+        submit_response = authorized_transkribus_request { submit_processing_request(page,model_id) }
 
-      if submit_response.code != 200
-        if submit_response.code == 429
-          # this account needs more Transkribus credits
-          self.details['error'] = submit_response.to_json
-          self.status=Status::FAILED
-          self.save!
-          return Response::INSUFFICIENT_CREDITS
-        else
-          # there is some other error
-          self.details['error'] = submit_response.to_json
-          self.status=Status::FAILED
-          self.save!
-          return
+        if submit_response.code != 200
+          if submit_response.code == 429
+            # this account needs more Transkribus credits
+            self.details['error'] = submit_response.to_json
+            self.status=Status::FAILED
+            self.save!
+            return Response::INSUFFICIENT_CREDITS
+          else
+            # there is some other error
+            self.details['error'] = submit_response.to_json
+            self.status=Status::FAILED
+            self.save!
+            return
+          end
         end
-      end
 
-      process_id = submit_response.parsed_response['processId']
-      self.details['process_id'] = process_id
-      self.status = Status::WAITING
-      self.save!
+        process_id = submit_response.parsed_response['processId']
+        self.details['process_id'] = process_id
+        self.status = Status::WAITING
+        self.save!
+      rescue => e
+        # log the error
+        Rails.logger.error "Error launching processing job for page #{page.id} and task #{id}"
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.join("\n")
+        # save the error and exception to the task deatils
+        self.details['error'] = e.message
+        self.details['backtrace'] = e.backtrace.join("\n")
+        self.status = Status::FAILED
+        self.save!
+      end
     end
 
     def check_status
@@ -143,8 +140,8 @@ module Transkribus
         if status=='CANCELED'
           print "process_id=#{process_id} was canceled, probably in the Transkribus UI\n"
           self.details['error'] = "process_id=#{process_id} was canceled, probably in the Transkribus UI"
-          @external_api_request.status = ExternalApiRequest::Status::FAILED
-          @external_api_request.save!
+          self.status = Status::FAILED
+          self.save!
           return
         elsif status=='FINISHED'
           return Response::READY
