@@ -15,7 +15,7 @@ class AdminController < ApplicationController
   def index
     @users = User.all
     @owners = User.where(owner: true)
-    
+
     transcription_deeds = Deed.where(deed_type: DeedType.transcriptions_or_corrections_no_edits)
     contributor_deeds = Deed.where(deed_type: DeedType.contributor_types)
 
@@ -27,11 +27,11 @@ class AdminController < ApplicationController
     @works_count            = Work.all.count
     @ia_works_count         = IaWork.all.count
     @pages_count            = Page.all.count
-    @transcribed_count      = Page.where.not(status: nil).count
+    @transcribed_count      = Page.where.not(status: :new).count
     @notes_count            = Note.all.count
     @users_count            = User.all.count
     @owners_count           = User.where(owner: true).count
-    
+
     @transcription_counts = {}
     @contribution_counts = {}
     @activity_project_counts = {}
@@ -48,7 +48,7 @@ class AdminController < ApplicationController
 
     @version = ActiveRecord::Migrator.current_version
 
-    
+
 =begin
     sql_online =
       'SELECT count(DISTINCT user_id) count '+
@@ -104,7 +104,7 @@ class AdminController < ApplicationController
       else
         ajax_redirect_to :action => 'user_list'
       end
-  
+
     else
       render :action => 'edit_user'
     end
@@ -303,7 +303,7 @@ class AdminController < ApplicationController
       @collection_work_average_hits = this_week.where.not(search_type: 'findaproject').average(:hits).round(2)
       @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
       @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
-      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1) 
+      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1)
       @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
     end
 

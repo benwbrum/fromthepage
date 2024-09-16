@@ -1,7 +1,5 @@
 @import "base/ftp_color_scheme";
 
-
-
 // ---------------------------
 // TYPOGRAPHY
 // ---------------------------
@@ -114,7 +112,6 @@ $gapSize:                   20px;
 @import "sections/search_attempt";
 
 @import "plugins/select2/core";
-@import "plugins/splitter";
 
 #welcome-message {
   width: 480px;
@@ -242,8 +239,8 @@ $thredded-topic-header-font-size-tablet-and-up: $fontSize;
 }
 
 
-.thredded--main-navigation { 
-//  display: none; 
+.thredded--main-navigation {
+//  display: none;
 }
 
 
@@ -293,6 +290,106 @@ h3, .thredded--post-form--title {
   height: 20px;
   transform: rotateZ(180deg);
   margin-top: -1px;
+}
+
+// Splitter CSS
+.page-columns {
+  .splitter {
+    cursor: col-resize;
+    background-color: #faf5eb;
+    position: relative;
+
+    &:hover::after {
+      background-color: #d0bb88 !important;
+    }
+
+    &:hover::before {
+      background-color: #9a8964 !important;
+    }
+  }
+
+  &[data-layout-mode='rtl'],
+  &[data-layout-mode='ltr'] {
+    .splitter {
+      margin-left: -2rem;
+      margin-right: -2rem;
+      width: 20px;
+      height: calc(100vh - 74px - 3rem);
+      position: sticky;
+      top: 80px !important;
+    }
+
+    .splitter::after {
+      position: absolute;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      content: '';
+      background-color: #ebe4d8;
+      z-index: 0;
+    }
+
+    .splitter::before {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      content: '';
+      background-color: #dac28a;
+      width: 5px;
+      left: 50%;
+      height: 40px;
+      border-radius: 2px;
+      display: block;
+      z-index: 1;
+    }
+  }
+
+  &[data-layout-mode='ttb'],
+  &[data-layout-mode='btt'] {
+
+    .splitter {
+      margin-top: -2rem;
+      margin-bottom: -2rem;
+      cursor: row-resize;
+      height: 20px;
+      width: 100%;
+      z-index: 99;
+      position: sticky;
+    }
+
+    .splitter::after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 3px;
+      width: 100%;
+      content: '';
+      background-color: #ebe4d8;
+      display: block;
+      left: 0;
+      z-index: 100;
+    }
+
+    .splitter::before {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      content: '';
+      background-color: #dac28a;
+      height: 5px;
+      left: 50%;
+      width: 40px;
+      border-radius: 2px;
+      display: block;
+      z-index: 101;
+    }
+  }
+}
+
+.bs {
+  @import "bootstrap.min";
 }
 
 @import "datepicker/datepicker";

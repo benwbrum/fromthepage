@@ -5,7 +5,7 @@ FactoryBot.define do
     sequence(:email) { |n| "user_#{n}@sample.com" }
     password { 'password' }
     password_confirmation { 'password' }
-  
+
     factory :owner do
       owner { true }
       sequence(:display_name) { |n| "owner_#{n}_login" }

@@ -4,12 +4,9 @@
   p.fglight =t('collection.edit_privacy.collection_collaborators_description')
   =form_tag(collection_add_collaborator_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id
-    -if User.count > 100
-      -options = nil
-    -else
-      -options = options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier')
+    -options = options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier')
     =select_tag 'collaborator_id', options, include_blank: true
-    =button_tag t('collection.edit.add_button')
+    =button_tag t('collection.edit.add_button'), class: 'add_collaborator'
   -@collaborators.each do |user|
     -contributions = user.deeds.where(collection_id: @collection.id).count
     .user-label
@@ -19,7 +16,7 @@
         small =t('collection.edit.n_contributions', count: contributions)
       -if user != @main_owner
         =form_tag(collection_remove_collaborator_path) do
-          =hidden_field_tag :user_id, user.id
+          =hidden_field_tag :collaborator_id, user.id
           =hidden_field_tag :collection_id, @collection.id
           =button_tag '', class: 'remove', title: t('collection.edit.remove_collaborator'), 'aria-label' => t('collection.edit.remove_collaborator')
   .toolbar
@@ -31,12 +28,13 @@ javascript:
     placeholder: 'Add new collaborator...',
     ajax: {
       url: '#{collection_search_users_path(@collection)}',
-      dataType: 'json', 
+      dataType: 'json',
       delay: 250,
       data: function (params) {
         var query = {
           term: params.term,
-          user_type: 'collaborator'
+          user_type: 'collaborator',
+          collection_id: "#{@collection.slug}"
         }
         return query;
       }

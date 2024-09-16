@@ -9,16 +9,15 @@ class ExportController < ApplicationController
 
   def index
     # @collection = Collection.friendly.find(params[:collection_id])
-    #check if there are any translated works in the collection
-    if @collection.works.where(supports_translation: true).exists?
-      @header = "Translated"
-    else
-      @header = "Transcribed"
-    end
+    filtered_data
 
-    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 15)
+    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: { work_id: nil }).distinct
+  end
 
-    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: {work_id: nil}).distinct
+  def list
+    filtered_data
+
+    render partial: 'list', locals: { collection: @collection, works: @works, header: @header }
   end
 
   def show
@@ -28,7 +27,7 @@ class ExportController < ApplicationController
   end
 
   def printable
-    output_file = export_printable(@work, params[:edition], params[:format], false, true, true)    
+    output_file = export_printable(@work, params[:edition], params[:format], false, true, true)
 
     if params[:format] == 'pdf'
       content_type = "application/pdf"
@@ -37,8 +36,8 @@ class ExportController < ApplicationController
     end
 
     # spew the output to the browser
-    send_data(File.read(output_file), 
-      filename: File.basename(output_file), 
+    send_data(File.read(output_file),
+      filename: File.basename(output_file),
       :content_type => content_type)
     cookies['download_finished'] = 'true'
   end
@@ -70,7 +69,6 @@ class ExportController < ApplicationController
               :type => "application/csv")
     cookies['download_finished'] = 'true'
   end
-
 
   def subject_coocurrence_csv
     send_data(@collection.export_subject_coocurrence_as_csv,
@@ -187,7 +185,7 @@ class ExportController < ApplicationController
     log_file = ContentdmTranslator.log_file(@collection)
     unless Dir.exist? File.dirname(log_file)
       FileUtils.mkdir_p(File.dirname(log_file))
-    end    
+    end
     cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
     logger.info(cmd)
     system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
@@ -205,5 +203,67 @@ class ExportController < ApplicationController
                    database: database }
   end
 
+  private
+
+  def filtered_data
+    # Check if there are any translated works in the collection
+    @header = @collection.works.where(supports_translation: true).exists? ? 'Translated' : 'Transcribed'
+
+    @works = params[:search].blank? ? @collection.works : @collection.search_works(params[:search])
+    @works = @works.includes(:work_statistic)
+
+    @work_stats_hash_map = {}
+    @works.each do |work|
+      work_stats(work)
+      @work_stats_hash_map[work.id] = {
+        progress_annotated: @progress_annotated,
+        progress_review: @progress_review,
+        progress_completed: @progress_completed
+      }
+    end
+
+    sort_filtered_data
+
+    @works = @works.paginate(page: params[:page], per_page: params[:per_page] || 15) unless params[:per_page] == '-1'
+  end
+
+  def sort_filtered_data
+    return if params[:sort].blank?
+
+    direction = params[:order]&.downcase == 'desc' ? 'DESC' : 'ASC'
+
+    case params[:sort].downcase
+    when 'title'
+      sorting_arguments = "title #{direction}"
+    when 'page_count'
+      sorting_arguments = "work_statistics.total_pages #{direction}"
+    when 'indexed_count'
+      ordered_work_ids = calculate_ordered_work_ids(:progress_annotated)
+      ordered_work_ids.reverse! if direction == 'DESC'
+
+      sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
+    when 'completed_count'
+      ordered_work_ids = calculate_ordered_work_ids(:progress_completed)
+      ordered_work_ids.reverse! if direction == 'DESC'
+
+      sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
+    when 'reviewed_count'
+      ordered_work_ids = calculate_ordered_work_ids(:progress_review)
+      ordered_work_ids.reverse! if direction == 'DESC'
+
+      sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
+    else
+      sorting_arguments = ''
+      @works = @works.reorder(sorting_arguments)
+    end
+
+    @works = @works.reorder(Arel.sql(sorting_arguments))
+  end
+
+  def calculate_ordered_work_ids(key)
+    @works.sort_by do |work|
+      @work_stats_hash_map[work.id][key]
+    end.pluck(:id)
+  end
 
 end

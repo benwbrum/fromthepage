@@ -5,50 +5,53 @@ page_1:
   base_image: <%=Rails.root.join('public/images/uploaded/10/page_0001.jpg')%>
   base_width: 1649
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
+  xml_text:
+  page_version_id:
   status: 'indexed'
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_2:
   id: 2
   title: '2'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/10/page_0002.jpg')%>
   base_width: 1653
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 2
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_3:
   id: 3
   title: '3'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/10/page_0003.jpg')%>
   base_width: 1643
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 3
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_4:
   id: 4
   title: '4'
@@ -56,118 +59,125 @@ page_4:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_004.jpg')%>
   base_width: 1652
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 4
   lock_version: 0
-  xml_text: 
-  page_version_id: 
+  xml_text:
+  page_version_id:
   status: 'indexed'
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_5:
   id: 5
   title: '5'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_005.jpg')%>
   base_width: 1645
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 5
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_6:
   id: 6
   title: '6'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_006.jpg')%>
   base_width: 1635
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 6
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_7:
   id: 7
   title: '7'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_007.jpg')%>
   base_width: 1663
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 7
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_8:
   id: 8
   title: '8'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_008.jpg')%>
   base_width: 1643
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 8
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_9:
   id: 9
   title: '9'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_009.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 9
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_10:
   id: 10
   title: '10'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_010.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 1
   position: 10
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_17:
   id: 17
   title: 'Page 1'
@@ -175,16 +185,17 @@ page_17:
   base_image: <%=Rails.root.join('public/images/uploaded/2/page_0001.jpg')%>
   base_width: 2529
   base_height: 3313
-  shrink_factor: 
+  shrink_factor:
   work_id: 2
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: "indexed"
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'indexed'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_18:
   id: 18
   title: '1'
@@ -192,68 +203,72 @@ page_18:
   base_image: <%=Rails.root.join('public/images/uploaded/3/page_0001.jpg')%>
   base_width: 2546
   base_height: 3375
-  shrink_factor: 
+  shrink_factor:
   work_id: 3
   position: 1
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Department
     of the Interior</p>\n      </page>\n"
-  page_version_id: 
+  page_version_id:
   status: 'transcribed'
-  source_translation: 
-  xml_translation: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
   search_text: " Department of the Interior \n\n\n\n"
 page_19:
   id: 19
   title: '1'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/4/page_0001.jpg')%>
   base_width: 2529
   base_height: 3313
-  shrink_factor: 
+  shrink_factor:
   work_id: 4
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_20:
   id: 20
   title: '1'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/5/page_0001.jpg')%>
   base_width: 2783
   base_height: 2642
-  shrink_factor: 
+  shrink_factor:
   work_id: 5
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_21:
   id: 21
   title: '1'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/6/page_0001.jpg')%>
   base_width: 2496
   base_height: 2688
-  shrink_factor: 
+  shrink_factor:
   work_id: 6
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_22:
   id: 22
   title: 'Test Page 1'
@@ -261,16 +276,17 @@ page_22:
   base_image: <%=Rails.root.join('public/images/uploaded/7/page_0001.jpg')%>
   base_width: 1138
   base_height: 2704
-  shrink_factor: 
+  shrink_factor:
   work_id: 7
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
+  xml_text:
+  page_version_id:
   status: 'indexed'
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_23:
   id: 23
   title: '1'
@@ -278,34 +294,36 @@ page_23:
   base_image: <%=Rails.root.join('public/images/uploaded/8/page_0001.jpg')%>
   base_width: 2546
   base_height: 3375
-  shrink_factor: 
+  shrink_factor:
   work_id: 8
   position: 1
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
     ascertain what</p>\n      </page>\n"
-  page_version_id: 
+  page_version_id:
   status: 'transcribed'
-  source_translation: 
-  xml_translation: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
   search_text: " should ascertain what \n\n\n\n"
 page_24:
   id: 24
   title: '1'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1724.jpg')%>
   base_width: 1146
   base_height: 2860
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 1
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_25:
   id: 25
   title: '2'
@@ -313,337 +331,357 @@ page_25:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1725.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 2
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Significs
     and Logic</p>\n      </page>\n"
-  page_version_id: 
+  page_version_id:
   status: 'transcribed'
-  source_translation: 
-  xml_translation: 
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
   search_text: " Significs and Logic \n\n\n\n"
 page_26:
   id: 26
   title: '3'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1726.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 3
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_27:
   id: 27
   title: '4'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1727.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 4
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_28:
   id: 28
   title: '5'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1728.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 5
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_29:
   id: 29
   title: '6'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1729.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 6
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_30:
   id: 30
   title: '7'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1730.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 7
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_31:
   id: 31
   title: '8'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1731.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 8
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_32:
   id: 32
   title: '9'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1732.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 9
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_33:
   id: 33
   title: '10'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1733.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 10
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_34:
   id: 34
   title: '11'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1734.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 11
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_35:
   id: 35
   title: '12'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1735.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 12
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_36:
   id: 36
   title: '13'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1736.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 13
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_37:
   id: 37
   title: '14'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1737.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 14
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_38:
   id: 38
   title: '15'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1738.jpg')%>
   base_width: 2860
   base_height: 1155
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 15
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_39:
   id: 39
   title: '16'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1739.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 16
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_40:
   id: 40
   title: '17'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1740.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 17
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_41:
   id: 41
   title: '18'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1741.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 18
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_42:
   id: 42
   title: '19'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1742.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 19
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_43:
   id: 43
   title: '20'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1743.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 20
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:
 page_44:
   id: 44
   title: '21'
-  source_text: 
+  source_text:
   base_image: <%=Rails.root.join('public/images/uploaded/9/1744.jpg')%>
   base_width: 2860
   base_height: 1121
-  shrink_factor: 
+  shrink_factor:
   work_id: 9
   position: 21
   lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
+  xml_text:
+  page_version_id:
+  status: 'new'
+  translation_status: 'new'
+  source_translation:
+  xml_translation:
+  search_text:

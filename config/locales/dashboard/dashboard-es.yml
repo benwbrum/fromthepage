@@ -138,8 +138,8 @@ es:
       since: desde %{date}
       start_a_project: Iniciar Un Proyecto
       summary: Resumen
-      to_upgrade_contact: Para actualizar, póngase en contacto con support@fromthepage.com
       total_pages: 'Páginas totales: %{pages}'
+      upgrade: Mejora
       work:
         one: Obra
         other: Obras

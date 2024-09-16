@@ -28,7 +28,7 @@ describe "uploads data for collections", :order => :defined do
       expect(Collection.last.works.count).not_to be_nil
     end
   end
-  
+
   it "checks to allow '.' in IIIF domain URL parameter" do
     visit "iiif/contributions/ac.uk"
     expect(page).to have_content("resources")
@@ -37,13 +37,13 @@ describe "uploads data for collections", :order => :defined do
     visit "/iiif/contributions/ac.uk/2018-01-01/2019-12-31"
     expect(page).to have_content("ac.uk")
   end
- 
-# commenting until we fix VCR  
+
+# commenting until we fix VCR
   # it "tests for transcribed works" do
   #   col = Collection.where(:title => 'Hebrew Manuscripts').first
   #   works = col.works
   #   works.each do |w|
-  #     w.pages.update_all(status: Page::STATUS_TRANSCRIBED, translation_status: Page::STATUS_TRANSLATED)
+  #     w.pages.update_all(status: :transcribed, translation_status: :translated)
   #     w.work_statistic.recalculate
   #   end
   #   col.calculate_complete

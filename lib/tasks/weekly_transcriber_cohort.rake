@@ -2,7 +2,7 @@ namespace :fromthepage do
   desc "weekly transcriber cohort"
   task :weekly_transcriber_cohort => :environment do
     # generate a csv file of users who signed up in the last week and write it out to a temporary file
-    TRANSCRIBER_TARGET_ACTIONS = ['static#landing_page', 'registrations#new', 'registrations#create', 'transcribe#display_page', 'transcribe#save_transcription']
+    target_actions = AhoyActivitySummary::WEEKLY_TRANSCRIBER_COHORT_TARGET_ACTIONS
     TRANSCRIBER_TEMP_FILE='/tmp/transcriber_conversion_cohorts.csv'
     week_cohorts=[]
     current_day=Date.new(2023,2,12)
@@ -20,7 +20,7 @@ namespace :fromthepage do
       previous_visits = nil
       previous_actions=nil
       registrations_create_count = nil
-      TRANSCRIBER_TARGET_ACTIONS.each do |action|
+      target_actions.each do |action|
         if previous_visits
           visits = Ahoy::Event.where(time: start_day..end_day, name: action, visit_id: previous_visits).pluck(:visit_id).uniq
           action_count = visits.count
@@ -37,7 +37,7 @@ namespace :fromthepage do
           f.print("#{pct}\t")
         end
         f.print("#{action_count}\t")
- 
+
         # we'll need this later for TTFPT
         if action == 'registrations#create'
           registrations_create_count = action_count
@@ -57,7 +57,7 @@ namespace :fromthepage do
       durations_to_first_transcription = []
       # for each user, find out when their account was created (user.creation_date?) and find the first page transcribed deed
       users_with_pages_transcribed.each do |user|
-        first_contribution_date = user.deeds.where(deed_type: DeedType.collection_edits).minimum(:created_at) 
+        first_contribution_date = user.deeds.where(deed_type: DeedType.collection_edits).minimum(:created_at)
         durations_to_first_transcription << first_contribution_date - user.created_at unless first_contribution_date.nil?
       end
       median_ttfpt = durations_to_first_transcription.sort[durations_to_first_transcription.count/2]

@@ -57,30 +57,30 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
-  it "adds collaborators to a private collection" do
+  it 'adds collaborators to a private collection' do
     ActionMailer::Base.deliveries.clear
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Privacy & Access")
-    #this user should not get an email (notifications turned off)
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Privacy & Access')
+    # this user should not get an email (notifications turned off)
     page.click_link 'Edit Collaborators'
     select(@rest_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
-    #this user should get an email
+    # this user should get an email
     select(@notify_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
-    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
   end
 
-  it "checks that an added user can edit a work in the collection" do
-    login_as(@rest_user, :scope => :user)
+  it 'checks that an added user can edit a work in the collection' do
+    login_as(@rest_user, scope: :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
+    expect(page).to have_content('Collections')
     expect(page).to have_content(@collection.title)
     page.find('.maincol').find('a', text: @collection.title).click
     expect(page.find('.tabs')).to have_selector('a', text: 'Overview')
@@ -93,15 +93,15 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('h1')).to have_content(@work.pages.first.title)
     fill_in_editor_field('Collaborator test')
     find('#save_button_top').click
-    page.click_link("Overview")
-    expect(page.find('.page-preview')).to have_content("Collaborator test")
+    page.click_link('Overview')
+    expect(page.find('.page-preview')).to have_content('Collaborator test')
   end
 
-  it "removes collaborators from a private collection" do
-    login_as(@owner, :scope => :user)
+  it 'removes collaborators from a private collection' do
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Privacy & Access")
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Collaborators'
     page.find('.user-label', text: @rest_user.display_name).find('button').click
     page.find('.user-label', text: @notify_user.display_name).find('button').click
@@ -109,29 +109,29 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "checks that the removed user can't view the collection" do
-    login_as(@rest_user, :scope => :user)
+    login_as(@rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
-  it "adds owners to a private collection" do
+  it 'adds owners to a private collection' do
     ActionMailer::Base.deliveries.clear
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Privacy & Access")
-    #this user should not get an email (notifications turned off)
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Privacy & Access')
+    # this user should not get an email (notifications turned off)
     page.click_link 'Edit Owners'
     select(@rest_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
-    #this user should get an email
+    # this user should get an email
     select(@notify_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
-    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
   end
 
   it "checks added owner permissions" do
@@ -154,19 +154,19 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).not_to have_selector('.owner-info')
   end
 
-  it "removes owner from a private collection" do
-    login_as(@owner, :scope => :user)
+  it 'removes owner from a private collection' do
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Privacy & Access")
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Owners'
     page.find('.user-label', text: @rest_user.display_name).find('button').click
     page.find('.user-label', text: @notify_user.display_name).find('button').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
-  it "checks removed owner permissions" do
-    login_as(@rest_user, :scope => :user)
+  it 'checks removed owner permissions' do
+    login_as(@rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
@@ -178,7 +178,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.side-tabs').click_link("Privacy & Access")
     page.click_link("Make Collection Public")
   end
-  
+
   context "inactive collection" do
 
     # Current Deed Counts for comparison
@@ -207,7 +207,7 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "transcribing doesn't work for inactive collections" do
-      unstarted_page = @page.work.pages.where(status: nil).first
+      unstarted_page = @page.work.pages.where(status: :new).first
       visit collection_display_page_path(@collection.owner, @collection, @page.work, unstarted_page)
       expect(page).to have_content('not active')
     end

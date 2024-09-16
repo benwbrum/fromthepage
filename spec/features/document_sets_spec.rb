@@ -70,11 +70,11 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page.find('h1')).to have_content("Test Document Set 3")
     expect(DocumentSet.last.is_public).to be true
-    expect(page).not_to have_content("Document Set Collaborators")
+    expect(page).not_to have_content('Allowed Collaborators')
     #make the set private
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
-    expect(page).to have_content("Document Set Collaborators")
+    expect(page).to have_content('Allowed Collaborators')
     #manually assign works until have the jqery test set
     id = @collection.works.third.id
     DocumentSet.last.work_ids = id
@@ -137,13 +137,14 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@test_set.owner, @test_set)
     page.find('.tabs').click_link("Settings")
-    #this user should not receive an email (notifications off)
-    select(@rest_user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    page.click_link 'Edit Collaborators'
+    # this user should not receive an email (notifications off)
+    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).to be_empty
-    #this user should receive an email
-    select(@user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    # this user should receive an email
+    select(@user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
@@ -333,8 +334,8 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
-  it "checks document set breadcrumbs - work" do
-    login_as(@user, :scope => :user)
+  it 'checks document set breadcrumbs - work' do
+    login_as(@user, scope: :user)
     work = @set.works.first
     @page = work.pages.first
     visit dashboard_path
@@ -342,23 +343,36 @@ describe "document sets", :order => :defined do
     page.find('.collection-work_title', text: work.title).click_link
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).not_to have_selector('a', text: 'Pages That Need Review')
+    expect(page).not_to have_selector('a', text: 'Translations That Need Review')
+
+    original_page_status = @page.status
+    @page.update!(status: 'review')
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
+    page.find('.collection-work_title', text: work.title).click_link
     click_button('Pages That Need Review')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("No pages found")
-    click_button("View All Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).not_to have_content('No pages found')
+    @page.update!(status: original_page_status)
+
+    original_page_translation_status = @page.translation_status
+    @page.update!(translation_status: 'review')
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
+    page.find('.collection-work_title', text: work.title).click_link
     click_button('Translations That Need Review')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("No pages found")
-    click_button("View All Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("About")
+    expect(page).not_to have_content('No pages found')
+    @page.update!(translation_status: original_page_translation_status)
+
+    page.find('.tabs').click_link('About')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/about"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("Contents")
+    page.find('.tabs').click_link('Contents')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/contents"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("Help")
+    page.find('.tabs').click_link('Help')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/help"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     click_link @set.title
@@ -430,19 +444,8 @@ describe "document sets", :order => :defined do
     visit collection_path(@set.owner, @set)
     expect(page).to have_selector('h1', text: @set.title)
     expect(page).to have_content('Works')
-    expect(page).to have_selector('a', text: 'Pages That Need Transcription')
-    expect(page).to have_selector('a', text: 'Pages That Need Review')
-    click_link('Pages That Need Transcription')
-    expect(page).to have_content('No pages found')
-    click_link('Return to collection')
-    expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content('Works')
-    click_link('Pages That Need Review')
-    expect(page).to have_selector('h3', text: 'Pages That Need Review')
-    expect(page).to have_content(@set.works.first.pages.first.title)
-    click_link('Return to collection')
-    expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content('Works')
+    expect(page).not_to have_selector('a', text: 'Pages That Need Transcription')
+    expect(page).not_to have_selector('a', text: 'Pages That Need Review')
   end
 
   it "disables document sets", js: true do

@@ -209,9 +209,9 @@
                             </div>
                         </div>
 
-                       
- 
- 
+
+
+
                     </div>
                 </div>
             </div>
@@ -609,7 +609,7 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-9">
-                    
+
                     <div class="loop-case">
                         <div class="box">
                             <div class="item">
@@ -617,20 +617,20 @@
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/transcription-archive01.png") %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <p>The Iowa State University Library has loaded 43 collections totaling more than 42,000 pages into FromThePage with the goal of providing accurate transcriptions to expand access to content for all online users. A variety of Special Collections & University Archives materials are worked on by crowdsourced collaborators. Six collections have been made available to the public with more released as they are fully transcribed. Check out how easy the upload process has been for them <a href="#">here</a>.</p>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
 
-                      
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/crowd-case01.png") %>
-                                 
+
                                 <p>FromThePage allows the public to have meaningful interaction with the Genealogy, Local History &
                                     Archives Unit of the Fort Worth Public Library. Over 8,000 pages have been transcribed in a
                                     little over a year. Volunteers enjoy making a contribution to the historical record by
@@ -640,8 +640,8 @@
                             </div>
                         </div>
 
-                       
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/transcription-archive02.png") %>
@@ -649,8 +649,8 @@
                             </div>
                         </div>
 
-                       
-                  
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/transcription-archive03.png") %>
@@ -658,8 +658,8 @@
                             </div>
                         </div>
 
-                      
-                     
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/transcription-archive04.png") %>
@@ -667,9 +667,9 @@
                             </div>
                         </div>
 
-                    
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -732,8 +732,8 @@
                             </div>
                         </div>
 
-                     
-  
+
+
 
                     </div>
                 </div>
@@ -746,7 +746,7 @@
     <section class="crowd-schedule">
         <div class="container">
             <div class="title">
-                <h4><%= number_with_delimiter Page.where.not(:status=>nil).count %></h4>
+                <h4><%= number_with_delimiter Page.where.not(status: :new).count %></h4>
                 <p>Pages — and counting!</p>
             </div>
 

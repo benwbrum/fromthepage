@@ -1,12 +1,11 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] ||= 'test'
+require_relative 'support/simplecov_profile'
+
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
-require 'coveralls'
-Coveralls.wear!
 
 DatabaseCleaner.strategy = :transaction
 
@@ -85,9 +84,10 @@ RSpec.configure do |config|
 end
 
 Capybara.configure do |config|
-  config.asset_host = "http://localhost:3000"
+  config.asset_host = 'http://localhost:3000'
   config.raise_server_errors = false
 end
+
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

@@ -11,6 +11,10 @@ en:
       save_document_set: Save Document Set
       title: Title
       url: URL
+    edit_set_collaborators:
+      remove_collaborator: Remove collaborator
+      set_collaborators: Document set collaborators
+      set_collaborators_description: Collaborators may transcribe and edit private document sets.
     index:
       actions: Actions
       aggregating_works_thematic_exhibits: Aggregating works into thematic exhibits
@@ -61,28 +65,24 @@ en:
       work_title: Work title
     settings:
       add: Add
-      add_collaborator: Add Collaborator
       add_work_title_to_document_set: Add %{work_title} to Document Set
-      collaborators_may_transcribe: Collaborators may transcribe and edit private document sets.
       document_set_based_on: This is a document set based on the <b>%{title}</b> collection.  You can manage all works and document sets within that collection by clicking %{link}.
-      document_set_collaborators: Document Set Collaborators
+      document_set_collaborators: Allowed Collaborators
       document_set_image: Document Set Image
       document_set_privacy: Document Set Privacy
       document_set_restricted: The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable.
       document_set_unrestricted: The document set can be viewed by anyone on the internet. Any works put within a public document set will be readable, even if the parent collection is private.  You may make the document set private to restrict its visiblity to collaborators.
+      done: Done
+      edit_collaborators: Edit Collaborators
       here: here
       make_document_set_private: Make Document Set Private
       make_document_set_public: Make Document Set Public
       manage_works: Manage Works
-      n_contributions:
-        one: 1 contribution
-        other: "%{count} contributions"
       n_pages:
         one: '1 page: '
         other: "%{count} pages: pl"
       no_image: No Image
       picture_document_set_description: A picture to be used to illustrate the document set description.
-      remove: Remove
       save: Save
       search: Search
       search_for_works: Search for works...

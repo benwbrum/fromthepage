@@ -21,12 +21,14 @@ es:
       gap_description: Marca un hueco en el texto, a menudo debido a daños
       head_description: Marca los encabezados dentro del texto
       marginalia_description: Marca el texto en los márgenes del texto principal.
+      redo_description: Rehacer la última acción deshecha
       reg_description: Marca una forma regularizada del texto, con formularios originales en el atributo orig.
       s_description: Marca el texto que se ha tachado por cualquier motivo.
       sub_description: Texto de subíndice.
       sup_description: Texto de superíndice.
       u_description: Marca el texto subrayado.
       unclear_description: Marca texto poco claro.
+      undo_description: Deshacer la última acción.
     collection_tabs:
       add_work: Añadir Obra
       collaborators: Colaboradores
@@ -74,6 +76,11 @@ es:
       threshold: Límite
       zoom_in: Acercarse
       zoom_out: Disminuir el zoom
+    page_navigation:
+      describe_work: describir el trabajo
+      nav_info: Página %{position} de %{size}
+      next_page: Siguiente página
+      previous_page: Pagina anterior
     page_tabs:
       correct: Corregir
       describe_work: Describir la obra

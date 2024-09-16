@@ -1,9 +1,11 @@
 -entries_info = false if local_assigns[:entries_info].nil?
+-controller = local_assigns[:controller] || controller_name
+-action = local_assigns[:action] || action_name
 .toolbar
   -if local_assigns.has_key?(:needs_review)
-    .toolbar_group =will_paginate(model, :params => {:work_id => @work.id, :needs_review => local_assigns[:needs_review]})
+    .toolbar_group =will_paginate model, params: { work_id: @work.id, needs_review: local_assigns[:needs_review] }
   -else
-    .toolbar_group =will_paginate model
+    .toolbar_group =will_paginate model, params: { controller: controller, action: action }
   -if entries_info
     .toolbar_group
       .pagination_info =page_entries_info model

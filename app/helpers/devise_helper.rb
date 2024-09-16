@@ -26,7 +26,13 @@ module DeviseHelper
     errors = if resource.errors.empty?
                flash_alerts
              else
-               resource.errors.messages.map { |key, msg| "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}" }
+               resource.errors.messages.map do |key, msg|
+                 if key == :reset_password_token
+                   I18n.t('devise.errors.messages.reset_password.invalid_token')
+                 else
+                   "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}"
+                 end
+               end
              end
 
     messages = errors.map { |msg| content_tag(:li, msg) }.join

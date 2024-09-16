@@ -40,12 +40,12 @@ describe "editor actions" , :order => :defined do
       fill_in_editor_field("Content")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_INCOMPLETE)
+      expect(Page.find(page_fact.id).status_incomplete?).to be_truthy
 
       fill_in_editor_field("")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(nil)
+      expect(Page.find(page_fact.id).status_new?).to be_truthy
     end
 
     it "creates correct verbatim plaintext" do
@@ -99,35 +99,37 @@ describe "editor actions" , :order => :defined do
       expect(page.find('.tabs')).not_to have_content("Transcribe")
     end
 
-    it "adds a user to a restricted work" do
+    it 'adds a user to a restricted work' do
       ActionMailer::Base.deliveries.clear
       logout(:user)
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
-      #this user should not get an email
-      select(@rest_user.name_with_identifier, from: 'user_id')
-      page.find('#user_id+button').click
+      page.click_link 'Edit Collaborators'
+      # this user should not get an email
+      select(@rest_user.name_with_identifier, from: 'scribe_id')
+      page.find('.add_scribe').click
       expect(ActionMailer::Base.deliveries).to be_empty
-      #this user should get an email
-      select(@user.name_with_identifier, from: 'user_id')
-      page.find('#user_id+button').click
+      # this user should get an email
+      select(@user.name_with_identifier, from: 'scribe_id')
+      page.find('.add_scribe').click
       expect(ActionMailer::Base.deliveries).not_to be_empty
       expect(ActionMailer::Base.deliveries.first.to).to include @user.email
       expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@auth_work.title}"
-      expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+      expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
     end
 
-    it "checks that an editor with permissions can see a restricted work" do
+    it 'checks that an editor with permissions can see a restricted work' do
       visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
       page.find('.work-page_title', text: @work.pages.first.title).click_link
-      expect(page.find('.tabs')).to have_content("Transcribe")
+      expect(page.find('.tabs')).to have_content('Transcribe')
     end
 
-    it "removes a collaborator from a restricted work" do
+    it 'removes a collaborator from a restricted work' do
       logout(:user)
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
-      page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+      page.click_link 'Edit Collaborators'
+      page.find('.user-label', text: @rest_user.name_with_identifier).find('button.remove').click
       expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
     end
 

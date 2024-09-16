@@ -11,6 +11,10 @@ de:
       save_document_set: Dokumentenset speichern
       title: Titel
       url: URL
+    edit_set_collaborators:
+      remove_collaborator: Mitarbeiter entfernen
+      set_collaborators: Dokumentsatz-Mitarbeiter
+      set_collaborators_description: Mitarbeiter können private Dokumentsätze transkribieren und bearbeiten.
     index:
       actions: Aktionen
       aggregating_works_thematic_exhibits: Aggregation von Werken zu thematischen Exponaten
@@ -61,28 +65,24 @@ de:
       work_title: Werktitel
     settings:
       add: Hinzufügen
-      add_collaborator: Mitarbeitende:n hinzufügen
       add_work_title_to_document_set: "%{work_title} zum Dokumentenset hinzufügen"
-      collaborators_may_transcribe: Mitarbeitende können private Dokumentensets transkribieren und bearbeiten.
       document_set_based_on: Dies ist ein Dokumentenset basierend auf der Sammlung <b>%{title}</b>. Sie können alle Werke und Dokumentensets innerhalb dieser Sammlung verwalten, indem Sie auf %{link} klicken.
-      document_set_collaborators: Mitarbeitende an Dokumentensets
+      document_set_collaborators: Erlaubte Mitwirkende
       document_set_image: Dokumentenset-Bild
       document_set_privacy: Privatsphäre-Einstellungen für Dokumentensets
       document_set_restricted: Das Dokumentenset kann nur von den unterhalb angeführten Mitarbeitenden eingesehen werden. Sie können die Sammlung öffentlich einsehbar machen.
       document_set_unrestricted: Das Dokumentenset kann von jedem im Internet eingesehen werden. Alle Werke, die einem öffentlichen Dokumentenset zugeordnet sind, sind einsehbar, auch wenn die übergeordnete Sammlung privat ist. Sie können das Dokumentenset auf privat setzen, um die Sichtbarkeit nur auf Mitarbeitende einzuschränken.
+      done: Erledigt
+      edit_collaborators: Mitarbeiter bearbeiten
       here: Hier
       make_document_set_private: Dokumentenset privat setzen
       make_document_set_public: Dokumentenset öffentlich setzen
       manage_works: Werke verwalten
-      n_contributions:
-        one: 1 Beitrag
-        other: "%{count} Beiträge"
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten: pl"
       no_image: Kein Bild
       picture_document_set_description: Ein Bild zur Veranschaulichung der Beschreibung des Dokumentensets.
-      remove: Entfernen
       save: Speichern
       search: Suchen
       search_for_works: Werke suchen...

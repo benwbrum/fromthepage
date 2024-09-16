@@ -8,7 +8,8 @@
         -if @field_preview && @field_preview[field.id]
           -cell = @field_preview[field.id].first
         -if field.input_type == 'spreadsheet'
-          .field-wrapper.spreadsheet
+          -span_width = !field.percentage.blank? ? field.percentage : @width
+          .field-wrapper.spreadsheet(style="width: #{span_width}%")
             =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
         -else
           -span_width = !field.percentage.blank? ? field.percentage : @width
@@ -16,7 +17,7 @@
             -if field.input_type == "instruction"
               div id=formatted_field_name(field) class="field-instructions"
                 h5 =t('.instructions')
-                p ==field.label.titleize
+                p ==field.label
             -else
               =generate_field_input(field, cell)
 

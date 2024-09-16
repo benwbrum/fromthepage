@@ -11,6 +11,9 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
+
+=render({ :partial => '/shared/insert_table_modal' })
+
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 - if @autolinked_changed
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
@@ -36,7 +39,7 @@
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+        -if !@page.status_blank? && @collection.voice_recognition
           .voice-recognition
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
@@ -48,30 +51,31 @@
           span =t('.always_show_fullscreen')
 
       .flex-toolbar_group.push-right
+
+      .flex-toolbar_group
         =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
+        =f.check_box('mark_blank', {checked: @page.status_blank?})
 
       -if !@collection.review_workflow
         .flex-toolbar_group
           =f.label 'needs_review', t('.needs_review')
-          =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
+          =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
       =render(:partial => 'save_buttons')
 
-  -if @page.status == Page::STATUS_NEEDS_REVIEW && current_user.can_review?(@collection)
+  -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
-      -if @collection.review_workflow 
+      -if @collection.review_workflow
         =t('.this_page_marked_needs_review_workflow_version')
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}" id="splitter")
-    .page-column
-      .page-imagescan
-        =render :partial => '/shared/osd_div'
-
-    .page-column
-      -if @page.status == Page::STATUS_BLANK
+  .page-columns(data-layout-mode="#{@layout_mode}")
+    .page-column.page-imagescan(id="leftColumn")
+      =render :partial => '/shared/osd_div'
+    .splitter(id="splitter")
+    .page-column(id="rightColumn")
+      -if @page.status_blank?
         .page-preview[*language_attrs(@collection)]
           .centered
             .centered_content
@@ -90,8 +94,8 @@
               =f.text_field :title
           -if !@collection.field_based
             =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
-            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
-            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction, :height => '', :show_line_numbers => true} })
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
@@ -142,82 +146,6 @@ h2.legend =t('.notes_and_questions')
 
 -content_for :javascript
   javascript:
-    var splitter = null;
-
-    function applySplitter(mode) {
-      var position = '50%'
-
-      if(splitter) {
-        splitter.destroy();
-      }
-
-      splitter = $('#splitter').split({
-        orientation: (mode === 'rtl' || mode === 'ltr')?'vertical':'horizontal',
-        limit: 10,
-        position, // if there is no percentage it interpret it as pixels
-        onDrag: function(event) {
-          if(typeof myCodeMirror !== 'undefined') {
-            myCodeMirror.refresh();
-          }
-          if(typeof hot !== 'undefined') {
-            hot.render();
-          }
-          Cookies.set('drag_position', splitter.position(), { expires: 365 });
-
-          if(mode === 'rtl') {
-            var left_width = $('.left_panel').width();
-            var right_width = $('.right_panel').width();
-
-            $('.right_panel').width(left_width);
-            $('.left_panel').width(right_width);
-          }
-
-          if(mode === 'btt') {
-            var top_height = $('.top_panel').height();
-            var bottom_height = $('.bottom_panel').height();
-
-            $('.top_panel').height(bottom_height);
-            $('.bottom_panel').height(top_height);
-          }
-        }
-      });
-
-      if(typeof myCodeMirror !== 'undefined') {
-        myCodeMirror.refresh();
-      }
-      if(typeof hot !== 'undefined') {
-        hot.render();
-      }
-
-      if(Cookies && (Cookies.get('drag_position') !== undefined) && (Cookies.get('drag_position') !== '0')) {
-        position = parseFloat(Cookies.get('drag_position'));
-        splitter.position(position);
-
-        if(mode === 'rtl') {
-          var left_width = $('.left_panel').width();
-          var right_width = $('.right_panel').width();
-
-          $('.right_panel').width(left_width);
-          $('.left_panel').width(right_width);
-        }
-
-        if(mode === 'btt') {
-          var top_height = $('.top_panel').height();
-          var bottom_height = $('.bottom_panel').height();
-
-          $('.top_panel').height(bottom_height);
-          $('.bottom_panel').height(top_height);
-        }
-      }
-
-      $('.vsplitter').attr('title', 'Drag this to change the editor and image viewer');
-      $('.hsplitter').attr('title', 'Drag this to change the editor and image viewer');
-    }
-
-    window.addEventListener('resize', function(event) {
-      applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
-    })
-
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
@@ -255,10 +183,39 @@ h2.legend =t('.notes_and_questions')
 
     $(function() {
       var imageWindow = null;
+      var resizableSplitter = Object.create(ResizableSplitter);
+
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+
+        if(resizableSplitter && resizableSplitter.destroy) {
+          resizableSplitter.destroy()
+        }
+
+        resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('splitterPos', pos)
+
+            // re-render spreedsheet & codemirror
+            refreshEditors();
+          },
+          initialPosition: (window.localStorage.getItem('splitterPos') || 50) + '%'
+        });
+
+        // re-render spreedsheet & codemirror
+        refreshEditors();
+      }
+
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
 
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
+        $('.headline').toggleClass('fullscreen');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
@@ -275,11 +232,7 @@ h2.legend =t('.notes_and_questions')
         if (typeof freezeTableColumn !== "undefined") {
           window.removeEventListener('scroll', freezeTableColumn);
           window.addEventListener('scroll', function (e) {
-            if(mode === 'ttb') {
-              freezeTableColumn('.page-imagescan', '.spreadsheet', '.ht_clone_top');
-            } else {
-              freezeTableColumn('.page-toolbar', '.spreadsheet', '.ht_clone_top');
-            } 
+            freezeTableColumn();
           });
         }
 
@@ -308,12 +261,6 @@ h2.legend =t('.notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-
-      if(Cookies && (Cookies.get('transcribe_layout_mode') !== undefined)) {
-        applySplitter(Cookies.get('transcribe_layout_mode'));
-      } else {
-        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
-      }
     });
 
     $(function() {
@@ -387,7 +334,7 @@ h2.legend =t('.notes_and_questions')
             if (!confirmation) {
               return false;
             }
-          }          
+          }
         } else {
           hideCustomAlert();
           allowFormToSubmit();

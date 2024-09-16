@@ -28,25 +28,46 @@
 
 <script>
   var button_config = [
+    {
+      class: 'undoBtn',
+      label: '<%= svg_symbol("#icon-arrow-undo") %>',
+      title: '<%= t(".undo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
+    {
+      class: 'redoBtn',
+      label: '<%= svg_symbol("#icon-arrow-redo") %>',
+      title: '<%= t(".redo_description") %>',
+      callback: function (cm) {
+        return false
+      }
+    },
     <% @collection.editor_buttons.each do |button| %>
       {
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
-        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
+        title: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
-          var selection = cm.getSelection();
-          cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
-          if (!selection) {
-            var cursorPos = cm.getCursor();
-            cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
-          }
-          <% if button.has_attribute %>
-            else {
+          var key = '<%= "#{button.key}" %>';
+          if(key === 'table') {
+            openTableModal()
+          } else {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
+            if (!selection) {
               var cursorPos = cm.getCursor();
-              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
             }
-          <% end %>
+            <% if button.has_attribute %>
+              else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+              }
+            <% end %>
+          }
         }
       },
     <% end %>
@@ -101,7 +122,7 @@
   var myCodeMirror = CodeMirror.fromTextArea(
     document.getElementById("<%= textarea %>"),
     {
-      lineNumbers: true,
+      lineNumbers: <%= show_line_numbers %>,
       mode: "xml",
       extraKeys: {
         "'<'": completeAfter,
@@ -119,11 +140,141 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
-    // track editing for volunteer hours
-    myCodeMirror.on("change", function(instance, changeObj) {
+  
+  // give codeMirror with class of respective text direction
+  myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+
+  if("<%= height %>") {
+    myCodeMirror.getWrapperElement().style.maxHeight = "<%= height %>px";
+    myCodeMirror.getWrapperElement().style.minHeight = "<%= height %>px";
+    document.querySelector('.CodeMirror-buttonsPanel').style.top = 0;
+  }
+
+
+  // open the modal
+  function openTableModal() {
+    document.getElementById('tableModal').style.display = 'block';
+  }
+
+  // close the modal
+  function closeTableModal() {
+    document.getElementById('tableModal').style.display = 'none';
+  }
+
+  // generate a Markdown table
+  function generateTable(rows, cols) {
+    let table = '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    table += '| ' + Array(cols).fill('---').join(' | ') + ' |\n';
+    for (let i = 0; i < rows - 1; i++) {
+      table += '| ' + Array(cols).fill('').join(' | ') + ' |\n';
+    }
+    return table;
+  }
+
+  // insert table into CodeMirror
+  function insertTable() {
+    const rows = parseInt(document.getElementById('rows').value);
+    const cols = parseInt(document.getElementById('columns').value);
+    const tableMarkdown = generateTable(rows, cols);
+    myCodeMirror.replaceSelection(tableMarkdown);
+    closeTableModal();
+  }
+
+  // event listeners
+  // document.querySelector('.insertTableBtn').addEventListener('click', openTableModal);
+
+  if(document.getElementById('insertTableOk'))
+    document.getElementById('insertTableOk').addEventListener('click', insertTable);
+
+  if(document.getElementById('insertTableCancel'))
+    document.getElementById('insertTableCancel').addEventListener('click', closeTableModal);
+
+  // track editing for volunteer hours
+  myCodeMirror.on("change", function(instance, changeObj) {
+    if(typeof(sendActiveEditing) !== 'undefined')
       sendActiveEditing()
-    });
-    
-    // give codeMirror with class of respective text direction
-    myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+  });
+
+  var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
+  var subjectAutoListStartAt = null;
+  var isAutoCompleteTriggered = false;
+
+  // Helper function to count the number of open and closed brackets
+  function countBrackets(text) {
+    let openCount = 0;
+    let closeCount = 0;
+
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === '[' && text[i+1] === '[') {
+        openCount++;
+      }
+      if (text[i] === ']' && text[i+1] === ']') {
+        closeCount++;
+      }
+    }
+
+    return { openCount, closeCount };
+  }
+
+  // display hint of subject linking
+  function showSubjectLinkHint(editor, change) {
+    if(subjectAutoListStartAt) {
+      var suggestions = [];
+      var cursor = editor.getCursor();
+      var start = cursor.ch - 2; // the start of the hint range
+      var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
+
+      suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
+
+      editor.showHint({
+        completeSingle: false,
+        hint: function() {
+          return {
+            list: suggestions.map(String),
+            from: CodeMirror.Pos(cursor.line, subjectAutoListStartAt),
+            to: CodeMirror.Pos(cursor.line, cursor.ch)
+          };
+        }
+      });
+    }
+  }
+
+  // bind autocomplete event
+  myCodeMirror.on("change", function(editor, change) {
+    var cursor = myCodeMirror.getCursor();
+    var token = myCodeMirror.getTokenAt(cursor);
+    var lastTwoChars = myCodeMirror.getRange({line: cursor.line, ch: cursor.ch - 2}, cursor);
+
+    // Check for opening and closing brackets
+    const text = editor.getValue();
+    const { openCount, closeCount } = countBrackets(text);
+
+    // Always show hints on change, but avoid adding multiple listeners
+    if(subjectAutoListStartAt && isAutoCompleteTriggered && openCount > closeCount)
+      showSubjectLinkHint(editor);
+
+    // Only trigger autocomplete if there are unclosed "[[" brackets
+    if (lastTwoChars === '[[') {
+      if(!isAutoCompleteTriggered) {
+        isAutoCompleteTriggered = true;
+        subjectAutoListStartAt = cursor.ch;
+        editor.on("inputRead", showSubjectLinkHint);
+      }
+    }
+
+    if (openCount > closeCount) {
+      if(!isAutoCompleteTriggered) {
+        isAutoCompleteTriggered = true;
+        editor.on("inputRead", showSubjectLinkHint);
+      }
+    }
+
+    if (openCount === closeCount) {
+      isAutoCompleteTriggered = false;
+      editor.off("inputRead", showSubjectLinkHint);
+    }
+  });
+
+  document.querySelector('.undoBtn').addEventListener('click', function(){undoCodeMirror()});
+  document.querySelector('.redoBtn').addEventListener('click', function(){redoCodeMirror()});
 </script>
