@@ -73,6 +73,7 @@ class Page < ApplicationRecord
   has_many :deeds, :dependent => :destroy
   has_many :external_api_requests, :dependent => :destroy
   has_many :page_processing_jobs, :dependent => :destroy
+  has_many :ai_jobs, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables

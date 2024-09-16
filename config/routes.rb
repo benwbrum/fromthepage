@@ -540,6 +540,10 @@ Fromthepage::Application.routes.draw do
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
+
+        resources :page, path: '', only: [] do
+          get 'htr_jobs', to: 'page#htr_jobs'
+        end
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

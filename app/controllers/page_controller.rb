@@ -32,6 +32,10 @@ class PageController < ApplicationController
     render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
   end
 
+  def htr_jobs
+    @ai_jobs = @page.ai_jobs # this may need to be restricted for non-HTR AI Jobs in the future
+  end
+
   def delete
     # We will deprecate this soon, and use convention destroy
     @page.destroy

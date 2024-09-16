@@ -7,9 +7,8 @@
   icon: '#icon-robot',
   name: t('.htr'),
   selected: 2,
-  path: "#",
+  path: "#{main_app.collection_work_page_htr_jobs_path(@collection.owner, @collection, @work, @page)}",
 }]
-
 .side-tabs
   -for tab in tabs
     -if tab[:selected] == selected

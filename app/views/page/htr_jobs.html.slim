@@ -1,0 +1,27 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 4, :page_id => @page.id }})
+.collection-meta-wrapper
+  =render({ partial: 'edit_tabs', locals: { selected: 2 }})
+
+  / link to create a new ai job
+  = link_to 'New Ai Job', new_ai_job_path
+
+  / table listing ai jobs for the current page
+  table.table.table-striped.table-hover
+    thead
+      tr
+        th Name
+        th Status
+        th Created
+        th By
+    tbody
+      - @ai_jobs.each do |ai_job|
+        tr
+          td = ai_job.job_type
+          td = ai_job.status
+          td = ai_job.created_at
+          td
+            = link_to 'Show', ai_job
+            = link_to 'Edit', edit_ai_job_path(ai_job)
+            = link_to 'Destroy', ai_job, method: :delete, data: { confirm: 'Are you sure?' }
+
+
