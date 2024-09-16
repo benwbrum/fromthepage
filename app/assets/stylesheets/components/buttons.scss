@@ -119,7 +119,7 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
 }
 
 // Button without content
-button:empty, .button:empty {
+button:empty, .button:empty:not(input) {
   padding: 0;
   width: $btnHeight;
   height: $btnHeight;

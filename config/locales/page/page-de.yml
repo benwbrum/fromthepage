@@ -5,7 +5,10 @@ de:
       page_created: Seite erfolgreich erstellt
     delete:
       page_deleted: Seite wurde gelöscht
-    edit:
+    edit_tabs:
+      general: Allgemein
+      htr: HTR
+    form:
       browse: Durchsuchen
       click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
       created: "%{date} erstellt"
