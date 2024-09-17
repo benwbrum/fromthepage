@@ -89,6 +89,14 @@ class Page < ApplicationRecord
 
   serialize :metadata, Hash
 
+  ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff'
+  ].freeze
+
   STATUS_VALUES = {
     new: 'new',
     blank: 'blank',
@@ -98,6 +106,7 @@ class Page < ApplicationRecord
     transcribed: 'transcribed',
     translated: 'translated'
   }.freeze
+
 
   enum status: STATUS_VALUES, _prefix: :status
   enum translation_status: STATUS_VALUES, _prefix: :translation_status

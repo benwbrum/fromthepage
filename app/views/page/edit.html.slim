@@ -1,5 +1,5 @@
 =javascript_include_tag "settings"
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 4, :page_id => @page.id }})
+=render({ partial: '/shared/page_tabs', locals: { selected: 4, page_id: @page.id } })
 .collection-meta-wrapper
   =render({ partial: 'edit_tabs', locals: { selected: 1 }})
   =render partial: 'form'

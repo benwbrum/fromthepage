@@ -132,7 +132,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
-    get 'update_featured_page', to: 'work#update_featured_page'
+    post 'update_featured_page', to: 'work#update_featured_page'
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
     get ':collection_id/:work_id/edit_scribes', to: 'work#edit_scribes', as: 'edit_scribes'
@@ -144,18 +144,9 @@ Fromthepage::Application.routes.draw do
     get 'document_sets_select', to: 'work#document_sets_select'
   end
 
-  scope 'page', as: 'page' do
-    get 'new', to: 'page#new'
-    get 'delete', to: 'page#delete'
-    get 'reorder_page', to: 'page#reorder_page'
-    get 'edit', to: 'page#edit'
-    get 'rotate', to: 'page#rotate'
-    post 'update', to: 'page#update'
-    post 'create', to: 'page#create'
-  end
-
-  resources :page, except: [:index, :show] do
-    # TODO Clean up page scopes
+  resources :page, except: [:index, :show, :edit], param: :page_id do
+    post :reorder, on: :collection
+    post :rotate, on: :collection
   end
 
   scope 'article', as: 'article' do

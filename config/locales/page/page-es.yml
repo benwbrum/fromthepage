@@ -3,8 +3,6 @@ es:
   page:
     create:
       page_created: Página creada con suceso
-    delete:
-      page_deleted: La página ha sido eliminada
     destroy:
       page_deleted: La página ha sido eliminada
     edit:
@@ -16,8 +14,8 @@ es:
       browse: Navegar
       click_to_browse_a_file: Haz clic para consultar un archivo...
       created: Creado %{date}
+      delete: Eliminar Página
       delete_confirm_message: "¿De verdad deseas eliminar esta colección? ¡Después de eliminarla no podrá ser recuperada!"
-      delete_page: Eliminar Página
       dimensions: 'Dimensiones: %{width}&times;%{height}'
       here_you_can_edit: Aquí puedes editar el título de la página y subir una nueva imagen. Para editar la transcripción de la página o el texto de traducción, cambia a la pestaña correspondiente arriba.
       page_image: Imagen de la Página
