@@ -63,7 +63,7 @@ describe "testing deletions" do
     expect(page).to have_content(test_page.title)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
     page.find('.tabs').click_link("Settings")
-    page.find('a', text: 'Delete Page').click
+    click_button 'Delete Page'
     del_count = work.pages.count
     expect(del_count).to eq (count - 1)
     deeds = Deed.where(page_id: test_page.id)
