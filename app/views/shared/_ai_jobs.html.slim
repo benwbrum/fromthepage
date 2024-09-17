@@ -1,0 +1,22 @@
+h3 AI Jobs
+-if work_or_collection.ai_jobs.present? 
+  table.tabular
+    thead
+      /TODO internationalize
+      tr
+        th Status
+        th Engine
+        th Parameters
+        th Owner
+    -work_or_collection.ai_jobs.each do |ai_job|
+      tr
+        /TODO internationalize with parameters
+        td =ai_job.status
+        td =ai_job.engine
+        /TODO consider a helper to parse thsi out
+        td =ai_job.parameters
+        td =ai_job.user.display_name
+-else
+  p No AI Jobs have been run for #{work_or_collection.title}
+
+=link_to "New AI Job", configure_ai_job_collection_work_path(@collection.owner, @collection, work_or_collection), class: 'button'

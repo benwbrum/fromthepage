@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>orig_proc-api-fa3a1d32-7829-46d3-9e4a-35b891a7b0ea.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2024-02-05T00:14:35.065+01:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Tags/>
+   <Layout>
+      <Page ID="Page1" PHYSICAL_IMG_NR="1" HEIGHT="1782" WIDTH="3008">
+         <TopMargin HEIGHT="0" WIDTH="3008" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="1782" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="1782" WIDTH="0" VPOS="0" HPOS="3008"/>
+         <BottomMargin HEIGHT="0" WIDTH="3008" VPOS="1782" HPOS="0"/>
+         <PrintSpace HEIGHT="1782" WIDTH="3008" VPOS="0" HPOS="0">
+            <TextBlock ID="tr_1" HEIGHT="497" WIDTH="1681" VPOS="890" HPOS="1044">
+               <Shape>
+                  <Polygon POINTS="1044,890 1044,1387 2725,1387 2725,890"/>
+               </Shape>
+               <TextLine ID="tr_1_tl_1"
+                         BASELINE="1104,973 1174,973 1244,980 1315,983 1385,985 1456,979 1526,979 1597,977 1667,976 1738,974 1808,977 1878,977 1949,973 2019,967 2090,970 2160,967 2231,971 2301,973 2372,973 2442,976 2513,973"
+                         HEIGHT="275"
+                         WIDTH="1415"
+                         VPOS="770"
+                         HPOS="1095">
+                  <String HEIGHT="275"
+                          WIDTH="619"
+                          VPOS="770"
+                          HPOS="1007"
+                          CONTENT="Mr."/>
+                  <SP HEIGHT="275" WIDTH="88" VPOS="770" HPOS="1626"/>
+                  <String HEIGHT="275"
+                          WIDTH="708"
+                          VPOS="770"
+                          HPOS="1360"
+                          CONTENT="John"/>
+                  <SP HEIGHT="275" WIDTH="88" VPOS="770" HPOS="2068"/>
+                  <String HEIGHT="275"
+                          WIDTH="531"
+                          VPOS="770"
+                          HPOS="1803"
+                          CONTENT="C."/>
+                  <SP HEIGHT="275" WIDTH="88" VPOS="770" HPOS="2333"/>
+                  <String HEIGHT="275"
+                          WIDTH="531"
+                          VPOS="770"
+                          HPOS="1979"
+                          CONTENT="East"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_2"
+                         BASELINE="1044,1149 1097,1147 1151,1146 1205,1143 1259,1143 1312,1143 1366,1141 1420,1137 1474,1143 1527,1138 1581,1140 1635,1140 1689,1141 1742,1145 1796,1146 1850,1149 1904,1149 1957,1149 2011,1149 2065,1149 2119,1149"
+                         HEIGHT="171"
+                         WIDTH="1084"
+                         VPOS="1026"
+                         HPOS="1033">
+                  <String HEIGHT="171"
+                          WIDTH="1251"
+                          VPOS="1026"
+                          HPOS="866"
+                          CONTENT="Pittsylvania."/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_3"
+                         BASELINE="2205,1173 2231,1175 2257,1177 2283,1183 2309,1185 2335,1185 2361,1185 2387,1185 2413,1187 2439,1188 2465,1188 2491,1188 2517,1188 2543,1188 2569,1188 2595,1188 2621,1188 2647,1188 2673,1189 2699,1190 2725,1188"
+                         HEIGHT="258"
+                         WIDTH="529"
+                         VPOS="1022"
+                         HPOS="2194">
+                  <String HEIGHT="258"
+                          WIDTH="705"
+                          VPOS="1022"
+                          HPOS="2018"
+                          CONTENT="Toutto"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_4"
+                         BASELINE="1952,1313 1984,1317 2017,1320 2049,1323 2082,1327 2115,1328 2147,1329 2180,1332 2213,1336 2245,1337 2278,1337 2311,1337 2343,1339 2376,1343 2409,1346 2441,1346 2474,1348 2507,1349 2539,1349 2572,1346 2605,1349"
+                         HEIGHT="215"
+                         WIDTH="666"
+                         VPOS="1191"
+                         HPOS="1935">
+                  <String HEIGHT="215"
+                          WIDTH="888"
+                          VPOS="1191"
+                          HPOS="1713"
+                          CONTENT="Vizina"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

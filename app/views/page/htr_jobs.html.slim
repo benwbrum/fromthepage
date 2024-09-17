@@ -1,0 +1,32 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 4, :page_id => @page.id }})
+.collection-meta-wrapper
+  =render({ partial: 'edit_tabs', locals: { selected: 2 }})
+  .page-settings.collection-settings-wrapper
+
+    .columns
+      .maincol
+        / link to create a new ai job
+        = link_to t('.new_ai_job'), collection_work_page_new_htr_job_path(@collection.owner, @collection, @work, @page), class: 'button', data: { litebox: { hash: 'new-htr-job-for-page', noscroll: false }}
+
+        h2 =t('.htr_jobs')
+        / table listing ai jobs for the current page
+        table.admin-grid.datagrid.striped
+          thead
+            tr
+              th Name
+              th Status
+              th Created
+              th User
+          tbody
+            - @ai_jobs.each do |ai_job|
+              tr
+                td 
+                  = ai_job.job_type
+                  br
+                  = 'TODO: ai_job.parameters '
+                td = ai_job.status
+                td 
+                  =ai_job.created_at
+                td
+                  =ai_job.user.display_name
+

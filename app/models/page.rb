@@ -32,7 +32,6 @@
 # Indexes
 #
 #  index_pages_on_edit_started_by_user_id                 (edit_started_by_user_id)
-#  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
 #  pages_search_text_index                                (search_text)
@@ -73,6 +72,8 @@ class Page < ApplicationRecord
   has_many :tex_figures, :dependent => :destroy
   has_many :deeds, :dependent => :destroy
   has_many :external_api_requests, :dependent => :destroy
+  has_many :page_processing_jobs, :dependent => :destroy
+  has_many :ai_jobs, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
@@ -620,8 +621,12 @@ class Page < ApplicationRecord
   end
 
   def alto_xml=(xml)
-    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
-    File.write(alto_path, xml)
+    if xml.blank?
+      FileUtils.rm(alto_path) if File.exists?(alto_path)
+    else
+      FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
+      File.write(alto_path, xml)
+    end
   end
 
 

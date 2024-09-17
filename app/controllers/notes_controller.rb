@@ -1,6 +1,5 @@
 class NotesController < ApplicationController
   include ActionView::Helpers::TextHelper
-  PAGES_PER_SCREEN = 20
 
   def create
     @note = Note.new(note_params)

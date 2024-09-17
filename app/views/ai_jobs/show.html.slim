@@ -1,0 +1,46 @@
+=render(:partial => 'admin/header', :locals => { :selected => 3 })
+
+
+p#notice= notice
+
+p
+  strong Job type:
+  = @ai_job.job_type
+
+p
+  strong Engine:
+  = @ai_job.engine
+
+p
+  strong Parameters:
+  = @ai_job.parameters
+
+p
+  strong Status:
+  = @ai_job.status
+
+p
+  strong Page:
+  = @ai_job.page&.title
+
+p
+  strong Work:
+  = @ai_job.work&.title
+
+p
+  strong Collection:
+  = @ai_job.collection&.title
+
+p
+  strong User:
+  = @ai_job.user.display_name
+
+p 
+  strong Created at:
+  = @ai_job.created_at
+
+p
+  strong Updated at:
+  = @ai_job.updated_at
+
+h3 TODO: List results and external api requests

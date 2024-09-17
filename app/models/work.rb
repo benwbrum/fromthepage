@@ -100,6 +100,7 @@ class Work < ApplicationRecord
   has_one :work_facet, :dependent => :destroy
   has_many :bulk_exports, :dependent => :delete_all
   has_many :metadata_description_versions, -> { order 'version_number DESC' }, :dependent => :destroy
+  has_many :ai_jobs, -> { order 'created_at DESC' }, :dependent => :destroy
 
   before_save :update_derivatives
 

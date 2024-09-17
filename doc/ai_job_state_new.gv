@@ -1,0 +1,124 @@
+digraph ai_job_fsm {
+  label="New AI Job State";
+//  rotate=90;
+  start[
+    label="Start\nAI Job",
+    xlabel="\rUI creates an ai_job record.\rLaunches a background task"
+  ];
+  queued[
+    label="AI Job\nQueued",
+    xlabel="Record created.\l? Launch a task from Rails"];
+  start -> queued;
+
+  submitting_processing[
+    label="Submit\nMetagrapho\nProcessing",
+    shape=rectangle,
+    xlabel="Existing Rake Task\l(only processes pages without ALTO)\l(runs for several minutes)"
+  ];
+
+  queued -> submitting_processing;
+
+
+  waiting_for_processing[
+    label="Waiting\nfor\nMetagrapho\nProcessing",
+    xlabel="Handle via cron every 5? minutes"
+  ];
+  submitting_processing -> waiting_for_processing;
+
+  check_external_requests_task[
+    label="Check\nExternal\nRequests\nTask",
+    xlabel="Modify existing task\lto do all steps per page",
+    shape=rectangle;
+  ];
+  waiting_for_processing -> check_external_requests_task;
+
+
+
+  subgraph cluster_page_fsm {
+    label="Page FSM\n(AI Job Agnostic)";
+
+    page_queued[
+      label="HTR Queued";
+    ];
+
+    page_running[
+      label="HTR Running"
+    ];
+
+    page_waiting[
+      label="HTR Waiting"
+    ];
+
+    page_errored[
+      label="HTR Errored"
+    ];
+
+    page_completed[
+      label="HTR Completed"
+    ];
+
+
+    fetch_htr[
+      label="Fetch\nALTO";
+      shape=diamond;
+    ];
+
+
+    ai_text_run[
+      label="AI Text Ready"
+    ];
+
+    page_completed->fetch_htr;
+
+
+    page_queued->page_running;
+
+    page_running->page_waiting;
+
+
+    restart_task[
+      label="Restart Task"
+      shape=diamond;
+    ]
+
+    check_request[
+      label="Check\nRequest";
+      shape=diamond;
+    ]
+
+    page_waiting->check_request;
+    check_request->page_errored;
+    check_request->page_completed;
+    check_request->page_waiting;
+
+
+    page_errored->restart_task;
+    restart_task->page_queued;
+
+    need_ai_text[label="AI Job\nneeds\nAI Text?",shape=diamond];
+    fetch_htr->need_ai_text;
+ 
+     generate_ai_text[
+        label="Generate\nAI Text",
+        shape=rectangle
+      ];
+ 
+     need_ai_text->generate_ai_text[label="yes"];
+     generate_ai_text->ai_text_run;
+  
+    are_all_requests_complete[
+      label="Update\nJob\nStatus\n(callback)",
+      shape=diamond
+    ];
+
+  };
+
+  check_external_requests_task -> page_queued;
+
+  need_ai_text->are_all_requests_complete[label="no"];
+
+  ai_text_run -> are_all_requests_complete;
+  done[label="Finished"];
+
+  are_all_requests_complete->done;
+ }

@@ -1,4 +1,6 @@
 Fromthepage::Application.routes.draw do
+  resources :ai_results
+  resources :ai_jobs
   resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
@@ -152,6 +154,10 @@ Fromthepage::Application.routes.draw do
     get 'rotate', to: 'page#rotate'
     post 'update', to: 'page#update'
     post 'create', to: 'page#create'
+  end
+
+  resources :page, except: [:index, :show] do
+    # TODO Clean up page scopes
   end
 
   scope 'article', as: 'article' do
@@ -509,6 +515,8 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
+      get 'configure_ai_job', on: :member, as: :configure_ai_job, to: 'ai_jobs#new_ai_job_collection'
+      post 'run_ai_job', on: :member, as: :run_ai_job, to: 'ai_jobs#run_ai_job_collection'
 
 
 
@@ -519,6 +527,8 @@ Fromthepage::Application.routes.draw do
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
         get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
+        get 'configure_ai_job', on: :member, as: :configure_ai_job, to: 'ai_jobs#new_ai_job_work'
+        post 'run_ai_job', on: :member, as: :run_ai_job, to: 'ai_jobs#run_ai_job_work'
         get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
@@ -530,6 +540,12 @@ Fromthepage::Application.routes.draw do
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
+
+        resources :page, path: '', only: [] do
+          get 'htr_jobs', to: 'page#htr_jobs'
+          get 'new_htr_job', to: 'ai_jobs#new_htr_job_page'
+          post 'run_htr_job', to: 'ai_jobs#run_htr_job_page'
+        end
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

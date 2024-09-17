@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Job type:</strong>
+  <%= @ai_result.job_type %>
+</p>
+
+<p>
+  <strong>Engine:</strong>
+  <%= @ai_result.engine %>
+</p>
+
+<p>
+  <strong>Parameters:</strong>
+  <%= @ai_result.parameters %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @ai_result.status %>
+</p>
+
+<p>
+  <strong>Result:</strong>
+  <%= @ai_result.result %>
+</p>
+
+<p>
+  <strong>Page:</strong>
+  <%= @ai_result.page_id %>
+</p>
+
+<p>
+  <strong>Work:</strong>
+  <%= @ai_result.work_id %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @ai_result.collection_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @ai_result.user_id %>
+</p>
+
+<p>
+  <strong>Ai job:</strong>
+  <%= @ai_result.ai_job_id %>
+</p>
+
+<%= link_to 'Edit', edit_ai_result_path(@ai_result) %> |
+<%= link_to 'Back', ai_results_path %>

@@ -5,7 +5,14 @@ es:
       page_created: Página creada con suceso
     delete:
       page_deleted: La página ha sido eliminada
+    destroy:
+      page_deleted: La página ha sido eliminada
     edit:
+      status: 'Estado:'
+    edit_tabs:
+      general: General
+      htr: HTR
+    form:
       browse: Navegar
       click_to_browse_a_file: Haz clic para consultar un archivo...
       created: Creado %{date}
@@ -16,10 +23,10 @@ es:
       page_image: Imagen de la Página
       page_position: 'Posición de Página: %{position}'
       page_status: Estado de la página
-      page_status_: No empezado
       page_status_blank: Página en blanco
       page_status_incomplete: Incompleto
       page_status_indexed: Indexado
+      page_status_new: No empezado
       page_status_review: Revisión de necesidades
       page_status_transcribed: Completo
       page_status_translated: Traducido
@@ -28,7 +35,6 @@ es:
       rotate_clockwise: Girar en Sentido Horario
       rotate_counterclockwise: Girar Hacia la Izquierda
       save_changes: Guardar Cambios
-      status: 'Estado:'
     new:
       add_new_page: Añadir Nueva Página
       browse: Navegar

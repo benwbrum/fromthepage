@@ -1,0 +1,140 @@
+digraph page_status_fsm {
+  label="Page Status FSM, UI and Actions\n(Optional Review Flow)";
+//  rotate=90;
+  overlap=false;
+  splines=true;
+  rankdir="TB";
+
+  subgraph optional_flow {
+    label="Review Optional Workflow";
+
+    start[
+      label="Untranscribed",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+      // TODO shade to look initial?  In progress? Not complete?
+    ];
+    { rank=source; start; }
+
+    save_to_untranscribed[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+    start -> save_to_untranscribed;
+
+    mark_blank_to_untranscribed[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
+
+
+
+
+    incomplete[
+      label="Incomplete",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+    ];
+
+    save_to_untranscribed -> incomplete;
+
+    save_to_incomplete[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+
+    incomplete -> save_to_incomplete;
+    save_to_incomplete -> incomplete;
+
+
+    mark_blank_to_incomplete[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
+
+ 
+    blank[
+      label="Blank",
+      // TODO what do we show here already?
+      xlabel="\rTODO: What do we show here?"
+    ];
+
+    
+    start -> mark_blank_to_untranscribed;
+    mark_blank_to_untranscribed -> blank;
+
+    incomplete -> mark_blank_to_incomplete;
+    mark_blank_to_incomplete -> blank;
+
+
+
+    needs_review[
+      label="Needs Review",
+      xlabel="\rButtons: Save, Done(?)\rChecks: Mark Blank, (un)Mark for Review"
+    ]
+
+    done_to_untranscribed[
+      label="Done\nButton",
+      shape=diamond
+    ];
+
+    done_to_incomplete[
+      label="Done\nButton",
+      shape=diamond
+    ];
+    
+
+
+    mark_needs_review_to_untranscribed[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+    mark_needs_review_to_incomplete[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+    mark_needs_review_to_transcribed[
+      label="Needs Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+
+    transcribed[
+      label="Transcribed",
+      xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    ];
+
+    start -> mark_needs_review_to_untranscribed;
+    mark_needs_review_to_untranscribed -> needs_review;
+    incomplete -> mark_needs_review_to_incomplete;
+    mark_needs_review_to_incomplete -> needs_review;
+    transcribed -> mark_needs_review_to_transcribed;
+    mark_needs_review_to_transcribed -> needs_review;
+
+    unmark_needs_review_to_needs_review[
+      label="Unmark\nNeeds Review\n&\nSave or Done",
+      shape=diamond
+    ];
+
+
+    needs_review -> unmark_needs_review_to_needs_review;
+    unmark_needs_review_to_needs_review -> transcribed;
+
+
+    start -> done_to_untranscribed;
+    done_to_untranscribed -> transcribed;
+    incomplete -> done_to_incomplete;
+    done_to_incomplete -> transcribed;
+
+    //indexed[
+    //  label="Indexed",
+    //  xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    //];
+
+    // TODO deal with translation
+
+  };
+
+}

@@ -1,0 +1,55 @@
+digraph ai_job_fsm {
+  label="AI Job State";
+//  rotate=90;
+  start[
+    label="Start\nAI Job",
+    xlabel="\rUI creates an ai_job record.\r? Does it start a background task?"
+  ];
+  queued[
+    label="AI Job\nQueued",
+    xlabel="Record created.\l? Do we harvest this in a cron job?\l? Do we launch a task from Rails?"];
+  start -> queued;
+  submitting_processing[
+    label="Submit\nMetagrapho\nProcessing",
+    shape=rectangle,
+    xlabel="Existing Rake Task\l(only processes pages without ALTO)\l(runs for several minutes)"
+  ];
+  queued -> submitting_processing;
+  waiting_for_processing[
+    label="Waiting\nfor\nMetagrapho\nProcessing",
+    xlabel="? How long do we wait?\l? Handle via cron?\l? One job or multiple?\l(runs for several minutes)"
+  ];
+  submitting_processing -> waiting_for_processing;
+  check_status_and_fetch[
+    label="Check\nStatus\nAnd\nFetch\nALTO",
+    shape=rectangle,
+    xlabel="(existing rake task)\l(runs for several minutes)"
+  ];
+  waiting_for_processing -> check_status_and_fetch;
+  are_all_requests_complete[
+    label="Are\nall\nrequests\nfinished?",
+    shape=diamond,
+    xlabel="Current process does not \ldifferentiate between incomplete \land errored requests."];
+  check_status_and_fetch -> are_all_requests_complete;
+  are_all_requests_complete -> check_status_and_fetch[label="no"]
+  are_any_requests_failed[
+    label="Are\nany\nrequests\nFAILED?",
+    shape=diamond,
+    xlabel="Current process entirely manual"
+  ];
+  are_all_requests_complete -> are_any_requests_failed[label="yes"];
+  are_any_requests_failed -> submitting_processing[label="yes"];
+  processing_finished[label="HTR\nFinished"];
+  are_any_requests_failed -> processing_finished[label="no"];
+  need_ai_text[label="AI Job\nneeds\nAI Text?",shape=diamond];
+  processing_finished -> need_ai_text;
+  done[label="Finished"];
+  generate_ai_text[
+    label="Generate\nAI Text",
+    shape=rectangle,
+    xlabel="(existing rake task)\l(runs for several minutes)\l? Do we need error handling?"
+  ];
+  need_ai_text -> generate_ai_text[label="yes"];
+  need_ai_text -> done[label="no"];
+  generate_ai_text -> done;
+}

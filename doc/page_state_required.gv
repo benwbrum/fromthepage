@@ -1,0 +1,144 @@
+digraph page_status_fsm {
+  label="Page Status FSM, UI and Actions\n(Review Required Flow)";
+//  rotate=90;
+  overlap=false;
+  splines=true;
+  rankdir="TB";
+
+  subgraph required_flow {
+    label="Required Review Workflow";
+
+    rstart[
+      label="Untranscribed",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+      // TODO shade to look initial?  In progress? Not complete?
+    ];
+    { rank=source; rstart; }
+
+    rsave_to_untranscribed[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+    rstart -> rsave_to_untranscribed;
+
+    rmark_blank_to_untranscribed[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
+
+
+
+
+    rincomplete[
+      label="Incomplete",
+      xlabel="\rButtons: Save, Done\rChecks: Mark Blank, Mark for Review"
+    ];
+
+    rsave_to_untranscribed -> rincomplete;
+
+    rsave_to_incomplete[
+      label="Save\nButton",
+      shape=diamond
+    ];
+
+
+    rincomplete -> rsave_to_incomplete;
+    rsave_to_incomplete -> rincomplete;
+
+
+    rmark_blank_to_incomplete[
+      label="Mark Blank\n&\nSave or Done",
+      shape=diamond
+    ];
+
+ 
+    rblank[
+      label="Blank",
+      // TODO what do we show here already?
+      xlabel="\rTODO: What do we show here?"
+    ];
+
+    
+    rstart -> rmark_blank_to_untranscribed;
+    rmark_blank_to_untranscribed -> rblank;
+
+    rincomplete -> rmark_blank_to_incomplete;
+    rmark_blank_to_incomplete -> rblank;
+
+
+
+    rneeds_review[
+      label="Needs Review",
+      xlabel="\rButtons: Save, Approve"
+    ]
+
+    rdone_to_untranscribed[
+      label="Done\nButton",
+      shape=diamond
+    ];
+
+    rdone_to_incomplete[
+      label="Done\nButton",
+      shape=diamond
+    ];
+    
+    rincomplete -> rdone_to_incomplete;
+    rdone_to_incomplete -> rneeds_review[label="Advances\nPage",color=green];
+
+    rsave_to_needs_review[
+      label="Save\nButton",
+      shape=diamond
+    ];
+    rneeds_review -> rsave_to_needs_review;
+    rsave_to_needs_review -> rneeds_review;
+
+
+
+    rtranscribed[
+      label="Transcribed",
+      xlabel="\rButtons: Save"
+    ];
+
+
+
+    rapprove_to_needs_review[
+      label="Approve\nButton",
+      shape=diamond
+    ];
+
+    rneeds_review -> rapprove_to_needs_review;
+    rapprove_to_needs_review -> rtranscribed[label="Advances\nPage",color=green];
+
+    rsave_to_transcribed_reviewer[
+      label="Save\n(by reviewer\nor owner)",
+      shape=diamond
+    ];
+
+    rsave_to_transcribed_nonreviewer[
+      label="Save\n(by others)",
+      shape=diamond
+    ];
+
+
+    rtranscribed -> rsave_to_transcribed_reviewer;
+    rsave_to_transcribed_reviewer -> rtranscribed;
+
+    rtranscribed -> rsave_to_transcribed_nonreviewer;
+    rsave_to_transcribed_nonreviewer -> rneeds_review;
+
+    rstart -> rdone_to_untranscribed;
+    rdone_to_untranscribed -> rneeds_review[label="Advances\nPage",color=green];
+
+    //indexed[
+    //  label="Indexed",
+    //  xlabel="\rButtons: Save\rChecks: Mark Blank, Mark for Review"
+    //];
+
+    // TODO deal with translation
+
+  };
+
+
+
+}

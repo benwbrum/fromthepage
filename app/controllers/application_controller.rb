@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
   after_action :track_action
   around_action :switch_locale
 
+
+  PAGES_PER_SCREEN = 20
+
+
   def switch_locale(&action)
     @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
 

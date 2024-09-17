@@ -34,6 +34,7 @@ describe "testing deletions" do
   end
 
   it "deletes a document set", skip: true do
+    binding.pry
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
@@ -62,7 +63,7 @@ describe "testing deletions" do
     expect(page).to have_content(test_page.title)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
     page.find('.tabs').click_link("Settings")
-    page.find('a', text: 'Delete Page').click
+    click_button 'Delete Page'
     del_count = work.pages.count
     expect(del_count).to eq (count - 1)
     deeds = Deed.where(page_id: test_page.id)

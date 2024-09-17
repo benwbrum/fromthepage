@@ -1,0 +1,33 @@
+=render(:partial => 'admin/header', :locals => { :selected => 3 })
+
+
+p#notice= notice
+
+h1 Ai Jobs
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th Job ID
+      th Job type
+      th Engine
+      th Status
+      th User
+      th Collection
+      th Work
+      th Page
+  tbody
+    - @ai_jobs.each do |ai_job|
+      tr
+        td= link_to(ai_job.id, ai_job)
+        td= t(ai_job.job_type)
+        td= t(ai_job.engine)
+        td= t(ai_job.status)
+        td= ai_job.user&.display_name
+        td= ai_job.collection&.title
+        td= ai_job.work&.title
+        td= ai_job.page&.title
+  
+
+
+=render(:partial => 'shared/pagination', :locals => { :model => @ai_jobs, :entries_info => true })

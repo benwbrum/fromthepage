@@ -84,6 +84,8 @@
             =f.label :translation_instructions, t('.translation_instructions'), class: 'above'
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
 
+      =render(partial: 'shared/ai_jobs', locals: {work_or_collection: @work})
+
       h3
         a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") =t('.additional_metadata')
 

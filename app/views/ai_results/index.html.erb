@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ai Results</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Job type</th>
+      <th>Engine</th>
+      <th>Parameters</th>
+      <th>Status</th>
+      <th>Result</th>
+      <th>Page</th>
+      <th>Work</th>
+      <th>Collection</th>
+      <th>User</th>
+      <th>Ai job</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ai_results.each do |ai_result| %>
+      <tr>
+        <td><%= ai_result.job_type %></td>
+        <td><%= ai_result.engine %></td>
+        <td><%= ai_result.parameters %></td>
+        <td><%= ai_result.status %></td>
+        <td><%= ai_result.result %></td>
+        <td><%= ai_result.page_id %></td>
+        <td><%= ai_result.work_id %></td>
+        <td><%= ai_result.collection_id %></td>
+        <td><%= ai_result.user_id %></td>
+        <td><%= ai_result.ai_job_id %></td>
+        <td><%= link_to 'Show', ai_result %></td>
+        <td><%= link_to 'Edit', edit_ai_result_path(ai_result) %></td>
+        <td><%= link_to 'Destroy', ai_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ai Result', new_ai_result_path %>

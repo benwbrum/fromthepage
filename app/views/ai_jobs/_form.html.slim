@@ -1,0 +1,32 @@
+= form_with(model: ai_job) do |form|
+  =hidden_field_tag :collection_id, @collection.slug
+  =hidden_field_tag :work_id, @work.slug
+  =hidden_field_tag :page_id, @page.id
+  - if ai_job.errors.any?
+    #error_explanation
+    h2 = pluralize(ai_job.errors.count, "error") + " prohibited this ai_job from being saved:"
+    ul
+      - ai_job.errors.each do |error|
+        li = error.full_message
+  / In the current iteration, users will not be able to change their job type or engine
+  / .field
+  /   = form.label :job_type
+  /   = form.select :job_type, AiJob::JobType.all.map { |type| [type, type] }, class: 'form-control'
+
+    
+  / Conditionalize on job_type: let users specify Transkribus model IDs if HTR or HTR_AND_AI_TEXT
+  - if AiJob::JobType.htr.include? ai_job.job_type
+    .field
+      = label_tag :transkribus_model_id
+      / editable select field
+      = select_tag(:transkribus_model_id, options_for_select(Transkribus::Model::MODELS.map { |title, id| [title, id] }), class: 'form-control')
+
+  - if AiJob::JobType.ai_text.include? ai_job.job_type
+    .field
+      = label_tag :placeholder_type
+      = select_tag(:placeholder_type, options_for_select(['none', 'word']), class: 'form-control')
+
+    =form.hidden_field :job_type
+
+  .actions
+    = form.submit(class: 'btn btn-primary')
