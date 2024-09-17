@@ -62,25 +62,11 @@ namespace :fromthepage do
 
   desc "Reindex everything into elasticsearch"
   task :es_reindex, [] => :environment do |t,args|
-    client = ElasticUtil.get_client()
-
-    Page.find_in_batches(batch_size: 1000) do |batch|
-      bulk_body = []
-      batch.each do |page|
-        bulk_body.push(
-          ElasticUtil.gen_bulk_action('ftp_page', page.as_indexed_json())
-        )
-      end
-
-      client.bulk(body: bulk_body, refresh: false)
-    end
-
-    client.indices.refresh(index: 'ftp_page')
-
+    ElasticUtil.reindex(Collection, 'ftp_collection');
+    ElasticUtil.reindex(Page, 'ftp_page');
+    ElasticUtil.reindex(User, 'ftp_user');
+    ElasticUtil.reindex(Work, 'ftp_work');
   end
-
-
-
 
   def get_es_config(target, parse = true)
     base_path = [Rails.root, 'lib', 'elastic']

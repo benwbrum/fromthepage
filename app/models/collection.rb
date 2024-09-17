@@ -128,6 +128,16 @@ class Collection < ApplicationRecord
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      intro_block: self.intro_block,
+      language: self.language,
+      owner_user_id: self.owner_user_id,
+      slug: self.slug,
+      title: self.title
+    }
+  end
 
   def text_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY

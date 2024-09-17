@@ -173,6 +173,14 @@ class Work < ApplicationRecord
     end
   end
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      title: self.title,
+      searchable_metadata: self.searchable_metadata
+    }
+  end
+
   def update_derivatives
     # searchable_metadata is currently the only derivative
     metadata_hash = self.merge_metadata(true)

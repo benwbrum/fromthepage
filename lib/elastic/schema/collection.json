@@ -1,14 +1,14 @@
 {
 	"mappings": {
 		"properties": {
-			"db_id": {
-				"type": "integer"
-			},
 			"intro_block": {
 				"type": "text"
 			},
 			"language": {
 				"type": "keyword"
+			},
+			"owner_user_id": {
+				"type": "integer"
 			},
 			"slug": {
 				"type": "text"

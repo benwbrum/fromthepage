@@ -140,6 +140,17 @@ class User < ApplicationRecord
   after_create :set_default_footer_block
   #before_destroy :clean_up_orphans
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      about: self.about,
+      display_name: self.display_name,
+      login: self.login,
+      real_name: self.real_name,
+      website: self.website
+    }
+  end
+
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
     if raw

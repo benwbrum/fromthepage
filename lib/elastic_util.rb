@@ -20,4 +20,21 @@ module ElasticUtil
     return bulk_action
   end
 
+  def self.reindex(model, index_name)
+    client = self.get_client()
+
+    model.find_in_batches(batch_size: 1000) do |batch|
+      bulk_body = []
+      batch.each do |item|
+        bulk_body.push(
+          ElasticUtil.gen_bulk_action(index_name, item.as_indexed_json())
+        )
+      end
+
+      client.bulk(body: bulk_body, refresh: false)
+    end
+
+    client.indices.refresh(index: index_name)
+  end
+
 end
