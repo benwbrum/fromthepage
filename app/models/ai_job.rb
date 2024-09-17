@@ -50,6 +50,14 @@ class AiJob < ApplicationRecord
     def self.all
       [HTR, AI_TEXT, HTR_AND_AI_TEXT]
     end
+
+    def self.htr
+      [HTR, HTR_AND_AI_TEXT]
+    end
+
+    def self.ai_text
+      [AI_TEXT, HTR_AND_AI_TEXT]
+    end
   end
 
   module Engine

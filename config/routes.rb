@@ -543,6 +543,8 @@ Fromthepage::Application.routes.draw do
 
         resources :page, path: '', only: [] do
           get 'htr_jobs', to: 'page#htr_jobs'
+          get 'new_htr_job', to: 'ai_jobs#new_htr_job_page'
+          post 'run_htr_job', to: 'ai_jobs#run_htr_job_page'
         end
       end
 

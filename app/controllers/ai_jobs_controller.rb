@@ -24,6 +24,26 @@ class AiJobsController < ApplicationController
 
   end
 
+  def new_htr_job_page
+    # consider generalizing htr jobs vs ai jobs
+    @ai_job = AiJob.new
+    @ai_job.page = @page
+    @ai_job.work = @work
+    @ai_job.collection = @collection
+    @ai_job.user = current_user
+    if @collection.field_based?
+      @ai_job.job_type = AiJob::JobType::HTR
+    else
+      @ai_job.job_type = AiJob::JobType::HTR_AND_AI_TEXT
+    end
+
+    render :new, layout: false
+  end
+
+  def runhtr_job_work
+
+  end
+
 
   # GET /ai_jobs
   def index
@@ -45,14 +65,17 @@ class AiJobsController < ApplicationController
 
   # POST /ai_jobs
   def create
-    binding.pry
     @ai_job = AiJob.new(ai_job_params)
     @ai_job.user = current_user
     @ai_job.collection = @collection
     @ai_job.work = @work
-    if @ai_job.save!
-      flash[:notice]='AI B'
-      if @work
+    @ai_job.page = @page
+    if @ai_job.save
+      flash[:notice]='HTR Job was successfully created.'
+      if @page
+        ajax_redirect_to collection_work_page_htr_jobs_path(@collection.owner, @collection, @work, @page)
+        # redirect_to collection_work_page_htr_jobs_path(@collection.owner, @collection, @work, @page)
+      elsif @work
         redirect_to collection_work_edit_path(@collection.owner, @collection, @work)
       else
         redirect_to collection_edit_path(@collection.owner, @collection)
