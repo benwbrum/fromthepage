@@ -3,7 +3,7 @@ class Page::Rotate
   include ImageHelper
   include Interactor
 
-  def initialize(page:, orientation: 0)
+  def initialize(page:, orientation:)
     @page        = page
     @orientation = orientation
 

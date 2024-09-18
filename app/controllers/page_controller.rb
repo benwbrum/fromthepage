@@ -70,7 +70,7 @@ class PageController < ApplicationController
   end
 
   def rotate
-    result = Page::Rotate.call(page: @page, orientation: params[:orientation]&.to_i)
+    result = Page::Rotate.call(page: @page, orientation: params[:orientation].to_i)
 
     redirect_back fallback_location: result.page
   end
