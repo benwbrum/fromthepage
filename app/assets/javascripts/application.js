@@ -123,8 +123,7 @@ $.fn.tooltip = function(s) {
     var url = $element.data('tooltip');
     var $tooltip = $('<div>').addClass('tooltip');
 
-    $element.on('click.Tooltip', function(e) {
-      e.preventDefault();
+    function showTooltip() {
       var offset = $element.offset();
       var pos_top = offset.top + $element.height();
       var pos_left = offset.left;
@@ -143,13 +142,25 @@ $.fn.tooltip = function(s) {
           $tooltip.html('<small>error :(</small>');
         });
       }
+    }
+
+    $element.on('mouseenter', function(e) {
+      e.preventDefault();
+      showTooltip();
+
+      $tooltip.off('mouseleave');
+      $tooltip.on('mouseleave', function(e){
+        $(this).remove();
+      })
     });
 
     // Close if clicked outside
-    $(document).on('click.Tooltip', function(e) {
-      if($(e.target).closest($element).length === 0) {
-        $tooltip.remove();
-      }
+    $element.on('mouseleave', function(e) {
+      setTimeout(function() {
+        if (!$tooltip.is(':hover')) {
+          $tooltip.remove();
+        }
+      }, 100);
     });
   });
 };
@@ -396,7 +407,7 @@ const ResizableSplitter = {
     const splitter = document.querySelector(splitterSelector);
     const panel1 = document.querySelector(panel1Selector);
     const panel2 = document.querySelector(panel2Selector);
-    
+
     let startX;
     let startWidthPanel1;
     let startWidthPanel2;
@@ -617,7 +628,7 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
 
     var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
     var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-  
+
     if(stickyHeight > tablePosTop) {
       document.querySelectorAll(columnEl).forEach(function(item) {
         item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';

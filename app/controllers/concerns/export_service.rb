@@ -7,7 +7,6 @@ module ExportService
   require 'subject_exporter'
   require 'subject_details_exporter'
 
-
   def path_from_work(work, original_filenames=false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
@@ -17,7 +16,6 @@ module ExportService
 
     dirname
   end
-
 
   def add_readme_to_zip(work:, out:, by_work:, original_filenames:)
     dirname = path_from_work(work)
@@ -50,16 +48,16 @@ module ExportService
     # render to a string
     rendered_markdown =
       ApplicationController.new.render_to_string(
-        :template => '/export/facing_edition.html',
-        :layout => false,
-        :assigns => {
-          :collection => work.collection,
-          :work => work,
-          :edition_type => edition,
-          :output_type => format,
-          :preserve_linebreaks => preserve_lb,
-          :include_metadata => include_metadata,
-          :include_contributors => include_contributors
+        template: '/export/facing_edition.html',
+        layout: false,
+        assigns: {
+          collection: work.collection,
+          work: work,
+          edition_type: edition,
+          output_type: format,
+          preserve_linebreaks: preserve_lb,
+          include_metadata: include_metadata,
+          include_contributors: include_contributors
         }
       )
 
@@ -73,6 +71,7 @@ module ExportService
 
     file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
+
     if format == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
     elsif format == 'doc'
@@ -83,10 +82,12 @@ module ExportService
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
+
     cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
+
     puts File.read(log_file)
 
     output_file
@@ -347,8 +348,7 @@ module ExportService
     out.write page_view unless page.status_blank?
   end
 
-
-private
+  private
 
   def spreadsheet_heading_to_indexable(field_id, column_label)
     {field_id => column_label}
