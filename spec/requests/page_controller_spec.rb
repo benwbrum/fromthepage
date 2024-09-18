@@ -4,7 +4,7 @@ describe PageController do
   let(:owner) { User.first }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:work) { create(:work, collection: collection) }
-  let(:page) { create(:page, :with_image, work: work, status: :new) }
+  let!(:page) { create(:page, :with_image, work: work, status: :new) }
 
   describe '#new' do
     let(:action_path) { new_page_path(work_id: work.id) }
@@ -33,11 +33,7 @@ describe PageController do
     end
     let(:subaction) { '' }
     let(:params) do
-      {
-        work_id: work.id,
-        page: page_params,
-        subaction: subaction
-      }
+      { work_id: work.id, page: page_params, subaction: subaction }
     end
 
     let(:subject) { post action_path, params: params }
@@ -48,7 +44,9 @@ describe PageController do
         subject
 
         expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(work_pages_tab_path(work_id: work.id, anchor: 'create-page'))
+        expect(response).to redirect_to(
+          work_pages_tab_path(work_id: work.id, anchor: 'create-page')
+        )
       end
 
       context 'with subaction' do
@@ -59,7 +57,9 @@ describe PageController do
           subject
 
           expect(response).to have_http_status(:redirect)
-          expect(response).to redirect_to(dashboard_startproject_path(anchor: 'create-work'))
+          expect(response).to redirect_to(
+            dashboard_startproject_path(anchor: 'create-work')
+          )
         end
       end
     end
@@ -146,7 +146,9 @@ describe PageController do
         subject
 
         expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(collection_edit_page_path(owner, collection, work, page))
+        expect(response).to redirect_to(
+          collection_edit_page_path(owner, collection, work, page)
+        )
       end
 
       context 'as xhr' do
@@ -185,7 +187,9 @@ describe PageController do
 
           expect(response.content_type).to eq('application/json; charset=utf-8')
           expect(JSON.parse(response.body)['success']).to be_falsey
-          expect(JSON.parse(response.body)['errors']).to eq('unsupported file type')
+          expect(JSON.parse(response.body)['errors']).to eq(
+            'unsupported file type'
+          )
         end
       end
     end
@@ -217,6 +221,18 @@ describe PageController do
 
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(page)
+    end
+
+    context 'no orientation param' do
+      let(:params) { { page_id: page.id } }
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(page)
+      end
     end
   end
 

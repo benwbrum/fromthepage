@@ -11,7 +11,7 @@ class Page::Update
 
   def call
     ActiveRecord::Base.transaction do
-      attributes = @page_params.to_h.except('base_image')
+      attributes = @page_params.to_h.except(:base_image)
       attributes['status'] = Page.statuses[:new] if @page_params[:status].blank?
       attributes['translation_status'] = Page.translation_statuses[:new] if @page_params[:translation_status].blank?
       @page.update_columns(attributes)

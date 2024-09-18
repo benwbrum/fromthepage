@@ -1,23 +1,22 @@
 require 'spec_helper'
 
-describe Page::Update do
+describe Page::Create do
   let(:owner) { User.first }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:work) { create(:work, collection: collection) }
-  let!(:page) { create(:page, :with_image, title: 'Original title', work: work, status: :blank) }
-  let(:page_params) { { title: 'Updated title', status: :new, translation_status: :new } }
+
+  let(:page_params) { { title: 'New page' } }
 
   let(:result) do
-    described_class.call(page: page, page_params: page_params)
+    described_class.call(work: work, page_params: page_params)
   end
 
-  it 'updates page' do
+  it 'creates new page' do
     expect(result.success?).to be_truthy
     expect(result.page).to have_attributes(
-      title: 'Updated title',
-      work_id: work.id,
-      status: 'new',
-      translation_status: 'new'
+      title: 'New page',
+      base_image: '',
+      work_id: work.id
     )
   end
 
@@ -26,19 +25,17 @@ describe Page::Update do
     let(:file_type) { 'image/jpeg' }
     let(:page_params) do
       {
-        title: 'Updated title',
+        title: 'New page',
         base_image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
 
-    it 'updates page' do
+    it 'creates new page' do
       expect(result.success?).to be_truthy
       expect(result.page).to have_attributes(
-        title: 'Updated title',
+        title: 'New page',
         base_image: Rails.root.join("public/images/working/upload/#{result.page.id}.jpg").to_s,
-        work_id: work.id,
-        status: 'new',
-        translation_status: 'new'
+        work_id: work.id
       )
     end
   end
@@ -56,6 +53,7 @@ describe Page::Update do
     it 'fails to create new page' do
       expect(result).to be_a_failure
 
+      expect(result.page.persisted?).to be_falsey
       expect(result.errors).to eq('unsupported file type')
     end
   end

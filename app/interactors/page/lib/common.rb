@@ -4,7 +4,7 @@ module Page::Lib::Common
     unless Page::ACCEPTED_FILE_TYPES.include?(image_file.content_type)
       error_msg = I18n.t('errors.unsupported_file_type')
       @page.errors.add(:base_image, error_msg)
-      raise ArgumentError, error_msg
+      raise StandardError, error_msg
     end
 
     filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
@@ -20,7 +20,6 @@ module Page::Lib::Common
   rescue StandardError => e
     context.errors = e.message
     context.fail!
-    raise ActiveRecord::Rollback
   end
 
   def assign_dimensions
