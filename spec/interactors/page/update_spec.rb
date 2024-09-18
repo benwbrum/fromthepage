@@ -4,6 +4,7 @@ describe Page::Update do
   let(:owner) { User.first }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:work) { create(:work, collection: collection) }
+  let(:work_statistic) { create(:work_statistic, work: work) }
   let!(:page) { create(:page, :with_image, title: 'Original title', work: work, status: :blank) }
   let(:page_params) { { title: 'Updated title', status: :new, translation_status: :new } }
 

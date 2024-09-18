@@ -15,9 +15,10 @@ describe Work::RefreshMetadata do
 
   let(:sc_manifest) { ScManifest.manifest_for_v3_hash(v3_hash) }
   let(:work) { create(:work, collection: collection, sc_manifest: sc_manifest) }
+  let(:work_no_manifest) { create(:work, collection: collection) }
 
   let(:result) do
-    described_class.new(work_ids: [work.id]).call
+    described_class.new(work_ids: [work.id, work_no_manifest.id]).call
   end
 
   context 'when original metadata is blank' do

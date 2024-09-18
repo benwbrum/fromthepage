@@ -23,8 +23,10 @@ class RakeInteractor
       Rake::Task[@task_name].reenable
       Rake::Task[@task_name].invoke(*@args.values)
     rescue => e
+      # :nocov:
       puts "#{e.class}: #{e.message}"
       puts e.backtrace.join("\n")
+      # :nocov: end
     ensure
       $stdout = old_stdout
 

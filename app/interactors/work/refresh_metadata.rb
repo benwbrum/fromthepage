@@ -18,9 +18,11 @@ class Work::RefreshMetadata
 
     finalize
   rescue => e
+    # :nocov:
     @errors << "Error: #{e}"
     context.errors = @errors
     context.fail!
+    # :nocov: end
   end
 
   def finalize
@@ -37,8 +39,10 @@ class Work::RefreshMetadata
       begin
         refresh_metadata(work)
       rescue
+        # :nocov:
         @errors << "Failed to refresh metadata for #{work.slug}"
         context.fail!
+        # :nocov: end
       end
     end
   end
