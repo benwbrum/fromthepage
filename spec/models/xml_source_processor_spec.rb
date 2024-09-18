@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 SOURCE_TEXT = "With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]"
-EXPECTED_XML = <<EOF
+EXPECTED_XML = <<EOF.chomp
 <?xml version='1.0' encoding='UTF-8'?>    
       <page>
         <p>With an <link link_id='1' target_id='1' target_title='Old Subject'>old subject</link> and a short <link link_id='2' target_id='1' target_title='Old Subject'>Old Subject</link>. With a <link link_id='3' target_id='2' target_title='New Text Link'>new links</link> and a <link link_id='4' target_id='3' target_title='New Short Text Link'>New Short Text Link</link></p>
       </page>
 EOF
 
-EXPECTED_XML_DISABLED = <<EOF
+EXPECTED_XML_DISABLED = <<EOF.chomp
 <?xml version='1.0' encoding='UTF-8'?>    
       <page>
         <p>With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]</p>
@@ -16,7 +16,7 @@ EXPECTED_XML_DISABLED = <<EOF
 EOF
 
 SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u000C charac\u0014ters and a tab\t"
-EXPECTED_XML_ILLEGAL_CHARS = <<EOF
+EXPECTED_XML_ILLEGAL_CHARS = <<EOF.chomp
 <?xml version='1.0' encoding='UTF-8'?>    
       <page>
         <p> With a lo ad of illegal   charac ters and a tab\t</p>
