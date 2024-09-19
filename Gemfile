@@ -104,6 +104,13 @@ group :development, :test do
   gem 'pry-awesome_print'
   gem 'pry-byebug'
   gem 'rspec-rails'
+
+  # Profiling for use in prod
+  gem 'flamegraph'
+  gem 'memory_profiler'
+  gem 'meta_request'
+  gem 'rack-mini-profiler', require: false
+  gem 'stackprof'
 end
 
 gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
@@ -129,13 +136,6 @@ gem 'friendly_id'
 # support right to left languages
 gem 'iso-639'
 gem 'rtl'
-
-# Profiling for use in prod
-gem 'flamegraph'
-gem 'memory_profiler'
-gem 'meta_request'
-gem 'rack-mini-profiler'
-gem 'stackprof'
 
 gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 gem 'newrelic_rpm'

@@ -26,7 +26,8 @@
             li data-weight="#{collection_count}"
               =link_to(ai_text, browse_tag_path(ai_text))
 
-    -if @search_results && @org_owners.empty? && @individual_owners.empty? # show search results instead of owner listing
+    // show search results instead of owner listing
+    -if @search_results && @org_owners.empty? && @individual_owners.empty?
       -@search_results.each do |sr|
         .project-list_projects
           .projects-owner
@@ -38,10 +39,12 @@
                 h5 =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
                   =truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
-    -else # show listing of all organizations and individual owners
+
+    // show listing of all organizations and individual owners
+    -else
       -[@org_owners, @individual_owners].each do |owners|
         -owners.each do |owner|
-          -projects = (owner.random_collections+owner.random_document_sets)
+          -projects = (owner.random_collections.sample(5) + owner.random_document_sets.sample(5))
           -if projects.count > 0
             .project-list_projects
               .projects-owner
@@ -59,12 +62,12 @@
                 -if owner.about.present?
                   .description
                     =owner.about
-                -tag_map = projects.map{|p| p.tags.canonical}.flatten.group_by{|t| t}.map{|k,v| [k.ai_text, v.size]}.sort_by{|k,v| v}.reverse
+                -tag_map = projects.flat_map(&:tags).group_by(&:canonical).map { |tag, tag_list| [tag.ai_text, tag_list.size] }.sort_by(&:last).reverse
                 -if tag_map.present?
                   ul.tagcloud
                     -tag_map.each do |ai_text, collection_count|
                       -if collection_count > 0
-                        li 
+                        li
                           -link_text = "#{ai_text} (#{collection_count})"
                           =link_to(link_text, tagged_user_profile_path(owner.slug, ai_text))
 

@@ -73,11 +73,9 @@ class ApplicationController < ActionController::Base
     super || guest_user
   end
 
-  #find the guest user account if a guest user session is currently active
+  # find the guest user account if a guest user session is currently active
   def guest_user
-    unless session[:guest_user_id].nil?
-      User.where(id: session[:guest_user_id]).first
-    end
+    User.find_by(id: session[:guest_user_id])
   end
 
   #when the user chooses to transcribe as guest, find guest user id or create new guest user

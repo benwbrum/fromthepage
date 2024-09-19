@@ -110,9 +110,9 @@ class User < ApplicationRecord
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   has_many :metadata_description_versions, :dependent => :destroy
