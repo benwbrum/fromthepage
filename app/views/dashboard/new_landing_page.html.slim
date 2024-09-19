@@ -1,4 +1,4 @@
--unless params[:search]
+-if params[:search].blank?
   .carousel
     -@collections.each do |c|
       -cache c do
@@ -19,7 +19,7 @@
 
 .columns.project-list
   article.maincol
-    -unless params[:search]
+    -if params[:search].blank?
       ul.tagcloud
         -@tag_map.each do |ai_text, collection_count|
           -if collection_count > 0
@@ -27,7 +27,7 @@
               =link_to(ai_text, browse_tag_path(ai_text))
 
     // show search results instead of owner listing
-    -if @search_results && @org_owners.empty? && @individual_owners.empty?
+    -if params[:search].present?
       -@search_results.each do |sr|
         .project-list_projects
           .projects-owner
@@ -72,8 +72,8 @@
                           -link_text = "#{ai_text} (#{collection_count})"
                           =link_to(link_text, tagged_user_profile_path(owner.slug, ai_text))
 
-      .project-list_link
-        =link_to t('.all_collections'), collections_list_path
+    .project-list_link
+      =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
