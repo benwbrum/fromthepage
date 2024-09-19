@@ -205,7 +205,8 @@ class DashboardController < ApplicationController
     users = User.owners
                 .joins(:collections)
                 .left_outer_joins(:document_sets)
-                .includes({ random_collections: :tags }, { random_document_sets: { collection: :tags } })
+                .includes(random_collections: :canonical_tags)
+                .includes({ random_document_sets: { collection: :canonical_tags } })
 
     @org_owners = users.findaproject_orgs.order(:display_name).distinct
     @individual_owners = users.findaproject_individuals.order(:display_name).distinct

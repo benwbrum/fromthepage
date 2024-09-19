@@ -126,6 +126,10 @@ class DocumentSet < ApplicationRecord
     self.collection.tags
   end
 
+  def canonical_tags
+    self.collection.canonical_tags
+  end
+
   def review_workflow
     self.collection.review_workflow
   end
@@ -332,7 +336,7 @@ class DocumentSet < ApplicationRecord
     nil
   end
 
-  def api_access 
+  def api_access
     collection.api_access
   end
 

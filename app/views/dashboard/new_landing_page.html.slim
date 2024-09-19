@@ -62,7 +62,8 @@
                 -if owner.about.present?
                   .description
                     =owner.about
-                -tag_map = projects.flat_map(&:tags).group_by(&:canonical).map { |tag, tag_list| [tag.ai_text, tag_list.size] }.sort_by(&:last).reverse
+
+                -tag_map = projects.flat_map(&:canonical_tags).pluck(:ai_text).tally.sort_by(&:last).reverse
                 -if tag_map.present?
                   ul.tagcloud
                     -tag_map.each do |ai_text, collection_count|
