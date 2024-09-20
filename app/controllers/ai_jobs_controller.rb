@@ -81,7 +81,7 @@ class AiJobsController < ApplicationController
         redirect_to collection_edit_path(@collection.owner, @collection)
       end
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
