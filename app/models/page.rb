@@ -131,8 +131,8 @@ class Page < ApplicationRecord
   def as_indexed_json
     return {
       _id: self.id,
-      collection_id: self.collection.id,
-      is_public: !self.collection.restricted || self.work.document_sets.where(:is_public => true).exists?,
+      collection_id: self.collection&.id,
+      is_public: !self.collection&.restricted || self.work.document_sets.where(:is_public => true).exists?,
       search_text: self.search_text,
       content_english: self.source_text # TODO: Hook up language pipeline
     }
