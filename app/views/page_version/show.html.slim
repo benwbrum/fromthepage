@@ -41,7 +41,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
                 h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
                 div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
                   div.source-code
-                    == "#{@selected_version.transcription}"
+                    == @selected_version.transcription
                   div.html-code
                     == xml_to_html(@selected_version.xml_transcription)
                 - if @work.supports_translation
