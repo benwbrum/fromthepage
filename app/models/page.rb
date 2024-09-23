@@ -140,7 +140,7 @@ class Page < ApplicationRecord
 
   # tested
   def collection
-    work.collection
+    work&.collection
   end
 
   def field_based
