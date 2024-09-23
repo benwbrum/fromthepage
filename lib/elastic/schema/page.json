@@ -4,6 +4,12 @@
 			"db_id": {
 				"type": "integer"
 			},
+			"is_public": {
+				"type": "boolean"
+			},
+			"collection_id": {
+				"type": "integer"
+			},
 			"work_id": {
 				"type": "integer"
 			},
