@@ -140,29 +140,6 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   =javascript_include_tag 'textdiff'
   javascript:
     $(function() {
-
-      function decodeHtmlEntities(str) {
-          const textarea = document.createElement('textarea');
-          textarea.innerHTML = str;
-          return textarea.value;
-      }
-
-      function renderRealHtmlTags(htmlString) {
-          // Create a container to parse the HTML string
-          const container = document.createElement('div');
-          container.innerHTML = htmlString;
-
-          // Find all the span elements that have encoded HTML tags inside
-          const spans = container.querySelectorAll('span');
-
-          spans.forEach(span => {
-              span.innerHTML = decodeHtmlEntities(span.innerHTML);
-          });
-
-          return container.innerHTML;
-      }
-
-
       $('span.view-code').click(function(){
         $(this).toggleClass('active');
 
