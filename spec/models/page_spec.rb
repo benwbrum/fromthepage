@@ -42,4 +42,21 @@ RSpec.describe Page, type: :model do
       expect(page.status_blank?).to be_truthy
     end
   end
+
+  
+  describe '#image_url_for_download' do
+    context 'when neither sc_canvas nor ia_leaf is present' do
+      let(:page) { build_stubbed(:page, base_image: '/image.jpg') }
+      let(:default_url_options) { { host: 'localhost:3000' } }
+
+      context 'when base_image contains spaces or parentheses' do
+        let(:page) { build_stubbed(:page, base_image: '/image (1).jpg') }
+
+        it 'returns the URL encoded characters' do
+          expect(page.image_url_for_download).to eq('http://localhost:3000/image%20(1).jpg')
+        end
+      end
+
+    end
+  end
 end

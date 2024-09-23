@@ -16,7 +16,7 @@ section.user-profile
             span =t('user.profile.login_and_password').html_safe
     .user-profile_stats
       -if user.staff?
-        -user.collections.each do |c|
+        -user.collections.uniq { |c| c.owner_user_id }.each do |c|
           -unless c.owner.staff?
             =link_to c.owner.display_name, user_profile_path(c.owner), target: '_blank', rel: 'nofollow'
             |&nbsp;&nbsp;
