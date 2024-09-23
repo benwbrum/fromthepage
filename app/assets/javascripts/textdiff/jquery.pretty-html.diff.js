@@ -7,8 +7,9 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
 
 (function() {
     var $;
-  
+    var endsTag = null;
     $ = jQuery;
+
   
     $.fn.extend({
       prettyHTMLDiff: function(options) {
@@ -25,12 +26,11 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
         dmp = new diff_match_patch();
         return this.each(function() {
           var changed, diff_as_html, diffs, original;
-          original = ($(settings.originalContainer, this).text() || "").trim();
+          original = $.fn.prettyHTMLDiff.cleanHTMLString(($(settings.originalContainer, this).html() || "").trim());
           $.fn.prettyHTMLDiff.debug("Original HTML found: ", original, settings);
-          changed = ($(settings.changedContainer, this).text() || "").trim();
+          changed = $.fn.prettyHTMLDiff.cleanHTMLString(($(settings.changedContainer, this).html() || "").trim());
           $.fn.prettyHTMLDiff.debug("Changed HTML found: ", changed, settings);
           diffs = dmp.diff_main(original, changed);
-  
           if (settings.cleanup) {
             dmp.diff_cleanupSemantic(diffs);
           }
@@ -39,14 +39,53 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
             return $.fn.prettyHTMLDiff.createHTML(diff);
           });
   
-          $(settings.diffContainer, this).html(
-            dmp.diff_prettyHtml(diffs)
-              .replace(/&para;/g, '')
-          );
+          $(settings.diffContainer, this).html(diff_as_html.join(''));
           return this;
         });
       }
     });
+
+    $.fn.prettyHTMLDiff.cleanHTMLString = function (htmlString) {
+      return htmlString
+        .replace(/\s{2,}/g, ' ')             // Replace multiple spaces with a single space
+        .replace(/\n/g, '');  
+    }
+
+    $.fn.prettyHTMLDiff.correctifyHTMLString = function (htmlString) {
+      // add incompleted ends tag to the next line
+      if(endsTag) {
+        htmlString = endsTag + htmlString;
+        endsTag = null;
+      }
+      
+      if(htmlString.startsWith('>')) { // if text includes incomplete close tag
+        htmlString = htmlString.replace('>', '');
+      } else if(htmlString.endsWith('<')) { // if text includes incomplete open tag
+        htmlString = htmlString.slice(0, htmlString.length - 1);
+      } else if(htmlString.endsWith('</')) { // if text includes incomplete open tag
+        htmlString = htmlString.slice(0, htmlString.length - 2);
+        endsTag = '</';
+      }
+
+      var openTagCount = htmlString.split('<').length - 1;
+      var closeTagCount = htmlString.split('>').length - 1;
+
+      // correct html string which has incomplete tags
+      if(openTagCount < closeTagCount) {
+        htmlString = "<" + htmlString;
+      } else if(openTagCount > closeTagCount) {
+        htmlString = htmlString + ">";
+      } else if((openTagCount === closeTagCount) && htmlString.indexOf('>') < htmlString.indexOf('<')) {
+        htmlString = "<" + htmlString + ">";
+      }
+
+      return htmlString;
+    }
+
+    $.fn.prettyHTMLDiff.splitByTags = function(htmlString) {
+      return $.fn.prettyHTMLDiff.correctifyHTMLString(htmlString)
+        .split(/(<\/?[^>]+>)/).filter(part => part !== '');
+    }
   
     $.fn.prettyHTMLDiff.debug = function(message, object, settings) {
       if (settings.debug) {
@@ -58,27 +97,38 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
       var data, html, operation, text;
       html = [];
       operation = diff[0];
-      data = diff[1];
-      text = data
+      text = diff[1];
+      tagRegex = /^<\/?[\w-]+(\s+[^>]*?)?>$/;
+
       switch (operation) {
         case DIFF_INSERT:
-          // Add logic to handle tables
-          if (data.startsWith("<td>")) {
-            return '<td><ins>' + text + '</ins></td>';
-          } else {
-            return '<ins>' + text + '</ins>';
-          }
+          words = $.fn.prettyHTMLDiff.splitByTags(text).map(function(word){
+            if(!tagRegex.test(word) && word != ' ') {
+              return '<ins>' + word + '</ins>';
+            }
+            return word;
+          })
+
+          return words.join('')
         case DIFF_DELETE:
-          // Add logic to handle tables
-          if (data.startsWith("<td>")) {
-            return '<td><del>' + text + '</del></td>';
-          } else {
-            return '<del>' + text + '</del>';
-          }
-        case DIFF_EQUAL:
-          return text ;
+          words = $.fn.prettyHTMLDiff.splitByTags(text).map(function(word){
+            if(!tagRegex.test(word)) {
+              return '<del>' + word + '</del>';
+            }
+            return word;
+          })
+
+          return words.join('')
+          case DIFF_EQUAL:
+            words = $.fn.prettyHTMLDiff.splitByTags(text).map(function(word){
+            
+            if(!tagRegex.test(word)) {
+              return '<span>' + word + '</span>';
+            }
+            return word;
+          })
+          return words.join('');
       }
     };
   
   }).call(this);
-  
