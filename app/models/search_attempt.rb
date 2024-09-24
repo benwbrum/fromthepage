@@ -64,7 +64,7 @@ class SearchAttempt < ApplicationRecord
         end
     end
 
-    def results
+    def results(page = 1, page_size = 30)
         query = sanitize_and_format_search_string(self.query)
 
         case search_type
@@ -84,7 +84,7 @@ class SearchAttempt < ApplicationRecord
             if collection_or_document_set.present? && query.present?
                 query = precise_search_string(query)
                 if ELASTIC_ENABLED
-                  results = elastic_collection_search(collection_or_document_set, query)
+                  results = elastic_collection_search(collection_or_document_set, query, page, page_size)
                 else
                   results = database_collection_search(collection_or_document_set, query)
                 end
@@ -112,7 +112,7 @@ class SearchAttempt < ApplicationRecord
                     .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
     end
 
-    def elastic_collection_search(coll_or_docset, query)
+    def elastic_collection_search(coll_or_docset, query, page, page_size)
         client = ElasticUtil.get_client()
 
         resp = client.search(index: 'ftp_page', body: {
@@ -139,14 +139,21 @@ class SearchAttempt < ApplicationRecord
                 ]
               }
             },
-            size: 10000 # Temporary until pagination is added
+            from: (page[:page].to_i - 1) * page_size,
+            size: page_size
         })
 
         matches = resp['hits']['hits'].map { |doc| doc['_id'] }
-        return Page.order('work_id', 'position')
+        results = Page.order('work_id', 'position')
                     .joins(:work)
                     .where(work_id: coll_or_docset.works.ids)
                     .where(id: matches)
+
+        results = WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
+          pager.replace(results)
+        end
+
+        return results
     end
 
     def sanitize_and_format_search_string(search_string)
