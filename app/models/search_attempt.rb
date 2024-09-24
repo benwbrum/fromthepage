@@ -173,9 +173,9 @@ class SearchAttempt < ApplicationRecord
     # to the SQS symbols
     def prep_sqs_operators(search_string)
       search_string.gsub!("&quot;", "\"") # Not sure where &quot; comes from
-      search_string.gsub!(" AND ", " +")
-      search_string.gsub!(" NOT ", " -")
-      search_string.gsub!(" OR ", " | ")
+      search_string.gsub!("AND ", " +")
+      search_string.gsub!("NOT ", " -")
+      search_string.gsub!("OR ", " | ")
       search_string
     end
 end
