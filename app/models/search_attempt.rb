@@ -115,24 +115,27 @@ class SearchAttempt < ApplicationRecord
     def elastic_collection_search(coll_or_docset, query)
         client = ElasticUtil.get_client()
 
-        resp = client.search(index: 'page', query: {
-            filter: [
-              {term: {is_public: true}},
-              # TODO: Fetch collections user has access to?
-              #{term: {collection_id: my_collections}},
-            ],
+        resp = client.search(index: 'ftp_page', body: {
             query: {
-              simple_query_string: {
-                query: query,
-                fields: [
-                  "title^2",
-                  "search_text^1.5",
-                  "content_english",
-                  "content_french",
-                  "content_german",
-                  "content_spanish",
-                  "content_portuguese",
-                  "content_swedish"
+              bool: {
+                must: {
+                  simple_query_string: {
+                    query: query,
+                    fields: [
+                      "title^2",
+                      "search_text^1.5",
+                      "content_english",
+                      "content_french",
+                      "content_german",
+                      "content_spanish",
+                      "content_portuguese",
+                      "content_swedish"
+                    ]
+                  }
+                },
+                filter: [
+                  {term: {is_public: true}},
+                  {term: {collection_id: coll_or_docset.id}}
                 ]
               }
             },
