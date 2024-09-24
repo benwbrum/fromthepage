@@ -28,6 +28,8 @@
 #  index_search_attempts_on_work_id          (work_id)
 #
 class SearchAttempt < ApplicationRecord
+    require 'elastic_util'
+
     belongs_to :user, optional: true
     belongs_to :collection, optional: true
     belongs_to :work, optional: true
@@ -81,10 +83,11 @@ class SearchAttempt < ApplicationRecord
             collection_or_document_set = collection || document_set
             if collection_or_document_set.present? && query.present?
                 query = precise_search_string(query)
-                results = Page.order('work_id, position')
-                    .joins(:work)
-                    .where(work_id: collection_or_document_set.works.ids)
-                    .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+                if ELASTIC_ENABLED
+                  results = elastic_collection_search(collection_or_document_set, query)
+                else
+                  results = database_collection_search(collection_or_document_set, query)
+                end
             else 
                 results = Page.none
             end
@@ -102,6 +105,46 @@ class SearchAttempt < ApplicationRecord
     end
 
     private
+    def database_collection_search(coll_or_docset, query)
+        return Page.order('work_id, position')
+                    .joins(:work)
+                    .where(work_id: coll_or_docset.works.ids)
+                    .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+    end
+
+    def elastic_collection_search(coll_or_docset, query)
+        client = ElasticUtil.get_client()
+
+        resp = client.search(index: 'page', query: {
+            filter: [
+              {term: {is_public: true}},
+              # TODO: Fetch collections user has access to?
+              #{term: {collection_id: my_collections}},
+            ],
+            query: {
+              simple_query_string: {
+                query: query,
+                fields: [
+                  "title^2",
+                  "search_text^1.5",
+                  "content_english",
+                  "content_french",
+                  "content_german",
+                  "content_spanish",
+                  "content_portuguese",
+                  "content_swedish"
+                ]
+              }
+            },
+            size: 10000 # Temporary until pagination is added
+        })
+
+        matches = resp['hits']['hits'].map { |doc| doc['_id'] }
+        return Page.order('work_id', 'position')
+                    .joins(:work)
+                    .where(work_id: coll_or_docset.works.ids)
+                    .where(id: matches)
+    end
 
     def sanitize_and_format_search_string(search_string)
         return '' unless search_string.present?
