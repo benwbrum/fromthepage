@@ -149,11 +149,9 @@ class SearchAttempt < ApplicationRecord
                     .where(work_id: coll_or_docset.works.ids)
                     .where(id: matches)
 
-        results = WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
+        return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
           pager.replace(results)
         end
-
-        return results
     end
 
     def sanitize_and_format_search_string(search_string)
