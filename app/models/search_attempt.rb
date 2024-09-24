@@ -172,6 +172,7 @@ class SearchAttempt < ApplicationRecord
     # uses symbols to replace them.  This method converts string representations
     # to the SQS symbols
     def prep_sqs_operators(search_string)
+      search_string.gsub!("&quot;", "\"") # Not sure where &quot; comes from
       search_string.gsub!(" AND ", " +")
       search_string.gsub!(" NOT ", " -")
       search_string.gsub!(" OR ", " | ")
