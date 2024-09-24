@@ -82,10 +82,11 @@ class SearchAttempt < ApplicationRecord
         when "collection"
             collection_or_document_set = collection || document_set
             if collection_or_document_set.present? && query.present?
-                query = precise_search_string(query)
                 if ELASTIC_ENABLED
+                  query = prep_sqs_operators(query)
                   results = elastic_collection_search(collection_or_document_set, query, page, page_size)
                 else
+                  query = precise_search_string(query)
                   results = database_collection_search(collection_or_document_set, query)
                 end
             else 
@@ -165,5 +166,15 @@ class SearchAttempt < ApplicationRecord
 
         search_string.gsub!(/\s+/, ' ')
         "+\"#{search_string}\""
+    end
+
+    # Simple Query String does not support AND/OR/NOT out of the box but instead
+    # uses symbols to replace them.  This method converts string representations
+    # to the SQS symbols
+    def prep_sqs_operators(search_string)
+      search_string.gsub!(" AND ", " +")
+      search_string.gsub!(" NOT ", " -")
+      search_string.gsub!(" OR ", " | ")
+      search_string
     end
 end
