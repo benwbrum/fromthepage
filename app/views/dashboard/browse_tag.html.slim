@@ -4,19 +4,6 @@ h2
 
 / Display a list of collections with teaser images and snippets as tiles
 -@collections.each do |collection|
-  -snippet = to_snippet(collection.intro_block)
-  .collection-tile
-    .projects_details_image
-    =link_to(image_tag(collection.picture_url(:thumb), alt: collection.title), collection_path(collection.owner, collection), class: 'collection-tile_image')
-    .collection-tile_content
-      h3 =link_to collection.title, collection_path(collection.owner, collection)
-      p =snippet
-      -collection_stats(collection)
-      .collection-work_stats
-        span 
-          =t('dashboard.owner.n_works', count: collection.works.count)
-        span
-          =render({ :partial => 'shared/progress', :locals => { :collection => collection } })
-
-
+  =render(partial: 'shared/collection_tile', locals: { collection: collection })
+  
       

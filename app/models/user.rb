@@ -110,9 +110,9 @@ class User < ApplicationRecord
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   has_many :metadata_description_versions, :dependent => :destroy
@@ -120,6 +120,8 @@ class User < ApplicationRecord
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Organization', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
