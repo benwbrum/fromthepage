@@ -39,14 +39,14 @@
           th
             h3.settings-label =t('.collection_owners')
             p.settings-label  ="(#{@owners.count})" unless @owners.empty?
-            p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+            p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false, noclose: true }})
           td
             =render 'users_list', users: @owners, type: 'owners'
         tr
           th
             h3.settings-label =t('.blocked_users')
             p.settings-label ="(#{@blocked_users.count})" unless @blocked_users.empty?
-            p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
+            p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, noclose: true, remote: true  }})
           td
             =render 'users_list', users: @blocked_users, type: 'blocked', disabled: @collection.restricted
         tr: td
