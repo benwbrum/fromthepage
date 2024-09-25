@@ -114,7 +114,19 @@ RSpec.describe Collection, type: :model do
         }.to change(Thredded::MessageboardGroup, :count).by(1)
          .and change(Thredded::Messageboard, :count).by(2)
 
-        expect(collection.messageboards_enabled).to be true
+        expect(collection.messageboards_enabled).to be_truthy
+
+        # Test disabling
+        collection.disable_messageboards
+        expect(collection.messageboards_enabled).to be_falsey
+        # Manually set to nil without deleting
+        collection.messageboard_group = nil
+        collection.save
+
+        # Enable again, but will not increase count
+        expect {
+          collection.enable_messageboards
+        }.not_to change(Thredded::MessageboardGroup, :count)
       end
     end
   end

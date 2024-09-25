@@ -175,10 +175,10 @@ class Collection < ApplicationRecord
 
   def enable_messageboards
     if self.messageboard_group.nil?
-      self.messageboard_group = Thredded::MessageboardGroup.create!(name: self.title)
+      self.messageboard_group = Thredded::MessageboardGroup.find_or_create_by!(name: self.title)
       # now create the default messageboards
-      Thredded::Messageboard.create!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
-      Thredded::Messageboard.create!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.find_or_create_by!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.find_or_create_by!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
     end
     self.messageboards_enabled = true
     self.save!
