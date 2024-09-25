@@ -41,47 +41,47 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
                 h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
                 div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
                   div.source-code
-                    == @selected_version.transcription
+                    == @selected_version&.transcription
                   div.html-code
-                    == xml_to_html(@selected_version.xml_transcription)
+                    == xml_to_html(@selected_version&.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
                     div.source-code
-                      == @selected_version.source_translation
+                      == @selected_version&.source_translation
                     div.html-code
-                      == xml_to_html(@selected_version.xml_translation)
+                      == xml_to_html(@selected_version&.xml_translation)
               - else
                 h4(data-diff-title="changed" data-empty=t('.untitled')) = @previous_version.title.presence || ""
                 div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
                   div.source-code
-                    == @previous_version.transcription
+                    == @previous_version&.transcription
                   div.html-code
-                    == xml_to_html(@previous_version.xml_transcription)
+                    == xml_to_html(@previous_version&.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
                     div.source-code
-                      == @previous_version.source_translation
+                      == @previous_version&.source_translation
                     div.html-code
-                      == xml_to_html(@previous_version.xml_translation)
+                      == xml_to_html(@previous_version&.xml_translation)
             - else
               h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
               div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
                 div.source-code
-                  == @selected_version.transcription
+                  == @selected_version&.transcription
                 div.html-code
-                  == xml_to_html(@selected_version.xml_transcription)
+                  == xml_to_html(@selected_version&.xml_transcription)
               - if @work.supports_translation
                 hr
                 h4= t('.translation')
                 div.table-responsive(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
                   div.source-code
-                    == @selected_version.source_translation
+                    == @selected_version&.source_translation
                   div.html-code
-                    == xml_to_html(@selected_version.xml_translation)
+                    == xml_to_html(@selected_version&.xml_translation)
         div.version-col.right
           div.diff-title
             =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
@@ -94,47 +94,47 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
                 h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version.title.presence || ""
                 div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
                   div.source-code
-                    == @previous_version.transcription
+                    == @previous_version&.transcription
                   div.html-code
-                    == xml_to_html(@previous_version.xml_transcription)
+                    == xml_to_html(@previous_version&.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
                     div.source-code
-                      == @previous_version.source_translation
+                      == @previous_version&.source_translation
                     div.html-code
-                      == xml_to_html(@previous_version.xml_translation)
+                      == xml_to_html(@previous_version&.xml_translation)
               - else
                 h4(data-diff-title="original" data-empty=t('.untitled')) = @selected_version.title.presence || t('.untitled')
                 div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
                   div.source-code
-                    == @selected_version.transcription
+                    == @selected_version&.transcription
                   div.html-code
-                    == xml_to_html(@selected_version.xml_transcription)
+                    == xml_to_html(@selected_version&.xml_transcription)
                 - if @work.supports_translation
                   hr
                   h4= t('.translation')
                   div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
                     div.source-code
-                      == @selected_version.source_translation
+                      == @selected_version&.source_translation
                     div.html-code
-                      == xml_to_html(@selected_version.xml_translation)
+                      == xml_to_html(@selected_version&.xml_translation)
             - else
               h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
               div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
                 div.source-code
-                  == @previous_version.transcription
+                  == @previous_version&.transcription
                 div.html-code
-                  == xml_to_html(@previous_version.xml_transcription)
+                  == xml_to_html(@previous_version&.xml_transcription)
               - if @work.supports_translation
                 hr
                 h4= t('.translation')
                 div.table-responsive(data-diff-translation="original" data-empty=t('.no_translation_provided'))
                   div.source-code
-                    == @previous_version.source_translation
+                    == @previous_version&.source_translation
                   div.html-code
-                    == xml_to_html(@previous_version.xml_translation)
+                    == xml_to_html(@previous_version&.xml_translation)
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'
