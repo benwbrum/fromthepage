@@ -4,17 +4,49 @@ fr:
     create:
       document_created: Le jeu de documents a été créé
     edit:
-      current_url_for_this_work: L'URL actuelle de ce œuvre est %{current_url}. Si vous souhaitez modifier la section de l'ensemble de documents de l'URL, veuillez utiliser des lettres minuscules et des tirets entre les mots.
+      current_url: 'L''URL actuelle de l''ensemble de documents :'
       description: La description
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
-      document_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
-      save_document_set: Enregistrer le jeu de documents
+      document_set_based_on: Il s'agit d'un ensemble de documents basé sur la collection <b>%{title}</b>. Vous pouvez gérer tous les œuvres et ensembles de documents de cette collection en cliquant sur %{link}.
+      document_set_image: Image du jeu de documents
+      document_set_image_description: Image à utiliser pour illustrer la description du jeu de documents.
+      here: ici
+      no_image: Pas d'image
+      save_changes: Sauvegarder les modifications
       title: Titre
+      upload_image: Télécharger une image
       url: URL
+      url_description: Veuillez utiliser des lettres minuscules et des tirets entre les mots.
+    edit_privacy:
+      document_set_collaborators: Collaborateurs autorisés
+      document_set_privacy: 'Confidentialité du document : <i>%{privacy}</i>'
+      document_set_restricted_description: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
+      document_set_unrestricted_description: L'ensemble de documents peut être consulté par n'importe qui sur Internet. Toutes les œuvres placées dans un ensemble de documents publics seront lisibles, même si la collection parente est privée. Vous pouvez rendre le jeu de documents privé pour limiter sa visibilité aux collaborateurs.
+      edit_collaborators: Modifier les collaborateurs
+      make_document_set_private: Rendre l'ensemble de documents privé
+      make_document_set_public: Rendre l'ensemble de documents public
+      private: Privé
+      public: Publique
     edit_set_collaborators:
       remove_collaborator: Supprimer un collaborateur
       set_collaborators: Collaborateurs de l'ensemble de documents
       set_collaborators_description: Les collaborateurs peuvent transcrire et éditer des ensembles de documents privés.
+    edit_tabs:
+      general: Général
+      manage_works: Gérer les œuvres
+      privacy_access: Confidentialité et accès
+    edit_works:
+      add: Ajouter
+      add_work_title_to_document_set: Ajouter %{work_title} au jeu de documents
+      document_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
+      n_pages:
+        one: '1 page :'
+        other: "%{count} pages :"
+      save: Sauvegarder
+      search: Chercher
+      search_for_works: Rechercher des oeuvres...
+      status: Statut
+      work: Œuvre
     index:
       actions: Actions
       aggregating_works_thematic_exhibits: Regroupement des œuvres dans des expositions thématiques
@@ -32,9 +64,9 @@ fr:
       no_document_sets: Cette collection n'a pas d'ensembles de documents
       privacy: Intimité
       private: Privé
-      public: Public
-      publishing_works_private_collection: Édition d'œuvres d'une collection privée. (Toutes les œuvres d'une collection privée ajoutées à un ensemble de documents publics seront visibles par le public.)
-      save: sauvegarder
+      public: Publique
+      publishing_works_private_collection: Publication d'œuvres issues d'une collection privée. (Toutes les œuvres d'une collection privée qui sont ajoutées à un ensemble de documents publics seront visibles par le public.)
+      save: Sauvegarder
       search: Chercher
       search_for_works: Rechercher des oeuvres...
       status: Statut
@@ -65,30 +97,7 @@ fr:
       work_title: Titre de œuvre
     settings:
       add: Ajouter
-      add_work_title_to_document_set: Ajouter %{work_title} au jeu de documents
-      document_set_based_on: Il s'agit d'un ensemble de documents basé sur la collection <b>%{title}</b>. Vous pouvez gérer tous les œuvres et ensembles de documents de cette collection en cliquant sur %{link}.
-      document_set_collaborators: Collaborateurs autorisés
-      document_set_image: Image du jeu de documents
-      document_set_privacy: Confidentialité de l'ensemble de documents
-      document_set_restricted: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
-      document_set_unrestricted: L'ensemble de documents peut être consulté par n'importe qui sur Internet. Toutes les œuvres placées dans un ensemble de documents publics seront lisibles, même si la collection parente est privée. Vous pouvez rendre le jeu de documents privé pour limiter sa visibilité aux collaborateurs.
       done: Fait
-      edit_collaborators: Modifier les collaborateurs
-      here: ici
-      make_document_set_private: Rendre l'ensemble de documents privé
-      make_document_set_public: Rendre l'ensemble de documents public
-      manage_works: Gérer les œuvres
-      n_pages:
-        one: '1 page :'
-        other: "%{count} pages : pl"
-      no_image: Pas d'image
-      picture_document_set_description: Image à utiliser pour illustrer la description du jeu de documents.
-      save: sauvegarder
-      search: Chercher
-      search_for_works: Rechercher des oeuvres...
-      status: Statut
-      upload_image: Télécharger une image
-      work: Œuvre
     transfer:
       source_and_target_can_not_be_the_same: La source et la cible ne peuvent pas être identiques.
     transfer_form:

@@ -24,7 +24,7 @@
         =button_tag '', class: 'remove', title: t('document_sets.edit_set_collaborators.remove_collaborator'), 'aria-label': t('document_sets.edit_set_collaborators.remove_collaborator')
   .toolbar
     .toolbar_group.aright
-      =link_to(t('document_sets.settings.done'), collection_settings_path(@collection.owner, @document_set), class: 'button')
+      =link_to(t('document_sets.settings.done'), collection_settings_privacy_path(@collection.owner, @document_set), class: 'button')
 
 javascript:
   $('#collaborator_id').select2({
