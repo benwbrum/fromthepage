@@ -184,7 +184,8 @@
           } else {
             this.$content.html(data);
           }
-        }).fail(function() {
+        }).fail(function(data) {
+          this.$content.html(data.responseText);
           this.$content.addClass('ajax-error');
         }).always(function() {
           $submit.prop('disabled', false);

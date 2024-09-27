@@ -16,9 +16,9 @@
           th
             h3 =f.label :slug, t('.url')
             p =t('.url_description')
-          td 
+          td
             =f.text_field :slug, value: @collection.slug
-        tr 
+        tr
           th =t('.current_url')
           td
             b#collection-url =collection_url(@collection.owner.slug,@collection.slug)
@@ -26,7 +26,7 @@
               =svg_symbol '#icon-copy', class: 'icon'
         tr
           th =t('.transcriber_url')
-          td 
+          td
             b#transcriber-url =collection_start_transcribing_url(@collection.owner.slug, @collection.slug)
             a.clipboard-btn (data-clipboard-target='#transcriber-url' aria-label=t('.copy_url') title=t('.copy_url'))
               =svg_symbol '#icon-copy', class: 'icon'
@@ -36,7 +36,7 @@
             h3 =f.label :tags, t('.subject_tags')
           td
             =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
-        tr 
+        tr
           th
             h3 =t('.collection_image')
             p =t('.collection_image_description')
@@ -52,13 +52,13 @@
           th
             h3 =f.label :intro_block, t('.description')
             p = t('.description_message')
-          td =f.text_area :intro_block, rows: 6, value: @collection.intro_block  
-        tr: td 
-        tr 
-          th 
+          td =f.text_area :intro_block, rows: 6, value: @collection.intro_block
+        tr: td
+        tr
+          th
             h3 =t('.footer')
             p =t('.footer_description')
-          td 
+          td
             .footer-preview
                 ==@collection.owner.footer_block
             -if current_user == @collection.owner

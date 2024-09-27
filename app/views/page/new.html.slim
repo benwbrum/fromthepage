@@ -2,7 +2,7 @@
   h1 =t('.add_new_page')
   p =t('.choose_a_title')
 
-  =form_for(@page, { :url => { :action => 'create' }}) do |f|
+  =form_for @page, url: page_index_path, method: :post do |f|
     =hidden_field_tag(:work_id, @page.work.id)
     =validation_summary @page.errors
     table.form

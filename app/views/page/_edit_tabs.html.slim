@@ -1,0 +1,22 @@
+-tabs = [{\
+  icon: '#icon-settings',
+  name: t('.general'),
+  selected: 1,
+  path: "#{main_app.collection_edit_page_path(@collection.owner, @collection, @work, @page)}",
+},{\
+  icon: '#icon-robot',
+  name: t('.htr'),
+  selected: 2,
+  path: "#",
+}]
+
+.side-tabs
+  -for tab in tabs
+    -if tab[:selected] == selected
+      a.active
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]
+    -else
+      =link_to tab[:path]
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]

@@ -9,6 +9,8 @@ de:
       document_set:
         slug: URL
         title: Titel
+      page:
+        base_image: Seitenbild
       work:
         slug: URL
         title: Titel
