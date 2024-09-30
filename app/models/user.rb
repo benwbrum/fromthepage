@@ -150,8 +150,9 @@ class User < ApplicationRecord
     end
   end
 
-
   def update_display_name
+    self.real_name = nil if self.real_name.blank?
+
     if self.owner
       self.display_name = self.real_name
     else
@@ -287,9 +288,9 @@ class User < ApplicationRecord
 
   def display_name
     if self.guest
-      "Guest"
+      'Guest'
     else
-      self[:display_name] || self[:login]
+      self[:display_name].presence || self[:login]
     end
   end
 
