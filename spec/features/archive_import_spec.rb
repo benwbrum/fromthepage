@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "IA import actions", :order => :defined do
+describe 'IA import actions', order: :defined, skip: 'IA outtage, temporarily skipping' do
 
   before :all do
 
