@@ -296,7 +296,7 @@
   position: relative;
   border-radius: 5px;
   margin: 6px 0 0 -5px;
-  background: rgba(#000, 0.85);
+  background: rgba(#000, 0.85) !important;
   box-shadow: 0 5px 15px rgba(#000, 0.12);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1223,9 +1223,38 @@ button, .button, .dropdown dd a {
 
 .diff-layout {
   display: flex;
-  justify-content: end;
+  justify-content: center;
+  background: transparent;
+  width: fit-content;
+  padding: 5px;
+  margin-left: auto;
+  column-gap: 10px;
+
+  div {
+    display: flex;
+
+    &.divider {
+      width: 1px;
+      height: 30px;
+      background-color: #d5d0c8;
+    }
+  }
 
   span {
+    // code & document icons
+    &.view-code,
+    &.view-document {
+      svg {
+        height: 25px;
+        fill: mix($btnColor, #FFF, 30%);
+      }
+      &.active {
+        svg {
+          fill: white;
+        }
+      }
+    }
+
     background-color: $btnBackground;
     width: 2em;
     height: 2em;
@@ -1302,6 +1331,10 @@ button, .button, .dropdown dd a {
         padding: 20px;
         flex: 1;
         background-color: mix($bodyBg, #FFF, 30%);
+
+        div.source-code {
+          display: none;
+        }
 
         table {
           th {
