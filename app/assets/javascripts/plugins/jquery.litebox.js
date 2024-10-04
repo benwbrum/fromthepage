@@ -32,7 +32,8 @@
       content: null,          // Selector for local content element
       cssclass: null,         // Custom CSS class for the litebox
       noscroll: true,         // Disable page scroll when open
-      disposable: false       // Remove from DOM after close
+      disposable: false,      // Remove from DOM after close
+      noclose: false          // Remove close button
     },
 
     isopen: false,
@@ -87,12 +88,15 @@
         this.$container = $('<div>').addClass('litebox_container');
         this.$content = $('<div>').addClass('litebox_content');
 
-        // Bind close handlers
-        this.$wrapper.add(this.$closebutton).on('click', $.proxy(this.eventClose, this));
-        this.$container.click(function(e) { e.stopPropagation(); });
-
         // Insert into DOM and show
-        this.$container.append(this.$closebutton, this.$content);
+        if(this.options.noclose) {
+          this.$container.append(this.$content);
+        } else {
+          // Bind close handlers
+          this.$wrapper.add(this.$closebutton).on('click', $.proxy(this.eventClose, this));
+          this.$container.click(function(e) { e.stopPropagation(); });
+          this.$container.append(this.$closebutton, this.$content);
+        }
         this.$wrapper.append(this.$container).appendTo(this.$body);
         this.$wrapper.css('opacity'); // Force reflow
         this.$wrapper.addClass('visible');
