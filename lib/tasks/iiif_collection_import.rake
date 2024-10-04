@@ -24,6 +24,11 @@ namespace :fromthepage do
         begin
           at_id = manifest['@id']
           print "\nattempting item manifest #{at_id}\n"
+          if ScManifest.where(work_id: collection.works.pluck(:id), at_id: at_id).exists?
+            print "Skipping #{at_id} because it already exists in the collection\n"
+            next
+          end
+            
           sc_manifest = ScManifest.manifest_for_at_id(at_id)
           work = nil
           work = sc_manifest.convert_with_collection(collection.owner, collection, nil, import_ocr)
