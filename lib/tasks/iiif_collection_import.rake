@@ -1,5 +1,47 @@
 namespace :fromthepage do 
 
+  desc "Import all pages of a IIIF collection"
+  task :import_paged_iiif_collection, [:at_id, :collection_id] => :environment do |t, args|
+    collection_at_id = args.at_id
+    collection_id = args.collection_id.to_i
+    collection = Collection.find collection_id
+    import_ocr=false
+
+    raw_json = URI.open(collection_at_id).read
+    hash = JSON.parse(raw_json)
+    manifests=[]
+    page_uri = hash['first']
+    
+    # loop through each sub-page
+    while page_uri
+      print "fetching collection page #{page_uri}\n"
+      raw_json = URI.open(page_uri).read
+      hash = JSON.parse(raw_json)
+      manifests += hash['manifests']
+
+      # loop through each manifest
+      hash['manifests'].each do |manifest|
+        begin
+          at_id = manifest['@id']
+          print "\nattempting item manifest #{at_id}\n"
+          if ScManifest.where(work_id: collection.works.pluck(:id), at_id: at_id).exists?
+            print "Skipping #{at_id} because it already exists in the collection\n"
+            next
+          end
+            
+          sc_manifest = ScManifest.manifest_for_at_id(at_id)
+          work = nil
+          work = sc_manifest.convert_with_collection(collection.owner, collection, nil, import_ocr)
+        rescue => e
+          puts "Error importing #{at_id}"
+          puts "#{e.message}"
+          puts e.backtrace.join("\n")
+        end
+      end
+      page_uri = hash['next']
+    end    
+  end
+
   desc "Import an IIIF collection"
   task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr] => :environment do |t, args|
   
