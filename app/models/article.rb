@@ -51,6 +51,12 @@ class Article < ApplicationRecord
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
+  # add a call back that logs a warning whenever an article is deleted
+  before_destroy :log_destroy
+
+  def log_destroy
+    logger.warn("ISSUE4269 Warning: Article #{self.id} #{self.title} in collection #{self.collection.title} is being destroyed.")
+  end
 
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
