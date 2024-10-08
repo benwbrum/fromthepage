@@ -54,13 +54,13 @@ class RegistrationsController < Devise::RegistrationsController
         expire_data_after_sign_in!
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
-      #set the guest_user_id of the session to nil for user login/out
+      # set the guest_user_id of the session to nil for user login/out
       if session[:guest_user_id]
         session[:guest_user_id] = nil
       end
 
       if @user.owner
-        @user.account_type="Trial"
+        @user.account_type = 'Trial'
         @user.save
         alert_bento
       end

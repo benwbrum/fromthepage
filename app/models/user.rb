@@ -133,6 +133,7 @@ class User < ApplicationRecord
 
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
+  validates :display_name, presence: true, if: -> { new_record? && owner == true }
 
   before_validation :update_display_name
 
@@ -154,9 +155,9 @@ class User < ApplicationRecord
     self.real_name = nil if self.real_name.blank?
 
     if self.owner
-      self.display_name = self.real_name
+      self[:display_name] = self.real_name
     else
-      self.display_name = login
+      self[:display_name] = self.login
     end
   end
 
