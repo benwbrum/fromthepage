@@ -33,7 +33,7 @@ describe "testing deletions" do
     expect(Deed.where(page_id: pages.ids)).to be_empty
   end
 
-  it "deletes a document set", skip: true do
+  it "deletes a document set" do
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
