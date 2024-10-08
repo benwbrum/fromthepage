@@ -18,7 +18,25 @@ class ApplicationController < ActionController::Base
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
+  around_action :check_deleted_articles
   around_action :switch_locale
+
+
+  def check_deleted_articles
+    if controller_name != 'display' && @collection && !@collection.subjects_disabled
+      starting_article_count = @collection.articles.count
+      yield
+      ending_article_count = @collection.articles.count
+      if starting_article_count > ending_article_count
+        logger.info("ISSUE4269 WARNING #{starting_article_count} > #{ending_article_count} at #{controller_name}##{action_name}")
+      end
+    else
+      yield
+    end
+  end
+          
+
+
 
   def switch_locale(&action)
     @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
