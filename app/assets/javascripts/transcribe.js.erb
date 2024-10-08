@@ -75,7 +75,7 @@ function startDictation(target){
         transcript += e.results[i][0].transcript;
       }
     }
-    
+
     if(typeof myCodeMirror !== 'undefined' && form.find('.CodeMirror').length > 0) {
       myCodeMirror.setValue(transcript);
     } else if(form.find('textarea').length > 0) {
@@ -110,7 +110,7 @@ function checkForUnsaved(inputs, msg, e, ignoreCodeMirror){
       }
     }
     else {
-      if (this.value != this.defaultValue){
+      if (this.value.trim() != this.defaultValue.trim()){
         if(!confirm(msg)) {
           e.preventDefault();
         }

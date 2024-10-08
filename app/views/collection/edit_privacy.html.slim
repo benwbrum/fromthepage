@@ -8,7 +8,7 @@
       =validation_summary @collection.errors
       =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
       table.form.collection-settings
-        tr 
+        tr
           th(colspan="2")
             h3.settings-label
               =t('.collection_privacy')
@@ -21,7 +21,7 @@
               =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button inline-btn')
                 =svg_symbol '#icon-lock', class: 'icon'
                 span =t('.make_collection_private')
-        tr 
+        tr
           td(colspan="2")
             -if @collection.restricted
               p =t('.collection_restricted_description')
@@ -29,24 +29,24 @@
               p =t('.collection_public_description')
         tr: td
         tr
-          th 
+          th
             h3.settings-label =t('.collection_collaborators')
             p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
-            p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !@collection.restricted, :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+            p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !@collection.restricted, :data => { litebox: { hash: 'edit-collaborators', noscroll: false, noclose: true }})
           td
             =render 'users_list', users: @collaborators, type: 'collaborators', disabled: !@collection.restricted
-        tr 
+        tr
           th
             h3.settings-label =t('.collection_owners')
             p.settings-label  ="(#{@owners.count})" unless @owners.empty?
-            p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+            p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false, noclose: true }})
           td
             =render 'users_list', users: @owners, type: 'owners'
         tr
-          th 
+          th
             h3.settings-label =t('.blocked_users')
             p.settings-label ="(#{@blocked_users.count})" unless @blocked_users.empty?
-            p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
+            p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', disabled: @collection.restricted, :data => { litebox: { hash: 'block-users', noscroll: false, noclose: true, remote: true  }})
           td
             =render 'users_list', users: @blocked_users, type: 'blocked', disabled: @collection.restricted
         tr: td
@@ -63,7 +63,7 @@
             =f.radio_button :api_access, false, disabled: !@collection.restricted, :checked => !(@collection.api_access || !@collection.restricted)
             =f.label :api_access_false
               .big =t('.closed_api')
-        tr 
+        tr
           td(colspan="2")
             h3 =t('.restrict_editing')
             =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button action-btn exits', disabled: @collection.works.empty? || !@collection.text_entry?)
