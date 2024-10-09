@@ -94,7 +94,6 @@ pt:
       del_description: Marca o texto que foi removido por apagamento ou tachado. <br><i>Recomendado</i>
       del_label: Eliminação
       description: FromThePage pode suportar marcação em transcrições em formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
-      documentation: Documentação
       expan_description: Marca abreviações expandidas com formas originais no atributo orig. (Forma alternativa de tag abbr.)
       expan_label: Expansão
       fig_description: Indica uma figura ou uma linha horizontal.

@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
-  before_action :update_ia_work_server
   before_action :store_current_location, :unless => :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
@@ -34,7 +33,7 @@ class ApplicationController < ActionController::Base
       yield
     end
   end
-          
+
 
 
 
@@ -241,38 +240,6 @@ class ApplicationController < ActionController::Base
     end
 
     return
-  end
-
-  # perform appropriate API call for updating the IA server
-  def update_ia_work_server
-    if @work && @work.ia_work
-      ia_servers = session[:ia_servers] ||= {}
-      ia_servers = JSON.parse(ia_servers.to_json).with_indifferent_access
-
-      unless ia_servers[@work.ia_work.book_id]
-        # fetch it and update it
-        begin
-          server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
-          ia_servers[@work.ia_work.book_id] = server_and_path
-        rescue => ex
-          # TODO log exception
-          if params[:offline]
-            # we're doing development offline
-            ia_servers[@work.ia_work.book_id] = {:server => 'offlineserver', :ia_path => 'offlinepath'}
-          else
-            logger.error(ex.message)
-            logger.error(ex.backtrace.join("\n"))
-            flash[:error] = t('layouts.application.internet_archive_difficulties')
-            redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
-            return
-          end
-        end
-      end
-
-      logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
-      @work.ia_work.server = ia_servers[@work.ia_work.book_id][:server]
-      @work.ia_work.ia_path = ia_servers[@work.ia_work.book_id][:ia_path]
-    end
   end
 
   def load_html_blocks
