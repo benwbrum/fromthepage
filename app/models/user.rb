@@ -133,13 +133,13 @@ class User < ApplicationRecord
 
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
-  validates :display_name, presence: true, if: -> { new_record? && owner == true }
+  validate :display_name_presence
 
   before_validation :update_display_name
 
   after_save :create_notifications
   after_create :set_default_footer_block
-  #before_destroy :clean_up_orphans
+  # before_destroy :clean_up_orphans
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
@@ -149,6 +149,13 @@ class User < ApplicationRecord
         errors.add(:email, 'error 38')
       end
     end
+  end
+
+  def display_name_presence
+    return unless new_record?
+    return unless owner
+
+    errors.add(:display_name, :blank) if self[:display_name].blank?
   end
 
   def update_display_name
