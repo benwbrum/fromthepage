@@ -7,6 +7,7 @@ es:
     email_address: Dirección de correo electrónico
     errors:
       keys:
+        display_name: Nombre para mostrar
         email: Correo electrónico
         login: Nombre de usuario
         password: Contraseña

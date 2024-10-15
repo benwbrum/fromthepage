@@ -7,6 +7,7 @@ de:
     email_address: E-Mail-Adresse
     errors:
       keys:
+        display_name: Organisationsname
         email: E-Mail
         login: Benutzername
         password: Passwort
