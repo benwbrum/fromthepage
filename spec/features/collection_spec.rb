@@ -289,7 +289,7 @@ end
 
 describe "collection spec (isolated)" do
   before :all do
-    @factory_owner = create(:user, owner: true)
+    @factory_owner = create(:owner)
   end
 
   it 'updates collection statistics', :js => true do

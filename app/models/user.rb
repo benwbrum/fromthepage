@@ -152,6 +152,7 @@ class User < ApplicationRecord
   end
 
   def display_name_presence
+    return unless validation_context == :registration
     return unless new_record?
     return unless owner
 

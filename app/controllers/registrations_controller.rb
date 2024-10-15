@@ -36,7 +36,7 @@ class RegistrationsController < Devise::RegistrationsController
     # This is the default Devise code
     yield resource if block_given?
 
-    if check_recaptcha(model: @user) && @user.save
+    if check_recaptcha(model: @user) && @user.save(context: :registration)
       # Record the `joined` deed based on Ahoy Visit
       join_collection = joined_from_collection(current_visit.id)
       unless join_collection.nil?

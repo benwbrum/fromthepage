@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "import data" do
-  let(:owner){ create(:user, owner: true) }
+  let(:owner){ create(:owner) }
 
   before :each do
     DatabaseCleaner.start
