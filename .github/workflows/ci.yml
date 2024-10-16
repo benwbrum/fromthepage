@@ -18,6 +18,9 @@ jobs:
       RAILS_ENV: test
       MYSQL_ROOT_PASSWORD: password
       MYSQL_SOCKET: /tmp/mysql.sock
+      SECRET_KEY_BASE: secret_key_base
+      DEVISE_SECRET_KEY: devise_secret_key
+      DEVISE_PEPPER: ''
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
