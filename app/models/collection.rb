@@ -65,12 +65,12 @@ class Collection < ApplicationRecord
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_users, through: :collection_blocks, source: :user
-  has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
-  has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
-  has_many :articles, :dependent => :destroy
-  has_many :document_sets, -> { order 'title' }, :dependent => :destroy
-  has_many :categories, -> { order 'title' }
-  has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
+  has_many :works, -> { order(:title) }, dependent: :destroy #, :order => :position
+  has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
+  has_many :articles, dependent: :destroy
+  has_many :document_sets, -> { order(:title) }, dependent: :destroy
+  has_many :categories, -> { order(:title) }
+  has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
   has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
@@ -79,7 +79,7 @@ class Collection < ApplicationRecord
   has_one :quality_sampling, :dependent => :destroy
   belongs_to :messageboard_group, class_name: 'Thredded::MessageboardGroup', foreign_key: 'thredded_messageboard_group_id', optional: true
 
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: 'Page', optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order(input_type: :asc, order: :asc) }, through: :metadata_coverages

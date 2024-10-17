@@ -157,10 +157,10 @@ Fromthepage::Application.routes.draw do
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'tooltip', to: 'article#tooltip'
-    get 'delete', to: 'article#delete'
+    delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     post 'combine_duplicate', to: 'article#combine_duplicate'
-    post 'article_category', :to => 'article#article_category'
+    post 'article_category', to: 'article#article_category'
   end
 
   scope 'export', as: 'export' do
