@@ -118,9 +118,16 @@ class DocumentSet < ApplicationRecord
     self.collection.text_and_metadata_entry?
   end
 
-
   def hide_completed
     self.collection.hide_completed
+  end
+
+  def tags
+    self.collection.tags
+  end
+
+  def canonical_tags
+    self.collection.canonical_tags
   end
 
   def review_workflow
@@ -329,7 +336,7 @@ class DocumentSet < ApplicationRecord
     nil
   end
 
-  def api_access 
+  def api_access
     collection.api_access
   end
 

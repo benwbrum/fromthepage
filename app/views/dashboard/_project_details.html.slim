@@ -1,0 +1,9 @@
+-snippet = truncate(Loofah.fragment(project.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+div.projects_details
+  -unless project.picture.blank?
+    .projects_details_image
+      =image_tag(project.picture_url(:thumb), alt: project.title)
+  .projects_collection
+    h5 =link_to project.title, collection_path(owner, project)
+    -unless snippet.empty?
+      .projects_collection_snippet = snippet

@@ -202,13 +202,21 @@ class DashboardController < ApplicationController
   def new_landing_page
     @search_results = search_results(params[:search])
 
-    # Get random Collections and DocSets from paying users
-    @owners = User.findaproject_owners.order(:display_name).joins(:collections)
-                  .left_outer_joins(:document_sets).includes(:collections)
+    users = User.owners
+                .joins(:collections)
+                .left_outer_joins(:document_sets)
+                .includes(random_collections: :canonical_tags)
+                .includes({ random_document_sets: { collection: :canonical_tags } })
 
-    # Sampled Randomly down to 8 items for Carousel
-    docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-    colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+    @org_owners = users.findaproject_orgs.order(:display_name).distinct
+    @individual_owners = users.findaproject_individuals.order(:display_name).distinct
+
+    docsets = DocumentSet.carousel
+                         .includes(:owner, { next_untranscribed_page: :work })
+                         .where(owner_user_id: @org_owners.select(:id) + @individual_owners.select(:id)).sample(5)
+    colls = Collection.carousel
+                      .includes(:owner, { next_untranscribed_page: :work })
+                      .where(owner_user_id: @org_owners.select(:id) + @individual_owners.select(:id)).sample(5)
     @collections = (docsets + colls).sample(8)
 
     @tag_map = Tag.featured_tags.group(:ai_text).count
@@ -344,6 +352,9 @@ class DashboardController < ApplicationController
   def search_results(search_key)
     return nil if search_key.nil?
 
-    Collection.search(search_key).unrestricted + DocumentSet.search(search_key).unrestricted
+    collections_query = Collection.search(search_key).unrestricted.includes(:owner)
+    document_sets_query = DocumentSet.search(search_key).unrestricted.includes(:owner)
+
+    collections_query + document_sets_query
   end
 end
