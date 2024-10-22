@@ -341,7 +341,6 @@ module ExportService
       path = File.join("html_full_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
     end
 
-
     out.put_next_entry path
 
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
@@ -402,53 +401,55 @@ module ExportService
     @headings
   end
 
-
   def export_work_metadata_as_csv(collection)
-    csv_string = CSV.generate(:force_quotes => true) do |csv|
+    csv_string = CSV.generate(force_quotes: true) do |csv|
       static_headers = [
-        'Title',
-        'Collection',
+        'FromThePage Title',
+        '*Collection*',
         'Document Sets',
-        'Uploaded Filename',
-        'FromThePage ID',
+        '*Uploaded Filename*',
+        '*FromThePage ID*',
         'FromThePage Slug',
-        'FromThePage URL',
-        'Identifier',
-        'Originating Manifest ID',
-        'Creation Date',
-        'Total Pages',
-        'Pages Transcribed',
-        'Pages Corrected',
-        'Pages Indexed',
-        'Pages Translated',
-        'Pages Needing Review',
-        'Pages Marked Blank',
-        'Contributors',
-        'Contributors Name',
-        'work_id'
+        '*FromThePage URL*',
+        'FromThePage Identifier',
+        'FromThePage Description',
+        '*Originating Manifest ID*',
+        '*Creation Date*',
+        '*Total Pages*',
+        '*Pages Transcribed*',
+        '*Pages Corrected*',
+        '*Pages Indexed*',
+        '*Pages Translated*',
+        '*Pages Needing Review*',
+        '*Pages Marked Blank*',
+        '*Contributors*',
+        '*Contributors Name*'
       ]
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
-      metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
+      metadata_headers = raw_metadata_strings
+                         .compact
+                         .flat_map { |raw| JSON.parse(raw).map { |element| element['label'] } }
+                         .uniq
       # append the headers for described metadata, read from the metadata_field configuration for the project
-      static_description_headers = ['Description Status', 'Described By']
-      described_headers = collection.metadata_fields.map {|field| field.label}
+      static_description_headers = ['*Description Status*', '*Described By*']
+      described_headers = collection.metadata_fields.map(&:label)
 
       csv << static_headers + metadata_headers + static_description_headers + described_headers
 
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work|
-
         work_users = work.deeds.map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         contributors_real_names = work.deeds.map{ |d| d.user.real_name }.uniq.join(' | ')
         row = [
           work.title,
           work.collection.title,
-          work.document_sets.map{|ds| ds.title}. join('|'),
+          work.document_sets.map(&:title).join('|'),
           work.uploaded_filename,
           work.id,
           work.slug,
           collection_read_work_url(collection.owner, collection, work),
           work.identifier,
+          work.description,
           work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
           work.created_on,
           work.work_statistic.total_pages,
@@ -459,14 +460,12 @@ module ExportService
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages,
           work_users,
-          contributors_real_names,
-          work.id
-
+          contributors_real_names
         ]
 
         unless work.original_metadata.blank?
           metadata = {}
-          JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
+          JSON.parse(work.original_metadata).each { |e| metadata[e['label']] = e['value'] }
 
           metadata_headers.each do |header|
             # look up the value for this index
@@ -478,17 +477,15 @@ module ExportService
           # description status
           row << work.description_status
           # described by
-          row << User.find(work.metadata_description_versions.pluck(:user_id)).map{|u| u.display_name}.join('; ')
+          row << User.find(work.metadata_description_versions.pluck(:user_id)).map(&:display_name).join('; ')
 
           metadata = JSON.parse(work.metadata_description)
           # we rely on a consistent order of fields returned by collection.metadata_fields to prevent scrambling columns
           collection.metadata_fields.each do |field|
-            element = metadata.detect{|candidate| candidate['transcription_field_id'] == field.id}
+            element = metadata.detect{ |candidate| candidate['transcription_field_id'] == field.id }
             if element
               value = element['value']
-              if value.is_a? Array
-                value = value.join("; ")
-              end
+              value = value.join('; ') if value.is_a? Array
               row << value
             else
               row << nil
