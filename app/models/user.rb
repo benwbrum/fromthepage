@@ -105,9 +105,9 @@ class User < ApplicationRecord
                           :class_name => 'Collection')
 
 
-  has_many :page_versions, -> { order 'created_on DESC' }
-  has_many :article_versions, -> { order 'created_on DESC' }
-  has_many :notes, -> { order 'created_at DESC' }
+  has_many :page_versions, -> { order(created_on: :desc) }
+  has_many :article_versions, -> { order(created_on: :desc) }
+  has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
 
   has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
