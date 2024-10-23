@@ -273,8 +273,7 @@ class Page < ApplicationRecord
           self.approval_delta = nil
         else
           self.approval_delta =
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f /
-              (old_transcription.size + new_transcription.size).to_f
+            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / (old_transcription.size + new_transcription.size).to_f
         end
       else # zero out deltas if the page is not complete
         self.approval_delta = nil
