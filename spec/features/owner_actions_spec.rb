@@ -238,6 +238,7 @@ describe "owner actions", :order => :defined do
 
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
+    page.click_link('Show All')
     page.find('.collection-works').find('a', text: @title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
