@@ -64,11 +64,6 @@ namespace :fromthepage do
       # Ideally we'd "just resave the pages"
 
 
-      # why are page_article_links not getting updated when we save the pages?  Why are the bad links not being updated?
-
-      # TODO -- we need to delete the redundant articles -- before? -- after we are done updating pages
-      # TODO -- test intermediate articles
-      
       # get the unique pages that reference missing articles
       pages = missing_article_hash.values.map { |entry| entry[:pages] }.flatten + redundent_reference_pages
       pages = pages.uniq

@@ -9,8 +9,7 @@ section.signon
     <br><br>
     ==t('.just_want_to_transcribe', sign_up_here: (link_to t('.sign_up_here'), new_user_registration_path))
 
-
-  =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  =form_for(resource, as: resource_name, url: registration_path(resource_name, registration_type: :free_trial)) do |f|
     =devise_error_messages!
     .signon_field
       =f.label :login, t('.login')
