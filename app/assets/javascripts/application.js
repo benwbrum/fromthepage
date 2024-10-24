@@ -641,3 +641,65 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
     }
   }
 }
+
+function lintHTML(content) {
+  const issues = [];
+  const stack = [];
+  const tagRegex = /<([a-z]+)(\s[^<>]*)?>|<\/([a-z]+)>|<([a-z]+)(\s[^<>]*)?\/>|<([a-z]+)(\s[^<>]*)?/gi;
+  let match;
+
+  while ((match = tagRegex.exec(content)) !== null) {
+    let tagName = match[1] || match[3] || match[4] || match[5];
+    let isOpeningTag = match[1];  // Opening tag
+    let isClosingTag = match[3];  // Closing tag
+    let isSelfClosingTag = match[4];  // Self-closing tag
+    let isUnclosedTag = match[5];  // Unclosed tag like <tag
+
+    const lineStart = content.substr(0, match.index).split("\n").length - 1;
+    const charStart = match.index - content.lastIndexOf('\n', match.index) - 1;
+
+    if(!isOpeningTag && !isSelfClosingTag && !isClosingTag && !isUnclosedTag && match[0].startsWith('<')){
+      isOpeningTag = match[0].replace('<', '').replaceAll('\n', '');
+      tagName = match[0].replace('<', '').replaceAll('\n', '');
+    }
+
+    if (isOpeningTag && !isSelfClosingTag) {
+      // Push opening tag to the stack
+      stack.push({ tagName, lineStart, charStart });
+    } else if (isClosingTag) {
+      // Handle closing tag, match with stack
+      const lastTag = stack.pop();
+      if (lastTag && lastTag.tagName !== tagName) {
+        issues.push({
+          message: `Unmatched closing tag </${tagName}> found. Expected </${lastTag.tagName}>.`,
+          severity: 'error',
+          from: CodeMirror.Pos(lineStart, charStart),
+          to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+        });
+      }
+    } else if (isSelfClosingTag) {
+      // Handle self-closing tag
+      continue;
+    } else if (isUnclosedTag) {
+      // Handle unclosed tag like "<tag"
+      issues.push({
+        message: `Unclosed tag <${tagName}> detected.`,
+        severity: 'warning',
+        from: CodeMirror.Pos(lineStart, charStart),
+        to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+      });
+    }
+  }
+
+  while (stack.length) {
+    const unclosedTag = stack.pop();
+    issues.push({
+      message: `Unclosed tag <${unclosedTag.tagName}> found.`,
+      severity: 'error',
+      from: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+      to: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+    });
+  }
+
+  return issues;
+}
