@@ -25,6 +25,14 @@
         :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
       }]
 
+    -if @page.has_alto?
+      -tabs += [{\
+        :name => t('.htr'),
+        :selected => 7,
+        :path => "#{collection_htr_path(@collection.owner, @collection, @work, @page.id)}",
+        :opts => { :rel => 'nofollow' },
+      }]
+
   -if !current_user && !@work.restrict_scribes
     -tabs += [{\
       :name => t('.transcribe'),
