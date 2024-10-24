@@ -4,8 +4,8 @@ describe "convention related tasks", :order => :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @work = @collection.works.last
+    @collection = @collections.find('imported-collection')
+    @work = @collection.works.find_by(transcription_conventions: nil)
     @page = @work.pages.first
     @conventions = @collection.transcription_conventions
     @clean_conventions = ActionController::Base.helpers.strip_tags(@collection.transcription_conventions)
@@ -58,13 +58,13 @@ describe "convention related tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Help Text")
     page.fill_in 'collection_transcription_conventions', with: @new_convention
-    #check unchanged work for collection conventions
-    work2 = @collection.works.first
+    # check unchanged work for collection conventions
+    work2 = @collection.works.where.not(id: @work.id).first
     page2 = work2.pages.second
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
     expect(page).to have_content @new_convention
-    #check changed work for collection conventions
+    # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     if page.has_content?("Facsimile")

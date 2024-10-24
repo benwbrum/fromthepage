@@ -37,7 +37,12 @@ class DocumentUpload < ApplicationRecord
     self.status = :queued
     self.save
 
-    DocumentUpload::ProcessJob.perform_later(self.id, log_file)
+    rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace >> #{log_file} 2>&1 &"
+
+    # Nice-up the rake call if settings are present
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    logger.info rake_call
+    system(rake_call)
   end
 
   def log_file
