@@ -69,11 +69,18 @@ namespace :fromthepage do
       pages = pages.uniq
       # for each page, resave the page so we get updated page source and page article links
       pages.each do |page|
-        print "\nResaving page #{page.title}\n"
+        print "\nResaving page #{page.id}\t#{page.title}\n"
         # print the page_article_link count before and after
         print "Before: #{page.page_article_links.count} links\n"
         page.source_text+=' '
-        page.save!
+        begin
+          page.save!
+          # catch any exceptions and print them
+        rescue => e
+          print "\nERROR SAVING PAGE #{page.id}!!!\n\n"
+          print e.message
+          print "\nERROR SAVING PAGE #{page.id}!!!\n\n"
+        end
         print "After: #{page.page_article_links.count} links\n"
       end
     end
