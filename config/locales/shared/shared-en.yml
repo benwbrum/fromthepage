@@ -85,6 +85,7 @@ en:
       correct: Correct
       describe_work: Describe work
       help: Help
+      htr: HTR
       nav_info: Page %{position} of %{size}
       next_page: Next page
       overview: Overview

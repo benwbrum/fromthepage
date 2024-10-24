@@ -1168,6 +1168,7 @@ button, .button, .dropdown dd a {
     form {
       position: relative;
       padding-left: 115px;
+
       label {
         left: 0;
         top: 50%;
@@ -1178,6 +1179,12 @@ button, .button, .dropdown dd a {
 
       select {
         max-width: 250px;
+      }
+    }
+
+    &.htr {
+      form {
+        padding-left: 0;
       }
     }
   }
@@ -1311,6 +1318,10 @@ button, .button, .dropdown dd a {
   border: none !important;
   background-clip: padding-box;
   // background-color: mix($bodyBg, #FFF, 30%);
+
+  &.htr {
+    padding-left: 0;
+  }
 
   .versions-wrapper {
     display: flex;

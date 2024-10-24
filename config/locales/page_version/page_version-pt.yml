@@ -5,6 +5,7 @@ pt:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
       help_description: Aqui você pode ver todas as revisões da página e comparar as alterações que foram feitas em cada revisão. A coluna da esquerda mostra o título da página e a transcrição na revisão selecionada; a coluna da direita mostra o que foi alterado. O texto inalterado está <span>destacado em branco</span>, o texto apagado está <del>destacado em vermelho</del> e o texto inserido está <ins>destacado em verde</ins>.
+      htr_help_description: Aqui pode ver todas as diferentes transcrições geradas por diferentes fontes e serviços e comparar as diferenças em cada revisão. Escolha as duas fontes nos menus suspensos acima do texto. A coluna da esquerda mostra o título da página e a transcrição na fonte selecionada, a coluna da direita mostra o que há de diferente na segunda fonte. O texto inalterado está <span>destacado em branco</span>, o texto apagado está <del>destacado em vermelho</del> e o texto inserido está <ins>destacado em verde</ins>.
       n_revisions:
         one: 1 revisão
         other: "%{count} revisões"

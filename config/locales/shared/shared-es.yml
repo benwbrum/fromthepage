@@ -85,6 +85,7 @@ es:
       correct: Corregir
       describe_work: Describir la obra
       help: Ayuda
+      htr: HTR
       nav_info: Página %{position} de %{size}
       next_page: Siguiente página
       overview: Resumen General

@@ -1,0 +1,120 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 7, :page_id => @page.id }})
+
+-selected_version_date = l(@selected_version.created_on.localtime)
+-selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
+
+p.diff-help =t('page_version.show.htr_help_description').html_safe
+
+div.diff-layout
+  div
+    span.diff-vertical.active
+    span.diff-horizontal
+
+table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
+  tr
+    td.diff-version.htr[*language_attrs(@collection)]
+      div.versions-wrapper
+        div.version-col
+          div.diff-title.htr
+            =form_tag({ :action => 'htr' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+              =hidden_field_tag :page_version_id, @selected_version.id
+              =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.select { |version| version.content_changed? }, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
+          div.version-content
+            - if @alto_xml
+                h4(data-diff-title="changed" data-empty=t('page_version.show.untitled')) = @selected_version.title.presence || t('page_version.show.untitled')
+                div.table-responsive(data-diff-transcription="changed" data-empty=t('page_version.show.no_transcription_provided'))
+                  div.html-code
+                    == xml_to_html(@alto_xml)
+        div.version-col.right
+          div.diff-title
+            =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+              =hidden_field_tag :page_version_id, @selected_version.id
+              =label_tag :compare_version_id, t('page_version.show.compared_with')
+              =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.select { |version| version.content_changed? }, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
+          div.version-content
+            h4(data-diff-title="changed" data-empty=t('page_version.show.untitled')) = @selected_version.title.presence || t('page_version.show.untitled')
+            div.table-responsive(data-diff-transcription="changed" data-empty=t('page_version.show.no_transcription_provided'))
+              div.html-code
+                == @ai_txt
+
+-content_for :javascript
+  =javascript_include_tag 'textdiff'
+  javascript:
+    $(function() {
+      $('span.view-code').click(function(){
+        $(this).toggleClass('active');
+
+        if($(this).hasClass('active')) {
+          $('div.source-code').show();
+          $('div.html-code').hide();
+        } else {
+          $('div.source-code').hide();
+          $('div.html-code').show();
+        }
+      })
+      $('span.diff-vertical').click(function(){
+        $('.versions-wrapper').removeClass('horizantal');
+        $('span.diff-horizontal').removeClass('active');
+        $(this).addClass('active');
+      })
+      $('span.diff-horizontal').click(function(){
+        $('.versions-wrapper').addClass('horizantal');
+        $('span.diff-vertical').removeClass('active');
+        $(this).addClass('active');
+      })
+
+      $('.diff-versions')
+        .prettyXMLDiff({
+          changedContainer:  '[data-diff-title=changed]',
+          originalContainer: '[data-diff-title=original]',
+          diffContainer:     '[data-diff-title=original]'
+        })
+
+        // apply prettyHTMLDiff for formatted html string
+        .prettyHTMLDiff({
+          changedContainer:  '[data-diff-transcription=changed] div.html-code',
+          originalContainer: '[data-diff-transcription=original] div.html-code',
+          diffContainer:     '[data-diff-transcription=original] div.html-code'
+        })
+        .prettyHTMLDiff({
+          changedContainer:  '[data-diff-translation=changed] div.html-code',
+          originalContainer: '[data-diff-translation=original] div.html-code',
+          diffContainer:     '[data-diff-translation=original] div.html-code'
+        })
+
+        // apply prettyXMLDiff for source code
+        .prettyXMLDiff({
+          changedContainer:  '[data-diff-transcription=changed] div.source-code',
+          originalContainer: '[data-diff-transcription=original] div.source-code',
+          diffContainer:     '[data-diff-transcription=original] div.source-code'
+        })
+        .prettyXMLDiff({
+          changedContainer:  '[data-diff-translation=changed] div.source-code',
+          originalContainer: '[data-diff-translation=original] div.source-code',
+          diffContainer:     '[data-diff-translation=original] div.source-code'
+        })
+        .prettyXMLDiff({
+          changedContainer:  '[data-diff-transcription=changed] div.source-code',
+          originalContainer: '[data-diff-transcription=changed] div.source-code',
+          diffContainer:     '[data-diff-transcription=changed] div.source-code'
+        })
+        .prettyXMLDiff({
+          changedContainer:  '[data-diff-translation=changed] div.source-code',
+          originalContainer: '[data-diff-translation=changed] div.source-code',
+          diffContainer:     '[data-diff-translation=changed] div.source-code'
+        });
+
+      // Awful workaround to make sure containers
+      // do not contain empty text nodes
+      $('[data-empty]').each(function() {
+        $element = $(this);
+        if(!$.trim($element.html())) {
+          $element.empty();
+        }
+      });
+
+      // Auto submit form when select value changed
+      $('select#compare_version_id').on('change', function() {
+        $(this).closest('form').submit();
+      });
+    });

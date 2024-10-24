@@ -5,6 +5,7 @@ fr:
       author_contributed_at: "%{author} le %{date}"
       compared_with: Comparé à
       help_description: Ici, vous pouvez voir toutes les révisions de page et comparer les modifications apportées à chaque révision. La colonne de gauche montre le titre de la page et la transcription dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
+      htr_help_description: Ici, vous pouvez voir toutes les différentes transcriptions générées par différentes sources et services et comparer les différences dans chaque révision. Choisissez les deux sources dans les menus déroulants au-dessus du texte. La colonne de gauche affiche le titre de la page et la transcription dans la source sélectionnée, la colonne de droite indique ce qui est différent dans la deuxième source. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
       n_revisions:
         one: 1 révision
         other: "%{count} révisions"
