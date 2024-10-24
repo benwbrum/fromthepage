@@ -4,6 +4,7 @@
 <%=javascript_include_tag "codemirror/addon/display/display/panel"%>
 <%=javascript_include_tag "codemirror/addon/hint/show-hint"%>
 <%=javascript_include_tag "codemirror/addon/hint/xml-hint"%>
+<%=javascript_include_tag "codemirror/addon/lint/lint"%>
 <%=javascript_include_tag "codemirror-buttons/buttons"%>
 
 <% if @page && !@page.ai_plaintext.blank? %>
@@ -123,7 +124,9 @@
     document.getElementById("<%= textarea %>"),
     {
       lineNumbers: <%= show_line_numbers %>,
-      mode: "xml",
+      mode: "text/html",
+      lint: true,
+      gutters: ["CodeMirror-lint-markers"],
       extraKeys: {
         "'<'": completeAfter,
         "'/'": completeIfAfterLt,
@@ -141,6 +144,10 @@
       direction: "<%= text_direction %>",
     });
   
+  CodeMirror.registerHelper("lint", "html", function(content) {
+    return lintHTML(content);
+  });
+
   // give codeMirror with class of respective text direction
   myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
 
@@ -194,6 +201,11 @@
     if(typeof(sendActiveEditing) !== 'undefined')
       sendActiveEditing()
   });
+
+  // trigger any lint error when the page loaded
+  setTimeout(function(){
+    myCodeMirror.performLint();
+  }, 500);
 
   var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
   var subjectAutoListStartAt = null;
