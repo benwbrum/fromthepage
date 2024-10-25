@@ -13,15 +13,9 @@ de:
       page_notes: Seitenanmerkungen
       pages_and_notes_counts: "%{posts_count} Anmerkungen auf %{topics_count} Seiten"
       total_notes: "%{count} Anmerkungen"
-    list:
-      collection: Sammlung
+    index:
       collection_title: 'Sammlung: %{title}'
-      note: Notiz
       notes: Anmerkungen
-      page: Seite
-      time: Zeit
-      user: Benutzer
-      work: Werk
     note:
       cancel: Abbrechen
       confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?
@@ -44,6 +38,13 @@ de:
       save_note: Anmerkung speichern
       sign_in: anmelden
       write_a_new_note: Schreiben Sie eine neue Anmerkung oder stellen Sie eine Frage...
+    table:
+      collection: Sammlung
+      note: Notiz
+      page: Seite
+      time: Zeit
+      user: Benutzer
+      work: Werk
     update:
       error_updating_note: Fehler beim Aktualisieren der Anmerkung
       note_has_been_updated: Anmerkung wurde aktualisiert

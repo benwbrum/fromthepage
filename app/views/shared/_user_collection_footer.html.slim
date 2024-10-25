@@ -1,2 +1,2 @@
--if @collection && @collection.owner && @collection.owner.footer_block
+-if @collection&.owner&.footer_block
   .collection-footer ==@collection.owner.footer_block

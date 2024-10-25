@@ -13,15 +13,9 @@ fr:
       page_notes: Remarques sur les pages
       pages_and_notes_counts: "%{posts_count} notes sur %{topics_count} pages"
       total_notes: "%{count} remarques"
-    list:
-      collection: Collection
+    index:
       collection_title: Collecte : %{title}
-      note: Note
       notes: Remarques
-      page: Page
-      time: Temps
-      user: Utilisateur
-      work: Œuvre
     note:
       cancel: Annuler
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
@@ -44,6 +38,13 @@ fr:
       save_note: Enregistrer la note
       sign_in: s'identifier
       write_a_new_note: Écrivez une nouvelle note ou posez une question...
+    table:
+      collection: Collection
+      note: Note
+      page: Page
+      time: Temps
+      user: Utilisateur
+      work: Œuvre
     update:
       error_updating_note: Erreur lors de la mise à jour de la note
       note_has_been_updated: La note a été mise à jour

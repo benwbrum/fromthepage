@@ -13,15 +13,9 @@ en:
       page_notes: Page Notes
       pages_and_notes_counts: "%{posts_count} notes on %{topics_count} pages"
       total_notes: "%{count} notes"
-    list:
-      collection: Collection
+    index:
       collection_title: 'Collection: %{title}'
-      note: Note
       notes: Notes
-      page: Page
-      time: Time
-      user: User
-      work: Work
     note:
       cancel: Cancel
       confirm_delete_message: Are you sure you want to delete this note?
@@ -44,6 +38,13 @@ en:
       save_note: Save Note
       sign_in: sign in
       write_a_new_note: Write a new note or ask a question...
+    table:
+      collection: Collection
+      note: Note
+      page: Page
+      time: Time
+      user: User
+      work: Work
     update:
       error_updating_note: Error updating note
       note_has_been_updated: Note has been updated

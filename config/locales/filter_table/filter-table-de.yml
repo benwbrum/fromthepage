@@ -1,0 +1,7 @@
+---
+de:
+  filter_table:
+    entries: Einträge
+    no_matching_records_found: Keine übereinstimmenden Datensätze gefunden
+    search_placeholder: Suchen...
+    show: Zeigen

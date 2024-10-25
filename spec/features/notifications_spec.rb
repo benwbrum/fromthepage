@@ -22,7 +22,7 @@ describe "notifications" , :order => :defined do
     expect(@owner.notification.note_added).to be false
   end
 
-  it "adds a response note (with email)" do
+  it "adds a response note (with email)", js: true do
     login_as(@user, :scope => :user)
     #now the actual test
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
@@ -50,7 +50,7 @@ describe "notifications" , :order => :defined do
     login_as(@admin, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
     fill_in('Write a new note or ask a question...', with: "Final note")
-    find('#save_note_button').click    
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     #user should receive an email, but owner should not
     expect(ActionMailer::Base.deliveries).not_to be_empty

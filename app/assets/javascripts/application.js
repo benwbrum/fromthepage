@@ -304,6 +304,9 @@ $(function() {
 
   $('[data-select-all]').selectAll();
 
+  // Filterable table
+  $('[data-filterable-table]').filterableTable();
+
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
     e.preventDefault();

@@ -23,16 +23,12 @@ p.big
   h2 =t('.export_individual_works')
   p.big =t('.export_individual_works_description')
 
-  =form_tag export_list_path(collection_id: @collection.id), method: :get, enforce_utf8: false, id: 'collection-search', class: 'dataTables_wrapper' do
-    =hidden_field_tag :sort, params[:sort]
-    =hidden_field_tag :order, params[:order]
-    .dataTables_length
-      label =select_tag :per_page, options_for_select(pagination_options_collection, params[:per_page] || '15'), class: 'field-input'
-    section.collection-search(style='width: 30%; float: right;')
-      =search_field_tag :search, params[:search], placeholder: 'Search...'
-      =button_tag 'Search', id: 'collection-search-submit'
+  =fe_filter_table_wrapper(url: collection_export_path(@collection.owner, @collection), selector: 'export-works-table', sorting: @sorting, ordering: @ordering) do
+    =fe_filter_page_size_select(selected: params[:per_page] || '15')
+    =fe_filter_search(key: :search, value: params[:search], classes: 'w30')
 
-    = render partial: 'list', locals: { collection: @collection, works: @works, header: @header }
+    #export-works-table
+      =render partial: 'table'
 
 h2= t('.api')
 p
@@ -58,68 +54,3 @@ p
         }, 1000);
       });
     });
-
-    $(document).ready( function () {
-      // initialize the works list datatable
-      const collectionSearchForm = $('#collection-search');
-      const worksListTable = $('#works-list');
-
-      const sortInput = $('#sort');
-      const orderInput = $('#order');
-      const perPageSelect = $('#per_page');
-      const collectionSearchSubmitButton = $('#collection-search-submit');
-
-      initializeTable();
-
-      function initializeTable() {
-        $('th.sorting').on('click', triggerSorting);
-      }
-
-      function triggerSorting(event) {
-        sortInput.val($(event.target).data('sort'));
-        let newOrder = orderInput.val() === 'asc' ? 'desc' : 'asc';
-        orderInput.val(newOrder);
-
-        submitForm();
-      }
-
-      // Handle change per_page
-      perPageSelect.on('change', function(event) {
-        event.preventDefault();
-
-        submitForm();
-      });
-
-      // Handle submit button click
-      collectionSearchSubmitButton.on('click', function(event) {
-        event.preventDefault();
-
-        submitForm();
-      });
-
-      function submitForm(event) {
-        $('html').addClass('page-busy');
-
-        const formData = collectionSearchForm.serialize();
-
-        const queryParams = new URLSearchParams(formData).toString();
-        const newUrl = `${window.location.pathname}?${queryParams}`;
-        history.pushState(null, '', newUrl);
-
-        $.ajax({
-          url: collectionSearchForm.attr('action'),
-          type: collectionSearchForm.attr('method'),
-          data: formData,
-          success: function(response) {
-            worksListTable.html(response);
-            initializeTable();
-
-            $('html').removeClass('page-busy');
-          },
-          error: function(xhr, status, error) {
-            $('html').removeClass('page-busy');
-            console.error('Error fetching document sets:', error);
-          }
-        })
-      }
-    } );

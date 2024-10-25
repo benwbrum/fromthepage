@@ -1,0 +1,15 @@
+-content_for :page_title
+  =t('.notes')
+  -if @collection
+    =" - #{@collection.title}"
+
+h1 =t('.notes')
+-if @collection
+  h3 =t('.collection_title', title: @collection.title)
+
+=fe_filter_table_wrapper(url: notes_path, selector: 'notes-table', sorting: @sorting, ordering: @ordering, static_params: { collection_id: @collection&.slug }) do
+  =fe_filter_page_size_select(selected: params[:per_page] || '15')
+  =fe_filter_search(key: :search, value: params[:search])
+
+  #notes-table
+    =render partial: 'table'

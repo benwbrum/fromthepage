@@ -44,7 +44,7 @@ html lang="en-US"
               =image_tag 'logo.png', width: 134, height: 50, alt: t('.home')
             -else
               =svg_symbol '#logo', title: 'Home'
-            
+
         .toolbar_group
           -if !(Collection.all.count > 30)
             =link_to t('.projects'), main_app.dashboard_path, class: 'header_link'
@@ -53,10 +53,10 @@ html lang="en-US"
           -if user_signed_in?
             =link_to t('dashboard.plain'), main_app.dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            -if @collection 
-              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@collection.owner), class: 'header_link'              
+            -if @collection
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@collection.owner), class: 'header_link'
             -elsif @user && @user.owner?
-              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@user), class: 'header_link'              
+              =link_to t('.sign_up_to_transcribe'), main_app.new_for_owner_path(@user), class: 'header_link'
             -else
               =link_to t('.sign_up_to_transcribe'), main_app.new_user_registration_path, class: 'header_link'
 

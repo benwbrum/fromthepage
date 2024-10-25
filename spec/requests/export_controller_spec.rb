@@ -22,8 +22,10 @@ describe ExportController do
 
   describe '#index' do
     let(:action_path) { collection_export_path(owner, collection) }
+    let(:params) { {} }
+    let(:headers) { {} }
 
-    let(:subject) { get action_path }
+    let(:subject) { get action_path, params: params, headers: headers }
 
     it 'renders status and template' do
       login_as owner
@@ -31,6 +33,84 @@ describe ExportController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:index)
+    end
+
+    context 'sort by title asc' do
+      let(:params) { { search: work.title, sort: 'title' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
+    end
+
+    context 'sort by title desc' do
+      let(:params) { { search: work.title, sort: 'title', order: 'desc' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
+    end
+
+    context 'sort by page count' do
+      let(:params) { { search: work.title, sort: 'page_count', order: 'asc' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
+    end
+
+    context 'sort by indexed count' do
+      let(:params) { { search: work.title, sort: 'indexed_count', order: 'desc' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
+    end
+
+    context 'sort by completed count' do
+      let(:params) { { search: work.title, sort: 'completed_count' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
+    end
+
+    context 'sort by reviewed count' do
+      let(:params) { { search: work.title, sort: 'reviewed_count' } }
+      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(partial: 'export/_table')
+      end
     end
   end
 
@@ -45,105 +125,6 @@ describe ExportController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:show)
-    end
-  end
-
-  describe '#list' do
-    let(:action_path) { export_list_path(collection_id: collection.id) }
-    let(:params) { { search: work.title, per_page: '-1', order: 'desc' } }
-
-    let(:subject) { get action_path, params: params }
-
-    it 'renders status and template' do
-      login_as owner
-      subject
-
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(partial: '_list')
-    end
-
-    context 'sort by title asc' do
-      let(:params) { { search: work.title, sort: 'title' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by title desc' do
-      let(:params) { { search: work.title, sort: 'title', order: 'desc' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by page count' do
-      let(:params) { { search: work.title, sort: 'page_count', order: 'asc' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by indexed count' do
-      let(:params) { { search: work.title, sort: 'indexed_count', order: 'desc' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by completed count' do
-      let(:params) { { search: work.title, sort: 'completed_count' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by reviewed count' do
-      let(:params) { { search: work.title, sort: 'reviewed_count' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
-    end
-
-    context 'sort by invalid key' do
-      let(:params) { { search: work.title, sort: 'invalid_key' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: '_list')
-      end
     end
   end
 

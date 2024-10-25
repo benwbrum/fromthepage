@@ -1,23 +1,27 @@
-#works-list
-  table.datagrid.dataTable.no-footer
-    thead
-      - sorting_class = "sorting_#{params[:order] || 'asc'}"
-      th[class="w80 sorting #{params[:sort] == 'title' ? sorting_class : '' }" data-sort='title']
-        =t('export.index.work_title')
-      th[class="sorting #{params[:sort] == 'page_count' ? sorting_class : '' }" data-sort='page_count']
-        =t('export.index.pages')
-      -unless collection.subjects_disabled
-        th[class="sorting #{params[:sort] == 'indexed_count' ? sorting_class : '' }" data-sort='indexed_count']
-          =t('export.index.indexed')
-      th[class="sorting #{params[:sort] == 'completed_count' ? sorting_class  : '' }" data-sort='completed_count']
-        =header
-      th[class="sorting #{params[:sort] == 'reviewed_count' ? sorting_class : '' }" data-sort='reviewed_count']
-        =t('export.index.review')
-      th.w100 =t('export.index.progress')
-      th(colspan="6") =t('export.index.export_as')
+table.datagrid.striped.dataTable.no-footer
+  thead
+    =fe_sortable_header(key: :title, sorting: @sorting, ordering: @ordering, classes: 'w80') do
+      =t('export.index.work_title')
 
-    tbody
-      -for work in works
+    =fe_sortable_header(key: :page_count, sorting: @sorting, ordering: @ordering) do
+      =t('export.index.pages')
+
+    -unless @collection.subjects_disabled
+      =fe_sortable_header(key: :indexed_count, sorting: @sorting, ordering: @ordering) do
+        =t('export.index.indexed')
+
+    =fe_sortable_header(key: :completed_count, sorting: @sorting, ordering: @ordering) do
+      =@header
+
+    =fe_sortable_header(key: :reviewed_count, sorting: @sorting, ordering: @ordering) do
+      =t('export.index.review')
+
+    th.w100 =t('export.index.progress')
+    th(colspan="6") =t('export.index.export_as')
+
+  tbody
+    -if @works.any?
+      -@works.each do |work|
         tr
           td.big =link_to work.title, display_read_work_path(work_id: work.id)
           td.nowrap.fgfaded =t('export.index.n_pages', count: work.work_statistic.total_pages)
@@ -61,6 +65,8 @@
           td.nowrap
             =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('export.index.more_export_formats')
               span =t('export.index.more')
+    -else
+      =fe_table_no_contents
 
-  -unless params[:per_page] == '-1'
-    =render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'export', action: 'index' }
+-unless params[:per_page] == '-1'
+  =render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'export', action: 'index' }
