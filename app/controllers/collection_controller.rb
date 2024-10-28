@@ -39,21 +39,24 @@ class CollectionController < ApplicationController
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
 
-  def authorized?
-    unless user_signed_in?
-      ajax_redirect_to dashboard_path
-    end
-
-    if @collection &&  !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
-    end
-  end
-
   def search_users
     query = "%#{params[:term].to_s.downcase}%"
-    excluded_ids = @collection.collaborators.pluck(:id) + [@collection.owner.id]
+    user_type = (params[:user_type] || 'collaborator').to_sym
+    case user_type
+    when :owner
+      excluded_ids = @collection.owners.select(:id)
+    when :blocked
+      excluded_ids = @collection.blocked_users.select(:id)
+    when :reviewer
+      excluded_ids = @collection.reviewers.select(:id)
+    else
+      # collaborator
+      excluded_ids = @collection.collaborators.select(:id)
+    end
+
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
+                .where.not(id: @collection.owner.id)
                 .limit(100)
 
     render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
@@ -577,7 +580,6 @@ class CollectionController < ApplicationController
     @stats = @collection.get_stats_hash(start_date, end_date)
   end
 
-
   def blank_collection
     collection = Collection.find_by(id: params[:collection_id])
     collection.blank_out_collection
@@ -655,12 +657,15 @@ class CollectionController < ApplicationController
     ajax_redirect_to(collection_path(@collection.owner, @collection))
   end
 
-private
+  private
+
   def authorized?
     unless user_signed_in?
       ajax_redirect_to dashboard_path
+      return
     end
-    if @collection &&  !current_user.like_owner?(@collection)
+
+    if @collection && !current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
   end
@@ -670,7 +675,6 @@ private
       redirect_to new_user_session_path
     end
   end
-
 
   def set_collection
     unless @collection
@@ -749,8 +753,6 @@ private
     @collaborators = @collaborators.sort_by(&:display_name)
     @reviewers = @reviewers.sort_by(&:display_name)
   end
-
-  private
 
   def permit_only_transcribed_works_flag
     params.permit(:only_transcribed)

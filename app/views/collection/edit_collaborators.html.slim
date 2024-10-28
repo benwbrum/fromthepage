@@ -27,7 +27,7 @@ javascript:
   $('#collaborator_id').select2({
     placeholder: 'Add new collaborator...',
     ajax: {
-      url: '#{collection_search_users_path(@collection)}',
+      url: '#{collection_search_users_path}',
       dataType: 'json',
       delay: 250,
       data: function (params) {
