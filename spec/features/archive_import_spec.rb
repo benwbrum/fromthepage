@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe 'IA import actions', order: :defined, skip: 'IA outtage, temporarily skipping' do
-
   before :all do
-
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second

@@ -34,9 +34,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-
-
   def switch_locale(&action)
     @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
 
