@@ -42,16 +42,22 @@ class CollectionController < ApplicationController
   def search_users
     query = "%#{params[:term].to_s.downcase}%"
     user_type = (params[:user_type] || 'collaborator').to_sym
+
+    owner_ids = @collection.owners.select(:id)
+    blocked_user_ids = @collection.blocked_users.select(:id)
+    reviewer_ids = @collection.reviewers.select(:id)
+    collaborator_ids = @collection.collaborators.select(:id)
+
     case user_type
     when :owner
-      excluded_ids = @collection.owners.select(:id)
+      excluded_ids = User.where(id: owner_ids).or(User.where(id: blocked_user_ids)).select(:id)
     when :blocked
-      excluded_ids = @collection.blocked_users.select(:id)
+      excluded_ids = User.where(id: blocked_user_ids).or(User.where(id: owner_ids)).select(:id)
     when :reviewer
-      excluded_ids = @collection.reviewers.select(:id)
+      excluded_ids = reviewer_ids
     else
       # collaborator
-      excluded_ids = @collection.collaborators.select(:id)
+      excluded_ids = collaborator_ids
     end
 
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
