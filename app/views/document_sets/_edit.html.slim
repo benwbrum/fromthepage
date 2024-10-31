@@ -13,7 +13,7 @@
       tr
         th.hidden= t('.url')
         td 
-          p.nomargin.settings ==t('.current_url_for_this_work', current_url: "<b>#{Rails.application.routes.default_url_options[:host]}/#{@document_set.owner.slug}/#{@document_set.slug}</b>")
+          p.nomargin.settings ==t('.current_url_for_this_work', current_url: "<b>#{collection_url(@document_set.owner.slug, @document_set.slug)}</b>")
       tr
         td(colspan="2")
           =f.label :description, t('.description'), class: 'above'
