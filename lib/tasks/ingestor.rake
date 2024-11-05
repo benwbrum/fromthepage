@@ -29,10 +29,16 @@ namespace :fromthepage do
     document_upload.status = :processing
     document_upload.save
 
-    process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+    begin
+      process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
 
-    document_upload.status = :finished
-    document_upload.save
+      document_upload.status = :finished
+      document_upload.save
+    rescue StandardError => e
+      print "Process Batch: Exception: #{e.message}"
+      document_upload.status = :error
+      document_upload.save
+    end
 
     if SMTP_ENABLED
       begin
