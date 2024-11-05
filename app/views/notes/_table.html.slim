@@ -25,16 +25,18 @@ table.datagrid.striped.dataTable.no-footer
       -@notes.each do |note|
         tr
           td
-            =link_to user_profile_path(note.user) do
-              =render partial: 'shared/profile_picture', locals: { user: note.user, gravatar_size: nil }
+            -if note.user
+              =link_to user_profile_path(note.user) do
+                =render partial: 'shared/profile_picture', locals: { user: note.user, gravatar_size: nil }
           td
-            =link_to note.user&.display_name, user_profile_path(note.user)
+            -if note.user
+              =link_to note.user.display_name, user_profile_path(note.user)
           td
-            =note.title
+            =link_to note.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}")
           -unless @collection&.metadata_only_entry?
             td
               -if note.page
-                =link_to(note.page.title, collection_display_page_path(note.collection.owner, note.collection, note.work, note.page))
+                =link_to(note.page.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}"))
           td
             -if note.work
               =link_to(note.work.title, collection_read_work_path(note.collection.owner, note.collection, note.work))
