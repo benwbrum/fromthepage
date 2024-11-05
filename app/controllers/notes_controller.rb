@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   include ActionView::Helpers::TextHelper
-  DEFAULT_NOTES_PER_PAGE = 15
+  DEFAULT_NOTES_PER_PAGE = 50
   PAGES_PER_SCREEN = 20
 
   def index
@@ -90,48 +90,47 @@ class NotesController < ApplicationController
     @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
 
     if @collection.present?
-      notes_scope = @collection.notes.includes(:user, :work, :page)
-      if params[:search]
-        query = "%#{params[:search].to_s.downcase}%"
-
-        notes_users = User.where(id: notes_scope.select(:user_id))
-                          .where('LOWER(users.display_name) LIKE :search', search: "%#{query}%")
-        notes_filter_by_user = notes_scope.where(user_id: notes_users.select(:id))
-
-        notes_filter_by_note = notes_scope.where('LOWER(notes.title) LIKE :search', search: "%#{query}%")
-
-        notes_pages = Page.where(id: notes_scope.select(:page_id))
-                          .where('LOWER(pages.title) LIKE :search', search: "%#{query}%")
-        notes_filter_by_page = notes_scope.where(page_id: notes_pages.select(:id))
-
-        notes_works = Work.where(id: notes_scope.select(:work_id))
-                          .where('LOWER(works.title) LIKE :search', search: "%#{query}%")
-        notes_filter_by_work = notes_scope.where(work_id: notes_works.select(:id))
-
-        notes_scope = notes_filter_by_user.or(notes_filter_by_note)
-                                          .or(notes_filter_by_page)
-                                          .or(notes_filter_by_work)
-      end
-
-      case @sorting
-      when :user
-        notes_scope = notes_scope.reorder("users.display_name #{@ordering}")
-      when :note
-        notes_scope = notes_scope.reorder(title: @ordering)
-      when :page
-        notes_scope = notes_scope.reorder("pages.title #{@ordering}")
-      when :work
-        notes_scope = notes_scope.reorder("works.title #{@ordering}")
-      else
-        notes_scope = notes_scope.reorder(created_at: @ordering)
-      end
+      notes_scope = @collection.notes.includes(:user, :work, :page, { collection: :owner })
     else
-      notes_scope = Note.none
+      notes_scope = Note.all.includes(:user, :work, :page, { collection: :owner })
     end
 
-    if params[:per_page] != '-1'
-      notes_scope = notes_scope.paginate(page: params[:page], per_page: params[:per_page] || DEFAULT_NOTES_PER_PAGE)
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+
+      notes_users = User.where(id: notes_scope.select(:user_id))
+                        .where('LOWER(users.display_name) LIKE :search', search: "%#{query}%")
+      notes_filter_by_user = notes_scope.where(user_id: notes_users.select(:id))
+
+      notes_filter_by_note = notes_scope.where('LOWER(notes.title) LIKE :search', search: "%#{query}%")
+
+      notes_pages = Page.where(id: notes_scope.select(:page_id))
+                        .where('LOWER(pages.title) LIKE :search', search: "%#{query}%")
+      notes_filter_by_page = notes_scope.where(page_id: notes_pages.select(:id))
+
+      notes_works = Work.where(id: notes_scope.select(:work_id))
+                        .where('LOWER(works.title) LIKE :search', search: "%#{query}%")
+      notes_filter_by_work = notes_scope.where(work_id: notes_works.select(:id))
+
+      notes_scope = notes_filter_by_user.or(notes_filter_by_note)
+                                        .or(notes_filter_by_page)
+                                        .or(notes_filter_by_work)
     end
+
+    case @sorting
+    when :user
+      notes_scope = notes_scope.reorder("users.display_name #{@ordering}")
+    when :note
+      notes_scope = notes_scope.reorder(title: @ordering)
+    when :page
+      notes_scope = notes_scope.reorder("pages.title #{@ordering}")
+    when :work
+      notes_scope = notes_scope.reorder("works.title #{@ordering}")
+    else
+      notes_scope = notes_scope.reorder(created_at: @ordering)
+    end
+
+    notes_scope = notes_scope.paginate(page: params[:page], per_page: DEFAULT_NOTES_PER_PAGE)
     @notes = notes_scope
   end
 

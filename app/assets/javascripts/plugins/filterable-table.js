@@ -15,6 +15,7 @@
     $form.on('keydown', 'input', function(event) {
       if (event.key === 'Enter') {
         event.preventDefault();
+        $(this).trigger('change');
       }
     });
 

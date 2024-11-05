@@ -26,8 +26,8 @@ describe NotesController do
       expect(response).to render_template(:index)
     end
 
-    context 'filters and paginate show all' do
-      let(:params) { { search: note.title, per_page: -1 } }
+    context 'filters and paginate' do
+      let(:params) { { search: note.title } }
       let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
       it 'renders status and template' do

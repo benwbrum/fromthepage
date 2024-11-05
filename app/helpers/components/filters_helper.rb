@@ -20,7 +20,7 @@ module Components::FiltersHelper
   end
 
   def fe_filter_search(key:, value: nil, classes: nil)
-    classes = "dataTables_filter #{classes}"
+    classes = "dataTables_filter search #{classes}"
 
     render('shared/components/filter_search', key: key, value: value, classes: classes)
   end

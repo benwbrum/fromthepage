@@ -30,21 +30,21 @@ table.datagrid.striped.dataTable.no-footer
           td
             =link_to note.user&.display_name, user_profile_path(note.user)
           td
-            =link_to note.title, note_path(note)
-          -unless @collection.metadata_only_entry?
+            =note.title
+          -unless @collection&.metadata_only_entry?
             td
               -if note.page
-                =link_to(note.page.title, collection_display_page_path(@collection.owner, @collection, note.work, note.page))
+                =link_to(note.page.title, collection_display_page_path(note.collection.owner, note.collection, note.work, note.page))
           td
             -if note.work
-              =link_to(note.work.title, collection_read_work_path(@collection.owner, @collection, note.work))
+              =link_to(note.work.title, collection_read_work_path(note.collection.owner, note.collection, note.work))
           td
-            =link_to(@collection.title, collection_path(@collection.owner, @collection))
+            -if note.collection
+              =link_to(note.collection.title, collection_path(note.collection.owner, note.collection))
           td
             =time_tag(note.created_at, class: 'small fglight') do
               =I18n.t('time_ago_in_words', time: time_ago_in_words(note.created_at))
     -else
       =fe_table_no_contents
 
--unless params[:per_page] == '-1'
-  =render partial: 'shared/pagination', locals: { model: @notes, entries_info: true, controller: 'notes', action: 'index' }
+=render partial: 'shared/pagination', locals: { model: @notes, entries_info: true, controller: 'notes', action: 'index' }
