@@ -616,8 +616,16 @@ class TranscribeController  < ApplicationController
   private
 
   def rollback_article_categories(destroy_ids, unset_ids)
-    Article.where(id: destroy_ids, provenance: nil).destroy_all if destroy_ids
     Article.where(id: unset_ids).update(categories: []) if unset_ids
+
+    if destroy_ids
+      candidate_articles = Article.where(id: destroy_ids, provenance: nil)
+      candidate_articles.each do |candidate|
+        if candidate.pages.count == 1 # don't delete uncategorized subjects that appear elsewhere
+          candidate.destroy!
+        end
+      end
+    end
   end
 
   def page_params
