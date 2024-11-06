@@ -157,6 +157,9 @@ fr:
       suggestions_transcription_conventions: Suggestions pour vos conventions de transcription.
       transcription_conventions: Conventions de transcription
       transcription_conventions_description: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
+      works_with_custom_conventions:
+        one: "%{title} a des conventions de transcription personnalisées"
+        other: "%{title} et %{count} autres ont des conventions de transcription personnalisées"
     edit_look:
       alphabetize_works: L'affichage fonctionne par ordre alphabétique plutôt que par ordre de travail nécessaire.
       alphabetize_works_description: L’affichage fonctionne par ordre alphabétique plutôt que par ordre de quantité de travail restant.
