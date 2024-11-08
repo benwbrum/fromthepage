@@ -20,3 +20,13 @@
         .toolbar_group.aright
           =link_to t('.cancel'), admin_tags_index_path, class: 'button'
           =link_to t('.delete'), admin_tags_delete_path(@tag.id), method: :delete, data: { confirm: t('.confirm_delete') }, class: 'button'
+    h3 Merge Tags
+    p Merge #{@tag.ai_text} (id: #{@tag.id}, count: #{@tag.collections.count}) into one of these canonical tags 
+    =form_tag(admin_tags_manual_merge_path) do
+      =hidden_field_tag(:source_tag_id, @tag.id) 
+      table.form 
+        tr.big
+          th =label_tag :target, 'Target Tag'
+          td.w100 
+            =select_tag(:target_tag_id, options_for_select(Tag.where(canonical: true).order(:ai_text).map { |tag| [ "#{tag.ai_text} (id: #{tag.id}, count: #{tag.collections.count})", tag.id ] }))
+      =submit_tag 'Merge'

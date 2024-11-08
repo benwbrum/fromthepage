@@ -341,7 +341,7 @@ class AdminController < ApplicationController
 
   def update_tag
     @tag = Tag.find params[:tag_id]
-    @tag.update_attributes(tag_params)
+    @tag.update(tag_params)
     redirect_to :action => 'tag_list'
   end
 
