@@ -157,6 +157,9 @@ de:
       suggestions_transcription_conventions: Vorschläge für Ihre Transkriptionskonventionen.
       transcription_conventions: Transkriptionskonventionen
       transcription_conventions_description: Diese Anweisungen werden unter dem Transkriptionsformular für jede Seite angezeigt, die transkribiert oder indiziert wird.
+      works_with_custom_conventions:
+        one: "%{title} hat benutzerdefinierte Transkriptionskonventionen"
+        other: "%{title} und %{count} andere haben benutzerdefinierte Transkriptionskonventionen"
     edit_look:
       alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.

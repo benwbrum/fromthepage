@@ -76,6 +76,7 @@ Fromthepage::Application.routes.draw do
       get 'index', to: 'admin#tag_list'
       get ':tag_id', to: 'admin#show_tag', as: 'show'
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
+      post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
   end
 
