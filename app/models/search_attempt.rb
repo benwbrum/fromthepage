@@ -70,11 +70,13 @@ class SearchAttempt < ApplicationRecord
         case search_type
         when "work"
             if work.present? && query.present?
-                query = precise_search_string(query)
-                results = Page.order('work_id, position')
-                    .joins(:work)
-                    .where(work_id: work.id)
-                    .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+                if ELASTIC_ENABLED
+                    query = prep_sqs_operators(query)
+                    results = elastic_work_search(work, query, page, page_size)
+                else
+                    query = precise_search_string(query)
+                    results = database_work_search(work, query)
+                end
             else
                 results = Page.none
             end
@@ -106,6 +108,7 @@ class SearchAttempt < ApplicationRecord
     end
 
     private
+    # when "collection" search handlers
     def database_collection_search(coll_or_docset, query)
         return Page.order('work_id, position')
                     .joins(:work)
@@ -148,6 +151,58 @@ class SearchAttempt < ApplicationRecord
         results = Page.order('work_id', 'position')
                     .joins(:work)
                     .where(work_id: coll_or_docset.works.ids)
+                    .where(id: matches)
+
+        return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
+          pager.replace(results)
+        end
+    end
+
+    # when "work" search handlers
+    def database_work_search(work, query)
+        return Page.order('work_id, position')
+                    .joins(:work)
+                    .where(work_id: work.id)
+                    .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+    end
+
+    def elastic_work_search(work, query, page, page_size)
+        client = ElasticUtil.get_client()
+
+        # TODO: Migrate query bodies outside this model but still inside rails
+        resp = client.search(index: 'ftp_page', body: {
+            query: {
+              bool: {
+                must: {
+                  simple_query_string: {
+                    query: query,
+                    fields: [
+                      "title^2",
+                      "search_text^1.5",
+                      "content_english",
+                      "content_french",
+                      "content_german",
+                      "content_spanish",
+                      "content_portuguese",
+                      "content_swedish"
+                    ]
+                  }
+                },
+                filter: [
+                  {term: {is_public: true}},
+                  {term: {work_id: work.id}}
+                ]
+              }
+            },
+            from: (page[:page].to_i - 1) * page_size,
+            size: page_size
+        })
+
+        matches = resp['hits']['hits'].map { |doc| doc['_id'] }
+
+        results = Page.order('work_id', 'position')
+                    .joins(:work)
+                    .where(work_id: work.id)
                     .where(id: matches)
 
         return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
