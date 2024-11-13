@@ -32,7 +32,8 @@ table.datagrid.striped.dataTable.no-footer
             -if note.user
               =link_to note.user.display_name, user_profile_path(note.user)
           td
-            =link_to note.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}")
+            -if note.collection
+              =link_to note.title, collection_display_page_path(note.collection.owner, note.collection, note.work || note.page.work_id, note.page, anchor: "note-#{note.id}")
           -unless @collection&.metadata_only_entry?
             td
               -if note.page

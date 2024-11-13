@@ -12,7 +12,7 @@ describe NotesController do
   let!(:note) { create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: owner.id) }
 
   describe '#index' do
-    let(:action_path) { notes_path(collection_id: collection.id) }
+    let(:action_path) { collection_notes_path(collection_id: collection.slug) }
     let(:params) { {} }
     let(:headers) { {} }
 

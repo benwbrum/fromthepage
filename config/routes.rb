@@ -33,6 +33,7 @@ Fromthepage::Application.routes.draw do
   iiif_for 'riiif/image', at: '/image-service'
 
   resources :notes, except: [:show, :edit]
+  get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
