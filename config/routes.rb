@@ -32,12 +32,8 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  scope 'notes', as: 'notes' do
-    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
-  end
-  resources :notes
-
-
+  resources :notes, except: [:show, :edit]
+  get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
@@ -167,7 +163,6 @@ Fromthepage::Application.routes.draw do
   scope 'export', as: 'export' do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
-    get 'list', to: 'export#list'
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'

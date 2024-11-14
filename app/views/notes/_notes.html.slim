@@ -70,11 +70,16 @@
           } else if(xhr.status === 500) {
             var message = xhr.statusText;
             $error.text('Error: ' + message);
+            return false;
           } else {
             // Error occurred
-            var message = xhr.responseJSON.join('. ');
+            var message = xhr.responseJSON.errors.join('. ');
             $error.text('Error: ' + message);
           }
+
+          var flash = xhr.responseJSON.flash;
+          $('#flash_wrapper').html(flash);
+          $('.flash').flashclose();
         });
 
         // Delete note
@@ -82,6 +87,10 @@
           if(xhr.status === 200 || xhr.status === 204) {
             var $container = $(this).closest('.user-bubble');
             $container.fadeOut(function() { $(this).remove(); });
+
+            var flash = xhr.responseJSON.flash;
+            $('#flash_wrapper').html(flash);
+            $('.flash').flashclose();
           }
         });
 

@@ -7,19 +7,15 @@ class ExportController < ApplicationController
   include ExportHelper
   include ExportService
 
+  DEFAULT_WORKS_PER_PAGE = 15
+
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }
 
   def index
     filtered_data
 
-    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: { work_id: nil }).distinct
-  end
-
-  def list
-    filtered_data
-
-    render partial: 'list', locals: { collection: @collection, works: @works, header: @header }
+    render partial: 'table' if request.xhr?
   end
 
   def show
@@ -194,6 +190,10 @@ class ExportController < ApplicationController
   private
 
   def filtered_data
+    @sorting = (params[:sort] || 'title').to_sym
+    @ordering = (params[:order] || 'ASC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+
     # Check if there are any translated works in the collection
     @header = @collection.works.where(supports_translation: true).exists? ? 'Translated' : 'Transcribed'
 
@@ -212,37 +212,34 @@ class ExportController < ApplicationController
 
     sort_filtered_data
 
-    @works = @works.paginate(page: params[:page], per_page: params[:per_page] || 15) unless params[:per_page] == '-1'
+    if params[:per_page] != '-1'
+      @works = @works.paginate(page: params[:page], per_page: params[:per_page] || DEFAULT_WORKS_PER_PAGE)
+    end
+
+    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: { work_id: nil }).distinct
   end
 
   def sort_filtered_data
-    return if params[:sort].blank?
-
-    direction = params[:order]&.downcase == 'desc' ? 'DESC' : 'ASC'
-
-    case params[:sort].downcase
-    when 'title'
-      sorting_arguments = "title #{direction}"
-    when 'page_count'
-      sorting_arguments = "work_statistics.total_pages #{direction}"
-    when 'indexed_count'
+    case @sorting
+    when :page_count
+      sorting_arguments = "work_statistics.total_pages #{@ordering}"
+    when :indexed_count
       ordered_work_ids = calculate_ordered_work_ids(:progress_annotated)
-      ordered_work_ids.reverse! if direction == 'DESC'
+      ordered_work_ids.reverse! if @ordering == :desc
 
       sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
-    when 'completed_count'
+    when :completed_count
       ordered_work_ids = calculate_ordered_work_ids(:progress_completed)
-      ordered_work_ids.reverse! if direction == 'DESC'
+      ordered_work_ids.reverse! if @ordering == :desc
 
       sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
-    when 'reviewed_count'
+    when :reviewed_count
       ordered_work_ids = calculate_ordered_work_ids(:progress_review)
-      ordered_work_ids.reverse! if direction == 'DESC'
+      ordered_work_ids.reverse! if @ordering == :desc
 
       sorting_arguments = "FIELD(id, #{ordered_work_ids.join(',')})"
     else
-      sorting_arguments = ''
-      @works = @works.reorder(sorting_arguments)
+      sorting_arguments = "title #{@ordering}"
     end
 
     @works = @works.reorder(Arel.sql(sorting_arguments))
