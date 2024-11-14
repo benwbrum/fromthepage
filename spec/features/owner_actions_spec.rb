@@ -269,7 +269,7 @@ describe "owner actions", :order => :defined do
     first('.select2-container', minimum: 1).click
     find('.select2-dropdown input.select2-search__field').send_keys("Arabic", :enter)
     expect(page).to have_content('Transcription type')
-    expect(Collection.find(3).text_language).to eq 'ara'
+    expect(@rtl_collection.reload.text_language).to eq 'ara'
   end
 
   it "checks rtl transcription page views" do
