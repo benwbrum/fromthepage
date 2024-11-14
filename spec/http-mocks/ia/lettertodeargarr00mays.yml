@@ -1,0 +1,939 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.archive.org/services/find_file.php?file=lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:07 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '145'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/services/find_file.php?file=lettertodeargarr00mays
+      Expires:
+      - Fri, 15 Nov 2024 02:13:07 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: UTF-8
+      string: "<html>\r\n<head><title>302 Found</title></head>\r\n<body>\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.24.0</center>\r\n</body>\r\n</html>\r\n"
+  recorded_at: Thu, 14 Nov 2024 20:13:02 GMT
+- request:
+    method: get
+    uri: http://archive.org/services/find_file.php?file=lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:07 GMT
+      Content-Type:
+      - text/html; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Location:
+      - http://ia601909.us.archive.org/item_xml.php?dir=/8/items/lettertodeargarr00mays
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Thu, 14 Nov 2024 20:13:02 GMT
+- request:
+    method: get
+    uri: http://ia601909.us.archive.org/item_xml.php?dir=/8/items/lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:07 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <results dir="/8/items/lettertodeargarr00mays" server="ia601909.us.archive.org">
+
+        <metadata>
+          <title>[Letter to] Dear Garrison [manuscript]</title>
+          <creator>May, Samuel, 1810-1899</creator>
+          <creator>Garrison, William Lloyd, 1805-1879, recipient</creator>
+          <subject>Garrison, William Lloyd, 1805-1879</subject>
+          <subject>May, Samuel, 1810-1899</subject>
+          <subject>Antislavery movements</subject>
+          <subject>Abolitionists</subject>
+          <description>Holograph, signed</description>
+          <publisher>Boston, [Mass.]</publisher>
+          <date>1868</date>
+          <language>eng</language>
+          <page-progression>lr</page-progression>
+          <sponsor>Associates of the Boston Public Library / The Boston Foundation</sponsor>
+          <contributor>Boston Public Library</contributor>
+          <scanningcenter>boston</scanningcenter>
+          <mediatype>texts</mediatype>
+          <collection>bplscas</collection>
+          <collection>bostonpubliclibrary</collection>
+          <collection>americana</collection>
+          <call_number>39999066769967</call_number>
+          <repub_state>4</repub_state>
+          <updatedate>2013-05-03 19:50:25</updatedate>
+          <updater>admin-tim-bigelow</updater>
+          <identifier>lettertodeargarr00mays</identifier>
+          <uploader>admin-tim-bigelow@archive.org</uploader>
+          <addeddate>2013-05-03 19:50:27</addeddate>
+          <publicdate>2013-05-03 19:50:30</publicdate>
+          <identifier-access>http://archive.org/details/lettertodeargarr00mays</identifier-access>
+          <identifier-ark>ark:/13960/t1kh26f12</identifier-ark>
+          <imagecount>4</imagecount>
+          <scandate>20141031000000</scandate>
+          <operator>boston_uploads</operator>
+          <scanfee>250</scanfee>
+          <invoice>6</invoice>
+          <sponsordate>20141031</sponsordate>
+          <backup_location>ia905700_8</backup_location>
+          <openlibrary_edition>OL25531154M</openlibrary_edition>
+          <openlibrary_work>OL16912147W</openlibrary_work>
+          <external-identifier>urn:oclc:record:1048313446</external-identifier>
+          <associated-names>Garrison, William Lloyd, 1805-1879, recipient</associated-names>
+          <ocr>tesseract 5.3.0-6-g76ae</ocr>
+          <ocr_parameters>-l eng</ocr_parameters>
+          <ocr_module_version>0.0.21</ocr_module_version>
+          <ocr_detected_script>Japanese</ocr_detected_script>
+          <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+          <ocr_detected_lang>en</ocr_detected_lang>
+          <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+          <page_number_confidence>0</page_number_confidence>
+          <page_number_module_version>1.0.3</page_number_module_version>
+          <pdf_module_version>0.0.23</pdf_module_version>
+        </metadata>
+
+        <files>
+          <file name="39999066769967.gif" source="derivative">
+            <format>Animated GIF</format>
+            <original>39999066769967_jp2.zip</original>
+            <mtime>1370956581</mtime>
+            <size>56931</size>
+            <md5>f60105c8118471a26b2b077629a858d1</md5>
+            <crc32>4b3df416</crc32>
+            <sha1>f31c62e3086a76dc399a736887944dbe91364d85</sha1>
+          </file>
+          <file name="39999066769967.pdf" source="derivative">
+            <pdf_module_version>0.0.23</pdf_module_version>
+            <format>Text PDF</format>
+            <original>39999066769967_page_numbers.json</original>
+            <mtime>1700076146</mtime>
+            <size>878778</size>
+            <md5>62444bfc66654c5be30a37ce5e803823</md5>
+            <crc32>4a0604b9</crc32>
+            <sha1>b3fbee5594d55adf94f2ce900e4d128bbc9d6563</sha1>
+          </file>
+          <file name="39999066769967_chocr.html.gz" source="derivative">
+            <ocr>tesseract 5.3.0-6-g76ae</ocr>
+            <ocr_parameters>lang-eng;two-pass-disabled;pass-dpi-disabled;autonomous-mode-disabled;binarisation-method-otsu</ocr_parameters>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_detected_script>Japanese</ocr_detected_script>
+            <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+            <ocr_detected_lang>en</ocr_detected_lang>
+            <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+            <format>chOCR</format>
+            <original>39999066769967_jp2.zip</original>
+            <mtime>1700075625</mtime>
+            <size>22842</size>
+            <md5>b8ffaea17943066dfeb9161bfea8c8e7</md5>
+            <crc32>4bb99927</crc32>
+            <sha1>58c4ffcfaf382e93011c02bdc0cb9e821be1c3fb</sha1>
+          </file>
+          <file name="39999066769967_cloth_detection.log" source="derivative">
+            <format>Cloth Cover Detection Log</format>
+            <original>39999066769967_scandata.xml</original>
+            <mtime>1700097109</mtime>
+            <size>519</size>
+            <md5>c3ec9a691a5efb7350f779ea78fd828c</md5>
+            <crc32>a0d9963a</crc32>
+            <sha1>4f7cb5b380e869df78cd4cb545f3d93e205675a3</sha1>
+          </file>
+          <file name="39999066769967_djvu.txt" source="derivative">
+            <format>DjVuTXT</format>
+            <original>39999066769967_djvu.xml</original>
+            <mtime>1700075663</mtime>
+            <size>1334</size>
+            <md5>431429bd16ff03cd61cac616cb95aaa1</md5>
+            <crc32>522777e0</crc32>
+            <sha1>b9ab2cacfc5e0a6b1df5543cc2a44cfeec98a2ad</sha1>
+          </file>
+          <file name="39999066769967_djvu.xml" source="derivative">
+            <format>Djvu XML</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075645</mtime>
+            <size>26192</size>
+            <md5>1fb151e6ed23fea0561a27c365bf76d3</md5>
+            <crc32>23db99f1</crc32>
+            <sha1>5b5bee241f5840ee2a04468886eb57e5c4a9e2b9</sha1>
+          </file>
+          <file name="39999066769967_hocr.html" source="derivative">
+            <hocr_char_to_word_module_version>1.2.0</hocr_char_to_word_module_version>
+            <hocr_char_to_word_hocr_version>1.1.45</hocr_char_to_word_hocr_version>
+            <ocr_parameters>lang-eng;two-pass-disabled;pass-dpi-disabled;autonomous-mode-disabled;binarisation-method-otsu</ocr_parameters>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_detected_script>Japanese</ocr_detected_script>
+            <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+            <ocr_detected_lang>en</ocr_detected_lang>
+            <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+            <format>hOCR</format>
+            <original>39999066769967_chocr.html.gz</original>
+            <mtime>1700075638</mtime>
+            <size>50798</size>
+            <md5>8194d123be636e7517ecf7eb1a31a050</md5>
+            <crc32>c95e077b</crc32>
+            <sha1>c0c94170ea34f7c0a0eb505b03d1e4cd61a7598e</sha1>
+          </file>
+          <file name="39999066769967_hocr_pageindex.json.gz" source="derivative">
+            <hocr_pageindex_module_version>1.0.0</hocr_pageindex_module_version>
+            <hocr_pageindex_hocr_version>1.1.15</hocr_pageindex_hocr_version>
+            <format>OCR Page Index</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075649</mtime>
+            <size>79</size>
+            <md5>ca0f5519a812c72384ae91d995e91882</md5>
+            <crc32>e096078c</crc32>
+            <sha1>4ef01fe20d88e1fae479b4138abe4dcb004da34a</sha1>
+          </file>
+          <file name="39999066769967_hocr_searchtext.txt.gz" source="derivative">
+            <hocr_fts_text_module_version>1.1.0</hocr_fts_text_module_version>
+            <hocr_fts_text_hocr_version>1.1.15</hocr_fts_text_hocr_version>
+            <word_conf_0_10>74</word_conf_0_10>
+            <word_conf_11_20>32</word_conf_11_20>
+            <word_conf_21_30>45</word_conf_21_30>
+            <word_conf_31_40>51</word_conf_31_40>
+            <word_conf_41_50>33</word_conf_41_50>
+            <word_conf_51_60>28</word_conf_51_60>
+            <word_conf_61_70>16</word_conf_61_70>
+            <word_conf_71_80>12</word_conf_71_80>
+            <word_conf_81_90>5</word_conf_81_90>
+            <word_conf_91_100>2</word_conf_91_100>
+            <format>OCR Search Text</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075657</mtime>
+            <size>860</size>
+            <md5>ebc585835227d7ca433a0606a3d9ff47</md5>
+            <crc32>577dcd98</crc32>
+            <sha1>4a6ecd7c666f5bb405c7d68be980a25ee53eef53</sha1>
+          </file>
+          <file name="39999066769967_images.zip" source="original">
+            <format>Generic Raw Book Zip</format>
+            <mtime>1370956554</mtime>
+            <size>36614448</size>
+            <md5>b8e5b2b982f96f22be1165b61a7dbb10</md5>
+            <crc32>faed21f1</crc32>
+            <sha1>5f182db46038d10ea66ab55be4d70be37d6e2ab5</sha1>
+            <filecount>5</filecount>
+          </file>
+          <file name="39999066769967_jp2.zip" source="derivative">
+            <format>Single Page Processed JP2 ZIP</format>
+            <original>39999066769967_images.zip</original>
+            <mtime>1370956574</mtime>
+            <size>2898942</size>
+            <md5>f1e8fa100452ca5a494e5105721c1711</md5>
+            <crc32>b55941db</crc32>
+            <sha1>171d098a7523c920af4d4869e1a82a1ecde34a2d</sha1>
+            <filecount>4</filecount>
+          </file>
+          <file name="39999066769967_page_numbers.json" source="derivative">
+            <hocr_pagenumber_module_version>1.0.3</hocr_pagenumber_module_version>
+            <hocr_pagenumber_hocr_version>1.1.54</hocr_pagenumber_hocr_version>
+            <hocr_pagenumber_confidence>0</hocr_pagenumber_confidence>
+            <format>Page Numbers JSON</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075675</mtime>
+            <size>831</size>
+            <md5>8654f72b2f5d249ff6684ea59663e752</md5>
+            <crc32>04678367</crc32>
+            <sha1>8fce9a9d178449ae92d81c5b7b46d5bfa17faf91</sha1>
+          </file>
+          <file name="39999066769967_scandata.xml" source="derivative">
+            <format>Scandata</format>
+            <original>39999066769967_djvu.xml</original>
+            <mtime>1700075675</mtime>
+            <size>1447</size>
+            <md5>e2439b21d8bd52f8e48f42bd5a76259c</md5>
+            <crc32>b220cc44</crc32>
+            <sha1>850332fa93df99e7cb73f6c2ad424de2f0136cf9</sha1>
+          </file>
+          <file name="__ia_thumb.jpg" source="original">
+            <mtime>1700075686</mtime>
+            <size>22479</size>
+            <md5>eca1c572cc95e18442acc65641a1ab3e</md5>
+            <crc32>c239df45</crc32>
+            <sha1>4b5267ebcc80b5438fcb40d910e4bf4ca71ddba7</sha1>
+            <format>Item Tile</format>
+            <rotation>0</rotation>
+          </file>
+          <file name="lettertodeargarr00mays_archive.torrent" source="metadata">
+            <btih>e9af413dd99183e549bce1a0a7445279ffb09f02</btih>
+            <mtime>1700097125</mtime>
+            <size>6361</size>
+            <md5>34525f50923f83ac5ce0fceb97ca2784</md5>
+            <crc32>53236853</crc32>
+            <sha1>a20e7c42b45c38e3fff98712729caee3ac4fc930</sha1>
+            <format>Archive BitTorrent</format>
+          </file>
+          <file name="lettertodeargarr00mays_dc.xml" source="original">
+            <format>Dublin Core</format>
+            <mtime>1649059357</mtime>
+            <size>1022</size>
+            <md5>a95e6f12eff7ffe9ba09a0e35bd13f88</md5>
+            <crc32>5d7e15db</crc32>
+            <sha1>f8630bf9714996356f48db4e4e9ede3aebe08207</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_files.xml" source="original">
+            <format>Metadata</format>
+            <md5>450b15f9c10618b0df874fa25f2ac434</md5>
+            <summation>md5</summation>
+          </file>
+          <file name="lettertodeargarr00mays_marc.xml" source="original">
+            <format>MARC</format>
+            <mtime>1367610625</mtime>
+            <size>4150</size>
+            <md5>d813be8f510c6131267438f1e68e0590</md5>
+            <crc32>f1817213</crc32>
+            <sha1>ee449f6e83ab652d7cafb33741fcd401118c276b</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.mrc" source="original">
+            <format>MARC Binary</format>
+            <mtime>1367610625</mtime>
+            <size>1218</size>
+            <md5>4473217c4a6b11f71906d1f96c79c02c</md5>
+            <crc32>7a5d06d3</crc32>
+            <sha1>2107d0b74e827961dbf9f796b6a63ce193836dd1</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.sqlite" source="original">
+            <mtime>1467758579</mtime>
+            <size>6144</size>
+            <format>Metadata</format>
+            <md5>aca2de7cacac9bc7f57874941818ec60</md5>
+            <crc32>b9364fe8</crc32>
+            <sha1>6e722ea039bd08bec8afbc5fd1c10938ecd1b099</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.xml" source="original">
+            <format>Metadata</format>
+            <mtime>1700076151</mtime>
+            <size>2434</size>
+            <md5>b9c8339046dd1dc772f158f10b9e01ee</md5>
+            <crc32>a264de08</crc32>
+            <sha1>161e402704af7cc63d66a8972b3fa87a2f084e63</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_metasource.xml" source="original">
+            <format>MARC Source</format>
+            <mtime>1367610625</mtime>
+            <size>403</size>
+            <md5>19b446785e9c94663c4693bee993a5c5</md5>
+            <crc32>83c26900</crc32>
+            <sha1>dc7cc88dcbcf33d11c76caeb01c834a3071de8ce</sha1>
+          </file>
+        </files>
+        </results>
+  recorded_at: Thu, 14 Nov 2024 20:13:03 GMT
+- request:
+    method: get
+    uri: http://ia601909.us.archive.org/8/items/lettertodeargarr00mays/39999066769967_scandata.xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:08 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Last-Modified:
+      - Wed, 15 Nov 2023 19:14:35 GMT
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - W/"6555189b-5a7"
+      Strict-Transport-Security:
+      - max-age=15724800
+      Expires:
+      - Fri, 15 Nov 2024 02:13:08 GMT
+      Cache-Control:
+      - max-age=21600
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <book>
+          <bookData>
+            <bookId>lettertodeargarr00mays</bookId>
+            <leafCount>4</leafCount>
+            <scanDataVersion>5</scanDataVersion>
+          </bookData>
+          <pageData>
+            <page leafNum="0">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2360</origWidth>
+              <origHeight>3656</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2360</w>
+                <h>3656</h>
+              </cropBox>
+              <bookStart>true</bookStart>
+            </page>
+            <page leafNum="1">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2368</origWidth>
+              <origHeight>3664</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2368</w>
+                <h>3664</h>
+              </cropBox>
+            </page>
+            <page leafNum="2">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2360</origWidth>
+              <origHeight>3664</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2360</w>
+                <h>3664</h>
+              </cropBox>
+            </page>
+            <page leafNum="3">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2328</origWidth>
+              <origHeight>3641</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2328</w>
+                <h>3641</h>
+              </cropBox>
+            </page>
+          </pageData>
+        </book>
+  recorded_at: Thu, 14 Nov 2024 20:13:03 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/services/find_file.php?file=lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:08 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '145'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/services/find_file.php?file=lettertodeargarr00mays
+      Expires:
+      - Fri, 15 Nov 2024 02:13:08 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: UTF-8
+      string: "<html>\r\n<head><title>302 Found</title></head>\r\n<body>\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.24.0</center>\r\n</body>\r\n</html>\r\n"
+  recorded_at: Thu, 14 Nov 2024 20:13:04 GMT
+- request:
+    method: get
+    uri: http://archive.org/services/find_file.php?file=lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:09 GMT
+      Content-Type:
+      - text/html; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Location:
+      - http://ia801909.us.archive.org/item_xml.php?dir=/8/items/lettertodeargarr00mays
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Thu, 14 Nov 2024 20:13:04 GMT
+- request:
+    method: get
+    uri: http://ia801909.us.archive.org/item_xml.php?dir=/8/items/lettertodeargarr00mays
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:09 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <results dir="/8/items/lettertodeargarr00mays" server="ia801909.us.archive.org">
+
+        <metadata>
+          <title>[Letter to] Dear Garrison [manuscript]</title>
+          <creator>May, Samuel, 1810-1899</creator>
+          <creator>Garrison, William Lloyd, 1805-1879, recipient</creator>
+          <subject>Garrison, William Lloyd, 1805-1879</subject>
+          <subject>May, Samuel, 1810-1899</subject>
+          <subject>Antislavery movements</subject>
+          <subject>Abolitionists</subject>
+          <description>Holograph, signed</description>
+          <publisher>Boston, [Mass.]</publisher>
+          <date>1868</date>
+          <language>eng</language>
+          <page-progression>lr</page-progression>
+          <sponsor>Associates of the Boston Public Library / The Boston Foundation</sponsor>
+          <contributor>Boston Public Library</contributor>
+          <scanningcenter>boston</scanningcenter>
+          <mediatype>texts</mediatype>
+          <collection>bplscas</collection>
+          <collection>bostonpubliclibrary</collection>
+          <collection>americana</collection>
+          <call_number>39999066769967</call_number>
+          <repub_state>4</repub_state>
+          <updatedate>2013-05-03 19:50:25</updatedate>
+          <updater>admin-tim-bigelow</updater>
+          <identifier>lettertodeargarr00mays</identifier>
+          <uploader>admin-tim-bigelow@archive.org</uploader>
+          <addeddate>2013-05-03 19:50:27</addeddate>
+          <publicdate>2013-05-03 19:50:30</publicdate>
+          <identifier-access>http://archive.org/details/lettertodeargarr00mays</identifier-access>
+          <identifier-ark>ark:/13960/t1kh26f12</identifier-ark>
+          <imagecount>4</imagecount>
+          <scandate>20141031000000</scandate>
+          <operator>boston_uploads</operator>
+          <scanfee>250</scanfee>
+          <invoice>6</invoice>
+          <sponsordate>20141031</sponsordate>
+          <backup_location>ia905700_8</backup_location>
+          <openlibrary_edition>OL25531154M</openlibrary_edition>
+          <openlibrary_work>OL16912147W</openlibrary_work>
+          <external-identifier>urn:oclc:record:1048313446</external-identifier>
+          <associated-names>Garrison, William Lloyd, 1805-1879, recipient</associated-names>
+          <ocr>tesseract 5.3.0-6-g76ae</ocr>
+          <ocr_parameters>-l eng</ocr_parameters>
+          <ocr_module_version>0.0.21</ocr_module_version>
+          <ocr_detected_script>Japanese</ocr_detected_script>
+          <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+          <ocr_detected_lang>en</ocr_detected_lang>
+          <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+          <page_number_confidence>0</page_number_confidence>
+          <page_number_module_version>1.0.3</page_number_module_version>
+          <pdf_module_version>0.0.23</pdf_module_version>
+        </metadata>
+
+        <files>
+          <file name="39999066769967.gif" source="derivative">
+            <format>Animated GIF</format>
+            <original>39999066769967_jp2.zip</original>
+            <mtime>1370956581</mtime>
+            <size>56931</size>
+            <md5>f60105c8118471a26b2b077629a858d1</md5>
+            <crc32>4b3df416</crc32>
+            <sha1>f31c62e3086a76dc399a736887944dbe91364d85</sha1>
+          </file>
+          <file name="39999066769967.pdf" source="derivative">
+            <pdf_module_version>0.0.23</pdf_module_version>
+            <format>Text PDF</format>
+            <original>39999066769967_page_numbers.json</original>
+            <mtime>1700076146</mtime>
+            <size>878778</size>
+            <md5>62444bfc66654c5be30a37ce5e803823</md5>
+            <crc32>4a0604b9</crc32>
+            <sha1>b3fbee5594d55adf94f2ce900e4d128bbc9d6563</sha1>
+          </file>
+          <file name="39999066769967_chocr.html.gz" source="derivative">
+            <ocr>tesseract 5.3.0-6-g76ae</ocr>
+            <ocr_parameters>lang-eng;two-pass-disabled;pass-dpi-disabled;autonomous-mode-disabled;binarisation-method-otsu</ocr_parameters>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_detected_script>Japanese</ocr_detected_script>
+            <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+            <ocr_detected_lang>en</ocr_detected_lang>
+            <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+            <format>chOCR</format>
+            <original>39999066769967_jp2.zip</original>
+            <mtime>1700075625</mtime>
+            <size>22842</size>
+            <md5>b8ffaea17943066dfeb9161bfea8c8e7</md5>
+            <crc32>4bb99927</crc32>
+            <sha1>58c4ffcfaf382e93011c02bdc0cb9e821be1c3fb</sha1>
+          </file>
+          <file name="39999066769967_cloth_detection.log" source="derivative">
+            <format>Cloth Cover Detection Log</format>
+            <original>39999066769967_scandata.xml</original>
+            <mtime>1700097109</mtime>
+            <size>519</size>
+            <md5>c3ec9a691a5efb7350f779ea78fd828c</md5>
+            <crc32>a0d9963a</crc32>
+            <sha1>4f7cb5b380e869df78cd4cb545f3d93e205675a3</sha1>
+          </file>
+          <file name="39999066769967_djvu.txt" source="derivative">
+            <format>DjVuTXT</format>
+            <original>39999066769967_djvu.xml</original>
+            <mtime>1700075663</mtime>
+            <size>1334</size>
+            <md5>431429bd16ff03cd61cac616cb95aaa1</md5>
+            <crc32>522777e0</crc32>
+            <sha1>b9ab2cacfc5e0a6b1df5543cc2a44cfeec98a2ad</sha1>
+          </file>
+          <file name="39999066769967_djvu.xml" source="derivative">
+            <format>Djvu XML</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075645</mtime>
+            <size>26192</size>
+            <md5>1fb151e6ed23fea0561a27c365bf76d3</md5>
+            <crc32>23db99f1</crc32>
+            <sha1>5b5bee241f5840ee2a04468886eb57e5c4a9e2b9</sha1>
+          </file>
+          <file name="39999066769967_hocr.html" source="derivative">
+            <hocr_char_to_word_module_version>1.2.0</hocr_char_to_word_module_version>
+            <hocr_char_to_word_hocr_version>1.1.45</hocr_char_to_word_hocr_version>
+            <ocr_parameters>lang-eng;two-pass-disabled;pass-dpi-disabled;autonomous-mode-disabled;binarisation-method-otsu</ocr_parameters>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_detected_script>Japanese</ocr_detected_script>
+            <ocr_detected_script_conf>1.0000</ocr_detected_script_conf>
+            <ocr_detected_lang>en</ocr_detected_lang>
+            <ocr_detected_lang_conf>1.0000</ocr_detected_lang_conf>
+            <format>hOCR</format>
+            <original>39999066769967_chocr.html.gz</original>
+            <mtime>1700075638</mtime>
+            <size>50798</size>
+            <md5>8194d123be636e7517ecf7eb1a31a050</md5>
+            <crc32>c95e077b</crc32>
+            <sha1>c0c94170ea34f7c0a0eb505b03d1e4cd61a7598e</sha1>
+          </file>
+          <file name="39999066769967_hocr_pageindex.json.gz" source="derivative">
+            <hocr_pageindex_module_version>1.0.0</hocr_pageindex_module_version>
+            <hocr_pageindex_hocr_version>1.1.15</hocr_pageindex_hocr_version>
+            <format>OCR Page Index</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075649</mtime>
+            <size>79</size>
+            <md5>ca0f5519a812c72384ae91d995e91882</md5>
+            <crc32>e096078c</crc32>
+            <sha1>4ef01fe20d88e1fae479b4138abe4dcb004da34a</sha1>
+          </file>
+          <file name="39999066769967_hocr_searchtext.txt.gz" source="derivative">
+            <hocr_fts_text_module_version>1.1.0</hocr_fts_text_module_version>
+            <hocr_fts_text_hocr_version>1.1.15</hocr_fts_text_hocr_version>
+            <word_conf_0_10>74</word_conf_0_10>
+            <word_conf_11_20>32</word_conf_11_20>
+            <word_conf_21_30>45</word_conf_21_30>
+            <word_conf_31_40>51</word_conf_31_40>
+            <word_conf_41_50>33</word_conf_41_50>
+            <word_conf_51_60>28</word_conf_51_60>
+            <word_conf_61_70>16</word_conf_61_70>
+            <word_conf_71_80>12</word_conf_71_80>
+            <word_conf_81_90>5</word_conf_81_90>
+            <word_conf_91_100>2</word_conf_91_100>
+            <format>OCR Search Text</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075657</mtime>
+            <size>860</size>
+            <md5>ebc585835227d7ca433a0606a3d9ff47</md5>
+            <crc32>577dcd98</crc32>
+            <sha1>4a6ecd7c666f5bb405c7d68be980a25ee53eef53</sha1>
+          </file>
+          <file name="39999066769967_images.zip" source="original">
+            <format>Generic Raw Book Zip</format>
+            <mtime>1370956554</mtime>
+            <size>36614448</size>
+            <md5>b8e5b2b982f96f22be1165b61a7dbb10</md5>
+            <crc32>faed21f1</crc32>
+            <sha1>5f182db46038d10ea66ab55be4d70be37d6e2ab5</sha1>
+            <filecount>5</filecount>
+          </file>
+          <file name="39999066769967_jp2.zip" source="derivative">
+            <format>Single Page Processed JP2 ZIP</format>
+            <original>39999066769967_images.zip</original>
+            <mtime>1370956574</mtime>
+            <size>2898942</size>
+            <md5>f1e8fa100452ca5a494e5105721c1711</md5>
+            <crc32>b55941db</crc32>
+            <sha1>171d098a7523c920af4d4869e1a82a1ecde34a2d</sha1>
+            <filecount>4</filecount>
+          </file>
+          <file name="39999066769967_page_numbers.json" source="derivative">
+            <hocr_pagenumber_module_version>1.0.3</hocr_pagenumber_module_version>
+            <hocr_pagenumber_hocr_version>1.1.54</hocr_pagenumber_hocr_version>
+            <hocr_pagenumber_confidence>0</hocr_pagenumber_confidence>
+            <format>Page Numbers JSON</format>
+            <original>39999066769967_hocr.html</original>
+            <mtime>1700075675</mtime>
+            <size>831</size>
+            <md5>8654f72b2f5d249ff6684ea59663e752</md5>
+            <crc32>04678367</crc32>
+            <sha1>8fce9a9d178449ae92d81c5b7b46d5bfa17faf91</sha1>
+          </file>
+          <file name="39999066769967_scandata.xml" source="derivative">
+            <format>Scandata</format>
+            <original>39999066769967_djvu.xml</original>
+            <mtime>1700075675</mtime>
+            <size>1447</size>
+            <md5>e2439b21d8bd52f8e48f42bd5a76259c</md5>
+            <crc32>b220cc44</crc32>
+            <sha1>850332fa93df99e7cb73f6c2ad424de2f0136cf9</sha1>
+          </file>
+          <file name="__ia_thumb.jpg" source="original">
+            <mtime>1700075686</mtime>
+            <size>22479</size>
+            <md5>eca1c572cc95e18442acc65641a1ab3e</md5>
+            <crc32>c239df45</crc32>
+            <sha1>4b5267ebcc80b5438fcb40d910e4bf4ca71ddba7</sha1>
+            <format>Item Tile</format>
+            <rotation>0</rotation>
+          </file>
+          <file name="lettertodeargarr00mays_archive.torrent" source="metadata">
+            <btih>e9af413dd99183e549bce1a0a7445279ffb09f02</btih>
+            <mtime>1700097125</mtime>
+            <size>6361</size>
+            <md5>34525f50923f83ac5ce0fceb97ca2784</md5>
+            <crc32>53236853</crc32>
+            <sha1>a20e7c42b45c38e3fff98712729caee3ac4fc930</sha1>
+            <format>Archive BitTorrent</format>
+          </file>
+          <file name="lettertodeargarr00mays_dc.xml" source="original">
+            <format>Dublin Core</format>
+            <mtime>1649059357</mtime>
+            <size>1022</size>
+            <md5>a95e6f12eff7ffe9ba09a0e35bd13f88</md5>
+            <crc32>5d7e15db</crc32>
+            <sha1>f8630bf9714996356f48db4e4e9ede3aebe08207</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_files.xml" source="original">
+            <format>Metadata</format>
+            <md5>450b15f9c10618b0df874fa25f2ac434</md5>
+            <summation>md5</summation>
+          </file>
+          <file name="lettertodeargarr00mays_marc.xml" source="original">
+            <format>MARC</format>
+            <mtime>1367610625</mtime>
+            <size>4150</size>
+            <md5>d813be8f510c6131267438f1e68e0590</md5>
+            <crc32>f1817213</crc32>
+            <sha1>ee449f6e83ab652d7cafb33741fcd401118c276b</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.mrc" source="original">
+            <format>MARC Binary</format>
+            <mtime>1367610625</mtime>
+            <size>1218</size>
+            <md5>4473217c4a6b11f71906d1f96c79c02c</md5>
+            <crc32>7a5d06d3</crc32>
+            <sha1>2107d0b74e827961dbf9f796b6a63ce193836dd1</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.sqlite" source="original">
+            <mtime>1467758579</mtime>
+            <size>6144</size>
+            <format>Metadata</format>
+            <md5>aca2de7cacac9bc7f57874941818ec60</md5>
+            <crc32>b9364fe8</crc32>
+            <sha1>6e722ea039bd08bec8afbc5fd1c10938ecd1b099</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_meta.xml" source="original">
+            <format>Metadata</format>
+            <mtime>1700076151</mtime>
+            <size>2434</size>
+            <md5>b9c8339046dd1dc772f158f10b9e01ee</md5>
+            <crc32>a264de08</crc32>
+            <sha1>161e402704af7cc63d66a8972b3fa87a2f084e63</sha1>
+          </file>
+          <file name="lettertodeargarr00mays_metasource.xml" source="original">
+            <format>MARC Source</format>
+            <mtime>1367610625</mtime>
+            <size>403</size>
+            <md5>19b446785e9c94663c4693bee993a5c5</md5>
+            <crc32>83c26900</crc32>
+            <sha1>dc7cc88dcbcf33d11c76caeb01c834a3071de8ce</sha1>
+          </file>
+        </files>
+        </results>
+  recorded_at: Thu, 14 Nov 2024 20:13:05 GMT
+- request:
+    method: get
+    uri: http://ia601909.us.archive.org/8/items/lettertodeargarr00mays/39999066769967_djvu.xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:09 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Last-Modified:
+      - Wed, 15 Nov 2023 19:14:05 GMT
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - W/"6555187d-6650"
+      Strict-Transport-Security:
+      - max-age=15724800
+      Expires:
+      - Fri, 15 Nov 2024 02:13:09 GMT
+      Cache-Control:
+      - max-age=21600
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIERqVnVYTUw+CjxEalZ1WE1MPgogPEJPRFk+CiAgPE9CSkVDVCBkYXRhPSJmaWxlOi8vbG9jYWxob3N0L3Zhci90bXAvYXV0b2NsZWFuL2Rlcml2ZS9sZXR0ZXJ0b2RlYXJnYXJyMDBtYXlzLzM5OTk5MDY2NzY5OTY3LmRqdnUiIHR5cGU9ImltYWdlL3guZGp2dSIgdXNlbWFwPSIzOTk5OTA2Njc2OTk2N18wMDAwLmRqdnUiIHdpZHRoPSIyMzYwIiBoZWlnaHQ9IjM2NTYiPgogICA8UEFSQU0gbmFtZT0iUEFHRSIgdmFsdWU9IjM5OTk5MDY2NzY5OTY3XzAwMDAuZGp2dSIvPgogICA8UEFSQU0gbmFtZT0iRFBJIiB2YWx1ZT0iNjAwIi8+CiAgIDxISURERU5URVhUPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjgyLDIxOSwzNzEsMTI5IiB4LWNvbmZpZGVuY2U9IjQyIj5hdDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0MjcsMTgxLDE3MDcsOTciIHgtY29uZmlkZW5jZT0iMCI+TGlwYSw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODA2LDE2MCwxOTA2LDEwMSIgeC1jb25maWRlbmNlPSIyNCI+MjI8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTMxLDIwMywyMDc5LDgxIiB4LWNvbmZpZGVuY2U9IjkwIj5mYW48L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjM0NywzNTEsNTQ0LDI0OCIgeC1jb25maWRlbmNlPSIzOCI+YWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2MDYsMzQ4LDg2OCwyMzAiIHgtY29uZmlkZW5jZT0iMjMiPnNwaW48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI5MDYsMzQ4LDEwMjUsMjMwIiB4LWNvbmZpZGVuY2U9IjYiPnBhczwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEwODMsMzQzLDEwOTYsMzIwIiB4LWNvbmZpZGVuY2U9IjQwIj47PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjA0NywyNjksMjE4OCwyNDEiIHgtY29uZmlkZW5jZT0iMCI+UGllbDwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjYzLDQ3Nyw5NDUsMzczIiB4LWNvbmZpZGVuY2U9IjAiPlBhdzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEwMDcsNTUxLDEzNDIsMzk0IiB4LWNvbmZpZGVuY2U9IjUyIj5ncmVhdCw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNDEyLDQ5OCwxNzY3LDM4MyIgeC1jb25maWRlbmNlPSI3Ij5iYnk8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNjcyLDU1NSwxNzcxLDM1OSIgeC1jb25maWRlbmNlPSI3Ij5jZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE4MTEsNDYzLDE4ODksMzk2IiB4LWNvbmZpZGVuY2U9IjY4Ij4mYW1wOzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5NDQsNTAwLDIxNTMsNDI3IiB4LWNvbmZpZGVuY2U9IjU1Ij5KYXI8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjI1MCw4NTMsMzM1LDcyNiIgeC1jb25maWRlbmNlPSIyMiI+VXA8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIzNzcsODUzLDU1Nyw3MjYiIHgtY29uZmlkZW5jZT0iMzciPmVuZXI8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2MTcsNzk2LDgzNSw3MjgiIHgtY29uZmlkZW5jZT0iNTEiPihuYXc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI4ODksODI2LDEwNzEsNjk4IiB4LWNvbmZpZGVuY2U9IjUiPmZyZWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTQ1LDgyNiwxMjk1LDY5OCIgeC1jb25maWRlbmNlPSIyNCI+cmVlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTM0Nyw4MjYsMTQ0NCw2OTgiIHgtY29uZmlkZW5jZT0iMjEiPmVlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTYzMCw4MDEsMTc5MCw2ODEiIHgtY29uZmlkZW5jZT0iMCI+bHBpPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTgxMCw4MDEsMTg0MCw2ODEiIHgtY29uZmlkZW5jZT0iMCI+dDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE4OTAsODAxLDIxODYsNjgxIiB4LWNvbmZpZGVuY2U9IjIzIj5wbGF04oCdPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNzQsMTIyNCw1MTAsMTEyMSIgeC1jb25maWRlbmNlPSI1MiI+TWFpcyw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI1ODksMTIxNSw2OTIsMTEzNiIgeC1jb25maWRlbmNlPSI4MiI+Ynk8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI3NDUsMTIzNSwxMTYwLDExMTQiIHgtY29uZmlkZW5jZT0iMCI+bmljZWtwcnk8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMjQ0LDExNzAsMTM1NCwxMTM0IiB4LWNvbmZpZGVuY2U9IjM4Ij5QWDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0MDcsMTI1NSwxNTA5LDExMTciIHgtY29uZmlkZW5jZT0iMzYiPk94PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTY2NiwxMjM5LDE4MzgsMTA3NyIgeC1jb25maWRlbmNlPSIyNCI+b2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODAyLDEyNTMsMTg1OSwxMTY4IiB4LWNvbmZpZGVuY2U9IjAiPuKAnDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5NTUsMTI0NywyMjQ4LDEwNjkiIHgtY29uZmlkZW5jZT0iMiI+YXNpOjwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjY4LDEzNTMsNjUyLDEyNTQiIHgtY29uZmlkZW5jZT0iMTkiPkFoZXJuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzAxLDEzMTcsNzkwLDEyNzgiIHgtY29uZmlkZW5jZT0iMTMiPml5PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iODY5LDEzMDksMTI4MywxMjQwIiB4LWNvbmZpZGVuY2U9IjI1Ij5URUw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzEwLDEzMjUsMTQ5MSwxMjUxIiB4LWNvbmZpZGVuY2U9IjE5Ij5hZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1MzAsMTI4NiwxNTkzLDEyODIiIHgtY29uZmlkZW5jZT0iNzkiPuKAlDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE2NjIsMTMyNSwxODkxLDEyMzEiIHgtY29uZmlkZW5jZT0iMzIiPlRpcGU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTE1LDEyOTYsMjAwNSwxMjI0IiB4LWNvbmZpZGVuY2U9IjU3Ij5wZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwNTYsMTM0NywyMTk0LDEyMTYiIHgtY29uZmlkZW5jZT0iNDEiPkhpZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjM4LDE0ODYsNDE5LDEzNDYiIHgtY29uZmlkZW5jZT0iNjgiPmZvZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjQ1NywxNDQxLDQ5OCwxMzk1IiB4LWNvbmZpZGVuY2U9IjM1Ij5NZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjU1NCwxNDY1LDc1MiwxNDAyIiB4LWNvbmZpZGVuY2U9IjM0Ij5DYXZl4oCdPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzkzLDE0NjEsOTE0LDEzODEiIHgtY29uZmlkZW5jZT0iNTYiPm9mfjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk0NywxNDQwLDExMjMsMTM2MiIgeC1jb25maWRlbmNlPSI1NSI+YXRlLDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjExNTMsMTQ1NiwxMjY0LDEzNTAiIHgtY29uZmlkZW5jZT0iNzMiPmhlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTMxNiwxNDU2LDE1OTEsMTM1MCIgeC1jb25maWRlbmNlPSIwIj5wYWMsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTYyNSwxNDExLDE3NTksMTM0MCIgeC1jb25maWRlbmNlPSIzMSI+TmVkPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTc5MywxNDE4LDE5MTMsMTMyNSIgeC1jb25maWRlbmNlPSI5Ij5wYXk8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjIzNiwxNTc5LDI4OCwxNTEzIiB4LWNvbmZpZGVuY2U9IjUwIj5HPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMzI5LDE2MjgsNjQzLDE0ODUiIHgtY29uZmlkZW5jZT0iMCI+TWhhYmx5PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjUwLDE2MzIsNjc3LDE0NzUiIHgtY29uZmlkZW5jZT0iNTUiPko8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI3MjgsMTU3MCw4ODUsMTQ5MCIgeC1jb25maWRlbmNlPSI1NyI+S2FkPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iOTI3LDE1ODcsMTE2MSwxNDkzIiB4LWNvbmZpZGVuY2U9IjMyIj5BZ2VkPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTIxNiwxNTU3LDEzMDMsMTQ5NyIgeC1jb25maWRlbmNlPSI3OSI+JmFtcDs8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzQ2LDE1NTcsMTU4MiwxNDgwIiB4LWNvbmZpZGVuY2U9IjQ4Ij5jYWxsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTYwNiwxNTUzLDE3MDMsMTUxOCIgeC1jb25maWRlbmNlPSIzNSI+bm48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzM2LDE1OTAsMTg4MiwxNTE0IiB4LWNvbmZpZGVuY2U9IjU3Ij5HcnU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTUxLDE1OTIsMjIxNCwxNDgyIiB4LWNvbmZpZGVuY2U9IjAiPkxvb24sPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNjcsMTcxNSw0NTEsMTYyMyIgeC1jb25maWRlbmNlPSIyMiI+TmFlPzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjQ2OSwxNjg1LDUwOCwxNjYwIiB4LWNvbmZpZGVuY2U9IjQiPkpwPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNTIyLDE3MDcsNjM1LDE2NTgiIHgtY29uZmlkZW5jZT0iNCI+S3Q8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2OTksMTcyNiw4OTEsMTYyNyIgeC1jb25maWRlbmNlPSIzMyI+TGVwcjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk2MCwxNjg1LDEwMTQsMTY0MSIgeC1jb25maWRlbmNlPSIwIj5pPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTIwMSwxNjkwLDEzNzMsMTYxOSIgeC1jb25maWRlbmNlPSI0MiI+U1VFPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTQxNCwxNjkwLDE0ODgsMTYxOSIgeC1jb25maWRlbmNlPSI0NiI+TkQpPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTU1MSwxNjgzLDE2NTcsMTYyOCIgeC1jb25maWRlbmNlPSIyNCI+cHc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzA3LDE2NzksMTkwNSwxNjIyIiB4LWNvbmZpZGVuY2U9IjE5Ij5CUzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5NDcsMTY4MywyMDMyLDE1ODIiIHgtY29uZmlkZW5jZT0iNDEiPmFsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjEwMywxNjIwLDIxMjYsMTU5OCIgeC1jb25maWRlbmNlPSIwIj7igJk8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjI1MSwxODMwLDY5MCwxNzMwIiB4LWNvbmZpZGVuY2U9IjAiPk1lcmVjdGluLjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc5NywxODA0LDg1MiwxNzQ5IiB4LWNvbmZpZGVuY2U9IjgwIj5KUzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg5NiwxODQyLDExNDksMTcxMCIgeC1jb25maWRlbmNlPSI4MCI+dGhhdGw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMjA0LDE4NDIsMTQxMywxNzEwIiB4LWNvbmZpZGVuY2U9IjAiPmZhYzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0OTgsMTc5OSwxNjU4LDE3MTYiIHgtY29uZmlkZW5jZT0iMzUiPldhPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTcyOSwxODM4LDE5NzIsMTcxNiIgeC1jb25maWRlbmNlPSIzMiI+YmhwLDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwNTEsMTc5MCwyMDk1LDE3MzMiIHgtY29uZmlkZW5jZT0iNjkiPkA8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyMTIzLDE3ODksMjI0NSwxNzIxIiB4LWNvbmZpZGVuY2U9IjMyIj5iYTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjU4LDE5NDIsNjE3LDE4NjkiIHgtY29uZmlkZW5jZT0iMCI+U2VsdXBuZWQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2NzksMTkyNCw3NTQsMTg3MiIgeC1jb25maWRlbmNlPSI1OCI+QDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjgyMCwxOTQzLDEwNDEsMTg5NiIgeC1jb25maWRlbmNlPSI1MyI+cHIsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTE0NCwxOTE3LDEzMDksMTg1MiIgeC1jb25maWRlbmNlPSIyNyI+Q29BPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTM2MywxOTEyLDE2NTEsMTgzNyIgeC1jb25maWRlbmNlPSIzMyI+Q2hhdGg8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNjg4LDE5MDksMTk1NSwxODY1IiB4LWNvbmZpZGVuY2U9IjUxIj5XYW50PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTk5NiwxOTAyLDIyNDEsMTg0MCIgeC1jb25maWRlbmNlPSIzNCI+b2FyPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNjksMjU2NSwzMTcsMjUwNCIgeC1jb25maWRlbmNlPSIwIj4mYW1wOzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjM0MywyNTk5LDcwNywyNDk0IiB4LWNvbmZpZGVuY2U9IjUwIj5mYXJrYWZpYTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc2MSwyNTU4LDExNDgsMjQ3OSIgeC1jb25maWRlbmNlPSIwIj5NV2UsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTIxOCwyNTg5LDE0NDgsMjQzNiIgeC1jb25maWRlbmNlPSIwIj5GaWZycy48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNDg1LDI0ODgsMTc3OSwyNDgzIiB4LWNvbmZpZGVuY2U9IjMwIj5jZWVkaW5nPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTgzNywyNTk3LDE5MTcsMjQyOSIgeC1jb25maWRlbmNlPSI0OSI+b248L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTA3LDI1OTMsMjE5NSwyNDkwIiB4LWNvbmZpZGVuY2U9IjE2Ij5Nb2VuPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNzYsMjY5MCw1NDIsMjU3MiIgeC1jb25maWRlbmNlPSIwIj5jbXM8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2MzAsMjY5MCw4MzcsMjU3MiIgeC1jb25maWRlbmNlPSIzMiI+aXRlKTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg4MSwyNjc1LDExMjQsMjU4MiIgeC1jb25maWRlbmNlPSI0OCI+dHRsZS48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMjQ5LDI2OTAsMTQzNywyNTcyIiB4LWNvbmZpZGVuY2U9IjAiPmxhdXI8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNDg1LDI2NjAsMTUwMCwyNjMzIiB4LWNvbmZpZGVuY2U9IjMwIj5KPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTUwMSwyNjYyLDIwNTAsMjU4MSIgeC1jb25maWRlbmNlPSIyOCI+TWxtbHVjZWhzPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjEwMiwyNjU2LDIyODgsMjU4NSIgeC1jb25maWRlbmNlPSI2MyI+dGhhcjwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMzA3LDI4MjksMzExLDI4MjEiIHgtY29uZmlkZW5jZT0iNjUiPnw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzE0LDI4OTMsMTMyNywyODc1IiB4LWNvbmZpZGVuY2U9IjgiPmY8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzk3LDI5MDgsMTg5NCwyODI1IiB4LWNvbmZpZGVuY2U9Ijc0Ij4oTFksPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjAyOCwyODkxLDIwNjYsMjg1MSIgeC1jb25maWRlbmNlPSIxMyI+cmVuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjE1NywyODk1LDIyNDgsMjg0MyIgeC1jb25maWRlbmNlPSIwIj5TZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjg0LDI5NjQsNDE4LDI4NzAiIHgtY29uZmlkZW5jZT0iNTkiPkxhbTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg2OSwyOTU2LDkxOCwyOTAwIiB4LWNvbmZpZGVuY2U9IjY0Ij5yaDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk5OSwyOTQ5LDEwNDksMjg1OCIgeC1jb25maWRlbmNlPSI0MiI+WEs8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTA4LDI5NDksMTE4NywyODU4IiB4LWNvbmZpZGVuY2U9Ijc5Ij5rbzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEyNjIsMjk2OSwxNDAyLDI4NzMiIHgtY29uZmlkZW5jZT0iODIiPllvdTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0NjYsMjk2OSwxNjYyLDI4NzMiIHgtY29uZmlkZW5jZT0iNjQiPkNhbi48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODExLDI5MzEsMTk0NywyODYxIiB4LWNvbmZpZGVuY2U9IjE2Ij5KZXQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTk2LDI5MjIsMjAzNywyODkxIiB4LWNvbmZpZGVuY2U9IjMyIj5pbDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwODcsMjkyNywyMjUzLDI4NzMiIHgtY29uZmlkZW5jZT0iMzkiPndlPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2MCwzMjAzLDQzMiwzMTMyIiB4LWNvbmZpZGVuY2U9IjE5Ij5pPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjk0LDMxOTUsODkyLDMxMTAiIHgtY29uZmlkZW5jZT0iMzMiPmVhZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEwNjgsMzE4MywxMjMzLDMxMDgiIHgtY29uZmlkZW5jZT0iMTIiPmE8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzQzLDMyMTEsMTQ4NiwzMDc5IiB4LWNvbmZpZGVuY2U9IjM2Ij5lZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1NjMsMzE3NCwxNjg0LDMwODMiIHgtY29uZmlkZW5jZT0iMjgiPmk8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjU0LDMzMjYsMTIwLDMyNDEiIHgtY29uZmlkZW5jZT0iOSI+4oCcNDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjI0MSwzMzQxLDM2NSwzMjU2IiB4LWNvbmZpZGVuY2U9IjU0Ij5hdDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjQwOCwzMzM5LDUwOSwzMjgzIiB4LWNvbmZpZGVuY2U9IjU2Ij53dzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjU5NSwzMzU3LDc1NywzMjM2IiB4LWNvbmZpZGVuY2U9IjEyIj5wYXJ+PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzk3LDMzNTcsMTE3MSwzMjM2IiB4LWNvbmZpZGVuY2U9IjAiPmxhcmxlZmVyZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEyMzMsMzMyMCwxNDQzLDMyMjkiIHgtY29uZmlkZW5jZT0iMjIiPmVlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTQ5MCwzMzU4LDE1MDgsMzI1MiIgeC1jb25maWRlbmNlPSIwIj4jPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTUzNCwzMzU4LDE3MTEsMzI1MiIgeC1jb25maWRlbmNlPSIwIj5lc2JlcmN0b248L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzU1LDMzNTgsMTg3NSwzMjUyIiB4LWNvbmZpZGVuY2U9IjMwIj5pZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5MzUsMzMyOSwyMjY1LDMyMjciIHgtY29uZmlkZW5jZT0iMCI+QmVyZWssPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNzYsMzQ4MSw1MDMsMzM5OSIgeC1jb25maWRlbmNlPSI0NCI+ZmV0PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzA3LDM0ODksMTMwMCwzMzQzIiB4LWNvbmZpZGVuY2U9IjMiPlNjZW5mYXA8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTU3LDM0OTMsMTMxMiwzMzM5IiB4LWNvbmZpZGVuY2U9IjYxIj50aGU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzUwLDM0MzgsMTU4MSwzMzkxIiB4LWNvbmZpZGVuY2U9IjMzIj50bmEuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTY1OCwzNDM0LDE2ODQsMzM1MyIgeC1jb25maWRlbmNlPSIzMSI+MTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE3MTEsMzQzNCwxOTQyLDMzNDYiIHgtY29uZmlkZW5jZT0iNDgiPmxoPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTk4NywzNDc1LDIyMTcsMzM3OCIgeC1jb25maWRlbmNlPSIzNSI+cHQ8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICA8L0hJRERFTlRFWFQ+CiAgPC9PQkpFQ1Q+CiAgPE1BUCBuYW1lPSIzOTk5OTA2Njc2OTk2N18wMDAwLmRqdnUiLz4KICA8T0JKRUNUIGRhdGE9ImZpbGU6Ly9sb2NhbGhvc3QvdmFyL3RtcC9hdXRvY2xlYW4vZGVyaXZlL2xldHRlcnRvZGVhcmdhcnIwMG1heXMvMzk5OTkwNjY3Njk5NjcuZGp2dSIgdHlwZT0iaW1hZ2UveC5kanZ1IiB1c2VtYXA9IjM5OTk5MDY2NzY5OTY3XzAwMDEuZGp2dSIgd2lkdGg9IjIzNjgiIGhlaWdodD0iMzY2NCI+CiAgIDxQQVJBTSBuYW1lPSJQQUdFIiB2YWx1ZT0iMzk5OTkwNjY3Njk5NjdfMDAwMS5kanZ1Ii8+CiAgIDxQQVJBTSBuYW1lPSJEUEkiIHZhbHVlPSI2MDAiLz4KICAgPEhJRERFTlRFWFQ+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyMjAsMjA5LDI3NywxOTkiIHgtY29uZmlkZW5jZT0iMzgiPl88L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIzMjcsMjQ5LDQ4NCwxMTUiIHgtY29uZmlkZW5jZT0iNDMiPmh1cjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjUyOCwyNDUsNjEzLDE1MiIgeC1jb25maWRlbmNlPSI1OCI+aWY8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2NjMsMjQ1LDk0MCwxMzkiIHgtY29uZmlkZW5jZT0iOTEiPm1hZGUsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTA0MiwyMDEsMTE0MSwxMzkiIHgtY29uZmlkZW5jZT0iNjIiPjE2PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTE4NSwyMDEsMTkxNSwxMTkiIHgtY29uZmlkZW5jZT0iNCI+VWVjdHQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNjExLDI0OSwxNzI0LDExNSIgeC1jb25maWRlbmNlPSI3NyI+YmU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzkwLDI0OSwxOTE0LDExNSIgeC1jb25maWRlbmNlPSI1MyI+MjwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjcwLDM4OCw4MTksMjYzIiB4LWNvbmZpZGVuY2U9IjAiPmVybG1wZWVlZWhlcjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjkwOSwzODUsMTAyMCwyNDgiIHgtY29uZmlkZW5jZT0iMzMiPnAtPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTA1MywzODUsMTIwMiwyNDgiIHgtY29uZmlkZW5jZT0iNzQiPmF0aDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEyNTgsMzg1LDE3NjEsMjQ4IiB4LWNvbmZpZGVuY2U9IjAiPmZyZXRlY2Fucyw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODMxLDMzNiwxOTM3LDIzNSIgeC1jb25maWRlbmNlPSIzMSI+ZXk8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjI1NSw1MzUsMzkwLDM3NCIgeC1jb25maWRlbmNlPSIzNCI+W2VuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNDQyLDUzNSw3MzIsMzc0IiB4LWNvbmZpZGVuY2U9IjkiPnBvcnRlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzkxLDUzNSw5MTMsMzc0IiB4LWNvbmZpZGVuY2U9IjQyIj5oYTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk2Niw1MzUsMTEwMSwzNzQiIHgtY29uZmlkZW5jZT0iMCI+Q29yPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTEyNyw1MzUsMTQyMywzNzQiIHgtY29uZmlkZW5jZT0iMCI+UHJldG8sPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTQ3NSw1MzUsMTU1NywzNzQiIHgtY29uZmlkZW5jZT0iMTUiPm9mcDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1OTYsNDkyLDE3MzAsNDA0IiB4LWNvbmZpZGVuY2U9IjE1Ij5IYXM8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzk3LDUzNSwxOTMzLDM3NCIgeC1jb25maWRlbmNlPSIxNSI+TGFyPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTk1OCw1MzUsMjEzNCwzNzQiIHgtY29uZmlkZW5jZT0iMCI+U2FyJmd0OzwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjU3LDY2OCwzNTYsNTU2IiB4LWNvbmZpZGVuY2U9IjI4Ij5KbzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjQxMSw2NjgsNjU1LDU1NiIgeC1jb25maWRlbmNlPSIwIj5DcmljYXQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI5ODgsNjIzLDE2NDIsNTU1IiB4LWNvbmZpZGVuY2U9IjIiPmNoYXJhYzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1MjUsNjUwLDE2NDcsNTM4IiB4LWNvbmZpZGVuY2U9Ijk0Ij5BZDwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjE2LDEwMTcsOTI4LDQ4NCIgeC1jb25maWRlbmNlPSIzNSI+ZWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTY3LDc2NSwxMjg1LDY3MSIgeC1jb25maWRlbmNlPSIzNyI+TG9kPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTMzOSw3NjUsMTUyMCw2NzEiIHgtY29uZmlkZW5jZT0iNDYiPlBoZXc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNTY5LDc0NCwxNTgzLDczMyIgeC1jb25maWRlbmNlPSIzMSI+LjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE2OTYsOTA2LDIwMzMsNTQzIiB4LWNvbmZpZGVuY2U9IjE5Ij5wYTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjYzLDExOTksNDExLDEwOTIiIHgtY29uZmlkZW5jZT0iMCI+QmloZXc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI0NDYsMTE5OSw2NjgsMTA5MiIgeC1jb25maWRlbmNlPSIyNyI+KGRhZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjY0MywxMzAyLDEzNDAsMTAzOCIgeC1jb25maWRlbmNlPSIyMiI+dHM8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMzE2LDExNjIsMTQ3MSwxMTIxIiB4LWNvbmZpZGVuY2U9IjM4Ij5ab248L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNTcsMTUwMywzNTksMTI5NyIgeC1jb25maWRlbmNlPSIwIj55OjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjM3MiwxNDcwLDU0OSwxMzAzIiB4LWNvbmZpZGVuY2U9IjMiPm9TPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNDk1LDE1MDIsODQzLDEyNjIiIHgtY29uZmlkZW5jZT0iMTIiPmFlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTA0OCwxNDU1LDEyMTQsMTM4MiIgeC1jb25maWRlbmNlPSI0Ij5MZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEzMDYsMTQ1OSwxMzkwLDEyOTgiIHgtY29uZmlkZW5jZT0iMjQiPmllPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTQ5MCwxNDY0LDE3NTAsMTM4NyIgeC1jb25maWRlbmNlPSI0MyI+TGVlLjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE3OTEsMTQ5OSwyMDIzLDEzNDIiIHgtY29uZmlkZW5jZT0iMjkiPmVhczwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjE5LDE2NDMsMTM4MiwxNTMwIiB4LWNvbmZpZGVuY2U9IjQzIj50dWNsbDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjU5MywxNjc0LDcyOCwxNTEyIiB4LWNvbmZpZGVuY2U9IjYyIj5oZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjgyMiwxNjQzLDExODcsMTUzMCIgeC1jb25maWRlbmNlPSIwIj5yaXR0aXRyPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTIyNywxNjc0LDE0MDMsMTUxMiIgeC1jb25maWRlbmNlPSI4MCI+JGUsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTQ3MCwxNjAzLDE1MTEsMTU0MiIgeC1jb25maWRlbmNlPSI2MyI+KzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0NjIsMTY3MCwxOTA0LDE1MzAiIHgtY29uZmlkZW5jZT0iNTQiPnJleSw8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjE5LDE5OTgsMzQzLDE5MTMiIHgtY29uZmlkZW5jZT0iMjUiPkRpZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjM5NywxOTkyLDY0MywxOTAzIiB4LWNvbmZpZGVuY2U9IjYiPkJlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjY5LDIwMjEsOTQ3LDE5MTAiIHgtY29uZmlkZW5jZT0iMzAiPmZvZzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEwMjYsMTk5NCwxMjQyLDE4OTciIHgtY29uZmlkZW5jZT0iNDQiPmZsYW5lPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTI4MCwyMDU3LDE0NjMsMTg5NyIgeC1jb25maWRlbmNlPSIzMCI+TGFnPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTU5NiwyMDUzLDE3NDMsMTkwMSIgeC1jb25maWRlbmNlPSI0MCI+b2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzg5LDE5NjQsMjAxMSwxODg1IiB4LWNvbmZpZGVuY2U9IjM2Ij5NaDwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNDQzLDIwNzUsNDU1LDIwNjEiIHgtY29uZmlkZW5jZT0iOCI+OzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjY0NiwyMTEwLDczMCwyMDQ5IiB4LWNvbmZpZGVuY2U9Ijc1Ij5mZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc5MiwyMTU1LDExNDIsMjAwNSIgeC1jb25maWRlbmNlPSIyNiI+cHVibGljPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTI1NCwyMDg4LDEzMDEsMjA1NCIgeC1jb25maWRlbmNlPSI4NyI+MjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEzNzksMjE1NSwxNTkyLDIwMDUiIHgtY29uZmlkZW5jZT0iMzciPldlZnQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNjY3LDIxNTUsMTkxNywyMDA1IiB4LWNvbmZpZGVuY2U9IjQxIj5mcm9tZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5NjcsMjE1NSwyMTY3LDIwMDUiIHgtY29uZmlkZW5jZT0iNjUiPllvci08L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FIHgtc3RydWN0PSJjYXB0aW9uIj4KICAgICAgICA8V09SRCBjb29yZHM9IjIyNCwyOTc2LDQ0OCwyOTAxIiB4LWNvbmZpZGVuY2U9IjQ3Ij5heWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI1MDMsMzA2OCw3MjYsMjgyOSIgeC1jb25maWRlbmNlPSI0NiI+dGFjdDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg1NywzMDY0LDk1OCwyODk3IiB4LWNvbmZpZGVuY2U9IjU5Ij5wb208L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMDM2LDMwNjgsMTIzNiwyODI5IiB4LWNvbmZpZGVuY2U9IjM3Ij5mb2Q8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNTI5LDMwMzcsMTY0OCwyODU0IiB4LWNvbmZpZGVuY2U9IjAiPnNlPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkUgeC1zdHJ1Y3Q9ImNhcHRpb24iPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMzM2LDMyNzMsNjE1LDMwNTciIHgtY29uZmlkZW5jZT0iMzAiPmllPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjk0LDMyOTUsNzk3LDMwNDkiIHgtY29uZmlkZW5jZT0iMTMiPkJTPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iODk5LDMyODksMTA2NCwzMTgzIiB4LWNvbmZpZGVuY2U9IjAiPlBnPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTE2NiwzMjkxLDE0NzQsMzE2MiIgeC1jb25maWRlbmNlPSIyNiI+aGU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTA0LDMyNTAsMjEzMSwzMTcyIiB4LWNvbmZpZGVuY2U9IjIwIj5lZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgIDwvSElEREVOVEVYVD4KICA8L09CSkVDVD4KICA8TUFQIG5hbWU9IjM5OTk5MDY2NzY5OTY3XzAwMDEuZGp2dSIvPgogIDxPQkpFQ1QgZGF0YT0iZmlsZTovL2xvY2FsaG9zdC92YXIvdG1wL2F1dG9jbGVhbi9kZXJpdmUvbGV0dGVydG9kZWFyZ2FycjAwbWF5cy8zOTk5OTA2Njc2OTk2Ny5kanZ1IiB0eXBlPSJpbWFnZS94LmRqdnUiIHVzZW1hcD0iMzk5OTkwNjY3Njk5NjdfMDAwMi5kanZ1IiB3aWR0aD0iMjM2MCIgaGVpZ2h0PSIzNjY0Ij4KICAgPFBBUkFNIG5hbWU9IlBBR0UiIHZhbHVlPSIzOTk5OTA2Njc2OTk2N18wMDAyLmRqdnUiLz4KICAgPFBBUkFNIG5hbWU9IkRQSSIgdmFsdWU9IjYwMCIvPgogICA8SElEREVOVEVYVD4KICAgIDxQQUdFQ09MVU1OPgogICAgIDxSRUdJT04+CiAgICAgIDxQQVJBR1JBUEg+CiAgICAgICA8TElORSB4LXN0cnVjdD0idGV4dGZsb2F0Ij4KICAgICAgICA8V09SRCBjb29yZHM9IjAsMTc3MSwxMTQsMTY2MCIgeC1jb25maWRlbmNlPSI1NyI+d3k8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMCwyNjEwLDM3LDI1OTUiIHgtY29uZmlkZW5jZT0iMjAiPm9+PC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICA8L1BBUkFHUkFQSD4KICAgICA8L1JFR0lPTj4KICAgIDwvUEFHRUNPTFVNTj4KICAgIDxQQUdFQ09MVU1OPgogICAgIDxSRUdJT04+CiAgICAgIDxQQVJBR1JBUEg+CiAgICAgICA8TElORT4KICAgICAgICA8V09SRCBjb29yZHM9IjI5NSw4OTgsNDgwLDc4NSIgeC1jb25maWRlbmNlPSIxNyI+ZGVjYXk8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI0OTgsODk4LDU2NSw3ODUiIHgtY29uZmlkZW5jZT0iMjIiPmNhbTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjYxOCw4NzIsOTU3LDc5MSIgeC1jb25maWRlbmNlPSIxMyI+U2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTI5LDk2OCwxNTUwLDc0NyIgeC1jb25maWRlbmNlPSIyMCI+ZXM8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODEwLDk2NywyMjU3LDcyOSIgeC1jb25maWRlbmNlPSIwIj5hPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIzMDUsMTExOSw5MTEsOTI4IiB4LWNvbmZpZGVuY2U9IjEzIj5lZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEwNzksMTEyNywxMjY2LDkyNCIgeC1jb25maWRlbmNlPSIyMiI+a2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNTYxLDExMjIsMjE5Myw5MTIiIHgtY29uZmlkZW5jZT0iMzIiPnRlPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNzMsMTI4NSw1ODEsMTE4OCIgeC1jb25maWRlbmNlPSI1MSI+ZnJpZmVyLDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjY1OSwxMjg5LDkxNywxMTU1IiB4LWNvbmZpZGVuY2U9IjcxIj50aHVjazwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk3MiwxMjg5LDE0MjAsMTE1NSIgeC1jb25maWRlbmNlPSIxNCI+ZnJ2ZXRhY2FlczwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0ODgsMTI1OCwxNjQ4LDExMzAiIHgtY29uZmlkZW5jZT0iNDIiPkppYW48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzEyLDEyNTgsMTg2MiwxMTMwIiB4LWNvbmZpZGVuY2U9IjQiPmZmPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTk0NiwxMjU4LDIyNjcsMTEzMCIgeC1jb25maWRlbmNlPSIwIj5uZWF8PC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyODQsMTQxNywzODUsMTMxOSIgeC1jb25maWRlbmNlPSI0NCI+Wmg8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI0MzcsMTM5Niw1MjksMTMyMCIgeC1jb25maWRlbmNlPSI0MSI+TVc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2MDcsMTQ0OSw5MjIsMTI5MiIgeC1jb25maWRlbmNlPSIzIj5wcmV0dGVuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iOTc4LDEzMzMsOTg1LDEzMjQiIHgtY29uZmlkZW5jZT0iMTQiPmk8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMDQ3LDE0MjQsMTMzNiwxMzAzIiB4LWNvbmZpZGVuY2U9IjAiPk5vdCw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNTAxLDEzNzgsMTY1NSwxMjgwIiB4LWNvbmZpZGVuY2U9IjAiPmE8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNzM0LDE0MDYsMTkxNSwxMjgzIiB4LWNvbmZpZGVuY2U9IjAiPkF0Y288L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxOTU1LDE0MDYsMjIwMiwxMjgzIiB4LWNvbmZpZGVuY2U9IjU0Ij5EaWNlLDwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iOTk3LDE1MDcsMTAzNCwxNDI5IiB4LWNvbmZpZGVuY2U9IjMiPlBvPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTE4MywxNTM0LDE0MTEsMTQyMCIgeC1jb25maWRlbmNlPSI3Ij5mb2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNDc3LDE1MDksMTU5MCwxNDI0IiB4LWNvbmZpZGVuY2U9IjI4Ij5hZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE2NTYsMTUxMCwxODU5LDE0MjkiIHgtY29uZmlkZW5jZT0iMzEiPkFvPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTk1NCwxNTIwLDIyMzAsMTM3NyIgeC1jb25maWRlbmNlPSIyOSI+b248L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjk3LDE1MzEsMzg0LDE0OTgiIHgtY29uZmlkZW5jZT0iNDEiPk9vfjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjQzMSwxNTE5LDQzNywxNTEyIiB4LWNvbmZpZGVuY2U9IjQ1Ij4vZjwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkUgeC1zdHJ1Y3Q9InRleHRmbG9hdCI+CiAgICAgICAgPFdPUkQgY29vcmRzPSI0NjIsMTY0Myw1OTksMTU5NCIgeC1jb25maWRlbmNlPSIxOCI+aWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI4NDEsMTcyNCwxMDkwLDE1OTEiIHgtY29uZmlkZW5jZT0iNDgiPmZpcmVkLDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjExOTUsMTcyNCwxNTI5LDE1OTEiIHgtY29uZmlkZW5jZT0iMCI+VmhzKSZxdW90OzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1NzIsMTcyNCwxNzcyLDE1OTEiIHgtY29uZmlkZW5jZT0iMjIiPmZyZS48L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxODM4LDE3MjQsMTk3MiwxNTkxIiB4LWNvbmZpZGVuY2U9IjAiPmhhLjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwMzgsMTcyNCwyMjY5LDE1OTEiIHgtY29uZmlkZW5jZT0iNDYiPkFyYeKAnTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNzIsMTc2Miw2NzMsMTYwMCIgeC1jb25maWRlbmNlPSIwIj7igJxUZWNlY2VlcDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjczOCwxNzA0LDc3NSwxNjQ5IiB4LWNvbmZpZGVuY2U9IjE4Ij5WZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc5MywxNjk1LDgxMywxNjUzIiB4LWNvbmZpZGVuY2U9IjE5Ij5hPC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNTgsMTg1Nyw1NzgsMTcyMCIgeC1jb25maWRlbmNlPSIyMiI+RGU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI2ODIsMTg0OSw3NTQsMTc2MyIgeC1jb25maWRlbmNlPSIwIj5pPzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk5MiwxODM0LDEzMzUsMTczMyIgeC1jb25maWRlbmNlPSI1NiI+U3RoLDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjEzOTUsMTgyMywxNTM2LDE3NDIiIHgtY29uZmlkZW5jZT0iODMiPnRoZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1OTMsMTg2MCwxODgxLDE3MzUiIHgtY29uZmlkZW5jZT0iMjEiPm5hcGh0LTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE5MTcsMTg2NCwyMDAxLDE3MjEiIHgtY29uZmlkZW5jZT0iNjUiPnRlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjA0OCwxODI0LDIyMTYsMTc1OSIgeC1jb25maWRlbmNlPSI0NCI+YmE8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjgxLDIwMDMsNTIxLDE4ODciIHgtY29uZmlkZW5jZT0iMzEiPmRhY2U8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI1ODYsMjAwMyw3MjIsMTg4NyIgeC1jb25maWRlbmNlPSIxNiI+R2xzPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNzcwLDIwMDMsMTAzMSwxODg3IiB4LWNvbmZpZGVuY2U9IjI1Ij5DZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjExMjgsMTk5MywxMTgxLDE5MDgiIHgtY29uZmlkZW5jZT0iNDQiPlhLPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTIzNywxOTkzLDEzNTgsMTkwOCIgeC1jb25maWRlbmNlPSIyNCI+Y2hhPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTM3OSwxOTkzLDE0MjksMTkwOCIgeC1jb25maWRlbmNlPSIwIj5kIzwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE0MzYsMjIxMSwyMDcwLDE4ODYiIHgtY29uZmlkZW5jZT0iMjEiPnJlczwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyNTEsMjQ1MCwzMTMsMjM2OCIgeC1jb25maWRlbmNlPSIzNiI+YTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjM1MCwyNDQ4LDgzNSwyMzAyIiB4LWNvbmZpZGVuY2U9IjQwIj5lcmU8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNTcyLDI2MDcsNzk5LDI0OTMiIHgtY29uZmlkZW5jZT0iMzkiPlBoYXM8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI4NDYsMjYzOCwxMTg4LDI0OTAiIHgtY29uZmlkZW5jZT0iNTgiPndpbGw8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMDg0LDI2NDIsMTE5MSwyNDgzIiB4LWNvbmZpZGVuY2U9IjI4Ij5oZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjgxLDI3NjIsNzc0LDI2MzMiIHgtY29uZmlkZW5jZT0iMTEiPm9mLXZpdGVzZWzigJ08L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI4MjIsMjcwNCw4ODMsMjYzMSIgeC1jb25maWRlbmNlPSI2NyI+bG88L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI5NDMsMjcwMSwxMDM0LDI2MzgiIHgtY29uZmlkZW5jZT0iNjkiPmZlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iOTczLDI3MDIsMjI1NCwyMjI4IiB4LWNvbmZpZGVuY2U9IjMwIj5hZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwOTUsMjY5OCwyMjU5LDI1NjgiIHgtY29uZmlkZW5jZT0iMzIiPnNlZXM8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMjYyLDI4NTgsMzIxLDI4MDQiIHgtY29uZmlkZW5jZT0iNTQiPkE8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIzNTUsMjg1OSw0NDMsMjgwNiIgeC1jb25maWRlbmNlPSI1OCI+ZmQ8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSI1MDUsMjg2Myw2ODEsMjc4NSIgeC1jb25maWRlbmNlPSI1NSI+Ym9ybjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc0NSwyODYzLDgzMCwyNzg1IiB4LWNvbmZpZGVuY2U9IjYxIj5hNDwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijk1MywyODIzLDExNTIsMjcyNyIgeC1jb25maWRlbmNlPSIzOSI+ZWY8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMjc4LDI4MjcsMTY1MSwyNzIzIiB4LWNvbmZpZGVuY2U9IjM3Ij5HaWwsPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTcyMCwyODI3LDE5NjMsMjcyMyIgeC1jb25maWRlbmNlPSIyNyI+ZXc8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyMDIzLDI4MDcsMjIyMCwyNzMxIiB4LWNvbmZpZGVuY2U9IjEwIj5lZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkU+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyOTgsMzEyNiw0OTQsMzAyNiIgeC1jb25maWRlbmNlPSIxNSI+QXZlPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNTQyLDMxNTIsNTcyLDMwNjIiIHgtY29uZmlkZW5jZT0iMCI+eTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjU5NCwzMTUyLDcyMiwzMDYyIiB4LWNvbmZpZGVuY2U9IjMiPmV0YTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijc2NCwzMTAzLDEwODcsMzA0NCIgeC1jb25maWRlbmNlPSIyNiI+ZWU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxMTg1LDMwODcsMTQyMywyOTgzIiB4LWNvbmZpZGVuY2U9IjM2Ij5wZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjE1NTksMzA4NSwxNzE2LDMwMTYiIHgtY29uZmlkZW5jZT0iMiI+Q2VzPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTczMywzMDg1LDE4MTQsMzAxNiIgeC1jb25maWRlbmNlPSI0MiI+cGVuPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTgzMSwzMDg1LDIwMDMsMzAxNiIgeC1jb25maWRlbmNlPSIxNCI+Y2VjZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjIwMjYsMzEwOSwyMTIyLDMwMjYiIHgtY29uZmlkZW5jZT0iMjIiPmk8L1dPUkQ+CiAgICAgICA8L0xJTkU+CiAgICAgIDwvUEFSQUdSQVBIPgogICAgIDwvUkVHSU9OPgogICAgPC9QQUdFQ09MVU1OPgogICAgPFBBR0VDT0xVTU4+CiAgICAgPFJFR0lPTj4KICAgICAgPFBBUkFHUkFQSD4KICAgICAgIDxMSU5FIHgtc3RydWN0PSJ0ZXh0ZmxvYXQiPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTY2LDMyNzUsMjQ2LDMyMTYiIHgtY29uZmlkZW5jZT0iMjUiPmFlLjwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkUgeC1zdHJ1Y3Q9ImNhcHRpb24iPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iMTcxLDM1NzksMjI2NSwzMDYyIiB4LWNvbmZpZGVuY2U9IjQ4Ij5heTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgICA8UEFHRUNPTFVNTj4KICAgICA8UkVHSU9OPgogICAgICA8UEFSQUdSQVBIPgogICAgICAgPExJTkUgeC1zdHJ1Y3Q9ImNhcHRpb24iPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNDYyLDM0MzcsNjI1LDMzNzgiIHgtY29uZmlkZW5jZT0iMzUiPmFpZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9IjcyNSwzNDQ3LDg2NywzMzgyIiB4LWNvbmZpZGVuY2U9IjMyIj5lZTwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg0MCwzNDA1LDg2OSwzMzg3IiB4LWNvbmZpZGVuY2U9IjE4Ij5+PC9XT1JEPgogICAgICAgPC9MSU5FPgogICAgICA8L1BBUkFHUkFQSD4KICAgICA8L1JFR0lPTj4KICAgIDwvUEFHRUNPTFVNTj4KICAgIDxQQUdFQ09MVU1OPgogICAgIDxSRUdJT04+CiAgICAgIDxQQVJBR1JBUEg+CiAgICAgICA8TElORSB4LXN0cnVjdD0iY2FwdGlvbiI+CiAgICAgICAgPFdPUkQgY29vcmRzPSIyMDQsMzU5MCw3ODgsMzM1NSIgeC1jb25maWRlbmNlPSIwIj5wZWVzPC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iNjgzLDM1MjAsODY3LDM0MjUiIHgtY29uZmlkZW5jZT0iMzciPmNvbjwvV09SRD4KICAgICAgICA8V09SRCBjb29yZHM9Ijg2MCwzNDk5LDg2MywzNDk4IiB4LWNvbmZpZGVuY2U9IjM1Ij46PC9XT1JEPgogICAgICAgIDxXT1JEIGNvb3Jkcz0iODQ3LDM2MTAsOTI0LDM0MjQiIHgtY29uZmlkZW5jZT0iMCI+wqU8L1dPUkQ+CiAgICAgICAgPFdPUkQgY29vcmRzPSIxNDE1LDM1MTIsMTc2NiwzMzYzIiB4LWNvbmZpZGVuY2U9IjI0Ij5hZTwvV09SRD4KICAgICAgIDwvTElORT4KICAgICAgPC9QQVJBR1JBUEg+CiAgICAgPC9SRUdJT04+CiAgICA8L1BBR0VDT0xVTU4+CiAgIDwvSElEREVOVEVYVD4KICA8L09CSkVDVD4KICA8TUFQIG5hbWU9IjM5OTk5MDY2NzY5OTY3XzAwMDIuZGp2dSIvPgogIDxPQkpFQ1QgZGF0YT0iZmlsZTovL2xvY2FsaG9zdC92YXIvdG1wL2F1dG9jbGVhbi9kZXJpdmUvbGV0dGVydG9kZWFyZ2FycjAwbWF5cy8zOTk5OTA2Njc2OTk2Ny5kanZ1IiB0eXBlPSJpbWFnZS94LmRqdnUiIHVzZW1hcD0iMzk5OTkwNjY3Njk5NjdfMDAwMy5kanZ1IiB3aWR0aD0iMjMyOCIgaGVpZ2h0PSIzNjQxIj4KICAgPFBBUkFNIG5hbWU9IlBBR0UiIHZhbHVlPSIzOTk5OTA2Njc2OTk2N18wMDAzLmRqdnUiLz4KICAgPFBBUkFNIG5hbWU9IkRQSSIgdmFsdWU9IjYwMCIvPgogICA8SElEREVOVEVYVC8+CiAgPC9PQkpFQ1Q+CiAgPE1BUCBuYW1lPSIzOTk5OTA2Njc2OTk2N18wMDAzLmRqdnUiLz4KIDwvQk9EWT4KPC9EalZ1WE1MPgo=
+  recorded_at: Thu, 14 Nov 2024 20:13:05 GMT
+recorded_with: VCR 6.2.0
