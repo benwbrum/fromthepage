@@ -134,6 +134,7 @@ class Collection < ApplicationRecord
       intro_block: self.intro_block,
       language: self.language,
       owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
       slug: self.slug,
       title: self.title
     }

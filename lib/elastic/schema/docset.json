@@ -1,0 +1,30 @@
+{
+	"mappings": {
+		"properties": {
+			"is_public": {
+				"type": "boolean"
+			},
+			"description": {
+				"type": "text"
+			},
+			"collection_id": {
+				"type": "integer"
+			},
+			"owner_user_id": {
+				"type": "integer"
+			},
+			"owner_display_name": {
+				"type": "text"
+			},
+			"language": {
+				"type": "keyword"
+			},
+			"slug": {
+				"type": "text"
+			},
+			"title": {
+				"type": "text"
+			}
+		}
+	}
+}

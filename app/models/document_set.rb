@@ -64,6 +64,22 @@ class DocumentSet < ApplicationRecord
     limit(sample_size).reorder(Arel.sql("RAND()"))
   end
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      is_public: self.is_public,
+      description: self.description,
+      collection_id: self.collection_id,
+      owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
+      language: self.language,
+      slug: self.slug,
+      title: self.title
+    }
+  end
+
+
+
   def show_to?(user)
     self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end

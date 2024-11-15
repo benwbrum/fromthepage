@@ -34,11 +34,13 @@ namespace :fromthepage do
     
     # Index schema
     collection_body = get_es_config(['schema', 'collection.json'])
+    docset_body = get_es_config(['schema', 'docset.json'])
     page_body = get_es_config(['schema', 'page.json'])
     user_body = get_es_config(['schema', 'user.json'])
     work_body = get_es_config(['schema', 'work.json'])
 
     client.indices.create(index: 'ftp_collection', body: collection_body)
+    client.indices.create(index: 'ftp_docset', body: docset_body)
     client.indices.create(index: 'ftp_page', body: page_body)
     client.indices.create(index: 'ftp_user', body: user_body)
     client.indices.create(index: 'ftp_work', body: work_body)
@@ -55,6 +57,7 @@ namespace :fromthepage do
     client.delete_script(id: 'multilingual_content')
 
     client.indices.delete(index: 'ftp_collection')
+    client.indices.delete(index: 'ftp_docset')
     client.indices.delete(index: 'ftp_page')
     client.indices.delete(index: 'ftp_user')
     client.indices.delete(index: 'ftp_work')
@@ -63,6 +66,7 @@ namespace :fromthepage do
   desc "Reindex everything into elasticsearch"
   task :es_reindex, [] => :environment do |t,args|
     ElasticUtil.reindex(Collection, 'ftp_collection');
+    ElasticUtil.reindex(DocumentSet, 'ftp_docset');
     ElasticUtil.reindex(Page, 'ftp_page');
     ElasticUtil.reindex(User, 'ftp_user');
     ElasticUtil.reindex(Work, 'ftp_work');
