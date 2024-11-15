@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Work::RefreshMetadata do
-  let(:owner) { User.find_by(login: OWNER) }
+  let!(:owner) { create(:unique_user, :owner) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
   let(:at_id) { 'http://example.com/manifest' }

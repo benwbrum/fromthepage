@@ -362,7 +362,7 @@ Fromthepage::Application.routes.draw do
     namespace :v1 do
       get 'bulk_export', to: 'bulk_export#index'
       get 'bulk_export/:collection_slug', to: 'bulk_export#index'
-      post 'bulk_export/:collection_slug', to: 'bulk_export#start'
+      post 'bulk_export/:collection_slug', to: 'bulk_export#start', as: 'bulk_export_start'
       get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
     end

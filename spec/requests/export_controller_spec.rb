@@ -5,7 +5,7 @@ describe ExportController do
     User.current_user = owner
   end
 
-  let(:owner) { User.first }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let(:source_text) do
