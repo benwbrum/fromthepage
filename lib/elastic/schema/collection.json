@@ -10,6 +10,9 @@
 			"owner_user_id": {
 				"type": "integer"
 			},
+			"owner_display_name": {
+				"type": "text"
+			},
 			"slug": {
 				"type": "text"
 			},
