@@ -157,7 +157,7 @@
           span.deed-short_content
             ==t('.user_wrote_note', user: user, note: text)
     small.legend
-      =link_to t('.show_more'), notes_list_path(collection_id: @collection.slug), class: 'button outline round'
+      =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     -cache @collection.most_recent_deed_created_at do

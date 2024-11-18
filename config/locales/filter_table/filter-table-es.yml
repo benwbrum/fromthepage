@@ -1,0 +1,7 @@
+---
+es:
+  filter_table:
+    entries: entradas
+    no_matching_records_found: No se encontraron registros coincidentes
+    search_placeholder: Buscar...
+    show: Espectáculo
