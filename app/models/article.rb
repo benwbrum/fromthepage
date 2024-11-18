@@ -35,11 +35,11 @@ class Article < ApplicationRecord
 
   has_and_belongs_to_many :categories, -> { distinct }
   belongs_to :collection, optional: true
-  has_many(:target_article_links, :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink')
+  has_many :target_article_links, foreign_key: 'target_article_id', class_name: 'ArticleArticleLink'
   scope :target_article_links, -> { include 'source_article' }
   scope :target_article_links, -> { order "articles.title ASC" }
 
-  has_many(:source_article_links, :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink')
+  has_many :source_article_links, foreign_key: 'source_article_id', class_name: 'ArticleArticleLink'
   has_many :page_article_links, dependent: :destroy
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
@@ -51,6 +51,12 @@ class Article < ApplicationRecord
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
+  # add a call back that logs a warning whenever an article is deleted
+  before_destroy :log_destroy
+
+  def log_destroy
+    logger.warn("ISSUE4269 Warning: Article #{self.id} #{self.title} in collection #{self.collection.title} is being destroyed.")
+  end
 
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")

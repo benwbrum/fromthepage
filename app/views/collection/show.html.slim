@@ -157,13 +157,13 @@
           span.deed-short_content
             ==t('.user_wrote_note', user: user, note: text)
     small.legend
-      =link_to t('.show_more'), notes_list_path(collection_id: @collection.slug), class: 'button outline round'
+      =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     -cache @collection.most_recent_deed_created_at do
       =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-=link_to(collection_new_mobile_user_path(@collection.id), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
+=link_to(collection_new_mobile_user_path(collection_id: @collection.slug), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""
 
 -content_for :javascript

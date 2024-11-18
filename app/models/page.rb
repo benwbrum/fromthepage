@@ -273,8 +273,7 @@ class Page < ApplicationRecord
           self.approval_delta = nil
         else
           self.approval_delta =
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f /
-              (old_transcription.size + new_transcription.size).to_f
+            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / (old_transcription.size + new_transcription.size).to_f
         end
       else # zero out deltas if the page is not complete
         self.approval_delta = nil
@@ -631,7 +630,7 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      uri = URI.parse(file_to_url(self.canonical_facsimile_url).gsub(" ","+"))
+      uri = URI.parse(URI.encode(file_to_url(self.canonical_facsimile_url)))
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
       host = raw_host.split(":")[0]

@@ -105,9 +105,9 @@ class User < ApplicationRecord
                           :class_name => 'Collection')
 
 
-  has_many :page_versions, -> { order 'created_on DESC' }
-  has_many :article_versions, -> { order 'created_on DESC' }
-  has_many :notes, -> { order 'created_at DESC' }
+  has_many :page_versions, -> { order(created_on: :desc) }
+  has_many :article_versions, -> { order(created_on: :desc) }
+  has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
 
   has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
@@ -135,12 +135,13 @@ class User < ApplicationRecord
 
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
+  validate :display_name_presence
 
   before_validation :update_display_name
 
   after_save :create_notifications
   after_create :set_default_footer_block
-  #before_destroy :clean_up_orphans
+  # before_destroy :clean_up_orphans
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
@@ -152,12 +153,21 @@ class User < ApplicationRecord
     end
   end
 
+  def display_name_presence
+    return unless validation_context == :registration
+    return unless new_record?
+    return unless owner
+
+    errors.add(:display_name, :blank) if self[:display_name].blank?
+  end
 
   def update_display_name
+    self.real_name = nil if self.real_name.blank?
+
     if self.owner
-      self.display_name = self.real_name
+      self[:display_name] = self.real_name
     else
-      self.display_name = login
+      self[:display_name] = self.login
     end
   end
 
@@ -289,9 +299,9 @@ class User < ApplicationRecord
 
   def display_name
     if self.guest
-      "Guest"
+      'Guest'
     else
-      self[:display_name] || self[:login]
+      self[:display_name].presence || self[:login]
     end
   end
 

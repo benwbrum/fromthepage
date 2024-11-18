@@ -94,7 +94,6 @@ en:
       del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
       del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
-      documentation: Documentation
       expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
       expan_label: Expansion
       fig_description: Indicates a figure or a horizontal line.
@@ -158,6 +157,9 @@ en:
       suggestions_transcription_conventions: Suggestions for your transcription conventions.
       transcription_conventions: Transcription conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+      works_with_custom_conventions:
+        one: "%{title} has custom transcription conventions"
+        other: "%{title} and %{count} others have custom transcription conventions"
     edit_look:
       alphabetize_works: List works alphabetically.
       alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.

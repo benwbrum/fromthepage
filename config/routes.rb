@@ -32,12 +32,8 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  scope 'notes', as: 'notes' do
-    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
-  end
-  resources :notes
-
-
+  resources :notes, except: [:show, :edit]
+  get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
@@ -76,6 +72,7 @@ Fromthepage::Application.routes.draw do
       get 'index', to: 'admin#tag_list'
       get ':tag_id', to: 'admin#show_tag', as: 'show'
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
+      post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
   end
 
@@ -119,7 +116,6 @@ Fromthepage::Application.routes.draw do
     scope 'metadata', as: 'metadata' do
       get ':id/example', to: 'metadata#example', as: :example
       get ':id/upload', to: 'metadata#upload', as: :upload
-      get 'csv_error', to: 'metadata#csv_error'
       post 'create', to: 'metadata#create'
       post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
@@ -157,16 +153,15 @@ Fromthepage::Application.routes.draw do
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'tooltip', to: 'article#tooltip'
-    get 'delete', to: 'article#delete'
+    delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     post 'combine_duplicate', to: 'article#combine_duplicate'
-    post 'article_category', :to => 'article#article_category'
+    post 'article_category', to: 'article#article_category'
   end
 
   scope 'export', as: 'export' do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
-    get 'list', to: 'export#list'
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'

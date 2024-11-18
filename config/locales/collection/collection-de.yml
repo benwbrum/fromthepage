@@ -94,7 +94,6 @@ de:
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde. <br><i>Empfohlen</i>
       del_label: Streichung
       description: FromThePage kann Auszeichnungen in Transkripten für TEI-XML oder HTML unterstützen. Wir empfehlen, nicht mehr als sechs Buttons auszuwählen, die im Transkriptionseditor angezeigt werden. Überlegen Sie, ob andere Systeme diese Art von Mark-up verwenden können; wenn nur plain text unterstützt wird, sollten Projekte die Buchdruck-Konventionen anstelle von Mark-up verwenden.
-      documentation: Dokumentation
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im orig-Attribut (Alternative Form des abbr-Tags).
       expan_label: Erweiterung
       fig_description: Kennzeichnet eine Abbildung oder eine horizontale Linie.
@@ -158,6 +157,9 @@ de:
       suggestions_transcription_conventions: Vorschläge für Ihre Transkriptionskonventionen.
       transcription_conventions: Transkriptionskonventionen
       transcription_conventions_description: Diese Anweisungen werden unter dem Transkriptionsformular für jede Seite angezeigt, die transkribiert oder indiziert wird.
+      works_with_custom_conventions:
+        one: "%{title} hat benutzerdefinierte Transkriptionskonventionen"
+        other: "%{title} und %{count} andere haben benutzerdefinierte Transkriptionskonventionen"
     edit_look:
       alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.

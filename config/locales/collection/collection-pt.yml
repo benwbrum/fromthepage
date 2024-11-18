@@ -94,7 +94,6 @@ pt:
       del_description: Marca o texto que foi removido por apagamento ou tachado. <br><i>Recomendado</i>
       del_label: Eliminação
       description: FromThePage pode suportar marcação em transcrições em formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
-      documentation: Documentação
       expan_description: Marca abreviações expandidas com formas originais no atributo orig. (Forma alternativa de tag abbr.)
       expan_label: Expansão
       fig_description: Indica uma figura ou uma linha horizontal.
@@ -158,6 +157,9 @@ pt:
       suggestions_transcription_conventions: Sugestões para as suas convenções de transcrição.
       transcription_conventions: Convenções de Transcrição
       transcription_conventions_description: Estas instruções serão exibidas no formulário de transcrição para cada página transcrita ou indexada.
+      works_with_custom_conventions:
+        one: "%{title} tem convenções de transcrição personalizadas"
+        other: "%{title} e %{count} outros têm convenções de transcrição personalizadas"
     edit_look:
       alphabetize_works: A exibição funciona em ordem alfabética e não na ordem do trabalho necessário.
       alphabetize_works_description: A exibição funciona em ordem alfabética e não em ordem de quantidade de trabalho restante.

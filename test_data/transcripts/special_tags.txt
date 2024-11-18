@@ -1,0 +1,42 @@
+Add tag is <add>for text insertions</add>
+
+Column break <cb/> to indicate a break between columns
+
+Date <date when="2020-12-09">December 9, 2020</date> to indicate a date, with an attribute of when
+
+Figure tag <figure>drawing or graph here</figure> to indicate a figure or illustration in the text
+
+Footnote <footnote marker="*">This is a footnote</footnote> contains the body of a footnote within the original document. This tag should be placed where the footnote marker appears in the text.
+
+Gap <gap>page is torn</gap> for missing text
+
+<head>Heading</head>
+for headings (similar to using ==wiki heading mark-up==)
+
+Stamp <stamp>stamp here</stamp> for stamps on envelops
+
+<table>
+  <row>
+    <cell>Cell in a table</cell>
+  </row>
+</table>
+
+<unclear>Unclear </unclear> for text that is difficult to read
+
+Strike <strike>through</strike> or <s>s</s> or <hi rend="str">str</hi> for struck through text
+
+Superscript <sup>sup</sup> or <hi rend="sup">hi rend=sup</hi> for superscript text
+
+<u>'U</u> or <hi rend="underline">underline</hi> for underlined text
+
+Expan <expan orig="original text">expanded text</expan> for expanding abbreviations, for example: <expan orig="qᵃtorsimes">quatorsiemes</expan>
+
+Reg <reg orig="original text">regularized text</reg> for regularizing text
+
+Abbr <abbr expan="expanded text">abbreviated text</abbr>
+
+<lb break="no"/>  a soft break tag.  In non-verbatim exports, combines the end of the line with the beginning of the next when a word is broken across the lines.
+
+Marginalia <marginalia>marginalia here</marginalia>  for noting marginalia
+
+Catchword <catchword>catchword</catchword> for catchwords
