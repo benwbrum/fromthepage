@@ -19,10 +19,10 @@ module Components::FiltersHelper
     render('shared/components/page_size_select', page_options: page_options, selected: selected)
   end
 
-  def fe_filter_search(key:, value: nil, classes: nil)
+  def fe_filter_search(key:, value: nil, classes: nil, placeholder: nil)
     classes = "dataTables_filter search #{classes}"
 
-    render('shared/components/filter_search', key: key, value: value, classes: classes)
+    render('shared/components/filter_search', key: key, value: value, classes: classes, placeholder: placeholder)
   end
 
   def fe_sortable_header(key:, sorting:, ordering:, classes: nil, &block)

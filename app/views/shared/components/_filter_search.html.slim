@@ -1,2 +1,2 @@
 div[class = classes]
-  =search_field_tag key, value, placeholder: t('filter_table.search_placeholder')
+  =search_field_tag key, value, placeholder: local_assigns[:placeholder] || t('filter_table.search_placeholder')

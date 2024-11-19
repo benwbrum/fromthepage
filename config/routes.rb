@@ -344,8 +344,7 @@ Fromthepage::Application.routes.draw do
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
-  get 'oldfindaproject', to: 'dashboard#landing_page', as: :old_landing_page
-  get 'findaproject', to: 'dashboard#new_landing_page', as: :landing_page
+  get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
