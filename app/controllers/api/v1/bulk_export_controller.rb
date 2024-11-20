@@ -38,20 +38,20 @@ module Api::V1
           bulk_export.collection = collection
           bulk_export.user = @api_user
           bulk_export.status = BulkExport::Status::NEW
-          bulk_export.plaintext_verbatim_page = !params[:plaintext_verbatim_page].blank?
-          bulk_export.plaintext_verbatim_work = !params[:plaintext_verbatim_work].blank?
-          bulk_export.plaintext_emended_page = !params[:plaintext_emended_page].blank?
-          bulk_export.plaintext_emended_work = !params[:plaintext_emended_work].blank?
-          bulk_export.plaintext_searchable_page = !params[:plaintext_searchable_page].blank?
-          bulk_export.plaintext_searchable_work = !params[:plaintext_searchable_work].blank?
-          bulk_export.tei_work = !params[:tei_work].blank?
-          bulk_export.html_page = !params[:html_page].blank?
-          bulk_export.html_work = !params[:html_work].blank?
-          bulk_export.subject_csv_collection = !params[:subject_csv_collection].blank?
-          bulk_export.subject_details_csv_collection = !params[:subject_details_csv_collection].blank?
-          bulk_export.table_csv_collection = !params[:table_csv_collection].blank?
-          bulk_export.table_csv_work = !params[:table_csv_work].blank?
-          bulk_export.notes_csv = !params[:notes_csv].blank?
+          bulk_export.plaintext_verbatim_page = params[:plaintext_verbatim_page].present?
+          bulk_export.plaintext_verbatim_work = params[:plaintext_verbatim_work].present?
+          bulk_export.plaintext_emended_page = params[:plaintext_emended_page].present?
+          bulk_export.plaintext_emended_work = params[:plaintext_emended_work].present?
+          bulk_export.plaintext_searchable_page = params[:plaintext_searchable_page].present?
+          bulk_export.plaintext_searchable_work = params[:plaintext_searchable_work].present?
+          bulk_export.tei_work = params[:tei_work].present?
+          bulk_export.html_page = params[:html_page].present?
+          bulk_export.html_work = params[:html_work].present?
+          bulk_export.subject_csv_collection = params[:subject_csv_collection].present?
+          bulk_export.subject_details_csv_collection = params[:subject_details_csv_collection].present?
+          bulk_export.table_csv_collection = params[:table_csv_collection].present?
+          bulk_export.table_csv_work = params[:table_csv_work].present?
+          bulk_export.notes_csv = params[:notes_csv].present?
           bulk_export.save
           bulk_export.submit_export_process
 
