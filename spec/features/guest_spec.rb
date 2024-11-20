@@ -135,11 +135,11 @@ describe 'guest user actions' do
     expect(page.current_path).to eq user_profile_path(@owner)
   end
 
-  it 'searches the landing page', :guest_enabled do
+  it 'searches the landing page', :guest_enabled, js: true do
     visit landing_page_path
     page.fill_in 'search', with: 'Import'
-    click_button('Search')
-    expect(page).not_to have_selector('.carousel')
+    page.find('#search').send_keys(:enter)
+    sleep(5)
     expect(page.find('.maincol')).to have_content @owner.display_name
     expect(page.find('.maincol')).to have_content @collections.second.title
     expect(page.find('.maincol')).not_to have_content @collections.first.title

@@ -6,13 +6,11 @@ pt:
       subject_tags: Tags de assunto
   dashboard:
     collaborator: Painel de Controle do Colaborador
-    new_landing_page:
+    landing_page:
       all_collections: Todas as coleções
       next_image: Próxima imagem
       previous_image: Imagem anterior
       recent_activity: Atividade recente
-      search: Procurar
-      search_for_collections: Pesquisar coleções
       search_for_collections_or_owners: Pesquise coleções ou proprietários
       transcribe_a_page: Transcrever uma página
     plain: Painel de Controle
