@@ -64,7 +64,20 @@ describe DashboardController do
       subject
 
       expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(landing_page_path)
+      expect(response).to redirect_to(collections_list_path)
+    end
+
+    context 'when collection count > 1000' do
+      before do
+        allow(Collection).to receive_message_chain(:all, :count).and_return(1001)
+      end
+
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(landing_page_path)
+      end
     end
   end
 

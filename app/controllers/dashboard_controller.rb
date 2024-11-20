@@ -29,7 +29,11 @@ class DashboardController < ApplicationController
   end
 
   def index
-    redirect_to landing_page_path
+    if Collection.all.count > 1000
+      redirect_to landing_page_path
+    else
+      redirect_to collections_list_path
+    end
   end
 
   def collections_list(private_only: false)
@@ -186,12 +190,13 @@ class DashboardController < ApplicationController
     if request.xhr?
       render partial: 'results'
     else
+      owner_user_ids = @org_owners.select(:id) + @individual_owners.select(:id)
       docsets = DocumentSet.carousel
                            .includes(:owner, { next_untranscribed_page: :work })
-                           .where(owner_user_id: @org_owners.select(:id) + @individual_owners.select(:id)).sample(5)
+                           .where(owner_user_id: owner_user_ids).sample(5)
       colls = Collection.carousel
                         .includes(:owner, { next_untranscribed_page: :work })
-                        .where(owner_user_id: @org_owners.select(:id) + @individual_owners.select(:id)).sample(5)
+                        .where(owner_user_id: owner_user_ids).sample(5)
       @collections = (docsets + colls).sample(8)
 
       @tag_map = Tag.featured_tags.group(:ai_text).count
