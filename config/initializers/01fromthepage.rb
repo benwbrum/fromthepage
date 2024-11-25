@@ -35,3 +35,7 @@ OPENAI_ACCESS_TOKEN=ENV['OPENAI_ACCESS_TOKEN']
 
 ENABLE_TRANSKRIBUS=true
 TRANSKRIBUS_ACCESS_TOKEN=ENV['TRANSKRIBUS_ACCESS_TOKEN']
+
+GCV_ENABLED = true
+GCV_CREDENTIAL_FILE='/home/benwbrum/dev/products/fromthepage/integration/gcv/fromthepage-e2932d0557ba.json'
+OCR_TRANSFORM_COMMAND='sudo docker run --rm -it -v "$PWD":/data ubma/ocr-fileformat ocr-transform alto2.0 hocr somefile.alto'
