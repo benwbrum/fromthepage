@@ -109,16 +109,14 @@ describe "collection settings js tasks", :order => :defined do
     message = accept_alert do
       page.click_link("Next page")
     end
-    sleep(3)
-    expect(message).to have_content("You have unsaved changes.")
+    expect(message).to have_content("You have unsaved changes.", wait: 3)
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
     #previous page arrow - make sure it also works with notes
     fill_in('Write a new note or ask a question...', with: "Test two")
     message = accept_alert do
       page.click_link("Previous page")
     end
-    sleep(3)
-    expect(message).to have_content("You have unsaved changes.")
+    expect(message).to have_content("You have unsaved changes.", wait: 3)
   end
 
   #note: these are hidden unless there is table data
