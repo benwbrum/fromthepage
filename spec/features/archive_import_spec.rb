@@ -23,7 +23,7 @@ describe 'IA import actions', order: :defined do
       click_link('Import From Archive.org')
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
-      click_button('Import Anyway') if page.has_button?('Import Anyway')
+      page.accept_confirm if page.has_button?('Import Anyway')
       expect(page).to have_content('Manage Archive.org Import')
       select @collection.title, from: 'collection_id'
       click_button('Publish Work')
@@ -42,7 +42,7 @@ describe 'IA import actions', order: :defined do
       click_link('Import From Archive.org')
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
-      click_button('Import Anyway') if page.has_button?('Import Anyway')
+      page.accept_confirm if page.has_button?('Import Anyway')
       expect(ia_work_count + 1).to eq IaWork.all.count
       expect(page).to have_content('Manage Archive.org Import')
       page.check('use_ocr')
