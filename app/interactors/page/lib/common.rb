@@ -7,6 +7,8 @@ module Page::Lib::Common
       raise StandardError, error_msg
     end
 
+    File.unlink @page.thumbnail_filename if File.exist?(@page.thumbnail_filename)
+
     filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
 
     dirname = File.dirname(filename)
