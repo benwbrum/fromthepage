@@ -625,7 +625,7 @@ class Page < ApplicationRecord
 
 
   def has_gcv_json?
-    File.exists?(alto_path)
+    File.exists?(gcv_json_path)
   end
 
   def gcv_json

@@ -35,22 +35,34 @@ module Google
         # Code to send the image to the GCV document processing API
         gcv_client = Google::Cloud::Vision.image_annotator
         # we want to send the image url, not the image itself
-#        image_url = @page.image_url_for_download 
-        image_url = 'https://fromthepage.com/images/uploaded/30154/page_0003.jpg'
+        image_url = @page.image_url_for_download 
         response = gcv_client.document_text_detection(image: image_url)
-        # process the response
-
         # save the response to the page
-        # pretty print the json TODO: remove this
+        # pretty print the json to get eround problems in ocr-transform
         @page.gcv_json=JSON.pretty_generate(JSON.parse(response.to_json))
 
         # now generate the ALTO XML from the response
         # this is a shell command that runs a docker container
         # that converts the GCV JSON to ALTO XML
         # the ALTO XML is then saved to the page
-        # hocr = `#{OCR_TRANSFORM_COMMAND} #{response.to_json}`
+        cmd = 'docker run --rm -i ubma/ocr-fileformat ocr-transform gcv hocr | docker run --rm -i ubma/ocr-fileformat ocr-transform hocr alto4.0'
+        # make a system call with cmd, piping the response to the command
 
+        stdout, stderr, status = Open3.capture3(cmd, stdin_data: @page.gcv_json)
+
+        if status.success?
+          @page.alto_xml = stdout
+        else
+          raise "Error executing ocr-transform: #{stderr}"
+        end
         
+      end
+
+
+      def self.plaintext_from_gcv_json(gcv_json)
+        # convert the GCV JSON string to plaintext
+        gcv = JSON.parse(gcv_json)['responses'][0]
+        plaintext = gcv['fullTextAnnotation']['text']
       end
     end
   end
