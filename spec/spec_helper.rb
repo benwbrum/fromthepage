@@ -118,10 +118,10 @@ end
 
 
 def fill_in_editor_field(text)
-  if page.has_field?('page_source_text') # we find page_source_text
-    fill_in('page_source_text', :with => text)
-  elsif page.has_field?('page_source_translation') # we find page_source_translation
-    fill_in('page_source_translation', :with => text)
+  if page.has_field?('page[source_text]') # we find page_source_text
+    fill_in('page[source_text]', with: text)
+  elsif page.has_field?('page[source_translation]') # we find page_source_translation
+    fill_in('page[source_translation]', with: text)
   else #codemirror
     script = "myCodeMirror.setValue(#{text.to_json});"
     page.execute_script(script)

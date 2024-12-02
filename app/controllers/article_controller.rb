@@ -23,11 +23,11 @@ class ArticleController < ApplicationController
   end
 
   def delete
-    result = Article::Destroy.call(
+    result = Article::Destroy.new(
       article: @article,
       user: current_user,
       collection: @collection
-    )
+    ).call
 
     if result.success?
       redirect_to collection_subjects_path(@collection.owner, @collection)
@@ -39,10 +39,10 @@ class ArticleController < ApplicationController
 
   def update
     if params[:save]
-      result = Article::Update.call(
+      result = Article::Update.new(
         article: @article,
         article_params: article_params
-      )
+      ).call
 
       if result.success?
         record_deed
@@ -75,10 +75,10 @@ class ArticleController < ApplicationController
   end
 
   def combine_duplicate
-    Article::Combine.call(
+    Article::Combine.new(
       article: @article,
       from_article_ids: params[:from_article_ids]
-    )
+    ).call
 
     flash[:notice] = t('.selected_subjects_combined', title: @article.title)
     redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
@@ -131,13 +131,17 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_source =
-      render_to_string(:partial => "graph.dot",
-                       :layout => false,
-                       :locals => { :article_links => article_links,
-                                    :link_total => link_total,
-                                    :link_max => link_max,
-                                    :min_rank => min_rank })
+    dot_source = render_to_string(
+      partial: 'graph',
+      layout: false,
+      locals: {
+        article_links: article_links,
+        link_total: link_total,
+        link_max: link_max,
+        min_rank: min_rank
+      },
+      formats: [:dot]
+    )
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|

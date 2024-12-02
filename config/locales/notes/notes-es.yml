@@ -21,13 +21,6 @@ es:
       confirm_delete_message: Confirma que deseas eliminar esta nota.
       delete: Eliminar
       edit: Editar
-      html:
-        cancel: Cancelar
-        confirm_delete_message: Confirma que deseas eliminar esta nota.
-        delete: Eliminar
-        edit: Editar
-        microphone: Micrófono
-        update: Actualizar
       microphone: Micrófono
       update: Actualizar
     notes:

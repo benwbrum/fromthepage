@@ -1,5 +1,5 @@
-class Article::Combine
-  include Interactor
+class Article::Combine < ApplicationInteractor
+
   include Article::Lib::Common
 
   def initialize(article:, from_article_ids:)
@@ -9,7 +9,7 @@ class Article::Combine
     super
   end
 
-  def call
+  def perform
     return if @from_article_ids.blank?
 
     from_articles = Article.where(id: @from_article_ids)

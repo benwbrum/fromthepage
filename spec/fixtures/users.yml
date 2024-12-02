@@ -13,7 +13,7 @@ user_2:
   id: 2
   login: eleanor
   display_name: eleanor
-  real_name: 
+  real_name:
   email: eleanor@test.com
   owner: false
   admin: false
@@ -24,7 +24,7 @@ user_3:
   id: 3
   login: harry
   display_name: harry
-  real_name: 
+  real_name:
   email: harry@test.com
   owner: false
   admin: false
@@ -41,22 +41,22 @@ user_4:
   admin: false
   activity_email: true
   account_type: Legacy
-  paid_date: <%= 1.month.from_now.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  paid_date: <%= 1.month.from_now.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_5:
   id: 5
   login: julia
   display_name: julia
-  real_name: 
+  real_name:
   email: julia@test.com
   owner: true
   admin: true
   activity_email: true
   account_type: Small Organization
-  paid_date: <%= 2.weeks.from_now.to_s :db %>
-  start_date: <%= 1.week.ago.to_s :db %>
+  paid_date: <%= 2.weeks.from_now.to_fs(:db) %>
+  start_date: <%= 1.week.ago.to_fs(:db) %>
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
 user_6:
@@ -74,69 +74,69 @@ user_7:
   id: 7
   login: brian
   display_name: Brian
-  real_name: 
+  real_name:
   email: brian@test.com
   owner: true
   admin: false
   activity_email: true
   account_type: Trial
-  paid_date: <%= 1.month.ago.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  paid_date: <%= 1.month.ago.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_8:
   id: 8
   login: wakanda
   display_name: Wakanda
-  real_name: 
+  real_name:
   email: wakanda@example.org
   owner: true
   admin: true
   activity_email: true
-  account_type: 
-  paid_date: <%= 1.month.ago.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  account_type:
+  paid_date: <%= 1.month.ago.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_9:
   id: 9
   login: shuri
   display_name: Shuri
-  real_name: 
+  real_name:
   email: shuri@example.org
   owner: false
   admin: false
   activity_email: true
-  account_type: 
-  paid_date: <%= 1.month.ago.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  account_type:
+  paid_date: <%= 1.month.ago.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_10:
   id: 10
   login: carlos
   display_name: Carlos
-  real_name: 
+  real_name:
   email: carlos@example.org
   owner: true
   admin: false
   activity_email: true
-  account_type: 
-  paid_date: <%= 1.month.ago.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  account_type:
+  paid_date: <%= 1.month.ago.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_11:
   id: 11
   login: jose
   display_name: Jose
-  real_name: 
+  real_name:
   email: jose@example.org
   owner: false
   admin: false
   activity_email: true
-  account_type: 
-  paid_date: <%= 1.month.ago.to_s :db %>
-  start_date: <%= 1.month.ago.to_s :db %>
+  account_type:
+  paid_date: <%= 1.month.ago.to_fs(:db) %>
+  start_date: <%= 1.month.ago.to_fs(:db) %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc

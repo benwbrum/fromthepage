@@ -23,10 +23,10 @@ describe Article::Combine do
   let(:from_article_ids) { [from_article.id] }
 
   let(:result) do
-    described_class.call(
+    described_class.new(
       article: to_article,
       from_article_ids: from_article_ids
-    )
+    ).call
   end
 
   it 'combines articles and updates source texts of related models' do

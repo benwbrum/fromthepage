@@ -54,11 +54,10 @@ class FacetsController < ApplicationController
   def update
     collection = Collection.find(params[:collection_id])
     errors = []
-
     collection.metadata_coverages.each do |m|
       metadata = params[:metadata][m[:key]]
       unless metadata.nil?
-        if !metadata['order'].blank?  
+        if metadata['order'].present?
           facet_label = metadata['label'].blank? ? m.key : metadata['label']
           if m.facet_config.label.nil?
             label_hash = {}
@@ -95,7 +94,10 @@ class FacetsController < ApplicationController
 
       redirect_to collection_facets_path(collection.owner, collection), notice: t('collection.facets.collection_facets_updated_successfully')
     else
-      render('collection/facets', :locals => { :@metadata_coverages => collection.metadata_coverages, :@errors => errors })
+      @metadata_coverages = collection.metadata_coverages
+      @errors = errors
+
+      render 'collection/facets'
     end
   end
 

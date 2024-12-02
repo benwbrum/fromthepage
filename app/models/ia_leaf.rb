@@ -42,8 +42,8 @@ class IaLeaf < ApplicationRecord
   end
 
   def refresh_cache
-    unless File.exists?(cache_file_path)
-      unless Dir.exists?(cache_dir_path)
+    unless File.exist?(cache_file_path)
+      unless Dir.exist?(cache_dir_path)
         Dir.mkdir(cache_dir_path)
       end
       # import the image

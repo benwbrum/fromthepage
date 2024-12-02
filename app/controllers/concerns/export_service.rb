@@ -48,7 +48,7 @@ module ExportService
     # render to a string
     rendered_markdown =
       ApplicationController.new.render_to_string(
-        template: '/export/facing_edition.html',
+        template: '/export/facing_edition',
         layout: false,
         assigns: {
           collection: work.collection,
@@ -58,7 +58,8 @@ module ExportService
           preserve_linebreaks: preserve_lb,
           include_metadata: include_metadata,
           include_contributors: include_contributors
-        }
+        },
+        formats: [:html]
       )
 
     # write the string to a temp directory
@@ -127,7 +128,7 @@ module ExportService
     path = 'work_metadata.csv'
     out.put_next_entry(path)
 
-    result = Work::Metadata::ExportCsv.call(collection: collection, works: collection.works)
+    result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
     out.write(result.csv_string)
   end
 

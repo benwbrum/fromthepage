@@ -150,7 +150,7 @@ describe Work::Metadata::ImportCsv do
   end
 
   let(:result) do
-    described_class.call(metadata_file: metadata_file, collection: collection.reload)
+    described_class.new(metadata_file: metadata_file, collection: collection.reload).call
   end
 
   it 'imports csv' do

@@ -21,13 +21,6 @@ fr:
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
       delete: Effacer
       edit: Éditer
-      html:
-        cancel: Annuler
-        confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
-        delete: Effacer
-        edit: Éditer
-        microphone: Microphone
-        update: Mise à jour
       microphone: Microphone
       update: Mise à jour
     notes:

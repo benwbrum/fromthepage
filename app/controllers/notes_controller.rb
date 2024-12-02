@@ -28,7 +28,7 @@ class NotesController < ApplicationController
     if @note.save
       record_deed
       render json: {
-        html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]),
+        html: render_to_string(partial: 'note', locals: { note: @note }, formats: [:html]),
         flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_created') },
                                 formats: [:html])
       }, status: :created

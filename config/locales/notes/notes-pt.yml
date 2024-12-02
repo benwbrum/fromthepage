@@ -21,13 +21,6 @@ pt:
       confirm_delete_message: Você tem certeza que deseja apagar esta nota?
       delete: Apagar
       edit: Editar
-      html:
-        cancel: Cancelar
-        confirm_delete_message: Você tem certeza que deseja apagar esta nota?
-        delete: Apagar
-        edit: Editar
-        microphone: Microfone
-        update: Atualizar
       microphone: Microfone
       update: Atualizar
     notes:
