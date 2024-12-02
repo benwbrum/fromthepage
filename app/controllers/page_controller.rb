@@ -31,7 +31,7 @@ class PageController < ApplicationController
 
     render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
   end
-  
+
   def delete
     @page.destroy
     flash[:notice] = t('.page_deleted')
@@ -92,8 +92,8 @@ class PageController < ApplicationController
     page = Page.find(params[:id])
     attributes = page_params.to_h.except("base_image")
     if page_params[:status].blank?
-      attributes['status'] = nil
-    end   
+      attributes['status'] = 'new'
+    end
     page.update_columns(attributes) # bypass page version callbacks
     flash[:notice] = t('.page_updated')
     page.work.work_statistic.recalculate if page.work.work_statistic

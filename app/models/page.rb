@@ -89,18 +89,22 @@ class Page < ApplicationRecord
 
   serialize :metadata, Hash
 
-  STATUS_VALUES = {
+  enum status: {
     new: 'new',
     blank: 'blank',
     incomplete: 'incomplete',
     indexed: 'indexed',
     needs_review: 'review',
-    transcribed: 'transcribed',
-    translated: 'translated'
-  }.freeze
+    transcribed: 'transcribed'
+  }, _prefix: :status
 
-  enum status: STATUS_VALUES, _prefix: :status
-  enum translation_status: STATUS_VALUES, _prefix: :translation_status
+  enum translation_status: {
+    new: 'new',
+    blank: 'blank',
+    indexed: 'indexed',
+    needs_review: 'review',
+    translated: 'translated'
+  }, _prefix: :translation_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }
@@ -116,17 +120,15 @@ class Page < ApplicationRecord
     TRANSLATION = 'translation'
   end
 
-  ALL_STATUSES = STATUS_VALUES.values
-  MAIN_STATUSES = ALL_STATUSES - [STATUS_VALUES[:translated]]
-  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_VALUES[:incomplete], STATUS_VALUES[:transcribed]]
   COMPLETED_STATUSES = [
-    STATUS_VALUES[:blank],
-    STATUS_VALUES[:indexed],
-    STATUS_VALUES[:transcribed],
-    STATUS_VALUES[:translated]
+    Page.statuses[:blank],
+    Page.statuses[:indexed],
+    Page.statuses[:transcribed],
+    Page.translation_statuses[:translated]
   ].freeze
-  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_VALUES[:needs_review]]
-  NEEDS_WORK_STATUSES = [STATUS_VALUES[:new], STATUS_VALUES[:incomplete]].freeze
+
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
+  NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
 
   # tested
   def collection
@@ -545,7 +547,7 @@ class Page < ApplicationRecord
     self.update_columns(source_text: remove_square_braces(text))
     @text_dirty = true
     process_source
-    self.status = STATUS_VALUES[:transcribed]
+    self.status = :transcribed
     self.save!
   end
 
@@ -553,13 +555,13 @@ class Page < ApplicationRecord
     self.update_columns(source_translation: remove_square_braces(text))
     @translation_dirty = true
     process_source
-    self.status = STATUS_VALUES[:translated]
+    self.status = :translated
     self.save!
   end
 
   def validate_blank_page
     unless self.status_blank?
-      self.status = STATUS_VALUES[:new] if self.source_text.blank?
+      self.status = :new if self.source_text.blank?
     end
   end
 
