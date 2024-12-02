@@ -52,6 +52,7 @@ de:
       reload_this_page_to: Laden Sie diese Seite neu, um die Liste zu aktualisieren.
       status: Status
       subject_csv_collection: Entitätsindex CSV (Sammlung)
+      subject_details_csv_collection: Betreffdetails CSV (Sammlung)
       table_csv_collection: Feld/Tabellen CSV (Sammlung)
       table_csv_work: Feld/Tabellen CSV (Werk)
       tei_work: TEX-XML (Werk)
@@ -154,7 +155,7 @@ de:
       import_form_message: In diesem Bereich können Sie Ihre Faksimiles nach FromThePage importieren. Wählen Sie eine Sammlung aus, in die importiert werden soll, und hängen Sie eine ZIP- oder PDF-Datei an, die Faksimiles enthält, die für Ihr Projekt verwendet werden sollen.
       page_image_guidelines: Richtlinien für Faksimiles
       select_a_collection: "- Sammlung auswählen -"
-      to_specify_metadata: Um Metadaten zusammen mit Bildern hochzuladen, fügen Sie jedem Ordner eine %{link}-Datei hinzu, die Felder für das Werk angibt.
+      to_specify_metadata: Um Metadaten anzugeben, können Sie nach dem Hochladen der Bilder eine Tabelle hochladen oder in jeden Ordner eine %{link}-Datei einfügen, die Felder für die Arbeit angibt.
       trial_accounts_are_limited: Testversionskonten sind auf 200 Seiten begrenzt. Bitte wenden Sie sich an support@fromthepage.com, um Ihren Kontotyp zu ändern.
       upload_file: Datei hochladen
       upload_pdf_or_zip_file: PDF- oder ZIP-Datei hochladen

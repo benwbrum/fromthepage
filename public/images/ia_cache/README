@@ -1,0 +1,2 @@
+This provides a cache for images hosted on the Internet Archive so that 
+Open Seadragon can serve them during iiif.archive.org's downtime.

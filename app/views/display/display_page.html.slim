@@ -23,11 +23,12 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns
-  .page-column.page-imagescan
-    =render :partial => '/shared/osd_div'
-
-  .page-column
+.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render :partial => '/shared/osd_div'
+  .splitter(id="splitter")
+  .page-column(id="rightColumn")
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
@@ -49,7 +50,7 @@
 
       -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
 
-      -if @page.status == Page::STATUS_BLANK
+      -if @page.status_blank?
         .centered
           .centered_content
             p.nodata_text==t('.this_page_is_blank')
@@ -64,7 +65,7 @@
                 -if current_user && current_user.can_transcribe?(@page.work)
                   -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
                   ==t('.please_help_this_page', help_link: help_link)
-                  ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
+                  ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status_blank?
                 -elsif !current_user && !@page.work.restrict_scribes
                   -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
                   ==t('.please_help_this_page', help_link: help_link)
@@ -79,3 +80,8 @@ h2.legend#notes =t('.page_notes')
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Display Page");
+
+-content_for :javascript
+  javascript:
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');

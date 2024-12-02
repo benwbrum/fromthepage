@@ -1,0 +1,72 @@
+table.datagrid.striped.dataTable.no-footer
+  thead
+    =fe_sortable_header(key: :title, sorting: @sorting, ordering: @ordering, classes: 'w80') do
+      =t('export.index.work_title')
+
+    =fe_sortable_header(key: :page_count, sorting: @sorting, ordering: @ordering) do
+      =t('export.index.pages')
+
+    -unless @collection.subjects_disabled
+      =fe_sortable_header(key: :indexed_count, sorting: @sorting, ordering: @ordering) do
+        =t('export.index.indexed')
+
+    =fe_sortable_header(key: :completed_count, sorting: @sorting, ordering: @ordering) do
+      =@header
+
+    =fe_sortable_header(key: :reviewed_count, sorting: @sorting, ordering: @ordering) do
+      =t('export.index.review')
+
+    th.w100 =t('export.index.progress')
+    th(colspan="6") =t('export.index.export_as')
+
+  tbody
+    -if @works.any?
+      -@works.each do |work|
+        tr
+          td.big =link_to work.title, display_read_work_path(work_id: work.id)
+          td.nowrap.fgfaded =t('export.index.n_pages', count: work.work_statistic.total_pages)
+          -unless @collection.subjects_disabled
+            td.nowrap.fgfaded.tocenter ="#{@work_stats_hash_map[work.id][:progress_annotated]}%"
+          td.nowrap.fgfaded.tocenter ="#{@work_stats_hash_map[work.id][:progress_completed]}%"
+          td.nowrap.fgfaded.tocenter ="#{@work_stats_hash_map[work.id][:progress_review]}%"
+          td
+            .progress
+              -unless @collection.subjects_disabled
+                span(style="width:#{@work_stats_hash_map[work.id][:progress_annotated]}%")
+                span(style="width:#{@work_stats_hash_map[work.id][:progress_completed] - @work_stats_hash_map[work.id][:progress_annotated]}%")
+                span(style="width:#{@work_stats_hash_map[work.id][:progress_review]}%")
+
+              -else
+                span(style="width:#{@work_stats_hash_map[work.id][:progress_completed]}%")
+                span(style="width:#{@work_stats_hash_map[work.id][:progress_review]}%")
+
+          td.nowrap
+            =link_to(export_show_path(work_id: work.id))
+              =svg_symbol '#icon-export', class: 'icon'
+              span= t('export.index.html')
+          td.nowrap
+            =link_to(export_work_plaintext_verbatim_path(work_id: work.id))
+              =svg_symbol '#icon-export', class: 'icon'
+              span =t('export.index.plain_text')
+          td.nowrap
+            =link_to(export_tei_path(work.slug))
+              =svg_symbol '#icon-export', class: 'icon'
+              span= t('export.index.tei')
+          td.nowrap
+            =link_to iiif_manifest_path(work.id)
+              =svg_symbol '#icon-export', class: 'icon'
+              span= t('export.index.iiif')
+          -unless work.table_cells.blank?
+            -if work.table_cells.count < 10000
+              td.nowrap
+                =link_to export_table_csv_path(work_id: work.id), class: 'btnCsvTblExport btnExport'
+                  =svg_symbol '#icon-export', class: 'icon'
+                  span =t('export.index.table_csv')
+          td.nowrap
+            =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('export.index.more_export_formats')
+              span =t('export.index.more')
+    -else
+      =fe_table_no_contents
+
+-unless params[:per_page] == '-1'
+  =render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'export', action: 'index' }

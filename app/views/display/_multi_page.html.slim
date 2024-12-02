@@ -2,7 +2,7 @@
   article.maincol
     -if @search_string.present?
       h2 =t('.search_for', search_string: @search_string)
-    
+
     =render 'pages_view'
 
     -if @review.nil?
@@ -32,15 +32,23 @@
         -if @total != @count
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.slug, needs_review: 'none'}, class: 'review-button'
         -elsif @collection.active?
-          =button_to t('.pages_need_transcription'), {action: "read_work", work_id: @work.slug, needs_review: 'transcription' }, class: 'review-button'
+          -if @work.pages.needs_transcription.any?
+            =button_to t('.pages_need_transcription'), { action: "read_work", work_id: @work.slug, needs_review: 'transcription' }, class: 'review-button'
           -if user_signed_in? && current_user.can_review?(@collection)
-            =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'review' }, class: 'review-button'
-          =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
+            -if @work.pages.review.any?
+              =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'review' }, class: 'review-button'
+          -if @work.pages.needs_index.any?
+            =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
+          -if @work.pages.incomplete.any?
+            =button_to t('.pages_need_completion'), {action: "read_work", work_id: @work.slug, needs_review: 'incomplete' }, class: 'review-button'
 
           -if @work.supports_translation
-            =button_to t('.pages_need_translation'), {action: "read_work", work_id: @work.slug, needs_review: 'translation' }, class: 'review-button'
-            =button_to t('.translations_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_review'}, class: 'review-button'
-            =button_to t('.translations_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_index'}, class: 'review-button'
+            -if @work.pages.needs_translation.any?
+              =button_to t('.pages_need_translation'), {action: "read_work", work_id: @work.slug, needs_review: 'translation' }, class: 'review-button'
+            -if @work.pages.translation_review.any?
+              =button_to t('.translations_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_review'}, class: 'review-button'
+            -if @work.pages.needs_translation_index.any?
+              =button_to t('.translations_need_indexing'), {action: "read_work", work_id: @work.slug, needs_review: 'translation_index'}, class: 'review-button'
           -if @collection.metadata_entry?
             =link_to t('.describe'), describe_collection_work_path(@collection.owner, @collection, @work.slug), class: 'button review-button'
 

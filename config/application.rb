@@ -45,8 +45,8 @@ module Fromthepage
         load override
       end
     end
-
   end
+
 
   #uncomment for development of SSO
   #Rails.application.config.action_controller.forgery_protection_origin_check=false

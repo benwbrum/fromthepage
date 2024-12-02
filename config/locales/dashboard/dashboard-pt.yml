@@ -52,6 +52,7 @@ pt:
       reload_this_page_to: Recarregue esta página para atualizar a lista.
       status: Status
       subject_csv_collection: Índice de assuntos CSV (coleção)
+      subject_details_csv_collection: Detalhes do assunto CSV (coleção)
       table_csv_collection: Campo/Tabela CSV (coleção)
       table_csv_work: Campo/Tabela CSV (obra)
       tei_work: TEX-XML (obra)
@@ -154,7 +155,7 @@ pt:
       import_form_message: Usando este formulário, você pode importar as suas imagens de página para FromThePage. Você deve selecionar uma coleção de destino para importar e anexar um arquivo ZIP ou PDF contendo imagens de página para o seu projeto.
       page_image_guidelines: Diretrizes de imagem da página
       select_a_collection: "- Selecione uma coleção -"
-      to_specify_metadata: Para indicar os meta-dados juntamente com as imagens, inclua um %{link} arquivo em cada pasta que indique os campos para a obra.
+      to_specify_metadata: Para especificar metadados você pode fazer upload de uma planilha após o upload das imagens ou pode incluir um arquivo %{link} em cada pasta especificando os campos para o trabalho.
       trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para fazer upgrade da sua conta.
       upload_file: Subir arquivo
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP

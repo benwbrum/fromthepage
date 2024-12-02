@@ -1,11 +1,10 @@
--user_name = user.display_name.presence || user.login
 section.user-profile
   .user-profile_image
-    =profile_picture(@user, 128)
+    =profile_picture(user, 128)
   .user-profile_details
     .headline
       h1.headline_title
-        =user_name
+        =user.display_name
       -if user == current_user
         .headline_aside
           =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
@@ -37,10 +36,10 @@ section.user-profile
 
 .columns
   article.maincol
-    -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
-      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+    -if collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
+      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: collections_and_document_sets, as: :cds
     -else
-      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: collections_and_document_sets, as: :cds
   aside.sidecol
 
 -content_for :javascript

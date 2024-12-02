@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
   include AddWorkHelper
+  include DashboardHelper
   include OwnerExporter
   PAGES_PER_SCREEN = 20
 
@@ -73,34 +74,33 @@ class DashboardController < ApplicationController
   end
 
   def your_hours
-    if params['start_date'].present? && params['end_date'].present?
-      @start_date_hours = Date.parse(params['start_date'])
-      @end_date_hours = Date.parse(params['end_date'])
-
-      if @start_date_hours > @end_date_hours
-        flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
-        redirect_to dashboard_your_hours_path
-      end
-    else
-      @start_date_hours = 7.days.ago.to_date
-      @end_date_hours = Date.today
+    load_user_hours_data
+    if @start_date_hours > @end_date_hours
+      flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
+      redirect_to dashboard_your_hours_path
     end
-    @user_collections = Collection.where(
-      owner_user_id: current_user.id,
-      created_on: @start_date_hours..@end_date_hours
-    )
   end
-  
+
   def download_hours_letter
-    load_user_data
+    load_user_hours_data
+    @time_duration=params[:time_duration]
     markdown_text = generate_markdown_text
-  
-    input_path = Rails.root.join('tmp', 'input.md').to_s
-    output_path = Rails.root.join('tmp', 'letter.pdf').to_s
-  
-    generate_pdf(input_path, output_path, markdown_text)
-  
-    send_generated_pdf(output_path)
+
+    # write the string to a temp directory
+    temp_dir = File.join(Rails.root, 'public', 'printable')
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "letter_#{time_stub}"
+    md_file = File.join(temp_dir, "#{file_stub}.md")
+    output_file = File.join(temp_dir, "#{file_stub}.pdf")
+
+    generate_pdf(md_file, output_file, markdown_text)
+
+    send_generated_pdf(output_file)
   end
 
   # Owner Dashboard - list of works
@@ -178,15 +178,10 @@ class DashboardController < ApplicationController
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
 
-  def browse_tag
-    @tag = Tag.where(ai_text: params[:ai_text]).first
-    @collections = @tag.collections.unrestricted.not_near_complete.has_intro_block.has_picture
-  end
-
   def landing_page
     if params[:search]
       # Get matching Collections and Docsets
-      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+      @search_results = search_results(params[:search])
 
       # Get user_ids from the resulting search
       search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
@@ -205,18 +200,24 @@ class DashboardController < ApplicationController
   end
 
   def new_landing_page
+    @search_results = search_results(params[:search])
+
     # Get random Collections and DocSets from paying users
-    @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
+    @owners = User.findaproject_owners.order(:display_name).joins(:collections)
+                  .left_outer_joins(:document_sets).includes(:collections)
 
     # Sampled Randomly down to 8 items for Carousel
     docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
     @collections = (docsets + colls).sample(8)
 
-    @tag_map = Tag.where(canonical: true).joins(:collections).where("collections.restricted" ==false).group(:ai_text).count
-
+    @tag_map = Tag.featured_tags.group(:ai_text).count
   end
 
+  def browse_tag
+    @tag = Tag.find_by(ai_text: params[:ai_text])
+    @collections = @tag.collections.unrestricted.has_intro_block.has_picture.not_empty
+  end
 
   def collaborator_time_export
     start_date = params[:start_date]
@@ -280,54 +281,69 @@ class DashboardController < ApplicationController
     params.require(:work).permit(:title, :description, :collection_id)
   end
 
-  def load_user_data
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
-    @time_duration = params[:time_duration]
-    @user_collections = Collection.where(
-      owner_user_id: current_user.id,
-      created_on: @start_date..@end_date
-    )
+  def load_user_hours_data
+    if params['start_date'].present? && params['end_date'].present?
+      @start_date_hours = Date.parse(params['start_date'])
+      @end_date_hours = Date.parse(params['end_date'])
+    else
+      @start_date_hours = 7.days.ago.to_date
+      @end_date_hours = Date.today
+    end
+    @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
+
+    raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
+    @collection_id_to_page_count = raw.select{|collection_id, page_id| !page_id.nil? }.map{|collection_id, page_id| collection_id}.tally
+    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
   end
-  
+
   def generate_markdown_text
     <<~MARKDOWN
-      ![](app/assets/images/logo.png){width=300px style='display: block; margin-left: 300px auto;'}  
+      ![](app/assets/images/logo.png){width=300px style='display: block; margin-left: 300px auto;'}
       &nbsp; &nbsp;
-      \n#{generated_format_date(Time.now.to_date.to_s)}\n
+      \n#{generated_format_date(Time.now.to_date)}\n
       &nbsp; &nbsp;
       \n#{I18n.t('dashboard.hours_letter.to_whom_it_may_concern')}\n
-      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date), end_date: generated_format_date(@end_date))}\n
+      #{I18n.t('dashboard.hours_letter.certification_text', user_name: current_user.real_name, time_duration: @time_duration, start_date: generated_format_date(@start_date_hours), end_date: generated_format_date(@end_date_hours))}\n
       #{I18n.t('dashboard.hours_letter.worked_on_collections', user_name: current_user.real_name)}\n
       #{I18n.t('dashboard.hours_letter.institutions_header')}
       #{I18n.t('dashboard.hours_letter.institutions_separator')}
       #{generate_collection_rows(@user_collections)}
       #{I18n.t('dashboard.hours_letter.volunteer_text', user_display_name: current_user.display_name)}\n
+      |
       #{I18n.t('dashboard.hours_letter.regards_text')}\n
-      | 
+      |
       | Sara Brumfield
       | Partner, FromThePage
     MARKDOWN
   end
-  
+
   def generate_collection_rows(user_collections)
     user_collections.map do |collection|
-      "| #{collection.owner.display_name} | #{collection.title} | #{collection.pages.count} |"
+      "| #{collection.owner.display_name} | #{collection.title} | #{@collection_id_to_page_count[collection.id]} |"
     end.join("\n")
   end
 
   def generated_format_date(date)
-    date = Date.parse(date)
     formatted_date = date.strftime("%B %d, %Y")
   end
-  
+
   def generate_pdf(input_path, output_path, markdown_text)
     File.write(input_path, markdown_text)
-  
+
     system("pandoc #{input_path} -s --pdf-engine=xelatex -o #{output_path}")
   end
-  
+
   def send_generated_pdf(output_path)
-    send_file(output_path, filename: 'letter.pdf', type: 'application/pdf')
+    # spew the output to the browser
+    send_data(File.read(output_path),
+      filename: File.basename("letter.pdf"),
+      :content_type => "application/pdf")
+    cookies['download_finished'] = 'true'
+  end
+
+  def search_results(search_key)
+    return nil if search_key.nil?
+
+    Collection.search(search_key).unrestricted + DocumentSet.search(search_key).unrestricted
   end
 end

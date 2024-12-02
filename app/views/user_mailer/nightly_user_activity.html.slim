@@ -15,7 +15,7 @@ p =t('.message')
   p
   h3(style="margin-bottom:0") =t('.new_notes')
   -@user_activity.active_note_pages.each do |page|
-    =link_to t('user_mailer.click_here'), collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)
+    =link_to t('user_mailer.click_here'), collection_display_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)
     =t('.html.to_view_note', page: page.title, collection: page.work.access_object(@user_activity.user).title, work: page.work.title)
     p
 

@@ -38,8 +38,7 @@ es:
       title: Título
       uri: URI
     graph:
-      dot:
-        title: Temas mencionados frecuentemente con %{subject}
+      title: Temas mencionados frecuentemente con %{subject}
     list:
       actions: Comportamiento
       add_child_category: Agregar categoría secundaria

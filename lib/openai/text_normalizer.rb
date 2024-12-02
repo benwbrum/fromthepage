@@ -9,7 +9,7 @@ module TextNormalizer
           {role: "system", content: "You are a scholarly editor who is preparing historical documents for publication."},
           {role: "user", content: prompt}
         ],
-        max_tokens: 16000,
+        max_tokens: 10000,
         n: 1,
         temperature: 0.0,
         top_p: 1.0,
@@ -20,6 +20,7 @@ module TextNormalizer
     print prompt
     print "\n"
     if response['choices'].nil? || response['choices'].empty? || response['choices'].first['message'].nil?
+      print "\nERROR  Response from OpenAI was not actionable:\n"
       pp response
       return []
     end

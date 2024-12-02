@@ -12,10 +12,20 @@ class WorkController < ApplicationController
                                    :set_work_author,
                                    :set_work_transcription_conventions]
   # tested
-  before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
+  before_action :authorized?, only: [
+    :edit,
+    :pages_tab,
+    :delete,
+    :new,
+    :create,
+    :edit_scribes,
+    :add_scribe,
+    :remove_scribe,
+    :search_scribes
+  ]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :configurable_printout]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
   def authorized?
     if !user_signed_in? || !current_user.owner
@@ -25,7 +35,10 @@ class WorkController < ApplicationController
     end
   end
 
-
+  def metadata_overview_monitor
+    @is_monitor_view = true
+    render :template => "transcribe/monitor_view"
+  end
 
   def configurable_printout
     @bulk_export = BulkExport.new
@@ -39,6 +52,7 @@ class WorkController < ApplicationController
 
 
   def describe
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
@@ -49,8 +63,9 @@ class WorkController < ApplicationController
   def save_description
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
 
-    if params['save_to_incomplete'] && !needs_review_checkbox_checked 
+    if params['save_to_incomplete'] && !needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::INCOMPLETE
     elsif params['save_to_needs_review'] || needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
@@ -101,8 +116,6 @@ class WorkController < ApplicationController
     # again, both may be blank here
   end
 
-
-
   def delete
     @work.destroy
     redirect_to dashboard_owner_path
@@ -114,30 +127,46 @@ class WorkController < ApplicationController
   end
 
   def edit
-    @scribes = @work.scribes
-    @nonscribes = User.all - @scribes
     @collections = current_user.collections
-    #set subjects to true if there are any articles/page_article_links
+    # set subjects to true if there are any articles/page_article_links
     @subjects = !@work.articles.blank?
+    @scribes = @work.scribes
+  end
+
+  def edit_scribes
+    @scribes = @work.scribes
+    @nonscribes = User.where.not(id: @scribes.pluck(:id)).limit(100)
+  end
+
+  def search_scribes
+    query = "%#{params[:term].to_s.downcase}%"
+    excluded_ids = @work.scribes.pluck(:id) + [@work.owner.id]
+    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                .where.not(id: excluded_ids)
+                .limit(100)
+
+    render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
   end
 
   def add_scribe
-    @work.scribes << @user
-    if @user.notification.add_as_collaborator
-      if SMTP_ENABLED
-        begin
-          UserMailer.work_collaborator(@user, @work).deliver!
-        rescue StandardError => e
-          print "SMTP Failed: Exception: #{e.message}"
-        end
+    scribe = User.find_by(id: params[:scribe_id])
+    @work.scribes << scribe
+    if scribe.notification.add_as_collaborator && SMTP_ENABLED
+      begin
+        UserMailer.work_collaborator(scribe, @work).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
       end
     end
-    redirect_to :action => 'edit', :work_id => @work.id
+
+    redirect_to work_edit_scribes_path(@collection, @work)
   end
 
   def remove_scribe
-    @work.scribes.delete(@user)
-    redirect_to :action => 'edit', :work_id => @work.id
+    scribe = User.find_by(id: params[:scribe_id])
+    @work.scribes.delete(scribe)
+
+    redirect_to work_edit_scribes_path(@collection, @work)
   end
 
   def update_work
@@ -182,7 +211,7 @@ class WorkController < ApplicationController
     if work_params[:slug].blank?
       @work.slug = @work.title.parameterize
     end
-    
+
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
@@ -246,6 +275,12 @@ class WorkController < ApplicationController
     redirect_back fallback_location: @work
   end
 
+  def document_sets_select
+    document_sets = current_user.document_sets.where(collection_id: params[:collection_id])
+
+    render partial: 'document_sets_select', locals: { document_sets: document_sets }
+  end
+
   protected
 
   def record_deed(work, deed_type, user)
@@ -262,23 +297,23 @@ class WorkController < ApplicationController
 
   def work_params
     params.require(:work).permit(
-      :title, 
-      :description, 
-      :collection_id, 
-      :supports_translation, 
-      :slug, 
-      :ocr_correction, 
+      :title,
+      :description,
+      :collection_id,
+      :supports_translation,
+      :slug,
+      :ocr_correction,
       :transcription_conventions,
-      :author, 
+      :author,
       :recipient,
-      :location_of_composition, 
-      :identifier, 
-      :pages_are_meaningful, 
-      :physical_description, 
-      :document_history, 
-      :permission_description, 
+      :location_of_composition,
+      :identifier,
+      :pages_are_meaningful,
+      :physical_description,
+      :document_history,
+      :permission_description,
       :translation_instructions,
-      :scribes_can_edit_titles, 
+      :scribes_can_edit_titles,
       :restrict_scribes,
       :picture,
       :genre,
@@ -287,6 +322,9 @@ class WorkController < ApplicationController
       :source_box_folder,
       :in_scope,
       :editorial_notes,
-      :document_date)
+      :document_date,
+      document_set_ids: []
+    )
   end
+
 end

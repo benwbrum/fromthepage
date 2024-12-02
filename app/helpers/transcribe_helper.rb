@@ -1,4 +1,28 @@
 module TranscribeHelper
+  # Get the current tab's path when moving from page to page
+  def get_active_tab_path(tab, owner, collection, work, item)
+    case tab
+    when 'display'
+      collection_display_page_path(owner, collection, work, item)
+    when 'transcribe'
+      collection_transcribe_page_path(owner, collection, work, item)
+    when 'transcribe-translate'
+      collection_translate_page_path(owner, collection, work, item)
+    when 'transcribe-help'
+      collection_help_page_path(owner, collection, work, item)
+    when 'page_version'
+      collection_page_version_path(owner, collection, work, item)
+    when 'page'
+      collection_edit_page_path(owner, collection, work, item)
+    else
+      collection_transcribe_page_path(owner, collection, work, item)
+    end
+  end
+
+  def canonical_subjects_for_autocomplete
+    @collection.articles.pluck(:title)
+  end
+
   def excerpt_subject(page, title, options = {})
     options[:text_type] ||= 'transcription'
     options[:radius] ||= 3
@@ -66,10 +90,12 @@ module TranscribeHelper
           service_id = page.sc_canvas.sc_service_id.sub(/\/$/,'')
           ["#{service_id}/info.json"]
         else
-          [{type: 'image', url: page.sc_canvas.sc_resource_id}.to_json]
+          [{type: 'image', url: page.sc_canvas.sc_resource_id}]
         end
       elsif page.ia_leaf
-        [page.ia_leaf.iiif_image_info_url]
+        # [page.ia_leaf.iiif_image_info_url]
+        page.ia_leaf.refresh_cache
+        [{type: 'image', url: file_to_url(page.ia_leaf.cache_file_path)}.to_json]
       elsif browser.platform.ios? && browser.webkit?
         ["#{url_for(:root)}image-service/#{page.id}/info.json"]
       else

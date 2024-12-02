@@ -11,16 +11,16 @@ describe "Devise" do
   let(:old_user){ create(:user) }
   let(:old_path){ user_profile_path(old_user) }
 
-  context "registration" do 
+  context "registration" do
 
     let(:user)  { build(:user) }
     let(:owner) { build(:owner) }
     let(:collection) { create(:collection) }
     let(:coll_path){ collection_path(collection.owner, collection) }
 
-    it "creates a new user account" do 
+    it "creates a new user account" do
       visit new_user_registration_path
-      page.fill_in 'User Name', with: user.login
+      page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
@@ -28,9 +28,9 @@ describe "Devise" do
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{user.display_name}")
     end
-    it "redirects user to dashboard/watchlist after signup" do 
+    it "redirects user to dashboard/watchlist after signup" do
       visit new_user_registration_path
-      page.fill_in 'User Name', with: user.login
+      page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
@@ -38,12 +38,12 @@ describe "Devise" do
       click_button('Create Account')
       expect(page.current_path).to eq dashboard_watchlist_path
     end
-    it "redirects user to previous path (if present) after signup" do 
+    it "redirects user to previous path (if present) after signup" do
       # Previous page
       visit old_path
       click_link('Sign Up')
-#      visit new_user_registration_path
-      page.fill_in 'User Name', with: user.login
+      # visit new_user_registration_path
+      page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
@@ -54,18 +54,18 @@ describe "Devise" do
     it "logs a `joined` deed if landing page was a collection" do
       # This is the Landing Page
       visit coll_path
-      # Complete user registration 
+      # Complete user registration
       visit new_user_registration_path
-      page.fill_in 'User Name', with: user.login
+      page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
       page.fill_in 'Real Name', with: user.display_name
       click_button('Create Account')
-      
+
       expect(page.current_path).to eq coll_path
       expect(page).to have_content("#{user.display_name} joined #{collection.title}")
-      
+
       visit dashboard_watchlist_path
       expect(page).to have_content("#{user.display_name} joined #{collection.title}")
     end
@@ -73,7 +73,7 @@ describe "Devise" do
 
   context "user login" do
     let(:user){ create(:user) }
-    it "signs in a user" do 
+    it "signs in a user" do
       visit new_user_session_path
       page.fill_in 'Login', with: user.login
       page.fill_in 'Password', with: user.password
@@ -99,7 +99,7 @@ describe "Devise" do
   end
   context "owner login" do
     let(:owner){ create(:owner) }
-    it "signs in an owner" do 
+    it "signs in an owner" do
       visit new_user_session_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Password', with: owner.password
@@ -115,7 +115,15 @@ describe "Devise" do
       click_button('Sign In')
       expect(page.current_path).to eq old_path
     end
-    it "redirects owner back to user dashboard/watchlist if original path was nil" do
+    it "redirects owner back to user dashboard/watchlist if original path was nil and user has no collection" do
+      visit new_user_session_path
+      page.fill_in 'Login', with: owner.login
+      page.fill_in 'Password', with: owner.password
+      click_button('Sign In')
+      expect(page.current_path).to eq dashboard_startproject_path
+    end
+    it "redirects owner back to user dashboard/watchlist if original path was nil and user has collection" do
+      _collection = create(:collection, owner_user_id: owner.id)
       visit new_user_session_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Password', with: owner.password
@@ -125,7 +133,7 @@ describe "Devise" do
   end
   context "admin login" do
     let(:admin){ create(:admin) }
-    it "signs in an admin" do 
+    it "signs in an admin" do
       visit new_user_session_path
       page.fill_in 'Login', with: admin.login
       page.fill_in 'Password', with: admin.password

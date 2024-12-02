@@ -3,9 +3,9 @@
 section.signon
   h1= t('devise.sign_up')
 
-  p Please fill in the following information to create a new FromThePage account. 
+  p Please fill in the following information to create a new FromThePage account.
   p By registering with this website you certify that you are at least 13 years of age or have parental permission.
-  
+
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
@@ -19,6 +19,7 @@ section.signon
     .signon_field
       =f.label :password, t('devise.password')
       =f.password_field :password, autocomplete: 'off'
+      small#password-validation style='color: red;'
     .signon_field
       =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'

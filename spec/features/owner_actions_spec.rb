@@ -75,6 +75,8 @@ describe "owner actions", :order => :defined do
     expect(page.find('.maincol')).to have_content("#{test_collection.title}")
     page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
@@ -87,7 +89,7 @@ describe "owner actions", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, '#document-upload').click
-    page.select 'Add New Collection', from: 'document_upload_collection_id' 
+    page.select 'Add New Collection', from: 'document_upload_collection_id'
 
     within(page.find('.litebox-embed')) do
       expect(page).to have_content('Create New Collection')
@@ -236,6 +238,7 @@ describe "owner actions", :order => :defined do
 
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
+    page.click_link('Show All')
     page.find('.collection-works').find('a', text: @title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
@@ -260,14 +263,13 @@ describe "owner actions", :order => :defined do
     end
   end
 
-  it "changes the collection's default language" do
+  it "changes the collection's default language", js: true do
     visit edit_collection_path(@owner, @rtl_collection)
-    expect(page).to have_selector('#collection_text_language')
-    select('Arabic', from: 'collection_text_language')
-    click_button 'Save Changes'
-    #note: this is just to make sure it's on the settings page again
-    expect(page).to have_content('Collection Owners')
-    expect(Collection.find(3).text_language).to eq 'ara'
+    page.find('.side-tabs').click_link("Task Configuration")
+    first('.select2-container', minimum: 1).click
+    find('.select2-dropdown input.select2-search__field').send_keys("Arabic", :enter)
+    expect(page).to have_content('Transcription type')
+    expect(@rtl_collection.reload.text_language).to eq 'ara'
   end
 
   it "checks rtl transcription page views" do
@@ -324,6 +326,7 @@ describe "owner actions", :order => :defined do
       click_link "Letters from America", match: :first
       expect(page).to have_content("Settings")
       click_link "Settings"
+      click_link "Privacy & Access"
       page.click_link 'Edit Owners'
       select("shuri - shuri@example.org", from: "user_id").select_option
       within(".user-select-form") do

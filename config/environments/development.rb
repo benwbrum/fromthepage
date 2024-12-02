@@ -38,8 +38,12 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options = config.action_mailer.default_url_options =  { host: 'localhost:3000' }
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.delivery_method = :postmark
+
+  config.action_mailer.postmark_settings = {
+    api_token: ''
+  }
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -76,6 +80,7 @@ Rails.application.configure do
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 

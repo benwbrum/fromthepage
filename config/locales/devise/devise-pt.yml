@@ -5,6 +5,19 @@ pt:
     create_account: Criar uma conta
     display_name: Nome em Exibição
     email_address: Endereço de email
+    errors:
+      keys:
+        display_name: Nome em Exibição
+        email: Email
+        login: Nome de usuário
+        password: Senha
+        password_confirmation: Confirmação da senha
+      messages:
+        login:
+          exclusion: não é válido
+          format: não pode conter colchetes angulares (<, >)
+        reset_password:
+          invalid_token: O link de redefinição de senha é inválido ou expirou. Solicite outra redefinição de senha para continuar.
     failure:
       already_authenticated: Você já entrou na sua conta.
       inactive: A sua conta ainda não foi ativada.
@@ -39,6 +52,7 @@ pt:
       send_paranoid_instructions: Se o seu endereço de e-mail existe em nossa base de dados, você receberá um link de recuperação de senha no seu e-mail em poucos minutos.
       updated: A sua senha foi alterada com sucesso. Você já entrou na sua conta.
       updated_not_active: A sua senha foi alterada com sucesso.
+      validation: O comprimento mínimo da senha é de 6 caracteres
     real_name: Nome real
     real_name_message: Os projetos podem usar isso ao dar crédito a você. Deixe em branco se não quiser ser creditado.
     receive_activity_emails: Receba e-mails de atividades
@@ -50,6 +64,7 @@ pt:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Igreja de Jesus Cristo dos Santos dos Últimos Dias
         sign_in_with_institution: Faça login com sua instituição
+        utah_id: UtahID
       destroyed: Tchau! A sua conta foi cancelada com sucesso. Esperamos voltar a ver você em breve.
       edit:
         confirm_delete_account: Tem certeza de que deseja excluir sua conta? Depois de excluir a conta, você não poderá recuperá-la!
@@ -102,6 +117,7 @@ pt:
     sign_up: Inscrever-se
     user_name: Nome de usuário
     user_name_message: Você usará esse nome para fazer login. Ele será exibido publicamente.
+    we_never_sell: Levamos suas informações pessoais a sério e respeitamos sua privacidade. Nunca vendemos seus dados a ninguém. Confira nossa Política de Privacidade para mais informações.
   errors:
     messages:
       expired: expirou, por favor solicite um novo

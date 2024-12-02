@@ -1,8 +1,15 @@
 ---
 fr:
+  shared:
+    insert_table_modal:
+      cancel: Annuler
+      columns: Colonnes
+      ok: D'accord
+      rows: Lignes
   transcribe:
     assign_categories:
       assign_categories: Attribuer des catégories
+      cancel: Annuler
       continue: Continuer
       manage_categories: Gérer les catégories
       options: options

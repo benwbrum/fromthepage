@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 FIELD_XML = <<EOF
-<?xml version='1.0' encoding='UTF-8'?>    
+<?xml version='1.0' encoding='UTF-8'?>
       <page>
         <p><span class='field__label'>Last Name: </span>Mitchell</p><p><span class='field__label'>First Name: </span>John</p><p><span class='field__label'>Middle Name: </span></p><p><span class='field__label'>Suffix or Title: </span></p><p><span class='field__label'>Home Town: </span>Pinson</p><p><span class='field__label'>Home County: </span>Jefferson</p><p><span class='field__label'>Home State: </span>Alabama</p><p><span class='field__label'>Race: </span>Caucasian</p><p><span class='field__label'>Gender: </span></p><p><span class='field__label'>Branch: </span>Army</p><p><span class='field__label'>Service Number: </span>14208593</p><p><span class='field__label'>See Also: </span></p><p><span class='field__label'>Notes: </span></p><p/>
       </page>
@@ -9,7 +9,7 @@ EOF
 
 
 describe "editor actions" , :order => :defined do
-  context "Factory" do 
+  context "Factory" do
     before :all do
       @user = User.find_by(login: USER)
     end
@@ -40,12 +40,12 @@ describe "editor actions" , :order => :defined do
       fill_in_editor_field("Content")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_INCOMPLETE)
+      expect(Page.find(page_fact.id).status_incomplete?).to be_truthy
 
       fill_in_editor_field("")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(nil)
+      expect(Page.find(page_fact.id).status_new?).to be_truthy
     end
 
     it "creates correct verbatim plaintext" do
@@ -69,7 +69,7 @@ describe "editor actions" , :order => :defined do
       expect(page_fact.search_text).to match("Mitchell First")
     end
   end
-  
+
   context "Legacy Group" do
     before :all do
       @owner = User.find_by(login: OWNER)
@@ -99,42 +99,44 @@ describe "editor actions" , :order => :defined do
       expect(page.find('.tabs')).not_to have_content("Transcribe")
     end
 
-    it "adds a user to a restricted work" do
+    it 'adds a user to a restricted work' do
       ActionMailer::Base.deliveries.clear
       logout(:user)
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
-      #this user should not get an email
-      select(@rest_user.name_with_identifier, from: 'user_id')
-      page.find('#user_id+button').click
+      page.click_link 'Edit Collaborators'
+      # this user should not get an email
+      select(@rest_user.name_with_identifier, from: 'scribe_id')
+      page.find('.add_scribe').click
       expect(ActionMailer::Base.deliveries).to be_empty
-      #this user should get an email
-      select(@user.name_with_identifier, from: 'user_id')
-      page.find('#user_id+button').click
+      # this user should get an email
+      select(@user.name_with_identifier, from: 'scribe_id')
+      page.find('.add_scribe').click
       expect(ActionMailer::Base.deliveries).not_to be_empty
       expect(ActionMailer::Base.deliveries.first.to).to include @user.email
       expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@auth_work.title}"
-      expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+      expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
     end
 
-    it "checks that an editor with permissions can see a restricted work" do
+    it 'checks that an editor with permissions can see a restricted work' do
       visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
       page.find('.work-page_title', text: @work.pages.first.title).click_link
-      expect(page.find('.tabs')).to have_content("Transcribe")
+      expect(page.find('.tabs')).to have_content('Transcribe')
     end
 
-    it "removes a collaborator from a restricted work" do
+    it 'removes a collaborator from a restricted work' do
       logout(:user)
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
-      page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+      page.click_link 'Edit Collaborators'
+      page.find('.user-label', text: @rest_user.name_with_identifier).find('button.remove').click
       expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
     end
 
     it "looks at a collection" do
       visit dashboard_watchlist_path
       page.find('h4', text: @collection.title).click_link(@collection.title)
-      expect(page).to have_content("Works")    
+      expect(page).to have_content("Works")
       expect(page).to have_content(@work.title)
       expect(page).not_to have_content("Collection Footer")
       #check the tabs in the collection
@@ -220,7 +222,7 @@ describe "editor actions" , :order => :defined do
       click_button('Save Changes')
       expect(page).to have_content("Test Translation")
     end
-    
+
     it "translation displays transcription text by default", :js => true do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
@@ -244,7 +246,7 @@ describe "editor actions" , :order => :defined do
     #     print e.message + "\n"
     #   end
     #   print "\n\n\n"
-      
+
     #   page.click_button("Show Image")
     #   sleep(2)
     #   print "\n\n\nPage contents after clicking show image:\n"
@@ -263,7 +265,7 @@ describe "editor actions" , :order => :defined do
     #   expect(page).to have_selector('.page-imagescan')
     #   expect(page).to_not have_selector('.page-preview')
     # end
-    
+
     it "checks a plain user profile" do
       login_as(@user, :scope => :user)
       visit dashboard_path
@@ -281,7 +283,7 @@ describe "editor actions" , :order => :defined do
       expect(page).not_to have_selector('a', text: 'Undo Login As')
     end
 
-    it "adds a note" do
+    it "adds a note", js: true do
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
       fill_in 'Write a new note or ask a question...', with: "Test note"
       find('#save_note_button').click
@@ -297,14 +299,14 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_selector('.user-bubble_actions > a[title="Delete"]')
     end
 
-    it "tries to save transcription with unsaved note", :js => true do
+    it "tries to save transcription with unsaved note", js: true do
       col = Collection.second
       test_page = col.works.first.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       text = Page.find_by(id: test_page.id).source_text
       fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in_editor_field "Attempt to save"
-      message = accept_alert do
+      message = dismiss_confirm do
         find('#finish_button_top').click
       end
       sleep(2)
@@ -428,7 +430,7 @@ describe "editor actions" , :order => :defined do
     end
 
 
-    it "adds an abusive note" do
+    it "adds an abusive note", js: true do
       flag_count = Flag.count
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
       fill_in 'Write a new note or ask a question...', with: "Visit <a href=\"www.spam.com\">our store!</a>"

@@ -1,22 +1,31 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+ruby '3.3.5'
 
-gem 'will_paginate'
-gem 'rmagick'
-gem 'nokogiri'
-gem "capistrano", "~> 3.10", require: false
-gem "capistrano-rails", "~> 1.4", require: false
+gem 'rails', '~> 7.2.1'
+
+gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
-gem 'rvm1-capistrano3', require: false
+gem 'capistrano-rails', '~> 1.4', require: false
+gem 'html-pipeline', '~> 2.14'
+gem 'importmap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
-gem 'savon', '~> 2.12.0'
 gem 'mysql2'
-gem 'text'
-gem 'thredded', '~> 1.0'
-gem "recaptcha", require: "recaptcha/rails"
+gem 'net-pop', github: 'ruby/net-pop'
+gem 'nkf'
+gem 'nokogiri'
+gem 'postmark-rails'
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'rmagick'
 gem 'ruby-openai'
+gem 'rvm1-capistrano3', require: false
+gem 'savon', '~> 2.12.0'
+gem 'text'
+gem 'thredded', '~> 1.1'
+gem 'will_paginate'
 
 gem 'acts_as_list'
 gem 'acts_as_tree'
@@ -25,27 +34,28 @@ gem 'devise'
 gem 'devise-encryptable'
 
 gem 'carrierwave'
-gem 'rubyzip'
 gem 'httparty'
+gem 'rack-attack'
+gem 'rubyzip'
 
 gem 'ahoy_matey'
 
-gem "browser", "~> 2.0"
-gem "user_agent_parser"
+gem 'browser', '~> 2.0'
+gem 'user_agent_parser'
 
-gem 'pry'
 gem 'oink'
+gem 'pry'
 
-gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
-gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
-gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
+gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
+gem 'iiif-presentation'
+gem 'riiif'
 
-gem 'omniauth-saml'
+gem 'omniauth', '~> 1.9.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth', '~> 1.9.2'
+gem 'omniauth-saml'
 
-gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
 gem 'bootsnap', require: false
 
@@ -55,46 +65,48 @@ gem 'active_link_to'
 
 gem 'warning'
 
-gem 'rails-i18n', '~> 6.0.0'
 gem 'http_accept_language'
+gem 'rails-i18n', '~> 7.0.0'
 
-gem 'forty_facets'
 gem 'charlock_holmes'
+gem 'forty_facets'
 
+gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
-gem 'diffy'
 gem 'terser'
-group :assets do
-  gem 'uglifier'
-end
+
+gem 'interactor-rails', '~> 2.0'
 
 group :test do
-  gem 'database_cleaner'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'database_cleaner'
+  gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'shoulda'
-  gem 'webmock', require: false
+  gem 'simplecov',      require: false
+  gem 'simplecov-lcov', require: false
   gem 'vcr'
-  gem 'coveralls', require: false
+  gem 'webmock', require: false
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'launchy'
-  gem 'pry-byebug'
-  gem 'factory_bot_rails'
-  gem 'pry-awesome_print' # makes console output easy to read
-  gem 'better_errors' # creates console in browser for errors
-  gem 'binding_of_caller' # goes with better_errors
-  # Supporting gem for RailsPanel
-  # https://github.com/dejan/rails_panel
+  gem 'annotaterb'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'bullet'
-  gem 'listen'
-  gem 'i18n-tasks'
+  gem 'dotenv-rails'
   gem 'easy_translate'
+  gem 'factory_bot_rails'
+  gem 'i18n-tasks'
+  gem 'launchy'
+  gem 'listen'
+  gem 'pry-awesome_print'
+  gem 'pry-byebug'
+  gem 'rspec-rails'
 end
+
+gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
 
 # Use SassC for stylesheets
 gem 'sassc-rails'
@@ -106,17 +118,17 @@ gem 'autoprefixer-rails'
 gem 'slim'
 
 # Gravatar Image Tag
-gem 'gravatar_image_tag'
+gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 
-#Admin masquerade as a user
+# Admin masquerade as a user
 gem 'devise_masquerade', '~> 1.2.0'
 
-#friendly routes
+# friendly routes
 gem 'friendly_id'
 
-#support right to left languages
-gem 'rtl'
+# support right to left languages
 gem 'iso-639'
+gem 'rtl'
 
 # Profiling for use in prod
 gem 'flamegraph'
@@ -125,8 +137,9 @@ gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
-gem 'intercom', '~> 3.9.0'
-
 gem 'open3'
+
+# Copy to clipboard
+gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'

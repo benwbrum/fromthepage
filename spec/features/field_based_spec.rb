@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
@@ -12,14 +11,12 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "sets collection to field based transcription" do
+  it "sets collection to field based transcription", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.click_link("Enable Field Based Transcription")
-    expect(page).to have_content("Edit Transcription Fields")
-    page.find('.tabs').click_link("Settings")
-    expect(page).to have_selector('a', text: 'Fields')
-    page.find('.sidecol').click_link('Fields')
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.choose('Field-based transcription')
+    page.click_link('Edit Fields')
     expect(page).to have_content("Edit Transcription Fields")
   end
 
@@ -41,16 +38,16 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "checks the field preview on edit page" do
-    #check the field preview
+    # check the field preview
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Fields")
-    expect(page.find('div.fields-preview')).to have_content("First field")
-    expect(page.find('div.fields-preview')).to have_content("Second field")
-    expect(page.find('div.fields-preview')).to have_content("Third field")
-    #check field width for first field (set to 20%)
-    expect(page.find('div.fields-preview .field-wrapper[1]')[:style]).to eq "width: 20%"
-    #check field width for second field (not set)
-    expect(page.find('div.fields-preview .field-wrapper[2]')[:style]).not_to eq "width: 20%"
+    page.find('.tabs').click_link('Fields')
+    expect(page.find('div.fields-preview')).to have_content('First field')
+    expect(page.find('div.fields-preview')).to have_content('Second field')
+    expect(page.find('div.fields-preview')).to have_content('Third field')
+    # check field width for first field (set to 20%)
+    expect(page.find('div.fields-preview .field-wrapper[1]')[:style]).to eq 'width: 20%'
+    # check field width for second field (not set)
+    expect(page.find('div.fields-preview .field-wrapper[2]')[:style]).not_to eq 'width: 20%'
     expect(TranscriptionField.count).to eq 3
   end
 
@@ -82,18 +79,18 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to eq 3
     visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
     expect(TranscriptionField.all.count).to eq 3
-    expect(page).not_to have_content("Autolink")
-    expect(page).to have_content("First field")
-    expect(page).to have_content("Second field")
-    expect(page).to have_content("Third field")
-    page.fill_in('fields_1_First_field', with: "Field one")
-    page.fill_in('fields_2_Second_field', with: "Field < three")
-    page.fill_in('fields_3_Third_field', with: "Field three")
+    expect(page).not_to have_content('Autolink')
+    expect(page).to have_content('First field')
+    expect(page).to have_content('Second field')
+    expect(page).to have_content('Third field')
+    page.fill_in('fields_1_first-field', with: 'Field one')
+    page.fill_in('fields_2_second-field', with: 'Field < three')
+    page.fill_in('fields_3_third-field', with: 'Field three')
     find('#save_button_top').click
     click_button 'Preview', match: :first
-    expect(page.find('.page-preview')).to have_content("First field: Field one")
+    expect(page.find('.page-preview')).to have_content('first-field: Field one')
     click_button 'Edit', match: :first
-    expect(page.find('.page-editarea')).to have_selector('#fields_1_First_field')
+    expect(page.find('.page-editarea')).to have_selector('#fields_1_first-field')
   end
 
   it "deletes a transcription field" do
@@ -108,7 +105,7 @@ describe "collection settings js tasks", :order => :defined do
     test_page = @collection.works.first.pages.second
     #next page arrow
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
-    page.fill_in('fields_1_First_field', with: "Field one")
+    page.fill_in('fields_1_first-field', with: "Field one")
     message = accept_alert do
       page.click_link("Next page")
     end
@@ -130,15 +127,18 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_export_path(@collection.owner, @collection)
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: work.title).find('.btnCsvTblExport').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+    content_type = page.response_headers['Content-Type']
+    expect(page.response_headers['Content-Type']).to eq 'text/csv'
   end
 
 
-  it "sets collection back to document based transcription" do
+  it "sets collection back to document based transcription", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.click_link("Revert to Document Based Transcription")
-    expect(page).not_to have_selector('a', text: 'Fields')
+    page.find('.side-tabs').click_link("Task Configuration")
+    page.choose('Document-based transcription')
+    expect(page.find_link('Edit Fields')).to match_css('[disabled]')
+    expect(page.find_link('Configure Buttons')).to_not match_css('[disabled]')
   end
 
 end

@@ -3,12 +3,18 @@
 
 <%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
 <div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
+<style>
+  .handsontable td.htInvalid {
+    background-color: yellow !important;
+  }
+</style>
 
 <script>
 
   edtfValidator = function (value, callback) {
     setTimeout(function(){
-      if (/^\d\d\d\d(-\d\d)?(-\d\d)?$/.test(value)) {
+      // support YYYY-MM-DD format, restricting year to 1400-2000, months to 01-12 and das to 01-31
+      if (/^(1[4-9]|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value) || !value) {
         callback(true);
       }
       else {
@@ -85,12 +91,6 @@
     data = null;
   };
 
-  // var data = [
-  //   ["", "Ford", "Tesla", "Toyota", "Honda"],
-  //   ["2017", 10, 11, 12, 13],
-  //   ["2018", 20, 11, 14, 13],
-  //   ["2019", 30, 15, 12, 13]
-  // ];
 
   function highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
     // first calculate against a 100% high canvas
@@ -123,7 +123,7 @@
   };
 
   var getHotHeight = function(rows) {
-    return rows * 23 + 25 + 2;
+    return rows * 23 + 40;
   };
 
   var updateHotHeight = function() {
@@ -147,12 +147,16 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    autoWrapCol: true,
     manualColumnResize: true,
     manualRowResize: true,
     startRows: <%= transcription_field.starting_rows %>,
     afterCreateRow: updateHotHeight,
     afterRemoveRow: updateHotHeight,
     afterChange: function(changes, source) {
+      if(source === 'edit') {
+        sendActiveEditing()
+      };
       document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
       if (changes) {
         var rowsCount = this.countRows();
@@ -171,11 +175,19 @@
           <%= transcription_field.bottom_offset %>);
       <% end %>
     },
+    modifyColWidth: function(width, col) {
+      if (width > 300) {
+        return 300
+      }
+    }
   });
 
-  // $(container).data('hot-object', hot);
-      // actually call it
+  window.addEventListener('load', function() {
+    window.onscroll = function (e) {
+      freezeTableColumn();
+    }
+  })
 
-  //alert("highlightRow(rowNum, <%= transcription_field.starting_rows %>, 0.1, 0.1);");
-
+  // flag any cells that don't match the format
+  hot.validateCells();
 </script>

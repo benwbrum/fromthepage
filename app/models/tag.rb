@@ -1,6 +1,25 @@
+# == Schema Information
+#
+# Table name: tags
+#
+#  id          :integer          not null, primary key
+#  ai_text     :string(255)
+#  canonical   :boolean
+#  message_key :string(255)
+#  tag_type    :string(255)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 class Tag < ApplicationRecord
   require 'openai/description_tagger'
   has_and_belongs_to_many :collections
+
+  # return tags that are canonical and have collections that are unrestricted and have a picture and intro block
+  def self.featured_tags
+    joins(:collections).where(canonical: true).merge(Collection.unrestricted.has_intro_block.has_picture.not_empty)
+  end
+    
+
   module TagType
     DATE='date'
     LANGUAGE='language'

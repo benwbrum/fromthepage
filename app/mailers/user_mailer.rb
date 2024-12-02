@@ -1,3 +1,5 @@
+require 'csv'
+
 class UserMailer < ActionMailer::Base
   include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
@@ -68,6 +70,25 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "#{@collection.owner.display_name}'s #{@collection.title} Collection"
   end
 
+  def metadata_csv_import_finished(user, result)
+    @user = user
+    @result = result
+
+    if @result.rowset_errors.any?
+      csv_data = CSV.generate(headers: true) do |csv|
+        csv << [:error, :work_id, :title]
+
+        @result.rowset_errors.each do |error|
+          csv << [error[:error], error[:work_id], error[:title]]
+        end
+      end
+
+      attachments['errors.csv'] = { mime_type: 'text/csv', content: csv_data }
+    end
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_csv_import_finished.subject')
+  end
+
   private
 
   def add_inline_attachments!
@@ -85,7 +106,7 @@ class UserMailer < ActionMailer::Base
 
     class << self
       def build(user)
-        #find which pages the user has worked on
+        # Find which pages the user has worked on
         user_page_ids ||= user.deeds.pluck(:page_id).uniq.compact
 
         Activity.new(
@@ -99,13 +120,14 @@ class UserMailer < ActionMailer::Base
 
       def user_pages_with_notes_added_in_past_day(user, user_page_ids)
         pages_with_recent_notes = Page.joins(:deeds)
-          .where(deeds: {deed_type: DeedType::NOTE_ADDED})
-          .merge(Deed.past_day).distinct
-          .where.not(deeds: {user_id: user.id})
-        pages_with_recent_notes.where(id: user_page_ids).select do |page| 
-          if page.deeds.where(deed_type: DeedType::NOTE_ADDED).last.user_id != user.id && page.work.access_object(user)
-            page
-          end
+                                      .where(deeds: { deed_type: DeedType::NOTE_ADDED })
+                                      .merge(Deed.past_day).distinct
+                                      .where.not(deeds: { user_id: user.id })
+
+        pages_with_recent_notes.where(id: user_page_ids).select do |page|
+          last_note = page.deeds.where(deed_type: DeedType::NOTE_ADDED).last
+          last_note.present? && last_note.user_id != user.id &&
+            page.work.access_object(user) && page.work.user_can_transcribe?(user)
         end
       end
 
@@ -114,11 +136,12 @@ class UserMailer < ActionMailer::Base
         user_collection_ids = user.deeds.pluck(:collection_id).uniq
         # works that have been added to those collections by someone other than the user in the past day
         works = Work.where(collection_id: user_collection_ids).joins(:deeds)
-          .where(deeds: {deed_type: DeedType::WORK_ADDED})
-          .merge(Deed.past_day).where.not(deeds: {user_id: user.id})
-          .distinct
+                    .where(deeds: { deed_type: DeedType::WORK_ADDED })
+                    .merge(Deed.past_day)
+                    .where.not(deeds: { user_id: user.id })
+                    .distinct
 
-        works.select {|work| work.access_object(user)}
+        works.select { |work| work.access_object(user) && work.user_can_transcribe?(user) }
       end
     end #end class << self
 

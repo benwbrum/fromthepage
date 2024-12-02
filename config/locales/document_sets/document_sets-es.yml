@@ -11,6 +11,10 @@ es:
       save_document_set: Guardar Conjunto de Documentos
       title: Título
       url: URL
+    edit_set_collaborators:
+      remove_collaborator: Quitar colaborador
+      set_collaborators: Colaboradores del conjunto de documentos
+      set_collaborators_description: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
     index:
       actions: Acciones
       aggregating_works_thematic_exhibits: Agregando obras a exposiciones temáticas
@@ -61,28 +65,24 @@ es:
       work_title: Título de la obra
     settings:
       add: Añadir
-      add_collaborator: Añadir colaborador
       add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
-      collaborators_may_transcribe: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
       document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
-      document_set_collaborators: Colaboradores del Conjunto de Documentos
+      document_set_collaborators: Colaboradores permitidos
       document_set_image: Imagen del Conjunto de Documentos
       document_set_privacy: Privacidad del Conjunto de Documentos
       document_set_restricted: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
       document_set_unrestricted: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
+      done: Hecho
+      edit_collaborators: Editar colaboradores
       here: aquí
       make_document_set_private: Hacer Privado el Conjunto de Documentos
       make_document_set_public: Hacer Público el Conjunto de Documentos
       manage_works: Administrar Obras
-      n_contributions:
-        one: 1 contribución
-        other: "%{count} contribuciones"
       n_pages:
         one: '1 página:'
         other: "%{count} páginas: pl"
       no_image: No Hay Imagen
       picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
-      remove: Eliminar
       save: Guardar
       search: Búsqueda
       search_for_works: Búsqueda de obras...

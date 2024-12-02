@@ -52,6 +52,7 @@ en:
       reload_this_page_to: Reload this page to update the list.
       status: Status
       subject_csv_collection: Subject Index CSV (collection)
+      subject_details_csv_collection: Subject Details CSV (collection)
       table_csv_collection: Field/Table CSV (collection)
       table_csv_work: Field/Table CSV (work)
       tei_work: TEX-XML (work)
@@ -70,7 +71,7 @@ en:
       institutions_separator: "|--------------|------------|-------------:|"
       regards_text: Regards,
       to_whom_it_may_concern: 'To Whom It May Concern:'
-      volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name} contribution to our crowdsourcing effort!
+      volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name}\'s contribution to our crowdsourcing effort!
       worked_on_collections: "%{user_name} has worked on the following collections by the following institutions:"
     landing_page:
       all_collections: All Collections
@@ -154,7 +155,7 @@ en:
       import_form_message: Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
       page_image_guidelines: Page Image Guidelines
       select_a_collection: "- Select a collection -"
-      to_specify_metadata: To specify metadata along with images, include a %{link} file in each folder specifying fields for the work.
+      to_specify_metadata: To specify metadata you can upload a spreadsheet after the images are uploaded or you can include a %{link} file in each folder specifying fields for the work.
       trial_accounts_are_limited: Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.
       upload_file: Upload File
       upload_pdf_or_zip_file: Upload PDF or ZIP File

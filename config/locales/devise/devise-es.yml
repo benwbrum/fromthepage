@@ -5,6 +5,19 @@ es:
     create_account: Crear una cuenta
     display_name: Nombre para mostrar
     email_address: Dirección de correo electrónico
+    errors:
+      keys:
+        display_name: Nombre para mostrar
+        email: Correo electrónico
+        login: Nombre de usuario
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+      messages:
+        login:
+          exclusion: ist ungültig
+          format: no puede contener corchetes angulares (<, >)
+        reset_password:
+          invalid_token: Su enlace para restablecer la contraseña no es válido o ha caducado. Solicite otro restablecimiento de contraseña para continuar.
     failure:
       already_authenticated: Ya has iniciado sesión.
       inactive: Tu cuenta aún no ha sido activada.
@@ -39,6 +52,7 @@ es:
       send_paranoid_instructions: Si tu dirección de correo electrónico ya existe en nuestra base de datos, dentro de unos minutos recibirás un enlace para recuperar su contraseña en el buzón de entrada de tu correo.
       updated: La contraseña ha sido cambiada exitosamente. Has iniciado sesión.
       updated_not_active: La contraseña ha sido cambiada exitosamente.
+      validation: La longitud mínima de la contraseña es de 6 caracteres
     real_name: Nombre real
     real_name_message: Los proyectos pueden usar esto cuando le den crédito. Deje esto en blanco si no desea que se le acredite.
     receive_activity_emails: Recibir correos electrónicos de actividad
@@ -50,6 +64,7 @@ es:
         johns_hopkins_university: Johns Hopkins University
         lds_full_name: Iglesia de Jesucristo de los Santos de los Últimos Días
         sign_in_with_institution: Ingresa con tu Institución
+        utah_id: UtahID
       destroyed: "¡Adiós! La cuenta ha sido cancelada exitosamente. Esperamos verte de nuevo pronto."
       edit:
         confirm_delete_account: "¿Está seguro de que desea eliminar su cuenta? ¡Después de eliminar la cuenta, no podrás recuperarla!"
@@ -102,6 +117,7 @@ es:
     sign_up: Inscribirse
     user_name: Nombre de usuario
     user_name_message: Usarás este nombre para iniciar sesión. Se mostrará públicamente.
+    we_never_sell: Nos tomamos en serio su información personal y respetamos su privacidad. Nunca vendemos tus datos a nadie. Consulte nuestra Política de Privacidad para obtener más información.
   errors:
     messages:
       expired: ha expirado, por favor solicite uno nuevo

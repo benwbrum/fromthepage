@@ -21,7 +21,7 @@
           th =t('.actions')
       -@users.each do |user|
         -page_sampling = @user_samplings[user.id]
-        -pages_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
+        -pages_to_review = @collection.pages.where(status: :needs_review).where(:last_editor_user_id => user.id).count
         tr
           td
             =user.display_name
@@ -31,8 +31,9 @@
             =pages_to_review
           -if page_sampling.reviewed_page_count > 0
             td.acenter
-              =(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => user.id).average(:approval_delta)).truncate(3)*100
-              span %
+             - approval_delta_average = @collection.pages.where(status: Page::COMPLETED_STATUSES).where(last_editor_user_id: user.id).average(:approval_delta)
+             = approval_delta_average ? (1.0 - approval_delta_average).truncate(3) * 100 : 0
+             span %
             td
               small(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
           -else
@@ -56,7 +57,7 @@
           th =t('.actions')
       -@works.each do |work|
         -page_sampling = @work_samplings[work.id]
-        -pages_to_review = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+        -pages_to_review = work.pages.where(status: :needs_review).count
         tr
           td
             =work.title
@@ -72,7 +73,7 @@
           -else
             td =t('.not_applicable')
             td =t('.not_applicable')
-          td 
+          td
             -if pages_to_review > 0
               =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 

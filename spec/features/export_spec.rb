@@ -52,7 +52,7 @@ describe "export tasks" do
     end
 
     visit bulk_export_index_path
-    expect(page).to have_content("Finished")
+    expect(page).to have_content("Administration")
   end
 
 

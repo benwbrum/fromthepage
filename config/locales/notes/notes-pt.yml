@@ -13,27 +13,14 @@ pt:
       page_notes: Notas de página
       pages_and_notes_counts: "%{posts_count} notas em %{topics_count} páginas"
       total_notes: "%{count} notas"
-    list:
-      collection: Coleção
+    index:
       collection_title: 'Coleção: %{title}'
-      note: Observação
       notes: Notas
-      page: Página
-      time: Tempo
-      user: Do utilizador
-      work: Obra
     note:
       cancel: Cancelar
       confirm_delete_message: Você tem certeza que deseja apagar esta nota?
       delete: Apagar
       edit: Editar
-      html:
-        cancel: Cancelar
-        confirm_delete_message: Você tem certeza que deseja apagar esta nota?
-        delete: Apagar
-        edit: Editar
-        microphone: Microfone
-        update: Atualizar
       microphone: Microfone
       update: Atualizar
     notes:
@@ -44,6 +31,13 @@ pt:
       save_note: Guardar Nota
       sign_in: entrar
       write_a_new_note: Escrever uma nova nota...
+    table:
+      collection: Coleção
+      note: Observação
+      page: Página
+      time: Tempo
+      user: Do utilizador
+      work: Obra
     update:
       error_updating_note: Erro ao atualizar a nota
       note_has_been_updated: A nota foi atualizada

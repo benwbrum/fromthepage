@@ -2,6 +2,8 @@
 
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 6, :page_id => @page.id }})
 
+=render({ :partial => '/shared/insert_table_modal' })
+
 =form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }, :html => { class: 'page-editor' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
@@ -10,18 +12,20 @@
     .flex-toolbar
       .flex-toolbar_group
         button#toggleImage.button.outline type="button" =t('.show_image')
-        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+        -if !@page.status_blank? && @collection.voice_recognition
           .voice-recognition
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
       .flex-toolbar_group.push-right
+
+      .flex-toolbar_group
         =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
+        =f.check_box('mark_blank', {checked: @page.status_blank?})
 
       .flex-toolbar_group
         =f.label 'needs_review', t('.page_needs_review')
-        =f.check_box('needs_review', {checked: @page.translation_status == 'review'})
+        =f.check_box('needs_review', {checked: @page.translation_status_needs_review?})
 
       .flex-toolbar_group
         -unless @preview_xml
@@ -32,12 +36,12 @@
           =button_tag t('.autolink'), :name => 'autolink'
         =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
-  -if @page.translation_status == 'review'
+  -if @page.translation_status_needs_review?
     .page-review
       =t('.this_page_marked_needs_review')
 
-  .page-columns
-    .page-column
+  .page-columns(data-layout-mode="ltr")
+    .page-column(id="leftColumn")
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
@@ -51,7 +55,7 @@
         -text_type = t('.transcribed')
 
       .page-preview(*language_attrs(@collection))
-        -if @page.status == Page::STATUS_BLANK
+        -if @page.status_blank?
           .centered
             .centered_content
               p.nodata_text==t('.this_page_is_blank')
@@ -65,16 +69,17 @@
               h5.nodata_title =t('.this_page_is_not', text_type: text_type)
               p.nodata_text
                 ==t('.please_help_this_page', help_link: help_link)
-                ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
+                ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status_blank?
       .page-imagescan(style=("display:none" unless @fromImage))
         =render :partial => '/shared/osd_div'
-    .page-column
+    .splitter(id="splitter")
+    .page-column(id="rightColumn")
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, class: 'page-editarea_textarea', 'aria-label': t('.edit_translation'))
-        
+
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions
 
@@ -82,12 +87,33 @@ h2.legend =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
--unless @collection.voice_recognition  
-  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
+-unless @collection.voice_recognition
+  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr', :height => '300', :show_line_numbers => true } })
 
 
 -content_for :javascript
   javascript:
+
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
 
     var lang = "#{@collection.language}";
     var fromImage = JSON.parse("#{@fromImage}") || false;
@@ -118,3 +144,6 @@ h2.legend =t('.page_notes')
       });
 
     });
+
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');

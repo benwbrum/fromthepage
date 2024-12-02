@@ -1,8 +1,20 @@
 class NotesController < ApplicationController
   include ActionView::Helpers::TextHelper
+  DEFAULT_NOTES_PER_PAGE = 50
   PAGES_PER_SCREEN = 20
 
+  def index
+    filtered_notes
+
+    render partial: 'table' if request.xhr?
+  end
+
   def create
+    unless user_signed_in?
+      flash[:error] = t('.must_be_logged')
+      ajax_redirect_to root_path and return
+    end
+
     @note = Note.new(note_params)
     # truncate the body for the title
     @note.title = @note.body
@@ -13,51 +25,117 @@ class NotesController < ApplicationController
     @note.collection = @work.collection
     @note.user = current_user
 
-    respond_to do |format|
-      if not user_signed_in?
-        format.html { redirect_back fallback_location: root_path, flash: { error: t('.must_be_logged') } }
-      elsif @note.save
-        record_deed
-        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]) }, status: :created }
-        format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_created') }
-      else
-        format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_back fallback_location: @note, flash: { error: t('.error_creating_note') } }
-      end
+    if @note.save
+      record_deed
+      render json: {
+        html: render_to_string(partial: 'note', locals: { note: @note }, formats: [:html]),
+        flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_created') },
+                                formats: [:html])
+      }, status: :created
+    else
+      render json: {
+        errors: @note.errors.full_messages,
+        flash: render_to_string(partial: 'shared/flash', locals: { type: 'error', message: t('.error_creating_note') })
+      }, status: :unprocessable_entity
     end
   end
 
   def update
     @note = Note.find(params[:id])
-    respond_to do |format|
-      if @note.update(note_params)
-        note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
 
-        format.json { render json: { html: simple_format(note_body) }, status: :ok }
-        format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_updated') }
-      else
-        format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_back fallback_location: @note, flash: { error: t('.error_updating_note') } }
-      end
+    ajax_redirect_to root_path and return unless user_signed_in? && @note.user == current_user
+
+    if @note.update(note_params)
+      note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
+
+      render json: {
+        html: simple_format(note_body),
+        flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_updated') },
+                                formats: [:html])
+      }, status: :ok
+    else
+      render json: {
+        errors: @note.errors.full_messages,
+        flash: render_to_string(partial: 'shared/flash', locals: { type: 'error', message: t('.error_updating_note') })
+      }, status: :unprocessable_entity
     end
   end
 
   def destroy
     @note = Note.find(params[:id])
-    @note.deed.delete
-    @note.delete
-    respond_to do |format|
-      format.json { head :no_content }
-      format.html { redirect_back fallback_location: root_path, notice: t('.note_has_been_deleted') }
+
+    unless user_signed_in? && (@note.user == current_user || current_user.like_owner?(@note.work))
+      ajax_redirect_to root_path and return
     end
+
+    @note.destroy
+
+    render json: {
+      flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_deleted') })
+    }
   end
 
-  def edit
-    @note = Note.find(params[:id])
+  def discussions
+    @pages = @collection.pages
+                        .where.not(last_note_updated_at: nil)
+                        .reorder(last_note_updated_at: :desc)
+                        .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
   end
 
-  def show
-    @note = Note.find(params[:id])
+  private
+
+  def filtered_notes
+    @sorting = (params[:sort] || 'time').to_sym
+    @ordering = (params[:order] || 'DESC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+
+    if @collection.present?
+      notes_scope = @collection.notes.includes(:user, :work, :page, { collection: :owner })
+    else
+      notes_scope = Note.all.includes(:user, :work, :page, { collection: :owner })
+    end
+
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+
+      notes_users = User.where(id: notes_scope.select(:user_id))
+                        .where('LOWER(users.display_name) LIKE :search', search: "%#{query}%")
+      notes_filter_by_user = notes_scope.where(user_id: notes_users.select(:id))
+
+      notes_filter_by_note = notes_scope.where('LOWER(notes.title) LIKE :search', search: "%#{query}%")
+
+      notes_pages = Page.where(id: notes_scope.select(:page_id))
+                        .where('LOWER(pages.title) LIKE :search', search: "%#{query}%")
+      notes_filter_by_page = notes_scope.where(page_id: notes_pages.select(:id))
+
+      notes_works = Work.where(id: notes_scope.select(:work_id))
+                        .where('LOWER(works.title) LIKE :search', search: "%#{query}%")
+      notes_filter_by_work = notes_scope.where(work_id: notes_works.select(:id))
+
+      notes_scope = notes_filter_by_user.or(notes_filter_by_note)
+                                        .or(notes_filter_by_page)
+                                        .or(notes_filter_by_work)
+    end
+
+    case @sorting
+    when :user
+      notes_scope = notes_scope.reorder("users.display_name #{@ordering}")
+    when :note
+      notes_scope = notes_scope.reorder(title: @ordering)
+    when :page
+      notes_scope = notes_scope.reorder("pages.title #{@ordering}")
+    when :work
+      notes_scope = notes_scope.reorder("works.title #{@ordering}")
+    else
+      notes_scope = notes_scope.reorder(created_at: @ordering)
+    end
+
+    notes_scope = notes_scope.paginate(page: params[:page], per_page: DEFAULT_NOTES_PER_PAGE)
+    @notes = notes_scope
+  end
+
+  def note_params
+    params.require(:note).permit(:body)
   end
 
   def record_deed
@@ -73,26 +151,4 @@ class NotesController < ApplicationController
     update_search_attempt_contributions
   end
 
-  def discussions
-    @pages = @collection.pages.where.not(last_note_updated_at: nil).reorder(last_note_updated_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
-  end
-
-  def list
-    respond_to do |format|
-      format.html
-      format.json { 
-        render json: NoteDatatable.new(
-          params, 
-          view_context: view_context, 
-          collection_id: params[:collection_id]
-        ) 
-      }
-    end
-  end
-
-  private
-
-  def note_params
-    params.require(:note).permit(:body)
-  end
 end

@@ -45,6 +45,7 @@ pt:
     multi_page:
       categories: Categorias
       describe: Criar metadados
+      pages_need_completion: Páginas que precisam ser concluídas
       pages_need_indexing: Páginas para Indexar
       pages_need_review: Páginas para Revisar
       pages_need_transcription: Páginas para Transcrever
@@ -81,6 +82,7 @@ pt:
       pages_that_mention: Páginas que mencionam %{article}
     read_work:
       pages: Páginas
+      pages_need_completion: Páginas que precisam ser concluídas
       pages_need_indexing: Páginas que precisam de indexação
       pages_need_review: Páginas que precisam de revisão
       pages_need_transcription: Páginas que precisam de transcrição

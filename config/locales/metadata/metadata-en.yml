@@ -1,6 +1,16 @@
 ---
 en:
   metadata:
+    create:
+      is_processing: Your upload is being processed. An email will be sent to update its status
+    import_csv:
+      errors:
+        filename_blank: No work filename or work ID values were in the uploaded file
+        not_existing_work: No work exists with filename %{work_filename}
+        not_existing_work_id: No work exists with ID %{work_id}
+        not_in_collection: No work with ID %{work_id} is in collection %{collection_title}
+    refresh:
+      is_processing: Metadata refresh is processing.
     upload:
       browse: Browse
       click_to_browse_a_file: Click to browse a file...

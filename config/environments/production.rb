@@ -86,14 +86,10 @@ Rails.application.configure do
 Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   config.action_mailer.default_url_options = { host: 'fromthepage.com' }
   config.action_mailer.default_options = { from: 'support@fromthepage.com' }
-  config.action_mailer.smtp_settings = {
-    :address   => "smtp.mandrillapp.com",
-    :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
-    :enable_starttls_auto => true, # detects and uses STARTTLS
-    :user_name => "FromThePage",
-    :password  => "14wY3Bos9GRp1WxlCPPFBg", # SMTP password is any valid API key
-    :authentication => 'login', # Mandrill supports 'plain' or 'login'
-    :domain => 'fromthepage.com', # your domain to identify your server when connecting
+  config.action_mailer.delivery_method = :postmark
+
+  config.action_mailer.postmark_settings = {
+    api_token: ''
   }
 
   Ahoy.geocode = false
@@ -102,6 +98,7 @@ Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   RAKE = '/usr/bin/env rake'
   NEATO = '/usr/bin/neato'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 #  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
 #  Disable IIIF search while Pontiiif is down
 #  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'

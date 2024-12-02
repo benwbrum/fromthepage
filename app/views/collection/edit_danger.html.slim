@@ -1,0 +1,48 @@
+=javascript_include_tag "settings"
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+.collection-meta-wrapper
+  =render({ :partial => 'edit_tabs', :locals => { :selected => 7}})
+
+  .collection-settings-wrapper
+    =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: {id: 'collection-settings-form'} do |f|
+      =validation_summary @collection.errors
+      =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+      table.form.collection-settings
+        tr 
+          td(colspan="2")
+            .danger-warning
+              =svg_symbol '#icon-warning-sign', class: 'icon'
+              =t('.danger_zone_description')
+        tr
+          td(colspan="2")
+            .collection-active(style=('display:none' if !@collection.is_active))
+              h3
+                =t('.collection_status')
+                i =t('.active')
+              p =t('.collection_active_description')
+            .collection-inactive(style=('display:none' if @collection.is_active))
+              h3
+                =t('.collection_status')
+                i =t('.inactive')
+              p =t('.collection_inactive_description')
+        tr 
+          td(colspan="2")
+            =f.radio_button :is_active, true
+            =f.label :is_active_true, t('.active'), class: 'big'
+            br
+            =f.radio_button :is_active, false
+            =f.label :is_active_false, t('.inactive'), class: 'big'
+        tr: td
+        tr
+          td(colspan="2")
+            h3 =t('.clear_transcripts')
+            =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button action-btn exits', data: { confirm: t('.confirm_blank_collection') }, disabled: !@collection.text_entry?)
+              span =t('.blank_collection')
+            p =t('.blank_collection_description')
+        tr: td
+        tr 
+          td(colspan="2")
+            h3 =t('.destroy_everything')
+            =link_to(collection_delete_path(:collection_id => @collection.id), class: 'button action-btn', data: { confirm: t('.confirm_delete_collection') })
+              span =t('.delete_collection')
+            p =t('.delete_collection_description')

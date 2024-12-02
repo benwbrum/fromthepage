@@ -1,0 +1,7 @@
+ruby:
+  selected_document_sets = local_assigns[:selected_document_sets] || []
+
+input[name="work[document_set_ids][]" type="hidden" value="" autocomplete="off"]
+=select_tag 'work[document_set_ids][]',
+             options_for_select([['', nil]] + document_sets&.pluck(:title, :id), selected_document_sets),
+             id: 'work_document_set_ids', class: 'field-input', data: { 'multi-select': true }, size: 1, multiple: true, disabled: document_sets.blank?

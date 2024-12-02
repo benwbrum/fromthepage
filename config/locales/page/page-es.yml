@@ -16,10 +16,10 @@ es:
       page_image: Imagen de la Página
       page_position: 'Posición de Página: %{position}'
       page_status: Estado de la página
-      page_status_: No empezado
       page_status_blank: Página en blanco
       page_status_incomplete: Incompleto
       page_status_indexed: Indexado
+      page_status_new: No empezado
       page_status_review: Revisión de necesidades
       page_status_transcribed: Completo
       page_status_translated: Traducido

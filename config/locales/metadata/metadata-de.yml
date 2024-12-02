@@ -1,6 +1,16 @@
 ---
 de:
   metadata:
+    create:
+      is_processing: Ihr Upload wird verarbeitet. Sie erhalten eine E-Mail mit der Statusaktualisierung.
+    import_csv:
+      errors:
+        filename_blank: In der hochgeladenen Datei waren keine Arbeitsdateinamen oder Arbeits-ID-Werte enthalten
+        not_existing_work: Es ist kein Werk mit dem Dateinamen %{work_filename} vorhanden.
+        not_existing_work_id: Es ist kein Werk mit der ID %{work_id} vorhanden
+        not_in_collection: In der Sammlung %{collection_title} befindet sich kein Werk mit der ID %{work_id}
+    refresh:
+      is_processing: Die IIIF-Sammlung wird importiert. Laden Sie diese Seite in wenigen Minuten neu, um importierte Werke zu sehen.
     upload:
       browse: Durchsuchen
       click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...

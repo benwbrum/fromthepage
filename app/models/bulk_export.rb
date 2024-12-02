@@ -1,3 +1,59 @@
+# == Schema Information
+#
+# Table name: bulk_exports
+#
+#  id                                 :integer          not null, primary key
+#  admin_searches                     :boolean
+#  collection_activity                :boolean
+#  collection_contributors            :boolean
+#  facing_edition_work                :boolean
+#  html_page                          :boolean
+#  html_work                          :boolean
+#  notes_csv                          :boolean
+#  organization                       :string(255)      default("by_work")
+#  owner_detailed_activity            :boolean
+#  owner_mailing_list                 :boolean
+#  plaintext_emended_page             :boolean
+#  plaintext_emended_work             :boolean
+#  plaintext_searchable_page          :boolean
+#  plaintext_searchable_work          :boolean
+#  plaintext_verbatim_page            :boolean
+#  plaintext_verbatim_work            :boolean
+#  plaintext_verbatim_zero_index_page :boolean          default(FALSE)
+#  report_arguments                   :string(255)
+#  static                             :boolean
+#  status                             :string(255)
+#  subject_csv_collection             :boolean
+#  subject_details_csv_collection     :boolean
+#  table_csv_collection               :boolean
+#  table_csv_work                     :boolean
+#  tei_work                           :boolean
+#  text_docx_work                     :boolean
+#  text_only_pdf_work                 :boolean
+#  text_pdf_work                      :boolean
+#  use_uploaded_filename              :boolean          default(FALSE)
+#  work_metadata_csv                  :boolean          default(FALSE)
+#  created_at                         :datetime         not null
+#  updated_at                         :datetime         not null
+#  collection_id                      :integer
+#  document_set_id                    :integer
+#  user_id                            :integer          not null
+#  work_id                            :integer
+#
+# Indexes
+#
+#  index_bulk_exports_on_collection_id    (collection_id)
+#  index_bulk_exports_on_document_set_id  (document_set_id)
+#  index_bulk_exports_on_user_id          (user_id)
+#  index_bulk_exports_on_work_id          (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id)
+#  fk_rails_...  (document_set_id => document_sets.id)
+#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (work_id => works.id)
+#
 class BulkExport < ApplicationRecord
   require 'zip'
   include ExportHelper, ExportService
@@ -79,9 +135,13 @@ class BulkExport < ApplicationRecord
     rake_call = "#{RAKE} fromthepage:process_bulk_export[#{self.id}]  --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if settings are present
-    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} stdbuf -oL " << rake_call if NICE_RAKE_ENABLED
 
     logger.info rake_call
+    system('env > /home/fromthepage/environment_logging/env_from_application.log')
+    Rails.logger.info("whoami is \n" + `whoami`)
+    Rails.logger.info("pwd is \n" + `pwd`)
+    Rails.logger.info("ulimit -a is \n" + `/bin/bash -c "ulimit -a"`)
     system(rake_call)
   end
 

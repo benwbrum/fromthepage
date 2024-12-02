@@ -1,3 +1,56 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id                             :integer          not null, primary key
+#  alphabetize_works              :boolean          default(TRUE)
+#  api_access                     :boolean          default(FALSE)
+#  created_on                     :datetime
+#  data_entry_type                :string(255)      default("text")
+#  default_orientation            :string(255)
+#  description_instructions       :text(65535)
+#  enable_spellcheck              :boolean          default(FALSE)
+#  facets_enabled                 :boolean          default(FALSE)
+#  field_based                    :boolean          default(FALSE)
+#  footer_block                   :text(16777215)
+#  help                           :text(65535)
+#  hide_completed                 :boolean          default(TRUE)
+#  intro_block                    :text(16777215)
+#  is_active                      :boolean          default(TRUE)
+#  language                       :string(255)
+#  license_key                    :string(255)
+#  link_help                      :text(65535)
+#  messageboard_slug              :string(255)
+#  messageboards_enabled          :boolean
+#  most_recent_deed_created_at    :datetime
+#  pct_completed                  :integer
+#  picture                        :string(255)
+#  restricted                     :boolean          default(FALSE)
+#  review_type                    :string(255)      default("optional")
+#  slug                           :string(255)
+#  subjects_disabled              :boolean          default(TRUE)
+#  supports_document_sets         :boolean          default(FALSE)
+#  text_language                  :string(255)
+#  title                          :string(255)
+#  transcription_conventions      :text(65535)
+#  user_download                  :boolean          default(FALSE)
+#  voice_recognition              :boolean          default(FALSE)
+#  works_count                    :integer          default(0)
+#  next_untranscribed_page_id     :integer
+#  owner_user_id                  :integer
+#  thredded_messageboard_group_id :bigint
+#
+# Indexes
+#
+#  index_collections_on_owner_user_id                   (owner_user_id)
+#  index_collections_on_restricted                      (restricted)
+#  index_collections_on_slug                            (slug) UNIQUE
+#  index_collections_on_thredded_messageboard_group_id  (thredded_messageboard_group_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (thredded_messageboard_group_id => thredded_messageboard_groups.id)
+#
 require 'csv'
 require 'subject_exporter'
 require 'subject_details_exporter'
@@ -12,12 +65,12 @@ class Collection < ApplicationRecord
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_users, through: :collection_blocks, source: :user
-  has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
-  has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
-  has_many :articles, :dependent => :destroy
-  has_many :document_sets, -> { order 'title' }, :dependent => :destroy
-  has_many :categories, -> { order 'title' }
-  has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
+  has_many :works, -> { order(:title) }, dependent: :destroy #, :order => :position
+  has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
+  has_many :articles, dependent: :destroy
+  has_many :document_sets, -> { order(:title) }, dependent: :destroy
+  has_many :categories, -> { order(:title) }
+  has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
   has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
@@ -26,10 +79,10 @@ class Collection < ApplicationRecord
   has_one :quality_sampling, :dependent => :destroy
   belongs_to :messageboard_group, class_name: 'Thredded::MessageboardGroup', foreign_key: 'thredded_messageboard_group_id', optional: true
 
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: 'Page', optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
-  has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
+  has_many :facet_configs, -> { order(input_type: :asc, order: :asc) }, through: :metadata_coverages
   has_many :table_cells, through: :transcription_fields
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -40,6 +93,8 @@ class Collection < ApplicationRecord
   has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
@@ -85,12 +140,16 @@ class Collection < ApplicationRecord
   def metadata_only_entry?
     self.data_entry_type == DataEntryType::METADATA_ONLY
   end
-  
+
+  def text_and_metadata_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA
+  end
+
   def subjects_enabled
     !subjects_disabled
   end
 
-  module ReviewType 
+  module ReviewType
     OPTIONAL = 'optional'
     REQUIRED = 'required'
     RESTRICTED = 'restricted'
@@ -99,12 +158,12 @@ class Collection < ApplicationRecord
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
-    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
+    self.pages.where(status: :needs_review).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
   end
 
   def never_reviewed_users
     users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
-    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => Page::STATUS_NEEDS_REVIEW).pluck(:user_id).uniq
+    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => 'review').pluck(:user_id).uniq
     unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
   end
 
@@ -116,10 +175,10 @@ class Collection < ApplicationRecord
 
   def enable_messageboards
     if self.messageboard_group.nil?
-      self.messageboard_group = Thredded::MessageboardGroup.create!(name: self.title)
+      self.messageboard_group = Thredded::MessageboardGroup.find_or_create_by!(name: self.title)
       # now create the default messageboards
-      Thredded::Messageboard.create!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
-      Thredded::Messageboard.create!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.find_or_create_by!(name: 'General', description: 'General discussion', messageboard_group_id: self.messageboard_group.id)
+      Thredded::Messageboard.find_or_create_by!(name: 'Help', messageboard_group_id: self.messageboard_group.id)
     end
     self.messageboards_enabled = true
     self.save!
@@ -236,7 +295,9 @@ class Collection < ApplicationRecord
     #for each page, delete page versions, update all attributes, save
     pages.each do |p|
       p.page_versions.destroy_all
-      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
+      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil,
+                       status: Page.statuses[:new], source_translation: nil, xml_translation: nil,
+                       translation_status: Page.translation_statuses[:new], search_text: "\n\n\n\n")
       p.save!
     end
 

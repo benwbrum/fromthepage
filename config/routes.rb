@@ -7,7 +7,6 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
   root to: 'static#splash'
   get 'landing', to: 'static#splash'
   get '/blog' => redirect("https://fromthepage.com/blog/")
@@ -32,12 +31,8 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  scope 'notes', as: 'notes' do
-    get 'list(/:collection_id)', to: 'notes#list', as: 'list'
-  end
-  resources :notes
-
-
+  resources :notes, except: [:show, :edit]
+  get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
@@ -76,6 +71,7 @@ Fromthepage::Application.routes.draw do
       get 'index', to: 'admin#tag_list'
       get ':tag_id', to: 'admin#show_tag', as: 'show'
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
+      post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
   end
 
@@ -91,12 +87,6 @@ Fromthepage::Application.routes.draw do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
     get 'show', to: 'collection#show', as: 'show'
-    get 'toggle_collection_active', to: 'collection#toggle_collection_active'
-    get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
-    get 'enable_fields', to: 'collection#enable_fields'
-    get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
-    get 'enable_document_sets', to: 'collection#enable_document_sets'
-    get 'enable_messageboards', to: 'collection#enable_messageboards'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
@@ -106,14 +96,10 @@ Fromthepage::Application.routes.draw do
     post 'add_reviewer', to: 'collection#add_reviewer'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     post 'remove_reviewer', to: 'collection#remove_reviewer'
-    get 'disable_document_sets', to: 'collection#disable_document_sets'
-    get 'disable_messageboards', to: 'collection#disable_messageboards'
-    get 'disable_fields', to: 'collection#disable_fields'
-    get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
+    get 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
@@ -129,8 +115,8 @@ Fromthepage::Application.routes.draw do
     scope 'metadata', as: 'metadata' do
       get ':id/example', to: 'metadata#example', as: :example
       get ':id/upload', to: 'metadata#upload', as: :upload
-      get 'csv_error', to:'metadata#csv_error'
       post 'create', to: 'metadata#create'
+      post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
 
     scope 'editor_button', as: 'editor_button' do
@@ -139,17 +125,18 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
-
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
     get 'update_featured_page', to: 'work#update_featured_page'
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
+    get ':collection_id/:work_id/edit_scribes', to: 'work#edit_scribes', as: 'edit_scribes'
+    get ':collection_id/:work_id/search_scribes', to: 'work#search_scribes', as: 'search_scribes'
     get 'revert', to: 'work#revert'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
-    patch 'update_work', :to => 'work#update_work'
+    patch 'update_work', to: 'work#update_work'
+    get 'document_sets_select', to: 'work#document_sets_select'
   end
 
   scope 'page', as: 'page' do
@@ -165,10 +152,10 @@ Fromthepage::Application.routes.draw do
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'tooltip', to: 'article#tooltip'
-    get 'delete', to: 'article#delete'
+    delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     post 'combine_duplicate', to: 'article#combine_duplicate'
-    post 'article_category', :to => 'article#article_category'
+    post 'article_category', to: 'article#article_category'
   end
 
   scope 'export', as: 'export' do
@@ -254,7 +241,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'deed', as: 'deed' do
-    get 'list', to: 'deed#list'
+    get 'listing', to: 'deed#list', as: :list
   end
 
   scope 'static', as: 'static' do
@@ -325,9 +312,10 @@ Fromthepage::Application.routes.draw do
     get 'restrict_set', to: 'document_sets#restrict_set'
     get 'destroy', to: 'document_sets#destroy'
     get 'publish_set', to: 'document_sets#publish_set'
-    get 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
+    post 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
     post 'assign_to_set', to: 'document_sets#assign_to_set'
     post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
+    get 'search_collaborators', to: 'document_sets#search_collaborators'
   end
 
   scope 'transcription_field', as: 'transcription_field' do
@@ -355,15 +343,15 @@ Fromthepage::Application.routes.draw do
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
-  get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
-  get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
+  get 'oldfindaproject', to: 'dashboard#landing_page', as: :old_landing_page
+  get 'findaproject', to: 'dashboard#new_landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
 
   scope 'feature', as: 'feature' do
-    get ':feature/:value', to: 'user#feature_toggle' 
-    get ':feature', to: 'user#feature_toggle' 
+    get ':feature/:value', to: 'user#feature_toggle'
+    get ':feature', to: 'user#feature_toggle'
   end
 
 
@@ -458,7 +446,7 @@ Fromthepage::Application.routes.draw do
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
   get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
-  get '/signup', to: 'static#signup', as: :signup 
+  get '/signup', to: 'static#signup', as: :signup
   get '/special_collections', to: 'static#transcription_archives', as: :special_collections
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
@@ -474,6 +462,7 @@ Fromthepage::Application.routes.draw do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
+      get 'settings/:document_set_id/edit_set_collaborators', to: 'document_sets#edit_set_collaborators', as: 'edit_set_collaborators'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'works_to_review', as: :works_to_review, to: 'collection#works_to_review'
@@ -500,6 +489,13 @@ Fromthepage::Application.routes.draw do
       post 'search'
 
       get 'edit', on: :member
+      get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
+      get 'edit/look', on: :member, to: 'collection#edit_look'
+      get 'edit/privacy', on: :member, to: 'collection#edit_privacy'
+      get 'edit/help', on: :member, to: 'collection#edit_help'
+      get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
+      get 'edit/danger', on: :member, to: 'collection#edit_danger'
+
       get 'new_work', on: :member
       get 'collaborators', on: :member, to: 'collection#contributors', as: :contributors
       get 'works_list', as: :works_list, to: 'collection#works_list'
@@ -508,7 +504,7 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-    
+
 
       #work related routes
       #have to use match because it must be both get and post
@@ -521,11 +517,13 @@ Fromthepage::Application.routes.draw do
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
-        get 'remove_scribe', on: :member
+        post 'remove_scribe', on: :member
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
         get 'metadata_overview', on: :member
+        get 'metadata_overview_monitor', on: :member
+        get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
@@ -540,6 +538,7 @@ Fromthepage::Application.routes.draw do
       #page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
       get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
+      get ':work_id/transcribe_monitor/:page_id', as: 'monitor_view', to: 'transcribe#monitor_view'
       get ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
       get ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'

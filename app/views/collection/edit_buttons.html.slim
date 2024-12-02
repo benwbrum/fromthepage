@@ -9,11 +9,14 @@ p =t('.description')
         .edit-buttons_format
           h5
             =t(".#{key}_label")
-          p.nomargin =t(".#{key}_description")
+          p.nomargin ==t(".#{key}_description")
         .edit-buttons_options
           =f.label key
             =check_box_tag key, '1', buttons.include?(key)
             span
+              -if EditorButton::BUTTON_MAP[key][0] == ''
+                code
+                  =="| H1 | H2 |<br/>|----|----|<br/>| C1 | C2 |<br/>| C3 | C4 |"
               -if EditorButton::BUTTON_MAP[key].size > 1
                 code
                   =EditorButton::BUTTON_MAP[key][0]

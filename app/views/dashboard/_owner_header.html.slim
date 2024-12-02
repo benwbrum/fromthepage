@@ -43,10 +43,10 @@
     -account_type_key = current_user.account_type.downcase.tr(' ', '_')
     =t('.account_type', type: t(".account_types.#{account_type_key}"))
     -unless (current_user.start_date == nil)
-      span 
+      span
         |&nbsp;
         =t('.since', date: l(current_user.start_date.to_date))
-    span 
+    span
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)
 

@@ -6,7 +6,6 @@
       });
     });
 
-
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
 
 .columns
@@ -21,6 +20,10 @@
         tr
           th =f.label :collection_id, t('.collection')
           td =f.collection_select(:collection_id, @collections, :id, :title)
+        tr
+          th =f.label :document_set_ids, t('.document_sets')
+          td#document_sets
+            =render partial: 'document_sets_select', locals: { document_sets: @work.collection&.document_sets, selected_document_sets: @work.document_sets.pluck(:id) }
         tr
           th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @work.slug
@@ -68,7 +71,7 @@
                 =button_tag t('.revert'), :work_id => @work.id, type: 'button', hidden: false, id: 'revert'
               -else
                 =button_tag t('.revert'), :work_id => @work.id, type: 'button', hidden: true, id: 'revert'
-                  
+
         tr
           td(colspan="2")
             =f.check_box :supports_translation, value: @work.supports_translation
@@ -172,26 +175,16 @@
         =f.check_box :restrict_scribes
         |&nbsp;
         =f.label :restrict_scribes, t('.restrict_collaborators')
-      -if @work.restrict_scribes && @scribes.empty?
+      -if @work.restrict_scribes && @work.scribes.empty?
         p.warning =t('.restricted_work_no_collaborators_warning')
       small.legend =button_tag t('.apply'), class: 'outline'
 
     -if @work.restrict_scribes
-      h3= t('.allowed_collaborators')
-      =form_tag(add_scribe_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'user-select-form') do
-        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag t('.add')
-      -if @scribes.empty?
-        p.fglight= t('.no_allowed_collaborators_selected')
-      -else
-        -@scribes.each do |user|
-          .user-label
-            .userpic
-              =profile_picture(user)
-            .username
-              =link_to user.name_with_identifier, user_profile_path(user)
-              small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: t('.remove')
+      .allowed-collaborators
+        h3 =t('.allowed_collaborators')
+        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { litebox: { hash: 'edit-scribes', noscroll: false, noclose: true }})
+      =render 'collection/users_list', users: @scribes, type: 'collaborators'
+
 
 -content_for :javascript
   javascript:
@@ -237,5 +230,32 @@
             }
           };
         };
+      });
+    });
+
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      const collectionSelect = $('#work_collection_id');
+      const documentSetsDiv = $('#document_sets');
+
+      function updateDocumentSetOptions(selectedId) {
+        $.ajax({
+          url: "#{work_document_sets_select_path}",
+          method: 'GET',
+          data: { collection_id: selectedId },
+          success: function(response) {
+            documentSetsDiv.html(response);
+            $('#work_document_set_ids').multiSelect();
+          },
+          error: function(xhr, status, error) {
+            console.error('Error fetching document sets:', error);
+          }
+        });
+      }
+
+      collectionSelect.on('change', function() {
+        const selectedId = $(this).val();
+        updateDocumentSetOptions(selectedId);
       });
     });

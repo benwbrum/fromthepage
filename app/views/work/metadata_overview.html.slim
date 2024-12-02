@@ -3,7 +3,7 @@
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
 
--if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+-if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists?
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
@@ -19,7 +19,7 @@
 
           .work-page_text[*language_attrs(@collection)]
             -transcription = xml_to_html(page.xml_text, false)
-            -if page.status == Page::STATUS_BLANK
+            -if page.status_blank?
               p.nodata_text ==t('.this_page_is_blank')
             -elsif transcription.present?
               ==transcription.force_encoding('utf-8')
@@ -30,7 +30,7 @@
   .page-column
     .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
       -if @work.description_status == Work::DescriptionStatus::UNDESCRIBED
-        p.collection-work_action 
+        p.collection-work_action
           =t('collection.show.this_work_has_not_been_described')
           span &nbsp;
           =link_to(t('collection.show.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, @work))
@@ -77,7 +77,7 @@ h2.legend =t('.notes_and_questions')
       });
 
       function updateDisplay(){
-        $('.page-imagescan').toggle(fromImage);
+        $('.page-image').toggle(fromImage);
         $('.page-preview').toggle(!fromImage);
 
         var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
@@ -88,6 +88,7 @@ h2.legend =t('.notes_and_questions')
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
+        $('.headline').toggleClass('fullscreen');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});

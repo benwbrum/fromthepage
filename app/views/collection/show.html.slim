@@ -44,15 +44,16 @@
           h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
           p.collection-work_snippet = to_snippet(work.description)
           -if @collection.text_entry? && work.next_untranscribed_page
-            p.collection-work_action 
-              -if (current_user && current_user.can_transcribe?(work) && @collection.active?)
+            p.collection-work_action
+              -if @collection.active? && work.user_can_transcribe?(current_user)
                 =t('.this_work_has_pages_that_need_work')
                 span &nbsp;
                 =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
               -else
                 =t('.restricted_collaboratoration')
+
           -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
-            p.collection-work_action 
+            p.collection-work_action
               -if (current_user && current_user.can_transcribe?(work))
                 =t('.this_work_has_not_been_described')
                 span &nbsp;
@@ -62,7 +63,7 @@
           -if @collection.text_entry?
             .collection-work_stats
               -work_stats(work)
-              span 
+              span
                 = t('.n_pages', count: work.work_statistic.total_pages)
                 = @wording
               span
@@ -115,15 +116,20 @@
       =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
 
     -if @collection.active? && @collection.text_entry?
+      ruby:
+        pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
+        pages_need_review_count = Page.where(work_id: @collection.work_ids, status: :needs_review).count
       -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
         =link_to t('.pages_need_correction_or_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
       -elsif @collection.works.where(:ocr_correction => true).present?
         =link_to t('.pages_need_correction'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
       -else
-        =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+        -unless pages_need_correction_count.zero?
+          =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-      =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
-    
+      -unless pages_need_review_count.zero?
+        =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+
     - if @collection.active? && @collection.metadata_only_entry?
       =link_to t('collection.needs_review_pages.works_that_need_metadata'), collection_needs_metadata_path(@collection.owner, @collection), class: 'button review-button'
       =link_to t('collection.needs_review_pages.review_metadata'), collection_needs_metadata_path(@collection.owner, @collection, need_review: true), class: 'button review-button'
@@ -133,23 +139,31 @@
 
     h3 =t('.recent_notes')
     -@collection.notes.active.limit(10).each do |note|
-      -if note.page
+      -if note.page || note.work
         -user = link_to note.user.display_name, user_profile_path(note.user)
         -note_title = strip_tags(note.title)
-        -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.page.work, note.page)
+        -if @collection.metadata_only_entry?
+          -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+        -else
+          -if @collection.text_and_metadata_entry?
+            -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+          -elsif note.page.nil?
+            -text = truncate(note_title, :length => 100)
+          -else
+            -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
         .deed-short.small
           =time_tag(note.created_at, class: 'legend legend-left')
             =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
           span.deed-short_content
             ==t('.user_wrote_note', user: user, note: text)
     small.legend
-      =link_to t('.show_more'), notes_list_path(collection_id: @collection.slug), class: 'button outline round'
+      =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     -cache @collection.most_recent_deed_created_at do
       =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-=link_to(collection_new_mobile_user_path(@collection.id), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
+=link_to(collection_new_mobile_user_path(collection_id: @collection.slug), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""
 
 -content_for :javascript
@@ -161,7 +175,7 @@
 
 -if @new_mobile_user
   -content_for :javascript
-    javascript: 
+    javascript:
       $(document).ready(function(){
         $('#new_mobile_user_link').trigger('click');
       });

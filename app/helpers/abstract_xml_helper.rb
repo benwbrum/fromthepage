@@ -3,12 +3,43 @@ module AbstractXmlHelper
 
   SANITIZE_ALLOWED_TAGS = %w(table tr td th thead tbody tfoot caption colgroup col a abbr acronym address b big blockquote br cite code del dfn div em font h1 h2 h3 h4 h5 h6 hr i img ins kbd li ol p pre q s samp small span strike strong sub sup tt u ul var time)
 
+  SANITIZE_ALLOWED_ATTRIBUTES = [
+    'abbr',
+    'alt',
+    'break',
+    'class',
+    'data-tooltip',
+    'datetime',
+    'depth',
+    'expan',
+    'height',
+    'href',
+    'id',
+    'marker',
+    'name',
+    'orig',
+    'position',
+    'rend',
+    'src',
+    'style',
+    'target',
+    'target_id',
+    'target_title',
+    'time',
+    'title',
+    'type',
+    'when',
+    'width'
+  ]
+
+  SANITIZE_SINGLE_QUOTE_TAGS = %w(b strong i em u s mark q code pre kbd)
+
   def source_to_html(source)
-    html = source.gsub(/\n/, "<br/>")
+    html = source.gsub(/\n/, '<br/>')
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil, highlight_article_id=nil)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -23,12 +54,11 @@ module AbstractXmlHelper
     #unless subject linking is disabled, do this
     unless @collection.subjects_disabled
       doc.elements.each("//link") do |e|
-
         title = e.attributes['target_title']
         id = e.attributes['target_id']
         # first find the articles
         anchor = REXML::Element.new("a")
-        #anchor.text = display_text
+        anchor.add_attribute("title", title)
         if id
           if flatten_links
             if flatten_links == :jekyll
@@ -39,7 +69,7 @@ module AbstractXmlHelper
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
-            if params[:article_id] && id == params[:article_id]
+            if highlight_article_id && id == highlight_article_id
               anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting
             end
           end
@@ -47,7 +77,6 @@ module AbstractXmlHelper
           # preview mode for this link
           anchor.add_attribute("href", "#")
         end
-        anchor.add_attribute("title", title)
         e.children.each { |c| anchor.add(c) }
         e.replace_with(anchor)
       end
@@ -155,7 +184,7 @@ module AbstractXmlHelper
       # convert to a span
       depth = e.attributes["depth"]
       title = e.attributes["title"]
-      
+
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -163,7 +192,7 @@ module AbstractXmlHelper
 
     doc.elements.each("//head") do |e|
       # convert to a span
-      depth = 2      
+      depth = 2
       span = e
       e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
@@ -268,13 +297,22 @@ module AbstractXmlHelper
     if @page
       doc.elements.each("//texFigure") do |e|
         position = e.attributes["position"]
-        
+
         span = REXML::Element.new('img')
         span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + "?timestamp=" + Time.now.to_i.to_s))
-        
+
         e.replace_with(span)
       end
-      
+
+    end
+
+    # \textquotesingle fix
+    SANITIZE_SINGLE_QUOTE_TAGS.each do |tag|
+      doc.elements.each("//#{tag}") do |e|
+        if e.text
+          e.text = e.text.gsub("'", "`")
+        end
+      end
     end
 
     # now our doc is correct - what do we do with it?
@@ -286,7 +324,11 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')
 
-    return ActionController::Base.helpers.sanitize(my_display_html.strip, :tags => SANITIZE_ALLOWED_TAGS).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
+    ActionController::Base.helpers.sanitize(
+      my_display_html.strip,
+      tags: SANITIZE_ALLOWED_TAGS,
+      attributes: SANITIZE_ALLOWED_ATTRIBUTES
+    ).gsub('<br>','<br/>').gsub('<hr>','<hr/>')
   end
 
 end

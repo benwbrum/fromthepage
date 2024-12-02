@@ -1,0 +1,47 @@
+section.user-profile
+  .user-profile_image
+    =profile_picture(user)
+  .user-profile_details
+    .headline
+      h1.headline_title
+        =user.display_name
+      -if user == current_user
+        .headline_aside
+          =link_to(user_update_profile_path(user_id: user.id), class: 'button outline', data: { litebox: { hash: 'update-profile' } })
+            =svg_symbol '#icon-edit', class: 'icon'
+            span =t('user.profile.edit_profile')
+          |&nbsp;&nbsp;
+          =link_to(edit_user_registration_path, class: 'button outline')
+            =svg_symbol '#icon-user', class: 'icon'
+            span =t('user.profile.login_and_password').html_safe
+    .user-profile_stats
+      -if user.staff?
+        -user.collections.uniq { |c| c.owner_user_id }.each do |c|
+          -unless c.owner.staff?
+            =link_to c.owner.display_name, user_profile_path(c.owner), target: '_blank', rel: 'nofollow'
+            |&nbsp;&nbsp;
+        br
+      span ="#{number_with_delimiter(user.deeds.count)} #{t('user.profile.contribution', count: user.deeds.count)}"
+      span = t('user.profile.user_since', date: l(user.created_at.to_date))
+      -if user.last_sign_in_at.present?
+        span = t('user.profile.last_seen', date: l(user.last_sign_in_at.to_date))
+
+h2 =t('user.profile.recent_activity_by', user_display_name: @user.display_name)
+table.datagrid.striped
+  -@deeds.each do |d|
+    tr
+      td.w100.toleft
+        -if d.work.nil? || d.work.access_object(current_user)
+          =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
+        -else
+          =raw(strip_tags(render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])))
+
+      td
+        small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
+      td.nowrap
+        =time_tag(d.created_at, class: 'small fglight')
+          =t('time_ago_in_words', time: time_ago_in_words(d.created_at))
+
+br
+small.legend
+  =will_paginate @deeds, { class: 'deed-pager', page_links: false, previous_label: t('user.profile.newer_activity'), next_label: t('user.profile.older_activity') }

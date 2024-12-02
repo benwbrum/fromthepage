@@ -8,6 +8,11 @@
   a#osd_zoom_in =svg_symbol "#icon-zoom-in", class: 'icon'
   a#osd_zoom_out =svg_symbol "#icon-zoom-out", class: 'icon'
   a#osd_home =svg_symbol "#icon-fit-view", class: 'icon'
+  a#osd_fit_width(title="#{t('.fit_width')}") =svg_symbol "#icon-fit-width", class: 'icon'
+  -if !@is_monitor_view
+    a#osd_monitor_open(title="#{t('.monitor_open')}") =svg_symbol "#icon-window", class: 'icon open'
+  -else
+    a#osd_monitor_close(title="#{t('.monitor_close')}") =svg_symbol "#close-window", class: 'icon close'
   a#osd_fullpage =svg_symbol "#icon-expand", class: 'icon'
   a#osd_rotate_left =svg_symbol "#icon-rotate-left", class: 'icon'
   a#osd_rotate_right =svg_symbol "#icon-rotate-right", class: 'icon'
@@ -39,8 +44,10 @@
 
 .image-container(id="image_container")
 
-
-
+-if @page
+  div data-image-window-path-value=collection_monitor_view_path(@collection.owner, @collection, @work, @page)
+- else
+  div data-image-window-path-value=metadata_overview_monitor_collection_work_path(@work.slug)
 
 -content_for :javascript
   javascript:
@@ -55,7 +62,7 @@
       OpenSeadragon.setString("Tooltips.FullPage", "#{t('.full_page')}");
       OpenSeadragon.setString("Tooltips.RotateLeft", "#{t('.rotate_left')}");
       OpenSeadragon.setString("Tooltips.RotateRight", "#{t('.rotate_right')}");
-      
+
       viewer = OpenSeadragon({
         id: "image_container",
         toolbar: "image_toolbar",
@@ -74,8 +81,7 @@
         previousButton: "osd_prev",
         nextButton: "osd_next",
         maxZoomPixelRatio: 10,
-        visibilityRatio: 1,
-        fitBounds: true,
+        visibilityRatio: 0.5,
         preserveViewport: true,
         showReferenceStrip: #{@page.nil?},
         referenceStripScroll: 'vertical',
@@ -92,12 +98,16 @@
       });
 
       viewer.addHandler('viewport-change', function() {
+        var zoomLevel = viewer.viewport.getZoom();
+        localStorage.setItem('prevZoomLevel', zoomLevel);
         var bounds = viewer.viewport.getBounds();
         localStorage['json_bounds'] = JSON.stringify(bounds);
       });
 
       viewer.addHandler('open', function() {
         var json_bounds = localStorage['json_bounds'];
+        var zoomLevel = localStorage.getItem('prevZoomLevel');
+
         if (json_bounds) {
           var bounds = JSON.parse(json_bounds);
           var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -105,6 +115,11 @@
         } else {
           viewer.raiseEvent('reset-bounds');
         }
+
+        if (zoomLevel) {
+          viewer.viewport.zoomTo(zoomLevel);
+        }
+
       });
 
       viewer.addHandler('canvas-press', function() {
@@ -115,11 +130,50 @@
         setTimeout(function() {
           if (lastFocused) {
             lastFocused.focus();
-            lastFocused.setSelectionRange(lastFocused.selectionStart, lastFocused.selectionEnd);
+            if(typeof lastFocused.setSelectionRange !== 'undefined')
+              lastFocused.setSelectionRange(lastFocused.selectionStart, lastFocused.selectionEnd);
             lastFocused = null;
           }
         }, 100);
       });
+
+
+      // Open image in a new window modal
+      var imageWindow = null;
+
+      function openImageMonitor() {
+        let imageWindowPathValue = document.querySelector('div[data-image-window-path-value]').dataset.imageWindowPathValue;
+        imageWindow = window.open(imageWindowPathValue, 'ImageWindow', width='100%',height='100%');
+        Cookies.set('monitor_view_on', 'true', { expires: 365 });
+        var monitorCloseDetect = setInterval(function() {
+          if(imageWindow && imageWindow.closed) {
+            Cookies.set('monitor_view_on', 'false', { expires: 365 });
+            imageWindow = null;
+          }
+        }, 1000);
+      }
+
+      document.getElementById('osd_fit_width').addEventListener('click', function() {
+        viewer.viewport.fitHorizontally();
+      });
+
+      if(document.getElementById('osd_monitor_open')) {
+        document.getElementById('osd_monitor_open').addEventListener('click', function() {
+          if(!imageWindow) {
+            openImageMonitor();
+          }
+        });
+      }
+
+      if(document.getElementById('osd_monitor_close')) {
+        document.getElementById('osd_monitor_close').addEventListener('click', function() {
+          window.close();
+        });
+      }
+
+      if(Cookies && (Cookies.get('monitor_view_on') === 'true') && document.getElementById('osd_monitor_open')) {
+        openImageMonitor();
+      }
 
       $('[data-filter]').on('input', updateFilters);
 
@@ -157,14 +211,13 @@
   -content_for :javascript
     javascript:
       $(function() {
-        
+
         var anno = AnnotoriousOSD.createOSDAnnotator(viewer, {
-          // make sure that the boxes over the text annotations are inert
-          pointerSelectAction: 'NONE'
-        });
-        anno.setFormatter(function() { 
-          // make the annotation boxes transparent rather than opaque
-          return { fillOpacity: 0 };
+          pointerSelectAction: 'NONE',
+          style: {
+            fillOpacity: 0,
+            strokeOpacity: 0
+          }
         });
 
 

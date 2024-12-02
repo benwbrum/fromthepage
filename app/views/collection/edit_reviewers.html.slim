@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px")
 
-  h3 =t('collection.edit.collection_reviewers')
-  p.fglight =t('collection.edit.collection_reviewers_description')
+  h3 =t('collection.edit_quality_control.collection_reviewers')
+  p.fglight =t('collection.edit_quality_control.collection_reviewers_description')
   =form_tag(collection_add_reviewer_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id, id: 'add_reviewer_collection_id'
     -if User.count > 100
@@ -24,7 +24,7 @@
 
   .toolbar
     .toolbar_group.aright
-      =link_to(t('collection.edit.done'), edit_collection_path(@collection.owner, @collection), class: 'button')
+      =link_to(t('collection.edit.done'), edit_quality_control_collection_path(@collection.owner, @collection), class: 'button')
 
 javascript:
   $('#add_reviewer_user_id').select2({

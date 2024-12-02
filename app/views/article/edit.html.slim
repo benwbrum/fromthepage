@@ -2,6 +2,8 @@
 
 =render({ :partial => '/shared/article_tabs', :locals => { :selected => 4, :article_id => @article.id }})
 
+=render({ :partial => '/shared/insert_table_modal' })
+
 .article-columns.columns
   article.maincol
     =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
@@ -23,6 +25,7 @@
                 span.voice-info.article-voice
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
+              =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
 
 
 
@@ -38,6 +41,7 @@
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
       =t('.categories')
+      br
       select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label=t('.select_categories') multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if @article.categories.include?(c)
@@ -54,7 +58,7 @@
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br
-      =link_to(article_delete_path(:article_id => @article.id, :collection_id => @collection.slug), data: {:confirm => t('.confirm_delete_subject')}, class: 'button')
+      =link_to(article_delete_path(article_id: @article.id, collection_id: @collection.slug), method: :delete, data: { confirm: t('.confirm_delete_subject') }, class: 'button')
         =svg_symbol '#icon-remove-sign', class: 'icon'
         span= t('.delete_subject')
 
@@ -65,7 +69,7 @@
     -else
       h3= t('.possible_duplicates', count: @article.possible_duplicates.size)
       p.fglight ==t('.possible_duplicates_description', article: @article.title)
-      =form_tag({ :action => 'combine_duplicate' }) do
+      =form_tag(article_combine_duplicate_path(article_id: @article.id), method: :post) do
         =hidden_field_tag :article_id, @article.id
         ul.article-duplicates
           -@article.possible_duplicates.each do |dup|
@@ -73,10 +77,10 @@
               label.article-duplicate_title
                 =check_box_tag 'from_article_ids[]', dup.id
                 |&nbsp;
-                span =link_to (dup.title), controller: 'article', action: 'show', article_id: dup.id 
-              span.article-duplicate_pages 
-                small.label =link_to t('.n_pages', count: dup.link_list.size), controller: 'display', action: 'read_all_works', article_id: dup.id 
-                
+                span =link_to (dup.title), controller: 'article', action: 'show', article_id: dup.id
+              span.article-duplicate_pages
+                small.label =link_to t('.n_pages', count: dup.link_list.size), controller: 'display', action: 'read_all_works', article_id: dup.id
+
         .toolbar
           .toolbar_group.aright =button_tag t('.combine_selected')
 

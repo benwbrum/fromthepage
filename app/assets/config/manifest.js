@@ -3,6 +3,8 @@
 //= link_directory ../stylesheets .css
 //= link_directory ../stylesheets/codemirror/lib .css
 //= link datepicker/datepicker.js
+//= link datepicker/lang/en-us.js
+//= link datepicker/lang/en.js
 //= link application.css
 //= link bootstrap.min.css
 //= link optimize.css
@@ -23,5 +25,5 @@
 //= link datatables.min.js
 //= link annotorious/annotorious-openseadragon.js
 //= link annotorious/annotorious-openseadragon-textlayer.js
-
-
+//= link select_all.js
+//= link_tree ../../javascript .js

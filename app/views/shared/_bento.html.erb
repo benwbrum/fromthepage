@@ -1,0 +1,15 @@
+<script src="https://app.bentonow.com/6247d0278bfbafc3ef75b753f26a46d2.js"></script>
+<script>
+window.addEventListener("bento:ready", function () {
+  if (typeof(bento$) != 'undefined') {
+    bento$(function() {
+        <% if user_signed_in? %>
+          // this identifies the user and updates the fields which are sent with the $view event.
+          bento.identify('<%= current_user.email %>');
+          bento.updateFields({"display_name": "<%= current_user.display_name %>"});
+        <% end %>
+        bento.view();
+    });
+  }
+})
+</script>

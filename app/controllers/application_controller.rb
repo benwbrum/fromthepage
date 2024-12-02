@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
-  before_action :update_ia_work_server
   before_action :store_current_location, :unless => :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
@@ -18,7 +17,22 @@ class ApplicationController < ActionController::Base
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
+  around_action :check_deleted_articles
   around_action :switch_locale
+
+
+  def check_deleted_articles
+    if controller_name != 'display' && @collection && !@collection.subjects_disabled
+      starting_article_count = @collection.articles.count
+      yield
+      ending_article_count = @collection.articles.count
+      if starting_article_count > ending_article_count
+        logger.info("ISSUE4269 WARNING #{starting_article_count} > #{ending_article_count} at #{controller_name}##{action_name}")
+      end
+    else
+      yield
+    end
+  end
 
   def switch_locale(&action)
     @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
@@ -50,7 +64,7 @@ class ApplicationController < ActionController::Base
     end
 
     # append region to locale
-    related_locales = http_accept_language.user_preferred_languages.select do |loc| 
+    related_locales = http_accept_language.user_preferred_languages.select do |loc|
       loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
       I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
     end
@@ -84,7 +98,7 @@ class ApplicationController < ActionController::Base
   def guest_transcription
 
     return head(:forbidden) unless GUEST_TRANSCRIPTION_ENABLED
-    
+
     if check_recaptcha(model: @page, :attribute => :errors)
       User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
@@ -198,7 +212,7 @@ class ApplicationController < ActionController::Base
     elsif !DocumentSet.find_by(slug: id).nil?
       @collection = DocumentSet.find_by(slug: id)
     elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id) 
+      @collection = Collection.find_by(slug: id)
     end
 
     # check to make sure URLs haven't gotten scrambled
@@ -223,38 +237,6 @@ class ApplicationController < ActionController::Base
     end
 
     return
-  end
-
-  # perform appropriate API call for updating the IA server
-  def update_ia_work_server
-    if @work && @work.ia_work
-      ia_servers = session[:ia_servers] ||= {}
-      ia_servers = JSON.parse(ia_servers.to_json).with_indifferent_access
-
-      unless ia_servers[@work.ia_work.book_id]
-        # fetch it and update it
-        begin
-          server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
-          ia_servers[@work.ia_work.book_id] = server_and_path
-        rescue => ex
-          # TODO log exception
-          if params[:offline]
-            # we're doing development offline
-            ia_servers[@work.ia_work.book_id] = {:server => 'offlineserver', :ia_path => 'offlinepath'}
-          else
-            logger.error(ex.message)
-            logger.error(ex.backtrace.join("\n"))
-            flash[:error] = t('layouts.application.internet_archive_difficulties')
-            redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
-            return
-          end
-        end
-      end
-
-      logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
-      @work.ia_work.server = ia_servers[@work.ia_work.book_id][:server]
-      @work.ia_work.ia_path = ia_servers[@work.ia_work.book_id][:ia_path]
-    end
   end
 
   def load_html_blocks
@@ -324,7 +306,11 @@ class ApplicationController < ActionController::Base
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
-      dashboard_owner_path
+      if current_user.collections.any?
+        dashboard_owner_path
+      else
+        dashboard_startproject_path
+      end
     else
       dashboard_watchlist_path
     end
@@ -350,7 +336,7 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
-    if page.status == nil
+    if page.status_new?
       if user_signed_in?
         collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
       else

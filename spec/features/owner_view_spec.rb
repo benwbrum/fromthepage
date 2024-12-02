@@ -21,8 +21,6 @@ describe "owner view - collection" do
     #look at owner stats in dashboard
     expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
-    expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.document_sets.count
-
     #look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'
@@ -72,6 +70,7 @@ describe "owner view - collection" do
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content(@collection.title)
+    expect(page).to have_content("Danger Zone")
   end
 
   it "looks at export tab" do

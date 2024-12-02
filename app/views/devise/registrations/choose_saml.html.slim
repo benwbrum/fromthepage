@@ -5,7 +5,7 @@ section.signon
   =form_tag(registrations_set_provider_path) do
     fieldset.signon_fieldset
       =label_tag :institution, t('.institution'), class: 'signon_label'
-        =select_tag(:institution, options_for_select([[t('.harvard_university'),'harvard'],[t('.illinois_state'),'ilstu'],[t('.lds_full_name'), 'lds'],[t('.johns_hopkins_university'),'jhu']]), autofocus: true)
+        =select_tag(:institution, options_for_select([[t('.harvard_university'),'harvard'],[t('.illinois_state'),'ilstu'],[t('.lds_full_name'), 'lds'],[t('.johns_hopkins_university'),'jhu'],[t('.utah_id'),'utah']]), autofocus: true)
     .toolbar
       .toolbar_group
         =button_tag t('devise.sign_in'), class: 'strong signin'

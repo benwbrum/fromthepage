@@ -56,7 +56,7 @@ class IiifController < ApplicationController
   def document_set
     iiif_collection = iiif_collection_from_collection(@document_set,true)
     render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
-  end      
+  end
 
   def contributions
     domain = params[:domain]
@@ -119,9 +119,9 @@ class IiifController < ApplicationController
     if domain.include? '.'
       # this is an actual domain
       if terminus_a_quo && terminus_ad_quem
-        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic)
       elsif terminus_a_quo
-        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
+        works = Work.joins(:work_statistic, :sc_manifest).where("sc_manifests.at_id LIKE ? AND work_statistics.last_edit_at >= ?", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
       else
         works = Work.joins(:sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").includes(:work_statistic, :sc_manifest)
       end
@@ -131,12 +131,12 @@ class IiifController < ApplicationController
       user = User.find(domain)
       if user && user.owner
         if terminus_a_quo && terminus_ad_quem
-          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ?", user.id).where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ?", user.id).where(:work_statistic => { :last_edit_at => terminus_a_quo..terminus_ad_quem}).distinct.includes(:work_statistic, :sc_manifest)
         elsif terminus_a_quo
-          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
+          works = Work.joins(:collection, :work_statistic).where("collections.owner_user_id = ? AND work_statistics.last_edit_at >= ?", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
         else
           works = Work.joins(:collection).where("collections.owner_user_id = ?", user.id).includes(:work_statistic, :sc_manifest)
-        end        
+        end
       else
         works=[]
         label = "No project owners found matching #{domain}."
@@ -206,36 +206,36 @@ class IiifController < ApplicationController
     ]
 
     manifest.seeAlso = []
-    manifest.seeAlso << 
-    { "label" => "Verbatim Plaintext", 
-      "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1", 
+    manifest.seeAlso <<
+    { "label" => "Verbatim Plaintext",
+      "format" => "text/plain",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1",
       "@id" => iiif_work_export_plaintext_verbatim_url(work.id)
     }
-    manifest.seeAlso << 
-    { "label" => "Emended Plaintext", 
-      "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext", 
+    manifest.seeAlso <<
+    { "label" => "Emended Plaintext",
+      "format" => "text/plain",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext",
       "@id" => iiif_work_export_plaintext_emended_url(work.id)
     }
     if work.supports_translation?
-      manifest.seeAlso << 
-      { "label" => "Verbatim Translation Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext", 
+      manifest.seeAlso <<
+      { "label" => "Verbatim Translation Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext",
         "@id" => iiif_work_export_plaintext_translation_verbatim_url(work.id)
       }
-      manifest.seeAlso << 
-      { "label" => "Emended Translation Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext", 
+      manifest.seeAlso <<
+      { "label" => "Emended Translation Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext",
         "@id" => iiif_work_export_plaintext_translation_emended_url(work.id)
       }
-    end    
-    manifest.seeAlso << 
-      { "label" => "Searchable Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
+    end
+    manifest.seeAlso <<
+      { "label" => "Searchable Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search",
         "@id" => iiif_work_export_plaintext_searchable_url(work.id)
     }
     if work.collection.metadata_entry?
@@ -598,12 +598,12 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work.id), 
-        "label" => "XHTML Export", 
+      { "@id" => iiif_work_export_html_url(work.id),
+        "label" => "XHTML Export",
         "format" => "text/html",
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work.id), 
-        "label" => "TEI Export", 
+      { "@id" => iiif_work_export_tei_url(work.id),
+        "label" => "TEI Export",
         "format" => "application/tei+xml",
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
@@ -677,14 +677,14 @@ private
     if page.sc_canvas
       page.sc_canvas.sc_canvas_id
     elsif page.ia_leaf
-      "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
+      "https://iiif.archive.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
     else
       url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
     end
   end
 
   def manifest_uri_from_ia(ia_work)
-    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
+    "https://iiif.archive.org/iiif/#{ia_work.book_id}/manifest.json"
   end
 
   def region_from_page(page)
@@ -746,7 +746,7 @@ private
   end
 
   def canvas_from_ia_page(page)
-    id_base = "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
+    id_base = "https://iiif.archive.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
 
     canvas = IIIF::Presentation::Canvas.new
     canvas.label = page.title
@@ -840,28 +840,28 @@ private
 
   def add_seeAlso_to_canvas(canvas,page)
     canvas.seeAlso = [] unless canvas.seeAlso
-    canvas.seeAlso << 
-      { "label" => "HTML Transcription", 
-        "format" => "text/html", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription", 
+    canvas.seeAlso <<
+      { "label" => "HTML Transcription",
+        "format" => "text/html",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription",
         "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page)
     }
-    canvas.seeAlso << 
-      { "label" => "Searchable Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
+    canvas.seeAlso <<
+      { "label" => "Searchable Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1",
         "@id" => iiif_page_export_plaintext_searchable_url(page.work_id, page.id)
     }
-    canvas.seeAlso << 
-    { "label" => "Verbatim Plaintext", 
-      "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2", 
+    canvas.seeAlso <<
+    { "label" => "Verbatim Plaintext",
+      "format" => "text/plain",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2",
       "@id" => iiif_page_export_plaintext_verbatim_url(page.work_id, page.id)
     }
-    canvas.seeAlso << 
-    { "label" => "Emended Plaintext", 
-      "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1", 
+    canvas.seeAlso <<
+    { "label" => "Emended Plaintext",
+      "format" => "text/plain",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1",
       "@id" => iiif_page_export_plaintext_emended_url(page.work_id, page.id)
     }
     if page.work.supports_translation? && !page.source_translation.blank?
@@ -871,16 +871,16 @@ private
           "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-translation",
           "@id" => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page)
       }
-      canvas.seeAlso << 
-      { "label" => "Verbatim Translation Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1", 
+      canvas.seeAlso <<
+      { "label" => "Verbatim Translation Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1",
         "@id" => iiif_page_export_plaintext_translation_verbatim_url(page.work_id, page.id)
       }
-      canvas.seeAlso << 
-      { "label" => "Emended Translation Plaintext", 
-        "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1", 
+      canvas.seeAlso <<
+      { "label" => "Emended Translation Plaintext",
+        "format" => "text/plain",
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1",
         "@id" => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
       }
     end
@@ -951,13 +951,13 @@ private
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
     service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :work_id => page.work.id, :page_id => page.id, :only_path => false})
     service["pageStatus"] = []
-    service["pageStatus"] << "needsReview" if page.status == Page::STATUS_NEEDS_REVIEW
-    service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
-    service["pageStatus"] << "markedBlank" if page.status == Page::STATUS_BLANK
-    service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED || page.status == Page::STATUS_INDEXED
-    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation_status == Page::STATUS_TRANSLATED || page.translation_status == Page::STATUS_INDEXED
-    service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
-    service["pageStatus"] << 'translationNeedsReview' if page.translation_status == Page::STATUS_NEEDS_REVIEW
+    service["pageStatus"] << "needsReview" if page.status_needs_review?
+    service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status_needs_review? || page.status_transcribed?)
+    service["pageStatus"] << "markedBlank" if page.status_blank?
+    service["pageStatus"] << "hasTranscript" if page.status_needs_review? || page.status_transcribed? || page.status_indexed?
+    service["pageStatus"] << "hasTranslation" if page.translation_status_needs_review? || page.translation_status_translated? || page.translation_status_indexed?
+    service["pageStatus"] << "hasSubjectTags" if page.status_indexed?
+    service["pageStatus"] << 'translationNeedsReview' if page.translation_status_needs_review?
     service
   end
 

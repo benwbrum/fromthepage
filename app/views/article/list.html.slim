@@ -44,7 +44,7 @@
                       =link_to t('.upload_subjects'), article_upload_form_path(@collection.slug)
 
           dd
-            -if category.articles_list(@collection).empty?
+            -if @vertical_articles[category].empty?
               p.acenter.fglight= t('.there_are_no_subjects')
             -else
               -@vertical_articles[category].each do |row|
@@ -57,7 +57,7 @@
                   -else
                     p.hidden
                       a.hidden a
-      -if @uncategorized_articles.present?
+      -if @uncategorized_articles.any?
         dl.category-article#category-none
           dt: h3= t('.uncategorized_subjects')
           dd
@@ -67,7 +67,7 @@
                   p[*language_attrs(@collection)]
                     = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
                       = article.title
-                      = content_tag :span, "(#{article.pages.count})", class: 'grey-number'
+                      = content_tag :span, "(#{article.pages_count})", class: 'grey-number'
                 -else
                   p.hidden
                     a.hidden a

@@ -8,7 +8,7 @@ describe "document sets", :order => :defined do
     @rest_user = User.find_by(login: REST_USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
-    #set up the restricted user not to be emailed
+    # set up the restricted user not to be emailed
     notification = Notification.find_by(user_id: @rest_user.id)
     notification.add_as_collaborator = false
     notification.save!
@@ -29,23 +29,37 @@ describe "document sets", :order => :defined do
     work.save!
   end
 
-  it "edits a document set (start at collection level)" do
-    login_as(@owner, :scope => :user)
+  it 'edits a document set (start at collection level)', js: true do
+    login_as(@owner, scope: :user)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
+    page.find('.tabs').click_link('Sets')
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
       within(page.find('tr', text: @document_sets.first.title)) do
-          page.find('a', text: 'Edit').click
+        page.find('a', text: 'Edit').click
       end
     end
-    page.fill_in 'document_set_title', with: "Edited Test Document Set 1"
+    page.fill_in 'document_set_title', with: 'Edited Test Document Set 1'
     page.find_button('Save Document Set').click
-    expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
+    expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
+
+    # Set all checkboxes off
+    page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
+      checkbox.set(false)
+    end
+
+    # Click select all
+    page.find('input[type="checkbox"][data-select-all="works"]', visible: false).check
+    expect(page.find('input[type="checkbox"][data-select-all="works"]', visible: false)).to be_checked
+
+    # Expect all checkboxes are true
+    page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
+      expect(checkbox).to be_checked
+    end
   end
-  
+
   it "makes a document set private" do
     login_as(@owner, :scope => :user)
     #create an additional document set to make private
@@ -56,11 +70,11 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page.find('h1')).to have_content("Test Document Set 3")
     expect(DocumentSet.last.is_public).to be true
-    expect(page).not_to have_content("Document Set Collaborators")
+    expect(page).not_to have_content('Allowed Collaborators')
     #make the set private
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
-    expect(page).to have_content("Document Set Collaborators")
+    expect(page).to have_content('Allowed Collaborators')
     #manually assign works until have the jqery test set
     id = @collection.works.third.id
     DocumentSet.last.work_ids = id
@@ -123,13 +137,14 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@test_set.owner, @test_set)
     page.find('.tabs').click_link("Settings")
-    #this user should not receive an email (notifications off)
-    select(@rest_user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    page.click_link 'Edit Collaborators'
+    # this user should not receive an email (notifications off)
+    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).to be_empty
-    #this user should receive an email
-    select(@user.name_with_identifier, from: 'user_id')
-    page.find('#user_id+button').click
+    # this user should receive an email
+    select(@user.name_with_identifier, from: 'collaborator_id')
+    page.find('.add_collaborator').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
@@ -171,7 +186,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
   end
 
-  it "checks notes on a public doc set/private collection" do
+  it "checks notes on a public doc set/private collection", js: true do
     login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     fill_in 'Write a new note or ask a question...', with: "Test private note"
@@ -185,9 +200,9 @@ describe "document sets", :order => :defined do
 
     # test activity stream for set
     visit collection_path(@set.owner, @set)
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     find("#show-more-deeds").click
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     page.find('a', text: @set.works.first.pages.first.title).click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
 
@@ -195,9 +210,9 @@ describe "document sets", :order => :defined do
     # test activity stream for collection
     login_as(@owner, :scope => :user)
     visit collection_path(@set.owner, @set.collection)
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     find("#show-more-deeds").click
-    expect(page).to have_content "Test private note"    
+    expect(page).to have_content "Test private note"
     page.find('a', text: @set.works.first.pages.first.title).click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
   end
@@ -250,8 +265,9 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content(@set.title)
   end
 
-  it "checks document set breadcrumbs - subjects" do
-    login_as(@user, :scope => :user)
+  it "checks document set breadcrumbs - subjects", js: true do
+    login_as(@user, scope: :user)
+
     @article = @set.articles.first
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
@@ -263,15 +279,24 @@ describe "document sets", :order => :defined do
     expect(page).to have_selector('.category-article', text: @article.title)
     expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
     page.find('a', text: @article.title).click
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     page.find('.tabs').click_link("Settings")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     click_button 'Autolink'
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     click_button('Save Changes')
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     page.find('.tabs').click_link("Versions")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
   end
 
   it "checks document set subject tabs" do
@@ -319,8 +344,8 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
-  it "checks document set breadcrumbs - work" do
-    login_as(@user, :scope => :user)
+  it 'checks document set breadcrumbs - work' do
+    login_as(@user, scope: :user)
     work = @set.works.first
     @page = work.pages.first
     visit dashboard_path
@@ -328,23 +353,36 @@ describe "document sets", :order => :defined do
     page.find('.collection-work_title', text: work.title).click_link
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).not_to have_selector('a', text: 'Pages That Need Review')
+    expect(page).not_to have_selector('a', text: 'Translations That Need Review')
+
+    original_page_status = @page.status
+    @page.update!(status: 'review')
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
+    page.find('.collection-work_title', text: work.title).click_link
     click_button('Pages That Need Review')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("No pages found")
-    click_button("View All Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).not_to have_content('No pages found')
+    @page.update!(status: original_page_status)
+
+    original_page_translation_status = @page.translation_status
+    @page.update!(translation_status: 'review')
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
+    page.find('.collection-work_title', text: work.title).click_link
     click_button('Translations That Need Review')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("No pages found")
-    click_button("View All Pages")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("About")
+    expect(page).not_to have_content('No pages found')
+    @page.update!(translation_status: original_page_translation_status)
+
+    page.find('.tabs').click_link('About')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/about"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("Contents")
+    page.find('.tabs').click_link('Contents')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/contents"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("Help")
+    page.find('.tabs').click_link('Help')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/help"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     click_link @set.title
@@ -411,38 +449,32 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
 
-  it "checks doc set needs transcription/review buttons" do
-    login_as(@user, :scope => :user)
+  it 'checks doc set needs transcription/review buttons' do
+    login_as(@user, scope: :user)
     visit collection_path(@set.owner, @set)
     expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
-    expect(page).to have_selector('a', text: "Pages That Need Transcription")
-    expect(page).to have_selector('a', text: "Pages That Need Review")
-    click_link("Pages That Need Transcription")
-    expect(page).to have_selector('h3', text: "Pages That Need Transcription")
-    expect(page).to have_content("No pages found")
-    click_link("Return to collection")
-    expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
-    click_link("Pages That Need Review")
-    expect(page).to have_selector('h3', text: "Pages That Need Review")
-    expect(page).to have_content("No pages found")
-    click_link("Return to collection")
-    expect(page).to have_selector('h1', text: @set.title)
-    expect(page).to have_content("Works")
+    expect(page).to have_content('Works')
+    expect(page).not_to have_selector('a', text: 'Pages That Need Transcription')
+    expect(page).not_to have_selector('a', text: 'Pages That Need Review')
   end
 
-  it "disables document sets" do
+  it "disables document sets", js: true do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
-    page.find('.button', text: 'Disable Document Sets').click
+    page.find('.side-tabs').click_link('Look & Feel')
+    page.uncheck('Enable document sets')
+    sleep(1)
+    expect(page.find_link("Edit Sets")).to match_css('[disabled]')
     expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
   end
 
-  it "enables document sets" do
+  it "enables document sets", js: true do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
-    page.find('.button', text: 'Enable Document Sets').click
+    page.find('.side-tabs').click_link('Look & Feel')
+    page.check("Enable document sets")
+    expect(page.find_link("Edit Sets")).not_to match_css('[disabled]')
+    page.click_link('Edit Sets')
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true
@@ -469,7 +501,7 @@ describe "document sets", :order => :defined do
     @set.works.each do |w|
       expect(page).to have_content w.title
     end
-    #check the old path 
+    #check the old path
     #(this variable is stored at the beginning of the test, so it's the original)
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
@@ -495,9 +527,11 @@ describe "document sets", :order => :defined do
     @collection.hide_completed = true
     @collection.save
     #resets work restrictions
-    work = Work.find_by(id: @set.works.first.id)
+    unless @owner.account_type == "Individual Researcher"
+      work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = true
     work.save!
+    end
   end
 
 end

@@ -1,291 +1,75 @@
+=javascript_include_tag "settings"
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
-.columns.collection_settings
-  article.maincol
-    =form_for :collection, url: collection_update_path(@collection) do |f|
-      =validation_summary @collection.errors
-      table.form.collection-settings
-        tr.big
-          th =f.label :title, t('.title')
-          td.w100 =f.text_field :title, value: @collection.title
-        tr.big
-          th =f.label :slug, t('.url')
-          td =f.text_field :slug, value: @collection.slug
-        tr
-          th.hidden =t('.url')
-          td
-            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
-        tr
-          td(colspan="2")
-            =f.label :intro_block, t('.description'), class: "above"
-            br: i =t('.description_message')
-            =f.text_area :intro_block, rows: 10, value: @collection.intro_block
-        tr
-          td(colspan="2")
-            =f.label :footer_block, t('.footer'), class: "above"
-            - if current_user == @collection.owner
-                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
-                p.nomargin.settings = link_to t('.edit_profile'), user_profile_path(current_user)
-            - else
-                =f.text_area :footer_block, rows: 5, value: @collection.owner.footer_block, disabled: true
-                p.nomargin.settings = t('.update_footer_message', owner: @collection.owner.display_name)
-        -if @collection.text_entry?
-          tr
-            td(colspan="2")
-              =f.label :transcription_conventions, t('.transcription_conventions'), class: "above"
-              br: i =t('.transcription_conventions_message')
-              =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
-              p.nomargin.settings =link_to t('.suggestions_transcription_conventions'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
-        tr
-          td(colspan="2")
-            =f.label :help, t('.help'), class: "above"
-            =f.text_area :help, rows: 8, value: @collection.help
-            p.nomargin.settings =link_to t('.suggestions_help_tab'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
-        -if @collection.text_entry?
-          tr
-            td(colspan="2")
-              =f.label :link_help, t('.link_help'), class: "above"
-              =f.text_area :link_help, rows: 10, value: @collection.link_help
-          tr
-            td(colspan="2")
-              =f.check_box :subjects_enabled
-              =f.label :subjects_enabled, t('.subjects_enabled')
-        tr
-          td(colspan="2")
-            =f.check_box :hide_completed
-            =f.label :hide_completed, t('.hide_completed')
-        tr
-          td(colspan="2")
-            =f.check_box :alphabetize_works
-            =f.label :alphabetize_works, t('.alphabetize_works')
-        -if @collection.text_entry?
-          tr
-            td(colspan="2")
-              =f.check_box :user_download
-              =f.label :user_download, t('.user_download')
-          tr
-            td(colspan="2")
-              =f.label :text_language, t('.text_language'), class: 'collection-label'
-              =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
+.collection-meta-wrapper
+  =render({ :partial => 'edit_tabs', :locals => { :selected => 1}})
 
-        tr
-          td(colspan="2")
-            =f.label :tags, t('.subject_tags')
-            =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
-
-        tr
-          td(colspan="2")
-            =f.label :default_orientation, t('.default_orientation')
-            =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w50'}
-
-        -if @ssl && !@collection.field_based && @collection.text_entry?
-          tr
-          td(colspan="2")
-              =f.check_box :enable_spellcheck
-              =f.label :enable_spellcheck, t('.enable_spellcheck')
-
-        -if @ssl && !@collection.field_based && @collection.text_entry?
-          tr
-            td(colspan="2")
-              =f.check_box :voice_recognition, onchange: 'showLang(event)'
-              =f.label :voice_recognition, t('.voice_recognition')
-        -if @collection.text_entry?
-          tr
-            td(colspan="2")
-              h3
-                =f.label :review_type, t('.review_type')
-              =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
-              =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
-              br
-              =f.radio_button :review_type, Collection::ReviewType::REQUIRED
-              =f.label "review_type_#{Collection::ReviewType::REQUIRED}", t('.review_type_required')
-              br
-              =f.radio_button :review_type, Collection::ReviewType::RESTRICTED
-              =f.label "review_type_#{Collection::ReviewType::RESTRICTED}", t('.review_type_restricted')
-              -if @collection.review_type == Collection::ReviewType::RESTRICTED
-                p =t('.authorized_reviewers')
-                -@reviewers.each do |user|
-                  .user-label
-                    .userpic
-                      =profile_picture(user)
-                    .username
-                      =link_to user.display_name, user_profile_path(user)
-                =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
-                
-
-      .toolbar
-        .toolbar_group
-          =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
-
-    h3 =t('.add_a_new_work')
-    -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => @collection.id)
-    p.nodata_text =t('.add_another_work_under', start_project: start_project).html_safe
-
-  aside.sidecol
-    h3 =t('.collection_image')
-    =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
+  .collection-settings-wrapper
+    =form_for :collection, url: collection_update_path(@collection), remote: true, authenticity_token: true, html: { id: 'collection-settings-form', multipart: true } do |f|
       =hidden_field_tag(:collection_id, @collection.id)
-      label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
-        =f.file_field :picture, accept: 'image/*'
-        -if @collection.picture_url(:thumb)
-          =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
-    p.fglight =t('.picture_to_be_used_message')
+      .validation-wrapper(style="display:none;") =render 'shared/validation_summary', errors: @collection.errors
+      =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+      table.form.collection-settings
+        tr
+          th: h3 =f.label :title, t('.title')
+          td =f.text_field :title, value: @collection.title
+        tr
+          th
+            h3 =f.label :slug, t('.url')
+            p =t('.url_description')
+          td 
+            =f.text_field :slug, value: @collection.slug
+        tr 
+          th =t('.current_url')
+          td
+            b#collection-url =collection_url(@collection.owner.slug,@collection.slug)
+            a.clipboard-btn (data-clipboard-target='#collection-url' aria-label=t('.copy_url') title=t('.copy_url'))
+              =svg_symbol '#icon-copy', class: 'icon'
+        tr
+          th =t('.transcriber_url')
+          td 
+            b#transcriber-url =collection_start_transcribing_url(@collection.owner.slug, @collection.slug)
+            a.clipboard-btn (data-clipboard-target='#transcriber-url' aria-label=t('.copy_url') title=t('.copy_url'))
+              =svg_symbol '#icon-copy', class: 'icon'
 
-    -if @collection.text_entry?
-      h3 =t('.collection_link')
-      p =t('.page_needing_transcription', current_url:  "<b>#{collection_start_transcribing_url(@collection.owner.slug, @collection.slug)}</b>").html_safe
-
-    h3 =t('.collection_privacy')
-    -if @collection.restricted
-      p =t('.collection_restricted_message')
-      =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button')
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('.make_collection_public')
-    -else
-      p =t('.collection_public_message')
-      =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button')
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('.make_collection_private')
-
-    -if @collection.restricted
-      h3 =t('.collection_collaborators')
-      p =t('.collection_collaborators_description')
-      p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
-      -@collaborators.each do |user|
-        .user-label
-          =profile_picture(user)
-          .username
-            =link_to user.display_name, user_profile_path(user)
-
-      h3 =t('.api_access')
-      p =t('.api_access_description')
-      -if @collection.api_access
-        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
-          =svg_symbol '#icon-lock', class: 'icon'
-          span =t('.close_api')
-      -else
-        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
-          =svg_symbol '#icon-unlock', class: 'icon'
-          span =t('.open_api')
-
-    h3 =t('.collection_owners')
-    p =t('.collection_owners_description')
-    p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
-    -@owners.each do |user|
-      .user-label
-        =profile_picture(user)
-        .username
-          =link_to user.display_name, user_profile_path(user)
-    
-    - unless @collection.restricted
-      h3 =t('.blocked_users')
-      p =t('.block_users_description')
-      p =link_to(t('.block'), collection_block_users_path(@collection.slug), id: 'block-users-button', class: 'button', :data => { litebox: { hash: 'block-users', noscroll: false, remote: true  }})
-
-
-    -if @collection.text_entry?
-      h3 =t('.transcription_type')
-      p =t('.transcription_type_description')
-      -if !@collection.field_based
-        =link_to(collection_enable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.field_based_transcription'))
-          span =t('.enable_field_based_transcription')
-      -else
-        =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_document_based_transcription'))
-          span =t('.revert_document_based_transcription')
-        =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
-
-    h3 =t('.metadata_entry')
-    -if @collection.metadata_entry?
-      =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
-      =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
-        span =t('.revert_metadata_description')
-    -else
-      =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
-        span =t('.enable_metadata_description')    
-
-    h3 =t('.message_boards')
-    p =t('.message_boards_description')
-    -if @collection.messageboards_enabled?
-      =link_to(collection_disable_messageboards_path(:collection_id => @collection.id), class: 'button')
-        span =t('.disable_message_boards')
-    -else
-      =link_to(collection_enable_messageboards_path(:collection_id => @collection.id), class: 'button')
-        span =t('.enable_message_boards')
-
-    -if !@collection.field_based && @collection.text_entry?
-      h3 =t('.editor_buttons')
-      p =t('.editor_buttons_description')
-      =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
-        span =t('.edit_buttons')
-
-    h3 =t('.document_sets')
-    p =t('.document_sets_description')
-    -if !@collection.supports_document_sets
-      p =t('.no_document_sets_in_collection')
-      =link_to(collection_enable_document_sets_path(:collection_id => @collection.id), class: 'button')
-        span =t('.enable_document_sets')
-    -else
-      =link_to(collection_disable_document_sets_path(:collection_id => @collection.id), class: 'button')
-        span =t('.disable_document_sets')
-
-    -if @collection.text_entry?
-      h3 =t('.ocr_correction')
-      p =t('.ocr_correction_description')
-      -if @collection.works.ocr_disabled.any?
-        =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button')
-          span =t('.enable_ocr')
-      '
-      -if @collection.works.ocr_enabled.any?
-        =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
-          span =t('.disable_ocr')
-
-    h3 =t('.metadata')
-    p =t('.metadata_description')
-    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
-      span =t('.upload_metadata')
-
-    -unless current_user.account_type == "Individual Researcher"
-      h3 =t('.metadata_facets')
-      p =t('.metadata_facets_description')
-      -if @collection.facets_enabled?
-        =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
-          span =t('.disable_facets')
-      -else
-        =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
-          span =t('.enable_facets')
-
-    -if @collection.text_entry?
-      h3 =t('.restricted_completed_works')
-      p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
-      =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
-        span =t('.restrict_completed_works')
-
-    h3 =t('.collection_status')
-    -if @collection.active?
-      p =t('.collection_active_message')
-      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('.make_collection_inactive')
-    -else
-      p =t('.collection_inactive_message')
-      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('.make_collection_active')
-
-
-    -if current_user == @collection.owner
-      -if @collection.text_entry?
-        h3 =t('.blank_collection')
-        p =t('.blank_collection_description')
-        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
-          span =t('.blank_collection')
-      h3 =t('.delete_collection')
-      =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
-        span =t('.delete_collection')
+        tr
+          th
+            h3 =f.label :tags, t('.subject_tags')
+          td
+            =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
+        tr 
+          th
+            h3 =t('.collection_image')
+            p =t('.collection_image_description')
+          td.image-form
+            -if @collection.picture_url(:thumb)
+              label.image-upload( data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
+                =f.file_field :picture, accept: 'image/*'
+                =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
+            -else
+              label( data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
+                =f.file_field :picture, accept: 'image/*'
+        tr
+          th
+            h3 =f.label :intro_block, t('.description')
+            p = t('.description_message')
+          td =f.text_area :intro_block, rows: 6, value: @collection.intro_block  
+        tr: td 
+        tr 
+          th 
+            h3 =t('.footer')
+            p =t('.footer_description')
+          td 
+            .footer-preview
+                ==@collection.owner.footer_block
+            -if current_user == @collection.owner
+              i ==t('.footer_edit', link: link_to(t('.footer_edit_link'), user_update_profile_path(user_id: @collection.owner)))
+            -else
+              i =t('.footer_edit_nonprimary')
 
 -content_for :javascript
   javascript:
     $(function() {
-      $('#collection_text_language').select2();
+      var clipboard = new Clipboard('.clipboard-btn');
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();

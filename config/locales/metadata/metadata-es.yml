@@ -1,6 +1,16 @@
 ---
 es:
   metadata:
+    create:
+      is_processing: Su carga está siendo procesada. Se enviará un correo electrónico para actualizar su estado.
+    import_csv:
+      errors:
+        filename_blank: No había ningún nombre de archivo de obra ni valores de identificación de obra en el archivo cargado
+        not_existing_work: No existe ninguna obra con el nombre de archivo %{work_filename}
+        not_existing_work_id: No existe ninguna obra con ID %{work_id}
+        not_in_collection: No hay ninguna obra con ID %{work_id} en la colección %{collection_title}
+    refresh:
+      is_processing: La importación de la colección IIIF está en proceso. Vuelva a cargar esta página en unos minutos para ver las obras importadas.
     upload:
       browse: Navegar
       click_to_browse_a_file: Haga clic para buscar un archivo...

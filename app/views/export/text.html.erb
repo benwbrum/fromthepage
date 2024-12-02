@@ -24,7 +24,9 @@
       <div id="page-<%=page.id%>">
         <h3><%= page.title %></h3>
         <div class="page-content">
-          <%= raw(xml_to_html(page.xml_text, true, true)) %>
+          <% unless page.status_blank? %>
+            <%= raw(xml_to_html(page.xml_text, true, true)) %>
+          <% end %>
         </div>
         <% if page.notes.present? %>
           <div class="page-notes">
