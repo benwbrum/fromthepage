@@ -84,6 +84,36 @@ en:
       upload_image: Upload Image
       url: URL
       url_description: Please use lowercase letters and dashes between any words.
+    form:
+      add_button: Add
+      collection_image: Collection image
+      collection_image_description: A picture to be used to illustrate the collection description.
+      copy_url: Copy to clipboard
+      current_url: 'The current URL for this collection:'
+      description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      done: Done
+      footer: Footer
+      footer_description: This text will be displayed at the bottom of every page in the collection.
+      footer_edit: Edit this footer in %{link}.
+      footer_edit_link: your user profile
+      footer_edit_nonprimary: Edit this footer in the organization account.
+      less: Show less
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
+      n_more: "%{count} more "
+      no_image: No Image
+      remove_collaborator: Remove collaborator
+      remove_owner: Remove owner
+      remove_reviewer: Remove Reviewer
+      save_changes: Save Changes
+      title: Title
+      transcriber_url: 'This link will send transcribers directly to a page needing transcription:'
+      unblock_user: Unblock user
+      upload_image: Upload Image
+      url: URL
+      url_description: Please use lowercase letters and dashes between any words.
     edit_buttons:
       abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
       abbr_label: Abbreviation
