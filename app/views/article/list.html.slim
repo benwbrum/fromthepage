@@ -26,7 +26,7 @@
               h3.headline_title(data-category-title="#{category.id}") =category.title
               -if user_signed_in? && current_user.like_owner?(@collection)
                 .headline_aside
-                  dl.dropdown.right
+                  dl.dropdown.right data-controller='dropdown'
                     dt.h5 tabindex=0
                       span= t('.actions')
                       =svg_symbol '#big-menu', class: 'icon icon-big'

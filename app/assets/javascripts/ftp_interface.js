@@ -22,7 +22,6 @@
 //= require utils
 
 $(function() {
-  $('.dropdown').dropdown();
   $('.input-file').inputFile();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();

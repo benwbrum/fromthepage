@@ -64,7 +64,7 @@ html lang="en-US"
               =link_to t('.sign_up_to_transcribe'), main_app.new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
-            dl.dropdown.right
+            dl.dropdown.right data-controller='dropdown'
               dt.header_link.header_user tabindex=0
                 span
                   big =current_user.guest ? t('.create_an_account') : t('.signed_in_as')
@@ -86,7 +86,7 @@ html lang="en-US"
               span =t('.sign_in')
               =svg_symbol '#header-user', class: 'icon'
 
-          dl.dropdown.right
+          dl.dropdown.right data-controller='dropdown'
             dt.header_link.header_locale tabindex=0
               span
                 =image_tag("icons/globe.svg", alt: "Globe Icon")
