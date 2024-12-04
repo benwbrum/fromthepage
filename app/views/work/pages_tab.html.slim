@@ -3,7 +3,7 @@
 .work-columns.columns
   .work-columns_left= t('.pages_tab_description')
   .work-columns_right
-    =link_to t('.add_new_page'), new_page_path(work_id: @work.id), data: { litebox: { hash: 'create-page' } }, class: 'button'
+    =link_to t('.add_new_page'), page_new_path(work_id: @work.id), data: { controller: 'litebox', litebox: { hash: 'create-page' } }, class: 'button'
 
 -if @work.pages.empty?
   .nodata

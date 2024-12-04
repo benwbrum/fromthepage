@@ -12,7 +12,6 @@ de:
       cancel: Stornieren
       continue: Weitermachen
       manage_categories: Kategorien verwalten
-      options: Optionen
       subject: 'Entität:'
       uncategorized_subjects: Nicht kategorisierte Entitäten
       uncategorized_subjects_mentioned: Sie haben nicht kategorisierte Entitäten, die in der Seitentranskription erwähnt werden. Bitte überprüfen Sie die folgenden Entitäten und weisen Sie ihnen die entsprechenden Kategorien zu.

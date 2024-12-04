@@ -12,7 +12,6 @@ en:
       cancel: Cancel
       continue: Continue
       manage_categories: Manage Categories
-      options: options
       subject: 'Subject: '
       uncategorized_subjects: Uncategorized Subjects
       uncategorized_subjects_mentioned: You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.

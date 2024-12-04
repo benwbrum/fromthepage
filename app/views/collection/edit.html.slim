@@ -35,7 +35,7 @@
           th
             h3 =f.label :tags, t('.subject_tags')
           td
-            =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
+            =f.select(:tags, options_from_collection_for_select(Tag.where(canonical: true), :id, :ai_text, @collection.tags.pluck(:id)), {}, class: 'field-input', data: { controller: 'select2', select2_placeholder_value: 'Choose...' }, size: 1, multiple: true)
         tr
           th
             h3 =t('.collection_image')

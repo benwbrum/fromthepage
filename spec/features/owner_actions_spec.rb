@@ -91,7 +91,7 @@ describe "owner actions", :order => :defined do
     page.find(:css, '#document-upload').click
     page.select 'Add New Collection', from: 'document_upload_collection_id'
 
-    within(page.find('.litebox-embed')) do
+    within(page.find('.litebox-embed', wait: 5)) do
       expect(page).to have_content('Create New Collection')
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")

@@ -1,8 +1,6 @@
 class UserController < ApplicationController
   before_action :remove_col_id, :only => [:profile, :update_profile]
   before_action :authorized?, :only => [:update_profile, :update]
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
 
   PAGES_PER_SCREEN = 50
 

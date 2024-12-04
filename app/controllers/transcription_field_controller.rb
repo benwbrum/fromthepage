@@ -2,9 +2,6 @@ class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
   before_action :authorized?, :only => [:new, :edit_fields, :add_field]
 
-  #no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil}
-
   def multiselect_form
     @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
     @collection = @transcription_field.collection
@@ -227,13 +224,13 @@ class TranscriptionFieldController < ApplicationController
   def enable_ruler
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     @transcription_field.update(:row_highlight => true)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
   end
 
   def disable_ruler
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     @transcription_field.update(:row_highlight => false)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
   end
 
   def choose_offset

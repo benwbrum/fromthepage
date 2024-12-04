@@ -45,7 +45,7 @@
           =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: t('.select_a_collection_to_import_into'), required: true, 'aria-label' => t('.select_a_collection')
           =button_tag t('.import_checked_manifests')
 
-        =check_box_tag("select_all", 1, true, data: { select_all: 'manifest_checks' })
+        =check_box_tag("select_all", 1, true, data: { controller: 'select-all', select_all: 'manifest_checks' })
         |&nbsp;&nbsp;
         =label_tag 'select_all', t('.select_all_manifests')
 
