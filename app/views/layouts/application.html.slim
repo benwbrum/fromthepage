@@ -30,6 +30,9 @@ html lang="en-US"
       =render :partial => '/layouts/fb_pixel'
     -unless CLARITY.blank?
       =render :partial => '/layouts/clarity'
+    = turbo_refreshes_with method: :morph, scroll: :preserve
+
+    =javascript_importmap_tags
 
   body class="#{'monitor-view' if @is_monitor_view}"
     #flash_wrapper
@@ -139,7 +142,6 @@ html lang="en-US"
     .page-busy-overlay
 
     =javascript_include_tag 'ftp_interface'
-    =javascript_importmap_tags
 
     =yield :javascript
 

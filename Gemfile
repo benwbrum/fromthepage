@@ -75,6 +75,9 @@ gem 'terser'
 
 gem 'interactor-rails', '~> 2.0'
 
+gem 'stimulus-rails'
+gem 'turbo-rails'
+
 group :assets do
   gem 'uglifier'
 end
