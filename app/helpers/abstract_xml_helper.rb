@@ -8,6 +8,7 @@ module AbstractXmlHelper
     'alt',
     'break',
     'class',
+    'data-controller',
     'data-tooltip',
     'datetime',
     'depth',
@@ -67,7 +68,8 @@ module AbstractXmlHelper
               anchor.add_attribute("href", "#article-#{id}")
             end
           else
-            anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
+            anchor.add_attribute('data-controller', 'tooltip')
+            anchor.add_attribute('data-tooltip', article_tooltip_url(article_id: id, collection_id: @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
             if highlight_article_id && id == highlight_article_id
               anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting

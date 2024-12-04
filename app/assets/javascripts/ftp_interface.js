@@ -24,7 +24,6 @@
 $(function() {
   $('.input-file').inputFile();
   $('[data-litebox]').litebox();
-  $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
   $('[data-imageview]').imageView();
 
