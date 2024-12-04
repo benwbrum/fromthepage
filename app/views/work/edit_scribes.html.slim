@@ -6,8 +6,14 @@
     =hidden_field_tag :user_id, @collection.owner.slug
     =hidden_field_tag :collection_id, @collection.slug
     =hidden_field_tag :work_id, @work.slug
+
     -options = options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier')
-    =select_tag 'scribe_id', options, include_blank: true
+    =select_tag 'scribe_id', options, include_blank: true, \
+      data: { \
+        controller: 'select2', \
+        select2_placeholder_value: 'Add new collaborator...', \
+        select2_ajax_url_value: work_search_scribes_path(collection_id: @collection.slug, work_id: @work.slug) }
+
     =button_tag t('collection.edit.add_button'), class: 'add_scribe'
   -@scribes.each do |user|
     .user-label
@@ -22,20 +28,3 @@
   .toolbar
     .toolbar_group.aright
       =link_to(t('work.edit.done'), edit_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'button')
-
-javascript:
-  $('#scribe_id').select2({
-    placeholder: 'Add new collaborator...',
-    ajax: {
-      url: '#{work_search_scribes_path(@collection, @work)}',
-      dataType: 'json',
-      delay: 250,
-      data: function (params) {
-        var query = {
-          term: params.term,
-          work_id: "#{@work.slug}"
-        }
-        return query;
-      }
-    }
-  });

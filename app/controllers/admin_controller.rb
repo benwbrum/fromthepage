@@ -5,9 +5,6 @@ class AdminController < ApplicationController
 
   PAGES_PER_SCREEN = 20
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner, :expunge_confirmation, :expunge_user]
-
   def authorized?
     unless user_signed_in? && current_user.admin
       redirect_to dashboard_path

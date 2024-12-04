@@ -90,6 +90,7 @@ de:
         other: 'Kategorien:'
       explore_this_subject: Diese Entität erkunden
     update:
+      categories_updated: Artikelkategorien aktualisiert.
       gis_coordinates_truncated:
         one: " (GIS-Koordinaten auf %{precision} Dezimalstelle gekürzt)"
         other: " (GIS-Koordinaten auf %{precision} Dezimalstellen gekürzt)"

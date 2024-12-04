@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do

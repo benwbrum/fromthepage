@@ -36,9 +36,6 @@ class CollectionController < ApplicationController
   before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
   before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
-
   def search_users
     query = "%#{params[:term].to_s.downcase}%"
     user_type = (params[:user_type] || 'collaborator').to_sym
