@@ -1,46 +1,4 @@
 ;(function($, window, document, undefined) {
-  // Global flash messages auto close
-  // $('element').flash();
-  $.fn.flashclose = function(s) {
-    s = $.extend({
-      delay_notice: 1000,      // Notice auto close delay, 0 = don't close
-      delay_alert: 6000,       // Alert auto close delay
-      delay_error: 0,            // Error auto close delay
-      delay_info: 30000
-    }, s || {});
-
-    return this.each(function() {
-      var container = $(this);
-      var btnclose = $('.flash_close', container);
-      var delay = s.delay_notice;
-
-      if(container.hasClass('flash-alert')) {
-        delay = s.delay_alert;
-      }
-      if(container.hasClass('flash-error')) {
-        delay = s.delay_error;
-      }
-      if(container.hasClass('flash-info')) {
-        delay = s.delay_info;
-      }
-
-      // Close on click
-      btnclose.one('click', function(e) {
-        e.stopPropagation();
-        container.fadeOut('fast', function() {
-          container.remove();
-        });
-      });
-
-      // Auto close
-      if(delay) {
-        setTimeout(function() {
-          btnclose.trigger('click');
-        }, delay);
-      }
-    });
-  };
-
   // Custom drop-down open/close toggle
   // $('element').dropdown();
   // <element data-dropdown='{ "selectable": true, "openclass": "visible"}'>

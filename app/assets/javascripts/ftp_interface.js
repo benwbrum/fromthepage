@@ -22,7 +22,6 @@
 //= require utils
 
 $(function() {
-  $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('.input-file').inputFile();
   $('[data-litebox]').litebox();

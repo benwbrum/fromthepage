@@ -128,12 +128,10 @@ h2.legend =t('.notes_and_questions')
                 // user has been logged out
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your session may have expired while you were editing.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               } else {
                 // some connection problem
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your connection to the website is unstable.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               }
             },
             complete: function() {
