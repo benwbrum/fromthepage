@@ -1,0 +1,54 @@
+tr
+  td(colspan="2")
+    =f.label :text_language
+      h3(style="display:inline-block") =t('collection.edit_tasks.text_language')
+
+      =f.select :text_language,
+                options_for_select(text_languages_collection, selected: collection.text_language.presence || 'eng'),
+                {},
+                { class: 'w50', data: { controller: 'select2' }, disabled: !collection.text_entry? }
+      p = t('collection.edit_tasks.text_language_description')
+tr: td
+tr
+  td(colspan="2")
+    h3 =t('collection.edit_tasks.transcription_type')
+    p =t('collection.edit_tasks.transcription_type_description')
+tr
+  td(colspan="2")
+    =f.radio_button :field_based, false, checked: !collection.field_based, disabled: !collection.text_entry?
+    =f.label :field_based_false
+      h3.settings-label =t('collection.edit_tasks.document_based_transcription')
+      =link_to t('collection.edit_tasks.edit_buttons'), collection_editor_button_edit_path(collection_id: collection.id), disabled: collection.field_based || !collection.text_entry?, class: 'button inline-btn', id: 'document-based-edit', 'aria-label' => t('collection.edit_tasks.edit_buttons'), data: { controller: 'litebox', litebox: { hash: 'edit-buttons' } }
+      p =t('collection.edit_tasks.document_based_transcription_description')
+tr
+  td(colspan="2")
+    =f.radio_button :field_based, true, checked: collection.field_based, disabled: !collection.text_entry?
+    =f.label :field_based_true
+      h3.settings-label =t('collection.edit_tasks.field_based_transcription')
+      =link_to t('collection.edit_tasks.edit_fields'), transcription_field_edit_fields_path(collection_id: collection), disabled: !collection.field_based || !collection.text_entry?, class: 'button inline-btn fields exits', id: 'field-based-edit', 'aria-label' => t('collection.edit_tasks.edit_fields')
+      p =t('collection.edit_tasks.field_based_transcription_description')
+tr: td
+tr
+  td(colspan="2")
+    =f.check_box :data_entry_type, checked: collection.metadata_entry?
+    =f.label :data_entry_type
+      h3.settings-label =t('collection.edit_tasks.enable_metadata_description')
+      =link_to t('collection.edit_tasks.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(collection_id: collection), disabled: !collection.metadata_entry?, class: 'button inline-btn fields exits', id: 'metadata-fields-edit', 'aria-label' => t('collection.edit_tasks.edit_fields')
+      p =t('collection.edit_tasks.metadata_description_description')
+tr
+  td(colspan="2")
+    =f.check_box :subjects_enabled, disabled: !collection.text_entry?
+    =f.label :subjects_enabled
+      h3 =t('collection.edit_tasks.subjects_enabled')
+      p =t('collection.edit_tasks.subjects_enabled_description')
+tr: td
+tr
+  td(colspan="2")
+    h3 =t('collection.edit_tasks.ocr_correction')
+    -if collection.works.ocr_disabled.any? || collection.works.empty?
+      =link_to(collection_enable_ocr_path(collection_id: collection.id), class: 'button action-btn', disabled: collection.works.empty? || !collection.text_entry?)
+        span =t('collection.edit_tasks.enable_ocr')
+    -if collection.works.ocr_enabled.any?
+      =link_to(collection_disable_ocr_path(collection_id: collection.id), class: 'button action-btn', disabled: !collection.text_entry?)
+        span =t('collection.edit_tasks.disable_ocr')
+    p =t('collection.edit_tasks.ocr_description')
