@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   around_action :check_deleted_articles
   around_action :switch_locale
 
+  layout :set_layout
 
   def check_deleted_articles
     if controller_name != 'display' && @collection && !@collection.subjects_disabled
@@ -333,6 +334,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private
+
+  def set_layout
+    request.xhr? ? false : nil
+  end
 end
 
   def page_params(page)
