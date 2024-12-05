@@ -35,7 +35,7 @@ describe "forum tab for collection", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable forums')
-    expect(page).to have_unchecked_filed('Enable forums')
+    expect(page).to have_unchecked_field('Enable forums')
     visit current_path
     expect(page.find('.tabs')).to_not have_content("Forum")
   end
