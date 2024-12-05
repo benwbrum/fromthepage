@@ -71,8 +71,7 @@ describe "export tasks" do
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: @work.title).click_link("Plain text")
     expect(page.current_path).to eq ("/export/work_plaintext_verbatim")
-    expect(page).to have_css('pre', text: @work.title)
-    expect(page).to have_css('pre', text: @page.title)
+    expect(page.body).to have_content(@work.verbatim_transcription_plaintext)
   end
 
   it "exports a work as tei" do
