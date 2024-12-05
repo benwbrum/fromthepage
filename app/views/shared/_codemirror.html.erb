@@ -165,7 +165,7 @@
   function generateTable(rows, cols) {
     let table = '| ' + Array(cols).fill('').join(' | ') + ' |\n';
     table += '| ' + Array(cols).fill('---').join(' | ') + ' |\n';
-    for (let i = 0; i < rows - 1; i++) {
+    for (let i = 0; i < rows; i++) {
       table += '| ' + Array(cols).fill('').join(' | ') + ' |\n';
     }
     return table;
