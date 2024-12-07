@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Work::RefreshMetadata do
+describe Work::Metadata::Refresh do
   let(:owner) { User.find_by(login: OWNER) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
@@ -23,7 +23,7 @@ describe Work::RefreshMetadata do
   context 'when original metadata is blank' do
     it 'adds metadata' do
       expect(work.original_metadata).to be_nil
-      VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
+      VCR.use_cassette('iiif/refresh_metadata', record: :none) do
         result
       end
       expect(result.success?).to be_truthy
@@ -37,7 +37,7 @@ describe Work::RefreshMetadata do
 
     it 'updates metadata' do
       expect(work.original_metadata).to eq(existing_metadata)
-      VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
+      VCR.use_cassette('iiif/refresh_metadata', record: :none) do
         result
       end
       expect(result.success?).to be_truthy

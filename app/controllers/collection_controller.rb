@@ -453,6 +453,10 @@ class CollectionController < ApplicationController
   def edit
   end
 
+  def edit_help
+    @works_with_custom_conventions = @collection.works.where.not(transcription_conventions: nil)
+  end
+
   def edit_tasks
     @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
     if @collection.field_based && !@collection.transcription_fields.present?

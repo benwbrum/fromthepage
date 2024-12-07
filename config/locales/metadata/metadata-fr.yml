@@ -1,6 +1,14 @@
 ---
 fr:
   metadata:
+    create:
+      is_processing: Votre téléchargement est en cours de traitement. Un e-mail vous sera envoyé pour mettre à jour son statut
+    import_csv:
+      errors:
+        filename_blank: Aucune valeur de nom de fichier de travail ou d'ID de travail n'était dans le fichier téléchargé
+        not_existing_work: Aucune œuvre n'existe avec le nom de fichier %{work_filename}
+        not_existing_work_id: Aucune œuvre n'existe avec l'ID %{work_id}
+        not_in_collection: Aucune œuvre avec l'ID %{work_id} n'est dans la collection %{collection_title}
     refresh:
       is_processing: L'importation de la collection IIIF est en cours. Rechargez cette page dans quelques minutes pour voir les œuvres importées.
     upload:

@@ -22,7 +22,7 @@ namespace :fromthepage do
       raise ArgumentError, 'Type can only be collection, document_set, or work' if id.nil?
     end
 
-    result = Work::RefreshMetadata.new(work_ids: all_work_ids).call
+    result = Work::Metadata::Refresh.new(work_ids: all_work_ids).call
 
     if result.success?
       p 'Updated metadata successfully!'

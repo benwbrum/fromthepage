@@ -157,6 +157,9 @@ en:
       suggestions_transcription_conventions: Suggestions for your transcription conventions.
       transcription_conventions: Transcription conventions
       transcription_conventions_description: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
+      works_with_custom_conventions:
+        one: "%{title} has custom transcription conventions"
+        other: "%{title} and %{count} others have custom transcription conventions"
     edit_look:
       alphabetize_works: List works alphabetically.
       alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.

@@ -59,7 +59,7 @@ describe "convention related tasks", :order => :defined do
     page.find('.side-tabs').click_link("Help Text")
     page.fill_in 'collection_transcription_conventions', with: @new_convention
     # check unchanged work for collection conventions
-    work2 = @collection.works.where.not(id: @work.id).first
+    work2 = @collection.works.where(transcription_conventions: nil).where.not(id: @work.id).first
     page2 = work2.pages.second
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)

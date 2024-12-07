@@ -63,7 +63,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "imports IIIF manifests", :js => true do
     #import a manifest for test data
-    VCR.use_cassette('iiif/imports_iiif_manifests', :record => :new_episodes) do
+    VCR.use_cassette('iiif/imports_iiif_manifests', record: :new_episodes) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
@@ -79,7 +79,7 @@ describe "uploads data for collections", :order => :defined do
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
       #this manifest has a very long title
-      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
+      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2654"
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")

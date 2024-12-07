@@ -35,6 +35,10 @@ en:
         Thanks, <br><br>
         %{from}
       turn_off_notification: " to turn off this notification"
+    metadata_csv_import_finished:
+      fail: Your upload has finished processing. %{count} works were updated successfully; %{error_count} rows encountered errors.
+      subject: Your metadata CSV import is finished.
+      success: Your upload has finished processing. %{count} works were updated successfully.
     new_mobile_user:
       html:
         continue_transcribing: " to continue transcribing."

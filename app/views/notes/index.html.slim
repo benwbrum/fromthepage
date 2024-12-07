@@ -1,0 +1,16 @@
+ruby:
+  url = @collection ? collection_notes_path(collection_id: @collection.slug) : notes_path
+-content_for :page_title
+  =t('.notes')
+  -if @collection
+    =" - #{@collection.title}"
+
+h1 =t('.notes')
+-if @collection
+  h3 =t('.collection_title', title: @collection.title)
+
+=fe_filter_table_wrapper(url: url, selector: 'notes-table', sorting: @sorting, ordering: @ordering) do
+  =fe_filter_search(key: :search, value: params[:search])
+
+  #notes-table
+    =render partial: 'table'

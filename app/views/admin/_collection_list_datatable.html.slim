@@ -8,6 +8,7 @@ table#collections.datagrid.striped
     th Status
     th Type
     th Completion
+    th Tags
     th Created
     th Facets
   tbody
@@ -58,6 +59,7 @@ table#collections.datagrid.striped
           -else
             td Transcription
         td =c.pct_completed
+        td =c.tags.where(canonical:true).pluck(:ai_text).join('; ')
         td =c.created_on.to_date
         -if c.facets_enabled?
           td facets
@@ -72,3 +74,4 @@ table#collections.datagrid.striped
     $(document).ready( function() {
         $('#collections').DataTable({ paging: false });
     } );
+//

@@ -35,6 +35,10 @@ fr:
         Merci, <br><br>
         %{from}
       turn_off_notification: " pour désactiver cette notification"
+    metadata_csv_import_finished:
+      fail: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès ; %{error_count} lignes ont rencontré des erreurs.
+      subject: Votre importation de métadonnées CSV est terminée.
+      success: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès.
     new_mobile_user:
       html:
         continue_transcribing: " continuer à transcrire."
