@@ -3,13 +3,14 @@
 
 -if result.is_a?(Collection)
   h2 Collection - #{result[:title]}
-  p #{result[:intro_block]}
+  p #{result[:intro_block].html_safe}
 
 -elsif result.is_a?(Page)
   h2 Page - #{result[:title]}
 
 -elsif result.is_a?(User)
   h2 User - #{result[:display_name]}
+  p #{result[:about].html_safe}
 
 -elsif result.is_a?(Work)
   h2 Work - #{result[:title]}
