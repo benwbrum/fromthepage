@@ -13,5 +13,9 @@
   -if @type_counts.has_key?(:ftp_page)
     a href="#pages" Pages (#{@type_counts[:ftp_page]})
 
+=will_paginate @search_results
+
 -@search_results.each do |sr|
   =render({ :partial => 'elastic/search_result', :locals => { :result => sr} })
+
+=will_paginate @search_results

@@ -205,9 +205,13 @@ class DashboardController < ApplicationController
     if ELASTIC_ENABLED
       search_data = elastic_search_results(params[:search])
 
-      @search_results = search_data[:inflated] 
+      inflated_results = search_data[:inflated] 
       @type_counts = search_data[:type_counts]
       @total_count = search_data[:total_count]
+
+      @search_results = WillPaginate::Collection.create(1, 10, @total_count) do |pager|
+          pager.replace(inflated_results)
+      end
 
     else
       @search_results = search_results(params[:search])
