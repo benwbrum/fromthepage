@@ -25,7 +25,7 @@
             th =t('.work')
             th =t('.status')
             th
-              =check_box_tag(nil, nil, false, style: 'margin: 0 5px 0 7px;', data: { select_all: 'works' })
+              =check_box_tag(nil, nil, false, style: 'margin: 0 5px 0 7px;', data: { controller: 'select-all', select_all: 'works' })
               =t('.add')
         tbody
           -@works.each do |work|

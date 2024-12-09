@@ -18,41 +18,16 @@
 //= require handsontable.full.min
 //= require datatables.min
 //= require clipboard
-//= require select_all
-//= require utils
 
 $(function() {
   $('[data-litebox]').litebox();
   $('[data-fullheight]').fullheight();
-  $('[data-imageview]').imageView();
-
-  // Classname trigger
-  $(document).on('click', '[data-toggle-class]', function() {
-    var data = $(this).data('toggle-class');
-    for(var selector in data) {
-      $(selector).toggleClass(data[selector]);
-    }
-  });
 
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
-
-  // Warn about unsaved data
-  $('form[data-areyousure]').areYouSure();
-
-  // Show and hide collection statistics
-  $('.collection').on('click', '[data-toggle-stats]', function(e) {
-    var container = $(e.delegateTarget);
-    var stats = $('.collection_stats', container);
-    var ishidden = stats.is(':hidden');
-    stats[ishidden ? 'slideDown' : 'slideUp']('fast');
-    container.toggleClass('stats-visible', ishidden);
-  });
-
-  $('[data-select-all]').selectAll();
 
   // Filterable table
   $('[data-filterable-table]').filterableTable();
