@@ -402,3 +402,84 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
     }
   }
 }
+
+function lintHTML(content) {
+  const selfClosingTags = ['br', 'area', 'base', 'basefont', 'bgsound', 'button', 'col', 'embed', 'frame', 'frameset', 'hr', 'img', 'input', 'isindex', 'keygen', 'meta', 'param', 'spacer', 'tagname', 'svg', 'track', 'wbr'];
+  const issues = [];
+  const stack = [];
+  const tagRegex = /<([a-z0-9]+)(\s[^<>]*)?>|<\/([a-z0-9]+)>|<([a-z0-9]+)(\s[^<>]*)?\/?>|<([a-z0-9]+)(\s[^<>]*)?/gi;
+  let match;
+
+  while ((match = tagRegex.exec(content)) !== null) {
+    let tagName = match[1] || match[3] || match[4] || match[5];
+    let isOpeningTag = match[1];  // Opening tag
+    let isClosingTag = match[3];  // Closing tag
+    let isSelfClosingTag = match[4];  // Self-closing tag
+    let isUnclosedTag = match[5];  // Unclosed tag like <tag
+
+    const lineStart = content.substr(0, match.index).split("\n").length - 1;
+    const charStart = match.index - content.lastIndexOf('\n', match.index) - 1;
+
+    if(!isOpeningTag && !isSelfClosingTag && !isClosingTag && !isUnclosedTag && match[0].startsWith('<')){
+      isOpeningTag = match[0].replace('<', '').replaceAll('\n', '').trim();
+      tagName = match[0].replace('<', '').replaceAll('\n', '').trim();
+    }
+
+    if ((isOpeningTag && !selfClosingTags.includes(isOpeningTag)) && !isSelfClosingTag) {
+      // Push opening tag to the stack
+      stack.push({ tagName, lineStart, charStart });
+    } else if (isClosingTag) {
+      if(selfClosingTags.includes(isClosingTag)) {
+        issues.push({
+          message: `Invalid closing tag </${isClosingTag}> found. Expected <${isClosingTag}>.`,
+          severity: 'error',
+          from: CodeMirror.Pos(lineStart, charStart),
+          to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+        });
+      } else {
+        // Handle closing tag, match with stack
+        const lastTag = stack.pop();
+
+        if ((lastTag && lastTag.tagName !== tagName)) {
+          let message = `Unmatched closing tag </${tagName}> found. Expected </${lastTag.tagName}>.`;
+          const hasOpenTag = stack.filter(s => s.tagName === tagName).length;
+
+          // The parent tag is closed but it has unclosed child tag
+          if(hasOpenTag) {
+            message = `This tag seems to be closed, but it contains an unclosed <${lastTag.tagName}> tag inside.`;
+          }
+
+          issues.push({
+            message,
+            severity: 'error',
+            from: CodeMirror.Pos(lineStart, charStart),
+            to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+          });
+        }
+      }
+    } else if (isSelfClosingTag) {
+      // Handle self-closing tag
+      continue;
+    } else if (isUnclosedTag) {
+      // Handle unclosed tag like "<tag"
+      issues.push({
+        message: `Unclosed tag <${tagName}> detected.`,
+        severity: 'warning',
+        from: CodeMirror.Pos(lineStart, charStart),
+        to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+      });
+    }
+  }
+
+  while (stack.length) {
+    const unclosedTag = stack.pop();
+    issues.push({
+      message: `Unclosed tag <${unclosedTag.tagName}> found.`,
+      severity: 'error',
+      from: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+      to: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+    });
+  }
+
+  return issues;
+}
