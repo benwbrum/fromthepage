@@ -203,13 +203,19 @@ class DashboardController < ApplicationController
 
   def new_landing_page
     if ELASTIC_ENABLED
-      search_data = elastic_search_results(params[:search])
+      search_page = params[:page].to_i || 1
+      page_size = 10
+
+      search_data = elastic_search_results(params[:search], search_page, page_size)
 
       inflated_results = search_data[:inflated] 
       @type_counts = search_data[:type_counts]
       @total_count = search_data[:total_count]
 
-      @search_results = WillPaginate::Collection.create(1, 10, @total_count) do |pager|
+      @search_results = WillPaginate::Collection.create(
+        search_page,
+        page_size,
+        @total_count) do |pager|
           pager.replace(inflated_results)
       end
 
@@ -357,14 +363,14 @@ class DashboardController < ApplicationController
   end
 
   # TODO: Hookup paging
-  def elastic_search_results(query)
+  def elastic_search_results(query, page, page_size)
     return nil if query.nil?
 
     client = ElasticUtil.get_client()
     generated_query = ElasticUtil.gen_query(
       query,
       ['collection', 'page', 'user', 'work'],
-      1, 10)
+      page, page_size)
 
     resp = client.search(
         index: generated_query[:indexes],
