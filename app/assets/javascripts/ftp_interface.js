@@ -53,11 +53,6 @@ $(function() {
     container.toggleClass('stats-visible', ishidden);
   });
 
-  // Manage subject categories
-  $('[data-assign-categories]').categoriesSelect();
-
-  $('[data-multi-select]').multiSelect();
-
   $('[data-select-all]').selectAll();
 
   // Filterable table

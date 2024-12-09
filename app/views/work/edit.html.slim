@@ -189,10 +189,6 @@
 -content_for :javascript
   javascript:
     $(function() {
-      $('.user-select-form select').select2({
-        placeholder: 'Add new collaborator...',
-      });
-
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
@@ -246,7 +242,6 @@
           data: { collection_id: selectedId },
           success: function(response) {
             documentSetsDiv.html(response);
-            $('#work_document_set_ids').multiSelect();
           },
           error: function(xhr, status, error) {
             console.error('Error fetching document sets:', error);

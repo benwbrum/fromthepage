@@ -65,13 +65,11 @@ class ArticleController < ApplicationController
   end
 
   def article_category
-    status = params[:status]
-    if status == 'true'
-      @article.categories << @category
-    else
-      @article.categories.delete(@category)
-    end
-    render plain: 'success'
+    categories = Category.where(id: params[:category_ids])
+    @article.categories = categories
+    @article.save!
+
+    respond_to(&:turbo_stream)
   end
 
   def combine_duplicate
@@ -224,7 +222,7 @@ class ArticleController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude)
+    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude, category_ids: [])
   end
 
   def sort_vertically(articles)

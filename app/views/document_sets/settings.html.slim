@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+=render({ partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @collection } })
 .columns
   article.maincol
     -link = link_to t('.here'), document_sets_path(:collection_id => @collection.collection)
@@ -89,11 +89,6 @@
 
 -content_for :javascript
   javascript:
-    $(function() {
-      $('.user-select-form select').select2({
-        placeholder: 'Add new collaborator...',
-      });
-    });
     $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
     });
