@@ -77,6 +77,64 @@ module ElasticUtil
     }
   end
 
+  # Elastic only gives us back doc types and ID's, need to convert those to objects
+  # that rails knows how to work with
+  def self.inflate_response(es_resp)
+    collections = []
+    pages = []
+    users = []
+    works = []
+
+    hits = es_resp['hits']['hits']
+    doc_types = es_resp['aggregations']['type_counts']['buckets']
+    total_count = es_resp['aggregations']['total_doc_count']['value']
+
+    # Load up individual types from response
+    collection_ids = hits.select { |x| x['_index'] == 'ftp_collection' }
+      .map { |x| x['_id'] }
+
+    page_ids= hits.select { |x| x['_index'] == 'ftp_page' }
+      .map { |x| x['_id'] }
+
+    user_ids = hits.select { |x| x['_index'] == 'ftp_user' }
+      .map { |x| x['_id'] }
+
+    work_ids = hits.select { |x| x['_index'] == 'ftp_work' }
+      .map { |x| x['_id'] }
+
+    collections = Collection.where(id: collection_ids)
+    pages = Page.where(id: page_ids)
+    users = User.where(id: user_ids)
+    works = Work.where(id: work_ids)
+
+    # TODO: Handle IDs missing from database (deleted/unsynced)?
+    inflated = []
+    hits.each do |hit|
+      case hit['_index']
+      when 'ftp_collection'
+        inflated << collections.find { |x| x[:id] == hit['_id'] }
+      when 'ftp_page'
+        inflated << pages.find { |x| x[:id] == hit['_id'] }
+      when 'ftp_user'
+        inflated << users.find { |x| x[:id] == hit['_id'] }
+      when 'ftp_work'
+        inflated << works.find { |x| x[:id] == hit['_id'] }
+      end
+    end
+
+    # Make convenient lookup for counts per type
+    type_counts = {}
+    doc_types.each do |bucket|
+      type_counts[bucket['key'].to_sym] = bucket['doc_count']
+    end
+
+    return {
+      inflated: inflated,
+      type_counts: type_counts,
+      total_count: total_count
+    }
+  end
+
   def self.reindex(model, index_name)
     client = self.get_client()
 

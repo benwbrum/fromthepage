@@ -203,7 +203,12 @@ class DashboardController < ApplicationController
 
   def new_landing_page
     if ELASTIC_ENABLED
-      @search_results = elastic_search_results(params[:search])
+      search_data = elastic_search_results(params[:search])
+
+      @search_results = search_data[:inflated] 
+      @type_counts = search_data[:type_counts]
+      @total_count = search_data[:total_count]
+
     else
       @search_results = search_results(params[:search])
     end
@@ -362,7 +367,7 @@ class DashboardController < ApplicationController
         body: generated_query[:query_body]
     )
 
-    return resp
+    return ElasticUtil.inflate_response(resp)
 
   end
 
