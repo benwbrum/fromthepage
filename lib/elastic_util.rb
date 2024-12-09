@@ -25,6 +25,7 @@ module ElasticUtil
     base_query = {
       query: {
         bool:  {
+          # This is what gets "generated"
           should: [] 
         }
       },
@@ -43,6 +44,13 @@ module ElasticUtil
           }
         }
       },
+      # General weighting for multi-type search results
+      indices_boost: [
+        { ftp_user: 1000.0 }, # Can bring this down to "mix" users in results
+        { ftp_collection: 50.0 },
+        { ftp_work: 10.0 },
+        { ftp_page: 1.0 }
+      ],
       from: (page - 1) * page_size,
       size: page_size
     }
