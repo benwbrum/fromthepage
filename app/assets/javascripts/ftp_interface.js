@@ -246,6 +246,9 @@ const ResizableSplitter = {
 
       panel1.style.flex = `${newWidthPanel1 / window.innerWidth}`;
       panel2.style.flex = `${newWidthPanel2 / window.innerWidth}`;
+
+      // reset the sticky position of the CodeMirror buttons panel
+      document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -297,11 +300,18 @@ const ResizableSplitter = {
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
         const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
-        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`;
+        const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
+        splitter.style.top = `${splitterTop}px`;
         splitter.style.bottom = `auto`;
+
+        // reset the sticky position of the CodeMirror buttons panel
+        document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
+
+        // reset the sticky position of the CodeMirror buttons panel
+        document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
       }
     }
 
@@ -387,18 +397,20 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
       topEl = '.page-toolbar'
     }
 
-    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
-    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-
-    if(stickyHeight > tablePosTop) {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
-        item.style.zIndex = 103;
-      })
-    } else {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = '0px';
-      })
+    if(document.querySelector(topEl) && document.querySelector(tableEl)) {
+      var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
+      var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
+  
+      if(stickyHeight > tablePosTop) {
+        document.querySelectorAll(columnEl).forEach(function(item) {
+          item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
+          item.style.zIndex = 103;
+        })
+      } else {
+        document.querySelectorAll(columnEl).forEach(function(item) {
+          item.style.top = '0px';
+        })
+      }
     }
   }
 }
