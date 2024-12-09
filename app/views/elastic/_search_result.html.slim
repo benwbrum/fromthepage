@@ -1,0 +1,16 @@
+// Customize the rendering of each type here
+// May need extra partials if we need to get more complex
+
+-if result.is_a?(Collection)
+  h2 Collection - #{result[:title]}
+  p #{result[:intro_block]}
+
+-elsif result.is_a?(Page)
+  h2 Page - #{result[:title]}
+
+-elsif result.is_a?(User)
+  h2 User - #{result[:display_name]}
+
+-elsif result.is_a?(Work)
+  h2 Work - #{result[:title]}
+

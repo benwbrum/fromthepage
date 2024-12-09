@@ -9,3 +9,5 @@
   a href="#works" Works (250)
   a href="#pages" Pages (250)
 
+-@search_results.each do |sr|
+  =render({ :partial => 'elastic/search_result', :locals => { :result => sr} })
