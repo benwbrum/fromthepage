@@ -1,13 +1,17 @@
 // Tab Navigation
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
-// TODO: Dynamically generate list based on active search types for context
+// TODO: Support moving active tab around
 .tabs
-  a.active href="#all" All (1000)
-  a href="#users" Users (250)
-  a href="#collections" Collections (250)
-  a href="#works" Works (250)
-  a href="#pages" Pages (250)
+  a.active href="#all" All (#{@total_count.to_i})
+  -if @type_counts.has_key?(:ftp_user)
+    a href="#users" Users (#{@type_counts[:ftp_user]})
+  -if @type_counts.has_key?(:ftp_collection)
+    a href="#collections" Collections (#{@type_counts[:ftp_collection]})
+  -if @type_counts.has_key?(:ftp_work)
+    a href="#works" Works (#{@type_counts[:ftp_work]})
+  -if @type_counts.has_key?(:ftp_page)
+    a href="#pages" Pages (#{@type_counts[:ftp_page]})
 
 -@search_results.each do |sr|
   =render({ :partial => 'elastic/search_result', :locals => { :result => sr} })
