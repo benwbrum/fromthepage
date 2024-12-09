@@ -404,104 +404,82 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
 }
 
 function lintHTML(content) {
+  const selfClosingTags = ['br', 'area', 'base', 'basefont', 'bgsound', 'button', 'col', 'embed', 'frame', 'frameset', 'hr', 'img', 'input', 'isindex', 'keygen', 'meta', 'param', 'spacer', 'tagname', 'svg', 'track', 'wbr'];
   const issues = [];
-  const stack = []; // Stack to track open tags and their line numbers
-  let currentLine = 1;
+  const stack = [];
+  const tagRegex = /<([a-z0-9]+)(\s[^<>]*)?>|<\/([a-z0-9]+)>|<([a-z0-9]+)(\s[^<>]*)?\/?>|<([a-z0-9]+)(\s[^<>]*)?/gi;
+  let match;
 
-  // Initialize parser
-  // const parser = new htmlparser2.Parser(
-  //   {
-  //     onopentag(name) {
-  //       // Push open tag with its line number onto the stack
-  //       stack.push({ tag: name, line: currentLine });
-  //     },
-  //     onclosetag(name) {
-  //       const lastTag = stack.pop();
+  while ((match = tagRegex.exec(content)) !== null) {
+    let tagName = match[1] || match[3] || match[4] || match[5];
+    let isOpeningTag = match[1];  // Opening tag
+    let isClosingTag = match[3];  // Closing tag
+    let isSelfClosingTag = match[4];  // Self-closing tag
+    let isUnclosedTag = match[5];  // Unclosed tag like <tag
 
-  //       if (!lastTag || lastTag.tag !== name) {
-  //         issues.push({
-  //           message: `Tag mismatch: Expected </${lastTag ? lastTag.tag : "unknown"}> but found </${name}> at line ${currentLine}`,
-  //           severity: 'error',
-  //           from: CodeMirror.Pos(currentLine, 0),
-  //           to: CodeMirror.Pos(currentLine, 0),
-  //         });
-  //         console.error(`Tag mismatch: Expected </${lastTag ? lastTag.tag : "unknown"}> but found </${name}> at line ${currentLine}`);
-  //       }
-  //     },
-  //     ontext(text) {
-  //       // Count lines in the text to keep track of line numbers
-  //       currentLine += (text.match(/\n/g) || []).length;
-  //     },
-  //     onend() {
-  //       // Report any unclosed tags remaining in the stack
-  //       stack.forEach(({ tag, line }) => {
-  //         console.error(`Unclosed tag <${tag}> detected at line ${line}`);
-  //       });
+    const lineStart = content.substr(0, match.index).split("\n").length - 1;
+    const charStart = match.index - content.lastIndexOf('\n', match.index) - 1;
 
-  //       if (stack.length === 0) {
-  //         console.log("All tags are balanced!");
-  //       }
-  //     },
-  //   },
-  //   { decodeEntities: true }
-  // );
+    if(!isOpeningTag && !isSelfClosingTag && !isClosingTag && !isUnclosedTag && match[0].startsWith('<')){
+      isOpeningTag = match[0].replace('<', '').replaceAll('\n', '').trim();
+      tagName = match[0].replace('<', '').replaceAll('\n', '').trim();
+    }
 
-  // // Parse the HTML string
-  // parser.write(htmlString);
-  // parser.end();
+    if ((isOpeningTag && !selfClosingTags.includes(isOpeningTag)) && !isSelfClosingTag) {
+      // Push opening tag to the stack
+      stack.push({ tagName, lineStart, charStart });
+    } else if (isClosingTag) {
+      if(selfClosingTags.includes(isClosingTag)) {
+        issues.push({
+          message: `Invalid closing tag </${isClosingTag}> found. Expected <${isClosingTag}>.`,
+          severity: 'error',
+          from: CodeMirror.Pos(lineStart, charStart),
+          to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+        });
+      } else {
+        // Handle closing tag, match with stack
+        const lastTag = stack.pop();
 
-  // while ((match = tagRegex.exec(content)) !== null) {
-  //   let tagName = match[1] || match[3] || match[4] || match[5];
-  //   let isOpeningTag = match[1];  // Opening tag
-  //   let isClosingTag = match[3];  // Closing tag
-  //   let isSelfClosingTag = match[4];  // Self-closing tag
-  //   let isUnclosedTag = match[5];  // Unclosed tag like <tag
+        if ((lastTag && lastTag.tagName !== tagName)) {
+          let message = `Unmatched closing tag </${tagName}> found. Expected </${lastTag.tagName}>.`;
+          const hasOpenTag = stack.filter(s => s.tagName === tagName).length;
 
-  //   const lineStart = content.substr(0, match.index).split("\n").length - 1;
-  //   const charStart = match.index - content.lastIndexOf('\n', match.index) - 1;
+          // The parent tag is closed but it has unclosed child tag
+          if(hasOpenTag) {
+            message = `This tag seems to be closed, but it contains an unclosed <${lastTag.tagName}> tag inside.`;
+          }
 
-  //   if(!isOpeningTag && !isSelfClosingTag && !isClosingTag && !isUnclosedTag && match[0].startsWith('<')){
-  //     isOpeningTag = match[0].replace('<', '').replaceAll('\n', '');
-  //     tagName = match[0].replace('<', '').replaceAll('\n', '');
-  //   }
+          issues.push({
+            message,
+            severity: 'error',
+            from: CodeMirror.Pos(lineStart, charStart),
+            to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+          });
+        }
+      }
+    } else if (isSelfClosingTag) {
+      // Handle self-closing tag
+      continue;
+    } else if (isUnclosedTag) {
+      // Handle unclosed tag like "<tag"
+      issues.push({
+        message: `Unclosed tag <${tagName}> detected.`,
+        severity: 'warning',
+        from: CodeMirror.Pos(lineStart, charStart),
+        to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+      });
+    }
+  }
 
-  //   if (isOpeningTag && !isSelfClosingTag) {
-  //     // Push opening tag to the stack
-  //     stack.push({ tagName, lineStart, charStart });
-  //   } else if (isClosingTag) {
-  //     // Handle closing tag, match with stack
-  //     const lastTag = stack.pop();
-  //     if (lastTag && lastTag.tagName !== tagName) {
-  //       issues.push({
-  //         message: `Unmatched closing tag </${tagName}> found. Expected </${lastTag.tagName}>.`,
-  //         severity: 'error',
-  //         from: CodeMirror.Pos(lineStart, charStart),
-  //         to: CodeMirror.Pos(lineStart, charStart + match[0].length),
-  //       });
-  //     }
-  //   } else if (isSelfClosingTag) {
-  //     // Handle self-closing tag
-  //     continue;
-  //   } else if (isUnclosedTag) {
-  //     // Handle unclosed tag like "<tag"
-  //     issues.push({
-  //       message: `Unclosed tag <${tagName}> detected.`,
-  //       severity: 'warning',
-  //       from: CodeMirror.Pos(lineStart, charStart),
-  //       to: CodeMirror.Pos(lineStart, charStart + match[0].length),
-  //     });
-  //   }
-  // }
-
-  // while (stack.length) {
-  //   const unclosedTag = stack.pop();
-  //   issues.push({
-  //     message: `Unclosed tag <${unclosedTag.tagName}> found.`,
-  //     severity: 'error',
-  //     from: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
-  //     to: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
-  //   });
-  // }
+  while (stack.length) {
+    const unclosedTag = stack.pop();
+    issues.push({
+      message: `Unclosed tag <${unclosedTag.tagName}> found.`,
+      severity: 'error',
+      from: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+      to: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+    });
+  }
 
   return issues;
 }
