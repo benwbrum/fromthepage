@@ -112,13 +112,13 @@ module ElasticUtil
     hits.each do |hit|
       case hit['_index']
       when 'ftp_collection'
-        inflated << collections.find { |x| x[:id] == hit['_id'] }
+        inflated << collections.find { |x| x[:id].to_s == hit['_id'] }
       when 'ftp_page'
-        inflated << pages.find { |x| x[:id] == hit['_id'] }
+        inflated << pages.find { |x| x[:id].to_s == hit['_id'] }
       when 'ftp_user'
-        inflated << users.find { |x| x[:id] == hit['_id'] }
+        inflated << users.find { |x| x[:id].to_s == hit['_id'] }
       when 'ftp_work'
-        inflated << works.find { |x| x[:id] == hit['_id'] }
+        inflated << works.find { |x| x[:id].to_s == hit['_id'] }
       end
     end
 
