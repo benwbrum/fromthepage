@@ -10,7 +10,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: work_update_path(id: @work.id), html: {id: :update} do |f|
+    =form_for :work, url: work_update_path(id: @work.id), html: { id: :update } do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @work.errors
       table.form.settings
