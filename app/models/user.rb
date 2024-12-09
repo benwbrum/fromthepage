@@ -151,6 +151,26 @@ class User < ApplicationRecord
     }
   end
 
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "about",
+              "real_name",
+              "website"
+            ]
+          }
+        },
+        filter: [
+          {term: {index: "ftp_user"}} # Need index filter for cross collection search
+        ]
+      }
+    }
+  end
+
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
     if raw

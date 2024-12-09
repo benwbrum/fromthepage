@@ -140,6 +140,26 @@ class Collection < ApplicationRecord
     }
   end
 
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "intro_block",
+              "slug"
+            ]
+          }
+        },
+        filter: [
+          {term: {index: "ftp_collection"}} # Need index filter for cross collection search
+        ]
+      }
+    }
+  end
+
   def text_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY
   end

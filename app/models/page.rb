@@ -139,6 +139,32 @@ class Page < ApplicationRecord
     }
   end
 
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "search_text^1.5",
+              "content_english",
+              "content_french",
+              "content_german",
+              "content_spanish",
+              "content_portuguese",
+              "content_swedish"
+            ]
+          }
+        },
+        filter: [
+          {term: {index: "ftp_page"}}, # Need index filter for cross collection search
+          {term: {is_public: true}}
+        ]
+      }
+    }
+  end
+
   # tested
   def collection
     work&.collection

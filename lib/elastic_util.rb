@@ -20,6 +20,63 @@ module ElasticUtil
     return bulk_action
   end
 
+  # "Federated" query magic happens here
+  def self.gen_query(query, types, page, page_size)
+    base_query = {
+      query: {
+        bool:  {
+          should: [] 
+        }
+      },
+      aggs: {
+        # Counts per doc type
+        type_counts: {
+          terms: {
+            field: "_index",
+            size: 10 # Should never need more than 4
+          }
+        },
+        # Total document count (sum of all types)
+        total_doc_count: {
+          sum_bucket: {
+            buckets_path: "type_counts>_count",
+          }
+        }
+      },
+      from: (page - 1) * page_size,
+      size: page_size
+    }
+
+    to_mod = base_query[:query][:bool][:should]
+
+    # Build out query based on active types
+    active_types = []
+    if types.include?("collection")
+      to_mod << Collection.es_match_query(query)
+      active_types << "ftp_collection"
+    end
+
+    if types.include?("page")
+      to_mod << Page.es_match_query(query)
+      active_types << "ftp_page"
+    end
+    
+    if types.include?("user")
+      to_mod << User.es_match_query(query)
+      active_types << "ftp_user"
+    end
+
+    if types.include?("work")
+      to_mod << Work.es_match_query(query)
+      active_types << "ftp_work"
+    end
+
+    return {
+      query_body: base_query,
+      indexes: active_types.join(",")
+    }
+  end
+
   def self.reindex(model, index_name)
     client = self.get_client()
 

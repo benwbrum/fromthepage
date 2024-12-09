@@ -181,6 +181,25 @@ class Work < ApplicationRecord
     }
   end
 
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "searchable_metadata"
+            ]
+          }
+        },
+        filter: [
+          {term: {index: "ftp_work"}} # Need index filter for cross collection search
+        ]
+      }
+    }
+  end
+
   def update_derivatives
     # searchable_metadata is currently the only derivative
     metadata_hash = self.merge_metadata(true)

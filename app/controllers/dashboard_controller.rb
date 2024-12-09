@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
+  require 'elastic_util'
+
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
@@ -200,7 +202,11 @@ class DashboardController < ApplicationController
   end
 
   def new_landing_page
-    @search_results = search_results(params[:search])
+    if ELASTIC_ENABLED
+      @search_results = elastic_search_results(params[:search])
+    else
+      @search_results = search_results(params[:search])
+    end
 
     # Get random Collections and DocSets from paying users
     @owners = User.findaproject_owners.order(:display_name).joins(:collections)
@@ -339,6 +345,25 @@ class DashboardController < ApplicationController
       filename: File.basename("letter.pdf"),
       :content_type => "application/pdf")
     cookies['download_finished'] = 'true'
+  end
+
+  # TODO: Hookup paging
+  def elastic_search_results(query)
+    return nil if query.nil?
+
+    client = ElasticUtil.get_client()
+    generated_query = ElasticUtil.gen_query(
+      query,
+      ['collection', 'page', 'user', 'work'],
+      1, 10)
+
+    resp = client.search(
+        index: generated_query[:indexes],
+        body: generated_query[:query_body]
+    )
+
+    return resp
+
   end
 
   def search_results(search_key)
