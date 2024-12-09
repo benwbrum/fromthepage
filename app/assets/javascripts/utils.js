@@ -1,26 +1,4 @@
 ;(function($, window, document, undefined) {
-  // Custom input file
-  $.fn.inputFile = function() {
-    return this.each(function() {
-      if(this.inputfile) return;
-
-      var $container = $(this);
-      var $button = $('button', $container);
-      var $file = $('input[type=file]', $container);
-      var $text = $('input[type=text]', $container);
-
-      $button.add($text).on('click', function() {
-        $file.click();
-      });
-
-      $file.on('change', function() {
-        $text.val($file.val());
-      });
-
-      this.inputfile = true;
-    });
-  };
-
   // Show big image
   $.fn.imageView = function() {
     return this.each(function() {

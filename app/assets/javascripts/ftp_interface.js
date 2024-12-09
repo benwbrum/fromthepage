@@ -22,7 +22,6 @@
 //= require utils
 
 $(function() {
-  $('.input-file').inputFile();
   $('[data-litebox]').litebox();
   $('[data-fullheight]').fullheight();
   $('[data-imageview]').imageView();

@@ -27,8 +27,6 @@
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
               =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
 
-
-
       -if @article.gis_enabled?
         table.form
           tr
@@ -44,7 +42,7 @@
       br
       =f.select :category_ids, \
         options_for_select(@collection.categories.map { |c| [c.title, c.id, { data: { level: c.level } }] }, selected: @article.category_ids), \
-        {}, { size: 1, multiple: true, aria: { label: t('.select_categories') } data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
+        {}, { size: 1, multiple: true, aria: { label: t('.select_categories') }, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
 
       .fglight
         br

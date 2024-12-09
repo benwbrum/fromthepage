@@ -1,8 +1,8 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 4, :page_id => @page.id }})
+=render({ partial: '/shared/page_tabs', locals: { selected: 4, page_id: @page.id } })
 
 .page-settings.columns
   .maincol
-    =form_for :page, url: page_update_path(:id => @page.id), :html => { :multipart => true } do |f|
+    =form_for :page, url: page_update_path(id: @page.id), html: { multipart: true } do |f|
       -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
       table.form lang="#{@collection.text_language}" dir=direction class=direction
         tr.big
@@ -23,7 +23,7 @@
           tr
             th =f.label :base_image, t('.page_image')
             td
-              .input-file
+              .input-file [data-controller='file-picker']
                 =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
                 input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_a_file') readonly)
                 button(type="button") #{t('.browse')}
