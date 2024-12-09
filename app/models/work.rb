@@ -194,7 +194,7 @@ class Work < ApplicationRecord
           }
         },
         filter: [
-          {term: {index: "ftp_work"}} # Need index filter for cross collection search
+          {term: {_index: "ftp_work"}} # Need index filter for cross collection search
         ]
       }
     }

@@ -154,7 +154,7 @@ class Collection < ApplicationRecord
           }
         },
         filter: [
-          {term: {index: "ftp_collection"}} # Need index filter for cross collection search
+          {term: {_index: "ftp_collection"}} # Need index filter for cross collection search
         ]
       }
     }

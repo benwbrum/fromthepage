@@ -158,7 +158,7 @@ class Page < ApplicationRecord
           }
         },
         filter: [
-          {term: {index: "ftp_page"}}, # Need index filter for cross collection search
+          {term: {_index: "ftp_page"}}, # Need index filter for cross collection search
           {term: {is_public: true}}
         ]
       }
