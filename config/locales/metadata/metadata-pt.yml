@@ -17,4 +17,4 @@ pt:
       template_file_anchor: este arquivo de modelo
       upload: Envio
       upload_metadata: Carregar metadados
-      upload_metadata_description: Para atualizar os metadados de várias obras desta coleção, carregue uma planilha com uma linha por obra. Faça o download do %{link} para começar.
+      upload_metadata_description: Para atualizar os metadados de várias obras desta coleção, carregue uma planilha com uma linha por obra. <br> Faça o download do %{link} para começar.

@@ -17,4 +17,4 @@ en:
       template_file_anchor: this template file
       upload: Upload
       upload_metadata: Upload Metadata
-      upload_metadata_description: To update metadata for several works within this collection, upload a spreadsheet with one row per work. Please download %{link} to start.
+      upload_metadata_description: To update metadata for several works within this collection, upload a spreadsheet with one row per work. <br> Columns with <i>*stars*</i> can not be modified. Ignore or delete any columns you are not changing. <br> Please download %{link} to start.

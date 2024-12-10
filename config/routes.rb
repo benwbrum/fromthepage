@@ -114,8 +114,8 @@ Fromthepage::Application.routes.draw do
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
-      get ':id/example', to: 'metadata#example', as: :example
-      get ':id/upload', to: 'metadata#upload', as: :upload
+      get ':collection_id/example', to: 'metadata#example', as: :example
+      get ':collection_id/upload', to: 'metadata#upload', as: :upload
       post 'create', to: 'metadata#create'
       post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
