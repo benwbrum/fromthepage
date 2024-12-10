@@ -2,7 +2,7 @@
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
 .tabs
-  =link_to "All (#{@total_count.to_i})",
+  =link_to "All (#{@full_count.to_i})",
     params.permit(:search), class: "#{'active' if !params[:filter]}"
   -if @type_counts.has_key?(:ftp_user)
     =link_to "Users (#{@type_counts[:ftp_user]})",

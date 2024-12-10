@@ -144,7 +144,8 @@ module ElasticUtil
     return {
       inflated: inflated,
       type_counts: type_counts,
-      total_count: total_count
+      full_count: total_count, # Can be overriden by filtered searches
+      filtered_count: total_count
     }
   end
 

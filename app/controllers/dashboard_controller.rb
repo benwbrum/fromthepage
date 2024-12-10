@@ -215,13 +215,14 @@ class DashboardController < ApplicationController
       )
 
       inflated_results = search_data[:inflated] 
+      @full_count = search_data[:full_count] # Used by All tab
       @type_counts = search_data[:type_counts]
-      @total_count = search_data[:total_count]
+      @filtered_count = search_data[:filtered_count] # Used for pagination
 
       @search_results = WillPaginate::Collection.create(
         search_page,
         page_size,
-        @total_count) do |pager|
+        @filtered_count) do |pager|
           pager.replace(inflated_results)
       end
 
@@ -387,8 +388,10 @@ class DashboardController < ApplicationController
           body: count_query[:query_body]
         )
 
+        # No real inflation happens here but we get counts back
         inflated_resp = ElasticUtil.inflate_response(resp)
 
+        full_count = inflated_resp[:full_count]
         type_counts = inflated_resp[:type_counts]
 
         filtered_query = ElasticUtil.gen_query(
@@ -401,12 +404,14 @@ class DashboardController < ApplicationController
           body: filtered_query[:query_body]
         )
 
+        # Actual object inflation for the filtered set
         inflated_resp = ElasticUtil.inflate_response(filtered_resp)
 
         # Blend all/filtered for display
         return {
           inflated: inflated_resp[:inflated],
-          total_count: inflated_resp[:total_count],
+          full_count: full_count,
+          filtered_count: inflated_resp[:filtered_count],
           type_counts: type_counts
         }
     else
