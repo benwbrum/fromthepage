@@ -207,7 +207,12 @@ class DashboardController < ApplicationController
 
       page_size = 10
 
-      search_data = elastic_search_results(params[:search], search_page, page_size)
+      search_data = elastic_search_results(
+        params[:search],
+        search_page,
+        page_size,
+        params[:filter]
+      )
 
       inflated_results = search_data[:inflated] 
       @type_counts = search_data[:type_counts]
@@ -364,21 +369,59 @@ class DashboardController < ApplicationController
   end
 
   # TODO: Hookup paging
-  def elastic_search_results(query, page, page_size)
+  def elastic_search_results(query, page, page_size, filter)
     return nil if query.nil?
 
     client = ElasticUtil.get_client()
-    generated_query = ElasticUtil.gen_query(
-      query,
-      ['collection', 'page', 'user', 'work'],
-      page, page_size)
 
-    resp = client.search(
-        index: generated_query[:indexes],
-        body: generated_query[:query_body]
-    )
+    if filter
+        count_query = ElasticUtil.gen_query(
+        query,
+        ['collection', 'page', 'user', 'work'],
+        page, page_size, true)
 
-    return ElasticUtil.inflate_response(resp)
+        # Need to run a count query for all types
+        # TODO: Could use msearch for one call to ES
+        resp = client.search(
+          index: count_query[:indexes],
+          body: count_query[:query_body]
+        )
+
+        inflated_resp = ElasticUtil.inflate_response(resp)
+
+        type_counts = inflated_resp[:type_counts]
+
+        filtered_query = ElasticUtil.gen_query(
+          query,
+          [filter],
+          page, page_size)
+
+        filtered_resp = client.search(
+          index: filtered_query[:indexes],
+          body: filtered_query[:query_body]
+        )
+
+        inflated_resp = ElasticUtil.inflate_response(filtered_resp)
+
+        # Blend all/filtered for display
+        return {
+          inflated: inflated_resp[:inflated],
+          total_count: inflated_resp[:total_count],
+          type_counts: type_counts
+        }
+    else
+      generated_query = ElasticUtil.gen_query(
+        query,
+        ['collection', 'page', 'user', 'work'],
+        page, page_size)
+
+      resp = client.search(
+          index: generated_query[:indexes],
+          body: generated_query[:query_body]
+      )
+
+      return ElasticUtil.inflate_response(resp)
+    end
 
   end
 

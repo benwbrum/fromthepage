@@ -7,20 +7,20 @@
     params.permit(:search)
   -if @type_counts.has_key?(:ftp_user)
     =link_to "Users (#{@type_counts[:ftp_user]})",
-      params.permit(:search).merge(filter: 'ftp_user')
+      params.permit(:search).merge(filter: 'user')
   -if @type_counts.has_key?(:ftp_collection)
     =link_to "Collections (#{@type_counts[:ftp_collection]})",
-      params.permit(:search).merge(filter: 'ftp_collection')
+      params.permit(:search).merge(filter: 'collection')
   -if @type_counts.has_key?(:ftp_work)
     =link_to "Works (#{@type_counts[:ftp_work]})",
-      params.permit(:search).merge(filter: 'ftp_work')
+      params.permit(:search).merge(filter: 'work')
   -if @type_counts.has_key?(:ftp_page)
     =link_to "Pages (#{@type_counts[:ftp_page]})",
-	  params.permit(:search).merge(filter: 'ftp_page')
+	  params.permit(:search).merge(filter: 'page')
 
 =will_paginate @search_results
 
 -@search_results.each do |sr|
   =render({ :partial => 'elastic/search_result', :locals => { :result => sr} })
 
-'=will_paginate @search_results
+=will_paginate @search_results

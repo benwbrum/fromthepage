@@ -21,7 +21,7 @@ module ElasticUtil
   end
 
   # "Federated" query magic happens here
-  def self.gen_query(query, types, page, page_size)
+  def self.gen_query(query, types, page, page_size, count_only = false)
     base_query = {
       query: {
         bool:  {
@@ -54,6 +54,11 @@ module ElasticUtil
       from: (page - 1) * page_size,
       size: page_size
     }
+
+    if count_only
+      base_query[:from] = 0
+      base_query[:size] = 0
+    end
 
     to_mod = base_query[:query][:bool][:should]
 
