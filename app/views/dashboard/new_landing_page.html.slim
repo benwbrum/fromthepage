@@ -17,7 +17,7 @@
               -else
                 =link_to t('.transcribe_a_page'), collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
 
--if ELASTIC_ENABLED
+-if ELASTIC_ENABLED && @search_results
   =render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
 
 -else

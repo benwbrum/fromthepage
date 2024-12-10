@@ -214,18 +214,19 @@ class DashboardController < ApplicationController
         params[:filter]
       )
 
-      inflated_results = search_data[:inflated] 
-      @full_count = search_data[:full_count] # Used by All tab
-      @type_counts = search_data[:type_counts]
-      @filtered_count = search_data[:filtered_count] # Used for pagination
+      if search_data
+        inflated_results = search_data[:inflated]
+        @full_count = search_data[:full_count] # Used by All tab
+        @type_counts = search_data[:type_counts]
+        @filtered_count = search_data[:filtered_count] # Used for pagination
 
-      @search_results = WillPaginate::Collection.create(
-        search_page,
-        page_size,
-        @filtered_count) do |pager|
-          pager.replace(inflated_results)
+        @search_results = WillPaginate::Collection.create(
+          search_page,
+          page_size,
+          @filtered_count) do |pager|
+            pager.replace(inflated_results)
+          end
       end
-
     else
       @search_results = search_results(params[:search])
     end
