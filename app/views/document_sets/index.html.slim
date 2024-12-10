@@ -30,8 +30,8 @@ ul
 
 
 br
-=link_to t('.create_a_document_set'), new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
-=link_to t('.transfer_works'), document_set_transfer_form_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
+=link_to t('.create_a_document_set'), new_document_set_path(collection_id: @collection.id), class: 'button', data: { controller: 'litebox' }
+=link_to t('.transfer_works'), document_set_transfer_form_path(collection_id: @collection.id), class: 'button', data: { controller: 'litebox' }
 
 -if @collection.document_sets.present?
   h3 =t('.assign_works_to_document_sets')

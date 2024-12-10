@@ -25,7 +25,7 @@
             =f.radio_button :field_based, false, :checked => !@collection.field_based, disabled: !@collection.text_entry?
             =f.label :field_based_false
               h3.settings-label =t('.document_based_transcription')
-              =link_to t('.edit_buttons'), collection_editor_button_edit_path(:collection_id => @collection.id), disabled: @collection.field_based || !@collection.text_entry?, class: 'button inline-btn', id: 'document-based-edit', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }}
+              =link_to t('.edit_buttons'), collection_editor_button_edit_path(collection_id: @collection.id), disabled: @collection.field_based || !@collection.text_entry?, class: 'button inline-btn', id: 'document-based-edit', 'aria-label' => t('.edit_buttons'), data: { controller: 'litebox', litebox: { hash: 'edit-buttons' } }
               p =t('.document_based_transcription_description')
         tr
           td(colspan="2")

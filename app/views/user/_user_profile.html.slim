@@ -7,7 +7,7 @@ section.user-profile
         =user.display_name
       -if user == current_user
         .headline_aside
-          =link_to(user_update_profile_path(user_id: user.id), class: 'button outline', data: { litebox: { hash: 'update-profile' } })
+          =link_to(user_update_profile_path(user_id: user.id), class: 'button outline', data: { controller: 'litebox', litebox: { hash: 'update-profile' } })
             =svg_symbol '#icon-edit', class: 'icon'
             span =t('user.profile.edit_profile')
           |&nbsp;&nbsp;

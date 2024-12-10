@@ -16,12 +16,19 @@ html lang="en-US"
     meta(name="copyright" content="(c) #{Time.now.year} FromThePage.com")
     meta(name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=")
     =csrf_meta_tags
+    = turbo_refreshes_with method: :morph, scroll: :preserve
     ="\n"
     =favicon_link_tag 'favicon.ico'
     ="\n"
     =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
     ="\n"
     =stylesheet_link_tag 'application'
+    =javascript_include_tag 'ftp_interface'
+    =javascript_importmap_tags
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
+    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
+
     -unless GA_ACCOUNT.blank?
       =render :partial => '/layouts/ga'
     -unless MIXPANEL_ID.blank?
@@ -30,9 +37,6 @@ html lang="en-US"
       =render :partial => '/layouts/fb_pixel'
     -unless CLARITY.blank?
       =render :partial => '/layouts/clarity'
-    = turbo_refreshes_with method: :morph, scroll: :preserve
-
-    =javascript_importmap_tags
 
   body class="#{'monitor-view' if @is_monitor_view}"
     #flash_wrapper
@@ -141,13 +145,7 @@ html lang="en-US"
 
     .page-busy-overlay
 
-    =javascript_include_tag 'ftp_interface'
-
     =yield :javascript
-
-    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'
-    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
-    =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
     -if defined?(BENTO_ENABLED) && BENTO_ENABLED
         =render :partial => '/shared/bento'

@@ -50,7 +50,7 @@
           td(colspan="2")
             =f.label :metadata, style: 'margin-bottom: 5px;'
               h3.settings-label =t('.metadata')
-            =link_to(collection_metadata_upload_path(@collection.id), class: 'button action-btn', :data => { litebox: { hash: 'upload-metadata' }})
+            =link_to(collection_metadata_upload_path(@collection.id), class: 'button action-btn', data: { controller: 'litebox', litebox: { hash: 'upload-metadata' } })
               span =t('.upload_metadata')
             p =t('.metadata_description')
             -if @collection.works.detect {|w| w.sc_manifest.present? }

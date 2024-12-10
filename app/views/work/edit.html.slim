@@ -182,7 +182,7 @@
     -if @work.restrict_scribes
       .allowed-collaborators
         h3 =t('.allowed_collaborators')
-        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { litebox: { hash: 'edit-scribes', noscroll: false, noclose: true }})
+        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-scribes', noscroll: false, noclose: true }})
       =render 'collection/users_list', users: @scribes, type: 'collaborators'
 
 

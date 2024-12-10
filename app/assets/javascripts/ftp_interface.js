@@ -20,7 +20,6 @@
 //= require clipboard
 
 $(function() {
-  $('[data-litebox]').litebox();
   $('[data-fullheight]').fullheight();
 
   // Global page loading spinner
@@ -366,7 +365,7 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
     if(document.querySelector(topEl) && document.querySelector(tableEl)) {
       var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
       var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-  
+
       if(stickyHeight > tablePosTop) {
         document.querySelectorAll(columnEl).forEach(function(item) {
           item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
