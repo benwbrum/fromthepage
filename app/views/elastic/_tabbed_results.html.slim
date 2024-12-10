@@ -3,19 +3,24 @@
 
 // TODO: Support moving active tab around
 .tabs
-  a.active href="#all" All (#{@total_count.to_i})
+  =link_to "All (#{@total_count.to_i})",
+    params.permit(:search)
   -if @type_counts.has_key?(:ftp_user)
-    a href="#users" Users (#{@type_counts[:ftp_user]})
+    =link_to "Users (#{@type_counts[:ftp_user]})",
+      params.permit(:search).merge(filter: 'ftp_user')
   -if @type_counts.has_key?(:ftp_collection)
-    a href="#collections" Collections (#{@type_counts[:ftp_collection]})
+    =link_to "Collections (#{@type_counts[:ftp_collection]})",
+      params.permit(:search).merge(filter: 'ftp_collection')
   -if @type_counts.has_key?(:ftp_work)
-    a href="#works" Works (#{@type_counts[:ftp_work]})
+    =link_to "Works (#{@type_counts[:ftp_work]})",
+      params.permit(:search).merge(filter: 'ftp_work')
   -if @type_counts.has_key?(:ftp_page)
-    a href="#pages" Pages (#{@type_counts[:ftp_page]})
+    =link_to "Pages (#{@type_counts[:ftp_page]})",
+	  params.permit(:search).merge(filter: 'ftp_page')
 
 =will_paginate @search_results
 
 -@search_results.each do |sr|
   =render({ :partial => 'elastic/search_result', :locals => { :result => sr} })
 
-=will_paginate @search_results
+'=will_paginate @search_results

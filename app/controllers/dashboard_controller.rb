@@ -203,7 +203,8 @@ class DashboardController < ApplicationController
 
   def new_landing_page
     if ELASTIC_ENABLED
-      search_page = params[:page].to_i || 1
+      search_page = (params[:page] || 1).to_i
+
       page_size = 10
 
       search_data = elastic_search_results(params[:search], search_page, page_size)
