@@ -38,6 +38,14 @@ module Google
         image_url = @page.image_url_for_download 
         response = gcv_client.document_text_detection(image: image_url)
         # save the response to the page
+        if response.responses.first.error
+          # print the error to STDERR but do not exit.  Also print the image_url
+          STDERR.puts "Error processing image: #{image_url}.  GCV error message:"
+          STDERR.puts response.responses.first.error.message
+          return
+        end
+
+
         # pretty print the json to get eround problems in ocr-transform
         @page.gcv_json=JSON.pretty_generate(JSON.parse(response.to_json))
 
@@ -45,7 +53,7 @@ module Google
         # this is a shell command that runs a docker container
         # that converts the GCV JSON to ALTO XML
         # the ALTO XML is then saved to the page
-        cmd = 'docker run --rm -i ubma/ocr-fileformat ocr-transform gcv hocr | docker run --rm -i ubma/ocr-fileformat ocr-transform hocr alto4.0'
+        cmd = OCR_TRANSFORM_COMMAND
         # make a system call with cmd, piping the response to the command
 
         stdout, stderr, status = Open3.capture3(cmd, stdin_data: @page.gcv_json)
