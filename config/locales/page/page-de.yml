@@ -16,10 +16,10 @@ de:
       page_image: Faksimile
       page_position: 'Seitenposition: %{position}'
       page_status: Seitenstatus
-      page_status_: Nicht angefangen
       page_status_blank: Leere Seite
       page_status_incomplete: Unvollständig
       page_status_indexed: Indexiert
+      page_status_new: Nicht angefangen
       page_status_review: Überprüfung erforderlich
       page_status_transcribed: Vollständig
       page_status_translated: Übersetzt

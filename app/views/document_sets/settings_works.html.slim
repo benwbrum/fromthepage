@@ -1,0 +1,4 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @document_set }})
+.collection-meta-wrapper
+  =render({ partial: 'edit_tabs', locals: { selected: 3 }})
+  =render partial: 'edit_works'

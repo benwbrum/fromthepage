@@ -388,6 +388,10 @@ h3, .thredded--post-form--title {
   }
 }
 
+thead th.bang {
+  display: none !important;
+}
+
 .bs {
   @import "bootstrap.min";
 }

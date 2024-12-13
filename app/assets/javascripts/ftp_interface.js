@@ -19,248 +19,7 @@
 //= require datatables.min
 //= require clipboard
 //= require select_all
-
-;(function($, window, document, undefined) {
-
-// Global flash messages auto close
-// $('element').flash();
-$.fn.flashclose = function(s) {
-  s = $.extend({
-    delay_notice: 1000,      // Notice auto close delay, 0 = don't close
-    delay_alert: 6000,       // Alert auto close delay
-    delay_error: 0,            // Error auto close delay
-    delay_info: 30000
-  }, s || {});
-
-  return this.each(function() {
-    var container = $(this);
-    var btnclose = $('.flash_close', container);
-    var delay = s.delay_notice;
-
-    if(container.hasClass('flash-alert')) {
-      delay = s.delay_alert;
-    }
-    if(container.hasClass('flash-error')) {
-      delay = s.delay_error;
-    }
-    if(container.hasClass('flash-info')) {
-      delay = s.delay_info;
-    }
-
-    // Close on click
-    btnclose.one('click', function(e) {
-      e.stopPropagation();
-      container.fadeOut('fast', function() {
-        container.remove();
-      });
-    });
-
-    // Auto close
-    if(delay) {
-      setTimeout(function() {
-        btnclose.trigger('click');
-      }, delay);
-    }
-  });
-};
-
-
-// Custom drop-down open/close toggle
-// $('element').dropdown();
-// <element data-dropdown='{ "selectable": true, "openclass": "visible"}'>
-$.fn.dropdown = function(s) {
-  s = $.extend({
-    trigger:    'dt',        // A child element which trigger open/close
-    items:      'dd > a',    // Clickable elements inside the drop-down
-    openclass:  'open',      // CSS class name for the open state
-    selectable: false        // TRUE to change trigger content on select
-  }, s || {});
-
-  return this.each(function() {
-    var $element = $(this);
-    var cfg = $.extend({}, s, $element.data('dropdown'));
-    var $trigger = $(cfg.trigger, this);
-
-    // Open/close when clicked on the trigger
-    $trigger.on('mousedown.DropDown', function() {
-      $element.toggleClass(cfg.openclass);
-    });
-    //Open on focus
-    $trigger.on('focusin.DropDown', function() {
-      $element.addClass(cfg.openclass);
-    });
-
-    // Close when clicked on an item
-    $(cfg.items, this).on('click.DropDown', function() {
-      $element.removeClass(cfg.openclass);
-      if(cfg.selectable) {
-        $trigger.html($(this).html());
-      }
-    });
-
-    // Close if clicked outside
-    $(document).on('click.DropDown', function(e) {
-      if($(e.target).closest($element).length === 0) {
-        $element.removeClass(cfg.openclass);
-      }
-    });
-    // Close if focus leaves
-    $(document).on('focusin.DropDown', function(e) {
-      if($(e.target).closest($element).length === 0) {
-        $element.removeClass(cfg.openclass);
-      }
-    });
-  });
-};
-
-
-// Tooltip with remote content
-// <element data-tooltip='/some/url.html'>
-// $('[data-tooltip]').tooltip();
-$.fn.tooltip = function(s) {
-  return this.each(function() {
-    var $element = $(this);
-    var url = $element.data('tooltip');
-    var $tooltip = $('<div>').addClass('tooltip');
-
-    function showTooltip() {
-      var offset = $element.offset();
-      var pos_top = offset.top + $element.height();
-      var pos_left = offset.left;
-      $tooltip.css({ 'top': pos_top, 'left': pos_left }).appendTo('body');
-
-      // Load remote content
-      if(url) {
-        $.ajax({
-          url: url,
-          cache: false,
-          context: this,
-          global: false
-        }).done(function(data) {
-          $tooltip.html(data);
-        }).fail(function() {
-          $tooltip.html('<small>error :(</small>');
-        });
-      }
-    }
-
-    $element.on('mouseenter', function(e) {
-      e.preventDefault();
-      showTooltip();
-
-      $tooltip.off('mouseleave');
-      $tooltip.on('mouseleave', function(e){
-        $(this).remove();
-      })
-    });
-
-    // Close if clicked outside
-    $element.on('mouseleave', function(e) {
-      setTimeout(function() {
-        if (!$tooltip.is(':hover')) {
-          $tooltip.remove();
-        }
-      }, 100);
-    });
-  });
-};
-
-
-// Manage subject categories with Select2 plugin
-// <select multiple data-assign-categories='/update_subject_category_url'>
-// $('[data-assign-categories]').categoriesSelect();
-$.fn.categoriesSelect = function() {
-  return this.each(function() {
-    var $element = $(this);
-    var update_url = $element.data('assign-categories');
-    var collection_slug = $element.data('collection-slug');
-
-    $element.select2({
-      placeholder: 'Assign categories...',
-      templateResult: function(category) {
-        if(!category.id) { return category.text; }
-        var level = $(category.element).data('level');
-        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-        return $category;
-      }
-    }).on('select2:select', function(e) {
-      $.ajax({
-        type: 'POST',
-        url: update_url,
-        data: { 'status': true, 'category_id': e.params.data.id, 'collection_id': collection_slug }
-      });
-    }).on('select2:unselect', function(e) {
-      $.ajax({
-        type: 'POST',
-        url: update_url,
-        data: { 'status': false, 'category_id': e.params.data.id, 'collection_id': collection_slug }
-      });
-    });
-  });
-};
-
-$.fn.multiSelect = function() {
-  return this.each(function() {
-    var $element = $(this);
-
-    $element.select2({
-      placeholder: 'Choose...',
-      templateResult: function(category) {
-        if(!category.id) { return category.text; }
-        var level = $(category.element).data('level');
-        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-        return $category;
-      }
-    });
-  });
-};
-
-
-
-
-// Custom input file
-$.fn.inputFile = function() {
-  return this.each(function() {
-    if(this.inputfile) return;
-
-    var $container = $(this);
-    var $button = $('button', $container);
-    var $file = $('input[type=file]', $container);
-    var $text = $('input[type=text]', $container);
-
-    $button.add($text).on('click', function() {
-      $file.click();
-    });
-
-    $file.on('change', function() {
-      $text.val($file.val());
-    });
-
-    this.inputfile = true;
-  });
-};
-
-
-// Show big image
-$.fn.imageView = function() {
-  return this.each(function() {
-    var $element = $(this);
-    var content = $('<img>').attr('src', $element.attr('href'));
-    var litebox = new LiteBox({
-      content: content,
-      disposable: true,
-      cssclass: 'litebox-image'
-    });
-
-    $element.on('click', function(e) {
-      e.preventDefault();
-      litebox.open();
-    });
-  });
-};
-
-})(jQuery, window, document);
-
+//= require utils
 
 $(function() {
   $('.flash').flashclose();
@@ -330,7 +89,6 @@ $(function() {
     maxWidth: 300,
   });
 });
-
 
 //Enable and disable select options for field-based transcription
 function addOptions(selector, enabled_index){
@@ -488,6 +246,9 @@ const ResizableSplitter = {
 
       panel1.style.flex = `${newWidthPanel1 / window.innerWidth}`;
       panel2.style.flex = `${newWidthPanel2 / window.innerWidth}`;
+
+      // reset the sticky position of the CodeMirror buttons panel
+      document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -539,11 +300,18 @@ const ResizableSplitter = {
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
         const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
-        splitter.style.top = `${elementTop > 73?elementTop:73 + panel1.clientHeight}px`;
+        const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
+        splitter.style.top = `${splitterTop}px`;
         splitter.style.bottom = `auto`;
+
+        // reset the sticky position of the CodeMirror buttons panel
+        document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
+
+        // reset the sticky position of the CodeMirror buttons panel
+        document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
       }
     }
 
@@ -629,18 +397,101 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
       topEl = '.page-toolbar'
     }
 
-    var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
-    var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-
-    if(stickyHeight > tablePosTop) {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
-        item.style.zIndex = 103;
-      })
-    } else {
-      document.querySelectorAll(columnEl).forEach(function(item) {
-        item.style.top = '0px';
-      })
+    if(document.querySelector(topEl) && document.querySelector(tableEl)) {
+      var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
+      var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
+  
+      if(stickyHeight > tablePosTop) {
+        document.querySelectorAll(columnEl).forEach(function(item) {
+          item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';
+          item.style.zIndex = 103;
+        })
+      } else {
+        document.querySelectorAll(columnEl).forEach(function(item) {
+          item.style.top = '0px';
+        })
+      }
     }
   }
+}
+
+function lintHTML(content) {
+  const selfClosingTags = ['br', 'area', 'base', 'basefont', 'bgsound', 'button', 'col', 'embed', 'frame', 'frameset', 'hr', 'img', 'input', 'isindex', 'keygen', 'meta', 'param', 'spacer', 'tagname', 'svg', 'track', 'wbr'];
+  const issues = [];
+  const stack = [];
+  const tagRegex = /<([a-z0-9]+)(\s[^<>]*)?>|<\/([a-z0-9]+)>|<([a-z0-9]+)(\s[^<>]*)?\/?>|<([a-z0-9]+)(\s[^<>]*)?/gi;
+  let match;
+
+  while ((match = tagRegex.exec(content)) !== null) {
+    let tagName = match[1] || match[3] || match[4] || match[5];
+    let isOpeningTag = match[1];  // Opening tag
+    let isClosingTag = match[3];  // Closing tag
+    let isSelfClosingTag = match[4];  // Self-closing tag
+    let isUnclosedTag = match[5];  // Unclosed tag like <tag
+
+    const lineStart = content.substr(0, match.index).split("\n").length - 1;
+    const charStart = match.index - content.lastIndexOf('\n', match.index) - 1;
+
+    if(!isOpeningTag && !isSelfClosingTag && !isClosingTag && !isUnclosedTag && match[0].startsWith('<')){
+      isOpeningTag = match[0].replace('<', '').replaceAll('\n', '').trim();
+      tagName = match[0].replace('<', '').replaceAll('\n', '').trim();
+    }
+
+    if ((isOpeningTag && !selfClosingTags.includes(isOpeningTag)) && !isSelfClosingTag) {
+      // Push opening tag to the stack
+      stack.push({ tagName, lineStart, charStart });
+    } else if (isClosingTag) {
+      if(selfClosingTags.includes(isClosingTag)) {
+        issues.push({
+          message: `Invalid closing tag </${isClosingTag}> found. Expected <${isClosingTag}>.`,
+          severity: 'error',
+          from: CodeMirror.Pos(lineStart, charStart),
+          to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+        });
+      } else {
+        // Handle closing tag, match with stack
+        const lastTag = stack.pop();
+
+        if ((lastTag && lastTag.tagName !== tagName)) {
+          let message = `Unmatched closing tag </${tagName}> found. Expected </${lastTag.tagName}>.`;
+          const hasOpenTag = stack.filter(s => s.tagName === tagName).length;
+
+          // The parent tag is closed but it has unclosed child tag
+          if(hasOpenTag) {
+            message = `This tag seems to be closed, but it contains an unclosed <${lastTag.tagName}> tag inside.`;
+          }
+
+          issues.push({
+            message,
+            severity: 'error',
+            from: CodeMirror.Pos(lineStart, charStart),
+            to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+          });
+        }
+      }
+    } else if (isSelfClosingTag) {
+      // Handle self-closing tag
+      continue;
+    } else if (isUnclosedTag) {
+      // Handle unclosed tag like "<tag"
+      issues.push({
+        message: `Unclosed tag <${tagName}> detected.`,
+        severity: 'warning',
+        from: CodeMirror.Pos(lineStart, charStart),
+        to: CodeMirror.Pos(lineStart, charStart + match[0].length),
+      });
+    }
+  }
+
+  while (stack.length) {
+    const unclosedTag = stack.pop();
+    issues.push({
+      message: `Unclosed tag <${unclosedTag.tagName}> found.`,
+      severity: 'error',
+      from: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+      to: CodeMirror.Pos(unclosedTag.lineStart, unclosedTag.charStart),
+    });
+  }
+
+  return issues;
 }
