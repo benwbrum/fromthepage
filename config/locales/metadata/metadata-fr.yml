@@ -17,4 +17,4 @@ fr:
       template_file_anchor: ce fichier modèle
       upload: Télécharger
       upload_metadata: Télécharger les métadonnées
-      upload_metadata_description: Pour mettre à jour les métadonnées de plusieurs œuvres de cette collection, téléchargez une feuille de calcul avec une ligne par œuvre. Veuillez télécharger %{link} pour commencer.
+      upload_metadata_description: Pour mettre à jour les métadonnées de plusieurs œuvres de cette collection, téléchargez une feuille de calcul avec une ligne par œuvre. <br> Les colonnes avec <i>étoiles</i> ne peuvent pas être modifiées. Ignorez ou supprimez toutes les colonnes que vous ne modifiez pas. <br> Veuillez télécharger %{link} pour commencer.
