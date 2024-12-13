@@ -72,6 +72,7 @@ gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
 gem 'terser'
+gem 'google-cloud-vision', '~> 1.4'
 
 gem 'interactor-rails', '~> 2.0'
 

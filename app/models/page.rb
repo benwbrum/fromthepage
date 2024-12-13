@@ -622,6 +622,24 @@ class Page < ApplicationRecord
   end
 
 
+  def has_gcv_json?
+    File.exists?(gcv_json_path)
+  end
+
+  def gcv_json
+    if has_gcv_json?
+      File.read(gcv_json_path)
+    else
+      ""
+    end
+  end
+
+  def gcv_json=(json)
+    FileUtils.mkdir_p(File.dirname(gcv_json_path)) unless Dir.exist? File.dirname(gcv_json_path)
+    File.write(gcv_json_path, json)
+  end
+
+
   def image_url_for_download
     if sc_canvas
       self.sc_canvas.sc_resource_id
@@ -642,6 +660,11 @@ class Page < ApplicationRecord
       end
       uri.to_s
     end
+  end
+
+  # This needs to be public for the ocr transformer to get atit
+  def gcv_json_path
+    File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_gcv.json")
   end
 
   private
