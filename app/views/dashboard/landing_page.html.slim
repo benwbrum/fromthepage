@@ -1,7 +1,7 @@
 -unless params[:search]
   .carousel
     -@collections.each do |c|
-      -cache c do
+      -cache [c, :old_landing_page] do
         -link_page = c.next_untranscribed_page
         -snippet = to_snippet(c.intro_block)
         .carousel_slide

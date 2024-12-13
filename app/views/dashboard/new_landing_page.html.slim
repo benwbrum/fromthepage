@@ -1,7 +1,7 @@
 -unless params[:search]
   .carousel
     -@collections.each do |c|
-      -cache c do
+      -cache [c, :landing_page] do
         -link_page = c.next_untranscribed_page
         -snippet = truncate(Loofah.fragment(c.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
         .carousel_slide
