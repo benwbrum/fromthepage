@@ -248,7 +248,8 @@ const ResizableSplitter = {
       panel2.style.flex = `${newWidthPanel2 / window.innerWidth}`;
 
       // reset the sticky position of the CodeMirror buttons panel
-      document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
+      if(document.querySelector('.CodeMirror-buttonsPanel'))
+        document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -305,13 +306,15 @@ const ResizableSplitter = {
         splitter.style.bottom = `auto`;
 
         // reset the sticky position of the CodeMirror buttons panel
-        document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
+        if(document.querySelector('.CodeMirror-buttonsPanel'))
+          document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
 
         // reset the sticky position of the CodeMirror buttons panel
-        document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
+        if(document.querySelector('.CodeMirror-buttonsPanel'))
+          document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
       }
     }
 

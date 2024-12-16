@@ -154,7 +154,8 @@
   if("<%= height %>") {
     myCodeMirror.getWrapperElement().style.maxHeight = "<%= height %>px";
     myCodeMirror.getWrapperElement().style.minHeight = "<%= height %>px";
-    document.querySelector('.CodeMirror-buttonsPanel').style.top = 0;
+    if(document.querySelector('.CodeMirror-buttonsPanel'))
+      document.querySelector('.CodeMirror-buttonsPanel').style.top = 0;
   }
 
 
