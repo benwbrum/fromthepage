@@ -2,7 +2,7 @@
 // May need extra partials if we need to get more complex
 
 -if result.is_a?(Collection)
-  h2 Collection - #{result[:title]}
+  h2 #{ link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result) }
   p #{sanitize(result[:intro_block], tags: [])}
 
 -elsif result.is_a?(Page)
