@@ -9,7 +9,7 @@
   h2 Page - #{result[:title]}
 
 -elsif result.is_a?(User)
-  h2 User - #{result[:display_name]}
+  h2 #{ link_to "User - " + result[:display_name], user_profile_path(result) }
   p #{sanitize(result[:about], tags: [])}
 
 -elsif result.is_a?(Work)
