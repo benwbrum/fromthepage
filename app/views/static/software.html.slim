@@ -141,7 +141,5 @@
 
     hr
 
-javascript:  mixpanel.track("Contact Us");
-
-
-
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Contact Us");
