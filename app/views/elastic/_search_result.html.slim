@@ -6,7 +6,7 @@
   p #{sanitize(result[:intro_block], tags: [])}
 
 -elsif result.is_a?(Page)
-  h2 Page - #{result[:title]}
+  h2 =link_to "Page - " + result[:title], collection_display_page_path(result.work.owner, result.collection, result.work, result.id)
 
 -elsif result.is_a?(User)
   h2 =link_to "User - " + result[:display_name], user_profile_path(result)
