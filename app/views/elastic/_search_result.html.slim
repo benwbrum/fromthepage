@@ -7,6 +7,8 @@
 
 -elsif result.is_a?(Page)
   h2 =link_to "Page - " + result[:title], collection_display_page_path(result.work.owner, result.collection, result.work, result.id)
+  table.datagrid
+  	=render({ :partial => 'elastic/page_partial', :locals => { :page => result , :@collection => result.collection} })
 
 -elsif result.is_a?(User)
   h2 =link_to "User - " + result[:display_name], user_profile_path(result)
