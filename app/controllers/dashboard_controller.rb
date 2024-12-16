@@ -228,6 +228,9 @@ class DashboardController < ApplicationController
         #       to the schemas
         @filtered_count = [ 10000, search_data[:filtered_count] ].min
 
+        # Inspired by display controller search
+        @search_string = "\"#{params[:search] || ""}\""
+
         @search_results = WillPaginate::Collection.create(
           search_page,
           page_size,
