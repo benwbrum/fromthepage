@@ -2,16 +2,16 @@
 // May need extra partials if we need to get more complex
 
 -if result.is_a?(Collection)
-  h2 #{ link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result) }
+  h2 =link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result)
   p #{sanitize(result[:intro_block], tags: [])}
 
 -elsif result.is_a?(Page)
   h2 Page - #{result[:title]}
 
 -elsif result.is_a?(User)
-  h2 #{ link_to "User - " + result[:display_name], user_profile_path(result) }
+  h2 =link_to "User - " + result[:display_name], user_profile_path(result)
   p #{sanitize(result[:about], tags: [])}
 
 -elsif result.is_a?(Work)
-  h2 Work - #{result[:title]}
+  h2 =link_to "Work - " + result[:title], collection_read_work_path(result.collection.owner, result.collection, result)
 
