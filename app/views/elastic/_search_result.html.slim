@@ -1,5 +1,4 @@
 // Customize the rendering of each type here
-// May need extra partials if we need to get more complex
 
 -if result.is_a?(Collection)
   h2 =link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result)
@@ -16,4 +15,4 @@
 
 -elsif result.is_a?(Work)
   h2 =link_to "Work - " + result[:title], collection_read_work_path(result.collection.owner, result.collection, result)
-
+  =render({ :partial => 'elastic/work_partial', :locals => { :work => result , :@collection => result.collection} })
