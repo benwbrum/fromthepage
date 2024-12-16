@@ -24,9 +24,6 @@
       =t("page.edit.page_status_#{page.status}")
 
   .work-page_content
-    -if page.work.pages_are_meaningful
-      h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
-
     .work-page_text[*language_attrs(@collection)]
       -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
       -if @search_string
@@ -62,23 +59,3 @@
             p.nodata_text
         -else
           p.nodata_text == t('.collaboration_is_restricted')
-
-    -if page.work.supports_translation
-      button.outline.work-page_toggle-view= t('.translation')
-      .work-page_text(style="display:none")
-        -translation = xml_to_html(page.xml_translation, false)
-        -if page.translation_status == 'blank'
-          p.nodata_text == t('.this_page_is_blank')
-        -elsif translation.present?
-          ==translation.force_encoding('utf-8')
-        -else
-          -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page), onclick: "resultClicked();")
-          p.nodata_text == t('.page_not_translated', help_translate: help_translate)
-
-    -current_version = page.page_versions[0]
-    -if current_version && current_version.page_version > 0
-      small.work-page_edited
-        -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user), onclick: "resultClicked();")
-        -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
-        = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe
-
