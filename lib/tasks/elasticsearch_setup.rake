@@ -68,7 +68,7 @@ namespace :fromthepage do
     ElasticUtil.reindex(Collection, 'ftp_collection');
     ElasticUtil.reindex(DocumentSet, 'ftp_docset');
     ElasticUtil.reindex(Page, 'ftp_page');
-    ElasticUtil.reindex(User, 'ftp_user');
+    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'), 'ftp_user');
     ElasticUtil.reindex(Work, 'ftp_work');
   end
 
