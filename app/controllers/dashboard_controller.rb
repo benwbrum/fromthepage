@@ -218,7 +218,15 @@ class DashboardController < ApplicationController
         inflated_results = search_data[:inflated]
         @full_count = search_data[:full_count] # Used by All tab
         @type_counts = search_data[:type_counts]
-        @filtered_count = search_data[:filtered_count] # Used for pagination
+
+        # Used for pagination, currently capped at 10k
+        #
+        # TODO: ES requires a scroll/search_after query for result sets larger
+        #       than 10k.
+        #
+        #       To setup support we just need to add a composite tiebreaker field
+        #       to the schemas
+        @filtered_count = [ 10000, search_data[:filtered_count] ].min
 
         @search_results = WillPaginate::Collection.create(
           search_page,
