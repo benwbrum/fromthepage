@@ -69,7 +69,7 @@ namespace :fromthepage do
     ElasticUtil.reindex(DocumentSet, 'ftp_docset');
     ElasticUtil.reindex(Page, 'ftp_page');
     ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'), 'ftp_user');
-    ElasticUtil.reindex(Work, 'ftp_work');
+    ElasticUtil.reindex(Work.where.not(collection_id: 0), 'ftp_work');
   end
 
   def get_es_config(target, parse = true)
