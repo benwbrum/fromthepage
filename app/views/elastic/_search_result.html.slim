@@ -2,7 +2,7 @@
 
 -if result.is_a?(Collection)
   h2 =link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result)
-  p #{sanitize(result[:intro_block], tags: [])}
+  p =to_snippet(result[:intro_block]) 
 
 -elsif result.is_a?(Page)
   h2 =link_to "Page - " + result[:title], collection_display_page_path(result.work.owner, result.collection, result.work, result.id)
@@ -10,7 +10,7 @@
 
 -elsif result.is_a?(User)
   h2 =link_to "User - " + result[:display_name], user_profile_path(result)
-  p #{sanitize(result[:about], tags: [])}
+  p =to_snippet(result[:about])
 
 -elsif result.is_a?(Work)
   h2 =link_to "Work - " + result[:title], collection_read_work_path(result.collection.owner, result.collection, result)
