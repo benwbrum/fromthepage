@@ -16,6 +16,7 @@
 
 // show listing of all organizations and individual owners
 -else
+  h1 =t('.institutions')
   -[@org_owners, @individual_owners].each do |owners|
     -owners.each do |owner|
       -projects = (owner.random_collections.sample(5) + owner.random_document_sets.sample(5))

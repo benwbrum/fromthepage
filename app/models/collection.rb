@@ -131,6 +131,9 @@ class Collection < ApplicationRecord
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
+  def created_at
+    created_on
+  end
 
   def text_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY

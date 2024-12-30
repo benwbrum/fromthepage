@@ -187,17 +187,28 @@ class DashboardController < ApplicationController
     @org_owners = users.findaproject_orgs.order(:display_name).distinct
     @individual_owners = users.findaproject_individuals.order(:display_name).distinct
 
+    # new projects -- 10 newest public, recently created collections
+    @new_projects = Collection.order('created_on DESC').unrestricted.where("LOWER(title) NOT LIKE 'test%'").distinct.limit(10)
+    # same for document sets
+    @new_document_sets = DocumentSet.order('created_at DESC').unrestricted.where("LOWER(title) NOT LIKE 'test%'").distinct.limit(10)
+    # merge them together, ordered by creation date
+    @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
+      a_date = a.is_a?(Collection) ? a.created_on : a.created_at
+      b_date = b.is_a?(Collection) ? b.created_on : b.created_at
+      b_date <=> a_date
+    end
+
     if request.xhr?
       render partial: 'results'
     else
       owner_user_ids = @org_owners.select(:id) + @individual_owners.select(:id)
-      docsets = DocumentSet.carousel
-                           .includes(:owner, { next_untranscribed_page: :work })
-                           .where(owner_user_id: owner_user_ids).sample(5)
-      colls = Collection.carousel
-                        .includes(:owner, { next_untranscribed_page: :work })
-                        .where(owner_user_id: owner_user_ids).sample(5)
-      @collections = (docsets + colls).sample(8)
+      # docsets = DocumentSet.carousel
+      #                      .includes(:owner, { next_untranscribed_page: :work })
+      #                      .where(owner_user_id: owner_user_ids).sample(5)
+      # colls = Collection.carousel
+      #                   .includes(:owner, { next_untranscribed_page: :work })
+      #                   .where(owner_user_id: owner_user_ids).sample(5)
+      # @collections = (docsets + colls).sample(8)
 
       @tag_map = Tag.featured_tags.group(:ai_text).count
     end
