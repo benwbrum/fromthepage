@@ -137,35 +137,46 @@ class DocumentSetsController < ApplicationController
   end
 
   def update
-    @document_set.attributes = document_set_params
+    @result = DocumentSet::Update.call(document_set: @document_set, document_set_params: document_set_params)
 
-    if document_set_params[:slug].blank?
-      @document_set.slug = @document_set.title.parameterize
-    end
-
-    if @document_set.save
+    if request.xhr?
+      render json: {
+        success: @result.success?,
+        updated_field: @result.updated_fields_hash,
+        errors: @result.errors
+      }
+    elsif @result.success?
       flash[:notice] = t('.document_updated')
-      unless request.referrer.include?("/settings")
-        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
-      else
-        redirect_to request.referrer
-      end
+      redirect_to collection_settings_path(@document_set.owner, @document_set)
     else
-      settings
-      render :settings
+      @document_set = @result.document_set
+      render :settings, status: :unprocessable_entity
     end
   end
 
   def settings
-    # works not yet in document set
-    if params[:search]
-      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
-    else
-      @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
-    end
-    # document set edit needs the @document set variable
+    @document_set ||= @collection
+  end
+
+  def settings_privacy
     @document_set ||= @collection
     @collaborators = @document_set.collaborators
+  end
+
+  def settings_works
+    if params[:search]
+      @works = @collection.search_collection_works(params[:search])
+                          .where.not(id: @collection.work_ids)
+                          .order(:title)
+                          .paginate(page: params[:page], per_page: 20)
+    else
+      @works = @collection.collection.works
+                          .where.not(id: @collection.work_ids)
+                          .order(:title)
+                          .paginate(page: params[:page], per_page: 20)
+    end
+
+    @document_set ||= @collection
   end
 
   def add_set_collaborator
@@ -189,16 +200,11 @@ class DocumentSetsController < ApplicationController
     redirect_to collection_edit_set_collaborators_path(@collection.owner, @collection, @document_set)
   end
 
-  def publish_set
-    @collection.is_public = true
-    @collection.save!
-    redirect_to collection_settings_path(@collection.owner, @collection)
-  end
+  def toggle_privacy
+    @result = DocumentSet::TogglePrivacy.call(document_set: @collection)
 
-  def restrict_set
-    @collection.is_public = false
-    @collection.save!
-    redirect_to collection_settings_path(@collection.owner, @collection)
+    @collection = @result.document_set
+    redirect_to collection_settings_privacy_path(@collection.owner, @collection)
   end
 
   def destroy
@@ -218,6 +224,5 @@ class DocumentSetsController < ApplicationController
   def document_set_params
     params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
   end
-
 
 end

@@ -25,7 +25,8 @@ describe "Metadata Description" do
     visit edit_collection_path(@owner, @collection)
     page.find('.side-tabs').click_link("Task Configuration")
     page.check("Enable metadata description")
-    sleep(1)
+    expect(page).to have_checked_field('Enable metadata description')
+
     button = page.find_link 'Edit Metadata Form'
     expect(button['disabled']).not_to eq('disabled')
     expect(Collection.find(@collection.id).data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
@@ -33,7 +34,8 @@ describe "Metadata Description" do
     visit edit_collection_path(@owner, @collection)
     page.find('.side-tabs').click_link("Task Configuration")
     page.uncheck("Enable metadata description")
-    sleep(1)
+    expect(page).to have_unchecked_field('Enable metadata description')
+
     button = page.find_link 'Edit Metadata Form'
     expect(button['disabled']).to eq('disabled')
     expect(@collection.data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
@@ -50,7 +52,7 @@ describe "Metadata Description" do
       visit edit_collection_path(@owner, @collection)
       page.find('.side-tabs').click_link("Task Configuration")
       page.check("Enable metadata description")
-      sleep(1)
+      expect(page).to have_checked_field('Enable metadata description')
 
       visit collection_path(@owner, @collection)
       page.find('.tabs').click_link("Metadata Fields")

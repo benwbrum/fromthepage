@@ -37,7 +37,7 @@ class PageVersion < ApplicationRecord
     previous_version = self.prev
     return true unless previous_version
 
-    %i[title transcription xml_transcription source_translation xml_translation].any? do |attribute|
+    %i[title status transcription xml_transcription source_translation xml_translation].any? do |attribute|
       self[attribute] != previous_version[attribute]
     end
   end

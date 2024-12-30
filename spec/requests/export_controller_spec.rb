@@ -226,14 +226,26 @@ describe ExportController do
 
   describe '#work_metadata_csv' do
     let(:action_path) { export_work_metadata_path(collection) }
+    let(:params) { {} }
 
-    let(:subject) { get action_path }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
+    end
+
+    context 'as example' do
+      let(:params) { { filename: 'example' } }
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
     end
   end
 

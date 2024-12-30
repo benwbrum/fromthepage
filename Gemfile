@@ -9,6 +9,7 @@ gem 'rails', '6.1.7.6'
 gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'capistrano-rails', '~> 1.4', require: false
+gem 'importmap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
 gem 'mysql2'
@@ -71,6 +72,7 @@ gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
 gem 'terser'
+gem 'google-cloud-vision', '~> 1.4'
 
 gem 'interactor-rails', '~> 2.0'
 

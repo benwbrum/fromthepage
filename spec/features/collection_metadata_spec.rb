@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe "collection metadata", :order => :defined do
+  include ActiveJob::TestHelper
+
   before :each do
     @owner = User.where(login: 'wakanda').first
     @user = User.where(login: 'margaret').first
@@ -49,7 +51,10 @@ describe "collection metadata", :order => :defined do
     page.execute_script(script)
 
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
-    click_button('Upload')
+
+    perform_enqueued_jobs do
+      click_button('Upload')
+    end
   end
 
   it "increments occurrences as works are re-imported", :js => true do
@@ -70,7 +75,11 @@ describe "collection metadata", :order => :defined do
     page.execute_script(script)
 
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
-    click_button('Upload')
+
+    perform_enqueued_jobs do
+      click_button('Upload')
+    end
+
     filename.reload
     expect(filename.count).to eq 3
   end

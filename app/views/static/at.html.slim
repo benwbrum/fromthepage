@@ -45,7 +45,5 @@
       p Our first FromThePage project was for the San Diego Museum of Natural History in 2010, and we're proud that archives, museums, and libraries across the world have run projects on FromThePage.  Some names you might recognize are Stanford University Archives, The British Library, and the state archives of Alabama, Virginia, California, North Carolina, Maryland, and Indiana.  (Don't worry, there are plenty of smaller institutions, too, like the Yaquina Head Lighthouses, the LA County Public Library and the Indianapolis Public Library.)
 
 
-javascript:  mixpanel.track("Archivists Tale");
-
-
-
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Archivists Tale");

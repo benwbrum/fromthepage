@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-class Work::RefreshMetadata
+class Work::Metadata::Refresh
   include Interactor
 
   def initialize(work_ids: nil, batches: 100)
@@ -17,10 +15,12 @@ class Work::RefreshMetadata
     end
 
     finalize
-  rescue => e
+  rescue StandardError => e
+    # :nocov:
     @errors << "Error: #{e}"
     context.errors = @errors
     context.fail!
+    # :nocov:
   end
 
   def finalize
@@ -37,8 +37,10 @@ class Work::RefreshMetadata
       begin
         refresh_metadata(work)
       rescue
+        # :nocov:
         @errors << "Failed to refresh metadata for #{work.slug}"
         context.fail!
+        # :nocov:
       end
     end
   end

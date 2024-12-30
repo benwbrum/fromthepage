@@ -16,10 +16,10 @@ en:
       page_image: Page Image
       page_position: 'Page Position: %{position}'
       page_status: Page Status
-      page_status_: Not Started
       page_status_blank: Blank Page
       page_status_incomplete: Incomplete
       page_status_indexed: Indexed
+      page_status_new: Not Started
       page_status_review: Needs Review
       page_status_transcribed: Complete
       page_status_translated: Translated
