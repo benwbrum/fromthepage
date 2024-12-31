@@ -49,6 +49,14 @@ class ScCanvas < ApplicationRecord
     end
   end
 
+  def iiif_image_info_url
+    if sc_service_id
+      "#{sc_service_id}/info.json"
+    else
+      self.sc_resource_id.sub(/full\/\w+\/\w+\/.*/, 'info.json')
+    end
+  end
+
 
   def transcript_annotations
     return nil unless self.annotations
