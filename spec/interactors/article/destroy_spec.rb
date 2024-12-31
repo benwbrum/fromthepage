@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Article::Destroy do
-  let(:user) { User.find_by(login: OWNER) }
+  let!(:user) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: user.id) }
   let!(:article) { create(:article, collection: collection) }
 
@@ -25,7 +25,7 @@ describe Article::Destroy do
   end
 
   context 'when user is not owner' do
-    let(:other_user) { User.find_by(login: NEW_OWNER) }
+    let!(:other_user) { create(:unique_user) }
 
     let(:result) do
       described_class.call(
