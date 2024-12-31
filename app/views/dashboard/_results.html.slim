@@ -19,21 +19,16 @@
   h1 =t('.institutions')
   -[@org_owners, @individual_owners].each do |owners|
     -owners.each do |owner|
-      -projects = (owner.random_collections.sample(5) + owner.random_document_sets.sample(5))
-      -if projects.count > 0
-        .project-list_projects
-          .projects-owner
-            h3.projects-owner_title
-              =link_to owner.display_name, user_profile_path(owner)
-            -if owner.picture.present?
-              .projects_details_image
-                =image_tag(owner.picture_url(:thumb), alt: owner.display_name)
-            -else # find a thumbnail from their collections
-              / display the most common tags for projects by this owner
-              -project = projects.first
-              -if project.picture.present?
-                .projects_details_image
-                  =image_tag(project.picture_url(:thumb), alt: project.title)
-            -if owner.about.present?
-              .description
-                =owner.about
+      .collection-tile
+        .projects_details_image
+
+          -if owner.picture.present?
+            -tile_url = owner.picture.url(:thumb)
+          -else
+            / -fallback_url = owner.owner_works.last.thumbnail
+            -fallback_url = 'https://fromthepage.com/uploads/collection/picture/1169/thumb_Supreme_Court.jpg'
+            -tile_url = gravatar_image_url(owner.email, :alt => owner.display_name, :default => fallback_url)
+          =link_to(image_tag(tile_url, alt: owner.display_name), class: 'collection-tile_image')
+          .collection-tile_content
+            h3 =link_to owner.display_name, user_profile_path(owner)
+

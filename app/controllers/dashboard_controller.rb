@@ -184,8 +184,8 @@ class DashboardController < ApplicationController
                 .includes(random_collections: :canonical_tags)
                 .includes({ random_document_sets: { collection: :canonical_tags } })
 
-    @org_owners = users.findaproject_orgs.order(:display_name).distinct
-    @individual_owners = users.findaproject_individuals.order(:display_name).distinct
+    @org_owners = users.findaproject_orgs.with_owner_works.order(:display_name).distinct
+    @individual_owners = users.findaproject_individuals.with_owner_works.order(:display_name).distinct
 
     # new projects -- 10 newest public, recently created collections
     @new_projects = Collection.order('created_on DESC').unrestricted.where("LOWER(title) NOT LIKE 'test%'").distinct.limit(10)
