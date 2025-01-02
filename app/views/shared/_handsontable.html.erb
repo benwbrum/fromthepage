@@ -59,7 +59,7 @@
       <% cells_by_row.values.each do |data_row| %>
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
-            <% cell = data_row.detect {|c| c.header == column_config.label } %>
+            <% cell = data_row.detect { |c| c.header.strip == column_config.label.strip } %>
             <% if cell.nil? %>
               null,
             <% else %>
@@ -111,7 +111,7 @@
       // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
 
       window.viewer.removeOverlay("runtime-overlay");
-      
+
       var elt = document.createElement("div");
       elt.id = "runtime-overlay";
       elt.className = "image-row-highlight";
