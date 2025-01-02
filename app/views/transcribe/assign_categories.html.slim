@@ -27,7 +27,7 @@ p.big =t('.uncategorized_subjects_mentioned')
 
     =form_with url: article_article_category_path(article_id: article.id), method: :post, data: { controller: 'form', turbo: true, action: 'change->form#requestSubmit' } do |f|
       =f.select :category_ids, \
-        options_for_select(@collection.categories.map { |c| [c.title, c.id, { aria: { label: t('.options') }, data: { level: c.level } }] }, selected: article.category_ids), \
+        options_for_select(categories_options(@collection.categories), selected: article.category_ids), \
         {}, { size: 1, aria: { label: t('.assign_categories') }, multiple: true, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
 
 span.legend
