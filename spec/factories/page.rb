@@ -21,3 +21,7 @@ FactoryBot.define do
     article
   end
 end
+
+FactoryBot.define do
+  factory :page_version
+end

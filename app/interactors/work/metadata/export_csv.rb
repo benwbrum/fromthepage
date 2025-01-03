@@ -1,6 +1,6 @@
 require 'csv'
 
-class Work::Metadata::ExportCsv
+class Work::Metadata::ExportCsv < ApplicationInteractor
   STATIC_HEADERS = [
     'FromThePage Title',
     '*Collection*',
@@ -29,8 +29,9 @@ class Work::Metadata::ExportCsv
     '*Described By*'
   ].freeze
 
-  include Interactor
   include Rails.application.routes.url_helpers
+
+  attr_accessor :csv_string
 
   def initialize(collection:, works:)
     @collection = collection
@@ -39,8 +40,8 @@ class Work::Metadata::ExportCsv
     super
   end
 
-  def call
-    csv_string = CSV.generate(force_quotes: true) do |csv|
+  def perform
+    @csv_string = CSV.generate(force_quotes: true) do |csv|
       works_scope = @works.includes(
                              :document_sets,
                              :work_statistic,
@@ -119,8 +120,5 @@ class Work::Metadata::ExportCsv
         csv << row
       end
     end
-
-    context.csv_string = csv_string
-    context
   end
 end

@@ -23,11 +23,11 @@ class ArticleController < ApplicationController
   end
 
   def delete
-    result = Article::Destroy.call(
+    result = Article::Destroy.new(
       article: @article,
       user: current_user,
       collection: @collection
-    )
+    ).call
 
     if result.success?
       redirect_to collection_subjects_path(@collection.owner, @collection)
@@ -39,10 +39,10 @@ class ArticleController < ApplicationController
 
   def update
     if params[:save]
-      result = Article::Update.call(
+      result = Article::Update.new(
         article: @article,
         article_params: article_params
-      )
+      ).call
 
       if result.success?
         record_deed
@@ -73,10 +73,10 @@ class ArticleController < ApplicationController
   end
 
   def combine_duplicate
-    Article::Combine.call(
+    Article::Combine.new(
       article: @article,
       from_article_ids: params[:from_article_ids]
-    )
+    ).call
 
     flash[:notice] = t('.selected_subjects_combined', title: @article.title)
     redirect_to collection_article_edit_path(@collection.owner, @collection, @article)

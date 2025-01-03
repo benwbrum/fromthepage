@@ -3,6 +3,8 @@ de:
   collection:
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
+    blank_collection:
+      notice: Die Sammlung wurde zurückgesetzt.
     collection_works:
       all_works: Alles funktioniert
       most_recent_activity: Neueste Aktivität
@@ -52,6 +54,8 @@ de:
     corrected: korrigiert
     create:
       notice: Sammlung wurde erstellt
+    delete:
+      notice: Sammlung erfolgreich gelöscht.
     disable_ocr:
       notice: Die OCR-Korrektur wurde für alle Werke deaktiviert.
     edit:
@@ -147,12 +151,10 @@ de:
       delete_collection_description: Durch Drücken dieser Schaltfläche wird die Sammlung und ihr gesamter Inhalt gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.
       destroy_everything: Alles zerstören
       inactive: Inaktiv
-      save_changes: Änderungen speichern
     edit_help:
       help: Grundlegender Hilfstext
       link_help: Hilfstext zur Entitätenverlinkung (wird nicht angezeigt, wenn Entitäten deaktiviert sind)
       link_help_description: Wird nicht angezeigt, wenn Themen deaktiviert sind.
-      save_changes: Änderungen speichern
       suggestions_help_tab: Vorschläge für Ihren Hilfe-Tab.
       suggestions_transcription_conventions: Vorschläge für Ihre Transkriptionskonventionen.
       transcription_conventions: Transkriptionskonventionen
@@ -185,7 +187,6 @@ de:
       page_on_the_top: Seite ganz oben
       refresh_metadata: Metadaten aktualisieren
       refresh_metadata_description: Aktualisieren Sie die Metadaten aus den ursprünglichen IIIF-Manifesten.
-      save_changes: Änderungen speichern
       spellcheck_description: Nicht geeignet für Texte mit unregelmäßiger Schreibweise.
       upload_metadata: Metadaten hochladen
       user_download: Mitarbeitenden erlauben, Werke herunterzuladen.
@@ -216,7 +217,6 @@ de:
       restrict_completed_works: Sperren Sie die Bearbeitung abgeschlossener Werke
       restrict_editing: Bearbeitung einschränken
       restricted_completed_works_description: Dieser Button schränkt die Bearbeitung von %{work_count} Werken ein, die abgeschlossen sind, aber derzeit nicht auf Projektinhaber:innen oder bestimmte Mitarbeitende beschränkt sind. Sie können diese Einstellung ändern und in den Werk-Einstellungen Mitarbeitende hinzufügen.
-      save_changes: Änderungen speichern
     edit_quality_control:
       authorized_reviewers: Autorisierte Reviewer:innen
       collection_reviewers: Autorisierte Reviewer:innen
@@ -230,7 +230,6 @@ de:
       review_type_required_description: Alle ersten Transkriptionen werden als prüfungsbedürftig markiert. (Die Überprüfung kann von jedermann durchgeführt werden.)
       review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen bzw. freigeben."
       review_type_restricted_description: Alle Transkriptionen müssen überprüft werden, und nur autorisierte Prüfer können Transkriptionen genehmigen.
-      save_changes: Änderungen speichern
     edit_tabs:
       danger_zone: Gefahrenzone
       general: Allgemein
@@ -254,7 +253,6 @@ de:
       metadata_description_description: Mithilfe der Metadatenbeschreibung werden strukturierte Metadaten zu Werken in der Sammlung erstellt. Sie müssen konfigurieren, welche Metadatenfelder angezeigt werden.
       ocr_correction: OCR-Korrektur
       ocr_description: Aktivieren oder deaktivieren Sie die OCR-Korrektur für alle Werke in dieser Sammlung.
-      save_changes: Änderungen speichern
       subjects_enabled: Entitätenindexierung aktivieren
       subjects_enabled_description: Themen werden verwendet, um Seiten in der Sammlung zu indizieren.
       text_language: Wählen Sie die Sprache des Transkriptionstextes aus
@@ -371,6 +369,7 @@ de:
     transcribed: transkribiert
     translated: übersetzt
     update:
+      error: Aktualisierung der Sammlung fehlgeschlagen
       notice: Die Sammlung wurde aktualisiert
     update_buttons:
       editor_buttons_updated: Editor-Buttons aktualisiert
