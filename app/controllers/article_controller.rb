@@ -9,8 +9,7 @@ class ArticleController < ApplicationController
 
   def list
     articles = @collection.articles.includes(:categories)
-    @categories = @collection.categories.includes(:articles)
-
+    @categories = @collection.categories
     @vertical_articles = {}
     @categories.each do |category|
       current_articles = articles.where(categories: { id: category.id })
