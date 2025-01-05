@@ -186,6 +186,14 @@ class Work < ApplicationRecord
   end
 
   def self.es_match_query(query, user)
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+    end
+
     return {
       bool: {
         must: {
@@ -198,6 +206,17 @@ class Work < ApplicationRecord
           }
         },
         filter: [
+          {
+            bool: {
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {collection_id: collection_collabs} },
+                { terms: {docset_id: docset_collabs} },
+              ]
+            }
+          },
           {term: {_index: "ftp_work"}} # Need index filter for cross collection search
         ]
       }
