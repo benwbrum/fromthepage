@@ -64,21 +64,21 @@ class DocumentSet < ApplicationRecord
     limit(sample_size).reorder(Arel.sql("RAND()"))
   end
 
+  # Docsets get indexed alongside collections but have a prefix added to ID
   def as_indexed_json
     return {
-      _id: self.id,
+      _id: "docset-#{self.id}",
       is_public: self.is_public,
-      description: self.description,
-      collection_id: self.collection_id,
+      is_docset: true,
+      intro_block: self.description,
+      language: self.language,
       owner_user_id: self.owner_user_id,
       owner_display_name: self.owner&.display_name,
-      language: self.language,
+      collection_id: self.collection_id,
       slug: self.slug,
       title: self.title
     }
   end
-
-
 
   def show_to?(user)
     self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))

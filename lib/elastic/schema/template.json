@@ -2,7 +2,7 @@
 	"index_patterns": ["ftp_*"],
 	"mappings": {
 		"_source": {
-			"includes": ["db_id"]
+			"includes": ["db_id", "is_docset"]
 		},
 		"properties": {
 			"content_english": {

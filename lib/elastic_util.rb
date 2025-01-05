@@ -94,6 +94,7 @@ module ElasticUtil
   # that rails knows how to work with
   def self.inflate_response(es_resp)
     collections = []
+    docsets = []
     pages = []
     users = []
     works = []
@@ -103,8 +104,13 @@ module ElasticUtil
     total_count = es_resp['aggregations']['total_doc_count']['value']
 
     # Load up individual types from response
-    collection_ids = hits.select { |x| x['_index'] == 'ftp_collection' }
+    collection_ids = hits
+      .select { |x| x['_index'] == 'ftp_collection' && !x['is_docset'] }
       .map { |x| x['_id'] }
+
+    docset_ids = hits
+      .select { |x| x['_index'] == 'ftp_collection' && x['is_docset'] }
+      .map { |x| x['_id'][7..-1] } # Need to drop prefix specializer for lookup
 
     page_ids= hits.select { |x| x['_index'] == 'ftp_page' }
       .map { |x| x['_id'] }
@@ -116,6 +122,7 @@ module ElasticUtil
       .map { |x| x['_id'] }
 
     collections = Collection.where(id: collection_ids)
+    docsets = DocumentSet.where(id: docset_ids)
     pages = Page.where(id: page_ids)
     users = User.where(id: user_ids)
     works = Work.where(id: work_ids)
@@ -125,7 +132,11 @@ module ElasticUtil
     hits.each do |hit|
       case hit['_index']
       when 'ftp_collection'
-        inflated << collections.find { |x| x[:id].to_s == hit['_id'] }
+        if hit['is_docset']
+          inflated << docsets.find { |x| x[:id].to_s == hit['_id'][7..-1] }
+        else
+          inflated << collections.find { |x| x[:id].to_s == hit['_id'] }
+        end
       when 'ftp_page'
         inflated << pages.find { |x| x[:id].to_s == hit['_id'] }
       when 'ftp_user'
