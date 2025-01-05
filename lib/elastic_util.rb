@@ -105,11 +105,11 @@ module ElasticUtil
 
     # Load up individual types from response
     collection_ids = hits
-      .select { |x| x['_index'] == 'ftp_collection' && !x['is_docset'] }
+      .select { |x| x['_index'] == 'ftp_collection' && !x['_source']['is_docset'] }
       .map { |x| x['_id'] }
 
     docset_ids = hits
-      .select { |x| x['_index'] == 'ftp_collection' && x['is_docset'] }
+      .select { |x| x['_index'] == 'ftp_collection' && x['_source']['is_docset'] }
       .map { |x| x['_id'][7..-1] } # Need to drop prefix specializer for lookup
 
     page_ids= hits.select { |x| x['_index'] == 'ftp_page' }
@@ -132,7 +132,7 @@ module ElasticUtil
     hits.each do |hit|
       case hit['_index']
       when 'ftp_collection'
-        if hit['is_docset']
+        if hit['_source']['is_docset']
           inflated << docsets.find { |x| x[:id].to_s == hit['_id'][7..-1] }
         else
           inflated << collections.find { |x| x[:id].to_s == hit['_id'] }

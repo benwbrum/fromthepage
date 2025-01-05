@@ -4,6 +4,11 @@
   h2 =link_to "Collection - " +  result[:title], collection_path(result.owner.slug, result)
   p =to_snippet(result[:intro_block]) 
 
+-elsif result.is_a?(DocumentSet)
+  // TODO: Cleanup doctype header rows, make more consistent with work/page partials
+  h2 =link_to "Collection DocSet - " +  result[:title], collection_path(result.owner, result)
+  p =to_snippet(result[:description])
+
 -elsif result.is_a?(Page)
   h2 =link_to "Page - " + result[:title], collection_display_page_path(result.work.owner, result.collection, result.work, result.id)
   =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :@collection => result.collection} })
