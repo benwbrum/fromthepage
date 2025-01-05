@@ -1,6 +1,18 @@
 {
 	"mappings": {
 		"properties": {
+			"is_public": {
+				"type": "boolean"
+			},
+			"collection_id": {
+				"type": "integer"
+			},
+			"docset_id": {
+				"type": "integer"
+			},
+			"owner_user_id": {
+				"type": "integer"
+			},
 			"db_id": {
 				"type": "integer"
 			},

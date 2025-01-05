@@ -176,6 +176,10 @@ class Work < ApplicationRecord
   def as_indexed_json
     return {
       _id: self.id,
+      is_public: !self.collection&.restricted || self.document_sets.where(:is_public => true).exists?,
+      collection_id: self.collection&.id,
+      docset_id: self.document_sets.pluck(:id),
+      owner_user_id: self.owner_user_id,
       title: self.title,
       searchable_metadata: self.searchable_metadata
     }
