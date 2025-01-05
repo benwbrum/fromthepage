@@ -381,7 +381,6 @@ class DashboardController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
-  # TODO: Hookup paging
   def elastic_search_results(query, page, page_size, filter)
     return nil if query.nil?
 
@@ -389,9 +388,11 @@ class DashboardController < ApplicationController
 
     if filter
         count_query = ElasticUtil.gen_query(
-        query,
-        ['collection', 'page', 'user', 'work'],
-        page, page_size, true)
+          current_user,
+          query,
+          ['collection', 'page', 'user', 'work'],
+          page, page_size, true
+        )
 
         # Need to run a count query for all types
         # TODO: Could use msearch for one call to ES
@@ -407,6 +408,7 @@ class DashboardController < ApplicationController
         type_counts = inflated_resp[:type_counts]
 
         filtered_query = ElasticUtil.gen_query(
+          current_user,
           query,
           [filter],
           page, page_size)
@@ -428,6 +430,7 @@ class DashboardController < ApplicationController
         }
     else
       generated_query = ElasticUtil.gen_query(
+        current_user,
         query,
         ['collection', 'page', 'user', 'work'],
         page, page_size)

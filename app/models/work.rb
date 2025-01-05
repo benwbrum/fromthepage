@@ -181,7 +181,7 @@ class Work < ApplicationRecord
     }
   end
 
-  def self.es_match_query(query)
+  def self.es_match_query(query, user)
     return {
       bool: {
         must: {

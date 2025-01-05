@@ -142,7 +142,7 @@ class Collection < ApplicationRecord
     }
   end
 
-  def self.es_match_query(query)
+  def self.es_match_query(query, user = nil)
     return {
       bool: {
         must: {
@@ -156,6 +156,16 @@ class Collection < ApplicationRecord
           }
         },
         filter: [
+          {
+            bool: {
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                # collaborators...
+              ]
+            }
+          },
           {term: {_index: "ftp_collection"}} # Need index filter for cross collection search
         ]
       }

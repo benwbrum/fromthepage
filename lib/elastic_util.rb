@@ -21,7 +21,7 @@ module ElasticUtil
   end
 
   # "Federated" query magic happens here
-  def self.gen_query(query, types, page, page_size, count_only = false)
+  def self.gen_query(user, query, types, page, page_size, count_only = false)
     base_query = {
       query: {
         bool:  {
@@ -65,12 +65,12 @@ module ElasticUtil
     # Build out query based on active types
     active_types = []
     if types.include?("collection")
-      to_mod << Collection.es_match_query(query)
+      to_mod << Collection.es_match_query(query, user)
       active_types << "ftp_collection"
     end
 
     if types.include?("page")
-      to_mod << Page.es_match_query(query)
+      to_mod << Page.es_match_query(query, user)
       active_types << "ftp_page"
     end
     
@@ -80,7 +80,7 @@ module ElasticUtil
     end
 
     if types.include?("work")
-      to_mod << Work.es_match_query(query)
+      to_mod << Work.es_match_query(query, user)
       active_types << "ftp_work"
     end
 
