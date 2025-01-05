@@ -143,10 +143,13 @@ class Collection < ApplicationRecord
   end
 
   def self.es_match_query(query, user = nil)
-    collaborator_collections = []
+    collection_collabs = []
+    docset_collabs= []
 
     if !user.nil?
-      collaborator_collections = user.collection_collaborations.pluck(:id)
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+        .map{ |x| "docset-#{x}" }
     end
 
     return {
@@ -168,8 +171,8 @@ class Collection < ApplicationRecord
               should: [
                 { term: {is_public: true} },
                 { term: {owner_user_id: user.nil? ? -1 : user.id} },
-                { terms: {_id: collaborator_collections} },
-                # todo: docset collaborators...
+                { terms: {_id: collection_collabs} },
+                { terms: {_id: docset_collabs} },
               ]
             }
           },
