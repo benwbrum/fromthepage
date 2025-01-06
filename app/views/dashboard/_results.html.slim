@@ -18,16 +18,16 @@
 -else
   -[@org_owners, @individual_owners].each do |owners|
     -owners.each do |owner|
-      .collection-tile
-        .projects_details_image
-
+      .project-list_projects
+        .projects-owner
           -if owner.picture.present?
             -tile_url = owner.picture.url(:thumb)
           -else
-            / -fallback_url = owner.owner_works.last.thumbnail
             -fallback_url = 'https://fromthepage.com/uploads/collection/picture/1169/thumb_Supreme_Court.jpg'
-            -tile_url = gravatar_image_url(owner.email, :alt => owner.display_name, :default => fallback_url)
-          =link_to(image_tag(tile_url, alt: owner.display_name), class: 'collection-tile_image')
-          .collection-tile_content
-            h3 =link_to owner.display_name, user_profile_path(owner)
-
+            -tile_url = gravatar_image_url(owner.email, alt: owner.display_name, default: fallback_url)
+          .projects_details_image
+            =link_to(image_tag(tile_url, alt: owner.display_name), class: 'collection-tile_image')
+          .description
+            h3.projects-owner_title
+              =link_to owner.display_name, user_profile_path(owner)
+            =owner.about
