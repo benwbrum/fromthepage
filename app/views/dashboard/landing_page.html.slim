@@ -10,7 +10,7 @@ ul.tagcloud
       .title-row
         h2[style='flex-grow: 1;']=t('.institutions')
         =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_institutions'))
-      #results
+      #results.landing-page-results
         =render partial: 'results'
 
     .project-list_link
