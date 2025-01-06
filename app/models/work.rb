@@ -175,6 +175,15 @@ class Work < ApplicationRecord
   end
 
   def as_indexed_json
+    # Error handling for data that is missing parent relationships
+    # Some works have collection_id 0, others have ID's that don't exist
+    # Return object with error set so indexer knows to skip
+    if !self.collection.present?
+      return {
+        indexing_error: true
+      }
+    end
+
     return {
       _id: self.id,
       is_public: !self.collection&.restricted || self.document_sets.where(:is_public => true).exists?,

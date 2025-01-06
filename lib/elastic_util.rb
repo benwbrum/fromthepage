@@ -171,8 +171,15 @@ module ElasticUtil
     model.find_in_batches(batch_size: 1000) do |batch|
       bulk_body = []
       batch.each do |item|
+        item_body = item.as_indexed_json()
+
+        # Skip errors
+        if item_body.key?(:indexing_error)
+          next
+        end
+
         bulk_body.push(
-          ElasticUtil.gen_bulk_action(index_name, item.as_indexed_json())
+          ElasticUtil.gen_bulk_action(index_name, item_body)
         )
       end
 
