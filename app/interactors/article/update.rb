@@ -1,7 +1,6 @@
-class Article::Update < ApplicationInteractor
+class Article::Update
+  include Interactor
   include Article::Lib::Common
-
-  attr_accessor :article, :notice
 
   def initialize(article:, article_params:)
     @article        = article
@@ -10,7 +9,7 @@ class Article::Update < ApplicationInteractor
     super
   end
 
-  def perform
+  def call
     old_title = @article.title
     @article.attributes = @article_params.except(:category_ids)
     categories = Category.where(id: @article_params[:category_ids])
@@ -19,12 +18,16 @@ class Article::Update < ApplicationInteractor
     if @article.save
       rename_article(@article, old_title, @article.title) if old_title != @article.title
 
-      @notice = I18n.t('article.update.subject_successfully_updated')
+      notice = I18n.t('article.update.subject_successfully_updated')
       if gis_truncated?
-        @notice << I18n.t('article.update.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION,
+        notice << I18n.t('article.update.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION,
                                                                      count: GIS_DECIMAL_PRECISION)
       end
+
+      context.article = @article
+      context.notice = notice
     else
+      context.article = @article
       context.fail!
     end
   end

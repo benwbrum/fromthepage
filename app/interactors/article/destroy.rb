@@ -1,5 +1,5 @@
-class Article::Destroy < ApplicationInteractor
-  attr_accessor :article
+class Article::Destroy
+  include Interactor
 
   def initialize(article:, user:, collection:)
     @article    = article
@@ -9,7 +9,7 @@ class Article::Destroy < ApplicationInteractor
     super
   end
 
-  def perform
+  def call
     context.fail!(message: I18n.t('article.delete.must_remove_referring_links')) if article_has_referring_links
     context.fail!(message: I18n.t('article.delete.only_subject_owner_can_delete')) unless user_can_delete_article
 

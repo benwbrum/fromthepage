@@ -2,7 +2,7 @@ class MetadataController < ApplicationController
   layout false
 
   def example
-    result = Work::Metadata::ExportCsv.new(collection: @collection, works: @collection.works).call
+    result = Work::Metadata::ExportCsv.call(collection: @collection, works: @collection.works)
 
     send_data(
       result.csv_string,

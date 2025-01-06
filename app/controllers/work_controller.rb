@@ -185,11 +185,11 @@ class WorkController < ApplicationController
     work = Work.find(params[:id])
     @collection ||= work.collection
 
-    result = Work::Update.new(work: work, work_params: work_params).call
+    result = Work::Update.call(work: work, work_params: work_params)
 
     @work = result.work
     if result.success?
-      if result.original_collection_id != result.collection.id
+      if result.original_collection_id != result.collection_id
         record_deed(@work, DeedType::WORK_ADDED, @work.owner)
         @collection = @work.collection
       end

@@ -6,11 +6,11 @@ describe Article::Destroy do
   let!(:article) { create(:article, collection: collection) }
 
   let(:result) do
-    described_class.new(
+    described_class.call(
       article: article,
       user: user,
       collection: collection
-    ).call
+    )
   end
 
   context 'with referring links' do
@@ -28,11 +28,11 @@ describe Article::Destroy do
     let(:other_user) { User.find_by(login: NEW_OWNER) }
 
     let(:result) do
-      described_class.new(
+      described_class.call(
         article: article,
         user: other_user,
         collection: collection
-      ).call
+      )
     end
 
     it 'fails to delete' do

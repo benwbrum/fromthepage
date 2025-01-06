@@ -1,5 +1,5 @@
-class Work::Update < ApplicationInteractor
-  attr_accessor :work, :collection, :original_collection_id
+class Work::Update
+  include Interactor
 
   def initialize(work:, work_params:)
     @work        = work
@@ -8,12 +8,13 @@ class Work::Update < ApplicationInteractor
     super
   end
 
-  def perform
-    @original_collection_id = @work.collection_id
+  def call
+    original_collection_id = @work.collection_id
     @collection = Collection.find_by(id: @work_params[:collection_id])
 
     if @collection.nil?
       @work.errors.add(:collection_id, :blank)
+      context.work = @work
       context.fail!
     end
 
@@ -26,7 +27,11 @@ class Work::Update < ApplicationInteractor
     @work.slug = @work.title.parameterize if @work_params[:slug].blank?
 
     if @work.save
-      change_collection if @original_collection_id != @collection.id
+      context.original_collection_id = original_collection_id
+      context.collection_id = @collection.id
+      change_collection if context.original_collection_id != context.collection_id
+
+      context
     else
       context.fail!
     end

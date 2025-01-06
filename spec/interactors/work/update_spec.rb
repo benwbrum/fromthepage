@@ -9,10 +9,10 @@ describe Work::Update do
   let(:work_params) { {} }
 
   let(:result) do
-    described_class.new(
+    described_class.call(
       work: work,
       work_params: work_params
-    ).call
+    )
   end
 
   context 'when missing collection_id' do

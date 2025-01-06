@@ -1,6 +1,0 @@
-th
-  h3.settings-label =t('collection.edit_privacy.collection_owners')
-  p.settings-label  ="(#{owners.count})" if owners.any?
-  p =link_to(t('collection.edit_privacy.edit_owners'), collection_edit_owners_path(collection.slug), id: 'edit-owners-button', class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-owners', noscroll: false, noclose: true } })
-td
-  =render 'users_list', users: owners.sort_by(&:display_name), type: 'owners'

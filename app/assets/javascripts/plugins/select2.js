@@ -1540,7 +1540,6 @@ S2.define('select2/selection/multiple',[
 
     this.$selection.on('click', '.select2-selection__choice__remove',
       function (evt) {
-      evt.stopPropagation();
       var $remove = $(this);
       var $selection = $remove.parent();
 
@@ -4869,8 +4868,8 @@ S2.define('select2/core',[
 
     // Hide the original select
     $element.addClass('select2-hidden-accessible');
-	  $element.attr('aria-hidden', 'true');
-
+	$element.attr('aria-hidden', 'true');
+	
     // Synchronize any monitored attributes
     this._syncAttributes();
 

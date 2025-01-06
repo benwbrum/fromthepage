@@ -6,10 +6,10 @@ class Work::Metadata::ImportCsvJob < ApplicationJob
     collection = Collection.find(collection_id)
     user = User.find(user_id)
 
-    result = Work::Metadata::ImportCsv.new(
+    result = Work::Metadata::ImportCsv.call(
       metadata_file: metadata_file,
       collection: collection
-    ).call
+    )
 
     if SMTP_ENABLED
       begin

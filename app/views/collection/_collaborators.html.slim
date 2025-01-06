@@ -1,6 +1,0 @@
-th
-  h3.settings-label =t('collection.edit_privacy.collection_collaborators')
-  p.settings-label ="(#{collaborators.count})" if collaborators.any?
-  p =link_to(t('collection.edit_privacy.edit_collaborators'), collection_edit_collaborators_path(collection.slug), id: 'edit-collaboators-button', class: 'button', disabled: !collection.restricted, data: { controller: 'litebox', litebox: { hash: 'edit-collaborators', noscroll: false, noclose: true } })
-td
-  =render 'users_list', users: collaborators, type: 'collaborators', disabled: !collection.restricted

@@ -1,6 +1,5 @@
-class Work::Metadata::Refresh < ApplicationInteractor
-
-  attr_reader :errors
+class Work::Metadata::Refresh
+  include Interactor
 
   def initialize(work_ids: nil, batches: 100)
     @all_works      = Work.where(id: work_ids)
@@ -10,15 +9,23 @@ class Work::Metadata::Refresh < ApplicationInteractor
     super
   end
 
-  def perform
+  def call
     @all_works.in_batches(of: 100).each do |works|
       process_batches(works)
     end
+
+    finalize
   rescue StandardError => e
     # :nocov:
     @errors << "Error: #{e}"
+    context.errors = @errors
     context.fail!
     # :nocov:
+  end
+
+  def finalize
+    context.errors = @errors
+    context
   end
 
   private

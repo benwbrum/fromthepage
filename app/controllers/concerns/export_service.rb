@@ -127,7 +127,7 @@ module ExportService
     path = 'work_metadata.csv'
     out.put_next_entry(path)
 
-    result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
+    result = Work::Metadata::ExportCsv.call(collection: collection, works: collection.works)
     out.write(result.csv_string)
   end
 

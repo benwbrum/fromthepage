@@ -83,7 +83,7 @@ class ExportController < ApplicationController
 
   def work_metadata_csv
     filename = params[:filename] ? "#{params[:filename]}.csv" : "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
-    result = Work::Metadata::ExportCsv.new(collection: @collection, works: @collection.works).call
+    result = Work::Metadata::ExportCsv.call(collection: @collection, works: @collection.works)
 
     send_data(
       result.csv_string,

@@ -38,7 +38,7 @@ describe MetadataController do
   describe '#create' do
     let(:action_path) { collection_metadata_create_path }
     let(:file) do
-      result = Work::Metadata::ExportCsv.new(collection: collection, works: Work.where(id: work.id)).call
+      result = Work::Metadata::ExportCsv.call(collection: collection, works: Work.where(id: work.id))
       temp_file = Tempfile.new(['metadata', '.csv'])
       temp_file.write(result.csv_string)
       temp_file.rewind

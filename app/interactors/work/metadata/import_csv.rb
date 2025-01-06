@@ -1,6 +1,6 @@
 require 'csv'
 
-class Work::Metadata::ImportCsv < ApplicationInteractor
+class Work::Metadata::ImportCsv
   SPECIAL_HEADERS = [
     # legacy headers
     'work_id',
@@ -15,19 +15,19 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
     '*Uploaded Filename*'
   ].freeze
 
-  attr_accessor :content, :rowset_errors
+  include Interactor
 
   def initialize(metadata_file:, collection:)
     @metadata_file = metadata_file
     @collection = collection
-    @content = 0
     @rowset_errors = []
 
     super
   end
 
-  def perform
+  def call
     csv = read_csv(@metadata_file)
+    success = 0
 
     csv.each do |row|
       metadata = []
@@ -72,9 +72,14 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
         work.original_metadata = metadata.to_json if metadata.present?
         work.save!
 
-        @content += 1
+        success += 1
       end
     end
+
+    context.content = success
+    context.rowset_errors = @rowset_errors
+
+    context
   end
 
   private
