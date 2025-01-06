@@ -59,7 +59,7 @@ module ElasticDelta
       doc_id = "docset-#{doc_id}"
     end
 
-    ElasticUtil.get_client().index(
+    ElasticUtil.get_client().delete(
       index: index,
       id: doc_id
     )
