@@ -18,7 +18,7 @@
 -else
   -[@org_owners, @individual_owners].each do |owners|
     -owners.each do |owner|
-      .collection__tile
+      .collection-tile
         -if owner.picture.present?
           -tile_url = owner.picture.url(:thumb)
         -else

@@ -343,7 +343,7 @@
     .headline {
       margin: 0;
     }
-  }  
+  }
   &_title {
     margin: 0;
     a {
@@ -387,7 +387,7 @@
     margin: 0;
   }
 
-  
+
 }
 
 
@@ -401,4 +401,22 @@
   white-space: nowrap;
   display: inline-block;
   font-size: $fontSizeSmall;
+}
+
+.landing-page-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  width: 100%;
+
+  .collection-tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 15em;
+    height: 200px;
+  }
 }
