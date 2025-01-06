@@ -142,6 +142,14 @@ class Page < ApplicationRecord
   end
 
   def self.es_match_query(query, user)
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+    end
+
     return {
       bool: {
         must: {
@@ -160,8 +168,18 @@ class Page < ApplicationRecord
           }
         },
         filter: [
-          {term: {_index: "ftp_page"}}, # Need index filter for cross collection search
-          {term: {is_public: true}}
+          {
+            bool: {
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {collection_id: collection_collabs} },
+                { terms: {docset_id: docset_collabs} }
+              ]
+            }
+          },
+          {term: {_index: "ftp_page"}} # Need index filter for cross collection search
         ]
       }
     }
