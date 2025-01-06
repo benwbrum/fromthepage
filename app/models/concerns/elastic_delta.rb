@@ -11,8 +11,10 @@ module ElasticDelta
 
   # Setup elastic hooks for models
   included do
-    after_save :es_update
-    after_destroy :es_delete
+    if ELASTIC_ENABLED
+      after_save :es_update
+      after_destroy :es_delete
+    end
   end
 
   private
