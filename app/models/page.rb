@@ -45,6 +45,7 @@ class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper
+  include ElasticDelta
 
   before_update :validate_blank_page
   before_update :process_source

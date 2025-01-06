@@ -54,6 +54,7 @@
 #  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
 #
 class Work < ApplicationRecord
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
