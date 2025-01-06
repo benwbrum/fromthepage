@@ -1,7 +1,11 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id }})
 
--selected_version_date = l(@selected_version.created_on.localtime)
--selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
+- if @selected_version.nil?
+  -selected_version_date = nil
+  -selected_version_user = nil
+- else
+  -selected_version_date = l(@selected_version.created_on.localtime)
+  -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
 
 p.diff-help =t('.help_description').html_safe
 
@@ -19,7 +23,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
 
     td.diff-list
       div.diff-title
-        h5 = t('.n_revisions', count: @page.page_versions.select { |version| version.content_changed? }.size)
+        h5 = t('.n_revisions', count: @page_versions.size)
       .scroll-container
         -@page_versions.each do |version|
           =link_to(page_version_show_path(page_version_id: version.id), class: ('selected' if version == @selected_version))
@@ -33,7 +37,8 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
       div.versions-wrapper
         div.version-col
           div.diff-title
-            = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
+            - if @selected_version
+              = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
           div.version-content
             - if @selected_version&.page_version && @previous_version&.page_version
               - if @selected_version.page_version > @previous_version.page_version
@@ -84,7 +89,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         div.version-col.right
           div.diff-title
             =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
-              =hidden_field_tag :page_version_id, @selected_version.id
+              =hidden_field_tag :page_version_id, @selected_version&.id
               =label_tag :compare_version_id, t('.compared_with')
               =select_tag :compare_version_id, options_from_collection_for_select(@page_versions, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
           div.version-content

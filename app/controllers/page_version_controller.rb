@@ -10,7 +10,7 @@ class PageVersionController < ApplicationController
     end
 
     @selected_version = @page_version.present? ? @page_version : @page_versions.first
-    @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
+    @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version&.prev
   end
 
   def list
