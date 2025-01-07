@@ -20,7 +20,11 @@ module TranscribeHelper
   end
 
   def canonical_subjects_for_autocomplete
-    @collection.articles.pluck(:title)
+    if @collection.is_a? Collection
+      @collection.articles.pluck(:title).sort
+    else
+      @collection.collection.articles.pluck(:title).sort
+    end
   end
 
   def excerpt_subject(page, title, options = {})

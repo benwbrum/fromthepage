@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_23_000320) do
+ActiveRecord::Schema.define(version: 2025_01_03_220916) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -465,8 +465,10 @@ ActiveRecord::Schema.define(version: 2024_07_23_000320) do
     t.string "display_text"
     t.datetime "created_on"
     t.string "text_type", default: "transcription"
+    t.integer "work_id"
     t.index ["article_id"], name: "index_page_article_links_on_article_id"
     t.index ["page_id"], name: "index_page_article_links_on_page_id"
+    t.index ["work_id"], name: "index_page_article_links_on_work_id"
   end
 
   create_table "page_blocks", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -1114,6 +1116,7 @@ ActiveRecord::Schema.define(version: 2024_07_23_000320) do
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"
+  add_foreign_key "page_article_links", "works"
   add_foreign_key "quality_samplings", "collections"
   add_foreign_key "quality_samplings", "users"
   add_foreign_key "spreadsheet_columns", "transcription_fields"

@@ -8,13 +8,26 @@
 #  text_type    :string(255)      default("transcription")
 #  article_id   :integer
 #  page_id      :integer
+#  work_id      :integer
 #
 # Indexes
 #
 #  index_page_article_links_on_article_id  (article_id)
 #  index_page_article_links_on_page_id     (page_id)
+#  index_page_article_links_on_work_id     (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (work_id => works.id)
 #
 class PageArticleLink < ApplicationRecord
   belongs_to :page, optional: true
+  belongs_to :work, optional: true
   belongs_to :article, counter_cache: :pages_count, optional: true
+
+  before_create :set_work
+
+  def set_work
+    self.work_id = page.work_id
+  end
 end
