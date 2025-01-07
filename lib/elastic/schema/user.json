@@ -1,0 +1,36 @@
+{
+	"mappings": {
+		"properties": {
+			"db_id": {
+				"type": "integer"
+			},
+			"about": {
+				"type": "text"
+			},
+			"display_name": {
+				"type": "keyword",
+				"fields": {
+					"text": {"type": "text"}
+				}
+			},
+			"login": {
+				"type": "keyword",
+				"fields": {
+					"text": {"type": "text"}
+				}
+			},
+			"real_name": {
+				"type": "keyword",
+				"fields": {
+					"text": {"type": "text"}
+				}
+			},
+			"website": {
+				"type": "keyword",
+				"fields": {
+					"text": {"type": "text"}
+				}
+			}
+		}
+	}
+}

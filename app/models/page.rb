@@ -45,6 +45,7 @@ class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper
+  include ElasticDelta
 
   before_update :validate_blank_page
   before_update :process_source
@@ -130,9 +131,66 @@ class Page < ApplicationRecord
   NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
   NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      collection_id: self.collection&.id,
+      docset_id: self.work&.document_sets&.pluck(:id),
+      owner_user_id: self.collection&.owner_user_id,
+      work_id: self.work&.id,
+      is_public: !self.collection&.restricted || self.work&.document_sets.where(:is_public => true).exists?,
+      search_text: self.search_text,
+      content_english: self.source_text # TODO: Hook up language pipeline
+    }
+  end
+
+  def self.es_match_query(query, user)
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+    end
+
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "search_text^1.5",
+              "content_english",
+              "content_french",
+              "content_german",
+              "content_spanish",
+              "content_portuguese",
+              "content_swedish"
+            ]
+          }
+        },
+        filter: [
+          {
+            bool: {
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {collection_id: collection_collabs} },
+                { terms: {docset_id: docset_collabs} }
+              ]
+            }
+          },
+          {term: {_index: "ftp_page"}} # Need index filter for cross collection search
+        ]
+      }
+    }
+  end
+
   # tested
   def collection
-    work.collection
+    work&.collection
   end
 
   def field_based

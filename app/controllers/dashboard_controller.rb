@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
+  require 'elastic_util'
+
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
@@ -200,7 +202,45 @@ class DashboardController < ApplicationController
   end
 
   def new_landing_page
-    @search_results = search_results(params[:search])
+    if ELASTIC_ENABLED
+      search_page = (params[:page] || 1).to_i
+
+      page_size = 10
+
+      search_data = elastic_search_results(
+        params[:search],
+        search_page,
+        page_size,
+        params[:filter]
+      )
+
+      if search_data
+        inflated_results = search_data[:inflated]
+        @full_count = search_data[:full_count] # Used by All tab
+        @type_counts = search_data[:type_counts]
+
+        # Used for pagination, currently capped at 10k
+        #
+        # TODO: ES requires a scroll/search_after query for result sets larger
+        #       than 10k.
+        #
+        #       To setup support we just need to add a composite tiebreaker field
+        #       to the schemas
+        @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+        # Inspired by display controller search
+        @search_string = "\"#{params[:search] || ""}\""
+
+        @search_results = WillPaginate::Collection.create(
+          search_page,
+          page_size,
+          @filtered_count) do |pager|
+            pager.replace(inflated_results)
+          end
+      end
+    else
+      @search_results = search_results(params[:search])
+    end
 
     # Get random Collections and DocSets from paying users
     @owners = User.findaproject_owners.order(:display_name).joins(:collections)
@@ -339,6 +379,70 @@ class DashboardController < ApplicationController
       filename: File.basename("letter.pdf"),
       :content_type => "application/pdf")
     cookies['download_finished'] = 'true'
+  end
+
+  def elastic_search_results(query, page, page_size, filter)
+    return nil if query.nil?
+
+    client = ElasticUtil.get_client()
+
+    if filter
+        count_query = ElasticUtil.gen_query(
+          current_user,
+          query,
+          ['collection', 'page', 'user', 'work'],
+          page, page_size, true
+        )
+
+        # Need to run a count query for all types
+        # TODO: Could use msearch for one call to ES
+        resp = client.search(
+          index: count_query[:indexes],
+          body: count_query[:query_body]
+        )
+
+        # No real inflation happens here but we get counts back
+        inflated_resp = ElasticUtil.inflate_response(resp)
+
+        full_count = inflated_resp[:full_count]
+        type_counts = inflated_resp[:type_counts]
+
+        filtered_query = ElasticUtil.gen_query(
+          current_user,
+          query,
+          [filter],
+          page, page_size)
+
+        filtered_resp = client.search(
+          index: filtered_query[:indexes],
+          body: filtered_query[:query_body]
+        )
+
+        # Actual object inflation for the filtered set
+        inflated_resp = ElasticUtil.inflate_response(filtered_resp)
+
+        # Blend all/filtered for display
+        return {
+          inflated: inflated_resp[:inflated],
+          full_count: full_count,
+          filtered_count: inflated_resp[:filtered_count],
+          type_counts: type_counts
+        }
+    else
+      generated_query = ElasticUtil.gen_query(
+        current_user,
+        query,
+        ['collection', 'page', 'user', 'work'],
+        page, page_size)
+
+      resp = client.search(
+          index: generated_query[:indexes],
+          body: generated_query[:query_body]
+      )
+
+      return ElasticUtil.inflate_response(resp)
+    end
+
   end
 
   def search_results(search_key)

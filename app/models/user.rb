@@ -61,6 +61,7 @@ class User < ApplicationRecord
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -140,6 +141,37 @@ class User < ApplicationRecord
   after_save :create_notifications
   after_create :set_default_footer_block
   # before_destroy :clean_up_orphans
+
+  def as_indexed_json
+    return {
+      _id: self.id,
+      about: self.about,
+      display_name: self.display_name,
+      login: self.login,
+      real_name: self.real_name,
+      website: self.website
+    }
+  end
+
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "about",
+              "real_name",
+              "website"
+            ]
+          }
+        },
+        filter: [
+          {term: {_index: "ftp_user"}} # Need index filter for cross collection search
+        ]
+      }
+    }
+  end
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first

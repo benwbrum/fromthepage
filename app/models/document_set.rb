@@ -25,6 +25,7 @@
 #
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
+  include ElasticDelta
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
@@ -75,6 +76,22 @@ class DocumentSet < ApplicationRecord
     carousel
     reorder(Arel.sql('RAND()')) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql('RAND()'))
+  end
+
+  # Docsets get indexed alongside collections but have a prefix added to ID
+  def as_indexed_json
+    return {
+      _id: "docset-#{self.id}",
+      is_public: self.is_public,
+      is_docset: true,
+      intro_block: self.description,
+      language: self.language,
+      owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
+      collection_id: self.collection_id,
+      slug: self.slug,
+      title: self.title
+    }
   end
 
   def show_to?(user)
@@ -221,10 +238,44 @@ class DocumentSet < ApplicationRecord
     collection.search_works(search)
   end
 
+  def self.elastic_search(query)
+    require 'elastic_util'
+
+    client = ElasticUtil.get_client()
+
+    resp = client.search(index: 'ftp_docset', body: {
+        query: {
+          bool: {
+            must: {
+              simple_query_string: {
+                query: query,
+                fields: [
+                  "title^2",
+                  "slug",
+                  "owner_display_name"
+                ]
+              }
+            }
+          }
+        },
+        size: 10000 # TODO: Need pagination eventually
+    })
+
+    matches = resp['hits']['hits'].map { |doc| doc['_id'] }
+
+    # TODO: Preserve ordering from matches for relevance?
+    DocumentSet
+        .where(id: matches)
+  end
+
   def self.search(search)
-    sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
+    if ELASTIC_ENABLED
+      elastic_search(search)
+    else
+      sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
     users where owner=1 and display_name like ?)"
-    where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
+      where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
+    end
   end
 
   def default_orientation

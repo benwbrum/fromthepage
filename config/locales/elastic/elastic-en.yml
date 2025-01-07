@@ -1,0 +1,39 @@
+---
+en:
+  elastic:
+    work_partial:
+      about: About
+      add_a_new_work: Add a new work
+      all_complete: All works are fully transcribed.
+      all_works: All Works
+      help_create_metadata: Help out!
+      help_transcribe_or_correct: Help out!
+      most_recent_activity: Most recent activity
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
+      pages_need_correction: Pages That Need Correction
+      pages_need_correction_or_transcription: Pages That Need Correction or Transcription
+      pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
+      progress: Progress
+      project_by: Project by
+      recent_edits: Recent Edits
+      recent_notes: Recent Notes
+      restricted_collaboratoration: Collaboration is restricted.
+      search: Search
+      search_by_title: Search by title or metadata...
+      search_by_title_1: Search by title
+      search_the_text: Search the text...
+      search_the_text_1: Search the text
+      show_more: Show More
+      start_creating_transcribing: Start Creating Metadata
+      start_transcribing: Start Transcribing
+      subject_categories: Subject Categories
+      this_work_has_not_been_described: This work needs better metadata.
+      this_work_has_pages_that_need_work: Some pages still need work.
+      time_ago_in_words: "%{time} ago"
+      user_wrote_note: "%{user} wrote %{note}"
+      work_title: Work title
+      works: Works
+      works_that_need_transcription: Works That Need Transcription

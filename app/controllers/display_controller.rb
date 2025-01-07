@@ -119,8 +119,12 @@ class DisplayController < ApplicationController
       # restrict to pages that include that subject
       @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
       @work = @search_attempt&.work
-      pages = @search_attempt.results
-      @pages = pages.paginate(page: params[:page])
+      if ELASTIC_ENABLED
+        @pages = @search_attempt.results(page: params.fetch(:page, 1))
+      else
+        pages = @search_attempt.results
+        @pages = pages.paginate(page: params[:page])
+      end
       @search_string = "\"#{params[:id].split("-")[0]}\""
     end
     logger.debug "DEBUG #{@search_string}"
