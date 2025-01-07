@@ -138,7 +138,9 @@ html lang="en-US"
 
     .page-busy-overlay
 
-    =javascript_include_tag 'application'
+    =javascript_include_tag 'ftp_interface'
+    =javascript_importmap_tags
+
     =yield :javascript
 
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'

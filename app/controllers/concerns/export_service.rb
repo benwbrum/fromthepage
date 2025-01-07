@@ -62,14 +62,14 @@ module ExportService
       )
 
     # write the string to a temp directory
-    temp_dir = File.join(Rails.root, 'public', 'printable')
+    temp_dir = File.join(Rails.root, 'tmp', 'printable')
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/, '')
     temp_dir = File.join(temp_dir, time_stub)
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
+    file_stub = "#{@work.slug.gsub('-', '_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
 
     if format == 'pdf'
@@ -92,8 +92,6 @@ module ExportService
 
     output_file
   end
-
-
 
   def export_owner_mailing_list_csv(out:, owner:)
     path = "mailing_list.csv"
@@ -571,7 +569,6 @@ module ExportService
     metadata_cells
   end
 
-
   def index_for_cell(cell)
     if cell.transcription_field_id && cell.transcription_field.present?
       if cell.transcription_field.input_type == 'spreadsheet'
@@ -586,7 +583,6 @@ module ExportService
 
     index
   end
-
 
   def cell_data(array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
     if transcription_field_flag
@@ -788,10 +784,10 @@ module ExportService
       ]
     }
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       rows.each do |row|
-          records << row
+        records << row
       end
     end
   end
