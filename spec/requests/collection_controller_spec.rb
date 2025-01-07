@@ -5,8 +5,8 @@ describe CollectionController do
     User.current_user = owner
   end
 
-  let!(:owner) { build(:owner).tap { |o| o.save(validate: false) } }
-  let!(:user) { build(:user).tap { |u| u.save(validate: false) } }
+  let!(:owner) { create(:unique_user, :owner) }
+  let!(:user) { create(:unique_user) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
 
   describe '#search_users' do

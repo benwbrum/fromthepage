@@ -1,4 +1,5 @@
 require 'alto_transformer'
+require 'google/cloud_vision_page_processor'
 require 'openai/text_normalizer'
 require 'diff_tools'
 namespace :fromthepage do
@@ -18,16 +19,11 @@ namespace :fromthepage do
     end
 
     work.pages.each do |page|
-      # check to see if ALTO XML exists
-      if page.has_alto?
-        # if it does, read the ALTO XML and generate AI Plaintext
-        raw_alto = page.alto_xml
-        plaintext = generate_plaintext(raw_alto, diff_level)
-        if !plaintext.blank?
-          # save the plaintext
-          page.ai_plaintext = generate_plaintext(raw_alto, diff_level)
-          page.save!
-        end
+      plaintext = plaintext_for_page(page, diff_level)
+      if !plaintext.blank?
+        # save the plaintext
+        page.ai_plaintext = plaintext
+        page.save!
       end
     end
   end
@@ -47,27 +43,41 @@ namespace :fromthepage do
     end
 
     work.pages.each do |page|
-      # check to see if ALTO XML exists
-      if page.has_alto?
-        # if it does, read the ALTO XML and generate AI Plaintext
-        raw_alto = page.alto_xml
-        # convert the alto to plaintext, using the same method as when we ingest XML files
-        plaintext = generate_plaintext(raw_alto, diff_level)
-        # do any additional processing here
-        # save the plaintext without creating derivatives
-        if !plaintext.blank?
-          page.update_column(:source_text, plaintext)
-        end
+      plaintext = plaintext_for_page(page, diff_level)
+      # save the plaintext without creating derivatives
+      if !plaintext.blank?
+        page.update_column(:source_text, plaintext)
       end
+
     end
   end
 
-  def generate_plaintext(raw_alto, diff_level)
-    # convert the alto to plaintext, using the same method as when we ingest XML files
-    plaintext = AltoTransformer.plaintext_from_alto_xml(raw_alto)
+  def plaintext_for_page(page, diff_level)
+    plaintext = nil
+
+    # Google CloudVision generates its own plaintext that is better than its ALTO XML
+    if page.has_gcv_json?
+      # if it does, read the GCV JSON and generate AI Plaintext
+      gcv_json = page.gcv_json
+      # convert the GCV JSON to plaintext
+      plaintext = Google::CloudVision::PageProcessor.plaintext_from_gcv_json(gcv_json)
+    elsif page.has_alto? # check to see if ALTO XML exists
+      # if it does, read the ALTO XML and generate AI Plaintext
+      raw_alto = page.alto_xml
+      # convert the alto to plaintext, using the same method as when we ingest XML files
+      plaintext = AltoTransformer.plaintext_from_alto_xml(raw_alto)
+    end
+
+    # do any additional processing here
+    postprocess_plaintext(plaintext, diff_level)
+
+    plaintext
+  end
+
+  def postprocess_plaintext(plaintext, diff_level)
     # some pages are blank, so they will have no word characters in the plaintext
     # we want to skip those pages
-    return nil if !plaintext.match(/\w/m)
+    return nil if plaintext.blank? || !plaintext.match(/\w/m)
 
     # do any additional processing here
     if diff_level != :none

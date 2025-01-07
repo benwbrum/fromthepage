@@ -114,8 +114,8 @@ Fromthepage::Application.routes.draw do
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
-      get ':id/example', to: 'metadata#example', as: :example
-      get ':id/upload', to: 'metadata#upload', as: :upload
+      get ':collection_id/example', to: 'metadata#example', as: :example
+      get ':collection_id/upload', to: 'metadata#upload', as: :upload
       post 'create', to: 'metadata#create'
       post ':id/refresh', to: 'metadata#refresh', as: :refresh
     end
@@ -128,7 +128,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
-    get 'update_featured_page', to: 'work#update_featured_page'
+    post 'update_featured_page', to: 'work#update_featured_page'
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
     get ':collection_id/:work_id/edit_scribes', to: 'work#edit_scribes', as: 'edit_scribes'
@@ -140,14 +140,9 @@ Fromthepage::Application.routes.draw do
     get 'document_sets_select', to: 'work#document_sets_select'
   end
 
-  scope 'page', as: 'page' do
-    get 'new', to: 'page#new'
-    get 'delete', to: 'page#delete'
-    get 'reorder_page', to: 'page#reorder_page'
-    get 'edit', to: 'page#edit'
-    get 'rotate', to: 'page#rotate'
-    post 'update', to: 'page#update'
-    post 'create', to: 'page#create'
+  resources :page, except: [:index, :show, :edit], param: :page_id do
+    post :reorder, on: :collection
+    post :rotate, on: :collection
   end
 
   scope 'article', as: 'article' do
@@ -310,9 +305,8 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'document_sets', as: 'document_sets' do
-    get 'restrict_set', to: 'document_sets#restrict_set'
     get 'destroy', to: 'document_sets#destroy'
-    get 'publish_set', to: 'document_sets#publish_set'
+    post 'toggle_privacy', to: 'document_sets#toggle_privacy'
     post 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
     post 'assign_to_set', to: 'document_sets#assign_to_set'
     post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
@@ -360,7 +354,7 @@ Fromthepage::Application.routes.draw do
     namespace :v1 do
       get 'bulk_export', to: 'bulk_export#index'
       get 'bulk_export/:collection_slug', to: 'bulk_export#index'
-      post 'bulk_export/:collection_slug', to: 'bulk_export#start'
+      post 'bulk_export/:collection_slug', to: 'bulk_export#start', as: 'bulk_export_start'
       get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
     end
@@ -463,6 +457,8 @@ Fromthepage::Application.routes.draw do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
+      get 'settings/privacy', as: :settings_privacy, to: 'document_sets#settings_privacy'
+      get 'settings/works', as: :settings_works, to: 'document_sets#settings_works'
       get 'settings/:document_set_id/edit_set_collaborators', to: 'document_sets#edit_set_collaborators', as: 'edit_set_collaborators'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'review', as: :review, to: 'collection#reviewer_dashboard'

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Article::Update do
-  let(:user) { User.find_by(login: OWNER) }
+  let!(:user) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: user.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: user.id) }
   let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }

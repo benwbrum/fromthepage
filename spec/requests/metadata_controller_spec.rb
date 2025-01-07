@@ -11,7 +11,7 @@ describe MetadataController do
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, original_metadata: original_metadata) }
 
   describe '#example' do
-    let(:action_path) { collection_metadata_example_path(collection.id) }
+    let(:action_path) { collection_metadata_example_path(collection_id: collection.id) }
     let(:subject) { get action_path }
 
     it 'renders status' do

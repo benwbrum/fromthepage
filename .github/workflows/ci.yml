@@ -48,7 +48,7 @@ jobs:
           COVERAGE: 'true'
           CI: 'true'
       - name: Run Coveralls
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
         uses: coverallsapp/github-action@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
