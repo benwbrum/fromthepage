@@ -127,7 +127,6 @@ describe 'guest user actions' do
   it 'looks at the landing page', :guest_enabled do
     CollectionStatistic.update_recent_statistics
     visit landing_page_path
-    expect(page).to have_selector('.carousel')
     expect(page.find('.maincol')).to have_link(@owner.display_name)
     page.find('.maincol').click_link(@owner.display_name)
     expect(page.find('.maincol')).not_to have_content(@admin.display_name)

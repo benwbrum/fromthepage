@@ -1,6 +1,6 @@
 section.search(style='width: 50%; float: right;')
   =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-    =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_institutions')
+    =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
     =button_tag t('.search')
     =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 

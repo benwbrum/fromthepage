@@ -73,6 +73,10 @@ fr:
       to_whom_it_may_concern: 'À qui cela peut concerner:'
       volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
       worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
+    landing_page:
+      by: " par "
+      institutions: Institutions
+      new_projects: Nouveaux projets
     new_upload:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
       reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.

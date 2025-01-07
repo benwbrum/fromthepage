@@ -73,6 +73,10 @@ de:
       to_whom_it_may_concern: 'Wen es angeht:'
       volunteer_text: Jeder Freiwillige trägt dazu bei, die Geschichte zugänglicher zu machen. Wir freuen uns über den Beitrag von %{user_display_name} zu unserem Crowdsourcing-Bemühen!
       worked_on_collections: "%{user_name} hat an den folgenden Sammlungen der folgenden Institutionen gearbeitet:"
+    landing_page:
+      by: " von "
+      institutions: Institutionen
+      new_projects: Neue Projekte
     new_upload:
       document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
       reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.
