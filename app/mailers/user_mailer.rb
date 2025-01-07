@@ -1,3 +1,5 @@
+require 'csv'
+
 class UserMailer < ActionMailer::Base
   include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
@@ -66,6 +68,25 @@ class UserMailer < ActionMailer::Base
     @user = user
     @collection = obj
     mail to: @user.email, subject: "#{@collection.owner.display_name}'s #{@collection.title} Collection"
+  end
+
+  def metadata_csv_import_finished(user, result)
+    @user = user
+    @result = result
+
+    if @result.rowset_errors.any?
+      csv_data = CSV.generate(headers: true) do |csv|
+        csv << [:error, :work_id, :title]
+
+        @result.rowset_errors.each do |error|
+          csv << [error[:error], error[:work_id], error[:title]]
+        end
+      end
+
+      attachments['errors.csv'] = { mime_type: 'text/csv', content: csv_data }
+    end
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_csv_import_finished.subject')
   end
 
   private

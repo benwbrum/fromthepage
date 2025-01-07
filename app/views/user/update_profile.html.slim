@@ -20,10 +20,10 @@
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
         tr
           th= t('.user_url')
-          td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
+          td =user_profile_url(@user)
         tr
           th= t('.sign_up_url')
-          td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}/sign_up
+          td =new_for_owner_url(@user)
         tr
           th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @user.slug

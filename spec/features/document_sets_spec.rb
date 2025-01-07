@@ -41,10 +41,13 @@ describe "document sets", :order => :defined do
       end
     end
     page.fill_in 'document_set_title', with: 'Edited Test Document Set 1'
-    page.find_button('Save Document Set').click
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
+    sleep(3)
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
 
+    page.find('.side-tabs').click_link('Manage Works')
     # Set all checkboxes off
     page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
       checkbox.set(false)
@@ -68,14 +71,14 @@ describe "document sets", :order => :defined do
     page.fill_in 'document_set_title', with: "Test Document Set 3"
     page.find_button('Create Document Set').click
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
-    expect(page.find('h1')).to have_content("Test Document Set 3")
+    page.find('.side-tabs').click_link('Privacy & Access')
+    expect(page.find('h1')).to have_content('Test Document Set 3')
     expect(DocumentSet.last.is_public).to be true
-    expect(page).not_to have_content('Allowed Collaborators')
-    #make the set private
+    # make the set private
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
-    expect(page).to have_content('Allowed Collaborators')
-    #manually assign works until have the jqery test set
+    expect(page).to have_content('Document set collaborators')
+    # manually assign works until have the jqery test set
     id = @collection.works.third.id
     DocumentSet.last.work_ids = id
     DocumentSet.last.save!
@@ -137,6 +140,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@test_set.owner, @test_set)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Collaborators'
     # this user should not receive an email (notifications off)
     select(@rest_user.name_with_identifier, from: 'collaborator_id')
@@ -186,7 +190,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
   end
 
-  it "checks notes on a public doc set/private collection" do
+  it "checks notes on a public doc set/private collection", js: true do
     login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     fill_in 'Write a new note or ask a question...', with: "Test private note"
@@ -470,7 +474,7 @@ describe "document sets", :order => :defined do
     expect(@collection.supports_document_sets).to be true
   end
 
-  it "edits a document set slug" do
+  it 'edits a document set slug', js: true do
     login_as(@owner, :scope => :user)
     slug = "new-#{@set.slug}"
     visit "/#{@owner.slug}/#{@set.slug}"
@@ -482,7 +486,9 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content @set.title
     expect(page).to have_field('document_set[slug]', with: @set.slug)
     page.fill_in 'document_set_slug', with: "new-#{@set.slug}"
-    page.find_button('Save Document Set').click
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
+    sleep(3)
     expect(page.find('h1')).to have_content @set.title
     expect(DocumentSet.find_by(id: @set.id).slug).to eq "#{slug}"
     #check new path
@@ -506,7 +512,9 @@ describe "document sets", :order => :defined do
     new_slug = DocumentSet.first.slug
     expect(page).to have_field('document_set[slug]', with: new_slug)
     page.fill_in 'document_set_slug', with: ""
-    page.find_button('Save Document Set').click
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
+    sleep(3)
     docset = DocumentSet.find_by(id: @set.id)
     #note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize

@@ -11,13 +11,13 @@
         tr
           th =f.label :status, t('.page_status')
           td
-            -option_array = Page::MAIN_STATUSES.map {|stat| [t(".page_status_#{stat}"),stat]}
+            -option_array = Page.statuses.map {|key, val| [t(".page_status_#{val}"), key]}
             =f.select :status, options_for_select(option_array, @page.status)
         -if @work.supports_translation
           tr
             th =f.label :translation_status, t('.page_translation_status')
             td
-              -option_array = Page::TRANSLATION_STATUSES.map {|stat| [t(".page_status_#{stat}"),stat]}
+              -option_array = Page::translation_statuses.map {|key, val| [t(".page_status_#{val}"), key]}
               =f.select :translation_status, options_for_select(option_array, @page.translation_status)
         -unless @page.base_image.blank?
           tr

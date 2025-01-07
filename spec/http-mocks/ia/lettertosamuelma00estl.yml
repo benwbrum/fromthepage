@@ -1,0 +1,938 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.archive.org/services/find_file.php?file=lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:12:58 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '145'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/services/find_file.php?file=lettertosamuelma00estl
+      Expires:
+      - Fri, 15 Nov 2024 02:12:58 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: UTF-8
+      string: "<html>\r\n<head><title>302 Found</title></head>\r\n<body>\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.24.0</center>\r\n</body>\r\n</html>\r\n"
+  recorded_at: Thu, 14 Nov 2024 20:12:54 GMT
+- request:
+    method: get
+    uri: http://archive.org/services/find_file.php?file=lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:12:59 GMT
+      Content-Type:
+      - text/html; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Location:
+      - http://ia801600.us.archive.org/item_xml.php?dir=/30/items/lettertosamuelma00estl
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Thu, 14 Nov 2024 20:12:54 GMT
+- request:
+    method: get
+    uri: http://ia801600.us.archive.org/item_xml.php?dir=/30/items/lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:12:59 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <results dir="/30/items/lettertosamuelma00estl" server="ia801600.us.archive.org">
+
+        <metadata>
+          <language>eng</language>
+          <scanningcenter>boston</scanningcenter>
+          <sponsor>Associates of the Boston Public Library / The Boston Foundation</sponsor>
+          <contributor>Boston Public Library</contributor>
+          <date>1850</date>
+          <subject>May, Samuel, 1810-1899</subject>
+          <subject>Estlin, J. B. (John Bishop), 1785-1855</subject>
+          <subject>Antislavery movements</subject>
+          <subject>Abolitionists</subject>
+          <title>[Letter to Samuel May] [manuscript]</title>
+          <creator>Estlin, J. B. (John Bishop), 1785-1855</creator>
+          <creator>May, Samuel, 1810-1899, recipient</creator>
+          <collection>bplscas</collection>
+          <collection>bostonpubliclibrary</collection>
+          <collection>americana</collection>
+          <shiptracking>ST000865</shiptracking>
+          <publisher>[S.l.]</publisher>
+          <description>Holograph</description>
+          <description>Title supplied by cataloger</description>
+          <mediatype>texts</mediatype>
+          <repub_state>4</repub_state>
+          <page-progression>lr</page-progression>
+          <publicdate>2014-01-21 17:24:55</publicdate>
+          <updatedate>2014-01-21 18:37:17</updatedate>
+          <updater>associate-nicholas-delancey@archive.org</updater>
+          <identifier>lettertosamuelma00estl</identifier>
+          <uploader>associate-nicholas-delancey@archive.org</uploader>
+          <addeddate>2014-01-21 18:37:19.35339</addeddate>
+          <identifier-access>http://archive.org/details/lettertosamuelma00estl</identifier-access>
+          <identifier-ark>ark:/13960/t41r98w81</identifier-ark>
+          <imagecount>2</imagecount>
+          <operator>boston_uploads</operator>
+          <scanfee>250</scanfee>
+          <invoice>6</invoice>
+          <scandate>20141031</scandate>
+          <sponsordate>20141031</sponsordate>
+          <backup_location>ia905803_10</backup_location>
+          <openlibrary_edition>OL25640201M</openlibrary_edition>
+          <openlibrary_work>OL17070684W</openlibrary_work>
+          <external-identifier>urn:oclc:record:1048336987</external-identifier>
+          <associated-names>May, Samuel, 1810-1899, recipient</associated-names>
+          <ocr_module_version>0.0.21</ocr_module_version>
+          <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+          <page_number_confidence>0</page_number_confidence>
+          <page_number_module_version>1.0.3</page_number_module_version>
+        </metadata>
+
+        <files>
+          <file name="39999063867541.djvu" source="derivative">
+            <format>DjVu</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1390501187</mtime>
+            <size>31973</size>
+            <md5>1a5ed2ebf30d0335838b53da42f11619</md5>
+            <crc32>2914da01</crc32>
+            <sha1>001b43597feab48952c4abbfee7f786b53f2f4d8</sha1>
+          </file>
+          <file name="39999063867541.gif" source="derivative">
+            <format>Animated GIF</format>
+            <original>39999063867541_jp2.zip</original>
+            <mtime>1390501150</mtime>
+            <size>30294</size>
+            <md5>617ffaee49f21c3a37c96498b338cf8e</md5>
+            <crc32>82864d81</crc32>
+            <sha1>5114a7ed863af3e474903e8bcb06f9ffab328d6e</sha1>
+          </file>
+          <file name="39999063867541.pdf" source="derivative">
+            <format>Image Container PDF</format>
+            <original>39999063867541_page_numbers.json</original>
+            <mtime>1700165557</mtime>
+            <size>54375</size>
+            <md5>07d367b49fedccc10458407e2577ccd0</md5>
+            <crc32>a6f87f4a</crc32>
+            <sha1>0fd36e6195b70fbd398496f6a32b787e95fc2337</sha1>
+          </file>
+          <file name="39999063867541_abbyy.gz" source="derivative">
+            <format>Abbyy GZ</format>
+            <original>39999063867541_jp2.zip</original>
+            <mtime>1390501174</mtime>
+            <size>405</size>
+            <md5>09db43c4a638b831679be69e731bac94</md5>
+            <crc32>98a30ff3</crc32>
+            <sha1>0d00ac3d67411913619c4fb06f5f6f97e57ef1ae</sha1>
+          </file>
+          <file name="39999063867541_chocr.html.gz" source="derivative">
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+            <format>chOCR</format>
+            <original>39999063867541_abbyy.gz</original>
+            <mtime>1700165370</mtime>
+            <size>553</size>
+            <md5>fc5b63e0043406b77606fddd1672c8cd</md5>
+            <crc32>2407039b</crc32>
+            <sha1>ffc84147401d98f1489f6e8f955125c318059657</sha1>
+          </file>
+          <file name="39999063867541_cloth_detection.log" source="derivative">
+            <format>Cloth Cover Detection Log</format>
+            <original>39999063867541_scandata.xml</original>
+            <mtime>1700166496</mtime>
+            <size>519</size>
+            <md5>1bfd1605f20254b8908a0a2b4d3be037</md5>
+            <crc32>43c4abb9</crc32>
+            <sha1>9baea3c46b54595f376d5025a9d885073782c989</sha1>
+          </file>
+          <file name="39999063867541_djvu.txt" source="derivative">
+            <format>DjVuTXT</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1700165416</mtime>
+            <size>0</size>
+            <md5>d41d8cd98f00b204e9800998ecf8427e</md5>
+            <crc32>00000000</crc32>
+            <sha1>da39a3ee5e6b4b0d3255bfef95601890afd80709</sha1>
+          </file>
+          <file name="39999063867541_djvu.xml" source="derivative">
+            <format>Djvu XML</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165385</mtime>
+            <size>788</size>
+            <md5>b8e441702a74e66b4dbcb74102d28df5</md5>
+            <crc32>947c8d52</crc32>
+            <sha1>5ff8600018e05ab496128cce2a4efac18f36adcb</sha1>
+          </file>
+          <file name="39999063867541_hocr.html" source="derivative">
+            <hocr_char_to_word_module_version>1.2.0</hocr_char_to_word_module_version>
+            <hocr_char_to_word_hocr_version>1.1.45</hocr_char_to_word_hocr_version>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+            <format>hOCR</format>
+            <original>39999063867541_chocr.html.gz</original>
+            <mtime>1700165378</mtime>
+            <size>1052</size>
+            <md5>dc133945df9f7c518eda395e4259414f</md5>
+            <crc32>405e1d56</crc32>
+            <sha1>bc840309c4f1b4adce68f0c7c4805cbbe8fa519f</sha1>
+          </file>
+          <file name="39999063867541_hocr_pageindex.json.gz" source="derivative">
+            <hocr_pageindex_module_version>1.0.0</hocr_pageindex_module_version>
+            <hocr_pageindex_hocr_version>1.1.15</hocr_pageindex_hocr_version>
+            <format>OCR Page Index</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165388</mtime>
+            <size>49</size>
+            <md5>2a3841b78d6361b660fa376aca6aed78</md5>
+            <crc32>daa14d9c</crc32>
+            <sha1>9c45646ce349363f07d89dd3a9b195314fb107a2</sha1>
+          </file>
+          <file name="39999063867541_hocr_searchtext.txt.gz" source="derivative">
+            <hocr_fts_text_module_version>1.1.0</hocr_fts_text_module_version>
+            <hocr_fts_text_hocr_version>1.1.15</hocr_fts_text_hocr_version>
+            <word_conf_0_10>0</word_conf_0_10>
+            <word_conf_11_20>0</word_conf_11_20>
+            <word_conf_21_30>0</word_conf_21_30>
+            <word_conf_31_40>0</word_conf_31_40>
+            <word_conf_41_50>0</word_conf_41_50>
+            <word_conf_51_60>0</word_conf_51_60>
+            <word_conf_61_70>0</word_conf_61_70>
+            <word_conf_71_80>0</word_conf_71_80>
+            <word_conf_81_90>0</word_conf_81_90>
+            <word_conf_91_100>0</word_conf_91_100>
+            <format>OCR Search Text</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165397</mtime>
+            <size>28</size>
+            <md5>57d81827b485bb54c48f231dc21c93f8</md5>
+            <crc32>c5b74cdc</crc32>
+            <sha1>c7f67e07ce8d3acdac85bb96baf5e1b9dcf626d4</sha1>
+          </file>
+          <file name="39999063867541_images.zip" source="original">
+            <format>Generic Raw Book Zip</format>
+            <mtime>1390500717</mtime>
+            <size>6758809</size>
+            <md5>8a161e6f2df865200e083ee0dc139381</md5>
+            <crc32>00530022</crc32>
+            <sha1>4cde515dae1561a6a24544f8123029d5c0a8b0da</sha1>
+            <filecount>2</filecount>
+          </file>
+          <file name="39999063867541_jp2.zip" source="derivative">
+            <format>Single Page Processed JP2 ZIP</format>
+            <original>39999063867541_images.zip</original>
+            <mtime>1390501144</mtime>
+            <size>715193</size>
+            <md5>9eb580ef73a6d8f5e54907058f3c8682</md5>
+            <crc32>e1044374</crc32>
+            <sha1>cfbd4105d6432abbaaaeaed21bed9575b812c838</sha1>
+            <filecount>2</filecount>
+          </file>
+          <file name="39999063867541_page_numbers.json" source="derivative">
+            <hocr_pagenumber_module_version>1.0.3</hocr_pagenumber_module_version>
+            <hocr_pagenumber_hocr_version>1.1.54</hocr_pagenumber_hocr_version>
+            <hocr_pagenumber_confidence>0</hocr_pagenumber_confidence>
+            <format>Page Numbers JSON</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165408</mtime>
+            <size>495</size>
+            <md5>7722600548e25c7a0cb99517d7c8f24f</md5>
+            <crc32>a03a1e35</crc32>
+            <sha1>eb7ac75581509540e4f08eb0e545661c2d721fdb</sha1>
+          </file>
+          <file name="39999063867541_scandata.xml" source="derivative">
+            <format>Scandata</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1700165409</mtime>
+            <size>851</size>
+            <md5>976ed3e55c8b61f05fbe036d6881269b</md5>
+            <crc32>25a225e8</crc32>
+            <sha1>b5774359fd23b4388b918ef584c124eb8d27ff60</sha1>
+          </file>
+          <file name="__ia_thumb.jpg" source="original">
+            <mtime>1700165421</mtime>
+            <size>6971</size>
+            <md5>ecf7f7835b61bd9a404d6a9fa971e3fe</md5>
+            <crc32>b6b315f4</crc32>
+            <sha1>6a287a76b9bfc86db041cdb06d3e9d2c7ccc78b0</sha1>
+            <format>Item Tile</format>
+            <rotation>0</rotation>
+          </file>
+          <file name="lettertosamuelma00estl_archive.torrent" source="metadata">
+            <btih>d0a7e1ea7427e914283c4991f18a910c8d58620d</btih>
+            <mtime>1700166524</mtime>
+            <size>5434</size>
+            <md5>cfdf25cfc634cc027eadfc3af0780283</md5>
+            <crc32>8512d3d9</crc32>
+            <sha1>9fd1794b1ecc31b48e5ee642724a1552eed1131a</sha1>
+            <format>Archive BitTorrent</format>
+          </file>
+          <file name="lettertosamuelma00estl_dc.xml" source="original">
+            <format>Dublin Core</format>
+            <mtime>1649060463</mtime>
+            <size>1070</size>
+            <md5>c92a4871357b273e10a949327bda8f82</md5>
+            <crc32>b02d92c8</crc32>
+            <sha1>8c32066525421b8885824e98c97e3272c398711a</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_files.xml" source="original">
+            <format>Metadata</format>
+            <md5>0881ec20248b5925215746ef689cd6d8</md5>
+            <summation>md5</summation>
+          </file>
+          <file name="lettertosamuelma00estl_marc.xml" source="original">
+            <format>MARC</format>
+            <mtime>1390329437</mtime>
+            <size>4207</size>
+            <md5>951c49ec7347702000723e03e0b543b0</md5>
+            <crc32>4427189b</crc32>
+            <sha1>487d733441288e8088494f8ae899956ced0b33dc</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.mrc" source="original">
+            <format>MARC Binary</format>
+            <mtime>1390329437</mtime>
+            <size>1239</size>
+            <md5>5313f391f46b68828e68975d010967e4</md5>
+            <crc32>fa736ef9</crc32>
+            <sha1>f956d5eb17b0d940348220b2e07a0784d29a0b55</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.sqlite" source="original">
+            <mtime>1467758749</mtime>
+            <size>6144</size>
+            <format>Metadata</format>
+            <md5>492398bba76a120b9918d1a04ca8d102</md5>
+            <crc32>55b82371</crc32>
+            <sha1>d070302bced7f5596b93d2892a758f95cffb32cf</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.xml" source="original">
+            <format>Metadata</format>
+            <mtime>1700165409</mtime>
+            <size>2203</size>
+            <md5>e57f125f5b35e710da7016c01b68dd5c</md5>
+            <crc32>2f541094</crc32>
+            <sha1>4f5d1905df652f4a1528ab31cef717013f842f97</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_metasource.xml" source="original">
+            <format>MARC Source</format>
+            <mtime>1390329437</mtime>
+            <size>317</size>
+            <md5>a2e5873c06b1fc9e78d194e2195004f5</md5>
+            <crc32>cbb79de8</crc32>
+            <sha1>c139cdc407ca3689cab2d40367c24d219088e61e</sha1>
+          </file>
+        </files>
+        </results>
+  recorded_at: Thu, 14 Nov 2024 20:12:54 GMT
+- request:
+    method: get
+    uri: http://ia801600.us.archive.org/30/items/lettertosamuelma00estl/39999063867541_scandata.xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:12:59 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Last-Modified:
+      - Thu, 16 Nov 2023 20:10:09 GMT
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - W/"65567721-353"
+      Strict-Transport-Security:
+      - max-age=15724800
+      Expires:
+      - Fri, 15 Nov 2024 02:12:59 GMT
+      Cache-Control:
+      - max-age=21600
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <book>
+          <bookData>
+            <bookId>lettertosamuelma00estl</bookId>
+            <leafCount>2</leafCount>
+            <scanDataVersion>5</scanDataVersion>
+          </bookData>
+          <pageData>
+            <page leafNum="0">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2460</origWidth>
+              <origHeight>1572</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2460</w>
+                <h>1572</h>
+              </cropBox>
+              <bookStart>true</bookStart>
+            </page>
+            <page leafNum="1">
+              <pageType>Normal</pageType>
+              <addToAccessFormats>true</addToAccessFormats>
+              <origWidth>2464</origWidth>
+              <origHeight>1575</origHeight>
+              <cropBox>
+                <x>0</x>
+                <y>0</y>
+                <w>2464</w>
+                <h>1575</h>
+              </cropBox>
+            </page>
+          </pageData>
+        </book>
+  recorded_at: Thu, 14 Nov 2024 20:12:55 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/services/find_file.php?file=lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:00 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '145'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/services/find_file.php?file=lettertosamuelma00estl
+      Expires:
+      - Fri, 15 Nov 2024 02:13:00 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: UTF-8
+      string: "<html>\r\n<head><title>302 Found</title></head>\r\n<body>\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.24.0</center>\r\n</body>\r\n</html>\r\n"
+  recorded_at: Thu, 14 Nov 2024 20:12:55 GMT
+- request:
+    method: get
+    uri: http://archive.org/services/find_file.php?file=lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:00 GMT
+      Content-Type:
+      - text/html; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Location:
+      - http://ia601600.us.archive.org/item_xml.php?dir=/30/items/lettertosamuelma00estl
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Thu, 14 Nov 2024 20:12:56 GMT
+- request:
+    method: get
+    uri: http://ia601600.us.archive.org/item_xml.php?dir=/30/items/lettertosamuelma00estl
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:01 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Strict-Transport-Security:
+      - max-age=15724800
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <results dir="/30/items/lettertosamuelma00estl" server="ia601600.us.archive.org">
+
+        <metadata>
+          <language>eng</language>
+          <scanningcenter>boston</scanningcenter>
+          <sponsor>Associates of the Boston Public Library / The Boston Foundation</sponsor>
+          <contributor>Boston Public Library</contributor>
+          <date>1850</date>
+          <subject>May, Samuel, 1810-1899</subject>
+          <subject>Estlin, J. B. (John Bishop), 1785-1855</subject>
+          <subject>Antislavery movements</subject>
+          <subject>Abolitionists</subject>
+          <title>[Letter to Samuel May] [manuscript]</title>
+          <creator>Estlin, J. B. (John Bishop), 1785-1855</creator>
+          <creator>May, Samuel, 1810-1899, recipient</creator>
+          <collection>bplscas</collection>
+          <collection>bostonpubliclibrary</collection>
+          <collection>americana</collection>
+          <shiptracking>ST000865</shiptracking>
+          <publisher>[S.l.]</publisher>
+          <description>Holograph</description>
+          <description>Title supplied by cataloger</description>
+          <mediatype>texts</mediatype>
+          <repub_state>4</repub_state>
+          <page-progression>lr</page-progression>
+          <publicdate>2014-01-21 17:24:55</publicdate>
+          <updatedate>2014-01-21 18:37:17</updatedate>
+          <updater>associate-nicholas-delancey@archive.org</updater>
+          <identifier>lettertosamuelma00estl</identifier>
+          <uploader>associate-nicholas-delancey@archive.org</uploader>
+          <addeddate>2014-01-21 18:37:19.35339</addeddate>
+          <identifier-access>http://archive.org/details/lettertosamuelma00estl</identifier-access>
+          <identifier-ark>ark:/13960/t41r98w81</identifier-ark>
+          <imagecount>2</imagecount>
+          <operator>boston_uploads</operator>
+          <scanfee>250</scanfee>
+          <invoice>6</invoice>
+          <scandate>20141031</scandate>
+          <sponsordate>20141031</sponsordate>
+          <backup_location>ia905803_10</backup_location>
+          <openlibrary_edition>OL25640201M</openlibrary_edition>
+          <openlibrary_work>OL17070684W</openlibrary_work>
+          <external-identifier>urn:oclc:record:1048336987</external-identifier>
+          <associated-names>May, Samuel, 1810-1899, recipient</associated-names>
+          <ocr_module_version>0.0.21</ocr_module_version>
+          <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+          <page_number_confidence>0</page_number_confidence>
+          <page_number_module_version>1.0.3</page_number_module_version>
+        </metadata>
+
+        <files>
+          <file name="39999063867541.djvu" source="derivative">
+            <format>DjVu</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1390501187</mtime>
+            <size>31973</size>
+            <md5>1a5ed2ebf30d0335838b53da42f11619</md5>
+            <crc32>2914da01</crc32>
+            <sha1>001b43597feab48952c4abbfee7f786b53f2f4d8</sha1>
+          </file>
+          <file name="39999063867541.gif" source="derivative">
+            <format>Animated GIF</format>
+            <original>39999063867541_jp2.zip</original>
+            <mtime>1390501150</mtime>
+            <size>30294</size>
+            <md5>617ffaee49f21c3a37c96498b338cf8e</md5>
+            <crc32>82864d81</crc32>
+            <sha1>5114a7ed863af3e474903e8bcb06f9ffab328d6e</sha1>
+          </file>
+          <file name="39999063867541.pdf" source="derivative">
+            <format>Image Container PDF</format>
+            <original>39999063867541_page_numbers.json</original>
+            <mtime>1700165557</mtime>
+            <size>54375</size>
+            <md5>07d367b49fedccc10458407e2577ccd0</md5>
+            <crc32>a6f87f4a</crc32>
+            <sha1>0fd36e6195b70fbd398496f6a32b787e95fc2337</sha1>
+          </file>
+          <file name="39999063867541_abbyy.gz" source="derivative">
+            <format>Abbyy GZ</format>
+            <original>39999063867541_jp2.zip</original>
+            <mtime>1390501174</mtime>
+            <size>405</size>
+            <md5>09db43c4a638b831679be69e731bac94</md5>
+            <crc32>98a30ff3</crc32>
+            <sha1>0d00ac3d67411913619c4fb06f5f6f97e57ef1ae</sha1>
+          </file>
+          <file name="39999063867541_chocr.html.gz" source="derivative">
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+            <format>chOCR</format>
+            <original>39999063867541_abbyy.gz</original>
+            <mtime>1700165370</mtime>
+            <size>553</size>
+            <md5>fc5b63e0043406b77606fddd1672c8cd</md5>
+            <crc32>2407039b</crc32>
+            <sha1>ffc84147401d98f1489f6e8f955125c318059657</sha1>
+          </file>
+          <file name="39999063867541_cloth_detection.log" source="derivative">
+            <format>Cloth Cover Detection Log</format>
+            <original>39999063867541_scandata.xml</original>
+            <mtime>1700166496</mtime>
+            <size>519</size>
+            <md5>1bfd1605f20254b8908a0a2b4d3be037</md5>
+            <crc32>43c4abb9</crc32>
+            <sha1>9baea3c46b54595f376d5025a9d885073782c989</sha1>
+          </file>
+          <file name="39999063867541_djvu.txt" source="derivative">
+            <format>DjVuTXT</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1700165416</mtime>
+            <size>0</size>
+            <md5>d41d8cd98f00b204e9800998ecf8427e</md5>
+            <crc32>00000000</crc32>
+            <sha1>da39a3ee5e6b4b0d3255bfef95601890afd80709</sha1>
+          </file>
+          <file name="39999063867541_djvu.xml" source="derivative">
+            <format>Djvu XML</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165385</mtime>
+            <size>788</size>
+            <md5>b8e441702a74e66b4dbcb74102d28df5</md5>
+            <crc32>947c8d52</crc32>
+            <sha1>5ff8600018e05ab496128cce2a4efac18f36adcb</sha1>
+          </file>
+          <file name="39999063867541_hocr.html" source="derivative">
+            <hocr_char_to_word_module_version>1.2.0</hocr_char_to_word_module_version>
+            <hocr_char_to_word_hocr_version>1.1.45</hocr_char_to_word_hocr_version>
+            <ocr_module_version>0.0.21</ocr_module_version>
+            <ocr_converted>abbyy-to-hocr 1.1.37</ocr_converted>
+            <format>hOCR</format>
+            <original>39999063867541_chocr.html.gz</original>
+            <mtime>1700165378</mtime>
+            <size>1052</size>
+            <md5>dc133945df9f7c518eda395e4259414f</md5>
+            <crc32>405e1d56</crc32>
+            <sha1>bc840309c4f1b4adce68f0c7c4805cbbe8fa519f</sha1>
+          </file>
+          <file name="39999063867541_hocr_pageindex.json.gz" source="derivative">
+            <hocr_pageindex_module_version>1.0.0</hocr_pageindex_module_version>
+            <hocr_pageindex_hocr_version>1.1.15</hocr_pageindex_hocr_version>
+            <format>OCR Page Index</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165388</mtime>
+            <size>49</size>
+            <md5>2a3841b78d6361b660fa376aca6aed78</md5>
+            <crc32>daa14d9c</crc32>
+            <sha1>9c45646ce349363f07d89dd3a9b195314fb107a2</sha1>
+          </file>
+          <file name="39999063867541_hocr_searchtext.txt.gz" source="derivative">
+            <hocr_fts_text_module_version>1.1.0</hocr_fts_text_module_version>
+            <hocr_fts_text_hocr_version>1.1.15</hocr_fts_text_hocr_version>
+            <word_conf_0_10>0</word_conf_0_10>
+            <word_conf_11_20>0</word_conf_11_20>
+            <word_conf_21_30>0</word_conf_21_30>
+            <word_conf_31_40>0</word_conf_31_40>
+            <word_conf_41_50>0</word_conf_41_50>
+            <word_conf_51_60>0</word_conf_51_60>
+            <word_conf_61_70>0</word_conf_61_70>
+            <word_conf_71_80>0</word_conf_71_80>
+            <word_conf_81_90>0</word_conf_81_90>
+            <word_conf_91_100>0</word_conf_91_100>
+            <format>OCR Search Text</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165397</mtime>
+            <size>28</size>
+            <md5>57d81827b485bb54c48f231dc21c93f8</md5>
+            <crc32>c5b74cdc</crc32>
+            <sha1>c7f67e07ce8d3acdac85bb96baf5e1b9dcf626d4</sha1>
+          </file>
+          <file name="39999063867541_images.zip" source="original">
+            <format>Generic Raw Book Zip</format>
+            <mtime>1390500717</mtime>
+            <size>6758809</size>
+            <md5>8a161e6f2df865200e083ee0dc139381</md5>
+            <crc32>00530022</crc32>
+            <sha1>4cde515dae1561a6a24544f8123029d5c0a8b0da</sha1>
+            <filecount>2</filecount>
+          </file>
+          <file name="39999063867541_jp2.zip" source="derivative">
+            <format>Single Page Processed JP2 ZIP</format>
+            <original>39999063867541_images.zip</original>
+            <mtime>1390501144</mtime>
+            <size>715193</size>
+            <md5>9eb580ef73a6d8f5e54907058f3c8682</md5>
+            <crc32>e1044374</crc32>
+            <sha1>cfbd4105d6432abbaaaeaed21bed9575b812c838</sha1>
+            <filecount>2</filecount>
+          </file>
+          <file name="39999063867541_page_numbers.json" source="derivative">
+            <hocr_pagenumber_module_version>1.0.3</hocr_pagenumber_module_version>
+            <hocr_pagenumber_hocr_version>1.1.54</hocr_pagenumber_hocr_version>
+            <hocr_pagenumber_confidence>0</hocr_pagenumber_confidence>
+            <format>Page Numbers JSON</format>
+            <original>39999063867541_hocr.html</original>
+            <mtime>1700165408</mtime>
+            <size>495</size>
+            <md5>7722600548e25c7a0cb99517d7c8f24f</md5>
+            <crc32>a03a1e35</crc32>
+            <sha1>eb7ac75581509540e4f08eb0e545661c2d721fdb</sha1>
+          </file>
+          <file name="39999063867541_scandata.xml" source="derivative">
+            <format>Scandata</format>
+            <original>39999063867541_djvu.xml</original>
+            <mtime>1700165409</mtime>
+            <size>851</size>
+            <md5>976ed3e55c8b61f05fbe036d6881269b</md5>
+            <crc32>25a225e8</crc32>
+            <sha1>b5774359fd23b4388b918ef584c124eb8d27ff60</sha1>
+          </file>
+          <file name="__ia_thumb.jpg" source="original">
+            <mtime>1700165421</mtime>
+            <size>6971</size>
+            <md5>ecf7f7835b61bd9a404d6a9fa971e3fe</md5>
+            <crc32>b6b315f4</crc32>
+            <sha1>6a287a76b9bfc86db041cdb06d3e9d2c7ccc78b0</sha1>
+            <format>Item Tile</format>
+            <rotation>0</rotation>
+          </file>
+          <file name="lettertosamuelma00estl_archive.torrent" source="metadata">
+            <btih>d0a7e1ea7427e914283c4991f18a910c8d58620d</btih>
+            <mtime>1700166524</mtime>
+            <size>5434</size>
+            <md5>cfdf25cfc634cc027eadfc3af0780283</md5>
+            <crc32>8512d3d9</crc32>
+            <sha1>9fd1794b1ecc31b48e5ee642724a1552eed1131a</sha1>
+            <format>Archive BitTorrent</format>
+          </file>
+          <file name="lettertosamuelma00estl_dc.xml" source="original">
+            <format>Dublin Core</format>
+            <mtime>1649060463</mtime>
+            <size>1070</size>
+            <md5>c92a4871357b273e10a949327bda8f82</md5>
+            <crc32>b02d92c8</crc32>
+            <sha1>8c32066525421b8885824e98c97e3272c398711a</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_files.xml" source="original">
+            <format>Metadata</format>
+            <md5>0881ec20248b5925215746ef689cd6d8</md5>
+            <summation>md5</summation>
+          </file>
+          <file name="lettertosamuelma00estl_marc.xml" source="original">
+            <format>MARC</format>
+            <mtime>1390329437</mtime>
+            <size>4207</size>
+            <md5>951c49ec7347702000723e03e0b543b0</md5>
+            <crc32>4427189b</crc32>
+            <sha1>487d733441288e8088494f8ae899956ced0b33dc</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.mrc" source="original">
+            <format>MARC Binary</format>
+            <mtime>1390329437</mtime>
+            <size>1239</size>
+            <md5>5313f391f46b68828e68975d010967e4</md5>
+            <crc32>fa736ef9</crc32>
+            <sha1>f956d5eb17b0d940348220b2e07a0784d29a0b55</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.sqlite" source="original">
+            <mtime>1467758749</mtime>
+            <size>6144</size>
+            <format>Metadata</format>
+            <md5>492398bba76a120b9918d1a04ca8d102</md5>
+            <crc32>55b82371</crc32>
+            <sha1>d070302bced7f5596b93d2892a758f95cffb32cf</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_meta.xml" source="original">
+            <format>Metadata</format>
+            <mtime>1700165409</mtime>
+            <size>2203</size>
+            <md5>e57f125f5b35e710da7016c01b68dd5c</md5>
+            <crc32>2f541094</crc32>
+            <sha1>4f5d1905df652f4a1528ab31cef717013f842f97</sha1>
+          </file>
+          <file name="lettertosamuelma00estl_metasource.xml" source="original">
+            <format>MARC Source</format>
+            <mtime>1390329437</mtime>
+            <size>317</size>
+            <md5>a2e5873c06b1fc9e78d194e2195004f5</md5>
+            <crc32>cbb79de8</crc32>
+            <sha1>c139cdc407ca3689cab2d40367c24d219088e61e</sha1>
+          </file>
+        </files>
+        </results>
+  recorded_at: Thu, 14 Nov 2024 20:12:56 GMT
+- request:
+    method: get
+    uri: http://ia801600.us.archive.org/30/items/lettertosamuelma00estl/39999063867541_djvu.xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.24.0
+      Date:
+      - Thu, 14 Nov 2024 20:13:01 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Last-Modified:
+      - Thu, 16 Nov 2023 20:09:45 GMT
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - W/"65567709-314"
+      Strict-Transport-Security:
+      - max-age=15724800
+      Expires:
+      - Fri, 15 Nov 2024 02:13:01 GMT
+      Cache-Control:
+      - max-age=21600
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE DjVuXML>
+        <DjVuXML>
+         <BODY>
+          <OBJECT data="file://localhost/var/tmp/autoclean/derive/lettertosamuelma00estl/39999063867541.djvu" type="image/x.djvu" usemap="39999063867541_0000.djvu" width="2460" height="1572">
+           <PARAM name="PAGE" value="39999063867541_0000.djvu"/>
+           <PARAM name="DPI" value="600"/>
+           <HIDDENTEXT/>
+          </OBJECT>
+          <MAP name="39999063867541_0000.djvu"/>
+          <OBJECT data="file://localhost/var/tmp/autoclean/derive/lettertosamuelma00estl/39999063867541.djvu" type="image/x.djvu" usemap="39999063867541_0001.djvu" width="2464" height="1575">
+           <PARAM name="PAGE" value="39999063867541_0001.djvu"/>
+           <PARAM name="DPI" value="600"/>
+           <HIDDENTEXT/>
+          </OBJECT>
+          <MAP name="39999063867541_0001.djvu"/>
+         </BODY>
+        </DjVuXML>
+  recorded_at: Thu, 14 Nov 2024 20:12:56 GMT
+recorded_with: VCR 6.2.0

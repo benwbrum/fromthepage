@@ -30,9 +30,9 @@ RSpec.describe XmlSourceProcessor, type: :model do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  let(:collection){ build_stubbed(:collection ) }
-  let(:work)      { build_stubbed(:work, collection: collection) }
-  let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT)}
+  let(:collection){ create(:collection ) }
+  let(:work)      { create(:work, collection: collection) }
+  let(:page)      { create(:page, work: work, source_text: SOURCE_TEXT)}
   let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
     
     context 'subject linking not disabled (default)' do

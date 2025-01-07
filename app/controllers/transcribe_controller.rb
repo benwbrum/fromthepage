@@ -139,6 +139,7 @@ class TranscribeController  < ApplicationController
       table_cells = @page.process_fields(@field_cells)
     end
 
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
 
     # if page has been marked blank, call the mark_blank code

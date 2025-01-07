@@ -37,13 +37,13 @@ module CollectionHelper
   def collection_stats(collection)
     works = WorkStatistic.where(work_id: collection.works.pluck(:id))
     total_pages = works.sum(:total_pages)
-    
+
     unless total_pages == 0
       total_blank_pages = works.sum(:blank_pages)
       total_annotated_pages = works.sum('annotated_pages + translated_annotated')
       total_review_pages = works.sum('needs_review + translated_review')
       total_completed_pages = works.sum('transcribed_pages + translated_pages')
-      
+
       @progress_blank = ((total_blank_pages.to_f/total_pages)*100).round
       @progress_annotated = ((total_annotated_pages.to_f/total_pages)*100).round
       @progress_review = ((total_review_pages.to_f/total_pages)*100).round
@@ -86,7 +86,7 @@ module CollectionHelper
       @progress_review = work.work_statistic.pct_translation_needs_review.round
       @progress_completed = work.work_statistic.pct_translation_completed.round
       @type = t('collection.translated')
-      @transcribed_type = t('collection.transcribed') 
+      @transcribed_type = t('collection.transcribed')
     end
 
     if @collection.subjects_disabled
@@ -124,7 +124,7 @@ module CollectionHelper
   def find_untranscribed_page
     # Get first untranscribed work
     untranscribed_works = @collection.works.joins(:work_statistic).where(work_statistics: {complete: 0})
-    
+
     if untranscribed_works.any?{|w| w.untranscribed?}
       work_ids = untranscribed_works.select{|w| w.untranscribed?}
     else
@@ -149,4 +149,17 @@ module CollectionHelper
     collection_or_document_set.class == DocumentSet && !collection_or_document_set.is_public
   end
 
+  def fe_works_with_custom_conventions(works)
+    return if works.empty?
+
+    work_to_display = works.sample
+    t(
+      'collection.edit_help.works_with_custom_conventions',
+      title: link_to(
+        work_to_display.title,
+        collection_path(work_to_display.collection.owner, work_to_display.collection)
+      ),
+      count: works.size
+    ).html_safe
+  end
 end

@@ -59,17 +59,16 @@ describe "convention related tasks", :order => :defined do
     page.find('.side-tabs').click_link("Help Text")
     page.fill_in 'collection_transcription_conventions', with: @new_convention
     # check unchanged work for collection conventions
-    work2 = @collection.works.where.not(id: @work.id).first
+    work2 = @collection.works.where(transcription_conventions: nil).where.not(id: @work.id).first
     page2 = work2.pages.second
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
+    page.find('.tabs').find_link('Transcribe', visible: true, wait: 5).click
     expect(page).to have_content @new_convention
     # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    page.find('.tabs').find_link('Correct', visible: true, wait: 5).click
     expect(page).not_to have_content @new_convention
     expect(page).to have_content @work_convention
   end

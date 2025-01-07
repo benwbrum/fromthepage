@@ -26,6 +26,24 @@
   }
 }
 
+.dataTables_filter.search {
+  position: relative;
+  input[type=search] {
+    height: 34px;
+    padding-left: 25px;
+    background-repeat: no-repeat;
+    background-position: left 5px center;
+    border-radius: $btnBorderRadius;
+    @include background-svg(16, 16, '<path fill="#{$bodyFgLight}" d="M15.21,13.79l-3.32-3.32C12.59,9.49,13,8.3,13,7c0-3.31-2.69-6-6-6C3.69,1,1,3.69,1,7s2.69,6,6,6 c1.3,0,2.49-0.42,3.47-1.11l3.32,3.32c0.2,0.2,0.45,0.29,0.71,0.29s0.51-0.1,0.71-0.29C15.6,14.82,15.6,14.18,15.21,13.79z M2.5,7 c0-2.48,2.02-4.5,4.5-4.5c2.48,0,4.5,2.02,4.5,4.5c0,2.48-2.02,4.5-4.5,4.5C4.52,11.5,2.5,9.48,2.5,7z"/>');
+  }
+  button {
+    top: 0;
+    right: 0;
+    position: absolute;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
 
 // Overview
 
@@ -147,7 +165,7 @@
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
-    
+
     .userpic {
       font-size: 26px;
       margin-right: 6px;
@@ -306,7 +324,7 @@
 
 .category-article dd p {
   width: 33%;
-  display: flex;    
+  display: flex;
 }
 
 .category-article dd p a {
@@ -448,7 +466,7 @@
     white-space: normal !important;
     vertical-align: top;
   }
-  td:nth-child(1), th { 
+  td:nth-child(1), th {
     width: 30%;
   }
   td:nth-child(2) {
@@ -571,7 +589,7 @@
       padding-right: 1em;
     }
   }
-  
+
   &.expanded {
     .user-label {
       display: inline-block;
@@ -619,7 +637,7 @@
   background-color: $bgColor;
   border-radius: 16px;
   padding: 1em;
-  
+
   text-align: center;
   color: $bodyFgLight;
 }
@@ -654,12 +672,12 @@
   &_format {
     flex: 1 1 auto;
     padding-right: 15px;
-  
+
     h5 {
       display: flex;
       align-items: center;
       margin: 0 0 0.25em 0;
-  
+
       input {
         width: 19px;
         height: 19px;
@@ -712,12 +730,12 @@
   &_format {
     flex: 1 1 auto;
     padding-right: 15px;
-  
+
     h5 {
       display: flex;
       align-items: center;
       margin: 0 0 0.25em 0;
-  
+
       input {
         width: 19px;
         height: 19px;
