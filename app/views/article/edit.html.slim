@@ -1,8 +1,8 @@
 =javascript_include_tag "transcribe"
 
-=render({ :partial => '/shared/article_tabs', :locals => { :selected => 4, :article_id => @article.id }})
+=render({ partial: '/shared/article_tabs', locals: { selected: 4, article_id: @article.id } })
 
-=render({ :partial => '/shared/insert_table_modal' })
+=render({ partial: '/shared/insert_table_modal' })
 
 .article-columns.columns
   article.maincol
@@ -27,8 +27,6 @@
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
               =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
 
-
-
       -if @article.gis_enabled?
         table.form
           tr
@@ -42,19 +40,19 @@
 
       =t('.categories')
       br
-      select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label=t('.select_categories') multiple)
-        -@collection.categories.walk_tree do |c, level|
-          -selected = true if @article.categories.include?(c)
-          option(data-level=level value=c.id selected=selected) =c.title
+        =f.select :category_ids, \
+          options_for_select(categories_options(@collection.categories), selected: @article.category_ids), \
+          {}, { size: 1, multiple: true, aria: { label: t('.select_categories') }, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
+
       .fglight
         br
-        =render :partial => 'shared/markup_help'
+        =render partial: 'shared/markup_help'
 
       .toolbar
         .toolbar_group.w100
-          =f.button t('.autolink'), :name => 'autolink'
+          =f.button t('.autolink'), name: 'autolink'
 
-        .toolbar_group.aright =f.button t('.save_changes'), :name => 'save', class: 'big'
+        .toolbar_group.aright =f.button t('.save_changes'), name: 'save', class: 'big'
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br

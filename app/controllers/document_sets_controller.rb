@@ -4,9 +4,6 @@ class DocumentSetsController < ApplicationController
 
   respond_to :html
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :edit, :update, :transfer_form, :edit_set_collaborators, :search_collaborators]
-
   def authorized?
     unless user_signed_in? && @collection && current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path

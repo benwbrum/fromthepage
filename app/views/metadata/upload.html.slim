@@ -8,10 +8,10 @@
     table.form
       tr
         td
-        .input-file
-          =f.file_field :file
-          input(type="text" placeholder=t('.click_to_browse_a_file') readonly)
-          button(type="button") =t('.browse')
+          .input-file [data-controller='file-picker']
+            =f.file_field :file
+            input(type="text" placeholder=t('.click_to_browse_a_file') readonly)
+            button(type="button") =t('.browse')
         =f.hidden_field :collection_id, value: @collection.id
     .toolbar
       .toolbar_group.aright =f.button t('.upload')

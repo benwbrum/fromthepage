@@ -18,5 +18,6 @@ en:
       title: Title
     enable_gis:
       gis_enabled_for: GIS enabled for %{title}
+    options: options
     update:
       category_updated: Category has been updated

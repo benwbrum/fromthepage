@@ -14,7 +14,7 @@ p.big
   h2 =t('.export_to_contentdm')
   p.big
     span.fright(style="margin-left: 30px")
-      =link_to(export_edit_contentdm_credentials_path(:collection_id => @collection.id), {:class => 'button btnExport', :id => 'btnExportContentdm', :data => { :litebox => { :hash => "", :collection_id => @collection.id }, :collection_id => @collection.id}})
+      =link_to(export_edit_contentdm_credentials_path(collection_id: @collection.id), { class: 'button btnExport', id: 'btnExportContentdm', data: { controller: 'litebox', litebox: { hash: '', collection_id: @collection.id }, collection_id: @collection.id } })
         =svg_symbol '#icon-export', class: 'icon'
         span =t('.export_to_contentdm')
     span =t('.export_to_contentdm_description')

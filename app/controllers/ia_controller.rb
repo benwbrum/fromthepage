@@ -4,9 +4,6 @@ class IaController < ApplicationController
 
   before_action :load_ia_work_from_params
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:ia_book_form, :confirm_import]
-
   def load_ia_work_from_params
     unless params[:ia_work_id].blank?
       @ia_work = IaWork.find(params[:ia_work_id])
