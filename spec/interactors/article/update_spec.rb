@@ -33,10 +33,10 @@ describe Article::Update do
   end
 
   let(:result) do
-    described_class.call(
+    described_class.new(
       article: article.reload,
       article_params: article_params
-    )
+    ).call
   end
 
   it 'updates article and source texts of related models' do

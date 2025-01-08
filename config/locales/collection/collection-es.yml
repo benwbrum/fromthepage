@@ -3,6 +3,8 @@ es:
   collection:
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
+    blank_collection:
+      notice: La colección ha sido restablecida.
     collection_works:
       all_works: Todo funciona
       most_recent_activity: Actividad más reciente
@@ -52,6 +54,8 @@ es:
     corrected: corregido
     create:
       notice: Se ha creado una colección
+    delete:
+      notice: Colección eliminada exitosamente
     disable_ocr:
       notice: La corrección OCR se ha deshabilitado para todas las obras.
     edit:
@@ -147,12 +151,10 @@ es:
       delete_collection_description: Al presionar este botón se eliminará la colección y todo su contenido. Esta acción no se puede deshacer.
       destroy_everything: Destruir todo
       inactive: Inactivo
-      save_changes: Guardar Cambios
     edit_help:
       help: Texto de Ayuda Básica
       link_help: Texto de ayuda para vinculación de temas (no se muestra si los temas están deshabilitados)
       link_help_description: No se muestra si los sujetos están deshabilitados.
-      save_changes: Guardar Cambios
       suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       suggestions_transcription_conventions: Sugerencias para las convenciones de transcripción.
       transcription_conventions: Convenciones de Transcripción
@@ -185,7 +187,6 @@ es:
       page_on_the_top: Página de Arriba
       refresh_metadata: Actualizar metadatos
       refresh_metadata_description: Actualice los metadatos de los manifiestos IIIF originales.
-      save_changes: Guardar Cambios
       spellcheck_description: No apto para textos con ortografía irregular.
       upload_metadata: Subir metadatos
       user_download: Permitir a los usuarios descargar obras.
@@ -216,7 +217,6 @@ es:
       restrict_completed_works: Restringir obras terminadas
       restrict_editing: Restringir edición
       restricted_completed_works_description: Este botón restringirá las %{work_count} obras que se completaron pero que actualmente no están restringidos a los propietarios del proyecto o colaboradores designados. Puede cambiar esta configuración y agregar colaboradores en la página de configuración de cada obra.
-      save_changes: Guardar Cambios
     edit_quality_control:
       authorized_reviewers: revisores autorizados
       collection_reviewers: Revisores autorizados
@@ -230,7 +230,6 @@ es:
       review_type_required_description: Todas las transcripciones iniciales se marcarán como que necesitan revisión. (Cualquiera puede realizar la revisión).
       review_type_restricted: " Restringido: todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones."
       review_type_restricted_description: Todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones.
-      save_changes: Guardar Cambios
     edit_tabs:
       danger_zone: Zona peligrosa
       general: General
@@ -254,7 +253,6 @@ es:
       metadata_description_description: La descripción de metadatos se utiliza para crear metadatos estructurados sobre las obras de la colección. Deberá configurar qué campos de metadatos se mostrarán.
       ocr_correction: Corrección OCR
       ocr_description: Habilite o deshabilite la corrección OCR para todas las obras de esta colección.
-      save_changes: Guardar Cambios
       subjects_enabled: Habilitar indexación de materias
       subjects_enabled_description: Los temas se utilizan para indexar páginas de la colección.
       text_language: Selecciona el idioma para texto de transcripción
@@ -371,6 +369,7 @@ es:
     transcribed: transcrito
     translated: traducido
     update:
+      error: No se pudo actualizar la colección
       notice: La colección ha sido actualizada
     update_buttons:
       editor_buttons_updated: Botones del editor actualizados

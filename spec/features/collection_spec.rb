@@ -37,7 +37,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
-    page.click_link('Make Collection Private')
+    page.click_button('Make Collection Private')
     @collection.reload
     expect(@collection.is_public).to eq false
     expect(page).to have_content("Collection privacy: Private")
@@ -175,7 +175,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
-    page.click_link("Make Collection Public")
+    page.click_button("Make Collection Public")
   end
 
   context "inactive collection" do
