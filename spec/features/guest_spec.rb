@@ -128,7 +128,7 @@ describe 'guest user actions' do
     CollectionStatistic.update_recent_statistics
     visit landing_page_path
     expect(page.find('.maincol')).to have_link(@owner.display_name)
-    page.find('.maincol').click_link(@owner.display_name)
+    page.find('.maincol').first('a', text: @owner.display_name).click
     expect(page.find('.maincol')).not_to have_content(@admin.display_name)
     expect(page.find('h1')).to have_content @owner.display_name
     expect(page.current_path).to eq user_profile_path(@owner)
