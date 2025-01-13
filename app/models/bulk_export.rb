@@ -22,7 +22,7 @@
 #  plaintext_verbatim_zero_index_page :boolean          default(FALSE)
 #  report_arguments                   :string(255)
 #  static                             :boolean
-#  status                             :string(255)
+#  status                             :string(255)      default("new")
 #  subject_csv_collection             :boolean
 #  subject_details_csv_collection     :boolean
 #  table_csv_collection               :boolean
@@ -31,7 +31,7 @@
 #  text_docx_work                     :boolean
 #  text_only_pdf_work                 :boolean
 #  text_pdf_work                      :boolean
-#  use_uploaded_filename              :boolean          default(FALSE)
+#  use_uploaded_filename              :boolean          default(TRUE)
 #  work_metadata_csv                  :boolean          default(FALSE)
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
@@ -64,6 +64,19 @@ class BulkExport < ApplicationRecord
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
+  # enum status: {
+  #   new: 'new',
+  #   queued: 'queued',
+  #   processing: 'processing',
+  #   finished: 'finished',
+  #   cleaned: 'cleaned',
+  #   error: 'error'
+  # }, _prefix: :status
+
+  # enum organization: {
+  #   by_format: 'by_format',
+  #   by_work: 'by_work'
+  # }, _prefix: :organization
 
   module Status
     NEW = 'new'
@@ -79,7 +92,6 @@ class BulkExport < ApplicationRecord
     WORK_THEN_FORMAT = 'by_work'
   end
 
-
   def work_level?
     self.attributes.detect{|k,v| k.match(/_work/) && v==true }
   end
@@ -87,7 +99,6 @@ class BulkExport < ApplicationRecord
   def page_level?
     self.attributes.detect{|k,v| k.match(/_page/) && v==true }
   end
-
 
   def export_to_zip
     self.status = Status::PROCESSING
@@ -118,7 +129,6 @@ class BulkExport < ApplicationRecord
 
       raise
     end
-
   end
 
   def clean_zip_file
@@ -127,7 +137,6 @@ class BulkExport < ApplicationRecord
     self.status = Status::CLEANED
     self.save
   end
-
 
   def submit_export_process
     self.status = Status::QUEUED
@@ -167,6 +176,4 @@ class BulkExport < ApplicationRecord
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
   end
-
-
 end
