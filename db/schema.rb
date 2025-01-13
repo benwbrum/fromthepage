@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
   create_table "bulk_exports", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id"
-    t.string "status"
+    t.string "status", default: "new"
     t.boolean "plaintext_verbatim_page"
     t.boolean "plaintext_verbatim_work"
     t.boolean "plaintext_emended_page"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
     t.boolean "subject_details_csv_collection"
     t.boolean "text_only_pdf_work"
     t.string "organization", default: "by_work"
-    t.boolean "use_uploaded_filename", default: false
+    t.boolean "use_uploaded_filename", default: true
     t.boolean "owner_mailing_list"
     t.boolean "owner_detailed_activity"
     t.boolean "collection_activity"
