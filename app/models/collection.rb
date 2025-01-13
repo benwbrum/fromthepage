@@ -144,10 +144,12 @@ class Collection < ApplicationRecord
   end
 
   def self.es_match_query(query, user = nil)
+    blocked_collections = []
     collection_collabs = []
     docset_collabs= []
 
     if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs = user.collection_collaborations.pluck(:id)
       docset_collabs = user.document_set_collaborations.pluck(:id)
         .map{ |x| "docset-#{x}" }
@@ -168,6 +170,9 @@ class Collection < ApplicationRecord
         filter: [
           {
             bool: {
+              must_not: [
+                { terms: {_id: blocked_collections} }
+              ],
               # At least one of the following must be true
               should: [
                 { term: {is_public: true} },

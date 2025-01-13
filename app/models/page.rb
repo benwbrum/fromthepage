@@ -143,10 +143,12 @@ class Page < ApplicationRecord
   end
 
   def self.es_match_query(query, user)
+    blocked_collections = []
     collection_collabs = []
     docset_collabs= []
 
     if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs = user.collection_collaborations.pluck(:id)
       docset_collabs = user.document_set_collaborations.pluck(:id)
     end
@@ -171,6 +173,9 @@ class Page < ApplicationRecord
         filter: [
           {
             bool: {
+              must_not: [
+                { terms: {collection_id: blocked_collections} }
+              ],
               # At least one of the following must be true
               should: [
                 { term: {is_public: true} },
