@@ -384,8 +384,6 @@ class DashboardController < ApplicationController
   def elastic_search_results(query, page, page_size, filter)
     return nil if query.nil?
 
-    client = ElasticUtil.get_client()
-
     if filter
         count_query = ElasticUtil.gen_query(
           current_user,
@@ -396,7 +394,7 @@ class DashboardController < ApplicationController
 
         # Need to run a count query for all types
         # TODO: Could use msearch for one call to ES
-        resp = client.search(
+        resp = ElasticUtil.safe_search(
           index: count_query[:indexes],
           body: count_query[:query_body]
         )
@@ -413,7 +411,7 @@ class DashboardController < ApplicationController
           [filter],
           page, page_size)
 
-        filtered_resp = client.search(
+        filtered_resp = ElasticUtil.safe_search(
           index: filtered_query[:indexes],
           body: filtered_query[:query_body]
         )
@@ -435,7 +433,7 @@ class DashboardController < ApplicationController
         ['collection', 'page', 'user', 'work'],
         page, page_size)
 
-      resp = client.search(
+      resp = ElasticUtil.safe_search(
           index: generated_query[:indexes],
           body: generated_query[:query_body]
       )
