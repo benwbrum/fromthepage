@@ -1,3 +1,4 @@
+/ Slim version of display/_pages_view repurposed for general search
 .work-page
   .work-page_thumbnail
     -if page.ia_leaf
@@ -24,6 +25,9 @@
       =t("page.edit.page_status_#{page.status}")
 
   .work-page_content
+    -if page.work.pages_are_meaningful
+      h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
+
     .work-page_text[*language_attrs(@collection)]
       -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
       -if @search_string

@@ -1,3 +1,4 @@
+/ Slim version of collection/show->work repurposed for general search
 -if @collection.text_entry?
   -default_path = collection_read_work_path(@collection.owner, @collection, work)
 -else
@@ -6,6 +7,7 @@
   .collection-work_image
     -unless work.thumbnail.nil?
         =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
+        h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
   p.collection-work_snippet = to_snippet(work.description)
   -if @collection.text_entry? && work.next_untranscribed_page
     p.collection-work_action
