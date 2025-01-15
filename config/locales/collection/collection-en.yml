@@ -7,11 +7,14 @@ en:
       notice: Collection has been reset.
     collection_works:
       all_works: All Works
+      collaboration: Collaboration
       most_recent_activity: Most recent activity
       n_pages:
         one: '1 page: '
         other: "%{count} pages; "
       progress: Progress
+      restricted: Restricted
+      unrestricted: Unrestricted
       work_title: Work title
       works_that_need_transcription: Works That Need Transcription
     complete: complete

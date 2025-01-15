@@ -36,15 +36,14 @@ de:
       manage_works: Werke verwalten
       privacy_access: Datenschutz und Zugang
     edit_works:
-      add: Hinzufügen
       add_work_title_to_document_set: "%{work_title} zum Dokumentenset hinzufügen"
+      all_works: Alle Werke
       document_is_marked_public: Wenn das Dokumentenset als öffentlich gekennzeichnet ist, sind darin enthaltene Werke einsehbar, auch wenn die Sammlung auf privat gesetzt ist.
+      included: Inklusive
       n_pages:
         one: '1 Seite:'
         other: "%{count} Seiten:"
-      save: Speichern
-      search: Suchen
-      search_for_works: Werke suchen...
+      not_included: Nicht enthalten
       status: Status
       work: Werk
     index:
@@ -82,19 +81,6 @@ de:
       document_set_is_marked_public: Wenn das Dokumentenset als öffentlich gekennzeichnet ist, sind darin enthaltene Werke einsehbar, auch wenn die Sammlung auf privat gesetzt ist.
       public: Öffentlich
       title: Titel
-    set_works:
-      collaboration: Kollaboration
-      most_recent_activity: Neueste Aktivität
-      n_pages:
-        one: '1 Seite:'
-        other: "%{count} Seiten:"
-      progress: Fortschritt
-      remove_from_set: Aus Set entfernen
-      remove_title_from_document_set: "%{title} aus dem Dokumentenset entfernen"
-      remove_works: Werke entfernen
-      restricted: Eingeschränkt
-      unrestricted: Uneingeschränkt
-      work_title: Werktitel
     settings:
       add: Hinzufügen
       done: Erledigt
@@ -114,4 +100,5 @@ de:
       transfer_works: Werke übertragen
       transfer_works_description: Werke zwischen Dokumentensets übertragen. (Durch das Kopieren besteht das gleiche Werk in zwei Dokumentensets.)
     update:
+      document_failed_update: Fehler beim Aktualisieren des Dokumentensatzes
       document_updated: Dokumentenset wurde gespeichert

@@ -36,15 +36,14 @@ pt:
       manage_works: Controlar Obras
       privacy_access: Privacidade e acesso
     edit_works:
-      add: Adicionar
       add_work_title_to_document_set: Adicionar %{work_title} ao Conjunto de Documentos
+      all_works: Todas as obras
       document_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
+      included: Incluído
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
-      save: Guardar
-      search: Buscar
-      search_for_works: Buscar obras...
+      not_included: Não incluso
       status: Status
       work: Obra
     index:
@@ -82,19 +81,6 @@ pt:
       document_set_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       public: Público
       title: Título
-    set_works:
-      collaboration: Colaboração
-      most_recent_activity: Atividade mais recente
-      n_pages:
-        one: '1 página:'
-        other: "%{count} páginas:"
-      progress: Progresso
-      remove_from_set: Remover do conjunto
-      remove_title_from_document_set: Remover %{title} do Conjunto de Documentos
-      remove_works: Remover obras
-      restricted: Restringido
-      unrestricted: Não Restringido
-      work_title: Título da obra
     settings:
       add: Adicionar
       done: Feito
@@ -114,4 +100,5 @@ pt:
       transfer_works: Trabalhos de Transferência
       transfer_works_description: A transferência funciona entre conjuntos de documentos. (A cópia colocará o mesmo trabalho em dois conjuntos de documentos ao mesmo tempo.)
     update:
+      document_failed_update: Falha ao atualizar conjunto de documentos
       document_updated: O documento foi atualizado

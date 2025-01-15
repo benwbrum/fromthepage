@@ -306,11 +306,11 @@ Fromthepage::Application.routes.draw do
 
   scope 'document_sets', as: 'document_sets' do
     get 'destroy', to: 'document_sets#destroy'
-    post 'toggle_privacy', to: 'document_sets#toggle_privacy'
     post 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
     post 'assign_to_set', to: 'document_sets#assign_to_set'
     post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
     get 'search_collaborators', to: 'document_sets#search_collaborators'
+    post 'update_works', to: 'document_sets#update_works'
   end
 
   scope 'transcription_field', as: 'transcription_field' do
@@ -446,7 +446,6 @@ Fromthepage::Application.routes.draw do
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
-
 
   resources :document_sets, except: [:show, :create, :edit]
 
