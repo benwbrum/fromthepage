@@ -2,6 +2,8 @@
 #
 # Table name: document_sets_works
 #
+#  created_at      :datetime
+#  updated_at      :datetime
 #  document_set_id :integer          not null
 #  work_id         :integer          not null
 #

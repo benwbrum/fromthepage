@@ -81,7 +81,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content('Test Document Set 3')
     expect(DocumentSet.last.is_public).to be true
     # make the set private
-    page.find('.button', text: 'Make Document Set Private').click
+    page.choose('document_set_visibility_private')
     expect(DocumentSet.last.is_public).to be false
     expect(page).to have_content('Document set collaborators')
     # manually assign works until have the jqery test set

@@ -6,6 +6,13 @@ pt:
     destroy:
       page_deleted: Esta página foi eliminada
     edit:
+      page_status_blank: Página em branco
+      page_status_incomplete: Incompleto
+      page_status_indexed: Indexado
+      page_status_new: Não foi iniciado
+      page_status_review: Precisa de revisão
+      page_status_transcribed: Completo
+      page_status_translated: Traduzido
       status: 'Status:'
     edit_tabs:
       general: Em geral

@@ -222,7 +222,7 @@ class DocumentSetsController < ApplicationController
   end
 
   def document_set_params
-    params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+    params.require(:document_set).permit(:visibility, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
   end
 
   def filtered_set_works

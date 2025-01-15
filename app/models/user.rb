@@ -249,8 +249,12 @@ class User < ApplicationRecord
     return works
   end
 
-  def can_transcribe?(work)
-    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  def can_transcribe?(work, collection)
+    if collection.is_a? DocumentSet
+      collection.collaborators.find_by(id: id).present?
+    else
+      !work.restrict_scribes || like_owner?(work) || work.scribes.include?(self)
+    end
   end
 
   def can_review?(obj)
@@ -325,7 +329,7 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+    document_sets.where(visibility: [:public, :read_only])
   end
 
 
@@ -347,7 +351,7 @@ class User < ApplicationRecord
       collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
       owned_collections = self.owned_collections
 
-      collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
+      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
 

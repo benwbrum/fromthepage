@@ -312,7 +312,7 @@ class Collection < ApplicationRecord
 
   def find_next_untranscribed_page_for_user(user)
     return nil unless has_untranscribed_pages?
-    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
     public = works.unrestricted
                   .where.not(next_untranscribed_page_id: nil)

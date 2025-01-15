@@ -264,7 +264,7 @@ class ApplicationController < ActionController::Base
 
   def set_fallback_collection
     if @work && @work.collection.supports_document_sets
-      alternative_set = @work.document_sets.where(:is_public => true).first
+      alternative_set = @work.document_sets.unrestricted.first
       if alternative_set
         @collection = alternative_set
         true
