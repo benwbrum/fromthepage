@@ -303,9 +303,9 @@ class Collection < ApplicationRecord
   end
 
   def set_next_untranscribed_page
-    first_work = works.where.not(restrict_scribes: true, next_untranscribed_page_id: nil).order_by_incomplete.first
-    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
-    page_id = first_page.nil? ? nil : first_page.id
+    first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
+    first_page = first_work&.next_untranscribed_page
+    page_id = first_page&.id
 
     update_columns(next_untranscribed_page_id: page_id)
   end
@@ -314,19 +314,11 @@ class Collection < ApplicationRecord
     return nil unless has_untranscribed_pages?
     return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
 
-    public = works.where.not(restrict_scribes: true, next_untranscribed_page_id: nil)
-                  .unrestricted
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
                   .order_by_incomplete
 
-    return public.first.next_untranscribed_page unless public.empty?
-
-    private = works.where.not(restrict_scribes: true, next_untranscribed_page_id: nil)
-                   .restricted
-                   .order_by_incomplete
-
-    wk = private.find{ |w| user.can_transcribe?(w) }
-
-    wk&.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
