@@ -11,7 +11,7 @@ ul.tagcloud
       .wrapper [style="padding-top: 0px; padding-right: 0px;"]
         =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
       .wrapper [style="padding: 0px;"]
-        #results.landing-page-results
+        #results
           =render partial: 'results'
 
     .project-list_link

@@ -177,38 +177,43 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     users = User.owners
                 .joins(:collections)
                 .left_outer_joins(:document_sets)
-                .includes(random_collections: :canonical_tags)
-                .includes({ random_document_sets: { collection: :canonical_tags } })
 
-    @org_owners = users.findaproject_orgs.with_owner_works.order(:display_name).distinct
-    @individual_owners = users.findaproject_individuals.with_owner_works.order(:display_name).distinct
+    org_owners = users.findaproject_orgs.with_owner_works.order(:display_name)
+    individual_owners = users.findaproject_individuals.with_owner_works.order(:display_name)
+    @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
+    @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
-    # new projects -- 10 newest public, recently created collections
-    @new_projects = Collection.order('created_on DESC').unrestricted.where("LOWER(title) NOT LIKE 'test%'").distinct.limit(10)
-    # same for document sets
-    @new_document_sets = DocumentSet.order('created_at DESC').unrestricted.where("LOWER(title) NOT LIKE 'test%'").distinct.limit(10)
-    # merge them together, ordered by creation date
-    @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
-      a_date = a.is_a?(Collection) ? a.created_on : a.created_at
-      b_date = b.is_a?(Collection) ? b.created_on : b.created_at
-      b_date <=> a_date
+    @new_projects = Collection.includes(:owner)
+                              .order('created_on DESC')
+                              .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                              .distinct
+                              .limit(10)
+
+    @new_document_sets = DocumentSet.includes(:owner)
+                                    .order('created_at DESC')
+                                    .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                                    .distinct
+                                    .limit(10)
+    if params[:search]
+      @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @search_results_map = {}
+      @search_results.each do |result|
+        @search_results_map[result.owner_user_id] ||= []
+        @search_results_map[result.owner_user_id] << result
+      end
     end
 
     if request.xhr?
       render partial: 'results'
     else
-      owner_user_ids = @org_owners.select(:id) + @individual_owners.select(:id)
-      # docsets = DocumentSet.carousel
-      #                      .includes(:owner, { next_untranscribed_page: :work })
-      #                      .where(owner_user_id: owner_user_ids).sample(5)
-      # colls = Collection.carousel
-      #                   .includes(:owner, { next_untranscribed_page: :work })
-      #                   .where(owner_user_id: owner_user_ids).sample(5)
-      # @collections = (docsets + colls).sample(8)
+      @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
+        a_date = a.is_a?(Collection) ? a.created_on : a.created_at
+        b_date = b.is_a?(Collection) ? b.created_on : b.created_at
+        b_date <=> a_date
+      end
 
       @tag_map = Tag.featured_tags.group(:ai_text).count
     end
