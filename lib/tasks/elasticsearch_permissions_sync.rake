@@ -2,13 +2,46 @@ require 'json'
 require 'elastic_util'
 
 namespace :fromthepage do
+  STATE_PATH = 'index-state.json'
+
   desc "Sync permissions changes to the index"
   task :es_sync, [] => :environment do |t,args|
-    after = 0
+    after = get_last_index_time()
     snapshot = Time.now.utc.to_i
 
+    persist_state(after, 'INDEXING')
     sync_collections_and_docsets(after, snapshot);
     sync_works(after, snapshot);
+    persist_state(snapshot, 'IDLE')
+  end
+
+  def get_last_index_time
+    if File.exist?(STATE_PATH)
+      data = File.read(STATE_PATH)
+      state = JSON.parse(data)
+
+      # Abandon ship if previous indexing underway
+      if state['status'] == 'INDEXING'
+        exit
+      end
+
+      return state['last_updated']
+    else
+      return Time.now.utc.to_i
+    end
+  end
+
+  def persist_state(timestamp, status)
+    body = {
+      last_updated: timestamp,
+      status: status
+    }
+
+    pretty = JSON.pretty_generate(body)
+
+    File.open(STATE_PATH, 'w') do |file|
+      file.write(pretty)
+    end
   end
 
   def gen_range_query(after, limit)
@@ -17,7 +50,7 @@ namespace :fromthepage do
         range: {
           permissions_updated: {
             gte: after,
-            #lt: limit # May bring this back if I do paging 
+            lt: limit
           }
         }
       },
