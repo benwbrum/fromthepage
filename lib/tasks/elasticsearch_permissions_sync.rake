@@ -62,26 +62,6 @@ namespace :fromthepage do
     }
   end
 
-  def reindex_pages(lookup)
-    lookup.find_in_batches(batch_size: 100) do |batch|
-      bulk_body = []
-      batch.each do |item|
-        item_body = item.as_indexed_json()
-
-        # Skip errors
-        if item_body.key?(:indexing_error)
-          next
-        end
-
-        bulk_body.push(
-          ElasticUtil.gen_bulk_action('ftp_page', item_body)
-        )
-      end
-
-      ElasticUtil.get_client().bulk(body: bulk_body, refresh: false)
-    end
-  end
-
   def sync_collections_and_docsets(after, limit)
     q = gen_range_query(after, limit)
 
@@ -97,12 +77,14 @@ namespace :fromthepage do
 
     collection_ids.each do |coll_id|
       c = Collection.find(coll_id)
-      reindex_pages(c.pages)
+      ElasticUtil.reindex(c.pages, 'ftp_page')
+      ElasticUtil.reindex(c.works, 'ftp_work')
     end
 
     docset_ids.each do |docset_id|
       ds = DocumentSet.find(docset_id)
-      reindex_pages(ds.pages)
+      ElasticUtil.reindex(ds.pages, 'ftp_page')
+      ElasticUtil.reindex(ds.works, 'ftp_work')
     end
   end
 
@@ -115,7 +97,7 @@ namespace :fromthepage do
 
     work_ids.each do |work_id|
       w = Work.find(work_id)
-      reindex_pages(w.pages)
+      ElasticUtil.reindex(w.pages, 'ftp_page')
     end
   end
 end
