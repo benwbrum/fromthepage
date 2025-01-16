@@ -66,7 +66,6 @@ class SearchAttempt < ApplicationRecord
 
     def results(page = 1, page_size = 30)
         query = sanitize_and_format_search_string(self.query)
-
         case search_type
         when "work"
             if work.present? && query.present?
@@ -134,7 +133,7 @@ class SearchAttempt < ApplicationRecord
           from: (page[:page].to_i - 1) * page_size,
           size: page_size
         }
-
+        logger.info("Query to ElasticSearch " + query_wrapper.to_json)
         # Issue query
         resp = ElasticUtil.safe_search(index: 'ftp_page', body: query_wrapper)
         matches = resp['hits']['hits'].map { |doc| doc['_id'] }
