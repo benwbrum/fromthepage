@@ -188,8 +188,12 @@
           } else {
             this.$content.html(data);
           }
-        }).fail(function() {
-          this.$content.addClass('ajax-error');
+        }).fail(function(data) {
+          if (data.responseText) {
+            this.$content.html(data.responseText);
+          } else {
+            this.$content.addClass('ajax-error');
+          }
         }).always(function() {
           $submit.prop('disabled', false);
           this.$content.removeClass('ajax-busy');

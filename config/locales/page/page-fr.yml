@@ -3,14 +3,19 @@ fr:
   page:
     create:
       page_created: Page créée avec succès
-    delete:
+    destroy:
       page_deleted: La page a été supprimée
     edit:
+      status: 'Statut:'
+    edit_tabs:
+      general: Général
+      htr: HTR
+    form:
       browse: Parcourir
       click_to_browse_a_file: Cliquer pour parcourir un fichier...
       created: Créée le %{date}
+      delete: Supprimer la page
       delete_confirm_message: Voulez-vous vraiment supprimer cette page ? Après la suppression, vous ne pourrez pas le récupérer !
-      delete_page: Supprimer la page
       dimensions: 'Dimensions : %{width}×%{height}'
       here_you_can_edit: Ici, vous pouvez modifier le titre de la page et téléverser une nouvelle image. Si vous souhaitez modifier la transcription de la page ou le texte de traduction, veuillez passer à l'onglet approprié ci-dessus.
       page_image: Image de la page
@@ -28,7 +33,6 @@ fr:
       rotate_clockwise: Tourner dans le sens horaire
       rotate_counterclockwise: Tourner dans le sens antihoraire
       save_changes: Sauvegarder les modifications
-      status: 'Statut:'
     new:
       add_new_page: Ajouter une nouvelle page
       browse: Parcourir

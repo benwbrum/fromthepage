@@ -41,7 +41,7 @@ class DocumentSet < ApplicationRecord
   has_many :document_set_works
   has_many :works, -> { order(:title) }, through: :document_set_works
   has_many :pages, through: :works
-  has_many :articles, -> { distinct }, through: :pages
+  has_many :articles, -> { distinct }, through: :works
   has_many :notes, -> { order(created_at: :desc) }, through: :works
   has_many :deeds, -> (document_set) {
     where(work_id: document_set.works.select(:id))

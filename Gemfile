@@ -76,6 +76,9 @@ gem 'google-cloud-vision', '~> 1.4'
 
 gem 'interactor-rails', '~> 2.0'
 
+gem 'stimulus-rails'
+gem 'turbo-rails'
+
 group :assets do
   gem 'uglifier'
 end

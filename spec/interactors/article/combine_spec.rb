@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Article::Combine do
-  let(:user) { User.find_by(login: OWNER) }
+  let!(:user) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: user.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: user.id) }
   let!(:from_related_page) { create(:page, work: work, source_text: '[[Duplicate]]', source_translation: '[[Duplicate]]') }
@@ -23,10 +23,10 @@ describe Article::Combine do
   let(:from_article_ids) { [from_article.id] }
 
   let(:result) do
-    described_class.call(
+    described_class.new(
       article: to_article,
       from_article_ids: from_article_ids
-    )
+    ).call
   end
 
   it 'combines articles and updates source texts of related models' do

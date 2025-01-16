@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Article::Update do
-  let(:user) { User.find_by(login: OWNER) }
+  let!(:user) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: user.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: user.id) }
   let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
@@ -17,6 +17,8 @@ describe Article::Update do
     create(:article_article_link, source_article: source_article, target_article: article)
   end
 
+  let(:category_ids) { [] }
+
   let(:latitude) { nil }
   let(:longitude) { nil }
   let(:article_params) do
@@ -25,15 +27,16 @@ describe Article::Update do
       uri: 'www.new-uri.com',
       source_text: 'New source text',
       latitude: latitude,
-      longitude: longitude
+      longitude: longitude,
+      category_ids: category_ids
     }
   end
 
   let(:result) do
-    described_class.call(
+    described_class.new(
       article: article.reload,
       article_params: article_params
-    )
+    ).call
   end
 
   it 'updates article and source texts of related models' do
@@ -52,6 +55,7 @@ describe Article::Update do
       source_translation: '[[New|Original]]'
     )
     expect(source_article.reload).to have_attributes(source_text: '[[New|Original]]')
+    expect(result.article.categories.any?).to be_falsey
   end
 
   context 'when gis truncated' do
@@ -72,6 +76,16 @@ describe Article::Update do
         latitude: 1.12346,
         longitude: 1.12346
       )
+    end
+  end
+
+  context 'when adding category' do
+    let!(:category) { create(:category) }
+    let(:category_ids) { [category.id] }
+
+    it 'updates article' do
+      expect(result.success?).to be_truthy
+      expect(result.article.categories.first).to eq(category)
     end
   end
 

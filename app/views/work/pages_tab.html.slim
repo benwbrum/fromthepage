@@ -3,7 +3,7 @@
 .work-columns.columns
   .work-columns_left= t('.pages_tab_description')
   .work-columns_right
-    =link_to t('.add_new_page'), page_new_path(work_id: @work.id), :data => { litebox: { hash: 'create-page' }}, class: 'button'
+    =link_to t('.add_new_page'), new_page_path(work_id: @work.id), data: { controller: 'litebox', litebox: { hash: 'create-page' } }, class: 'button'
 
 -if @work.pages.empty?
   .nodata
@@ -24,7 +24,7 @@
           td.nowrap.fgfaded
             -if page.base_image.empty?
               =svg_symbol '#icon-warning-sign', class: 'icon'
-              ==t('.upload_page_image', upload: (link_to t('.upload'), { controller: 'page', action: 'edit', page_id: page.id }))
+              ==t('.upload_page_image', upload: (link_to t('.upload'), collection_edit_page_path(@collection.owner, @collection, @work, page.id)))
             -else
               =svg_symbol '#icon-check-sign', class: 'icon a50'
               ==t('.ready_to_transcribe', transcribe: (link_to t('.transcribe'), { controller: 'transcribe', action: 'display_page', page_id: page.id }))
@@ -32,14 +32,14 @@
           -if @work.featured_page == page.id
             b &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{t('.featured_page')} &nbsp;&nbsp;&nbsp;
           -else
-            =link_to t('.make_featured_page'), work_update_featured_page_path(page_id: page.id)
+            =link_to t('.make_featured_page'), work_update_featured_page_path(page_id: page.id), method: :post
           |&nbsp;|&nbsp;
-          =link_to t('.settings'), page_edit_path(page_id: page.id)
+          =link_to t('.settings'), collection_edit_page_path(@collection.owner, @collection, @work, page.id)
           |&nbsp;|&nbsp;
-          =link_to t('.delete'), page_delete_path(page_id: page.id), data: { :confirm => t('.confirm_delete_page') }
+          =link_to t('.delete'), page_path(page), method: :delete, data: { confirm: t('.confirm_delete_page') }
         td.nowrap
           .work-page-position
-            =link_to(page_reorder_page_path(direction: 'up', page_id: page.id), title: t('.move_up'), 'aria-label' => t('.move_up'))
+            =link_to reorder_page_index_path(direction: 'up', page_id: page.id), method: :post, title: t('.move_up'), aria: { label: t('.move_up') } do
               =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
-            =link_to({ controller: 'page', action: 'reorder_page', direction: 'down', page_id: page.id }, title: t('.move_down'), 'aria-label' => t('.move_down'))
+            =link_to reorder_page_index_path(direction: 'down', page_id: page.id), method: :post, title: t('.move_down'), aria: { label: t('.move_down') } do
               =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'

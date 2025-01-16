@@ -3,14 +3,19 @@ de:
   page:
     create:
       page_created: Seite erfolgreich erstellt
-    delete:
+    destroy:
       page_deleted: Seite wurde gelöscht
     edit:
+      status: 'Status:'
+    edit_tabs:
+      general: Allgemein
+      htr: HTR
+    form:
       browse: Durchsuchen
       click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
       created: "%{date} erstellt"
+      delete: Seite löschen
       delete_confirm_message: Möchten Sie diese Seite wirklich löschen? Nach dem Löschen können Sie sie nicht wiederherstellen!
-      delete_page: Seite löschen
       dimensions: 'Maße: %{width} × %{height}'
       here_you_can_edit: Hier können Sie den Seitentitel bearbeiten und ein neues Bild hochladen. Wenn Sie die Transkription oder den Übersetzungstext bearbeiten möchten, wechseln Sie bitte oberhalb auf die entsprechende Registerkarte.
       page_image: Faksimile
@@ -28,7 +33,6 @@ de:
       rotate_clockwise: Im Uhrzeigersinn drehen
       rotate_counterclockwise: Gegen den Uhrzeigersinn drehen
       save_changes: Änderungen speichern
-      status: 'Status:'
     new:
       add_new_page: Neue Seite hinzufügen
       browse: Durchsuchen

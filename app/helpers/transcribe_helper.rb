@@ -20,7 +20,11 @@ module TranscribeHelper
   end
 
   def canonical_subjects_for_autocomplete
-    @collection.articles.pluck(:title)
+    if @collection.is_a? Collection
+      @collection.articles.pluck(:title).sort
+    else
+      @collection.collection.articles.pluck(:title).sort
+    end
   end
 
   def excerpt_subject(page, title, options = {})
@@ -86,12 +90,7 @@ module TranscribeHelper
       sources
     else
       if page.sc_canvas
-        if page.sc_canvas.sc_service_id
-          service_id = page.sc_canvas.sc_service_id.sub(/\/$/,'')
-          ["#{service_id}/info.json"]
-        else
-          [{type: 'image', url: page.sc_canvas.sc_resource_id}]
-        end
+        [page.sc_canvas.iiif_image_info_url]
       elsif page.ia_leaf
         # [page.ia_leaf.iiif_image_info_url]
         page.ia_leaf.refresh_cache

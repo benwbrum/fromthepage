@@ -1,0 +1,8 @@
+<%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection, scope: 'edit_danger' }) %>
+
+<% if @result.success? %>
+  <%= turbo_stream.update('collection-tabs', partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @collection.id }) %>
+  <%= turbo_flash(t('collection.update.notice'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('collection.update.error'), :error) %>
+<% end %>

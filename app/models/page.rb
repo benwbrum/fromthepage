@@ -90,6 +90,14 @@ class Page < ApplicationRecord
 
   serialize :metadata, Hash
 
+  ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff'
+  ].freeze
+
   enum status: {
     new: 'new',
     blank: 'blank',
@@ -592,9 +600,8 @@ class Page < ApplicationRecord
     end
   end
 
-  # tested
   def create_link(article, display_text, text_type)
-    link = PageArticleLink.new(page: self, article: article,
+    link = PageArticleLink.new(page: self, article: article, work: self.work,
                                display_text: display_text, text_type: text_type)
     link.save!
     return link.id

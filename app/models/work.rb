@@ -93,6 +93,8 @@ class Work < ApplicationRecord
   has_one :work_statistic, :dependent => :destroy
   has_many :sections, -> { order 'position' }, :dependent => :destroy
   has_many :table_cells, :dependent => :destroy
+  has_many :page_article_links, dependent: :destroy
+  has_many :articles, through: :page_article_links
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
 
@@ -316,10 +318,6 @@ class Work < ApplicationRecord
   end
 
   def revert
-  end
-
-  def articles
-    Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
 

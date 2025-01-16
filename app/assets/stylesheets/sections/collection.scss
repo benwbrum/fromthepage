@@ -483,7 +483,6 @@
     vertical-align: top;
   }
   select, .inline-btn, .select2 {
-    margin-left: 1em;
     display: inline-block;
 
     &.select2-hidden-accessible {
@@ -508,6 +507,12 @@
   }
   .button[disabled] {
     pointer-events: none;
+  }
+}
+
+.page-settings {
+  .sidecol {
+    padding-top: 0.5em;
   }
 }
 

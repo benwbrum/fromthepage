@@ -1,0 +1,62 @@
+.page-settings.collection-settings-wrapper
+  p= t('.here_you_can_edit')
+  .columns
+    .maincol
+      =form_for(@page,
+      url: page_path(@page),
+      method: :put,
+      remote: true,
+      authenticity_token: true,
+      html: { multipart: true }) do |f|
+        .validation-wrapper(style="#{@page.errors.any? ? '' : 'display:none;'}") = render 'shared/validation_summary', errors: @page.errors
+        =f.submit t('.save_changes'), id: 'collection-settings-save', hidden: true
+        -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+        table.form.collection-settings lang="#{@collection.text_language}" dir=direction class=direction
+          tr
+            th
+              h3 = f.label :title, t('.page_title')
+            td.w100 =f.text_field :title, value: @page.title
+          tr
+            th
+              h3 = f.label :status, t('.page_status')
+            td.w100
+              -option_array = Page::statuses.map {|key, val| [t(".page_status_#{val}"), key]}
+              =f.select :status, options_for_select(option_array, @page.status), {}, { class: 'bs ms-0' }
+          -if @work.supports_translation
+            tr
+              th
+                h3 = f.label :translation_status, t('.page_translation_status')
+              td
+                -option_array = Page::translation_statuses.map {|key, val| [t(".page_status_#{val}"), key]}
+                =f.select :translation_status, options_for_select(option_array, @page.translation_status)
+          tr
+            th
+              h3 = f.label :base_image, t('.page_image')
+            td
+              .input-file
+                =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+                input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_a_file') readonly)
+                button(type="button") #{t('.browse')}
+    .sidecol
+      h3 = t('.page_position', position: @page.position)
+      =time_tag @page.created_on
+        =t('.created', date: l(@page.created_on.localtime))
+
+  -if @page.base_image.present?
+    hr
+    .headline
+      h2.headline_title =t('.page_image')
+      .headline_aside
+        span.fgfaded = t('.dimensions', width: @page.base_width, height: @page.base_height).html_safe
+      .headline_aside
+        .button-stack
+          =link_to rotate_page_index_path(page_id: @page.id, orientation: 90), class: 'button outline', title: t('.rotate_clockwise'), method: :post do
+            =svg_symbol "#icon-rotate-cw", class: 'icon'
+          =link_to rotate_page_index_path(page_id: @page.id, orientation: 270), class: 'button outline', title: t('.rotate_counterclockwise'), method: :post do
+            =svg_symbol "#icon-rotate-ccw", class: 'icon'
+
+    .page-image-preview =image_tag("#{file_to_url(@page.canonical_facsimile_url)}?#{Time.now.to_i}")
+
+  .toolbar
+    .toolbar_group.w100
+      =link_to t('.delete'), page_path(@page), method: :delete, data: { confirm: t('.delete_confirm_message') }, class: 'button big'
