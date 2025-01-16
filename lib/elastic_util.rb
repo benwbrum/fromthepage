@@ -207,6 +207,7 @@ module ElasticUtil
   # Exception handled search
   # Returns mocked empty result set on exception
   def self.safe_search(arguments = {})
+    Rails.logger.info("Query to ElasticSearch " + arguments.to_json)
     begin
       resp = self.get_client()
         .search(index: arguments[:index], body: arguments[:body])
