@@ -117,36 +117,26 @@ class SearchAttempt < ApplicationRecord
     end
 
     def elastic_collection_search(coll_or_docset, query, page, page_size)
-        client = ElasticUtil.get_client()
+        # Assuming access-control is handled earlier
+        # Filter on collection only here, works join against DB happens later
+        filter = {}
+        if coll_or_docset.is_a?(Collection)
+          filter = {term: {collection_id: coll_or_docset.id}}
+        elsif coll_or_docset.is_a?(DocumentSet)
+          filter = {term: {docset_id: coll_or_docset.id}}
+        end
 
-        resp = client.search(index: 'ftp_page', body: {
-            query: {
-              bool: {
-                must: {
-                  simple_query_string: {
-                    query: query,
-                    fields: [
-                      "title^2",
-                      "search_text^1.5",
-                      "content_english",
-                      "content_french",
-                      "content_german",
-                      "content_spanish",
-                      "content_portuguese",
-                      "content_swedish"
-                    ]
-                  }
-                },
-                filter: [
-                  {term: {is_public: true}},
-                  {term: {collection_id: coll_or_docset.id}}
-                ]
-              }
-            },
-            from: (page[:page].to_i - 1) * page_size,
-            size: page_size
-        })
+        # Generate query and setup filter/paging in wrapper
+        query_body = Page.es_match_query(query, nil)
+        query_body[:bool][:filter] = filter # Replace filter
+        query_wrapper = {
+          query: query_body,
+          from: (page[:page].to_i - 1) * page_size,
+          size: page_size
+        }
 
+        # Issue query
+        resp = ElasticUtil.safe_search(index: 'ftp_page', body: query_wrapper)
         matches = resp['hits']['hits'].map { |doc| doc['_id'] }
         results = Page.order('work_id', 'position')
                     .joins(:work)
@@ -160,54 +150,38 @@ class SearchAttempt < ApplicationRecord
 
     # when "work" search handlers
     def database_work_search(work, query)
-        return Page.order('work_id, position')
-                    .joins(:work)
-                    .where(work_id: work.id)
-                    .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+      return Page.order('work_id, position')
+                  .joins(:work)
+                  .where(work_id: work.id)
+                  .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
     end
 
     def elastic_work_search(work, query, page, page_size)
-        client = ElasticUtil.get_client()
+      filter = [
+        {term: {is_public: true} },
+        {term: {work_id: work.id} }
+      ]
 
-        # TODO: Migrate query bodies outside this model but still inside rails
-        resp = client.search(index: 'ftp_page', body: {
-            query: {
-              bool: {
-                must: {
-                  simple_query_string: {
-                    query: query,
-                    fields: [
-                      "title^2",
-                      "search_text^1.5",
-                      "content_english",
-                      "content_french",
-                      "content_german",
-                      "content_spanish",
-                      "content_portuguese",
-                      "content_swedish"
-                    ]
-                  }
-                },
-                filter: [
-                  {term: {is_public: true}},
-                  {term: {work_id: work.id}}
-                ]
-              }
-            },
-            from: (page[:page].to_i - 1) * page_size,
-            size: page_size
-        })
+      # Generate query and setup filter/paging in wrapper
+      query_body = Page.es_match_query(query, nil)
+      query_body[:bool][:filter] = filter # Replace filter
+      query_wrapper = {
+        query: query_body,
+        from: (page[:page].to_i - 1) * page_size,
+        size: page_size
+      }
 
-        matches = resp['hits']['hits'].map { |doc| doc['_id'] }
+      # Send query
+      resp = ElasticUtil.safe_search(index: 'ftp_page', body: query_wrapper)
+      matches = resp['hits']['hits'].map { |doc| doc['_id'] }
+      results = Page.order('work_id', 'position')
+                  .joins(:work)
+                  .where(work_id: work.id)
+                  .where(id: matches)
 
-        results = Page.order('work_id', 'position')
-                    .joins(:work)
-                    .where(work_id: work.id)
-                    .where(id: matches)
-
-        return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
-          pager.replace(results)
-        end
+      return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
+        pager.replace(results)
+      end
     end
 
     def sanitize_and_format_search_string(search_string)

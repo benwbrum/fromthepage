@@ -1,3 +1,4 @@
+/ Slim version of collection/show->work repurposed for general search
 -if @collection.text_entry?
   -default_path = collection_read_work_path(@collection.owner, @collection, work)
 -else
@@ -6,29 +7,30 @@
   .collection-work_image
     -unless work.thumbnail.nil?
         =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
+        h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
   p.collection-work_snippet = to_snippet(work.description)
   -if @collection.text_entry? && work.next_untranscribed_page
     p.collection-work_action
       -if @collection.active? && work.user_can_transcribe?(current_user)
-        =t('.this_work_has_pages_that_need_work')
+        =t('collection.show.this_work_has_pages_that_need_work')
         span &nbsp;
-        =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
+        =link_to(t('collection.show.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
       -else
-        =t('.restricted_collaboratoration')
+        =t('collection.show.restricted_collaboratoration')
 
   -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
     p.collection-work_action
       -if (current_user && current_user.can_transcribe?(work))
-        =t('.this_work_has_not_been_described')
+        =t('collection.show.this_work_has_not_been_described')
         span &nbsp;
-        =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
+        =link_to(t('collection.show.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
       -else
-        =t('.restricted_collaboratoration')
+        =t('collection.show.restricted_collaboratoration')
   -if @collection.text_entry?
     .collection-work_stats
       -work_stats(work)
       span
-        = t('.n_pages', count: work.work_statistic.total_pages)
+        = t('collection.collection_works.n_pages', count: work.work_statistic.total_pages)
         = @wording
       span
         =render(:partial => 'shared/progress', :locals => { :collection => @collection })

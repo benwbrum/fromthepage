@@ -144,10 +144,12 @@ class Collection < ApplicationRecord
   end
 
   def self.es_match_query(query, user = nil)
+    blocked_collections = []
     collection_collabs = []
     docset_collabs= []
 
     if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs = user.collection_collaborations.pluck(:id)
       docset_collabs = user.document_set_collaborations.pluck(:id)
         .map{ |x| "docset-#{x}" }
@@ -168,6 +170,9 @@ class Collection < ApplicationRecord
         filter: [
           {
             bool: {
+              must_not: [
+                { terms: {_id: blocked_collections} }
+              ],
               # At least one of the following must be true
               should: [
                 { term: {is_public: true} },
@@ -367,44 +372,10 @@ class Collection < ApplicationRecord
     self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
-  def self.elastic_search(query)
-    require 'elastic_util'
-
-    client = ElasticUtil.get_client()
-
-    resp = client.search(index: 'ftp_collection', body: {
-        query: {
-          bool: {
-            must: {
-              simple_query_string: {
-                query: query,
-                fields: [
-                  "title^2",
-                  "slug",
-                  "owner_display_name"
-                ]
-              }
-            }
-          }
-        },
-        size: 10000 # TODO: Need pagination eventually
-    })
-
-    matches = resp['hits']['hits'].map { |doc| doc['_id'] }
-
-    # TODO: Preserve ordering from matches for relevance?
-    Collection
-        .where(id: matches)
-  end
-
   def self.search(search)
-    if ELASTIC_ENABLED
-      elastic_search(search)
-    else
-      sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-      users where owner=1 and display_name like ?)"
-      where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
-    end
+    sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
+           users where owner=1 and display_name like ?)"
+    where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 
   def sections

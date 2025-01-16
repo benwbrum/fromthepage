@@ -204,6 +204,39 @@ module ElasticUtil
     client.indices.refresh(index: index_name)
   end
 
+  # Exception handled search
+  # Returns mocked empty result set on exception
+  def self.safe_search(arguments = {})
+    begin
+      resp = self.get_client()
+        .search(index: arguments[:index], body: arguments[:body])
+
+      if resp.key?('error')
+        raise 'General elastic error'
+      end
+
+      return resp
+    rescue Exception
+      return {
+        'hits' => {
+          'total' => {
+            'value' => 0,
+            'relation' => 'eq'
+          },
+          'hits' => []
+        },
+        'aggregations' => {
+          'type_counts' => {
+            'buckets' => []
+          },
+          'total_doc_count' => {
+            'value' => 0
+          }
+        }
+      }
+    end
+  end
+
   # Helper threading pool to execute indexing requests in parallel
   class WorkerPool
     def initialize(size)
