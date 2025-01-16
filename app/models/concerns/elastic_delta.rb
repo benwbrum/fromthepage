@@ -70,6 +70,11 @@ module ElasticDelta
     index = get_index_for_type(self)
     doc_id = self.id
 
+    # Only delete a single page if not destroyed by association
+    if index == 'ftp_page' && destroyed_by_association
+      return
+    end
+
     # Hack for storing docsets alongside collections
     if self.is_a?(DocumentSet)
       doc_id = "docset-#{doc_id}"
@@ -78,6 +83,34 @@ module ElasticDelta
     ElasticUtil.get_client().delete(
       index: index,
       id: doc_id
+    )
+
+    # Delete pages by query
+    es_delete_by_query()
+  end
+
+  def es_delete_by_query
+    coll_id = 0
+
+    if self.is_a?(Collection)
+      coll_id = self.id
+    elsif self.is_a?(Work)
+      coll_id = self.collection.id
+    else
+      return # Only delete by query for Collection/Work deletion
+    end
+
+    q = {
+      query: {
+        term: {
+          collection_id: coll_id
+        }
+      }
+    }
+
+    ElasticUtil.get_client().delete_by_query(
+      index: 'ftp_page',
+      body: q
     )
   end
 
