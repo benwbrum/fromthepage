@@ -39,6 +39,20 @@ module ElasticDelta
     doc_id = self.id
     body = self.as_indexed_json().except(:_id)
 
+    perm_key = nil
+    if self.is_a?(Collection)
+      perm_key = :restricted
+    elsif self.is_a?(DocumentSet)
+      perm_key = :is_public
+    end
+
+    # Update permissions timestamp on dirty permissions fields
+    if perm_key
+      if saved_changes.key?(perm_key)
+        body[:permissions_updated] = Time.now.utc.to_i
+      end
+    end
+
     # Hack for storing docsets alongside collections
     if self.is_a?(DocumentSet)
       doc_id = "docset-#{doc_id}"

@@ -132,6 +132,7 @@ class Collection < ApplicationRecord
   def as_indexed_json
     return {
       _id: self.id,
+      permissions_updated: 0,
       is_public: !self.restricted,
       is_docset: false,
       intro_block: self.intro_block,

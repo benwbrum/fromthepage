@@ -4,6 +4,9 @@
 			"is_public": {
 				"type": "boolean"
 			},
+			"permissions_updated": {
+				"type": "long"
+			},
 			"collection_id": {
 				"type": "integer"
 			},
