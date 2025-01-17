@@ -25,11 +25,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.3
-          bundler-cache: true
+          bundler-cache: false
       - name: Install dependencies
         run: |
           sudo apt-get -qq update
-          sudo apt-get install -y ghostscript poppler-utils graphviz pandoc texlive-full
+          sudo apt-get install -y ghostscript poppler-utils graphviz pandoc texlive-full libmagickwand-dev imagemagick libmagickcore-dev
           bundle install --jobs 4 --retry 3
       - name: Create db
         run: bundle exec rake db:create
