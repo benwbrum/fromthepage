@@ -119,7 +119,7 @@ class User < ApplicationRecord
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
 
   scope :with_owner_works, -> { joins(:uploaded_works).distinct }
-  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Organization', 'Small Organization']) }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
   scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
