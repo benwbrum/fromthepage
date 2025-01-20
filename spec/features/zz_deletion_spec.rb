@@ -24,7 +24,7 @@ describe "testing deletions" do
     expect(page).to have_content("Please use caution")
     expect(page).to have_content("Blank Collection")
     page.find('a', text: 'Blank Collection').click
-    expect(page.current_path).to eq("/collection/show")
+    expect(page.current_path).to eq "/#{col.owner.slug}/#{col.slug}"
     pages = Page.where(work_id: col.works.ids)
     pages.each do |p|
       expect(p.status_new?).to be_truthy

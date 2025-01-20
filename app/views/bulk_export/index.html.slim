@@ -31,7 +31,7 @@
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
             td.nowrap
-              dl.dropdown.right
+              dl.dropdown.right data-controller='dropdown'
                 dt tabindex=0
                   span= t('.actions')
                   =svg_symbol '#icon-list', class: 'icon'

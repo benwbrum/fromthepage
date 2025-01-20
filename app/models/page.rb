@@ -89,6 +89,14 @@ class Page < ApplicationRecord
 
   serialize :metadata, Hash
 
+  ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff'
+  ].freeze
+
   enum status: {
     new: 'new',
     blank: 'blank',

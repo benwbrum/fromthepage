@@ -90,6 +90,7 @@ en:
         other: 'Categories: '
       explore_this_subject: Explore this subject
     update:
+      categories_updated: Article categories updated.
       gis_coordinates_truncated:
         one: " (GIS coordinates truncated to %{precision} decimal place)"
         other: " (GIS coordinates truncated to %{precision} decimal places)"

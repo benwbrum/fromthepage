@@ -171,8 +171,6 @@ class Collection < ApplicationRecord
     review_type != ReviewType::OPTIONAL
   end
 
-
-
   def enable_messageboards
     if self.messageboard_group.nil?
       self.messageboard_group = Thredded::MessageboardGroup.find_or_create_by!(name: self.title)
@@ -272,43 +270,6 @@ class Collection < ApplicationRecord
     end
   end
 
-  def blank_out_collection
-    puts "Reset all data in the #{self.title} collection to blank"
-    works = Work.where(collection_id: self.id)
-    pages = Page.where(work_id: works.ids)
-
-    #delete deeds for pages and articles (not work add deed)
-    Deed.where(page_id: pages.ids).destroy_all
-    Deed.where(article_id: self.articles.ids).destroy_all
-    #delete articles
-    Article.where(collection_id: self.id).destroy_all
-    #delete categories (aside from the default)
-    Category.where(collection_id: self.id).where.not(title: 'People').where.not(title: 'Places').destroy_all
-    #delete notes
-    Note.where(page_id: pages.ids).destroy_all
-    #delete page_article_links
-    PageArticleLink.where(page_id: pages.ids).destroy_all
-    #update work transcription version
-    works.each do |w|
-      w.update_columns(transcription_version: 0)
-    end
-    #for each page, delete page versions, update all attributes, save
-    pages.each do |p|
-      p.page_versions.destroy_all
-      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil,
-                       status: Page.statuses[:new], source_translation: nil, xml_translation: nil,
-                       translation_status: Page.translation_statuses[:new], search_text: "\n\n\n\n")
-      p.save!
-    end
-
-    #fix user_id for page version (doesn't get set in this type of update)
-    PageVersion.where(page_id: pages.ids).each do |v|
-      v.user_id = self.owner.id
-      v.save!
-    end
-    puts "#{self.title} collection has been reset"
-  end
-
   def search_works(search)
     self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
@@ -342,9 +303,9 @@ class Collection < ApplicationRecord
   end
 
   def set_next_untranscribed_page
-    first_work = works.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
-    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
-    page_id = first_page.nil? ? nil : first_page.id
+    first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
+    first_page = first_work&.next_untranscribed_page
+    page_id = first_page&.id
 
     update_columns(next_untranscribed_page_id: page_id)
   end
@@ -353,21 +314,11 @@ class Collection < ApplicationRecord
     return nil unless has_untranscribed_pages?
     return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
 
-    public = works
-      .where.not(next_untranscribed_page_id: nil)
-      .unrestricted
-      .order_by_incomplete
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
+                  .order_by_incomplete
 
-    return public.first.next_untranscribed_page unless public.empty?
-
-    private = works
-      .where.not(next_untranscribed_page_id: nil)
-      .restricted
-      .order_by_incomplete
-
-    wk = private.find{ |w| user.can_transcribe?(w) }
-
-    wk.nil? ? nil : wk.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?

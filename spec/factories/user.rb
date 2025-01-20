@@ -19,8 +19,8 @@ FactoryBot.define do
     end
 
     factory :unique_user do
-      sequence(:login) { "user_#{SecureRandom.hex(2)}_login" }
-      sequence(:email) { "user_#{SecureRandom.hex(2)}@sample.com" }
+      sequence(:login) { "user_#{SecureRandom.hex(4)}_login" }
+      sequence(:email) { "user_#{SecureRandom.hex(4)}@sample.com" }
       password { 'password' }
       password_confirmation { 'password' }
 

@@ -3,14 +3,19 @@ pt:
   page:
     create:
       page_created: Esta página foi criada com sucesso
-    delete:
+    destroy:
       page_deleted: Esta página foi eliminada
     edit:
+      status: 'Status:'
+    edit_tabs:
+      general: Em geral
+      htr: HTR
+    form:
       browse: Navegar
       click_to_browse_a_file: Clique para navegar num arquivo...
       created: Criada %{date}
+      delete: Apagar Página
       delete_confirm_message: Tem certeza que deseja apagar esta página? Depois de apagar não pode ser recuperada!
-      delete_page: Apagar Página
       dimensions: 'Dimensões: %{width}&times;%{height}'
       here_you_can_edit: Aqui você pode editar o título da página e subir uma nova imagem. Se quiser editar a transcrição da página ou o texto da tradução, por favor vá para a aba apropriada acima.
       page_image: Imagem da Página
@@ -28,7 +33,6 @@ pt:
       rotate_clockwise: Girar Sentido Horário
       rotate_counterclockwise: Girar Sentido Anti-Horário
       save_changes: Salvar Alterações
-      status: 'Status:'
     new:
       add_new_page: Adicionar Página Nova
       browse: Navegar

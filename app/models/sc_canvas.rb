@@ -53,7 +53,12 @@ class ScCanvas < ApplicationRecord
     if sc_service_id
       "#{sc_service_id}/info.json"
     else
-      self.sc_resource_id.sub(/full\/\w+\/\w+\/.*/, 'info.json')
+      # special handling for NARA images -- treat them as an image
+      if sc_resource_id.include?('catalog.archives.gov')
+        {type: 'image', url: sc_resource_id}.to_json
+      else
+        self.sc_resource_id.sub(/full\/\w+\/\w+\/.*/, 'info.json')
+      end
     end
   end
 

@@ -2,9 +2,6 @@ class CategoryController < ApplicationController
   public :render_to_string
   protect_from_forgery
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create]
-
   def edit
   end
 
@@ -23,7 +20,7 @@ class CategoryController < ApplicationController
       @new_category.collection = @collection.collection
     else
       @new_category.collection = @collection
-    end      
+    end
     if @category.present?
       @new_category.parent = @category
       @new_category.gis_enabled = @category.gis_enabled

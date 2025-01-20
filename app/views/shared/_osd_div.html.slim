@@ -16,7 +16,7 @@
   a#osd_fullpage =svg_symbol "#icon-expand", class: 'icon'
   a#osd_rotate_left =svg_symbol "#icon-rotate-left", class: 'icon'
   a#osd_rotate_right =svg_symbol "#icon-rotate-right", class: 'icon'
-  dl.dropdown.right
+  dl.dropdown.right data-controller='dropdown'
     dt title= t('.image_filters')
       =svg_symbol "#icon-filters", class: 'icon'
     dd

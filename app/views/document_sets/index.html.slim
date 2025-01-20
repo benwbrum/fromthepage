@@ -30,8 +30,8 @@ ul
 
 
 br
-=link_to t('.create_a_document_set'), new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
-=link_to t('.transfer_works'), document_set_transfer_form_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
+=link_to t('.create_a_document_set'), new_document_set_path(collection_id: @collection.id), class: 'button', data: { controller: 'litebox' }
+=link_to t('.transfer_works'), document_set_transfer_form_path(collection_id: @collection.id), class: 'button', data: { controller: 'litebox' }
 
 -if @collection.document_sets.present?
   h3 =t('.assign_works_to_document_sets')
@@ -51,7 +51,7 @@ br
             th(style="min-width: 100px;") =t('.status')
             -@collection.document_sets.each do |document_set|
               th(style="min-width: 150px;")
-                =check_box_tag(nil, nil, false, style: 'margin-right: 5px;', data: { select_all: "document_set_#{document_set.id}" })
+                =check_box_tag(nil, nil, false, style: 'margin-right: 5px;', data: { controller: 'select-all', select_all: "document_set_#{document_set.id}" })
                 =document_set.title
                 /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
         tbody

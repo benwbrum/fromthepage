@@ -24,6 +24,7 @@
         th
           h3.settings-label =t('.document_set_collaborators')
           p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
-          p =link_to(t('.edit_collaborators'), collection_edit_set_collaborators_path(document_set_id: @document_set.slug), id: 'edit-set-collaborators-button', class: 'button', disabled: !@document_set.restricted, data: { litebox: { hash: 'edit-set-collaborators', noscroll: false }})
+          p =link_to(t('.edit_collaborators'), collection_edit_set_collaborators_path(document_set_id: @document_set.slug), id: 'edit-set-collaborators-button', class: 'button', disabled: !@document_set.restricted, data: { controller: 'litebox', litebox: { hash: 'edit-set-collaborators', noscroll: false, noclose: true } })
+
         td
           =render 'collection/users_list', users: @collaborators, type: 'collaborators', disabled: !@document_set.restricted

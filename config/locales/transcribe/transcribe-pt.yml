@@ -12,7 +12,6 @@ pt:
       cancel: Cancelar
       continue: Continuar
       manage_categories: Controlar Categorias
-      options: opções
       subject: 'Tema: '
       uncategorized_subjects: Temas Não Categorizados
       uncategorized_subjects_mentioned: Você tem temas não categorizados mencionados na transcrição da página. Por favor, revisa os temas abaixo e atribua as categorias apropriadas para eles.

@@ -26,5 +26,4 @@
 //= link datatables.min.js
 //= link annotorious/annotorious-openseadragon.js
 //= link annotorious/annotorious-openseadragon-textlayer.js
-//= link select_all.js
 //= link_tree ../../javascript .js
