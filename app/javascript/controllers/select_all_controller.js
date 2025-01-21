@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import "select_all"
+
+import "plugins/select_all"
 
 // Connects to data-controller="select-all"
 export default class extends Controller {
