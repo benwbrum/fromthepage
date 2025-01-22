@@ -11,7 +11,9 @@
     p =to_snippet(result[:description])
 
 -elsif result.is_a?(Page)
-  =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :@collection => result.collection} })
+  / Collection work class provides consistent styling with other elements
+  .collection-work
+    =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :@collection => result.collection} })
 
 -elsif result.is_a?(User)
   .collection-work
