@@ -160,6 +160,33 @@ module ElasticUtil
     }
   end
 
+  def self.looks_like_id(query)
+    if query.nil?
+      return false
+    end
+
+    # We say something looks like an ID if:
+    # - More than 2 underscores/hyphens in single term
+    # - More than 1 period in a term > 4 chars
+    if query.is_a?(String) && !query.empty?
+      query.split.each do |token|
+        period_count = token.count('.')
+        symbol_count = token.count('-')
+        symbol_count += token.count('_')
+
+        if symbol_count > 2 || (period_count >= 2 && query.length > 4)
+          return true
+        end
+      end
+
+      # No tokens exceeded symbol threshold
+      return false
+    else
+      # Query was empty or not a string
+      return false
+    end
+  end
+
   def self.reindex(model, index_name)
     client = self.get_client()
 
