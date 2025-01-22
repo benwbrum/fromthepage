@@ -11,7 +11,8 @@
 				"type": "long"
 			},
 			"intro_block": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general"
 			},
 			"language": {
 				"type": "keyword"

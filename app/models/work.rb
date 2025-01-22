@@ -213,6 +213,7 @@ class Work < ApplicationRecord
             query: query,
             fields: [
               "title^2",
+              "searchable_metadata.whitespace^1.5",
               "searchable_metadata"
             ]
           }

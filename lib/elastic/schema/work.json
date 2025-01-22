@@ -20,10 +20,17 @@
 				"type": "integer"
 			},
 			"title": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general"
 			},
 			"searchable_metadata": {
-				"type": "text"
+				"type": "text",
+				"fields": {
+					"whitespace": {
+						"type": "text",
+						"analyzer": "general_whitespace"
+					}
+				}
 			}
 		}
 	}
