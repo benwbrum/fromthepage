@@ -153,20 +153,40 @@ class Page < ApplicationRecord
       docset_collabs = user.document_set_collaborations.pluck(:id)
     end
 
+    search_fields = [
+      "title^2",
+      "search_text^1.5",
+      "content_english",
+      "content_french",
+      "content_german",
+      "content_spanish",
+      "content_portuguese",
+      "content_swedish"
+    ]
+
     return {
       bool: {
         must: {
-          simple_query_string: {
-            query: query,
-            fields: [
-              "title^2",
-              "search_text^1.5",
-              "content_english",
-              "content_french",
-              "content_german",
-              "content_spanish",
-              "content_portuguese",
-              "content_swedish"
+          bool: {
+            # Run same query as phrase and regular tokenized
+            # Phrase matches will have higher impact
+            should: [
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 3.0,
+                  type: "phrase",
+                  fields: search_fields
+                }
+              },
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 1.0,
+                  type: "most_fields",
+                  fields: search_fields
+                }
+              }
             ]
           }
         },
