@@ -143,6 +143,9 @@ class SearchAttempt < ApplicationRecord
                     .where(work_id: coll_or_docset.works.ids)
                     .where(id: matches)
 
+        # Apply ES relevance
+        results = results.sort_by { |x| matches.index(x[:id].to_s) }
+
         return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
           pager.replace(results)
         end
@@ -178,6 +181,9 @@ class SearchAttempt < ApplicationRecord
                   .joins(:work)
                   .where(work_id: work.id)
                   .where(id: matches)
+
+      # Apply ES relevance
+      results = results.sort_by { |x| matches.index(x[:id].to_s) }
 
       return WillPaginate::Collection.create(page[:page].to_i, 30, resp['hits']['total']['value']) do |pager|
         pager.replace(results)
