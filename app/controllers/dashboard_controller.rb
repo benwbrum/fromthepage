@@ -207,11 +207,18 @@ class DashboardController < ApplicationController
 
       page_size = 10
 
+      org_id = nil
+      if (params[:org])
+        org_user = User.find_by(slug: params[:org])
+        org_id = org_user.present? ? org_user[:id] : nil
+      end
+
       search_data = elastic_search_results(
         params[:search],
         search_page,
         page_size,
-        params[:filter]
+        params[:filter],
+        org_id
       )
 
       if search_data
@@ -381,7 +388,7 @@ class DashboardController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
-  def elastic_search_results(query, page, page_size, filter)
+  def elastic_search_results(query, page, page_size, filter, org_filter)
     return nil if query.nil?
 
     if filter
@@ -389,6 +396,7 @@ class DashboardController < ApplicationController
           current_user,
           query,
           ['collection', 'page', 'user', 'work'],
+          org_filter,
           page, page_size, true
         )
 
@@ -409,6 +417,7 @@ class DashboardController < ApplicationController
           current_user,
           query,
           [filter],
+          org_filter,
           page, page_size)
 
         filtered_resp = ElasticUtil.safe_search(
@@ -431,6 +440,7 @@ class DashboardController < ApplicationController
         current_user,
         query,
         ['collection', 'page', 'user', 'work'],
+        org_filter,
         page, page_size)
 
       resp = ElasticUtil.safe_search(
