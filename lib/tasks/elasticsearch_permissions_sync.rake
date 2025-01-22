@@ -10,8 +10,14 @@ namespace :fromthepage do
     snapshot = Time.now.utc.to_i
 
     persist_state(after, 'INDEXING')
+
+    # Permissions updates
     sync_collections_and_docsets(after, snapshot);
     sync_works(after, snapshot);
+
+    # Page content updates
+    sync_pages(after, snapshot);
+
     persist_state(snapshot, 'IDLE')
   end
 
@@ -99,5 +105,13 @@ namespace :fromthepage do
       w = Work.find(work_id)
       ElasticUtil.reindex(w.pages, 'ftp_page')
     end
+  end
+
+  def sync_pages(after, limit)
+    pending = Page.where(
+      "updated_at >= FROM_UNIXTIME(?) AND updated_at < FROM_UNIXTIME(?)",
+      after, limit)
+
+    ElasticUtil.reindex(pending, 'ftp_page')
   end
 end

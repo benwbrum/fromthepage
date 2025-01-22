@@ -39,6 +39,11 @@ module ElasticDelta
     doc_id = self.id
     body = self.as_indexed_json().except(:_id)
 
+    # Page updates have been moved to the delta indexer
+    if self.is_a?(Page)
+      return
+    end
+
     perm_key = nil
     if self.is_a?(Collection)
       perm_key = :restricted
