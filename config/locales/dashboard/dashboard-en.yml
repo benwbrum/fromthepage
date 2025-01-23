@@ -80,6 +80,8 @@ en:
       previous_image: Previous image
       recent_activity: Recent Activity
       search: Search
+      search_org: Search Organization
+      search_org_label: Search for content published by this organization...
       search_for_collections: Search for collections
       search_for_collections_or_owners: Search for collections or owners...
       transcribe_a_page: Transcribe a page

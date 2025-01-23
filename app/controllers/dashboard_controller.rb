@@ -210,7 +210,11 @@ class DashboardController < ApplicationController
       org_id = nil
       if (params[:org])
         org_user = User.find_by(slug: params[:org])
-        org_id = org_user.present? ? org_user[:id] : nil
+
+        if org_user.present?
+          org_id = org_user[:id]
+          @org_filter = org_user
+        end
       end
 
       search_data = elastic_search_results(
