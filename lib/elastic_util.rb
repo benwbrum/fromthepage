@@ -21,12 +21,12 @@ module ElasticUtil
   end
 
   # "Federated" query magic happens here
-  def self.gen_query(user, query, types, org_filter,
+  def self.gen_query(user, query, types, query_config,
                      page, page_size, count_only = false)
     base_query = {
       query: {
         # This is what gets "generated"
-        bool:  { must: { bool: { should: [] } } }
+        bool:  { must: { bool: { should: [] } }, filter:[] }
       },
       aggs: {
         # Counts per doc type
@@ -54,11 +54,19 @@ module ElasticUtil
       size: page_size
     }
 
-    # Filter all results to owner org ID if option is set
-    if !org_filter.nil?
-      base_query[:query][:bool][:filter] = [
-        { term: {owner_user_id: org_filter} }
-      ]
+    # Apply post filtering if configured
+    if query_config.present?
+      filter_mod = base_query[:query][:bool][:filter]
+      case query_config[:type]
+      when "org"
+        filter_mod << { term: {owner_user_id: query_config[:org_id]} }
+      when "collection"
+        filter_mod << { term: {collection_id: query_config[:coll_id]} }
+      when "docset"
+        filter_mod << { term: {docset_id: query_config[:docset_id]} }
+      when "work"
+        filter_mod << { term: {work_id: query_config[:work_id]} }
+      end
     end
 
     if count_only

@@ -11,23 +11,24 @@ h3.search-heading
 
 -if @full_count.to_i > 0
   .tabs
+    - permitted_params = [:search, :org, :mode, :slug]
     =link_to "All (#{@full_count.to_i})",
-      params.permit(:search, :org), class: "#{'active' if !params[:filter]}"
+      params.permit(*permitted_params), class: "#{'active' if !params[:filter]}"
     -if @type_counts.has_key?(:ftp_user)
       =link_to "Users (#{@type_counts[:ftp_user]})",
-        params.permit(:search, :org).merge(filter: 'user'),
+        params.permit(*permitted_params).merge(filter: 'user'),
         class: "#{'active' if params[:filter] == 'user'}"
     -if @type_counts.has_key?(:ftp_collection)
       =link_to "Collections (#{@type_counts[:ftp_collection]})",
-        params.permit(:search, :org).merge(filter: 'collection'),
+        params.permit(*permitted_params).merge(filter: 'collection'),
         class: "#{'active' if params[:filter] == 'collection'}"
     -if @type_counts.has_key?(:ftp_work)
       =link_to "Works (#{@type_counts[:ftp_work]})",
-        params.permit(:search, :org).merge(filter: 'work'),
+        params.permit(*permitted_params).merge(filter: 'work'),
         class: "#{'active' if params[:filter] == 'work'}"
     -if @type_counts.has_key?(:ftp_page)
       =link_to "Pages (#{@type_counts[:ftp_page]})",
-        params.permit(:search, :org).merge(filter: 'page'),
+        params.permit(*permitted_params).merge(filter: 'page'),
         class: "#{'active' if params[:filter] == 'page'}"
 
   =will_paginate @search_results

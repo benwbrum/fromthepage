@@ -207,13 +207,45 @@ class DashboardController < ApplicationController
 
       page_size = 10
 
-      org_id = nil
-      if (params[:org])
+      query_config = {}
+      if params[:org]
         org_user = User.find_by(slug: params[:org])
 
         if org_user.present?
-          org_id = org_user[:id]
+          query_config = {
+            type: 'org',
+            org_id: org_user[:id]
+          }
           @org_filter = org_user
+        end
+      elsif params[:mode] and params[:slug]
+        if params[:mode] == 'collection'
+          coll = Collection.find_by(slug: params[:slug])
+
+          if coll.present?
+            query_config = {
+              type: 'collection',
+              coll_id: coll[:id]
+            }
+          end
+        elsif params[:mode] == 'docset'
+          docset = DocumentSet.find_by(slug: params[:slug])
+
+          if docset.present?
+            query_config = {
+              type: 'docset',
+              docset_id: docset[:id]
+            }
+          end
+        elsif params[:mode] == 'work'
+          work = Work.find_by(slug: params[:slug])
+
+          if work.present?
+            query_config = {
+              type: 'work',
+              work_id: work[:id]
+            }
+          end
         end
       end
 
@@ -222,7 +254,7 @@ class DashboardController < ApplicationController
         search_page,
         page_size,
         params[:filter],
-        org_id
+        query_config
       )
 
       if search_data
@@ -392,12 +424,20 @@ class DashboardController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
-  def elastic_search_results(query, page, page_size, filter, org_filter)
+  def elastic_search_results(query, page, page_size, filter, query_config)
     return nil if query.nil?
 
     search_types = ['collection', 'page', 'user', 'work']
-    unless org_filter.nil?
-      search_types = ['collection', 'page', 'work']
+    # Narrow down types based on query_config
+    if query_config.present?
+      case query_config[:type]
+      when "org"
+        search_types = ['collection', 'page', 'work']
+      when "collection", "docset"
+        search_types = ['page', 'work']
+      when "work"
+        search_types = ['page']
+      end
     end
 
     if filter
@@ -405,7 +445,7 @@ class DashboardController < ApplicationController
           current_user,
           query,
           search_types,
-          org_filter,
+          query_config,
           page, page_size, true
         )
 
@@ -426,7 +466,7 @@ class DashboardController < ApplicationController
           current_user,
           query,
           [filter],
-          org_filter,
+          query_config,
           page, page_size)
 
         filtered_resp = ElasticUtil.safe_search(
@@ -449,7 +489,7 @@ class DashboardController < ApplicationController
         current_user,
         query,
         ['collection', 'page', 'user', 'work'],
-        org_filter,
+        query_config,
         page, page_size)
 
       resp = ElasticUtil.safe_search(
