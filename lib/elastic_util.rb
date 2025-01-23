@@ -56,8 +56,6 @@ module ElasticUtil
 
     # Filter all results to owner org ID if option is set
     if !org_filter.nil?
-      types = ['collection', 'page', 'work']
-
       base_query[:query][:bool][:filter] = [
         { term: {owner_user_id: org_filter} }
       ]

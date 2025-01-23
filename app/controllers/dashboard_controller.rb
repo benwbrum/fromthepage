@@ -395,11 +395,16 @@ class DashboardController < ApplicationController
   def elastic_search_results(query, page, page_size, filter, org_filter)
     return nil if query.nil?
 
+    search_types = ['collection', 'page', 'user', 'work']
+    unless org_filter.nil?
+      search_types = ['collection', 'page', 'work']
+    end
+
     if filter
         count_query = ElasticUtil.gen_query(
           current_user,
           query,
-          ['collection', 'page', 'user', 'work'],
+          search_types,
           org_filter,
           page, page_size, true
         )
