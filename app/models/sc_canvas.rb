@@ -51,7 +51,8 @@ class ScCanvas < ApplicationRecord
 
   def iiif_image_info_url
     if sc_service_id
-      "#{sc_service_id}/info.json"
+      service_id = sc_service_id.sub(/\/$/,'')
+      "#{service_id}/info.json"
     else
       # special handling for NARA images -- treat them as an image
       if sc_resource_id.include?('catalog.archives.gov')
