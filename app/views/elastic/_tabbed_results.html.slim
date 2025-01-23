@@ -2,9 +2,26 @@
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
 h3.search-heading
-  -unless @org_filter.nil?
+  -if @org_filter.present?
     | Searching inside 
     =link_to @org_filter[:display_name], user_profile_path(@org_filter)
+
+  -elsif @collection_filter.present?
+    | Searching inside 
+    =link_to @collection_filter[:title], collection_path(@collection_filter.owner.slug, @collection_filter)
+
+  -elsif @docset_filter.present?
+    | Searching inside 
+    =link_to @docset_filter[:title], collection_path(@docset_filter.owner, @docset_filter)
+
+  -elsif @work_filter.present?
+    -if @work_filter.collection.text_entry?
+      -work_path = collection_read_work_path(@work_filter.collection.owner, @work_filter.collection, @work_filter)
+    -else
+      -work_path = metadata_overview_collection_work_path(@work_filter.collection.owner, @work_filter.collection, @work_filter)
+    | Searching inside 
+    =link_to @work_filter.title, work_path
+
   -else
     | Search Results
   br

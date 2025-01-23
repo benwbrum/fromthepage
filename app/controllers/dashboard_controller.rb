@@ -227,6 +227,7 @@ class DashboardController < ApplicationController
               type: 'collection',
               coll_id: coll[:id]
             }
+            @collection_filter = coll
           end
         elsif params[:mode] == 'docset'
           docset = DocumentSet.find_by(slug: params[:slug])
@@ -236,6 +237,7 @@ class DashboardController < ApplicationController
               type: 'docset',
               docset_id: docset[:id]
             }
+            @docset_filter = docset
           end
         elsif params[:mode] == 'work'
           work = Work.find_by(slug: params[:slug])
@@ -245,6 +247,7 @@ class DashboardController < ApplicationController
               type: 'work',
               work_id: work[:id]
             }
+            @work_filter = work;
           end
         end
       end
