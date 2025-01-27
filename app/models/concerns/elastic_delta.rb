@@ -64,7 +64,7 @@ module ElasticDelta
     end
 
     # Must use index instead of update since we don't store data in index currently
-    ElasticUtil.get_client().index(
+    ElasticUtil.safe_index(
       index: index,
       id: doc_id,
       body: body
@@ -85,7 +85,7 @@ module ElasticDelta
       doc_id = "docset-#{doc_id}"
     end
 
-    ElasticUtil.get_client().delete(
+    ElasticUtil.safe_delete(
       index: index,
       id: doc_id
     )
@@ -113,7 +113,7 @@ module ElasticDelta
       }
     }
 
-    ElasticUtil.get_client().delete_by_query(
+    ElasticUtil.safe_delete_by_query(
       index: 'ftp_page',
       body: q
     )

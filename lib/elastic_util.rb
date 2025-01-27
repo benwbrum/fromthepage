@@ -247,12 +247,36 @@ module ElasticUtil
     client.indices.refresh(index: index_name)
   end
 
-  # Exception handled search
+  # "Safe" methods wrap calls to elastic in basic exception handling
+  def self.safe_delete(arguments = {})
+    begin
+      self.get_client().delete(arguments)
+    rescue Exception
+      # No-op
+    end
+  end
+
+  def self.safe_delete_by_query(arguments = {})
+    begin
+      self.get_client().delete_by_query(arguments)
+    rescue Exception
+      # No-op
+    end
+  end
+
+  def self.safe_index(arguments = {})
+    begin
+      self.get_client().index(arguments)
+    rescue Exception
+      # No-op
+    end
+  end
+
   # Returns mocked empty result set on exception
   def self.safe_search(arguments = {})
     begin
       resp = self.get_client()
-        .search(index: arguments[:index], body: arguments[:body])
+        .search(arguments)
 
       if resp.key?('error')
         raise 'General elastic error'

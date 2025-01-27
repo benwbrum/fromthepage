@@ -27,7 +27,7 @@ module ElasticDeltaWorks
       body = self.work.as_indexed_json().except(:_id) 
       body[:permissions_updated] = Time.now.utc.to_i
 
-      ElasticUtil.get_client().index(
+      ElasticUtil.safe_index(
         index: 'ftp_work',
         id: self.work[:id],
         body: body
