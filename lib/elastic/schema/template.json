@@ -52,6 +52,18 @@
 						"lowercase"
 					]
 				},
+				"identifier_whitespace": {
+					"char_filter": [
+						"html_strip"
+					],
+					"tokenizer": "whitespace",
+					"filter": [
+						"lowercase",
+						"drop_purewords",
+						"condense_alphanumeric",
+						"length_limit"
+					]
+				},
 				"text_english": {
 					"char_filter": [
 						"html_strip"
@@ -126,6 +138,20 @@
 				}
 			},
 			"filter": {
+				"condense_alphanumeric": {
+					"type": "pattern_replace",
+					"pattern": "[^a-z0-9]",
+					"replacement": ""
+				},
+				"drop_purewords": {
+					"type": "pattern_replace",
+					"pattern": "^[a-z]+$",
+					"replacement": ""
+				},
+				"length_limit": {
+					"type": "length",
+					"min": "6"
+				},
 				"stem_english": {
 					"type": "stemmer",
 					"language": "english"

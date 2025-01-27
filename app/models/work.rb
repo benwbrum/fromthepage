@@ -212,11 +212,13 @@ class Work < ApplicationRecord
     search_fields = [];
     if ElasticUtil.looks_like_id(query)
       search_fields = [
+        "searchable_metadata.identifier_whitespace",
         "searchable_metadata.whitespace"
       ]
     else
       search_fields = [
         "title^2",
+        "searchable_metadata.identifier_whitespace^1.5",
         "searchable_metadata"
       ]
     end

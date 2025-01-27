@@ -26,6 +26,10 @@
 			"searchable_metadata": {
 				"type": "text",
 				"fields": {
+					"identifier_whitespace": {
+						"type": "text",
+						"analyzer": "identifier_whitespace"
+					},
 					"whitespace": {
 						"type": "text",
 						"analyzer": "general_whitespace"
