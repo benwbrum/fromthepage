@@ -8,6 +8,7 @@
     -unless work.thumbnail.nil?
         =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
   h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
+  =render partial: 'elastic/breadcrumbs', locals: { doc: work }
   p.collection-work_snippet = to_snippet(work.description)
   -if @collection.text_entry? && work.next_untranscribed_page
     p.collection-work_action

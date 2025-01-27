@@ -1,0 +1,32 @@
+/ Slim version of shared/breadcrumbs repurposed for general search
+/ State setup
+-path = []
+
+-bc_work = nil
+-bc_page = nil
+
+-if doc.is_a?(Work)
+  -bc_work = doc
+-elsif doc.is_a?(Page)
+  -bc_work = doc.work
+  -bc_page = doc
+
+/ Build out breadcrumbs
+-if bc_work
+  -access = bc_work.access_object(current_user)
+  -if access.is_a?(DocumentSet) && access.title.present?
+    -path.push(link_to access.title, document_set_path(access.owner, access))
+  -elsif access.is_a?(Collection) && access.title.present?
+    -path.push(link_to access.title, collection_path(access.owner, access))
+
+-if bc_page && bc_work.title.present?
+  -path.push(link_to bc_work.title, collection_read_work_path(bc_work.collection.owner, bc_work.collection, bc_work))
+
+/ Render
+-if path.present?
+  ul.breadcrumbs
+    -path.each do |item|
+      li =item
+
+
+  
