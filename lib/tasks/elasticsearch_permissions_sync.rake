@@ -11,14 +11,19 @@ namespace :fromthepage do
 
     persist_state(after, 'INDEXING')
 
-    # Permissions updates
-    sync_collections_and_docsets(after, snapshot);
-    sync_works(after, snapshot);
+    begin
+      # Permissions updates
+      sync_collections_and_docsets(after, snapshot);
+      sync_works(after, snapshot);
 
-    # Page content updates
-    sync_pages(after, snapshot);
+      # Page content updates
+      sync_pages(after, snapshot);
 
-    persist_state(snapshot, 'IDLE')
+      persist_state(snapshot, 'IDLE')
+    rescue Exception
+      # Keep same time, change state to ERROR so it'll try again
+      persist_state(after, 'ERROR')
+    end
   end
 
   def get_last_index_time
