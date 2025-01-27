@@ -31,7 +31,7 @@
 
   .work-page_content
     -if page.work.pages_are_meaningful
-      h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
+      h4.collection-work_title =link_to page.title, page_params(page), onclick: "resultClicked();"
       =render partial: 'elastic/breadcrumbs', locals: { doc: page }
 
     .work-page_text[*language_attrs(@collection)]
