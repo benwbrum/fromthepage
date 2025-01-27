@@ -37,9 +37,9 @@ jobs:
         run: bundle exec rake db:migrate
       - name: Load fixtures
         run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
-      - name: Run RuboCop
-        run: bundle exec rubocop
-        continue-on-error: true
+      # - name: Run RuboCop
+      #   run: bundle exec rubocop
+      #   continue-on-error: true
       - name: Run tests
         uses: coactions/setup-xvfb@v1
         with:
