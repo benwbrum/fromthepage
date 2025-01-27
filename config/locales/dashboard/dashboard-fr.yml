@@ -76,6 +76,7 @@ fr:
     landing_page:
       by: " par "
       institutions: Institutions
+      more: plus
       new_projects: Nouveaux projets
     new_upload:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.

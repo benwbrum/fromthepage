@@ -76,6 +76,7 @@ es:
     landing_page:
       by: " por "
       institutions: Instituciones
+      more: más
       new_projects: Nuevos proyectos
     new_upload:
       document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.

@@ -76,6 +76,7 @@ de:
     landing_page:
       by: " von "
       institutions: Institutionen
+      more: mehr
       new_projects: Neue Projekte
     new_upload:
       document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
