@@ -76,8 +76,8 @@ en:
     landing_page:
       by: " by "
       institutions: Institutions
-      new_projects: New Projects
       more: more
+      new_projects: New Projects
     new_upload:
       document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
       reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.
