@@ -1,0 +1,1 @@
+<%= turbo_stream.replace("note-#{@note.id}", partial: 'note', locals: { note: @note, editing: params[:editing] == 'true' }) %>

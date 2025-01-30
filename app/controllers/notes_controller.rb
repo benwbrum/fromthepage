@@ -9,6 +9,13 @@ class NotesController < ApplicationController
     render partial: 'table' if request.xhr?
   end
 
+  def edit
+    @note = Note.find(params[:id])
+    @collection = @note.collection
+
+    respond_to(&:turbo_stream)
+  end
+
   def create
     unless user_signed_in?
       flash[:error] = t('.must_be_logged')
