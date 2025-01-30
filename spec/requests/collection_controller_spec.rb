@@ -362,4 +362,71 @@ describe CollectionController do
       expect(response).to redirect_to(dashboard_owner_path)
     end
   end
+
+  describe '#works_list' do
+    let(:action_path) { collection_works_list_path(owner, collection) }
+    let(:params) { {} }
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:works_list)
+    end
+
+    context 'with filters' do
+      let(:work) { create(:work, collection: collection) }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      context 'search filter' do
+        let(:params) { { search: work.title, order: 'ASC' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:works_list)
+        end
+      end
+
+      context 'show filter' do
+        let(:params) { { show: 'need_transcription', order: 'DESC' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:works_list)
+        end
+      end
+
+      context 'sort by activity' do
+        let(:params) { { sort: 'activity', order: 'ASC' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:works_list)
+        end
+      end
+
+      context 'sort by collaboration' do
+        let(:params) { { sort: 'collaboration', order: 'DESC' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:works_list)
+        end
+      end
+    end
+  end
 end

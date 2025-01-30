@@ -36,4 +36,19 @@ module ResourcesHelper
 
     options
   end
+
+  def works_list_show_options
+    [
+      [t('collection.collection_works.all_works'), 'all'],
+      [t('collection.collection_works.works_that_need_transcription'), 'need_transcription']
+    ]
+  end
+
+  def document_set_inclusion_options
+    [
+      [t('document_sets.edit_works.all_works'), 'all'],
+      [t('document_sets.edit_works.included'), 'included'],
+      [t('document_sets.edit_works.not_included'), 'not_included']
+    ]
+  end
 end

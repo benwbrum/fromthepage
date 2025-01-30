@@ -6,7 +6,10 @@ class NotesController < ApplicationController
   def index
     filtered_notes
 
-    render partial: 'table' if request.xhr?
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
