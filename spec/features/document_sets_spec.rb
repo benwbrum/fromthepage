@@ -299,16 +299,16 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
-  it "checks document set subject tabs" do
-    login_as(@owner, :scope => :user)
+  it 'checks document set subject tabs' do
+    login_as(@owner, scope: :user)
     @article = @set.articles.first
     visit collection_article_show_path(@set.owner, @set, @article.id)
-    expect(page).to have_content("Description")
+    expect(page).to have_content('Description')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('a', text: 'Edit the description in the settings tab.').click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("Title")
-    page.find('.tabs').click_link("Overview")
+    expect(page).to have_content('Title')
+    page.find('.tabs').click_link('Overview')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
     # click_button("Search All Pages")

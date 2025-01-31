@@ -251,6 +251,8 @@ class User < ApplicationRecord
 
   def can_transcribe?(work, collection)
     if collection.is_a? DocumentSet
+      return true if collection.visibility_public? || like_owner?(work)
+
       collection.collaborators.find_by(id: id).present?
     else
       !work.restrict_scribes || like_owner?(work) || work.scribes.include?(self)
