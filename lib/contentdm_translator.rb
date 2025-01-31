@@ -159,7 +159,7 @@ module ContentdmTranslator
       }
 
       message = {
-        :cdmurl => "http://#{cdm_server(manifest_at_id)}:8888",
+        :cdmurl => "https://#{cdm_server(manifest_at_id)}:8888",
         :username => username,
         :password => password,
         :license => license,
