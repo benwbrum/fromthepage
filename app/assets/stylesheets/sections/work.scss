@@ -46,6 +46,9 @@
   padding: $gapSize 0;
   display: inline-block;
   border-bottom: 1px dotted $borderColor;
+  &.search_result {
+    padding: 0;
+  }
   &_thumbnail {
     float: left;
     margin-right: $gapSize;
