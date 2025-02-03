@@ -72,14 +72,15 @@
       .project-list_link
         =link_to t('.all_collections'), collections_list_path
 
-  aside.sidecol
-    =form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
-      =button_tag t('.search')
-      =label_tag 'search', t('.search_for_collections'), class: 'hidden'
+  -if (ELASTIC_ENABLED && !@search_results) || !ELASTIC_ENABLED
+    aside.sidecol
+      =form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+        =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
+        =button_tag t('.search')
+        =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
-    h2 =t('.recent_activity')
-    =deeds_for()
+      h2 =t('.recent_activity')
+      =deeds_for()
 
 -content_for :javascript
   javascript:

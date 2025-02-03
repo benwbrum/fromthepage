@@ -1,6 +1,13 @@
 // Tab Navigation
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
+=form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag :mode, params[:mode]
+      =hidden_field_tag :slug, params[:slug]
+      =search_field_tag :search, params[:search], placeholder: t('dashboard.landing_page.search')
+      =button_tag t('dashboard.landing_page.search')
+      =label_tag 'search', t('dashboard.landing_page.search'), class: 'hidden'
+
 h3.search-heading
   -if @org_filter.present?
     | Searching inside 
