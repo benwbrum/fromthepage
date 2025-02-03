@@ -71,6 +71,9 @@
     padding-right: 0.5em;
     padding-bottom: 0.10em;
     padding-left: 0.5em;
+    &.search_result{
+      overflow-x: auto;
+    }
   }
   &_text p {
     margin: 0.3em 0;

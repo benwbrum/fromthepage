@@ -3,7 +3,7 @@
   -default_path = collection_read_work_path(@collection.owner, @collection, work)
 -else
   -default_path = metadata_overview_collection_work_path(@collection.owner, @collection, work)
-.collection-work
+.collection-work.search_result
   .collection-work_image
     -unless work.thumbnail.nil?
         =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"

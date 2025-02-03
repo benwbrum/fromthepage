@@ -110,6 +110,9 @@
     }
     .progress { max-width: 300px; }
   }
+  &.search_result {
+    max-width: 90vw;
+  }
 }
 
 .hidden {
