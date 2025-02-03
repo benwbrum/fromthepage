@@ -20,6 +20,26 @@ module ElasticUtil
     return bulk_action
   end
 
+  # Augments query by wrapping terms that look like identifiers in quotes
+  def self.augment_query(query)
+    if query.nil?
+      return query
+    end
+
+    tokens = query.split
+    augmented_tokens = []
+
+    tokens.each do |t|
+      if self.looks_like_id(t)
+        augmented_tokens << '"' + t + '"'
+      else
+        augmented_tokens << t
+      end
+    end
+
+    return augmented_tokens.join(' ')
+  end
+
   # "Federated" query magic happens here
   def self.gen_query(user, query, types, query_config,
                      page, page_size, count_only = false)
@@ -78,25 +98,28 @@ module ElasticUtil
     # post filtering on org
     to_mod = base_query[:query][:bool][:must][:bool][:should]
 
+    # Wrap punctuated terms in quotes to avoid heavy recall
+    precise_query = self.augment_query(query)
+
     # Build out query based on active types
     active_types = []
     if types.include?("collection")
-      to_mod << Collection.es_match_query(query, user)
+      to_mod << Collection.es_match_query(precise_query, user)
       active_types << "ftp_collection"
     end
 
     if types.include?("page")
-      to_mod << Page.es_match_query(query, user)
+      to_mod << Page.es_match_query(precise_query, user)
       active_types << "ftp_page"
     end
     
     if types.include?("user")
-      to_mod << User.es_match_query(query)
+      to_mod << User.es_match_query(precise_query)
       active_types << "ftp_user"
     end
 
     if types.include?("work")
-      to_mod << Work.es_match_query(query, user)
+      to_mod << Work.es_match_query(precise_query, user)
       active_types << "ftp_work"
     end
 
@@ -176,31 +199,22 @@ module ElasticUtil
     }
   end
 
-  def self.looks_like_id(query)
-    if query.nil?
+  def self.looks_like_id(token)
+    if token.nil?
+      return false
+    end
+
+    if token.include?('"')
       return false
     end
 
     # We say something looks like an ID if:
-    # - More than 2 underscores/hyphens in single term
-    # - More than 1 period in a term > 4 chars
-    if query.is_a?(String) && !query.empty?
-      query.split.each do |token|
-        period_count = token.count('.')
-        symbol_count = token.count('-')
-        symbol_count += token.count('_')
-
-        if symbol_count > 2 || (period_count >= 2 && query.length > 4)
-          return true
-        end
-      end
-
-      # No tokens exceeded symbol threshold
-      return false
-    else
-      # Query was empty or not a string
-      return false
+    # - Any punctuation is included (-._)
+    if token.match?(/[.\-_]/)
+      return true
     end
+
+    return false
   end
 
   def self.reindex(model, index_name)
