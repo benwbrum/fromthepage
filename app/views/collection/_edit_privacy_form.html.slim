@@ -4,7 +4,7 @@ tr
       =t('collection.edit_privacy.collection_privacy')
       i =collection.is_public ? t('collection.edit_privacy.public') : t('collection.edit_privacy.private')
     -if collection.restricted
-      =button_tag name: 'collection[restricted]', value: 'false', class: 'button inline-btn'
+      =button_tag name: 'collection[restricted]', value: 'false', class: 'button inline-btn' do
         =svg_symbol '#icon-unlock', class: 'icon'
         span =t('collection.edit_privacy.make_collection_public')
     -else

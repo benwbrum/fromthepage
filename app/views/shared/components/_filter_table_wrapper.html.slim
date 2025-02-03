@@ -1,8 +1,2 @@
-=form_tag(url, method: :get, enforce_utf8: false, id: selector, class: classes, data: dataset) do
-  =hidden_field_tag :sort, sorting
-  =hidden_field_tag :order, ordering
-
-  -static_params.each do |key, value|
-    =hidden_field_tag key, value
-
+div[id=selector data-controller='filter-table' class=classes]
   =yield

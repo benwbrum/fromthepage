@@ -1,9 +1,10 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
-
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
+
+  DEFAULT_WORKS_PER_PAGE = 15
 
   public :render_to_string
 
@@ -611,10 +612,11 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    if params[:only_transcribed].present?
-      @works = @collection.works.joins(:work_statistic).where("work_statistics.transcribed_percentage < ?", 100).where("work_statistics.needs_review = ?", 0).order(:title)
-    else
-      @works = @collection.works.includes(:work_statistic).order(:title)
+    filtered_works
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
   end
 
@@ -783,4 +785,38 @@ class CollectionController < ApplicationController
     params.permit(:only_transcribed)
   end
 
+  def filtered_works
+    @sorting = (params[:sort] || 'title').to_sym
+    @ordering = (params[:order] || 'ASC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+
+    works_scope = @collection.works.includes(:work_statistic, :deeds)
+    if params[:show] == 'need_transcription'
+      works_scope = works_scope.joins(:work_statistic)
+                               .where('work_statistics.transcribed_percentage < ?', 100)
+                               .where('work_statistics.transcribed_percentage < ?', 100)
+                               .where('work_statistics.needs_review = ?', 0)
+    end
+
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+      works_scope = works_scope.where(
+        'LOWER(works.title) LIKE :search OR LOWER(works.searchable_metadata) like :search',
+        search: "%#{query}%"
+      )
+    end
+
+    case @sorting
+    when :activity
+      works_scope = works_scope.left_joins(:deeds)
+                               .reorder(Arel.sql("COALESCE((SELECT created_at FROM deeds WHERE deeds.work_id = works.id ORDER BY created_at DESC LIMIT 1), works.created_on) #{@ordering}"))
+    when :collaboration
+      works_scope = works_scope.reorder(restrict_scribes: @ordering)
+    else
+      works_scope = works_scope.reorder(title: @ordering)
+    end
+
+    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: DEFAULT_WORKS_PER_PAGE)
+    @works = works_scope
+  end
 end

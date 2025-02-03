@@ -90,6 +90,9 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :canonical_tags, -> { where(canonical: true) },
+                          class_name: 'Tag', join_table: 'collections_tags'
+
   has_many :ahoy_activity_summaries
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -106,8 +109,8 @@ class Collection < ApplicationRecord
   mount_uploader :picture, PictureUploader
 
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
-  scope :unrestricted, -> { where(restricted: false)}
-  scope :restricted, -> { where(restricted: true)}
+  scope :unrestricted, -> { where(restricted: false) }
+  scope :restricted, -> { where(restricted: true) }
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
@@ -128,6 +131,9 @@ class Collection < ApplicationRecord
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
+  def created_at
+    created_on
+  end
 
   def text_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY

@@ -1,0 +1,8 @@
+=form_tag(url, method: :get, id: selector, data: dataset) do
+  =hidden_field_tag :sort, sorting
+  =hidden_field_tag :order, ordering
+
+  -static_params.each do |key, value|
+    =hidden_field_tag key, value
+
+  =yield

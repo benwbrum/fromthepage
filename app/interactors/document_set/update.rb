@@ -1,25 +1,28 @@
-class DocumentSet::Update
-  include Interactor
+class DocumentSet::Update < ApplicationInteractor
+  attr_accessor :document_set
 
   def initialize(document_set:, document_set_params:)
     @document_set        = document_set
     @document_set_params = document_set_params
-    @errors              = nil
 
     super
   end
 
-  def call
+  def perform
+    toggle_privacy
+
     @document_set.attributes = @document_set_params
     @document_set.slug = @document_set.title.parameterize if @document_set_params[:slug].blank?
-    context.updated_fields_hash = @document_set.changes.transform_values(&:last)
 
-    unless @document_set.save
-      @errors = @document_set.errors.full_messages
-      context.errors = @errors
-      context.fail!
-    end
+    @document_set.save!
+  end
 
-    context
+  private
+
+  def toggle_privacy
+    return unless @document_set_params[:is_public].present?
+
+    is_public = ActiveRecord::Type::Boolean.new.cast(@document_set_params[:is_public])
+    @document_set_params[:is_public] = is_public
   end
 end

@@ -1,4 +1,5 @@
-=render({ partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @document_set } })
+=render partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @document_set }
 .collection-meta-wrapper
-  =render({ partial: 'edit_tabs', locals: { selected: 2 }})
-  =render partial: 'edit_privacy'
+  =render partial: 'edit_tabs', locals: { selected: 2 }
+  #document-set-settings
+    =render partial: 'form', locals: { document_set: @document_set, scope: 'edit_privacy' }

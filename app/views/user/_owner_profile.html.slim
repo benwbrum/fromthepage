@@ -34,6 +34,16 @@ section.user-profile
           h3 =link_to c.title, collection_path(c.owner, c)
           p =snippet
 
+-if @tag 
+  h2 
+    span Collections tagged 
+    i =@tag.ai_text
+
+    / Display a list of collections with teaser images and snippets as tiles
+    -@tag_collections.each do |collection|
+      = render partial: 'shared/collection_tile', locals: { collection: collection }
+
+
 .columns
   article.maincol
     -if collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
