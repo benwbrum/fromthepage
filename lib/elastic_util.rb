@@ -69,11 +69,12 @@ module ElasticUtil
         }
       },
       # General weighting for multi-type search results
+      # Note: Using wildcards as alias names don't carry thru to boosting results
       indices_boost: [
-        { ftp_user: 1000.0 }, # Can bring this down to "mix" users in results
-        { ftp_collection: 50.0 },
-        { ftp_work: 10.0 },
-        { ftp_page: 1.0 }
+        { 'ftp_user*': 1000.0 }, # Can bring this down to "mix" users in results
+        { 'ftp_collection*': 50.0 },
+        { 'ftp_work*': 10.0 },
+        { 'ftp_page*': 1.0 }
       ],
       from: (page - 1) * page_size,
       size: page_size
