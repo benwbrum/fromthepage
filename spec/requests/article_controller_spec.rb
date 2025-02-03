@@ -161,16 +161,14 @@ describe ArticleController do
 
   describe '#assign_category' do
     let!(:article) { create(:article, collection: collection) }
-    let(:status) { 'true' }
     let(:params) do
       {
-        status: status,
-        category_id: category.id
+        category_ids: [category.id]
       }
     end
 
     let(:action_path) { article_article_category_path(article_id: article.id) }
-    let(:subject) { post action_path, params: params }
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
 
     context 'not authorized' do
       it 'redirects' do
@@ -181,22 +179,12 @@ describe ArticleController do
       end
     end
 
-    it 'renders status' do
+    it 'renders status and template' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
-    end
-
-    context 'status false' do
-      let(:status) { 'false' }
-
-      it 'renders status' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-      end
+      expect(response).to render_template(:article_category)
     end
   end
 

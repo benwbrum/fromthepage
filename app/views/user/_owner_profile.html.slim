@@ -7,7 +7,7 @@ section.user-profile
         =user.display_name
       -if user == current_user
         .headline_aside
-          =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+          =link_to(update_profile_path(user.id), class: 'button outline', data: { controller: 'litebox', litebox: { hash: 'update-profile' } })
             =svg_symbol '#icon-edit', class: 'icon'
             span =t('.edit_profile')
           |&nbsp;&nbsp;
@@ -15,7 +15,7 @@ section.user-profile
             =svg_symbol '#icon-user', class: 'icon'
             span =t('.login_and_password').html_safe
           |&nbsp;&nbsp;
-          =link_to(user_api_key_path, class: 'button outline', :data => { litebox: { hash: 'api-key' }})
+          =link_to(user_api_key_path, class: 'button outline', data: { controller: 'litebox', litebox: { hash: 'api-key' } })
             =svg_symbol '#icon-lock', class: 'icon'
             span =t('.api_keys').html_safe
     .user-profile_stats

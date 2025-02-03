@@ -18,53 +18,15 @@
 //= require handsontable.full.min
 //= require datatables.min
 //= require clipboard
-//= require select_all
-//= require utils
 
 $(function() {
-  $('.flash').flashclose();
-  $('.dropdown').dropdown();
-  $('.input-file').inputFile();
-  $('[data-litebox]').litebox();
-  $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-imageview]').imageView();
-
-  // Classname trigger
-  $(document).on('click', '[data-toggle-class]', function() {
-    var data = $(this).data('toggle-class');
-    for(var selector in data) {
-      $(selector).toggleClass(data[selector]);
-    }
-  });
 
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
-
-  // Warn about unsaved data
-  $('form[data-areyousure]').areYouSure();
-
-  // Show and hide collection statistics
-  $('.collection').on('click', '[data-toggle-stats]', function(e) {
-    var container = $(e.delegateTarget);
-    var stats = $('.collection_stats', container);
-    var ishidden = stats.is(':hidden');
-    stats[ishidden ? 'slideDown' : 'slideUp']('fast');
-    container.toggleClass('stats-visible', ishidden);
-  });
-
-  // Manage subject categories
-  $('[data-assign-categories]').categoriesSelect();
-
-  $('[data-multi-select]').multiSelect();
-
-  $('[data-select-all]').selectAll();
-
-  // Filterable table
-  $('[data-filterable-table]').filterableTable();
 
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
@@ -400,7 +362,7 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
     if(document.querySelector(topEl) && document.querySelector(tableEl)) {
       var stickyHeight = document.querySelector(topEl).clientHeight + document.querySelector(topEl).getBoundingClientRect().top;
       var tablePosTop = document.querySelector(tableEl).getBoundingClientRect().top;
-  
+
       if(stickyHeight > tablePosTop) {
         document.querySelectorAll(columnEl).forEach(function(item) {
           item.style.top = (stickyHeight - tablePosTop) + (mode === 'ttb'?20:0) + 'px';

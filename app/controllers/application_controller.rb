@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   after_action :track_action
   around_action :switch_locale
 
+  layout :set_layout
 
 
   def switch_locale(&action)
@@ -318,6 +319,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private
+
+  def set_layout
+    request.xhr? ? false : nil
+  end
 end
 
   def page_params(page)

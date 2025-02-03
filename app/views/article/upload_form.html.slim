@@ -7,7 +7,7 @@
     table.form
       tr
         td
-        .input-file
+        .input-file [data-controller='file-picker']
           =f.file_field :file
           input(type="text" placeholder=t('.click_to_browse') readonly)
           button(type="button") =t('.browse')

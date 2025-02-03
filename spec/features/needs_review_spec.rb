@@ -186,7 +186,7 @@ describe "needs review", :order => :defined do
     end
   end
 
-  it "checks statistics in works list" do
+  it "checks statistics in works list", js: true do
     logout(@user)
     login_as(@owner, :scope => :user)
     visit collection_works_list_path(@collection.owner, @collection)
@@ -206,7 +206,7 @@ describe "needs review", :order => :defined do
         review = w.work_statistic.pct_needs_review.round
       end
       stats = w.work_statistic
-      rows = page.find('.collection-work-stats').find_all('tr', text: w.title)
+      rows = page.find('#works-table').find_all('tr', text: w.title)
       row = rows.first
       expect(row).to have_content(w.title)
       expect(row).to have_content(w.pages.count)

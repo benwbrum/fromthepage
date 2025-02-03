@@ -1,25 +1,35 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
-
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
 
+  DEFAULT_WORKS_PER_PAGE = 15
+
   public :render_to_string
 
-  protect_from_forgery :except => [:set_collection_title,
-                                   :set_collection_intro_block,
-                                   :set_collection_footer_block]
+  protect_from_forgery except: [
+    :set_collection_title,
+    :set_collection_intro_block,
+    :set_collection_footer_block
+  ]
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
   before_action :authorized?, only: [
     :new,
     :edit,
+    :edit_tasks,
+    :edit_look,
+    :edit_privacy,
+    :edit_help,
+    :edit_quality_control,
+    :edit_danger,
     :update,
+    :blank_collection,
     :delete,
     :create,
-    :edit_owner,
+    :edit_owners,
     :remove_owner,
     :add_owner,
     :edit_collaborators,
@@ -31,13 +41,10 @@ class CollectionController < ApplicationController
     :new_mobile_user,
     :search_users
   ]
-  before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :set_collection, :only => edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => edit_actions + [ :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
+  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :load_settings, only: [:upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
   before_action :permit_only_transcribed_works_flag, only: [:works_list]
-
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
 
   def search_users
     query = "%#{params[:term].to_s.downcase}%"
@@ -48,17 +55,17 @@ class CollectionController < ApplicationController
     reviewer_ids = @collection.reviewers.select(:id)
     collaborator_ids = @collection.collaborators.select(:id)
 
-    case user_type
-    when :owner
-      excluded_ids = User.where(id: owner_ids).or(User.where(id: blocked_user_ids)).select(:id)
-    when :blocked
-      excluded_ids = User.where(id: blocked_user_ids).or(User.where(id: owner_ids)).select(:id)
-    when :reviewer
-      excluded_ids = reviewer_ids
-    else
-      # collaborator
-      excluded_ids = collaborator_ids
-    end
+    excluded_ids = case user_type
+                   when :owner
+                     User.where(id: owner_ids).or(User.where(id: blocked_user_ids)).select(:id)
+                   when :blocked
+                     User.where(id: blocked_user_ids).or(User.where(id: owner_ids)).select(:id)
+                   when :reviewer
+                     reviewer_ids
+                   else
+                     # collaborator
+                     collaborator_ids
+                   end
 
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
@@ -168,7 +175,6 @@ class CollectionController < ApplicationController
     # don't show popup again
     session[:new_mobile_user] = false
   end
-
 
   def show
     if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
@@ -397,9 +403,11 @@ class CollectionController < ApplicationController
     if SMTP_ENABLED
       begin
         UserMailer.collection_collaborator(user, collection).deliver!
+      # :nocov:
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
+      # :nocov:
     end
   end
 
@@ -443,6 +451,8 @@ class CollectionController < ApplicationController
 
   def delete
     @collection.destroy
+
+    flash[:notice] = t('.notice')
     redirect_to dashboard_owner_path
   end
 
@@ -451,74 +461,78 @@ class CollectionController < ApplicationController
   end
 
   def edit
-  end
-
-  def edit_help
-    @works_with_custom_conventions = @collection.works.where.not(transcription_conventions: nil)
+    @tags_options = Tag.where(canonical: true)
+    @selected_tags = @collection.tags.pluck(:id)
   end
 
   def edit_tasks
-    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
-    if @collection.field_based && !@collection.transcription_fields.present?
-      flash.now[:info] = t('.alert')
-    end
+    flash.now[:info] = t('.alert') if @collection.field_based && !@collection.transcription_fields.present?
   end
 
   def edit_look
-    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
+    # Edit look form
+  end
+
+  def edit_privacy
+    @main_owner = @collection.owner
+    @collaborators = @collection.collaborators
+    @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
+    @blocked_users = @collection.blocked_users
+  end
+
+  def edit_help
+    @works_with_custom_conventions = @collection.works
+                                                .includes(collection: :owner)
+                                                .where.not(transcription_conventions: nil)
+  end
+
+  def edit_quality_control
+    @reviewers = @collection.reviewers
+  end
+
+  def edit_danger
+    # Edit danger form
   end
 
   def update
-    # Convert incoming params to fit the model
-    if collection_params[:subjects_enabled].present?
-      params[:collection][:subjects_disabled] = (collection_params[:subjects_enabled] == '1') ? false : true
-      params[:collection].delete(:subjects_enabled)
-    end
-    if collection_params[:data_entry_type].present?
-      params[:collection][:data_entry_type] = (collection_params[:data_entry_type] == '1') ? Collection::DataEntryType::TEXT_AND_METADATA : Collection::DataEntryType::TEXT_ONLY
-    end
+    @result = Collection::Update.new(
+      collection: @collection,
+      collection_params: collection_params,
+      user: current_user
+    ).call
 
-    # Default slug to title if blank
-    if collection_params[:slug] == ""
-      params[:collection][:slug] = @collection.title.parameterize
-    end
+    @collection = @result.collection
 
-    # Call methods to enable/disable features if the fields have changed
-    if collection_params[:messageboards_enabled].present? && collection_params[:messageboards_enabled] != @collection.messageboards_enabled
-      collection_params[:messageboards_enabled] ? @collection.enable_messageboards : @collection.disable_messageboards
-    end
-    if collection_params[:is_active].present? && collection_params[:is_active] != @collection.is_active
-      toggle_collection_active(collection_params[:is_active] == "true")
-    end
-    if collection_params[:field_based] == "1" && !@collection.field_based
-      enable_fields
-    end
+    respond_to do |format|
+      template = case params[:scope]
+                 when 'edit_tasks'
+                   'collection/update_tasks'
+                 when 'edit_look'
+                   'collection/update_look'
+                 when 'edit_privacy'
+                   @main_owner = @collection.owner
+                   @collaborators = @collection.collaborators
+                   @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
+                   @blocked_users = @collection.blocked_users
+                   'collection/update_privacy'
+                 when 'edit_help'
+                   @works_with_custom_conventions = @collection.works
+                                                               .includes(collection: :owner)
+                                                               .where.not(transcription_conventions: nil)
+                   'collection/update_help'
+                 when 'edit_quality_control'
+                   @reviewers = @collection.reviewers
+                   'collection/update_quality_control'
+                 when 'edit_danger'
+                   'collection/update_danger'
+                 else
+                   # edit
+                   @tags_options = Tag.where(canonical: true)
+                   @selected_tags = @collection.tags.pluck(:id)
+                   'collection/update_general'
+                 end
 
-    @collection.attributes = collection_params
-    updated_fields = updated_fields_hash
-    @collection.tags = Tag.where(id: params[:collection][:tags])
-
-    if @collection.save
-      if request.xhr?
-        render json: {
-          success: true,
-          updated_field: updated_fields
-        }
-      else
-        flash[:notice] = t('.notice')
-        redirect_back fallback_location: edit_collection_path(@collection.owner, @collection)
-      end
-    else
-      if request.xhr?
-        render json: {
-          success: false,
-          errors: @collection.errors.full_messages
-        }
-      else
-        edit # load the appropriate variables
-        edit_action = Rails.application.routes.recognize_path(request.referrer)[:action]
-        render action: edit_action
-      end
+      format.turbo_stream { render template }
     end
   end
 
@@ -591,16 +605,18 @@ class CollectionController < ApplicationController
   end
 
   def blank_collection
-    collection = Collection.find_by(id: params[:collection_id])
-    collection.blank_out_collection
-    redirect_to action: 'show', collection_id: params[:collection_id]
+    @result = Collection::Blankout.new(collection: @collection).call
+
+    flash[:notice] = t('.notice')
+    redirect_to collection_path(@result.collection.owner, @result.collection)
   end
 
   def works_list
-    if params[:only_transcribed].present?
-      @works = @collection.works.joins(:work_statistic).where("work_statistics.transcribed_percentage < ?", 100).where("work_statistics.needs_review = ?", 0).order(:title)
-    else
-      @works = @collection.works.includes(:work_statistic).order(:title)
+    filtered_works
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
   end
 
@@ -743,7 +759,8 @@ class CollectionController < ApplicationController
       :is_active,
       :search_attempt_id,
       :alphabetize_works,
-      :tags
+      :restricted,
+      tags: []
     )
   end
 
@@ -768,4 +785,38 @@ class CollectionController < ApplicationController
     params.permit(:only_transcribed)
   end
 
+  def filtered_works
+    @sorting = (params[:sort] || 'title').to_sym
+    @ordering = (params[:order] || 'ASC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+
+    works_scope = @collection.works.includes(:work_statistic, :deeds)
+    if params[:show] == 'need_transcription'
+      works_scope = works_scope.joins(:work_statistic)
+                               .where('work_statistics.transcribed_percentage < ?', 100)
+                               .where('work_statistics.transcribed_percentage < ?', 100)
+                               .where('work_statistics.needs_review = ?', 0)
+    end
+
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+      works_scope = works_scope.where(
+        'LOWER(works.title) LIKE :search OR LOWER(works.searchable_metadata) like :search',
+        search: "%#{query}%"
+      )
+    end
+
+    case @sorting
+    when :activity
+      works_scope = works_scope.left_joins(:deeds)
+                               .reorder(Arel.sql("COALESCE((SELECT created_at FROM deeds WHERE deeds.work_id = works.id ORDER BY created_at DESC LIMIT 1), works.created_on) #{@ordering}"))
+    when :collaboration
+      works_scope = works_scope.reorder(restrict_scribes: @ordering)
+    else
+      works_scope = works_scope.reorder(title: @ordering)
+    end
+
+    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: DEFAULT_WORKS_PER_PAGE)
+    @works = works_scope
+  end
 end

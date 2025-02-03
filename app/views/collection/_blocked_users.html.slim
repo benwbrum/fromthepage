@@ -1,0 +1,6 @@
+th
+  h3.settings-label =t('collection.edit_privacy.blocked_users')
+  p.settings-label ="(#{blocked_users.count})" if blocked_users.any?
+  p =link_to(t('collection.edit_privacy.block'), collection_block_users_path(collection.slug), id: 'block-users-button', class: 'button', disabled: collection.restricted, data: { controller: 'litebox', litebox: { hash: 'block-users', noscroll: false, noclose: true, remote: true  } })
+td
+  =render 'users_list', users: blocked_users.sort_by(&:display_name), type: 'blocked', disabled: collection.restricted

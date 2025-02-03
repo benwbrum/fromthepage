@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
@@ -38,7 +37,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
-    page.click_link('Make Collection Private')
+    page.click_button('Make Collection Private')
     @collection.reload
     expect(@collection.is_public).to eq false
     expect(page).to have_content("Collection privacy: Private")
@@ -176,7 +175,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
-    page.click_link("Make Collection Public")
+    page.click_button("Make Collection Public")
   end
 
   context "inactive collection" do
@@ -250,25 +249,26 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
 
-  it "sorts works in works list", :js => true do
-    login_as(@owner, :scope => :user)
+  it 'sorts works in works list', js: true do
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Works List")
-    expect(page).to have_content("Works")
+    page.find('.tabs').click_link('Works List')
+    expect(page).to have_content('Works')
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
-    #sort by percent complete
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Progress').click
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
+    # Deprecated sorting by percent complete
+    #  #sort by percent complete
+    #  page.find('#works-table').find('thead').find('th', text: 'Progress').click
+    #  expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
+    #  expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
     #sort by recent activity
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+    page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
+    page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
 
   it "views pages that need transcription" do

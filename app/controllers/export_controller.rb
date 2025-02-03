@@ -9,13 +9,13 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }
-
   def index
     filtered_data
 
-    render partial: 'table' if request.xhr?
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show
@@ -86,7 +86,7 @@ class ExportController < ApplicationController
 
   def work_metadata_csv
     filename = params[:filename] ? "#{params[:filename]}.csv" : "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
-    result = Work::Metadata::ExportCsv.call(collection: @collection, works: @collection.works)
+    result = Work::Metadata::ExportCsv.new(collection: @collection, works: @collection.works).call
 
     send_data(
       result.csv_string,

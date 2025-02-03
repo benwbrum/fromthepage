@@ -30,7 +30,7 @@
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
-        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+        dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
             span.hide-l =t('.layout')
@@ -128,12 +128,10 @@ h2.legend =t('.notes_and_questions')
                 // user has been logged out
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your session may have expired while you were editing.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               } else {
                 // some connection problem
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your connection to the website is unstable.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               }
             },
             complete: function() {

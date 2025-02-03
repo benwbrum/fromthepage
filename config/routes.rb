@@ -86,19 +86,19 @@ Fromthepage::Application.routes.draw do
 
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
-    get 'delete', to: 'collection#delete'
-    get 'show', to: 'collection#show', as: 'show'
+    delete 'delete/:collection_id', to: 'collection#delete', as: :delete_collection
+    get 'show', to: 'collection#show', as: :show
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
-    get 'blank_collection', to: 'collection#blank_collection'
+    post 'blank_collection/:collection_id', to: 'collection#blank_collection', as: :blank_collection
     get 'edit', to: 'collection#edit'
-    get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
-    get ':collection_id/block_users', to: 'collection#block_users', as: 'block_users'
+    get ':collection_id/edit_owners', to: 'collection#edit_owners', as: :edit_owners
+    get ':collection_id/block_users', to: 'collection#block_users', as: :block_users
     post 'add_reviewer', to: 'collection#add_reviewer'
-    get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
+    get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: :edit_reviewers
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'publish_collection', to: 'collection#publish_collection'
-    get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
+    get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: :edit_collaborators
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
@@ -108,10 +108,10 @@ Fromthepage::Application.routes.draw do
     post 'remove_owner', to: 'collection#remove_owner'
     post 'remove_block_user', to: 'collection#remove_block_user'
     post 'create', to: 'collection#create'
-    get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
-    get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: 'new_mobile_user'
-    post ':collection_id/email_link', to: 'collection#email_link', as: 'email_link'
-    match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
+    get ':collection_id/search_users', to: 'collection#search_users', as: :search_users
+    get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: :new_mobile_user
+    post ':collection_id/email_link', to: 'collection#email_link', as: :email_link
+    post 'update/:collection_id', to: 'collection#update', as: :update
 
     scope 'metadata', as: 'metadata' do
       get ':collection_id/example', to: 'metadata#example', as: :example
@@ -306,11 +306,11 @@ Fromthepage::Application.routes.draw do
 
   scope 'document_sets', as: 'document_sets' do
     get 'destroy', to: 'document_sets#destroy'
-    post 'toggle_privacy', to: 'document_sets#toggle_privacy'
     post 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
     post 'assign_to_set', to: 'document_sets#assign_to_set'
     post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
     get 'search_collaborators', to: 'document_sets#search_collaborators'
+    post 'update_works', to: 'document_sets#update_works'
   end
 
   scope 'transcription_field', as: 'transcription_field' do
@@ -445,7 +445,6 @@ Fromthepage::Application.routes.draw do
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
-
 
   resources :document_sets, except: [:show, :create, :edit]
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile

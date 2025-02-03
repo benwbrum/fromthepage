@@ -206,16 +206,18 @@ class DashboardController < ApplicationController
       end
     end
 
-    if request.xhr?
-      render partial: 'results'
-    else
-      @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
-        a_date = a.is_a?(Collection) ? a.created_on : a.created_at
-        b_date = b.is_a?(Collection) ? b.created_on : b.created_at
-        b_date <=> a_date
+    respond_to do |format|
+      format.html do
+        @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
+          a_date = a.is_a?(Collection) ? a.created_on : a.created_at
+          b_date = b.is_a?(Collection) ? b.created_on : b.created_at
+          b_date <=> a_date
+        end
+
+        @tag_map = Tag.featured_tags.group(:ai_text).count
       end
 
-      @tag_map = Tag.featured_tags.group(:ai_text).count
+      format.turbo_stream
     end
   end
 

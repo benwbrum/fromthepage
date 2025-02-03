@@ -249,53 +249,27 @@ describe DashboardController do
   describe '#landing_page' do
     let(:action_path) { landing_page_path }
     let(:params) { {} }
-    let(:headers) { {} }
 
-    let(:subject) { get action_path, params: params, headers: headers }
+    let(:subject) { get action_path, params: params }
 
-    context 'when format html' do
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:landing_page)
+    end
+
+    context 'with search param' do
+      let(:params) { { search: 'Search' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:landing_page)
-      end
-
-      context 'with search param' do
-        let(:params) { { search: 'Search' } }
-
-        it 'renders status and template' do
-          login_as owner
-          subject
-
-          expect(response).to have_http_status(:ok)
-          expect(response).to render_template(:landing_page)
-        end
-      end
-    end
-
-    context 'when format xhr' do
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
-
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'dashboard/_results')
-      end
-
-      context 'with search param' do
-        let(:params) { { search: 'Search' } }
-
-        it 'renders status and template' do
-          login_as owner
-          subject
-
-          expect(response).to have_http_status(:ok)
-          expect(response).to render_template(partial: 'dashboard/_results')
-        end
       end
     end
   end

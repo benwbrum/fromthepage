@@ -256,11 +256,13 @@ module ExportHelper
     @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
 
     @all_articles = @work.articles
-
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'}).to_a
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'}).to_a
-    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'}).to_a
+    people = work.collection.categories.where(title: 'People').first
+    people_and_descendants = people.descendants << people
+    places = work.collection.categories.where(title: 'Places').first
+    places_and_descendants = places.descendants << places
+    @person_articles = @all_articles.joins(:categories).where(categories: {id: people_and_descendants.map(&:id)}).to_a
+    @place_articles = @all_articles.joins(:categories).where(categories: {id: places_and_descendants.map(&:id)}).to_a
+    @other_articles = @all_articles - @person_articles - @place_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
@@ -332,6 +334,8 @@ module ExportHelper
   end
 
   def category_to_tei(category, subjects, seen_subjects) 
+    return "" if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
+
     has_content = false
     tei = ""
     tei << "<category xml:id=\"C#{category.id}\">\n"

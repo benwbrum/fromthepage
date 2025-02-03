@@ -46,7 +46,7 @@
     h3
       a(href="#" class="title" onclick="return false;" id="import-internet-archive") =t('.import_from_the_internet_archive')
     section style="display: none"
-      =link_to t('.import_from_archive_dot_org'), ia_book_form_path, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
+      =link_to t('.import_from_archive_dot_org'), ia_book_form_path, data: { controller: 'litebox', litebox: { hash: 'import-ia' } }, class: 'button'
 
     =render 'dashboard/empty'
 
