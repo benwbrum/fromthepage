@@ -206,7 +206,8 @@ class Page < ApplicationRecord
               ]
             }
           },
-          {term: {_index: "ftp_page"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_page"}}
         ]
       }
     }

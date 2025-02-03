@@ -237,7 +237,8 @@ class Work < ApplicationRecord
               ]
             }
           },
-          {term: {_index: "ftp_work"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_work"}}
         ]
       }
     }

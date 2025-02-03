@@ -166,7 +166,8 @@ class User < ApplicationRecord
           }
         },
         filter: [
-          {term: {_index: "ftp_user"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_user"}}
         ]
       }
     }

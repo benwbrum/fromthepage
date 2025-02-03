@@ -149,20 +149,22 @@ module ElasticUtil
 
     # Load up individual types from response
     collection_ids = hits
-      .select { |x| x['_index'] == 'ftp_collection' && !x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?('ftp_collection')
+                && !x['_source']['is_docset'] }
       .map { |x| x['_id'] }
 
     docset_ids = hits
-      .select { |x| x['_index'] == 'ftp_collection' && x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?('ftp_collection')
+                && x['_source']['is_docset'] }
       .map { |x| x['_id'][7..-1] } # Need to drop prefix specializer for lookup
 
-    page_ids= hits.select { |x| x['_index'] == 'ftp_page' }
+    page_ids = hits.select { |x| x['_index'].include?( 'ftp_page') }
       .map { |x| x['_id'] }
 
-    user_ids = hits.select { |x| x['_index'] == 'ftp_user' }
+    user_ids = hits.select { |x| x['_index'].include?('ftp_user') }
       .map { |x| x['_id'] }
 
-    work_ids = hits.select { |x| x['_index'] == 'ftp_work' }
+    work_ids = hits.select { |x| x['_index'].include?('ftp_work') }
       .map { |x| x['_id'] }
 
     collections = Collection.where(id: collection_ids)
@@ -174,26 +176,35 @@ module ElasticUtil
     # TODO: Handle IDs missing from database (deleted/unsynced)?
     inflated = []
     hits.each do |hit|
-      case hit['_index']
-      when 'ftp_collection'
+      if hit['_index'].include?('ftp_collection')
         if hit['_source']['is_docset']
           inflated << docsets.find { |x| x[:id].to_s == hit['_id'][7..-1] }
         else
           inflated << collections.find { |x| x[:id].to_s == hit['_id'] }
         end
-      when 'ftp_page'
+      elsif hit['_index'].include?('ftp_page')
         inflated << pages.find { |x| x[:id].to_s == hit['_id'] }
-      when 'ftp_user'
+      elsif hit['_index'].include?('ftp_user')
         inflated << users.find { |x| x[:id].to_s == hit['_id'] }
-      when 'ftp_work'
+      elsif hit['_index'].include?('ftp_work')
         inflated << works.find { |x| x[:id].to_s == hit['_id'] }
       end
     end
 
     # Make convenient lookup for counts per type
     type_counts = {}
+    aliased_types = ['ftp_collection', 'ftp_page', 'ftp_user', 'ftp_work']
     doc_types.each do |bucket|
-      type_counts[bucket['key'].to_sym] = bucket['doc_count']
+      # Convert actual index name back into alias
+      key = ''
+      aliased_types.each do |type|
+        if bucket['key'].include?(type)
+          key = type
+          break
+        end
+      end
+
+      type_counts[key.to_sym] = bucket['doc_count']
     end
 
     return {
