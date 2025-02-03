@@ -138,6 +138,14 @@ class UserController < ApplicationController
 
     return unless @user.owner?
 
+    if params[:ai_text]
+      @tag = Tag.where(ai_text: params[:ai_text]).first
+      if @tag
+        tag_collections = @tag.collections.where(owner_user_id: @user.id)
+        tag_document_sets = tag_collections.map(&:document_sets).flatten
+        @tag_collections = tag_collections+tag_document_sets
+      end
+    end
     collections = @user.all_owner_collections.carousel
     sets = @user.document_sets.carousel
     @carousel_collections = (collections + sets).sample(8)

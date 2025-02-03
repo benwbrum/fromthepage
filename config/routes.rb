@@ -338,8 +338,7 @@ Fromthepage::Application.routes.draw do
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
-  get 'oldfindaproject', to: 'dashboard#landing_page', as: :old_landing_page
-  get 'findaproject', to: 'dashboard#new_landing_page', as: :landing_page
+  get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'paged_search/:id', to: 'display#paged_search', as: :paged_search
   get 'browse_tag/:ai_text', to: 'dashboard#browse_tag', as: :browse_tag
@@ -448,6 +447,7 @@ Fromthepage::Application.routes.draw do
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
   resources :document_sets, except: [:show, :create, :edit]
+  get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
@@ -499,7 +499,6 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
-
 
 
       #work related routes

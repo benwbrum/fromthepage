@@ -1,68 +1,32 @@
--unless params[:search]
-  .carousel
-    -@collections.each do |c|
-      -cache [c, :old_landing_page] do
-        -link_page = c.next_untranscribed_page
-        -snippet = to_snippet(c.intro_block)
-        .carousel_slide
-          =link_to image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c), class: 'carousel_slide_image'
-          .carousel_slide_content
-            h3 =link_to c.title, collection_path(c.owner, c)
-            h5.owner-link =link_to c.owner.display_name, user_profile_path(c.owner)
-            p =snippet
-            br
-            -unless link_page.blank?
-              -if user_signed_in?
-                =link_to t('.transcribe_a_page'), collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
-              -else
-                =link_to t('.transcribe_a_page'), collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
+ul.tagcloud
+  -@tag_map.each do |ai_text, collection_count|
+    -if collection_count > 0
+      li data-weight="#{collection_count}"
+        =link_to(ai_text, browse_tag_path(ai_text))
 
 .columns.project-list
   article.maincol
-    -@owners.each do |owner|
-      -projects = (owner.random_collections + owner.random_document_sets).sample(3)
-      -unless projects.blank?
-        .project-list_projects
-          .projects-owner
-            h3.projects-owner_title
-              =link_to owner.display_name, user_profile_path(owner)
-            -if owner.about.present?
-              .description
-                =owner.about
-          .projects
-            -projects.each do |project|
-              -if current_user && show_project_snippet?(project, current_user)
-                -snippet = to_snippet(project.intro_block)
-                div.projects_details
-                  -unless project.picture.blank?
-                    .projects_details_image
-                      =image_tag(project.picture_url(:thumb), alt: project.title)
-                  .projects_collection
-                    h5
-                      =link_to project.title, collection_path(owner, project)
-                    -unless snippet.empty?
-                      .projects_collection_snippet =snippet
-              -else
-                -snippet = to_snippet(project.intro_block)
-                div.projects_details
-                  -unless project.picture.blank?
-                    .projects_details_image
-                      =image_tag(project.picture_url(:thumb), alt: project.title)
-                  .projects_collection
-                    h5
-                      =link_to project.title, collection_path(owner, project)
-                    -unless snippet.empty?
-                      .projects_collection_snippet =snippet
-            .projects_link =link_to t('.more'), user_profile_path(owner)
+    h2 =t('.institutions')
+    =fe_filter_table_wrapper(selector: 'results') do
+      =fe_filter_form_wrapper(url: landing_page_path, selector: 'results', sorting: nil, ordering: nil) do
+        .wrapper [style="padding-top: 0px; padding-right: 0px;"]
+          =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
+
+      =fe_filter_table(selector: 'results') do
+        .wrapper [style="padding: 0px;"]
+          =render partial: 'results'
 
     .project-list_link
       =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
-      =button_tag t('.search')
-      =label_tag 'search', t('.search_for_collections'), class: 'hidden'
+    h2 =t('.new_projects')
+    -@new_projects[..10].each do |project|
+      .deed-short.small
+        span.deed-short_content
+          =link_to project.title, collection_path(project.owner.slug, project.id)
+          =t('.by')
+          =link_to project.owner.display_name, user_profile_path(project.owner)
 
     h2 =t('.recent_activity')
     =deeds_for()
@@ -80,6 +44,3 @@
         nextArrow: '<button class="button outline" aria-label="#{t('.next_image')}">#{svg_symbol '#icon-arrow-right', class: 'icon'}</button>',
       });
     });
-
-
-

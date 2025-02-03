@@ -33,10 +33,16 @@ module Components::FiltersHelper
     render('shared/components/page_size_select', page_options: page_options, selected: selected)
   end
 
-  def fe_filter_search(key:, value: nil, classes: nil)
+  def fe_filter_search(key:, value: nil, classes: nil, placeholder: nil)
     classes = "dataTables_filter search #{classes}"
 
-    render('shared/components/filter_search', key: key, value: value, classes: classes)
+    render('shared/components/filter_search', key: key, value: value, classes: classes, placeholder: placeholder)
+  end
+
+  def fe_filter_select(key:, value: nil, options: [], classes: nil)
+    classes = "dataTables_filter #{classes}"
+
+    render('shared/components/filter_select', key: key, value: value, options: options, classes: classes)
   end
 
   def fe_filter_select(key:, value: nil, options: [], classes: nil)

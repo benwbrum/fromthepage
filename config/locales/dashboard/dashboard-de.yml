@@ -74,15 +74,10 @@ de:
       volunteer_text: Jeder Freiwillige trägt dazu bei, die Geschichte zugänglicher zu machen. Wir freuen uns über den Beitrag von %{user_display_name} zu unserem Crowdsourcing-Bemühen!
       worked_on_collections: "%{user_name} hat an den folgenden Sammlungen der folgenden Institutionen gearbeitet:"
     landing_page:
-      all_collections: Alle Sammlungen
-      more: Mehr...
-      next_image: Nächstes Bild
-      previous_image: Vorheriges Bild
-      recent_activity: Letzte Aktivitäten
-      search: Suche
-      search_for_collections: Nach Sammlungen suchen
-      search_for_collections_or_owners: Suchen Sie nach Sammlungen oder Projektinhaber:innen...
-      transcribe_a_page: Eine Seite transkribieren
+      by: " von "
+      institutions: Institutionen
+      more: mehr
+      new_projects: Neue Projekte
     new_upload:
       document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
       reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.

@@ -1,0 +1,51 @@
+-if params[:search].present?
+  -if @search_results.any? && @owners.any?
+    -@owners.each do |owner|
+      -unless @search_results_map[owner.id].blank?
+        .project-list_projects
+          .projects-owner
+            h3.projects-owner_title
+              =link_to owner.display_name, user_profile_path(owner)
+            -if owner.about.present?
+              .description
+                =owner.about
+          .projects
+            -@search_results_map[owner.id].each do |project|
+              -snippet = truncate(Loofah.fragment(project.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+              div.projects_details
+                -unless project.picture.blank?
+                  .projects_details_image
+                    =image_tag(project.picture_url(:thumb), alt: project.title)
+                .projects_collection
+                  h5 =link_to project.title, collection_path(owner, project)
+                  -unless snippet.empty?
+                    .projects_collection_snippet = snippet
+            .projects_link =link_to t('dashboard.landing_page.more'), user_profile_path(owner)
+  -else
+    -@search_results&.each do |sr|
+      .project-list_projects
+        .projects-owner
+          h3.projects-owner_title
+            =link_to sr.owner.display_name, user_profile_path(sr.owner)
+        .projects
+          div.projects_details
+            .projects_collection
+              h5 =link_to sr.title, collection_path(sr.owner.slug, sr.id)
+              .projects_collection_snippet
+                =truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+
+  =render partial: 'shared/pagination', locals: { model: @search_results, entries_info: false, controller: 'dashboard', action: 'landing_page' }
+
+-else
+  .landing-page-results
+    -grouped_collections = @collections.group_by(&:owner_user_id)
+    -@owners.each do |owner|
+      .collection-tile
+        -if owner.picture.present?
+          -tile_url = owner.picture.url(:thumb)
+        -else
+          -fallback_url = grouped_collections[owner.id]&.detect { |col| col.picture.present? }&.picture_url(:thumb) || asset_url('fallback.jpg')
+          -tile_url = gravatar_image_url(owner.email, alt: owner.display_name, default: fallback_url)
+        =link_to(image_tag(tile_url, alt: owner.display_name, class: 'collection-tile_image'), tile_url)
+        h3 =link_to owner.display_name, user_profile_path(owner)
+
