@@ -45,6 +45,12 @@ module Components::FiltersHelper
     render('shared/components/filter_select', key: key, value: value, options: options, classes: classes)
   end
 
+  def fe_filter_select(key:, value: nil, options: [], classes: nil)
+    classes = "dataTables_filter #{classes}"
+
+    render('shared/components/filter_select', key: key, value: value, options: options, classes: classes)
+  end
+
   def fe_sortable_header(key:, sorting:, ordering:, classes: nil, &block)
     sorting_class = "sorting_#{ordering}"
 
