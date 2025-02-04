@@ -182,19 +182,11 @@ class DocumentSet < ApplicationRecord
     return nil unless has_untranscribed_pages?
     return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
-    public_works = works.where.not(next_untranscribed_page_id: nil)
-                        .unrestricted
-                        .order_by_incomplete
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
+                  .order_by_incomplete
 
-    return public_works.first.next_untranscribed_page unless public_works.empty?
-
-    private_works = works.where.not(next_untranscribed_page_id: nil)
-                         .restricted
-                         .order_by_incomplete
-
-    wk = private_works.find{ |w| user.can_transcribe?(w, self) }
-
-    wk&.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
