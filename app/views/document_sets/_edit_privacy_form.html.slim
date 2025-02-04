@@ -11,19 +11,19 @@ tr
 tr
   td(colspan="2")
     =f.radio_button :visibility, :public, name: 'document_set[visibility]', checked: document_set.visibility_public?
-    =f.label 'document_set_public'
+    =f.label :visibility_public
       h3 =t('document_sets.edit_privacy.public')
 
 tr
   td(colspan="2")
     =f.radio_button :visibility, :private, name: 'document_set[visibility]', checked: document_set.visibility_private?
-    =f.label 'document_set_private'
+    =f.label :visibility_private
       h3 =t('document_sets.edit_privacy.private')
 
 tr
   td(colspan="2")
     =f.radio_button :visibility, :read_only, name: 'document_set[visibility]', checked: document_set.visibility_read_only?
-    =f.label 'document_set_read_only'
+    =f.label :visibility_read_only
       h3 =t('document_sets.edit_privacy.read_only')
 
 tr: td
