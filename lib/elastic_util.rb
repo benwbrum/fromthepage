@@ -150,13 +150,11 @@ module ElasticUtil
 
     # Load up individual types from response
     collection_ids = hits
-      .select { |x| x['_index'].include?('ftp_collection')
-                && !x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?('ftp_collection') && !x['_source']['is_docset'] }
       .map { |x| x['_id'] }
 
     docset_ids = hits
-      .select { |x| x['_index'].include?('ftp_collection')
-                && x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?('ftp_collection') && x['_source']['is_docset'] }
       .map { |x| x['_id'][7..-1] } # Need to drop prefix specializer for lookup
 
     page_ids = hits.select { |x| x['_index'].include?( 'ftp_page') }
