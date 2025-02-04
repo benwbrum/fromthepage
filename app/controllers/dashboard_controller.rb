@@ -181,10 +181,9 @@ class DashboardController < ApplicationController
                 .joins(:collections)
                 .left_outer_joins(:document_sets)
 
-    org_owners = users.findaproject_orgs.with_owner_works
-    individual_owners = users.findaproject_individuals.with_owner_works
+    org_owners = users.findaproject_orgs.with_owner_works.order(:display_name)
+    individual_owners = users.findaproject_individuals.with_owner_works.order(:display_name)
     @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
-                   .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
     @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
     @new_projects = Collection.includes(:owner)
