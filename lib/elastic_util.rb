@@ -26,6 +26,11 @@ module ElasticUtil
       return query
     end
 
+    # Don't add quotes if query had existing ones
+    if query.include?('"')
+      return query
+    end
+
     tokens = query.split
     augmented_tokens = []
 
