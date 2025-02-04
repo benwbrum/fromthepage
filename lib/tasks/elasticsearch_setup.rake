@@ -87,8 +87,18 @@ namespace :fromthepage do
     client = ElasticUtil.get_client()
 
     # Get existing aliases
-    resp = client.indices.get_alias(name: index)
-    existing = resp.keys
+    existing = []
+    begin
+      resp = client.indices.get_alias(name: index)
+      existing = resp.keys
+    rescue Exception
+      # no-op, end up here when alias doesn't previously exist
+    end
+
+    if existing.include?(env_index(index))
+      puts "Existing alias matches, unable to rollover."
+      return
+    end
 
     actions = []
 
