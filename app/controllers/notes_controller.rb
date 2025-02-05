@@ -28,7 +28,7 @@ class NotesController < ApplicationController
 
     @result = Note::Create.new(
       note_params: note_params,
-      collection: @collection,
+      collection: @work.collection,
       work: @work,
       page: @page,
       user: current_user
