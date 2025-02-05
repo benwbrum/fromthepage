@@ -74,15 +74,10 @@ es:
       volunteer_text: Cada voluntario ayuda a hacer la historia más accesible. ¡Apreciamos la contribución de %{user_display_name} a nuestro esfuerzo de crowdsourcing!
       worked_on_collections: "%{user_name} ha trabajado en las siguientes colecciones de las siguientes instituciones:"
     landing_page:
-      all_collections: Todas las Colecciones
-      more: Más...
-      next_image: Siguiente imagen
-      previous_image: Imagen anterior
-      recent_activity: Actividad Reciente
-      search: Búsqueda
-      search_for_collections: Búsqueda de obras
-      search_for_collections_or_owners: Buscar colecciones o dueños...
-      transcribe_a_page: Transcribir una página
+      by: " por "
+      institutions: Instituciones
+      more: más
+      new_projects: Nuevos proyectos
     new_upload:
       document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.
       reload_this_page: El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo.

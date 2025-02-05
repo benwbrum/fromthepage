@@ -5,11 +5,11 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_action :authorized?, :except => [:zoom, :guest, :help, :still_editing, :active_editing]
-  before_action :active?, :except => [:still_editing, :active_editing]
+  before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
+  before_action :active?, except: [:still_editing, :active_editing]
 
-  protect_from_forgery :except => [:zoom, :unzoom]
-  #this prevents failed redirects after sign up
+  protect_from_forgery except: [:zoom, :unzoom]
+  # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
   skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]

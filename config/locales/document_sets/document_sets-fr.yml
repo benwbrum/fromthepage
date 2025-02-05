@@ -36,15 +36,14 @@ fr:
       manage_works: Gérer les œuvres
       privacy_access: Confidentialité et accès
     edit_works:
-      add: Ajouter
       add_work_title_to_document_set: Ajouter %{work_title} au jeu de documents
+      all_works: Toutes les oeuvres
       document_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
+      included: Compris
       n_pages:
         one: '1 page :'
         other: "%{count} pages :"
-      save: Sauvegarder
-      search: Chercher
-      search_for_works: Rechercher des oeuvres...
+      not_included: Non inclus
       status: Statut
       work: Œuvre
     index:
@@ -82,19 +81,6 @@ fr:
       document_set_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
       public: Public
       title: Titre
-    set_works:
-      collaboration: Collaboration
-      most_recent_activity: Activité la plus récente
-      n_pages:
-        one: '1 page :'
-        other: "%{count} pages :"
-      progress: Progrès
-      remove_from_set: Supprimer de l'ensemble
-      remove_title_from_document_set: Supprimer %{title} du jeu de documents
-      remove_works: Supprimer les œuvres
-      restricted: Limité
-      unrestricted: Libre
-      work_title: Titre de œuvre
     settings:
       add: Ajouter
       done: Fait
@@ -114,4 +100,5 @@ fr:
       transfer_works: Œuvres de transfert
       transfer_works_description: Le transfert fonctionne entre les ensembles de documents. (La copie placera le même œuvre dans deux ensembles de documents en même temps.)
     update:
+      document_failed_update: Échec de la mise à jour de l'ensemble de documents
       document_updated: Le jeu de documents a été enregistré

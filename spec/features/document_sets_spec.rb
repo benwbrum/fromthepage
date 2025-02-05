@@ -47,6 +47,9 @@ describe "document sets", :order => :defined do
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
 
+    doc_set = @document_sets.first
+    work_ids = doc_set.work_ids
+
     page.find('.side-tabs').click_link('Manage Works')
     # Set all checkboxes off
     page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
@@ -61,14 +64,17 @@ describe "document sets", :order => :defined do
     page.all('input[type="checkbox"].works', visible: false).each do |checkbox|
       expect(checkbox).to be_checked
     end
+
+    doc_set.work_ids = work_ids
+    doc_set.save!
   end
 
-  it "makes a document set private" do
-    login_as(@owner, :scope => :user)
-    #create an additional document set to make private
-    visit document_sets_path(:collection_id => @collection)
+  it 'makes a document set private', js: true do
+    login_as(@owner, scope: :user)
+    # create an additional document set to make private
+    visit document_sets_path(collection_id: @collection)
     page.find('.button', text: 'Create a Document Set').click
-    page.fill_in 'document_set_title', with: "Test Document Set 3"
+    page.fill_in 'document_set_title', with: 'Test Document Set 3'
     page.find_button('Create Document Set').click
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     page.find('.side-tabs').click_link('Privacy & Access')
@@ -134,12 +140,12 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
   end
 
-  it "adds a collaborator" do
+  it 'adds a collaborator' do
     ActionMailer::Base.deliveries.clear
     @test_set = DocumentSet.last
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@test_set.owner, @test_set)
-    page.find('.tabs').click_link("Settings")
+    page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Privacy & Access')
     page.click_link 'Edit Collaborators'
     # this user should not receive an email (notifications off)
@@ -152,12 +158,12 @@ describe "document sets", :order => :defined do
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
-    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match('added you as a collaborator')
   end
 
-  it "tests a collaborator" do
+  it 'tests a collaborator' do
     @test_set = DocumentSet.last
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     visit dashboard_path
     @collections.each do |c|
       unless c.restricted
@@ -177,14 +183,14 @@ describe "document sets", :order => :defined do
         end
       end
     end
-    #check collaborator access to private doc set
+    # check collaborator access to private doc set
     visit collection_path(@owner, @test_set)
     expect(page.find('h1')).to have_content(@test_set.title)
     expect(page.find('.maincol')).to have_content(@test_set.works.first.title)
-    #check collaborator access through a link
+    # check collaborator access through a link
     visit collection_read_work_path(@owner, @test_set, @test_set.works.first)
     expect(page.find('h1')).to have_content(@test_set.works.first.title)
-    #check that the collaborator can't access other private doc set
+    # check that the collaborator can't access other private doc set
     visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)

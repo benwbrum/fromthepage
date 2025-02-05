@@ -72,11 +72,9 @@ class User < ApplicationRecord
 
   mount_uploader :picture, PictureUploader
 
-  has_many(:owner_works,
-           :foreign_key => "owner_user_id",
-           :class_name => 'Work')
-  has_many :collections, :foreign_key => "owner_user_id"
-  has_many :document_sets, :foreign_key => "owner_user_id"
+  has_many :uploaded_works, foreign_key: 'owner_user_id', class_name: 'Work'
+  has_many :collections, foreign_key: 'owner_user_id'
+  has_many :document_sets, foreign_key: 'owner_user_id'
   has_many :ia_works
   has_many :visits
   has_many :bulk_exports
@@ -111,16 +109,19 @@ class User < ApplicationRecord
   has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   has_many :metadata_description_versions, :dependent => :destroy
 
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
-  scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
+
+  scope :with_owner_works, -> { joins(:uploaded_works).distinct }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
@@ -264,7 +265,7 @@ class User < ApplicationRecord
   end
 
   def all_owner_collections
-    Collection.where(owner_user_id: self.id).or(Collection.where(id: self.owned_collections.ids)).distinct.order(:title)
+    Collection.where(owner_user_id: id).or(Collection.where(id: owned_collections.select(:id))).distinct.order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -277,8 +278,7 @@ class User < ApplicationRecord
   end
 
   def owner_works
-    works = Work.where(collection_id: self.all_owner_collections.ids)
-    return works
+    Work.where(collection_id: all_owner_collections.select(:id))
   end
 
   def can_transcribe?(work)

@@ -28,9 +28,6 @@ $(function() {
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
-  // Filterable table
-  $('[data-filterable-table]').filterableTable();
-
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
     e.preventDefault();

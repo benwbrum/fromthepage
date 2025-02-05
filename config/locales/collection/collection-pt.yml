@@ -7,11 +7,14 @@ pt:
       notice: A coleção foi redefinida.
     collection_works:
       all_works: Todas as obras
+      collaboration: Colaboração
       most_recent_activity: Atividade mais recente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
       progress: Progresso
+      restricted: Restrito
+      unrestricted: Irrestrito
       work_title: Título da obra
       works_that_need_transcription: Obras que precisam de transcrição
     complete: completo

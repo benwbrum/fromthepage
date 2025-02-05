@@ -234,10 +234,6 @@ class DocumentSet < ApplicationRecord
     works.where('title LIKE ? OR searchable_metadata like ?', "%#{search}%", "%#{search}%")
   end
 
-  def search_collection_works(search)
-    collection.search_works(search)
-  end
-
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
            users where owner=1 and display_name like ?)"

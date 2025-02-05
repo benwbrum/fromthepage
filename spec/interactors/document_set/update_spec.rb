@@ -7,7 +7,7 @@ describe DocumentSet::Update do
   let(:document_set_params) { {} }
 
   let(:result) do
-    described_class.call(document_set: document_set, document_set_params: document_set_params)
+    described_class.new(document_set: document_set, document_set_params: document_set_params).call
   end
 
   context 'when valid params' do
@@ -15,17 +15,17 @@ describe DocumentSet::Update do
       {
         title: 'New title',
         description: 'New description',
-        slug: 'newslug'
+        slug: 'newslug',
+        is_public: 'true'
       }
     end
 
     it 'updates document_set' do
       expect(result.success?).to be_truthy
-      expect(result.document_set.title).to eq('New title')
-      expect(result.updated_fields_hash).to include(
+      expect(result.document_set).to have_attributes(
         title: 'New title',
         description: 'New description',
-        slug: 'newslug'
+        is_public: true
       )
     end
   end
@@ -39,7 +39,7 @@ describe DocumentSet::Update do
 
     it 'updates document_set' do
       expect(result.success?).to be_falsey
-      expect(result.errors).to include(
+      expect(result.document_set.errors.full_messages).to include(
         "Title can't be blank",
         'Title is too short (minimum is 3 characters)'
       )

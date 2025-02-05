@@ -23,9 +23,8 @@ describe ExportController do
   describe '#index' do
     let(:action_path) { collection_export_path(owner, collection) }
     let(:params) { {} }
-    let(:headers) { {} }
 
-    let(:subject) { get action_path, params: params, headers: headers }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status and template' do
       login_as owner
@@ -37,79 +36,79 @@ describe ExportController do
 
     context 'sort by title asc' do
       let(:params) { { search: work.title, sort: 'title' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by title desc' do
       let(:params) { { search: work.title, sort: 'title', order: 'desc' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by page count' do
       let(:params) { { search: work.title, sort: 'page_count', order: 'asc' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by indexed count' do
       let(:params) { { search: work.title, sort: 'indexed_count', order: 'desc' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by completed count' do
       let(:params) { { search: work.title, sort: 'completed_count' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by reviewed count' do
       let(:params) { { search: work.title, sort: 'reviewed_count' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'export/_table')
+        expect(response).to render_template(:index)
       end
     end
   end

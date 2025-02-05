@@ -17,7 +17,7 @@ ENABLE_SAML = true
 #IDP_SSO_TARGET_URL = 'https://capriza.github.io/samling/samling.html' #easy test for saml without a saml server
 #the below isn't a reference to the cert file, but the actual cert.  See https://github.com/omniauth/omniauth-saml for other options, like fingerprint.
 #the initializer/devise.rb file is where this is used, and if you want to use fingerprint rather than cert, you can modify that file
-IDP_CERT = ENV['IDP_CERT'] 
+IDP_CERT = ENV['IDP_CERT']
 
 # ReCAPTCHA Settings
 RECAPTCHA_SITE_KEY = ENV['RECAPTCHA_SITE_KEY']

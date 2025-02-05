@@ -1,0 +1,38 @@
+table.datagrid.striped.dataTable.no-footer
+  thead
+    =fe_sortable_header(key: :title, sorting: @sorting, ordering: @ordering) do
+      =t('collection.collection_works.work_title')
+
+    th=t('collection.collection_works.progress')
+    th.progress_bar
+
+    =fe_sortable_header(key: :activity, sorting: @sorting, ordering: @ordering) do
+      =t('collection.collection_works.most_recent_activity')
+
+    -if @collection.is_a?(DocumentSet)
+      =fe_sortable_header(key: :collaboration, sorting: @sorting, ordering: @ordering) do
+        =t('collection.collection_works.collaboration')
+
+  tbody
+    -@works.each do |w|
+      -work_stats(w)
+      tr
+        td[style='max-width: 175px;']=link_to w.title, collection_read_work_path(@collection.owner, @collection, w)
+        td
+          =t('collection.collection_works.n_pages', count: w.work_statistic.total_pages)
+          =@wording
+        td.w20
+          span.progress
+            -unless @collection.subjects_disabled
+              span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+            -unless @progress_review == 0
+              span(style="width:#{@progress_review}%")
+            span(style="width:#{w.work_statistic.complete}%")
+        -most_recent_activity = w.deeds.first&.created_at || w.created_on
+        td.nowrap (data-order="#{most_recent_activity.to_i}")
+          =l(most_recent_activity, format: :short)
+        -if @collection.is_a?(DocumentSet)
+          td =w.restrict_scribes ? t('collection.collection_works.restricted') : t('collection.collection_works.unrestricted')
+
+=render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'collection', action: 'works_list' }

@@ -14,9 +14,8 @@ describe NotesController do
   describe '#index' do
     let(:action_path) { collection_notes_path(collection_id: collection.slug) }
     let(:params) { {} }
-    let(:headers) { {} }
 
-    let(:subject) { get action_path, params: params, headers: headers }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status and template' do
       login_as owner
@@ -28,66 +27,66 @@ describe NotesController do
 
     context 'filters and paginate' do
       let(:params) { { search: note.title } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by user' do
       let(:params) { { sort: 'user', order: 'ASC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by note' do
       let(:params) { { sort: 'note', order: 'DESC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by page' do
       let(:params) { { sort: 'page', order: 'ASC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by work' do
       let(:params) { { sort: 'work', order: 'DESC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 

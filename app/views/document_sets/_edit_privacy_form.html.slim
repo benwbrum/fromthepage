@@ -1,0 +1,27 @@
+tr
+  th(colspan="2")
+    h3.settings-label
+      =t('document_sets.edit_privacy.document_set_privacy', privacy: document_set.is_public ? t('document_sets.edit_privacy.public') : t('document_sets.edit_privacy.private')).html_safe
+    -if document_set.restricted
+      =button_tag name: 'document_set[is_public]', value: 'true', class: 'button inline-btn' do
+        = svg_symbol '#icon-unlock', class: 'icon'
+        span =t('document_sets.edit_privacy.make_document_set_public')
+    -else
+      =button_tag name: 'document_set[is_public]', value: 'false', class: 'button inline-btn' do
+        = svg_symbol '#icon-lock', class: 'icon'
+        span =t('document_sets.edit_privacy.make_document_set_private')
+tr
+  td(colspan="2")
+    -if document_set.restricted
+      p =t('document_sets.edit_privacy.document_set_restricted_description')
+    -else
+      p =t('document_sets.edit_privacy.document_set_unrestricted_description')
+tr: td
+tr
+  th
+    h3.settings-label =t('document_sets.edit_privacy.document_set_collaborators')
+    p.settings-label ="(#{@collaborators.count})" unless @collaborators.empty?
+    p =link_to(t('document_sets.edit_privacy.edit_collaborators'), collection_edit_set_collaborators_path(document_set.owner, document_set, document_set_id: document_set), id: 'edit-set-collaborators-button', class: 'button', disabled: !document_set.restricted, data: { controller: 'litebox', litebox: { hash: 'edit-set-collaborators', noscroll: false, noclose: true } })
+
+  td
+    =render 'collection/users_list', users: @collaborators, type: 'collaborators', disabled: !document_set.restricted

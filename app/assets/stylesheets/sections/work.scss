@@ -149,3 +149,9 @@
   font-style: italic;
   color: $fgRed;
 }
+
+#works-table-wrapper {
+  .document_set {
+    max-width: 25px !important;
+  }
+}

@@ -23,11 +23,12 @@ p.big
   h2 =t('.export_individual_works')
   p.big =t('.export_individual_works_description')
 
-  =fe_filter_table_wrapper(url: collection_export_path(@collection.owner, @collection), selector: 'export-works-table', sorting: @sorting, ordering: @ordering) do
-    =fe_filter_page_size_select(selected: params[:per_page] || '15')
-    =fe_filter_search(key: :search, value: params[:search], classes: 'w30')
+  =fe_filter_table_wrapper(selector: 'export-works-table') do
+    =fe_filter_form_wrapper(url: collection_export_path(@collection.owner, @collection), selector: 'export-works-table', sorting: @sorting, ordering: @ordering) do
+      =fe_filter_page_size_select(selected: params[:per_page] || '15')
+      =fe_filter_search(key: :search, value: params[:search], classes: 'w30')
 
-    #export-works-table
+    =fe_filter_table(selector: 'export-works-table') do
       =render partial: 'table'
 
 h2= t('.api')

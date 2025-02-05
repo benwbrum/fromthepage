@@ -36,15 +36,14 @@ en:
       manage_works: Manage Works
       privacy_access: Privacy & Access
     edit_works:
-      add: Add
       add_work_title_to_document_set: Add %{work_title} to Document Set
+      all_works: All works
       document_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
+      included: Included
       n_pages:
         one: '1 page: '
-        other: "%{count} pages: pl"
-      save: Save
-      search: Search
-      search_for_works: Search for works...
+        other: "%{count} pages:"
+      not_included: Not included
       status: Status
       work: Work
     index:
@@ -82,19 +81,6 @@ en:
       document_set_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
       public: Public
       title: Title
-    set_works:
-      collaboration: Collaboration
-      most_recent_activity: Most recent activity
-      n_pages:
-        one: '1 page: '
-        other: "%{count} pages: "
-      progress: Progress
-      remove_from_set: Remove from set
-      remove_title_from_document_set: Remove %{title} from Document Set
-      remove_works: Remove works
-      restricted: Restricted
-      unrestricted: Unrestricted
-      work_title: Work title
     settings:
       add: Add
       done: Done
@@ -114,4 +100,5 @@ en:
       transfer_works: Transfer Works
       transfer_works_description: Transfer works between document sets.  (Copying will place the same work within two document sets at the same time.)
     update:
+      document_failed_update: Failed to update document set
       document_updated: Document set has been saved

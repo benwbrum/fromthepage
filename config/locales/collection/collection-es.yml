@@ -7,11 +7,14 @@ es:
       notice: La colección ha sido restablecida.
     collection_works:
       all_works: Todo funciona
+      collaboration: Colaboración
       most_recent_activity: Actividad más reciente
       n_pages:
         one: '1 página:'
         other: "%{count} páginas:"
       progress: Progreso
+      restricted: Restringido
+      unrestricted: Irrestricto
       work_title: Título de la obra
       works_that_need_transcription: Obras que necesitan transcripción
     complete: completo
