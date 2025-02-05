@@ -40,12 +40,13 @@
   .landing-page-results
     -grouped_collections = @collections.group_by(&:owner_user_id)
     -@owners.each do |owner|
-      .collection-tile
-        -if owner.picture.present?
-          -tile_url = owner.picture.url(:thumb)
-        -else
-          -fallback_url = asset_url(grouped_collections[owner.id]&.detect { |col| col.picture.present? }&.picture_url(:thumb) || 'fallback.jpg')
-          -tile_url = gravatar_image_url(owner.email, alt: owner.display_name, default: fallback_url)
-        =link_to user_profile_path(owner) do
-          =image_tag(tile_url, alt: owner.display_name, class: 'collection-tile_image')
-        h3 =link_to owner.display_name, user_profile_path(owner)
+      -if grouped_collections[owner.id].present?
+        .collection-tile
+          -if owner.picture.present?
+            -tile_url = owner.picture.url(:thumb)
+          -else
+            -fallback_url = asset_url(grouped_collections[owner.id]&.detect { |col| col.picture.present? }&.picture_url(:thumb) || 'fallback.jpg')
+            -tile_url = gravatar_image_url(owner.email, alt: owner.display_name, default: fallback_url)
+          =link_to user_profile_path(owner) do
+            =image_tag(tile_url, alt: owner.display_name, class: 'collection-tile_image')
+          h3 =link_to owner.display_name, user_profile_path(owner)
