@@ -147,6 +147,7 @@ class Page < ApplicationRecord
       owner_user_id: self.collection&.owner_user_id,
       work_id: self.work&.id,
       is_public: !self.collection&.restricted || self.work&.document_sets.where(:is_public => true).exists?,
+      title: self.title,
       search_text: self.search_text,
       content_english: self.source_text # TODO: Hook up language pipeline
     }
@@ -163,20 +164,40 @@ class Page < ApplicationRecord
       docset_collabs = user.document_set_collaborations.pluck(:id)
     end
 
+    search_fields = [
+      "title^2",
+      "search_text^1.5",
+      "content_english",
+      "content_french",
+      "content_german",
+      "content_spanish",
+      "content_portuguese",
+      "content_swedish"
+    ]
+
     return {
       bool: {
         must: {
-          simple_query_string: {
-            query: query,
-            fields: [
-              "title^2",
-              "search_text^1.5",
-              "content_english",
-              "content_french",
-              "content_german",
-              "content_spanish",
-              "content_portuguese",
-              "content_swedish"
+          bool: {
+            # Run same query as phrase and regular tokenized
+            # Phrase matches will have higher impact
+            should: [
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 3.0,
+                  type: "phrase",
+                  fields: search_fields
+                }
+              },
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 1.0,
+                  type: "most_fields",
+                  fields: search_fields
+                }
+              }
             ]
           }
         },
@@ -195,7 +216,8 @@ class Page < ApplicationRecord
               ]
             }
           },
-          {term: {_index: "ftp_page"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_page"}}
         ]
       }
     }

@@ -4,6 +4,9 @@
 			"is_public": {
 				"type": "boolean"
 			},
+			"permissions_updated": {
+				"type": "long"
+			},
 			"collection_id": {
 				"type": "integer"
 			},
@@ -17,10 +20,21 @@
 				"type": "integer"
 			},
 			"title": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general"
 			},
 			"searchable_metadata": {
-				"type": "text"
+				"type": "text",
+				"fields": {
+					"identifier_whitespace": {
+						"type": "text",
+						"analyzer": "identifier_whitespace"
+					},
+					"whitespace": {
+						"type": "text",
+						"analyzer": "general_whitespace"
+					}
+				}
 			}
 		}
 	}

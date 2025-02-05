@@ -54,6 +54,8 @@
 #  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
 #
 class Work < ApplicationRecord
+  require 'elastic_util'
+
   include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
@@ -208,15 +210,18 @@ class Work < ApplicationRecord
       docset_collabs = user.document_set_collaborations.pluck(:id)
     end
 
+    search_fields = [
+      "title^2",
+      "searchable_metadata.identifier_whitespace^1.5",
+      "searchable_metadata"
+    ]
+
     return {
       bool: {
         must: {
           simple_query_string: {
             query: query,
-            fields: [
-              "title^2",
-              "searchable_metadata"
-            ]
+            fields: search_fields
           }
         },
         filter: [
@@ -234,7 +239,8 @@ class Work < ApplicationRecord
               ]
             }
           },
-          {term: {_index: "ftp_work"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_work"}}
         ]
       }
     }

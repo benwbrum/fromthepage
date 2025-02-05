@@ -120,7 +120,31 @@ class DisplayController < ApplicationController
       @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
       @work = @search_attempt&.work
       if ELASTIC_ENABLED
-        @pages = @search_attempt.results(page: params.fetch(:page, 1))
+        search_mode = nil
+        search_slug = nil
+
+        if @search_attempt.search_type == "collection"
+          if @search_attempt.collection.present?
+            search_mode = 'collection'
+            search_slug = @search_attempt.collection.slug
+          elsif @search_attempt.document_set.present?
+            search_mode = 'docset'
+            search_slug = @search_attempt.document_set.slug
+          end
+        elsif @search_attempt.search_type == "work"
+          if @search_attempt.work.present?
+            search_mode = 'work'
+            search_slug = @search_attempt.work.slug
+          end
+        end
+
+        # TODO: Need metrics tracking from new_landing search
+        # Redirect to "findaproject" tabbed search results
+        redirect_to controller: 'dashboard',
+                    action: 'new_landing_page',
+                    search: @search_attempt.query,
+                    mode: search_mode,
+                    slug: search_slug
       else
         pages = @search_attempt.results
         @pages = pages.paginate(page: params[:page])

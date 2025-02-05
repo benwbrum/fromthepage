@@ -135,6 +135,7 @@ class Collection < ApplicationRecord
   def as_indexed_json
     return {
       _id: self.id,
+      permissions_updated: 0,
       is_public: !self.restricted,
       is_docset: false,
       intro_block: self.intro_block,
@@ -185,7 +186,8 @@ class Collection < ApplicationRecord
               ]
             }
           },
-          {term: {_index: "ftp_collection"}} # Need index filter for cross collection search
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_collection"}}
         ]
       }
     }

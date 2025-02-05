@@ -3,11 +3,11 @@
   -default_path = collection_read_work_path(@collection.owner, @collection, work)
 -else
   -default_path = metadata_overview_collection_work_path(@collection.owner, @collection, work)
-.collection-work
+.collection-work.search_result
   .collection-work_image
     -unless work.thumbnail.nil?
         =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
-        h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
+  h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
   p.collection-work_snippet = to_snippet(work.description)
   -if @collection.text_entry? && work.next_untranscribed_page
     p.collection-work_action
@@ -38,6 +38,7 @@
     .collection-work_stats
       span =t("work.#{work.description_status}")
 
+  =render partial: 'elastic/breadcrumbs', locals: { doc: work }
 // Existing code needs @collection instance var but we don't want it set going forward
 -@collection = nil
 

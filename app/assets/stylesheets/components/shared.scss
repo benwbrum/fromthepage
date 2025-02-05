@@ -378,6 +378,10 @@
   margin: 0 0 $gapSize / 2 0;
   font-size: $fontSizeStrong;
   font-family: $fontFamilyHead;
+  &.smaller {
+    font-size: $fontSizeSmall;
+    margin: 10px 0 0 0;
+  }
   li {
     margin: 0;
     display: inline-block;

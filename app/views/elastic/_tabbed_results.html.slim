@@ -1,25 +1,60 @@
 // Tab Navigation
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
+=form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      -if params[:mode].present?
+        =hidden_field_tag :mode, params[:mode]
+      -if params[:slug].present?
+        =hidden_field_tag :slug, params[:slug]
+      =search_field_tag :search, params[:search], placeholder: t('dashboard.landing_page.search')
+      =button_tag t('dashboard.landing_page.search')
+      =label_tag 'search', t('dashboard.landing_page.search'), class: 'hidden'
+
+h3.search-heading
+  -if @org_filter.present?
+    | Searching inside 
+    =link_to @org_filter[:display_name], user_profile_path(@org_filter)
+
+  -elsif @collection_filter.present?
+    | Searching inside 
+    =link_to @collection_filter[:title], collection_path(@collection_filter.owner.slug, @collection_filter)
+
+  -elsif @docset_filter.present?
+    | Searching inside 
+    =link_to @docset_filter[:title], collection_path(@docset_filter.owner, @docset_filter)
+
+  -elsif @work_filter.present?
+    -if @work_filter.collection.text_entry?
+      -work_path = collection_read_work_path(@work_filter.collection.owner, @work_filter.collection, @work_filter)
+    -else
+      -work_path = metadata_overview_collection_work_path(@work_filter.collection.owner, @work_filter.collection, @work_filter)
+    | Searching inside 
+    =link_to @work_filter.title, work_path
+
+  -else
+    | Search Results
+  br
+
 -if @full_count.to_i > 0
   .tabs
+    - permitted_params = [:search, :org, :mode, :slug]
     =link_to "All (#{@full_count.to_i})",
-      params.permit(:search), class: "#{'active' if !params[:filter]}"
+      params.permit(*permitted_params), class: "#{'active' if !params[:filter]}"
     -if @type_counts.has_key?(:ftp_user)
       =link_to "Users (#{@type_counts[:ftp_user]})",
-        params.permit(:search).merge(filter: 'user'),
+        params.permit(*permitted_params).merge(filter: 'user'),
         class: "#{'active' if params[:filter] == 'user'}"
     -if @type_counts.has_key?(:ftp_collection)
       =link_to "Collections (#{@type_counts[:ftp_collection]})",
-        params.permit(:search).merge(filter: 'collection'),
+        params.permit(*permitted_params).merge(filter: 'collection'),
         class: "#{'active' if params[:filter] == 'collection'}"
     -if @type_counts.has_key?(:ftp_work)
       =link_to "Works (#{@type_counts[:ftp_work]})",
-        params.permit(:search).merge(filter: 'work'),
+        params.permit(*permitted_params).merge(filter: 'work'),
         class: "#{'active' if params[:filter] == 'work'}"
     -if @type_counts.has_key?(:ftp_page)
       =link_to "Pages (#{@type_counts[:ftp_page]})",
-        params.permit(:search).merge(filter: 'page'),
+        params.permit(*permitted_params).merge(filter: 'page'),
         class: "#{'active' if params[:filter] == 'page'}"
 
   =will_paginate @search_results

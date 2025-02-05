@@ -1,3 +1,10 @@
+=form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get,
+  enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag :org, user.slug
+      =search_field_tag :search, params[:search], placeholder: t('dashboard.landing_page.search_org')
+      =button_tag t('dashboard.landing.search')
+      =label_tag 'search', t('dashboard.landing_page.search_org_label'), class: 'hidden'
+
 section.user-profile
   .user-profile_image
     =profile_picture(user, 128)

@@ -82,6 +82,7 @@ class DocumentSet < ApplicationRecord
   def as_indexed_json
     return {
       _id: "docset-#{self.id}",
+      permissions_updated: 0,
       is_public: self.is_public,
       is_docset: true,
       intro_block: self.description,
