@@ -37,7 +37,7 @@
   =render partial: 'shared/pagination', locals: { model: @search_results, entries_info: false, controller: 'dashboard', action: 'landing_page' }
 
 -else
-  .landing-page-results
+  .collection-tiles-wrapper
     -grouped_collections = @collections.group_by(&:owner_user_id)
     -@owners.each do |owner|
       .collection-tile

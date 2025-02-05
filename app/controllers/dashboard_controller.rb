@@ -224,7 +224,20 @@ class DashboardController < ApplicationController
 
   def browse_tag
     @tag = Tag.find_by(ai_text: params[:ai_text])
-    @collections = @tag.collections.unrestricted.has_intro_block.has_picture.not_empty
+    collections = @tag.collections
+                      .includes(:owner, { works: :work_statistic })
+                      .unrestricted
+                      .has_intro_block
+                      .has_picture
+                      .not_empty
+
+    document_sets = DocumentSet.includes(:owner, :collection, { works: :work_statistic })
+                               .where(collection: { id: collections.select(:id) })
+                               .unrestricted
+                               .has_intro_block
+                               .not_empty
+
+    @collections = collections + document_sets
   end
 
   def collaborator_time_export

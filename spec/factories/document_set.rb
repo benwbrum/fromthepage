@@ -8,9 +8,14 @@ FactoryBot.define do
       # Document Sets are private by default!
       is_public { true }
     end
+
     trait :private do
       # Document Sets are private by default!
       is_public { false }
+    end
+
+    trait :with_picture do
+      picture { Rack::Test::UploadedFile.new(Rails.root.join('test_data/uploads/document_set_image.jpg'), 'image/jpeg') }
     end
   end
 end
