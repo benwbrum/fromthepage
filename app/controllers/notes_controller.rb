@@ -34,6 +34,10 @@ class NotesController < ApplicationController
       user: current_user
     ).call
 
+    @note = @result.note
+
+    record_deed if @result.success?
+
     respond_to(&:turbo_stream)
   end
 

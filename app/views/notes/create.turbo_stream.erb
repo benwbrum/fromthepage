@@ -2,14 +2,14 @@
   'notes-form',
   partial: 'notes/form',
   locals: {
-    note: @result.success? ? Note.new : @result.note,
-    collection: @result.note.collection,
-    work: @result.note.work,
-    page: @result.note.page
+    note: @result.success? ? Note.new : @note,
+    collection: @note.collection,
+    work: @note.work,
+    page: @note.page
   }) %>
 
 <% if @result.success? %>
-  <%= turbo_stream.append('notes-list', partial: 'notes/note', locals: { note: @result.note }) %>
+  <%= turbo_stream.append('notes-list', partial: 'notes/note', locals: { note: @note }) %>
   <%= turbo_flash(t('.note_has_been_created'), :notice) %>
 <% else %>
   <%= turbo_flash(t('.error_creating_note'), :error) %>
