@@ -13,6 +13,11 @@ en:
       page_notes: Page Notes
       pages_and_notes_counts: "%{posts_count} notes on %{topics_count} pages"
       total_notes: "%{count} notes"
+    form:
+      microphone: Microphone
+      note_body: Note body
+      save_note: Save Note
+      write_a_new_note: Write a new note or ask a question...
     index:
       collection_title: 'Collection: %{title}'
       notes: Notes
@@ -31,13 +36,9 @@ en:
       microphone: Microphone
       update: Update
     notes:
-      microphone: Microphone
       nobody_has_written_a_note: Nobody has written a note for this page yet
-      note_body: Note body
       please_sign_in_to_write: Please %{link} to write a note for this page
-      save_note: Save Note
       sign_in: sign in
-      write_a_new_note: Write a new note or ask a question...
     table:
       collection: Collection
       note: Note

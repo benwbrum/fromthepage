@@ -1,0 +1,2 @@
+<%= turbo_flash(t('.note_has_been_deleted'), :notice) %>
+<%= turbo_stream.remove("note-#{@note.id}") %>

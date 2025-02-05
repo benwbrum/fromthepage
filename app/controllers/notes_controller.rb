@@ -12,70 +12,57 @@ class NotesController < ApplicationController
     end
   end
 
+  def edit
+    @note = Note.find(params[:id])
+
+    respond_to(&:turbo_stream)
+  end
+
   def create
     unless user_signed_in?
       flash[:error] = t('.must_be_logged')
-      ajax_redirect_to root_path and return
+      ajax_redirect_to root_path
+
+      return
     end
 
-    @note = Note.new(note_params)
-    # truncate the body for the title
-    @note.title = @note.body
-    @note.title = truncate(@note.title, length: 250, escape: false)
-    # add param-loaded associations
-    @note.page = @page
-    @note.work = @work
-    @note.collection = @work.collection
-    @note.user = current_user
+    @result = Note::Create.new(
+      note_params: note_params,
+      collection: @collection,
+      work: @work,
+      page: @page,
+      user: current_user
+    ).call
 
-    if @note.save
-      record_deed
-      render json: {
-        html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]),
-        flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_created') },
-                                formats: [:html])
-      }, status: :created
-    else
-      render json: {
-        errors: @note.errors.full_messages,
-        flash: render_to_string(partial: 'shared/flash', locals: { type: 'error', message: t('.error_creating_note') })
-      }, status: :unprocessable_entity
-    end
+    respond_to(&:turbo_stream)
   end
 
   def update
-    @note = Note.find(params[:id])
+    note = Note.find(params[:id])
 
-    ajax_redirect_to root_path and return unless user_signed_in? && @note.user == current_user
+    if !user_signed_in? || note.user != current_user
+      ajax_redirect_to root_path
 
-    if @note.update(note_params)
-      note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
-
-      render json: {
-        html: simple_format(note_body),
-        flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_updated') },
-                                formats: [:html])
-      }, status: :ok
-    else
-      render json: {
-        errors: @note.errors.full_messages,
-        flash: render_to_string(partial: 'shared/flash', locals: { type: 'error', message: t('.error_updating_note') })
-      }, status: :unprocessable_entity
+      return
     end
+
+    @result = Note::Update.new(note: note, note_params: note_params).call
+
+    respond_to(&:turbo_stream)
   end
 
   def destroy
     @note = Note.find(params[:id])
 
     unless user_signed_in? && (@note.user == current_user || current_user.like_owner?(@note.work))
-      ajax_redirect_to root_path and return
+      ajax_redirect_to root_path
+
+      return
     end
 
     @note.destroy
 
-    render json: {
-      flash: render_to_string(partial: 'shared/flash', locals: { type: 'notice', message: t('.note_has_been_deleted') })
-    }
+    respond_to(&:turbo_stream)
   end
 
   def discussions
