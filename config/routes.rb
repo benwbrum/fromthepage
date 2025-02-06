@@ -210,7 +210,7 @@ Fromthepage::Application.routes.draw do
   end
 
   resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
-    get :click, to: 'search_attempt#click'
+    get :click, to: 'search_attempt#click', on: :collection
   end
 
   scope 'category', as: 'category' do

@@ -1,5 +1,5 @@
 class SearchAttempt::Create < ApplicationInteractor
-  attr_accessor :search_attempt
+  attr_accessor :search_attempt, :link
 
   def initialize(search_attempt_params:, user: nil)
     @search_attempt_params = search_attempt_params
@@ -38,5 +38,7 @@ class SearchAttempt::Create < ApplicationInteractor
       user_id: @user&.id,
       owner: is_owner
     )
+
+    @link = @search_attempt.generate_link
   end
 end

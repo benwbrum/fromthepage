@@ -118,7 +118,7 @@ class DisplayController < ApplicationController
       # restrict to pages that include that subject
       @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
       @work = @search_attempt&.work
-      pages = @search_attempt.results
+      pages = @search_attempt.query_results
       @pages = pages.paginate(page: params[:page])
       @search_string = params[:id].split('-')[0...-1].join(' ')
     end

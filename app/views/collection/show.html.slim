@@ -97,21 +97,21 @@
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
+    =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', data: { turbo: true }) do
       -if @collection.is_a?(DocumentSet)
-        =hidden_field_tag('document_set_id', @collection.slug)
+        =hidden_field_tag :document_set_id, @collection.slug
       -else
-        =hidden_field_tag('collection_id', @collection.slug)
-      =search_field_tag :search, nil, placeholder: t('.search_the_text'), "aria-label" => t('.search_the_text_1')
+        =hidden_field_tag :collection_id, @collection.slug
+      =search_field_tag :search, nil, placeholder: t('.search_the_text'), aria: { label: t('.search_the_text_1') }
       =button_tag t('.search')
       =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
 
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+    =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', enforce_utf8: false, data: { turbo: true }) do
       -if @collection.is_a?(DocumentSet)
-        =hidden_field_tag('document_set_id', @collection.slug, {:id => "document set id for search work"})
+        =hidden_field_tag :document_set_id, @collection.slug, { id: 'document set id for search work' }
       -else
-        =hidden_field_tag('collection_id', @collection.slug, {:id => "collection id for search work"})
-      =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
+        =hidden_field_tag :collection_id, @collection.slug, { id: 'collection id for search work' }
+      =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), aria: { label: t('.search_by_title_1') }
       =button_tag t('.search')
       =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
 
