@@ -52,7 +52,7 @@
       .work-page_text[*language_attrs(@collection)]
         -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
         -if @search_string
-          -transcription = highlight_search_terms(transcription, @search_string)
+          -transcription = SearchAttempt::Lib::Utils.highlight_terms(transcription, @search_string)
         -if current_user
           -action = page_params(page)
         -else

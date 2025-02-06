@@ -1,5 +1,17 @@
 class SearchAttemptController < ApplicationController
   def create
+    @result = SearchAttempt::Create.new(search_attempt_params: search_attempt_params, user: current_user).call
+    @search_attempt = @result.search_attempt
+
+    if @result.success?
+      session[:search_attempt_id] = @search_attempt.id if @result.success?
+      redirect_to @search_attempt.results_link
+    end
+
+    respond_to(&:turbo_stream)
+  end
+
+  def create_old
     owner = current_user.nil? ? false : current_user.owner
     query = params[:search]
     # Some of these objects may be nil, based on the search type
@@ -62,5 +74,11 @@ class SearchAttemptController < ApplicationController
     end
 
     return head :ok
+  end
+
+  private
+
+  def search_attempt_params
+    params.permit(:search, :work_id, :collection_id, :document_set_id, :search_by_title)
   end
 end
