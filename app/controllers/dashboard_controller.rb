@@ -262,27 +262,6 @@ class DashboardController < ApplicationController
           end
       end
     else
-      users = User.owners
-                  .joins(:collections)
-                  .left_outer_joins(:document_sets)
-
-      org_owners = users.findaproject_orgs.with_owner_works
-      individual_owners = users.findaproject_individuals.with_owner_works
-      @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
-                     .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
-      @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
-
-      @new_projects = Collection.includes(:owner)
-                                .order('created_on DESC')
-                                .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                                .distinct
-                                .limit(10)
-
-      @new_document_sets = DocumentSet.includes(:owner)
-                                      .order('created_at DESC')
-                                      .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                                      .distinct
-                                      .limit(10)
       if params[:search]
         @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @search_results_map = {}
@@ -291,19 +270,40 @@ class DashboardController < ApplicationController
           @search_results_map[result.owner_user_id] << result
         end
       end
-      respond_to do |format|
-        format.html do
-          @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
-            a_date = a.is_a?(Collection) ? a.created_on : a.created_at
-            b_date = b.is_a?(Collection) ? b.created_on : b.created_at
-            b_date <=> a_date
-          end
+    end
+    users = User.owners
+      .joins(:collections)
+      .left_outer_joins(:document_sets)
 
-          @tag_map = Tag.featured_tags.group(:ai_text).count
+    org_owners = users.findaproject_orgs.with_owner_works
+    individual_owners = users.findaproject_individuals.with_owner_works
+    @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
+           .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
+    @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
+
+    @new_projects = Collection.includes(:owner)
+                      .order('created_on DESC')
+                      .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                      .distinct
+                      .limit(10)
+
+    @new_document_sets = DocumentSet.includes(:owner)
+                            .order('created_at DESC')
+                            .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                            .distinct
+                            .limit(10)
+    respond_to do |format|
+      format.html do
+        @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
+          a_date = a.is_a?(Collection) ? a.created_on : a.created_at
+          b_date = b.is_a?(Collection) ? b.created_on : b.created_at
+          b_date <=> a_date
         end
 
-        format.turbo_stream
+        @tag_map = Tag.featured_tags.group(:ai_text).count
       end
+
+      format.turbo_stream
     end
   end
 

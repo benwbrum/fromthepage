@@ -1,7 +1,7 @@
 // Tab Navigation
 // Tabs are "lazy loaded" meaning they require a render server side on change
 
-=form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+=form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       -if params[:mode].present?
         =hidden_field_tag :mode, params[:mode]
       -if params[:slug].present?

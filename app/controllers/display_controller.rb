@@ -141,7 +141,7 @@ class DisplayController < ApplicationController
         # TODO: Need metrics tracking from new_landing search
         # Redirect to "findaproject" tabbed search results
         redirect_to controller: 'dashboard',
-                    action: 'new_landing_page',
+                    action: 'landing_page',
                     search: @search_attempt.query,
                     mode: search_mode,
                     slug: search_slug

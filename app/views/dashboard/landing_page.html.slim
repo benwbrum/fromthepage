@@ -1,23 +1,35 @@
-ul.tagcloud
-  -@tag_map.each do |ai_text, collection_count|
-    -if collection_count > 0
-      li data-weight="#{collection_count}"
-        =link_to(ai_text, browse_tag_path(ai_text))
+- if !@search_results
+  ul.tagcloud
+    -@tag_map.each do |ai_text, collection_count|
+      -if collection_count > 0
+        li data-weight="#{collection_count}"
+          =link_to(ai_text, browse_tag_path(ai_text))
 
 .columns.project-list
-  article.maincol
-    h2 =t('.institutions')
-    =fe_filter_table_wrapper(selector: 'results') do
-      =fe_filter_form_wrapper(url: landing_page_path, selector: 'results', sorting: nil, ordering: nil) do
-        .wrapper [style="padding-top: 0px; padding-right: 0px;"]
-          =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
+  article.maincol  
+    - if @search_results && ELASTIC_ENABLED
+      =render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
+    - else
+      -if @search_results && @owners.empty?
+        -@search_results.each do |sr|
+          .project-list_projects
+            .projects-owner
+              h3.projects-owner_title
+                =link_to sr.owner.display_name, user_profile_path(sr.owner)
+            .projects
+    - if !@search_results
+      h2 =t('.institutions')
+      =fe_filter_table_wrapper(selector: 'results') do
+        =fe_filter_form_wrapper(url: landing_page_path, selector: 'results', sorting: nil, ordering: nil) do
+          .wrapper [style="padding-top: 0px; padding-right: 0px;"]
+            =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
 
-      =fe_filter_table(selector: 'results') do
-        .wrapper [style="padding: 0px;"]
-          =render partial: 'results'
+        =fe_filter_table(selector: 'results') do
+          .wrapper [style="padding: 0px;"]
+            =render partial: 'results'
 
-    .project-list_link
-      =link_to t('.all_collections'), collections_list_path
+      .project-list_link
+        =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
     h2 =t('.new_projects')
