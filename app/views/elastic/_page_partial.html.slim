@@ -1,8 +1,8 @@
 / Slim version of display/_pages_view repurposed for general search
--if @collection.text_entry?
-  -default_work_path = collection_read_work_path(@collection.owner, @collection, page.work)
+-if collection.text_entry?
+  -default_work_path = collection_read_work_path(collection.owner, collection, page.work)
 -else
-  -default_work_path = metadata_overview_collection_work_path(@collection.owner, @collection, page.work)
+  -default_work_path = metadata_overview_collection_work_path(collection.owner, collection, page.work)
 
 .work-page.search_result
   .work-page_thumbnail
@@ -33,7 +33,7 @@
     -if page.work.pages_are_meaningful
       h4.collection-work_title =link_to page.title, page_params(page), onclick: "resultClicked();"
 
-    .work-page_text.search_result[*language_attrs(@collection)]
+    .work-page_text.search_result[*language_attrs(collection)]
       -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
       -if @search_string
         -transcription = highlight_search_terms(transcription, @search_string)
@@ -45,7 +45,7 @@
       -if page.status_blank?
         p.nodata_text ==t('display.display_page.this_page_is_blank')
       -elsif transcription.present?
-        -if (page.status_incomplete? && @collection.active?)
+        -if (page.status_incomplete? && collection.active?)
           .incomplete_transcription
             ==transcription.force_encoding('utf-8')
           .incomplete_text
@@ -56,7 +56,7 @@
 
       -else
         -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
-          -if @collection.active?
+          -if collection.active?
             -if page.work.ocr_correction
               -status = t('display.pages_view.corrected')
               -help = link_to(t('.help_correct'), action, onclick: "resultClicked();")
@@ -70,7 +70,4 @@
           p.nodata_text == t('display.pages_view.collaboration_is_restricted')
       
     =render partial: 'elastic/breadcrumbs', locals: { doc: page }
-
-// Existing code needs @collection instance var but we don't want it set going forward
--@collection = nil
 

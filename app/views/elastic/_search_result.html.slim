@@ -1,5 +1,4 @@
 // Customize the rendering of each type here
-
 -if result.is_a?(Collection)
   .collection-work.search_result
     h2 =link_to result[:title], collection_path(result.owner.slug, result)
@@ -13,7 +12,7 @@
 -elsif result.is_a?(Page)
   / Collection work class provides consistent styling with other elements
   .collection-work.search_result
-    =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :@collection => result.collection} })
+    =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :collection => result.collection} })
 
 -elsif result.is_a?(User)
   .collection-work.search_result
@@ -21,4 +20,4 @@
     p =to_snippet(result[:about])
 
 -elsif result.is_a?(Work)
-  =render({ :partial => 'elastic/work_partial', :locals => { :work => result , :@collection => result.collection} })
+  =render({ :partial => 'elastic/work_partial', :locals => { :work => result , :collection => result.collection} })

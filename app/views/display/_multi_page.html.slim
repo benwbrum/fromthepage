@@ -28,6 +28,14 @@
           =search_field_tag :search, query, :placeholder => t('.search_in_work'), "aria-label" => t('.search_in_collection_1')
           =button_tag t('.search')
           =label_tag 'search_work_string', t('.search_in_work'), class: 'hidden'
+        h4 new search
+        =form_tag(collection_work_search_path, :method => :get, class: 'collection-search') do
+          =hidden_field_tag('work_id', @work.slug)
+          =search_field_tag :term, query, :placeholder => t('.search_in_work'), "aria-label" => t('.search_in_work')
+          =button_tag t('.search')
+          =label_tag 'search_work_string', t('.search_in_work'), class: 'hidden'
+
+
 
         -if @total != @count
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.slug, needs_review: 'none'}, class: 'review-button'

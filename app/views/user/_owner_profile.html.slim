@@ -1,4 +1,4 @@
-=form_tag({:controller => 'dashboard', :action => 'new_landing_page'}, method: :get,
+=form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get,
   enforce_utf8: false, class: 'collection-search') do
       =hidden_field_tag :org, user.slug
       =search_field_tag :search, params[:search], placeholder: t('dashboard.landing_page.search_org')

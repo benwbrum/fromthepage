@@ -3,7 +3,7 @@ class SearchAttemptController < ApplicationController
     owner = current_user.nil? ? false : current_user.owner
     query = params[:search]
     # Some of these objects may be nil, based on the search type
-    work = Work.find(params[:work_id]) if params[:work_id].present?
+    work = Work.find(params[:work_id].to_i) if params[:work_id].present?
     collection = Collection.find(params[:collection_id]) if params[:collection_id].present?
     document_set = DocumentSet.find(params[:document_set_id]) if params[:document_set_id].present?
 

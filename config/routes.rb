@@ -112,6 +112,7 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: :new_mobile_user
     post ':collection_id/email_link', to: 'collection#email_link', as: :email_link
     post 'update/:collection_id', to: 'collection#update', as: :update
+    get 'search/:term', to: 'collection#search'
 
     scope 'metadata', as: 'metadata' do
       get ':collection_id/example', to: 'metadata#example', as: :example
@@ -451,6 +452,7 @@ Fromthepage::Application.routes.draw do
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
+    get 'search/:term', to: 'user#search'
 
     resources :collection, path: '', only: [:show] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
@@ -529,7 +531,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
       get ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
       get ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
-
+      get ':work_id/search', to: 'work#search', as: 'work_search'
       #page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
       get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
