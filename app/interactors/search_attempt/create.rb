@@ -29,6 +29,8 @@ class SearchAttempt::Create < ApplicationInteractor
 
     query = query&.strip
 
+    context.fail! if query.blank?
+
     @search_attempt = SearchAttempt.create!(
       query: query,
       search_type: search_type,

@@ -6,8 +6,6 @@ class SearchAttemptController < ApplicationController
     if @result.success?
       session[:search_attempt_id] = @search_attempt.id if @result.success?
       redirect_to @result.link
-
-    # :nocov:
     else
       respond_to do |format|
         format.turbo_stream do
@@ -21,7 +19,6 @@ class SearchAttemptController < ApplicationController
         end
       end
     end
-    # :nocov:
   end
 
   def show
