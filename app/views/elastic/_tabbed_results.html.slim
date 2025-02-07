@@ -28,7 +28,7 @@ h3.search-heading
 -if @full_count.to_i > 0
   -if  @work.nil? #suppress tabs if we are in a work context
     .tabs
-      - permitted_params = [:search, :org, :mode, :slug]
+      - permitted_params = [:search, :org, :mode, :slug, :term]
       =link_to "All (#{@full_count.to_i})",
         params.permit(*permitted_params), class: "#{'active' if !params[:filter]}"
       -if @type_counts.has_key?(:ftp_user)

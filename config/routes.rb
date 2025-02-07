@@ -112,7 +112,6 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new_mobile_user', to: 'collection#new_mobile_user', as: :new_mobile_user
     post ':collection_id/email_link', to: 'collection#email_link', as: :email_link
     post 'update/:collection_id', to: 'collection#update', as: :update
-    get 'search/:term', to: 'collection#search'
 
     scope 'metadata', as: 'metadata' do
       get ':collection_id/example', to: 'metadata#example', as: :example
@@ -484,7 +483,8 @@ Fromthepage::Application.routes.draw do
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'facets'
-      post 'search'
+      post 'search', to: 'collection#facet_search', as: 'facet_search'
+      get 'search', to: 'collection#search', as: 'search'
 
       get 'edit', on: :member
       get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
