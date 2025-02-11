@@ -283,13 +283,7 @@ module ExportHelper
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
-    if defined? render_to_string
-      thingy = self
-    else
-      thingy = ApplicationController.new
-    end
-
-    xml = thingy.render_to_string(
+    xml = ApplicationController.renderer.render_to_string(
       layout: false, 
       template: "export/tei.html.erb",
       assigns: {
