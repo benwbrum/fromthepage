@@ -26,6 +26,8 @@ class Note < ApplicationRecord
   # automated stuff
   acts_as_tree
 
+  MAX_TITLE_LENGTH = 250
+
   # associations
   belongs_to :user, optional: true
   belongs_to :page, optional: true

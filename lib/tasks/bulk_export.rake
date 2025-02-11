@@ -7,11 +7,12 @@ namespace :fromthepage do
     end
   end
 
+
   desc "Process a bulk export"
   task :process_bulk_export, [:bulk_export_id] => :environment do |t,args|
     require "#{Rails.root}/app/helpers/error_helper"
     include ErrorHelper
-    include Rails.application.routes.url_helpers
+    # include Rails.application.routes.url_helpers
 
     bulk_export_id = args.bulk_export_id
     print "fetching bulk export with ID=#{bulk_export_id}\n"

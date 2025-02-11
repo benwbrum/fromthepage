@@ -7,6 +7,15 @@ module ExportService
   require 'subject_exporter'
   require 'subject_details_exporter'
 
+  include Rails.application.routes.url_helpers
+
+  # Quick and dirty override to ensure default_url_options is set.
+  def default_url_options
+    Rails.application.config.action_mailer.default_url_options || {}
+  end
+
+
+
   def path_from_work(work, original_filenames=false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
@@ -47,7 +56,7 @@ module ExportService
   def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
     rendered_markdown =
-      ApplicationController.new.render_to_string(
+      ApplicationController.renderer.render_to_string(
         template: '/export/facing_edition.html',
         layout: false,
         assigns: {
@@ -473,7 +482,7 @@ module ExportService
       unless page.table_cells.empty?
         has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
-        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+        page_url = collection_display_page_url(collection.owner, collection, work, page)
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
@@ -764,7 +773,7 @@ module ExportService
 
     notes = collection.notes.order(created_at: :desc)
     rows = notes.map {|n|
-      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_url =collection_display_page_url(collection.owner, collection, n.page.work, n.page)
       page_contributors = n.page.deeds
         .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
         .uniq.join('|')
