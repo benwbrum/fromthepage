@@ -144,7 +144,7 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
+    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
@@ -159,7 +159,7 @@ module ContentdmTranslator
       }
 
       message = {
-        :cdmurl => "https://#{cdm_server(manifest_at_id)}:8888",
+        :cdmurl => "http://#{cdm_server(manifest_at_id)}:8888",
         :username => username,
         :password => password,
         :license => license,
