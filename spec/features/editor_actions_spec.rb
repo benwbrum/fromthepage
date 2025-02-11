@@ -329,9 +329,10 @@ describe "editor actions" , :order => :defined do
       test_page = col.works.first.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       title = test_page.notes.last.id
+      note_id = test_page.notes.last.id
       page.find('.user-bubble_content', text: "Test two")
       accept_alert do
-        page.click_link('', :href => "/notes/#{title}")
+        find("form[data-turbo='true'][data-turbo-confirm='Are you sure you want to delete this note?'][action='/notes/#{note_id}'] button[type='submit']").click
       end
       sleep(3)
       expect(Note.find_by(id: title)).to be_nil
