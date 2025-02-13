@@ -44,4 +44,5 @@ fr:
       save_and_new_work: Enregistrer et nouveau œuvre
       title: Titre
     update:
-      page_updated: Page mise à jour
+      error: Impossible de mettre à jour la page
+      notice: La page a été mise à jour

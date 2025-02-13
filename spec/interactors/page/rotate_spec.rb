@@ -10,7 +10,7 @@ describe Page::Rotate do
   let(:orientation) { 0 }
 
   let(:result) do
-    described_class.call(page: page, orientation: orientation)
+    described_class.new(page: page, orientation: orientation).call
   end
 
   it 'no changes' do

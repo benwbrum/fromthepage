@@ -9,7 +9,7 @@ describe Page::Update do
   let(:page_params) { { title: 'Updated title', status: :new, translation_status: :new } }
 
   let(:result) do
-    described_class.call(page: page, page_params: page_params)
+    described_class.new(page: page, page_params: page_params).call
   end
 
   it 'updates page' do
@@ -54,10 +54,10 @@ describe Page::Update do
       }
     end
 
-    it 'fails to create new page' do
-      expect(result).to be_a_failure
+    it 'fails to update page' do
+      expect(result.success?).to be_falsey
 
-      expect(result.errors).to eq('unsupported file type')
+      expect(result.page.errors).to include(:base_image)
     end
   end
 end

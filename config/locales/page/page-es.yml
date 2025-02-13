@@ -44,4 +44,5 @@ es:
       save_and_new_work: Guardar y Obra Nuevo
       title: Título
     update:
-      page_updated: Página actualizada
+      error: No se pudo actualizar la página
+      notice: La página ha sido actualizada

@@ -44,4 +44,5 @@ en:
       save_and_new_work: Save & New Work
       title: Title
     update:
-      page_updated: Page updated
+      error: Failed to update page
+      notice: Page has been updated

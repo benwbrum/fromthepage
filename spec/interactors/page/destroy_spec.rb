@@ -7,7 +7,7 @@ describe Page::Destroy do
   let!(:page) { create(:page, :with_image, work: work, status: :new) }
 
   let(:result) do
-    described_class.call(page: page)
+    described_class.new(page: page).call
   end
 
   it 'deletes page' do
