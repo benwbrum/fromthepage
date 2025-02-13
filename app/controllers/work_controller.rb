@@ -45,6 +45,7 @@ class WorkController < ApplicationController
   def search
     search_page = (search_params[:page] || 1).to_i
     @term = search_params[:term]
+    @breadcrumb_scope={work: true}
 
     page_size = 10
 

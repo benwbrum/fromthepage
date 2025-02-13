@@ -10,20 +10,25 @@
 -elsif doc.is_a?(Page)
   -bc_work = doc.work
   -bc_page = doc
+-elsif doc.is_a?(Collection) || doc.is_a?(DocumentSet)
+  -bc_collection = doc
+
+-if bc_collection && !@breadcrumb_scope[:user]
+  -owner = bc_collection.owner
+  -path.push(link_to owner.display_name, user_profile_path(owner))
 
 / Build out breadcrumbs
--if bc_work
+-if bc_work && !@breadcrumb_scope[:collection]
   -access = bc_work.access_object(current_user)
   -if access.is_a?(DocumentSet) && access.title.present?
     -path.push(link_to access.title, document_set_path(access.owner, access))
   -elsif access.is_a?(Collection) && access.title.present?
     -path.push(link_to access.title, collection_path(access.owner, access))
 
--if bc_page && bc_work.title.present?
+-if bc_page && bc_work.title.present? && !@breadcrumb_scope[:work]
   -path.push(link_to bc_work.title, collection_read_work_path(bc_work.collection.owner, bc_work.collection, bc_work))
 
-/ Render
--if path.present?
+
   ul.breadcrumbs.smaller
     -path.each do |item|
       li =item

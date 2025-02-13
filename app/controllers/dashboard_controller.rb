@@ -183,6 +183,7 @@ class DashboardController < ApplicationController
       search_page = (params[:page] || 1).to_i
 
       page_size = 10
+      @breadcrumb_scope={site: true}
 
       query_config = {}
       if params[:org]
@@ -444,4 +445,6 @@ class DashboardController < ApplicationController
 
     collections_query + document_sets_query
   end
+
+
 end

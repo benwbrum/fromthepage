@@ -451,7 +451,7 @@ Fromthepage::Application.routes.draw do
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
-    get 'search/:term', to: 'user#search'
+    get 'search', to: 'user#search', as: :owner_search
 
     resources :collection, path: '', only: [:show] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'

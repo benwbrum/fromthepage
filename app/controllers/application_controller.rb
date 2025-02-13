@@ -329,12 +329,12 @@ end
   def page_params(page)
     if page.status_new?
       if user_signed_in?
-        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
+        collection_transcribe_page_path(page.work.collection.owner, page.work.collection, page.work, page)
       else
-        collection_guest_page_path(@collection.owner, @collection, page.work, page)
+        collection_guest_page_path(page.work.collection.owner, page.work.collection, page.work, page)
       end
     else
-      collection_display_page_path(@collection.owner, @collection, page.work, page)
+      collection_display_page_path(page.work.collection.owner, page.work.collection, page.work, page)
     end
   end
 

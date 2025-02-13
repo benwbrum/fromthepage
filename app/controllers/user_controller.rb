@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  include ElasticSearchable
   before_action :remove_col_id, :only => [:profile, :update_profile]
   before_action :authorized?, :only => [:update_profile, :update]
 
@@ -151,6 +152,53 @@ class UserController < ApplicationController
     @carousel_collections = (collections + sets).sample(8)
   end
 
+  def search # ElasticSearch version
+    @user = User.friendly.find(params[:user_slug])
+    search_page = (search_params[:page] || 1).to_i
+    @term = search_params[:term]
+    @breadcrumb_scope={user: true}
+
+    page_size = 10
+    
+    query_config = {
+      type: 'org',
+      org_id: @user.id
+    }
+    @org_filter = @user
+  
+    search_data = elastic_search_results(
+      @term,
+      search_page,
+      page_size,
+      search_params[:filter],
+      query_config
+    )
+
+    if search_data
+      inflated_results = search_data[:inflated]
+      @full_count = search_data[:full_count] # Used by All tab
+      @type_counts = search_data[:type_counts]
+
+      # Used for pagination, currently capped at 10k
+      #
+      # TODO: ES requires a scroll/search_after query for result sets larger
+      #       than 10k.
+      #
+      #       To setup support we just need to add a composite tiebreaker field
+      #       to the schemas
+      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+      # Inspired by display controller search
+      @search_string = "\"#{@term || ""}\""
+      @search_results = WillPaginate::Collection.create(
+        search_page,
+        page_size,
+        @filtered_count) do |pager|
+          pager.replace(inflated_results)
+        end
+    end
+  end
+
   private
 
   def authorized?
@@ -161,6 +209,10 @@ class UserController < ApplicationController
     unless current_user && (@user == current_user || current_user.admin?)
       redirect_to dashboard_path
     end
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :user_id)
   end
 
 
