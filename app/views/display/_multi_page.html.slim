@@ -31,10 +31,10 @@
 
         -if @total != @count
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.slug, needs_review: 'none'}, class: 'review-button'
-        -elsif @collection.active?
+        -elsif @collection.active? && current_user&.can_transcribe?(@work, @collection)
           -if @work.pages.needs_transcription.any?
             =button_to t('.pages_need_transcription'), { action: "read_work", work_id: @work.slug, needs_review: 'transcription' }, class: 'review-button'
-          -if user_signed_in? && current_user.can_review?(@collection)
+          -if current_user&.can_review?(@collection)
             -if @work.pages.review.any?
               =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'review' }, class: 'review-button'
           -if @work.pages.needs_index.any?

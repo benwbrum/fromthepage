@@ -298,6 +298,10 @@ class Collection < ApplicationRecord
     !restricted
   end
 
+  def visibility_read_only?
+    false
+  end
+
   def active?
     self.is_active
   end
