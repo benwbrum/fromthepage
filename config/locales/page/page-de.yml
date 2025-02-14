@@ -44,4 +44,5 @@ de:
       save_and_new_work: Speichern & neues Werk
       title: Titel
     update:
-      page_updated: Seite aktualisiert
+      error: Seite konnte nicht aktualisiert werden
+      notice: Seite wurde aktualisiert

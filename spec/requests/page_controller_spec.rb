@@ -138,30 +138,15 @@ describe PageController do
       }
     end
 
-    let(:subject) { put action_path, params: params }
+    let(:subject) { put action_path, params: params, as: :turbo_stream }
 
     context 'correct params' do
-      it 'redirects' do
+      it 'renders status and template' do
         login_as owner
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(
-          collection_edit_page_path(owner, collection, work, page)
-        )
-      end
-
-      context 'as xhr' do
-        let(:headers) { { 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest' } }
-        let(:subject) { put action_path, params: params, headers: headers }
-
-        it 'renders json' do
-          login_as owner
-          subject
-
-          expect(response.content_type).to eq('application/json; charset=utf-8')
-          expect(JSON.parse(response.body)['success']).to be_truthy
-        end
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
       end
     end
 
@@ -173,24 +158,8 @@ describe PageController do
         login_as owner
         subject
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to render_template(:edit)
-      end
-
-      context 'as xhr' do
-        let(:headers) { { 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest' } }
-        let(:subject) { put action_path, params: params, headers: headers }
-
-        it 'renders json' do
-          login_as owner
-          subject
-
-          expect(response.content_type).to eq('application/json; charset=utf-8')
-          expect(JSON.parse(response.body)['success']).to be_falsey
-          expect(JSON.parse(response.body)['errors']).to eq(
-            'unsupported file type'
-          )
-        end
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
       end
     end
   end
