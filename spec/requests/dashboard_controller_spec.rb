@@ -275,7 +275,16 @@ describe DashboardController do
   end
 
   describe '#browse_tag' do
-    let!(:tag) { create(:tag) }
+    let(:intro_block) { '<h1> Intro Block </h1>' }
+    let!(:collection) do
+      create(:collection, :with_pages, :with_picture, owner_user_id: owner.id, intro_block: intro_block)
+    end
+    let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let!(:document_set) do
+      create(:document_set, :public, :with_picture, collection_id: collection.id, owner_user_id: owner.id,
+                                                    description: intro_block, works: [work])
+    end
+    let!(:tag) { create(:tag, collections: [collection]) }
     let(:action_path) { browse_tag_path(ai_text: tag.ai_text) }
 
     let(:subject) { get action_path }

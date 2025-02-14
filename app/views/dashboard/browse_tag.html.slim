@@ -1,9 +1,7 @@
-h2 
-  span Collections tagged 
+h2
+  span Collections tagged
   i =@tag.ai_text
 
-/ Display a list of collections with teaser images and snippets as tiles
--@collections.each do |collection|
-  =render(partial: 'shared/collection_tile', locals: { collection: collection })
-  
-      
+.collection-tiles-wrapper
+  -@collections.each do |collection|
+    =render(partial: 'shared/collection_tile', locals: { collection: collection })
