@@ -1,5 +1,5 @@
-class Page::Destroy
-  include Interactor
+class Page::Destroy < ApplicationInteractor
+  attr_accessor :page
 
   def initialize(page:)
     @page = page
@@ -7,9 +7,7 @@ class Page::Destroy
     super
   end
 
-  def call
+  def perform
     @page.destroy
-
-    context
   end
 end

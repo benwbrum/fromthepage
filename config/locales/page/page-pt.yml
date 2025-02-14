@@ -44,4 +44,5 @@ pt:
       save_and_new_work: Salvar & Nova Obra
       title: Título
     update:
-      page_updated: Esta página foi atualizada
+      error: Falha ao atualizar a página
+      notice: A página foi atualizada

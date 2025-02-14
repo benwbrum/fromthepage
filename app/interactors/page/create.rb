@@ -1,6 +1,7 @@
-class Page::Create
+class Page::Create < ApplicationInteractor
+  attr_accessor :page
+
   include Page::Lib::Common
-  include Interactor
 
   def initialize(work:, page_params:)
     @work        = work
@@ -9,15 +10,12 @@ class Page::Create
     super
   end
 
-  def call
+  def perform
     ActiveRecord::Base.transaction do
       @page = Page.new(@page_params)
       @work.pages << @page
 
-      context.page = @page
       process_uploaded_file(@page_params[:base_image]) if @page_params[:base_image]
     end
-
-    context
   end
 end
