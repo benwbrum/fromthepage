@@ -541,6 +541,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/next_untranscribed_page', as: 'next_untranscribed_page', to: 'transcribe#goto_next_untranscribed_page'
 
       get ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
+      get ':work_id/htr/:page_id', as: 'htr', to: 'page_version#htr'
       get ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
       get ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
       get ':work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'

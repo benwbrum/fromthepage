@@ -17,4 +17,10 @@ class PageVersionController < ApplicationController
     render 'show'
   end
 
+  def htr
+    @alto_xml = @selected_version.page.alto_xml
+    @ai_txt = @selected_version.page.ai_plaintext
+    render 'htr'
+  end
+
 end
