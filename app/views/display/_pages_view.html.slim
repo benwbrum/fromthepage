@@ -61,8 +61,8 @@
 
         -if page.status_blank?
           p.nodata_text ==t('.this_page_is_blank')
-        -elsif transcription.present? && can_transcribe
-          -if (page.status_incomplete? && @collection.active?)
+        -elsif transcription.present?
+          -if page.status_incomplete? && @collection.active? && can_transcribe
             .incomplete_transcription
               ==transcription.force_encoding('utf-8')
             .incomplete_text
