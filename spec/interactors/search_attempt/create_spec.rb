@@ -126,4 +126,60 @@ describe SearchAttempt::Create do
       )
     end
   end
+
+  context 'query results when "" query string' do
+    let(:search_type) { '' }
+    let(:search_attempt) do
+      create(:search_attempt, search_type: search_type, query: '', work_id: work.id, collection_id: collection.id)
+    end
+
+    let(:result) do
+      SearchAttempt::Lib::Utils.query_results(search_attempt)
+    end
+
+    context 'when work' do
+      let(:search_type) { 'work' }
+
+      it 'returns empty query' do
+        expect(result.none?).to be_truthy
+      end
+    end
+
+    context 'when work' do
+      let(:search_type) { 'work' }
+
+      it 'returns empty query' do
+        expect(result.none?).to be_truthy
+      end
+    end
+
+    context 'when collection' do
+      let(:search_type) { 'collection' }
+
+      it 'returns empty query' do
+        expect(result.none?).to be_truthy
+      end
+    end
+  end
+
+  context 'sanitize empty query string' do
+    let(:result) do
+      SearchAttempt::Lib::Utils.sanitize_and_format_search_string(nil)
+    end
+
+    it 'returns empty string' do
+      expect(result).to eq('')
+    end
+  end
+
+  context 'precise search string empty query string' do
+    let(:search_string) { 'foo-bar' }
+    let(:result) do
+      SearchAttempt::Lib::Utils.precise_search_string(search_string)
+    end
+
+    it 'returns empty string' do
+      expect(result).to eq(search_string)
+    end
+  end
 end

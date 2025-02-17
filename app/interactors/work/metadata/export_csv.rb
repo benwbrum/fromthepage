@@ -73,7 +73,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
           collection_read_work_url(@collection.owner, @collection, work),
           work.description,
           work.identifier,
-          work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.sc_manifest&.at_id.presence || '',
           work.created_on,
           work.work_statistic.total_pages,
           work.work_statistic.transcribed_pages,

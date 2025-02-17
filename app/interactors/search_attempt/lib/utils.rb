@@ -60,11 +60,12 @@ class SearchAttempt::Lib::Utils
     when 'collection-title'
       collection = search_attempt.collection || search_attempt.document_set
       results = collection.search_works(query).includes(:work_statistic)
-    when 'findaproject'
+    else
+      # when 'findaproject'
       results = Collection.search(query).unrestricted + DocumentSet.search(query).unrestricted
     end
 
-    search_attempt.update_attribute(:hits, results&.count || 0)
+    search_attempt.update_attribute(:hits, results.count)
 
     results
   end
