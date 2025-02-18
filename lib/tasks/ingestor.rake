@@ -325,7 +325,8 @@ namespace :fromthepage do
           ds = DocumentSet.new
           ds.title = set_title
           ds.collection = collection
-          ds.is_public = !collection.restricted # inherit public setting of parent collection
+          # inherit public setting of parent collection
+          ds.visibility = collection.restricted ? :private : :public
           ds.owner_user_id = collection.owner_user_id
           ds.save!
         end
