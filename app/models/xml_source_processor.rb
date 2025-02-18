@@ -537,7 +537,7 @@ EOF
       text_table = pipe_tables_formatting(text_table)
     end
 
-    text_table
+    "#{text_table}\n\n"
   end
 
 
