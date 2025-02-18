@@ -81,7 +81,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content('Test Document Set 3')
     expect(DocumentSet.last.is_public).to be true
     # make the set private
-    page.find('.button', text: 'Make Document Set Private').click
+    page.choose('document_set_visibility_private')
     expect(DocumentSet.last.is_public).to be false
     expect(page).to have_content('Document set collaborators')
     # manually assign works until have the jqery test set
@@ -299,16 +299,16 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
-  it "checks document set subject tabs" do
-    login_as(@owner, :scope => :user)
+  it 'checks document set subject tabs' do
+    login_as(@owner, scope: :user)
     @article = @set.articles.first
     visit collection_article_show_path(@set.owner, @set, @article.id)
-    expect(page).to have_content("Description")
+    expect(page).to have_content('Description')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('a', text: 'Edit the description in the settings tab.').click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    expect(page).to have_content("Title")
-    page.find('.tabs').click_link("Overview")
+    expect(page).to have_content('Title')
+    page.find('.tabs').click_link('Overview')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
     # click_button("Search All Pages")

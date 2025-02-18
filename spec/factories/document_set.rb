@@ -5,13 +5,15 @@ FactoryBot.define do
     owner_user_id { association(:owner).id }
 
     trait :public do
-      # Document Sets are private by default!
-      is_public { true }
+      visibility { :public }
     end
 
     trait :private do
-      # Document Sets are private by default!
-      is_public { false }
+      visibility { :private }
+    end
+
+    trait :read_only do
+      visibility { :read_only }
     end
 
     trait :with_picture do

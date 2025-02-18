@@ -20,9 +20,9 @@ class DocumentSet::Update < ApplicationInteractor
   private
 
   def toggle_privacy
-    return unless @document_set_params[:is_public].present?
+    return unless @document_set_params[:visibility].present?
 
-    is_public = ActiveRecord::Type::Boolean.new.cast(@document_set_params[:is_public])
-    @document_set_params[:is_public] = is_public
+    visibility = DocumentSet.visibilities[@document_set_params[:visibility]] || DocumentSet.visibilities[:public]
+    @document_set_params[:visibility] = visibility
   end
 end

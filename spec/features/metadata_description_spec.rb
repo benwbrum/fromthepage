@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "Metadata Description" do
@@ -7,12 +6,11 @@ describe "Metadata Description" do
     @collections = @owner.all_owner_collections
     @collection = @collections.second
   end
+
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit '/feature/description/enable'
   end
-
-
 
   # factory code from work spec
   # let(:work_no_ocr){ create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: false) }
@@ -27,8 +25,7 @@ describe "Metadata Description" do
     page.check("Enable metadata description")
     expect(page).to have_checked_field('Enable metadata description')
 
-    button = page.find_link 'Edit Metadata Form'
-    expect(button['disabled']).not_to eq('disabled')
+    expect(page.find("#metadata-fields-edit")[:disabled]).not_to eq("disabled")
     expect(Collection.find(@collection.id).data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
 
     visit edit_collection_path(@owner, @collection)
@@ -36,8 +33,7 @@ describe "Metadata Description" do
     page.uncheck("Enable metadata description")
     expect(page).to have_unchecked_field('Enable metadata description')
 
-    button = page.find_link 'Edit Metadata Form'
-    expect(button['disabled']).to eq('disabled')
+    expect(page.find("#metadata-fields-edit")[:disabled]).to eq("disabled")
     expect(@collection.data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
   end
 

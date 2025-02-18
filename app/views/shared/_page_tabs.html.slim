@@ -4,7 +4,7 @@
   :path => "#{collection_display_page_path(@collection.owner, @collection, @work, @page.id)}",
 }]
 -if @collection.active? # Inactive Collections shouldn't displa this stuff
-  -if user_signed_in? && current_user.can_transcribe?(@work)
+  -if current_user&.can_transcribe?(@work, @collection)
     -if correction_mode?
       -tabs += [{\
         :name => t('.correct'),
@@ -25,7 +25,7 @@
         :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
       }]
 
-  -if !current_user && !@work.restrict_scribes
+  -if !(user_signed_in? || @collection.visibility_read_only? && @work.restrict_scribes)
     -tabs += [{\
       :name => t('.transcribe'),
       :selected => 3,

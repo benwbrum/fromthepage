@@ -15,18 +15,6 @@ class TranscribeController  < ApplicationController
   skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
   skip_around_action :switch_locale, only: [:still_editing, :active_editing]
 
-  def authorized?
-    unless user_signed_in? && current_user.can_transcribe?(@work)
-      redirect_to new_user_session_path
-    end
-  end
-
-  def active?
-    unless @collection.active?
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-    end
-  end
-
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
@@ -614,6 +602,24 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  def authorized?
+    unless user_signed_in?
+      redirect_to new_user_session_path
+
+      return
+    end
+
+    return if current_user.can_transcribe?(@work, @collection)
+
+    redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page)
+  end
+
+  def active?
+    return if @collection.active?
+
+    redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+  end
 
   def rollback_article_categories(destroy_ids, unset_ids)
     Article.where(id: unset_ids).update(categories: []) if unset_ids

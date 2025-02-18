@@ -51,4 +51,10 @@ module ResourcesHelper
       [t('document_sets.edit_works.not_included'), 'not_included']
     ]
   end
+
+  def document_set_visibility_options
+    DocumentSet.visibilities.keys.map do |key|
+      [t("document_sets.new.#{key}"), key]
+    end
+  end
 end

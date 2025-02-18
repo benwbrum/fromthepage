@@ -48,6 +48,7 @@
     .work-page_content
       -if page.work.pages_are_meaningful
         h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
+        -can_transcribe = current_user&.can_transcribe?(page.work, @collection) || !(user_signed_in? || @collection.visibility_read_only? && page.work.restrict_scribes)
 
       .work-page_text[*language_attrs(@collection)]
         -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
@@ -61,7 +62,7 @@
         -if page.status_blank?
           p.nodata_text ==t('.this_page_is_blank')
         -elsif transcription.present?
-          -if (page.status_incomplete? && @collection.active?)
+          -if page.status_incomplete? && @collection.active? && can_transcribe
             .incomplete_transcription
               ==transcription.force_encoding('utf-8')
             .incomplete_text
@@ -71,7 +72,7 @@
             ==transcription.force_encoding('utf-8')
 
         -else
-          -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+          -if can_transcribe
             -if @collection.active?
               -if page.work.ocr_correction
                 -status = t('.corrected')
@@ -93,7 +94,7 @@
             p.nodata_text == t('.this_page_is_blank')
           -elsif translation.present?
             ==translation.force_encoding('utf-8')
-          -else
+          -elsif can_transcribe
             -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page), onclick: "resultClicked();")
             p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 

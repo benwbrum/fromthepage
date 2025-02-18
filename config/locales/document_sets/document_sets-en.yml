@@ -19,14 +19,15 @@ en:
       url_description: Please use lowercase letters and dashes between any words.
     edit_privacy:
       document_set_collaborators: Document set collaborators
-      document_set_privacy: 'Document Set Privacy: <i>%{privacy}</i>'
+      document_set_privacy_private: 'Document Set Privacy: <i>Private</i>'
+      document_set_privacy_public: 'Document Set Privacy: <i>Public</i>'
+      document_set_privacy_read_only: 'Document Set Privacy: <i>Read-only</i>'
       document_set_restricted_description: The document set can only be viewed by the collaborators listed below. You may make the collection publicly readable.
       document_set_unrestricted_description: The document set can be viewed by anyone on the internet. Any works put within a public document set will be readable, even if the parent collection is private.  You may make the document set private to restrict its visiblity to collaborators.
       edit_collaborators: Edit Collaborators
-      make_document_set_private: Make Document Set Private
-      make_document_set_public: Make Document Set Public
       private: Private
       public: Public
+      read_only: Read-only
     edit_set_collaborators:
       remove_collaborator: Remove collaborator
       set_collaborators: Document set collaborators
@@ -79,8 +80,11 @@ en:
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       document_set_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
+      private: Private
       public: Public
+      read_only: Read-only
       title: Title
+      visibility: Visibility
     settings:
       add: Add
       done: Done
