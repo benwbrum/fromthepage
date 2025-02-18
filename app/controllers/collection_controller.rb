@@ -202,7 +202,7 @@ class CollectionController < ApplicationController
           if session[:search_attempt_id] != @search_attempt.id
             session[:search_attempt_id] = @search_attempt.id
           end
-          @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+          @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
 
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
@@ -268,7 +268,7 @@ class CollectionController < ApplicationController
             if session[:search_attempt_id] != @search_attempt.id
               session[:search_attempt_id] = @search_attempt.id
             end
-            @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+            @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)

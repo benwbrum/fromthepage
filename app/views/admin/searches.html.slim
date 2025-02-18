@@ -33,7 +33,7 @@ table.admin-grid.datagrid.striped
     -@searches.each do |search|
       tr
         td.toleft
-          div =link_to search.query, search.results_link
+          div =link_to search.query, search.generate_link
         td.nowrap =t(".search_type.#{search.search_type}")
         td
           -if search.collection
