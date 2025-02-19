@@ -30,7 +30,7 @@ module DisplayHelper
       if page.work.ocr_correction
         @wording = t('.correct')
       else
-        @wording = t('.transcribe')
+        @wording = t('.incomplete')
       end
     elsif page.status_blank?
       @wording = t('.blank_page')
@@ -63,7 +63,7 @@ module DisplayHelper
       @wording = t('.completed')
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
     else
-      @wording = t('.transcribe')
+      @wording = t('.incomplete')
     end
   end
 
