@@ -2,36 +2,41 @@
 / State setup
 -path = []
 
--bc_work = nil
 -bc_page = nil
+-bc_work = nil
+-bc_collection = nil
+-bc_owner = nil
 
 -if doc.is_a?(Work)
-  -bc_work = doc
+  / -bc_work = doc
+  -bc_collection = doc.access_object(current_user)
+  -bc_owner = doc.collection.owner
 -elsif doc.is_a?(Page)
+  / -bc_page = doc
   -bc_work = doc.work
-  -bc_page = doc
+  -bc_collection = doc.work.access_object(current_user)
+  -bc_owner = doc.work.collection.owner
 -elsif doc.is_a?(Collection) || doc.is_a?(DocumentSet)
-  -bc_collection = doc
+  / -bc_collection = doc
+  -bc_owner = doc.owner
+-elsif doc.is_a?(User)
+  -bc_owner = doc
 
--if bc_collection && !@breadcrumb_scope[:user]
-  -owner = bc_collection.owner
-  -path.push(link_to owner.display_name, user_profile_path(owner))
+-if bc_owner && @breadcrumb_scope[:site]
+  -path.push(link_to bc_owner.display_name, user_profile_path(bc_owner))
 
-/ Build out breadcrumbs
--if bc_work && !@breadcrumb_scope[:collection]
-  -access = bc_work.access_object(current_user)
-  -if access.is_a?(DocumentSet) && access.title.present?
-    -path.push(link_to access.title, document_set_path(access.owner, access))
-  -elsif access.is_a?(Collection) && access.title.present?
-    -path.push(link_to access.title, collection_path(access.owner, access))
+-if bc_collection && (@breadcrumb_scope[:owner] || @breadcrumb_scope[:site])
+  -if bc_collection.is_a?(DocumentSet)
+    -path.push(link_to bc_collection.title, document_set_path(bc_collection.owner, bc_collection))
+  -elsif bc_collection.is_a?(Collection)
+    -path.push(link_to bc_collection.title, collection_path(bc_collection.owner, bc_collection))
 
--if bc_page && bc_work.title.present? && !@breadcrumb_scope[:work]
-  -path.push(link_to bc_work.title, collection_read_work_path(bc_work.collection.owner, bc_work.collection, bc_work))
+-if bc_work && bc_collection && (@breadcrumb_scope[:collection] || @breadcrumb_scope[:site] || @breadcrumb_scope[:owner])
+  -path.push(link_to bc_work.title, collection_read_work_path(bc_owner.slug, bc_collection.slug, bc_work.slug))
 
-
-  ul.breadcrumbs.smaller
-    -path.each do |item|
-      li =item
+ul.breadcrumbs.smaller
+  -path.each do |item|
+    li =item
 
 
   

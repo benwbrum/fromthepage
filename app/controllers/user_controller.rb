@@ -156,7 +156,7 @@ class UserController < ApplicationController
     @user = User.friendly.find(params[:user_slug])
     search_page = (search_params[:page] || 1).to_i
     @term = search_params[:term]
-    @breadcrumb_scope={user: true}
+    @breadcrumb_scope={owner: true}
 
     page_size = 10
     

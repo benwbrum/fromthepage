@@ -3,11 +3,13 @@
   .collection-work.search_result
     h2 =link_to result[:title], collection_path(result.owner.slug, result)
     p =to_snippet(result[:intro_block])
+    =render partial: 'elastic/breadcrumbs', locals: { doc: result }
 
 -elsif result.is_a?(DocumentSet)
   .collection-work.search_result
     h2 =link_to result[:title], collection_path(result.owner, result)
     p =to_snippet(result[:description])
+    =render partial: 'elastic/breadcrumbs', locals: { doc: result }
 
 -elsif result.is_a?(Page)
   / Collection work class provides consistent styling with other elements
