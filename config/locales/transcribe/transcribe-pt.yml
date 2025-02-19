@@ -46,6 +46,7 @@ pt:
       sign_up_now_to_transcribe: Inscreva-se agora para transcrever.
       transcribe_as_guest: Transcrever como hóspede
     mark_page_blank:
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
     save_buttons:
       approve: Confirmar
@@ -68,6 +69,7 @@ pt:
       save_to_transcribed_tooltip: Salve suas alterações
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
       you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     save_translation:
