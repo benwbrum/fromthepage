@@ -270,14 +270,13 @@ class Work < ApplicationRecord
     metadata
   end
 
-
   def access_object(user)
     if self.collection.show_to?(user)
       # public collection or collection that has authorized access
       self.collection
     elsif self.collection.supports_document_sets
       # private collection whcih might have document sets that grant access
-      alternative_set = self.document_sets.where(:is_public => true).first
+      alternative_set = self.document_sets.unrestricted.first
       if alternative_set
         alternative_set
       else

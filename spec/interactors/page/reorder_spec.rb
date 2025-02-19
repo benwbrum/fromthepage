@@ -10,7 +10,7 @@ describe Page::Reorder do
   let(:direction) {}
 
   let(:result) do
-    described_class.call(page: page_2, direction: direction)
+    described_class.new(page: page_2, direction: direction).call
   end
 
   context 'it moves up' do

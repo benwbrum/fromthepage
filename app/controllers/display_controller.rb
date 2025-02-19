@@ -113,9 +113,8 @@ class DisplayController < ApplicationController
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
       @search_attempt = SearchAttempt.find_by(slug: params[:id])
-      if session[:search_attempt_id] != @search_attempt.id
-        session[:search_attempt_id] = @search_attempt.id
-      end
+      session[:search_attempt_id] = @search_attempt.id if session[:search_attempt_id] != @search_attempt.id
+
       # restrict to pages that include that subject
       @collection = @search_attempt.collection || @search_attempt.document_set || @search_attempt.work.collection
       @work = @search_attempt&.work
@@ -146,10 +145,10 @@ class DisplayController < ApplicationController
                     mode: search_mode,
                     slug: search_slug
       else
-        pages = @search_attempt.results
+        pages = @search_attempt.query_results
         @pages = pages.paginate(page: params[:page])
       end
-      @search_string = "\"#{params[:id].split("-")[0]}\""
+      @search_string = params[:id].split('-')[0...-1].join(' ')
     end
     logger.debug "DEBUG #{@search_string}"
   end

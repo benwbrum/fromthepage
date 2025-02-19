@@ -13,6 +13,11 @@ es:
       page_notes: Notas de página
       pages_and_notes_counts: "%{posts_count} notas en %{topics_count} páginas"
       total_notes: "%{count} notas"
+    form:
+      microphone: Micrófono
+      note_body: Cuerpo de la Nota
+      save_note: Guardar Nota
+      write_a_new_note: Escribir una nueva nota...
     index:
       collection_title: 'Colección: %{title}'
       notes: Notas
@@ -31,13 +36,9 @@ es:
       microphone: Micrófono
       update: Actualizar
     notes:
-      microphone: Micrófono
       nobody_has_written_a_note: Nadie ha escrito una nota para esta página todavía
-      note_body: Cuerpo de la Nota
       please_sign_in_to_write: Por favor, %{link} para escribir una nota para esta página
-      save_note: Guardar Nota
       sign_in: registrarse
-      write_a_new_note: Escribir una nueva nota...
     table:
       collection: Recopilación
       note: Nota

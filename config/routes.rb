@@ -32,7 +32,7 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  resources :notes, except: [:show, :edit]
+  resources :notes, except: [:show]
   get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
@@ -209,10 +209,8 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
 
-  scope 'search_attempt', as: 'search_attempt' do
-    get 'create', to: 'search_attempt#create'
-    get 'click', to: 'search_attempt#click'
-    get ':id', to: 'search_attempt#show', as: 'show'
+  resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
+    get :click, to: 'search_attempt#click', on: :collection
   end
 
   scope 'category', as: 'category' do

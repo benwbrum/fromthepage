@@ -5,11 +5,11 @@
 #  id                         :integer          not null, primary key
 #  default_orientation        :string(255)
 #  description                :text(65535)
-#  is_public                  :boolean
 #  pct_completed              :integer
 #  picture                    :string(255)
 #  slug                       :string(255)
 #  title                      :string(255)
+#  visibility                 :integer          default("private"), not null
 #  works_count                :integer          default(0)
 #  created_at                 :datetime
 #  updated_at                 :datetime
@@ -58,14 +58,15 @@ class DocumentSet < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(is_public: true) }
-  scope :restricted, -> { where(is_public: false) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: [:private]) }
+
   scope :carousel, -> {
     where(pct_completed: [nil, 1..90])
       .joins(:collection)
       .where.not(collections: { picture: nil })
       .where.not(description: [nil, ''])
-      .where(is_public: true)
+      .unrestricted
       .reorder(Arel.sql('RAND()'))
   }
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
@@ -94,6 +95,12 @@ class DocumentSet < ApplicationRecord
       title: self.title
     }
   end
+
+  enum visibility: {
+    private: 0,
+    public: 1,
+    read_only: 2
+  }, _prefix: :visibility
 
   def show_to?(user)
     is_public? || user&.like_owner?(self) || user&.collaborator?(self)
@@ -170,7 +177,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def restricted
-    !is_public
+    visibility_private?
   end
 
   def picture_url(thumb = nil)
@@ -182,7 +189,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def set_next_untranscribed_page
-    first_work = works.order_by_incomplete.first
+    first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
     first_page = first_work&.next_untranscribed_page
     page_id = first_page&.id
 
@@ -191,21 +198,13 @@ class DocumentSet < ApplicationRecord
 
   def find_next_untranscribed_page_for_user(user)
     return nil unless has_untranscribed_pages?
-    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
-    public_works = works.where.not(next_untranscribed_page_id: nil)
-                        .unrestricted
-                        .order_by_incomplete
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
+                  .order_by_incomplete
 
-    return public_works.first.next_untranscribed_page unless public_works.empty?
-
-    private_works = works.where.not(next_untranscribed_page_id: nil)
-                         .restricted
-                         .order_by_incomplete
-
-    wk = private_works.find{ |w| user.can_transcribe?(w) }
-
-    wk&.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
@@ -258,6 +257,14 @@ class DocumentSet < ApplicationRecord
 
   def user_help
     collection.owner.help
+  end
+
+  def is_public
+    visibility_public?
+  end
+
+  def is_public?
+    visibility_public?
   end
 
   public :user_help

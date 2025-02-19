@@ -366,7 +366,7 @@ describe CollectionController do
   describe '#works_list' do
     let(:action_path) { collection_works_list_path(owner, collection) }
     let(:params) { {} }
-    let(:subject) { get action_path }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status and template' do
       login_as owner

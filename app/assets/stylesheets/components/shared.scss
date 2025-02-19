@@ -303,7 +303,7 @@
 
   /* border-radius: 5px; */
   opacity: 0;
-  position: absolute; 
+  position: absolute;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
   -ms-transition: opacity 0.5s;
@@ -349,7 +349,7 @@
 
   /* border-radius: 5px; */
   opacity: 0;
-  position: absolute; 
+  position: absolute;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
   -ms-transition: opacity 0.5s;
@@ -1038,13 +1038,6 @@ button, .button, .dropdown dd a {
   display: inline-block;
   box-sizing: border-box;
   margin-bottom: $gapSize / 2;
-  &.editable {
-    .user-bubble_form { display: none; }
-    &.edit {
-      .user-bubble_content { display: none; }
-      .user-bubble_form { display: block; }
-    }
-  }
   .userpic {
     float: left;
     font-size: 40px;
@@ -1120,12 +1113,20 @@ button, .button, .dropdown dd a {
   &_actions {
     float: right;
     margin: -5px -5px 0 0;
-    a {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    a, button {
       margin-left: 8px;
       vertical-align: top;
       display: inline-block;
       color: rgba($bodyFg, 0.3);
       &:hover { color: rgba($bodyFg, 0.6); }
+
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
     }
   }
 }

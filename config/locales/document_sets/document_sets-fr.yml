@@ -19,14 +19,15 @@ fr:
       url_description: Veuillez utiliser des lettres minuscules et des tirets entre les mots.
     edit_privacy:
       document_set_collaborators: Collaborateurs autorisés
-      document_set_privacy: 'Confidentialité du document : <i>%{privacy}</i>'
+      document_set_privacy_private: 'Confidentialité de l''ensemble de documents : <i>Privé</i>'
+      document_set_privacy_public: 'Confidentialité de l''ensemble de documents : <i>Public</i>'
+      document_set_privacy_read_only: 'Confidentialité de l''ensemble de documents : <i>Lecture seule</i>'
       document_set_restricted_description: L'ensemble de documents ne peut être consulté que par les collaborateurs répertoriés ci-dessous. Vous pouvez rendre la collection lisible publiquement.
       document_set_unrestricted_description: L'ensemble de documents peut être consulté par n'importe qui sur Internet. Toutes les œuvres placées dans un ensemble de documents publics seront lisibles, même si la collection parente est privée. Vous pouvez rendre le jeu de documents privé pour limiter sa visibilité aux collaborateurs.
       edit_collaborators: Modifier les collaborateurs
-      make_document_set_private: Rendre l'ensemble de documents privé
-      make_document_set_public: Rendre l'ensemble de documents public
       private: Privé
       public: Publique
+      read_only: Lecture seule
     edit_set_collaborators:
       remove_collaborator: Supprimer un collaborateur
       set_collaborators: Collaborateurs de l'ensemble de documents
@@ -79,8 +80,11 @@ fr:
       description: La description
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       document_set_is_marked_public: Si le jeu de documents est marqué comme public, les œuvres qui y sont placées seront lisibles même si la collection est marquée comme privée.
+      private: Privé
       public: Public
+      read_only: Lecture seule
       title: Titre
+      visibility: Visibilité
     settings:
       add: Ajouter
       done: Fait

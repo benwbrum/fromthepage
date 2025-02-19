@@ -15,17 +15,17 @@
 
       -if @collection
         -query = @search_attempt.query if @search_attempt&.search_type == 'collection'
-        =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
-          =hidden_field_tag('collection_id', @collection.id)
-          =search_field_tag :search, query, :placeholder => t('.search_in_collection'), "aria-label" => t('.search_in_collection_1')
+        =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', data: { turbo: true }) do
+          =hidden_field_tag :collection_id, @collection.id
+          =search_field_tag :search, query, placeholder: t('.search_in_collection'), aria: { label: t('.search_in_collection_1') }
           =button_tag t('.search')
           =label_tag 'search_string', t('.search_in_collection'), class: 'hidden'
 
       -if @work
         -query = @search_attempt.query if @search_attempt&.search_type == 'work'
-        =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
-          =hidden_field_tag('work_id', @work.id)
-          =search_field_tag :search, query, :placeholder => t('.search_in_work'), "aria-label" => t('.search_in_collection_1')
+        =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', data: { turbo: true }) do
+          =hidden_field_tag :work_id, @work.id
+          =search_field_tag :search, query, placeholder: t('.search_in_work'), aria: { lable: t('.search_in_collection_1') }
           =button_tag t('.search')
           =label_tag 'search_work_string', t('.search_in_work'), class: 'hidden'
         h4 new search
@@ -38,10 +38,10 @@
 
         -if @total != @count
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.slug, needs_review: 'none'}, class: 'review-button'
-        -elsif @collection.active?
+        -elsif @collection.active? && current_user&.can_transcribe?(@work, @collection)
           -if @work.pages.needs_transcription.any?
             =button_to t('.pages_need_transcription'), { action: "read_work", work_id: @work.slug, needs_review: 'transcription' }, class: 'review-button'
-          -if user_signed_in? && current_user.can_review?(@collection)
+          -if current_user&.can_review?(@collection)
             -if @work.pages.review.any?
               =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.slug, needs_review: 'review' }, class: 'review-button'
           -if @work.pages.needs_index.any?
