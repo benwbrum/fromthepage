@@ -29,22 +29,25 @@
 				"type": "keyword"
 			},
 			"search_text": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general"
 			},
 			"source_text": {
 				"type": "text",
-				"fields": {
-					"search": {
-						"type": "text",
-						"analyzer": "general"
-					}
-				}
+				"analyzer": "general"
 			},
 			"source_translation": {
 				"type": "text"
 			},
 			"title": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general",
+				"fields": {
+					"no_underscores": {
+						"type": "text",
+						"analyzer": "general_no_underscores"
+					}
+				}
 			}
 		}
 	}

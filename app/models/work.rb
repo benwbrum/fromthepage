@@ -210,6 +210,7 @@ class Work < ApplicationRecord
 
     search_fields = [
       "title^2",
+      "title.no_underscores^1.3",
       "searchable_metadata.identifier_whitespace^1.5",
       "searchable_metadata"
     ]
