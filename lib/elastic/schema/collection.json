@@ -30,7 +30,14 @@
 				"type": "text"
 			},
 			"title": {
-				"type": "text"
+				"type": "text",
+				"analyzer": "general",
+				"fields": {
+					"no_underscores": {
+						"type": "text",
+						"analyzer": "general_no_underscores"
+					}
+				}
 			}
 		}
 	}

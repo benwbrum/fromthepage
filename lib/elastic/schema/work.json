@@ -21,7 +21,13 @@
 			},
 			"title": {
 				"type": "text",
-				"analyzer": "general"
+				"analyzer": "general",
+				"fields": {
+					"no_underscores": {
+						"type": "text",
+						"analyzer": "general_no_underscores"
+					}
+				}
 			},
 			"searchable_metadata": {
 				"type": "text",

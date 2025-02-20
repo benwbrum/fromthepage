@@ -166,6 +166,7 @@ class Page < ApplicationRecord
 
     search_fields = [
       "title^2",
+      "title.no_underscores^1.3",
       "search_text^1.5",
       "content_english",
       "content_french",

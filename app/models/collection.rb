@@ -166,6 +166,7 @@ class Collection < ApplicationRecord
             query: query,
             fields: [
               "title^2",
+              "title.no_underscores^1.3",
               "intro_block",
               "slug"
             ]

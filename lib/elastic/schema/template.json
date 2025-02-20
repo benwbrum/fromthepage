@@ -43,6 +43,16 @@
 						"lowercase"
 					]
 				},
+				"general_no_underscores": {
+					"char_filter": [
+						"html_strip",
+						"replace_underscores"
+					],
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase"
+					]
+				},
 				"general_whitespace": {
 					"char_filter": [
 						"html_strip"
@@ -54,7 +64,8 @@
 				},
 				"identifier_whitespace": {
 					"char_filter": [
-						"html_strip"
+						"html_strip",
+						"drop_wildcards"
 					],
 					"tokenizer": "whitespace",
 					"filter": [
@@ -135,6 +146,18 @@
 						"stop_swedish",
 						"stem_swedish"
 					]
+				}
+			},
+			"char_filter": {
+				"replace_underscores": {
+					"type": "pattern_replace",
+					"pattern": "\\_",
+					"replacement": " "
+				},
+				"drop_wildcards": {
+					"type": "pattern_replace",
+					"pattern": "\\*",
+					"replacement": ""
 				}
 			},
 			"filter": {
