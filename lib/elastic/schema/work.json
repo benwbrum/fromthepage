@@ -34,7 +34,8 @@
 				"fields": {
 					"identifier_whitespace": {
 						"type": "text",
-						"analyzer": "identifier_whitespace"
+						"analyzer": "identifier_whitespace",
+						"search_analyzer": "identifier_whitespace_querytime"
 					},
 					"whitespace": {
 						"type": "text",
