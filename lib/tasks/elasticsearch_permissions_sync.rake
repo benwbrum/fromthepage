@@ -21,6 +21,8 @@ namespace :fromthepage do
 
       persist_state(snapshot, 'IDLE')
     rescue Exception
+      # log the exception
+      pp $!
       # Keep same time, change state to ERROR so it'll try again
       persist_state(after, 'ERROR')
     end
@@ -113,9 +115,9 @@ namespace :fromthepage do
   end
 
   def sync_pages(after, limit)
-    pending = Page.where(
-      "updated_at >= FROM_UNIXTIME(?) AND updated_at < FROM_UNIXTIME(?)",
-      after, limit)
+    terminus_a_quo = DateTime.strptime(after.to_s,'%s')
+    terminus_ad_quem = DateTime.strptime(limit.to_s,'%s')
+    pending = Page.where(updated_at: [terminus_a_quo..terminus_ad_quem])
 
     ElasticUtil.reindex(pending, 'ftp_page')
   end
