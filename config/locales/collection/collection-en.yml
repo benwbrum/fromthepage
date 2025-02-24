@@ -336,6 +336,9 @@ en:
       transcribed_page: Transcribed Page
       unreviewed_contributors: New Contributors
       works_to_review: Works to Review
+    search:
+      search: Search
+      search_in_collection: Search in collection
     show:
       about: About
       add_a_new_work: Add a new work

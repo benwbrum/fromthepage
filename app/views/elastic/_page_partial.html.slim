@@ -59,7 +59,7 @@
           -if collection.active?
             -if page.work.ocr_correction
               -status = t('display.pages_view.corrected')
-              -help = link_to(t('.help_correct'), action, onclick: "resultClicked();")
+              -help = link_to(t('display.pages_view.help_correct'), action, onclick: "resultClicked();")
             -else
               -status = t('display.pages_view.transcribed')
               -help = link_to(t('display.pages_view.help_transcribe'), action, onclick: "resultClicked();")
