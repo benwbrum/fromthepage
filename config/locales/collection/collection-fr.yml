@@ -336,6 +336,9 @@ fr:
       transcribed_page: Page transcrite
       unreviewed_contributors: Nouveaux contributeurs
       works_to_review: Œuvres à revoir
+    search:
+      search: Recherche
+      search_in_collection: Recherche dans la collection
     show:
       about: À propos
       add_a_new_work: Ajouter une nouvelle œuvre
@@ -356,6 +359,7 @@ fr:
       search: Chercher
       search_by_title: Rechercher par titre ou métadonnées...
       search_by_title_1: Rechercher par titre
+      search_in_collection: Recherche dans la collection
       search_the_text: Rechercher dans le texte...
       search_the_text_1: Rechercher le texte
       show_more: Voir plus
