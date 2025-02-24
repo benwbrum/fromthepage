@@ -80,6 +80,7 @@ de:
       new_projects: Neue Projekte
       search: Suchen
       search_for_collections: Suche nach Sammlungen
+      search_org: Organisation durchsuchen
       search_org_label: Suchen Sie nach von dieser Organisation veröffentlichten Inhalten ...
     new_upload:
       document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
