@@ -78,6 +78,10 @@ pt:
       institutions: Instituições
       more: mais
       new_projects: Novos Projetos
+      search: Procurar
+      search_for_collections: Pesquisar coleções
+      search_org: Organização de Pesquisa
+      search_org_label: Pesquisar conteúdo publicado por esta organização...
     new_upload:
       document_uploaded: O documento foi subido e será processado em breve. Vamos enviar um e-mail para você em %{email} quando estiver pronto.
       reload_this_page: O documento foi subido e será processado em breve. Recarregue esta página em alguns minutos para vê-lo.
