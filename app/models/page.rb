@@ -56,24 +56,24 @@ class Page < ApplicationRecord
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
-  acts_as_list :scope => :work
-  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
+  acts_as_list scope: :work
+  belongs_to :last_editor, class_name: 'User', foreign_key: 'last_editor_user_id', optional: true
 
   has_many :page_article_links, dependent: :destroy
   has_many :articles, through: :page_article_links
-  has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
+  has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
-  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
+  belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
 
-  has_many :notes, -> { order 'created_at' }, :dependent => :destroy
-  has_one :ia_leaf, :dependent => :destroy
-  has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, :dependent => :destroy
-  has_many :tex_figures, :dependent => :destroy
-  has_many :deeds, :dependent => :destroy
-  has_many :external_api_requests, :dependent => :destroy
+  has_many :notes, -> { order(:created_at) }, dependent: :destroy
+  has_one :ia_leaf, dependent: :destroy
+  has_one :sc_canvas, dependent: :destroy
+  has_many :table_cells, dependent: :destroy
+  has_many :tex_figures, dependent: :destroy
+  has_many :deeds, dependent: :destroy
+  has_many :external_api_requests, dependent: :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
