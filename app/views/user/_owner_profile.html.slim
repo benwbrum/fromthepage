@@ -1,8 +1,3 @@
-=form_tag(owner_search_path(user.slug), :method => :get, class: 'collection-search') do
-  =search_field_tag :term, params[:term], placeholder: t('dashboard.landing_page.search_org')
-  =button_tag t('.search')
-  =label_tag 'term', t('dashboard.landing_page.search_org_label'), class: 'hidden'
-
 section.user-profile
   .user-profile_image
     =profile_picture(user, 128)
@@ -39,18 +34,13 @@ section.user-profile
           h3 =link_to c.title, collection_path(c.owner, c)
           p =snippet
 
--if @tag 
-  h2 
-    span Collections tagged 
-    i =@tag.ai_text
-
-    / Display a list of collections with teaser images and snippets as tiles
-    -@tag_collections.each do |collection|
-      = render partial: 'shared/collection_tile', locals: { collection: collection }
-
-
 .columns
   article.maincol
+    -if ELASTIC_ENABLED
+      =form_tag(owner_search_path(user.slug), :method => :get, class: 'collection-search') do
+        =search_field_tag :term, params[:term], placeholder: t('dashboard.landing_page.search_org')
+        =button_tag t('.search')
+        =label_tag 'term', t('dashboard.landing_page.search_org_label'), class: 'hidden'
     -if collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: collections_and_document_sets, as: :cds
     -else

@@ -83,6 +83,14 @@ class SearchAttempt < ApplicationRecord
     return results
   end
 
+  def generate_link
+    SearchAttempt::Lib::Utils.generate_link(self)
+  end
+
+  def query_results
+    SearchAttempt::Lib::Utils.query_results(self)
+  end
+
   private
 
   def sanitize_and_format_search_string(search_string)
@@ -96,13 +104,5 @@ class SearchAttempt < ApplicationRecord
 
       search_string.gsub!(/\s+/, ' ')
       "+\"#{search_string}\""
-  end
-
-  def generate_link
-    SearchAttempt::Lib::Utils.generate_link(self)
-  end
-
-  def query_results
-    SearchAttempt::Lib::Utils.query_results(self)
   end
 end

@@ -10,7 +10,6 @@ class SearchAttempt::Create < ApplicationInteractor
 
   def perform
     is_owner = @user&.owner
-
     query = @search_attempt_params[:search]
     work = Work.friendly.find(@search_attempt_params[:work_id], allow_nil: true)
     collection = Collection.friendly.find(@search_attempt_params[:collection_id], allow_nil: true)
