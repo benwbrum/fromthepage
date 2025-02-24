@@ -80,7 +80,6 @@ fr:
       new_projects: Nouveaux projets
       search: Recherche
       search_for_collections: Rechercher des collections
-      search_org: Organisation de recherche
       search_org_label: Rechercher du contenu publié par cette organisation...
     new_upload:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
