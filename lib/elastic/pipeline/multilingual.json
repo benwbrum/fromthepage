@@ -1,0 +1,10 @@
+{
+	"description": "Populates multilingual fields",
+	"processors": [
+		{
+			"script": {
+				"id": "multilingual_content"
+			}
+		}
+	]
+}

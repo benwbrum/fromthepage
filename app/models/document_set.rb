@@ -25,6 +25,7 @@
 #
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
+  include ElasticDelta
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
@@ -76,6 +77,23 @@ class DocumentSet < ApplicationRecord
     carousel
     reorder(Arel.sql('RAND()')) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql('RAND()'))
+  end
+
+  # Docsets get indexed alongside collections but have a prefix added to ID
+  def as_indexed_json
+    return {
+      _id: "docset-#{self.id}",
+      permissions_updated: 0,
+      is_public: self.is_public,
+      is_docset: true,
+      intro_block: self.description,
+      language: self.language,
+      owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
+      collection_id: self.collection_id,
+      slug: self.slug,
+      title: self.title
+    }
   end
 
   enum visibility: {
@@ -218,7 +236,7 @@ class DocumentSet < ApplicationRecord
 
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-    users where owner=1 and display_name like ?)"
+           users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 

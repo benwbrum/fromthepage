@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
+
   include AddWorkHelper
   include DashboardHelper
+  include ElasticSearchable
   include OwnerExporter
   PAGES_PER_SCREEN = 20
 
@@ -177,36 +179,120 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
+    if ELASTIC_ENABLED
+      search_page = (params[:page] || 1).to_i
+
+      page_size = 10
+      @breadcrumb_scope={site: true}
+
+      query_config = {}
+      if params[:org]
+        org_user = User.find_by(slug: params[:org])
+
+        if org_user.present?
+          query_config = {
+            type: 'org',
+            org_id: org_user[:id]
+          }
+          @org_filter = org_user
+        end
+      elsif params[:mode] and params[:slug]
+        if params[:mode] == 'collection'
+          coll = Collection.find_by(slug: params[:slug])
+
+          if coll.present?
+            query_config = {
+              type: 'collection',
+              coll_id: coll[:id]
+            }
+            @collection_filter = coll
+          end
+        elsif params[:mode] == 'docset'
+          docset = DocumentSet.find_by(slug: params[:slug])
+
+          if docset.present?
+            query_config = {
+              type: 'docset',
+              docset_id: docset[:id]
+            }
+            @docset_filter = docset
+          end
+        elsif params[:mode] == 'work'
+          work = Work.find_by(slug: params[:slug])
+
+          if work.present?
+            query_config = {
+              type: 'work',
+              work_id: work[:id]
+            }
+            @work_filter = work;
+          end
+        end
+      end
+
+      search_data = elastic_search_results(
+        params[:search],
+        search_page,
+        page_size,
+        params[:filter],
+        query_config
+      )
+
+      if search_data
+        inflated_results = search_data[:inflated]
+        @full_count = search_data[:full_count] # Used by All tab
+        @type_counts = search_data[:type_counts]
+
+        # Used for pagination, currently capped at 10k
+        #
+        # TODO: ES requires a scroll/search_after query for result sets larger
+        #       than 10k.
+        #
+        #       To setup support we just need to add a composite tiebreaker field
+        #       to the schemas
+        @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+        # Inspired by display controller search
+        @search_string = "\"#{params[:search] || ""}\""
+
+        @search_results = WillPaginate::Collection.create(
+          search_page,
+          page_size,
+          @filtered_count) do |pager|
+            pager.replace(inflated_results)
+          end
+      end
+    else
+      if params[:search]
+        @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @search_results_map = {}
+        @search_results.each do |result|
+          @search_results_map[result.owner_user_id] ||= []
+          @search_results_map[result.owner_user_id] << result
+        end
+      end
+    end
     users = User.owners
-                .joins(:collections)
-                .left_outer_joins(:document_sets)
+      .joins(:collections)
+      .left_outer_joins(:document_sets)
 
     org_owners = users.findaproject_orgs.with_owner_works
     individual_owners = users.findaproject_individuals.with_owner_works
     @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
-                   .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
+           .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
     @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
     @new_projects = Collection.includes(:owner)
-                              .order('created_on DESC')
-                              .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                              .distinct
-                              .limit(10)
+                      .order('created_on DESC')
+                      .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                      .distinct
+                      .limit(10)
 
     @new_document_sets = DocumentSet.includes(:owner)
-                                    .order('created_at DESC')
-                                    .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                                    .distinct
-                                    .limit(10)
-    if params[:search]
-      @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-      @search_results_map = {}
-      @search_results.each do |result|
-        @search_results_map[result.owner_user_id] ||= []
-        @search_results_map[result.owner_user_id] << result
-      end
-    end
-
+                            .order('created_at DESC')
+                            .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                            .distinct
+                            .limit(10)
     respond_to do |format|
       format.html do
         @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
@@ -220,6 +306,7 @@ class DashboardController < ApplicationController
 
       format.turbo_stream
     end
+                  
   end
 
   def browse_tag
@@ -371,4 +458,6 @@ class DashboardController < ApplicationController
 
     collections_query + document_sets_query
   end
+
+
 end

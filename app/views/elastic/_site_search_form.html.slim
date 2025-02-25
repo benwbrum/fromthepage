@@ -1,0 +1,9 @@
+=form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      -if params[:mode].present?
+        =hidden_field_tag :mode, params[:mode]
+      -if params[:slug].present?
+        =hidden_field_tag :slug, params[:slug]
+      =search_field_tag :search, params[:search], placeholder: t('dashboard.landing_page.search')
+      =button_tag t('dashboard.landing_page.search')
+      =label_tag 'search', t('dashboard.landing_page.search'), class: 'hidden'
+

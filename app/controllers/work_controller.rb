@@ -1,6 +1,7 @@
 class WorkController < ApplicationController
   # require 'ftools'
   include XmlSourceProcessor
+  include ElasticSearchable
 
   protect_from_forgery :except => [:set_work_title,
                                    :set_work_description,
@@ -41,6 +42,52 @@ class WorkController < ApplicationController
     @bulk_export.report_arguments['preserve_linebreaks'] = false
   end
 
+  def search
+    search_page = (search_params[:page] || 1).to_i
+    @term = search_params[:term]
+    @breadcrumb_scope={work: true}
+
+    page_size = 10
+
+  # call elasticsearch with the work scope to get the results
+    query_config = {
+      type: 'work',
+      work_id: @work.id
+    }
+    search_data = elastic_search_results(
+      @term,
+      search_page,
+      page_size,
+      search_params[:filter],
+      query_config
+    )
+
+    if search_data
+      inflated_results = search_data[:inflated]
+      @full_count = search_data[:full_count] # Used by All tab
+      @type_counts = search_data[:type_counts]
+
+      # Used for pagination, currently capped at 10k
+      #
+      # TODO: ES requires a scroll/search_after query for result sets larger
+      #       than 10k.
+      #
+      #       To setup support we just need to add a composite tiebreaker field
+      #       to the schemas
+      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+      # Inspired by display controller search
+      @search_string = "\"#{@term || ""}\""
+
+      @search_results = WillPaginate::Collection.create(
+        search_page,
+        page_size,
+        @filtered_count) do |pager|
+          pager.replace(inflated_results)
+        end
+    end
+
+  end
 
   def describe
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
@@ -245,6 +292,10 @@ class WorkController < ApplicationController
     end
   end
 
+  def search_params
+    params.permit(:term, :page, :filter, :work_id, :collection_id, :user_id)
+  end
+
   def work_params
     params.require(:work).permit(
       :title,
@@ -273,6 +324,7 @@ class WorkController < ApplicationController
       :in_scope,
       :editorial_notes,
       :document_date,
+      :term,
       document_set_ids: []
     )
   end

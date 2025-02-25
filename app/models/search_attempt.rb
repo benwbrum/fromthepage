@@ -45,11 +45,64 @@ class SearchAttempt < ApplicationRecord
     update_attribute(:slug, "#{query.parameterize}-#{id}")
   end
 
+  def results
+    query = sanitize_and_format_search_string(self.query)
+    case search_type
+    when "work"
+      if work.present? && query.present?
+          query = precise_search_string(query)
+          results = Page.order('work_id, position')
+              .joins(:work)
+              .where(work_id: work.id)
+              .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+      else
+          results = Page.none
+      end
+
+    when "collection"
+      collection_or_document_set = collection || document_set
+      if collection_or_document_set.present? && query.present?
+          query = precise_search_string(query)
+          results = Page.order('work_id, position')
+              .joins(:work)
+              .where(work_id: collection_or_document_set.works.ids)
+              .where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", query)
+      else 
+          results = Page.none
+      end
+    
+    when "collection-title"
+      collection_or_document_set = collection || document_set
+      results = collection_or_document_set.search_works(query).includes(:work_statistic)
+
+    when "findaproject"
+      results = Collection.search(query).unrestricted + DocumentSet.search(query).unrestricted
+    end
+
+    update_attribute(:hits, results&.count || 0)
+    return results
+  end
+
   def generate_link
     SearchAttempt::Lib::Utils.generate_link(self)
   end
 
   def query_results
     SearchAttempt::Lib::Utils.query_results(self)
+  end
+
+  private
+
+  def sanitize_and_format_search_string(search_string)
+      return '' unless search_string.present?
+      string = CGI::escapeHTML(search_string)
+  end
+
+  def precise_search_string(search_string)
+      # convert 'natural' search strings unless they're precise
+      return search_string if search_string.match(/["+-]/)
+
+      search_string.gsub!(/\s+/, ' ')
+      "+\"#{search_string}\""
   end
 end
