@@ -1,0 +1,73 @@
+/ Slim version of display/_pages_view repurposed for general search
+-if collection.text_entry?
+  -default_work_path = collection_read_work_path(collection.owner, collection, page.work)
+-else
+  -default_work_path = metadata_overview_collection_work_path(collection.owner, collection, page.work)
+
+.work-page.search_result
+  .work-page_thumbnail
+    -if page.ia_leaf
+      =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page), onclick: "resultClicked();")
+    -elsif page.sc_canvas
+      =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page), onclick: "resultClicked();")
+    -else
+      =link_to(image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page), onclick: "resultClicked();")
+    span
+      span.progress
+        -if page.status_new?
+          -progress_pct = 0
+        -elsif page.status_incomplete?
+          -progress_pct = 33
+          span(style="width:0%")
+          span(style="width:0%")
+        -elsif page.status_needs_review?
+          -progress_pct = 67
+          span(style="width:0%")
+        -else
+          -progress_pct = 100
+        span(style="width:#{progress_pct}%")
+    .page_status
+      =t("page.edit.page_status_#{page.status}")
+
+  .work-page_content
+    -if page.work.pages_are_meaningful
+      h4.collection-work_title =link_to page.title, page_params(page), onclick: "resultClicked();"
+
+    .work-page_text.search_result[*language_attrs(collection)]
+      -transcription = xml_to_html(page.xml_text, false, false, page.work.collection, params[:article_id])
+      -if @search_string
+        -transcription = SearchAttempt::Lib::Utils.highlight_terms(transcription, @search_string)
+      -if current_user
+        -action = page_params(page)
+      -else
+        -action = page_params(page)
+
+      -if page.status_blank?
+        p.nodata_text ==t('display.display_page.this_page_is_blank')
+      -elsif transcription.present?
+        -if (page.status_incomplete? && collection.active?)
+          .incomplete_transcription
+            ==transcription.force_encoding('utf-8')
+          .incomplete_text
+            b ==t('display.pages_view.this_page_is_incomplete')
+            =link_to(t('display.pages_view.help_complete'), action, class: 'button', onclick: "resultClicked();")
+        -else
+          ==transcription.force_encoding('utf-8')
+
+      -else
+        -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+          -if collection.active?
+            -if page.work.ocr_correction
+              -status = t('display.pages_view.corrected')
+              -help = link_to(t('display.pages_view.help_correct'), action, onclick: "resultClicked();")
+            -else
+              -status = t('display.pages_view.transcribed')
+              -help = link_to(t('display.pages_view.help_transcribe'), action, onclick: "resultClicked();")
+            p.nodata_text == t('display.pages_view.this_page_is_not', status: status, help: help)
+          -else
+            p.nodata_text
+        -else
+          p.nodata_text == t('display.pages_view.collaboration_is_restricted')
+      
+    =render partial: 'elastic/breadcrumbs', locals: { doc: page }
+

@@ -31,6 +31,7 @@ pt:
       page_status_blank: Página em branco
       page_status_incomplete: Incompleto
       page_status_indexed: Indexado
+      page_status_needs_review: Necessita de revisão
       page_status_new: Não foi iniciado
       page_status_review: Precisa de revisão
       page_status_transcribed: Completo

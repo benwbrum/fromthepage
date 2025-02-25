@@ -54,6 +54,9 @@
 #  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
 #
 class Work < ApplicationRecord
+  require 'elastic_util'
+
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -173,6 +176,75 @@ class Work < ApplicationRecord
         nil
       end
     end
+  end
+
+  def as_indexed_json
+    # Error handling for data that is missing parent relationships
+    # Some works have collection_id 0, others have ID's that don't exist
+    # Return object with error set so indexer knows to skip
+    if !self.collection.present?
+      return {
+        indexing_error: true
+      }
+    end
+
+    return {
+      _id: self.id,
+      is_public: !self.collection&.restricted || self.document_sets.where(:is_public => true).exists?,
+      collection_id: self.collection&.id,
+      docset_id: self.document_sets.pluck(:id),
+      owner_user_id: self.owner_user_id,
+      title: self.title,
+      searchable_metadata: self.searchable_metadata
+    }
+  end
+
+  def self.es_match_query(query, user)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+    end
+
+    search_fields = [
+      "title^2",
+      "title.no_underscores^1.3",
+      "searchable_metadata.identifier_whitespace^1.5",
+      "searchable_metadata"
+    ]
+
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: search_fields
+          }
+        },
+        filter: [
+          {
+            bool: {
+              must_not: [
+                { terms: {collection_id: blocked_collections} }
+              ],
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {collection_id: collection_collabs} },
+                { terms: {docset_id: docset_collabs} },
+              ]
+            }
+          },
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_work"}}
+        ]
+      }
+    }
   end
 
   def update_derivatives

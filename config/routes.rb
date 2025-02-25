@@ -209,10 +209,8 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
 
-  scope 'search_attempt', as: 'search_attempt' do
-    get 'create', to: 'search_attempt#create'
-    get 'click', to: 'search_attempt#click'
-    get ':id', to: 'search_attempt#show', as: 'show'
+  resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
+    get :click, to: 'search_attempt#click', on: :collection
   end
 
   scope 'category', as: 'category' do
@@ -451,6 +449,7 @@ Fromthepage::Application.routes.draw do
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
+    get 'search', to: 'user#search', as: :owner_search
 
     resources :collection, path: '', only: [:show] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
@@ -482,7 +481,8 @@ Fromthepage::Application.routes.draw do
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'facets'
-      post 'search'
+      post 'search', to: 'collection#facet_search', as: 'facet_search'
+      get 'search', to: 'collection#search', as: 'search'
 
       get 'edit', on: :member
       get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
@@ -529,7 +529,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
       get ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
       get ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
-
+      get ':work_id/search', to: 'work#search', as: 'work_search'
       #page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
       get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'

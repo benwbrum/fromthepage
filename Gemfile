@@ -150,3 +150,6 @@ gem 'open3'
 gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'
+
+# Elasticsearch client
+gem 'elasticsearch', '8.15.0'

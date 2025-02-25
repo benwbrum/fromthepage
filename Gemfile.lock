@@ -225,6 +225,14 @@ GEM
       activesupport (>= 4)
       edtf (>= 2.3, < 4)
       roman (~> 0.2.0)
+    elastic-transport (8.3.5)
+      faraday (< 3)
+      multi_json
+    elasticsearch (8.15.0)
+      elastic-transport (~> 8.3)
+      elasticsearch-api (= 8.15.0)
+    elasticsearch-api (8.15.0)
+      multi_json
     errbase (0.2.2)
     erubi (1.12.0)
     event_stream_parser (1.0.0)
@@ -698,6 +706,7 @@ DEPENDENCIES
   easy_translate
   edtf
   edtf-humanize
+  elasticsearch (= 8.15.0)
   factory_bot_rails
   flamegraph
   forty_facets

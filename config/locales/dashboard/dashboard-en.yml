@@ -76,8 +76,12 @@ en:
     landing_page:
       by: " by "
       institutions: Institutions
-      more: more
+      more: More...
       new_projects: New Projects
+      search: Search
+      search_for_collections: Search for collections
+      search_org: Search Organization
+      search_org_label: Search for content published by this organization...
     new_upload:
       document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
       reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.

@@ -59,6 +59,7 @@ require 'subject_distribution_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   before_save :uniquify_slug
@@ -131,6 +132,68 @@ class Collection < ApplicationRecord
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      permissions_updated: 0,
+      is_public: !self.restricted,
+      is_docset: false,
+      intro_block: self.intro_block,
+      language: self.language,
+      owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
+      slug: self.slug,
+      title: self.title
+    }
+  end
+
+  def self.es_match_query(query, user = nil)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+        .map{ |x| "docset-#{x}" }
+    end
+
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "title.no_underscores^1.3",
+              "intro_block",
+              "slug"
+            ]
+          }
+        },
+        filter: [
+          {
+            bool: {
+              must_not: [
+                { terms: {_id: blocked_collections} }
+              ],
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {_id: collection_collabs} },
+                { terms: {_id: docset_collabs} },
+              ]
+            }
+          },
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_collection"}}
+        ]
+      }
+    }
+  end
+  
   def created_at
     created_on
   end
@@ -282,7 +345,7 @@ class Collection < ApplicationRecord
 
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-    users where owner=1 and display_name like ?)"
+           users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 

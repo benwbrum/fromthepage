@@ -186,6 +186,8 @@ fr:
       upload_page_image: Image de la page %{upload}
     save_description:
       work_described: Votre description a été enregistrée
+    search:
+      search_in_work: Rechercher dans le document
     show:
       author_name: Nom de l'auteur
       description: Description

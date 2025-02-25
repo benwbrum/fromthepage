@@ -89,7 +89,7 @@ module CollectionHelper
       @transcribed_type = t('collection.transcribed')
     end
 
-    if @collection.subjects_disabled
+    if work.collection.subjects_disabled
       unless @progress_review == 0
         @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
       else
@@ -105,7 +105,7 @@ module CollectionHelper
       @wording = "#{work.work_statistic.complete}% #{t('collection.complete')} (#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')})"
     end
 
-    if @collection.metadata_entry?
+    if work.collection.metadata_entry?
       @wording += '. '
       @wording += t("work.#{work.description_status}")
     end

@@ -336,6 +336,9 @@ de:
       transcribed_page: Transkribierte Seite
       unreviewed_contributors: Neue Mitarbeitende
       works_to_review: Zu überprüfende Werke
+    search:
+      search: Suchen
+      search_in_collection: Suche in der Sammlung
     show:
       about: Info
       add_a_new_work: Neues Werk hinzufügen
@@ -356,6 +359,7 @@ de:
       search: Suche
       search_by_title: Nach Titel oder Metadaten suchen...
       search_by_title_1: Nach Titel suchen
+      search_in_collection: Suche in der Sammlung
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen
