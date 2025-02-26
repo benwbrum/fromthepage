@@ -106,6 +106,8 @@ class DocumentSet < ApplicationRecord
     is_public? || user&.like_owner?(self) || user&.collaborator?(self)
   end
 
+
+
   def intro_block
     description
   end
