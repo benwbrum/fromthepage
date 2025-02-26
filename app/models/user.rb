@@ -282,7 +282,11 @@ class User < ApplicationRecord
     Work.where(collection_id: all_owner_collections.select(:id))
   end
 
-  def can_transcribe?(work, collection)
+  def can_transcribe?(work, collection=nil)
+    if collection.nil?
+      collection = work.access_object(self)
+    end
+    
     return true if like_owner?(collection)
 
     if collection.is_a? DocumentSet
