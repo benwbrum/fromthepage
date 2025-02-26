@@ -146,7 +146,7 @@ class Page < ApplicationRecord
       docset_id: self.work&.document_sets&.pluck(:id),
       owner_user_id: self.collection&.owner_user_id,
       work_id: self.work&.id,
-      is_public: !self.collection&.restricted || self.work&.document_sets.where(:is_public => true).exists?,
+      is_public: !self.collection&.restricted || self.work&.document_sets.where(visibility: [:public, :read_only]).exists?,
       title: self.title,
       search_text: self.search_text,
       content_english: self.source_text # TODO: Hook up language pipeline
