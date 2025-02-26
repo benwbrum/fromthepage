@@ -64,13 +64,23 @@
 				},
 				"identifier_whitespace": {
 					"char_filter": [
-						"html_strip",
-						"drop_wildcards"
+						"html_strip"
 					],
 					"tokenizer": "whitespace",
 					"filter": [
 						"lowercase",
 						"drop_purewords",
+						"condense_alphanumeric",
+						"length_limit"
+					]
+				},
+				"identifier_whitespace_querytime": {
+					"char_filter": [
+						"html_strip"
+					],
+					"tokenizer": "whitespace",
+					"filter": [
+						"lowercase",
 						"condense_alphanumeric",
 						"length_limit"
 					]
@@ -153,11 +163,6 @@
 					"type": "pattern_replace",
 					"pattern": "\\_",
 					"replacement": " "
-				},
-				"drop_wildcards": {
-					"type": "pattern_replace",
-					"pattern": "\\*",
-					"replacement": ""
 				}
 			},
 			"filter": {
