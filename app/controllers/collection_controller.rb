@@ -142,7 +142,7 @@ class CollectionController < ApplicationController
 
   def search # ElasticSearch version
     search_page = (search_params[:page] || 1).to_i
-    @term = search_params[:term]
+    @search_string = search_params[:term]
     @breadcrumb_scope={collection: true}
 
     page_size = 10
@@ -162,7 +162,7 @@ class CollectionController < ApplicationController
     end
 
     search_data = elastic_search_results(
-      @term,
+      @search_string,
       search_page,
       page_size,
       search_params[:filter],
@@ -183,8 +183,6 @@ class CollectionController < ApplicationController
       #       to the schemas
       @filtered_count = [ 10000, search_data[:filtered_count] ].min
 
-      # Inspired by display controller search
-      @search_string = "\"#{@term || ""}\""
       @search_results = WillPaginate::Collection.create(
         search_page,
         page_size,
