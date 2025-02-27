@@ -283,16 +283,13 @@ class User < ApplicationRecord
   end
 
   def can_transcribe?(work, collection=nil)
-    if collection.nil?
-      collection = work.access_object(self)
-    end
-    
     return true if like_owner?(collection)
+    collection ||= work.access_object(self) || work.collection
 
     if collection.is_a? DocumentSet
       return true if collection.visibility_public? || like_owner?(work)
 
-      collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
+      collection.collaborators.find_by(id: id).present? || collection.collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
     else
       !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
     end

@@ -330,7 +330,7 @@ end
     if @collection
       collection = @collection
     else
-      collection = page.work.access_object(current_user)
+      collection = page.work.access_object(current_user) || page.work.collection
     end
 
     if page.status_new?
