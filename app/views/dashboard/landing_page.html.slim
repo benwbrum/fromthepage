@@ -15,9 +15,6 @@
           =button_tag t('.search')
           =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
-
-
-
     - if ELASTIC_ENABLED && @search_results
       =render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
     - else
