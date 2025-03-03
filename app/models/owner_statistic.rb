@@ -27,9 +27,11 @@ module OwnerStatistic
   end
 
   def review_count(days=nil)
-    Deed.where(work_id: self.owner_works.ids)
-      .where(date_range_clause(days))
-      .where(deed_type: DeedType::PAGE_REVIEWED).count
+    Deed.select(:work_id)
+        .where(work_id: self.owner_works.ids)
+        .where(date_range_clause(days))
+        .where(deed_type: DeedType::PAGE_REVIEWED)
+        .count
   end
 
   def owner_subjects
