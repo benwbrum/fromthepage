@@ -530,7 +530,8 @@ EOF
         else
           width = column_widths.values.first
         end
-        e.text.rjust(width, ' ')
+        inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+        inner_html.rjust(width, ' ')
       end.join(' | ') << "\n"
     end
     if pandoc_format
