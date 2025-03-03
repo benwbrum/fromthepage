@@ -46,7 +46,7 @@ tr
     -if collection.works.detect {|w| w.sc_manifest.present? }
       =link_to(collection_metadata_refresh_path(collection.id), class: 'button action-btn', style: 'margin-top: 5px;', method: :post)
         span =t('collection.edit_look.refresh_metadata')
-    p =t('collection.edit_look.refresh_metadata_description')
+      p =t('collection.edit_look.refresh_metadata_description')
 tr
   td(colspan="2")
     -researcher = current_user.account_type == "Individual Researcher"
