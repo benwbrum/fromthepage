@@ -46,6 +46,7 @@ en:
       sign_up_now_to_transcribe: Sign up now to transcribe.
       transcribe_as_guest: Transcribe as guest
     mark_page_blank:
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
     save_buttons:
       approve: Approve
@@ -68,6 +69,7 @@ en:
       save_to_transcribed_tooltip: Save your changes
     save_transcription:
       error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
       you_may_save_notice: You may save up to %{guest_deed_count} transcriptions as a guest.
     save_translation:
