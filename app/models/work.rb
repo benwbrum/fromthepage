@@ -225,7 +225,7 @@ class Work < ApplicationRecord
       is_public: !self.collection&.restricted || self.document_sets.where(visibility: [:public, :read_only]).exists?,
       collection_id: self.collection&.id,
       docset_id: self.document_sets.pluck(:id),
-      owner_user_id: self.owner_user_id,
+      owner_user_id: self.collection&.owner_user_id,
       title: self.title,
       searchable_metadata: self.searchable_metadata
     }
