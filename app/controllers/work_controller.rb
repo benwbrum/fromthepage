@@ -24,6 +24,8 @@ class WorkController < ApplicationController
     :search_scribes
   ]
 
+  ES_SEARCH_LIMIT = 10_000
+
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
@@ -49,7 +51,7 @@ class WorkController < ApplicationController
 
     page_size = 10
 
-  # call elasticsearch with the work scope to get the results
+    # call elasticsearch with the work scope to get the results
     query_config = {
       type: 'work',
       work_id: @work.id
@@ -62,28 +64,28 @@ class WorkController < ApplicationController
       query_config
     )
 
-    if search_data
-      inflated_results = search_data[:inflated]
-      @full_count = search_data[:full_count] # Used by All tab
-      @type_counts = search_data[:type_counts]
+    return unless search_data
 
-      # Used for pagination, currently capped at 10k
-      #
-      # TODO: ES requires a scroll/search_after query for result sets larger
-      #       than 10k.
-      #
-      #       To setup support we just need to add a composite tiebreaker field
-      #       to the schemas
-      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+    inflated_results = search_data[:inflated]
+    @full_count = search_data[:full_count] # Used by All tab
+    @type_counts = search_data[:type_counts]
 
-      @search_results = WillPaginate::Collection.create(
-        search_page,
-        page_size,
-        @filtered_count) do |pager|
-          pager.replace(inflated_results)
-        end
+    # Used for pagination, currently capped at 10k
+    #
+    # TODO: ES requires a scroll/search_after query for result sets larger
+    #       than 10k.
+    #
+    #       To setup support we just need to add a composite tiebreaker field
+    #       to the schemas
+    @filtered_count = [ES_SEARCH_LIMIT, search_data[:filtered_count]].min
+
+    @search_results = WillPaginate::Collection.create(
+      search_page,
+      page_size,
+      @filtered_count
+    ) do |pager|
+      pager.replace(inflated_results)
     end
-
   end
 
   def describe

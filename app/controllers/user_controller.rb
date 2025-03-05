@@ -4,6 +4,7 @@ class UserController < ApplicationController
   before_action :authorized?, :only => [:update_profile, :update]
 
   PAGES_PER_SCREEN = 50
+  ES_SEARCH_LIMIT = 10_000
 
   def demo
     session[:demo_mode] = true;
@@ -152,11 +153,12 @@ class UserController < ApplicationController
     @carousel_collections = (collections + sets).sample(8)
   end
 
-  def search # ElasticSearch version
+  def search
+    # ElasticSearch version
     @user = User.friendly.find(params[:user_slug])
     search_page = (search_params[:page] || 1).to_i
     @search_string = search_params[:term]
-    @breadcrumb_scope={owner: true}
+    @breadcrumb_scope = { owner: true }
 
     page_size = 10
 
@@ -174,26 +176,27 @@ class UserController < ApplicationController
       query_config
     )
 
-    if search_data
-      inflated_results = search_data[:inflated]
-      @full_count = search_data[:full_count] # Used by All tab
-      @type_counts = search_data[:type_counts]
+    return unless search_data
 
-      # Used for pagination, currently capped at 10k
-      #
-      # TODO: ES requires a scroll/search_after query for result sets larger
-      #       than 10k.
-      #
-      #       To setup support we just need to add a composite tiebreaker field
-      #       to the schemas
-      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+    inflated_results = search_data[:inflated]
+    @full_count = search_data[:full_count] # Used by All tab
+    @type_counts = search_data[:type_counts]
 
-      @search_results = WillPaginate::Collection.create(
-        search_page,
-        page_size,
-        @filtered_count) do |pager|
-          pager.replace(inflated_results)
-        end
+    # Used for pagination, currently capped at 10k
+    #
+    # TODO: ES requires a scroll/search_after query for result sets larger
+    #       than 10k.
+    #
+    #       To setup support we just need to add a composite tiebreaker field
+    #       to the schemas
+    @filtered_count = [ES_SEARCH_LIMIT, search_data[:filtered_count]].min
+
+    @search_results = WillPaginate::Collection.create(
+      search_page,
+      page_size,
+      @filtered_count
+    ) do |pager|
+      pager.replace(inflated_results)
     end
   end
 

@@ -1,1 +1,6 @@
-<%= turbo_stream.update('results', partial: 'results') %>
+<%= turbo_stream.remove('tagcloud') %>
+<% if ELASTIC_ENABLED && @search_results %>
+  <%= turbo_stream.update('results', partial: 'elastic/tabbed_results', locals: { search_results: @search_results }) %>
+<% else %>
+  <%= turbo_stream.update('results', partial: 'results') %>
+<% end %>

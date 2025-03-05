@@ -2,9 +2,9 @@ require 'json'
 require 'elastic_util'
 
 namespace :fromthepage do
-  desc "Initialize Elasticsearch configuration and create indexes"
-  task :es_init, [] => :environment do |t,args|
-    client = ElasticUtil.get_client()
+  desc 'Initialize Elasticsearch configuration and create indexes'
+  task :es_init, [] => :environment do |_t, _args|
+    client = ElasticUtil.get_client
     # Template
     template_body = get_es_config(['schema', 'template.json'])
     client.indices.put_template(
@@ -24,14 +24,14 @@ namespace :fromthepage do
       id: 'multilingual_content',
       body: script_def
     )
-   
+
     # Pipelines
     pipeline_body = get_es_config(['pipeline', 'multilingual.json'])
     client.ingest.put_pipeline(
       id: 'multilingual',
       body: pipeline_body
     )
-    
+
     # Index schema
     collection_body = get_es_config(['schema', 'collection.json'])
     page_body = get_es_config(['schema', 'page.json'])
@@ -50,9 +50,9 @@ namespace :fromthepage do
     puts('Task complete, check status codes for errors.')
   end
 
-  desc "Delete all configuration and indices created by init"
-  task :es_reset, [] => :environment do |t,args|
-    client = ElasticUtil.get_client()
+  desc 'Delete all configuration and indices created by init'
+  task :es_reset, [] => :environment do |_t, _args|
+    client = ElasticUtil.get_client
 
     client.indices.delete_template(name: 'fromthepage')
     client.ingest.delete_pipeline(id: 'multilingual')
@@ -64,19 +64,18 @@ namespace :fromthepage do
     client.indices.delete(index: env_index('ftp_work'))
   end
 
-  desc "Reindex everything into elasticsearch"
-  task :es_reindex, [] => :environment do |t,args|
-    ElasticUtil.reindex(Collection, env_index('ftp_collection'));
+  desc 'Reindex everything into elasticsearch'
+  task :es_reindex, [] => :environment do |_t, _args|
+    ElasticUtil.reindex(Collection, env_index('ftp_collection'))
     # Docsets are a special type of collection, intentionally using same index
-    ElasticUtil.reindex(DocumentSet, env_index('ftp_collection'));
-    ElasticUtil.reindex(Page, env_index('ftp_page'));
-    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'),
-      env_index('ftp_user'));
-    ElasticUtil.reindex(Work.where.not(collection_id: 0), env_index('ftp_work'));
+    ElasticUtil.reindex(DocumentSet, env_index('ftp_collection'))
+    ElasticUtil.reindex(Page, env_index('ftp_page'))
+    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'), env_index('ftp_user'))
+    ElasticUtil.reindex(Work.where.not(collection_id: 0), env_index('ftp_work'))
   end
 
-  desc "Rollover the active alias used by the application"
-  task :es_rollover, [] => :environment do |t,args|
+  desc 'Rollover the active alias used by the application'
+  task :es_rollover, [] => :environment do |_t, _args|
     rollover('ftp_collection')
     rollover('ftp_page')
     rollover('ftp_user')
@@ -84,48 +83,47 @@ namespace :fromthepage do
   end
 
   def rollover(index)
-    client = ElasticUtil.get_client()
+    client = ElasticUtil.get_client
 
     # Get existing aliases
     existing = []
     begin
       resp = client.indices.get_alias(name: index)
       existing = resp.keys
-    rescue Exception
+    rescue StandardError => _e
       # no-op, end up here when alias doesn't previously exist
     end
 
     if existing.include?(env_index(index))
-      puts "Existing alias matches, unable to rollover."
+      puts 'Existing alias matches, unable to rollover.'
       return
     end
 
     actions = []
 
     # Add new alias
-    actions << { add: {index: env_index(index), alias: index } }
+    actions << { add: { index: env_index(index), alias: index } }
 
     # Remove all existing
     existing.each do |i|
-      actions << { remove: {index: i, alias: index } }
+      actions << { remove: { index: i, alias: index } }
     end
 
-    client.indices.update_aliases(body: {actions: actions})
+    client.indices.update_aliases(body: { actions: actions })
   end
 
   def env_index(index)
-    return "#{index}_#{ELASTIC_SUFFIX}"
+    "#{index}_#{ELASTIC_SUFFIX}"
   end
 
   def get_es_config(target, parse = true)
     base_path = [Rails.root, 'lib', 'elastic']
     src = File.read(File.join(base_path + target))
-    
+
     if !parse
-      return src
+      src
     else
-      return JSON.parse(src)
+      JSON.parse(src)
     end
   end
-
 end

@@ -261,7 +261,7 @@ describe DashboardController do
     end
 
     context 'with search param' do
-      let(:params) { { search: 'Search' } }
+      let(:params) { { search: collection.title } }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
@@ -270,6 +270,112 @@ describe DashboardController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:landing_page)
+      end
+    end
+
+    context 'with search param as elastic search' do
+      before do
+        stub_const('ELASTIC_ENABLED', true)
+      end
+
+      let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+
+      let(:params) { { search: collection.title } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:landing_page)
+      end
+
+      context 'org' do
+        let(:params) { { search: collection.title, org: owner.slug } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
+
+      context 'collection mode' do
+        let(:params) { { search: work.title, mode: 'collection', slug: collection.slug } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+
+        context 'non-existing collection' do
+          let(:params) { { search: work.title, mode: 'collection', slug: SecureRandom.base64(4).to_s } }
+
+          it 'renders status and template' do
+            login_as owner
+            subject
+
+            expect(response).to have_http_status(:ok)
+            expect(response).to render_template(:landing_page)
+          end
+        end
+      end
+
+      context 'document_set mode' do
+        let!(:document_set) do
+          create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work])
+        end
+        let(:params) { { search: work.title, mode: 'docset', slug: document_set.slug } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+
+        context 'non-existing docset' do
+          let(:params) { { search: work.title, mode: 'docset', slug: SecureRandom.base64(4).to_s } }
+
+          it 'renders status and template' do
+            login_as owner
+            subject
+
+            expect(response).to have_http_status(:ok)
+            expect(response).to render_template(:landing_page)
+          end
+        end
+      end
+
+      context 'work mode' do
+        let(:params) { { search: work.title, mode: 'work', slug: work.slug } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+
+        context 'non-existing work' do
+          let(:params) { { search: work.title, mode: 'work', slug: SecureRandom.base64(4).to_s } }
+
+          it 'renders status and template' do
+            login_as owner
+            subject
+
+            expect(response).to have_http_status(:ok)
+            expect(response).to render_template(:landing_page)
+          end
+        end
       end
     end
   end

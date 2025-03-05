@@ -108,4 +108,37 @@ describe WorkController do
       end
     end
   end
+
+  describe '#search' do
+    before do
+      stub_const('ELASTIC_ENABLED', true)
+    end
+
+    let(:action_path) { collection_work_search_path(owner, collection, work) }
+    let(:params) { { term: work.title } }
+
+    let(:subject) { get action_path, params: params }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:search)
+    end
+
+    context 'no term' do
+      let(:params) { {} }
+
+      it 'renders status and template' do
+        stub_const('ELASTIC_ENABLED', true)
+
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:search)
+      end
+    end
+  end
 end

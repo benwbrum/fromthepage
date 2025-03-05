@@ -429,4 +429,52 @@ describe CollectionController do
       end
     end
   end
+
+  describe '#search' do
+    before do
+      stub_const('ELASTIC_ENABLED', true)
+    end
+
+    let(:action_path) { collection_search_path(owner, collection) }
+    let(:params) { { term: collection.title } }
+
+    let(:subject) { get action_path, params: params }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:search)
+    end
+
+    context 'document set' do
+      let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+      let(:action_path) { collection_search_path(owner, document_set) }
+
+      let(:params) { { term: document_set.title } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:search)
+      end
+    end
+
+    context 'no term' do
+      let(:params) { {} }
+
+      it 'renders status and template' do
+        stub_const('ELASTIC_ENABLED', true)
+
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:search)
+      end
+    end
+  end
 end

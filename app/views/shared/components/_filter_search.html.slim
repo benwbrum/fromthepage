@@ -1,2 +1,4 @@
 div[class = classes]
   =search_field_tag key, value, placeholder: local_assigns[:placeholder] || t('filter_table.search_placeholder')
+  -if with_button
+    =button_tag t('dashboard.landing_page.search'), type: 'submit'

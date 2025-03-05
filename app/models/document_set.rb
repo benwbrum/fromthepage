@@ -81,7 +81,7 @@ class DocumentSet < ApplicationRecord
 
   # Docsets get indexed alongside collections but have a prefix added to ID
   def as_indexed_json
-    return {
+    {
       _id: "docset-#{self.id}",
       permissions_updated: 0,
       is_public: self.is_public,

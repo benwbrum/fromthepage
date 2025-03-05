@@ -1,6 +1,6 @@
-=form_tag(owner_search_path(@user.slug), :method => :get, class: 'collection-search') do
+=form_tag(owner_search_path(@user.slug), method: :get, class: 'collection-search') do
   =search_field_tag :term, params[:term], placeholder: t('dashboard.landing_page.search_org')
   =button_tag t('dashboard.landing_page.search')
   =label_tag 'term', t('dashboard.landing_page.search_org_label'), class: 'hidden'
 
-=render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
+=render partial: 'elastic/tabbed_results', locals: { search_results: @search_results }

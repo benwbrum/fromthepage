@@ -1,8 +1,8 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection }})
+=render partial: '/shared/collection_tabs', locals: { selected: 1, collection_id: @collection }
 
-=form_tag(collection_search_path(@collection.owner, @collection), :method => :get, class: 'collection-search') do
-  =search_field_tag :term, @term, :placeholder => t('.search_in_collection'), "aria-label" => t('.search_in_collection')
+=form_tag(collection_search_path(@collection.owner, @collection), method: :get, class: 'collection-search') do
+  =search_field_tag :term, @term, placeholder: t('.search_in_collection'), aria: { label: t('.search_in_collection') }
   =button_tag t('.search')
   =label_tag 'search_in_collection_string', t('.search_in_collection'), class: 'hidden'
 
-=render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
+=render partial: 'elastic/tabbed_results', locals: { search_results: @search_results }

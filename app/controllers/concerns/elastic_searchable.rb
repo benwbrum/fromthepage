@@ -20,11 +20,13 @@ module ElasticSearchable
 
     if filter
       count_query = ElasticUtil.gen_query(
-        current_user,
-        query,
-        search_types,
-        query_config,
-        page, page_size, true
+        user: current_user,
+        query: query,
+        types: search_types,
+        query_config: query_config,
+        page: page,
+        page_size: page_size,
+        count_only: true
       )
 
       # Need to run a count query for all types
@@ -41,11 +43,12 @@ module ElasticSearchable
       type_counts = inflated_resp[:type_counts]
 
       filtered_query = ElasticUtil.gen_query(
-        current_user,
-        query,
-        [filter],
-        query_config,
-        page, page_size
+        user: current_user,
+        query: query,
+        types: [filter],
+        query_config: query_config,
+        page: page,
+        page_size: page_size
       )
 
       filtered_resp = ElasticUtil.safe_search(
@@ -65,11 +68,12 @@ module ElasticSearchable
       }
     else
       generated_query = ElasticUtil.gen_query(
-        current_user,
-        query,
-        ['collection', 'page', 'user', 'work'],
-        query_config,
-        page, page_size
+        user: current_user,
+        query: query,
+        types: ['collection', 'page', 'user', 'work'],
+        query_config: query_config,
+        page: page,
+        page_size: page_size
       )
 
       resp = ElasticUtil.safe_search(

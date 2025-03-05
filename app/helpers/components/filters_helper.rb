@@ -33,10 +33,12 @@ module Components::FiltersHelper
     render('shared/components/page_size_select', page_options: page_options, selected: selected)
   end
 
-  def fe_filter_search(key:, value: nil, classes: nil, placeholder: nil)
-    classes = "dataTables_filter search #{classes}"
+  def fe_filter_search(key:, value: nil, classes: nil, placeholder: nil, wrapper_class: 'dataTables_filter search',
+                       with_button: false)
+    classes = "#{wrapper_class} #{classes}"
 
-    render('shared/components/filter_search', key: key, value: value, classes: classes, placeholder: placeholder)
+    render('shared/components/filter_search', key: key, value: value, classes: classes, placeholder: placeholder,
+                                              with_button: with_button)
   end
 
   def fe_filter_select(key:, value: nil, options: [], classes: nil)

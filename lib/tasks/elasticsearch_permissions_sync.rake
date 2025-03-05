@@ -4,23 +4,23 @@ require 'elastic_util'
 namespace :fromthepage do
   STATE_PATH = 'index-state.json'
 
-  desc "Sync permissions changes to the index"
-  task :es_sync, [] => :environment do |t,args|
-    after = get_last_index_time()
+  desc 'Sync permissions changes to the index'
+  task :es_sync, [] => :environment do |_t, _args|
+    after = get_last_index_time
     snapshot = Time.now.utc.to_i
 
     persist_state(after, 'INDEXING')
 
     begin
       # Permissions updates
-      sync_collections_and_docsets(after, snapshot);
-      sync_works(after, snapshot);
+      sync_collections_and_docsets(after, snapshot)
+      sync_works(after, snapshot)
 
       # Page content updates
-      sync_pages(after, snapshot);
+      sync_pages(after, snapshot)
 
       persist_state(snapshot, 'IDLE')
-    rescue Exception
+    rescue StandardError => _e
       # log the exception
       pp $!
       # Keep same time, change state to ERROR so it'll try again
@@ -34,13 +34,11 @@ namespace :fromthepage do
       state = JSON.parse(data)
 
       # Abandon ship if previous indexing underway
-      if state['status'] == 'INDEXING'
-        exit
-      end
+      exit if state['status'] == 'INDEXING'
 
-      return state['last_updated']
+      state['last_updated']
     else
-      return Time.now.utc.to_i
+      Time.now.utc.to_i
     end
   end
 
@@ -58,7 +56,7 @@ namespace :fromthepage do
   end
 
   def gen_range_query(after, limit)
-    q = {
+    {
       query: {
         range: {
           permissions_updated: {
@@ -71,7 +69,7 @@ namespace :fromthepage do
       # this process.  That can cause page offsets to behave wonky as the result
       # sets shift.  Could solve with a PIT if activity levels exceed 10000 permission
       # events per update
-      size: 10000
+      size: 10_000
     }
   end
 
@@ -80,13 +78,11 @@ namespace :fromthepage do
 
     resp = ElasticUtil.safe_search(index: 'ftp_collection', body: q)
 
-    collection_ids = resp['hits']['hits']
-      .select { |x| !x['_source']['is_docset'] } 
-      .map { |x| x['_id'] }
+    collection_ids = resp['hits']['hits'].reject { |x| x['_source']['is_docset'] }
+                                         .map { |x| x['_id'] }
 
-    docset_ids = resp['hits']['hits']
-      .select { |x| x['_source']['is_docset'] } 
-      .map { |x| x['_id'][7..-1] } # Have to drop prefix
+    docset_ids = resp['hits']['hits'].select { |x| x['_source']['is_docset'] }
+                                     .map { |x| x['_id'][7..-1] } # Have to drop prefix
 
     collection_ids.each do |coll_id|
       c = Collection.find(coll_id)
@@ -105,8 +101,7 @@ namespace :fromthepage do
     q = gen_range_query(after, limit)
 
     resp = ElasticUtil.safe_search(index: 'ftp_work', body: q)
-    work_ids = resp['hits']['hits']
-      .map { |x| x['_id'] }
+    work_ids = resp['hits']['hits'].map { |x| x['_id'] }
 
     work_ids.each do |work_id|
       w = Work.find(work_id)
@@ -115,8 +110,8 @@ namespace :fromthepage do
   end
 
   def sync_pages(after, limit)
-    terminus_a_quo = DateTime.strptime(after.to_s,'%s')
-    terminus_ad_quem = DateTime.strptime(limit.to_s,'%s')
+    terminus_a_quo = DateTime.strptime(after.to_s, '%s')
+    terminus_ad_quem = DateTime.strptime(limit.to_s, '%s')
     pending = Page.where(updated_at: [terminus_a_quo..terminus_ad_quem])
 
     ElasticUtil.reindex(pending, 'ftp_page')

@@ -133,7 +133,7 @@ class Collection < ApplicationRecord
   end
 
   def as_indexed_json
-    return {
+    {
       _id: self.id,
       permissions_updated: 0,
       is_public: !self.restricted,
@@ -152,23 +152,24 @@ class Collection < ApplicationRecord
     collection_collabs = []
     docset_collabs= []
 
-    if !user.nil?
+    unless user.nil?
       blocked_collections = user.blocked_collections.pluck(:id)
-      collection_collabs = user.collection_collaborations.pluck(:id)
-      docset_collabs = user.document_set_collaborations.pluck(:id)
-        .map{ |x| "docset-#{x}" }
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      docset_collabs      = user.document_set_collaborations
+                                .pluck(:id)
+                                .map{ |x| "docset-#{x}" }
     end
 
-    return {
+    {
       bool: {
         must: {
           simple_query_string: {
             query: query,
             fields: [
-              "title^2",
-              "title.no_underscores^1.3",
-              "intro_block",
-              "slug"
+              'title^2',
+              'title.no_underscores^1.3',
+              'intro_block',
+              'slug'
             ]
           }
         },
@@ -176,24 +177,24 @@ class Collection < ApplicationRecord
           {
             bool: {
               must_not: [
-                { terms: {_id: blocked_collections} }
+                { terms: { _id: blocked_collections} }
               ],
               # At least one of the following must be true
               should: [
-                { term: {is_public: true} },
-                { term: {owner_user_id: user.nil? ? -1 : user.id} },
-                { terms: {_id: collection_collabs} },
-                { terms: {_id: docset_collabs} },
+                { term: { is_public: true } },
+                { term: { owner_user_id: user.nil? ? -1 : user.id } },
+                { terms: { _id: collection_collabs } },
+                { terms: { _id: docset_collabs } }
               ]
             }
           },
           # Need index filter for cross collection search
-          {prefix: {_index: "ftp_collection"}}
+          { prefix: { _index: 'ftp_collection' } }
         ]
       }
     }
   end
-  
+
   def created_at
     created_on
   end

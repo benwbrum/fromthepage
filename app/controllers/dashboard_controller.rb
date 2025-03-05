@@ -5,7 +5,9 @@ class DashboardController < ApplicationController
   include DashboardHelper
   include ElasticSearchable
   include OwnerExporter
+
   PAGES_PER_SCREEN = 20
+  ES_SEARCH_LIMIT = 10_000
 
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]
@@ -179,11 +181,11 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    if ELASTIC_ENABLED
+    if ELASTIC_ENABLED && params[:search].present?
       search_page = (params[:page] || 1).to_i
 
       page_size = 10
-      @breadcrumb_scope={site: true}
+      @breadcrumb_scope = { site: true }
 
       query_config = {}
       if params[:org]
@@ -196,7 +198,7 @@ class DashboardController < ApplicationController
           }
           @org_filter = org_user
         end
-      elsif params[:mode] and params[:slug]
+      elsif params[:mode] && params[:slug]
         if params[:mode] == 'collection'
           coll = Collection.find_by(slug: params[:slug])
 
@@ -250,48 +252,47 @@ class DashboardController < ApplicationController
         #
         #       To setup support we just need to add a composite tiebreaker field
         #       to the schemas
-        @filtered_count = [ 10000, search_data[:filtered_count] ].min
+        @filtered_count = [ES_SEARCH_LIMIT, search_data[:filtered_count]].min
 
         @search_string = params[:search]
 
         @search_results = WillPaginate::Collection.create(
           search_page,
           page_size,
-          @filtered_count) do |pager|
-            pager.replace(inflated_results)
-          end
-      end
-    else
-      if params[:search]
-        @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-        @search_results_map = {}
-        @search_results.each do |result|
-          @search_results_map[result.owner_user_id] ||= []
-          @search_results_map[result.owner_user_id] << result
+          @filtered_count
+        ) do |pager|
+          pager.replace(inflated_results)
         end
       end
+    elsif params[:search].present?
+      @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @search_results_map = {}
+      @search_results.each do |result|
+        @search_results_map[result.owner_user_id] ||= []
+        @search_results_map[result.owner_user_id] << result
+      end
     end
-    users = User.owners
-      .joins(:collections)
-      .left_outer_joins(:document_sets)
+
+    users = User.owners.joins(:collections).left_outer_joins(:document_sets)
 
     org_owners = users.findaproject_orgs.with_owner_works
     individual_owners = users.findaproject_individuals.with_owner_works
-    @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
-           .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
+    @owners = users.where(id: org_owners.select(:id))
+                   .or(users.where(id: individual_owners.select(:id))).distinct
+                   .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
     @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
     @new_projects = Collection.includes(:owner)
-                      .order('created_on DESC')
-                      .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                      .distinct
-                      .limit(10)
+                              .order('created_on DESC')
+                              .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                              .distinct
+                              .limit(10)
 
     @new_document_sets = DocumentSet.includes(:owner)
-                            .order('created_at DESC')
-                            .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                            .distinct
-                            .limit(10)
+                                    .order('created_at DESC')
+                                    .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
+                                    .distinct
+                                    .limit(10)
     respond_to do |format|
       format.html do
         @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
@@ -305,7 +306,6 @@ class DashboardController < ApplicationController
 
       format.turbo_stream
     end
-
   end
 
   def browse_tag

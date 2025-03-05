@@ -52,3 +52,5 @@ tags
 
 .env
 .DS_Store
+
+index-state.json
