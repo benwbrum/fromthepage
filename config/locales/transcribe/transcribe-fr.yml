@@ -46,6 +46,7 @@ fr:
       sign_up_now_to_transcribe: Inscrivez-vous pour transcrire.
       transcribe_as_guest: Transcrire en tant qu'invité
     mark_page_blank:
+      saved_and_next_notice: Enregistré. Passage à la page suivante.
       saved_notice: Enregistré
     save_buttons:
       approve: Approuver
@@ -68,6 +69,7 @@ fr:
       save_to_transcribed_tooltip: Enregistrez vos modifications
     save_transcription:
       error_message: 'Une erreur s''est produite lors de l''analyse du balisage dans votre relevé de notes. Ce type d''erreur se produit souvent s''il manque un crochet angulaire ou si une balise HTML est laissée ouverte. Vérifiez toutes les occurrences des symboles < ou > dans votre texte. (L''erreur de l''analyseur était : %{error_message})'
+      saved_and_next_notice: Enregistré. Passage à la page suivante.
       saved_notice: Enregistré
       you_may_save_notice: Vous pouvez enregistrer jusqu'à %{guest_deed_count} transcriptions en tant qu'invité.
     save_translation:

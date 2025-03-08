@@ -12,7 +12,7 @@ class ArticleController < ApplicationController
     @categories = @collection.categories
     @vertical_articles = {}
     @categories.each do |category|
-      current_articles = articles.where(categories: { id: category.id })
+      current_articles = articles.where(categories: { id: category.id }).reorder(:title)
       @vertical_articles[category] = sort_vertically(current_articles)
     end
 

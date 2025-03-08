@@ -47,8 +47,10 @@ class TranscribeController  < ApplicationController
     redirect_path = case options[:redirect]
                     when 'transcribe'
                       page_id = @page.last? ? @page.id : @page.lower_item.id
+                      notice_msg = @page.id == page_id ? t('.saved_notice') : t('.saved_and_next_notice')
                       collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
                     else
+                      notice_msg = t('.saved_notice')
                       collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
                     end
 
@@ -58,7 +60,7 @@ class TranscribeController  < ApplicationController
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = t('.saved_notice')
+      flash[:notice] = notice_msg
       redirect_to redirect_path
       return false
     elsif @page.status_blank? && params[:page]['mark_blank'] == '0'
@@ -66,7 +68,7 @@ class TranscribeController  < ApplicationController
       @page.translation_status = :new
       @page.save
       @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = t('.saved_notice')
+      flash[:notice] = notice_msg
       redirect_to redirect_path
       return false
     else
@@ -220,6 +222,7 @@ class TranscribeController  < ApplicationController
           elsif @quality_sampling
             next_page = @quality_sampling.next_unsampled_page
             if next_page
+              flash[:notice] = t('.saved_and_next_notice') if next_page.id != @page.id
               redirect_to collection_sampling_review_page_path(@collection.owner,
                                                                @collection, @quality_sampling,
                                                                next_page.id, flow: 'quality-sampling')
@@ -231,6 +234,7 @@ class TranscribeController  < ApplicationController
                                   params[:save_to_transcribed]
 
             next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
+            flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
             redirect_to action: 'assign_categories', page_id: @page.id,
                         collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
           end

@@ -95,13 +95,12 @@ module ApplicationHelper
       condition << options[:not_user_id]
     end
 
-
     suppress_collection = false
     if options[:collection]
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
       suppress_collection = true
     else
-      #restricting to visible collections first speeds up the query
+      # restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner].id)
@@ -113,7 +112,7 @@ module ApplicationHelper
       end
     end
     options[:suppress_collection] = suppress_collection
-    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
+    render partial: 'deed/deeds', locals: { limit: limit, deeds: deeds, options: options }
   end
 
   def show_prerender(prerender, locale)

@@ -46,6 +46,7 @@ es:
       sign_up_now_to_transcribe: Regístrate ahora para transcribir.
       transcribe_as_guest: Transcribir como visitante
     mark_page_blank:
+      saved_and_next_notice: Guardado. Pasando a la siguiente página.
       saved_notice: Guardado
     save_buttons:
       approve: Aprobar
@@ -68,6 +69,7 @@ es:
       save_to_transcribed_tooltip: Guardar tus cambios
     save_transcription:
       error_message: 'Se produjo un error al analizar el formato en la transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja una etiqueta de HTML abierta. Verifica cualquier instancia de < or=""> símbolos en el texto. (El error del analizador fue: %{error_message})'
+      saved_and_next_notice: Guardado. Pasando a la siguiente página.
       saved_notice: Guardado
       you_may_save_notice: Puedes guardar hasta %{guest_deed_count} transcripciones como visitante.
     save_translation:
