@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require_tree ./plugins
 //= require user.js
-//= require handsontable.full.min
 //= require datatables.min
 //= require clipboard
 
@@ -379,6 +378,8 @@ function freezeTableColumn(topEl, tableEl, columnEl, mode='') {
     }
   }
 }
+
+window.freezeTableColumn = freezeTableColumn;
 
 function lintHTML(content) {
   const selfClosingTags = ['br', 'area', 'base', 'basefont', 'bgsound', 'button', 'col', 'embed', 'frame', 'frameset', 'hr', 'img', 'input', 'isindex', 'keygen', 'meta', 'param', 'spacer', 'tagname', 'svg', 'track', 'wbr'];

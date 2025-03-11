@@ -1,25 +1,8 @@
--field_order(@collection)
--@fields.each do |line, array|
-  -page_number = array.map{|field| field.page_number}.uniq.first
-  -if (@page && (page_number == @page.position || page_number == nil)) || (current_page?({action: 'edit_fields'}))
-    .fields-row
-      -field_layout(array)
-      -@field_array.each do |field, cell|
-        -if @field_preview && @field_preview[field.id]
-          -cell = @field_preview[field.id].first
-        -if field.input_type == 'spreadsheet'
-          -span_width = !field.percentage.blank? ? field.percentage : @width
-          .field-wrapper.spreadsheet(style="width: #{span_width}%")
-            =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
-        -else
-          -span_width = !field.percentage.blank? ? field.percentage : @width
-          .field-wrapper(style="width: #{span_width}%")
-            -if field.input_type == "instruction"
-              div id=formatted_field_name(field) class="field-instructions"
-                h5 =t('.instructions')
-                p ==field.label
-            -else
-              =generate_field_input(field, cell)
+-@field_presenter.formatted_fields.each do |formatted_fields|
+  .fields-row
+    -formatted_fields.each do |formatted_field|
+      .field-wrapper[style="width: #{formatted_field[:width]}%"]
+        =@field_presenter.generate_field_input(field_id: formatted_field[:field].id, content: formatted_field[:values])
 
 -content_for :javascript
   javascript:

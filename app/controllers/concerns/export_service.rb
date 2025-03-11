@@ -153,19 +153,48 @@ module ExportService
   end
 
   def export_table_csv_collection(out:, collection:)
-    path = "fields_and_tables.csv"
+    path = 'fields_and_tables.csv'
     out.put_next_entry(path)
-    out.write(export_tables_as_csv(collection))
+
+    if collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: collection,
+        works: collection.works.includes(
+          { pages: [:notes, { page_versions: :user }] }, :deeds
+        )
+      ).call
+
+      csv_string = result.csv_string
+    else
+      csv_string = export_tables_as_csv(collection)
+    end
+
+    out.write(csv_string)
   end
 
   def export_table_csv_work(out:, work:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'csv', "fields_and_tables.csv")
+    path = if by_work
+             File.join(path_from_work(work, original_filenames), 'csv', "fields_and_tables.csv")
+           else
+             File.join('fields_and_tables', "#{path_from_work(work, original_filenames)}.csv")
+           end
+
+    collection = work.collection
+    if collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: collection,
+        works: collection.works.includes(
+          { pages: [:notes, { page_versions: :user }] }, :deeds
+        ).where(id: work.id)
+      ).call
+
+      csv_string = result.csv_string
     else
-      path = File.join("fields_and_tables", "#{path_from_work(work, original_filenames)}.csv")
+      csv_string = export_tables_as_csv(work)
     end
+
     out.put_next_entry(path)
-    out.write(export_tables_as_csv(work))
+    out.write(csv_string)
   end
 
   def export_collection_notes_csv(out:, collection:)
@@ -402,7 +431,7 @@ module ExportService
         @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
       end
     end
-    #get headings from non-field-based
+    # get headings from non-field-based
     cell_headings.each do |raw_heading|
       @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
       @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
@@ -417,7 +446,7 @@ module ExportService
       works = table_obj.works
     elsif table_obj.is_a?(Work)
       collection = table_obj.collection
-      #need arrays so they will act equivalently to the collection works
+      # need arrays so they will act equivalently to the collection works
       ids = [table_obj.id]
       works = [table_obj]
     end
@@ -455,8 +484,8 @@ module ExportService
       works.each do |w|
         csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?, collection)
       end
-
     end
+
     csv_string
   end
 
