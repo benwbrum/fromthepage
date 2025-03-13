@@ -155,6 +155,7 @@ class Collection < ApplicationRecord
     if !user.nil?
       blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs = user.collection_collaborations.pluck(:id)
+      collection_collabs+= user.owned_collections.pluck(:id)
       docset_collabs = user.document_set_collaborations.pluck(:id)
         .map{ |x| "docset-#{x}" }
     end
@@ -183,6 +184,7 @@ class Collection < ApplicationRecord
                 { term: {is_public: true} },
                 { term: {owner_user_id: user.nil? ? -1 : user.id} },
                 { terms: {_id: collection_collabs} },
+                { terms: { collection_id: collection_collabs }},
                 { terms: {_id: docset_collabs} },
               ]
             }
