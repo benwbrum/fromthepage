@@ -22,20 +22,20 @@ module ElasticDelta
   # Map model types to collection names
   def get_index_for_type(type)
     if type.is_a?(Collection)
-      return 'ftp_collection'
+      return ElasticUtil::Index::COLLECTION
     elsif type.is_a?(DocumentSet)
-      return 'ftp_collection' # DocSets intentionally put into collection for now
+      return ElasticUtil::Index::COLLECTION # DocSets intentionally put into collection for now
     elsif type.is_a?(Page)
-      return 'ftp_page'
+      return ElasticUtil::Index::PAGE
     elsif type.is_a?(User)
-      return 'ftp_user'
+      return ElasticUtil::Index::USER
     elsif type.is_a?(Work)
-      return 'ftp_work'
+      return ElasticUtil::Index::WORK
     end
   end
 
   def es_update
-    index = get_index_for_type(self)
+    index = ElasticUtil.env_index(get_index_for_type(self))
     doc_id = self.id
     body = self.as_indexed_json().except(:_id)
 
@@ -76,7 +76,7 @@ module ElasticDelta
     doc_id = self.id
 
     # Only delete a single page if not destroyed by association
-    if index == 'ftp_page' && destroyed_by_association
+    if index == ElasticUtil::Index::PAGE && destroyed_by_association
       return
     end
 
@@ -114,7 +114,7 @@ module ElasticDelta
     }
 
     ElasticUtil.safe_delete_by_query(
-      index: 'ftp_page',
+      index: ElasticUtil::Index::PAGE,
       body: q
     )
   end

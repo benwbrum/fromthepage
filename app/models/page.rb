@@ -219,7 +219,7 @@ class Page < ApplicationRecord
             }
           },
           # Need index filter for cross collection search
-          {prefix: {_index: "ftp_page"}}
+          {prefix: {_index: ElasticUtil::Index::PAGE}}
         ]
       }
     }

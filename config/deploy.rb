@@ -23,7 +23,7 @@ set :branch, 'ui-design'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/initializers/rack_attack.rb config/initializers/omniauth.rb config/newrelic.yml public/robots.txt}
+set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/initializers/rack_attack.rb config/initializers/omniauth.rb config/newrelic.yml public/robots.txt index-state.json}
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}

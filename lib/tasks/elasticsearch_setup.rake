@@ -38,17 +38,37 @@ namespace :fromthepage do
     user_body = get_es_config(['schema', 'user.json'])
     work_body = get_es_config(['schema', 'work.json'])
 
-    client.indices.create(index: env_index('ftp_collection'),
+    client.indices.create(index: ElasticUtil::Index::COLLECTION,
                           body: collection_body)
-    client.indices.create(index: env_index('ftp_page'),
+    client.indices.create(index: ElasticUtil::Index::PAGE,
                           body: page_body)
-    client.indices.create(index: env_index('ftp_user'),
+    client.indices.create(index: ElasticUtil::Index::USER,
                           body: user_body)
-    client.indices.create(index: env_index('ftp_work'),
+    client.indices.create(index: ElasticUtil::Index::WORK,
                           body: work_body)
 
     puts('Task complete, check status codes for errors.')
   end
+
+  desc "Report on the stats of the current indices"
+  task :es_stats, [] => :environment do |t,args|
+    client = ElasticUtil.get_client()
+
+    resp = client.cat.indices(format: 'json')
+    print "Current index stats:\n"
+    current_indices = resp.select{|row| ElasticUtil::Index::ALL.include? row['index']}
+    current_indices.each do |row|
+      print "#{row['index']}:\t#{row['health']}\t#{row['status']}\t#{row['docs.count']} documents\n"
+    end
+    
+    print "\nAll index stats:\n"
+    resp.each do |row|
+      unless row['index'].match(/^\./) || ElasticUtil::Index::ALL.include?(row['index'])
+        print "#{row['index']}:\t#{row['health']}\t#{row['status']}\t#{row['docs.count']} documents\n"
+      end
+    end
+
+  end  
 
   desc "Delete all configuration and indices created by init"
   task :es_reset, [] => :environment do |t,args|
@@ -58,63 +78,60 @@ namespace :fromthepage do
     client.ingest.delete_pipeline(id: 'multilingual')
     client.delete_script(id: 'multilingual_content')
 
-    client.indices.delete(index: env_index('ftp_collection'))
-    client.indices.delete(index: env_index('ftp_page'))
-    client.indices.delete(index: env_index('ftp_user'))
-    client.indices.delete(index: env_index('ftp_work'))
+    client.indices.delete(index: ElasticUtil::Index::COLLECTION)
+    client.indices.delete(index: ElasticUtil::Index::PAGE)
+    client.indices.delete(index: ElasticUtil::Index::USER)
+    client.indices.delete(index: ElasticUtil::Index::WORK)
   end
 
   desc "Reindex everything into elasticsearch"
-  task :es_reindex, [] => :environment do |t,args|
-    ElasticUtil.reindex(Collection, env_index('ftp_collection'));
+  task :es_reindex, [:models] => :environment do |t,args|
+    # look in the arguments for specific models to reindex
+    # if none are provided, reindex everything
+    if args[:models].blank?
+      models=[:collection, :document_set, :page, :user, :work]
+    else
+      models=args[:models].split(',').map(&:to_sym)
+    end
+
+    ElasticUtil.reindex(Collection, ElasticUtil::Index::COLLECTION) if models.include?(:collection)
     # Docsets are a special type of collection, intentionally using same index
-    ElasticUtil.reindex(DocumentSet, env_index('ftp_collection'));
-    ElasticUtil.reindex(Page, env_index('ftp_page'));
-    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'),
-      env_index('ftp_user'));
-    ElasticUtil.reindex(Work.where.not(collection_id: 0), env_index('ftp_work'));
+    ElasticUtil.reindex(DocumentSet, ElasticUtil::Index::COLLECTION) if models.include?(:document_set)
+    ElasticUtil.reindex(Page, ElasticUtil::Index::PAGE) if models.include?(:page)
+    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'),ElasticUtil::Index::USER) if models.include?(:user)
+    ElasticUtil.reindex(Work.where.not(collection_id: 0), ElasticUtil::Index::WORK) if models.include?(:work)
   end
 
-  desc "Rollover the active alias used by the application"
-  task :es_rollover, [] => :environment do |t,args|
-    rollover('ftp_collection')
-    rollover('ftp_page')
-    rollover('ftp_user')
-    rollover('ftp_work')
+  desc "Reindex everything into elasticsearch"
+  task :es_reindex, [:models] => :environment do |t,args|
+    # look in the arguments for specific models to reindex
+    # if none are provided, reindex everything
+    if args[:models].blank?
+      models=[:collection, :document_set, :page, :user, :work]
+    else
+      models=args[:models].split(',').map(&:to_sym)
+    end
+
+    ElasticUtil.reindex(Collection, ElasticUtil::Index::COLLECTION) if models.include?(:collection)
+    # Docsets are a special type of collection, intentionally using same index
+    ElasticUtil.reindex(DocumentSet, ElasticUtil::Index::COLLECTION) if models.include?(:document_set)
+    ElasticUtil.reindex(Page, ElasticUtil::Index::PAGE) if models.include?(:page)
+    ElasticUtil.reindex(User.where.not(owner: 0, account_type: 'staff'),ElasticUtil::Index::USER) if models.include?(:user)
+    ElasticUtil.reindex(Work.where.not(collection_id: 0), ElasticUtil::Index::WORK) if models.include?(:work)
   end
 
-  def rollover(index)
+  desc "Query ElasticSearch for a specific document by the ID which our application knows about"
+  task :es_get, [:id] => :environment do |t,args|
     client = ElasticUtil.get_client()
+    id = args[:id]
 
-    # Get existing aliases
-    existing = []
-    begin
-      resp = client.indices.get_alias(name: index)
-      existing = resp.keys
-    rescue Exception
-      # no-op, end up here when alias doesn't previously exist
+    # loop through all current elasticsearch indices to query for the document we want
+    ElasticUtil::Index::ALL.each do |index|
+      print "Checking index: #{index}\n"
+      resp = client.get(index: index, id: id, ignore: [404])
+      print JSON.pretty_generate(resp.to_json)
+      print "\n\n"
     end
-
-    if existing.include?(env_index(index))
-      puts "Existing alias matches, unable to rollover."
-      return
-    end
-
-    actions = []
-
-    # Add new alias
-    actions << { add: {index: env_index(index), alias: index } }
-
-    # Remove all existing
-    existing.each do |i|
-      actions << { remove: {index: i, alias: index } }
-    end
-
-    client.indices.update_aliases(body: {actions: actions})
-  end
-
-  def env_index(index)
-    return "#{index}_#{ELASTIC_SUFFIX}"
   end
 
   def get_es_config(target, parse = true)

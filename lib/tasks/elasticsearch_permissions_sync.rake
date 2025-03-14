@@ -78,7 +78,7 @@ namespace :fromthepage do
   def sync_collections_and_docsets(after, limit)
     q = gen_range_query(after, limit)
 
-    resp = ElasticUtil.safe_search(index: 'ftp_collection', body: q)
+    resp = ElasticUtil.safe_search(index: ElasticUtil::Index::COLLECTION, body: q)
 
     collection_ids = resp['hits']['hits']
       .select { |x| !x['_source']['is_docset'] } 
@@ -90,27 +90,27 @@ namespace :fromthepage do
 
     collection_ids.each do |coll_id|
       c = Collection.find(coll_id)
-      ElasticUtil.reindex(c.pages, 'ftp_page')
-      ElasticUtil.reindex(c.works, 'ftp_work')
+      ElasticUtil.reindex(c.pages, ElasticUtil::Index::PAGE)
+      ElasticUtil.reindex(c.works, ElasticUtil::Index::WORK)
     end
 
     docset_ids.each do |docset_id|
       ds = DocumentSet.find(docset_id)
-      ElasticUtil.reindex(ds.pages, 'ftp_page')
-      ElasticUtil.reindex(ds.works, 'ftp_work')
+      ElasticUtil.reindex(ds.pages, ElasticUtil::Index::PAGE)
+      ElasticUtil.reindex(ds.works, ElasticUtil::Index::WORK)
     end
   end
 
   def sync_works(after, limit)
     q = gen_range_query(after, limit)
 
-    resp = ElasticUtil.safe_search(index: 'ftp_work', body: q)
+    resp = ElasticUtil.safe_search(index: ElasticUtil::Index::WORK, body: q)
     work_ids = resp['hits']['hits']
       .map { |x| x['_id'] }
 
     work_ids.each do |work_id|
       w = Work.find(work_id)
-      ElasticUtil.reindex(w.pages, 'ftp_page')
+      ElasticUtil.reindex(w.pages, ElasticUtil::Index::PAGE)
     end
   end
 
@@ -119,6 +119,6 @@ namespace :fromthepage do
     terminus_ad_quem = DateTime.strptime(limit.to_s,'%s')
     pending = Page.where(updated_at: [terminus_a_quo..terminus_ad_quem])
 
-    ElasticUtil.reindex(pending, 'ftp_page')
+    ElasticUtil.reindex(pending, ElasticUtil::Index::PAGE)
   end
 end

@@ -1,4 +1,18 @@
 module ElasticUtil
+  def self.env_index(index)
+    elastic_suffix = ENV['ELASTIC_SUFFIX'] || ELASTIC_SUFFIX
+    return "#{index}_#{elastic_suffix}"
+  end
+
+  module Index
+    COLLECTION = ElasticUtil.env_index('ftp_collection')
+    PAGE = ElasticUtil.env_index('ftp_page')
+    USER = ElasticUtil.env_index('ftp_user')
+    WORK = ElasticUtil.env_index('ftp_work')
+
+    ALL = [COLLECTION, PAGE, USER, WORK]
+  end
+
 
   def self.get_client(enable_log = false)
     return Elasticsearch::Client.new(
@@ -71,10 +85,10 @@ module ElasticUtil
       # General weighting for multi-type search results
       # Note: Using wildcards as alias names don't carry thru to boosting results
       indices_boost: [
-        { 'ftp_user*': 1000.0 }, # Can bring this down to "mix" users in results
-        { 'ftp_collection*': 50.0 },
-        { 'ftp_work*': 10.0 },
-        { 'ftp_page*': 1.0 }
+        { "#{ElasticUtil::Index::USER}*": 1000.0 }, # Can bring this down to "mix" users in results
+        { "#{ElasticUtil::Index::COLLECTION}*": 50.0 },
+        { "#{ElasticUtil::Index::WORK}*": 10.0 },
+        { "#{ElasticUtil::Index::PAGE}*": 1.0 }
       ],
       from: (page - 1) * page_size,
       size: page_size
@@ -111,22 +125,22 @@ module ElasticUtil
     active_types = []
     if types.include?("collection")
       to_mod << Collection.es_match_query(precise_query, user)
-      active_types << "ftp_collection"
+      active_types << ElasticUtil::Index::COLLECTION
     end
 
     if types.include?("page")
       to_mod << Page.es_match_query(precise_query, user)
-      active_types << "ftp_page"
+      active_types << ElasticUtil::Index::PAGE
     end
     
     if types.include?("user")
       to_mod << User.es_match_query(precise_query)
-      active_types << "ftp_user"
+      active_types << ElasticUtil::Index::USER
     end
 
     if types.include?("work")
       to_mod << Work.es_match_query(precise_query, user)
-      active_types << "ftp_work"
+      active_types << ElasticUtil::Index::USER
     end
 
     return {
@@ -150,20 +164,20 @@ module ElasticUtil
 
     # Load up individual types from response
     collection_ids = hits
-      .select { |x| x['_index'].include?('ftp_collection') && !x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?(ElasticUtil::Index::COLLECTION) && !x['_source']['is_docset'] }
       .map { |x| x['_id'] }
 
     docset_ids = hits
-      .select { |x| x['_index'].include?('ftp_collection') && x['_source']['is_docset'] }
+      .select { |x| x['_index'].include?(ElasticUtil::Index::COLLECTION) && x['_source']['is_docset'] }
       .map { |x| x['_id'][7..-1] } # Need to drop prefix specializer for lookup
 
-    page_ids = hits.select { |x| x['_index'].include?( 'ftp_page') }
+    page_ids = hits.select { |x| x['_index'].include?( ElasticUtil::Index::PAGE) }
       .map { |x| x['_id'] }
 
-    user_ids = hits.select { |x| x['_index'].include?('ftp_user') }
+    user_ids = hits.select { |x| x['_index'].include?(ElasticUtil::Index::USER) }
       .map { |x| x['_id'] }
 
-    work_ids = hits.select { |x| x['_index'].include?('ftp_work') }
+    work_ids = hits.select { |x| x['_index'].include?(ElasticUtil::Index::WORK) }
       .map { |x| x['_id'] }
 
     collections = Collection.where(id: collection_ids)
@@ -175,22 +189,23 @@ module ElasticUtil
     # TODO: Handle IDs missing from database (deleted/unsynced)?
     inflated = []
     hits.each do |hit|
-      if hit['_index'].include?('ftp_collection')
+      if hit['_index'].include?(ElasticUtil::Index::COLLECTION)
         if hit['_source']['is_docset']
           inflated << docsets.find { |x| x[:id].to_s == hit['_id'][7..-1] }
         else
           inflated << collections.find { |x| x[:id].to_s == hit['_id'] }
         end
-      elsif hit['_index'].include?('ftp_page')
+      elsif hit['_index'].include?(ElasticUtil::Index::PAGE)
         inflated << pages.find { |x| x[:id].to_s == hit['_id'] }
-      elsif hit['_index'].include?('ftp_user')
+      elsif hit['_index'].include?(ElasticUtil::Index::USER)
         inflated << users.find { |x| x[:id].to_s == hit['_id'] }
-      elsif hit['_index'].include?('ftp_work')
+      elsif hit['_index'].include?(ElasticUtil::Index::WORK)
         inflated << works.find { |x| x[:id].to_s == hit['_id'] }
       end
     end
 
     # Make convenient lookup for counts per type
+
     type_counts = {}
     aliased_types = ['ftp_collection', 'ftp_page', 'ftp_user', 'ftp_work']
     doc_types.each do |bucket|
@@ -265,6 +280,8 @@ module ElasticUtil
         begin
           client.bulk(body: bulk_body, refresh: false)
         rescue => e
+          # print the exception
+          puts e.message
           puts "Error with threaded bulk request"
         end
       end
@@ -307,7 +324,6 @@ module ElasticUtil
     begin
       resp = self.get_client()
         .search(arguments)
-
       if resp.key?('error')
         raise 'General elastic error'
       end
