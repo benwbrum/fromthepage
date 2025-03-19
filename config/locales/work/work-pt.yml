@@ -9,9 +9,9 @@ pt:
       heading: Configuração de impressão
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadados
-      preserve_linebreaks: Preservar quebras de linha
+      preserve_linebreaks: Preservar quebra de linha
       text_contents: Conteúdo
-      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
+      text_contents_description: A versão para impressão incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
       text_format: Formatação de texto
       text_format_description: Opções para formatar texto.
       text_format_docx: MS Word (.docx)
@@ -140,7 +140,7 @@ pt:
       uploaded_by: Enviado por
       url: URL
       work_image: Imagem da obra
-      work_image_description: Uma imagem a ser usada para ilustrar a obra. Se nenhuma imagem for carregada, uma imagem da página será usada.
+      work_image_description: Uma imagem utilizada para ilustrar a obra. Caso nenhuma imagem seja carregada, será usada uma imagem da página.
       work_thumbnail: Miniatura da obra
       work_title: Título da obra
     edit_scribes:
@@ -156,7 +156,7 @@ pt:
     new:
       collection: Coleção
       create_empty_work: Criar obra vazia
-      create_empty_work_description: Isso cria uma obra vazio. Depois de criar a obra, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar a obra e fazer upload do arquivo em %{start_project}.
+      create_empty_work_description: Cria uma obra vazia. Após criar a obra, é possível adicionar imagens de páginas individuais. Caso possua um arquivo ZIP ou PDF com várias imagens, crie a obra e envie o arquivo em %{start_project}.
       create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
@@ -166,7 +166,7 @@ pt:
     pages_tab:
       actions: Ações
       add_new_page: Adicionar nova página
-      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-lo!
+      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-la!
       delete: Excluir
       featured_page: Página em destaque
       image_status: Status da imagem
@@ -174,14 +174,14 @@ pt:
       move_down: Mover para baixo
       move_up: Subir
       no_pages_found: Nenhuma página encontrada
-      no_pages_found_description: Esta obra ainda não contém páginas
-      no_works_found_description: Não há nenhum obra presente neste momento
+      no_pages_found_description: Esta obra ainda não possui páginas
+      no_works_found_description: Não há nenhuma obra neste momento
       page_title: Título da página
-      pages_tab_description: Aqui você vê a lista de todas as páginas da obra. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para esta obra clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
+      pages_tab_description: Aqui é possível visualizar a lista de todas as páginas da obra. Para alterar a posição de uma página, utilize as setas para cima e para baixo à direita. Para criar uma nova página, clique no botão Adicionar Nova Página. Após criar uma nova página em branco, localize-a na lista abaixo e acesse as configurações para enviar a imagem da página.
       position: Posição
       ready_to_transcribe: Pronto para %{transcribe}
       settings: Definições
-      transcribe: transcrever
+      transcribe: Transcrever
       upload: Envio
       upload_page_image: "%{upload} imagem da página"
     save_description:
@@ -206,7 +206,7 @@ pt:
       source_box_folder: Caixa de fontes
       source_collection_name: Nome de coleção fonte
       source_location: Localização de fonte
-      uploaded_by: Subido por
+      uploaded_by: Enviado por
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso
