@@ -792,7 +792,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = xml_table_to_markdown_table(table_element)
+    text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
   end
 
