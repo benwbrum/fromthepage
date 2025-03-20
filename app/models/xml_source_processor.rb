@@ -494,7 +494,7 @@ EOF
     text.split("\n").map{|line| "|#{line}|"}.join("\n")
   end
 
-  def xml_table_to_markdown_table(table_element, pandoc_format=false)
+  def xml_table_to_markdown_table(table_element, pandoc_format=false, plaintext_export=false)
     text_table = ""
 
     # clean up in-cell line-breaks
@@ -530,8 +530,13 @@ EOF
         else
           width = column_widths.values.first
         end
-        inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
-        inner_html.rjust(width, ' ')
+
+        if plaintext_export
+          e.text.rjust(width, ' ')
+        else
+          inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+          inner_html.rjust(width, ' ')
+        end
       end.join(' | ') << "\n"
     end
     if pandoc_format
