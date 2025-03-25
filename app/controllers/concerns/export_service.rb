@@ -474,7 +474,8 @@ module ExportService
       spreadsheet_count = input_types.count("spreadsheet")
       position = input_types.index("spreadsheet")
     else
-      renamed_cell_headings_count = 0
+      # this variable apparently tracks how many times we should attempt to process a set of headers, designed for sparse tables
+      renamed_cell_headings_count = 1
     end
     spreadsheet_field_ids = work.collection.transcription_fields.where(input_type: 'spreadsheet').order(:line_number).pluck(:id)
 
@@ -523,7 +524,7 @@ module ExportService
 
           grouped_hash.each do |row, cell_array|
             count = 0
-            while count < renamed_cell_headings_count
+            while count < renamed_cell_headings_count # this is 0 and should not be!
               #get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
               if has_spreadsheet

@@ -47,10 +47,10 @@ gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git',
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
 
-gem 'omniauth', '~> 1.9.2'
+gem 'omniauth', '~> 1.9'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth-saml'
+gem 'omniauth-saml', '~> 1.10.6'
 
 gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
