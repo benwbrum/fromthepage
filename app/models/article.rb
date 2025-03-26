@@ -2,20 +2,26 @@
 #
 # Table name: articles
 #
-#  id            :integer          not null, primary key
-#  created_on    :datetime
-#  graph_image   :string(255)
-#  latitude      :decimal(7, 5)
-#  lock_version  :integer          default(0)
-#  longitude     :decimal(8, 5)
-#  pages_count   :integer          default(0)
-#  provenance    :string(255)
-#  source_text   :text(16777215)
-#  title         :string(255)
-#  uri           :string(255)
-#  xml_text      :text(16777215)
-#  collection_id :integer
-#  created_by_id :integer
+#  id               :integer          not null, primary key
+#  bibliography     :text(65535)
+#  birth_date       :string(255)
+#  created_on       :datetime
+#  death_date       :string(255)
+#  disambiguator    :string(255)
+#  graph_image      :string(255)
+#  latitude         :decimal(7, 5)
+#  lock_version     :integer          default(0)
+#  longitude        :decimal(8, 5)
+#  pages_count      :integer          default(0)
+#  provenance       :string(255)
+#  race_description :string(255)
+#  sex              :string(255)
+#  source_text      :text(16777215)
+#  title            :string(255)
+#  uri              :string(255)
+#  xml_text         :text(16777215)
+#  collection_id    :integer
+#  created_by_id    :integer
 #
 # Indexes
 #
@@ -90,6 +96,10 @@ class Article < ApplicationRecord
 
   def gis_enabled?
     self.categories.where(:gis_enabled => true).present?
+  end
+
+  def bio_fields_enabled?
+    self.categories.where(:bio_fields_enabled => true).present?
   end
 
   #######################
