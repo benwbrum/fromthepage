@@ -57,6 +57,7 @@ class Work < ApplicationRecord
   require 'elastic_util'
 
   include ElasticDelta
+  include EdtfDate
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged history]
 
@@ -138,7 +139,8 @@ class Work < ApplicationRecord
               with: /[-_[:alpha:]]/
             }
   validates :description, html: true, length: { maximum: 16.megabytes - 1 }
-  validate :document_date_is_edtf
+
+  edtf_date_attribute :document_date
 
   mount_uploader :picture, PictureUploader
 

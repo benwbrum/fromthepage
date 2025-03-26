@@ -30,6 +30,8 @@
 #
 class Article < ApplicationRecord
   include XmlSourceProcessor
+  include EdtfDate
+
   #include ActiveModel::Dirty
 
   before_save :process_source
@@ -59,6 +61,10 @@ class Article < ApplicationRecord
   after_save :create_version
   # add a call back that logs a warning whenever an article is deleted
   before_destroy :log_destroy
+
+  edtf_date_attribute :birth_date
+  edtf_date_attribute :death_date
+
 
   def log_destroy
     logger.warn("ISSUE4269 Warning: Article #{self.id} #{self.title} in collection #{self.collection.title} is being destroyed.")
