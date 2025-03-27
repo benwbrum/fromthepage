@@ -56,11 +56,11 @@
             th =f.label :race_description, t('.race_description')
             td.w100 =f.text_field :race_description
 
-        tr
-          td(colspan="2")
-            =f.label :bibliography, t('.bibliography'), class: 'above'
-            div
-              =f.text_area :bibliography, class: 'article-editarea_textarea', rows: 15
+      tr
+        td(colspan="2")
+          =f.label :bibliography, t('.bibliography'), class: 'above'
+          div
+            =f.text_area :bibliography, class: 'article-editarea_textarea', rows: 5
 
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })

@@ -21,12 +21,6 @@ module EdtfDate
           return nil if raw_date.nil?
           return raw_date if date.nil?
 
-          if raw_date.length == 7 # YYYY-MM
-            date.month_precision!
-          elsif raw_date.length == 4 && !raw_date.include?("x") # YYYY
-            date.year_precision!
-          end
-
           date.edtf
         end
 
