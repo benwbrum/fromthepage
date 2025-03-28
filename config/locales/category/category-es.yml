@@ -3,9 +3,6 @@ es:
   category:
     add_new:
       create_category: Crear categoría
-      enable_bio_fields: Habilitar campos biográficos
-      enable_gis: Habilitar SIG
-      title: Título
     create:
       category_created: La categoría ha sido creada
     delete:
@@ -16,10 +13,7 @@ es:
       gis_disabled_for: SIG deshabilitado para %{title}
     edit:
       edit_category: Editar categoria
-      enable_bio_fields: Habilitar campos biográficos
-      enable_gis: Habilitar SIG
       save_changes: Guardar cambio
-      title: Título
     enable_bio_fields:
       bio_fields_enabled_for: Campos biográficos habilitados para %{title}
     enable_gis:

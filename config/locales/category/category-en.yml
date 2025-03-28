@@ -3,9 +3,6 @@ en:
   category:
     add_new:
       create_category: Create Category
-      enable_bio_fields: Enable Biographical Fields
-      enable_gis: Enable GIS
-      title: Title
     create:
       category_created: Category has been created
     delete:
@@ -16,10 +13,7 @@ en:
       gis_disabled_for: GIS disabled for %{title}
     edit:
       edit_category: Edit Category
-      enable_bio_fields: Enable Biographical Fields
-      enable_gis: Enable GIS
       save_changes: Save Changes
-      title: Title
     enable_bio_fields:
       bio_fields_enabled_for: Biographical fields enabled for %{title}
     enable_gis:

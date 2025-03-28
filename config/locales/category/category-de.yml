@@ -3,9 +3,6 @@ de:
   category:
     add_new:
       create_category: Kategorie erstellen
-      enable_bio_fields: Biografische Felder aktivieren
-      enable_gis: GIS aktivieren
-      title: Titel
     create:
       category_created: Kategorie wurde erstellt
     delete:
@@ -16,10 +13,7 @@ de:
       gis_disabled_for: GIS für %{title} deaktiviert
     edit:
       edit_category: Kategorie bearbeiten
-      enable_bio_fields: Biografische Felder aktivieren
-      enable_gis: GIS aktivieren
       save_changes: Änderungen speichern
-      title: Titel
     enable_bio_fields:
       bio_fields_enabled_for: Biografische Felder aktiviert für %{title}
     enable_gis:
