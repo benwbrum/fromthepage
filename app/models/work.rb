@@ -57,6 +57,7 @@ class Work < ApplicationRecord
   require 'elastic_util'
 
   include ElasticDelta
+  include EdtfDate
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged history]
 
@@ -138,7 +139,8 @@ class Work < ApplicationRecord
               with: /[-_[:alpha:]]/
             }
   validates :description, html: true, length: { maximum: 16.megabytes - 1 }
-  validate :document_date_is_edtf
+
+  edtf_date_attribute :document_date
 
   mount_uploader :picture, PictureUploader
 
@@ -372,41 +374,6 @@ class Work < ApplicationRecord
   end
 
   def revert
-  end
-
-  def document_date=(date_as_edtf)
-    if date_as_edtf.respond_to? :to_edtf
-      self[:document_date] = date_as_edtf.to_edtf
-    else
-      # the edtf-ruby gem has some gaps in coverage for e.g. seasons
-      self[:document_date] = date_as_edtf.to_s
-    end
-  end
-
-  def document_date
-    date = Date.edtf(self[:document_date])
-
-    if self[:document_date].nil? # there is no document date
-      return nil
-    elsif date.nil? # the document date is invalid
-      return self[:document_date]
-      # assign date precision based on length of document_date string (edtf-ruby does not do this automatically)
-    elsif self[:document_date].length == 7 # YYYY-MM
-      date.month_precision!
-    elsif self[:document_date].length == 4 and
-          not self[:document_date].include? "x" # YYYY
-      date.year_precision!
-    end
-
-    return date.edtf
-  end
-
-  def document_date_is_edtf
-    if self[:document_date].present?
-      if Date.edtf(self[:document_date]).nil?
-        errors.add(:document_date, "must be in EDTF format")
-      end
-    end
   end
 
   def update_deed_collection

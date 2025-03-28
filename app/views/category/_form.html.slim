@@ -1,0 +1,17 @@
+  =hidden_field_tag(:collection_id, @collection.slug)
+  =f.hidden_field(:collection_id)
+  =f.hidden_field(:parent_id)
+  / only show a hidden field with the category id if the record is not new
+  -if category.persisted?
+    =hidden_field_tag(:category_id, category.id)
+  =validation_summary category.errors
+  table.form
+    tr.big
+      th =f.label :title, t('.title')
+      td.w100 =f.text_field :title
+    tr
+      th =f.label :gis_enabled, t('.enable_gis')
+      td =f.check_box :gis_enabled
+    tr
+      th =f.label :bio_fields_enabled, t('.enable_bio_fields')
+      td =f.check_box :bio_fields_enabled

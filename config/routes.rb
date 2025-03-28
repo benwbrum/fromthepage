@@ -216,6 +216,8 @@ Fromthepage::Application.routes.draw do
   scope 'category', as: 'category' do
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'
+    get 'enable_bio_fields', to: 'category#enable_bio_fields'
+    get 'disable_bio_fields', to: 'category#disable_bio_fields'
     get 'enable_gis', to: 'category#enable_gis'
     get 'disable_gis', to: 'category#disable_gis'
     get 'delete', to: 'category#delete'
