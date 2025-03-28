@@ -51,10 +51,16 @@
           // TO DO: make these auto-complete from the existing values for this collection
           tr
             th =f.label :sex, t('.sex')
-            td.w100 =f.text_field :sex
+            td.w100 =f.text_field :sex, list: 'sex_autocomplete'
+            datalist(id="sex_autocomplete")
+              -@sex_autocomplete.each do |sex|
+                option value=sex
           tr
             th =f.label :race_description, t('.race_description')
-            td.w100 =f.text_field :race_description
+            td.w100 =f.text_field :race_description, list: 'race_description_autocomplete'
+            datalist(id="race_description_autocomplete")
+              -@race_description_autocomplete.each do |rd|
+                option value=rd
 
       tr
         td(colspan="2")

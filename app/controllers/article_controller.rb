@@ -36,6 +36,11 @@ class ArticleController < ApplicationController
     end
   end
 
+  def edit
+    @sex_autocomplete=@collection.articles.distinct.pluck(:sex).select{|e| !e.blank?}
+    @race_description_autocomplete=@collection.articles.distinct.pluck(:race_description).select{|e| !e.blank?}
+  end
+
   def update
     if params[:save]
       result = Article::Update.new(
