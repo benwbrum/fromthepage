@@ -24,6 +24,10 @@ en:
       bio_fields_enabled_for: Biographical fields enabled for %{title}
     enable_gis:
       gis_enabled_for: GIS enabled for %{title}
+    form:
+      enable_bio_fields: Enable Biographical Fields
+      enable_gis: Enable GIS
+      title: Title
     options: options
     update:
       category_updated: Category has been updated

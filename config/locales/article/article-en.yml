@@ -23,6 +23,12 @@ en:
       description: Description
       latitude: Latitude
       longitude: Longitude
+      bibliography: Bibliography
+      birth_date: Birth Date
+      death_date: Death Date
+      disambiguator: Disambiguator
+      race_description: Race Description
+      sex: Sex
       microphone: Microphone
       n_pages:
         one: 1 page
@@ -52,6 +58,8 @@ en:
       create_the_first_category: Create the first category
       delete_category: Delete Category
       disable_gis_for_category: Disable GIS for Category
+      disable_bio_fields_for_category: Disable Biographical Fields for Category
+      enable_bio_fields_for_category: Enable Biographical Fields for Category
       edit_category: Edit Category
       enable_gis_for_category: Enable GIS for Category
       no_categories: No Categories
