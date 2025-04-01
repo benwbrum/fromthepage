@@ -92,6 +92,7 @@ group :test do
   gem 'simplecov-lcov', require: false
   gem 'vcr'
   gem 'webmock', require: false
+  gem 'with_model'
 end
 
 group :development, :test do

@@ -401,6 +401,14 @@ module ExportHelper
     end
 
     tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    unless subject.bibliography.blank?
+      subject.bibliography.split("\n").each do |line|
+        unless line.blank?
+          tei << "<bibl>#{line.chomp}</bibl>"
+        end
+      end
+    end
+
     tei << "            </catDesc>\n"
     tei << "          </category>\n"
 

@@ -242,10 +242,8 @@ module XmlSourceProcessor
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
           current_table[:rows] << cells
           rowline = ''
-          cells.each_with_index do |cell, i|
-            head = current_table[:header][i]
-            role_string = " role=\"#{head}\""
-            rowline += "<td#{role_string}>#{cell}</td> "
+          cells.each_with_index do |cell, _i|
+            rowline += "<td>#{cell}</td> "
           end
 
           if current_table[:rows].size == 1

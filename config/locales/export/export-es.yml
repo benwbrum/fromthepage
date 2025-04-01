@@ -39,6 +39,7 @@ es:
       tei: IET
       work_title: Título de la obra
     show:
+      bibliography: Bibliografía
       categories: 'Categorías:'
       export_metadata: Exportar desde FromThePage de %{work} de %{collection} realizada en %{time}.
       fromthepage_version: 'Versión FromThePage: %{version}'
