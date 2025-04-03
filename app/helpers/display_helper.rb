@@ -30,7 +30,7 @@ module DisplayHelper
       if page.work.ocr_correction
         @wording = t('.correct')
       else
-        @wording = t('.incomplete')
+        @wording = t('.transcribe')
       end
     elsif page.status_blank?
       @wording = t('.blank_page')
