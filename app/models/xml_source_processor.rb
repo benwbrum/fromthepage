@@ -242,10 +242,8 @@ module XmlSourceProcessor
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
           current_table[:rows] << cells
           rowline = ''
-          cells.each_with_index do |cell, i|
-            head = current_table[:header][i]
-            role_string = " role=\"#{head}\""
-            rowline += "<td#{role_string}>#{cell}</td> "
+          cells.each_with_index do |cell, _i|
+            rowline += "<td>#{cell}</td> "
           end
 
           if current_table[:rows].size == 1
@@ -494,7 +492,7 @@ EOF
     text.split("\n").map{|line| "|#{line}|"}.join("\n")
   end
 
-  def xml_table_to_markdown_table(table_element, pandoc_format=false)
+  def xml_table_to_markdown_table(table_element, pandoc_format=false, plaintext_export=false)
     text_table = ""
 
     # clean up in-cell line-breaks
@@ -530,8 +528,13 @@ EOF
         else
           width = column_widths.values.first
         end
-        inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
-        inner_html.rjust(width, ' ')
+
+        if plaintext_export
+          e.text.rjust(width, ' ')
+        else
+          inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+          inner_html.rjust(width, ' ')
+        end
       end.join(' | ') << "\n"
     end
     if pandoc_format

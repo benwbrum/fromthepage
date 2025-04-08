@@ -161,6 +161,7 @@ class Page < ApplicationRecord
     if !user.nil?
       blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs = user.collection_collaborations.pluck(:id)
+      collection_collabs+= user.owned_collections.pluck(:id)
       docset_collabs = user.document_set_collaborations.pluck(:id)
     end
 
@@ -791,7 +792,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = xml_table_to_markdown_table(table_element)
+    text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
   end
 

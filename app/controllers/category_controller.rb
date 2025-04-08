@@ -24,6 +24,7 @@ class CategoryController < ApplicationController
     if @category.present?
       @new_category.parent = @category
       @new_category.gis_enabled = @category.gis_enabled
+      @new_category.bio_fields_enabled = @category.bio_fields_enabled
     end
   end
 
@@ -74,9 +75,37 @@ class CategoryController < ApplicationController
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
 
+  def enable_bio_fields
+    @category.update_attribute(:bio_fields_enabled, true)
+    @category.descendants.each {|d| d.update_attribute(:bio_fields_enabled, true)}
+
+    notice = t('.bio_fields_enabled_for', title: @category.title)
+    count = @category.descendants.count
+    if count > 0
+      notice << " and #{count} child " << "category".pluralize(count)
+    end
+
+    flash[:notice] = notice
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+  end
+
+  def disable_bio_fields
+    @category.update_attribute(:bio_fields_enabled, false)
+    @category.descendants.each {|d| d.update_attribute(:bio_fields_enabled, false)}
+
+    notice = t('.bio_fields_disabled_for', title: @category.title)
+    count = @category.descendants.count
+    if count > 0
+      notice << " and #{count} child " << "category".pluralize(count)
+    end
+
+    flash[:notice] = notice
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+  end
+
   private
 
   def category_params
-    params.require(:category).permit(:title, :gis_enabled, :collection_id, :parent_id)
+    params.require(:category).permit(:title, :bio_fields_enabled, :gis_enabled, :collection_id, :parent_id)
   end
 end
