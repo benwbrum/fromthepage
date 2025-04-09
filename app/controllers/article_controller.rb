@@ -36,6 +36,11 @@ class ArticleController < ApplicationController
     end
   end
 
+  def edit
+    @sex_autocomplete=@collection.articles.distinct.pluck(:sex).select{|e| !e.blank?}
+    @race_description_autocomplete=@collection.articles.distinct.pluck(:race_description).select{|e| !e.blank?}
+  end
+
   def update
     if params[:save]
       result = Article::Update.new(
@@ -221,7 +226,7 @@ class ArticleController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude, category_ids: [])
+    params.require(:article).permit(:title, :uri, :disambiguator, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, category_ids: [])
   end
 
   def sort_vertically(articles)
