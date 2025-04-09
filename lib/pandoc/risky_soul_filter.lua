@@ -12,8 +12,6 @@ function Span(el)
   if el.classes:includes("textulst") then
     return pandoc.RawInline("latex", "\\textulst{" .. pandoc.utils.stringify(content) .. "}")
   elseif el.classes:includes("textul") then
-    return pandoc.RawInline("latex", "\\textul{" .. pandoc.utils.stringify(content) .. "}")
-  elseif el.classes:includes("textst") then
-    return pandoc.RawInline("latex", "\\textst{" .. pandoc.utils.stringify(content) .. "}")
+    return pandoc.RawInline("latex", "\\underline{" .. pandoc.utils.stringify(content) .. "}")
   end
 end
