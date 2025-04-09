@@ -171,7 +171,7 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("Page Title")
       expect(page).to have_content(@work.pages.last.title)
       within(page.find('tr', text: @work.pages.last.title)) do
-        page.find('a', text: 'Incomplete').click
+        page.find('a', text: 'Transcribe').click
       end
       expect(page).to have_content("Transcription Conventions")
       expect(page).to have_selector("textarea")
