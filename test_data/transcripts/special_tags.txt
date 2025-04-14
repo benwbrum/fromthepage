@@ -15,11 +15,9 @@ for headings (similar to using ==wiki heading mark-up==)
 
 Stamp <stamp>stamp here</stamp> for stamps on envelops
 
-<table>
-  <row>
-    <cell>Cell in a table</cell>
-  </row>
-</table>
+| Col 1 |Col 2 |Col 3 |
+| --- | --- | --- | --- |
+|Val  |<i>Normal Underline'</i>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
 
 <unclear>Unclear </unclear> for text that is difficult to read
 

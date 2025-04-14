@@ -92,7 +92,9 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
 
-    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
+    tex_template = Rails.root.join('lib', 'pandoc', 'pdf_export_template.tex')
+    lua_filter = Rails.root.join('lib', 'pandoc', 'risky_soul_filter.lua')
+    cmd = "pandoc --template #{tex_template} --lua-filter=#{lua_filter} --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
