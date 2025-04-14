@@ -11,6 +11,8 @@ en:
       bio_fields_disabled_for: Biographical fields disabled for %{title}
     disable_gis:
       gis_disabled_for: GIS disabled for %{title}
+    disable_org_fields:
+      org_fields_disabled_for: Organization fields disabled for %{title}
     edit:
       edit_category: Edit Category
       save_changes: Save Changes
@@ -18,9 +20,12 @@ en:
       bio_fields_enabled_for: Biographical fields enabled for %{title}
     enable_gis:
       gis_enabled_for: GIS enabled for %{title}
+    enable_org_fields:
+      org_fields_enabled_for: Organization fields enabled for %{title}
     form:
       enable_bio_fields: Enable Biographical Fields
       enable_gis: Enable GIS
+      enable_org_fields: Enable Organization Fields
       title: Title
     options: options
     update:

@@ -48,7 +48,6 @@
           tr
             th =f.label :death_date, t('.death_date')
             td.w100 =f.text_field :death_date
-          // TO DO: make these auto-complete from the existing values for this collection
           tr
             th =f.label :sex, t('.sex')
             td.w100 =f.text_field :sex, list: 'sex_autocomplete'
@@ -61,6 +60,15 @@
             datalist(id="race_description_autocomplete")
               -@race_description_autocomplete.each do |rd|
                 option value=rd
+
+      -if @article.org_fields_enabled?
+        table.form
+          tr
+            th =f.label :begun, t('.begun')
+            td.w100 =f.text_field :begun
+          tr
+            th =f.label :ended, t('.ended')
+            td.w100 =f.text_field :ended
 
       tr
         td(colspan="2")

@@ -220,6 +220,8 @@ Fromthepage::Application.routes.draw do
     get 'disable_bio_fields', to: 'category#disable_bio_fields'
     get 'enable_gis', to: 'category#enable_gis'
     get 'disable_gis', to: 'category#disable_gis'
+    get 'enable_org_fields', to: 'category#enable_org_fields'
+    get 'disable_org_fields', to: 'category#disable_org_fields'
     get 'delete', to: 'category#delete'
     post 'create', to: 'category#create'
     patch 'update', :to => 'category#update'
