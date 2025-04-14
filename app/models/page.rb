@@ -810,7 +810,6 @@ class Page < ApplicationRecord
     factor = 400.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
-    image = nil
   end
 
   def delete_deeds
