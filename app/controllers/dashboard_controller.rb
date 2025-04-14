@@ -293,6 +293,7 @@ class DashboardController < ApplicationController
                                     .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
                                     .distinct
                                     .limit(10)
+
     respond_to do |format|
       format.html do
         @new_projects = (@new_projects + @new_document_sets).sort do |a, b|

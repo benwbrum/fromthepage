@@ -37,7 +37,7 @@
     -@new_projects[..10].each do |project|
       .deed-short.small
         span.deed-short_content
-          =link_to project.title, collection_path(project.owner.slug, project.id)
+          =link_to project.title, collection_path(project.owner.slug, project.slug)
           =t('.by')
           =link_to project.owner.display_name, user_profile_path(project.owner)
 
