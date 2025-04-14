@@ -65,6 +65,7 @@ en:
       add_button: Add
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
+      collection_findable_instruction: For collections to be findable in FromThePage, please ensure they have tags, an image, and a description.
       copy_url: Copy to clipboard
       current_url: 'The current URL for this collection:'
       description: Description
