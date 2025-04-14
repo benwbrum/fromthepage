@@ -7,8 +7,6 @@ module Page::Lib::Common
       raise StandardError, error_msg
     end
 
-    File.unlink @page.thumbnail_filename if File.exist?(@page.thumbnail_filename)
-
     filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
 
     dirname = File.dirname(filename)
@@ -25,10 +23,14 @@ module Page::Lib::Common
   end
 
   def assign_dimensions
+    File.unlink @page.thumbnail_filename if File.exist?(@page.thumbnail_filename)
+
     image = Magick::ImageList.new(@page.base_image)
     @page.base_width = image.columns
     @page.base_height = image.rows
     @page.save!
+
+    @page.thumbnail_image
   end
 
 end
