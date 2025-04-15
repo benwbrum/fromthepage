@@ -320,9 +320,11 @@
 }
 
 .category-article dd {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  &:not(.actions) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
 .category-article dd p {
