@@ -74,16 +74,25 @@ en:
       upload_subjects: Upload Subjects
     show:
       all_uncategorized_subjects: All uncategorized subjects in the collection
+      begun: Begun
+      bibliography: Bibliography
+      birth_date: Birth Date
       categories: Categories
+      death_date: Death Date
       description: Description
+      disambiguator: Disambiguator
       download: Download
       download_description: Download a spreadsheet of coocurring subjects and works they appear in.
       edit_description_description: Edit the description in the settings tab.
+      ended: Ended
       export: Export
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 Possible Duplicate
         other: "%{count} Possible Duplicates"
       no_category_message: This subject does not belong to any category
+      race_description: Race Description
       references: References
       related_subjects: Related Subjects
       related_subjects_1: Related subjects
@@ -93,6 +102,7 @@ en:
       search_unlinked_pages: Search Unlinked Pages
       search_unlinked_pages_description: Only search text of pages which do not link to <em>%{article}</em>
       see_also: 'See also: '
+      sex: Sex
       text_search: Text Search
     subject_upload:
       csv_file_must_contain_headers: CSV file must contain headers for HEADING, ARTICLE, URI, and CATEGORY
