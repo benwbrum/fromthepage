@@ -285,14 +285,14 @@ class DashboardController < ApplicationController
                               .order('created_on DESC')
                               .unrestricted.where("LOWER(collections.title) NOT LIKE 'test%'")
                               .distinct
-                              .limit(10)
+                              .limit(20)
 
     @new_document_sets = DocumentSet.includes(:owner)
                                     .joins(works: :pages)
                                     .order('created_at DESC')
                                     .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
                                     .distinct
-                                    .limit(10)
+                                    .limit(20)
 
     respond_to do |format|
       format.html do

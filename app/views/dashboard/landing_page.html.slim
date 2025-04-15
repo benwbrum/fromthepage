@@ -34,7 +34,7 @@
 
   aside.sidecol
     h2 =t('.new_projects')
-    -@new_projects[..10].each do |project|
+    -@new_projects[..20].each do |project|
       .deed-short.small
         span.deed-short_content
           =link_to project.title, collection_path(project.owner.slug, project.slug)
