@@ -282,14 +282,18 @@ class DashboardController < ApplicationController
 
     @new_projects = Collection.includes(:owner)
                               .joins(works: :pages)
-                              .order('created_on DESC')
+                              .joins(:owner)
+                              .order('collections.created_on DESC')
+                              .where(owner: { deleted: false })
                               .unrestricted.where("LOWER(collections.title) NOT LIKE 'test%'")
                               .distinct
                               .limit(20)
 
     @new_document_sets = DocumentSet.includes(:owner)
                                     .joins(works: :pages)
-                                    .order('created_at DESC')
+                                    .joins(:owner)
+                                    .order('document_sets.created_at DESC')
+                                    .where(owner: { deleted: false })
                                     .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
                                     .distinct
                                     .limit(20)
