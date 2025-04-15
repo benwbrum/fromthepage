@@ -1,5 +1,8 @@
 class Xml::Lib::Utils
-  SOUL_RISKY_TAGS = ['s', 'ins'].freeze
+  STRIKETHROUGH_TAGS = ['s', 'del'].freeze
+  UNDERLINE_TAGS = ['ins', 'u'].freeze
+
+  SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS
 
   # TODO: extend functionality for other problematic nested tags
   def self.handle_soul_risky_tags(doc)
