@@ -29,7 +29,7 @@
                     dt.h5 tabindex=0
                       span= t('.actions')
                       =svg_symbol '#big-menu', class: 'icon icon-big'
-                    dd
+                    dd.actions
                       =link_to t('.edit_category'), category_edit_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
                       br
                       =link_to t('.add_child_category'), category_add_new_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
