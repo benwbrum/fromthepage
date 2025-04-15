@@ -16,6 +16,7 @@ es:
       only_subject_owner_can_delete: Solo el creador del tema o el propietario del proyecto puede eliminar esto.
     edit:
       autolink: Enlace automático
+      begun: Comenzó
       bibliography: Bibliografía
       birth_date: Fecha de nacimiento
       categories: Categorías
@@ -25,6 +26,7 @@ es:
       delete_subject: Eliminar asunto
       description: Descripción
       disambiguator: Desambiguador
+      ended: Terminado
       latitude: Latitud
       longitude: Longitud
       microphone: Micrófono
@@ -59,9 +61,11 @@ es:
       delete_category: Eliminar categoría
       disable_bio_fields_for_category: Deshabilitar campos biográficos para la categoría
       disable_gis_for_category: Deshabilitar SIG para la categoría
+      disable_org_fields_for_category: Deshabilitar campos de organización para la categoría
       edit_category: Editar categoria
       enable_bio_fields_for_category: Habilitar campos biográficos para la categoría
       enable_gis_for_category: Habilitar SIG para la categoría
+      enable_org_fields_for_category: Habilitar campos de organización para la categoría
       no_categories: Sin categorías
       no_categories_message: No hay categorías de temas en la colección.<br>
       there_are_no_subjects: No hay asignaturas para la categoría seleccionada

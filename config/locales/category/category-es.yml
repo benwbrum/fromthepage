@@ -11,6 +11,8 @@ es:
       bio_fields_disabled_for: Campos biográficos deshabilitados para %{title}
     disable_gis:
       gis_disabled_for: SIG deshabilitado para %{title}
+    disable_org_fields:
+      org_fields_disabled_for: Campos de organización deshabilitados para %{title}
     edit:
       edit_category: Editar categoria
       save_changes: Guardar cambio
@@ -18,9 +20,12 @@ es:
       bio_fields_enabled_for: Campos biográficos habilitados para %{title}
     enable_gis:
       gis_enabled_for: SIG habilitado para %{title}
+    enable_org_fields:
+      org_fields_enabled_for: Campos de organización habilitados para %{title}
     form:
       enable_bio_fields: Habilitar campos biográficos
       enable_gis: Habilitar SIG
+      enable_org_fields: Habilitar campos de organización
       title: Título
     options: Opciones
     update:

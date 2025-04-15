@@ -16,6 +16,7 @@ fr:
       only_subject_owner_can_delete: Seul le créateur du sujet ou le propriétaire du projet peut le supprimer.
     edit:
       autolink: Lien automatique
+      begun: Commencé
       bibliography: Bibliographie
       birth_date: Date de naissance
       categories: Catégories
@@ -25,6 +26,7 @@ fr:
       delete_subject: Supprimer le sujet
       description: Description
       disambiguator: Désambiguïsateur
+      ended: Terminé
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
@@ -59,9 +61,11 @@ fr:
       delete_category: Supprimer la catégorie
       disable_bio_fields_for_category: Désactiver les champs biographiques pour la catégorie
       disable_gis_for_category: Désactiver le SIG pour la catégorie
+      disable_org_fields_for_category: Désactiver les champs d'organisation pour la catégorie
       edit_category: Modifier la catégorie
       enable_bio_fields_for_category: Activer les champs biographiques pour la catégorie
       enable_gis_for_category: Activer le SIG pour la catégorie
+      enable_org_fields_for_category: Activer les champs d'organisation pour la catégorie
       no_categories: Aucune catégorie
       no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
       there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée
