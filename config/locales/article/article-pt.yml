@@ -74,16 +74,25 @@ pt:
       upload_subjects: Carregar assuntos
     show:
       all_uncategorized_subjects: Todos os assuntos não categorizados na coleção
+      begun: Começou
+      bibliography: Bibliografia
+      birth_date: Data de nascimento
       categories: Categorias
+      death_date: Data da morte
       description: Descrição
+      disambiguator: Desambiguador
       download: Download
       download_description: Faça o download de uma planilha de assuntos e obras simultâneos em que eles aparecem.
       edit_description_description: Edite a descrição na guia de configurações.
+      ended: Terminou
       export: Exportar
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 Possível Duplicata
         other: "%{count} Possíveis Duplicatas"
       no_category_message: Este assunto não pertence a nenhuma categoria
+      race_description: Descrição da corrida
       references: Referências
       related_subjects: Assuntos Relacionados
       related_subjects_1: Assuntos relacionados
@@ -93,6 +102,7 @@ pt:
       search_unlinked_pages: Pesquisar páginas não vinculadas
       search_unlinked_pages_description: Pesquise apenas texto de páginas que não estejam vinculadas a <em>%{article}</em>
       see_also: 'Veja também:'
+      sex: Sexo
       text_search: Pesquisa de texto
     subject_upload:
       csv_file_must_contain_headers: O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam "cabeçalho," "artigo," "Indentificador Universal de Recursos," e "categoria" respectivamente.

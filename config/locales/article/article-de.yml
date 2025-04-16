@@ -74,16 +74,25 @@ de:
       upload_subjects: Entitäten hochladen
     show:
       all_uncategorized_subjects: Alle unkategorisierten Entitäten in der Sammlung
+      begun: Begonnen
+      bibliography: Bibliographie
+      birth_date: Geburtsdatum
       categories: Kategorien
+      death_date: Sterbedatum
       description: Beschreibung
+      disambiguator: Begriffsklärer
       download: Download
       download_description: Laden Sie eine Tabelle mit gemeinsam auftretenden Entiäten sowie mit den Werken, in denen sie vorkommen, herunter.
       edit_description_description: Bearbeiten Sie die Beschreibung unter "Einstellungen".
+      ended: Beendet
       export: Export
+      latitude: Breite
+      longitude: Länge
       n_possible_duplicates:
         one: 1 mögliches Duplikat
         other: "%{count} mögliche Duplikate"
       no_category_message: Diese Entität gehört keiner Kategorie an
+      race_description: Rennbeschreibung
       references: Verweise
       related_subjects: Verwandte Entitäten
       related_subjects_1: Verwandte Entitäten
@@ -93,6 +102,7 @@ de:
       search_unlinked_pages: Nicht verlinkte Seiten durchsuchen
       search_unlinked_pages_description: Suchen Sie nur nach Seiten, die nicht auf <em>%{article}</em> verlinken
       see_also: 'Siehe auch:'
+      sex: Sex
       text_search: Textsuche
     subject_upload:
       csv_file_must_contain_headers: Die CSV-Datei muss Header für HEADING, ARTICLE, URI und CATEGORY enthalten

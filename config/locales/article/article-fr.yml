@@ -74,16 +74,25 @@ fr:
       upload_subjects: Téléverser des sujets
     show:
       all_uncategorized_subjects: Tous les sujets non catégorisés de la collection
+      begun: Commencé
+      bibliography: Bibliographie
+      birth_date: Date de naissance
       categories: Catégories
+      death_date: Date de décès
       description: Description
+      disambiguator: Désambiguïsateur
       download: Télécharger
       download_description: Télécharger un tableau CSV des sujets et des œuvres associées dans lesquels ils apparaissent.
       edit_description_description: Modifiez la description dans l'onglet Réglages.
+      ended: Terminé
       export: Exporter
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 doublon possible
         other: "%{count} Doublons possibles"
       no_category_message: Ce sujet n'appartient à aucune catégorie
+      race_description: Description de la course
       references: Références
       related_subjects: Sujets connexes
       related_subjects_1: Sujets connexes
@@ -93,6 +102,7 @@ fr:
       search_unlinked_pages: Rechercher des pages non liées
       search_unlinked_pages_description: 'Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>'
       see_also: 'Voir également:'
+      sex: Sexe
       text_search: Recherche de texte
     subject_upload:
       csv_file_must_contain_headers: Le fichier CSV doit contenir des en-têtes pour HEADING, ARTICLE, URI et CATEGORY
