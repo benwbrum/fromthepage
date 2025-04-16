@@ -17,7 +17,7 @@ Stamp <stamp>stamp here</stamp> for stamps on envelops
 
 | Col 1 |Col 2 |Col 3 |
 | --- | --- | --- | --- |
-|Val  |<i>Normal Underline'</i>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
+|<i>Val </i> |<u><del> Va'l <del></u>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
 
 <unclear>Unclear </unclear> for text that is difficult to read
 
