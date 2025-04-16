@@ -7,9 +7,21 @@ fr:
       category_created: La catégorie a été créée
     delete:
       category_deleted: La catégorie a été supprimée
+    disable_bio_fields:
+      fields_disabled_for: Les champs biologiques ont été désactivés pour %{title}.
+    disable_gis:
+      fields_disabled_for: Le SIG a été désactivé pour %{title}.
+    disable_org_fields:
+      fields_disabled_for: Les champs d'organisation ont été désactivés pour %{title}.
     edit:
       edit_category: Modifier la catégorie
       save_changes: Enregistrer la modification
+    enable_bio_fields:
+      fields_enabled_for: Les champs biologiques ont été activés pour %{title}.
+    enable_gis:
+      fields_enabled_for: Le SIG a été activé pour %{title}.
+    enable_org_fields:
+      fields_enabled_for: Les champs d'organisation ont été activés pour %{title}.
     form:
       enable_bio_fields: Activer les champs biographiques
       enable_gis: Activer le SIG

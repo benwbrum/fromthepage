@@ -31,21 +31,17 @@
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd.actions
                       =link_to t('.edit_category'), category_edit_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
-                      br
                       =link_to t('.add_child_category'), category_add_new_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
-                      br
                       =link_to t('.add_root_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }
-                      br
+                      hr
                       -if category.gis_enabled
                         =link_to t('.disable_gis_for_category'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id)
                       -else
                         =link_to t('.enable_gis_for_category'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id)
-                      br
                       -if category.bio_fields_enabled
                         =link_to t('.disable_bio_fields_for_category'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
                       -else
                         =link_to t('.enable_bio_fields_for_category'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
-                      br
                       -if category.org_fields_enabled
                         =link_to t('.disable_org_fields_for_category'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
                       -else

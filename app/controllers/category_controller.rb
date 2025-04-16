@@ -75,7 +75,7 @@ class CategoryController < ApplicationController
 
   def toggle_x_fields(field, enable)
     attribute = "#{field}_enabled".to_sym
-    message = "#{field}_#{enable ? 'enabled' : 'disabled'}_for"
+    message = ".fields_#{enable ? 'enabled' : 'disabled'}_for"
     @category.update_attribute(attribute, enable)
     @category.descendants.each {|d| d.update_attribute(attribute, enable)}
     notice = t(".#{message}", title: @category.title)
@@ -86,10 +86,6 @@ class CategoryController < ApplicationController
     flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
-
-
-
-
 
   def category_params
     params.require(:category).permit(:title, :bio_fields_enabled, :gis_enabled, :org_fields_enabled, :collection_id, :parent_id)

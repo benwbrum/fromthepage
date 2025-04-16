@@ -7,9 +7,21 @@ de:
       category_created: Kategorie wurde erstellt
     delete:
       category_deleted: Kategorie wurde gelöscht
+    disable_bio_fields:
+      fields_disabled_for: Biofelder wurden für %{title} deaktiviert.
+    disable_gis:
+      fields_disabled_for: GIS wurde für %{title} deaktiviert.
+    disable_org_fields:
+      fields_disabled_for: Organisationsfelder wurden für %{title} deaktiviert.
     edit:
       edit_category: Kategorie bearbeiten
       save_changes: Änderungen speichern
+    enable_bio_fields:
+      fields_enabled_for: Biofelder wurden für %{title} aktiviert.
+    enable_gis:
+      fields_enabled_for: GIS wurde für %{title} aktiviert.
+    enable_org_fields:
+      fields_enabled_for: Organisationsfelder wurden für %{title} aktiviert.
     form:
       enable_bio_fields: Biografische Felder aktivieren
       enable_gis: GIS aktivieren

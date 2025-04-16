@@ -7,9 +7,21 @@ pt:
       category_created: A categoria foi criada
     delete:
       category_deleted: A categoria foi deletada
+    disable_bio_fields:
+      fields_disabled_for: Os campos biológicos foram desabilitados para %{title}.
+    disable_gis:
+      fields_disabled_for: O GIS foi desabilitado para %{title}.
+    disable_org_fields:
+      fields_disabled_for: Os campos da organização foram desabilitados para %{title}.
     edit:
       edit_category: Editar categoria
       save_changes: Salvar alterações
+    enable_bio_fields:
+      fields_enabled_for: Os campos biológicos foram habilitados para %{title}.
+    enable_gis:
+      fields_enabled_for: O GIS foi habilitado para %{title}.
+    enable_org_fields:
+      fields_enabled_for: Campos de organização foram habilitados para %{title}.
     form:
       enable_bio_fields: Habilitar campos biográficos
       enable_gis: Habilitar GIS
