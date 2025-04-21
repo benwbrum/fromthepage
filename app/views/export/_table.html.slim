@@ -56,12 +56,19 @@ table.datagrid.striped.dataTable.no-footer
             =link_to iiif_manifest_path(work.id)
               =svg_symbol '#icon-export', class: 'icon'
               span= t('export.index.iiif')
-          -unless work.table_cells.blank?
-            -if work.table_cells.count < 10000
-              td.nowrap
-                =link_to export_table_csv_path(work_id: work.id), class: 'btnCsvTblExport btnExport'
-                  =svg_symbol '#icon-export', class: 'icon'
-                  span =t('export.index.table_csv')
+          ruby:
+            if @collection.field_based?
+              total_table_cells = work.pages.sum("JSON_LENGTH(transcription_json)")
+            else
+              total_table_cells = work.table_cells.count
+            end
+
+            show_table_export = total_table_cells.positive? && total_table_cells < 10_000
+          -if show_table_export
+            td.nowrap
+              =link_to export_table_csv_path(work_id: work.id), class: 'btnCsvTblExport btnExport'
+                =svg_symbol '#icon-export', class: 'icon'
+                span =t('export.index.table_csv')
           td.nowrap
             =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('export.index.more_export_formats')
               span =t('export.index.more')

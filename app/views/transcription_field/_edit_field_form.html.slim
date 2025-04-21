@@ -8,7 +8,7 @@
             td(colspan="2")
               =label_tag :data_entry_type, t('.data_entry_type_label'), class: "above"
               br
-              =radio_button_tag :data_entry_type, Collection::DataEntryType::TEXT_AND_METADATA, @collection.data_entry_type == Collection::DataEntryType::TEXT_AND_METADATA 
+              =radio_button_tag :data_entry_type, Collection::DataEntryType::TEXT_AND_METADATA, @collection.data_entry_type == Collection::DataEntryType::TEXT_AND_METADATA
               =label_tag "data_entry_type_#{Collection::DataEntryType::TEXT_AND_METADATA}", t('.data_entry_type_text_and_metadata')
               br
               =radio_button_tag :data_entry_type, Collection::DataEntryType::METADATA_ONLY, @collection.data_entry_type == Collection::DataEntryType::METADATA_ONLY
@@ -48,7 +48,7 @@ div.fields-preview
       .fgfaded ==@collection.description_instructions
     =render({partial: 'metadata_field_layout', locals: {collection_id: @collection, owner_preview: true}})
   -else
-    =render({partial: 'field_layout', locals: {collection_id: @collection}})
+    =render partial: 'field_layout', locals: { collection_id: @collection }
 
 -content_for :javascript
   javascript:

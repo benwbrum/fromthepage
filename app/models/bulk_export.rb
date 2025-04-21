@@ -97,9 +97,9 @@ class BulkExport < ApplicationRecord
       if self.work
         works=[self.work]
       elsif self.document_set
-        works = self.document_set.works.includes(pages: [:notes, {page_versions: :user}])
+        works = self.document_set.works.includes(pages: [:notes, { page_versions: :user }])
       elsif self.collection
-        works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+        works = Work.includes(pages: [:notes, { page_versions: :user }]).where(collection_id: self.collection.id)
       else
         works = []
       end

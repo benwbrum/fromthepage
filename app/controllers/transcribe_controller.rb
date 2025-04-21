@@ -18,21 +18,44 @@ class TranscribeController  < ApplicationController
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
-    @collection = page.collection unless @collection
-    @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
+    @collection ||= page.collection
+    @auto_fullscreen = cookies[:auto_fullscreen] || 'no'
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
     @current_user_alerted = false
     @field_preview ||= {}
-    unless params[:quality_sampling_id].blank?
-      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
-    end
+    @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) unless params[:quality_sampling_id].blank?
 
-    if @page.edit_started_by_user_id != current_user.id &&
-       @page.edit_started_at > Time.now - 1.minute
+    if @page.edit_started_at.present? &&
+       @page.edit_started_by_user_id != current_user.id &&
+       @page.edit_started_at > 1.minute.ago
       flash.now[:info] = t('.alert')
       @current_user_alerted = true
-    end unless @page.edit_started_at.nil?
+    end
+
+    return unless @page.field_based
+
+    if @page.transcription_json.nil?
+      transcription_fields = @collection.transcription_fields
+                                        .order(:line_number, :position)
+      spreadsheet_columns_map = SpreadsheetColumn.where(transcription_field_id: transcription_fields.select(:id))
+                                                 .order(:position).group_by(&:transcription_field_id)
+      grouped_transcription_fields = transcription_fields.group_by(&:line_number)
+
+      field_cells = TranscriptionField::Lib::Utils.table_cells_to_field_cells(
+        page: @page,
+        grouped_transcription_fields: grouped_transcription_fields,
+        spreadsheet_columns_map: spreadsheet_columns_map
+      )
+
+      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: field_cells)
+    end
+
+    @field_presenter = TranscriptionField::Lib::Presenter.new(
+      view_context: view_context,
+      collection: @collection,
+      page: @page
+    )
   end
 
   def monitor_view
@@ -124,13 +147,13 @@ class TranscribeController  < ApplicationController
 
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) if params[:quality_sampling_id].present?
 
-    if @page.field_based
-      @field_cells = request.params[:fields]
-      table_cells = @page.process_fields(@field_cells)
-    end
-
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
+
+    if @page.field_based
+      @field_cells = request.params[:fields]
+      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: @field_cells)
+    end
 
     # if page has been marked blank, call the mark_blank code
     mark_page_blank(redirect: 'transcribe') || return unless params[:page]['needs_review'] == '1'
@@ -169,8 +192,6 @@ class TranscribeController  < ApplicationController
 
       begin
         if @page.save
-          @page.replace_table_cells(table_cells) if @page.field_based && !table_cells.empty?
-
           log_transcript_success
           flash[:notice] = t('.saved_notice')
 
@@ -262,8 +283,11 @@ class TranscribeController  < ApplicationController
         @display_context = 'preview'
         @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
         if @page.field_based
-          # what do we do about the table cells?
-          @field_preview = table_cells.group_by(&:transcription_field_id)
+          @field_presenter = TranscriptionField::Lib::Presenter.new(
+            view_context: view_context,
+            collection: @collection,
+            page: @page
+          )
         end
 
         display_page
@@ -277,8 +301,11 @@ class TranscribeController  < ApplicationController
 
     elsif params['edit']
       if @page.field_based
-        # what do we do about the table cells?
-        @field_preview = table_cells.group_by(&:transcription_field_id)
+        @field_presenter = TranscriptionField::Lib::Presenter.new(
+          view_context: view_context,
+          collection: @collection,
+          page: @page
+        )
       end
       display_page
       render action: 'display_page'

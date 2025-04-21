@@ -25,7 +25,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
-    @field_preview = {}
+    @field_presenter = TranscriptionField::Lib::Presenter.new(view_context: view_context, collection: @collection, edit_action: true)
   end
 
   def edit_metadata_fields
@@ -149,6 +149,7 @@ class TranscriptionFieldController < ApplicationController
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     @collection = @transcription_field.collection
     @current_columns = @transcription_field.spreadsheet_columns.order(:position)
+    # @field_presenter = TranscriptionField::Lib::Presenter.new(view_context: view_context, collection: @collection, edit_action: true)
   end
 
   def add_columns

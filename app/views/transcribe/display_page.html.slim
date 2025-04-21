@@ -97,7 +97,7 @@
             -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
             =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction, :height => '', :show_line_numbers => true} })
           -else
-            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
+            =render partial: 'transcription_field/field_layout', locals: { collection_id: @collection, transcribe: true }
 
 .fgfaded
   ==@work.set_transcription_conventions
@@ -168,6 +168,7 @@ h2.legend =t('.notes_and_questions')
       }
     }
 
+    window.sendActiveEditing = sendActiveEditing;
 
     $('.field-wrapper .field-input').each(function() {
       $(this).change(function() {

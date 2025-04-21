@@ -67,6 +67,7 @@ class Collection < ApplicationRecord
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_users, through: :collection_blocks, source: :user
   has_many :works, -> { order(:title) }, dependent: :destroy #, :order => :position
+  has_many :sections, -> { order(:position) }, through: :works
   has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :articles, dependent: :destroy
   has_many :document_sets, -> { order(:title) }, dependent: :destroy
@@ -195,7 +196,7 @@ class Collection < ApplicationRecord
       }
     }
   end
-  
+
   def created_at
     created_on
   end
@@ -271,12 +272,7 @@ class Collection < ApplicationRecord
   end
 
   def page_metadata_fields
-    page_fields = []
-    works.each do |w|
-      page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
-    end
-
-    page_fields.uniq
+    works.flat_map { |w| w.pages.first&.metadata&.keys }.compact.uniq
   end
 
   def export_subject_index_as_csv(work)
@@ -349,10 +345,6 @@ class Collection < ApplicationRecord
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
            users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
-  end
-
-  def sections
-    Section.where(work_id: self.works.ids)
   end
 
   def default_orientation

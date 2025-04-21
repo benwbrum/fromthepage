@@ -20,6 +20,7 @@
 #  source_translation      :text(16777215)
 #  status                  :string(255)      default("new"), not null
 #  title                   :string(255)
+#  transcription_json      :json
 #  translation_status      :string(255)      default("new"), not null
 #  xml_text                :text(16777215)
 #  xml_translation         :text(16777215)
@@ -47,6 +48,7 @@ class Page < ApplicationRecord
   include ApplicationHelper
   include ElasticDelta
 
+  before_create :set_default_transcription_json
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
@@ -508,107 +510,12 @@ class Page < ApplicationRecord
     emended_plaintext(self.xml_translation)
   end
 
-
-  def process_spreadsheet(field, cell_data)
-    # returns a formatted string
-    formatted = String.new
-    new_table_cells = []
-
-    # read spreadsheet-wide data like table heading
-    formatted << "<table class=\"tabular\"><thead>"
-
-    # read column-specific data like column heading
-    column_configs = field.spreadsheet_columns.to_a
-    column_configs.each do |column|
-      formatted << "<th>#{column.label}</th>"
-    end
-    checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
-
-    formatted << "</thead><tbody>"
-    # write out
-    parsed_cell_data = JSON.parse(cell_data.values.first)
-    parsed_cell_data.each_with_index do |row, rownum|
-      unless this_and_following_rows_empty?(parsed_cell_data, rownum)
-        # row = parsed_cell_data[row_key]
-        formatted_row = "<tr>"
-        row.each_with_index do |cell, colnum|
-          column = column_configs[colnum]
-          # save the table cell object
-          tc = TableCell.new(row: rownum+1)
-          tc.work = self.work
-          tc.page = self
-          tc.transcription_field_id = field.id
-          tc.header = column.label
-          if cell.blank?
-            cell = ''
-          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
-            cell = ERB::Util.html_escape(cell)
-          end
-          if checkbox_headers.include? tc.header
-            tc.content = (cell == 'true' || cell == true).to_s
-          else
-            tc.content = cell
-          end
-          new_table_cells << tc
-
-          # format the cell
-          formatted_row << "<td>#{cell}</td>"
-        end
-        formatted_row << "</tr>"
-        formatted << formatted_row
-      end
-    end
-    formatted << "</tbody></table>"
-
-    [formatted, new_table_cells]
-  end
-
   def this_and_following_rows_empty?(cell_data, rownum)
     remaining_rows = cell_data[rownum..(cell_data.count - 1)]
 
     row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
 
     row_with_value.nil?
-  end
-
-  def replace_table_cells(new_table_cells)
-    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
-  end
-
-  #create table cells if the collection is field based
-  def process_fields(field_cells)
-    new_table_cells = []
-    string = String.new
-    unless field_cells.blank?
-      field_cells.each do |id, cell_data|
-        field = TranscriptionField.find(id.to_i)
-        input_type = field.input_type
-        if input_type == 'spreadsheet'
-          spreadsheet_string, spreadsheet_cells = process_spreadsheet(field, cell_data)
-          string << spreadsheet_string
-          new_table_cells += spreadsheet_cells
-        else
-          tc = TableCell.new(row: 1)
-          tc.work = self.work
-          tc.page = self
-          tc.transcription_field_id = id.to_i
-
-          cell_data.each do |key, value|
-            if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
-              value = ERB::Util.html_escape(value)
-            end
-            tc.header = key
-            tc.content = value
-            key = (input_type == "description") ? (key + " ") : (key + ": ")
-            string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
-          end
-
-          new_table_cells << tc
-        end
-      end
-    end
-    self.source_text = string
-    new_table_cells
   end
 
   #######################
@@ -739,6 +646,7 @@ class Page < ApplicationRecord
   end
 
   private
+
   def ai_plaintext_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
   end
@@ -750,7 +658,6 @@ class Page < ApplicationRecord
   def original_htr_path
     '/not/implemented/yet/placeholder.xml'
   end
-
 
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
@@ -796,7 +703,6 @@ class Page < ApplicationRecord
     table_element.replace(text_table)
   end
 
-
   def modernize_absolute(filename)
     if filename
       File.join(Rails.root, 'public', filename.sub(/.*public/, ''))
@@ -818,6 +724,10 @@ class Page < ApplicationRecord
 
   def update_featured_page
     self.work.update_columns(featured_page: nil)
+  end
+
+  def set_default_transcription_json
+    self.transcription_json ||= {}
   end
 
 end

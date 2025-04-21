@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2025_03_26_164644) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -613,6 +614,7 @@ ActiveRecord::Schema.define(version: 2025_03_26_164644) do
     t.integer "last_editor_user_id"
     t.datetime "last_note_updated_at"
     t.datetime "updated_at"
+    t.json "transcription_json"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"

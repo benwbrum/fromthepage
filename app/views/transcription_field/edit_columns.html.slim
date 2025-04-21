@@ -15,7 +15,7 @@ div.columns
 
     -else
       =link_to t('.enable_ruler'), transcription_field_spreadsheet_column_enable_ruler_path(@transcription_field), class: 'button'
-  
+
     =form_tag transcription_field_spreadsheet_column_add_columns_path
       =hidden_field_tag(:collection_id, @collection.id)
       =hidden_field_tag(:transcription_field_id, @transcription_field.id)
@@ -27,7 +27,7 @@ div.columns
             td.w100.fglight =t('.start_rows_description')
 
       h3 =t('.edit_spreadsheet_columns')
-      p 
+      p
       -if @collection.table_cells.present?
         i =t('.transcription_warning')
       table.field-form#new-columns
@@ -49,7 +49,7 @@ div.columns
           =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
 
     h2 =t('.preview')
-    =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => @transcription_field} })
+    =render partial: '/shared/handsontable', locals: { transcription_field: @transcription_field, spreadsheet_columns: @current_columns, content: [@current_columns.map { |col| { col.id => nil } }] }
 
 -content_for :javascript
   javascript:
