@@ -8,20 +8,20 @@ en:
     delete:
       category_deleted: Category has been deleted
     disable_bio_fields:
-      fields_disabled_for: Bio fields have been disabled for %{title}.
+      fields_disabled_for: Bio fields disabled for %{title}.
     disable_gis:
-      fields_disabled_for: GIS has been disabled for %{title}.
+      fields_disabled_for: GIS disabled for %{title}.
     disable_org_fields:
-      fields_disabled_for: Organization fields have been disabled for %{title}.
+      fields_disabled_for: Organization fields disabled for %{title}.
     edit:
       edit_category: Edit Category
       save_changes: Save Changes
     enable_bio_fields:
-      fields_enabled_for: Bio fields have been enabled for %{title}.
+      fields_enabled_for: Bio fields enabled for %{title}.
     enable_gis:
-      fields_enabled_for: GIS has been enabled for %{title}.
+      fields_enabled_for: GIS enabled for %{title}.
     enable_org_fields:
-      fields_enabled_for: Organization fields have been enabled for %{title}.
+      fields_enabled_for: Organization fields enabled for %{title}.
     form:
       enable_bio_fields: Enable Biographical Fields
       enable_gis: Enable GIS
