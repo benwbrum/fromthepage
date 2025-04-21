@@ -395,33 +395,25 @@ $endif$
 
 % Nested strikethroughs workaround
 \ifLuaTeX
-  % Do nothing
 \else
-  \makeatletter
-  \newdimen\SOUL@ulstdp
-  \newdimen\SOUL@ulstht
-  \def\SOUL@ulstleaders{%
-      \leaders
-      \hbox
-      {%
-        \rlap{\vrule\@depth\SOUL@uldp\@height\SOUL@ulht\@width.1pt\relax}%
-        \vrule\@depth\SOUL@ulstdp\@height\SOUL@ulstht\@width.1pt\relax
-      }%
-  }
-  \def\SOUL@ulstpreamble{%
-    \SOUL@ulpreamble
-    \SOUL@ulstdp=\SOUL@uldp
-    \SOUL@ulstht=\SOUL@ulht
-    \SOUL@stpreamble
-  }
-  \def\SOUL@ulstsetup{%
-    \SOUL@ulsetup
-    \let\SOUL@preamble\SOUL@ulstpreamble
-    \let\SOUL@ulleaders\SOUL@ulstleaders
-  }
-  \DeclareRobustCommand*\textulst{\SOUL@ulstsetup\SOUL@}
+  \usepackage{tikz}
+  \usepackage{contour}
+  \usepackage{adjustbox}
+  % Define the macro
 
-  \makeatletter
+  \newcommand{\ulst}[1]{%
+    \tikz[baseline=(X.base)]{
+      \node[inner sep=0pt, outer sep=0pt] (X) {\contour{white}{#1}};
+      % Underline
+      \draw[line width=0.45pt]
+        ([yshift=-2.7pt]X.south west) --
+        ([yshift=-2.7pt]X.south east);
+      % Strikethrough
+      \draw[line width=0.4pt]
+        ([yshift=0.5ex]X.base west) --
+        ([yshift=0.5ex]X.base east);
+    }%
+  }
 \fi
 
 $if(natbib)$
