@@ -19,6 +19,9 @@ tr
     b [data-clipboard-target='source'] =collection_start_transcribing_url(collection.owner, collection.slug)
     a.clipboard-btn (data-action='click->clipboard#copy' aria-label=t('collection.edit.copy_url') title=t('collection.edit.copy_url'))
       =svg_symbol '#icon-copy', class: 'icon'
+
+tr
+  td[colspan='2' style='padding: 30px 0 0 0;'] = t('collection.edit.collection_findable_instruction')
 tr
   th
     h3 =f.label :tags, t('collection.edit.subject_tags')
