@@ -51,8 +51,4 @@ class Xml::Lib::Utils
   end
 
   private
-
-  def risky_root_tag?(risky_element)
-    return if SOUL_RISKY_TAGS.include?(risky_element.parent.name)
-  end
 end
