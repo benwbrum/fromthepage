@@ -1,5 +1,7 @@
 class Xml::Lib::Utils
-  SOUL_RISKY_TAGS = ['s', 'ins'].freeze
+  STRIKETHROUGH_TAGS = ['s', 'del']
+  UNDERLINE_TAGS = ['ins', 'u']
+  SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS
 
   # TODO: extend functionality for other problematic nested tags
   def self.handle_soul_risky_tags(doc)
@@ -7,6 +9,8 @@ class Xml::Lib::Utils
 
     SOUL_RISKY_TAGS.each do |risky_tag|
       doc.each_element("//#{risky_tag}") do |risky_element|
+        next if SOUL_RISKY_TAGS.include?(risky_element.parent.name)
+
         key = SecureRandom.uuid
         risky_tag_replacement = handle_soul_risky_element(risky_element)
         risky_tag_replacements[key] = risky_tag_replacement
@@ -26,23 +30,25 @@ class Xml::Lib::Utils
       output_segments << if child.is_a?(REXML::Element) && SOUL_RISKY_TAGS.include?(child.name)
                            handle_soul_risky_element(child)
                          else
-                           child.to_s.gsub("'", '__SINGLEQUOTE__').gsub('`', '__BACKTICK__')
+                           child.to_s.strip
                          end
     end
 
     # Extend this for different tags with special handling
-    inner_content = if risky_element.name == 's'
-                      "~~#{output_segments.join}~~"
-                    elsif risky_element.name == 'ins'
-                      underline_name = risky_element.parent.name == 's' ? '.textulst' : '.textul'
-                      "[#{output_segments.join}]{#{underline_name}}"
-                    end
-
-    # Extend this for different parent tags with special handling
-    if risky_element.parent.name == 's'
-      "~~#{inner_content}~~"
-    else
-      inner_content
+    if STRIKETHROUGH_TAGS.include?(risky_element.name)
+      if UNDERLINE_TAGS.include?(risky_element.parent.name)
+        "]{.ul}[#{output_segments.join}]{.ulst}["
+      else
+        "~~#{output_segments.join}~~"
+      end
+    elsif UNDERLINE_TAGS.include?(risky_element.name)
+      if STRIKETHROUGH_TAGS.include?(risky_element.parent.name)
+        "~~[#{output_segments.join}]{.ulst}~~"
+      else
+        "[#{output_segments.join}]{.ul}"
+      end
     end
   end
+
+  private
 end

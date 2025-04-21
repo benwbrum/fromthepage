@@ -271,27 +271,33 @@ class DashboardController < ApplicationController
         end
       end
     end
-    users = User.owners
-      .joins(:collections)
-      .left_outer_joins(:document_sets)
+
+    users = User.owners.joins(:collections).left_outer_joins(:document_sets)
 
     org_owners = users.findaproject_orgs.with_owner_works
     individual_owners = users.findaproject_individuals.with_owner_works
     @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
-           .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
+                   .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
     @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
     @new_projects = Collection.includes(:owner)
-                      .order('created_on DESC')
-                      .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                      .distinct
-                      .limit(10)
+                              .joins(works: :pages)
+                              .joins(:owner)
+                              .order('collections.created_on DESC')
+                              .where(owner: { deleted: false })
+                              .unrestricted.where("LOWER(collections.title) NOT LIKE 'test%'")
+                              .distinct
+                              .limit(20)
 
     @new_document_sets = DocumentSet.includes(:owner)
-                            .order('created_at DESC')
-                            .unrestricted.where("LOWER(title) NOT LIKE 'test%'")
-                            .distinct
-                            .limit(10)
+                                    .joins(works: :pages)
+                                    .joins(:owner)
+                                    .order('document_sets.created_at DESC')
+                                    .where(owner: { deleted: false })
+                                    .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
+                                    .distinct
+                                    .limit(20)
+
     respond_to do |format|
       format.html do
         @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
@@ -305,7 +311,6 @@ class DashboardController < ApplicationController
 
       format.turbo_stream
     end
-
   end
 
   def browse_tag
