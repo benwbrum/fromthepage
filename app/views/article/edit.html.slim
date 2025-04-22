@@ -29,6 +29,11 @@
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
               =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
+      .fglight
+        =render partial: 'shared/markup_help'
+      .toolbar
+        =f.button t('.autolink'), name: 'autolink'
+      br
 
       -if @article.gis_enabled?
         table.form
@@ -48,7 +53,6 @@
           tr
             th =f.label :death_date, t('.death_date')
             td.w100 =f.text_field :death_date
-          // TO DO: make these auto-complete from the existing values for this collection
           tr
             th =f.label :sex, t('.sex')
             td.w100 =f.text_field :sex, list: 'sex_autocomplete'
@@ -61,6 +65,15 @@
             datalist(id="race_description_autocomplete")
               -@race_description_autocomplete.each do |rd|
                 option value=rd
+
+      -if @article.org_fields_enabled?
+        table.form
+          tr
+            th =f.label :begun, t('.begun')
+            td.w100 =f.text_field :begun
+          tr
+            th =f.label :ended, t('.ended')
+            td.w100 =f.text_field :ended
 
       tr
         td(colspan="2")
@@ -78,13 +91,6 @@
           {}, { size: 1, multiple: true, aria: { label: t('.select_categories') }, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
 
       .fglight
-        br
-        =render partial: 'shared/markup_help'
-
-      .toolbar
-        .toolbar_group.w100
-          =f.button t('.autolink'), name: 'autolink'
-
         .toolbar_group.aright =f.button t('.save_changes'), name: 'save', class: 'big'
 
     -if user_signed_in? && current_user.like_owner?(@collection)

@@ -3,7 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd"
 xml:lang="EN"
-xml:id="export">
+xml:id="<%=@work.identifier||@work.id%>">
 
 <teiHeader>
   <fileDesc>
@@ -91,10 +91,10 @@ xml:id="export">
             <collection><%= @work.source_collection_name %></collection>
           <% end %>
           <% unless @work.identifier.blank? %>
-            <idno><%=@work.identifier%></idno>
+            <idno type='external id'><%=@work.identifier%></idno>
           <% end %>
           <% unless @work.source_box_folder.blank? %>
-            <idno><%=@work.source_box_folder%></idno>
+            <idno type='box-folder'><%=@work.source_box_folder%></idno>
           <% end %>
         </msIdentifier>
         <physDesc>

@@ -15,6 +15,12 @@
         = t('.see_also')
         a href="#{@article.uri}" target="_blank" #{@article.uri}
 
+    -[:latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :begun, :ended].each do |field|
+      -if @article.send(field).present?
+        br
+        b =t(".#{field}") + ": "
+        =@article.send(field)
+
     h3= t('.related_subjects')
     .article-graph
       =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: t('.related_subjects_1'))

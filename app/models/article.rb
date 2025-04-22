@@ -3,11 +3,13 @@
 # Table name: articles
 #
 #  id               :integer          not null, primary key
+#  begun            :string(255)
 #  bibliography     :text(65535)
 #  birth_date       :string(255)
 #  created_on       :datetime
 #  death_date       :string(255)
 #  disambiguator    :string(255)
+#  ended            :string(255)
 #  graph_image      :string(255)
 #  latitude         :decimal(7, 5)
 #  lock_version     :integer          default(0)
@@ -64,6 +66,8 @@ class Article < ApplicationRecord
 
   edtf_date_attribute :birth_date
   edtf_date_attribute :death_date
+  edtf_date_attribute :begun
+  edtf_date_attribute :ended
 
 
   def log_destroy
@@ -106,6 +110,10 @@ class Article < ApplicationRecord
 
   def bio_fields_enabled?
     self.categories.where(:bio_fields_enabled => true).present?
+  end
+
+  def org_fields_enabled?
+    self.categories.where(:org_fields_enabled => true).present?
   end
 
   #######################
