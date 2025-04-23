@@ -328,6 +328,8 @@ pt:
       recent_contributor_title: Contribuintes recentes
       review: Análise
       user: Do utilizador
+    restrict_scribes:
+      success: As obras concluídas foram restringidas com sucesso
     reviewer_dashboard:
       one_off_contributions: Contribuições únicas
       pages_needing_review: Páginas para revisão

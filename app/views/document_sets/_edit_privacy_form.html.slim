@@ -35,3 +35,5 @@ tr
 
   td
     =render 'collection/users_list', users: @collaborators, type: 'collaborators', disabled: document_set.visibility_public?
+
+= render partial: 'collection/restrict_transcribed', locals: { collection: document_set, works_to_restrict_count: @works_to_restrict_count }

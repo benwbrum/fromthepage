@@ -328,6 +328,8 @@ es:
       recent_contributor_title: Colaboradores recientes
       review: Revisar
       user: Usuario
+    restrict_scribes:
+      success: Las obras finalizadas se han restringido con éxito
     reviewer_dashboard:
       one_off_contributions: Aportaciones puntuales
       pages_needing_review: Páginas para revisar
