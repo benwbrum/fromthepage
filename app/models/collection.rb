@@ -119,7 +119,6 @@ class Collection < ApplicationRecord
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
-
   scope :random_sample, -> (sample_size = 5) do
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
@@ -195,7 +194,7 @@ class Collection < ApplicationRecord
       }
     }
   end
-  
+
   def created_at
     created_on
   end

@@ -100,7 +100,7 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: :edit_collaborators
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'restrict_transcribed', to: 'collection#restrict_transcribed'
+    post 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
@@ -449,6 +449,7 @@ Fromthepage::Application.routes.draw do
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
   resources :document_sets, except: [:show, :create, :edit]
+
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
   scope ':user_slug' do

@@ -490,8 +490,9 @@ class CollectionController < ApplicationController
   end
 
   def restrict_transcribed
-    @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
+    @result = Collection::RestrictTranscribed.new(collection: @collection).call
+
+    respond_to(&:turbo_stream)
   end
 
   def enable_fields
@@ -531,6 +532,7 @@ class CollectionController < ApplicationController
     @collaborators = @collection.collaborators
     @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
     @blocked_users = @collection.blocked_users
+    @works_to_restrict_count = works_to_restrict_count
   end
 
   def edit_help
@@ -567,6 +569,7 @@ class CollectionController < ApplicationController
                    @collaborators = @collection.collaborators
                    @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
                    @blocked_users = @collection.blocked_users
+                   @works_to_restrict_count = works_to_restrict_count
                    'collection/update_privacy'
                  when 'edit_help'
                    @works_with_custom_conventions = @collection.works
@@ -877,5 +880,10 @@ class CollectionController < ApplicationController
     params.permit(:term, :page, :filter, :collection_id, :user_id)
   end
 
-
+  def works_to_restrict_count
+    @collection.works
+               .joins(:work_statistic)
+               .where(work_statistics: { complete: 100 }, restrict_scribes: false)
+               .count
+  end
 end

@@ -328,6 +328,8 @@ en:
       recent_contributor_title: Recent Contributors
       review: Review
       user: User
+    restrict_scribes:
+      success: Completed works have been successfully restricted
     reviewer_dashboard:
       one_off_contributions: One-off Contributions
       pages_needing_review: Pages to Review
