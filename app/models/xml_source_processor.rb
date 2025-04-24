@@ -1,19 +1,5 @@
 module XmlSourceProcessor
 
-  @text_dirty = false
-  @translation_dirty = false
-  #@fields = false
-
-  def source_text=(text)
-    @text_dirty = true
-    super
-  end
-
-  def source_translation=(translation)
-    @translation_dirty = true
-    super
-  end
-
   def validate_source
     if self.source_text.blank?
       return
@@ -81,11 +67,11 @@ module XmlSourceProcessor
   # format to canonical xml format belongs here.
   ##############################################
   def process_source
-    if @text_dirty
+    if source_text_changed?
       self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
-    if @translation_dirty
+    if self.respond_to?(:source_translation) && source_translation_changed?
       self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
     end
   end
