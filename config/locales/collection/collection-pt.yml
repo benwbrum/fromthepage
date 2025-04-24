@@ -63,6 +63,7 @@ pt:
       notice: A correção de OCR foi desativada para todas as obras.
     edit:
       add_button: Adicionar
+      collection_findable_instruction: Para que as coleções possam ser encontradas no FromThePage, certifique-se de que elas tenham tags, uma imagem e uma descrição.
       collection_image: Imagem da Coleção
       collection_image_description: Uma imagem a ser usada para ilustrar a descrição da coleção.
       copy_url: Copiar para área de transferência

@@ -17,9 +17,14 @@ Stamp <stamp>stamp here</stamp> for stamps on envelops
 
 | Col 1 |Col 2 |Col 3 |
 | --- | --- | --- | --- |
-|Val  |<i>Normal Underline'</i>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
-
+|<i>Val </i> |<u><del> Va'l </del></u>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
 <unclear>Unclear </unclear> for text that is difficult to read
+
+<hi rend="str"><add>and of little importance</add></hi>
+
+<hi rend="str"><unclear>to be?</unclear></hi>
+
+thither <add>for</add> <hi rend="str">an many</hi> <hi rend="sup"><hi rend="str"><unclear>[unclear]</unclear></hi> many</hi>years
 
 Strike <strike>through</strike> or <s>s</s> or <hi rend="str">str</hi> for struck through text
 
