@@ -23,7 +23,7 @@ table.datagrid.striped.dataTable.no-footer
     -if @works.any?
       -@works.each do |work|
         tr
-          td.big =link_to work.title, display_read_work_path(work_id: work.id)
+          td.big =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
           td.nowrap.fgfaded =t('export.index.n_pages', count: work.work_statistic.total_pages)
           -unless @collection.subjects_disabled
             td.nowrap.fgfaded.tocenter ="#{@work_stats_hash_map[work.id][:progress_annotated]}%"
