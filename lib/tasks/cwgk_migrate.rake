@@ -305,13 +305,25 @@ namespace :fromthepage do
         end
         work.save!
 
+
+        # we want to assign the last element of text_array to the last page
+        last_page = work.pages.last
+        last_page.source_text = text_array.last
+        last_page.status = Page.statuses[:transcribed]
+        last_page.save!
+
+
+        # get the remaining pages excluding the last
+        remaining_pages = work.pages[0..-2]
+
         # some of our application logic is based on a page having multiple versions, so let's add the text in a separate step
-        work.pages.each_with_index do |page, i|
-          # add the text to the page
-          page.source_text = text_array[i]
-          page.status = Page.statuses[:transcribed]
-          binding.pry unless page.valid?
-          page.save!
+        remaining_pages.each_with_index do |page, i|
+          if i <= text_array.length - 2
+            # add the text to the page
+            page.source_text = text_array[i]
+            page.status = Page.statuses[:transcribed]
+            page.save!
+          end
         end
     
         work.pages.each_with_index do |page, i|
