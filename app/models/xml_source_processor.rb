@@ -62,6 +62,11 @@ module XmlSourceProcessor
     #    return errors.size > 0
   end
 
+def source_text=(text)
+    self.source_text_will_change!
+    super
+end
+
   ##############################################
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.
