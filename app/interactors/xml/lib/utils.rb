@@ -1,10 +1,21 @@
 class Xml::Lib::Utils
-  STRIKETHROUGH_TAGS = ['s', 'del']
-  UNDERLINE_TAGS = ['ins', 'u']
-  SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS
+  STRIKETHROUGH_TAGS = ['s', 'del'].freeze
+  UNDERLINE_TAGS = ['ins', 'u'].freeze
+  UNCLEAR_TAGS = ['unclear'].freeze
+
+  SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS + UNCLEAR_TAGS
+
+  TEI_REND_MAP = {
+    'italic' => 'em',
+    'bold' => 'strong',
+    'underline' => 'u',
+    'str' => 's',
+    'u' => 'u'
+  }.freeze
 
   # TODO: extend functionality for other problematic nested tags
   def self.handle_soul_risky_tags(doc)
+    rend_to_html(doc)
     risky_tag_replacements = {}
 
     SOUL_RISKY_TAGS.each do |risky_tag|
@@ -47,8 +58,24 @@ class Xml::Lib::Utils
       else
         "[#{output_segments.join}]{.ul}"
       end
+    elsif UNCLEAR_TAGS.include?(risky_element.name)
+      "\\[#{output_segments.join}\\]"
     end
   end
 
-  private
+  def self.rend_to_html(doc)
+    doc.each_element('//hi[@rend]') do |hi|
+      rend = TEI_REND_MAP[hi['rend']]
+
+      next unless rend.present?
+
+      new_node = REXML::Element.new(rend)
+      hi.children.each do |child|
+        new_node << child
+      end
+
+      hi.parent.insert_before(hi, new_node)
+      hi.remove
+    end
+  end
 end

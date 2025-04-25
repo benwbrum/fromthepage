@@ -429,4 +429,35 @@ describe CollectionController do
       end
     end
   end
+
+  describe '#restrict_transcribed' do
+    let!(:work) { create(:work, collection: collection) }
+    let!(:work_statistic) { create(:work_statistic, work_id: work.id, complete: 100) }
+
+    let(:action_path) { collection_restrict_transcribed_path(collection_id: collection) }
+
+    subject { post action_path, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:restrict_transcribed)
+    end
+
+    context 'when document set' do
+      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+
+      let(:action_path) { collection_restrict_transcribed_path(collection_id: document_set) }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:restrict_transcribed)
+      end
+    end
+  end
 end

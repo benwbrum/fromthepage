@@ -100,7 +100,7 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: :edit_collaborators
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'restrict_transcribed', to: 'collection#restrict_transcribed'
+    post 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
@@ -220,6 +220,8 @@ Fromthepage::Application.routes.draw do
     get 'disable_bio_fields', to: 'category#disable_bio_fields'
     get 'enable_gis', to: 'category#enable_gis'
     get 'disable_gis', to: 'category#disable_gis'
+    get 'enable_org_fields', to: 'category#enable_org_fields'
+    get 'disable_org_fields', to: 'category#disable_org_fields'
     get 'delete', to: 'category#delete'
     post 'create', to: 'category#create'
     patch 'update', :to => 'category#update'
@@ -447,6 +449,7 @@ Fromthepage::Application.routes.draw do
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
   resources :document_sets, except: [:show, :create, :edit]
+
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
   scope ':user_slug' do

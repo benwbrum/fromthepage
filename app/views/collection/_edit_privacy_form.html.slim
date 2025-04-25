@@ -38,9 +38,5 @@ tr
     =f.radio_button :api_access, false, disabled: !collection.restricted, :checked => !(collection.api_access || !collection.restricted)
     =f.label :api_access_false
       .big =t('collection.edit_privacy.closed_api')
-tr
-  td(colspan="2")
-    h3 =t('collection.edit_privacy.restrict_editing')
-    =link_to({ :action => 'restrict_transcribed', :collection_id => collection.id }, class: 'button action-btn exits', disabled: collection.works.empty? || !collection.text_entry?)
-      span =t('collection.edit_privacy.restrict_completed_works')
-    p =t('collection.edit_privacy.restricted_completed_works_description', work_count: collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
+
+= render partial: 'restrict_transcribed', locals: { collection: collection, works_to_restrict_count: @works_to_restrict_count }

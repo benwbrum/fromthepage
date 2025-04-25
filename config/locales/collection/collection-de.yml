@@ -328,6 +328,8 @@ de:
       recent_contributor_title: Aktuelle Mitarbeitende
       review: Review
       user: Mitarbeiter:in
+    restrict_scribes:
+      success: Abgeschlossene Arbeiten wurden erfolgreich eingeschränkt
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten

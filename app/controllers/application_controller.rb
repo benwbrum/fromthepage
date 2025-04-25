@@ -297,8 +297,10 @@ class ApplicationController < ActionController::Base
       else
         dashboard_startproject_path
       end
-    else
+    elsif current_user.deeds.any?
       dashboard_watchlist_path
+    else
+      landing_page_path
     end
   end
 

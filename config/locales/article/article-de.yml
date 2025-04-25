@@ -16,6 +16,7 @@ de:
       only_subject_owner_can_delete: Nur der Betreffersteller oder Projekteigentümer kann dies löschen.
     edit:
       autolink: Autolink
+      begun: Begonnen
       bibliography: Bibliographie
       birth_date: Geburtsdatum
       categories: Kategorien
@@ -25,6 +26,7 @@ de:
       delete_subject: Entität löschen
       description: Beschreibung
       disambiguator: Begriffsklärer
+      ended: Beendet
       latitude: Breitengrad
       longitude: Längengrad
       microphone: Mikrofon
@@ -59,9 +61,11 @@ de:
       delete_category: Kategorie löschen
       disable_bio_fields_for_category: Deaktivieren Sie biografische Felder für die Kategorie
       disable_gis_for_category: GIS für Kategorie deaktivieren
+      disable_org_fields_for_category: Organisationsfelder für Kategorien deaktivieren
       edit_category: Kategorie bearbeiten
       enable_bio_fields_for_category: Biografische Felder für die Kategorie aktivieren
       enable_gis_for_category: GIS für Kategorie aktivieren
+      enable_org_fields_for_category: Organisationsfelder für Kategorie aktivieren
       no_categories: Keine Kategorien
       no_categories_message: Es sind keine Entitätskategorien in der Sammlung vorhanden.<br>
       there_are_no_subjects: Es sind keine Entitäten für die ausgewählte Kategorie vorhanden
@@ -70,16 +74,25 @@ de:
       upload_subjects: Entitäten hochladen
     show:
       all_uncategorized_subjects: Alle unkategorisierten Entitäten in der Sammlung
+      begun: Begonnen
+      bibliography: Bibliographie
+      birth_date: Geburtsdatum
       categories: Kategorien
+      death_date: Sterbedatum
       description: Beschreibung
+      disambiguator: Begriffsklärer
       download: Download
       download_description: Laden Sie eine Tabelle mit gemeinsam auftretenden Entiäten sowie mit den Werken, in denen sie vorkommen, herunter.
       edit_description_description: Bearbeiten Sie die Beschreibung unter "Einstellungen".
+      ended: Beendet
       export: Export
+      latitude: Breite
+      longitude: Länge
       n_possible_duplicates:
         one: 1 mögliches Duplikat
         other: "%{count} mögliche Duplikate"
       no_category_message: Diese Entität gehört keiner Kategorie an
+      race_description: Rennbeschreibung
       references: Verweise
       related_subjects: Verwandte Entitäten
       related_subjects_1: Verwandte Entitäten
@@ -89,6 +102,7 @@ de:
       search_unlinked_pages: Nicht verlinkte Seiten durchsuchen
       search_unlinked_pages_description: Suchen Sie nur nach Seiten, die nicht auf <em>%{article}</em> verlinken
       see_also: 'Siehe auch:'
+      sex: Sex
       text_search: Textsuche
     subject_upload:
       csv_file_must_contain_headers: Die CSV-Datei muss Header für HEADING, ARTICLE, URI und CATEGORY enthalten
