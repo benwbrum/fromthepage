@@ -319,14 +319,12 @@ class DashboardController < ApplicationController
     collections = tag_collections.includes(:owner, { works: :work_statistic })
                                  .unrestricted
                                  .has_intro_block
-                                 .has_picture
                                  .not_empty
 
     document_sets = DocumentSet.includes(:owner, :collection, { works: :work_statistic })
                                .where(collection: { id: tag_collections.select(:id) })
                                .unrestricted
                                .has_intro_block
-                               .has_picture
                                .not_empty
 
     @collections = collections + document_sets
