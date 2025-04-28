@@ -39,6 +39,15 @@
 <%= raw(xml_to_pandoc_md(page.xml_translation, @preserve_linebreaks, true)) %>
 <% end %>
 
+<% if @include_notes && page.notes.any? %>
+*Notes:*
+
+<% page.notes.each do |note| %>
+- _<%= "#{note.user.display_name}:" %>_
+  <%= raw(note.body.gsub("\n", "\n\n")) %>
+<% end %>
+<% end %>
+
 <% end %>
 
 <% if @edition_type != 'text_only' && @include_contributors %>
