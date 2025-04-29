@@ -14,18 +14,19 @@
       h2 =t('.works')
 
       .start_link
-        -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
-          p
-          -if user_signed_in?
-            =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-          -else
-            =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-        - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
-          p
-          -if user_signed_in?
-            =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-          -else
-            =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+        -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+          -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
+            p
+            -if user_signed_in?
+              =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+            -else
+              =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+          - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
+            p
+            -if user_signed_in?
+              =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+            -else
+              =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
@@ -45,7 +46,7 @@
           p.collection-work_snippet = to_snippet(work.description)
           -if @collection.text_entry? && work.next_untranscribed_page
             p.collection-work_action
-              -if @collection.active? && work.user_can_transcribe?(current_user)
+              -if @collection.active? && current_user&.can_transcribe?(work, @collection)
                 =t('.this_work_has_pages_that_need_work')
                 span &nbsp;
                 =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
@@ -54,7 +55,7 @@
 
           -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
             p.collection-work_action
-              -if (current_user && current_user.can_transcribe?(work))
+              -if current_user&.can_transcribe?(work, @collection)
                 =t('.this_work_has_not_been_described')
                 span &nbsp;
                 =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
@@ -97,42 +98,49 @@
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, :method => :get, class: 'collection-search') do
-      -if @collection.is_a?(DocumentSet)
-        =hidden_field_tag('document_set_id', @collection.slug)
-      -else
-        =hidden_field_tag('collection_id', @collection.slug)
-      =search_field_tag :search, nil, placeholder: t('.search_the_text'), "aria-label" => t('.search_the_text_1')
-      =button_tag t('.search')
-      =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
+    -if ELASTIC_ENABLED 
+      =form_tag(collection_search_path(@collection.owner, @collection), :method => :get, class: 'collection-search') do
+        =search_field_tag :term, nil, :placeholder => t('.search_in_collection'), "aria-label" => t('.search_in_collection')
+        =button_tag t('.search')
+        =label_tag 'search_in_collection_string', t('.search_in_collection'), class: 'hidden'
+    -else
+      =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', data: { turbo: true }) do
+        -if @collection.is_a?(DocumentSet)
+          =hidden_field_tag :document_set_id, @collection.slug
+        -else
+          =hidden_field_tag :collection_id, @collection.slug
+        =search_field_tag :search, nil, placeholder: t('.search_the_text'), aria: { label: t('.search_the_text_1') }
+        =button_tag t('.search')
+        =label_tag 'search_string', t('.search_the_text_1'), class: 'hidden'
 
-    =form_tag({:controller => 'search_attempt', :action => 'create'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      -if @collection.is_a?(DocumentSet)
-        =hidden_field_tag('document_set_id', @collection.slug, {:id => "document set id for search work"})
-      -else
-        =hidden_field_tag('collection_id', @collection.slug, {:id => "collection id for search work"})
-      =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), "aria-label" => t('.search_by_title_1')
-      =button_tag t('.search')
-      =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
+      =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', enforce_utf8: false, data: { turbo: true }) do
+        -if @collection.is_a?(DocumentSet)
+          =hidden_field_tag :document_set_id, @collection.slug, { id: 'document set id for search work' }
+        -else
+          =hidden_field_tag :collection_id, @collection.slug, { id: 'collection id for search work' }
+        =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title'), aria: { label: t('.search_by_title_1') }
+        =button_tag t('.search')
+        =label_tag 'search', t('.search_by_title_1'), class: 'hidden'
 
-    -if @collection.active? && @collection.text_entry?
-      ruby:
-        pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
-        pages_need_review_count = Page.where(work_id: @collection.work_ids, status: :needs_review).count
-      -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
-        =link_to t('.pages_need_correction_or_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
-      -elsif @collection.works.where(:ocr_correction => true).present?
-        =link_to t('.pages_need_correction'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
-      -else
-        -unless pages_need_correction_count.zero?
-          =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+    -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+      -if @collection.active? && @collection.text_entry?
+        ruby:
+          pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
+          pages_need_review_count = Page.where(work_id: @collection.work_ids, status: :needs_review).count
+        -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
+          =link_to t('.pages_need_correction_or_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+        -elsif @collection.works.where(:ocr_correction => true).present?
+          =link_to t('.pages_need_correction'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+        -else
+          -unless pages_need_correction_count.zero?
+            =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-      -unless pages_need_review_count.zero?
-        =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+        -unless pages_need_review_count.zero?
+          =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
-    - if @collection.active? && @collection.metadata_only_entry?
-      =link_to t('collection.needs_review_pages.works_that_need_metadata'), collection_needs_metadata_path(@collection.owner, @collection), class: 'button review-button'
-      =link_to t('collection.needs_review_pages.review_metadata'), collection_needs_metadata_path(@collection.owner, @collection, need_review: true), class: 'button review-button'
+        - if @collection.active? && @collection.metadata_only_entry?
+          =link_to t('collection.needs_review_pages.works_that_need_metadata'), collection_needs_metadata_path(@collection.owner, @collection), class: 'button review-button'
+          =link_to t('collection.needs_review_pages.review_metadata'), collection_needs_metadata_path(@collection.owner, @collection, need_review: true), class: 'button review-button'
 
     -if @collection.facets_enabled?
       =render(:partial => 'facet_form')
@@ -160,10 +168,10 @@
       =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
-    -cache @collection.most_recent_deed_created_at do
-      =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
+    -cache [@collection.id, @collection.most_recent_deed_created_at, :collection_show] do
+      =deeds_for({ collection: @collection, limit: 20, types: DeedType.collection_edits, long_view: true })
 
-=link_to(collection_new_mobile_user_path(collection_id: @collection.slug), :data => { litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
+=link_to(collection_new_mobile_user_path(collection_id: @collection.slug), data: { controller: 'litebox', litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""
 
 -content_for :javascript

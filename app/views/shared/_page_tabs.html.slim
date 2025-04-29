@@ -4,7 +4,7 @@
   :path => "#{collection_display_page_path(@collection.owner, @collection, @work, @page.id)}",
 }]
 -if @collection.active? # Inactive Collections shouldn't displa this stuff
-  -if user_signed_in? && current_user.can_transcribe?(@work)
+  -if current_user&.can_transcribe?(@work, @collection)
     -if correction_mode?
       -tabs += [{\
         :name => t('.correct'),
@@ -25,7 +25,7 @@
         :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
       }]
 
-  -if !current_user && !@work.restrict_scribes
+  -if !(user_signed_in? || @collection.visibility_read_only? && @work.restrict_scribes)
     -tabs += [{\
       :name => t('.transcribe'),
       :selected => 3,
@@ -67,37 +67,38 @@
 
 -@display_context ||= ''
 
-div(class=('headline' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')))
-  h1.headline_title =@page.title
-  .headline_aside
-    -unless @display_context == 'preview'
-      nav.page-nav
-        -if @page != @work.pages.first
-          -higher_item = @page.higher_item
-          -unless higher_item.nil?
-            -prev_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, higher_item.id)
-            =link_to(prev_path, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
-        -else
-          span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
-
-        span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
-
-        -if !@page.last?
-          -lower_item = @page.lower_item
-          -lower_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, lower_item.id)
-          =link_to(lower_path, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
-            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-        -elsif selected == 3 # if we're in "transcribe"
-          -if @collection.metadata_entry?
-            =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
+#page-tabs
+  div(class=('headline' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')))
+    h1.headline_title =@page.title
+    .headline_aside
+      -unless @display_context == 'preview'
+        nav.page-nav
+          -if @page != @work.pages.first
+            -higher_item = @page.higher_item
+            -unless higher_item.nil?
+              -prev_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, higher_item.id)
+              =link_to(prev_path, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
           -else
-            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+            span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+
+          span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
+
+          -if !@page.last?
+            -lower_item = @page.lower_item
+            -lower_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, lower_item.id)
+            =link_to(lower_path, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-        -else
-          span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
-.tabs
-  -for tab in tabs
-    = link_to_unless(tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]) do
-      a.active= tab[:name]
+          -elsif selected == 3 # if we're in "transcribe"
+            -if @collection.metadata_entry?
+              =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
+            -else
+              =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+          -else
+            span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
+  .tabs
+    -for tab in tabs
+      = link_to_unless(tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]) do
+        a.active= tab[:name]

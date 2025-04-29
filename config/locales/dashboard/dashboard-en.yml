@@ -74,15 +74,14 @@ en:
       volunteer_text: Each volunteer helps make history more accessible. We appreciate %{user_display_name}\'s contribution to our crowdsourcing effort!
       worked_on_collections: "%{user_name} has worked on the following collections by the following institutions:"
     landing_page:
-      all_collections: All Collections
+      by: " by "
+      institutions: Institutions
       more: More...
-      next_image: Next image
-      previous_image: Previous image
-      recent_activity: Recent Activity
+      new_projects: New Projects
       search: Search
       search_for_collections: Search for collections
-      search_for_collections_or_owners: Search for collections or owners...
-      transcribe_a_page: Transcribe a page
+      search_org: Search Organization
+      search_org_label: Search for content published by this organization...
     new_upload:
       document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
       reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.

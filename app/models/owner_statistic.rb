@@ -28,8 +28,10 @@ module OwnerStatistic
 
   def review_count(days=nil)
     Deed.where(work_id: self.owner_works.ids)
-      .where(date_range_clause(days))
-      .where(deed_type: DeedType::PAGE_REVIEWED).count
+        .where(date_range_clause(days))
+        .where(deed_type: DeedType::PAGE_REVIEWED)
+        .distinct
+        .count(:work_id)
   end
 
   def owner_subjects
@@ -68,7 +70,11 @@ module OwnerStatistic
   end
 
   def index_count(days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_INDEXED).where(date_range_clause(days)).count
+    Deed.where(collection_id: collection_ids)
+        .where(deed_type: DeedType::PAGE_INDEXED)
+        .where(date_range_clause(days))
+        .distinct
+        .count(:work_id)
   end
 
   def translation_count(days=nil)

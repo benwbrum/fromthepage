@@ -25,16 +25,18 @@ module ExportHelper
       e.replace_with(sup)
     end
 
+    markdown_risky_tags = Xml::Lib::Utils.handle_soul_risky_tags(doc)
+
     postprocessed = ""
     doc.write(postprocessed)
 
-
     # use Nokogiri for doc
-    markdown_tables = []
+    markdown_tables = {}
     doc = Nokogiri::XML(postprocessed)
-    doc.xpath("//table").each_with_index do |n,i|
-      markdown_tables << xml_table_to_markdown_table(n, true)
-      n.replace("REPLACEMETABLE#{i}")
+    doc.xpath('//table').each do |table_element|
+      key = SecureRandom.uuid
+      markdown_tables[key] = xml_table_to_markdown_table(table_element, true)
+      table_element.replace("REPLACEMETABLE#{key}")
     end
 
     postprocessed = doc.to_s
@@ -65,14 +67,16 @@ module ExportHelper
       processed = stdout.read
     end
 
-    markdown_tables.each_with_index do |table,i|
-      processed.gsub!("REPLACEMETABLE#{i}", table)
+    markdown_tables.each do |key, table|
+      processed.gsub!("REPLACEMETABLE#{key}", table)
+    end
+
+    markdown_risky_tags.each do |key, risky_tag|
+      processed.gsub!("REPLACEMERISKYTAGS#{key}", risky_tag)
     end
 
     return processed
   end
-
-
 
   def write_work_exports(works, out, export_user, bulk_export)
 
@@ -255,11 +259,13 @@ module ExportHelper
     @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
 
     @all_articles = @work.articles
-
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'}).to_a
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'}).to_a
-    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'}).to_a
+    people = work.collection.categories.where(title: 'People').first
+    people_and_descendants = people.descendants << people
+    places = work.collection.categories.where(title: 'Places').first
+    places_and_descendants = places.descendants << places
+    @person_articles = @all_articles.joins(:categories).where(categories: {id: people_and_descendants.map(&:id)}).to_a
+    @place_articles = @all_articles.joins(:categories).where(categories: {id: places_and_descendants.map(&:id)}).to_a
+    @other_articles = @all_articles - @person_articles - @place_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
@@ -280,13 +286,7 @@ module ExportHelper
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
-    if defined? render_to_string
-      thingy = self
-    else
-      thingy = ApplicationController.new
-    end
-
-    xml = thingy.render_to_string(
+    xml = ApplicationController.renderer.render_to_string(
       layout: false,
       template: 'export/tei',
       formats: [:html],
@@ -333,6 +333,8 @@ module ExportHelper
   end
 
   def category_to_tei(category, subjects, seen_subjects)
+    return '' if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
+
     has_content = false
     tei = ""
     tei << "<category xml:id=\"C#{category.id}\">\n"
@@ -404,6 +406,14 @@ module ExportHelper
     end
 
     tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    unless subject.bibliography.blank?
+      subject.bibliography.split("\n").each do |line|
+        unless line.blank?
+          tei << "<bibl>#{line.chomp}</bibl>"
+        end
+      end
+    end
+
     tei << "            </catDesc>\n"
     tei << "          </category>\n"
 
@@ -930,6 +940,8 @@ module ExportHelper
     array
   end
 
+  def handle_soul_risky_tags(doc)
 
+  end
 
 end

@@ -16,11 +16,17 @@ en:
       only_subject_owner_can_delete: Only the subject creator or project owner can delete this.
     edit:
       autolink: Autolink
+      begun: Begun
+      bibliography: Bibliography
+      birth_date: Birth Date
       categories: Categories
       combine_selected: Combine Selected
       confirm_delete_subject: Are you sure you want to delete this subject?  After deleting you won't be able to recover it!
+      death_date: Death Date
       delete_subject: Delete Subject
       description: Description
+      disambiguator: Disambiguator
+      ended: Ended
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
@@ -33,8 +39,10 @@ en:
         one: Possible Duplicate
         other: Possible Duplicates
       possible_duplicates_description: Please review the list below and select the subjects to combine. Duplicates will be remapped so all existing links will point to the "%{article}" subject.
+      race_description: Race Description
       save_changes: Save Changes
       select_categories: Select categories
+      sex: Sex
       title: Title
       uri: URI
     graph:
@@ -50,9 +58,13 @@ en:
       create_category_message: "%{link} you'll use to group subjects."
       create_the_first_category: Create the first category
       delete_category: Delete Category
+      disable_bio_fields_for_category: Disable Biographical Fields for Category
       disable_gis_for_category: Disable GIS for Category
+      disable_org_fields_for_category: Disable Organization Fields for Category
       edit_category: Edit Category
+      enable_bio_fields_for_category: Enable Biographical Fields for Category
       enable_gis_for_category: Enable GIS for Category
+      enable_org_fields_for_category: Enable Organization Fields for Category
       no_categories: No Categories
       no_categories_message: There are no subject categories in the collection.<br>
       there_are_no_subjects: There are no subjects for the category selected
@@ -61,16 +73,25 @@ en:
       upload_subjects: Upload Subjects
     show:
       all_uncategorized_subjects: All uncategorized subjects in the collection
+      begun: Begun
+      bibliography: Bibliography
+      birth_date: Birth Date
       categories: Categories
+      death_date: Death Date
       description: Description
+      disambiguator: Disambiguator
       download: Download
       download_description: Download a spreadsheet of coocurring subjects and works they appear in.
       edit_description_description: Edit the description in the settings tab.
+      ended: Ended
       export: Export
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 Possible Duplicate
         other: "%{count} Possible Duplicates"
       no_category_message: This subject does not belong to any category
+      race_description: Race Description
       references: References
       related_subjects: Related Subjects
       related_subjects_1: Related subjects
@@ -80,6 +101,7 @@ en:
       search_unlinked_pages: Search Unlinked Pages
       search_unlinked_pages_description: Only search text of pages which do not link to <em>%{article}</em>
       see_also: 'See also: '
+      sex: Sex
       text_search: Text Search
     subject_upload:
       csv_file_must_contain_headers: CSV file must contain headers for HEADING, ARTICLE, URI, and CATEGORY
@@ -89,6 +111,7 @@ en:
         other: 'Categories: '
       explore_this_subject: Explore this subject
     update:
+      categories_updated: Article categories updated.
       gis_coordinates_truncated:
         one: " (GIS coordinates truncated to %{precision} decimal place)"
         other: " (GIS coordinates truncated to %{precision} decimal places)"

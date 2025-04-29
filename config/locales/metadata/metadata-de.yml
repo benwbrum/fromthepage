@@ -17,4 +17,4 @@ de:
       template_file_anchor: diese Vorlage
       upload: Hochladen
       upload_metadata: Metadaten hochladen
-      upload_metadata_description: Um Metadaten für mehrere Werke in dieser Sammlung zu aktualisieren, laden Sie eine Tabelle mit einer Zeile pro Werk hoch. Bitte laden Sie %{link} herunter, um zu beginnen.
+      upload_metadata_description: Um Metadaten für mehrere Werke in dieser Sammlung zu aktualisieren, laden Sie eine Tabelle mit einer Zeile pro Werk hoch. <br> Spalten mit <i>Sternen</i> können nicht geändert werden. Ignorieren oder löschen Sie alle Spalten, die Sie nicht ändern. <br> Bitte laden Sie %{link} herunter, um zu beginnen.

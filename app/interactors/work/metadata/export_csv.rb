@@ -1,7 +1,6 @@
 require 'csv'
 
 class Work::Metadata::ExportCsv < ApplicationInteractor
-
   STATIC_HEADERS = [
     'FromThePage Title',
     '*Collection*',
@@ -30,9 +29,9 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
     '*Described By*'
   ].freeze
 
-  attr_accessor :csv_string
-
   include Rails.application.routes.url_helpers
+
+  attr_accessor :csv_string
 
   def initialize(collection:, works:)
     @collection = collection
@@ -74,7 +73,7 @@ class Work::Metadata::ExportCsv < ApplicationInteractor
           collection_read_work_url(@collection.owner, @collection, work),
           work.description,
           work.identifier,
-          work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.sc_manifest&.at_id.presence || '',
           work.created_on,
           work.work_statistic.total_pages,
           work.work_statistic.transcribed_pages,

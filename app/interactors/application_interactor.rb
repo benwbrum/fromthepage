@@ -1,25 +1,26 @@
 class ApplicationInteractor
-
   attr_reader :context
 
   def initialize(context = {})
     @context = Interactor::Context.build(context)
+    @success = true
   end
 
   def call
     perform
 
     self
-  rescue Interactor::Failure
+  rescue StandardError
+    @success = false
+
     self
   end
 
   def success?
-    context.success?
+    @success
   end
 
   def message
     context.message
   end
-
 end

@@ -4,7 +4,7 @@ h2.nomargin =t('.metadata_facets')
 p =t('.metadata_facets_description')
 
 .toolbar
-  .toolbar-group.aright =link_to(t('.translate'), facets_localize_path(@collection), class: 'button', :data => { litebox: { hash: 'localize-facets-buttons', noscroll: false  }})
+  .toolbar-group.aright =link_to(t('.translate'), facets_localize_path(@collection), class: 'button', data: { controller: 'litebox', litebox: { hash: 'localize-facets-buttons', noscroll: false  }})
 
 
 -if @errors

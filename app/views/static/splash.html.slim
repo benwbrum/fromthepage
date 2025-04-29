@@ -3,6 +3,37 @@
 -content_for :meta_keywords, "transcribe handwritten documents online free open-source wiki historical crowdsourcing transcription"
 
 section.spotlight
-  = html_block('left')
-section.spotlight
-  = html_block('right')
+  h3 Featured Projects
+  ul.justified.vtop
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/indiana-archives.jpg', class: 'cover_image', size: '200', alt: 'Julia Brumfield'
+        figcaption.cover_caption
+          p Help the Indiana Archives commemorate the centennial of World War I by indexing our collection of service record cards. These cards detail the military service of Indiana men and women who served in the armed forces at the time of World War I.
+          =link_to 'Learn More', '/indianaarchives/indiana-wwi-service-record-cards'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/la-county.jpg', class: 'cover_image', size: '200', alt: 'Zenas Matthews'
+        figcaption.cover_caption
+          p LA County Library's Letters of the Office of Indian Affairs document the turbulent time when new state officials worked to assume control of California's affairs, U.S. government officials arrived to document tribal groups, and private citizens poured into the state after the discovery of gold.
+
+          =link_to 'Learn More', '/lacountylibrary/letters-of-the-office-of-indian-affairs-1849-1880-california-superintendency'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/lighthouse.jpg', class: 'cover_image', size: '200', alt: 'East Civil War Papers'
+        figcaption.cover_caption
+          p "At 6. P.M. sighted three ship’s boats coming toward the cape and landed, it proved to be the entire crew of the ship St. Charles that blew up by coal gas at 8.40 A.M. the 17th. "
+
+          p Volunteers on the Yaquina Head Lighthouse Keeper's Logs have discovered a shipwreck from 1892.  Want to find more?  Help transcribe the keeper's logs.
+
+          =link_to 'Learn More', '/yaquinalights/1871-1900-yaquina-head-lighthouse-letter-books'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/standford-papers.jpg', class: 'cover_image', size: '200', alt: 'Austin Fanzine Project'
+        figcaption.cover_caption
+          p The papers of Jane L. Stanford pertain largely to the founding and administration of Stanford University, along with her personal and social affairs; included in the papers are correspondence, business records, legal and financial papers, speeches, news clippings, and biographical materials.
+
+          =link_to 'Learn More', '/stanforduniversityarchives/jls'
+
+-unless MIXPANEL_ID.blank?
+  javascript: mixpanel.track("Landing Page");

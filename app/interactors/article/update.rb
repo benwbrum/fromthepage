@@ -1,8 +1,7 @@
 class Article::Update < ApplicationInteractor
+  include Article::Lib::Common
 
   attr_accessor :article, :notice
-
-  include Article::Lib::Common
 
   def initialize(article:, article_params:)
     @article        = article
@@ -13,7 +12,9 @@ class Article::Update < ApplicationInteractor
 
   def perform
     old_title = @article.title
-    @article.attributes = @article_params
+    @article.attributes = @article_params.except(:category_ids)
+    categories = Category.where(id: @article_params[:category_ids])
+    @article.categories = categories
 
     if @article.save
       rename_article(@article, old_title, @article.title) if old_title != @article.title

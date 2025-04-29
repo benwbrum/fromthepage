@@ -31,17 +31,12 @@ describe "different user role logins" do
     expect(new_user_count).to eq (user_count + 1)
   end
 
-  it "signs in an editor with no activity" do
-      visit new_user_session_path
-      fill_in 'Login', with: INACTIVE
-      fill_in 'Password', with: @password
-      click_button('Sign In')
-      expect(page.current_path).to eq dashboard_watchlist_path
-      expect(page).to have_content(I18n.t('dashboard.collaborator'))
-      expect(page).to have_content("You haven't participated in any projects yet.")
-      visit root_path
-      click_link('Dashboard')
-      expect(page.current_path).to eq dashboard_watchlist_path
+  it 'signs in an editor with no activity' do
+    visit new_user_session_path
+    fill_in 'Login', with: INACTIVE
+    fill_in 'Password', with: @password
+    click_button('Sign In')
+    expect(page.current_path).to eq landing_page_path
   end
 
   it "signs in an editor with activity" do

@@ -186,6 +186,8 @@ de:
       upload_page_image: "%{upload} Faksimile"
     save_description:
       work_described: Ihre Beschreibung wurde gespeichert
+    search:
+      search_in_work: Suche im Dokument
     show:
       author_name: Name des Autors/der Autorin
       description: Beschreibung

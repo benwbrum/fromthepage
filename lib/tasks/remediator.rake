@@ -22,7 +22,6 @@ namespace :fromthepage do
 
       # new_article is the one created by the bug
       # replacement_article is the one we're recreating and pointing everything to
-      # binding.pry
       redundent_reference_pages=[]
       # now we have a list of all of our problems (well, maybe not _all_ of them)
       missing_article_hash.each_pair do |title, entry|

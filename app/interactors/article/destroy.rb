@@ -1,5 +1,4 @@
 class Article::Destroy < ApplicationInteractor
-
   attr_accessor :article
 
   def initialize(article:, user:, collection:)
@@ -26,5 +25,4 @@ class Article::Destroy < ApplicationInteractor
   def user_can_delete_article
     @article.created_by_id == @user.id || @user.like_owner?(@collection)
   end
-
 end

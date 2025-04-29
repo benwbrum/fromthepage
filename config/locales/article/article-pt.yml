@@ -16,11 +16,17 @@ pt:
       only_subject_owner_can_delete: Somente o criador do assunto ou proprietário do projeto pode excluir isso.
     edit:
       autolink: Autolink
+      begun: Iniciado
+      bibliography: Bibliografia
+      birth_date: Data de nascimento
       categories: Categorias
       combine_selected: Combinar selecionado
       confirm_delete_subject: Tem certeza de que deseja excluir este assunto? Após a exclusão, você não poderá recuperá-lo!
+      death_date: Data da morte
       delete_subject: Excluir assunto
       description: Descrição
+      disambiguator: Desambiguador
+      ended: Terminou
       latitude: Latitude
       longitude: Longitude
       microphone: Microfone
@@ -33,8 +39,10 @@ pt:
         one: Possível duplicata
         other: Possíveis duplicatas
       possible_duplicates_description: Por favor, revise a lista abaixo e selecione os assuntos para combinar. As duplicatas serão remapeadas para que todos os links existentes apontem para o assunto "%{article}".
+      race_description: Descrição da corrida
       save_changes: Salvar alterações
       select_categories: Selecionar categorias
+      sex: Sexo
       title: Título
       uri: URI
     graph:
@@ -50,9 +58,13 @@ pt:
       create_category_message: "%{link} que você usará para agrupar assuntos."
       create_the_first_category: Crie a primeira categoria
       delete_category: Excluir categoria
+      disable_bio_fields_for_category: Desabilitar campos biográficos para categoria
       disable_gis_for_category: Desativar SIG para categoria
+      disable_org_fields_for_category: Desabilitar campos de organização para categoria
       edit_category: Editar categoria
+      enable_bio_fields_for_category: Habilitar campos biográficos para categoria
       enable_gis_for_category: Ativar SIG para categoria
+      enable_org_fields_for_category: Habilitar campos de organização para categoria
       no_categories: Sem categorias
       no_categories_message: Não há categorias de assunto na coleção.<br>
       there_are_no_subjects: Não há assuntos para a categoria selecionada
@@ -61,16 +73,25 @@ pt:
       upload_subjects: Carregar assuntos
     show:
       all_uncategorized_subjects: Todos os assuntos não categorizados na coleção
+      begun: Começou
+      bibliography: Bibliografia
+      birth_date: Data de nascimento
       categories: Categorias
+      death_date: Data da morte
       description: Descrição
+      disambiguator: Desambiguador
       download: Download
       download_description: Faça o download de uma planilha de assuntos e obras simultâneos em que eles aparecem.
       edit_description_description: Edite a descrição na guia de configurações.
+      ended: Terminou
       export: Exportar
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 Possível Duplicata
         other: "%{count} Possíveis Duplicatas"
       no_category_message: Este assunto não pertence a nenhuma categoria
+      race_description: Descrição da corrida
       references: Referências
       related_subjects: Assuntos Relacionados
       related_subjects_1: Assuntos relacionados
@@ -80,6 +101,7 @@ pt:
       search_unlinked_pages: Pesquisar páginas não vinculadas
       search_unlinked_pages_description: Pesquise apenas texto de páginas que não estejam vinculadas a <em>%{article}</em>
       see_also: 'Veja também:'
+      sex: Sexo
       text_search: Pesquisa de texto
     subject_upload:
       csv_file_must_contain_headers: O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam "cabeçalho," "artigo," "Indentificador Universal de Recursos," e "categoria" respectivamente.
@@ -89,6 +111,7 @@ pt:
         other: 'Categorias:'
       explore_this_subject: Explorar este assunto
     update:
+      categories_updated: Categorias de artigos atualizadas.
       gis_coordinates_truncated:
         one: " (Coordenadas SIG truncadas para a casa decimal %{precision})"
         other: " (coordenadas SIG truncadas para %{precision} casas decimais)"

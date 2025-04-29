@@ -12,7 +12,6 @@ de:
       cancel: Stornieren
       continue: Weitermachen
       manage_categories: Kategorien verwalten
-      options: Optionen
       subject: 'Entität:'
       uncategorized_subjects: Nicht kategorisierte Entitäten
       uncategorized_subjects_mentioned: Sie haben nicht kategorisierte Entitäten, die in der Seitentranskription erwähnt werden. Bitte überprüfen Sie die folgenden Entitäten und weisen Sie ihnen die entsprechenden Kategorien zu.
@@ -47,6 +46,7 @@ de:
       sign_up_now_to_transcribe: Registrieren Sie sich jetzt, um zu transkribieren.
       transcribe_as_guest: Als Gast transkribieren
     mark_page_blank:
+      saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.
       saved_notice: Gespeichert
     save_buttons:
       approve: Freigeben
@@ -69,6 +69,7 @@ de:
       save_to_transcribed_tooltip: Änderungen speichern
     save_transcription:
       error_message: 'Bei der Analyse des Mark-ups in Ihrem Transkript ist ein Fehler aufgetreten. Diese Art von Fehler tritt häufig auf, wenn eine spitze Klammer fehlt oder wenn ein HTML-Tag offen gelassen wird. Überprüfen Sie alle < oder > in Ihrem Text. (Fehler beim Parsen: %{error_message})'
+      saved_and_next_notice: Gespeichert. Zur nächsten Seite wechseln.
       saved_notice: Gespeichert
       you_may_save_notice: Als Gast können Sie bis zu %{guest_deed_count} Transkriptionen speichern.
     save_translation:

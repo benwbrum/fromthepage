@@ -14,7 +14,7 @@ h1 =t('dashboard.collaborator')
       -@collections.each do |c|
         -if c.show_to?(current_user)
           h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
-          -cache c.most_recent_deed_created_at do
+          -cache [c.id, c.most_recent_deed_created_at, :watchlist] do
             -c.deeds.includes(:page, :user, :work).limit(5).each do |d|
               //- Hide collection link
               -d.collection = nil

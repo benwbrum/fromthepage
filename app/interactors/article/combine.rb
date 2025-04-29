@@ -1,5 +1,4 @@
 class Article::Combine < ApplicationInteractor
-
   include Article::Lib::Common
 
   def initialize(article:, from_article_ids:)
@@ -40,5 +39,4 @@ class Article::Combine < ApplicationInteractor
     to_article.save!
     from_article.destroy
   end
-
 end

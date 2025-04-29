@@ -6,7 +6,10 @@ class MetadataController < ApplicationController
     works = collection.works.limit(3)
     result = Work::Metadata::ExportCsv.new(collection: collection, works: works).call
 
-    send_data result.csv_string, filename: 'example.csv'
+    send_data(
+      result.csv_string,
+      filename: "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
+    )
   end
 
   def upload

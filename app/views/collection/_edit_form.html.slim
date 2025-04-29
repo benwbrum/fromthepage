@@ -1,0 +1,58 @@
+tr
+  th: h3 =f.label :title, t('collection.edit.title')
+  td =f.text_field :title
+tr
+  th
+    h3 =f.label :slug, t('collection.edit.url')
+    p =t('collection.edit.url_description')
+  td
+    =f.text_field :slug
+tr
+  th =t('collection.edit.current_url')
+  td [data-controller='clipboard']
+    b [data-clipboard-target='source'] =collection_url(collection.owner, collection.slug)
+    a.clipboard-btn (data-action='click->clipboard#copy' aria-label=t('collection.edit.copy_url') title=t('collection.edit.copy_url'))
+      =svg_symbol '#icon-copy', class: 'icon'
+tr
+  th =t('collection.edit.transcriber_url')
+  td [data-controller='clipboard']
+    b [data-clipboard-target='source'] =collection_start_transcribing_url(collection.owner, collection.slug)
+    a.clipboard-btn (data-action='click->clipboard#copy' aria-label=t('collection.edit.copy_url') title=t('collection.edit.copy_url'))
+      =svg_symbol '#icon-copy', class: 'icon'
+
+tr
+  td[colspan='2' style='padding: 30px 0 0 0;'] = t('collection.edit.collection_findable_instruction')
+tr
+  th
+    h3 =f.label :tags, t('collection.edit.subject_tags')
+  td
+    =f.select(:tags, options_from_collection_for_select(@tags_options, :id, :ai_text, @selected_tags), {}, class: 'field-input', data: { controller: 'select2', select2_placeholder_value: 'Choose...', select2_sync_on_value: 'commit' }, size: 1, multiple: true)
+tr
+  th
+    h3 =t('collection.edit.collection_image')
+    p =t('collection.edit.collection_image_description')
+  td.image-form
+    -if collection.picture_url(:thumb)
+      label.image-upload( data-hover=t('collection.edit.upload_image') aria-label=t('collection.edit.upload_image') title=t('collection.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+        =image_tag(collection.picture_url(:thumb), alt: collection.title)
+    -else
+      label( data-empty=t('collection.edit.no_image') data-hover=t('collection.edit.upload_image') aria-label=t('collection.edit.upload_image') title=t('collection.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+tr
+  th
+    h3 =f.label :intro_block, t('collection.edit.description')
+    p = t('collection.edit.description_message')
+  td =f.text_area :intro_block, rows: 6
+tr: td
+tr
+  th
+    h3 =t('collection.edit.footer')
+    p =t('collection.edit.footer_description')
+  td
+    .footer-preview
+        ==collection.owner.footer_block
+    -if current_user == collection.owner
+      i ==t('collection.edit.footer_edit', link: link_to(t('collection.edit.footer_edit_link'), user_update_profile_path(user_id: collection.owner)))
+    -else
+      i =t('collection.edit.footer_edit_nonprimary')

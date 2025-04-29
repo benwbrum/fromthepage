@@ -10,7 +10,7 @@ module ContentdmTranslator
       # get the fts field for this collection
       fts_error, fts_field = fts_field_for_collection(work.collection)
       if fts_error
-        puts "Error retrieving Full-Text Search field: #{error}\n"
+        puts "Error retrieving Full-Text Search field: #{fts_error}\n"
       end
     end
     # for each page
@@ -144,7 +144,7 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
+    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
@@ -225,12 +225,12 @@ module ContentdmTranslator
     raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..." if server.nil?
 
     matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
-    
+
     if matches
       collection = matches[1]
       record = matches[2]
     end
-    
+
     # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
       new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"

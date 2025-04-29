@@ -61,6 +61,7 @@ class User < ApplicationRecord
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -71,11 +72,9 @@ class User < ApplicationRecord
 
   mount_uploader :picture, PictureUploader
 
-  has_many(:owner_works,
-           :foreign_key => "owner_user_id",
-           :class_name => 'Work')
-  has_many :collections, :foreign_key => "owner_user_id"
-  has_many :document_sets, :foreign_key => "owner_user_id"
+  has_many :uploaded_works, foreign_key: 'owner_user_id', class_name: 'Work'
+  has_many :collections, foreign_key: 'owner_user_id'
+  has_many :document_sets, foreign_key: 'owner_user_id'
   has_many :ia_works
   has_many :visits
   has_many :bulk_exports
@@ -110,16 +109,19 @@ class User < ApplicationRecord
   has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   has_many :metadata_description_versions, :dependent => :destroy
 
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
-  scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
+
+  scope :with_owner_works, -> { joins(:uploaded_works).distinct }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
@@ -140,6 +142,38 @@ class User < ApplicationRecord
   after_save :create_notifications
   after_create :set_default_footer_block
   # before_destroy :clean_up_orphans
+
+  def as_indexed_json
+    return {
+      _id: self.id,
+      about: self.about,
+      display_name: self.display_name,
+      login: self.login,
+      real_name: self.real_name,
+      website: self.website
+    }
+  end
+
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "about",
+              "real_name",
+              "website"
+            ]
+          }
+        },
+        filter: [
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_user"}}
+        ]
+      }
+    }
+  end
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
@@ -232,7 +266,7 @@ class User < ApplicationRecord
   end
 
   def all_owner_collections
-    Collection.where(owner_user_id: self.id).or(Collection.where(id: self.owned_collections.ids)).distinct.order(:title)
+    Collection.where(owner_user_id: id).or(Collection.where(id: owned_collections.select(:id))).distinct.order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -245,12 +279,20 @@ class User < ApplicationRecord
   end
 
   def owner_works
-    works = Work.where(collection_id: self.all_owner_collections.ids)
-    return works
+    Work.where(collection_id: all_owner_collections.select(:id))
   end
 
-  def can_transcribe?(work)
-    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  def can_transcribe?(work, collection=nil)
+    return true if like_owner?(collection)
+    collection ||= work.access_object(self) || work.collection
+
+    if collection.is_a? DocumentSet
+      return true if collection.visibility_public? || like_owner?(work)
+
+      collection.collaborators.find_by(id: id).present? || collection.collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
+    else
+      !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
+    end
   end
 
   def can_review?(obj)
@@ -325,7 +367,7 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+    document_sets.where(visibility: [:public, :read_only])
   end
 
 
@@ -347,7 +389,7 @@ class User < ApplicationRecord
       collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
       owned_collections = self.owned_collections
 
-      collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
+      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
 

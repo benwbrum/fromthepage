@@ -49,6 +49,20 @@ class ScCanvas < ApplicationRecord
     end
   end
 
+  def iiif_image_info_url
+    if sc_service_id
+      service_id = sc_service_id.sub(/\/$/,'')
+      "#{service_id}/info.json"
+    else
+      # special handling for NARA images -- treat them as an image
+      if sc_resource_id.include?('catalog.archives.gov')
+        {type: 'image', url: sc_resource_id}.to_json
+      else
+        self.sc_resource_id.sub(/full\/\w+\/\w+\/.*/, 'info.json')
+      end
+    end
+  end
+
 
   def transcript_annotations
     return nil unless self.annotations

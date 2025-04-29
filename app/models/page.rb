@@ -45,6 +45,7 @@ class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper
+  include ElasticDelta
 
   before_update :validate_blank_page
   before_update :process_source
@@ -55,24 +56,24 @@ class Page < ApplicationRecord
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
-  acts_as_list :scope => :work
-  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
+  acts_as_list scope: :work
+  belongs_to :last_editor, class_name: 'User', foreign_key: 'last_editor_user_id', optional: true
 
   has_many :page_article_links, dependent: :destroy
   has_many :articles, through: :page_article_links
-  has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
+  has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
-  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
+  belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
 
-  has_many :notes, -> { order 'created_at' }, :dependent => :destroy
-  has_one :ia_leaf, :dependent => :destroy
-  has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, :dependent => :destroy
-  has_many :tex_figures, :dependent => :destroy
-  has_many :deeds, :dependent => :destroy
-  has_many :external_api_requests, :dependent => :destroy
+  has_many :notes, -> { order(:created_at) }, dependent: :destroy
+  has_one :ia_leaf, dependent: :destroy
+  has_one :sc_canvas, dependent: :destroy
+  has_many :table_cells, dependent: :destroy
+  has_many :tex_figures, dependent: :destroy
+  has_many :deeds, dependent: :destroy
+  has_many :external_api_requests, dependent: :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
@@ -88,6 +89,14 @@ class Page < ApplicationRecord
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   serialize :metadata, type: Hash
+
+  ACCEPTED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff'
+  ].freeze
 
   enum :status, {
     new: 'new',
@@ -130,9 +139,95 @@ class Page < ApplicationRecord
   NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
   NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
 
+  def as_indexed_json
+    return {
+      _id: self.id,
+      collection_id: self.collection&.id,
+      docset_id: self.work&.document_sets&.pluck(:id),
+      owner_user_id: self.collection&.owner_user_id,
+      work_id: self.work&.id,
+      is_public: !self.collection&.restricted || self.work&.document_sets.where(visibility: [:public, :read_only]).exists?,
+      title: self.title,
+      search_text: self.search_text,
+      content_english: self.source_text # TODO: Hook up language pipeline
+    }
+  end
+
+  def self.es_match_query(query, user)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      collection_collabs+= user.owned_collections.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+    end
+
+    search_fields = [
+      "title^2",
+      "title.no_underscores^1.3",
+      "search_text^1.5",
+      "content_english",
+      "content_french",
+      "content_german",
+      "content_spanish",
+      "content_portuguese",
+      "content_swedish"
+    ]
+
+    return {
+      bool: {
+        must: {
+          bool: {
+            # Run same query as phrase and regular tokenized
+            # Phrase matches will have higher impact
+            should: [
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 3.0,
+                  type: "phrase",
+                  fields: search_fields
+                }
+              },
+              {
+                simple_query_string: {
+                  query: query,
+                  boost: 1.0,
+                  type: "most_fields",
+                  fields: search_fields
+                }
+              }
+            ]
+          }
+        },
+        filter: [
+          {
+            bool: {
+              must_not: [
+                { terms: {collection_id: blocked_collections} }
+              ],
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {collection_id: collection_collabs} },
+                { terms: {docset_id: docset_collabs} }
+              ]
+            }
+          },
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_page"}}
+        ]
+      }
+    }
+  end
+
   # tested
   def collection
-    work.collection
+    work&.collection
   end
 
   def field_based
@@ -529,9 +624,8 @@ class Page < ApplicationRecord
     end
   end
 
-  # tested
   def create_link(article, display_text, text_type)
-    link = PageArticleLink.new(page: self, article: article,
+    link = PageArticleLink.new(page: self, article: article, work: self.work,
                                display_text: display_text, text_type: text_type)
     link.save!
     return link.id
@@ -555,7 +649,7 @@ class Page < ApplicationRecord
     self.update_columns(source_translation: remove_square_braces(text))
     @translation_dirty = true
     process_source
-    self.status = :translated
+    self.translation_status = :translated
     self.save!
   end
 
@@ -618,7 +712,6 @@ class Page < ApplicationRecord
     FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
     File.write(alto_path, xml)
   end
-
 
   def image_url_for_download
     if sc_canvas
@@ -697,7 +790,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_table(table_element)
-    text_table = xml_table_to_markdown_table(table_element)
+    text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
   end
 
@@ -715,7 +808,6 @@ class Page < ApplicationRecord
     factor = 400.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
-    image = nil
   end
 
   def delete_deeds

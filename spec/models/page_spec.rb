@@ -49,11 +49,11 @@ RSpec.describe Page, type: :model do
       let(:default_url_options) { { host: 'localhost:3000' } }
 
       context 'when base_image contains spaces or parentheses' do
-        let(:page) { build_stubbed(:page, base_image: '/image (1).jpg') }
+        let(:page) { build_stubbed(:page, base_image: '/image (1) [2].jpg') }
 
         it 'returns the URL encoded characters' do
           page.sc_canvas=nil
-          expect(page.image_url_for_download).to eq('http://localhost:3000/image%20(1).jpg')
+          expect(page.image_url_for_download).to eq('http://localhost:3000/image%20%281%29%20%5B2%5D.jpg')
         end
       end
 

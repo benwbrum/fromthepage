@@ -17,22 +17,10 @@ class ApplicationController < ActionController::Base
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
-  around_action :check_deleted_articles
   around_action :switch_locale
 
+  layout :set_layout
 
-  def check_deleted_articles
-    if controller_name != 'display' && @collection && !@collection.subjects_disabled
-      starting_article_count = @collection.articles.count
-      yield
-      ending_article_count = @collection.articles.count
-      if starting_article_count > ending_article_count
-        logger.info("ISSUE4269 WARNING #{starting_article_count} > #{ending_article_count} at #{controller_name}##{action_name}")
-      end
-    else
-      yield
-    end
-  end
 
   def switch_locale(&action)
     @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
@@ -87,11 +75,9 @@ class ApplicationController < ActionController::Base
     super || guest_user
   end
 
-  #find the guest user account if a guest user session is currently active
+  # find the guest user account if a guest user session is currently active
   def guest_user
-    unless session[:guest_user_id].nil?
-      User.where(id: session[:guest_user_id]).first
-    end
+    User.find_by(id: session[:guest_user_id])
   end
 
   #when the user chooses to transcribe as guest, find guest user id or create new guest user
@@ -276,7 +262,7 @@ class ApplicationController < ActionController::Base
 
   def set_fallback_collection
     if @work && @work.collection.supports_document_sets
-      alternative_set = @work.document_sets.where(:is_public => true).first
+      alternative_set = @work.document_sets.unrestricted.first
       if alternative_set
         @collection = alternative_set
         true
@@ -311,8 +297,10 @@ class ApplicationController < ActionController::Base
       else
         dashboard_startproject_path
       end
-    else
+    elsif current_user.deeds.any?
       dashboard_watchlist_path
+    else
+      landing_page_path
     end
   end
 
@@ -333,17 +321,28 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private
+
+  def set_layout
+    request.xhr? ? false : nil
+  end
 end
 
   def page_params(page)
+    if @collection
+      collection = @collection
+    else
+      collection = page.work.access_object(current_user) || page.work.collection
+    end
+
     if page.status_new?
       if user_signed_in?
-        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
+        collection_transcribe_page_path(page.work.collection.owner, collection, page.work, page)
       else
-        collection_guest_page_path(@collection.owner, @collection, page.work, page)
+        collection_guest_page_path(page.work.collection.owner, collection, page.work, page)
       end
     else
-      collection_display_page_path(@collection.owner, @collection, page.work, page)
+      collection_display_page_path(page.work.collection.owner, collection, page.work, page)
     end
   end
 

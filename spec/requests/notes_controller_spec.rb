@@ -5,7 +5,7 @@ describe NotesController do
     User.current_user = owner
   end
 
-  let(:owner) { User.first }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
@@ -14,9 +14,8 @@ describe NotesController do
   describe '#index' do
     let(:action_path) { collection_notes_path(collection_id: collection.slug) }
     let(:params) { {} }
-    let(:headers) { {} }
 
-    let(:subject) { get action_path, params: params, headers: headers }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status and template' do
       login_as owner
@@ -28,66 +27,66 @@ describe NotesController do
 
     context 'filters and paginate' do
       let(:params) { { search: note.title } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by user' do
       let(:params) { { sort: 'user', order: 'ASC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by note' do
       let(:params) { { sort: 'note', order: 'DESC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by page' do
       let(:params) { { sort: 'page', order: 'ASC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
     context 'sort by work' do
       let(:params) { { sort: 'work', order: 'DESC' } }
-      let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(partial: 'notes/_table')
+        expect(response).to render_template(:index)
       end
     end
 
@@ -104,46 +103,38 @@ describe NotesController do
     end
   end
 
-  describe '#create' do
-    let(:action_path) { notes_path(collection_id: collection.id, work_id: work.id, page_id: page.id) }
-    let(:params) { { note: { body: 'New note' } } }
+  describe '#edit' do
+    let(:action_path) { edit_note_path(note.id) }
+    let(:params) { {} }
 
-    let(:subject) { post action_path, params: params }
+    let(:subject) { get action_path, params: params, as: :turbo_stream }
 
-    it 'redirects' do
+    it 'renders status and template' do
+      login_as owner
       subject
 
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(root_path)
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit)
     end
 
-    context 'success' do
+    context 'when editing' do
+      let(:params) { { editing: true } }
+
       it 'renders status and template' do
         login_as owner
         subject
 
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
-      end
-    end
-
-    context 'error' do
-      let(:params) { { note: { body: '' } } }
-      it 'renders status and template' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
       end
     end
   end
 
-  describe '#update' do
-    let(:action_path) { note_path(note) }
-    let(:params) { { note: { body: 'Edited note' } } }
+  describe '#create' do
+    let(:action_path) { notes_path(collection_id: collection.id, work_id: work.id, page_id: page.id) }
+    let(:params) { { note: { body: 'New note' } } }
 
-    let(:subject) { put action_path, params: params }
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
 
     it 'redirects' do
       subject
@@ -158,7 +149,7 @@ describe NotesController do
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(response).to render_template(:create)
       end
     end
 
@@ -168,8 +159,43 @@ describe NotesController do
         login_as owner
         subject
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:create)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { note_path(note) }
+    let(:params) { { note: { body: 'Edited note' } } }
+
+    let(:subject) { put action_path, params: params, as: :turbo_stream }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(root_path)
+    end
+
+    context 'success' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
+      end
+    end
+
+    context 'error' do
+      let(:params) { { note: { body: '' } } }
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
       end
     end
   end
@@ -177,7 +203,7 @@ describe NotesController do
   describe '#destroy' do
     let(:action_path) { note_path(note) }
 
-    let(:subject) { delete action_path }
+    let(:subject) { delete action_path, as: :turbo_stream }
 
     it 'redirects' do
       subject
@@ -192,7 +218,7 @@ describe NotesController do
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(response).to render_template(:destroy)
       end
     end
   end

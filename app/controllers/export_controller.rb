@@ -9,13 +9,13 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }
-
   def index
     filtered_data
 
-    render partial: 'table' if request.xhr?
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

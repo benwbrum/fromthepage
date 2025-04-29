@@ -16,6 +16,7 @@
 //= link codemirror/mode/xml/xml.js
 //= link codemirror/addon/display/display/panel.js
 //= link codemirror/addon/hint/show-hint.js
+//= link codemirror/addon/lint/lint.js
 //= link codemirror/addon/hint/xml-hint.js
 //= link codemirror-buttons/buttons.js
 //= link landing/lightbox.min.js
@@ -25,5 +26,4 @@
 //= link datatables.min.js
 //= link annotorious/annotorious-openseadragon.js
 //= link annotorious/annotorious-openseadragon-textlayer.js
-//= link select_all.js
 //= link_tree ../../javascript .js

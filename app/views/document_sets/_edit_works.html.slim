@@ -1,0 +1,10 @@
+.collection-settings-wrapper
+  p =t('.document_is_marked_public')
+
+  =fe_filter_table_wrapper(selector: 'works-table') do
+    =fe_filter_form_wrapper(url: collection_settings_works_path(@collection.owner, @collection), selector: 'works-table', sorting: nil, ordering: @ordering) do
+      =fe_filter_search(key: :search, value: params[:search])
+      =fe_filter_select(key: :show, value: params[:show] || 'all', options: document_set_inclusion_options)
+
+    =fe_filter_table(selector: 'works-table') do
+      =render partial: 'works_table'

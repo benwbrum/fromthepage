@@ -1,8 +1,7 @@
 class UserController < ApplicationController
+  include ElasticSearchable
   before_action :remove_col_id, :only => [:profile, :update_profile]
   before_action :authorized?, :only => [:update_profile, :update]
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
 
   PAGES_PER_SCREEN = 50
 
@@ -140,9 +139,62 @@ class UserController < ApplicationController
 
     return unless @user.owner?
 
+    if params[:ai_text]
+      @tag = Tag.where(ai_text: params[:ai_text]).first
+      if @tag
+        tag_collections = @tag.collections.where(owner_user_id: @user.id)
+        tag_document_sets = tag_collections.map(&:document_sets).flatten
+        @tag_collections = tag_collections+tag_document_sets
+      end
+    end
     collections = @user.all_owner_collections.carousel
     sets = @user.document_sets.carousel
     @carousel_collections = (collections + sets).sample(8)
+  end
+
+  def search # ElasticSearch version
+    @user = User.friendly.find(params[:user_slug])
+    search_page = (search_params[:page] || 1).to_i
+    @search_string = search_params[:term]
+    @breadcrumb_scope={owner: true}
+
+    page_size = 10
+
+    query_config = {
+      type: 'org',
+      org_id: @user.id
+    }
+    @org_filter = @user
+
+    search_data = elastic_search_results(
+      @search_string,
+      search_page,
+      page_size,
+      search_params[:filter],
+      query_config
+    )
+
+    if search_data
+      inflated_results = search_data[:inflated]
+      @full_count = search_data[:full_count] # Used by All tab
+      @type_counts = search_data[:type_counts]
+
+      # Used for pagination, currently capped at 10k
+      #
+      # TODO: ES requires a scroll/search_after query for result sets larger
+      #       than 10k.
+      #
+      #       To setup support we just need to add a composite tiebreaker field
+      #       to the schemas
+      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+      @search_results = WillPaginate::Collection.create(
+        search_page,
+        page_size,
+        @filtered_count) do |pager|
+          pager.replace(inflated_results)
+        end
+    end
   end
 
   private
@@ -155,6 +207,10 @@ class UserController < ApplicationController
     unless current_user && (@user == current_user || current_user.admin?)
       redirect_to dashboard_path
     end
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :user_id)
   end
 
 

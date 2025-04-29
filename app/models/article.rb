@@ -2,20 +2,28 @@
 #
 # Table name: articles
 #
-#  id            :integer          not null, primary key
-#  created_on    :datetime
-#  graph_image   :string(255)
-#  latitude      :decimal(7, 5)
-#  lock_version  :integer          default(0)
-#  longitude     :decimal(8, 5)
-#  pages_count   :integer          default(0)
-#  provenance    :string(255)
-#  source_text   :text(16777215)
-#  title         :string(255)
-#  uri           :string(255)
-#  xml_text      :text(16777215)
-#  collection_id :integer
-#  created_by_id :integer
+#  id               :integer          not null, primary key
+#  begun            :string(255)
+#  bibliography     :text(65535)
+#  birth_date       :string(255)
+#  created_on       :datetime
+#  death_date       :string(255)
+#  disambiguator    :string(255)
+#  ended            :string(255)
+#  graph_image      :string(255)
+#  latitude         :decimal(7, 5)
+#  lock_version     :integer          default(0)
+#  longitude        :decimal(8, 5)
+#  pages_count      :integer          default(0)
+#  provenance       :string(255)
+#  race_description :string(255)
+#  sex              :string(255)
+#  source_text      :text(16777215)
+#  title            :string(255)
+#  uri              :string(255)
+#  xml_text         :text(16777215)
+#  collection_id    :integer
+#  created_by_id    :integer
 #
 # Indexes
 #
@@ -24,6 +32,8 @@
 #
 class Article < ApplicationRecord
   include XmlSourceProcessor
+  include EdtfDate
+
   #include ActiveModel::Dirty
 
   before_save :process_source
@@ -53,6 +63,12 @@ class Article < ApplicationRecord
   after_save :create_version
   # add a call back that logs a warning whenever an article is deleted
   before_destroy :log_destroy
+
+  edtf_date_attribute :birth_date
+  edtf_date_attribute :death_date
+  edtf_date_attribute :begun
+  edtf_date_attribute :ended
+
 
   def log_destroy
     logger.warn("ISSUE4269 Warning: Article #{self.id} #{self.title} in collection #{self.collection.title} is being destroyed.")
@@ -90,6 +106,14 @@ class Article < ApplicationRecord
 
   def gis_enabled?
     self.categories.where(:gis_enabled => true).present?
+  end
+
+  def bio_fields_enabled?
+    self.categories.where(:bio_fields_enabled => true).present?
+  end
+
+  def org_fields_enabled?
+    self.categories.where(:org_fields_enabled => true).present?
   end
 
   #######################

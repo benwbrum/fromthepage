@@ -1,7 +1,6 @@
 require 'csv'
 
 class Work::Metadata::ImportCsv < ApplicationInteractor
-
   SPECIAL_HEADERS = [
     # legacy headers
     'work_id',
@@ -34,7 +33,7 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
       metadata = []
       csv.headers.each do |header|
         # Skip protected headers
-        next if header&.include?('*')
+        next if header.include?('*')
 
         # Skip special headers
         next if SPECIAL_HEADERS.include?(header)
@@ -107,5 +106,4 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
       { error: I18n.t('metadata.import_csv.errors.not_existing_work', work_filename: work_filename) }
     end
   end
-
 end

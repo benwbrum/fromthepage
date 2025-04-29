@@ -1,8 +1,8 @@
 =javascript_include_tag "transcribe"
 
-=render({ :partial => '/shared/article_tabs', :locals => { :selected => 4, :article_id => @article.id }})
+=render({ partial: '/shared/article_tabs', locals: { selected: 4, article_id: @article.id } })
 
-=render({ :partial => '/shared/insert_table_modal' })
+=render({ partial: '/shared/insert_table_modal' })
 
 .article-columns.columns
   article.maincol
@@ -16,6 +16,9 @@
         tr.big
           th =f.label :uri, t('.uri')
           td.w100 =f.text_field :uri
+        tr.big
+          th =f.label :disambiguator, t('.disambiguator')
+          td.w100 =f.text_field :disambiguator
         tr
           td.voice-div(colspan="2")
             =f.label :source_text, t('.description'), class: 'above'
@@ -26,8 +29,11 @@
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
               =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr', :height => '300', :show_line_numbers => false } })
-
-
+      .fglight
+        =render partial: 'shared/markup_help'
+      .toolbar
+        =f.button t('.autolink'), name: 'autolink'
+      br
 
       -if @article.gis_enabled?
         table.form
@@ -38,23 +44,54 @@
             td.w50 =f.text_field :latitude, :value => (number_with_precision(f.object.latitude, :precision => 5))
             td.w50 =f.text_field :longitude, :value => (number_with_precision(f.object.longitude, :precision => 5))
 
+
+      -if @article.bio_fields_enabled?
+        table.form
+          tr
+            th =f.label :birth_date, t('.birth_date')
+            td.w100 =f.text_field :birth_date
+          tr
+            th =f.label :death_date, t('.death_date')
+            td.w100 =f.text_field :death_date
+          tr
+            th =f.label :sex, t('.sex')
+            td.w100 =f.text_field :sex, list: 'sex_autocomplete'
+            datalist(id="sex_autocomplete")
+              -@sex_autocomplete.each do |sex|
+                option value=sex
+          tr
+            th =f.label :race_description, t('.race_description')
+            td.w100 =f.text_field :race_description, list: 'race_description_autocomplete'
+            datalist(id="race_description_autocomplete")
+              -@race_description_autocomplete.each do |rd|
+                option value=rd
+
+      -if @article.org_fields_enabled?
+        table.form
+          tr
+            th =f.label :begun, t('.begun')
+            td.w100 =f.text_field :begun
+          tr
+            th =f.label :ended, t('.ended')
+            td.w100 =f.text_field :ended
+
+      tr
+        td(colspan="2")
+          =f.label :bibliography, t('.bibliography'), class: 'above'
+          div
+            =f.text_area :bibliography, class: 'article-editarea_textarea', rows: 5
+
+
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
       =t('.categories')
       br
-      select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label=t('.select_categories') multiple)
-        -@collection.categories.walk_tree do |c, level|
-          -selected = true if @article.categories.include?(c)
-          option(data-level=level value=c.id selected=selected) =c.title
+        =f.select :category_ids, \
+          options_for_select(categories_options(@collection.categories), selected: @article.category_ids), \
+          {}, { size: 1, multiple: true, aria: { label: t('.select_categories') }, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
+
       .fglight
-        br
-        =render :partial => 'shared/markup_help'
-
-      .toolbar
-        .toolbar_group.w100
-          =f.button t('.autolink'), :name => 'autolink'
-
-        .toolbar_group.aright =f.button t('.save_changes'), :name => 'save', class: 'big'
+        .toolbar_group.aright =f.button t('.save_changes'), name: 'save', class: 'big'
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br

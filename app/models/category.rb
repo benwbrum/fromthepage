@@ -2,12 +2,14 @@
 #
 # Table name: categories
 #
-#  id            :integer          not null, primary key
-#  created_on    :datetime
-#  gis_enabled   :boolean          default(FALSE), not null
-#  title         :string(255)
-#  collection_id :integer
-#  parent_id     :integer
+#  id                 :integer          not null, primary key
+#  bio_fields_enabled :boolean          default(FALSE)
+#  created_on         :datetime
+#  gis_enabled        :boolean          default(FALSE), not null
+#  org_fields_enabled :boolean
+#  title              :string(255)
+#  collection_id      :integer
+#  parent_id          :integer
 #
 # Indexes
 #

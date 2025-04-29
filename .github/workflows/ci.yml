@@ -21,16 +21,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y ghostscript poppler-utils graphviz pandoc texlive-full libmagickwand-dev imagemagick
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.5
           bundler-cache: true
-      - name: Install dependencies
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y ghostscript poppler-utils graphviz pandoc texlive-full
-          bundle install --jobs 4 --retry 3
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
       - name: Create db
         run: bundle exec rake db:create
       - name: Migrate
@@ -48,7 +49,7 @@ jobs:
           COVERAGE: 'true'
           CI: 'true'
       - name: Run Coveralls
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
         uses: coverallsapp/github-action@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

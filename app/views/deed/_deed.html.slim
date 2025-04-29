@@ -33,7 +33,7 @@
         -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
     -else
       -work = deed.work.title
-  
+
   -unless(deed.collection.nil?)
     -if prerender
       -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
@@ -55,7 +55,7 @@
 
   -when DeedType::PAGE_INDEXED
     -output += t('.indexed_page', page: page)
-    
+
   -when DeedType::PAGE_MARKED_BLANK
     -output += t('.marked_page_as_blank', page: page)
 
@@ -94,7 +94,7 @@
 
   -when DeedType::COLLECTION_JOINED
       -output += t('.joined')
-      
+
       -if deed.collection.nil?
         -output += t('.this_collection')
       -else
@@ -106,10 +106,10 @@
   -when DeedType::EDITED_METADATA
     -output += t('.edited_metadata')
 
-  -if(!deed.work.nil?)
+  -if !deed.work.nil? && deed.deed_type != DeedType::WORK_ADDED
     -output += t('.in_the_work', work: work)
 
-  -if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED && !suppress_collection)
+  -if !collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED && !suppress_collection
     -output += t('.in_collection', collection: collection)
 
   -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)

@@ -1,5 +1,4 @@
 class Work::Metadata::Refresh < ApplicationInteractor
-
   attr_reader :errors
 
   def initialize(work_ids: nil, batches: 100)
@@ -14,11 +13,11 @@ class Work::Metadata::Refresh < ApplicationInteractor
     @all_works.in_batches(of: 100).each do |works|
       process_batches(works)
     end
-  rescue StandardError => e
     # :nocov:
+  rescue StandardError => e
     @errors << "Error: #{e}"
     context.fail!
-    # :nocov:
+    # :nocov: end
   end
 
   private
@@ -29,11 +28,12 @@ class Work::Metadata::Refresh < ApplicationInteractor
 
       begin
         refresh_metadata(work)
-      rescue
+
         # :nocov:
+      rescue StandardError => _e
         @errors << "Failed to refresh metadata for #{work.slug}"
         context.fail!
-        # :nocov:
+        # :nocov: end
       end
     end
   end

@@ -32,9 +32,9 @@ table.admin-grid.datagrid.striped
         td.nowrap =u.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap
           .instack
-            =link_to t('.visits'), admin_user_visits_path(:user_id => u.id)
+            =link_to t('.visits'), admin_user_visits_path(user_id: u.id)
             =link_to t('.login_as'), user_masquerade_path(u)
-            =link_to t('.edit'), admin_edit_user_path(:user_id => u.id), :data => { litebox: { hash: "" }}
-            =link_to t('.expunge'), admin_expunge_confirmation_path(:user_id => u.id), :data => { litebox: { hash: "" }}
+            =link_to t('.edit'), admin_edit_user_path(user_id: u.id), data: { controller: 'litebox', litebox: { hash: '' } }
+            =link_to t('.expunge'), admin_expunge_confirmation_path(user_id: u.id), data: { controller: 'litebox', litebox: { hash: '' } }
 
 =render(:partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true })

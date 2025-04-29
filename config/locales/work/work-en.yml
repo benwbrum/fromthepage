@@ -186,6 +186,8 @@ en:
       upload_page_image: "%{upload} page image"
     save_description:
       work_described: Your description has been saved
+    search:
+      search_in_work: Search in Work
     show:
       author_name: Author Name
       description: Description
