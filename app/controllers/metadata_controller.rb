@@ -2,9 +2,7 @@ class MetadataController < ApplicationController
   layout false
 
   def example
-    collection = Collection.find(params[:id])
-    works = collection.works.limit(3)
-    result = Work::Metadata::ExportCsv.new(collection: collection, works: works).call
+    result = Work::Metadata::ExportCsv.new(collection: @collection, works: @collection.works).call
 
     send_data(
       result.csv_string,
