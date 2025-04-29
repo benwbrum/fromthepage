@@ -719,8 +719,7 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      encoded_url = Addressable::URI.parse(self.canonical_facsimile_url).normalize.to_s
-      uri = URI.parse(encoded_url)
+      uri = Addressable::URI.parse(self.canonical_facsimile_url)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
       host = raw_host.split(":")[0]
