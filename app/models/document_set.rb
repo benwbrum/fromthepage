@@ -70,6 +70,7 @@ class DocumentSet < ApplicationRecord
       .reorder(Arel.sql('RAND()'))
   }
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
+  scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
