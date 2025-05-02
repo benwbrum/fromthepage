@@ -237,6 +237,7 @@ class TranscriptionFieldController < ApplicationController
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     @collection = @transcription_field.collection
     @page = @collection.pages.sample(1).first
+    @work = @page&.work
   end
 
   def save_offset
