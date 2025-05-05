@@ -262,7 +262,7 @@ class ApplicationController < ActionController::Base
 
   def set_fallback_collection
     if @work && @work.collection.supports_document_sets
-      alternative_set = @work.document_sets.where(:is_public => true).first
+      alternative_set = @work.document_sets.unrestricted.first
       if alternative_set
         @collection = alternative_set
         true
@@ -297,8 +297,10 @@ class ApplicationController < ActionController::Base
       else
         dashboard_startproject_path
       end
-    else
+    elsif current_user.deeds.any?
       dashboard_watchlist_path
+    else
+      landing_page_path
     end
   end
 
@@ -327,14 +329,20 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
+    if @collection
+      collection = @collection
+    else
+      collection = page.work.access_object(current_user) || page.work.collection
+    end
+
     if page.status_new?
       if user_signed_in?
-        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
+        collection_transcribe_page_path(page.work.collection.owner, collection, page.work, page)
       else
-        collection_guest_page_path(@collection.owner, @collection, page.work, page)
+        collection_guest_page_path(page.work.collection.owner, collection, page.work, page)
       end
     else
-      collection_display_page_path(@collection.owner, @collection, page.work, page)
+      collection_display_page_path(page.work.collection.owner, collection, page.work, page)
     end
   end
 

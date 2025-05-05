@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_03_220916) do
+ActiveRecord::Schema.define(version: 2025_04_11_162248) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -69,6 +69,14 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
     t.string "provenance"
     t.integer "created_by_id"
     t.integer "pages_count", default: 0
+    t.string "birth_date"
+    t.string "death_date"
+    t.string "sex"
+    t.string "race_description"
+    t.text "bibliography"
+    t.string "disambiguator"
+    t.string "begun"
+    t.string "ended"
     t.index ["collection_id"], name: "index_articles_on_collection_id"
     t.index ["created_by_id"], name: "fk_rails_35e2f292e3"
   end
@@ -128,6 +136,8 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
     t.integer "collection_id"
     t.datetime "created_on"
     t.boolean "gis_enabled", default: false, null: false
+    t.boolean "bio_fields_enabled", default: false
+    t.boolean "org_fields_enabled"
     t.index ["collection_id"], name: "index_categories_on_collection_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
@@ -266,7 +276,6 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
   end
 
   create_table "document_sets", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
-    t.boolean "is_public"
     t.integer "owner_user_id"
     t.integer "collection_id"
     t.string "title"
@@ -279,6 +288,7 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
     t.string "default_orientation"
     t.integer "next_untranscribed_page_id"
     t.integer "works_count", default: 0
+    t.integer "visibility", default: 0, null: false
     t.index ["collection_id"], name: "index_document_sets_on_collection_id"
     t.index ["owner_user_id"], name: "index_document_sets_on_owner_user_id"
     t.index ["slug"], name: "index_document_sets_on_slug", unique: true
@@ -444,7 +454,9 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
     t.integer "depth"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "fk_rails_7d330fa613"
     t.index ["page_id"], name: "index_notes_on_page_id"
+    t.index ["work_id"], name: "fk_rails_9fa473ac93"
   end
 
   create_table "notifications", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -1116,6 +1128,9 @@ ActiveRecord::Schema.define(version: 2025_01_03_220916) do
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"
+  add_foreign_key "notes", "collections", on_delete: :cascade
+  add_foreign_key "notes", "pages", on_delete: :cascade
+  add_foreign_key "notes", "works", on_delete: :cascade
   add_foreign_key "page_article_links", "works"
   add_foreign_key "quality_samplings", "collections"
   add_foreign_key "quality_samplings", "users"

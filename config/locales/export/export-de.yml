@@ -39,6 +39,7 @@ de:
       tei: TEI
       work_title: Werktitel
     show:
+      bibliography: Bibliographie
       categories: 'Kategorien:'
       export_metadata: FromThePage-Export von %{work} aus %{collection} von %{time}.
       fromthepage_version: 'FromThePage-Version: %{version}'

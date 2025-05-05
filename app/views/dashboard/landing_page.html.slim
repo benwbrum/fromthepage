@@ -1,30 +1,43 @@
-ul.tagcloud
-  -@tag_map.each do |ai_text, collection_count|
-    -if collection_count > 0
-      li data-weight="#{collection_count}"
-        =link_to(ai_text, browse_tag_path(ai_text))
+- if !@search_results
+  ul.tagcloud
+    -@tag_map.each do |ai_text, collection_count|
+      -if collection_count > 0
+        li data-weight="#{collection_count}"
+          =link_to(ai_text, browse_tag_path(ai_text))
 
 .columns.project-list
   article.maincol
-    h2 =t('.institutions')
-    =fe_filter_table_wrapper(selector: 'results') do
-      =fe_filter_form_wrapper(url: landing_page_path, selector: 'results', sorting: nil, ordering: nil) do
-        .wrapper [style="padding-top: 0px; padding-right: 0px;"]
-          =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
+    - if ELASTIC_ENABLED
+      / render the elasticsearch site-wide search form
+      .search_wrapper
+        =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+          =search_field_tag :search, params[:search]
+          =button_tag t('.search')
+          =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
-      =fe_filter_table(selector: 'results') do
-        .wrapper [style="padding: 0px;"]
-          =render partial: 'results'
+    - if ELASTIC_ENABLED && @search_results
+      =render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
+    - else
+      h2 =t('.institutions')
+      =fe_filter_table_wrapper(selector: 'results') do
+        =fe_filter_form_wrapper(url: landing_page_path, selector: 'results', sorting: nil, ordering: nil) do
+          .wrapper [style="padding-top: 0px; padding-right: 0px;"]
+            -unless ELASTIC_ENABLED
+              =fe_filter_search(key: :search, value: params[:search], classes: 'w40', placeholder: t('dashboard.landing_page.search_for_collections_or_owners'))
 
-    .project-list_link
-      =link_to t('.all_collections'), collections_list_path
+        =fe_filter_table(selector: 'results') do
+          .wrapper [style="padding: 0px;"]
+            =render partial: 'results'
+
+      .project-list_link
+        =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
     h2 =t('.new_projects')
-    -@new_projects[..10].each do |project|
+    -@new_projects[..20].each do |project|
       .deed-short.small
         span.deed-short_content
-          =link_to project.title, collection_path(project.owner.slug, project.id)
+          =link_to project.title, collection_path(project.owner.slug, project.slug)
           =t('.by')
           =link_to project.owner.display_name, user_profile_path(project.owner)
 

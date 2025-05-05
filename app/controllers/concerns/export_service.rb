@@ -7,6 +7,15 @@ module ExportService
   require 'subject_exporter'
   require 'subject_details_exporter'
 
+  include Rails.application.routes.url_helpers
+
+  # Quick and dirty override to ensure default_url_options is set.
+  def default_url_options
+    Rails.application.config.action_mailer.default_url_options || {}
+  end
+
+
+
   def path_from_work(work, original_filenames=false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
@@ -47,7 +56,7 @@ module ExportService
   def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
     # render to a string
     rendered_markdown =
-      ApplicationController.new.render_to_string(
+      ApplicationController.renderer.render_to_string(
         template: '/export/facing_edition.html',
         layout: false,
         assigns: {
@@ -83,7 +92,9 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
 
-    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
+    tex_template = Rails.root.join('lib', 'pandoc', 'pdf_export_template.tex')
+    lua_filter = Rails.root.join('lib', 'pandoc', 'risky_soul_filter.lua')
+    cmd = "pandoc --template #{tex_template} --lua-filter=#{lua_filter} --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
@@ -465,7 +476,8 @@ module ExportService
       spreadsheet_count = input_types.count("spreadsheet")
       position = input_types.index("spreadsheet")
     else
-      renamed_cell_headings_count = 0
+      # this variable apparently tracks how many times we should attempt to process a set of headers, designed for sparse tables
+      renamed_cell_headings_count = 1
     end
     spreadsheet_field_ids = work.collection.transcription_fields.where(input_type: 'spreadsheet').order(:line_number).pluck(:id)
 
@@ -473,7 +485,7 @@ module ExportService
       unless page.table_cells.empty?
         has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
-        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+        page_url = collection_display_page_url(collection.owner, collection, work, page)
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
@@ -514,7 +526,7 @@ module ExportService
 
           grouped_hash.each do |row, cell_array|
             count = 0
-            while count < renamed_cell_headings_count
+            while count < renamed_cell_headings_count # this is 0 and should not be!
               #get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
               if has_spreadsheet
@@ -764,7 +776,7 @@ module ExportService
 
     notes = collection.notes.order(created_at: :desc)
     rows = notes.map {|n|
-      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_url =collection_display_page_url(collection.owner, collection, n.page.work, n.page)
       page_contributors = n.page.deeds
         .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
         .uniq.join('|')

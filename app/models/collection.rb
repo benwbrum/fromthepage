@@ -59,6 +59,7 @@ require 'subject_distribution_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   before_save :uniquify_slug
@@ -71,24 +72,24 @@ class Collection < ApplicationRecord
   has_many :document_sets, -> { order(:title) }, dependent: :destroy
   has_many :categories, -> { order(:title) }
   has_many :deeds, -> { order(created_at: :desc) }, dependent: :destroy
-  has_one :sc_collection, :dependent => :destroy
-  has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
-  has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
-  has_many :bulk_exports, :dependent => :destroy
-  has_many :editor_buttons, :dependent => :destroy
-  has_one :quality_sampling, :dependent => :destroy
+  has_one :sc_collection, dependent: :destroy
+  has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, dependent: :destroy
+  has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, class_name: 'TranscriptionField', dependent: :destroy
+  has_many :bulk_exports, dependent: :destroy
+  has_many :editor_buttons, dependent: :destroy
+  has_one :quality_sampling, dependent: :destroy
   belongs_to :messageboard_group, class_name: 'Thredded::MessageboardGroup', foreign_key: 'thredded_messageboard_group_id', optional: true
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: 'Page', optional: true
   has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
-  has_many :metadata_coverages, :dependent => :destroy
+  has_many :metadata_coverages, dependent: :destroy
   has_many :facet_configs, -> { order(input_type: :asc, order: :asc) }, through: :metadata_coverages
   has_many :table_cells, through: :transcription_fields
 
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
-  has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_user_id', optional: true
+  has_and_belongs_to_many :owners, class_name: 'User', join_table: :collection_owners
+  has_and_belongs_to_many :collaborators, class_name: 'User', join_table: :collection_collaborators
+  has_and_belongs_to_many :reviewers, class_name: 'User', join_table: :collection_reviewers
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :canonical_tags, -> { where(canonical: true) },
                           class_name: 'Tag', join_table: 'collections_tags'
@@ -118,7 +119,6 @@ class Collection < ApplicationRecord
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
-
   scope :random_sample, -> (sample_size = 5) do
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
@@ -129,6 +129,70 @@ class Collection < ApplicationRecord
     TEXT_ONLY = 'text'
     METADATA_ONLY = 'metadata'
     TEXT_AND_METADATA = 'text_and_metadata'
+  end
+
+  def as_indexed_json
+    return {
+      _id: self.id,
+      permissions_updated: 0,
+      is_public: !self.restricted,
+      is_docset: false,
+      intro_block: self.intro_block,
+      language: self.language,
+      owner_user_id: self.owner_user_id,
+      owner_display_name: self.owner&.display_name,
+      slug: self.slug,
+      title: self.title
+    }
+  end
+
+  def self.es_match_query(query, user = nil)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs= []
+
+    if !user.nil?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs = user.collection_collaborations.pluck(:id)
+      collection_collabs+= user.owned_collections.pluck(:id)
+      docset_collabs = user.document_set_collaborations.pluck(:id)
+        .map{ |x| "docset-#{x}" }
+    end
+
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "title^2",
+              "title.no_underscores^1.3",
+              "intro_block",
+              "slug"
+            ]
+          }
+        },
+        filter: [
+          {
+            bool: {
+              must_not: [
+                { terms: {_id: blocked_collections} }
+              ],
+              # At least one of the following must be true
+              should: [
+                { term: {is_public: true} },
+                { term: {owner_user_id: user.nil? ? -1 : user.id} },
+                { terms: {_id: collection_collabs} },
+                { terms: { collection_id: collection_collabs }},
+                { terms: {_id: docset_collabs} },
+              ]
+            }
+          },
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_collection"}}
+        ]
+      }
+    }
   end
 
   def created_at
@@ -282,7 +346,7 @@ class Collection < ApplicationRecord
 
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-    users where owner=1 and display_name like ?)"
+           users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 
@@ -304,6 +368,10 @@ class Collection < ApplicationRecord
     !restricted
   end
 
+  def visibility_read_only?
+    false
+  end
+
   def active?
     self.is_active
   end
@@ -318,7 +386,7 @@ class Collection < ApplicationRecord
 
   def find_next_untranscribed_page_for_user(user)
     return nil unless has_untranscribed_pages?
-    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
     public = works.unrestricted
                   .where.not(next_untranscribed_page_id: nil)

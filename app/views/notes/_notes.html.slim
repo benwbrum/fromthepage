@@ -1,96 +1,16 @@
--if @page
-  -notes = @page.notes
--else
-  -notes = @work.notes.where(page_id: nil)
--if notes.empty?
+ruby:
+  notes = @page ? @page.notes : @work.notes.where(page_id: nil)
+
+-unless notes.any?
   p.acenter.fglight(data-note-empty)
     = t('.nobody_has_written_a_note')
+
 -unless user_signed_in?
   p.acenter.fglight = t('.please_sign_in_to_write', link: link_to(t('.sign_in'), new_user_session_path)).html_safe
 
--notes.each do |note|
-  =render({ partial: 'notes/note', locals: { note: note }})
+#notes-list
+  -notes.each do |note|
+    =render partial: 'notes/note', locals: { note: note }
 
 -if user_signed_in?
-  .user-bubble
-    =profile_picture(current_user)
-
-    =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
-      -if @page
-        =hidden_field_tag(:page_id, @page.id)
-      -else
-        =hidden_field_tag(:work_id, @work.id)
-
-      =hidden_field_tag(:collection_id, @collection.slug)
-      .user-bubble_form_editor
-        =f.text_area :body, :rows => 4, :placeholder => t('.write_a_new_note')
-      .user-bubble_form_footer
-        span.user-bubble_form_error
-        =f.label :body, t('.note_body'), class: 'hidden'
-        -if @collection.voice_recognition
-          span.voice-info.voice
-          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
-        =f.button t('.save_note'), id: 'save_note_button'
-
-  -content_for :javascript
-    javascript:
-      $(function() {
-        // Toggle note edit
-        $(document).on('click', '[data-note-edit]', function() {
-          var $container = $(this).closest('.user-bubble').toggleClass('edit');
-          if($container.hasClass('edit')) {
-            $('form', $container)[0].reset();
-            $('.user-bubble_form_error', $container).empty();
-          }
-        });
-
-        // Create and update note
-        $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
-          var $container = $(this).parent();
-          var $error = $('.user-bubble_form_error', $container).empty();
-
-          if (e.response === undefined && xhr.responseText.includes("Sign In")) {
-            var message = "You need to be logged in to create this note."
-            $error.text('Error: ' + message);
-            return false;
-          }
-
-          if(xhr.status === 201) {
-            // Note created
-            var content = xhr.responseJSON.html;
-            $(content).hide().insertBefore($container).fadeIn();
-            $('[data-note-empty]').hide();
-            this.reset();
-          } else if(xhr.status === 200) {
-            // Note updated
-            this.reset();
-            var content = xhr.responseJSON.html;
-            $container.removeClass('edit');
-            $('.user-bubble_note', $container).html(content);
-          } else if(xhr.status === 500) {
-            var message = xhr.statusText;
-            $error.text('Error: ' + message);
-            return false;
-          } else {
-            // Error occurred
-            var message = xhr.responseJSON.errors.join('. ');
-            $error.text('Error: ' + message);
-          }
-
-          var flash = xhr.responseJSON.flash;
-          $('#flash_wrapper').html(flash);
-        });
-
-        // Delete note
-        $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
-          if(xhr.status === 200 || xhr.status === 204) {
-            var $container = $(this).closest('.user-bubble');
-            $container.fadeOut(function() { $(this).remove(); });
-
-            var flash = xhr.responseJSON.flash;
-            $('#flash_wrapper').html(flash);
-          }
-        });
-
-
-      });
+  =render partial: 'notes/form', locals: { collection: @collection, page: @page, work: @work, note: Note.new }

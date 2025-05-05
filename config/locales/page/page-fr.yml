@@ -6,6 +6,13 @@ fr:
     destroy:
       page_deleted: La page a été supprimée
     edit:
+      page_status_blank: Page vierge
+      page_status_incomplete: Incomplet
+      page_status_indexed: Indexé
+      page_status_new: Non-trancrite
+      page_status_review: À besoin d'une révision
+      page_status_transcribed: Complet
+      page_status_translated: Traduit
       status: 'Statut:'
     edit_tabs:
       general: Général
@@ -24,6 +31,7 @@ fr:
       page_status_blank: Page vierge
       page_status_incomplete: Incomplet
       page_status_indexed: Indexé
+      page_status_needs_review: Besoin d'un examen
       page_status_new: Non-trancrite
       page_status_review: À besoin d'une révision
       page_status_transcribed: Complet
@@ -44,4 +52,5 @@ fr:
       save_and_new_work: Enregistrer et nouveau œuvre
       title: Titre
     update:
-      page_updated: Page mise à jour
+      error: Impossible de mettre à jour la page
+      notice: La page a été mise à jour

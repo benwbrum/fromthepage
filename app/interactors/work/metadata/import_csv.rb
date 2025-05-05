@@ -33,7 +33,7 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
       metadata = []
       csv.headers.each do |header|
         # Skip protected headers
-        next if header&.include?('*')
+        next if header.include?('*')
 
         # Skip special headers
         next if SPECIAL_HEADERS.include?(header)

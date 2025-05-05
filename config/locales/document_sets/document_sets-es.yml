@@ -19,14 +19,15 @@ es:
       url_description: Utilice letras minúsculas y guiones entre cualquier palabra.
     edit_privacy:
       document_set_collaborators: Colaboradores permitidos
-      document_set_privacy: 'Privacidad del Conjunto de Documentos: <i>%{privacy}</i>'
+      document_set_privacy_private: 'Privacidad del Conjunto de Documentos: <i>Privado</i>'
+      document_set_privacy_public: 'Privacidad del Conjunto de Documentos: <i>Público</i>'
+      document_set_privacy_read_only: 'Privacidad del Conjunto de Documentos: <i>Solo lectura</i>'
       document_set_restricted_description: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
       document_set_unrestricted_description: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
       edit_collaborators: Editar colaboradores
-      make_document_set_private: Hacer Privado el Conjunto de Documentos
-      make_document_set_public: Hacer Público el Conjunto de Documentos
       private: Privado
       public: Público
+      read_only: Sólo lectura
     edit_set_collaborators:
       remove_collaborator: Quitar colaborador
       set_collaborators: Colaboradores del conjunto de documentos
@@ -79,8 +80,11 @@ es:
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       document_set_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      private: Privado
       public: Público
+      read_only: Sólo lectura
       title: Título
+      visibility: Visibilidad
     settings:
       add: Añadir
       done: Hecho

@@ -3,6 +3,7 @@ class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
+  include ElasticSearchable
 
   DEFAULT_WORKS_PER_PAGE = 15
 
@@ -139,12 +140,64 @@ class CollectionController < ApplicationController
 
   end
 
+  def search # ElasticSearch version
+    search_page = (search_params[:page] || 1).to_i
+    @search_string = search_params[:term]
+    @breadcrumb_scope={collection: true}
+
+    page_size = 10
+
+    if @collection.is_a?(Collection)
+      query_config = {
+        type: 'collection',
+        coll_id: @collection.id
+      }
+      @collection_filter = @collection
+    else
+      query_config = {
+        type: 'docset',
+        docset_id: @collection.id
+      }
+      @docset_filter = @collection
+    end
+
+    search_data = elastic_search_results(
+      @search_string,
+      search_page,
+      page_size,
+      search_params[:filter],
+      query_config
+    )
+
+    if search_data
+      inflated_results = search_data[:inflated]
+      @full_count = search_data[:full_count] # Used by All tab
+      @type_counts = search_data[:type_counts]
+
+      # Used for pagination, currently capped at 10k
+      #
+      # TODO: ES requires a scroll/search_after query for result sets larger
+      #       than 10k.
+      #
+      #       To setup support we just need to add a composite tiebreaker field
+      #       to the schemas
+      @filtered_count = [ 10000, search_data[:filtered_count] ].min
+
+      @search_results = WillPaginate::Collection.create(
+        search_page,
+        page_size,
+        @filtered_count) do |pager|
+          pager.replace(inflated_results)
+        end
+    end
+  end
+
   def facets
     collection = Collection.find(params[:collection_id])
     @metadata_coverages = collection.metadata_coverages
   end
 
-  def search
+  def facet_search
     mc = @collection.metadata_coverages.where(key: params['facet_search']['label']).first
     first_year = params['facet_search']['date'].split.first.to_i
     last_year = params['facet_search']['date'].split.last.to_i
@@ -202,7 +255,7 @@ class CollectionController < ApplicationController
           if session[:search_attempt_id] != @search_attempt.id
             session[:search_attempt_id] = @search_attempt.id
           end
-          @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+          @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
 
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
@@ -268,7 +321,7 @@ class CollectionController < ApplicationController
             if session[:search_attempt_id] != @search_attempt.id
               session[:search_attempt_id] = @search_attempt.id
             end
-            @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
+            @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -437,8 +490,9 @@ class CollectionController < ApplicationController
   end
 
   def restrict_transcribed
-    @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
+    @result = Collection::RestrictTranscribed.new(collection: @collection).call
+
+    respond_to(&:turbo_stream)
   end
 
   def enable_fields
@@ -478,6 +532,7 @@ class CollectionController < ApplicationController
     @collaborators = @collection.collaborators
     @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
     @blocked_users = @collection.blocked_users
+    @works_to_restrict_count = works_to_restrict_count
   end
 
   def edit_help
@@ -514,6 +569,7 @@ class CollectionController < ApplicationController
                    @collaborators = @collection.collaborators
                    @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
                    @blocked_users = @collection.blocked_users
+                   @works_to_restrict_count = works_to_restrict_count
                    'collection/update_privacy'
                  when 'edit_help'
                    @works_with_custom_conventions = @collection.works
@@ -818,5 +874,16 @@ class CollectionController < ApplicationController
 
     works_scope = works_scope.distinct.paginate(page: params[:page], per_page: DEFAULT_WORKS_PER_PAGE)
     @works = works_scope
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :collection_id, :user_id)
+  end
+
+  def works_to_restrict_count
+    @collection.works
+               .joins(:work_statistic)
+               .where(work_statistics: { complete: 100 }, restrict_scribes: false)
+               .count
   end
 end

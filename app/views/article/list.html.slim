@@ -29,14 +29,23 @@
                     dt.h5 tabindex=0
                       span= t('.actions')
                       =svg_symbol '#big-menu', class: 'icon icon-big'
-                    dd
+                    dd.actions
                       =link_to t('.edit_category'), category_edit_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
                       =link_to t('.add_child_category'), category_add_new_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
                       =link_to t('.add_root_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }
+                      hr
                       -if category.gis_enabled
                         =link_to t('.disable_gis_for_category'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id)
                       -else
                         =link_to t('.enable_gis_for_category'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id)
+                      -if category.bio_fields_enabled
+                        =link_to t('.disable_bio_fields_for_category'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -else
+                        =link_to t('.enable_bio_fields_for_category'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -if category.org_fields_enabled
+                        =link_to t('.disable_org_fields_for_category'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -else
+                        =link_to t('.enable_org_fields_for_category'), category_enable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
                       hr
                       =link_to t('.delete_category'), { controller: 'category', action: 'delete', collection_id: @collection.slug, category_id: category.id }, class: 'fgred', data: { confirm: t('.confirm_delete_category') }
                       hr

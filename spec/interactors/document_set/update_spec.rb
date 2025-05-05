@@ -16,7 +16,7 @@ describe DocumentSet::Update do
         title: 'New title',
         description: 'New description',
         slug: 'newslug',
-        is_public: 'true'
+        visibility: 'public'
       }
     end
 
@@ -25,7 +25,7 @@ describe DocumentSet::Update do
       expect(result.document_set).to have_attributes(
         title: 'New title',
         description: 'New description',
-        is_public: true
+        visibility: 'public'
       )
     end
   end

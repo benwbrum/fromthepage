@@ -16,7 +16,15 @@
 #
 # Indexes
 #
+#  fk_rails_7d330fa613     (collection_id)
+#  fk_rails_9fa473ac93     (work_id)
 #  index_notes_on_page_id  (page_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id) ON DELETE => cascade
+#  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
+#  fk_rails_...  (work_id => works.id) ON DELETE => cascade
 #
 class Note < ApplicationRecord
   # Notes are comments on pages.  In the future they may
@@ -25,6 +33,8 @@ class Note < ApplicationRecord
 
   # automated stuff
   acts_as_tree
+
+  MAX_TITLE_LENGTH = 250
 
   # associations
   belongs_to :user, optional: true

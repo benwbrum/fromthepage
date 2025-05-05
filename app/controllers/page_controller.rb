@@ -21,7 +21,7 @@ class PageController < ApplicationController
   end
 
   def create
-    result = Page::Create.call(work: @work, page_params: page_params)
+    result = Page::Create.new(work: @work, page_params: page_params).call
 
     if result.success?
       subaction = params[:subaction]
@@ -44,36 +44,35 @@ class PageController < ApplicationController
   end
 
   def update
-    result = Page::Update.call(page: @page, page_params: page_params)
+    @result = Page::Update.new(page: @page, page_params: page_params).call
 
-    if request.xhr?
-      render json: {
-        success: result.success?,
-        errors: result.errors
-      }
-    elsif result.success?
-      flash[:notice] = t('.page_updated')
-      redirect_to collection_edit_page_path(@collection.owner, @collection, @work, @page)
-    else
-      render :edit, status: :unprocessable_entity
+    @page = @result.page
+    @collection = @page.collection
+    @work = @page.work
+
+    respond_to do |format|
+      # TODO: other page settings tab
+      template = 'page/update_general'
+
+      format.turbo_stream { render template }
     end
   end
 
   def destroy
-    result = Page::Destroy.call(page: @page)
+    result = Page::Destroy.new(page: @page).call
 
     flash[:notice] = t('.page_deleted')
     redirect_to work_pages_tab_path(work_id: result.page.work_id)
   end
 
   def rotate
-    result = Page::Rotate.call(page: @page, orientation: params[:orientation].to_i)
+    result = Page::Rotate.new(page: @page, orientation: params[:orientation].to_i).call
 
     redirect_back fallback_location: result.page
   end
 
   def reorder
-    Page::Reorder.call(page: @page, direction: params[:direction])
+    Page::Reorder.new(page: @page, direction: params[:direction]).call
 
     redirect_to work_pages_tab_path(work_id: @work.id)
   end

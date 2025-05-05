@@ -8,7 +8,7 @@ describe Page::Create do
   let(:page_params) { { title: 'New page' } }
 
   let(:result) do
-    described_class.call(work: work, page_params: page_params)
+    described_class.new(work: work, page_params: page_params).call
   end
 
   it 'creates new page' do
@@ -51,10 +51,10 @@ describe Page::Create do
     end
 
     it 'fails to create new page' do
-      expect(result).to be_a_failure
+      expect(result.success?).to be_falsey
 
       expect(result.page.persisted?).to be_falsey
-      expect(result.errors).to eq('unsupported file type')
+      expect(result.page.errors).to include(:base_image)
     end
   end
 end

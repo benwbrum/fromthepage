@@ -2,7 +2,7 @@
   h1 =t('.create_new_document_set')
   p =t('.document_set_is_marked_public')
 
-  =form_for(@document_set, url: document_set_create_path(:collection_id => @collection)) do |f|
+  =form_for(@document_set, url: document_set_create_path(collection_id: @collection)) do |f|
     =validation_summary @document_set.errors
     =f.hidden_field :collection_id
     table.form
@@ -10,8 +10,10 @@
         th =f.label :title, t('.title')
         td.w100 =f.text_field :title
       tr
-        th =f.label(:is_public, t('.public'))
-        td =f.check_box :is_public, {checked: true}
+        th =f.label(:visibility, t('.visibility'))
+        td =f.select :visibility, \
+              options_for_select(document_set_visibility_options, selected: 'public'), \
+              {}, { size: 1, multiple: false, data: { controller: 'select2' } }
       tr
         td(colspan="2")
           =f.label :description, t('.description'), class: 'above'

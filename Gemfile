@@ -47,10 +47,10 @@ gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git',
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
 
-gem 'omniauth', '~> 1.9.2'
+gem 'omniauth', '~> 1.9'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
-gem 'omniauth-saml'
+gem 'omniauth-saml', '~> 1.10.6'
 
 gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
@@ -92,6 +92,7 @@ group :test do
   gem 'simplecov-lcov', require: false
   gem 'vcr'
   gem 'webmock', require: false
+  gem 'with_model'
 end
 
 group :development, :test do
@@ -150,3 +151,6 @@ gem 'open3'
 gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'
+
+# Elasticsearch client
+gem 'elasticsearch', '8.15.0'

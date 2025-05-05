@@ -16,11 +16,17 @@ es:
       only_subject_owner_can_delete: Solo el creador del tema o el propietario del proyecto puede eliminar esto.
     edit:
       autolink: Enlace automático
+      begun: Comenzó
+      bibliography: Bibliografía
+      birth_date: Fecha de nacimiento
       categories: Categorías
       combine_selected: Combinar seleccionado
       confirm_delete_subject: "¿Está seguro de que desea eliminar este asunto? ¡Después de borrar no podrás recuperarlo!"
+      death_date: Fecha de fallecimiento
       delete_subject: Eliminar asunto
       description: Descripción
+      disambiguator: Desambiguador
+      ended: Terminado
       latitude: Latitud
       longitude: Longitud
       microphone: Micrófono
@@ -33,8 +39,10 @@ es:
         one: Posible duplicado
         other: Posibles duplicados
       possible_duplicates_description: Revise la lista a continuación y seleccione los temas para combinar. Los duplicados se reasignarán para que todos los enlaces existentes apunten al asunto "%{article}".
+      race_description: Descripción de la carrera
       save_changes: Guardar cambios
       select_categories: Seleccionar categorías
+      sex: Sexo
       title: Título
       uri: URI
     graph:
@@ -51,9 +59,13 @@ es:
       create_category_message: "%{link} que usarás para agrupar materias."
       create_the_first_category: Crear la primera categoría
       delete_category: Eliminar categoría
+      disable_bio_fields_for_category: Deshabilitar campos biográficos para la categoría
       disable_gis_for_category: Deshabilitar SIG para la categoría
+      disable_org_fields_for_category: Deshabilitar campos de organización para la categoría
       edit_category: Editar categoria
+      enable_bio_fields_for_category: Habilitar campos biográficos para la categoría
       enable_gis_for_category: Habilitar SIG para la categoría
+      enable_org_fields_for_category: Habilitar campos de organización para la categoría
       no_categories: Sin categorías
       no_categories_message: No hay categorías de temas en la colección.<br>
       there_are_no_subjects: No hay asignaturas para la categoría seleccionada
@@ -62,16 +74,25 @@ es:
       upload_subjects: Subir materias
     show:
       all_uncategorized_subjects: Todos los temas sin categorizar en la colección.
+      begun: Comenzó
+      bibliography: Bibliografía
+      birth_date: Fecha de nacimiento
       categories: Categorías
+      death_date: Fecha de fallecimiento
       description: Descripción
+      disambiguator: Desambiguador
       download: Descargar
       download_description: Descargue una hoja de cálculo de temas coincidentes y obras en las que aparecen.
       edit_description_description: Edite la descripción en la pestaña de configuración.
+      ended: Terminado
       export: Exportar
+      latitude: Latitud
+      longitude: Longitud
       n_possible_duplicates:
         one: 1 posible duplicado
         other: "%{count} posibles duplicados"
       no_category_message: Este tema no pertenece a ninguna categoría.
+      race_description: Descripción de la carrera
       references: Referencias
       related_subjects: Temas relacionados
       related_subjects_1: Temas relacionados
@@ -81,6 +102,7 @@ es:
       search_unlinked_pages: Buscar páginas no vinculadas
       search_unlinked_pages_description: Solo busque texto de páginas que no se vinculen a <em>%{article}</em>
       see_also: 'Ver también:'
+      sex: Sexo
       text_search: Búsqueda de texto
     subject_upload:
       csv_file_must_contain_headers: El archivo CSV debe contener encabezados para HEADING, ARTICLE, URI y CATEGORY. Estos términos quieren decir encabezado, artículo, Identificador Universal de Recursos, y categoría, respectivamente.

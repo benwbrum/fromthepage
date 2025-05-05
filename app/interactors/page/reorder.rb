@@ -1,6 +1,4 @@
-class Page::Reorder
-  include Interactor
-
+class Page::Reorder < ApplicationInteractor
   def initialize(page:, direction:)
     @page      = page
     @direction = direction
@@ -8,9 +6,7 @@ class Page::Reorder
     super
   end
 
-  def call
+  def perform
     @direction == 'up' ? @page.move_higher : @page.move_lower
-
-    context
   end
 end

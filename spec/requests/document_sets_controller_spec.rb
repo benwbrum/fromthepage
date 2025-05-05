@@ -160,7 +160,7 @@ describe DocumentSetsController do
       let(:params) do
         {
           document_set: {
-            is_public: 'true'
+            visibility: 'public'
           }
         }
       end

@@ -63,6 +63,7 @@ pt:
       notice: A correção de OCR foi desativada para todas as obras.
     edit:
       add_button: Adicionar
+      collection_findable_instruction: Para que as coleções possam ser encontradas no FromThePage, certifique-se de que elas tenham tags, uma imagem e uma descrição.
       collection_image: Imagem da Coleção
       collection_image_description: Uma imagem a ser usada para ilustrar a descrição da coleção.
       copy_url: Copiar para área de transferência
@@ -327,6 +328,8 @@ pt:
       recent_contributor_title: Contribuintes recentes
       review: Análise
       user: Do utilizador
+    restrict_scribes:
+      success: As obras concluídas foram restringidas com sucesso
     reviewer_dashboard:
       one_off_contributions: Contribuições únicas
       pages_needing_review: Páginas para revisão
@@ -336,6 +339,9 @@ pt:
       transcribed_page: Página transcrita
       unreviewed_contributors: Novos colaboradores
       works_to_review: Obras para Revisão
+    search:
+      search: Procurar
+      search_in_collection: Pesquisar na coleção
     show:
       about: Sobre
       add_a_new_work: Adicionar uma nova obra
@@ -356,6 +362,7 @@ pt:
       search: Buscar
       search_by_title: Buscar por título...
       search_by_title_1: Pesquisar por título
+      search_in_collection: Pesquisar na coleção
       search_the_text: Buscar o texto...
       search_the_text_1: Pesquise o texto
       show_more: Mostrar Mais

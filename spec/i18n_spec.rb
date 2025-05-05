@@ -17,7 +17,7 @@ RSpec.describe I18n do
 
   it 'does not have unused keys' do
     # edit button keys are dynamic and will throw false positives here
-    static_keys = unused_keys.key_names.select{|key| !key.match(/collection\.edit_buttons/)}
+    static_keys = unused_keys.key_names.select{|key| !(key.match(/collection\.edit_buttons/)||key.match(/category\..*abled_for/))}
 
     expect(static_keys).to be_empty,
                            "#{static_keys.count} unused i18n keys, run `i18n-tasks unused' to show them"

@@ -32,7 +32,7 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  resources :notes, except: [:show, :edit]
+  resources :notes, except: [:show]
   get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
@@ -100,7 +100,7 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: :edit_collaborators
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'restrict_transcribed', to: 'collection#restrict_transcribed'
+    post 'restrict_transcribed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_block_user', to: 'collection#add_block_user'
     post 'remove_collaborator', to: 'collection#remove_collaborator'
@@ -209,17 +209,19 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
 
-  scope 'search_attempt', as: 'search_attempt' do
-    get 'create', to: 'search_attempt#create'
-    get 'click', to: 'search_attempt#click'
-    get ':id', to: 'search_attempt#show', as: 'show'
+  resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
+    get :click, to: 'search_attempt#click', on: :collection
   end
 
   scope 'category', as: 'category' do
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'
+    get 'enable_bio_fields', to: 'category#enable_bio_fields'
+    get 'disable_bio_fields', to: 'category#disable_bio_fields'
     get 'enable_gis', to: 'category#enable_gis'
     get 'disable_gis', to: 'category#disable_gis'
+    get 'enable_org_fields', to: 'category#enable_org_fields'
+    get 'disable_org_fields', to: 'category#disable_org_fields'
     get 'delete', to: 'category#delete'
     post 'create', to: 'category#create'
     patch 'update', :to => 'category#update'
@@ -447,10 +449,12 @@ Fromthepage::Application.routes.draw do
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
   resources :document_sets, except: [:show, :create, :edit]
+
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
+    get 'search', to: 'user#search', as: :owner_search
 
     resources :collection, path: '', only: [:show] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
@@ -482,7 +486,8 @@ Fromthepage::Application.routes.draw do
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'facets'
-      post 'search'
+      post 'search', to: 'collection#facet_search', as: 'facet_search'
+      get 'search', to: 'collection#search', as: 'search'
 
       get 'edit', on: :member
       get 'edit/tasks', on: :member, to: 'collection#edit_tasks'
@@ -529,7 +534,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
       get ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
       get ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
-
+      get ':work_id/search', to: 'work#search', as: 'work_search'
       #page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
       get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'

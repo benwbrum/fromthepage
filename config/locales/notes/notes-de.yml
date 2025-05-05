@@ -13,6 +13,11 @@ de:
       page_notes: Seitenanmerkungen
       pages_and_notes_counts: "%{posts_count} Anmerkungen auf %{topics_count} Seiten"
       total_notes: "%{count} Anmerkungen"
+    form:
+      microphone: Mikrofon
+      note_body: Anmerkungstext
+      save_note: Anmerkung speichern
+      write_a_new_note: Schreiben Sie eine neue Anmerkung oder stellen Sie eine Frage...
     index:
       collection_title: 'Sammlung: %{title}'
       notes: Anmerkungen
@@ -31,13 +36,9 @@ de:
       microphone: Mikrofon
       update: Aktualisieren
     notes:
-      microphone: Mikrofon
       nobody_has_written_a_note: Bisher hat noch niemand eine Anmerkung für diese Seite verfasst
-      note_body: Anmerkungstext
       please_sign_in_to_write: Bitte %{link}, um eine Anmerkung für diese Seite zu schreiben
-      save_note: Anmerkung speichern
       sign_in: anmelden
-      write_a_new_note: Schreiben Sie eine neue Anmerkung oder stellen Sie eine Frage...
     table:
       collection: Sammlung
       note: Notiz

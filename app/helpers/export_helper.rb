@@ -1,6 +1,6 @@
 module ExportHelper
   include XmlSourceProcessor
- 
+
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
     # do some escaping of the document for markdown
@@ -25,22 +25,24 @@ module ExportHelper
       e.replace_with(sup)
     end
 
+    markdown_risky_tags = Xml::Lib::Utils.handle_soul_risky_tags(doc)
+
     postprocessed = ""
     doc.write(postprocessed)
 
-
     # use Nokogiri for doc
-    markdown_tables = []
+    markdown_tables = {}
     doc = Nokogiri::XML(postprocessed)
-    doc.xpath("//table").each_with_index do |n,i|
-      markdown_tables << xml_table_to_markdown_table(n, true)
-      n.replace("REPLACEMETABLE#{i}")
+    doc.xpath('//table').each do |table_element|
+      key = SecureRandom.uuid
+      markdown_tables[key] = xml_table_to_markdown_table(table_element, true)
+      table_element.replace("REPLACEMETABLE#{key}")
     end
 
     postprocessed = doc.to_s
     # do the conversions for linebreaks, italics, etc.
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
-    
+
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
     else
@@ -59,20 +61,22 @@ module ExportHelper
     processed = "never ran"
 
     cmd = "pandoc --from html --to markdown+pipe_tables"
-    Open3.popen2(cmd) do |stdin, stdout, t| 
+    Open3.popen2(cmd) do |stdin, stdout, t|
       stdin.print(html)
       stdin.close
       processed = stdout.read
     end
 
-    markdown_tables.each_with_index do |table,i|
-      processed.gsub!("REPLACEMETABLE#{i}", table)
+    markdown_tables.each do |key, table|
+      processed.gsub!("REPLACEMETABLE#{key}", table)
+    end
+
+    markdown_risky_tags.each do |key, risky_tag|
+      processed.gsub!("REPLACEMERISKYTAGS#{key}", risky_tag)
     end
 
     return processed
   end
-
-
 
   def write_work_exports(works, out, export_user, bulk_export)
 
@@ -198,7 +202,7 @@ module ExportHelper
             format='expanded'
             export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
             export_plaintext_translation_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames)
-          end  
+          end
 
           if bulk_export.plaintext_searchable_page
             format='searchable'
@@ -283,14 +287,8 @@ module ExportHelper
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
-    if defined? render_to_string
-      thingy = self
-    else
-      thingy = ApplicationController.new
-    end
-
-    xml = thingy.render_to_string(
-      layout: false, 
+    xml = ApplicationController.renderer.render_to_string(
+      layout: false,
       template: "export/tei.html.erb",
       assigns: {
         work: @work,
@@ -313,7 +311,7 @@ module ExportHelper
 
   def page_id_to_xml_id(id, translation=false)
     return "" if id.blank?
-    
+
     if translation
       "TTP#{id}"
     else
@@ -329,11 +327,11 @@ module ExportHelper
     end
     tei << "</taxonomy>\n"
     tei = REXML::Document.new(tei).to_s
-    
+
     tei
   end
 
-  def category_to_tei(category, subjects, seen_subjects) 
+  def category_to_tei(category, subjects, seen_subjects)
     return "" if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
 
     has_content = false
@@ -372,7 +370,7 @@ module ExportHelper
 
     subjects
   end
-  
+
   def subject_to_tei(subject)
     tei = format_subject_to_tei(subject)
     tei
@@ -389,7 +387,7 @@ module ExportHelper
     subject.categories.each do |category|
       tei << '<ab>'
       category.ancestors.reverse.each do |parent|
-        if parent.root? 
+        if parent.root?
           category_class = "#category #root"
         else
           category_class = "#category #branch"
@@ -407,6 +405,14 @@ module ExportHelper
     end
 
     tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    unless subject.bibliography.blank?
+      subject.bibliography.split("\n").each do |line|
+        unless line.blank?
+          tei << "<bibl>#{line.chomp}</bibl>"
+        end
+      end
+    end
+
     tei << "            </catDesc>\n"
     tei << "          </category>\n"
 
@@ -423,7 +429,7 @@ module ExportHelper
     tei << "</category>\n"
 
     tei
-    
+
   end
 
   def xml_to_export_tei(xml_text, context, page_id = "", add_corrsp=false)
@@ -517,7 +523,7 @@ module ExportHelper
       e.name='note'
       e.add_attribute('type', 'marginalia')
     end
-    
+
     p_element.elements.each('//catchword') do |e|
       e.name='fw'
       e.add_attribute('type', 'catchword')
@@ -528,7 +534,7 @@ module ExportHelper
     # convert HTML tables to TEI tables
     p_element_string = p_element.to_s
     p_element.elements.each("//table") do |e|
-      unless e['rows'] || e['cols'] 
+      unless e['rows'] || e['cols']
         row_count = 0
         max_column_count = 0
         table = REXML::Element.new("table")
@@ -566,7 +572,7 @@ module ExportHelper
         table.add_attribute("cols", max_column_count)
         e.replace_with(table)
       end
-      
+
     end # end of tables
     # now delete any lb elements from tables elements in the document
     p_element.elements.each("//table") do |table|
@@ -574,13 +580,13 @@ module ExportHelper
         lb.remove
       end
     end
-    
+
   end
 
   def transform_footnotes(p_element)
     p_element.elements.each('//footnote') do |e|
       marker = e.attributes['marker']
-      
+
       e.name='note'
       e.delete_attribute('marker')
       e.add_attribute('type', 'footnote')
@@ -589,7 +595,7 @@ module ExportHelper
   end
 
   def transform_lb(p_element)
-    # while we support text within an LB tag to encode line 
+    # while we support text within an LB tag to encode line
     # continuation sigla, TEI doesn't and recommends the sigil be part of the text before the LB
     p_element.elements.each('//lb') do |e|
       if e['break'] == 'no'
@@ -601,7 +607,7 @@ module ExportHelper
         end
       end
     end
-    
+
   end
 
 
@@ -687,19 +693,19 @@ module ExportHelper
     else
       doc = REXML::Document.new(xml)
       doc_body = doc.get_elements('//body').first
-      
+
       # Process Sections
       current_depth = 1
       sections = []
-      
+
       doc_body.children.each do |e|
-      
+
         if(e.node_type != :text && e.get_elements('head').length > 0)
           header = e.get_elements('head').first
-          
+
           # Create the new section
           section = REXML::Element.new('section')
-          section.add_attribute('depth', header.attributes['depth']) 
+          section.add_attribute('depth', header.attributes['depth'])
 
           # Handle where to put the new section
           if sections.empty?
@@ -726,9 +732,9 @@ module ExportHelper
 
         # Adds the current element to the new section at the right location
         sections.first.add(e) unless sections.empty?
-      
+
       end
-      
+
       return doc
     end
   end
@@ -783,7 +789,7 @@ module ExportHelper
     end
 
     response_array = []
-    page.table_cells.each do |cell| 
+    page.table_cells.each do |cell|
       unless columns[cell.header]
 
         field = fields[cell.header]
@@ -836,8 +842,8 @@ module ExportHelper
 
   def spreadsheet_column_config(column, include_within)
     column_config = {
-      label: column.label, 
-      input_type: column.input_type, 
+      label: column.label,
+      input_type: column.input_type,
       position: column.position,
       profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-spreadsheet-column-configuration-response'
     }
@@ -855,9 +861,9 @@ module ExportHelper
 
   def transcription_field_config(field, include_within)
     element = {
-      label: field.label, 
-      input_type: field.input_type, 
-      position: field.position, 
+      label: field.label,
+      input_type: field.input_type,
+      position: field.position,
       line: field.line_number,
       profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-field-configuration-response'
     }
@@ -933,6 +939,8 @@ module ExportHelper
     array
   end
 
+  def handle_soul_risky_tags(doc)
 
+  end
 
 end

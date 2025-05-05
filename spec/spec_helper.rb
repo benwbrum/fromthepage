@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
+require 'with_model'
 
 DatabaseCleaner.strategy = :transaction
 
@@ -28,6 +29,7 @@ Dir[Rails.root.join('lib/**/*.rb')].each { |f| require f }
 #ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.extend WithModel
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

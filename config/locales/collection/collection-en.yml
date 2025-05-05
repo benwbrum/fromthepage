@@ -63,6 +63,7 @@ en:
       notice: OCR correction has been disabled for all works.
     edit:
       add_button: Add
+      collection_findable_instruction: For collections to be findable in FromThePage, please ensure they have tags, an image, and a description.
       collection_image: Collection image
       collection_image_description: A picture to be used to illustrate the collection description.
       copy_url: Copy to clipboard
@@ -327,6 +328,8 @@ en:
       recent_contributor_title: Recent Contributors
       review: Review
       user: User
+    restrict_scribes:
+      success: Completed works have been successfully restricted
     reviewer_dashboard:
       one_off_contributions: One-off Contributions
       pages_needing_review: Pages to Review
@@ -336,6 +339,9 @@ en:
       transcribed_page: Transcribed Page
       unreviewed_contributors: New Contributors
       works_to_review: Works to Review
+    search:
+      search: Search
+      search_in_collection: Search in collection
     show:
       about: About
       add_a_new_work: Add a new work
@@ -356,6 +362,7 @@ en:
       search: Search
       search_by_title: Search by title or metadata...
       search_by_title_1: Search by title
+      search_in_collection: Search in collection
       search_the_text: Search the text...
       search_the_text_1: Search the text
       show_more: Show More

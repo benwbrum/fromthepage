@@ -63,6 +63,7 @@ de:
       notice: Die OCR-Korrektur wurde für alle Werke deaktiviert.
     edit:
       add_button: Hinzufügen
+      collection_findable_instruction: Damit Sammlungen in FromThePage gefunden werden können, stellen Sie sicher, dass sie über Tags, ein Bild und eine Beschreibung verfügen.
       collection_image: Profilbild der Sammlung
       collection_image_description: Ein Bild zur Veranschaulichung der Sammlungsbeschreibung.
       copy_url: In die Zwischenablage kopieren
@@ -327,6 +328,8 @@ de:
       recent_contributor_title: Aktuelle Mitarbeitende
       review: Review
       user: Mitarbeiter:in
+    restrict_scribes:
+      success: Abgeschlossene Arbeiten wurden erfolgreich eingeschränkt
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten
@@ -336,6 +339,9 @@ de:
       transcribed_page: Transkribierte Seite
       unreviewed_contributors: Neue Mitarbeitende
       works_to_review: Zu überprüfende Werke
+    search:
+      search: Suchen
+      search_in_collection: Suche in der Sammlung
     show:
       about: Info
       add_a_new_work: Neues Werk hinzufügen
@@ -356,6 +362,7 @@ de:
       search: Suche
       search_by_title: Nach Titel oder Metadaten suchen...
       search_by_title_1: Nach Titel suchen
+      search_in_collection: Suche in der Sammlung
       search_the_text: Den Text durchsuchen...
       search_the_text_1: Den Text durchsuchen
       show_more: Mehr zeigen

@@ -61,6 +61,7 @@ class User < ApplicationRecord
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
+  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -141,6 +142,38 @@ class User < ApplicationRecord
   after_save :create_notifications
   after_create :set_default_footer_block
   # before_destroy :clean_up_orphans
+
+  def as_indexed_json
+    return {
+      _id: self.id,
+      about: self.about,
+      display_name: self.display_name,
+      login: self.login,
+      real_name: self.real_name,
+      website: self.website
+    }
+  end
+
+  def self.es_match_query(query)
+    return {
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              "about",
+              "real_name",
+              "website"
+            ]
+          }
+        },
+        filter: [
+          # Need index filter for cross collection search
+          {prefix: {_index: "ftp_user"}}
+        ]
+      }
+    }
+  end
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
@@ -249,8 +282,17 @@ class User < ApplicationRecord
     Work.where(collection_id: all_owner_collections.select(:id))
   end
 
-  def can_transcribe?(work)
-    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  def can_transcribe?(work, collection=nil)
+    return true if like_owner?(collection)
+    collection ||= work.access_object(self) || work.collection
+
+    if collection.is_a? DocumentSet
+      return true if collection.visibility_public? || like_owner?(work)
+
+      collection.collaborators.find_by(id: id).present? || collection.collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
+    else
+      !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
+    end
   end
 
   def can_review?(obj)
@@ -325,7 +367,7 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+    document_sets.where(visibility: [:public, :read_only])
   end
 
 
@@ -347,7 +389,7 @@ class User < ApplicationRecord
       collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
       owned_collections = self.owned_collections
 
-      collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
+      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
 

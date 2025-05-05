@@ -12,7 +12,7 @@ class ArticleController < ApplicationController
     @categories = @collection.categories
     @vertical_articles = {}
     @categories.each do |category|
-      current_articles = articles.where(categories: { id: category.id })
+      current_articles = articles.where(categories: { id: category.id }).reorder(:title)
       @vertical_articles[category] = sort_vertically(current_articles)
     end
 
@@ -34,6 +34,11 @@ class ArticleController < ApplicationController
       flash.alert = result.message
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
     end
+  end
+
+  def edit
+    @sex_autocomplete=@collection.articles.distinct.pluck(:sex).select{|e| !e.blank?}
+    @race_description_autocomplete=@collection.articles.distinct.pluck(:race_description).select{|e| !e.blank?}
   end
 
   def update
@@ -221,7 +226,7 @@ class ArticleController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude, category_ids: [])
+    params.require(:article).permit(:title, :uri, :disambiguator, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
   end
 
   def sort_vertically(articles)

@@ -55,7 +55,14 @@
               <ul>
               <% for version in page.page_versions %>
                 <li>
-                  <small class="page-version-username"><%= version.user.display_name %></small>
+                  <small class="page-version-username">
+                    <% if version.user.real_name.blank?
+                        name = version.user.display_name
+                      else
+                        name = version.user.real_name
+                      end %>
+                    <%= name %>
+                  </small>
                   <small class="page-version-date"><%= version.created_on.localtime.strftime("%m/%d/%Y %I:%M %p") %></small>
                 </li>
               <% end %>
@@ -103,12 +110,20 @@
         <h2 class="divider"><%= t('.subjects_and_indices') %></h2>
 
         <div class="subjects">
-          <% @work.articles.sort{ |x,y| x.title.upcase <=> y.title.upcase }.each do |article| %>
+          <% @work.articles.sort{ |x,y| x.title.upcase <=> y.title.upcase }.uniq.each do |article| %>
           <div id="article-<%=article.id%>">
             <h3 class="article-title"><%=article.title %></h3>
             <div class="article-content">
               <%= raw(xml_to_html(article.xml_text, true, true)) %>
             </div>
+            <% [:disambiguation, :birth_date, :death_date, :latitude, :longitude, :race_description, :sex].each do |structured_attribute| %>
+              <% unless article[structured_attribute].blank? %>
+                <div class="article-attribute">
+                  <strong><%= t(".#{structured_attribute}") %>:</strong>
+                  <%= article[structured_attribute] %>
+                </div>
+              <% end %>
+            <% end %>
             <% if article.categories.present? %>
               <div class="article-categories">
                 <strong><%= t('.categories') %></strong>
@@ -119,19 +134,33 @@
                 </ul>
               </div>
             <% end %>
+            <% if article.bibliography.present? %>
+              <div class="article-bibliography">
+                <strong><%= t('.bibliography') %>:</strong>
+                <p>
+                  <% article.bibliography.split("\n").select{|line| !line.blank? }.each do |line| %>
+                    <%= line %><br />
+                  <% end %>
+                </p>
+              </div>
+            <% end %>
             <div class="article-indices">
               <strong><%= t('.pages') %></strong>
               <ul>
-                <% article.show_links(@collection).each do |link| %>
-                  <li>
-                    <small>
-                    <% if link.text_type == 'translation' %>
-                      <%= link_to(link.page.title, "#page-#{link.page_id}") %>
-                    <% else %>
-                      <%= link_to(link.page.title, "#translation-#{link.page_id}") %> (translation)
-                    <% end %>
-                    </small>
-                  </li>
+                <% seen = []%>
+                <% article.page_article_links.includes(:page).where(pages: {work_id: @work.id}).each do |link| %>
+                  <% unless seen.include?([link.page_id, link.text_type]) %>
+                    <% seen << [link.page_id, link.text_type] %>
+                    <li>
+                      <small>
+                      <% if link.text_type != 'translation' %>
+                        <%= link_to(link.page.title, "#page-#{link.page_id}") %>
+                      <% else %>
+                        <%= link_to(link.page.title, "#translation-#{link.page_id}") %> (translation)
+                      <% end %>
+                      </small>
+                    </li>
+                  <% end %>
                 <% end %>
               </ul>
             </div>

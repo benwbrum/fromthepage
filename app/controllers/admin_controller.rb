@@ -276,34 +276,47 @@ class AdminController < ApplicationController
   end
 
   def searches
-    if params[:filter] == 'nonowner' # Only transcriber searches
-      searches = SearchAttempt.where(owner: false)
-    elsif params[:filter] == 'findaproject'
-      searches = SearchAttempt.where(search_type: 'findaproject')
-    elsif params[:filter] == 'collectionwork'
-      searches = SearchAttempt.where.not(search_type: 'findaproject')
-    elsif params[:filter] == 'collection'
-      searches = SearchAttempt.where(search_type: 'collection')
-    elsif params[:filter] == 'collection-title'
-      searches = SearchAttempt.where(search_type: 'collection-title')
-    elsif params[:filter] == 'work'
-      searches = SearchAttempt.where(search_type: 'work')
-    else
-      searches = SearchAttempt.all
-    end
-    @searches = searches.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    searches = case params[:filter]
+               when 'nonowner'
+                 SearchAttempt.where(owner: false)
+               when 'findaproject'
+                 SearchAttempt.where(search_type: 'findaproject')
+               when 'collectionwork'
+                 SearchAttempt.where.not(search_type: 'findaproject')
+               when 'collection'
+                 SearchAttempt.where(search_type: 'collection')
+               when 'collection-title'
+                 SearchAttempt.where(search_type: 'collection-title')
+               when 'work'
+                 SearchAttempt.where(search_type: 'work')
+               else
+                 SearchAttempt.all
+               end
+
+    @searches = searches.order('id DESC').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
 
     this_week = SearchAttempt.where('created_at > ?', 1.week.ago)
+
     unless this_week.empty?
       by_visit = this_week.joins(:visit).group('visits.id')
-      @find_a_project_searches_per_day = (this_week.where(search_type: 'findaproject').count / 7.0).round(2)
-      @collection_work_searches_per_day = (this_week.where.not(search_type: 'findaproject').count / 7.0).round(2)
-      @find_a_project_average_hits = this_week.where(search_type: 'findaproject').average(:hits).round(2)
-      @collection_work_average_hits = this_week.where.not(search_type: 'findaproject').average(:hits).round(2)
-      @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / this_week.count) * 100).round(1)
-      @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
-      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / this_week.count) * 100).round(1)
-      @contribution_rate_visit = ((by_visit.sum(:contributions).values.count{|c|c>0}.to_f / by_visit.length) * 100).round(1)
+      total_days = 7.0
+      total_searches = this_week.count.nonzero? || 1
+      total_visits = by_visit.size.nonzero? || 1
+
+      @find_a_project_searches_per_day = (this_week.where(search_type: 'findaproject').count / total_days).round(2)
+      @collection_work_searches_per_day = (this_week.where.not(search_type: 'findaproject').count / total_days).round(2)
+
+      @find_a_project_average_hits = (this_week.where(search_type: 'findaproject').average(:hits) || 0).to_f
+                                                                                                       .round(2)
+      @collection_work_average_hits = (this_week.where.not(search_type: 'findaproject').average(:hits) || 0).to_f
+                                                                                                            .round(2)
+
+      @clickthrough_rate = ((this_week.where('clicks > 0').count.to_f / total_searches) * 100).round(1)
+      @clickthrough_rate_visit = ((by_visit.sum(:clicks).values.count(&:positive?).to_f / total_visits) * 100).round(1)
+
+      @contribution_rate = ((this_week.where('contributions > 0').count.to_f / total_searches) * 100).round(1)
+      @contribution_rate_visit = ((by_visit.sum(:contributions).values.count(&:positive?).to_f / total_visits) * 100)
+                                 .round(1)
     end
 
     start_d = params[:start_date]
