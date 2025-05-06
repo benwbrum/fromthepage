@@ -416,6 +416,9 @@ $endif$
   }
 \fi
 
+% Smalltext for notes workaround
+\newcommand{\smalltext}[1]{{\scalebox{0.70}{#1}}}
+
 $if(natbib)$
 \usepackage[$natbiboptions$]{natbib}
 \bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}

@@ -40,12 +40,13 @@
 <% end %>
 
 <% if @include_notes && page.notes.any? %>
-*Notes:*
+[*Notes:*]{.smalltext}
 
 <% page.notes.each do |note| %>
-- _<%= "#{note.user.display_name}:" %>_
-  <%= raw(note.body.gsub("\n", "\n\n")) %>
+[_<%= "#{note.user.display_name}:" %>_ <%= raw(note.body.gsub("\n", "\n\n")) %>]{.smalltext}
+
 <% end %>
+
 <% end %>
 
 <% end %>
