@@ -417,7 +417,19 @@ $endif$
 \fi
 
 % Smalltext for notes workaround
-\newcommand{\smalltext}[1]{{\scalebox{0.70}{#1}}}
+\newsavebox{\smalltextbox}
+\newenvironment{smalltext}
+  {
+    \begin{quote}
+    \begin{lrbox}{\smalltextbox}
+    \begin{minipage}{\linewidth}
+  }
+  {
+    \end{minipage}
+    \end{lrbox}
+    \makebox[0pt][l]{\scalebox{0.85}[0.85]{\usebox{\smalltextbox}}}
+    \end{quote}
+  }
 
 $if(natbib)$
 \usepackage[$natbiboptions$]{natbib}
