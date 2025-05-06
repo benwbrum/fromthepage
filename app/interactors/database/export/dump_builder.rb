@@ -1,0 +1,220 @@
+class Database::Export::DumpBuilder < ApplicationInteractor
+  RECORDS_TO_EXPORT = [
+    'users',
+    'collections',
+    'document_sets',
+    'works',
+    'pages',
+    'page_versions',
+    'notes',
+    'articles',
+    'page_article_links',
+    'deeds',
+    'document_sets_works',
+    'categories',
+    'sc_collections',
+    'sc_manifests',
+    'sc_canvases',
+    'transcription_fields',
+    'sections',
+    'table_cells',
+    'spreadsheet_columns',
+    'editor_buttons',
+    'quality_samplings',
+    'metadata_coverages',
+    'facet_configs',
+    'collection_blocks',
+    'collection_owners',
+    'collection_collaborators',
+    'collection_reviewers',
+    'ahoy_activity_summaries',
+    'ia_works',
+    'ia_leaves',
+    'work_statistics',
+    'transcribe_authorizations'
+  ].freeze
+
+  def initialize(collection_slugs: [], path: '')
+    @collection_slugs = collection_slugs
+    @path = path
+
+    super
+  end
+
+  def perform
+    RECORDS_TO_EXPORT.each do |record_name|
+      export_dump(send(record_name), record_name)
+    end
+  end
+
+  private
+
+  def export_dump(records, table_name)
+    File.write(
+      "#{@path}/#{table_name}.yml",
+      records.map(&:attributes).to_yaml
+    )
+  end
+
+  def collections
+    @collections ||= Collection.where(slug: @collection_slugs)
+  end
+
+  def works
+    @works ||= Work.where(collection_id: collections.select(:id))
+  end
+
+  def pages
+    @pages ||= Page.where(work_id: works.select(:id))
+  end
+
+  def page_versions
+    @page_versions ||= PageVersion.where(page_id: pages.select(:id))
+  end
+
+  def notes
+    @notes ||= Note.where(collection_id: collections.select(:id))
+                   .or(Note.where(work_id: works.select(:id)))
+                   .or(Note.where(page_id: pages.select(:id)))
+                   .distinct
+  end
+
+  def articles
+    @articles ||= Article.where(collection_id: collections.select(:id))
+  end
+
+  def page_article_links
+    @page_article_links ||= PageArticleLink.where(article_id: articles.select(:id))
+  end
+
+  def deeds
+    @deeds ||= Deed.where(collection_id: collections.select(:id))
+                   .or(Deed.where(work_id: works.select(:id)))
+                   .or(Deed.where(page_id: pages.select(:id)))
+                   .or(Deed.where(note_id: notes.select(:id)))
+                   .or(Deed.where(article_id: articles.select(:id)))
+                   .distinct
+  end
+
+  def document_sets
+    @document_sets ||= DocumentSet.where(collection_id: collections.select(:id))
+  end
+
+  def document_sets_works
+    @document_sets_works ||= DocumentSetWork.where(document_set_id: document_sets.select(:id))
+  end
+
+  def categories
+    @categories ||= Category.where(collection_id: collections.select(:id))
+  end
+
+  def sc_collections
+    @sc_collections ||= ScCollection.where(collection_id: collections.select(:id))
+  end
+
+  def sc_manifests
+    @sc_manifests ||= ScManifest.where(collection_id: collections.select(:id))
+                                .or(ScManifest.where(work_id: works.select(:id)))
+                                .or(ScManifest.where(sc_collection_id: sc_collections.select(:id)))
+                                .distinct
+  end
+
+  def sc_canvases
+    @sc_canvases ||= ScCanvas.where(page_id: pages.select(:id))
+                             .or(ScCanvas.where(sc_manifest_id: sc_manifests.select(:id)))
+  end
+
+  def transcription_fields
+    @transcription_fields ||= TranscriptionField.where(collection_id: collections.select(:id))
+  end
+
+  def sections
+    @sections ||= Section.where(work_id: works.select(:id))
+  end
+
+  def table_cells
+    @table_cells ||= TableCell.where(transcription_field_id: transcription_fields.select(:id))
+                              .or(TableCell.where(work_id: works.select(:id)))
+                              .or(TableCell.where(page_id: pages.select(:id)))
+                              .or(TableCell.where(section_id: sections.select(:id)))
+                              .distinct
+  end
+
+  def spreadsheet_columns
+    @spreadsheet_columns ||= SpreadsheetColumn.where(transcription_field_id: transcription_fields.select(:id))
+  end
+
+  def editor_buttons
+    @editor_buttons ||= EditorButton.where(collection_id: collections.select(:id))
+  end
+
+  def quality_samplings
+    @quality_samplings ||= QualitySampling.where(collection_id: collections.select(:id))
+  end
+
+  def metadata_coverages
+    @metadata_coverages ||= MetadataCoverage.where(collection_id: collections.select(:id))
+  end
+
+  def facet_configs
+    @facet_configs ||= FacetConfig.where(metadata_coverage_id: metadata_coverages.select(:id))
+  end
+
+  def collection_blocks
+    @collection_blocks ||= CollectionBlock.where(collection_id: collections.select(:id))
+  end
+
+  def collection_owners
+    @collection_owners ||= CollectionOwner.where(collection_id: collections.select(:id))
+  end
+
+  def collection_collaborators
+    @collection_collaborators ||= CollectionCollaborator.where(collection_id: collections.select(:id))
+  end
+
+  def collection_reviewers
+    @collection_reviewers ||= CollectionReviewer.where(collection_id: collections.select(:id))
+  end
+
+  def ahoy_activity_summaries
+    @ahoy_activity_summaries ||= AhoyActivitySummary.where(collection_id: collections.select(:id))
+  end
+
+  def ia_works
+    @ia_works ||= IaWork.where(work_id: works.select(:id))
+  end
+
+  def ia_leaves
+    @ia_leaves ||= IaLeaf.where(ia_work_id: ia_works.select(:id))
+                         .or(IaLeaf.where(page_id: pages.select(:id)))
+                         .distinct
+  end
+
+  def work_statistics
+    @work_statistics ||= WorkStatistic.where(work_id: works.select(:id))
+  end
+
+  def transcribe_authorizations
+    @transcribe_authorizations ||= TranscribeAuthorization.where(work_id: works.select(:id))
+  end
+
+  def users
+    return @users if defined?(@users)
+
+    direct_owners = User.where(id: collections.select(:owner_user_id))
+    owners = User.where(id: collection_owners.select(:user_id))
+    collaborators = User.where(id: collection_collaborators.select(:user_id))
+    reviewers = User.where(id: collection_reviewers.select(:user_id))
+    blocked = User.where(id: collection_blocks.select(:user_id))
+    scribes = User.where(id: transcribe_authorizations.select(:user_id))
+
+    @users = direct_owners.or(owners)
+                          .or(collaborators)
+                          .or(reviewers)
+                          .or(blocked)
+                          .or(scribes)
+                          .distinct
+
+    @users
+  end
+end

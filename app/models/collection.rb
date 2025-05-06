@@ -61,12 +61,12 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   include ElasticDelta
   extend FriendlyId
-  friendly_id :slug_candidates, :use => [:slugged, :history]
+  friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_users, through: :collection_blocks, source: :user
-  has_many :works, -> { order(:title) }, dependent: :destroy #, :order => :position
+  has_many :works, -> { order(:title) }, dependent: :destroy
   has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :articles, dependent: :destroy
   has_many :document_sets, -> { order(:title) }, dependent: :destroy
