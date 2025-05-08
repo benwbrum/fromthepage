@@ -275,7 +275,7 @@ namespace :fromthepage do
           page_elements.keep_if{|e| e.present?}
           page_elements.each do |e|
             e.xpath('.//text()').each do |text_node|
-              # remove text nodes that contain a newline charachter and no other text
+              # remove text nodes that contain a newline character and no other text
               if text_node.content.strip.empty? && text_node.content.include?("\n")
                 text_node.remove
               end
