@@ -222,7 +222,7 @@ namespace :fromthepage do
         creation=doc.search('profileDesc/creation')
         creation_place=creation.search('placeName').text
         creation_date=creation.search('date')
-        genre=doc.search('profileDesc/term[type=genre]').text
+        genre=doc.search('profileDesc//term[type=genre]').text
 
         permission_description="This image and transcription is publicly accessible. The image appears courtesy of the repository named in the Source Description. The transcription and annotation were undertaken by Kentucky Historical Society staff, volunteers, and interns. If referencing this document title, accession number, and permanent URL."
         source_block=doc.search('msIdentifier')
@@ -274,7 +274,13 @@ namespace :fromthepage do
           text_paragraphs = []
           page_elements.keep_if{|e| e.present?}
           page_elements.each do |e|
-            text_paragraphs << e.children.to_a.select{|n| n.present?}.map{|n| n.name=='lb' ? "\n" : n.to_s}.join("")
+            e.xpath('.//text()').each do |text_node|
+              # remove text nodes that contain a newline charachter and no other text
+              if text_node.content.strip.empty? && text_node.content.include?("\n")
+                text_node.remove
+              end
+            end
+            text_paragraphs << e.children.to_a.select{|n| n.present?}.map{|n| n.name=='lb' ? "\n" : n.to_s}.join("").gsub(/\n+/,"\n").strip
           end
           text_array << text_paragraphs.join("\n\n")
         end
@@ -300,7 +306,6 @@ namespace :fromthepage do
           image = nil
           GC.start
           work.pages << page
-          binding.pry unless page.valid?
           print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
         end
         work.save!
@@ -393,7 +398,6 @@ namespace :fromthepage do
           id = ref.sub('cwgk:', '')
           # get the title from the id_to_title_map
           title = id_to_title_map[id]
-          binding.pry if title.blank?
           # create a new text node
           text = "[[#{title}|#{text}]]"
           text_node = Nokogiri::XML::Text.new(text, body)
