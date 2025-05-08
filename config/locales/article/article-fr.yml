@@ -25,7 +25,6 @@ fr:
       death_date: Date de décès
       delete_subject: Supprimer le sujet
       description: Description
-      disambiguator: Désambiguïsateur
       ended: Terminé
       latitude: Latitude
       longitude: Longitude
@@ -43,6 +42,7 @@ fr:
       save_changes: Sauvegarder les modifications
       select_categories: Sélectionnez les catégories
       sex: Sexe
+      short_summary: Bref résumé
       title: Titre
       uri: URI
     graph:
