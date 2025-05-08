@@ -15,7 +15,7 @@
         = t('.see_also')
         a href="#{@article.uri}" target="_blank" #{@article.uri}
 
-    -[:latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :begun, :ended].each do |field|
+    -[:short_summary, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :begun, :ended].each do |field|
       -if @article.send(field).present?
         br
         b =t(".#{field}") + ": "

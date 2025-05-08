@@ -43,6 +43,7 @@ fr:
       save_changes: Sauvegarder les modifications
       select_categories: Sélectionnez les catégories
       sex: Sexe
+      short_summary: Bref résumé
       title: Titre
       uri: URI
     graph:
