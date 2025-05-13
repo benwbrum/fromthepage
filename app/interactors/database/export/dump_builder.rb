@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class Database::Export::DumpBuilder < ApplicationInteractor
   RECORDS_TO_EXPORT = [
     'users',
@@ -34,6 +36,14 @@ class Database::Export::DumpBuilder < ApplicationInteractor
     'transcribe_authorizations'
   ].freeze
 
+  RECORDS_WITH_ASSETS = {
+    'collections' => 'public/uploads/collection/picture',
+    'document_sets' => 'public/uploads/document_set/picture',
+    'works' => 'public/uploads/work/picture',
+    'pages' => 'public/images/working/upload',
+    'users' => 'public/uploads/user/picture'
+  }.freeze
+
   def initialize(collection_slugs: [], path: '')
     @collection_slugs = collection_slugs
     @path = path
@@ -45,6 +55,10 @@ class Database::Export::DumpBuilder < ApplicationInteractor
     RECORDS_TO_EXPORT.each do |record_name|
       export_dump(send(record_name), record_name)
     end
+
+    RECORDS_WITH_ASSETS.each_key do |record_name|
+      handle_assets(record_name)
+    end
   end
 
   private
@@ -52,7 +66,11 @@ class Database::Export::DumpBuilder < ApplicationInteractor
   def export_dump(records, table_name)
     File.write(
       "#{@path}/#{table_name}.yml",
-      records.map(&:attributes).to_yaml
+      records.map do |record|
+        record.class.column_names.index_with do |column_name|
+          record.read_attribute_before_type_cast(column_name)
+        end
+      end.to_yaml
     )
   end
 
@@ -216,5 +234,53 @@ class Database::Export::DumpBuilder < ApplicationInteractor
                           .distinct
 
     @users
+  end
+
+  def handle_assets(record_name)
+    if record_name == 'pages'
+      handle_pages_assets
+    else
+      handle_picture_assets(record_name)
+    end
+  end
+
+  def handle_picture_assets(record_name)
+    assets_path = Rails.root.join(@path, RECORDS_WITH_ASSETS[record_name])
+    FileUtils.mkdir_p(assets_path)
+
+    send(record_name).each do |record|
+      new_path = Rails.root.join(assets_path, record.id.to_s)
+      FileUtils.mkdir_p(new_path)
+
+      picture_url = record.picture_url&.delete_prefix('/')
+      picture_path = File.join(Rails.root.join('public', picture_url))
+
+      scaled_url = record.picture_url(:scaled)&.delete_prefix('/')
+      scaled_path = File.join(Rails.root.join('public', scaled_url))
+
+      thumb_url = record.picture_url(:thumb)&.delete_prefix('/')
+      thumb_path = File.join(Rails.root.join('public', thumb_url))
+
+      [picture_path, scaled_path, thumb_path].each do |file|
+        FileUtils.cp(file, new_path) if File.file?(file)
+      end
+    end
+  end
+
+  def handle_pages_assets
+    assets_path = Rails.root.join(@path, RECORDS_WITH_ASSETS['pages'])
+    FileUtils.mkdir_p(assets_path)
+
+    pages.each do |page|
+      picture_url = page.base_image.sub(/.*public/, '')&.delete_prefix('/')
+      picture_path = File.join(Rails.root.join('public', picture_url))
+
+      thumb_url = picture_url.gsub('.jpg', '_thumb.jpg')
+      thumb_path = File.join(Rails.root.join('public', thumb_url))
+
+      [picture_path, thumb_path].each do |file|
+        FileUtils.cp(file, assets_path) if File.file?(file)
+      end
+    end
   end
 end
