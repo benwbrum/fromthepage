@@ -5,7 +5,7 @@
 #  collection_id :integer
 #  tag_id        :integer
 #
-class CollectionCollaborator < ApplicationRecord
+class CollectionTag < ApplicationRecord
   belongs_to :collection
   belongs_to :tag
 end
