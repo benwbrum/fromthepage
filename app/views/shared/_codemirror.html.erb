@@ -236,9 +236,13 @@
       var start = cursor.ch - 2; // the start of the hint range
       var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
 
-      suggestions = canonicalSubjectTitles
-        .filter(item => item.toLowerCase().includes(currentText.toLowerCase()))
-        .slice(0, 10);
+      suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
+      totalMatches = suggestions.length
+      var maxOptions = 20;
+      if(totalMatches > maxOptions) {
+        suggestions = suggestions.slice(0, maxOptions);
+        suggestions.push('...')
+      }
 
       editor.showHint({
         completeSingle: false,
