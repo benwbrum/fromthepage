@@ -17,7 +17,7 @@
       // append ai_plaintext to the end of the current text
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
       cm.markClean();
-    }; 
+    };
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
       appendAiPlaintext(myCodeMirror);
       // now disable the button
@@ -143,7 +143,7 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
-  
+
   CodeMirror.registerHelper("lint", "html", function(content) {
     return lintHTML(content);
   });
@@ -236,7 +236,9 @@
       var start = cursor.ch - 2; // the start of the hint range
       var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
 
-      suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
+      suggestions = canonicalSubjectTitles
+        .filter(item => item.toLowerCase().includes(currentText.toLowerCase()))
+        .slice(0, 10);
 
       editor.showHint({
         completeSingle: false,
