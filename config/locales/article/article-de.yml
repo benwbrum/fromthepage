@@ -25,7 +25,6 @@ de:
       death_date: Sterbedatum
       delete_subject: Entität löschen
       description: Beschreibung
-      disambiguator: Begriffsklärer
       ended: Beendet
       latitude: Breitengrad
       longitude: Längengrad
@@ -43,6 +42,7 @@ de:
       save_changes: Änderungen speichern
       select_categories: Kategorien auswählen
       sex: Sex
+      short_summary: Kurze Zusammenfassung
       title: Titel
       uri: URI
     graph:

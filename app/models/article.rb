@@ -8,7 +8,6 @@
 #  birth_date       :string(255)
 #  created_on       :datetime
 #  death_date       :string(255)
-#  disambiguator    :string(255)
 #  ended            :string(255)
 #  graph_image      :string(255)
 #  latitude         :decimal(7, 5)
@@ -18,6 +17,7 @@
 #  provenance       :string(255)
 #  race_description :string(255)
 #  sex              :string(255)
+#  short_summary    :string(255)
 #  source_text      :text(16777215)
 #  title            :string(255)
 #  uri              :string(255)

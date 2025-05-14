@@ -535,7 +535,7 @@ module ExportHelper
     # convert HTML tables to TEI tables
     p_element_string = p_element.to_s
     p_element.elements.each("//table") do |e|
-      unless e['rows'] || e['cols']
+      unless e.get_elements('.//tr').empty? # TEI tables use row and cell elements, not tr and td
         row_count = 0
         max_column_count = 0
         table = REXML::Element.new("table")

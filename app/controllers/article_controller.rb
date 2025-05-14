@@ -230,7 +230,7 @@ class ArticleController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :uri, :disambiguator, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
+    params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
   end
 
   def sort_vertically(articles)
