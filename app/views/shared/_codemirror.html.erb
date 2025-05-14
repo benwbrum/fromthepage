@@ -236,11 +236,15 @@
       var start = cursor.ch - 2; // the start of the hint range
       var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
 
+      var MIN_SEARCH_LENGTH = 3;
+      if (currentText.length < MIN_SEARCH_LENGTH) {
+        return;
+      }
+
       suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
-      totalMatches = suggestions.length
-      var maxOptions = 20;
+
       if(totalMatches > maxOptions) {
-        suggestions = suggestions.slice(0, maxOptions);
+        suggestions = suggestions;
         suggestions.push('...')
       }
 
