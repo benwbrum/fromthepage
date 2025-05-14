@@ -1,5 +1,5 @@
 class Xml::Lib::Utils
-  STRIKETHROUGH_TAGS = ['s', 'del'].freeze
+  STRIKETHROUGH_TAGS = ['s', 'del', 'strike'].freeze
   UNDERLINE_TAGS = ['ins', 'u'].freeze
   UNCLEAR_TAGS = ['unclear'].freeze
 
@@ -46,21 +46,23 @@ class Xml::Lib::Utils
     end
 
     # Extend this for different tags with special handling
-    if STRIKETHROUGH_TAGS.include?(risky_element.name)
-      if UNDERLINE_TAGS.include?(risky_element.parent.name)
-        "]{.ul}[#{output_segments.join}]{.ulst}["
-      else
-        "~~#{output_segments.join}~~"
-      end
-    elsif UNDERLINE_TAGS.include?(risky_element.name)
-      if STRIKETHROUGH_TAGS.include?(risky_element.parent.name)
-        "~~[#{output_segments.join}]{.ulst}~~"
-      else
-        "[#{output_segments.join}]{.ul}"
-      end
-    elsif UNCLEAR_TAGS.include?(risky_element.name)
-      "\\[#{output_segments.join}\\]"
-    end
+    output = if STRIKETHROUGH_TAGS.include?(risky_element.name)
+               if UNDERLINE_TAGS.include?(risky_element.parent.name)
+                 "]{.ul}[#{output_segments.join}]{.ulst}["
+               else
+                 "~~#{output_segments.join}~~"
+               end
+             elsif UNDERLINE_TAGS.include?(risky_element.name)
+               if STRIKETHROUGH_TAGS.include?(risky_element.parent.name)
+                 "~~[#{output_segments.join}]{.ulst}~~"
+               else
+                 "[#{output_segments.join}]{.ul}"
+               end
+             elsif UNCLEAR_TAGS.include?(risky_element.name)
+               "\\[#{output_segments.join}\\]"
+             end
+
+    output.gsub('~~~~', '').gsub('[]{.ul}', '')
   end
 
   def self.rend_to_html(doc)
