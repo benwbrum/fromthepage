@@ -17,7 +17,25 @@ namespace :fromthepage do
         path: dump_path
       ).call
 
-      puts "Finished with errors\n#{result.full_errors}" unless result.success?
+      puts "Finished with errors: #{result.full_errors}\n#{result.full_errors.backtrace.join("\n")}" unless result.success?
+    end
+  end
+
+  namespace :import do
+    desc 'Import collections dump (USAGE: rake fromthepage:import:database_dump[path_to_dump])'
+    task :database_dump, [:path_to_dump] => :environment do |_t, args|
+      path_to_dump = args[:path_to_dump]
+      path = Rails.root.join('tmp', 'dumps', path_to_dump)
+
+      if File.exist?(path)
+        puts 'Importing dump to database'
+
+        result = Database::Import::DumpIngestor.new(path: path).call
+
+        puts "Finished with errors: #{result.full_errors}\n#{result.full_errors.backtrace.join("\n")}" unless result.success?
+      else
+        puts 'Path to dump does not exist'
+      end
     end
   end
 end

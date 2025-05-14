@@ -1,49 +1,4 @@
-require 'fileutils'
-
-class Database::Export::DumpBuilder < ApplicationInteractor
-  RECORDS_TO_EXPORT = [
-    'users',
-    'collections',
-    'document_sets',
-    'works',
-    'pages',
-    'page_versions',
-    'notes',
-    'articles',
-    'page_article_links',
-    'deeds',
-    'document_sets_works',
-    'categories',
-    'sc_collections',
-    'sc_manifests',
-    'sc_canvases',
-    'transcription_fields',
-    'sections',
-    'table_cells',
-    'spreadsheet_columns',
-    'editor_buttons',
-    'quality_samplings',
-    'metadata_coverages',
-    'facet_configs',
-    'collection_blocks',
-    'collection_owners',
-    'collection_collaborators',
-    'collection_reviewers',
-    'ahoy_activity_summaries',
-    'ia_works',
-    'ia_leaves',
-    'work_statistics',
-    'transcribe_authorizations'
-  ].freeze
-
-  RECORDS_WITH_ASSETS = {
-    'collections' => 'public/uploads/collection/picture',
-    'document_sets' => 'public/uploads/document_set/picture',
-    'works' => 'public/uploads/work/picture',
-    'pages' => 'public/images/working/upload',
-    'users' => 'public/uploads/user/picture'
-  }.freeze
-
+class Database::Export::DumpBuilder < Database::Base
   def initialize(collection_slugs: [], path: '')
     @collection_slugs = collection_slugs
     @path = path
@@ -52,7 +7,7 @@ class Database::Export::DumpBuilder < ApplicationInteractor
   end
 
   def perform
-    RECORDS_TO_EXPORT.each do |record_name|
+    RECORDS.each_key do |record_name|
       export_dump(send(record_name), record_name)
     end
 
@@ -225,12 +180,14 @@ class Database::Export::DumpBuilder < ApplicationInteractor
     reviewers = User.where(id: collection_reviewers.select(:user_id))
     blocked = User.where(id: collection_blocks.select(:user_id))
     scribes = User.where(id: transcribe_authorizations.select(:user_id))
+    deed_users = User.where(id: deeds.select(:user_id))
 
     @users = direct_owners.or(owners)
                           .or(collaborators)
                           .or(reviewers)
                           .or(blocked)
                           .or(scribes)
+                          .or(deed_users)
                           .distinct
 
     @users

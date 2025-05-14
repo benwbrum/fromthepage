@@ -73,6 +73,7 @@ gem 'edtf'
 gem 'edtf-humanize'
 gem 'terser'
 
+gem 'activerecord-import', '~> 2.1'
 gem 'interactor-rails', '~> 2.0'
 
 gem 'stimulus-rails'
