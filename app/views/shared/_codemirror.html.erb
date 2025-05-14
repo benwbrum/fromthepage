@@ -243,11 +243,6 @@
 
       suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
 
-      if(totalMatches > maxOptions) {
-        suggestions = suggestions;
-        suggestions.push('...')
-      }
-
       editor.showHint({
         completeSingle: false,
         hint: function() {
