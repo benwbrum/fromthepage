@@ -264,8 +264,8 @@ module ApplicationHelper
 
   def pagination_options_collection
     [
-      ['15', 15],
       ['50', 50],
+      ['200', 200],
       [I18n.t('will_paginate.all'), -1]
     ]
   end

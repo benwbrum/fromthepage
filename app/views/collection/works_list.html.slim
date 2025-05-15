@@ -6,6 +6,7 @@
 
     =fe_filter_table_wrapper(selector: 'works-table') do
       =fe_filter_form_wrapper(url: collection_works_list_path(@collection.owner, @collection), selector: 'works-table', sorting: @sorting, ordering: @ordering) do
+        =fe_filter_page_size_select(selected: @per_page)
         =fe_filter_search(key: :search, value: params[:search])
         =fe_filter_select(key: :show, value: params[:show] || 'all', options: works_list_show_options) if @collection.is_a?(Collection)
 
