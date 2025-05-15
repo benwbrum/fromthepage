@@ -18,6 +18,16 @@ describe "Devise" do
     let(:collection) { create(:collection) }
     let(:coll_path){ collection_path(collection.owner, collection) }
 
+    it 'failes to create a new user account' do
+      visit new_user_registration_path
+      page.fill_in 'Username', with: user.login
+      page.fill_in 'Email Address', with: 'spammy@email.xyz'
+      page.fill_in 'Password', with: user.password
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
+      click_button('Create Account')
+      expect(page).to have_content('Email is from a domain that is not allowed for sign up')
+    end
     it "creates a new user account" do
       visit new_user_registration_path
       page.fill_in 'Username', with: user.login

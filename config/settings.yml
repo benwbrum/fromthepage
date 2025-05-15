@@ -1,0 +1,10 @@
+---
+spammy_emails:
+  tlds:
+    - io
+    - xyz
+    - top
+    - tk
+    - ga
+    - cf
+    - gq
