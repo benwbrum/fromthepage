@@ -52,3 +52,6 @@ tags
 
 .env
 .DS_Store
+
+.editorconfig
+.tool-versions
