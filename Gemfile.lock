@@ -181,6 +181,9 @@ GEM
     clipboard-rails (1.7.1)
     coderay (1.1.3)
     concurrent-ruby (1.2.3)
+    config (5.5.2)
+      deep_merge (~> 1.2, >= 1.2.1)
+      ostruct
     crack (1.0.0)
       bigdecimal
       rexml
@@ -195,6 +198,7 @@ GEM
     db_text_search (1.0.0)
       activerecord (>= 4.1.15)
     debug_inspector (1.2.0)
+    deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
     device_detector (1.0.7)
@@ -420,6 +424,7 @@ GEM
       sanitize
     open3 (0.2.1)
     orm_adapter (0.5.0)
+    ostruct (0.6.1)
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
@@ -698,6 +703,7 @@ DEPENDENCIES
   carrierwave
   charlock_holmes
   clipboard-rails
+  config
   database_cleaner
   devise
   devise-encryptable
