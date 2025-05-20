@@ -18,7 +18,7 @@ describe "Devise" do
     let(:collection) { create(:collection) }
     let(:coll_path){ collection_path(collection.owner, collection) }
 
-    it 'failes to create a new user account' do
+    it 'fails to create a new user account' do
       visit new_user_registration_path
       page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: 'spammy@email.xyz'
