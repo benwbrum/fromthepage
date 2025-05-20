@@ -427,6 +427,18 @@ describe CollectionController do
           expect(response).to render_template(:works_list)
         end
       end
+
+      context 'per_page all' do
+        let(:params) { { per_page: -1 } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:works_list)
+        end
+      end
     end
   end
 
