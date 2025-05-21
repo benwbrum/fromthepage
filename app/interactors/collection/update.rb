@@ -10,6 +10,8 @@ class Collection::Update < ApplicationInteractor
   end
 
   def perform
+    saved_change_to_restricted = false
+
     ActiveRecord::Base.transaction do
       set_subjects_enabled
       set_data_entry_type
@@ -21,7 +23,12 @@ class Collection::Update < ApplicationInteractor
 
       @collection.attributes = @collection_params
       @collection.save!
+      saved_change_to_restricted = @collection.saved_change_to_restricted?
     end
+
+    return unless saved_change_to_restricted
+
+    Elasticsearch::Collection::SyncJob.perform_later(collection_id: @collection.id)
   end
 
   private

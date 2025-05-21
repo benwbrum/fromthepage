@@ -261,8 +261,25 @@ describe DashboardController do
     end
 
     context 'with search param' do
-      let(:params) { { search: 'Search' } }
+      let(:params) { { search: collection.title } }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:landing_page)
+      end
+    end
+
+    context 'with elasticsearch' do
+      before do
+        stub_const('ELASTIC_ENABLED', true)
+        CollectionsIndex.import collection
+      end
+
+      let(:params) { { search: collection.title } }
 
       it 'renders status and template' do
         login_as owner
