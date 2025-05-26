@@ -26,6 +26,10 @@ pt:
             slug:
               blank: É necessário
               invalid: deve ter pelo menos uma letra
+        user:
+          attributes:
+            email:
+              spammy: é de um domínio que não é permitido para inscrição
         work:
           attributes:
             slug:

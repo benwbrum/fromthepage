@@ -5,8 +5,6 @@ class CollectionController < ApplicationController
   include CollectionHelper
   include ElasticSearchable
 
-  DEFAULT_WORKS_PER_PAGE = 15
-
   public :render_to_string
 
   protect_from_forgery except: [
@@ -849,9 +847,8 @@ class CollectionController < ApplicationController
     works_scope = @collection.works.includes(:work_statistic, :deeds)
     if params[:show] == 'need_transcription'
       works_scope = works_scope.joins(:work_statistic)
+                               .where('work_statistics.complete < ?', 100)
                                .where('work_statistics.transcribed_percentage < ?', 100)
-                               .where('work_statistics.transcribed_percentage < ?', 100)
-                               .where('work_statistics.needs_review = ?', 0)
     end
 
     if params[:search]
@@ -872,7 +869,8 @@ class CollectionController < ApplicationController
       works_scope = works_scope.reorder(title: @ordering)
     end
 
-    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: DEFAULT_WORKS_PER_PAGE)
+    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: per_page) unless per_page == -1
+
     @works = works_scope
   end
 
