@@ -87,6 +87,8 @@ GEM
     activerecord (6.1.7.6)
       activemodel (= 6.1.7.6)
       activesupport (= 6.1.7.6)
+    activerecord-import (2.1.0)
+      activerecord (>= 4.2)
     activestorage (6.1.7.6)
       actionpack (= 6.1.7.6)
       activejob (= 6.1.7.6)
@@ -684,6 +686,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  activerecord-import (~> 2.1)
   acts_as_list
   acts_as_tree
   ahoy_matey
