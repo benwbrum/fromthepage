@@ -14,7 +14,7 @@ table.admin-grid.datagrid.striped
   tbody
     -@actions.each do |a|
       tr
-        td.nowrap =a.time.strftime('%H:%M:%S')
+        td.nowrap =a.time.strftime('%D %H:%M:%S')
         td.nowrap =a.name
         td.nowrap =a.properties['collection_title']
         td.nowrap =a.properties['work_title']
