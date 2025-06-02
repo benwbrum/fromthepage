@@ -245,6 +245,44 @@ module AbstractXmlHelper
       e.replace_with(unclear)
     end
 
+    doc.elements.each("//cb") do |e|
+      number = e.attributes["n"]
+      if number.blank?
+        text="{column}"
+      else
+        text="{column #{number}}"
+      end
+
+      cb = REXML::Element.new('span')
+      rend = e.attributes["rend"]
+      cb.add(REXML::Element.new('br'))      
+      cb.add_text(text)
+      e.children.each { |c| unclear.add(c) }
+      cb.add(REXML::Element.new('br'))
+
+      cb.add_attribute('class', 'cb')
+      e.replace_with(cb)
+    end
+
+    doc.elements.each("//pb") do |e|
+      number = e.attributes["n"]
+      if number.blank?
+        text="{page break}"
+      else
+        text="{page break #{number}}"
+      end
+
+      pb = REXML::Element.new('span')
+      rend = e.attributes["rend"]
+      pb.add(REXML::Element.new('br'))      
+      pb.add_text(text)
+      e.children.each { |c| unclear.add(c) }
+      pb.add(REXML::Element.new('br'))
+
+      pb.add_attribute('class', 'pb')
+      e.replace_with(pb)
+    end
+
     doc.elements.each("//marginalia") do |e|
       span = REXML::Element.new('span')
       span.add_text("{")
