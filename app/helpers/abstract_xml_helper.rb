@@ -226,7 +226,7 @@ module AbstractXmlHelper
     end
 
     doc.elements.each("//figure") do |e|
-      rend = e.attributes["rend"]
+      rend = e.attributes["rend"] || e.attributes["type"]
       if rend == 'hr'
         e.name='hr'
       else
