@@ -92,9 +92,7 @@ module TranscribeHelper
       if page.sc_canvas
         [page.sc_canvas.iiif_image_info_url]
       elsif page.ia_leaf
-        # [page.ia_leaf.iiif_image_info_url]
-        page.ia_leaf.refresh_cache
-        [{type: 'image', url: file_to_url(page.ia_leaf.cache_file_path)}.to_json]
+        [page.ia_leaf.iiif_image_info_url]
       elsif browser.platform.ios? && browser.webkit?
         ["#{url_for(:root)}image-service/#{page.id}/info.json"]
       else

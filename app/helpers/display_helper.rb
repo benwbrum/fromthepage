@@ -15,9 +15,7 @@ module DisplayHelper
   end
 
   def correction_mode?
-    if @page.work.ocr_correction
-      true
-    end
+    @page.work.ocr_correction
   end
 
   def notes_for(commentable)
