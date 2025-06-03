@@ -34,7 +34,7 @@
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
 <% end %>
 
-<% if @work.supports_translation && !page.xml_translation.blank?%>
+<% if @work.supports_translation && !page.source_translation.blank? %>
 ### <%= page.title %>
 <%= raw(xml_to_pandoc_md(page.xml_translation, @preserve_linebreaks, true)) %>
 <% end %>
