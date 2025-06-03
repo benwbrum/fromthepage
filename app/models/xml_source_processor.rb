@@ -468,10 +468,19 @@ EOF
   end
 
   def rename_link_in_text(text, title_regex, new_title)
-    # handle links of the format [[Old Title|Display Text]]
-    text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
-    # handle links of the format [[Old Title]]
-    text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+    if new_title == ''
+      # Link deleted, remove [[ ]] but keep the original title text
+
+      # Handle links of the form [[Old Title|Display Text]] => Display Text
+      text = text.gsub(/\[\[#{title_regex}\|([^\]]+)\]\]/, '\1')
+      # Handle links of the form [[Old Title]] => Old Title
+      text = text.gsub(/\[\[(#{title_regex})\]\]/, '\1')
+    else
+      # Replace the title part in [[Old Title|Display Text]]
+      text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
+      # Replace [[Old Title]] with [[New Title|Old Title]]
+      text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+    end
 
     text
   end
