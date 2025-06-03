@@ -97,6 +97,8 @@ en:
       abbr_label: Abbreviation
       add_description: Marks text inserted after-the-fact by the writer. <br><i>Recommended</i>
       add_label: Addition
+      b_label: Bold
+      b_description: Marks text typeset in bold.
       date_description: Marks dates, with standardized form in the when attribute.
       date_label: Date
       del_description: Marks text that has been removed by erasure or strike-through. <br><i>Recommended</i>
