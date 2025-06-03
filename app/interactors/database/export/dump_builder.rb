@@ -171,6 +171,18 @@ class Database::Export::DumpBuilder < Database::Base
     @transcribe_authorizations ||= TranscribeAuthorization.where(work_id: works.select(:id))
   end
 
+  def thredded_messageboards
+    @thredded_messageboards ||= Thredded::Messageboard.where(
+      messageboard_group_id: thredded_messageboard_groups.select(:id)
+    )
+  end
+
+  def thredded_messageboard_groups
+    @thredded_messageboard_groups ||= Thredded::MessageboardGroup.where(
+      id: collections.select(:thredded_messageboard_group_id)
+    )
+  end
+
   def users
     return @users if defined?(@users)
 

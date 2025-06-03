@@ -2,6 +2,8 @@ require 'fileutils'
 
 class Database::Base < ApplicationInteractor
   RECORDS = {
+    'thredded_messageboard_groups' => Thredded::MessageboardGroup,
+    'thredded_messageboards' => Thredded::Messageboard,
     'users' => User,
     'collections' => Collection,
     'document_sets' => DocumentSet,

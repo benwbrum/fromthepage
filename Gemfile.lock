@@ -178,7 +178,7 @@ GEM
       image_processing (~> 1.1)
       marcel (~> 1.0.0)
       ssrf_filter (~> 1.0)
-    charlock_holmes (0.7.7)
+    charlock_holmes (0.7.9)
     childprocess (5.0.0)
     clipboard-rails (1.7.1)
     coderay (1.1.3)
