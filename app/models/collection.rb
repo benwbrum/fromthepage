@@ -61,12 +61,12 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   include ElasticDelta
   extend FriendlyId
-  friendly_id :slug_candidates, :use => [:slugged, :history]
+  friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_users, through: :collection_blocks, source: :user
-  has_many :works, -> { order(:title) }, dependent: :destroy #, :order => :position
+  has_many :works, -> { order(:title) }, dependent: :destroy
   has_many :notes, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :articles, dependent: :destroy
   has_many :document_sets, -> { order(:title) }, dependent: :destroy
@@ -255,6 +255,37 @@ class Collection < ApplicationRecord
   def disable_messageboards
     self.messageboards_enabled=false
     self.save!
+  end
+
+
+  def use_as_template(new_title)
+    new_collection = self.dup
+    new_collection.title = new_title
+    new_collection.slug = nil
+    new_collection.save!
+    # now copy the child records like transcription_fields, categories, etc.
+    self.transcription_fields.each do |f|
+      new_field = f.dup
+      new_field.collection = new_collection
+      new_field.save!
+      # copy over the fields' spreadsheet columns
+      f.spreadsheet_columns.each do |c|
+        new_column = c.dup
+        new_column.transcription_field = new_field
+        new_column.save!
+      end
+    end
+    new_collection.metadata_fields = self.metadata_fields.map { |f| f.dup }
+    new_collection.categories = self.categories.map { |c| c.dup }
+    new_collection.editor_buttons = self.editor_buttons.map { |b| b.dup }
+    # now handle the many-to-many associations for collaborators, reviewers, owners, and blocks
+    new_collection.collaborator_ids = self.collaborator_ids
+    new_collection.reviewer_ids = self.reviewer_ids
+    new_collection.owner_ids = self.owner_ids
+    new_collection.collection_block_ids = self.collection_block_ids
+    # now save the collection
+    new_collection.save!
+    new_collection
   end
 
   def self.access_controlled(user)

@@ -280,7 +280,7 @@ namespace :fromthepage do
                 text_node.remove
               end
             end
-            text_paragraphs << e.children.to_a.select{|n| n.present?}.map{|n| n.name=='lb' ? "\n" : n.to_s}.join("").gsub(/\n+/,"\n").strip
+            text_paragraphs << e.children.to_a.select{|n| n.present?}.map{|n| n.name=='lb' ? "\n" : n.to_html}.join("").gsub(/\n+/,"\n").strip
           end
           text_array << text_paragraphs.join("\n\n")
         end
