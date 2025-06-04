@@ -105,7 +105,7 @@ describe Article::RenameJob do
       worker.perform(article_id: article.id, old_name: 'Original', new_name: '')
     end
 
-    it 'removes links in texts and delets article links' do
+    it 'removes links in texts and deletes article links' do
       # Set source text like this to avoid before save callbacks
       source_article.update_column(:source_text, '[[Original]]')
 
