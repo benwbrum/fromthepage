@@ -9,6 +9,7 @@ en:
       heading: Printout Configuration
       include_contributors: Include Contributors
       include_metadata: Include Metadata
+      include_notes: Include Notes
       preserve_linebreaks: Preserve Linebreaks
       text_contents: Contents
       text_contents_description: The printable export will include the text of the transcription, and can also include information about the contributors to the project or metadata about the work.

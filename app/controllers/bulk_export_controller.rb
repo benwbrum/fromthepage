@@ -14,7 +14,7 @@ class BulkExportController < ApplicationController
     @bulk_export = BulkExport.new
     if @collection.is_a? DocumentSet
       @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
+      @bulk_export.collection = @collection.collection
     else
       @bulk_export.collection = @collection
     end
@@ -25,7 +25,7 @@ class BulkExportController < ApplicationController
     @bulk_export = BulkExport.new(bulk_export_params)
     if @collection.is_a? DocumentSet
       @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
+      @bulk_export.collection = @collection.collection
     else
       @bulk_export.collection = @collection
     end
@@ -74,8 +74,8 @@ class BulkExportController < ApplicationController
   def download
     if @bulk_export.status == BulkExport::Status::FINISHED
       # read and spew the file
-      send_file(@bulk_export.zip_file_name, 
-        filename: "fromthepage_export.zip", 
+      send_file(@bulk_export.zip_file_name,
+        filename: "fromthepage_export.zip",
         :content_type => "application/zip")
       cookies['download_finished'] = 'true'
     else
@@ -84,65 +84,67 @@ class BulkExportController < ApplicationController
     end
   end
 
-
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_bulk_export
-      @bulk_export = BulkExport.find(params[:bulk_export_id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def bulk_export_params
-      params.require(:bulk_export).permit(
-        :user_id, 
-        :collection_id, 
-        :plaintext_verbatim_page, 
-        :plaintext_verbatim_work, 
-        :plaintext_emended_page, 
-        :plaintext_emended_work, 
-        :plaintext_searchable_page, 
-        :plaintext_searchable_work,
-        :plaintext_verbatim_zero_index_page,
-        :tei_work, 
-        :html_page, 
-        :html_work, 
-        :subject_csv_collection, 
-        :subject_details_csv_collection,
-        :table_csv_work, 
-        :table_csv_collection,
-        :work_metadata_csv,
-        :facing_edition_work,
-        :text_docx_work,
-        :text_pdf_work,
-        :text_only_pdf_work,
-        :organization,
-        :use_uploaded_filename,
-        :static,
-        :owner_mailing_list,
-        :owner_detailed_activity,
-        :collection_activity,
-        :collection_contributors,
-        :preserve_linebreaks,
-        :work_id,
-        :include_metadata, 
-        :include_contributors,
-        :notes_csv,
-        :admin_searches,
-        :report_arguments => [
-          :start_date, 
-          :end_date, 
-          :preserve_linebreaks, 
-          :include_metadata, 
-          :include_contributors])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_bulk_export
+    @bulk_export = BulkExport.find(params[:bulk_export_id])
   end
 
+  # Only allow a trusted parameter "white list" through.
+  def bulk_export_params
+    params.require(:bulk_export).permit(
+      :user_id,
+      :collection_id,
+      :plaintext_verbatim_page,
+      :plaintext_verbatim_work,
+      :plaintext_emended_page,
+      :plaintext_emended_work,
+      :plaintext_searchable_page,
+      :plaintext_searchable_work,
+      :plaintext_verbatim_zero_index_page,
+      :tei_work,
+      :html_page,
+      :html_work,
+      :subject_csv_collection,
+      :subject_details_csv_collection,
+      :table_csv_work,
+      :table_csv_collection,
+      :work_metadata_csv,
+      :facing_edition_work,
+      :text_docx_work,
+      :text_pdf_work,
+      :text_only_pdf_work,
+      :organization,
+      :use_uploaded_filename,
+      :static,
+      :owner_mailing_list,
+      :owner_detailed_activity,
+      :collection_activity,
+      :collection_contributors,
+      :preserve_linebreaks,
+      :work_id,
+      :include_metadata,
+      :include_contributors,
+      :include_notes,
+      :notes_csv,
+      :admin_searches,
+      :report_arguments => [
+        :start_date,
+        :end_date,
+        :preserve_linebreaks,
+        :include_metadata,
+        :include_contributors,
+        :include_notes
+      ]
+    )
+  end
 
-private
   def create_for_work_actual
     @bulk_export = BulkExport.new(bulk_export_params)
     if @collection.is_a? DocumentSet
       @bulk_export.document_set = @collection
-      @bulk_export.collection = @collection.collection    
+      @bulk_export.collection = @collection.collection
     else
       @bulk_export.collection = @collection
     end
