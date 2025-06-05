@@ -50,7 +50,7 @@ class Article < ApplicationRecord
   scope :target_article_links, -> { order "articles.title ASC" }
 
   has_many :source_article_links, foreign_key: 'source_article_id', class_name: 'ArticleArticleLink'
-  has_many :page_article_links, dependent: :destroy
+  has_many :page_article_links
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
 

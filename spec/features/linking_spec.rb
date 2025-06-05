@@ -12,7 +12,7 @@ describe "subject linking" do
 
   before :each do
     login_as(@user, :scope => :user)
-  end    
+  end
 
   #it checks to make sure the subject is on the page
   it "looks at subjects in a collection" do
@@ -30,7 +30,7 @@ describe "subject linking" do
     end
   end
 
-  it "edits a subject's description" do 
+  it "edits a subject's description" do
     article = Article.first
     visit "/article/show?article_id=#{article.id}"
     expect(page).to have_content("Description")
@@ -45,15 +45,15 @@ describe "subject linking" do
     expect(article.article_versions.count).to be >=1
   end
 
-  it "conditionally displays GIS fields on subject" do 
+  it "conditionally displays GIS fields on subject" do
     article = Article.first
     category = article.categories.first
     category_hash = "#category-" + "#{category.id}"
-    
+
     visit "/article/show?article_id=#{article.id}"
     page.find('.tabs').click_link('Settings')
     expect(page).not_to have_content("Latitude")
-    
+
     category.gis_enabled = true
     category.save
 
@@ -69,20 +69,6 @@ describe "subject linking" do
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click
-    page.find('.tabs').click_link("Settings")
-    click_link('Delete Subject')
-    expect(page.find('.flash_message')).to have_content("You must remove all referring links")
-    page.find('a', text: "Show pages that mention").click
-    page.find('.work-page_title').find('a').click
-    page.find('.tabs').click_link("Transcribe")
-    fill_in_editor_field ""
-    find('#save_button_top').click
-    page.click_link("Overview")
-    expect(page).to have_content("Facsimile")
-    click_link(collection.title)
-    page.find('.tabs').click_link("Subjects")
-    page.find('a', text: "Testing").click
-    expect(page).not_to have_content("Show pages that mention Testing in all works")
     page.find('.tabs').click_link("Settings")
     click_link('Delete Subject')
     expect(page).to have_content("People")

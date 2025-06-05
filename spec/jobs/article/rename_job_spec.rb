@@ -87,4 +87,40 @@ describe Article::RenameJob do
       expect(from_deed.reload).to have_attributes(article_id: to_article.id)
     end
   end
+
+  context 'from destroy' do
+    let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
+    let!(:article) do
+      create(:article, title: 'Original', collection: collection, pages: [related_page])
+    end
+
+    let!(:source_article) do
+      create(:article, collection: collection.reload)
+    end
+    let!(:article_article_link) do
+      create(:article_article_link, source_article: source_article, target_article: article)
+    end
+
+    let(:perform_worker) do
+      worker.perform(article_id: article.id, old_name: 'Original', new_name: '')
+    end
+
+    it 'removes links in texts and deletes article links' do
+      # Set source text like this to avoid before save callbacks
+      source_article.update_column(:source_text, '[[Original]]')
+
+      article.destroy!
+
+      perform_enqueued_jobs do
+        perform_worker
+      end
+
+      expect(related_page.reload).to have_attributes(
+        source_text: 'Original',
+        source_translation: 'Original'
+      )
+      expect(source_article.reload).to have_attributes(source_text: 'Original')
+      expect(ArticleArticleLink.exists?(article_article_link.id)).to be_falsey
+    end
+  end
 end
