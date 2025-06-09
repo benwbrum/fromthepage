@@ -38,6 +38,8 @@ class Article::Lib::Rename
 
     source_article_links.destroy_all
 
+    return unless @article&.persisted? && @new_article&.persisted?
+
     Deed.where(article_id: @article.id).update_all(article_id: @new_article.id)
 
     if @article.source_text
