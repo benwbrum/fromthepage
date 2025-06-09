@@ -9,6 +9,7 @@ de:
       heading: Ausdruckkonfiguration
       include_contributors: Mitwirkende einbeziehen
       include_metadata: Metadaten einschließen
+      include_notes: Notizen einschließen
       preserve_linebreaks: Zeilenumbrüche beibehalten
       text_contents: Inhalt
       text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.

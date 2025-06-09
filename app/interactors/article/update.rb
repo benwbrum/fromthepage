@@ -1,6 +1,4 @@
 class Article::Update < ApplicationInteractor
-  include Article::Lib::Common
-
   attr_accessor :article, :notice
 
   def initialize(article:, article_params:)
@@ -17,12 +15,18 @@ class Article::Update < ApplicationInteractor
     @article.categories = categories
 
     if @article.save
-      rename_article(@article, old_title, @article.title) if old_title != @article.title
+      if old_title != @article.title
+        Article::RenameJob.perform_later(
+          article_id: @article.id,
+          old_name: old_title,
+          new_name: @article.title
+        )
+      end
 
       @notice = I18n.t('article.update.subject_successfully_updated')
       if gis_truncated?
         @notice << I18n.t('article.update.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION,
-                                                                     count: GIS_DECIMAL_PRECISION)
+                                                                      count: GIS_DECIMAL_PRECISION)
       end
     else
       context.fail!

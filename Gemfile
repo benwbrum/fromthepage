@@ -6,6 +6,8 @@ ruby '3.3.5'
 
 gem 'rails', '~> 7.2.1'
 
+gem 'config'
+
 gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'capistrano-rails', '~> 1.4', require: false
@@ -76,6 +78,7 @@ gem 'edtf'
 gem 'edtf-humanize'
 gem 'terser'
 
+gem 'activerecord-import', '~> 2.1'
 gem 'interactor-rails', '~> 2.0'
 
 gem 'stimulus-rails'

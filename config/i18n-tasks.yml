@@ -154,6 +154,8 @@ ignore_unused:
   - 'dashboard.owner_header.account_types.{legacy,staff,trial,individual_researcher,small_organization,large_institution}'
   - 'collection.edit_buttons.*_label'
   - 'collection.edit_buttons.*_description'
+  - 'bulk_export.create_for_work_ajax.*'
+  - 'category.*'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

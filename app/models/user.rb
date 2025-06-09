@@ -103,7 +103,6 @@ class User < ApplicationRecord
                           :join_table => 'collection_reviewers',
                           :class_name => 'Collection')
 
-
   has_many :page_versions, -> { order(created_on: :desc) }
   has_many :article_versions, -> { order(created_on: :desc) }
   has_many :notes, -> { order(created_at: :desc) }
@@ -136,6 +135,7 @@ class User < ApplicationRecord
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
   validate :display_name_presence
+  validate :email_domain_blacklist, if: -> { validation_context == :registration }
 
   before_validation :update_display_name
 
@@ -481,7 +481,6 @@ class User < ApplicationRecord
     self.save
   end
 
-
   # Generate a unique API key
   def self.generate_api_key
     loop do
@@ -503,4 +502,16 @@ class User < ApplicationRecord
     self.account_type == 'Staff'
   end
 
+  private
+
+  def email_domain_blacklist
+    return if email.blank?
+
+    domain = email.split('@').last&.downcase
+    tld = domain.split('.').last
+
+    return unless Settings.spammy_emails.tlds.include?(tld)
+
+    errors.add(:email, :spammy)
+  end
 end

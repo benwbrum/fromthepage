@@ -21,9 +21,10 @@ describe Article::Update do
 
   let(:latitude) { nil }
   let(:longitude) { nil }
+  let(:article_title) { 'New' }
   let(:article_params) do
     {
-      title: 'New',
+      title: article_title,
       uri: 'www.new-uri.com',
       source_text: 'New source text',
       latitude: latitude,
@@ -40,6 +41,10 @@ describe Article::Update do
   end
 
   it 'updates article and source texts of related models' do
+    expect(Article::RenameJob).to receive(:perform_later).with(
+      article_id: article.id, old_name: 'Original', new_name: 'New'
+    ).and_call_original
+
     # Set source text like this to avoid before save callbacks
     source_article.update_column(:source_text, '[[Original]]')
 
@@ -50,12 +55,22 @@ describe Article::Update do
       uri: 'www.new-uri.com',
       source_text: 'New source text'
     )
-    expect(related_page.reload).to have_attributes(
-      source_text: '[[New|Original]]',
-      source_translation: '[[New|Original]]'
-    )
-    expect(source_article.reload).to have_attributes(source_text: '[[New|Original]]')
-    expect(result.article.categories.any?).to be_falsey
+  end
+
+  context 'when unchanged title' do
+    let(:article_title) { 'Original' }
+
+    it 'updates article without renaming source texts' do
+      expect(Article::RenameJob).not_to receive(:perform_later)
+
+      expect(result.success?).to be_truthy
+      expect(result.notice).to eq(I18n.t('article.update.subject_successfully_updated'))
+      expect(result.article).to have_attributes(
+        title: 'Original',
+        uri: 'www.new-uri.com',
+        source_text: 'New source text'
+      )
+    end
   end
 
   context 'when gis truncated' do
