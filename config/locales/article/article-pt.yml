@@ -9,6 +9,7 @@ pt:
         one: 1 assunto refere-se a %{article}
         other: "%{count} assuntos referem-se a %{article}"
       show_pages_that_mention: Mostrar páginas que mencionam %{article} em todos as obras
+      in_the_work: " em %{work}"
     combine_duplicate:
       selected_subjects_combined: Temas selecionados combinados com %{title}
     delete:

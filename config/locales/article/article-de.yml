@@ -9,6 +9,7 @@ de:
         one: 1 Entität bezieht sich auf %{article}
         other: "%{count} Entitäten beziehen sich auf %{article}"
       show_pages_that_mention: Seiten in allen Werken anzeigen, die %{article} erwähnen
+      in_the_work: " im %{work}"
     combine_duplicate:
       selected_subjects_combined: Ausgewählte Entitäten kombiniert mit %{title}
     delete:
