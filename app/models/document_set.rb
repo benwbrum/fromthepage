@@ -5,6 +5,7 @@
 #  id                         :integer          not null, primary key
 #  default_orientation        :string(255)
 #  description                :text(65535)
+#  featured_at                :datetime
 #  pct_completed              :integer
 #  picture                    :string(255)
 #  slug                       :string(255)
@@ -29,6 +30,8 @@ class DocumentSet < ApplicationRecord
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
+
+  before_create :fill_featured_at
   before_save :uniquify_slug
   # validate :slug_uniqueness_across_objects
 
@@ -79,6 +82,15 @@ class DocumentSet < ApplicationRecord
     reorder(Arel.sql('RAND()')) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql('RAND()'))
   end
+
+  scope :featured_projects, -> {
+    joins(works: :pages)
+      .joins(:owner)
+      .where(owner: { deleted: false })
+      .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
+      .where.not(featured_at: nil)
+      .distinct
+  }
 
   # Docsets get indexed alongside collections but have a prefix added to ID
   def as_indexed_json
@@ -212,6 +224,12 @@ class DocumentSet < ApplicationRecord
 
   def has_untranscribed_pages?
     next_untranscribed_page.present?
+  end
+
+  def fill_featured_at
+    return if self.visibility.to_sym == :private
+
+    self.featured_at = Time.current
   end
 
   def slug_candidates

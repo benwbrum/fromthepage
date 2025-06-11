@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_08_142909) do
+ActiveRecord::Schema.define(version: 2025_06_11_171909) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -234,6 +234,7 @@ ActiveRecord::Schema.define(version: 2025_05_08_142909) do
     t.boolean "messageboards_enabled"
     t.datetime "most_recent_deed_created_at"
     t.boolean "alphabetize_works", default: true
+    t.datetime "featured_at"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -303,6 +304,7 @@ ActiveRecord::Schema.define(version: 2025_05_08_142909) do
     t.integer "works_count", default: 0
     t.integer "next_untranscribed_page_id"
     t.integer "visibility", default: 0, null: false
+    t.datetime "featured_at"
     t.index ["collection_id"], name: "index_document_sets_on_collection_id"
     t.index ["owner_user_id"], name: "index_document_sets_on_owner_user_id"
     t.index ["slug"], name: "index_document_sets_on_slug", unique: true

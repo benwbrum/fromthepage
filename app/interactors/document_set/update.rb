@@ -13,6 +13,7 @@ class DocumentSet::Update < ApplicationInteractor
 
     @document_set.attributes = @document_set_params
     @document_set.slug = @document_set.title.parameterize if @document_set_params[:slug].blank?
+    set_featured_at
 
     @document_set.save!
   end
@@ -24,5 +25,11 @@ class DocumentSet::Update < ApplicationInteractor
 
     visibility = DocumentSet.visibilities[@document_set_params[:visibility]] || DocumentSet.visibilities[:public]
     @document_set_params[:visibility] = visibility
+  end
+
+  def set_featured_at
+    return if @document_set.featured_at.present? || @document_set.visibility.to_sym == :private
+
+    @document_set.featured_at = Time.current
   end
 end
