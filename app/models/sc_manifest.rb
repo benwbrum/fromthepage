@@ -288,7 +288,7 @@ class ScManifest < ApplicationRecord
     if object.is_a? Array
       lang_keys = object.map{ |hash| lang_keys_from_hash(hash) }.flatten
     else
-      lang_keys = lang_keys_from_hash(hash)
+      lang_keys = lang_keys_from_hash(object)
     end
     lang_keys.tally
   end
