@@ -2,6 +2,7 @@
 de:
   article:
     article_links:
+      in_the_work: " im %{work}"
       n_pages_refer_to:
         one: 1 Seite bezieht sich auf %{article}
         other: "%{count} Seiten beziehen sich auf %{article}"
@@ -9,7 +10,6 @@ de:
         one: 1 Entität bezieht sich auf %{article}
         other: "%{count} Entitäten beziehen sich auf %{article}"
       show_pages_that_mention: Seiten in allen Werken anzeigen, die %{article} erwähnen
-      in_the_work: " im %{work}"
     combine_duplicate:
       selected_subjects_combined: Ausgewählte Entitäten kombiniert mit %{title}
     delete:

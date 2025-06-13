@@ -2,6 +2,7 @@
 es:
   article:
     article_links:
+      in_the_work: " en %{work}"
       n_pages_refer_to:
         one: 1 página se refiere a %{article}
         other: "%{count} páginas se refieren a %{article}"
@@ -9,7 +10,6 @@ es:
         one: 1 sujeto se refiere a %{article}
         other: "%{count} sujetos se refieren a %{article}"
       show_pages_that_mention: Mostrar páginas que mencionen %{article} en todos las obras
-      in_the_work: " en %{work}"
     combine_duplicate:
       selected_subjects_combined: Asignaturas seleccionadas combinadas con %{title}
     delete:

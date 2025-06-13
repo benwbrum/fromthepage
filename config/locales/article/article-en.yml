@@ -2,6 +2,7 @@
 en:
   article:
     article_links:
+      in_the_work: in %{work}
       n_pages_refer_to:
         one: 1 page refers to %{article}
         other: "%{count} pages refer to %{article}"
@@ -9,7 +10,6 @@ en:
         one: 1 subject refers to %{article}
         other: "%{count} subjects refer to %{article}"
       show_pages_that_mention: Show pages that mention %{article} in all works
-      in_the_work: "in %{work}"
     combine_duplicate:
       selected_subjects_combined: Selected subjects combined with %{title}
     delete:
