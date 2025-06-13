@@ -2,6 +2,7 @@
 pt:
   article:
     article_links:
+      in_the_work: " em %{work}"
       n_pages_refer_to:
         one: 1 página refere-se a %{article}
         other: As páginas %{count} referem-se a %{article}
