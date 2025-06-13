@@ -79,7 +79,6 @@ module ExportHelper
   end
 
   def write_work_exports(works, out, export_user, bulk_export)
-
     # owner-level exports
     if bulk_export.owner_mailing_list
       export_owner_mailing_list_csv(out: out, owner: export_user)
@@ -137,7 +136,6 @@ module ExportHelper
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
-
         # work-specific exports
         if bulk_export.table_csv_work
           export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
@@ -173,20 +171,21 @@ module ExportHelper
         preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
         include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
         include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
+        include_notes = bulk_export.report_arguments['include_notes'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         # Page-specific exports
@@ -534,7 +533,7 @@ module ExportHelper
     # convert HTML tables to TEI tables
     p_element_string = p_element.to_s
     p_element.elements.each("//table") do |e|
-      unless e['rows'] || e['cols']
+      unless e.get_elements('.//tr').empty? # TEI tables use row and cell elements, not tr and td
         row_count = 0
         max_column_count = 0
         table = REXML::Element.new("table")

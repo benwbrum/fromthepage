@@ -9,7 +9,12 @@ pt:
       heading: Configuração de impressão
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadados
+<<<<<<< development
       preserve_linebreaks: Preservar quebra de linha
+=======
+      include_notes: Incluir notas
+      preserve_linebreaks: Preservar quebras de linha
+>>>>>>> development
       text_contents: Conteúdo
       text_contents_description: A versão para impressão incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
       text_format: Formatação de texto

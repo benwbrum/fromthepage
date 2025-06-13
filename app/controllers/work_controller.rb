@@ -39,6 +39,7 @@ class WorkController < ApplicationController
     @bulk_export.text_pdf_work = true
     @bulk_export.report_arguments['include_contributors'] = true
     @bulk_export.report_arguments['include_metadata'] = true
+    @bulk_export.report_arguments['include_notes'] = true
     @bulk_export.report_arguments['preserve_linebreaks'] = false
   end
 

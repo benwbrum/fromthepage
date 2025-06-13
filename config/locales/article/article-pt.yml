@@ -12,7 +12,6 @@ pt:
     combine_duplicate:
       selected_subjects_combined: Temas selecionados combinados com %{title}
     delete:
-      must_remove_referring_links: Você deve remover todos os links que fazem referência antes de deletar este tema.
       only_subject_owner_can_delete: Somente o criador do assunto ou proprietário do projeto pode excluir isso.
     edit:
       autolink: Autolink
@@ -25,7 +24,6 @@ pt:
       death_date: Data da morte
       delete_subject: Excluir assunto
       description: Descrição
-      disambiguator: Desambiguador
       ended: Terminou
       latitude: Latitude
       longitude: Longitude
@@ -43,6 +41,7 @@ pt:
       save_changes: Salvar alterações
       select_categories: Selecionar categorias
       sex: Sexo
+      short_summary: Resumo curto
       title: Título
       uri: URI
     graph:

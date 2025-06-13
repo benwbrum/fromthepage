@@ -47,7 +47,7 @@ class MasqueradesController < Devise::MasqueradesController
   end
 
   def after_masquerade_path_for(user)
-    user_profile_path(user)
+    dashboard_role_path
   end
 
 end

@@ -9,6 +9,7 @@ es:
       heading: Configuración de impresión
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadatos
+      include_notes: Incluir notas
       preserve_linebreaks: Conservar saltos de línea
       text_contents: Contenido
       text_contents_description: La exportación imprimible incluirá el texto de la transcripción y también puede incluir información sobre los colaboradores del proyecto o metadatos sobre la obra.

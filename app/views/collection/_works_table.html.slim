@@ -35,4 +35,5 @@ table.datagrid.striped.dataTable.no-footer
         -if @collection.is_a?(DocumentSet)
           td =w.restrict_scribes ? t('collection.collection_works.restricted') : t('collection.collection_works.unrestricted')
 
-=render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'collection', action: 'works_list' }
+- unless @per_page == -1
+  =render partial: 'shared/pagination', locals: { model: @works, entries_info: true, controller: 'collection', action: 'works_list' }

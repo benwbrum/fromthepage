@@ -38,7 +38,7 @@ module SubjectDetailsExporter
           row << subject.uri
           row << subject.categories.map { |category| category.title }.join("; ")
           row << Rails.application.routes.url_helpers.collection_article_show_url(@collection.owner, @collection, subject.id)
-          row << subject.disambiguator
+          row << subject.short_summary
           row << subject.latitude
           row << subject.longitude
           row << subject.birth_date
