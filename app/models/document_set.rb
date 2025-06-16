@@ -26,6 +26,7 @@
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
   include ElasticDelta
+  include DuplicateSlugCleanup
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
@@ -54,7 +55,6 @@ class DocumentSet < ApplicationRecord
   has_many :bulk_exports, dependent: :delete_all
 
   after_save :set_next_untranscribed_page
-  after_save :cleanup_duplicate_slug, if: -> { saved_change_to_slug? }
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
@@ -124,20 +124,6 @@ class DocumentSet < ApplicationRecord
 
   def uniquify_slug
     self.slug = "#{slug}-set" if Collection.where(slug: slug).exists?
-  end
-
-  def cleanup_duplicate_slug
-    duplicates = FriendlyId::Slug
-                   .where(slug: slug, sluggable_type: %w[Collection DocumentSet])
-                   .where.not(sluggable_type: self.class.name, sluggable_id: id)
-
-    duplicates.each do |dup|
-      obj = dup.sluggable
-      next unless obj.respond_to?(:owner_user_id)
-      next unless obj.owner_user_id == owner_user_id
-      next if obj.slug == slug
-      dup.destroy if obj.slugs.count > 1
-    end
   end
 
   delegate :metadata_coverages,          to: :collection
