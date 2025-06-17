@@ -92,10 +92,8 @@ describe 'guest user actions' do
     find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
 
-    # Versions Tab: check to see what the page versions say
-    page.find('.tabs').click_link('Versions')
-    expect(page).to have_content('revisions')
-    expect(page).to have_link('Guest')
+    # Versions tab should not be visible to guests
+    expect(page.find('.tabs')).not_to have_link('Versions')
 
     # Transcribe Tab: Contribution 2
     page.find('.tabs').click_link('Transcribe')
@@ -119,7 +117,8 @@ describe 'guest user actions' do
     expect(@guest.id).to eq(@user.id)
     expect(page.current_path).to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
 
-    # Versions Tab
+    # Versions tab should now be visible to the signed up user
+    expect(page.find('.tabs')).to have_link('Versions')
     page.find('.tabs').click_link('Versions')
     expect(page).to have_link('martha')
   end
