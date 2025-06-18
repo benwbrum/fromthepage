@@ -64,10 +64,12 @@ module XmlSourceProcessor
 
 def source_text=(text)
     self.source_text_will_change!
-    if self.source_translation
-      self.source_translation_will_change!
-    end
     super
+end
+
+def source_translation=(text)
+  self.source_translation_will_change!
+  super
 end
 
   ##############################################
