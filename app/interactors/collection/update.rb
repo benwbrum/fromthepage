@@ -102,8 +102,8 @@ class Collection::Update < ApplicationInteractor
   end
 
   def set_featured_at
-    return if @collection.restricted? || @collection.featured_at.present?
+    return unless @collection.restricted_changed?
 
-    @collection.featured_at = Time.current
+    @collection.featured_at = @collection.restricted? ? nil : Time.current
   end
 end

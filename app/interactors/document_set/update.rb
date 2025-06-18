@@ -28,8 +28,8 @@ class DocumentSet::Update < ApplicationInteractor
   end
 
   def set_featured_at
-    return if @document_set.featured_at.present? || @document_set.visibility.to_sym == :private
+    return unless @document_set.visibility_changed?
 
-    @document_set.featured_at = Time.current
+    @document_set.featured_at = @document_set.visibility.to_sym == :private ? nil : Time.current
   end
 end
