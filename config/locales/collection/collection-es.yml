@@ -97,6 +97,8 @@ es:
       abbr_label: Abreviatura
       add_description: Marca el texto insertado después del hecho por el escritor. <br><i>Recomendado</i>
       add_label: Suma
+      b_description: Marca el texto compuesto en negrita.
+      b_label: Atrevido
       date_description: Marca fechas, con forma estandarizada en el atributo when.
       date_label: Fecha
       del_description: Marca el texto que ha sido eliminado por borrado o tachado. <br><i>Recomendado</i>

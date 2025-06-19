@@ -678,12 +678,26 @@ module ExportHelper
 
       i.replace_with(hi)
     end
-    p_element.elements.each('//sup') do |sup|
+    p_element.elements.each('//ins') do |ins|
       add = REXML::Element.new("add")
+      ins.children.each { |c| add.add(c) }
 
-      add.add_attribute("place", "above")
-      sup.children.each { |c| add.add(c) }
-      sup.replace_with(add)
+      ins.replace_with(add)
+    end
+    p_element.elements.each('//b') do |i|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "bold")
+      i.children.each { |c| hi.add(c) }
+
+      i.replace_with(hi)
+    end
+    p_element.elements.each('//sup') do |sup|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "sup")
+      sup.children.each { |c| hi.add(c) }
+      sup.replace_with(hi)
     end
   end
 

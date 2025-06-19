@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <page>
   <p>Add tag is <add>for text insertions</add></p>
+  <p>Use hi rend bold for <hi rend="bold">bolded text</hi></p>
   <p>Column break <cb/> to indicate a break between columns</p>
   <p>Date <date when='2020-12-09'>December 9, 2020</date> to indicate a date, with an attribute of when</p>
   <p>Figure tag <figure>drawing or graph here</figure> to indicate a figure or illustration in the text</p>

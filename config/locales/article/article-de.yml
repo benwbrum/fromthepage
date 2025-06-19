@@ -2,6 +2,7 @@
 de:
   article:
     article_links:
+      in_the_work: " im %{work}"
       n_pages_refer_to:
         one: 1 Seite bezieht sich auf %{article}
         other: "%{count} Seiten beziehen sich auf %{article}"

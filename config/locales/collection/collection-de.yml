@@ -97,6 +97,8 @@ de:
       abbr_label: Abkürzung
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde. <br><i>Empfohlen</i>
       add_label: Ergänzung
+      b_description: Markiert fett gesetzten Text.
+      b_label: Deutlich
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       date_label: Datum
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde. <br><i>Empfohlen</i>
