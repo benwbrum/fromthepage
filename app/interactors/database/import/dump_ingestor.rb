@@ -20,8 +20,12 @@ class Database::Import::DumpIngestor < Database::Base
     rows = YAML.load_file(path_to_dump(table_name))
 
     rows.each do |row|
-      new_record = RECORDS[table_name].new(row)
+      if row['metadata'].present?
+        metadata_str = row['metadata'] == "--- {}\n" ? '{}' : row['metadata']
+        row['metadata'] = JSON.parse(metadata_str)
+      end
 
+      new_record = RECORDS[table_name].new(row)
       if table_name != 'pages' && RECORDS_WITH_ASSETS.keys.include?(table_name)
         picture_path = Rails.root.join(@path, RECORDS_WITH_ASSETS[table_name], new_record.id.to_s, row['picture'] || '')
 
@@ -36,7 +40,7 @@ class Database::Import::DumpIngestor < Database::Base
       records << new_record
     end
 
-    RECORDS[table_name].import records, timestamps: false, validate: false
+    RECORDS[table_name].import records, validate: false
 
     return unless table_name != 'pages' && RECORDS_WITH_ASSETS.keys.include?(table_name)
 

@@ -416,6 +416,21 @@ $endif$
   }
 \fi
 
+% Smalltext for notes workaround
+\newsavebox{\smalltextbox}
+\newenvironment{smalltext}
+  {
+    \begin{quote}
+    \begin{lrbox}{\smalltextbox}
+    \begin{minipage}{\linewidth}
+  }
+  {
+    \end{minipage}
+    \end{lrbox}
+    \makebox[0pt][l]{\scalebox{0.85}[0.85]{\usebox{\smalltextbox}}}
+    \end{quote}
+  }
+
 $if(natbib)$
 \usepackage[$natbiboptions$]{natbib}
 \bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}

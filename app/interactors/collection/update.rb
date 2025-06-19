@@ -22,6 +22,8 @@ class Collection::Update < ApplicationInteractor
       set_tags
 
       @collection.attributes = @collection_params
+      set_featured_at
+
       @collection.save!
       saved_change_to_restricted = @collection.saved_change_to_restricted?
     end
@@ -104,5 +106,11 @@ class Collection::Update < ApplicationInteractor
 
     tags = Tag.where(id: tag_ids)
     @collection.tags = tags
+  end
+
+  def set_featured_at
+    return unless @collection.restricted_changed?
+
+    @collection.featured_at = @collection.restricted? ? nil : Time.current
   end
 end

@@ -217,32 +217,19 @@ class DashboardController < ApplicationController
                    .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
     @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
-    @new_projects = Collection.includes(:owner)
-                              .joins(works: :pages)
-                              .joins(:owner)
-                              .order('collections.created_on DESC')
-                              .where(owner: { deleted: false })
-                              .unrestricted.where("LOWER(collections.title) NOT LIKE 'test%'")
-                              .distinct
-                              .limit(20)
+    new_collections = Collection.includes(:owner)
+                                .featured_projects
+                                .order(featured_at: :desc)
+                                .limit(20)
 
-    @new_document_sets = DocumentSet.includes(:owner)
-                                    .joins(works: :pages)
-                                    .joins(:owner)
-                                    .order('document_sets.created_at DESC')
-                                    .where(owner: { deleted: false })
-                                    .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
-                                    .distinct
-                                    .limit(20)
+    new_document_sets = DocumentSet.includes(:owner)
+                                   .featured_projects
+                                   .order(featured_at: :desc)
+                                   .limit(20)
 
     respond_to do |format|
       format.html do
-        @new_projects = (@new_projects + @new_document_sets).sort do |a, b|
-          a_date = a.is_a?(Collection) ? a.created_on : a.created_at
-          b_date = b.is_a?(Collection) ? b.created_on : b.created_at
-          b_date <=> a_date
-        end
-
+        @new_projects = (new_collections + new_document_sets).sort_by(&:featured_at).reverse
         @tag_map = Tag.featured_tags.group(:ai_text).count
       end
 

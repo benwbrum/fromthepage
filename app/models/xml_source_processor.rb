@@ -339,8 +339,6 @@ EOF
   def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links
     # log the count of articles before and after
-    old_article_count = collection.articles.count
-    logger.info("ISSUE4269 old_article_count = #{old_article_count}")
     clear_links(text_type) unless preview_mode
     processed = ""
     # process it
@@ -377,11 +375,6 @@ EOF
       link_element.add_attribute('target_id', article.id.to_s) unless preview_mode
       link_element.add_attribute('link_id', link_id.to_s) unless preview_mode
       element.replace_with(link_element)
-    end
-    new_article_count = collection.articles.count
-    logger.info("ISSUE4269 new_article_count = #{new_article_count}")
-    if new_article_count < old_article_count
-      logger.error("ISSUE4269 ERROR new_article_count #{new_article_count} < old_article_count #{old_article_count}!")
     end
     doc.write(processed)
     return processed
@@ -468,10 +461,19 @@ EOF
   end
 
   def rename_link_in_text(text, title_regex, new_title)
-    # handle links of the format [[Old Title|Display Text]]
-    text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
-    # handle links of the format [[Old Title]]
-    text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+    if new_title == ''
+      # Link deleted, remove [[ ]] but keep the original title text
+
+      # Handle links of the form [[Old Title|Display Text]] => Display Text
+      text = text.gsub(/\[\[#{title_regex}\|([^\]]+)\]\]/i, '\1')
+      # Handle links of the form [[Old Title]] => Old Title
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, '\1')
+    else
+      # Replace the title part in [[Old Title|Display Text]]
+      text = text.gsub(/\[\[#{title_regex}\|/i, "[[#{new_title}|")
+      # Replace [[Old Title]] with [[New Title|Old Title]]
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, "[[#{new_title}|\\1]]")
+    end
 
     text
   end

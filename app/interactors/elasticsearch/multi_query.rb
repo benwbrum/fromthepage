@@ -35,6 +35,10 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       body: base_query
     )
 
+    Rails.logger.info("[Elasticsearch] Indexes: #{@indexes.inspect}")
+    Rails.logger.info("[Elasticsearch] Query Body: #{base_query.to_json}")
+    Rails.logger.info("[Elasticsearch] Raw Response: #{@response.inspect}")
+
     inflate_results
 
     @results = WillPaginate::Collection.create(@page, DEFAULT_PAGE_SIZE,

@@ -79,7 +79,6 @@ module ExportHelper
   end
 
   def write_work_exports(works, out, export_user, bulk_export)
-
     # owner-level exports
     if bulk_export.owner_mailing_list
       export_owner_mailing_list_csv(out: out, owner: export_user)
@@ -137,7 +136,6 @@ module ExportHelper
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
         end
 
-
         # work-specific exports
         if bulk_export.table_csv_work
           export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
@@ -173,20 +171,21 @@ module ExportHelper
         preserve_lb = bulk_export.report_arguments['preserve_linebreaks']
         include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
         include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
+        include_notes = bulk_export.report_arguments['include_notes'] != '0'
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_pdf_work
-          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_only_pdf_work
-          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text_only', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_docx_work
-          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+          export_printable_to_zip(work, 'text', 'doc', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
         end
 
         # Page-specific exports
@@ -678,12 +677,26 @@ module ExportHelper
 
       i.replace_with(hi)
     end
-    p_element.elements.each('//sup') do |sup|
+    p_element.elements.each('//ins') do |ins|
       add = REXML::Element.new("add")
+      ins.children.each { |c| add.add(c) }
 
-      add.add_attribute("place", "above")
-      sup.children.each { |c| add.add(c) }
-      sup.replace_with(add)
+      ins.replace_with(add)
+    end
+    p_element.elements.each('//b') do |i|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "bold")
+      i.children.each { |c| hi.add(c) }
+
+      i.replace_with(hi)
+    end
+    p_element.elements.each('//sup') do |sup|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "sup")
+      sup.children.each { |c| hi.add(c) }
+      sup.replace_with(hi)
     end
   end
 

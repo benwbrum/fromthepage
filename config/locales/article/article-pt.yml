@@ -2,6 +2,7 @@
 pt:
   article:
     article_links:
+      in_the_work: " em %{work}"
       n_pages_refer_to:
         one: 1 página refere-se a %{article}
         other: As páginas %{count} referem-se a %{article}
@@ -12,7 +13,6 @@ pt:
     combine_duplicate:
       selected_subjects_combined: Temas selecionados combinados com %{title}
     delete:
-      must_remove_referring_links: Você deve remover todos os links que fazem referência antes de deletar este tema.
       only_subject_owner_can_delete: Somente o criador do assunto ou proprietário do projeto pode excluir isso.
     edit:
       autolink: Autolink
@@ -55,7 +55,7 @@ pt:
       categories: Categorias
       category_back_message: Assim que terminar de editar as categorias, %{page_link} para retornar à página "%{page}".
       click_here: Clique aqui
-      confirm_delete_category: Tem certeza de que deseja excluir esta categoria e todas as suas subcategorias? Após a exclusão, você não poderá recuperá-lo!
+      confirm_delete_category: Tem certeza de que deseja excluir esta categoria e todas as suas subcategorias? Após a exclusão, você não poderá recuperá-la!
       create_category_message: "%{link} que você usará para agrupar assuntos."
       create_the_first_category: Crie a primeira categoria
       delete_category: Excluir categoria
@@ -94,9 +94,9 @@ pt:
       no_category_message: Este assunto não pertence a nenhuma categoria
       race_description: Descrição da corrida
       references: Referências
-      related_subjects: Assuntos Relacionados
+      related_subjects: Assuntos relacionados
       related_subjects_1: Assuntos relacionados
-      related_subjects_description: O gráfico mostra os outros assuntos mencionados nas mesmas páginas que o assunto "%{article}". Se o mesmo assunto ocorrer em uma página com "%{article}" mais de uma vez, ele aparecerá mais próximo de "%{article}" no gráfico e será colorido em um tom mais escuro. Quanto mais próximo um assunto estiver do centro, mais "relacionados" serão os assuntos.
+      related_subjects_description: O gráfico mostra outros assuntos mencionados nas mesmas páginas que o assunto "%{article}". Se o mesmo assunto ocorrer em uma página com "%{article}" mais de uma vez, ele aparecerá mais próximo de "%{article}" no gráfico e será colorido em um tom mais escuro. Quanto mais próximo um assunto estiver do centro, mais "relacionados" serão os assuntos.
       search_all_pages: Pesquisar todas as páginas
       search_all_pages_description: Pesquise no texto de %{collection} por páginas que contenham palavras usadas para vincular a <em>%{article}</em>
       search_unlinked_pages: Pesquisar páginas não vinculadas
@@ -105,7 +105,7 @@ pt:
       sex: Sexo
       text_search: Pesquisa de texto
     subject_upload:
-      csv_file_must_contain_headers: O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam "cabeçalho," "artigo," "Indentificador Universal de Recursos," e "categoria" respectivamente.
+      csv_file_must_contain_headers: O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, e CATEGORY, os quais significam "cabeçalho," "artigo," "Identificador Universal de Recursos," e "categoria" respectivamente.
     tooltip:
       category:
         one: 'Categoria:'
