@@ -227,7 +227,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def fill_featured_at
-    return if self.visibility.to_sym == :private
+    return if self.visibility.nil? || self.visibility.to_sym == :private
 
     self.featured_at = Time.current
   end
