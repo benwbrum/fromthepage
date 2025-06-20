@@ -561,6 +561,7 @@ Fromthepage::Application.routes.draw do
 
       #article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'
+      get 'article/:article_id/relationship_graph', to: 'article#relationship_graph', as: 'article_relationship_graph'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'

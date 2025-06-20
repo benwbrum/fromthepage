@@ -22,6 +22,8 @@
         =@article.send(field)
 
     h3= t('.related_subjects')
+    -if !params['rsg'].blank?
+      =render :partial => 'subject_graph_d3'
     .article-graph
       =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: t('.related_subjects_1'))
       ==@map

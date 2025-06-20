@@ -199,6 +199,10 @@ class Collection < ApplicationRecord
     created_on
   end
 
+  def pages_are_meaningful?
+    self.works.where(pages_are_meaningful: true).present?
+  end
+
   def text_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY
   end
