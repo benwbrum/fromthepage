@@ -66,18 +66,6 @@ describe ArticleController do
         expect(response).to redirect_to(collection_subjects_path(owner, collection))
       end
     end
-
-    context 'fail' do
-      let!(:article) { create(:article, collection: collection, pages: [page]) }
-
-      it 'redirects' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(collection_article_show_path(owner, collection, article))
-      end
-    end
   end
 
   describe '#update' do

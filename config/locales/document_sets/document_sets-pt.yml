@@ -34,7 +34,7 @@ pt:
       set_collaborators_description: Os colaboradores podem transcrever e editar conjuntos de documentos privados.
     edit_tabs:
       general: Em geral
-      manage_works: Controlar Obras
+      manage_works: Gerenciar obras
       privacy_access: Privacidade e acesso
     edit_works:
       add_work_title_to_document_set: Adicionar %{work_title} ao Conjunto de Documentos
@@ -50,8 +50,8 @@ pt:
     index:
       actions: Ações
       aggregating_works_thematic_exhibits: Agregar obras em exposições temáticas
-      assign_works_to_document_sets: Atribuir Obras aos Conjuntos de Documentos
-      create_a_document_set: Criar Conjunto de Documentos
+      assign_works_to_document_sets: Inserir obras em conjuntos de documentos
+      create_a_document_set: Criar conjunto de documentos
       delete: Apagar
       delete_document_set_confirm_message: Tem certeza que deseja apagar este conjunto de documentos? O conjunto de documentos será apagado, mas nenhuma das obras dentro do conjunto de documentos será apagada.
       document_sets_are_sub_sets: 'Os conjuntos de documentos são subconjuntos dos documentos de uma coleção. Eles têm vários usos, incluindo:'

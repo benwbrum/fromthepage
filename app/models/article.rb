@@ -50,7 +50,7 @@ class Article < ApplicationRecord
   scope :target_article_links, -> { order "articles.title ASC" }
 
   has_many :source_article_links, foreign_key: 'source_article_id', class_name: 'ArticleArticleLink'
-  has_many :page_article_links, dependent: :destroy
+  has_many :page_article_links
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
 
@@ -62,24 +62,17 @@ class Article < ApplicationRecord
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
-  # add a call back that logs a warning whenever an article is deleted
-  before_destroy :log_destroy
 
   edtf_date_attribute :birth_date
   edtf_date_attribute :death_date
   edtf_date_attribute :begun
   edtf_date_attribute :ended
 
-
-  def log_destroy
-    logger.warn("ISSUE4269 Warning: Article #{self.id} #{self.title} in collection #{self.collection.title} is being destroyed.")
-  end
-
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
   end
 
-  #needed for document sets to correctly display articles
+  # Needed for document sets to correctly display articles
   def show_links(collection)
     self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids})
   end

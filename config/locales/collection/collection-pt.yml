@@ -36,9 +36,9 @@ pt:
       start_date: Data de iniciar
       update: Atualizar
     contributors_body:
-      active_collaborators: Colaboradores Ativos
-      all_collaborator_emails: Todos os e-mails dos Colaboradores
-      collaborator_stats: Estatísticas de Colaborador %{start_deed} até %{end_deed}
+      active_collaborators: Colaboradores ativos
+      all_collaborator_emails: Todos os e-mails de colaboradores
+      collaborator_stats: Estatísticas de colaborador %{start_deed} até %{end_deed}
       collaborators: Colaboradores
       detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
       export_activity_as_csv: Exportar todas as atividades como uma planilha
@@ -47,13 +47,13 @@ pt:
       export_as_csv: Exportar atividade do usuário como uma planilha
       export_as_csv_description: Baixe uma planilha com uma linha listando cada usuário e seu tempo e atividade.
       find_project_newsletters_recommendations: Encontre recomendações para boletins de projetos.
-      new_collaborators: Novos Colaboradores
+      new_collaborators: Novos colaboradores
       no_activity_this_time_frame: Nenhuma atividade neste período de tempo
-      no_collaborators: Sem Colaboradores
+      no_collaborators: Sem colaboradores
       time_on_this: Tempo nesta coleção
       total_time: 'Tempo Total: %{hours} horas, %{minutes} minutos.'
       user: Do utilizador
-      view_activity: Visualizar Atividade
+      view_activity: Visualizar atividade
     corrected: Corrigido
     create:
       notice: A coleção foi criada
@@ -69,7 +69,7 @@ pt:
       copy_url: Copiar para área de transferência
       current_url: 'O URL atual desta coleção:'
       description: Descrição
-      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      description_message: A descrição será exibida nas telas de visão geral e sobre o projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela de busca de projetos.
       done: Feito
       footer: Rodapé
       footer_description: Este texto será exibido na parte inferior de cada página da coleção.
@@ -82,14 +82,14 @@ pt:
         other: "%{count} contribuições"
       n_more: "%{count} mais"
       no_image: Sem Imagem
-      remove_collaborator: Remover Colaborador
-      remove_owner: Remover Dono
+      remove_collaborator: Remover colaborador
+      remove_owner: Remover proprietário
       remove_reviewer: Remover revisor
-      save_changes: Guardar Alterações
+      save_changes: Salvar alterações
       title: Titulo
-      transcriber_url: 'Este link enviará os transcritores diretamente para uma página que precisa de transcrição:'
+      transcriber_url: 'Este link enviará os transcritores diretamente para uma página que precise de transcrição:'
       unblock_user: Desbloquear usuário
-      upload_image: Subir Imagem
+      upload_image: Enviar imagem
       url: URL
       url_description: Use letras minúsculas e travessões entre quaisquer palavras.
     edit_buttons:
@@ -97,11 +97,13 @@ pt:
       abbr_label: Abreviação
       add_description: Marca o texto inserido após o fato pelo escritor. <br><i>Recomendado</i>
       add_label: Adição
+      b_description: Marca o texto digitado em negrito.
+      b_label: Audacioso
       date_description: Marca datas, com formulário padronizado no atributo when.
       date_label: Encontro
       del_description: Marca o texto que foi removido por apagamento ou tachado. <br><i>Recomendado</i>
       del_label: Eliminação
-      description: FromThePage pode suportar marcação em transcrições em formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
+      description: FromThePage tem suporte para marcação em transcrições com formulários TEI-XML ou HTML. Recomendamos configurar no máximo seis botões para aparecer no editor de transcrição. Considere se outros sistemas poderão usar esse tipo de marcação; se apenas texto simples for suportado, os projetos devem usar convenções de tipografia em vez de marcação.
       expan_description: Marca abreviações expandidas com formas originais no atributo orig. (Forma alternativa de tag abbr.)
       expan_label: Expansão
       fig_description: Indica uma figura ou uma linha horizontal.

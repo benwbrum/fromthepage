@@ -214,7 +214,7 @@ module AbstractXmlHelper
         span.name='i'
         span.attributes.delete 'rend'
       when 'bold'
-        span.name='i'
+        span.name='b'
       when 'sub'
         span.name='sub'
       when 'str'
@@ -223,7 +223,11 @@ module AbstractXmlHelper
     end
 
     doc.elements.each("//add") do |e|
-      e.name='span'
+      e.name='ins'
+      e.add_attribute('class', "addition")
+    end
+
+    doc.elements.each("//ins") do |e|
       e.add_attribute('class', "addition")
     end
 

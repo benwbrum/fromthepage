@@ -45,8 +45,8 @@ pt:
           wrong_number_of_closing_braces: Número incorreto de chaves de fechamento após %{tag}
     models:
       bulk_export:
-        one: exportação a granel
-        other: exportações a granel
+        one: exportação em lote
+        other: exportações em lote
       ia_leaf:
         one: página
         other: Páginas

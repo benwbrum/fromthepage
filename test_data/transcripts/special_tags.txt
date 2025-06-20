@@ -1,5 +1,7 @@
 Add tag is <add>for text insertions</add>
 
+Use hi rend bold for <hi rend="bold">bolded text</hi>
+
 Column break <cb/> to indicate a break between columns
 
 Date <date when="2020-12-09">December 9, 2020</date> to indicate a date, with an attribute of when
