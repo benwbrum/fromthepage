@@ -57,6 +57,7 @@ class Article < ApplicationRecord
   scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages) }
 
   has_many :pages, through: :page_article_links
+  has_many :works, through: :page_article_links
 
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
@@ -108,6 +109,15 @@ class Article < ApplicationRecord
   def org_fields_enabled?
     self.categories.where(:org_fields_enabled => true).present?
   end
+
+  def clear_relationship_graph
+    File.unlink(d3js_file) if File.exists?(d3js_file)
+  end
+
+  def d3js_file
+    "#{Rails.root}/public/images/working/dot/#{self.id}.d3.js"
+  end
+
 
   #######################
   # De-Dup Support

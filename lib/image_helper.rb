@@ -32,7 +32,18 @@ module ImageHelper
     destination = filename.gsub(pattern, '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
-    gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
+    # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
+    raw_page_size=`pdfinfo #{filename} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+    dpi=300
+    pixel_dim=raw_page_size.split(' x ').map{|e| e.to_f / 72 * dpi}
+    if pixel_dim.max >= 16000
+      dpi=150
+      pixel_dim=raw_page_size.split(' x ').map{|e| e.to_f / 72 * dpi}
+      if pixel_dim.max >= 16000
+        dpi=72
+      end
+    end
+    gs = "gs -r#{dpi}x#{dpi} -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
     print "\t\t#{gs}\n"
     system(gs)
 
