@@ -97,6 +97,8 @@ fr:
       abbr_label: Abréviation
       add_description: Marque le texte inséré après coup par l'auteur. <br><i>Recommandé</i>
       add_label: Ajout
+      b_description: Marque le texte composé en gras.
+      b_label: Audacieux
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       date_label: Date
       del_description: Marque le texte qui a été supprimé par effacement ou barré. <br><i>Recommandé</i>

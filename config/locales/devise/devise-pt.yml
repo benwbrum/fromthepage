@@ -3,11 +3,11 @@ pt:
   devise:
     confirm_password: Confirme a Senha
     create_account: Criar uma conta
-    display_name: Nome em Exibição
+    display_name: Nome público
     email_address: Endereço de email
     errors:
       keys:
-        display_name: Nome em Exibição
+        display_name: Nome público
         email: Email
         login: Nome de usuário
         password: Senha
@@ -42,7 +42,7 @@ pt:
       edit:
         change_password: Mudar senha
         change_password_message: Crie uma nova senha para sua conta. A senha deve ter pelo menos 8 caracteres e conter letras e números. Por favor, não use a mesma senha que você usa para seu banco online ou conta de e-mail!
-        new_password: Nova Senha
+        new_password: Nova senha
       new:
         message: Insira o endereço de e-mail associado à sua conta FromThePage. Se o seu endereço de e-mail existir em nosso banco de dados, você receberá um link de recuperação de senha em seu endereço de e-mail em alguns minutos.
         password_recovery: Recuperação de senha
