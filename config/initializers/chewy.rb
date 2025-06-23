@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
-Chewy.settings = if Rails.env.development? || Rails.env.test?
+cloud_id = Settings.elasticsearch.cloud_id
+
+Chewy.settings = if cloud_id.present?
                    {
-                     host: Settings.elasticsearch.host,
+                     cloud_id: cloud_id,
+                     api_key: Settings.elasticsearch.api_key,
                      prefix: Settings.elasticsearch.prefix
                    }
                  else
                    {
-                     cloud_id: Settings.elasticsearch.cloud_id,
-                     api_key: Settings.elasticsearch.api_key,
+                     host: Settings.elasticsearch.host,
                      prefix: Settings.elasticsearch.prefix
                    }
                  end
