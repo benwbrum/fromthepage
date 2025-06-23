@@ -1,0 +1,12 @@
+style
+  | .btn-#{token} {
+  |   position: absolute !important;
+  |   left: 0px !important;
+  |   top: auto;
+  |   width: 1px;
+  |   height: 1px;
+  |   overflow: hidden;
+  | }
+
+div[class="btn-#{token}"]
+  =link_to honeypot_label_options.sample, honeypot_path(token: token)

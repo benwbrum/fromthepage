@@ -57,4 +57,20 @@ module ResourcesHelper
       [t("document_sets.new.#{key}"), key]
     end
   end
+
+  def honeypot_label_options
+    if Rails.env.test?
+      [
+        'Honeypot'
+      ]
+    else
+      [
+        t('shared.collection_tabs.collaborators'),
+        t('shared.collection_tabs.overview'),
+        t('shared.collection_tabs.review'),
+        t('shared.description_tabs.versions'),
+        t('shared.description_tabs.metadata')
+      ]
+    end
+  end
 end

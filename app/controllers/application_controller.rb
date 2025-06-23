@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
+  before_action :set_honeypot_token
   after_action :track_action
   around_action :switch_locale
 
@@ -339,6 +340,10 @@ class ApplicationController < ActionController::Base
   def default_per_page
     # Override in controller for custom defaults
     DEFAULT_PER_PAGE
+  end
+
+  def set_honeypot_token
+    @honeypot_token = SecureRandom.hex(10)
   end
 end
 

@@ -106,7 +106,8 @@ html lang="en-US"
     =(yield :content_above).force_encoding 'UTF-8'
 
     main.wrapper
-      =render :partial => '/shared/breadcrumbs'
+      =render partial: 'shared/honeypot', locals: { token: @honeypot_token }
+      =render partial: '/shared/breadcrumbs'
       -if content_for?(:thredded)
         =javascript_include_tag 'thredded'
         -if @collection.nil?

@@ -41,7 +41,7 @@ GCV_CREDENTIAL_FILE='/home/benwbrum/dev/products/fromthepage/integration/gcv/fro
 OCR_TRANSFORM_COMMAND='docker run --rm -i ubma/ocr-fileformat ocr-transform gcv hocr | docker run --rm -i ubma/ocr-fileformat ocr-transform hocr alto4.0'
 
 # Elasticsearch settings
-ELASTIC_ENABLED = ENV['ELASTIC_ENABLED'] && ENV['ELASTIC_ENABLED'].downcase == 'true' 
+ELASTIC_ENABLED = ENV['ELASTIC_ENABLED'] && ENV['ELASTIC_ENABLED'].downcase == 'true'
 ELASTIC_CLOUD_ID = ENV['ELASTIC_CLOUD_ID']
 ELASTIC_API_KEY = ENV['ELASTIC_API_KEY']
 ELASTIC_SUFFIX = ENV['ELASTIC_SUFFIX']
