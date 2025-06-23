@@ -126,20 +126,6 @@ class ArticleController < ApplicationController
         end
       end
 
-      # replace with above
-      # @article.page_article_links.each do |link|
-      #   page_nodes << link.page
-      #   work_nodes << link.page.work
-      #   # now walk the network to find coocurrences
-      #   center_article_to_page_links<<link.page_id
-      #   center_article_to_work_links<<link.page.work_id
-      #   link.page.page_article_links.each do |second_link|
-      #     article_nodes << second_link.article
-      #     second_page_to_article_links<<[second_link.page.id, second_link.article_id]
-      #     second_work_to_article_links<<[second_link.page.work_id, second_link.article_id]
-      #   end
-      # end
-
       # now construct the JSON response
       nodes=[]
       nodes << {
@@ -178,15 +164,6 @@ class ArticleController < ApplicationController
         end
       end
   
-      # TODO decide on page vs. work here
-      # work_nodes.uniq.each do |work|
-      #   nodes << {
-      #     "id" => "W#{work.id}", 
-      #     "title" => work.title, 
-      #     "group" => "Documents",
-      #     "link" => collection_read_work_url(@collection.owner, @collection, work)
-      #   }
-      # end
       links=[]
       article_links.tally.each do |article_id,link_count|
         links << {
@@ -218,9 +195,8 @@ class ArticleController < ApplicationController
       File.write(@article.d3js_file, doc.to_json)
     end
 
-    send_file @article.d3js_file,
-      type:        "application/javascript; charset=utf-8",
-      disposition: "inline"
+    # now render the d3js file
+    render file: @article.d3js_file, type: "application/javascript; charset=utf-8", layout: false
   end
 
 
