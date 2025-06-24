@@ -165,7 +165,7 @@ class BulkExportController < ApplicationController
 
   def authorized?
     unless user_signed_in? && current_user.admin
-      redirect_to dashboard_path
+      redirect_to dashboard_path and return
     end
   end
 
