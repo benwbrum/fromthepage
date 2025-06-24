@@ -130,7 +130,7 @@ module ExportHelper
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
+        print "\t#{DateTime.now.to_s} Exporting work\t#{work.id}\t#{work.title}\n"
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
@@ -677,26 +677,12 @@ module ExportHelper
 
       i.replace_with(hi)
     end
-    p_element.elements.each('//ins') do |ins|
-      add = REXML::Element.new("add")
-      ins.children.each { |c| add.add(c) }
-
-      ins.replace_with(add)
-    end
-    p_element.elements.each('//b') do |i|
-      hi = REXML::Element.new("hi")
-
-      hi.add_attribute("rend", "bold")
-      i.children.each { |c| hi.add(c) }
-
-      i.replace_with(hi)
-    end
     p_element.elements.each('//sup') do |sup|
-      hi = REXML::Element.new("hi")
+      add = REXML::Element.new("add")
 
-      hi.add_attribute("rend", "sup")
-      sup.children.each { |c| hi.add(c) }
-      sup.replace_with(hi)
+      add.add_attribute("place", "above")
+      sup.children.each { |c| add.add(c) }
+      sup.replace_with(add)
     end
   end
 
