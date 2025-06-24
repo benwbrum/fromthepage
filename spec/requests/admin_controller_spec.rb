@@ -75,24 +75,17 @@ describe AdminController do
   describe 'admin tabs' do
     before { login_as admin }
 
-    it 'responds to owner list' do
-      get admin_owner_list_path
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:owner_list)
+    shared_examples 'an admin tab' do |path, template|
+      it "responds to #{template}" do
+        get path
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(template)
+      end
     end
 
-    it 'responds to moderation' do
-      get admin_moderation_path
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:moderation)
-    end
-
-    it 'responds to uploads' do
-      get admin_uploads_path
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:uploads)
-    end
-
+    it_behaves_like 'an admin tab', admin_owner_list_path, :owner_list
+    it_behaves_like 'an admin tab', admin_moderation_path, :moderation
+    it_behaves_like 'an admin tab', admin_uploads_path, :uploads
     it 'responds to exports' do
       get bulk_export_index_path
       expect(response).to have_http_status(:ok)
