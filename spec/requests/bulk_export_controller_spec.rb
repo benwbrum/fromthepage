@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe BulkExportController do
   let!(:admin) { create(:admin) }
-  let!(:bulk_export) { create(:bulk_export, user_id: admin.id) }
+  let!(:bulk_export) { create(:bulk_export, user_id: admin.id, status: "finished") }
 
   describe '#index' do
     let(:action_path) { bulk_export_index_path }
