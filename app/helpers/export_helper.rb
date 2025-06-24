@@ -130,7 +130,7 @@ module ExportHelper
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
+        print "\t#{DateTime.now.to_s} Exporting work\t#{work.id}\t#{work.title}\n"
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
