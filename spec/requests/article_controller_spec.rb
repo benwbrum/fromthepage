@@ -229,4 +229,29 @@ describe ArticleController do
       end
     end
   end
+
+  describe '#relationship_graph' do
+    let!(:article) { create(:article, collection: collection, pages: [page]) }
+    let!(:linked_article) { create(:article, collection: collection) }
+
+    before do
+      create(:article_article_link, source_article: article, target_article: linked_article)
+      linked_article.pages << page
+      FileUtils.rm_f(article.d3js_file)
+    end
+
+    let(:action_path) { collection_article_relationship_graph_path(owner, collection, article) }
+    let(:subject) { get action_path }
+
+    it 'returns graph data without authentication' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      node_ids = json['nodes'].map { |n| n['id'] }
+      expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
+      expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
+      expect(File).to exist(article.d3js_file)
+    end
+  end
 end

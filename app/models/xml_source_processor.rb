@@ -67,6 +67,11 @@ def source_text=(text)
     super
 end
 
+def source_translation=(text)
+  self.source_translation_will_change!
+  super
+end
+
   ##############################################
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.

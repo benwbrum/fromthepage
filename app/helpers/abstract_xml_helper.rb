@@ -40,7 +40,7 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil, highlight_article_id=nil)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil, highlight_article_id=nil, suppress_tooltips=false)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -68,8 +68,10 @@ module AbstractXmlHelper
               anchor.add_attribute("href", "#article-#{id}")
             end
           else
-            anchor.add_attribute('data-controller', 'tooltip')
-            anchor.add_attribute('data-tooltip', article_tooltip_url(article_id: id, collection_id: collection.slug))
+            unless suppress_tooltips
+              anchor.add_attribute('data-controller', 'tooltip')
+              anchor.add_attribute('data-tooltip', article_tooltip_url(article_id: id, collection_id: collection.slug))
+            end
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
             if highlight_article_id && id == highlight_article_id
               anchor.add_attribute("class", "highlighted")  # Add the class attribute for highlighting

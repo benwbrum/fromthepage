@@ -486,6 +486,7 @@ class Page < ApplicationRecord
   def clear_article_graphs
     article_ids = self.page_article_links.pluck(:article_id)
     Article.where(id: article_ids).update_all(:graph_image=>nil)
+    Article.where(id: article_ids).each{|article| article.clear_relationship_graph}
   end
 
   def populate_search

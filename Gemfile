@@ -61,6 +61,7 @@ gem 'bootsnap', require: false
 gem 'puma'
 
 gem 'active_link_to'
+gem 'mail', '~> 2.7'
 
 gem 'warning'
 
