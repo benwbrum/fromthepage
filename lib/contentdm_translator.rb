@@ -136,6 +136,25 @@ module ContentdmTranslator
     return error, fts
   end
 
+  def self.export_work_to_cdm_with_retry(work, username, password, license)
+    max_delay = 3600
+    delay = 300
+
+    begin
+      ContentdmTranslator.export_work_to_cdm(work, username, password, license)
+    rescue Net::ReadTimeout => e
+      print "Net::ReadTimeout: Retrying in #{delay} seconds... (#{e.message})"
+
+      sleep(delay)
+
+      delay *= 2
+      if delay > max_delay
+        print "Net::ReadTimeout: Max retry delay reached, giving up. (#{e.message})"
+      else
+        retry
+      end
+    end
+  end
 
   def self.export_work_to_cdm(work, username, password, license)
     error, fieldname = fts_field_for_collection(work.collection)
