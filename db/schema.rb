@@ -386,6 +386,7 @@ ActiveRecord::Schema.define(version: 2025_06_25_171905) do
   end
 
   create_table "honeypot_visits", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.integer "visit_id"
     t.string "ip_address", null: false
     t.string "ip_subnet", null: false
     t.string "browser"

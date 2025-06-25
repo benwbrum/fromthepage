@@ -15,7 +15,8 @@ class HoneypotsController < ApplicationController
       ip_address: ip,
       ip_subnet: subnet_from_ip(ip),
       browser: browser_name(request.user_agent),
-      user_agent: request.user_agent.to_s
+      user_agent: request.user_agent.to_s,
+      visit: ahoy.visit
     )
   end
 
