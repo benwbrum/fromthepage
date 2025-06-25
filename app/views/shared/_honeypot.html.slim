@@ -9,4 +9,4 @@ style
   | }
 
 div[class="btn-#{token}"]
-  =link_to honeypot_label_options.sample, main_app.honeypot_path(token: token)
+  =link_to honeypot_label_options.sample, main_app.honeypot_path(token: token), rel: 'nofollow'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_11_171909) do
+ActiveRecord::Schema.define(version: 2025_06_25_171905) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -383,6 +383,18 @@ ActiveRecord::Schema.define(version: 2025_06_11_171909) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "honeypot_visits", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.string "ip_address", null: false
+    t.string "ip_subnet", null: false
+    t.string "browser"
+    t.text "user_agent"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["browser"], name: "index_honeypot_visits_on_browser"
+    t.index ["ip_address"], name: "index_honeypot_visits_on_ip_address"
+    t.index ["ip_subnet", "created_at"], name: "index_honeypot_visits_on_ip_subnet_and_created_at"
   end
 
   create_table "ia_leaves", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
