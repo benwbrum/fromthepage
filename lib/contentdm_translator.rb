@@ -137,17 +137,18 @@ module ContentdmTranslator
   end
 
   def self.export_work_to_cdm_with_retry(work, username, password, license)
-    max_delay = 3600
+    max_delay = 21_600
     delay = 300
 
     begin
       ContentdmTranslator.export_work_to_cdm(work, username, password, license)
     rescue Net::ReadTimeout => e
-      print "Net::ReadTimeout: Retrying in #{delay} seconds... (#{e.message})"
+      delay_to_use = [delay, max_delay].min
+      print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
 
-      sleep(delay)
+      sleep(delay_to_use)
 
-      delay *= 2
+      delay = (delay * 1.5).round
       if delay > max_delay
         print "Net::ReadTimeout: Max retry delay reached, giving up. (#{e.message})"
       else
@@ -167,7 +168,7 @@ module ContentdmTranslator
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
-      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title}.  CONTENTdm response:"
+      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title} at #{Time.current.strftime('%Y-%m-%d %I:%M %p')}.  CONTENTdm response:"
       metadata_wrapper = {
         'metadataList' => {
           'metadata' => [
