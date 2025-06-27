@@ -196,7 +196,7 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
-  if Rails.application.config.upload_host.present?
+  if Rails.application.config.try(:upload_host)
     constraints subdomain: Rails.application.config.upload_host do
       scope 'dashboard', as: 'dashboard' do
         post 'new_upload', to: 'dashboard#new_upload'
