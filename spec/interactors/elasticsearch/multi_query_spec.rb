@@ -84,7 +84,7 @@ describe Elasticsearch::MultiQuery do
   context 'Guest user' do
     let(:result) do
       described_class.new(
-        query: "#{identifier} some other words",
+        query: "#{identifier} some other-words",
         query_params: {},
         user: nil
       ).call
@@ -92,19 +92,17 @@ describe Elasticsearch::MultiQuery do
 
     context 'Collection restricted' do
       it 'performs multiquery' do
-        # expect(result.success?).to be_truthy
-        begin
-          expect(result.full_errors).to be_nil
-        rescue StandardError => e
-          puts "\n[CI DEBUG] Elasticsearch query failure:"
-          require 'json'
-
-          puts JSON.pretty_generate(result.response)
-          raise e
-        end
-
-        expect(result.full_errors).to be_nil
+        expect(result.success?).to be_truthy
         expect(result.results).to eq([])
+      end
+
+      it 'performs multiquery including docset' do
+        document_set.update!(title: "docset #{identifier}")
+
+        expect(result.success?).to be_truthy
+        expect(result.results).to contain_exactly(
+          document_set
+        )
       end
 
       it 'performs multiquery including page_3 when work_2 added to public document set' do
@@ -112,8 +110,7 @@ describe Elasticsearch::MultiQuery do
         document_set.reload.works.each(&:save!)
         document_set.reload.works.flat_map(&:pages).each(&:save!)
 
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
+        expect(result.success?).to be_truthy
 
         expect(result.results).to contain_exactly(
           page_3
@@ -132,8 +129,7 @@ describe Elasticsearch::MultiQuery do
       end
 
       it 'performs multiquery' do
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
+        expect(result.success?).to be_truthy
 
         expect(result.results).to contain_exactly(
           collection,
@@ -146,9 +142,7 @@ describe Elasticsearch::MultiQuery do
       it 'performs multiquery including newly transcribed page' do
         page_2.update!(source_text: "New transcription #{identifier}")
 
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
-
+        expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
           collection,
           work_1,
@@ -163,9 +157,7 @@ describe Elasticsearch::MultiQuery do
         collection.reload.works.each(&:save!)
         collection.reload.pages.each(&:save!)
 
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
-
+        expect(result.success?).to be_truthy
         expect(result.results).to eq([])
       end
     end
@@ -182,8 +174,7 @@ describe Elasticsearch::MultiQuery do
 
     context 'Collection restricted' do
       it 'performs multiquery' do
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
+        expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
           collection,
           work_1,
@@ -197,7 +188,7 @@ describe Elasticsearch::MultiQuery do
   context 'Other user' do
     let(:result) do
       described_class.new(
-        query: "#{identifier} some other words",
+        query: "#{identifier} some other-words",
         query_params: {},
         user: other_user
       ).call
@@ -214,9 +205,7 @@ describe Elasticsearch::MultiQuery do
       end
 
       it 'performs multiquery' do
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
-
+        expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
           collection,
           work_1,
@@ -230,8 +219,7 @@ describe Elasticsearch::MultiQuery do
         collection.works.each(&:save!)
         collection.works.flat_map(&:pages).each(&:save!)
 
-        # expect(result.success?).to be_truthy
-        expect(result.full_errors).to be_nil
+        expect(result.success?).to be_truthy
         expect(result.results).to eq([])
       end
     end

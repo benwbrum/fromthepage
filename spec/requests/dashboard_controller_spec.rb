@@ -288,6 +288,42 @@ describe DashboardController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:landing_page)
       end
+
+      context 'filter by collection' do
+        let(:params) { { search: collection.title, filter: 'collection' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
+
+      context 'filter by work' do
+        let(:params) { { search: collection.title, filter: 'work' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
+
+      context 'filter by page' do
+        let(:params) { { search: collection.title, filter: 'page' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
     end
   end
 
