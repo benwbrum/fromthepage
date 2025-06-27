@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
+  protect_from_forgery :except => [:new_upload]
 
   include AddWorkHelper
   include DashboardHelper
