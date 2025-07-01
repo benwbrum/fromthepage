@@ -29,7 +29,14 @@ module AddWorkHelper
         flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
       end
       @document_upload.submit_process
-      ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
+      upload_host = Rails.application.config.upload_host
+      if upload_host.present?
+        host = request.host.gsub(/^#{upload_host}\./,'')
+      else
+        host = request.host
+      end
+
+      ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id, host: host
     else
       render action: 'upload'
     end

@@ -387,13 +387,12 @@ class User < ApplicationRecord
 
     if user
       collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
-      owned_collections = self.owned_collections
 
       collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
 
-      (filtered_public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
+      (filtered_public_collections+collaborator_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
       (filtered_public_collections+public_sets)
     end
