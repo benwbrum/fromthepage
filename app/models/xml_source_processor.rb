@@ -345,34 +345,55 @@ EOF
     # first clear out the existing links
     # log the count of articles before and after
     clear_links(text_type) unless preview_mode
-    processed = ""
+
+    candidate_articles = collection.articles.left_joins(:article_versions)
+    page_update_timestamp = 1.hour.ago
+
+    processed = ''
     # process it
     doc = REXML::Document.new xml_string
     doc.elements.each("//link") do |element|
       # default the title to the text if it's not specified
-      if !(title=element.attributes['target_title'])
+      if !(title = element.attributes['target_title'])
         title = element.text
       end
-      #display_text = element.text
-      display_text = ""
+      # display_text = element.text
+      display_text = ''
       element.children.each do |e|
         display_text += e.to_s
       end
       debug("link display_text = #{display_text}")
-      #change the xml version of quotes back to double quotes for article title
+      # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
+      article = candidate_articles.find_by(title: title)
+
+      if article.nil?
+        article_version = ArticleVersion.where(article_id: candidate_articles.select(:id))
+                                        .where(title: title)
+                                        .where('created_on > ?', page_update_timestamp)
+                                        .order(created_on: :desc)
+                                        .first
+        article = article_version&.article
+
+        if article.present?
+          display_text = article.title
+          title = article.title
+        end
+      end
+
       # create new blank articles if they don't exist already
-      if !(article = collection.articles.where(:title => title).first)
+      if article.nil?
         article = Article.new
         article.title = title
         article.collection = collection
         article.created_by_id = User.current_user.id if User.current_user.present?
         article.save! unless preview_mode
       end
+
       link_id = create_link(article, display_text, text_type) unless preview_mode
       # now update the attribute
-      link_element = REXML::Element.new("link")
+      link_element = REXML::Element.new('link')
       element.children.each { |c| link_element.add(c) }
       link_element.add_attribute('target_title', title)
       debug("element="+link_element.inspect)
@@ -382,9 +403,8 @@ EOF
       element.replace_with(link_element)
     end
     doc.write(processed)
-    return processed
+    processed
   end
-
 
   # handle XML-dependent post-processing
   def postprocess_xml_markup(xml_string)
