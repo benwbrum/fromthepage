@@ -48,6 +48,8 @@ describe "User deletion" do
   end
 
   it "does not break page versions" do
+    @admin = User.where(:admin => true).first
+    login_as(@admin, :scope => :user)
     visit "/display/display_page?page_id=#{@page1.id}"
     click_link("Versions")    
   end

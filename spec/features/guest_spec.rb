@@ -92,8 +92,10 @@ describe 'guest user actions' do
     find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
 
-    # Versions tab should not be visible to guests
-    expect(page.find('.tabs')).not_to have_link('Versions')
+    # Versions Tab: check to see what the page versions say
+    page.find('.tabs').click_link('Versions')
+    expect(page).to have_content('revisions')
+    expect(page).to have_link('Guest')
 
     # Transcribe Tab: Contribution 2
     page.find('.tabs').click_link('Transcribe')
