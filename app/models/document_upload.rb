@@ -24,6 +24,7 @@ class DocumentUpload < ApplicationRecord
   validates :collection_id, :file, presence: true
 
   mount_uploader :file, DocumentUploader
+  has_one_attached :attachment
 
   enum status: {
     new: 'new',
@@ -58,5 +59,4 @@ class DocumentUpload < ApplicationRecord
   def upload_dir
     File.dirname(self.file.path)
   end
-
 end

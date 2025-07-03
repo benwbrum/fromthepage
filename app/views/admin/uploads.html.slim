@@ -22,7 +22,7 @@ table.admin-grid.datagrid.striped
             p.fgfaded(data-prefix="Collection: ")
               =link_to(document.collection.title, collection_url(document.user, document.collection))
           .small.fgfaded(data-prefix="File Name: ")
-            =link_to(document.file, document.file.to_s, target: '_blank')
+            =link_to(document.attachment.filename, document.attachment, target: '_blank')
         td.nowrap
           p
             =document.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
