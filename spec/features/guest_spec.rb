@@ -119,7 +119,8 @@ describe 'guest user actions' do
     expect(@guest.id).to eq(@user.id)
     expect(page.current_path).to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
 
-    # Versions Tab
+    # Versions tab should now be visible to the signed up user
+    expect(page.find('.tabs')).to have_link('Versions')
     page.find('.tabs').click_link('Versions')
     expect(page).to have_link('martha')
   end
