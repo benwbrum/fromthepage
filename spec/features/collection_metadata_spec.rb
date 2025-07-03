@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "collection metadata", :order => :defined do
-  include ActiveJob::TestHelper
-
   before :each do
     @owner = User.where(login: 'wakanda').first
     @user = User.where(login: 'margaret').first
@@ -33,8 +31,8 @@ describe "collection metadata", :order => :defined do
     title = find('h1').text
     expect(title).to eq "ladi"
     expect(page).to have_content("Document has been uploaded")
-    wait_for_upload_processing
-    sleep(10)
+
+    perform_enqueued_jobs
   end
 
   it "uploads metadata for the imported works", :js => true do

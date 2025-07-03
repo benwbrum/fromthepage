@@ -83,26 +83,35 @@ describe "owner actions", :order => :defined do
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
   end
 
-  it "creates a collection from work dropdown", :js => true do
-    @owner.account_type = "Small Organization"
-    col_title = "New Work Collection"
+  it 'creates a collection from work dropdown', js: true do
+    @owner.account_type = 'Small Organization'
+    col_title = 'New Work Collection'
+
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, '#document-upload').click
+    page.find('.tabs').click_link('Start A Project')
+
+    page.find(:css, '#document-upload', wait: 5).click
+    expect(page).to have_select('document_upload_collection_id', wait: 5)
     page.select 'Add New Collection', from: 'document_upload_collection_id'
 
     within(page.find('.litebox-embed', wait: 5)) do
-      expect(page).to have_content('Create New Collection')
+      expect(page).to have_content('Create New Collection', wait: 5)
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")
     end
+
     sleep(2)
-    page.execute_script("$('#document-upload').click()")
-    page.find('#document_upload_collection_id')
-    expect(page).to have_select('document_upload_collection_id', selected: col_title)
+
+    page.find(:css, '#document-upload', wait: 5).click
+    page.find('#document_upload_collection_id', wait: 5)
+
+    expect(page).to have_select('document_upload_collection_id', selected: col_title, wait: 5)
+
     sleep(2)
+
     expect(Collection.last.title).to eq col_title
-    #need to remove this collection to prevent conflicts in later tests
+
+    # need to remove this collection to prevent conflicts in later tests
     Collection.last.destroy
   end
 

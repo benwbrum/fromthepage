@@ -1,0 +1,15 @@
+<% if @result.success? %>
+  <% if SMTP_ENABLED %>
+    <% flash_msg = t('.document_uploaded', email: @document_upload.user.email) %>
+  <% else %>
+    <% flash_msg = t('.reload_this_page') %>
+  <% end %>
+
+  <%= turbo_stream.redirect(
+    collection_show_path(collection_id: @document_upload.collection_id),
+    response: turbo_flash(flash_msg, :info)
+  )%>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+  <%= turbo_stream.replace('document_upload_form', partial: 'dashboard/upload') %>
+<% end %>

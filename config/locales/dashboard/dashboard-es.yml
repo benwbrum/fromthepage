@@ -4,6 +4,12 @@ es:
     alphabetical_collections_and_document_sets:
       project_by: Proyecto por %{author}
       start_transcribing: Comenzar a Transcribir
+    cdm_upload:
+      import: Importar
+      import_from_contentdm: Importar desde CONTENTdm
+      import_many_link: importar varios objetos compuestos individuales.
+      or_import_many: O
+      paste_in_the_url: Pega el URL del objeto compuesto de tu sitio CONTENTdm.
     collections_list:
       collections: Colecciones
       meta_description: Eres libre de elegir entre los muchos proyectos interesantes disponibles en FromThePage. Puedes comenzar leyendo los escritos históricos que ya han sido transcritos por otros miembros. Te invitamos a colaborar en uno de los grandes proyectos de la era digital.
@@ -73,6 +79,9 @@ es:
       to_whom_it_may_concern: 'A quien le interese:'
       volunteer_text: Cada voluntario ayuda a hacer la historia más accesible. ¡Apreciamos la contribución de %{user_display_name} a nuestro esfuerzo de crowdsourcing!
       worked_on_collections: "%{user_name} ha trabajado en las siguientes colecciones de las siguientes instituciones:"
+    ia_upload:
+      import_from_archive_dot_org: Importar desde Archive.org
+      import_from_the_internet_archive: Importar desde Internet Archive
     landing_page:
       by: " por "
       institutions: Instituciones
@@ -82,22 +91,11 @@ es:
       search_for_collections: Buscar colecciones
       search_org: Buscar Organización
       search_org_label: Buscar contenido publicado por esta organización...
-    new_upload:
-      document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.
-      reload_this_page: El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo.
     new_work:
       acceptable_formats: Los archivos PNG, GIF y JPG son aceptables.
       images_should_be_named: 'Las imágenes deben nombrarse de modo que un ordenamiento alfabético dará como resultado el orden de página correcto.<br> (Esto puede requerir "cero-relleno" para cualquier número de página: <code>pagina_09.jpg, pagina_10jpg</code> se ordenará correctamente, pero <code>page_9.jpg, pagina_10.jpg</code> no.)'
       images_should_be_oriented: Las imágenes deben estar orientadas para que el lado correcto quede hacia arriba.
-      import: Importar
-      import_a_iiif_manifest_or_collection: Importar Manifiesto IIIF o Colección
-      import_from_archive_dot_org: Importar desde Archive.org
-      import_from_contentdm: Importar desde CONTENTdm
-      import_from_the_internet_archive: Importar desde Internet Archive
-      import_many_link: importar varios objetos compuestos individuales.
-      or_import_many: O
       page_image_guidelines: Guías para Imagen de Página
-      paste_in_the_url: Pega el URL del objeto compuesto de tu sitio CONTENTdm.
     owner:
       active_collections: Colecciones activas
       create_a_collection: crear una colección
@@ -143,11 +141,15 @@ es:
         one: Obra
         other: Obras
       your_collections: Tus Colecciones
+    sc_collection_upload:
+      import: Importar
+      import_a_iiif_manifest_or_collection: Importar Manifiesto IIIF o Colección
     upload:
       acceptable_image_files: Se aceptan archivos PNG, GIF y JPG.
       browse: Navegar
       click_to_browse_a_file: Haz clic para consultar un archivo...
       click_to_browse_files: Haz clic para consultar los archivos...
+      document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.
       each_folder_will_be_treated: Cada carpeta se tratará como un documento diferente, por lo tanto, no mezcle páginas de documentos diferentes en la misma carpeta.
       each_pdf_will_be_treated: Cada PDF se tratará como su propio documento, por lo tanto, no divida las páginas del mismo documento entre más de un PDF.
       for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último obra con las 5 imágenes de la carpeta.'
@@ -155,11 +157,14 @@ es:
       image_orientation_guidelines: Las imágenes deben estar orientadas de manera que queden boca arriba.
       import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto.
       page_image_guidelines: Directrices de imagen de página
+      reload_this_page: El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo.
       select_a_collection: "- Seleccione una colección -"
       to_specify_metadata: Para especificar metadatos, puede cargar una hoja de cálculo después de cargar las imágenes o puede incluir un archivo %{link} en cada carpeta especificando campos para el trabajo.
       trial_accounts_are_limited: Las cuentas de prueba están limitadas a 200 páginas. Por favor contacta a support@fromthepage.com para actualizar tu cuenta.
       upload_file: Subir archivo
       upload_pdf_or_zip_file: Subir archivo PDF o ZIP
+      uploading: Subiendo...
+      uploading_failed: No se pudo cargar el archivo. Inténtalo de nuevo.
       use_image_filenames: Utilizar los nombres de archivo de las imágenes como títulos de página.
       use_ocr_from_pdf: Utilizar el OCR de la capa de texto del PDF.
       zip_files_may_contain: Los archivos ZIP pueden contener carpetas con imágenes, PDFs o carpetas que contengan archivos PDF.

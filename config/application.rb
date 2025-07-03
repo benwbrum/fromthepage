@@ -33,12 +33,11 @@ module Fromthepage
     config.i18n.fallbacks = true
     config.i18n.fallbacks = [:en]
 
-    # override this in environment to set a different host for uploads
-    config.upload_host=nil
+    # load overrides for Thredded and other engines
+    # config/application.rb
 
+    config.hosts << Settings.upload_host if Settings.upload_host.present?
 
-  # load overrides for Thredded and other engines
-  # config/application.rb
     overrides = "#{Rails.root}/app/overrides"
     Rails.autoloaders.main.ignore(overrides)
 

@@ -196,7 +196,6 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.4)
     db_text_search (1.0.0)
       activerecord (>= 4.1.15)
     debug_inspector (1.2.0)
@@ -444,6 +443,8 @@ GEM
       rack (>= 1.0, < 4)
     rack-contrib (2.4.0)
       rack (< 4)
+    rack-cors (2.0.2)
+      rack (>= 2.0.0)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
     rack-proxy (0.7.7)
@@ -635,7 +636,6 @@ GEM
       timeago_js (>= 3.0.2.2)
     tilt (2.3.0)
     timeago_js (3.0.2.2)
-    timeout (0.4.1)
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -687,7 +687,6 @@ DEPENDENCIES
   bootsnap
   browser (~> 2.0)
   bullet
-  mail (~> 2.7)
   capistrano (~> 3.10)
   capistrano-bundler (~> 1.6)
   capistrano-rails (~> 1.4)
@@ -724,6 +723,7 @@ DEPENDENCIES
   jquery-ui-sass-rails
   launchy
   listen
+  mail (~> 2.7)
   memory_profiler
   meta_request
   mysql2
@@ -741,6 +741,7 @@ DEPENDENCIES
   pry-byebug
   puma
   rack-attack
+  rack-cors
   rack-mini-profiler
   rack-reverse-proxy
   rails (= 6.1.7.6)

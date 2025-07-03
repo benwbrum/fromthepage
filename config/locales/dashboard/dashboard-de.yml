@@ -4,6 +4,12 @@ de:
     alphabetical_collections_and_document_sets:
       project_by: Projekt von %{author}
       start_transcribing: Mit der Transkription beginnen
+    cdm_upload:
+      import: Import
+      import_from_contentdm: Import von CONTENTdm
+      import_many_link: Import mehrerer einzelner mehrteiliger Objekte.
+      or_import_many: Oder
+      paste_in_the_url: Fügen Sie die URL eines mehrteiligen Objekts oder einer Sammlung auf Ihrer CONTENTdm-Site ein.
     collections_list:
       collections: Sammlungen
       meta_description: Wählen Sie frei aus den vielen interessanten Projekten, die auf FromThePage gehostet werden. Lesen Sie zuerst historische Schriften, die bereits von anderen Mitgliedern transkribiert wurden. Gerne können Sie einem der tollen Projekte dabei helfen, ins digitale Zeitalter zu kommen.
@@ -73,6 +79,9 @@ de:
       to_whom_it_may_concern: 'Wen es angeht:'
       volunteer_text: Jeder Freiwillige trägt dazu bei, die Geschichte zugänglicher zu machen. Wir freuen uns über den Beitrag von %{user_display_name} zu unserem Crowdsourcing-Bemühen!
       worked_on_collections: "%{user_name} hat an den folgenden Sammlungen der folgenden Institutionen gearbeitet:"
+    ia_upload:
+      import_from_archive_dot_org: Von Archive.org importieren
+      import_from_the_internet_archive: Import von Internet Archive
     landing_page:
       by: " von "
       institutions: Institutionen
@@ -82,22 +91,11 @@ de:
       search_for_collections: Suche nach Sammlungen
       search_org: Organisation durchsuchen
       search_org_label: Suchen Sie nach von dieser Organisation veröffentlichten Inhalten ...
-    new_upload:
-      document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
-      reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.
     new_work:
       acceptable_formats: 'Zulässige Formate: PNG-, GIF- und JPG.'
       images_should_be_named: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
       images_should_be_oriented: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
-      import: Import
-      import_a_iiif_manifest_or_collection: Importieren Sie ein IIIF-Manifest oder eine IIIF-Collection
-      import_from_archive_dot_org: Von Archive.org importieren
-      import_from_contentdm: Import von CONTENTdm
-      import_from_the_internet_archive: Import von Internet Archive
-      import_many_link: Import mehrerer einzelner mehrteiliger Objekte.
-      or_import_many: Oder
       page_image_guidelines: Richtlinien für Faksimiles
-      paste_in_the_url: Fügen Sie die URL eines mehrteiligen Objekts oder einer Sammlung auf Ihrer CONTENTdm-Site ein.
     owner:
       active_collections: Aktive Sammlungen
       create_a_collection: eine Sammlung erstellen
@@ -143,11 +141,15 @@ de:
         one: Werk
         other: Werke
       your_collections: Ihre Sammlungen
+    sc_collection_upload:
+      import: Import
+      import_a_iiif_manifest_or_collection: Importieren Sie ein IIIF-Manifest oder eine IIIF-Collection
     upload:
       acceptable_image_files: PNG-, GIF- und JPG-Dateien sind alle akzeptabel.
       browse: Durchsuchen
       click_to_browse_a_file: Klicken Sie hier, um eine Datei zu durchsuchen...
       click_to_browse_files: Klicken Sie hier, um Dateien zu durchsuchen
+      document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
       each_folder_will_be_treated: Jeder Ordner wird als ein eigenes Dokument behandelt, vermischen Sie also keine Seiten aus verschiedenen Dokumenten in einem Ordner.
       each_pdf_will_be_treated: Jedes PDF wird als eigenes Dokument behandelt. Teilen Sie also Seiten desselben Dokuments nicht auf mehr als ein PDF auf.
       for_example_a_zip_file: 'Der Upload einer ZIP-Datei mit 3 Bildern, 2 PDFs und 1 Ordner mit 5 weiteren Bildern würde zum Beispiel zur Erstellung von 4 Werken führen: die Bilder der obersten Ebene in einem, jedes PDF als eigenes Werk und ein letztes Werk, das die 5 Bilder aus dem Ordner enthält.'
@@ -155,11 +157,14 @@ de:
       image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
       import_form_message: In diesem Bereich können Sie Ihre Faksimiles nach FromThePage importieren. Wählen Sie eine Sammlung aus, in die importiert werden soll, und hängen Sie eine ZIP- oder PDF-Datei an, die Faksimiles enthält, die für Ihr Projekt verwendet werden sollen.
       page_image_guidelines: Richtlinien für Faksimiles
+      reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.
       select_a_collection: "- Sammlung auswählen -"
       to_specify_metadata: Um Metadaten anzugeben, können Sie nach dem Hochladen der Bilder eine Tabelle hochladen oder in jeden Ordner eine %{link}-Datei einfügen, die Felder für die Arbeit angibt.
       trial_accounts_are_limited: Testversionskonten sind auf 200 Seiten begrenzt. Bitte wenden Sie sich an support@fromthepage.com, um Ihren Kontotyp zu ändern.
       upload_file: Datei hochladen
       upload_pdf_or_zip_file: PDF- oder ZIP-Datei hochladen
+      uploading: Hochladen...
+      uploading_failed: Das Hochladen der Datei ist fehlgeschlagen. Versuchen Sie es erneut.
       use_image_filenames: " Bilddateinamen als Seitentitel verwenden."
       use_ocr_from_pdf: " Text aus PDF-Textebenen, Textdateien oder XML-Dateien impprtieren."
       zip_files_may_contain: ZIP-Dateien können Ordner mit Bildern, PDFs oder Ordner mit PDFs enthalten.

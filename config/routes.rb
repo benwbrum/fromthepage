@@ -7,7 +7,6 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
   root to: redirect('/landing')
   get '/landing', to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
@@ -196,20 +195,6 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
-  if Rails.application.config.upload_host.present?
-    constraints subdomain: Rails.application.config.upload_host do
-      scope 'dashboard', as: 'dashboard' do
-        post 'new_upload', to: 'dashboard#new_upload'
-      end
-    end
-  else
-    scope 'dashboard', as: 'dashboard' do
-      post 'new_upload', to: 'dashboard#new_upload'
-    end
-  end
-
-
-
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
     get 'owner' => 'dashboard#owner'
@@ -217,7 +202,7 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    post 'new_upload', to: 'dashboard#new_upload'
+    post 'upload', to: 'dashboard#upload'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
@@ -519,10 +504,11 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-
-      #work related routes
-      #have to use match because it must be both get and post
-      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
+      # work related routes
+      # have to use match because it must be both get and post
+      # TODO: Remove when PR for https://github.com/rails/rails/issues/31228#issuecomment-352900551 is merged
+      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work,
+        constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
