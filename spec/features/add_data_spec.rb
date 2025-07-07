@@ -31,8 +31,9 @@ describe "uploads data for collections", :order => :defined do
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/test.pdf')
-
+    sleep 2
     click_button('Upload File')
+
     expect(page).to have_selector('h1', text: @collection.title)
     expect(page).to have_content('Document has been uploaded')
 
@@ -50,6 +51,7 @@ describe "uploads data for collections", :order => :defined do
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
+    sleep 2
     page.check('Import text from PDF text layers, text files or XML files.')
     click_button('Upload File')
     expect(page).to have_selector('h1', text: @collection.title)

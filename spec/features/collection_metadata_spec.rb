@@ -27,6 +27,7 @@ describe "collection metadata", :order => :defined do
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/ladi_fixture.zip')
+    sleep 2
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq "ladi"
@@ -49,6 +50,7 @@ describe "collection metadata", :order => :defined do
     page.execute_script(script)
 
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
+    sleep 2
 
     perform_enqueued_jobs do
       click_button('Upload')
@@ -73,6 +75,7 @@ describe "collection metadata", :order => :defined do
     page.execute_script(script)
 
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
+    sleep 2
 
     perform_enqueued_jobs do
       click_button('Upload')
