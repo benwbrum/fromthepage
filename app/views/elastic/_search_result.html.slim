@@ -11,15 +11,15 @@
     p =to_snippet(result[:description])
     =render partial: 'elastic/breadcrumbs', locals: { doc: result }
 
--elsif result.is_a?(Page)
+-elsif result.is_a?(Page) && result.collection.present?
   / Collection work class provides consistent styling with other elements
   .collection-work.search_result
     =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :collection => result.collection} })
 
--elsif result.is_a?(User)
+-elsif result.is_a?(User) && result.collection.present?
   .collection-work.search_result
     h2 =link_to result[:display_name], user_profile_path(result)
     p =to_snippet(result[:about])
 
--elsif result.is_a?(Work)
+-elsif result.is_a?(Work) && result.collection.present?
   =render({ :partial => 'elastic/work_partial', :locals => { :work => result , :collection => result.collection} })
