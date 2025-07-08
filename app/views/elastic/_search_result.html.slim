@@ -16,7 +16,7 @@
   .collection-work.search_result
     =render({ :partial => 'elastic/page_partial', :locals => { :page => result , :collection => result.collection} })
 
--elsif result.is_a?(User) && result.collection.present?
+-elsif result.is_a?(User)
   .collection-work.search_result
     h2 =link_to result[:display_name], user_profile_path(result)
     p =to_snippet(result[:about])
