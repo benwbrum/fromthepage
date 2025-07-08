@@ -1,26 +1,26 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe 'owner actions', order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
     @works = @owner.owner_works
-    @title = "This is an empty work"
+    @title = 'This is an empty work'
     @rtl_collection = Collection.find(3)
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
-  it "fails to upload a document", :js => true do
+  it 'fails to upload a document', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select(@collections.first.title, :from => 'document_upload_collection_id')
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+    select(@collections.first.title, from: 'document_upload_collection_id')
     click_button('Upload File')
-    expect(page).to have_content("prohibited the form from being saved")
+    expect(page).to have_content('prohibited the form from being saved')
     expect(page).to have_content("File can't be blank")
   end
 

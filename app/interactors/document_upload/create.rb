@@ -10,18 +10,17 @@ class DocumentUpload::Create < ApplicationInteractor
   end
 
   def perform
+    @attachment = ActiveStorage::Blob.find_signed(@document_upload_params.delete(:attachment))
+
     @document_upload = DocumentUpload.new(@document_upload_params)
     @document_upload.user = @user
     @document_upload.status = :queued
+    @document_upload.attachment = @attachment if @attachment.present?
 
-    if @document_upload.save
-      DocumentUpload::ProcessJob.perform_later(
-        document_upload_id: @document_upload.id
-      )
-    else
-      @attachment = ActiveStorage::Blob.find_signed(@document_upload_params[:attachment])
+    @document_upload.save!
 
-      context.fail!
-    end
+    DocumentUpload::ProcessJob.perform_later(
+      document_upload_id: @document_upload.id
+    )
   end
 end

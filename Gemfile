@@ -160,3 +160,5 @@ gem 'ajax-datatables-rails', '~> 1.0.0'
 gem 'elasticsearch', '8.15.0'
 
 gem 'rack-cors'
+
+gem 'active_storage_validations'

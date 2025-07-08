@@ -22,7 +22,19 @@ class DocumentUpload < ApplicationRecord
   belongs_to :collection, optional: true
 
   validates :collection_id, presence: true
-  validates :attachment, presence: true, on: :create
+
+  ACCEPTED_FILE_TYPES = [
+    'application/pdf',
+    'application/zip'
+  ].freeze
+
+  FE_ACCEPTED_FILE_TYPES = [
+    'application/x-zip',
+    'application/x-zip-compressed'
+  ].freeze
+
+  validates :attachment, attached: true, on: :create
+  validates :attachment, content_type: ACCEPTED_FILE_TYPES, on: :create
 
   mount_uploader :file, DocumentUploader
   has_one_attached :attachment

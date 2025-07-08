@@ -24,7 +24,7 @@
               .input-file[data-controller='file-picker' data-file-picker-direct-url-value=rails_direct_uploads_url(subdomain: Settings.upload_host&.split('.')&.first) data-file-picker-direct-uploading-placeholder-value=t('.uploading') data-file-picker-direct-failed-placeholder-value=t('.uploading_failed')]
                 =f.file_field :file,
                   tabindex: '-1',
-                  accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed',
+                  accept: (DocumentUpload::ACCEPTED_FILE_TYPES + DocumentUpload::FE_ACCEPTED_FILE_TYPES).join(','),
                   title: t('.upload_file'),
                   data: { direct_upload_target: 'input', action: 'change->direct-upload#now' }
                 input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_files') readonly value=@attachment&.filename)
