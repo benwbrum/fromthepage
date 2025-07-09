@@ -69,6 +69,7 @@ gem 'http_accept_language'
 gem 'rails-i18n', '~> 6.0.0'
 
 gem 'charlock_holmes'
+gem 'roo'
 gem 'forty_facets'
 
 gem 'diffy'
