@@ -26,7 +26,6 @@
 #
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
-  include ElasticDelta
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
@@ -92,34 +91,64 @@ class DocumentSet < ApplicationRecord
       .distinct
   }
 
-  # Docsets get indexed alongside collections but have a prefix added to ID
-  def as_indexed_json
-    return {
-      _id: "docset-#{self.id}",
-      permissions_updated: 0,
-      is_public: self.is_public,
-      is_docset: true,
-      intro_block: self.description,
-      language: self.language,
-      owner_user_id: self.owner_user_id,
-      owner_display_name: self.owner&.display_name,
-      collection_id: self.collection_id,
-      slug: self.slug,
-      title: self.title
-    }
-  end
-
   enum visibility: {
     private: 0,
     public: 1,
     read_only: 2
   }, _prefix: :visibility
 
+  update_index('document_sets', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id).map { |x| "docset-#{x}" }
+    end
+
+    DocumentSetsIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              'title^2',
+              'title.no_underscores^1.3',
+              'intro_block',
+              'slug'
+            ]
+          }
+        },
+        filter: [
+          { term: { is_docset: true } },
+          {
+            bool: {
+              must_not: [
+                { terms: { collection_id: blocked_collections } }
+              ],
+              should: [
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { _id: docset_collabs } }
+              ],
+              minimum_should_match: 1
+            }
+          }
+        ]
+      }
+    )
+  end
+
   def show_to?(user)
     is_public? || user&.like_owner?(self) || user&.collaborator?(self)
   end
-
-
 
   def intro_block
     description
@@ -289,4 +318,17 @@ class DocumentSet < ApplicationRecord
   end
 
   public :user_help
+
+  private
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: DocumentSetsIndex.index_name,
+      id: "docset-#{id}"
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
 end

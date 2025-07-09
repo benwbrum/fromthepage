@@ -1,0 +1,6 @@
+elasticsearch:
+  host: <%= ENV.fetch('ELASTIC_HOST_URL', 'http://localhost:9200') %>
+  prefix: ftp
+  suffix: <%= ENV['ELASTIC_SUFFIX'] %>
+  cloud_id: <%= ENV['ELASTIC_CLOUD_ID'] %>
+  api_key: <%= ENV['ELASTIC_API_KEY'] %>
