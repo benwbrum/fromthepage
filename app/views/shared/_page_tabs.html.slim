@@ -31,19 +31,20 @@ ruby:
     end
   end
 
-  tabs += [
-    {
+  if user_signed_in?
+    tabs << {
       name: t('.versions'),
       selected: 2,
       path: collection_page_version_path(@collection.owner, @collection, @work, @page.id),
       opts: { :rel => 'nofollow' },
-    },
-    {
-      name: t('.help'),
-      selected: 9,
-      path: collection_help_page_path(@collection.owner, @collection, @work, @page.id),
     }
-  ]
+  end
+
+  tabs << {
+    name: t('.help'),
+    selected: 9,
+    path: collection_help_page_path(@collection.owner, @collection, @work, @page.id),
+  }
 
   if user_signed_in? && current_user.like_owner?(@work)
     tabs << {

@@ -472,4 +472,44 @@ describe CollectionController do
       end
     end
   end
+
+  describe '#search' do
+    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+    let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let!(:page) { create(:page, work: work) }
+
+    let(:action_path) { collection_search_path(owner, collection) }
+    let(:params) { { term: page.title } }
+
+    let(:subject) { get action_path, params: params }
+
+    before do
+      stub_const('ELASTIC_ENABLED', true)
+
+      CollectionsIndex.import collection.reload
+      DocumentSetsIndex.import document_set.reload
+      WorksIndex.import collection.works
+      PagesIndex.import collection.works.flat_map(&:pages)
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:search)
+    end
+
+    context 'when document set' do
+      let(:action_path) { collection_search_path(owner, document_set) }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:search)
+      end
+    end
+  end
 end
