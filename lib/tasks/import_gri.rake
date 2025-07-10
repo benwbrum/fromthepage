@@ -68,7 +68,9 @@ namespace :fromthepage do
       end
 
       page.source_text = lines.join("\n")
-      page.save!
+      if !page.save 
+	binding.pry 
+      end
       puts "Updated page #{page.title} with #{rows.length} rows"
     end
   end
