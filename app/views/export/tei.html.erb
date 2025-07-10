@@ -112,9 +112,9 @@ xml:id="<%=@work.identifier||@work.id%>">
         <listPerson>
           <% @person_articles.each do |person| %>
             <person xml:id="S<%=person.id%>">
-              <persName><%= person.title %></persName>
+              <persName><%= h(person.title) %></persName>
               <% unless person.uri.blank? %>
-                <idno><%= person.uri %></idno>
+                <idno><%= h(person.uri) %></idno>
               <% end %>
               <% unless person.birth_date.blank? %>
                 <event type="birth"  when="<%=person.birth_date%>">
@@ -162,7 +162,7 @@ xml:id="<%=@work.identifier||@work.id%>">
               <% unless person.bibliography.blank? %>
                 <% person.bibliography.split("\n").each do |line| %>
                   <% unless line.blank? %>
-                    <bibl><%= line.chomp %></bibl>
+                    <bibl><%= h(line.chomp) %></bibl>
                   <% end %>
                 <% end %>
               <% end %>
@@ -175,9 +175,9 @@ xml:id="<%=@work.identifier||@work.id%>">
         <listPlace>
           <% @place_articles.each do |place| %>
             <place xml:id="S<%=place.id%>">
-              <placeName><%= place.title %></placeName>
+              <placeName><%= h(place.title) %></placeName>
               <% unless place.uri.blank? %>
-                <idno><%= place.uri %></idno>
+                <idno><%= h(place.uri) %></idno>
               <% end %>
               <% if place.categories %>
                 <note type="categorization">
@@ -213,7 +213,7 @@ xml:id="<%=@work.identifier||@work.id%>">
               <% unless place.bibliography.blank? %>
                 <% place.bibliography.split("\n").each do |line| %>
                   <% unless line.blank? %>
-                    <bibl><%= line.chomp %></bibl>
+                    <bibl><%= h(line.chomp) %></bibl>
                   <% end %>
                 <% end %>
               <% end %>
