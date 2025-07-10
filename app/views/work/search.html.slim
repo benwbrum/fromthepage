@@ -2,8 +2,10 @@
 
 =form_tag(collection_work_search_path, :method => :get, class: 'collection-search') do
   =hidden_field_tag('work_id', @work.slug)
-  =search_field_tag :term, @search_string, "aria-label" => t('.search_in_work')
+  =search_field_tag :term, @term, "aria-label" => t('.search_in_work')
   =button_tag t('dashboard.landing_page.search')
   =label_tag 'search_work_string', t('.search_in_work'), class: 'hidden'
 
-=render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results } })
+
+
+=render({ :partial => 'elastic/tabbed_results', :locals => { :search_results => @search_results} })
