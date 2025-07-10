@@ -19,7 +19,6 @@ if ENV['COVERAGE'] == 'true'
 
   SimpleCov.start 'rails' do
     add_group 'Interactors', '/app/interactors/'
-    add_group 'Indexes', '/app/chewy_indexes/'
 
     enable_coverage :branch
 

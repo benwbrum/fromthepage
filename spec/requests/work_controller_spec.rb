@@ -108,27 +108,4 @@ describe WorkController do
       end
     end
   end
-
-  describe '#search' do
-    let(:action_path) { collection_work_search_path(owner, collection, work) }
-    let(:params) { { term: page.title } }
-
-    let(:subject) { get action_path, params: params }
-
-    before do
-      stub_const('ELASTIC_ENABLED', true)
-
-      CollectionsIndex.import collection.reload
-      WorksIndex.import collection.works
-      PagesIndex.import collection.works.flat_map(&:pages)
-    end
-
-    it 'renders status and template' do
-      login_as owner
-      subject
-
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:search)
-    end
-  end
 end

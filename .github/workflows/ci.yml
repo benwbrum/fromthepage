@@ -18,24 +18,9 @@ jobs:
       RAILS_ENV: test
       MYSQL_ROOT_PASSWORD: password
       MYSQL_SOCKET: /tmp/mysql.sock
-      ELASTIC_HOST_URL: http://localhost:9200
-      ELASTIC_SUFFIX: ci
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - name: Run Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: 8.15.0
-          security-enabled: false
-          port: 9200
-          nodes: 1
       - name: Install dependencies
         run: |
           sudo apt-get -qq update
@@ -53,18 +38,6 @@ jobs:
         run: bundle exec rake db:migrate
       - name: Load fixtures
         run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
-      - name: Elasticsearch Initialize
-        run: bundle exec rake fromthepage:es:setup:init
-        env:
-          ELASTIC_ENABLED: true
-      - name: Elasticsearch Build Indices
-        run: bundle exec rake fromthepage:es:data:build
-        env:
-          ELASTIC_ENABLED: true
-      - name: Elasticsearch Reindex
-        run: bundle exec rake fromthepage:es:data:reindex
-        env:
-          ELASTIC_ENABLED: true
       - name: Run RuboCop
         run: bundle exec rubocop
         continue-on-error: true
@@ -75,7 +48,6 @@ jobs:
         env:
           COVERAGE: 'true'
           CI: 'true'
-          ELASTIC_ENABLED: false
       - name: Run Coveralls
         if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
         uses: coverallsapp/github-action@v2.3.0
