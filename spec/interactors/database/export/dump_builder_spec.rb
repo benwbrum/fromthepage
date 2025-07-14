@@ -37,6 +37,6 @@ describe Database::Export::DumpBuilder do
 
   it 'creates dumps' do
     expect(result.success?).to be_truthy
-    expect(Dir.children(path).count { |f| File.file?(File.join(path, f)) }).to eq(34)
+    expect(Dir.children(path).count { |f| File.file?(File.join(path, f)) }).to eq(35)
   end
 end
