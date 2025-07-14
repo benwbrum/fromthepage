@@ -519,7 +519,6 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-
       #work related routes
       #have to use match because it must be both get and post
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
