@@ -1,26 +1,26 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe 'owner actions', order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
     @works = @owner.owner_works
-    @title = "This is an empty work"
+    @title = 'This is an empty work'
     @rtl_collection = Collection.find(3)
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
-  it "fails to upload a document", :js => true do
+  it 'fails to upload a document', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select(@collections.first.title, :from => 'document_upload_collection_id')
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+    select(@collections.first.title, from: 'document_upload_collection_id')
     click_button('Upload File')
-    expect(page).to have_content("prohibited the form from being saved")
+    expect(page).to have_content('prohibited the form from being saved')
     expect(page).to have_content("File can't be blank")
   end
 
@@ -83,26 +83,35 @@ describe "owner actions", :order => :defined do
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
   end
 
-  it "creates a collection from work dropdown", :js => true do
-    @owner.account_type = "Small Organization"
-    col_title = "New Work Collection"
+  it 'creates a collection from work dropdown', js: true do
+    @owner.account_type = 'Small Organization'
+    col_title = 'New Work Collection'
+
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, '#document-upload').click
+    page.find('.tabs').click_link('Start A Project')
+
+    page.find(:css, '#document-upload', wait: 5).click
+    expect(page).to have_select('document_upload_collection_id', wait: 5)
     page.select 'Add New Collection', from: 'document_upload_collection_id'
 
     within(page.find('.litebox-embed', wait: 5)) do
-      expect(page).to have_content('Create New Collection')
+      expect(page).to have_content('Create New Collection', wait: 5)
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")
     end
+
     sleep(2)
-    page.execute_script("$('#document-upload').click()")
-    page.find('#document_upload_collection_id')
-    expect(page).to have_select('document_upload_collection_id', selected: col_title)
+
+    page.find(:css, '#document-upload', wait: 5).click
+    page.find('#document_upload_collection_id', wait: 5)
+
+    expect(page).to have_select('document_upload_collection_id', selected: col_title, wait: 5)
+
     sleep(2)
+
     expect(Collection.last.title).to eq col_title
-    #need to remove this collection to prevent conflicts in later tests
+
+    # need to remove this collection to prevent conflicts in later tests
     Collection.last.destroy
   end
 

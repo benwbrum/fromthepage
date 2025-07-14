@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AdminController do
-  let!(:admin) { create(:admin) }
+  let!(:admin) { create(:unique_user, :admin) }
   let!(:collection) { create(:collection, owner_user_id: admin.id) }
   let!(:document_upload) { create(:document_upload, collection: collection, user: admin) }
   let!(:flag) { create(:flag) }

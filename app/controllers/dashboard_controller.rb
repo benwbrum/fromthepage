@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
-  protect_from_forgery :except => [:new_upload]
-
   include AddWorkHelper
   include DashboardHelper
   include ElasticSearchable
@@ -12,8 +10,8 @@ class DashboardController < ApplicationController
     only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+    only: [:owner, :staging, :upload, :startproject, :empty_work,
+           :create_work, :summary, :exports]
 
   before_action :remove_col_id
 
@@ -364,9 +362,23 @@ class DashboardController < ApplicationController
       end
     end
 
-    send_data( csv,
-              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-              :type => "application/csv")
+    send_data(
+      csv,
+      filename: "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+      type: 'application/csv'
+    )
+  end
+
+  def upload
+    @result = DocumentUpload::Create.new(
+      document_upload_params: document_upload_params,
+      user: current_user
+    ).call
+
+    @document_upload = @result.document_upload
+    @attachment = @result.attachment
+
+    respond_to(&:turbo_stream)
   end
 
   private
@@ -378,7 +390,13 @@ class DashboardController < ApplicationController
   end
 
   def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
+    params.require(:document_upload).permit(
+      :document_upload,
+      :attachment,
+      :preserve_titles,
+      :ocr,
+      :collection_id
+    )
   end
 
   def load_user_hours_data

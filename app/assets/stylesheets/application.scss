@@ -396,6 +396,11 @@ thead th.bang {
   @import "bootstrap.min";
 }
 
+.my-3 {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}
+
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
 @import "handsontable.min";

@@ -4,6 +4,12 @@ fr:
     alphabetical_collections_and_document_sets:
       project_by: Projet par %{author}
       start_transcribing: Commencez à transcrire
+    cdm_upload:
+      import: Importer
+      import_from_contentdm: Importer depuis CONTENTdm
+      import_many_link: importer plusieurs objets composés individuels.
+      or_import_many: 'Ou '
+      paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     collections_list:
       collections: Collections
       meta_description: Vous êtes libre de choisir parmi les nombreux projets intéressants hébergés sur FromThePage. Commencez à lire les écrits historiques qui ont déjà été transcrits par d'autres membres. Vous êtes les bienvenus pour aider l'un des grands projets à entrer dans l'ère numérique.
@@ -73,6 +79,9 @@ fr:
       to_whom_it_may_concern: 'À qui cela peut concerner:'
       volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
       worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
+    ia_upload:
+      import_from_archive_dot_org: Importer depuis Archive.org
+      import_from_the_internet_archive: Importer à partir des archives Internet
     landing_page:
       by: " par "
       institutions: Institutions
@@ -82,22 +91,11 @@ fr:
       search_for_collections: Rechercher des collections
       search_org: Recherche au sein de l'organisation
       search_org_label: Rechercher du contenu publié par cette organisation...
-    new_upload:
-      document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
-      reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
     new_work:
       acceptable_formats: Les fichiers PNG, GIF et JPG sont tous acceptables.
       images_should_be_named: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
       images_should_be_oriented: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
-      import: Importer
-      import_a_iiif_manifest_or_collection: Importer un manifeste ou une collection IIIF
-      import_from_archive_dot_org: Importer depuis Archive.org
-      import_from_contentdm: Importer depuis CONTENTdm
-      import_from_the_internet_archive: Importer à partir des archives Internet
-      import_many_link: importer plusieurs objets composés individuels.
-      or_import_many: 'Ou '
       page_image_guidelines: Directives relatives aux images de page
-      paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
       active_collections: Collections actives
       create_a_collection: créer une collection
@@ -143,11 +141,15 @@ fr:
         one: Œuvre
         other: Œuvres
       your_collections: Vos collections
+    sc_collection_upload:
+      import: Importer
+      import_a_iiif_manifest_or_collection: Importer un manifeste ou une collection IIIF
     upload:
       acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
       browse: Parcourir
       click_to_browse_a_file: Cliquer pour parcourir un fichier...
       click_to_browse_files: Cliquer pour parcourir les fichiers
+      document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
       each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez pas les pages de différents documents dans le même dossier.
       each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
       for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
@@ -155,11 +157,14 @@ fr:
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
       page_image_guidelines: Directives relatives aux images de page
+      reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
       select_a_collection: "- Sélectionner une collection -"
       to_specify_metadata: Pour spécifier les métadonnées, vous pouvez télécharger une feuille de calcul après le téléchargement des images ou vous pouvez inclure un fichier %{link} dans chaque dossier spécifiant les champs du travail.
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
       upload_file: Téléverser un fichier
       upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
+      uploading: Téléchargement en cours...
+      uploading_failed: Échec du téléchargement du fichier. Réessayer.
       use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
       use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.

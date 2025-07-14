@@ -20,49 +20,52 @@ describe "uploads data for collections", :order => :defined do
     User.find_each(&:save)
   end
 
-  it "starts a new project from tab", :js => true do
+  it 'starts a new project from tab', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select(@collection.title, :from => 'document_upload_collection_id')
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+    select(@collection.title, from: 'document_upload_collection_id')
 
     # workaround
     script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/test.pdf')
+    sleep 2
     click_button('Upload File')
-    title = find('h1').text
-    expect(title).to eq @collection.title
-    expect(page).to have_content("Document has been uploaded")
-    wait_for_upload_processing
-    sleep(10)
+
+    expect(page).to have_selector('h1', text: @collection.title)
+    expect(page).to have_content('Document has been uploaded')
+
+    perform_enqueued_jobs
   end
 
-  it "starts an ocr project", :js => true do
+  it 'starts an ocr project', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#document-upload").click
-    select(@collection.title, :from => 'document_upload_collection_id')
+    page.find('.tabs').click_link('Start A Project')
+    page.find(:css, '#document-upload').click
+    select(@collection.title, from: 'document_upload_collection_id')
 
     # workaround
     script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
+    sleep 2
     page.check('Import text from PDF text layers, text files or XML files.')
     click_button('Upload File')
-    title = find('h1').text
-    expect(title).to eq @collection.title
-    expect(page).to have_content("Document has been uploaded")
-    wait_for_upload_processing
+    expect(page).to have_selector('h1', text: @collection.title)
+    expect(page).to have_content('Document has been uploaded')
+
+    perform_enqueued_jobs
+
     uploaded_work = Work.last
     expect(uploaded_work.ocr_correction).to eq true
     expect(uploaded_work.pages.first.source_text).to match 'dagegen'
   end
 
-  it "imports IIIF manifests", :js => true do
-    #import a manifest for test data
+  it 'imports IIIF manifests', js: true do
+    # Import a manifest for test data
     VCR.use_cassette('iiif/imports_iiif_manifests', record: :new_episodes) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
@@ -78,7 +81,7 @@ describe "uploads data for collections", :order => :defined do
       works_count = Work.all.count
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
-      #this manifest has a very long title
+      # this manifest has a very long title
       page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2654"
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
@@ -92,15 +95,20 @@ describe "uploads data for collections", :order => :defined do
     end
   end
 
-  it "creates an empty work", :js => true do
+  it 'creates an empty work', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#create-empty-work").click
-    select(@collection.title, :from => 'work_collection_id')
+    expect(page).to have_selector('.tabs')
+    within('.tabs') do
+      click_link('Start A Project')
+    end
+    expect(page).to have_selector('#create-empty-work', visible: true)
+    find('#create-empty-work').click
+    expect(page).to have_select('work_collection_id', with_options: [@collection.title])
+    select(@collection.title, from: 'work_collection_id')
     fill_in 'work_title', with: @title
-    fill_in 'work_description', with: "This work contains no pages."
+    fill_in 'work_description', with: 'This work contains no pages.'
     click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
+    expect(page).to have_content('Here you see the list of all pages in the work.')
     expect(Work.find_by(title: @title)).not_to be nil
   end
 

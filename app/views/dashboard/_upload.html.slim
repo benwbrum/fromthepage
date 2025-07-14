@@ -1,56 +1,67 @@
-    h3
-      a(href="#" class="title" onclick="return false;" id="document-upload") =t('.upload_pdf_or_zip_file')
+#document_upload_form.my-3[data-controller='toggle-view']
+  h3
+    =link_to t('.upload_pdf_or_zip_file'), '#', class: 'title', id: 'document-upload', data: { action: 'click->toggle-view#toggle' }
 
-    section(style=("display: none" unless @document_upload.errors.any?))
-      -if current_user.account_type == "Trial" && current_user.page_count >= 200
-        p =t('.trial_accounts_are_limited')
-      -else
-        p.big =t('.import_form_message')
-        =form_for :document_upload, url: dashboard_new_upload_url do |f|
-          =validation_summary @document_upload.errors
-          table.form.collection-settings
-            tr
-              =f.label :collection_id, class: "hidden"
-              td =f.select :collection_id, options_from_collection_for_select(current_user.collections.sort { |a,b| a.title <=> b.title }, 'id', 'title', @document_upload.collection_id), {prompt: t('.select_a_collection')}
-            tr
-              td
-                .input-file [data-controller='file-picker']
-                  =f.file_field(:file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed', title: t('.upload_file'))
-                  input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_files') readonly)
-                  button(type="button") =t('.browse')
-            tr
-              td
-                =f.check_box :preserve_titles
-                =f.label :preserve_titles, t('.use_image_filenames')
-            tr
-              td
-                =f.check_box :ocr
-                =f.label :ocr, t('.use_ocr_from_pdf')
+  section[data-toggle-view-target='toggleable' style="#{@document_upload.errors.any? ? '' : 'display: none'}"]
+    -if current_user.account_type == "Trial" && current_user.page_count >= 200
+      p =t('.trial_accounts_are_limited')
+    -else
+      p.big =t('.import_form_message')
+      =form_for :document_upload, url: dashboard_upload_path, html: { data: { turbo: true } } do |f|
+        =validation_summary @document_upload.errors
+        table.form.collection-settings
+          tr
+            =f.label :collection_id, class: 'hidden'
+            td
+              =f.select :collection_id,
+                options_from_collection_for_select(current_user.collections.sort { |a, b| a.title <=> b.title },
+                'id',
+                'title',
+                @document_upload.collection_id),
+                { prompt: t('.select_a_collection') }
+          tr
+            td
+              .input-file[data-controller='file-picker' data-file-picker-direct-url-value=rails_direct_uploads_url(subdomain: Settings.upload_host&.split('.')&.first) data-file-picker-direct-uploading-placeholder-value=t('.uploading') data-file-picker-direct-failed-placeholder-value=t('.uploading_failed')]
+                =f.file_field :file,
+                  tabindex: '-1',
+                  accept: (DocumentUpload::ACCEPTED_FILE_TYPES + DocumentUpload::FE_ACCEPTED_FILE_TYPES).join(','),
+                  title: t('.upload_file'),
+                  data: { direct_upload_target: 'input', action: 'change->direct-upload#now' }
+                input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_files') readonly value=@attachment&.filename)
+                =f.hidden_field :attachment, value: @attachment&.signed_id
+                button(type="button") =t('.browse')
+          tr
+            td
+              =f.check_box :preserve_titles
+              =f.label :preserve_titles, t('.use_image_filenames')
+          tr
+            td
+              =f.check_box :ocr
+              =f.label :ocr, t('.use_ocr_from_pdf')
 
+        ul
+          li =t('.zip_files_may_contain')
+          li =t('.each_folder_will_be_treated')
+          li =t('.each_pdf_will_be_treated')
+          li =t('.for_example_a_zip_file')
+          li =t('.to_specify_metadata', link: link_to('metadata.yml', static_metadata_path)).html_safe
+        p.aright
+          =f.button t('.upload_file'), class: 'big'
 
-          ul
-            li =t('.zip_files_may_contain')
-            li =t('.each_folder_will_be_treated')
-            li =t('.each_pdf_will_be_treated')
-            li =t('.for_example_a_zip_file')
-            li =t('.to_specify_metadata', link: link_to('metadata.yml', :controller => 'static', :action => 'metadata')).html_safe
-          p.aright
-            =f.button t('.upload_file'), class: 'big'
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
+    });
 
-    -content_for :javascript
-      javascript:
-        $(function(){
-          $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
-        });
-
-        $(function(){
-          $('#document_upload_collection_id').on('change', function(){
-            var col = $(this).val();
-              if (col == 'new'){
-                new LiteBox({
-                  url: '/collection/new',
-                  hash: 'create-collection'
-                }).open();
-              };
-          });
-        })
+    $(function(){
+      $('#document_upload_collection_id').on('change', function(){
+        var col = $(this).val();
+          if (col == 'new'){
+            new LiteBox({
+              url: '/collection/new',
+              hash: 'create-collection'
+            }).open();
+          };
+      });
+    })
