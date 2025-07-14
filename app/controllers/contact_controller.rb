@@ -3,7 +3,7 @@ class ContactController < ApplicationController
   include ContactHelper
 
   def form
-    if contact_form_token.to_s != params[:token]
+    unless valid_contact_form_token?(params[:token])
       raise ActionController::RoutingError.new('Not Found')
     end
   end
