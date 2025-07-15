@@ -71,6 +71,7 @@ class NotesController < ApplicationController
 
   def discussions
     @pages = @collection.pages
+                        .joins(:notes)
                         .where.not(last_note_updated_at: nil)
                         .reorder(last_note_updated_at: :desc)
                         .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
