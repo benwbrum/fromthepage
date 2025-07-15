@@ -18,8 +18,9 @@ describe ImageHelper do
       end
 
       it 'successfully extracts page size information' do
-        # Test the pdfinfo command directly (this is what was failing before the fix)
-        raw_page_size = `pdfinfo '#{test_pdf_with_spaces}' | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+        # Test the pdfinfo command using proper shell escaping
+        require 'shellwords'
+        raw_page_size = `pdfinfo #{Shellwords.escape(test_pdf_with_spaces)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
         
         expect(raw_page_size).not_to be_empty
         expect(raw_page_size).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
@@ -34,7 +35,8 @@ describe ImageHelper do
 
       it 'calculates DPI correctly' do
         # Test the DPI calculation logic that uses the pdfinfo output
-        raw_page_size = `pdfinfo '#{test_pdf_with_spaces}' | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+        require 'shellwords'
+        raw_page_size = `pdfinfo #{Shellwords.escape(test_pdf_with_spaces)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
         
         expect(raw_page_size).not_to be_empty
         
@@ -56,6 +58,71 @@ describe ImageHelper do
         end
         
         expect(dpi).to be_in([72, 150, 300])
+      end
+    end
+
+    context 'with filename without spaces' do
+      let(:test_pdf_source) { File.join(Rails.root, 'test_data/uploads/test.pdf') }
+      let(:test_pdf_normal) { '/tmp/test_no_spaces.pdf' }
+
+      before do
+        FileUtils.cp(test_pdf_source, test_pdf_normal)
+      end
+
+      after do
+        FileUtils.rm(test_pdf_normal) if File.exist?(test_pdf_normal)
+        # Clean up any extracted directories
+        destination = test_pdf_normal.gsub(/\.pdf$/, '')
+        FileUtils.rm_rf(destination) if Dir.exist?(destination)
+      end
+
+      it 'successfully extracts page size information' do
+        # Test that our fix doesn't break normal filenames
+        require 'shellwords'
+        raw_page_size = `pdfinfo #{Shellwords.escape(test_pdf_normal)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+        
+        expect(raw_page_size).not_to be_empty
+        expect(raw_page_size).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
+      end
+
+      it 'maintains backward compatibility' do
+        # Test that Shellwords.escape doesn't change filenames without special characters
+        require 'shellwords'
+        escaped_filename = Shellwords.escape(test_pdf_normal)
+        
+        expect(escaped_filename).to eq(test_pdf_normal)
+      end
+    end
+
+    context 'with filename containing special characters' do
+      let(:test_pdf_source) { File.join(Rails.root, 'test_data/uploads/test.pdf') }
+      let(:test_pdf_special) { "/tmp/test'with'quotes.pdf" }
+
+      before do
+        FileUtils.cp(test_pdf_source, test_pdf_special)
+      end
+
+      after do
+        FileUtils.rm(test_pdf_special) if File.exist?(test_pdf_special)
+        # Clean up any extracted directories
+        destination = test_pdf_special.gsub(/\.pdf$/, '')
+        FileUtils.rm_rf(destination) if Dir.exist?(destination)
+      end
+
+      it 'successfully handles filenames with single quotes' do
+        # Test that our robust escaping handles single quotes in filenames
+        require 'shellwords'
+        raw_page_size = `pdfinfo #{Shellwords.escape(test_pdf_special)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+        
+        expect(raw_page_size).not_to be_empty
+        expect(raw_page_size).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
+      end
+
+      it 'fails with simple quote escaping' do
+        # Test that simple quote escaping fails with single quotes in filename
+        raw_page_size = `pdfinfo '#{test_pdf_special}' | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+        
+        expect(raw_page_size).to be_empty
       end
     end
   end
