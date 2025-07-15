@@ -12,11 +12,12 @@ class Article::Destroy < ApplicationInteractor
   def perform
     context.fail!(message: I18n.t('article.delete.only_subject_owner_can_delete')) unless user_can_delete_article
 
+    versions = @article.article_versions.where('created_on > ?', 1.hour.ago)
     @article.destroy!
 
     Article::RenameJob.perform_later(
       article_id: @article.id,
-      old_name: @article.title,
+      old_names: versions.pluck(:title) + [@article.title],
       new_name: ''
     )
   end

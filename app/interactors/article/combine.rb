@@ -26,7 +26,7 @@ class Article::Combine < ApplicationInteractor
 
     Article::RenameJob.perform_later(
       article_id: from_article.id,
-      old_name: old_from_title,
+      old_names: [old_from_title],
       new_name: to_article.title,
       new_article_id: to_article.id
     )

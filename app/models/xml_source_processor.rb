@@ -369,13 +369,9 @@ EOF
       article = candidate_articles.find_by(title: title)
 
       if article.nil?
-        article_version = ArticleVersion.where(article_id: candidate_articles.select(:id))
-                                        .where(title: title)
-                                        .where('created_on > ?', page_update_timestamp)
-                                        .order(created_on: :desc)
-                                        .first
-        article = article_version&.article
-
+        article = candidate_articles.where('article_versions.title': title)
+                                    .where('article_versions.created_on > ?', page_update_timestamp)
+                                    .first
         if article.present?
           display_text = article.title
           title = article.title
