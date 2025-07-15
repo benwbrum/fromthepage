@@ -33,7 +33,7 @@ module ImageHelper
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
-    raw_page_size=`pdfinfo #{filename} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+    raw_page_size=`pdfinfo '#{filename}' | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
     dpi=300
     pixel_dim=raw_page_size.split(' x ').map{|e| e.to_f / 72 * dpi}
     if pixel_dim.max >= 16000
