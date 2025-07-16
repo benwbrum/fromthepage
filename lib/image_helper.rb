@@ -28,11 +28,7 @@ module ImageHelper
     
   end
   
-  def self.extract_pdf(filename, ocr=false)
-    pattern = Regexp.new(File.extname(filename) + "$")
-    destination = filename.gsub(pattern, '')
-    FileUtils.mkdir(destination) unless File.exists?(destination)
-    pattern = File.join(destination, "page_%04d.jpg")
+  def self.calculate_page_size_and_dpi(filename)
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
     raw_page_size=`pdfinfo #{Shellwords.escape(filename)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
     dpi=300
@@ -44,7 +40,19 @@ module ImageHelper
         dpi=72
       end
     end
-    gs = "gs -r#{dpi}x#{dpi} -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
+    { raw_page_size: raw_page_size, dpi: dpi }
+  end
+
+  def self.extract_pdf(filename, ocr=false)
+    pattern = Regexp.new(File.extname(filename) + "$")
+    destination = filename.gsub(pattern, '')
+    FileUtils.mkdir(destination) unless File.exists?(destination)
+    pattern = File.join(destination, "page_%04d.jpg")
+    
+    page_info = calculate_page_size_and_dpi(filename)
+    dpi = page_info[:dpi]
+    
+    gs = "gs -r#{dpi}x#{dpi} -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg #{Shellwords.escape(filename)}"
     print "\t\t#{gs}\n"
     system(gs)
 
@@ -54,7 +62,7 @@ module ImageHelper
       page_count = Dir.glob(File.join(destination, "*.jpg")).count
       1.upto(page_count) do |page_num|
         output_file = pattern % page_num
-        pdftotext = "pdftotext -f #{page_num} -l #{page_num} '#{filename}' '#{output_file}'"
+        pdftotext = "pdftotext -f #{page_num} -l #{page_num} #{Shellwords.escape(filename)} #{Shellwords.escape(output_file)}"
         print "\t\t#{pdftotext}\n"
         system(pdftotext)
       end
