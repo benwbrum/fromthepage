@@ -45,4 +45,64 @@ describe TranscribeController do
       expect(response).to render_template(:display_page)
     end
   end
+
+  describe '#save_transcription' do
+    # TODO: Move logic to interactor for better isolation testing
+    # Temporary, do not do this pattern for request tests
+    context 'Article rename race check' do
+      # Scenario:
+      # Article is renamed and rename job is still running.
+      # Another user made update to current page
+      # while rename job is unfinished
+      let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
+      let!(:category) { create(:category) }
+      let!(:article) do
+        create(:article, title: 'Original', collection: collection, pages: [page], categories: [category])
+      end
+      let!(:source_article) do
+        create(:article, collection: collection.reload)
+      end
+      let!(:article_article_link) do
+        create(:article_article_link, source_article: source_article, target_article: article)
+      end
+
+      let(:action_path) do
+        collection_oneoff_review_page_save_path(
+          user_slug: owner.slug,
+          collection_id: collection.slug,
+          page_id: page.id
+        )
+      end
+
+      let(:params) do
+        {
+          flow: '',
+          quality_sampling_id: '',
+          page: {
+            mark_blank: '0',
+            needs_review: '0',
+            source_text: '[[Original]] some change'
+          },
+          save_to_transcribed: '',
+          'filter-brightness' => '0',
+          'filter-contrast' => '0',
+          'filter-threshold' => '0'
+        }
+      end
+
+      let(:subject) { patch action_path, params: params }
+
+      it 'updates page without losing article links' do
+        source_article.update_column(:source_text, '[[Original]]')
+        article.update!(title: 'Renamed')
+
+        login_as owner
+        subject
+
+        expect(page.reload.source_text).to include('[[Original]] some change')
+        expect(page.articles.reload).to include(article)
+        expect(article.reload.categories).to include(category)
+      end
+    end
+  end
 end

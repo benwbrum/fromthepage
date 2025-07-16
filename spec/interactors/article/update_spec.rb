@@ -42,7 +42,7 @@ describe Article::Update do
 
   it 'updates article and source texts of related models' do
     expect(Article::RenameJob).to receive(:perform_later).with(
-      article_id: article.id, old_name: 'Original', new_name: 'New'
+      article_id: article.id, old_names: ['New', 'Original', 'Original'], new_name: 'New'
     ).and_call_original
 
     # Set source text like this to avoid before save callbacks
