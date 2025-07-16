@@ -36,7 +36,7 @@ module ContributorHelper
       date: [start_date..end_date]
     ).group(:user_id).sum(:minutes)
 
-    user_active_mailers = User.active_mailers.includes(:deeds)
+    user_active_mailers = User.active_mailers.joins(:deeds)
 
     # Find recent transcription deeds by user, then older deeds by user
     recent_users_ids = transcription_deeds.where(created_at: [start_date..end_date]).select(:user_id)
@@ -47,7 +47,7 @@ module ContributorHelper
     @new_transcribers = user_active_mailers.where(id: recent_users_ids)
                                            .where.not(id: older_users_ids)
 
-    @all_collaborators = user_active_mailers.where(deeds: { collection_id: @collection.id }).distinct
+    @all_collaborators = user_active_mailers.where(id: deeds_scope.select(:user_id)).distinct
   end
 
   def owner_expirations
