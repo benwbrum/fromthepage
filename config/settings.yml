@@ -1,4 +1,5 @@
 ---
+enable_delayed_job: <%= ENV['ENABLE_DELAYED_JOB'] == 'true' %>
 spammy_emails:
   tlds:
     - io

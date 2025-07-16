@@ -37,8 +37,8 @@ module Fromthepage
     config.upload_host=nil
 
 
-  # load overrides for Thredded and other engines
-  # config/application.rb
+    # load overrides for Thredded and other engines
+    # config/application.rb
     overrides = "#{Rails.root}/app/overrides"
     Rails.autoloaders.main.ignore(overrides)
 
@@ -47,9 +47,14 @@ module Fromthepage
         load override
       end
     end
+
+    if Settings.enable_delayed_job
+      config.active_job.queue_adapter = :delayed_job
+    else
+      config.active_job.queue_adapter = :async
+    end
   end
 
-
-  #uncomment for development of SSO
-  #Rails.application.config.action_controller.forgery_protection_origin_check=false
+  # uncomment for development of SSO
+  # Rails.application.config.action_controller.forgery_protection_origin_check=false
 end

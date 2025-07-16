@@ -1,4 +1,6 @@
 Fromthepage::Application.routes.draw do
+  mount DelayedJobWeb, at: '/delayed_job' if Settings.enable_delayed_job
+
   resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
