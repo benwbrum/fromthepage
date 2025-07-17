@@ -190,6 +190,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    daemons (1.4.1)
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -200,6 +201,16 @@ GEM
       activerecord (>= 4.1.15)
     debug_inspector (1.2.0)
     deep_merge (1.2.2)
+    delayed_job (4.1.13)
+      activesupport (>= 3.0, < 9.0)
+    delayed_job_active_record (4.1.11)
+      activerecord (>= 3.0, < 9.0)
+      delayed_job (>= 3.0, < 5)
+    delayed_job_web (1.4.4)
+      activerecord (> 3.0.0)
+      delayed_job (> 2.0.3)
+      rack-protection (>= 1.5.5)
+      sinatra (>= 1.4.4)
     deprecation (1.1.0)
       activesupport
     device_detector (1.0.7)
@@ -365,6 +376,8 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.4.0)
     mustache (1.1.1)
+    mustermann (3.0.3)
+      ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
     mysql2 (0.5.6)
     net-scp (4.0.0)
@@ -445,6 +458,9 @@ GEM
       rack (< 4)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-proxy (0.7.7)
       rack
     rack-reverse-proxy (0.12.0)
@@ -579,6 +595,11 @@ GEM
     simplecov-html (0.12.3)
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
+    sinatra (3.2.0)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.2.0)
+      tilt (~> 2.0)
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
@@ -696,7 +717,10 @@ DEPENDENCIES
   charlock_holmes
   clipboard-rails
   config
+  daemons
   database_cleaner
+  delayed_job_active_record
+  delayed_job_web
   devise
   devise-encryptable
   devise_masquerade (~> 1.2.0)

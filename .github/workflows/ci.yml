@@ -18,6 +18,7 @@ jobs:
       RAILS_ENV: test
       MYSQL_ROOT_PASSWORD: password
       MYSQL_SOCKET: /tmp/mysql.sock
+      ENABLE_DELAYED_JOB: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -38,6 +39,9 @@ jobs:
         run: bundle exec rake db:migrate
       - name: Load fixtures
         run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+      - name: Run Delayed Job worker
+        run: bin/delayed_job start &
+        continue-on-error: true
       - name: Run RuboCop
         run: bundle exec rubocop
         continue-on-error: true
