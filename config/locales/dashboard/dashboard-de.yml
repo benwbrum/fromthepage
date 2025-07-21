@@ -178,3 +178,4 @@ de:
       select_new_date: Wählen Sie einen neuen Datumsbereich
       start_date: Startdatum
       update: Aktualisieren
+      hours_update_note: "Stunden werden über Nacht aktualisiert. Kommen Sie morgen zurück, um Statistiken einschließlich der heutigen Arbeit zu sehen."

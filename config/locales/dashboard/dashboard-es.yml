@@ -178,3 +178,4 @@ es:
       select_new_date: Seleccione un nuevo rango de fechas
       start_date: Fecha de inicio
       update: Actualizar
+      hours_update_note: "Las horas se actualizan durante la noche. Vuelve mañana para ver las estadísticas que incluyen el trabajo de hoy."

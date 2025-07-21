@@ -178,3 +178,4 @@ fr:
       select_new_date: Sélectionnez une nouvelle plage de dates
       start_date: Date de début
       update: Mise à jour
+      hours_update_note: "Les heures sont mises à jour pendant la nuit. Revenez demain pour voir les statistiques incluant le travail d'aujourd'hui."
