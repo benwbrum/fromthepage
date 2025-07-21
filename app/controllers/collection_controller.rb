@@ -639,11 +639,11 @@ class CollectionController < ApplicationController
   end
 
   def contributors
-    #Get the start and end date params from date picker, if none, set defaults
+    # Get the start and end date params from date picker, if none, set defaults
     start_date = params[:start_date]
     end_date = params[:end_date]
 
-    if start_date == nil
+    if start_date.nil?
       start_date = 1.week.ago
       end_date = DateTime.now.utc
     end
@@ -651,8 +651,8 @@ class CollectionController < ApplicationController
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
-    @start_deed = start_date.strftime("%b %d, %Y")
-    @end_deed = end_date.strftime("%b %d, %Y")
+    @start_deed = start_date.strftime('%b %d, %Y')
+    @end_deed = end_date.strftime('%b %d, %Y')
 
     new_contributors(@collection, start_date, end_date)
     @stats = @collection.get_stats_hash(start_date, end_date)

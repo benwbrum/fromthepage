@@ -17,7 +17,7 @@
   | &nbsp;
   h3 =t('.export_activity_as_csv_header')
   p =t('.export_activity_as_csv_description')
-  =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f| 
+  =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f|
     =f.hidden_field :collection_activity, value: true
     =f.hidden_field 'report_arguments[start_date]', value: @start_deed.to_datetime
     =f.hidden_field 'report_arguments[end_date]', value: @end_deed.to_datetime
@@ -33,11 +33,11 @@
 
     -unless @active_transcribers.empty?
       table.datagrid.striped(style="width:45%")
-        thead 
+        thead
           tr
-            th= t('.user') 
+            th= t('.user')
             th= t('.time_on_this')
-        tbody 
+        tbody
           -@active_transcribers.each do |user|
             tr
               td= link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
@@ -50,7 +50,7 @@
         =t('.total_time', hours: (total_minutes / 60), minutes: (total_minutes % 60))
       p
         =t('.export_as_csv_description')
-        =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f| 
+        =form_for :bulk_export, url: bulk_export_create_path(@collection.id) do |f|
           =f.hidden_field :collection_contributors, value: true
           =f.hidden_field 'report_arguments[start_date]', value: @start_deed.to_datetime
           =f.hidden_field 'report_arguments[end_date]', value: @end_deed.to_datetime
@@ -64,10 +64,10 @@
 h3 =t('.all_collaborator_emails')
 p=link_to t('.find_project_newsletters_recommendations'), "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
 p#collaborators
-  -unless @all_collaborators.empty?
-    =@all_collaborators + ", support@fromthepage.com"
-  -else
+  -if @all_collaborators.empty?
     =t('.no_collaborators')
+  -else
+    = @all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
 
 -content_for :javascript
   javascript:
