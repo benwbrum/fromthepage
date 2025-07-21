@@ -11,13 +11,13 @@
       tr
         th =f.label :orcid, t('.ocrid_id')
         td =f.text_field :orcid, :placeholder => t('.your_ocrid_id')
-      -if @user.owner
         tr
           th =f.label :picture, t('.picture')
           td 
             =f.file_field :picture, accept: 'image/*'
             -if @user.picture_url(:thumb)
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
+      -if @user.owner
         tr
           th= t('.user_url')
           td =user_profile_url(@user)
