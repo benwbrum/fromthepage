@@ -175,7 +175,7 @@ en:
       download_letter: Download a Letter
       end_date: End date
       hours_details_message: "%{user_name} has contributed %{time_duration} between %{start_date} and %{end_date}"
+      hours_update_note: Hours are updated overnight. Come back tomorrow for statistics including today's work.
       select_new_date: Select a new date range
       start_date: Start date
       update: Update
-      hours_update_note: "Hours are updated overnight. Come back tomorrow for statistics including today's work."

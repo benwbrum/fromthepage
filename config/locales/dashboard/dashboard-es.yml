@@ -175,7 +175,7 @@ es:
       download_letter: Descargar una carta
       end_date: Fecha final
       hours_details_message: "%{user_name} ha contribuido %{time_duration} entre %{start_date} y %{end_date}"
+      hours_update_note: Las horas se actualizan durante la noche. Vuelve mañana para ver las estadísticas que incluyen el trabajo de hoy.
       select_new_date: Seleccione un nuevo rango de fechas
       start_date: Fecha de inicio
       update: Actualizar
-      hours_update_note: "Las horas se actualizan durante la noche. Vuelve mañana para ver las estadísticas que incluyen el trabajo de hoy."
