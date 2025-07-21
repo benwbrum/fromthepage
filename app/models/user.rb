@@ -441,6 +441,10 @@ class User < ApplicationRecord
     end
   end
 
+  def last_deed_at
+    deeds.maximum(:created_at)
+  end
+
   def self.search(search)
     wildcard = "%#{search}%"
     where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
