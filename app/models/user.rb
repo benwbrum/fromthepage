@@ -61,7 +61,6 @@ class User < ApplicationRecord
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
-  include ElasticDelta
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -143,36 +142,25 @@ class User < ApplicationRecord
   after_create :set_default_footer_block
   # before_destroy :clean_up_orphans
 
-  def as_indexed_json
-    return {
-      _id: self.id,
-      about: self.about,
-      display_name: self.display_name,
-      login: self.login,
-      real_name: self.real_name,
-      website: self.website
-    }
-  end
+  update_index('users', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
 
-  def self.es_match_query(query)
-    return {
+  def self.es_search(query:)
+    UsersIndex.query(
       bool: {
         must: {
           simple_query_string: {
             query: query,
             fields: [
-              "about",
-              "real_name",
-              "website"
+              'about',
+              'real_name',
+              'website'
             ]
           }
         },
-        filter: [
-          # Need index filter for cross collection search
-          {prefix: {_index: "ftp_user"}}
-        ]
+        filter: []
       }
-    }
+    )
   end
 
   def email_does_not_match_denylist
@@ -516,5 +504,16 @@ class User < ApplicationRecord
     return unless Settings.spammy_emails.tlds.include?(tld)
 
     errors.add(:email, :spammy)
+  end
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: UsersIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
   end
 end
