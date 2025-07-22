@@ -1,5 +1,5 @@
 -if params[:search].present?
-  -if @search_results.any? && @owners.any?
+  -if @search_results&.any? && @owners&.any?
     -@owners.each do |owner|
       -unless @search_results_map[owner.id].blank?
         .project-list_projects
