@@ -157,5 +157,6 @@ gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'
 
+gem 'chewy'
 # Elasticsearch client
-gem 'elasticsearch', '8.15.0'
+# gem 'elasticsearch', '8.15.0'

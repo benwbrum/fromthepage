@@ -16,6 +16,7 @@ class Database::Base < ApplicationInteractor
     'deeds' => Deed,
     'document_sets_works' => DocumentSetWork,
     'categories' => Category,
+    'articles_categories' => ArticlesCategory,
     'sc_collections' => ScCollection,
     'sc_manifests' => ScManifest,
     'sc_canvases' => ScCanvas,

@@ -43,8 +43,11 @@ class Article < ApplicationRecord
   validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90}
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
 
-  has_and_belongs_to_many :categories, -> { distinct }
+  has_many :articles_categories
+  has_many :categories, -> { distinct }, through: :articles_categories
+
   belongs_to :collection, optional: true
+
   has_many :target_article_links, foreign_key: 'target_article_id', class_name: 'ArticleArticleLink'
   scope :target_article_links, -> { include 'source_article' }
   scope :target_article_links, -> { order "articles.title ASC" }
