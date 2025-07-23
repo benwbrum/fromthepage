@@ -178,3 +178,4 @@ pt:
       select_new_date: Selecione um novo período
       start_date: Data de início
       update: Atualizar
+      hours_update_note: "As estatísticas de contribuição são calculadas a cada vinte e quatro horas. Essas estatísticas refletem o uso até %{time_ago}."

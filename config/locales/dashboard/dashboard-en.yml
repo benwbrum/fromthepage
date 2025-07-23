@@ -178,3 +178,4 @@ en:
       select_new_date: Select a new date range
       start_date: Start date
       update: Update
+      hours_update_note: "Contribution statistics are calculated every twenty-four hours. These statistics reflect usage up to %{time_ago}."

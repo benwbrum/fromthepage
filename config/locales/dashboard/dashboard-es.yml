@@ -178,3 +178,4 @@ es:
       select_new_date: Seleccione un nuevo rango de fechas
       start_date: Fecha de inicio
       update: Actualizar
+      hours_update_note: "Las estadísticas de contribución se calculan cada veinticuatro horas. Estas estadísticas reflejan el uso hasta %{time_ago}."
