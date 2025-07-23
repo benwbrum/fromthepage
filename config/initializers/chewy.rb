@@ -15,4 +15,4 @@ Chewy.settings = if cloud_id.present?
                    }
                  end
 
-Chewy.root_strategy = :atomic
+Chewy.root_strategy = :active_job
