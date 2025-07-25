@@ -55,7 +55,7 @@
           ==transcription.force_encoding('utf-8')
 
       -else
-        -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+        -if (current_user && current_user.can_transcribe?(page.work, collection)) || (!current_user && !page.work.restrict_scribes)
           -if collection.active?
             -if page.work.ocr_correction
               -status = t('display.pages_view.corrected')
