@@ -1,6 +1,38 @@
 require 'spec_helper'
 
 RSpec.describe UserMailer, type: :mailer do
+  describe 'upload_no_images_warning' do
+    let(:user) { build_stubbed(:user) }
+    let(:collection) { build_stubbed(:collection) }
+    let(:document_upload) { build_stubbed(:document_upload, user: user, collection: collection) }
+
+    it 'renders the subject' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.subject).to eq('Upload processing complete - no images found')
+    end
+
+    it 'renders the receiver email' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.to).to eq([user.email])
+    end
+
+    it 'renders the sender email' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.from).to eq(['support@fromthepage.com'])
+    end
+
+    it 'includes the filename in the message' do
+      allow(document_upload).to receive(:name).and_return('test.zip')
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.body.encoded).to include('test.zip')
+    end
+
+    it 'includes supported formats information' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.body.encoded).to include('JPG, JPEG, PNG')
+    end
+  end
+
   describe 'nightly_user_activity' do
 
     context "inside the mailer email" do
