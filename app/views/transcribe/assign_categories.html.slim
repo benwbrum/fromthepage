@@ -19,6 +19,11 @@ ruby:
 
 p.big =t('.uncategorized_subjects_mentioned')
 
+-if user_signed_in? && current_user.like_owner?(@collection)
+  p.help-text =t('.help_can_manage_categories')
+-else
+  p.help-text =t('.help_cannot_manage_categories')
+
 -@unassigned_articles.each do |article|
   .page-uncategorized
     h4.page-uncategorized_subject(data-prefix=t('.subject') *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"

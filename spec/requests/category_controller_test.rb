@@ -1,15 +1,34 @@
 require 'spec_helper'
 
 describe CategoryController do
+  before do
+    User.current_user = owner
+  end
+
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:category) { create(:category, collection_id: collection.id) }
   let!(:child_category) { create(:category, collection_id: collection.id, parent: category) }
 
   describe "GET #edit" do
-    it "renders the edit template" do
-      get category_edit_path(collection_id: collection.slug, category_id: category.id)
-      expect(response).to render_template(:edit)
+    context "when user is authorized" do
+      it "renders the edit template" do
+        get category_edit_path(collection_id: collection.slug, category_id: category.id)
+        expect(response).to render_template(:edit)
+      end
+    end
+
+    context "when user is not authorized" do
+      let!(:unauthorized_user) { create(:unique_user) }
+      
+      before do
+        User.current_user = unauthorized_user
+      end
+
+      it "redirects to dashboard" do
+        get category_edit_path(collection_id: collection.slug, category_id: category.id)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 

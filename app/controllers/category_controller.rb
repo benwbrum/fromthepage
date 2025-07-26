@@ -1,6 +1,7 @@
 class CategoryController < ApplicationController
   public :render_to_string
   protect_from_forgery
+  before_action :authorized?
 
   def edit
   end
@@ -85,6 +86,12 @@ class CategoryController < ApplicationController
     end
     flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+  end
+
+  def authorized?
+    unless user_signed_in? && current_user.like_owner?(@collection)
+      redirect_to dashboard_path
+    end
   end
 
   def category_params

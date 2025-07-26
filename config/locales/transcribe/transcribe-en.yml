@@ -11,6 +11,8 @@ en:
       assign_categories: Assign categories
       cancel: Cancel
       continue: Continue
+      help_can_manage_categories: You can add categories by choosing "manage categories" above.
+      help_cannot_manage_categories: If there is no appropriate category, just choose "continue".
       manage_categories: Manage Categories
       subject: 'Subject: '
       uncategorized_subjects: Uncategorized Subjects
