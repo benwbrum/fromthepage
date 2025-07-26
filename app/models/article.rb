@@ -132,8 +132,8 @@ class Article < ApplicationRecord
     # take each element of this article name
     words = self.title.tr(',.', ' ').split(' ')
     # sort it by word length, longest to shortest
-    # require at least 3 characters to reduce false positives from common short words like "Dr", "Mr"
-    words.keep_if { |word| word.length >= 3 }
+    # require at least 3 word characters to reduce false positives from common short words like "Dr", "Mr"
+    words.keep_if { |word| word.match(/\w{3,}/) }
     words.sort! { |x,y| x.length <=> y.length }
     words.reverse!
     # for each word

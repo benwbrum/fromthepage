@@ -15,7 +15,7 @@ RSpec.describe Article, type: :model do
         
         # Test that the word processing excludes "Dr" but includes "Smith"
         words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.length >= 3 }
+        words.keep_if { |word| word.match(/\w{3,}/) }
         
         expect(words).to eq(["Smith"])
         expect(words).not_to include("Dr")
@@ -25,7 +25,7 @@ RSpec.describe Article, type: :model do
         test_article = build(:article, collection: collection, title: "A B Mr")
         
         words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.length >= 3 }
+        words.keep_if { |word| word.match(/\w{3,}/) }
         
         expect(words).to be_empty
       end
@@ -34,11 +34,39 @@ RSpec.describe Article, type: :model do
         test_article = build(:article, collection: collection, title: "John Robert Calvert")
         
         words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.length >= 3 }
+        words.keep_if { |word| word.match(/\w{3,}/) }
         words.sort! { |x,y| x.length <=> y.length }
         words.reverse!
         
         expect(words).to eq(["Calvert", "Robert", "John"])
+      end
+
+      it 'excludes words with punctuation that do not have enough word characters' do
+        # Test with punctuation that isn't handled by tr(',.', ' ')
+        test_article = build(:article, collection: collection, title: "Mr; Dr: Smith")
+        
+        words = test_article.title.tr(',.', ' ').split(' ')
+        words.keep_if { |word| word.match(/\w{3,}/) }
+        
+        # "Mr;" should be excluded (only 2 word characters)
+        # "Dr:" should be excluded (only 2 word characters)  
+        # "Smith" should be included (5 word characters)
+        expect(words).to eq(["Smith"])
+        expect(words).not_to include("Mr;")
+        expect(words).not_to include("Dr:")
+      end
+
+      it 'includes 3+ character titles even with punctuation' do
+        # "Mrs" is a legitimate 3-character title that should be preserved
+        test_article = build(:article, collection: collection, title: "Mrs: Johnson")
+        
+        words = test_article.title.tr(',.', ' ').split(' ')
+        words.keep_if { |word| word.match(/\w{3,}/) }
+        
+        # Both "Mrs:" and "Johnson" should be included 
+        # "Mrs:" contains "Mrs" (3 word characters)
+        # "Johnson" contains "Johnson" (7 word characters)
+        expect(words).to eq(["Mrs:", "Johnson"])
       end
     end
   end
