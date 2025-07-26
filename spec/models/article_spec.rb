@@ -10,105 +10,115 @@ RSpec.describe Article, type: :model do
 
   describe '#possible_duplicates' do
     let(:collection) { create(:collection) }
-    let(:article) { create(:article, collection: collection, title: "F. R. Calvert") }
 
-    context 'word filtering for duplicate detection' do
-      it 'excludes very short words to reduce false positives' do
-        # Create a test article with short common words
-        test_article = build(:article, collection: collection, title: "Dr. Smith")
+    context 'when detecting duplicate articles' do
+      it 'excludes short words like "Dr" to reduce false positives' do
+        # Create the main article we're checking for duplicates
+        main_article = create(:article, collection: collection, title: "Dr. Smith")
         
-        # Mock the collection.articles scope to avoid database queries
-        allow(test_article.collection).to receive(:articles).and_return(Article.none)
+        # Create articles with various titles
+        smith_article = create(:article, collection: collection, title: "John Smith")
+        doctor_article = create(:article, collection: collection, title: "Dr. Jones") 
+        unrelated_article = create(:article, collection: collection, title: "Mary Brown")
         
-        # Test that the word processing excludes "Dr" but includes "Smith"
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
+        # Call the actual possible_duplicates method
+        duplicates = main_article.possible_duplicates
         
-        expect(words).to eq(["Smith"])
-        expect(words).not_to include("Dr")
+        # Should find "John Smith" because it contains "Smith" (3+ characters)
+        expect(duplicates).to include(smith_article)
+        
+        # Should NOT find "Dr. Jones" because "Dr" is filtered out (< 3 characters)
+        expect(duplicates).not_to include(doctor_article)
+        
+        # Should NOT find unrelated article
+        expect(duplicates).not_to include(unrelated_article)
       end
 
-      it 'filters single letters and very short words' do
-        test_article = build(:article, collection: collection, title: "A B Mr")
+      it 'finds articles with shared meaningful words' do
+        main_article = create(:article, collection: collection, title: "F. R. Calvert")
         
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
+        # Articles that should be found
+        calvert_match = create(:article, collection: collection, title: "John Calvert")
+        calvert_family = create(:article, collection: collection, title: "Calvert Family")
         
-        expect(words).to be_empty
+        # Articles that should NOT be found (only short words match)
+        initial_only = create(:article, collection: collection, title: "F. Johnson")
+        unrelated = create(:article, collection: collection, title: "Mary Brown")
+        
+        duplicates = main_article.possible_duplicates
+        
+        # Should find articles with "Calvert"
+        expect(duplicates).to include(calvert_match)
+        expect(duplicates).to include(calvert_family)
+        
+        # Should NOT find articles with only short initials or unrelated names
+        expect(duplicates).not_to include(initial_only)
+        expect(duplicates).not_to include(unrelated)
       end
 
-      it 'preserves meaningful words of 3+ characters' do
-        test_article = build(:article, collection: collection, title: "John Robert Calvert")
+      it 'handles titles with punctuation correctly' do
+        main_article = create(:article, collection: collection, title: "Mrs. Johnson")
         
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
-        words.sort! { |x,y| x.length <=> y.length }
-        words.reverse!
+        # Should find articles with "Johnson" (meaningful word)
+        johnson_match = create(:article, collection: collection, title: "Robert Johnson")
         
-        expect(words).to eq(["Calvert", "Robert", "John"])
+        # Should find articles with "Mrs" (3+ characters, even with punctuation)
+        mrs_match = create(:article, collection: collection, title: "Mrs Smith")
+        
+        # Should NOT find articles with only short titles
+        short_title = create(:article, collection: collection, title: "Mr. Brown")
+        
+        duplicates = main_article.possible_duplicates
+        
+        expect(duplicates).to include(johnson_match)
+        expect(duplicates).to include(mrs_match)
+        expect(duplicates).not_to include(short_title)
       end
 
-      it 'excludes words with punctuation that do not have enough word characters' do
-        # Test with punctuation that isn't handled by tr(',.', ' ')
-        test_article = build(:article, collection: collection, title: "Mr; Dr: Smith")
+      it 'does not return the same article as a duplicate of itself' do
+        main_article = create(:article, collection: collection, title: "John Smith")
         
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
+        # Create another article with similar title
+        other_article = create(:article, collection: collection, title: "Jane Smith")
         
-        # "Mr;" should be excluded (only 2 word characters)
-        # "Dr:" should be excluded (only 2 word characters)  
-        # "Smith" should be included (5 word characters)
-        expect(words).to eq(["Smith"])
-        expect(words).not_to include("Mr;")
-        expect(words).not_to include("Dr:")
+        duplicates = main_article.possible_duplicates
+        
+        # Should find the other article but not itself
+        expect(duplicates).to include(other_article)
+        expect(duplicates).not_to include(main_article)
       end
 
-      it 'includes 3+ character titles even with punctuation' do
-        # "Mrs" is a legitimate 3-character title that should be preserved
-        test_article = build(:article, collection: collection, title: "Mrs: Johnson")
+      it 'only searches within the same collection' do
+        # Create articles in different collections
+        collection1 = create(:collection)
+        collection2 = create(:collection)
         
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
+        main_article = create(:article, collection: collection1, title: "John Smith")
+        same_collection = create(:article, collection: collection1, title: "Jane Smith")
+        different_collection = create(:article, collection: collection2, title: "Bob Smith")
         
-        # Both "Mrs:" and "Johnson" should be included 
-        # "Mrs:" contains "Mrs" (3 word characters)
-        # "Johnson" contains "Johnson" (7 word characters)
-        expect(words).to eq(["Mrs:", "Johnson"])
+        duplicates = main_article.possible_duplicates
+        
+        # Should only find articles in the same collection
+        expect(duplicates).to include(same_collection)
+        expect(duplicates).not_to include(different_collection)
       end
 
-      it 'handles fixture data correctly' do
-        # Test with existing fixture article title to ensure compatibility
-        test_article = build(:article, collection: collection, title: "Mrs.")
+      it 'prioritizes articles with longer matching words' do
+        main_article = create(:article, collection: collection, title: "Robert Johnson Smith")
         
-        words = test_article.title.tr(',.', ' ').split(' ')
-        words.keep_if { |word| word.match(/\w{3,}/) }
+        # Create articles with different word matches
+        short_match = create(:article, collection: collection, title: "Bob Johnson")
+        long_match = create(:article, collection: collection, title: "Elizabeth Smith")
         
-        # "Mrs." becomes "Mrs" after tr() and should be included (3 characters)
-        expect(words).to eq(["Mrs"])
-      end
-
-      it 'demonstrates the intended reduction in false positives' do
-        # Show the before/after behavior for the original problem case
-        title = "F. R. Calvert"
-        words = title.tr(',.', ' ').split(' ')
+        duplicates = main_article.possible_duplicates
         
-        # Old behavior would include nothing (F, R have <2 chars)
-        old_filtered = words.select { |word| word.match(/\w\w/) }
-        expect(old_filtered).to eq(["Calvert"])
+        # Should find both, but longer words are processed first in the algorithm
+        expect(duplicates).to include(short_match)
+        expect(duplicates).to include(long_match)
         
-        # New behavior still includes only meaningful words
-        new_filtered = words.select { |word| word.match(/\w{3,}/) }
-        expect(new_filtered).to eq(["Calvert"])
-        
-        # Demonstrate fix for "Dr. Smith" case
-        title2 = "Dr. Smith"
-        words2 = title2.tr(',.', ' ').split(' ')
-        
-        old_filtered2 = words2.select { |word| word.match(/\w\w/) }
-        expect(old_filtered2).to eq(["Dr", "Smith"])  # Would match both
-        
-        new_filtered2 = words2.select { |word| word.match(/\w{3,}/) }
-        expect(new_filtered2).to eq(["Smith"])  # Only matches meaningful word
+        # The exact ordering depends on the internal algorithm, but both should be found
+        expect(duplicates.count).to eq(2)
       end
     end
   end
