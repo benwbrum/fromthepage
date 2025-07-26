@@ -42,6 +42,10 @@ module AddWorkHelper
     end
   end
 
+  def empty_work
+    @work = Work.new
+  end
+
   protected
   def record_deed
     deed = Deed.new
