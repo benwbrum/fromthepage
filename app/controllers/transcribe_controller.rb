@@ -39,13 +39,13 @@ class TranscribeController  < ApplicationController
       page_title = @page.title.present? ? @page.title : "Page #{@page.position}"
       work_title = @page.work&.title || "Unknown Work"
       
-      description = strip_html_and_truncate(@page.source_text) if @page.source_text.present?
+      description = view_context.strip_html_and_truncate(@page.source_text) if @page.source_text.present?
       description ||= "A page from #{work_title} in the #{@page.work&.collection&.title || 'Unknown Collection'} project"
       
-      set_social_media_meta_tags(
+      view_context.set_social_media_meta_tags(
         title: "#{work_title} - #{page_title}",
         description: description,
-        image_url: page_image_url(@page) || work_image_url(@page.work) || collection_image_url(@page.work&.collection),
+        image_url: view_context.page_image_url(@page) || view_context.work_image_url(@page.work) || view_context.collection_image_url(@page.work&.collection),
         url: request.original_url,
         type: 'article'
       )

@@ -1,6 +1,4 @@
-class OembedController < ApplicationController
-  include ApplicationHelper
-  
+class OembedController < ApplicationController  
   protect_from_forgery with: :null_session
   
   before_action :set_format
@@ -97,10 +95,10 @@ class OembedController < ApplicationController
 
     {
       title: collection.title,
-      description: strip_html_and_truncate(collection.intro_block || "A transcription project on FromThePage"),
+      description: view_context.strip_html_and_truncate(collection.intro_block || "A transcription project on FromThePage"),
       author: collection.owner.display_name,
       author_url: author_url,
-      image_url: collection_image_url(collection),
+      image_url: view_context.collection_image_url(collection),
       url: collection_url,
       type: 'collection'
     }
@@ -116,10 +114,10 @@ class OembedController < ApplicationController
 
     {
       title: work.title,
-      description: strip_html_and_truncate(work.description || "A document in the #{work.collection.title} project"),
+      description: view_context.strip_html_and_truncate(work.description || "A document in the #{work.collection.title} project"),
       author: work.collection.owner.display_name,
       author_url: author_url,
-      image_url: work_image_url(work) || collection_image_url(work.collection),
+      image_url: view_context.work_image_url(work) || view_context.collection_image_url(work.collection),
       url: work_url,
       type: 'work'
     }
@@ -138,10 +136,10 @@ class OembedController < ApplicationController
 
     {
       title: "#{work.title} - #{page.title || "Page #{page.position}"}",
-      description: strip_html_and_truncate(page.source_text || "A page from #{work.title}"),
+      description: view_context.strip_html_and_truncate(page.source_text || "A page from #{work.title}"),
       author: work.collection.owner.display_name,
       author_url: author_url,
-      image_url: page_image_url(page) || work_image_url(work) || collection_image_url(work.collection),
+      image_url: view_context.page_image_url(page) || view_context.work_image_url(work) || view_context.collection_image_url(work.collection),
       url: page_url,
       type: 'page'
     }

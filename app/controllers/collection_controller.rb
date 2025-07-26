@@ -355,14 +355,14 @@ class CollectionController < ApplicationController
         
         # Set social media meta tags for collection
         unless @collection.nil? || !@collection.is_active?
-          description = strip_html_and_truncate(@collection.intro_block) if @collection.intro_block.present?
+          description = view_context.strip_html_and_truncate(@collection.intro_block) if @collection.intro_block.present?
           works_count = @collection.respond_to?(:works_count) ? @collection.works_count : @collection.works.count rescue 0
           description ||= "A transcription project on FromThePage with #{works_count} #{'work'.pluralize(works_count)}"
           
-          set_social_media_meta_tags(
+          view_context.set_social_media_meta_tags(
             title: @collection.title,
             description: description,
-            image_url: collection_image_url(@collection),
+            image_url: view_context.collection_image_url(@collection),
             url: request.original_url,
             type: 'website'
           )
