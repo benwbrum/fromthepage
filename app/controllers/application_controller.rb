@@ -438,3 +438,14 @@ end
 def codespaces_environment?
   Rails.env.development? && ENV["CODESPACES"] == "true"
 end
+
+def strip_html_and_truncate(text, length: 200)
+  return '' if text.blank?
+  
+  # Remove HTML tags and normalize whitespace
+  plain_text = ActionView::Base.full_sanitizer.sanitize(text)
+  plain_text = plain_text.squish
+  
+  # Truncate to desired length
+  plain_text.length > length ? "#{plain_text[0...length]}..." : plain_text
+end

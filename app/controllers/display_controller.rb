@@ -58,6 +58,20 @@ class DisplayController < ApplicationController
       end
     end
     session[:col_id] = @collection.slug
+    
+    # Set social media meta tags for work
+    unless @work.nil?
+      description = strip_html_and_truncate(@work.description) if @work.description.present?
+      description ||= "A document in the #{@work.collection.title} project on FromThePage"
+      
+      set_social_media_meta_tags(
+        title: @work.title,
+        description: description,
+        image_url: work_image_url(@work) || collection_image_url(@work.collection),
+        url: request.original_url,
+        type: 'article'
+      )
+    end
   end
 
   def read_all_works

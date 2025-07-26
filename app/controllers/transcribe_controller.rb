@@ -33,6 +33,23 @@ class TranscribeController  < ApplicationController
       flash.now[:info] = t('.alert')
       @current_user_alerted = true
     end unless @page.edit_started_at.nil?
+    
+    # Set social media meta tags for page
+    unless @page.nil?
+      page_title = @page.title.present? ? @page.title : "Page #{@page.position}"
+      work_title = @page.work.title
+      
+      description = strip_html_and_truncate(@page.source_text) if @page.source_text.present?
+      description ||= "A page from #{work_title} in the #{@page.work.collection.title} project"
+      
+      set_social_media_meta_tags(
+        title: "#{work_title} - #{page_title}",
+        description: description,
+        image_url: page_image_url(@page) || work_image_url(@page.work) || collection_image_url(@page.work.collection),
+        url: request.original_url,
+        type: 'article'
+      )
+    end
   end
 
   def monitor_view

@@ -269,4 +269,74 @@ module ApplicationHelper
       [I18n.t('will_paginate.all'), -1]
     ]
   end
+
+  # Social Media Metadata Helpers
+
+  def set_social_media_meta_tags(title:, description:, image_url: nil, url: nil, type: 'website')
+    content_for :og_title, title
+    content_for :og_description, description
+    content_for :og_type, type
+    content_for :og_url, url || request.original_url
+    
+    # Set image with fallback
+    if image_url.present?
+      content_for :og_image, absolute_url(image_url)
+      content_for :twitter_image, absolute_url(image_url)
+    else
+      default_image = asset_url('logo.png')
+      content_for :og_image, default_image
+      content_for :twitter_image, default_image
+    end
+    
+    # Twitter cards
+    content_for :twitter_card, 'summary_large_image'
+    content_for :twitter_title, title
+    content_for :twitter_description, description
+    
+    # Regular meta tags
+    content_for :meta_description, description
+    
+    # oEmbed discovery URLs
+    oembed_base_url = "#{request.protocol}#{request.host_with_port}/oembed"
+    oembed_params = "?url=#{CGI.escape(url || request.original_url)}"
+    content_for :oembed_json_url, "#{oembed_base_url}#{oembed_params}&format=json"
+    content_for :oembed_xml_url, "#{oembed_base_url}#{oembed_params}&format=xml"
+  end
+
+  def collection_image_url(collection)
+    return nil unless collection&.picture.present?
+    if collection.picture.start_with?('http')
+      collection.picture
+    else
+      # Handle relative URLs by making them absolute
+      "#{request.protocol}#{request.host_with_port}#{collection.picture}"
+    end
+  end
+
+  def work_image_url(work)
+    return nil unless work&.picture.present?
+    if work.picture.start_with?('http')
+      work.picture
+    else
+      # Handle relative URLs by making them absolute
+      "#{request.protocol}#{request.host_with_port}#{work.picture}"
+    end
+  end
+
+  def page_image_url(page)
+    return nil unless page&.base_image.present?
+    if page.base_image.start_with?('http')
+      page.base_image
+    else
+      # Handle relative URLs by making them absolute
+      "#{request.protocol}#{request.host_with_port}#{page.base_image}"
+    end
+  end
+
+  private
+
+  def absolute_url(url)
+    return url if url.blank? || url.start_with?('http')
+    "#{request.protocol}#{request.host_with_port}#{url}"
+  end
 end

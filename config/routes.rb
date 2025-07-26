@@ -582,5 +582,8 @@ Fromthepage::Application.routes.draw do
     end
   end
 
+  # oEmbed endpoint for social media embedding
+  get '/oembed', to: 'oembed#show', as: :oembed
+
   get '/:user_id', to: 'user#profile', as: :user_profile
 end
