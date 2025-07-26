@@ -170,31 +170,7 @@ class OembedController < ApplicationController
     end
   end
 
-  def strip_html_and_truncate(text, length: 200)
-    return '' if text.blank?
-    
-    # Remove HTML tags and normalize whitespace
-    plain_text = ActionView::Base.full_sanitizer.sanitize(text)
-    plain_text = plain_text.squish
-    
-    # Truncate to desired length
-    plain_text.length > length ? "#{plain_text[0...length]}..." : plain_text
-  end
 
-  def collection_image_url(collection)
-    return nil unless collection&.picture.present?
-    make_absolute_url(collection.picture)
-  end
-
-  def work_image_url(work)
-    return nil unless work&.picture.present?
-    make_absolute_url(work.picture)
-  end
-
-  def page_image_url(page)
-    return nil unless page&.base_image.present?
-    make_absolute_url(page.base_image)
-  end
 
   def make_absolute_url(url)
     return url if url.blank? || url.start_with?('http')

@@ -318,6 +318,17 @@ module ApplicationHelper
     absolute_url(page.base_image)
   end
 
+  def strip_html_and_truncate(text, length: 200)
+    return '' if text.blank?
+    
+    # Remove HTML tags and normalize whitespace
+    plain_text = ActionView::Base.full_sanitizer.sanitize(text)
+    plain_text = plain_text.squish
+    
+    # Truncate to desired length
+    plain_text.length > length ? "#{plain_text[0...length]}..." : plain_text
+  end
+
   private
 
   def absolute_url(url)

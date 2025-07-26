@@ -8,17 +8,8 @@ describe OembedController do
 
   describe '#show' do
     context 'when requesting JSON format for a collection' do
-      let(:collection_url) { "#{request.protocol}#{request.host}/#{owner.slug}/#{collection.slug}" }
+      let(:collection_url) { "http://www.example.com/#{owner.slug}/#{collection.slug}" }
       let(:action_path) { oembed_path(url: collection_url, format: 'json') }
-
-      before do
-        # Mock the request object for URL parsing
-        allow(controller).to receive(:request).and_return(double(
-          host: 'example.com',
-          protocol: 'http://',
-          host_with_port: 'example.com'
-        ))
-      end
 
       it 'returns JSON oEmbed response' do
         get action_path
