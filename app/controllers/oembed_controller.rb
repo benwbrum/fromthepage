@@ -87,7 +87,7 @@ class OembedController < ApplicationController
 
   def parse_collection_content(params)
     collection = Collection.friendly.find(params[:id]) rescue nil
-    return nil unless collection&.is_active?
+    return nil unless collection&.active?
 
     base_url = "#{request.protocol}#{request.host_with_port}"
     collection_url = "#{base_url}/#{collection.owner.slug}/#{collection.slug}"
@@ -106,7 +106,7 @@ class OembedController < ApplicationController
 
   def parse_work_content(params)
     work = Work.friendly.find(params[:work_id]) rescue nil
-    return nil unless work&.collection&.is_active?
+    return nil unless work&.collection&.active?
 
     base_url = "#{request.protocol}#{request.host_with_port}"
     work_url = "#{base_url}/#{work.collection.owner.slug}/#{work.collection.slug}/#{work.slug}"
@@ -125,7 +125,7 @@ class OembedController < ApplicationController
 
   def parse_page_content(params)
     work = Work.friendly.find(params[:work_id]) rescue nil
-    return nil unless work&.collection&.is_active?
+    return nil unless work&.collection&.active?
     
     page = work.pages.find(params[:page_id]) rescue nil
     return nil unless page
