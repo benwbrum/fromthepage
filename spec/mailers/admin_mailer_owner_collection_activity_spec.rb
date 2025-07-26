@@ -59,80 +59,80 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
 
   describe "#has_activity?" do
     before :all do
-      @owner = create(:user)
-      @collection = create(:collection, owner_user_id: @owner.id)
-      @work = create(:work, collection_id: @collection.id)
-      @page = create(:page, work_id: @work.id)
-      @collaborator = create(:user)
+      @activity_owner = create(:user)
+      @activity_collection = create(:collection, owner_user_id: @activity_owner.id)
+      @activity_work = create(:work, collection_id: @activity_collection.id)
+      @activity_page = create(:page, work_id: @activity_work.id)
+      @activity_collaborator = create(:user)
     end
 
     after :each do
-      @deed&.destroy
+      @activity_deed&.destroy
     end
 
     after :all do
-      @page.destroy
-      @work.destroy
-      @collection.destroy
-      @collaborator.destroy
-      @owner.destroy
+      @activity_page.destroy
+      @activity_work.destroy
+      @activity_collection.destroy
+      @activity_collaborator.destroy
+      @activity_owner.destroy
     end
 
     context "when there are new collaborators" do
       it "returns true" do
-        @deed = create(:deed, {
+        @activity_deed = create(:deed, {
           deed_type: DeedType::WORK_ADDED,
-          collection_id: @collection.id,
-          user_id: @collaborator.id
+          collection_id: @activity_collection.id,
+          user_id: @activity_collaborator.id
         })
-        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
         expect(activity.has_activity?).to be true
       end
     end
 
     context "when there are new comments" do
       it "returns true" do
-        @deed = create(:deed, {
+        @activity_deed = create(:deed, {
           deed_type: DeedType::NOTE_ADDED,
-          collection_id: @collection.id,
-          page_id: @page.id,
-          user_id: @collaborator.id
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          user_id: @activity_collaborator.id
         })
-        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
         expect(activity.has_activity?).to be true
       end
     end
 
     context "when there is new activity (non-comment deeds)" do
       it "returns true" do
-        @deed = create(:deed, {
+        @activity_deed = create(:deed, {
           deed_type: DeedType::PAGE_TRANSCRIPTION,
-          collection_id: @collection.id,
-          page_id: @page.id,
-          user_id: @collaborator.id
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          user_id: @activity_collaborator.id
         })
-        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
         expect(activity.has_activity?).to be true
       end
     end
 
     context "when there is no new activity" do
       it "returns false" do
-        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
         expect(activity.has_activity?).to be false
       end
     end
 
     context "when there are old deeds but no recent activity" do
       it "returns false" do
-        @deed = create(:deed, {
+        @activity_deed = create(:deed, {
           deed_type: DeedType::PAGE_TRANSCRIPTION,
-          collection_id: @collection.id,
-          page_id: @page.id,
-          user_id: @collaborator.id,
+          collection_id: @activity_collection.id,
+          page_id: @activity_page.id,
+          user_id: @activity_collaborator.id,
           created_at: 2.days.ago
         })
-        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
         expect(activity.has_activity?).to be false
       end
     end
