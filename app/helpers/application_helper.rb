@@ -246,6 +246,8 @@ module ApplicationHelper
 
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
   def to_snippet(intro_block)
+    return '' if intro_block.blank?
+    
     # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
     doc = Nokogiri::HTML(intro_block)
     doc.xpath('//style').each { |n| n.remove }

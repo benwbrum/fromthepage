@@ -279,7 +279,7 @@ class WorkController < ApplicationController
       "dateModified" => @work.most_recent_deed_created_at&.iso8601,
       "publisher" => {
         "@type" => "Organization",
-        "name" => @collection.owner.display_name
+        "name" => @collection.owner&.display_name || "FromThePage"
       }
     }
     

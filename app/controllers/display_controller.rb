@@ -105,7 +105,7 @@ class DisplayController < ApplicationController
         "dateModified" => @page.updated_at&.iso8601,
         "publisher" => {
           "@type" => "Organization", 
-          "name" => @collection.owner.display_name
+          "name" => @collection.owner&.display_name || "FromThePage"
         }
       }
       
