@@ -96,6 +96,7 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           deed_type: DeedType::NOTE_ADDED,
           collection_id: @activity_collection.id,
           page_id: @activity_page.id,
+          work_id: @activity_work.id,
           user_id: @activity_collaborator.id
         })
         activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
@@ -109,6 +110,7 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           deed_type: DeedType::PAGE_TRANSCRIPTION,
           collection_id: @activity_collection.id,
           page_id: @activity_page.id,
+          work_id: @activity_work.id,
           user_id: @activity_collaborator.id
         })
         activity = AdminMailer::OwnerCollectionActivity.build(@activity_owner)
@@ -129,6 +131,7 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           deed_type: DeedType::PAGE_TRANSCRIPTION,
           collection_id: @activity_collection.id,
           page_id: @activity_page.id,
+          work_id: @activity_work.id,
           user_id: @activity_collaborator.id,
           created_at: 2.days.ago
         })
