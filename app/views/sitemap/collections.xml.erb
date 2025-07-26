@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<% @collections.each do |collection| %>
+  <url>
+    <loc><%= request.protocol + request.host_with_port %>/<%= collection.owner.slug %>/<%= collection.slug %></loc>
+    <lastmod><%= (collection.most_recent_deed_created_at || collection.created_on || Time.now).strftime('%Y-%m-%d') %></lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+<% end %>
+</urlset>

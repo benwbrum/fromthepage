@@ -257,6 +257,42 @@ class WorkController < ApplicationController
     update_search_attempt_contributions
   end
 
+  def show
+    # Set meta information for work pages for better archival
+    @page_title = "#{@work.title} - #{@collection.title}"
+    @meta_description = "Historical work: #{@work.title} by #{@work.author} in the #{@collection.title} collection. #{@work.description}".truncate(160)
+    @meta_keywords = [@work.title, @work.author, @collection.title, "historical document", "digital archive"].compact.join(", ")
+    
+    # Generate structured data for work
+    @structured_data = {
+      "@context" => "https://schema.org",
+      "@type" => "Book",
+      "name" => @work.title,
+      "author" => @work.author,
+      "description" => @work.description,
+      "dateCreated" => @work.document_date,
+      "inLanguage" => @collection.text_language || "en",
+      "isPartOf" => {
+        "@type" => "Collection",
+        "name" => @collection.title,
+        "description" => @collection.intro_block
+      },
+      "url" => request.original_url,
+      "dateModified" => @work.most_recent_deed_created_at&.iso8601,
+      "publisher" => {
+        "@type" => "Organization",
+        "name" => "FromThePage"
+      }
+    }
+
+    # Add archival-friendly headers
+    respond_to do |format|
+      format.html do
+        response.headers['X-Robots-Tag'] = 'index, follow, archive'
+      end
+    end
+  end
+
   private
 
   def authorized?

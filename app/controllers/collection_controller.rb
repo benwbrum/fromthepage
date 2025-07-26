@@ -352,6 +352,33 @@ class CollectionController < ApplicationController
             end
           end
         end
+        
+        # Set meta information for collection pages for better archival
+        @page_title = "#{@collection.title} - FromThePage"
+        @meta_description = "#{@collection.title}: #{@collection.intro_block}".truncate(160)
+        @meta_keywords = [@collection.title, "historical documents", "digital archive", "transcription", "collection"].compact.join(", ")
+        
+        # Generate structured data for collection
+        @structured_data = {
+          "@context" => "https://schema.org",
+          "@type" => "Collection",
+          "name" => @collection.title,
+          "description" => @collection.intro_block,
+          "url" => request.original_url,
+          "dateModified" => @collection.most_recent_deed_created_at&.iso8601,
+          "publisher" => {
+            "@type" => "Organization",
+            "name" => "FromThePage"
+          },
+          "numberOfItems" => @collection.works_count
+        }
+
+        # Add archival-friendly headers
+        respond_to do |format|
+          format.html do
+            response.headers['X-Robots-Tag'] = 'index, follow, archive'
+          end
+        end
       else
         redirect_to "/404"
       end
