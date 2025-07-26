@@ -76,43 +76,45 @@ class DisplayController < ApplicationController
   end
 
   def display_page
-    # Set meta information for web crawlers and archival
-    @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
-    @meta_description = "Transcript of #{@page.title || "page #{@page.position}"} from #{@work.title} in the #{@collection.title} collection."
-    @meta_keywords = [@work.title, @collection.title, @page.title, "transcript", "transcription", "historical document"].compact.join(", ")
-    
-    # Generate structured data for better content understanding
-    @structured_data = {
-      "@context" => "https://schema.org",
-      "@type" => "DigitalDocument",
-      "name" => @page.title || "Page #{@page.position}",
-      "description" => @meta_description,
-      "text" => @page.source_text,
-      "inLanguage" => @collection.text_language || "en",
-      "isPartOf" => {
-        "@type" => "Book",
-        "name" => @work.title,
-        "author" => @work.author,
-        "dateCreated" => @work.document_date,
+    # Set meta information for web crawlers and archival only for pages with content
+    if @page.status != 'new'
+      @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
+      @meta_description = "Transcript of #{@page.title || "page #{@page.position}"} from #{@work.title} in the #{@collection.title} collection."
+      @meta_keywords = [@work.title, @collection.title, @page.title, "transcript", "transcription", "historical document"].compact.join(", ")
+      
+      # Generate structured data for better content understanding
+      @structured_data = {
+        "@context" => "https://schema.org",
+        "@type" => "DigitalDocument",
+        "name" => @page.title || "Page #{@page.position}",
+        "description" => @meta_description,
+        "text" => @page.verbatim_transcription_plaintext,
+        "inLanguage" => @collection.text_language || "en",
         "isPartOf" => {
-          "@type" => "Collection",
-          "name" => @collection.title,
-          "description" => @collection.intro_block
+          "@type" => "Book",
+          "name" => @work.title,
+          "author" => @work.author,
+          "dateCreated" => @work.document_date,
+          "isPartOf" => {
+            "@type" => "Collection",
+            "name" => @collection.title,
+            "description" => to_snippet(@collection.intro_block)
+          }
+        },
+        "url" => request.original_url,
+        "dateModified" => @page.updated_at&.iso8601,
+        "publisher" => {
+          "@type" => "Organization", 
+          "name" => @collection.owner.display_name
         }
-      },
-      "url" => request.original_url,
-      "dateModified" => @page.updated_at&.iso8601,
-      "publisher" => {
-        "@type" => "Organization", 
-        "name" => "FromThePage"
       }
-    }
-    
-    # Add archival-friendly meta tags
-    respond_to do |format|
-      format.html do
-        # Additional headers for better archival
-        response.headers['X-Robots-Tag'] = 'index, follow, archive'
+      
+      # Add archival-friendly meta tags
+      respond_to do |format|
+        format.html do
+          # Additional headers for better archival
+          response.headers['X-Robots-Tag'] = 'index, follow, archive'
+        end
       end
     end
   end

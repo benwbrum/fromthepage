@@ -82,7 +82,7 @@ RSpec.describe SitemapController, type: :request do
     end
   end
 
-  describe "blank pages" do
+  describe "blank and new pages" do
     it "excludes blank pages from sitemap" do
       blank_page = create(:page, work: @work, status: 'blank')
       
@@ -93,6 +93,18 @@ RSpec.describe SitemapController, type: :request do
       
       blank_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}/display/#{blank_page.id}"
       expect(urls).not_to include(blank_url)
+    end
+    
+    it "excludes new status pages from sitemap" do
+      new_page = create(:page, work: @work, status: 'new')
+      
+      get "/sitemap_pages.xml"
+      
+      doc = Nokogiri::XML(response.body)
+      urls = doc.xpath("//url/loc").map(&:text)
+      
+      new_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}/display/#{new_page.id}"
+      expect(urls).not_to include(new_url)
     end
   end
 end

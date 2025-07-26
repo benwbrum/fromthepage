@@ -1,38 +1,39 @@
-namespace :sitemap do
-  desc "Generate static sitemap files for better archival discovery"
-  task generate: :environment do
-    require 'fileutils'
+namespace :fromthepage do
+  namespace :sitemap do
+    desc "Generate static sitemap files for better archival discovery"
+    task generate: :environment do
+      require 'fileutils'
+      
+      sitemap_dir = Rails.root.join('public', 'sitemaps')
+      FileUtils.mkdir_p(sitemap_dir)
+      
+      # Configuration
+      base_url = Rails.application.config.force_ssl ? 'https://fromthepage.com' : 'http://localhost:3000'
+      max_urls_per_file = 50000
+      
+      puts "Generating sitemaps..."
+      
+      # Generate collections sitemap
+      generate_collections_sitemap(sitemap_dir, base_url, max_urls_per_file)
+      
+      # Generate works sitemap  
+      generate_works_sitemap(sitemap_dir, base_url, max_urls_per_file)
+      
+      # Generate pages sitemap
+      generate_pages_sitemap(sitemap_dir, base_url, max_urls_per_file)
+      
+      # Generate sitemap index
+      generate_sitemap_index(sitemap_dir, base_url)
+      
+      puts "Sitemaps generated successfully in #{sitemap_dir}"
+    end
     
-    sitemap_dir = Rails.root.join('public', 'sitemaps')
-    FileUtils.mkdir_p(sitemap_dir)
+    private
     
-    # Configuration
-    base_url = Rails.application.config.force_ssl ? 'https://fromthepage.com' : 'http://localhost:3000'
-    max_urls_per_file = 50000
-    
-    puts "Generating sitemaps..."
-    
-    # Generate collections sitemap
-    generate_collections_sitemap(sitemap_dir, base_url, max_urls_per_file)
-    
-    # Generate works sitemap  
-    generate_works_sitemap(sitemap_dir, base_url, max_urls_per_file)
-    
-    # Generate pages sitemap
-    generate_pages_sitemap(sitemap_dir, base_url, max_urls_per_file)
-    
-    # Generate sitemap index
-    generate_sitemap_index(sitemap_dir, base_url)
-    
-    puts "Sitemaps generated successfully in #{sitemap_dir}"
-  end
-  
-  private
-  
-  def generate_collections_sitemap(sitemap_dir, base_url, max_urls_per_file)
-    collections = Collection.where(restricted: false, is_active: true)
-                           .includes(:owner)
-                           .order(:id)
+    def generate_collections_sitemap(sitemap_dir, base_url, max_urls_per_file)
+      collections = Collection.where(restricted: false)
+                             .includes(:owner)
+                             .order(:id)
     
     file_count = (collections.count.to_f / max_urls_per_file).ceil
     
@@ -55,7 +56,7 @@ namespace :sitemap do
   
   def generate_works_sitemap(sitemap_dir, base_url, max_urls_per_file)
     works = Work.joins(:collection)
-               .where(collections: { restricted: false, is_active: true })
+               .where(collections: { restricted: false })
                .includes(:collection => :owner)
                .order(:id)
     
@@ -80,8 +81,8 @@ namespace :sitemap do
   
   def generate_pages_sitemap(sitemap_dir, base_url, max_urls_per_file)
     pages = Page.joins(work: :collection)
-               .where(collections: { restricted: false, is_active: true })
-               .where.not(status: 'blank')
+               .where(collections: { restricted: false })
+               .where.not(status: ['blank', 'new'])
                .includes(work: { collection: :owner })
                .order(:id)
     
@@ -135,5 +136,6 @@ namespace :sitemap do
   
   def generate_url_entry(url, lastmod, changefreq, priority)
     "<url><loc>#{url}</loc><lastmod>#{lastmod}</lastmod><changefreq>#{changefreq}</changefreq><priority>#{priority}</priority></url>"
+  end
   end
 end
