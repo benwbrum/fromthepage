@@ -23,9 +23,6 @@ pt:
       your_projects: Seus projetos
     empty:
       add_new_collection: Adicionar nova coleção
-      create_empty_work: Criar obra vazia
-      create_empty_work_description: Use esta opção para criar uma obra vazia. Você pode então carregar imagens de páginas individuais na obra.
-      create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
       select_a_collection: "- Selecione uma coleção -"

@@ -23,9 +23,6 @@ en:
       your_projects: Your Projects
     empty:
       add_new_collection: Add New Collection
-      create_empty_work: Create Empty Work
-      create_empty_work_description: Use this option to create an empty work. You can then upload individual page images into the work.
-      create_work: Create Work
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       select_a_collection: "- Select a collection -"

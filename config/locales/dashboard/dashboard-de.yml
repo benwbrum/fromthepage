@@ -23,9 +23,6 @@ de:
       your_projects: Ihre Projekte
     empty:
       add_new_collection: Neue Sammlung hinzufügen
-      create_empty_work: Leeres Werk erstellen
-      create_empty_work_description: Verwenden Sie diese Option, um ein leeres Werk zu erstellen. Sie können dann einzelne Faksimiles in das Werk hochladen.
-      create_work: Werk erstellen
       description: Beschreibung
       description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
       select_a_collection: "- Wählen Sie eine Sammlung aus -"

@@ -142,7 +142,19 @@ describe "owner actions", :order => :defined do
 
 
   it "moves a work to another collection" do
-    work = @works.first # Use an existing work instead of the deleted empty work
+    # Find a work that is NOT in the target collection to ensure we're actually moving it
+    target_collection = @collection
+    work = @works.find { |w| w.collection != target_collection }
+    
+    # If no such work exists, use a work from a different collection than the target
+    if work.nil?
+      source_collection = @collections.find { |c| c != target_collection }
+      work = source_collection&.works&.first
+    end
+    
+    # Skip test if we can't find a suitable work to move
+    skip "No suitable work found to move between collections" if work.nil?
+    
     initial_deed_count = Deed.where(work_id: work.id).count
 
     visit dashboard_owner_path
@@ -153,14 +165,14 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.collection.title)
     expect(page.find('#work_collection_id')).to have_content(work.collection.title)
-    select(@collection.title, :from => 'work_collection_id')
+    select(target_collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     updated_work = Work.find_by(id: work.id)
     # Check that a new deed was created for this work
     expect(Deed.where(work_id: updated_work.id).count).to eq(initial_deed_count + 1)
     expect(updated_work.deeds.where.not(:collection_id => updated_work.collection_id).count).to eq(0)
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: target_collection.title)
   end
 
   it "doesn't move a work with articles", :js => true do
