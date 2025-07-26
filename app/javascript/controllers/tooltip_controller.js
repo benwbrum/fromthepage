@@ -27,6 +27,12 @@ export default class extends Controller {
       this.scheduleHideTooltip();
     });
 
+    // Click event for accessibility testing and mouse interaction
+    this.$element.on('click', (event) => {
+      event.preventDefault();
+      this.showTooltip();
+    });
+
     // Global escape key handler for dismissal (WCAG 2.1 requirement)
     $(document).on('keydown.tooltip', (event) => {
       if (event.key === 'Escape' && this.$tooltip.is(':visible')) {

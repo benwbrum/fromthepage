@@ -61,11 +61,11 @@ describe "subject link accessibility", :order => :defined do
       tooltip_id = subject_link['aria-describedby']
     end
       
-    # Click to focus (more reliable than send_keys for testing)
+    # Click to trigger tooltip (this also focuses the element)
     subject_link.click
     
-    # Check that tooltip appears using the ID from aria-describedby
-    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    # Check that tooltip appears using the ID from aria-describedby with wait time
+    expect(page).to have_selector("##{tooltip_id}", visible: true, wait: 2)
   end
 
   it "allows dismissing tooltip with Escape key", js: true do
@@ -93,14 +93,14 @@ describe "subject link accessibility", :order => :defined do
       
     subject_link.click
     
-    # Verify tooltip is visible
-    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    # Verify tooltip is visible with wait time
+    expect(page).to have_selector("##{tooltip_id}", visible: true, wait: 2)
     
     # Press Escape to dismiss
     page.send_keys(:escape)
     
     # Verify tooltip is hidden
-    expect(page).not_to have_selector('#' + tooltip_id, visible: true)
+    expect(page).not_to have_selector("##{tooltip_id}", visible: true)
   end
 
   it "keeps tooltip visible when hovering over it", js: true do
@@ -129,13 +129,13 @@ describe "subject link accessibility", :order => :defined do
     subject_link.hover
     
     # Wait for tooltip to appear
-    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    expect(page).to have_selector("##{tooltip_id}", visible: true)
     
     # Move mouse to tooltip
-    tooltip = page.find('#' + tooltip_id)
+    tooltip = page.find("##{tooltip_id}")
     tooltip.hover
     
     # Tooltip should remain visible
-    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    expect(page).to have_selector("##{tooltip_id}", visible: true)
   end
 end
