@@ -1,5 +1,6 @@
 class WorkController < ApplicationController
   # require 'ftools'
+  include ApplicationHelper
   include XmlSourceProcessor
 
   protect_from_forgery :except => [:set_work_title,

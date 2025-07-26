@@ -248,11 +248,17 @@ module ApplicationHelper
   def to_snippet(intro_block)
     return '' if intro_block.blank?
     
-    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
-    doc = Nokogiri::HTML(intro_block)
-    doc.xpath('//style').each { |n| n.remove }
-    # strip tags and truncate
-    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+    begin
+      # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+      doc = Nokogiri::HTML(intro_block)
+      doc.xpath('//style').each { |n| n.remove }
+      # strip tags and truncate
+      text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
+      truncate(text.to_s, length: 300, separator: ' ') || ''
+    rescue => e
+      # If anything goes wrong, return empty string
+      ''
+    end
   end
 
   def timeago(time, options = {})

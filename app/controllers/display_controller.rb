@@ -1,4 +1,5 @@
 class DisplayController < ApplicationController
+  include ApplicationHelper
   public :render_to_string
 
   protect_from_forgery :except => [:set_note_body]

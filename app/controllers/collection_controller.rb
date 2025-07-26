@@ -1,5 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  include ApplicationHelper
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
