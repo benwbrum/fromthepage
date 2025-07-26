@@ -224,6 +224,72 @@ describe CollectionController do
     end
   end
 
+  describe '#edit_buttons' do
+    let(:action_path) { editor_button_edit_path(collection.id) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_buttons)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#update_buttons' do
+    let(:action_path) { editor_button_update_path(collection.id) }
+    let(:params) { { collection: { buttons: {} } } }
+
+    let(:subject) { post action_path, params: params }
+
+    it 'updates when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:redirect)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
   describe '#update' do
     let(:scope) { nil }
     let(:params) { {} }
@@ -377,12 +443,12 @@ describe CollectionController do
     end
 
     context 'when accessed by non-owner user' do
-      it 'redirects to collection show page' do
+      it 'renders status and template' do
         login_as user
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(collection_path(owner, collection))
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:works_list)
       end
     end
 
