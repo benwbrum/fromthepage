@@ -42,9 +42,6 @@ module AddWorkHelper
     end
   end
 
-  # empty_work and create_work methods removed as per issue #1530
-  # These were used for creating blank works, which was confusing for users
-
   protected
   def record_deed
     deed = Deed.new
