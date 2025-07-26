@@ -114,7 +114,6 @@ group :development, :test do
   gem 'pry-awesome_print'
   gem 'pry-byebug'
   gem 'rspec-rails'
-  gem 'rubocop', require: false
 end
 
 gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
