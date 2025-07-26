@@ -88,10 +88,7 @@ class AdminMailer < ActionMailer::Base
     end
     
     def has_activity?
-      return true if @collaborators.any?
-      return true if @comments.any?
-      return true if @activity.any?
-      false
+      !@collaborators.blank? || !@comments.blank? || !@activity.blank?
     end
     
     class << self
