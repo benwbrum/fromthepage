@@ -12,7 +12,7 @@ class DashboardController < ApplicationController
 
   before_action :get_data,
     only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+           :startproject, :summary, :exports]
 
   before_action :remove_col_id
 

@@ -42,26 +42,8 @@ module AddWorkHelper
     end
   end
 
-  def empty_work
-    @work = Work.new
-  end
-
-  def create_work
-    @work = Work.new
-    @work.title = params[:work][:title]
-    @work.collection_id = params[:work][:collection_id]
-    @work.description = params[:work][:description]
-    @work.owner = current_user
-    @collections = current_user.all_owner_collections
-
-    if @work.save
-      flash[:notice] = t('work_created', scope: [:dashboard, :create_work])
-      record_deed
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
-    else
-      render action: 'empty_work'
-    end
-  end
+  # empty_work and create_work methods removed as per issue #1530
+  # These were used for creating blank works, which was confusing for users
 
   protected
   def record_deed

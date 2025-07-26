@@ -218,7 +218,7 @@ Fromthepage::Application.routes.draw do
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
     post 'new_upload', to: 'dashboard#new_upload'
-    post 'create_work', to: 'dashboard#create_work'
+    # post 'create_work', to: 'dashboard#create_work' # Removed as per issue #1530
     get 'your_hours', to: 'dashboard#your_hours'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
