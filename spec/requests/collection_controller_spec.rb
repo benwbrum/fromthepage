@@ -376,6 +376,25 @@ describe CollectionController do
       expect(response).to render_template(:works_list)
     end
 
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
     context 'with filters' do
       let(:work) { create(:work, collection: collection) }
       let(:subject) { get action_path, params: params, as: :turbo_stream }

@@ -37,7 +37,8 @@ class CollectionController < ApplicationController
     :remove_reviewer,
     :add_reviewer,
     :new_mobile_user,
-    :search_users
+    :search_users,
+    :works_list
   ]
   before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
@@ -718,7 +719,8 @@ class CollectionController < ApplicationController
     end
 
     if @collection && !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
+      # Redirect to collection landing page instead of dashboard
+      ajax_redirect_to collection_path(@collection.owner, @collection)
     end
   end
 

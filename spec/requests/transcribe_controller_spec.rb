@@ -23,6 +23,19 @@ describe TranscribeController do
       end
     end
 
+    context 'when collection is inactive' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, is_active: false) }
+      let!(:user) { create(:unique_user) }
+
+      it 'redirects to collection overview instead of display page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
     context 'when read-only document set and user is not a collaborator' do
       let!(:document_set) { create(:document_set, :read_only, owner_user_id: owner.id, collection_id: collection.id) }
       let!(:user) { create(:unique_user) }
