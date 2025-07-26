@@ -75,7 +75,7 @@ class PageVersion < ApplicationRecord
         )
         if previous_version.page_version == 0
           # reset the page and work status
-          page.update_columns(:status => nil)
+          page.update_columns(:status => 'new')
           page.update_work_stats
         end
       else
@@ -86,7 +86,7 @@ class PageVersion < ApplicationRecord
           :xml_text => nil,
           :source_translation => nil,
           :xml_translation => nil,
-          :status => nil
+          :status => 'new'
         )
         page.update_work_stats
       end
