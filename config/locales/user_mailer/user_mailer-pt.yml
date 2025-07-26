@@ -68,6 +68,16 @@ pt:
       text:
         message: 'Seu upload de "%{file}" foi processado e está disponível nesta URL:'
       your_upload_is_ready: Seu carregamento está pronto!
+    upload_no_images_warning:
+      html:
+        collection_link_message: Você ainda pode visitar sua coleção em
+        message: 'Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.'
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'Você ainda pode visitar sua coleção nesta URL:'
+        message: 'Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.'
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload processado - nenhuma imagem encontrada
     work_collaborator:
       html:
         to_view: " para ver %{collection} - %{work}."
