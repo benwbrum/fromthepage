@@ -73,11 +73,11 @@ en:
     upload_no_images_warning:
       html:
         collection_link_message: You can still visit your collection at
-        message: 'Your upload of "%{file}" has been processed, but no supported image files were found.'
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
         supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
       text:
         collection_link_message: 'You can still visit your collection at this URL:'
-        message: 'Your upload of "%{file}" has been processed, but no supported image files were found.'
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
         supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
       upload_processed_no_images: Upload processed - no images found
     work_collaborator:

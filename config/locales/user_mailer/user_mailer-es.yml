@@ -71,11 +71,11 @@ es:
     upload_no_images_warning:
       html:
         collection_link_message: Aún puede visitar su colección en
-        message: 'Su carga de "%{file}" ha sido procesada, pero no se encontraron archivos de imagen compatibles.'
+        message: Su carga de "%{file}" ha sido procesada, pero no se encontraron archivos de imagen compatibles.
         supported_formats: 'Los formatos de imagen compatibles son: JPG, JPEG, PNG'
       text:
         collection_link_message: 'Aún puede visitar su colección en esta URL:'
-        message: 'Su carga de "%{file}" ha sido procesada, pero no se encontraron archivos de imagen compatibles.'
+        message: Su carga de "%{file}" ha sido procesada, pero no se encontraron archivos de imagen compatibles.
         supported_formats: 'Los formatos de imagen compatibles son: JPG, JPEG, PNG'
       upload_processed_no_images: Carga procesada - no se encontraron imágenes
     work_collaborator:
