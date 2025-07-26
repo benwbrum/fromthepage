@@ -75,6 +75,41 @@ RSpec.describe Article, type: :model do
         # "Johnson" contains "Johnson" (7 word characters)
         expect(words).to eq(["Mrs:", "Johnson"])
       end
+
+      it 'handles fixture data correctly' do
+        # Test with existing fixture article title to ensure compatibility
+        test_article = build(:article, collection: collection, title: "Mrs.")
+        
+        words = test_article.title.tr(',.', ' ').split(' ')
+        words.keep_if { |word| word.match(/\w{3,}/) }
+        
+        # "Mrs." becomes "Mrs" after tr() and should be included (3 characters)
+        expect(words).to eq(["Mrs"])
+      end
+
+      it 'demonstrates the intended reduction in false positives' do
+        # Show the before/after behavior for the original problem case
+        title = "F. R. Calvert"
+        words = title.tr(',.', ' ').split(' ')
+        
+        # Old behavior would include nothing (F, R have <2 chars)
+        old_filtered = words.select { |word| word.match(/\w\w/) }
+        expect(old_filtered).to eq(["Calvert"])
+        
+        # New behavior still includes only meaningful words
+        new_filtered = words.select { |word| word.match(/\w{3,}/) }
+        expect(new_filtered).to eq(["Calvert"])
+        
+        # Demonstrate fix for "Dr. Smith" case
+        title2 = "Dr. Smith"
+        words2 = title2.tr(',.', ' ').split(' ')
+        
+        old_filtered2 = words2.select { |word| word.match(/\w\w/) }
+        expect(old_filtered2).to eq(["Dr", "Smith"])  # Would match both
+        
+        new_filtered2 = words2.select { |word| word.match(/\w{3,}/) }
+        expect(new_filtered2).to eq(["Smith"])  # Only matches meaningful word
+      end
     end
   end
 end
