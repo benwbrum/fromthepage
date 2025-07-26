@@ -2,9 +2,16 @@ require 'spec_helper'
 
 RSpec.describe UserMailer, type: :mailer do
   describe 'upload_no_images_warning' do
-    let(:user) { build_stubbed(:user) }
-    let(:collection) { build_stubbed(:collection) }
-    let(:document_upload) { build_stubbed(:document_upload, user: user, collection: collection) }
+    let(:user) { create(:user) }
+    let(:collection) { create(:collection, owner_user_id: user.id) }
+    let(:document_upload) { create(:document_upload, user: user, collection: collection) }
+
+    after do
+      # Clean up created records
+      document_upload.destroy
+      collection.destroy  
+      user.destroy
+    end
 
     it 'renders the subject' do
       mail = UserMailer.upload_no_images_warning(document_upload)
@@ -22,14 +29,15 @@ RSpec.describe UserMailer, type: :mailer do
     end
 
     it 'includes the filename in the message' do
-      allow(document_upload).to receive(:name).and_return('test.zip')
       mail = UserMailer.upload_no_images_warning(document_upload)
-      expect(mail.body.encoded).to include('test.zip')
+      expect(mail.body.encoded).to include(document_upload.name)
     end
 
     it 'includes supported formats information' do
       mail = UserMailer.upload_no_images_warning(document_upload)
+      # Test for the actual translated content that should be rendered
       expect(mail.body.encoded).to include('JPG, JPEG, PNG')
+      expect(mail.body.encoded).to include('no supported image files were found')
     end
   end
 
