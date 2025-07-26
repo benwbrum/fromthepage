@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe CategoryController do
-  before do
-    User.current_user = owner
-  end
-
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:category) { create(:category, collection_id: collection.id) }
@@ -12,6 +8,10 @@ describe CategoryController do
 
   describe "GET #edit" do
     context "when user is authorized" do
+      before do
+        login_as owner
+      end
+      
       it "renders the edit template" do
         get category_edit_path(collection_id: collection.slug, category_id: category.id)
         expect(response).to render_template(:edit)
@@ -22,7 +22,7 @@ describe CategoryController do
       let!(:unauthorized_user) { create(:unique_user) }
       
       before do
-        User.current_user = unauthorized_user
+        login_as unauthorized_user
       end
 
       it "redirects to dashboard" do
@@ -33,6 +33,10 @@ describe CategoryController do
   end
 
   describe "PATCH #update" do
+    before do
+      login_as owner
+    end
+    
     context "with valid category params" do
       it "updates the category and redirects to collection subjects path" do
         new_title= "Updated Category Title #{category.id}"
@@ -52,6 +56,10 @@ describe CategoryController do
   end
 
   describe "GET #add_new" do
+    before do
+      login_as owner
+    end
+    
     it "assigns a new category and renders the add_new template" do
       get category_add_new_path(collection_id: collection.slug)
       expect(assigns(:new_category)).to be_a_new(Category)
@@ -60,6 +68,10 @@ describe CategoryController do
   end
 
   describe "POST #create" do
+    before do
+      login_as owner
+    end
+    
     context "with valid category params" do
       it "creates a new category and redirects to collection subjects path" do
         new_title = "New Category Title #{rand(1000000)}"
@@ -74,6 +86,10 @@ describe CategoryController do
 
 
   describe "#enable_bio_fields" do
+    before do
+      login_as owner
+    end
+    
     it "enables bio fields for the category and its descendants" do
       get category_enable_bio_fields_path(collection_id: collection.id, category_id: category.id)
       expect(category.reload.bio_fields_enabled).to be_truthy
@@ -85,6 +101,10 @@ describe CategoryController do
   end
 
   describe "#disable_bio_fields" do
+    before do
+      login_as owner
+    end
+    
     it "disables bio fields for the category and its descendants" do
       get category_disable_bio_fields_path(collection_id: collection.id, category_id: category.id)
       expect(category.reload.bio_fields_enabled).to be_falsey
@@ -97,6 +117,10 @@ describe CategoryController do
 
 
   describe "#enable_org_fields" do
+    before do
+      login_as owner
+    end
+    
     it "enables org fields for the category and its descendants" do
       get category_enable_org_fields_path(collection_id: collection.id, category_id: category.id)
       expect(category.reload.org_fields_enabled).to be_truthy
@@ -108,6 +132,10 @@ describe CategoryController do
   end
 
   describe "#disable_org_fields" do
+    before do
+      login_as owner
+    end
+    
     it "disables org fields for the category and its descendants" do
       get category_disable_org_fields_path(collection_id: collection.id, category_id: category.id)
       expect(category.reload.org_fields_enabled).to be_falsey

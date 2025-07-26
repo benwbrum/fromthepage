@@ -89,6 +89,9 @@ class CategoryController < ApplicationController
   end
 
   def authorized?
+    # Get collection from category if not already set
+    @collection ||= @category&.collection
+    
     unless user_signed_in? && current_user.like_owner?(@collection)
       redirect_to dashboard_path
     end

@@ -11,6 +11,8 @@ fr:
       assign_categories: Attribuer des catégories
       cancel: Annuler
       continue: Continuer
+      help_can_manage_categories: Vous pouvez ajouter des catégories en choisissant "gérer les catégories" ci-dessus.
+      help_cannot_manage_categories: S'il n'y a pas de catégorie appropriée, choisissez simplement "continuer".
       manage_categories: Gérer les catégories
       subject: 'Matière:'
       uncategorized_subjects: Sujets non classés

@@ -11,6 +11,8 @@ de:
       assign_categories: Kategorien zuweisen
       cancel: Stornieren
       continue: Weitermachen
+      help_can_manage_categories: Sie können Kategorien hinzufügen, indem Sie oben "Kategorien verwalten" wählen.
+      help_cannot_manage_categories: Wenn es keine geeignete Kategorie gibt, wählen Sie einfach "weitermachen".
       manage_categories: Kategorien verwalten
       subject: 'Entität:'
       uncategorized_subjects: Nicht kategorisierte Entitäten

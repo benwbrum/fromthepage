@@ -11,6 +11,8 @@ es:
       assign_categories: Asignar categorías
       cancel: Cancelar
       continue: Continuar
+      help_can_manage_categories: Puedes agregar categorías eligiendo "administrar categorías" arriba.
+      help_cannot_manage_categories: Si no hay una categoría apropiada, simplemente elige "continuar".
       manage_categories: Administrar Categorías
       subject: 'Tema: '
       uncategorized_subjects: Temas Sin Categoría
