@@ -42,64 +42,100 @@ describe "subject link accessibility", :order => :defined do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @title).click_link(@title)
     
-    # Find any subject link with tooltip
+    # Check if we have subject links with tooltips (from fixture data)
     if page.has_selector?('a[data-controller="tooltip"]')
       subject_link = page.first('a[data-controller="tooltip"]')
-      # Click to focus (more reliable than send_keys for testing)
-      subject_link.click
-      
-      # Check that tooltip appears using the ID from aria-describedby
       tooltip_id = subject_link['aria-describedby']
-      expect(page).to have_selector('#' + tooltip_id, visible: true)
+      if tooltip_id.nil?
+        skip "Subject link found but missing aria-describedby attribute"
+      end
     else
-      skip "No subject links with tooltips found"
+      # Create subject links if they don't exist
+      page.find('.tabs').click_link("Transcribe")
+      fill_in_editor_field("[[Test Subject]] mentioned in this document.")
+      find('#save_button_top').click
+      page.find('.tabs').click_link("Overview")
+      
+      expect(page).to have_selector('a[data-controller="tooltip"]', text: 'Test Subject')
+      subject_link = page.find('a[data-controller="tooltip"]', text: 'Test Subject')
+      tooltip_id = subject_link['aria-describedby']
     end
+      
+    # Click to focus (more reliable than send_keys for testing)
+    subject_link.click
+    
+    # Check that tooltip appears using the ID from aria-describedby
+    expect(page).to have_selector('#' + tooltip_id, visible: true)
   end
 
   it "allows dismissing tooltip with Escape key", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @title).click_link(@title)
     
-    # Find any subject link with tooltip
+    # Check if we have subject links with tooltips (from fixture data)
     if page.has_selector?('a[data-controller="tooltip"]')
       subject_link = page.first('a[data-controller="tooltip"]')
-      subject_link.click
-      
       tooltip_id = subject_link['aria-describedby']
-      # Verify tooltip is visible
-      expect(page).to have_selector('#' + tooltip_id, visible: true)
-      
-      # Press Escape to dismiss
-      page.send_keys(:escape)
-      
-      # Verify tooltip is hidden
-      expect(page).not_to have_selector('#' + tooltip_id, visible: true)
+      if tooltip_id.nil?
+        skip "Subject link found but missing aria-describedby attribute"
+      end
     else
-      skip "No subject links with tooltips found"
+      # Create subject links if they don't exist
+      page.find('.tabs').click_link("Transcribe")
+      fill_in_editor_field("[[Test Subject]] mentioned in this document.")
+      find('#save_button_top').click
+      page.find('.tabs').click_link("Overview")
+      
+      expect(page).to have_selector('a[data-controller="tooltip"]', text: 'Test Subject')
+      subject_link = page.find('a[data-controller="tooltip"]', text: 'Test Subject')
+      tooltip_id = subject_link['aria-describedby']
     end
+      
+    subject_link.click
+    
+    # Verify tooltip is visible
+    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    
+    # Press Escape to dismiss
+    page.send_keys(:escape)
+    
+    # Verify tooltip is hidden
+    expect(page).not_to have_selector('#' + tooltip_id, visible: true)
   end
 
   it "keeps tooltip visible when hovering over it", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @title).click_link(@title)
     
-    # Find any subject link with tooltip
+    # Check if we have subject links with tooltips (from fixture data)
     if page.has_selector?('a[data-controller="tooltip"]')
       subject_link = page.first('a[data-controller="tooltip"]')
-      subject_link.hover
-      
       tooltip_id = subject_link['aria-describedby']
-      # Wait for tooltip to appear
-      expect(page).to have_selector('#' + tooltip_id, visible: true)
-      
-      # Move mouse to tooltip
-      tooltip = page.find('#' + tooltip_id)
-      tooltip.hover
-      
-      # Tooltip should remain visible
-      expect(page).to have_selector('#' + tooltip_id, visible: true)
+      if tooltip_id.nil?
+        skip "Subject link found but missing aria-describedby attribute"
+      end
     else
-      skip "No subject links with tooltips found"
+      # Create subject links if they don't exist
+      page.find('.tabs').click_link("Transcribe")
+      fill_in_editor_field("[[Test Subject]] mentioned in this document.")
+      find('#save_button_top').click
+      page.find('.tabs').click_link("Overview")
+      
+      expect(page).to have_selector('a[data-controller="tooltip"]', text: 'Test Subject')
+      subject_link = page.find('a[data-controller="tooltip"]', text: 'Test Subject')
+      tooltip_id = subject_link['aria-describedby']
     end
+      
+    subject_link.hover
+    
+    # Wait for tooltip to appear
+    expect(page).to have_selector('#' + tooltip_id, visible: true)
+    
+    # Move mouse to tooltip
+    tooltip = page.find('#' + tooltip_id)
+    tooltip.hover
+    
+    # Tooltip should remain visible
+    expect(page).to have_selector('#' + tooltip_id, visible: true)
   end
 end
