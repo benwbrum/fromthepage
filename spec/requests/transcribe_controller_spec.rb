@@ -24,8 +24,11 @@ describe TranscribeController do
     end
 
     context 'when collection is inactive' do
-      let!(:collection) { create(:collection, owner_user_id: owner.id, is_active: false) }
       let!(:user) { create(:unique_user) }
+
+      before do
+        collection.update!(is_active: false)
+      end
 
       it 'redirects to collection overview instead of display page' do
         login_as user

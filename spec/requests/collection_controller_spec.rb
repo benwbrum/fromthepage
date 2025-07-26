@@ -27,7 +27,7 @@ describe CollectionController do
       subject
 
       expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(dashboard_path)
+      expect(response).to redirect_to(collection_path(collection.owner, collection))
     end
 
     context 'when user_type owner' do
