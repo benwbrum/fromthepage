@@ -38,22 +38,6 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
-  it "creates an empty new work in a collection", :js => true do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    work_title = "New Test Work"
-    visit dashboard_owner_path
-    click_link("#{test_collection.title}")
-    click_link("Add a new work")
-    expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Create Empty Work")
-    page.find(:css, "#create-empty-work").click
-    fill_in 'work_title', with: work_title
-    fill_in 'work_description', with: "This work contains no pages."
-    click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: work_title)).not_to be nil
-  end
 
   it "checks for subject in a new collection" do
     @owner.account_type = "Small Organization"
@@ -155,34 +139,25 @@ describe "owner actions", :order => :defined do
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end
 
-  it "fails to create an empty work", :js => true do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#create-empty-work").click
-    select(@collections.last.title, :from => 'work_collection_id')
-    fill_in 'work_description', with: "This work should fail to create."
-    click_button('Create Work')
-    expect(page).to have_content("Create Empty Work")
-    expect(page).to have_content("Title can't be blank")
-  end
+
 
   it "moves a work to another collection" do
-    work = Work.find_by(title: @title)
+    work = @works.first # Use an existing work instead of the deleted empty work
 
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: work.collection.title).click
-    page.find('.collection-works').find('a', text: @title).click
+    page.find('.collection-works').find('a', text: work.title).click
     page.find('.tabs').click_link('Settings')
-    expect(page).to have_content(@title)
+    expect(page).to have_content(work.title)
     expect(page).to have_content("Work title")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
-    expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.collection.title)
+    expect(page.find('#work_collection_id')).to have_content(work.collection.title)
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
-    work = Work.find_by(title: @title)
-    expect(Deed.last.work_id).to eq(work.id)
-    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
+    updated_work = Work.find_by(id: work.id)
+    expect(Deed.last.work_id).to eq(updated_work.id)
+    expect(updated_work.deeds.where.not(:collection_id => updated_work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 
@@ -234,19 +209,20 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a work" do
-    collection = Work.find_by(title: @title).collection
+    work = @works.last # Use an existing work instead of the deleted empty work
+    collection = work.collection
 
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: collection.title).click
     page.click_link('Show All')
-    page.find('.collection-works').find('a', text: @title).click
+    page.find('.collection-works').find('a', text: work.title).click
     page.find('.tabs').click_link('Settings')
-    expect(page).to have_content(@title)
+    expect(page).to have_content(work.title)
     expect(page).to have_content("Work title")
     click_link("Delete Work")
     expect(page.current_path).to eq dashboard_owner_path
     page.find('.maincol').find('a', text: collection.title).click
-    expect(page).not_to have_content(@title)
+    expect(page).not_to have_content(work.title)
   end
 
   it "checks an owner user profile/homepage" do

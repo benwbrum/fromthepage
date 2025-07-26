@@ -156,8 +156,6 @@ fr:
     needsreview: Les métadonnées doivent être révisées.
     new:
       collection: Le recueil
-      create_empty_work: Créer un œuvre vide
-      create_empty_work_description: Cela crée une œuvre vide. Une fois que vous avez créé l'œuvre, vous pouvez ajouter des images de page individuelles. Si vous avez un fichier zip ou pdf avec plusieurs images, vous devez créer l'œuvre et télécharger le fichier sous %{start_project} à la place.
       create_work: Créer un œuvre
       description: La description
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.

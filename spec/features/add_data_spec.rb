@@ -92,41 +92,6 @@ describe "uploads data for collections", :order => :defined do
     end
   end
 
-  it "creates an empty work", :js => true do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#create-empty-work").click
-    select(@collection.title, :from => 'work_collection_id')
-    fill_in 'work_title', with: @title
-    fill_in 'work_description', with: "This work contains no pages."
-    click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: @title)).not_to be nil
-  end
-
-  it "adds pages to an empty work" do
-    visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.maincol').find('a', text: @title).click
-    page.find('.tabs').click_link("Pages")
-    page.find('a', text: "Add New Page").click
-    attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage1.jpg')
-    click_button('Save & Add Next Page')
-    work = Work.find_by(title: @title)
-    pages = work.pages
-    expect(pages).not_to be nil
-    expect(page).to have_content(pages.first.title)
-    page.find('a', text: "Add New Page").click
-    attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage2.jpg')
-    click_button('Save & New Work')
-    count = work.pages.count
-    expect(count).to eq 2
-    work = Work.find(work.id)
-    expect(work.work_statistic[:total_pages]).to eq 2
-    expect(page).to have_content("Create Empty Work")
-    #testing the cancel button involves ajax
-  end
-
   it "adds new document sets", js: true do
     @owner = User.find_by(login: OWNER)
     visit dashboard_owner_path

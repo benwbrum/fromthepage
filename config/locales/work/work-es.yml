@@ -156,8 +156,6 @@ es:
     needsreview: Los metadatos necesitan revisión.
     new:
       collection: Recopilación
-      create_empty_work: Crear obra vacía
-      create_empty_work_description: Esto crea una obra vacío. Una vez que crees la obra, puedes agregar imágenes de página individuales. Si tienes un archivo zip o pdf con varias imágenes, debes crear la obra y cargar el archivo en %{start_project} en su lugar.
       create_work: Crear obra
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.

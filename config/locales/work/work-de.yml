@@ -156,8 +156,6 @@ de:
     needsreview: Metadaten müssen überprüft werden.
     new:
       collection: Sammlung
-      create_empty_work: Erstellen Sie ein neues Werk
-      create_empty_work_description: Dadurch entsteht ein neues Werk. Sobald Sie das Werk erstellt haben, können Sie einzelne Faksimiles hinzufügen. Wenn Sie eine ZIP-Datei oder ein PDF mit mehreren Bildern haben, sollten Sie stattdessen unter %{start_project} ein Werk erstellen und die Datei(en) hochladen.
       create_work: Werk erstellen
       description: Beschreibung
       description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
