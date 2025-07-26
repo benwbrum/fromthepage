@@ -305,38 +305,37 @@ module ApplicationHelper
 
   def collection_image_url(collection)
     return nil unless collection&.picture.present?
-    if collection.picture.start_with?('http')
-      collection.picture
-    else
-      # Handle relative URLs by making them absolute
-      "#{request.protocol}#{request.host_with_port}#{collection.picture}"
-    end
+    absolute_url(collection.picture)
   end
 
   def work_image_url(work)
     return nil unless work&.picture.present?
-    if work.picture.start_with?('http')
-      work.picture
-    else
-      # Handle relative URLs by making them absolute
-      "#{request.protocol}#{request.host_with_port}#{work.picture}"
-    end
+    absolute_url(work.picture)
   end
 
   def page_image_url(page)
     return nil unless page&.base_image.present?
-    if page.base_image.start_with?('http')
-      page.base_image
-    else
-      # Handle relative URLs by making them absolute
-      "#{request.protocol}#{request.host_with_port}#{page.base_image}"
-    end
+    absolute_url(page.base_image)
   end
 
   private
 
   def absolute_url(url)
     return url if url.blank? || url.start_with?('http')
-    "#{request.protocol}#{request.host_with_port}#{url}"
+    
+    # Try to get request context, fallback to asset_url if available
+    begin
+      if defined?(request) && request.present?
+        "#{request.protocol}#{request.host_with_port}#{url}"
+      elsif respond_to?(:asset_url)
+        asset_url(url)
+      else
+        # Last resort - assume relative URL needs a leading slash
+        url.start_with?('/') ? url : "/#{url}"
+      end
+    rescue
+      # If all else fails, return the URL as-is
+      url
+    end
   end
 end

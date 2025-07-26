@@ -91,13 +91,17 @@ class OembedController < ApplicationController
     collection = Collection.friendly.find(params[:id]) rescue nil
     return nil unless collection&.is_active?
 
+    base_url = "#{request.protocol}#{request.host_with_port}"
+    collection_url = "#{base_url}/#{collection.owner.slug}/#{collection.slug}"
+    author_url = "#{base_url}/#{collection.owner.slug}"
+
     {
       title: collection.title,
       description: strip_html_and_truncate(collection.intro_block || "A transcription project on FromThePage"),
       author: collection.owner.display_name,
-      author_url: user_profile_url(collection.owner),
+      author_url: author_url,
       image_url: collection_image_url(collection),
-      url: collection_url(collection),
+      url: collection_url,
       type: 'collection'
     }
   end
@@ -106,13 +110,17 @@ class OembedController < ApplicationController
     work = Work.friendly.find(params[:work_id]) rescue nil
     return nil unless work&.collection&.is_active?
 
+    base_url = "#{request.protocol}#{request.host_with_port}"
+    work_url = "#{base_url}/#{work.collection.owner.slug}/#{work.collection.slug}/#{work.slug}"
+    author_url = "#{base_url}/#{work.collection.owner.slug}"
+
     {
       title: work.title,
       description: strip_html_and_truncate(work.description || "A document in the #{work.collection.title} project"),
       author: work.collection.owner.display_name,
-      author_url: user_profile_url(work.collection.owner),
+      author_url: author_url,
       image_url: work_image_url(work) || collection_image_url(work.collection),
-      url: read_work_url(work.collection.owner.slug, work.collection, work),
+      url: work_url,
       type: 'work'
     }
   end
@@ -124,13 +132,17 @@ class OembedController < ApplicationController
     page = work.pages.find(params[:page_id]) rescue nil
     return nil unless page
 
+    base_url = "#{request.protocol}#{request.host_with_port}"
+    page_url = "#{base_url}/#{work.collection.owner.slug}/#{work.collection.slug}/#{work.slug}/display/#{page.id}"
+    author_url = "#{base_url}/#{work.collection.owner.slug}"
+
     {
       title: "#{work.title} - #{page.title || "Page #{page.position}"}",
       description: strip_html_and_truncate(page.source_text || "A page from #{work.title}"),
       author: work.collection.owner.display_name,
-      author_url: user_profile_url(work.collection.owner),
+      author_url: author_url,
       image_url: page_image_url(page) || work_image_url(work) || collection_image_url(work.collection),
-      url: display_page_url(work.collection.owner.slug, work.collection, work, page),
+      url: page_url,
       type: 'page'
     }
   end
@@ -167,5 +179,25 @@ class OembedController < ApplicationController
     
     # Truncate to desired length
     plain_text.length > length ? "#{plain_text[0...length]}..." : plain_text
+  end
+
+  def collection_image_url(collection)
+    return nil unless collection&.picture.present?
+    make_absolute_url(collection.picture)
+  end
+
+  def work_image_url(work)
+    return nil unless work&.picture.present?
+    make_absolute_url(work.picture)
+  end
+
+  def page_image_url(page)
+    return nil unless page&.base_image.present?
+    make_absolute_url(page.base_image)
+  end
+
+  def make_absolute_url(url)
+    return url if url.blank? || url.start_with?('http')
+    "#{request.protocol}#{request.host_with_port}#{url.start_with?('/') ? url : "/#{url}"}"
   end
 end
