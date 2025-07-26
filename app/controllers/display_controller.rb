@@ -62,7 +62,7 @@ class DisplayController < ApplicationController
     # Set social media meta tags for work
     unless @work.nil?
       description = strip_html_and_truncate(@work.description) if @work.description.present?
-      description ||= "A document in the #{@work.collection.title} project on FromThePage"
+      description ||= "A document in the #{@work.collection&.title || 'Unknown Collection'} project on FromThePage"
       
       set_social_media_meta_tags(
         title: @work.title,

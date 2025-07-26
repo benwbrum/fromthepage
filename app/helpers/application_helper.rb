@@ -276,16 +276,21 @@ module ApplicationHelper
     content_for :og_title, title
     content_for :og_description, description
     content_for :og_type, type
-    content_for :og_url, url || request.original_url
+    content_for :og_url, url || (defined?(request) ? request.original_url : url)
     
     # Set image with fallback
     if image_url.present?
       content_for :og_image, absolute_url(image_url)
       content_for :twitter_image, absolute_url(image_url)
     else
-      default_image = asset_url('logo.png')
-      content_for :og_image, default_image
-      content_for :twitter_image, default_image
+      # Try to get a default image, fall back gracefully
+      begin
+        default_image = respond_to?(:asset_url) ? asset_url('logo.png') : '/assets/logo.png'
+        content_for :og_image, default_image
+        content_for :twitter_image, default_image
+      rescue
+        # Skip image if we can't generate URLs
+      end
     end
     
     # Twitter cards
@@ -296,11 +301,13 @@ module ApplicationHelper
     # Regular meta tags
     content_for :meta_description, description
     
-    # oEmbed discovery URLs
-    oembed_base_url = "#{request.protocol}#{request.host_with_port}/oembed"
-    oembed_params = "?url=#{CGI.escape(url || request.original_url)}"
-    content_for :oembed_json_url, "#{oembed_base_url}#{oembed_params}&format=json"
-    content_for :oembed_xml_url, "#{oembed_base_url}#{oembed_params}&format=xml"
+    # oEmbed discovery URLs - only if request is available
+    if defined?(request) && request.present?
+      oembed_base_url = "#{request.protocol}#{request.host_with_port}/oembed"
+      oembed_params = "?url=#{CGI.escape(url || request.original_url)}"
+      content_for :oembed_json_url, "#{oembed_base_url}#{oembed_params}&format=json"
+      content_for :oembed_xml_url, "#{oembed_base_url}#{oembed_params}&format=xml"
+    end
   end
 
   def collection_image_url(collection)
@@ -337,14 +344,14 @@ module ApplicationHelper
     # Try to get request context, fallback to asset_url if available
     begin
       if defined?(request) && request.present?
-        "#{request.protocol}#{request.host_with_port}#{url}"
+        "#{request.protocol}#{request.host_with_port}#{url.start_with?('/') ? url : "/#{url}"}"
       elsif respond_to?(:asset_url)
         asset_url(url)
       else
         # Last resort - assume relative URL needs a leading slash
         url.start_with?('/') ? url : "/#{url}"
       end
-    rescue
+    rescue => e
       # If all else fails, return the URL as-is
       url
     end
