@@ -2,6 +2,7 @@ class SitemapController < ApplicationController
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params
   skip_before_action :load_html_blocks
+  skip_before_action :authorize_collection
   skip_around_action :switch_locale
 
   def index

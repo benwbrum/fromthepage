@@ -2,11 +2,22 @@ require 'spec_helper'
 
 RSpec.describe SitemapController, type: :request do
   before do
-    # Create test data
+    # Create test data with explicit slug generation
     @owner = create(:user, :owner)
+    @owner.reload # Ensure slug is generated and loaded from DB
+    
     @collection = create(:collection, owner: @owner, is_active: true, restricted: false)
+    @collection.reload # Ensure slug is generated and loaded from DB
+    
     @work = create(:work, collection: @collection)
+    @work.reload # Ensure slug is generated and loaded from DB
+    
     @page = create(:page, work: @work, status: 'transcribed')
+    
+    # Verify that slugs were created properly
+    raise "Owner slug not generated" if @owner.slug.blank?
+    raise "Collection slug not generated" if @collection.slug.blank?
+    raise "Work slug not generated" if @work.slug.blank?
   end
 
   describe "GET /sitemap.xml" do
@@ -18,8 +29,15 @@ RSpec.describe SitemapController, type: :request do
       
       # Parse XML to validate structure
       doc = Nokogiri::XML(response.body)
-      expect(doc.at_xpath("//sitemapindex")).to be_present
-      expect(doc.xpath("//sitemap").count).to eq(3) # collections, works, pages
+      
+      # Check for sitemapindex element with or without namespace
+      sitemapindex = doc.at_xpath("//sitemapindex") || doc.at_xpath("//*[local-name()='sitemapindex']")
+      expect(sitemapindex).to be_present
+      
+      # Check for sitemap elements
+      sitemaps = doc.xpath("//sitemap") 
+      sitemaps = doc.xpath("//*[local-name()='sitemap']") if sitemaps.empty?
+      expect(sitemaps.count).to eq(3) # collections, works, pages
     end
   end
 
@@ -31,7 +49,12 @@ RSpec.describe SitemapController, type: :request do
       expect(response.content_type).to include("application/xml")
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc") 
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       expected_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}"
       expect(urls).to include(expected_url)
@@ -46,7 +69,12 @@ RSpec.describe SitemapController, type: :request do
       expect(response.content_type).to include("application/xml")
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc")
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       expected_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
       expect(urls).to include(expected_url)
@@ -61,7 +89,12 @@ RSpec.describe SitemapController, type: :request do
       expect(response.content_type).to include("application/xml")
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc")
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       expected_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}/display/#{@page.id}"
       expect(urls).to include(expected_url)
@@ -75,7 +108,12 @@ RSpec.describe SitemapController, type: :request do
       get "/sitemap_collections.xml"
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc")
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       restricted_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{restricted_collection.slug}"
       expect(urls).not_to include(restricted_url)
@@ -89,7 +127,12 @@ RSpec.describe SitemapController, type: :request do
       get "/sitemap_pages.xml"
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc")
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       blank_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}/display/#{blank_page.id}"
       expect(urls).not_to include(blank_url)
@@ -101,7 +144,12 @@ RSpec.describe SitemapController, type: :request do
       get "/sitemap_pages.xml"
       
       doc = Nokogiri::XML(response.body)
-      urls = doc.xpath("//url/loc").map(&:text)
+      
+      # Handle both with and without namespace
+      url_locs = doc.xpath("//url/loc")
+      url_locs = doc.xpath("//*[local-name()='url']/*[local-name()='loc']") if url_locs.empty?
+      
+      urls = url_locs.map(&:text)
       
       new_url = "#{request.protocol}#{request.host_with_port}/#{@owner.slug}/#{@collection.slug}/#{@work.slug}/display/#{new_page.id}"
       expect(urls).not_to include(new_url)
