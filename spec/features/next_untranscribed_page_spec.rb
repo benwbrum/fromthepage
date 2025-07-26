@@ -6,11 +6,7 @@ describe 'Next untranscribed page logic' do
   before :all do
   end
   before :each do
-    DatabaseCleaner.start
     login_as(user, scope: :user)
-  end
-  after :each do
-    DatabaseCleaner.clean
   end
 
   let(:user)  { create(:user) }

@@ -6,10 +6,6 @@ describe "Work Settings" do
     end
     before :each do
         login_as(@owner, :scope => :user)
-        DatabaseCleaner.start
-    end
-    after :each do
-        DatabaseCleaner.clean
     end
 
     let(:collection) { create(:collection, owner: @owner) }

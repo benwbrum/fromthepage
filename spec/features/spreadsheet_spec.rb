@@ -25,12 +25,6 @@ end
 
 
 describe "spreadsheet" do
-  before :all do
-    DatabaseCleaner.start
-  end
-  after :all do
-    DatabaseCleaner.clean
-  end
   before :each do
     login_as(owner, scope: :user)
   end

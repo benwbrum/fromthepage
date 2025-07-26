@@ -77,12 +77,6 @@ RSpec.describe Collection, type: :model do
   end
 
   context 'OCR Settings' do
-    before :each do
-      DatabaseCleaner.start
-    end
-    after :each do
-      DatabaseCleaner.clean
-    end
 
     let(:work_no_ocr) { create(:work) }
     let(:work_ocr)    { create(:work) }

@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe "Devise" do
-  before :each do
-    DatabaseCleaner.start
-  end
-  after :each do
-    DatabaseCleaner.clean
-  end
 
   let(:old_user){ create(:user) }
   let(:old_path){ user_profile_path(old_user) }

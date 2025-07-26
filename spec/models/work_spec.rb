@@ -3,12 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Work, type: :model do
-  before :each do
-    DatabaseCleaner.start
-  end
-  after :each do
-    DatabaseCleaner.clean
-  end
   describe '#supports_indexing?' do
     it "returns true if a work's collection does not have subjects disabled" do
       collection = create(:collection, :with_pages, subjects_disabled: false)

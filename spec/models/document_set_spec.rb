@@ -3,12 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe DocumentSet, type: :model do
-  before :each do
-    DatabaseCleaner.start
-  end
-  after :each do
-    DatabaseCleaner.clean
-  end
   describe '#set_next_untranscribed_page' do
     let(:collection){ create(:collection, works:[]) }
     let(:work){ create(:work, collection_id: collection.id) }

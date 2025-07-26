@@ -3,14 +3,6 @@ require 'spec_helper'
 describe "import data" do
   let(:owner){ create(:owner) }
 
-  before :each do
-    DatabaseCleaner.start
-  end
-
-  after :each do
-    DatabaseCleaner.clean
-  end
-
   context "CONTENTdm" do
 
     let(:item_url)      { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/2' }

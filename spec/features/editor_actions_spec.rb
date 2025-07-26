@@ -15,10 +15,6 @@ describe "editor actions" , :order => :defined do
     end
     before :each do
       login_as(@user, :scope => :user)
-      DatabaseCleaner.start
-    end
-    after :each do
-      DatabaseCleaner.clean
     end
 
     let(:collection){ create(:collection ) }

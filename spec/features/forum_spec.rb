@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "forum tab for collection", :order => :defined do
+describe "forum tab for collection" do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -11,9 +11,7 @@ describe "forum tab for collection", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end
-
-  it "sets slugs" do
+    # Ensure slugs are set for each test
     Collection.find_each(&:save)
     Work.find_each(&:save)
     User.find_each(&:save)

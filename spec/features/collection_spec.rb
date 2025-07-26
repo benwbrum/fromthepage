@@ -332,10 +332,6 @@ describe "collection spec (isolated)" do
     end
     before :each do
       login_as(@owner, :scope => :user)
-      DatabaseCleaner.start
-    end
-    after :each do
-      DatabaseCleaner.clean
     end
 
     let(:work_ocr){ create(:work, ocr_correction: true) }

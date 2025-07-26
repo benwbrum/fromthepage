@@ -1,7 +1,7 @@
 
 require 'spec_helper'
 
-describe "collection settings js tasks", :order => :defined do
+describe "collection settings js tasks" do
 
   # it "Deed view displays public deeds" do
   #   visit collections_list_path
