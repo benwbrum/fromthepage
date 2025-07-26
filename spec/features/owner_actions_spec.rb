@@ -143,6 +143,7 @@ describe "owner actions", :order => :defined do
 
   it "moves a work to another collection" do
     work = @works.first # Use an existing work instead of the deleted empty work
+    initial_deed_count = Deed.where(work_id: work.id).count
 
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: work.collection.title).click
@@ -156,7 +157,8 @@ describe "owner actions", :order => :defined do
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     updated_work = Work.find_by(id: work.id)
-    expect(Deed.last.work_id).to eq(updated_work.id)
+    # Check that a new deed was created for this work
+    expect(Deed.where(work_id: updated_work.id).count).to eq(initial_deed_count + 1)
     expect(updated_work.deeds.where.not(:collection_id => updated_work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
