@@ -1,6 +1,13 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe Article, type: :model do
+  before :each do
+    DatabaseCleaner.start
+  end
+  after :each do
+    DatabaseCleaner.clean
+  end
+
   describe '#possible_duplicates' do
     let(:collection) { create(:collection) }
     let(:article) { create(:article, collection: collection, title: "F. R. Calvert") }
