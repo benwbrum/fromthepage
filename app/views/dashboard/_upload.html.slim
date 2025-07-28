@@ -6,7 +6,7 @@
         p =t('.trial_accounts_are_limited')
       -else
         p.big =t('.import_form_message')
-        =form_for :document_upload, url: dashboard_new_upload_path do |f|
+        =form_for :document_upload, url: dashboard_new_upload_url do |f|
           =validation_summary @document_upload.errors
           table.form.collection-settings
             tr

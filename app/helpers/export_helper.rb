@@ -130,7 +130,7 @@ module ExportHelper
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
+        print "\t#{DateTime.now.to_s} Exporting work\t#{work.id}\t#{work.title}\n"
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
@@ -406,9 +406,9 @@ module ExportHelper
     tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
     unless subject.bibliography.blank?
       subject.bibliography.split("\n").each do |line|
-        unless line.blank?
-          tei << "<bibl>#{line.chomp}</bibl>"
-        end
+        next if line.blank?
+        escaped_line = ERB::Util.html_escape(line.chomp)
+        tei << "<bibl>#{escaped_line}</bibl>"
       end
     end
 

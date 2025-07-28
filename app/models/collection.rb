@@ -11,6 +11,7 @@
 #  description_instructions       :text(65535)
 #  enable_spellcheck              :boolean          default(FALSE)
 #  facets_enabled                 :boolean          default(FALSE)
+#  featured_at                    :datetime
 #  field_based                    :boolean          default(FALSE)
 #  footer_block                   :text(16777215)
 #  help                           :text(65535)
@@ -61,6 +62,7 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   include ElasticDelta
   include DuplicateSlugCleanup
+  
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
@@ -105,6 +107,7 @@ class Collection < ApplicationRecord
   before_create :set_transcription_conventions
   before_create :set_help
   before_create :set_link_help
+  before_create :fill_featured_at
   after_create :create_categories
   after_save :set_next_untranscribed_page
 
@@ -119,6 +122,14 @@ class Collection < ApplicationRecord
   scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
+  scope :featured_projects, -> {
+    joins(works: :pages)
+      .joins(:owner)
+      .where(owner: { deleted: false })
+      .unrestricted.where("LOWER(collections.title) NOT LIKE 'test%'")
+      .where.not(featured_at: nil)
+      .distinct
+  }
 
   scope :random_sample, -> (sample_size = 5) do
     carousel
@@ -126,78 +137,65 @@ class Collection < ApplicationRecord
     limit(sample_size).reorder(Arel.sql("RAND()"))
   end
 
+  update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
   module DataEntryType
     TEXT_ONLY = 'text'
     METADATA_ONLY = 'metadata'
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
-  def as_indexed_json
-    return {
-      _id: self.id,
-      permissions_updated: 0,
-      is_public: !self.restricted,
-      is_docset: false,
-      intro_block: self.intro_block,
-      language: self.language,
-      owner_user_id: self.owner_user_id,
-      owner_display_name: self.owner&.display_name,
-      slug: self.slug,
-      title: self.title
-    }
-  end
-
-  def self.es_match_query(query, user = nil)
+  def self.es_search(query:, user: nil, is_public: true)
     blocked_collections = []
     collection_collabs = []
-    docset_collabs= []
 
-    if !user.nil?
+    if user.present?
       blocked_collections = user.blocked_collections.pluck(:id)
-      collection_collabs = user.collection_collaborations.pluck(:id)
-      collection_collabs+= user.owned_collections.pluck(:id)
-      docset_collabs = user.document_set_collaborations.pluck(:id)
-        .map{ |x| "docset-#{x}" }
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
     end
 
-    return {
+    CollectionsIndex.query(
       bool: {
         must: {
           simple_query_string: {
             query: query,
             fields: [
-              "title^2",
-              "title.no_underscores^1.3",
-              "intro_block",
-              "slug"
+              'title^2',
+              'title.no_underscores^1.3',
+              'intro_block',
+              'slug'
             ]
           }
         },
         filter: [
+          { term: { is_docset: false } },
           {
             bool: {
               must_not: [
-                { terms: {_id: blocked_collections} }
+                { terms: { _id: blocked_collections } }
               ],
-              # At least one of the following must be true
               should: [
-                { term: {is_public: true} },
-                { term: {owner_user_id: user.nil? ? -1 : user.id} },
-                { terms: {_id: collection_collabs} },
-                { terms: { collection_id: collection_collabs }},
-                { terms: {_id: docset_collabs} },
-              ]
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { _id: collection_collabs } },
+                { terms: { collection_id: collection_collabs } }
+              ],
+              minimum_should_match: 1
             }
-          },
-          # Need index filter for cross collection search
-          {prefix: {_index: "ftp_collection"}}
+          }
         ]
       }
-    }
+    )
   end
 
   def created_at
     created_on
+  end
+
+  def pages_are_meaningful?
+    self.works.where(pages_are_meaningful: true).present?
   end
 
   def text_entry?
@@ -572,10 +570,28 @@ ENDHELP
     end
   end
 
+  def fill_featured_at
+    return if self.restricted?
+
+    self.featured_at = Time.current
+  end
+
   def user_help
     User.find(self.owner_user_id).help
   end
 
   public :user_help
 
+  private
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: CollectionsIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
 end

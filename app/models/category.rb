@@ -21,7 +21,8 @@ class Category < ApplicationRecord
 
   acts_as_tree order: 'title'
   belongs_to :collection, optional: true
-  has_and_belongs_to_many :articles, -> { order('title').distinct }
+  has_many :articles_categories
+  has_many :articles, -> { distinct.order(:title) }, through: :articles_categories
 
   validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id], case_sensitive: true }
 
