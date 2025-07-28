@@ -1,4 +1,5 @@
 class BulkExportController < ApplicationController
+  before_action :authorized?, only: [:index, :show, :download]
   before_action :set_bulk_export, only: [:show, :edit, :download]
 
   PAGES_PER_SCREEN = 20
@@ -159,6 +160,12 @@ class BulkExportController < ApplicationController
       @bulk_export.submit_export_process
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
+    end
+  end
+
+  def authorized?
+    unless user_signed_in? && current_user.admin
+      redirect_to dashboard_path
     end
   end
 
