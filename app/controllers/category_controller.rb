@@ -1,7 +1,7 @@
 class CategoryController < ApplicationController
   public :render_to_string
   protect_from_forgery
-  before_action :authorized?
+  before_action :authorized?, only: [:manage]
 
   def manage
     @categories = @collection.categories

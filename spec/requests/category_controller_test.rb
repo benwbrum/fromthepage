@@ -15,13 +15,22 @@ describe CategoryController do
 
   describe "GET #manage" do
     it "renders the manage template" do
+      login_as owner
       get category_manage_path(collection_id: collection.slug)
       expect(response).to render_template(:manage)
     end
     
     it "assigns categories to @categories" do
+      login_as owner
       get category_manage_path(collection_id: collection.slug)
       expect(assigns(:categories)).to eq(collection.categories)
+    end
+    
+    it "redirects non-owners to dashboard" do
+      non_owner = create(:unique_user)
+      login_as non_owner
+      get category_manage_path(collection_id: collection.slug)
+      expect(response).to redirect_to(dashboard_path)
     end
   end
 
