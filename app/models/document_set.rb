@@ -26,6 +26,8 @@
 #
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
+  include ElasticDelta
+  include DuplicateSlugCleanup
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]

@@ -52,4 +52,20 @@ RSpec.describe DocumentSet, type: :model do
       expect(docset.next_untranscribed_page).to eq(page_incomplete)
     end
   end
+
+  describe '#cleanup_duplicate_slug' do
+    it 'removes duplicate slugs from other objects for the same owner' do
+      owner = create(:owner)
+      docset = create(:document_set, owner: owner)
+      dup_slug = docset.slug
+
+      docset.update!(slug: 'new-slug')
+
+      collection = create(:collection, owner: owner)
+      collection.update!(slug: dup_slug)
+
+      types = FriendlyId::Slug.where(slug: dup_slug).pluck(:sluggable_type)
+      expect(types).to eq(['Collection'])
+    end
+  end
 end
