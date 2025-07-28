@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "IIIF Manifests API", :type => :request do
-  fixtures :all
-
   it "returns JSON" do
     get iiif_manifest_path(1)
     expect(response.content_type).to eq("application/json; charset=utf-8")
