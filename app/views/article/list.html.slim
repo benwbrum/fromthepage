@@ -6,7 +6,10 @@
 
   .collection-categories
     .category-tree
-      h3= t('.categories')
+      .category-tree-header
+        h3= t('.categories')
+        -if user_signed_in? && current_user.like_owner?(@collection)
+          =link_to t('.manage_categories'), category_manage_path(collection_id: @collection.slug), class: 'manage-categories-link'
       ==display_categories(@categories, nil) do |category|
         -ret = "<a href=\"#category-#{category.id}\" class=\"tree-item\">"
         -if category.children.any?
@@ -86,6 +89,30 @@
     p.nodata_text
       ==t('.no_categories_message')
       ==t('.create_category_message', link: add_category) if user_signed_in? && current_user.like_owner?(@collection)
+
+-content_for :css do
+  :css
+    .category-tree-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .manage-categories-link {
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+      background: white;
+    }
+    
+    .manage-categories-link:hover {
+      background: #007bff;
+      color: white;
+    }
 
 -content_for :javascript
   javascript:

@@ -13,6 +13,18 @@ describe CategoryController do
     end
   end
 
+  describe "GET #manage" do
+    it "renders the manage template" do
+      get category_manage_path(collection_id: collection.slug)
+      expect(response).to render_template(:manage)
+    end
+    
+    it "assigns categories to @categories" do
+      get category_manage_path(collection_id: collection.slug)
+      expect(assigns(:categories)).to eq(collection.categories)
+    end
+  end
+
   describe "PATCH #update" do
     context "with valid category params" do
       it "updates the category and redirects to collection subjects path" do

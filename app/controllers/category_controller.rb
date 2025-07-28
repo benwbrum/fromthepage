@@ -1,6 +1,11 @@
 class CategoryController < ApplicationController
   public :render_to_string
   protect_from_forgery
+  before_action :authorized?
+
+  def manage
+    @categories = @collection.categories
+  end
 
   def edit
   end
@@ -89,5 +94,16 @@ class CategoryController < ApplicationController
 
   def category_params
     params.require(:category).permit(:title, :bio_fields_enabled, :gis_enabled, :org_fields_enabled, :collection_id, :parent_id)
+  end
+
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+      return
+    end
+
+    if @collection && !current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
   end
 end

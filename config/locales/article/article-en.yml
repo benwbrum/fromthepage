@@ -63,6 +63,7 @@ en:
       disable_gis_for_category: Disable GIS for Category
       disable_org_fields_for_category: Disable Organization Fields for Category
       edit_category: Edit Category
+      manage_categories: Manage Categories
       enable_bio_fields_for_category: Enable Biographical Fields for Category
       enable_gis_for_category: Enable GIS for Category
       enable_org_fields_for_category: Enable Organization Fields for Category

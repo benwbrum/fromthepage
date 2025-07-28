@@ -1,0 +1,23 @@
+.category-item
+  .category-title= category.title
+  .category-actions
+    =link_to t('.edit'), category_edit_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }, class: 'action-link'
+    =link_to t('.add_child'), category_add_new_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }, class: 'action-link'
+    -if category.gis_enabled
+      =link_to t('.disable_gis'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    -else
+      =link_to t('.enable_gis'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    -if category.bio_fields_enabled
+      =link_to t('.disable_bio_fields'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    -else
+      =link_to t('.enable_bio_fields'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    -if category.org_fields_enabled
+      =link_to t('.disable_org_fields'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    -else
+      =link_to t('.enable_org_fields'), category_enable_org_fields_path(collection_id: @collection.slug, category_id: category.id), class: 'action-link'
+    =link_to t('.delete'), { controller: 'category', action: 'delete', collection_id: @collection.slug, category_id: category.id }, class: 'action-link delete-link', data: { confirm: t('.confirm_delete_category') }
+
+-if category.children.any?
+  .category-children
+    - category.children.each do |child_category|
+      = render partial: 'category_item', locals: { category: child_category }

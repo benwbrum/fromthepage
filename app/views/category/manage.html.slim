@@ -1,0 +1,85 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 3, :collection_id => @collection }})
+
+.collection-categories
+  .manage-categories-header
+    h3= t('.manage_categories')
+    .top-level-actions
+      =link_to t('.add_root_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }, class: 'button'
+      =link_to t('.upload_subjects'), article_upload_form_path(@collection.slug), class: 'button'
+
+  -if @categories.present?
+    .category-tree
+      - @categories.roots.each do |category|
+        = render partial: 'category_item', locals: { category: category }
+  -else
+    .nodata
+      h4.nodata_title= t('.no_categories')
+      p.nodata_text
+        ==t('.no_categories_message')
+
+-content_for :css do
+  :css
+    .manage-categories-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .top-level-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .category-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      margin: 4px 0;
+      background: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+    
+    .category-title {
+      font-weight: 500;
+      flex-grow: 1;
+    }
+    
+    .category-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .action-link {
+      padding: 4px 8px;
+      font-size: 12px;
+      color: #007bff;
+      text-decoration: none;
+      border: 1px solid #007bff;
+      border-radius: 3px;
+      background: white;
+    }
+    
+    .action-link:hover {
+      background: #007bff;
+      color: white;
+    }
+    
+    .delete-link {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+    
+    .delete-link:hover {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .category-children {
+      margin-left: 20px;
+    }
