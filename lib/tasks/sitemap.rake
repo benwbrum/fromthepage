@@ -43,10 +43,12 @@ namespace :fromthepage do
         file.write(generate_xml_header)
         
         slice.each do |collection|
-          url = "#{base_url}/#{collection.owner.slug}/#{collection.slug}"
-          lastmod = (collection.most_recent_deed_created_at || collection.created_on || Time.now).strftime('%Y-%m-%d')
-          
-          file.write(generate_url_entry(url, lastmod, 'weekly', '0.8'))
+          if collection.owner
+            url = "#{base_url}/#{collection.owner.slug}/#{collection.slug}"
+            lastmod = (collection.most_recent_deed_created_at || collection.created_on || Time.now).strftime('%Y-%m-%d')
+            
+            file.write(generate_url_entry(url, lastmod, 'weekly', '0.8'))
+          end
         end
         
         file.write(generate_xml_footer)
@@ -68,10 +70,12 @@ namespace :fromthepage do
         file.write(generate_xml_header)
         
         slice.each do |work|
-          url = "#{base_url}/#{work.collection.owner.slug}/#{work.collection.slug}/#{work.slug}"
-          lastmod = (work.most_recent_deed_created_at || work.created_on || Time.now).strftime('%Y-%m-%d')
-          
-          file.write(generate_url_entry(url, lastmod, 'weekly', '0.7'))
+          if work.collection && work.collection.owner
+            url = "#{base_url}/#{work.collection.owner.slug}/#{work.collection.slug}/#{work.slug}"
+            lastmod = (work.most_recent_deed_created_at || work.created_on || Time.now).strftime('%Y-%m-%d')
+            
+            file.write(generate_url_entry(url, lastmod, 'weekly', '0.7'))
+          end
         end
         
         file.write(generate_xml_footer)
