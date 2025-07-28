@@ -153,7 +153,7 @@ class User < ApplicationRecord
             query: query,
             fields: [
               'about',
-              'real_name',
+              'real_name.text',
               'website'
             ]
           }
