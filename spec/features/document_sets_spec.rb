@@ -236,7 +236,7 @@ describe "document sets", :order => :defined do
     visit document_sets_path(:collection_id => @collection)
     within(page.find('#sets')) do
       within(page.find('tr', text: @test_set.title)) do
-          page.find('a', text: 'Delete').click
+        page.find('a', text: 'Delete').click
       end
     end
     expect(DocumentSet.all.ids).not_to include @test_set.id

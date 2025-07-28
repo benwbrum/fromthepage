@@ -55,9 +55,8 @@ section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @works.length}") =t('.work', count: @works.length)
   -unless @document_sets.empty?
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") =t('.document_set', count: @document_sets.length)
-
 .tabs
-  =active_link_to t('.start_a_project'), dashboard_startproject_path
+  =active_link_to t('.start_a_project'), dashboard_startproject_url
   =active_link_to t('.your_collections'), dashboard_owner_path
   =active_link_to t('.summary'), dashboard_summary_path
   =active_link_to t('.exports'), dashboard_exports_path

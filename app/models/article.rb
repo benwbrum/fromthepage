@@ -43,8 +43,11 @@ class Article < ApplicationRecord
   validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90}
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
 
-  has_and_belongs_to_many :categories, -> { distinct }
+  has_many :articles_categories
+  has_many :categories, -> { distinct }, through: :articles_categories
+
   belongs_to :collection, optional: true
+
   has_many :target_article_links, foreign_key: 'target_article_id', class_name: 'ArticleArticleLink'
   scope :target_article_links, -> { include 'source_article' }
   scope :target_article_links, -> { order "articles.title ASC" }
@@ -57,6 +60,7 @@ class Article < ApplicationRecord
   scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages) }
 
   has_many :pages, through: :page_article_links
+  has_many :works, through: :page_article_links
 
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
@@ -108,6 +112,15 @@ class Article < ApplicationRecord
   def org_fields_enabled?
     self.categories.where(:org_fields_enabled => true).present?
   end
+
+  def clear_relationship_graph
+    File.unlink(d3js_file) if File.exists?(d3js_file)
+  end
+
+  def d3js_file
+    "#{Rails.root}/public/images/working/dot/#{self.id}.d3.js"
+  end
+
 
   #######################
   # De-Dup Support

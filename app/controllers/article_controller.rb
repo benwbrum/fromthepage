@@ -1,7 +1,9 @@
 class ArticleController < ApplicationController
   include AbstractXmlController
+  include AbstractXmlHelper
 
-  before_action :authorized?, except: [:list, :show, :tooltip, :graph]
+  skip_before_action :verify_authenticity_token, only: [:relationship_graph]
+  before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
 
   def tooltip
     render partial: 'tooltip'
@@ -89,6 +91,114 @@ class ArticleController < ApplicationController
   def graph
     redirect_to :action => :show, :article_id => @article.id
   end
+
+  def relationship_graph
+    unless File.exist? @article.d3js_file
+      article_links=[]
+      article_nodes=[]
+      # get all the source article links
+      @article.source_article_links.each do |link|
+        article_nodes << link.target_article
+        article_links << link.target_article_id
+      end
+      # get all the source article links
+      @article.target_article_links.each do |link|
+        article_nodes << link.source_article
+        article_links << link.source_article_id
+      end
+      document_nodes=[]
+      work_nodes=[]
+      center_article_to_document_links=[]
+      second_document_to_article_links=[]
+      # get all the pages and works linking to this article
+      if @collection.pages_are_meaningful?
+        document_association = @article.pages
+      else
+        document_association = @article.works
+      end
+
+      document_association.each do |document|
+        document_nodes << document
+        center_article_to_document_links << document.id
+        document.articles.each do |article|
+          article_nodes << article
+          second_document_to_article_links << [document.id, article.id]
+        end
+      end
+
+      # now construct the JSON response
+      nodes=[]
+      nodes << {
+        "id" => "S#{@article.id}", 
+        "title" => @article.title, 
+        "group" => @article.title, 
+        "link" => collection_article_show_url(@collection.owner, @collection, @article)}
+      article_nodes.uniq.each do |article|
+        if article != @article
+          nodes << {
+            "id" => "S#{article.id}", 
+            "title" => article.title,
+            "bio" => xml_to_html(article.xml_text, false, nil, nil, nil, true),
+            "group" => article.categories.first&.title, 
+            "link" => collection_article_show_url(@collection.owner, @collection, article)
+          }
+        end
+      end
+      if @collection.pages_are_meaningful?
+        document_nodes.uniq.each do |page|
+          nodes << {
+            "id" => "D#{page.id}", 
+            "title" => page.title + " in " + page.work.title, 
+            "group" => "Documents",
+            "link" => collection_display_page_path(@collection.owner, @collection, page.work, page)
+          }
+        end
+      else
+        document_nodes.uniq.each do |work|
+          nodes << {
+            "id" => "D#{work.id}", 
+            "title" => work.title, 
+            "group" => "Documents",
+            "link" => collection_read_work_url(@collection.owner, @collection, work)
+          }
+        end
+      end
+  
+      links=[]
+      article_links.tally.each do |article_id,link_count|
+        links << {
+          "source"=>"S#{@article.id}", 
+          "target"=>"S#{article_id}", 
+          "value"=>link_count, 
+          "group"=>"direct"
+        }
+      end
+      center_article_to_document_links.tally.each do |work_id, link_count|
+        links << {
+          "source"=>"S#{@article.id}", 
+          "target"=>"D#{work_id}", 
+          "value"=>link_count, 
+          "group"=>"mentioned in"
+        }
+      end
+      second_document_to_article_links.tally.each do |link_pair, link_count|
+        work_id,second_article_id = link_pair
+        links << {
+          "source"=>"D#{work_id}", 
+          "target"=>"S#{second_article_id}", 
+          "value"=>link_count, 
+          "group"=>"mentions"
+        }
+      end
+
+      doc={ "nodes" => nodes, "links" => links}
+      File.write(@article.d3js_file, doc.to_json)
+    end
+
+    # now render the d3js file
+    render file: @article.d3js_file, type: "application/javascript; charset=utf-8", layout: false
+  end
+
 
   def show
     sql =

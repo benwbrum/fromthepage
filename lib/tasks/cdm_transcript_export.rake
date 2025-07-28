@@ -1,5 +1,5 @@
 require 'contentdm_translator'
-namespace :fromthepage do 
+namespace :fromthepage do
 
   desc "Export transcripts for completed works to CONTENTdm"
   task :cdm_transcript_export, [:collection_id] => :environment do |t, args|
@@ -12,7 +12,7 @@ namespace :fromthepage do
     collection.works.joins(:sc_manifest, :work_statistic).each do |work|
       if work.work_statistic.complete >= 99
         print "\tBeginning export of work #{work.id}, '#{work.title}' \n"
-        ContentdmTranslator.export_work_to_cdm(work, username, password, license)
+        ContentdmTranslator.export_work_to_cdm_with_retry(work, username, password, license)
         print "Finished export of work #{work.id}, '#{work.title}' \n"
       else
         print "\tSkipping export of uncompleted work #{work.id}, '#{work.title}' \n"

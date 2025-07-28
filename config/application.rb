@@ -33,6 +33,8 @@ module Fromthepage
     config.i18n.fallbacks = true
     config.i18n.fallbacks = [:en]
 
+    # override this in environment to set a different host for uploads
+    config.upload_host=nil
 
 
   # load overrides for Thredded and other engines

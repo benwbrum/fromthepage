@@ -64,6 +64,7 @@ gem 'bootsnap', require: false
 gem 'puma'
 
 gem 'active_link_to'
+gem 'mail', '~> 2.7'
 
 gem 'warning'
 
@@ -71,6 +72,7 @@ gem 'http_accept_language'
 gem 'rails-i18n', '~> 7.0.0'
 
 gem 'charlock_holmes'
+gem 'roo'
 gem 'forty_facets'
 
 gem 'diffy'
@@ -155,5 +157,6 @@ gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'
 
+gem 'chewy'
 # Elasticsearch client
-gem 'elasticsearch', '8.15.0'
+# gem 'elasticsearch', '8.15.0'

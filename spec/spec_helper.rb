@@ -46,6 +46,10 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.before(:each) do
+    Chewy.strategy(:urgent)
+  end
+
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
 

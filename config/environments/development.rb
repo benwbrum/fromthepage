@@ -90,4 +90,8 @@ Rails.application.configure do
   # Open 'http://localhost:1080/' in your browser to see mail sent
 
   Ahoy.geocode = false
+  # Add a custom hostname for uploads
+  config.upload_host = 'uploads'
+  config.hosts << "#{config.upload_host}.localhost"
+
 end

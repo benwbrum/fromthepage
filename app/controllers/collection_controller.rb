@@ -3,7 +3,6 @@ class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
-  include ElasticSearchable
 
   public :render_to_string
 
@@ -138,56 +137,29 @@ class CollectionController < ApplicationController
 
   end
 
-  def search # ElasticSearch version
-    search_page = (search_params[:page] || 1).to_i
+  def search
     @search_string = search_params[:term]
-    @breadcrumb_scope={collection: true}
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        mode: @collection.is_a?(DocumentSet) ? 'docset' : 'collection',
+        slug: @collection.slug
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
 
-    page_size = 10
-
-    if @collection.is_a?(Collection)
-      query_config = {
-        type: 'collection',
-        coll_id: @collection.id
-      }
-      @collection_filter = @collection
+    @breadcrumb_scope = { collection: true }
+    if @collection.is_a?(DocumentSet)
+      @docset_filter = @es_query.docset_filter
     else
-      query_config = {
-        type: 'docset',
-        docset_id: @collection.id
-      }
-      @docset_filter = @collection
+      @collection_filter = @es_query.collection_filter
     end
 
-    search_data = elastic_search_results(
-      @search_string,
-      search_page,
-      page_size,
-      search_params[:filter],
-      query_config
-    )
-
-    if search_data
-      inflated_results = search_data[:inflated]
-      @full_count = search_data[:full_count] # Used by All tab
-      @type_counts = search_data[:type_counts]
-
-      # Used for pagination, currently capped at 10k
-      #
-      # TODO: ES requires a scroll/search_after query for result sets larger
-      #       than 10k.
-      #
-      #       To setup support we just need to add a composite tiebreaker field
-      #       to the schemas
-      @filtered_count = [ 10000, search_data[:filtered_count] ].min
-
-      @search_results = WillPaginate::Collection.create(
-        search_page,
-        page_size,
-        @filtered_count) do |pager|
-          pager.replace(inflated_results)
-        end
-    end
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
   end
 
   def facets
@@ -639,11 +611,11 @@ class CollectionController < ApplicationController
   end
 
   def contributors
-    #Get the start and end date params from date picker, if none, set defaults
+    # Get the start and end date params from date picker, if none, set defaults
     start_date = params[:start_date]
     end_date = params[:end_date]
 
-    if start_date == nil
+    if start_date.nil?
       start_date = 1.week.ago
       end_date = DateTime.now.utc
     end
@@ -651,8 +623,8 @@ class CollectionController < ApplicationController
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
-    @start_deed = start_date.strftime("%b %d, %Y")
-    @end_deed = end_date.strftime("%b %d, %Y")
+    @start_deed = start_date.strftime('%b %d, %Y')
+    @end_deed = end_date.strftime('%b %d, %Y')
 
     new_contributors(@collection, start_date, end_date)
     @stats = @collection.get_stats_hash(start_date, end_date)

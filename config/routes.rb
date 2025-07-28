@@ -195,6 +195,20 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
+  if Rails.application.config.upload_host.present?
+    constraints subdomain: Rails.application.config.upload_host do
+      scope 'dashboard', as: 'dashboard' do
+        post 'new_upload', to: 'dashboard#new_upload'
+      end
+    end
+  else
+    scope 'dashboard', as: 'dashboard' do
+      post 'new_upload', to: 'dashboard#new_upload'
+    end
+  end
+
+
+
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
     get 'owner' => 'dashboard#owner'
@@ -504,7 +518,6 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-
       #work related routes
       #have to use match because it must be both get and post
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
@@ -560,6 +573,7 @@ Fromthepage::Application.routes.draw do
 
       #article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'
+      get 'article/:article_id/relationship_graph', to: 'article#relationship_graph', as: 'article_relationship_graph'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'

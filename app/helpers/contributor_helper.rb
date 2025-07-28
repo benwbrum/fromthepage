@@ -1,50 +1,53 @@
 module ContributorHelper
 
   def new_contributors(collection_id, start_date, end_date)
-    unless @collection
-      @collection = Collection.find_by(id: collection_id)
-    end
-    condition = "created_at >= ? AND created_at <= ?"
+    @collection ||= Collection.find_by(id: collection_id)
+    condition = 'created_at >= ? AND created_at <= ?'
 
-    #get the start and end date params from date picker, if none, set defaults
-    start_date = start_date
-    end_date = end_date
+    deeds_scope = @collection.deeds.includes(:page, :work, :user)
 
-    #check to see if there are any deeds in the collection
-    @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
+    # Check to see if there are any deeds in the collection
+    @collection_deeds = deeds_scope.where(condition, start_date, end_date)
 
-    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions_or_corrections).or(@collection.deeds.where(deed_type: DeedType.collection_joins))
+    transcription_deeds = deeds_scope.where(
+      deed_type: DeedType.transcriptions_or_corrections + DeedType.collection_joins
+    )
 
-    @recent_notes = @collection_deeds.where(deed_type: DeedType::NOTE_ADDED)
-    @recent_transcriptions = @collection_deeds.where(deed_type: DeedType.transcriptions)
-    @recent_articles = @collection_deeds.where(deed_type: DeedType::ARTICLE_EDIT)
-    @recent_translations = @collection_deeds.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
-    @recent_ocr = @collection_deeds.where(deed_type: DeedType::OCR_CORRECTED)
-    @recent_index = @collection_deeds.where(deed_type: DeedType::PAGE_INDEXED)
-    @recent_review = @collection_deeds.where(deed_type: DeedType::NEEDS_REVIEW)
-    @recent_xlat_index = @collection_deeds.where(deed_type: DeedType::TRANSLATION_INDEXED)
-    @recent_xlat_review = @collection_deeds.where(deed_type: DeedType::TRANSLATION_REVIEW)
-    @recent_work_add = @collection_deeds.where(deed_type: DeedType::WORK_ADDED)
+    @recent_notes = deeds_scope.where(deed_type: DeedType::NOTE_ADDED)
+    @recent_transcriptions = deeds_scope.where(deed_type: DeedType.transcriptions)
+    @recent_articles = deeds_scope.where(deed_type: DeedType::ARTICLE_EDIT)
+    @recent_translations = deeds_scope.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
+    @recent_ocr = deeds_scope.where(deed_type: DeedType::OCR_CORRECTED)
+    @recent_index = deeds_scope.where(deed_type: DeedType::PAGE_INDEXED)
+    @recent_review = deeds_scope.where(deed_type: DeedType::NEEDS_REVIEW)
+    @recent_xlat_index = deeds_scope.where(deed_type: DeedType::TRANSLATION_INDEXED)
+    @recent_xlat_review = deeds_scope.where(deed_type: DeedType::TRANSLATION_REVIEW)
+    @recent_work_add = deeds_scope.where(deed_type: DeedType::WORK_ADDED)
 
-    #get distinct user ids per deed and create list of users
-    user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
-    @active_transcribers = User.where(id: user_deeds)
+    # get distinct user ids per deed and create list of users
+    @active_transcribers = User.joins(:deeds)
+                               .where(deeds: { collection_id: @collection.id })
+                               .where('deeds.created_at >= ? AND deeds.created_at <= ?', start_date, end_date)
+                               .distinct
 
     # use ahoy activity summary to calculate ranges
-    @user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
+    @user_time_proportional = AhoyActivitySummary.where(
+      collection_id: @collection.id,
+      date: [start_date..end_date]
+    ).group(:user_id).sum(:minutes)
 
+    user_active_mailers = User.active_mailers.joins(:deeds)
 
-    #find recent transcription deeds by user, then older deeds by user
-    recent_trans_deeds = transcription_deeds.where(created_at: [start_date..end_date]).distinct.pluck(:user_id)
-    recent_users = User.active_mailers.where(id: recent_trans_deeds)
-    older_trans_deeds = transcription_deeds.where(created_at: [..start_date]).distinct.pluck(:user_id)
-    older_users = User.active_mailers.where(id: older_trans_deeds)
+    # Find recent transcription deeds by user, then older deeds by user
+    recent_users_ids = transcription_deeds.where(created_at: [start_date..end_date]).select(:user_id)
 
-    #compare older to recent list to get new transcribers
-    @new_transcribers = recent_users - older_users
+    older_users_ids = transcription_deeds.where(created_at: [..start_date]).select(:user_id)
 
-    all_transcribers = User.active_mailers.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
-    @all_collaborators = all_transcribers.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+    # compare older to recent list to get new transcribers
+    @new_transcribers = user_active_mailers.where(id: recent_users_ids)
+                                           .where.not(id: older_users_ids)
+
+    @all_collaborators = user_active_mailers.where(id: deeds_scope.select(:user_id)).distinct
   end
 
   def owner_expirations
