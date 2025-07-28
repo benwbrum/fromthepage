@@ -15,12 +15,16 @@ describe ApplicationHelper do
     before do
       # Mock request context for helper
       allow(helper).to receive(:defined?).with(:request).and_return(true)
-      allow(helper).to receive(:request).and_return(double(
+      request_double = double(
         original_url: url,
         protocol: 'http://',
-        host_with_port: 'example.com'
-      ))
+        host_with_port: 'example.com',
+        present?: true
+      )
+      allow(helper).to receive(:request).and_return(request_double)
       allow(helper).to receive(:content_for)
+      allow(helper).to receive(:respond_to?).with(:asset_url).and_return(true)
+      allow(helper).to receive(:asset_url).with('logo.png').and_return('/assets/logo-123.png')
     end
 
     it 'sets Open Graph meta tags' do
@@ -139,10 +143,12 @@ describe ApplicationHelper do
   describe '#absolute_url' do
     before do
       allow(helper).to receive(:defined?).with(:request).and_return(true)
-      allow(helper).to receive(:request).and_return(double(
+      request_double = double(
         protocol: 'https://',
-        host_with_port: 'example.com'
-      ))
+        host_with_port: 'example.com',
+        present?: true
+      )
+      allow(helper).to receive(:request).and_return(request_double)
     end
 
     it 'returns blank for blank URL' do

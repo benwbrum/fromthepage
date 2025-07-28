@@ -285,11 +285,16 @@ module ApplicationHelper
     else
       # Try to get a default image, fall back gracefully
       begin
-        default_image = respond_to?(:asset_url) ? asset_url('logo.png') : '/assets/logo.png'
-        content_for :og_image, default_image
-        content_for :twitter_image, default_image
-      rescue
+        if respond_to?(:asset_url) && defined?(request) && request.present?
+          default_image = asset_url('logo.png')
+        else
+          default_image = '/assets/logo.png'
+        end
+        content_for :og_image, absolute_url(default_image)
+        content_for :twitter_image, absolute_url(default_image)
+      rescue => e
         # Skip image if we can't generate URLs
+        Rails.logger.debug "Failed to generate default social media image: #{e.message}" if defined?(Rails)
       end
     end
     
