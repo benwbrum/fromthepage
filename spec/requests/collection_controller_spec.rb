@@ -512,4 +512,58 @@ describe CollectionController do
       end
     end
   end
+
+  describe '#show' do
+    let(:action_path) { "/#{owner.slug}/#{collection.slug}" }
+
+    context 'when collection is active and has intro_block' do
+      before do
+        collection.update!(is_active: true, intro_block: '<p>This is a test collection with HTML content.</p>')
+      end
+
+      it 'sets social media meta tags' do
+        expect_any_instance_of(ApplicationHelper).to receive(:set_social_media_meta_tags).with(
+          title: collection.title,
+          description: kind_of(String),
+          image_url: anything,
+          url: anything,
+          type: 'website'
+        )
+
+        get action_path
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when collection is active but has no intro_block' do
+      before do
+        collection.update!(is_active: true, intro_block: nil)
+      end
+
+      it 'sets social media meta tags with default description' do
+        expect_any_instance_of(ApplicationHelper).to receive(:set_social_media_meta_tags).with(
+          title: collection.title,
+          description: /A transcription project on FromThePage with \d+ works?/,
+          image_url: anything,
+          url: anything,
+          type: 'website'
+        )
+
+        get action_path
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when collection is inactive' do
+      before do
+        collection.update!(is_active: false)
+      end
+
+      it 'does not set social media meta tags' do
+        expect_any_instance_of(ApplicationHelper).not_to receive(:set_social_media_meta_tags)
+
+        get action_path
+      end
+    end
+  end
 end

@@ -44,5 +44,35 @@ describe TranscribeController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:display_page)
     end
+
+    it 'sets social media meta tags for page with source_text' do
+      page.update!(source_text: '<p>This is transcribed text content.</p>')
+      
+      expect_any_instance_of(ApplicationHelper).to receive(:set_social_media_meta_tags).with(
+        title: /#{work.title} - /,
+        description: kind_of(String),
+        image_url: anything,
+        url: anything,
+        type: 'article'
+      )
+
+      login_as owner
+      subject
+    end
+
+    it 'sets social media meta tags for page without source_text' do
+      page.update!(source_text: nil)
+      
+      expect_any_instance_of(ApplicationHelper).to receive(:set_social_media_meta_tags).with(
+        title: /#{work.title} - /,
+        description: /A page from .* in the .* project/,
+        image_url: anything,
+        url: anything,
+        type: 'article'
+      )
+
+      login_as owner
+      subject
+    end
   end
 end
