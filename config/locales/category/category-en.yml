@@ -33,12 +33,6 @@ en:
       upload_subjects: Upload Subjects
       edit: Edit
       add_child: Add Child
-      enable_gis: Enable GIS
-      disable_gis: Disable GIS
-      enable_bio_fields: Enable Bio Fields
-      disable_bio_fields: Disable Bio Fields
-      enable_org_fields: Enable Org Fields
-      disable_org_fields: Disable Org Fields
       delete: Delete
       confirm_delete_category: Are you sure you want to delete this category?
       no_categories: No Categories
