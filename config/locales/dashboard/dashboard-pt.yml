@@ -175,7 +175,7 @@ pt:
       download_letter: Baixe uma carta
       end_date: Data final
       hours_details_message: "%{user_name} contribuiu com %{time_duration} entre %{start_date} e %{end_date}"
-      hours_update_note: As horas são atualizadas durante a noite. Volte amanhã para ver as estatísticas incluindo o trabalho de hoje.
+      hours_update_note: As estatísticas de contribuição são calculadas a cada vinte e quatro horas. Essas estatísticas refletem o uso até %{time_ago}.
       select_new_date: Selecione um novo período
       start_date: Data de início
       update: Atualizar
