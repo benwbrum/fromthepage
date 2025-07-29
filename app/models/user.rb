@@ -153,8 +153,7 @@ class User < ApplicationRecord
             query: query,
             fields: [
               'about',
-              # TODO: Remove `.text` when users table is reindexed
-              'real_name.text',
+              'real_name',
               'website'
             ]
           }
