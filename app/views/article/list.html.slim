@@ -91,7 +91,7 @@
       ==t('.create_category_message', link: add_category) if user_signed_in? && current_user.like_owner?(@collection)
 
 -content_for :css do
-  :css
+  css:
     .category-tree-header {
       display: flex;
       justify-content: space-between;
