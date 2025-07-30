@@ -32,6 +32,8 @@ describe "Metadata Description" do
     visit edit_collection_path(@owner, @collection)
     page.find('.side-tabs').click_link("Task Configuration")
     page.uncheck("Enable metadata description")
+    sleep(2)
+
     expect(page).to have_unchecked_field('Enable metadata description')
 
     expect(page.find("#metadata-fields-edit")[:disabled]).to eq("disabled")
