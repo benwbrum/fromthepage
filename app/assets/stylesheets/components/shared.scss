@@ -221,6 +221,19 @@
 // TOOLTIP
 // ---------------------------
 
+// Subject link accessibility styles
+a[data-controller="tooltip"] {
+  &:focus {
+    outline: 2px solid #0078D4;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
 .tooltip {
   color: #FFF;
   padding: 15px;
@@ -234,6 +247,8 @@
   box-shadow: 0 5px 15px rgba(#000, 0.12);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  // Ensure tooltip is properly layered above other content
+  z-index: 1000;
   &:before {
     left: 10px;
     content: '';
