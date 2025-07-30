@@ -6,32 +6,8 @@ namespace :fromthepage do
 
     raise ArgumentError, 'Usage: rake fromthepage:refresh_metadata[id_value,type_value]' if id.nil? || type.nil?
 
-    case type
-    when 'collection'
-      p "Refreshing metadata for works in collection #{id}"
-      object = Collection.find_by(id: id)
-      all_work_ids = object.works.pluck(:id)
-    when 'document_set'
-      p "Refreshing metadata for works in document_sets #{id}"
-      object = DocumentSet.find_by(id: id)
-      all_work_ids = object.works.pluck(:id)
-    when 'work'
-      p "Refreshing metadata for work #{id}"
-      all_work_ids = [id]
-    else
-      raise ArgumentError, 'Type can only be collection, document_set, or work' if id.nil?
-    end
+    puts 'NOTE: Logs will be handled by metadata refresh job — do not pipe this task’s output.'
 
-    result = Work::Metadata::Refresh.new(work_ids: all_work_ids).call
-
-    if result.success?
-      p 'Updated metadata successfully!'
-    else
-      p 'Refresh metadata finished with errors:'
-
-      result.errors.each do |error|
-        p error
-      end
-    end
+    Metadata::RefreshJob.perform_now(id: id, type: type)
   end
 end

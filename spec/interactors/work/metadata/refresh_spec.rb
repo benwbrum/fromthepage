@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Work::Metadata::Refresh do
-  let(:owner) { User.find_by(login: OWNER) }
+  let(:owner) { create(:unique_user, :owner) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
   let(:at_id) { 'http://example.com/manifest' }
@@ -43,6 +43,22 @@ describe Work::Metadata::Refresh do
       end
       expect(result.success?).to be_truthy
       expect(work.reload.original_metadata).to eq(original_metadata)
+    end
+  end
+
+  context 'when refresh fails' do
+    it 'handles error gracefully' do
+      expect(work.original_metadata).to be_nil
+      VCR.use_cassette('iiif/refresh_metadata_failed', record: :none) do
+        result
+      end
+
+      expect(result.success?).to be_falsey
+      expect(result.logs).to include(
+        "Refreshing metadata for work: #{work.id}",
+        "Failed to refresh metadata for #{work.slug}",
+        'Error: 404 Not Found'
+      )
     end
   end
 end

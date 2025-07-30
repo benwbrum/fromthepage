@@ -39,6 +39,10 @@ de:
       fail: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert; bei %{error_count} Zeilen sind Fehler aufgetreten.
       subject: Der Import Ihrer Metadaten-CSV ist abgeschlossen.
       success: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert.
+    metadata_refresh_finished:
+      fail: Die Metadatenaktualisierung wurde mit Fehlern abgeschlossen.
+      subject: Die Metadatenaktualisierung für %{type}:%{id} ist abgeschlossen.
+      success: Die Aktualisierung der Metadaten wurde erfolgreich abgeschlossen.
     new_mobile_user:
       html:
         continue_transcribing: " weiter zu transkribieren."
