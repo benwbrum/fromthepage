@@ -81,6 +81,10 @@ class Database::Export::DumpBuilder < Database::Base
     @categories ||= Category.where(collection_id: collections.select(:id))
   end
 
+  def articles_categories
+    @articles_categories ||= ArticlesCategory.where(article_id: articles.select(:id))
+  end
+
   def sc_collections
     @sc_collections ||= ScCollection.where(collection_id: collections.select(:id))
   end
