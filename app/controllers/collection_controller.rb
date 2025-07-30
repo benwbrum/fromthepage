@@ -1,5 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  include ApplicationHelper
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
@@ -354,18 +355,42 @@ class CollectionController < ApplicationController
         end
         
         # Set social media meta tags for collection
-        unless @collection.nil? || !@collection.active?
-          description = view_context.strip_html_and_truncate(@collection.intro_block) if @collection.intro_block.present?
-          works_count = @collection.respond_to?(:works_count) ? @collection.works_count : @collection.works.count rescue 0
-          description ||= "A transcription project on FromThePage with #{works_count} #{'work'.pluralize(works_count)}"
-          
-          view_context.set_social_media_meta_tags(
-            title: @collection.title,
-            description: description,
-            image_url: view_context.collection_image_url(@collection),
-            url: request.original_url,
-            type: 'website'
-          )
+        description = view_context.strip_html_and_truncate(@collection.intro_block) if @collection.intro_block.present?
+        works_count = @collection.respond_to?(:works_count) ? @collection.works_count : @collection.works.count rescue 0
+        description ||= "A transcription project on FromThePage with #{works_count} #{'work'.pluralize(works_count)}"
+        
+        view_context.set_social_media_meta_tags(
+          title: @collection.title,
+          description: description,
+          image_url: view_context.collection_image_url(@collection),
+          url: request.original_url,
+          type: 'website'
+        )
+        # Set meta information for collection pages for better archival
+        @page_title = "#{@collection.title} - FromThePage"
+        @meta_description = "#{@collection.title}: #{to_snippet(@collection.intro_block)}".truncate(160)
+        @meta_keywords = [@collection.title, "historical documents", "digital archive", "transcription", "collection"].compact.join(", ")
+        
+        # Generate structured data for collection
+        @structured_data = {
+          "@context" => "https://schema.org",
+          "@type" => "Collection",
+          "name" => @collection.title,
+          "description" => to_snippet(@collection.intro_block),
+          "url" => request.original_url,
+          "dateModified" => @collection.most_recent_deed_created_at&.iso8601,
+          "publisher" => {
+            "@type" => "Organization",
+            "name" => "FromThePage"
+          },
+          "numberOfItems" => @collection.works_count
+        }
+
+        # Add archival-friendly headers
+        respond_to do |format|
+          format.html do
+            response.headers['X-Robots-Tag'] = 'index, follow, archive'
+          end
         end
       else
         redirect_to "/404"

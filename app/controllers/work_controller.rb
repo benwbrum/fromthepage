@@ -1,5 +1,6 @@
 class WorkController < ApplicationController
   # require 'ftools'
+  include ApplicationHelper
   include XmlSourceProcessor
 
   protect_from_forgery :except => [:set_work_title,
@@ -255,6 +256,44 @@ class WorkController < ApplicationController
     deed.user = user
     deed.save!
     update_search_attempt_contributions
+  end
+
+  def show
+    # Set meta information for work pages for better archival
+    @page_title = "#{@work.title} - #{@collection.title}"
+    @meta_description = "Historical document: #{@work.title}#{@work.author.present? ? " by #{@work.author}" : ""} in the #{@collection.title} collection. #{@work.description}".truncate(160)
+    @meta_keywords = [@work.title, @work.author, @collection.title, "historical document", "digital archive"].compact.join(", ")
+    
+    # Generate structured data for work
+    @structured_data = {
+      "@context" => "https://schema.org",
+      "@type" => "DigitalDocument",
+      "name" => @work.title,
+      "description" => @work.description,
+      "inLanguage" => @collection.text_language || "en",
+      "isPartOf" => {
+        "@type" => "Collection",
+        "name" => @collection.title,
+        "description" => to_snippet(@collection.intro_block)
+      },
+      "url" => request.original_url,
+      "dateModified" => @work.most_recent_deed_created_at&.iso8601,
+      "publisher" => {
+        "@type" => "Organization",
+        "name" => @collection.owner&.display_name || "FromThePage"
+      }
+    }
+    
+    # Add optional fields conditionally
+    @structured_data["author"] = @work.author if @work.author.present?
+    @structured_data["dateCreated"] = @work.document_date if @work.document_date.present?
+
+    # Add archival-friendly headers
+    respond_to do |format|
+      format.html do
+        response.headers['X-Robots-Tag'] = 'index, follow, archive'
+      end
+    end
   end
 
   private
