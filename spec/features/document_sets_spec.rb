@@ -76,6 +76,7 @@ describe "document sets", :order => :defined do
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: 'Test Document Set 3'
     page.find_button('Create Document Set').click
+    sleep(2)
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     page.find('.side-tabs').click_link('Privacy & Access')
     expect(page.find('h1')).to have_content('Test Document Set 3')
