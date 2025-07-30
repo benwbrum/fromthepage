@@ -45,10 +45,10 @@
       .page_status
         =t("page.edit.page_status_#{page.status}")
 
+    -can_transcribe = current_user&.can_transcribe?(page.work, @collection) || !(user_signed_in? || @collection.visibility_read_only? && page.work.restrict_scribes)
     .work-page_content
       -if page.work.pages_are_meaningful
         h4.work-page_title =link_to page.title, page_params(page), onclick: "resultClicked();"
-        -can_transcribe = current_user&.can_transcribe?(page.work, @collection) || !(user_signed_in? || @collection.visibility_read_only? && page.work.restrict_scribes)
 
       .work-page_text[*language_attrs(@collection)]
         -transcription = xml_to_html(page.xml_text, false, false, nil, params[:article_id])
