@@ -156,9 +156,7 @@ fr:
     needsreview: Les métadonnées doivent être révisées.
     new:
       collection: Le recueil
-      create_empty_work: Créer une œuvre sans pages
-      create_empty_work_description: Utilisez cette option pour créer une œuvre sans pages. Vous pouvez ensuite téléverser des images de page individuelles dans l'œuvre.
-      create_work: Créer un œuvre
+
       description: La description
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
       start_a_project: Démarrer un projet
