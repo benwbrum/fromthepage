@@ -8,6 +8,7 @@
 /.bundle
 /.project
 /node_modules
+vendor/bundle/
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
