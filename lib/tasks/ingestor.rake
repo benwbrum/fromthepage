@@ -44,12 +44,20 @@ namespace :fromthepage do
     if SMTP_ENABLED
       begin
         if works_created > 0
+          print "Processing completed successfully: #{works_created} works created from upload. Sending success email.\n"
           UserMailer.upload_finished(document_upload).deliver!
         else
+          print "Processing completed but no works were created: no supported image files found in upload. Sending warning email.\n"
           UserMailer.upload_no_images_warning(document_upload).deliver!
         end
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
+      end
+    else
+      if works_created > 0
+        print "Processing completed successfully: #{works_created} works created from upload. SMTP disabled, no email sent.\n"
+      else
+        print "Processing completed but no works were created: no supported image files found in upload. SMTP disabled, no email sent.\n"
       end
     end
 
