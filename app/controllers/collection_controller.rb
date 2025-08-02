@@ -743,13 +743,18 @@ class CollectionController < ApplicationController
 
   def authorized?
     unless user_signed_in?
-      ajax_redirect_to dashboard_path
+      respond_to do |format|
+        format.html { redirect_to dashboard_path }
+        format.js   { ajax_redirect_to dashboard_path }
+      end
       return
     end
 
     if @collection && !current_user.like_owner?(@collection)
-      # Redirect to collection landing page instead of dashboard
-      ajax_redirect_to collection_path(@collection.owner, @collection)
+      respond_to do |format|
+        format.html { redirect_to collection_path(@collection.owner, @collection) }
+        format.js   { ajax_redirect_to collection_path(@collection.owner, @collection) }
+      end
     end
   end
 
