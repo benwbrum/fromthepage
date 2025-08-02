@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'spec_helper'
 
-RSpec.describe Collection, type: :model do
+describe Collection do
   describe 'validations' do
     context 'html validations' do
       let(:invalid_html) { '<p>Missing end tags' }
@@ -131,4 +129,100 @@ RSpec.describe Collection, type: :model do
     end
   end
 
+  context 'es_search' do
+    let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
+
+    let!(:owner) { create(:unique_user, :owner) }
+    let!(:public_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
+    let!(:restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id, restricted: true) }
+    let!(:public_updated_to_restricted_collection) { create(:collection, title: identifier, owner_user_id: owner.id) }
+
+    let!(:other_user) { create(:unique_user, :owner) }
+    let!(:other_public_collection) { create(:collection, title: identifier, owner_user_id: other_user.id) }
+    let!(:other_restricted_collection) { create(:collection, title: identifier, owner_user_id: other_user.id, restricted: true) }
+
+    # We also query by intro_block, so this tests that
+    let!(:no_owner_public_collection) { create(:collection, intro_block: "<div>#{identifier}</div>", owner_user_id: nil) }
+
+    let(:records) do
+      [
+        owner,
+        public_collection,
+        restricted_collection,
+        public_updated_to_restricted_collection,
+        other_user,
+        other_public_collection,
+        other_restricted_collection,
+        no_owner_public_collection
+      ]
+    end
+
+    before(:each) do
+      stub_const('ELASTIC_ENABLED', true)
+
+      CollectionsIndex.purge
+      records.each(&:save!)
+
+      public_updated_to_restricted_collection.update!(restricted: true)
+    end
+
+    after(:each) do
+      stub_const('ELASTIC_ENABLED', true)
+
+      records.reverse.each(&:destroy!)
+      CollectionsIndex.purge
+    end
+
+    describe '#self.es_search' do
+      let(:user) { nil }
+
+      let(:es_search) { described_class.es_search(query: identifier, user: user, is_public: true) }
+
+      context 'when not logged in' do
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              other_public_collection.id,
+              no_owner_public_collection.id
+            ]
+          )
+        end
+      end
+
+      context 'when logged in as owner' do
+        let(:user) { owner }
+
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              restricted_collection.id,
+              public_updated_to_restricted_collection.id,
+              other_public_collection.id,
+              no_owner_public_collection.id
+            ]
+          )
+        end
+      end
+
+      context 'when logged in as other_user and is blocked on public_collection' do
+        let(:user) { other_user }
+
+        before do
+          public_collection.blocked_users << other_user
+        end
+
+        it 'returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              other_public_collection.id,
+              other_restricted_collection.id,
+              no_owner_public_collection.id
+            ]
+          )
+        end
+      end
+    end
+  end
 end
