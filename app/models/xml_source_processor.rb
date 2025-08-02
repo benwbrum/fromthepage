@@ -99,6 +99,9 @@ end
                     ""
                   end
 
+    # Handle nil source_text gracefully
+    return "" if source_text.nil?
+
     xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)

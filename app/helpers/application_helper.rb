@@ -356,13 +356,14 @@ module ApplicationHelper
     
     # Try to get request context, fallback to asset_url if available
     begin
-      if defined?(request) && request.present?
+      # Check if request is actually available and not just defined
+      if defined?(request) && request.present? && respond_to?(:request)
         "#{request.protocol}#{request.host_with_port}#{url.start_with?('/') ? url : "/#{url}"}"
       elsif respond_to?(:asset_url)
         asset_url(url)
       else
-        # Last resort - assume relative URL needs a leading slash
-        url.start_with?('/') ? url : "/#{url}"
+        # When request is not available, return URL unchanged as fallback
+        url
       end
     rescue => e
       # If all else fails, return the URL as-is
