@@ -12,7 +12,9 @@ pt:
       include_notes: Incluir notas
       preserve_linebreaks: Preservar quebras de linha
       text_contents: Conteúdo
-      text_contents_description: A versão para impressão incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
+      text_contents_description: A versão para impressão incluirá o texto da transcrição
+        e também pode incluir informações sobre os colaboradores do projeto ou metadados
+        sobre a obra.
       text_format: Formatação de texto
       text_format_description: Opções para formatar texto.
       text_format_docx: MS Word (.docx)
@@ -49,23 +51,32 @@ pt:
     description_versions:
       author_contributed_at: "%{author} em %{date}"
       compared_with: Comparado com
-      help_description: Visualize e compare as alterações que foram feitas em cada revisão aos metadados da obra. A coluna da esquerda mostra os metadados na revisão selecionada, a coluna da direita mostra o que foi alterado. O texto inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
+      help_description: Visualize e compare as alterações que foram feitas em cada
+        revisão aos metadados da obra. A coluna da esquerda mostra os metadados na
+        revisão selecionada, a coluna da direita mostra o que foi alterado. O texto
+        inalterado é <span>destacado em branco</span>, o texto excluído é <del>destacado
+        em vermelho</del> e o texto inserido é <ins>destacado em verde</ins>.
       revision: revisão
     download:
       analyze: Analisar
       configurable_printout: Impressão Configurável
       configurable_printout_button: configurar
-      configurable_printout_description: Exportação para PDF ou MS Word com conteúdo e formatação configuráveis
+      configurable_printout_description: Exportação para PDF ou MS Word com conteúdo
+        e formatação configuráveis
       docx_download_description: Baixe uma versão DOCX desta obra.
       download: Download
       expanded_plaintext: Texto simples expandido
-      expanded_plaintext_export_description: Exporte transcrições de texto simples substituindo texto literal por títulos de assunto canônicos como um arquivo zip contendo um arquivo por página.
+      expanded_plaintext_export_description: Exporte transcrições de texto simples
+        substituindo texto literal por títulos de assunto canônicos como um arquivo
+        zip contendo um arquivo por página.
       experiment: Experimentar
       export: Exportar
       facing_pdf: PDF de frente
-      facing_pdf_export_description: Baixe uma versão em PDF desta obra incluindo imagens e texto nas páginas opostas.
+      facing_pdf_export_description: Baixe uma versão em PDF desta obra incluindo
+        imagens e texto nas páginas opostas.
       html: HTML
-      html_export_description: Exporte as transcrições como um arquivo zip contendo um arquivo HTML por página.
+      html_export_description: Exporte as transcrições como um arquivo zip contendo
+        um arquivo HTML por página.
       iiif: IIIF
       iiif_manifest: IIIF Manifesto
       iiif_manifest_description: IIIF Manifest URI para uso em qualquer cliente IIIF.
@@ -74,80 +85,116 @@ pt:
       pdf_download_description: Baixe uma versão em PDF desta obra.
       reuse: Reuso
       searchable_plaintext: Texto simples pesquisável
-      searchable_plaintext_export_description: Exporte transcrições de texto simples otimizadas para pesquisa de texto completo como um arquivo zip contendo um arquivo por página.
+      searchable_plaintext_export_description: Exporte transcrições de texto simples
+        otimizadas para pesquisa de texto completo como um arquivo zip contendo um
+        arquivo por página.
       subject_index_csv: Índice de assunto CSV
-      subject_index_csv_description: Uma planilha listando cada lugar em que um assunto é mencionado em uma página dentro da obra.
+      subject_index_csv_description: Uma planilha listando cada lugar em que um assunto
+        é mencionado em uma página dentro da obra.
       table_field_csv: CSV de tabela/campo
-      table_field_csv_export_description: Exporte todos os dados tabulares, de planilha ou baseados em campo como um único arquivo CSV.
+      table_field_csv_export_description: Exporte todos os dados tabulares, de planilha
+        ou baseados em campo como um único arquivo CSV.
       verbatim_plaintext: Texto simples literal
-      verbatim_plaintext_export_description: Exporte transcrições em texto simples como um arquivo zip contendo um arquivo por página.
+      verbatim_plaintext_export_description: Exporte transcrições em texto simples
+        como um arquivo zip contendo um arquivo por página.
       verbatim_plaintext_zero_index: Zip de treinamento Transkribus
-      verbatim_plaintext_zero_index_description: Arquivo zip contendo arquivos de texto sem formatação indexados em zero, adequados para importação como dados de treinamento para o Transkribus.
+      verbatim_plaintext_zero_index_description: Arquivo zip contendo arquivos de
+        texto sem formatação indexados em zero, adequados para importação como dados
+        de treinamento para o Transkribus.
       voyant: Voyant
-      voyant_analysis_description: Envie a transcrição desta obra para a Voyant Tools para análise.
+      voyant_analysis_description: Envie a transcrição desta obra para a Voyant Tools
+        para análise.
       warning_work_not_complete: 'Atenção: esta obra pode não estar completo.'
       word_trees: Árvores de palavras
-      word_trees_analysis_description: Envie a transcrição desta obra para o visualizador Árvores de Palavras de Jason Davies para análise.
-      zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis apenas para proprietários de projetos.
+      word_trees_analysis_description: Envie a transcrição desta obra para o visualizador
+        Árvores de Palavras de Jason Davies para análise.
+      zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis
+        apenas para proprietários de projetos.
     edit:
       additional_metadata: Metadados adicionais
-      additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
+      additional_metadata_description: Esses campos de metadados são exibidos na tela
+        Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade
+        de FromThePage.
       allowed_collaborators: Colaboradores permitidos
       apply: Aplicar
       author: Autor
-      collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
+      collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos
+        das páginas
       collection: Coleção
-      confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão, você não poderá recuperá-lo!
-      current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar a seção da obra do URL, use letras minúsculas e traços entre as palavras.
+      confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão,
+        você não poderá recuperá-lo!
+      current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar
+        a seção da obra do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir obra
       description: Descrição
-      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      description_message: A descrição será exibida na tela Visão geral do projeto
+        e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida
+        na tela inicial da organização e na tela Find A Project.
       document_date: Data do documento
-      document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
+      document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843,
+        2001-02, 1643-06-30)
       document_history: Documento histórico
       document_sets: Conjuntos de documentos
       done: Feito
       edit_collaborators: Editar colaboradores
       editorial_notes: Notas editoriais
       enable_ocr_correction: Ativar correção de OCR
-      enable_ocr_correction_description: Uma obra pode começar com texto OCR que precisa ser corrigido. Quando marcada, a guia Transcrever será substituída por uma guia Correta.
+      enable_ocr_correction_description: Uma obra pode começar com texto OCR que precisa
+        ser corrigido. Quando marcada, a guia Transcrever será substituída por uma
+        guia Correta.
       genre: Gênero
       identifier: Identificador
-      identifier_description: Identificador de sistemas fora de FromThePage, para ser usado correlacionando exportações para registros externos. (Este campo não é visível ao público.)
+      identifier_description: Identificador de sistemas fora de FromThePage, para
+        ser usado correlacionando exportações para registros externos. (Este campo
+        não é visível ao público.)
       in_scope: Na mira
-      more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
+      more_work_settings_info: Para obter mais informações sobre configurações da
+        obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription"
+        target="_blank">Preparando uma obra para Transcrição</a>.
       no_image: Sem imagem
       pages_are_meaningful: As páginas são significativas
-      pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
+      pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas
+        de uma obra (como em um diário com uma data para cada página), ou podem não
+        ser (como em cartas ou livros, onde o texto não deve ser dividido em seções
+        baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos
+        com destaque.
       permission_description: Descrição da permissão
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
       restrict_collaborators: Restringir colaboradores
-      restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
+      restricted_work_no_collaborators_warning: Somente os proprietários do projeto
+        podem editar esta obra. Adicione colaboradores para tornar a obra editável
+        por outras pessoas.
       revert: Reverter
-      revert_transcription_conventions_description: Reverter convenções de transcrição para padrão de coleção
+      revert_transcription_conventions_description: Reverter convenções de transcrição
+        para padrão de coleção
       save_changes: Salvar alterações
-      settings_only_work_owners: As configurações para esta obra são acessíveis apenas aos proprietários da obra.
+      settings_only_work_owners: As configurações para esta obra são acessíveis apenas
+        aos proprietários da obra.
       source_box_folder: Caixa/Pasta de Origem
       source_collection_name: Nome da coleção de origem
       source_location: Local de origem
       support_translation: Tradução de suporte
-      support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
+      support_translation_description: Uma obra pode ser traduzida assim como transcrita.
+        Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
-      transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
+      transcription_conventions_message: Essas instruções serão exibidas sob o formulário
+        de transcrição para cada página que está sendo transcrita ou indexada.
       translation_instructions: Instruções de tradução
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
       url: URL
       work_image: Imagem da obra
-      work_image_description: Uma imagem utilizada para ilustrar a obra. Caso nenhuma imagem seja carregada, será usada uma imagem da página.
+      work_image_description: Uma imagem utilizada para ilustrar a obra. Caso nenhuma
+        imagem seja carregada, será usada uma imagem da página.
       work_thumbnail: Miniatura da obra
       work_title: Título da obra
     edit_scribes:
       remove_collaborator: Remover colaborador
       work_collaborators: Colaboradores de trabalho
-      work_collaborators_description: Os colaboradores podem transcrever e editar trabalhos privados.
+      work_collaborators_description: Os colaboradores podem transcrever e editar
+        trabalhos privados.
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -156,16 +203,19 @@ pt:
     needsreview: Metadados precisam de revisão.
     new:
       collection: Coleção
-
       description: Descrição
-      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      description_message: A descrição será exibida na tela Visão geral do projeto
+        e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida
+        na tela inicial da organização e na tela Find A Project.
       start_a_project: Iniciar um projeto
       title: Título
-      work_description: Uma obra é um documento único como uma carta, um diário, um livro de campo, um cartão postal ou um caderno.
+      work_description: Uma obra é um documento único como uma carta, um diário, um
+        livro de campo, um cartão postal ou um caderno.
     pages_tab:
       actions: Ações
       add_new_page: Adicionar nova página
-      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-la!
+      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão,
+        você não poderá recuperá-la!
       delete: Excluir
       featured_page: Página em destaque
       image_status: Status da imagem
@@ -176,7 +226,11 @@ pt:
       no_pages_found_description: Esta obra ainda não possui páginas
       no_works_found_description: Não há nenhuma obra neste momento
       page_title: Título da página
-      pages_tab_description: Aqui é possível visualizar a lista de todas as páginas da obra. Para alterar a posição de uma página, utilize as setas para cima e para baixo à direita. Para criar uma nova página, clique no botão Adicionar Nova Página. Após criar uma nova página em branco, localize-a na lista abaixo e acesse as configurações para enviar a imagem da página.
+      pages_tab_description: Aqui é possível visualizar a lista de todas as páginas
+        da obra. Para alterar a posição de uma página, utilize as setas para cima
+        e para baixo à direita. Para criar uma nova página, clique no botão Adicionar
+        Nova Página. Após criar uma nova página em branco, localize-a na lista abaixo
+        e acesse as configurações para enviar a imagem da página.
       position: Posição
       ready_to_transcribe: Pronto para %{transcribe}
       settings: Definições

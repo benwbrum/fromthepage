@@ -183,7 +183,7 @@ describe "owner actions", :order => :defined do
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
-    expect(page.find('.flash_message')).to have_content("Saved")
+    expect(page).to have_content("Saved")
 
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
@@ -206,7 +206,7 @@ describe "owner actions", :order => :defined do
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
-    expect(page.find('.flash_message')).to have_content("Saved")
+    expect(page).to have_content("Saved")
 
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")

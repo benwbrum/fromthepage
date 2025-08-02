@@ -8,8 +8,6 @@ fr:
       collections: Collections
       meta_description: Vous êtes libre de choisir parmi les nombreux projets intéressants hébergés sur FromThePage. Commencez à lire les écrits historiques qui ont déjà été transcrits par d'autres membres. Vous êtes les bienvenus pour aider l'un des grands projets à entrer dans l'ère numérique.
       recent_activity: Activité récente
-    create_work:
-      work_created: Œuvre créée avec succès
     editor:
       activity_stream: Flux d'activité
       article_in_the_work: "%{article} article dans la collection %{collection}"

@@ -8,8 +8,6 @@ pt:
       collections: Coleções
       meta_description: Você pode escolher entre os muitos projetos interessantes hospedados em FromThePage. Comece a ler os escritos históricos que já foram transcritos por outros membros. Você pode ajudar um dos grandes projetos entrar na era digital.
       recent_activity: Atividade Recente
-    create_work:
-      work_created: Obra criada com sucesso
     editor:
       activity_stream: Fluxo de atividades
       article_in_the_work: Artigo %{article} na coleção %{collection}
