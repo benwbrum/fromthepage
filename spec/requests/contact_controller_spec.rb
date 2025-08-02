@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe ContactController, type: :request do
   include ApplicationHelper
