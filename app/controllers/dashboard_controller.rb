@@ -4,7 +4,6 @@ class DashboardController < ApplicationController
 
   include AddWorkHelper
   include DashboardHelper
-  include ElasticSearchable
   include OwnerExporter
   PAGES_PER_SCREEN = 20
 
@@ -180,96 +179,34 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    if ELASTIC_ENABLED
-      search_page = (params[:page] || 1).to_i
+    if ELASTIC_ENABLED && params[:search].present?
+      @es_query = Elasticsearch::MultiQuery.new(
+        query: params[:search],
+        query_params: {
+          org: params[:org],
+          mode: params[:mode],
+          slug: params[:slug]
+        },
+        page: params[:page] || 1,
+        scope: params[:filter],
+        user: current_user
+      ).call
 
-      page_size = 10
-      @breadcrumb_scope={site: true}
+      @breadcrumb_scope = { site: true }
+      @org_filter = @es_query.org_filter
+      @collection_filter = @es_query.collection_filter
+      @docset_filter = @es_query.docset_filter
+      @work_filter = @es_query.work_filter
 
-      query_config = {}
-      if params[:org]
-        org_user = User.find_by(slug: params[:org])
-
-        if org_user.present?
-          query_config = {
-            type: 'org',
-            org_id: org_user[:id]
-          }
-          @org_filter = org_user
-        end
-      elsif params[:mode] and params[:slug]
-        if params[:mode] == 'collection'
-          coll = Collection.find_by(slug: params[:slug])
-
-          if coll.present?
-            query_config = {
-              type: 'collection',
-              coll_id: coll[:id]
-            }
-            @collection_filter = coll
-          end
-        elsif params[:mode] == 'docset'
-          docset = DocumentSet.find_by(slug: params[:slug])
-
-          if docset.present?
-            query_config = {
-              type: 'docset',
-              docset_id: docset[:id]
-            }
-            @docset_filter = docset
-          end
-        elsif params[:mode] == 'work'
-          work = Work.find_by(slug: params[:slug])
-
-          if work.present?
-            query_config = {
-              type: 'work',
-              work_id: work[:id]
-            }
-            @work_filter = work;
-          end
-        end
-      end
-
-      search_data = elastic_search_results(
-        params[:search],
-        search_page,
-        page_size,
-        params[:filter],
-        query_config
-      )
-
-      if search_data
-        inflated_results = search_data[:inflated]
-        @full_count = search_data[:full_count] # Used by All tab
-        @type_counts = search_data[:type_counts]
-
-        # Used for pagination, currently capped at 10k
-        #
-        # TODO: ES requires a scroll/search_after query for result sets larger
-        #       than 10k.
-        #
-        #       To setup support we just need to add a composite tiebreaker field
-        #       to the schemas
-        @filtered_count = [ 10000, search_data[:filtered_count] ].min
-
-        @search_string = params[:search]
-
-        @search_results = WillPaginate::Collection.create(
-          search_page,
-          page_size,
-          @filtered_count) do |pager|
-            pager.replace(inflated_results)
-          end
-      end
-    else
-      if params[:search]
-        @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-        @search_results_map = {}
-        @search_results.each do |result|
-          @search_results_map[result.owner_user_id] ||= []
-          @search_results_map[result.owner_user_id] << result
-        end
+      @search_results = @es_query.results
+      @full_count = @es_query.total_count
+      @type_counts = @es_query.type_counts
+    elsif params[:search].present?
+      @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @search_results_map = {}
+      @search_results.each do |result|
+        @search_results_map[result.owner_user_id] ||= []
+        @search_results_map[result.owner_user_id] << result
       end
     end
 
@@ -390,6 +327,12 @@ class DashboardController < ApplicationController
       @end_date_hours = Date.today
     end
     @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
+
+    last_summary = AhoyActivitySummary.where(user_id: current_user.id)
+                                      .where.not(collection_id: nil)
+                                      .order(date: :desc)
+                                      .first
+    @last_calculation_date = last_summary&.date&.end_of_day
 
     raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
     @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map{ |collection_id, page_id| collection_id }.tally

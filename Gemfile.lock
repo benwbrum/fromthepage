@@ -179,6 +179,10 @@ GEM
       marcel (~> 1.0.0)
       ssrf_filter (~> 1.0)
     charlock_holmes (0.7.9)
+    chewy (7.6.0)
+      activesupport (>= 5.2)
+      elasticsearch (>= 7.14.0, < 8)
+      elasticsearch-dsl
     childprocess (5.0.0)
     clipboard-rails (1.7.1)
     coderay (1.1.3)
@@ -230,13 +234,15 @@ GEM
       activesupport (>= 4)
       edtf (>= 2.3, < 4)
       roman (~> 0.2.0)
-    elastic-transport (8.3.5)
-      faraday (< 3)
+    elasticsearch (7.17.11)
+      elasticsearch-api (= 7.17.11)
+      elasticsearch-transport (= 7.17.11)
+    elasticsearch-api (7.17.11)
       multi_json
-    elasticsearch (8.15.0)
-      elastic-transport (~> 8.3)
-      elasticsearch-api (= 8.15.0)
-    elasticsearch-api (8.15.0)
+    elasticsearch-dsl (0.1.10)
+    elasticsearch-transport (7.17.11)
+      base64
+      faraday (>= 1, < 3)
       multi_json
     errbase (0.2.2)
     erubi (1.12.0)
@@ -338,6 +344,7 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    language_server-protocol (3.17.0.5)
     launchy (3.0.0)
       addressable (~> 2.8)
       childprocess (~> 5.0)
@@ -414,6 +421,7 @@ GEM
     open3 (0.2.1)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
+    parallel (1.27.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
@@ -527,10 +535,24 @@ GEM
       rspec-support (~> 3.13)
     rspec-support (3.13.1)
     rtl (0.6.0)
+    rubocop (1.65.1)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
+      parallel (~> 1.10)
+      parser (>= 3.3.0.2)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 2.4, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.31.2)
+      parser (>= 3.3.0.4)
     ruby-openai (6.5.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
+    ruby-progressbar (1.13.0)
     ruby-saml (1.18.0)
       nokogiri (>= 1.13.10)
       rexml
@@ -694,6 +716,7 @@ DEPENDENCIES
   capybara
   carrierwave
   charlock_holmes
+  chewy
   clipboard-rails
   config
   database_cleaner
@@ -706,7 +729,6 @@ DEPENDENCIES
   easy_translate
   edtf
   edtf-humanize
-  elasticsearch (= 8.15.0)
   factory_bot_rails
   flamegraph
   forty_facets
@@ -753,6 +775,7 @@ DEPENDENCIES
   roo
   rspec-rails
   rtl
+  rubocop
   ruby-openai
   rubyzip
   rvm1-capistrano3

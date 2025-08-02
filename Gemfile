@@ -114,6 +114,7 @@ group :development, :test do
   gem 'pry-awesome_print'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'rubocop'
 end
 
 gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
@@ -157,5 +158,6 @@ gem 'clipboard-rails'
 
 gem 'ajax-datatables-rails', '~> 1.0.0'
 
+gem 'chewy'
 # Elasticsearch client
-gem 'elasticsearch', '8.15.0'
+# gem 'elasticsearch', '8.15.0'

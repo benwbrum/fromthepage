@@ -1,7 +1,7 @@
 class WorkController < ApplicationController
   # require 'ftools'
+  include ApplicationHelper
   include XmlSourceProcessor
-  include ElasticSearchable
 
   protect_from_forgery :except => [:set_work_title,
                                    :set_work_description,
@@ -44,47 +44,25 @@ class WorkController < ApplicationController
   end
 
   def search
-    search_page = (search_params[:page] || 1).to_i
     @search_string = search_params[:term]
-    @breadcrumb_scope={work: true}
 
-    page_size = 10
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        mode: 'work',
+        slug: @work.slug
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
 
-  # call elasticsearch with the work scope to get the results
-    query_config = {
-      type: 'work',
-      work_id: @work.id
-    }
-    search_data = elastic_search_results(
-      @search_string,
-      search_page,
-      page_size,
-      search_params[:filter],
-      query_config
-    )
+    @breadcrumb_scope = { work: true }
+    @work_filter = @es_query.work_filter
 
-    if search_data
-      inflated_results = search_data[:inflated]
-      @full_count = search_data[:full_count] # Used by All tab
-      @type_counts = search_data[:type_counts]
-
-      # Used for pagination, currently capped at 10k
-      #
-      # TODO: ES requires a scroll/search_after query for result sets larger
-      #       than 10k.
-      #
-      #       To setup support we just need to add a composite tiebreaker field
-      #       to the schemas
-      @filtered_count = [ 10000, search_data[:filtered_count] ].min
-
-      @search_results = WillPaginate::Collection.create(
-        search_page,
-        page_size,
-        @filtered_count) do |pager|
-          pager.replace(inflated_results)
-        end
-    end
-
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
   end
 
   def describe
@@ -278,6 +256,44 @@ class WorkController < ApplicationController
     deed.user = user
     deed.save!
     update_search_attempt_contributions
+  end
+
+  def show
+    # Set meta information for work pages for better archival
+    @page_title = "#{@work.title} - #{@collection.title}"
+    @meta_description = "Historical document: #{@work.title}#{@work.author.present? ? " by #{@work.author}" : ""} in the #{@collection.title} collection. #{@work.description}".truncate(160)
+    @meta_keywords = [@work.title, @work.author, @collection.title, "historical document", "digital archive"].compact.join(", ")
+    
+    # Generate structured data for work
+    @structured_data = {
+      "@context" => "https://schema.org",
+      "@type" => "DigitalDocument",
+      "name" => @work.title,
+      "description" => @work.description,
+      "inLanguage" => @collection.text_language || "en",
+      "isPartOf" => {
+        "@type" => "Collection",
+        "name" => @collection.title,
+        "description" => to_snippet(@collection.intro_block)
+      },
+      "url" => request.original_url,
+      "dateModified" => @work.most_recent_deed_created_at&.iso8601,
+      "publisher" => {
+        "@type" => "Organization",
+        "name" => @collection.owner&.display_name || "FromThePage"
+      }
+    }
+    
+    # Add optional fields conditionally
+    @structured_data["author"] = @work.author if @work.author.present?
+    @structured_data["dateCreated"] = @work.document_date if @work.document_date.present?
+
+    # Add archival-friendly headers
+    respond_to do |format|
+      format.html do
+        response.headers['X-Robots-Tag'] = 'index, follow, archive'
+      end
+    end
   end
 
   private
