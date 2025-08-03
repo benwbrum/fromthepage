@@ -20,7 +20,10 @@ class Work::Update < ApplicationInteractor
     params_convention = normalize_conventions_string(@work_params[:transcription_conventions])
     collection_convention = normalize_conventions_string(@collection.transcription_conventions)
 
-    @work_params = @work_params.merge(transcription_conventions: nil) if params_convention == collection_convention
+    # If params conventions are blank or match collection conventions, inherit from collection
+    if params_convention.blank? || params_convention == collection_convention
+      @work_params = @work_params.merge(transcription_conventions: nil)
+    end
     @work.attributes = @work_params
 
     @work.slug = @work.title.parameterize if @work_params[:slug].blank?
@@ -35,6 +38,7 @@ class Work::Update < ApplicationInteractor
   private
 
   def normalize_conventions_string(input)
+    return '' if input.blank?
     input
       .gsub(/\r\n?/, "\n")
       .gsub(/\s+/, ' ')
