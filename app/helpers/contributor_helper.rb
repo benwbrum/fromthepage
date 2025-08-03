@@ -1,5 +1,42 @@
 module ContributorHelper
 
+  def single_user_contributors(collection_id, start_date, end_date, user)
+    @collection ||= Collection.find_by(id: collection_id)
+    condition = 'created_at >= ? AND created_at <= ?'
+
+    deeds_scope = @collection.deeds.includes(:page, :work, :user).where(user: user)
+
+    # Get deeds for this specific user in the time period
+    @collection_deeds = deeds_scope.where(condition, start_date, end_date)
+
+    # Get user activity time from ahoy_activity_summary
+    @user_time_proportional = AhoyActivitySummary.where(
+      collection_id: @collection.id,
+      user_id: user.id,
+      date: [start_date..end_date]
+    ).sum(:minutes)
+
+    # Set the selected user as the only active transcriber
+    @active_transcribers = [user]
+    @user_time_proportional = { user.id => @user_time_proportional }
+
+    # Get breakdown of deeds by type for this user
+    @recent_notes = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::NOTE_ADDED)
+    @recent_transcriptions = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType.transcriptions)
+    @recent_articles = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::ARTICLE_EDIT)
+    @recent_translations = deeds_scope.where(condition, start_date, end_date).where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
+    @recent_ocr = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::OCR_CORRECTED)
+    @recent_index = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::PAGE_INDEXED)
+    @recent_review = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::NEEDS_REVIEW)
+    @recent_xlat_index = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::TRANSLATION_INDEXED)
+    @recent_xlat_review = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::TRANSLATION_REVIEW)
+    @recent_work_add = deeds_scope.where(condition, start_date, end_date).where(deed_type: DeedType::WORK_ADDED)
+
+    # For single user view, these would be empty or just the selected user
+    @new_transcribers = []
+    @all_collaborators = [user]
+  end
+
   def new_contributors(collection_id, start_date, end_date)
     @collection ||= Collection.find_by(id: collection_id)
     condition = 'created_at >= ? AND created_at <= ?'

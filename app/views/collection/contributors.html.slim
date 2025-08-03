@@ -7,18 +7,65 @@ h4.normargin =t('.select_new_date')
 
 =form_tag(contributors_collection_path(@collection.owner, @collection), method: "get") do
   =hidden_field_tag(:collection_id, @collection)
-  =label_tag(:start_date, t('.start_date'))
-  |
-  =text_field_tag(:start_date, @start_deed, style: "width:30%")
-  |
-  =label_tag(:end_date, t('.end_date'))
-  |
-  =text_field_tag(:end_date, @end_deed, style: "width:30%")
-  |
-  =submit_tag(t('.update'))
+  
+  .form-row
+    .form-group
+      =label_tag(:user_id, "Select User (optional):")
+      =select_tag 'user_id', options_for_select([['All Users', '']] + (@selected_user ? [[@selected_user.display_name, @selected_user.id]] : [])), \
+        include_blank: false, \
+        data: { \
+          controller: 'select2', \
+          select2_placeholder_value: 'Search for a specific user...', \
+          select2_ajax_url_value: collection_search_users_path(collection_id: @collection.slug, user_type: :contributor), \
+          select2_allow_clear_value: true }
+  
+  .form-row
+    .form-group
+      =label_tag(:start_date, t('.start_date'))
+      |
+      =text_field_tag(:start_date, @start_deed, style: "width:30%")
+      |
+      =label_tag(:end_date, t('.end_date'))
+      |
+      =text_field_tag(:end_date, @end_deed, style: "width:30%")
+      |
+      =submit_tag(t('.update'))
 br/
 
-=render "contributors_body"
+-if @selected_user_id.present?
+  h3 = "Statistics for #{@selected_user.display_name}"
+  p
+    strong Total time: 
+    - if @user_time_proportional[@selected_user.id] && @user_time_proportional[@selected_user.id] > 0
+      | #{@user_time_proportional[@selected_user.id] / 60} hours, #{@user_time_proportional[@selected_user.id] % 60} minutes
+    - else
+      | No recorded time for this period
+      
+  -unless @collection_deeds.empty?
+    h4 Activity Details
+    table.datagrid.striped(style="width:100%")
+      thead
+        tr
+          th Date
+          th Activity
+          th Page/Work
+      tbody
+        -@collection_deeds.order(created_at: :desc).each do |deed|
+          tr
+            td= deed.created_at.strftime('%m/%d/%Y %H:%M')
+            td= deed.deed_type.humanize
+            td
+              -if deed.page
+                = link_to deed.page.title, collection_transcribe_page_path(deed.collection.owner, deed.collection, deed.work, deed.page)
+                | (#{deed.work.title})
+              -elsif deed.work
+                = link_to deed.work.title, collection_read_work_path(deed.collection.owner, deed.collection, deed.work)
+              -else
+                | Collection activity
+  -else
+    p No activity found for this user in the selected time period.
+-else
+  =render "contributors_body"
 
 -content_for :javascript
   =javascript_include_tag 'datepicker/datepicker'

@@ -61,15 +61,28 @@ class CollectionController < ApplicationController
                      User.where(id: blocked_user_ids).or(User.where(id: owner_ids)).select(:id)
                    when :reviewer
                      reviewer_ids
+                   when :contributor
+                     # For contributors search, don't exclude anyone - show all users with activity
+                     []
                    else
                      # collaborator
                      collaborator_ids
                    end
 
-    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
-                .where.not(id: excluded_ids)
-                .where.not(id: @collection.owner.id)
-                .limit(100)
+    if user_type == :contributor
+      # Find users who have activity on this collection (from deeds or explicit collaborators)
+      active_user_ids = @collection.deeds.select(:user_id).distinct
+      collaborator_user_ids = @collection.collaborators.select(:id)
+      
+      users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                  .where(id: active_user_ids.or(User.where(id: collaborator_user_ids)))
+                  .limit(100)
+    else
+      users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                  .where.not(id: excluded_ids)
+                  .where.not(id: @collection.owner.id)
+                  .limit(100)
+    end
 
     render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
   end
@@ -654,7 +667,18 @@ class CollectionController < ApplicationController
     @start_deed = start_date.strftime('%b %d, %Y')
     @end_deed = end_date.strftime('%b %d, %Y')
 
-    new_contributors(@collection, start_date, end_date)
+    # Check if we're filtering by a specific user
+    @selected_user_id = params[:user_id]
+    if @selected_user_id.present?
+      @selected_user = User.find(@selected_user_id)
+      
+      # Show individual user statistics
+      single_user_contributors(@collection, start_date, end_date, @selected_user)
+    else
+      # Show all contributors (existing functionality)
+      new_contributors(@collection, start_date, end_date)
+    end
+    
     @stats = @collection.get_stats_hash(start_date, end_date)
   end
 
