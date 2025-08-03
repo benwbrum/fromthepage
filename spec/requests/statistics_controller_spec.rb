@@ -2,23 +2,23 @@ require 'spec_helper'
 
 describe StatisticsController, type: :request do
   before do
-    @owner = User.create!(login: 'test_owner', email: 'owner@example.com', password: 'password123')
-    @collection = Collection.create!(title: 'Test Collection', owner: @owner)
-    @work = Work.create!(title: 'Test Work', collection: @collection)
+    @owner = create(:user, :owner)
+    @collection = create(:collection, owner_user_id: @owner.id, works: [])
+    @work = create(:work, collection: @collection)
     
     # Create test users and deeds
-    @user1 = User.create!(login: 'transcriber1', email: 'transcriber1@example.com', password: 'password123')
-    @user2 = User.create!(login: 'transcriber2', email: 'transcriber2@example.com', password: 'password123')
+    @user1 = create(:user)
+    @user2 = create(:user)
     
     # Create test deeds
     3.times do
-      Deed.create!(user: @user1, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
+      create(:deed, user: @user1, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
     end
     2.times do
-      Deed.create!(user: @user2, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
+      create(:deed, user: @user2, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
     end
     1.times do
-      Deed.create!(user: @user1, work: @work, deed_type: DeedType::PAGE_EDIT)
+      create(:deed, user: @user1, work: @work, deed_type: DeedType::PAGE_EDIT)
     end
   end
 
