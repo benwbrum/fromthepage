@@ -158,31 +158,18 @@ describe "collection metadata", :order => :defined do
 
   it "should not be available/visible for the Individual Researcher plan", js: true do
     logout
-    old_account_type=@user.account_type
-    @user.account_type='Individual Researcher'
-    @user.save
-    
-    # Clear any existing collections for this user to ensure Individual Researcher limit works
-    @user.all_owner_collections.destroy_all
-    
-    login_as @user
-    
-    # Create a collection owned by @user to test Individual Researcher restrictions
-    visit dashboard_owner_path
-    # Open the actions dropdown to access the Create a Collection link
-    page.find('.headline_aside .dropdown dt').click
-    page.find('a', text: 'Create a Collection').click
-    fill_in 'collection_title', with: 'researcher_test_collection'
-    click_button('Create Collection')
-    
-    c = Collection.where(title: "researcher_test_collection").first
-    visit edit_collection_path(@user, c)
+    old_account_type=@owner.account_type
+    @owner.account_type='Individual Researcher'
+    @owner.save
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
     page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_field("Enable metadata facets", disabled: true)
     expect(page.find_link("Edit Facets")).to match_css('[disabled]')
     expect(page).to have_content("Not available for researcher accounts.")
-    @user.account_type=old_account_type
-    @user.save
+    @owner.account_type=old_account_type
+    @owner.save
   end
 
   it "deletes a collection" do
