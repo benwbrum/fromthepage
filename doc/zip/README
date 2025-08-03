@@ -11,17 +11,17 @@ translation -- HTML translation files only (if work supports translation).
 
 PLAINTEXT FORMATS:
 
-verbatim -- Full text of the transcription, with versions, contributors and comments. Line breaks are represented with single newlines, paragraph breaks with double newlines, and page breaks with triple newlines.
+verbatim -- Full text of the transcription. Line breaks are represented with single newlines, paragraph breaks with double newlines, and page breaks with triple newlines.
 searchable -- Text optimized for full-text search. Contains verbatim plaintext except that words broken by hyphenated newlines are joined together, and a list of canonical names mentioned within each page is appended.
 expanded -- Expanded transcripts and translations where linked subjects are replaced with their canonical names to make the text suitable for programmatic analysis (e.g., "Mr. Jones" becomes "James Jones").
 
 TEI XML FORMATS:
 
-tei -- Text Encoding Initiative XML format useful for editors who plan to do further mark-up within TEI-XML editors like oXygen.
+tei -- TEI-XML exports follow the TEI Consortium Guidelines and attempt to preserve all edit history, notes, mark-up, annotations and other features of the editorial process. It is the only "lossless" FromThePage export format.
 
 PDF FORMATS:
 
-text_pdf -- PDF file containing text transcripts and work metadata.
+text_pdf -- PDF file containing text transcripts, work metadata, and contributor attribution.
 text_only_pdf -- PDF file containing text transcripts only.
 facing_edition_pdf -- PDF file with images and transcripts on facing pages.
 

@@ -25,11 +25,11 @@ describe "Zip Export README" do
     
     # Check for TEI XML
     expect(readme_content).to include('TEI XML FORMATS')
-    expect(readme_content).to include('tei -- Text Encoding Initiative XML')
+    expect(readme_content).to include('tei -- TEI-XML exports follow the TEI Consortium Guidelines')
     
     # Check for PDF formats
     expect(readme_content).to include('PDF FORMATS')
-    expect(readme_content).to include('text_pdf -- PDF file containing text transcripts and work metadata')
+    expect(readme_content).to include('text_pdf -- PDF file containing text transcripts, work metadata, and contributor attribution')
     expect(readme_content).to include('text_only_pdf -- PDF file containing text transcripts only')
     expect(readme_content).to include('facing_edition_pdf -- PDF file with images and transcripts')
     
