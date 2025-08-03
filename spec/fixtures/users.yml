@@ -34,7 +34,7 @@ user_3:
 user_4:
   id: 4
   login: margaret
-  display_name: margaret
+  display_name: Margaret Reed
   real_name: Margaret Reed
   email: margaret@test.com
   owner: true
