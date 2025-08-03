@@ -17,7 +17,8 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
   after do
     # Clean up any deeds created during tests to avoid interfering with other tests
     # This follows the same pattern as the existing deed_spec.rb test
-    created_deed_ids.each { |id| Deed.destroy(id) } if defined?(@created_deed_ids)
+    # Check if deed exists before destroying to handle cascading deletes
+    created_deed_ids.each { |id| Deed.destroy(id) if Deed.exists?(id) } if defined?(@created_deed_ids)
     user.destroy if user.persisted?
     collection.destroy if collection.persisted?
   end
