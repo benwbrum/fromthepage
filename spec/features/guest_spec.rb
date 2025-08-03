@@ -127,6 +127,27 @@ describe 'guest user actions' do
 
   it 'looks at the landing page', :guest_enabled do
     CollectionStatistic.update_recent_statistics
+    
+    # Ensure margaret has the data needed for landing page
+    margaret = User.find_by(login: OWNER)
+    margaret.update!(
+      owner: true,
+      deleted: false,
+      account_type: 'Legacy',
+      display_name: 'Margaret Reed',
+      real_name: 'Margaret Reed'
+    )
+    
+    # Ensure margaret's collection is set up properly
+    collection = margaret.collections.first
+    if collection
+      collection.update!(
+        restricted: false,
+        is_active: true,
+        featured_at: 1.week.ago
+      )
+    end
+    
     visit landing_page_path
     expect(page.find('.maincol')).to have_link(@owner.display_name)
     page.find('.maincol').first('a', text: @owner.display_name).click
