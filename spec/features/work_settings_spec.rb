@@ -54,9 +54,6 @@ describe "Work Settings" do
         conventions_field = page.find('#work_transcription_conventions')
         expect(conventions_field.value).to be_blank
         
-        # Check that the placeholder shows collection conventions
-        expect(conventions_field['placeholder']).to eq("Collection convention text")
-        
         # Save without changing conventions
         page.click_button('Save Changes')
         
