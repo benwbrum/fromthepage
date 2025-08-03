@@ -19,12 +19,7 @@ en:
       your_recent_page_edits: Your Recent Page Edits
     editor_header:
       your_projects: Your Projects
-    empty:
-      add_new_collection: Add New Collection
-      description: Description
-      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
-      select_a_collection: "- Select a collection -"
-      title: Title
+
     exports:
       admin_searches: Searches
       bulk_exports_description: This lists all bulk exports you have run. Exports are cleaned after a few days, and are no longer available for download

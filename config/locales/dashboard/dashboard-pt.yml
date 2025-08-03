@@ -19,12 +19,7 @@ pt:
       your_recent_page_edits: Suas edições recentes de página
     editor_header:
       your_projects: Seus projetos
-    empty:
-      add_new_collection: Adicionar nova coleção
-      description: Descrição
-      description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
-      select_a_collection: "- Selecione uma coleção -"
-      title: Título
+
     exports:
       admin_searches: Pesquisas
       bulk_exports_description: Isso lista todas as exportações em massa que você executou. As exportações são limpas após alguns dias e não estão mais disponíveis para download

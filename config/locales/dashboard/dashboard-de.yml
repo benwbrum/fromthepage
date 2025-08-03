@@ -19,12 +19,6 @@ de:
       your_recent_page_edits: Ihre letzten Seitenbearbeitungen
     editor_header:
       your_projects: Ihre Projekte
-    empty:
-      add_new_collection: Neue Sammlung hinzufügen
-      description: Beschreibung
-      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
-      select_a_collection: "- Wählen Sie eine Sammlung aus -"
-      title: Titel
     exports:
       admin_searches: Suchen
       bulk_exports_description: Hier werden alle von ihnen ausgeführten Sammelexporte aufgelistet. Exporte werden nach einigen Tagen bereinigt und stehen nicht mehr zum Download zur Verfügung.
