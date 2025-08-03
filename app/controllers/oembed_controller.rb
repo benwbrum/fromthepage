@@ -17,7 +17,7 @@ class OembedController < ApplicationController
       version: "1.0",
       type: "rich",
       provider_name: "FromThePage",
-      provider_url: "https://fromthepage.com",
+      provider_url: Rails.application.config.provider_url,
       title: @content_data[:title],
       author_name: @content_data[:author],
       author_url: @content_data[:author_url],
@@ -95,7 +95,7 @@ class OembedController < ApplicationController
 
     {
       title: collection.title,
-      description: view_context.strip_html_and_truncate(collection.intro_block || "A transcription project on FromThePage"),
+      description: view_context.to_snippet(collection.intro_block || "A transcription project on FromThePage", length: 200),
       author: collection.owner.display_name,
       author_url: author_url,
       image_url: view_context.collection_image_url(collection),
@@ -114,7 +114,7 @@ class OembedController < ApplicationController
 
     {
       title: work.title,
-      description: view_context.strip_html_and_truncate(work.description || "A document in the #{work.collection.title} project"),
+      description: view_context.to_snippet(work.description || "A document in the #{work.collection.title} project", length: 200),
       author: work.collection.owner.display_name,
       author_url: author_url,
       image_url: view_context.work_image_url(work) || view_context.collection_image_url(work.collection),
@@ -136,7 +136,7 @@ class OembedController < ApplicationController
 
     {
       title: "#{work.title} - #{page.title || "Page #{page.position}"}",
-      description: view_context.strip_html_and_truncate(page.source_text || "A page from #{work.title}"),
+      description: view_context.to_snippet(page.source_text || "A page from #{work.title}", length: 200),
       author: work.collection.owner.display_name,
       author_url: author_url,
       image_url: view_context.page_image_url(page) || view_context.work_image_url(work) || view_context.collection_image_url(work.collection),

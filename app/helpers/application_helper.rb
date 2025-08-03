@@ -245,7 +245,7 @@ module ApplicationHelper
   end
 
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
-  def to_snippet(intro_block)
+  def to_snippet(intro_block, length: 300)
     return '' if intro_block.blank?
     
     begin
@@ -254,7 +254,7 @@ module ApplicationHelper
       doc.xpath('//style').each { |n| n.remove }
       # strip tags and truncate
       text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
-      truncate(text.to_s, length: 300, separator: ' ') || ''
+      truncate(text.to_s, length: length, separator: ' ') || ''
     rescue => e
       # If anything goes wrong, return empty string
       ''
@@ -336,17 +336,6 @@ module ApplicationHelper
   def page_image_url(page)
     return nil unless page&.base_image.present?
     absolute_url(page.base_image)
-  end
-
-  def strip_html_and_truncate(text, length: 200)
-    return '' if text.blank?
-    
-    # Remove HTML tags and normalize whitespace
-    plain_text = ActionView::Base.full_sanitizer.sanitize(text)
-    plain_text = plain_text.squish
-    
-    # Truncate to desired length
-    plain_text.length > length ? "#{plain_text[0...length]}..." : plain_text
   end
 
   private

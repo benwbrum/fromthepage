@@ -34,19 +34,23 @@ class TranscribeController  < ApplicationController
       @current_user_alerted = true
     end unless @page.edit_started_at.nil?
     
-    # Set social media meta tags for page
+    # Set social media meta tags for page - use display URL instead of transcribe URL for sharing
     unless @page.nil?
       page_title = @page.title.present? ? @page.title : "Page #{@page.position}"
       work_title = @page.work&.title || "Unknown Work"
       
-      description = view_context.strip_html_and_truncate(@page.source_text) if @page.source_text.present?
+      description = view_context.to_snippet(@page.source_text, length: 200) if @page.source_text.present?
       description ||= "A page from #{work_title} in the #{@page.work&.collection&.title || 'Unknown Collection'} project"
+      
+      # Generate display URL instead of transcribe URL for social media sharing
+      display_url = "/#{@page.work.collection.owner.slug}/#{@page.work.collection.slug}/#{@page.work.slug}/display/#{@page.id}"
+      display_url = "#{request.protocol}#{request.host_with_port}#{display_url}" if request.present?
       
       view_context.set_social_media_meta_tags(
         title: "#{work_title} - #{page_title}",
         description: description,
         image_url: view_context.page_image_url(@page) || view_context.work_image_url(@page.work) || view_context.collection_image_url(@page.work&.collection),
-        url: request.original_url,
+        url: display_url,
         type: 'article'
       )
     end
