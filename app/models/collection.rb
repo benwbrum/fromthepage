@@ -394,7 +394,7 @@ class Collection < ApplicationRecord
   end
 
   def text_orientation
-    if !self[:text_orientation].nil?
+    if self.class.column_names.include?('text_orientation') && !self[:text_orientation].nil?
       self[:text_orientation]
     elsif self[:field_based]
       TextOrientation::TOP_TO_BOTTOM
