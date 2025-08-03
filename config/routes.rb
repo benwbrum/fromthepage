@@ -258,6 +258,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'static', as: 'static' do
     get 'metadata', to: 'static#metadata'
+    get 'search_help', to: 'static#search_help'
   end
 
   scope 'page_version', as: 'page_version' do
@@ -461,6 +462,7 @@ Fromthepage::Application.routes.draw do
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
+  get '/search_help', to: 'static#search_help', as: :search_help
 
   resources :document_sets, except: [:show, :create, :edit]
 

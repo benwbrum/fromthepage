@@ -44,4 +44,8 @@ class StaticController < ApplicationController
     render layout: false
   end
 
+  def search_help
+    # Search help documentation page
+  end
+
 end

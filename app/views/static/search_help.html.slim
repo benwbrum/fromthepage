@@ -1,0 +1,180 @@
+- content_for :page_title, "Search Help - FromThePage"
+- content_for :meta_description, "Learn how to use FromThePage's search features including boolean operators, quotations, and advanced search syntax."
+
+.row
+  .col-md-12
+    h1 Search Help
+    
+    p FromThePage uses powerful search capabilities that support various operators to help you find exactly what you're looking for. Our search is powered by ElasticSearch and supports both simple searches and advanced boolean queries.
+
+    h2 Basic Search
+    
+    h3 Simple Word Search
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code alice
+        p Finds pages containing the word "alice" (case-insensitive).
+    
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code alice mann
+        p Finds pages containing either "alice" OR "mann".
+
+    h2 Phrase Search (Quotations)
+    
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code "Mrs. Alice Mann"
+        p Finds pages containing the exact phrase "Mrs. Alice Mann". 
+        p This is useful when you want to search for specific names, addresses, or multi-word terms that must appear together in that exact order.
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code "Boston Massachusetts"
+        p Finds pages containing exactly "Boston Massachusetts" as a phrase.
+
+    h2 Boolean Operators
+
+    h3 AND Operator
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code alice AND mann
+        p Finds pages that contain both "alice" AND "mann" (not necessarily together).
+        p
+          em Alternative syntax: 
+          code alice + mann
+
+    h3 OR Operator  
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code alice OR jane
+        p Finds pages that contain either "alice" OR "jane" (or both).
+        p
+          em Note: The default behavior when you type multiple words is OR, so 
+          code alice jane 
+          em is the same as 
+          code alice OR jane
+
+    h3 NOT Operator
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code alice NOT jane
+        p Finds pages that contain "alice" but do NOT contain "jane".
+        p
+          em Alternative syntax: 
+          code alice -jane
+
+    h2 Combining Operators
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code "Alice Mann" AND Boston
+        p Finds pages containing the exact phrase "Alice Mann" AND also containing the word "Boston".
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code (alice OR jane) AND mann
+        p Finds pages containing either "alice" or "jane" AND also containing "mann".
+        p Use parentheses to group search terms and control the order of operations.
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code "Mrs. Mann" NOT "Mr. Mann"
+        p Finds pages containing "Mrs. Mann" but not "Mr. Mann".
+
+    h2 Wildcards
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code mann*
+        p Finds pages containing words that start with "mann" (like "mann", "manning", "manners").
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code *son
+        p Finds pages containing words that end with "son" (like "johnson", "anderson", "son").
+
+    h2 Field-Specific Search
+
+    p You can search within specific parts of documents by using field names:
+
+    .card.mb-3
+      .card-body
+        p
+          strong Example: 
+          code title:"Annual Report"
+        p Searches only in page titles for "Annual Report".
+
+    h2 Tips for Better Searching
+
+    .alert.alert-info
+      ul
+        li Use quotation marks around phrases to search for exact matches
+        li Capitalize boolean operators (AND, OR, NOT) for clarity
+        li Use parentheses to group complex queries
+        li Start with simple searches and add operators as needed
+        li Remember that searches are case-insensitive for content
+
+    h2 Common Search Examples
+
+    .table-responsive
+      table.table.table-striped
+        thead
+          tr
+            th Search Query
+            th What It Finds
+        tbody
+          tr
+            td
+              code "John Smith"
+            td Pages with the exact phrase "John Smith"
+          tr
+            td
+              code birth AND death
+            td Pages containing both "birth" and "death"
+          tr
+            td
+              code "New York" OR "Boston"
+            td Pages containing either "New York" or "Boston" (or both)
+          tr
+            td
+              code marriage NOT divorce
+            td Pages containing "marriage" but not "divorce"
+          tr
+            td
+              code smith*
+            td Pages with words starting with "smith" (smith, smithson, etc.)
+          tr
+            td
+              code "Mary Johnson" AND Boston
+            td Pages with "Mary Johnson" and also containing "Boston"
+
+    .alert.alert-secondary
+      p
+        strong Need more help? 
+        | If you're having trouble finding what you're looking for, try different combinations of these search techniques. 
+        | Remember that the more specific your search terms, the more targeted your results will be.
