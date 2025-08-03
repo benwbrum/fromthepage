@@ -94,7 +94,7 @@ pt:
       all: Todas as obras
       cancel: Cancelar
       completed: Apenas obras concluídas
-      copy: Copiar (não cria trabalhos duplicados)
+      copy: Copiar (não cria obras duplicados)
       move: Jogada
       source_set: Conjunto de documentos de origem
       status_filter: O que funciona
@@ -102,7 +102,7 @@ pt:
       transfer: Transferir
       transfer_type_label: Tipo de transferência
       transfer_works: Trabalhos de Transferência
-      transfer_works_description: A transferência funciona entre conjuntos de documentos. (A cópia colocará o mesmo trabalho em dois conjuntos de documentos ao mesmo tempo.)
+      transfer_works_description: A transferência funciona entre conjuntos de documentos. (A cópia colocará a mesma obra em dois conjuntos de documentos ao mesmo tempo.)
     update:
       document_failed_update: Falha ao atualizar conjunto de documentos
       document_updated: O documento foi atualizado
