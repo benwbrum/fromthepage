@@ -21,9 +21,11 @@ class Work::Update < ApplicationInteractor
     collection_convention = normalize_conventions_string(@collection.transcription_conventions)
 
     @work_params = @work_params.merge(transcription_conventions: nil) if params_convention == collection_convention
+    
+    # If slug is blank, don't update it (keep existing slug)
+    @work_params = @work_params.except(:slug) if @work_params[:slug].blank?
+    
     @work.attributes = @work_params
-
-    @work.slug = @work.title.parameterize if @work_params[:slug].blank?
 
     if @work.save
       change_collection if @original_collection_id != @collection.id
