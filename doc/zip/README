@@ -1,10 +1,44 @@
-HTML:
+FromThePage Export Formats
 
-full -- full text of the transcription or translation, with versions, contributors, and comments.
-text -- just the full text of the transcription or translation.
+This archive contains files exported from FromThePage in one or more of the following formats:
 
-Text:
+HTML FORMATS:
 
-verbatim -- full text of the transcription, with versions, contributors and comments.
-searchable -- links removed and line breaks removed so searches can span line breaks.
-expanded -- expanded transcripts and translations replace the verbatim linked subjects with the canonical name of the subject to make it suitable for text analysis.
+full -- Full text of the transcription or translation, with versions, contributors, and comments.
+text -- Just the full text of the transcription or translation.
+transcript -- HTML transcript files only.
+translation -- HTML translation files only (if work supports translation).
+
+PLAINTEXT FORMATS:
+
+verbatim -- Full text of the transcription, with versions, contributors and comments. Line breaks are represented with single newlines, paragraph breaks with double newlines, and page breaks with triple newlines.
+searchable -- Text optimized for full-text search. Contains verbatim plaintext except that words broken by hyphenated newlines are joined together, and a list of canonical names mentioned within each page is appended.
+expanded -- Expanded transcripts and translations where linked subjects are replaced with their canonical names to make the text suitable for programmatic analysis (e.g., "Mr. Jones" becomes "James Jones").
+
+TEI XML FORMATS:
+
+tei -- Text Encoding Initiative XML format useful for editors who plan to do further mark-up within TEI-XML editors like oXygen.
+
+PDF FORMATS:
+
+text_pdf -- PDF file containing text transcripts and work metadata.
+text_only_pdf -- PDF file containing text transcripts only.
+facing_edition_pdf -- PDF file with images and transcripts on facing pages.
+
+DOCUMENT FORMATS:
+
+text_docx -- Microsoft Word (.docx) file containing text transcripts.
+
+CSV DATA FORMATS:
+
+fields_and_tables -- Spreadsheet with field-based or tabular data from the transcription.
+subject_index -- Spreadsheet listing each place a subject is mentioned within the collection.
+subject_details -- Spreadsheet listing each subject in the collection with details.
+work_metadata -- Spreadsheet with a row for each work containing statistics about pages transcribed and metadata.
+collection_notes -- Spreadsheet listing each note in the collection.
+
+STATIC SITE:
+
+site -- Complete static Jekyll website containing the entire edition.
+
+Files may be organized either by work (with subfolders for each format) or by format (with separate files for each work), depending on the export settings chosen.
