@@ -91,7 +91,7 @@ Rails.application.configure do
 
   Ahoy.geocode = false
   # Add a custom hostname for uploads
-  config.upload_host = 'uploads'
-  config.hosts << "#{config.upload_host}.localhost"
+  #config.upload_host = 'uploads'
+  #config.hosts << "#{config.upload_host}.localhost"
 
 end

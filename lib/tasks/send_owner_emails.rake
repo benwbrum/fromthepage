@@ -8,7 +8,7 @@ namespace :fromthepage do
     owners.each do |owner|
 	    if owner.notification.owner_stats
         activity = AdminMailer::OwnerCollectionActivity.build(owner)
-        unless activity.collections.blank?
+        if activity.has_activity?
           begin
             AdminMailer.collection_stats_by_owner(activity).deliver!
           rescue Postmark::InactiveRecipientError => e

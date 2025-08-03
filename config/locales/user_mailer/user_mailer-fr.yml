@@ -39,6 +39,10 @@ fr:
       fail: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès ; %{error_count} lignes ont rencontré des erreurs.
       subject: Votre importation de métadonnées CSV est terminée.
       success: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès.
+    metadata_refresh_finished:
+      fail: L'actualisation des métadonnées s'est terminée avec des erreurs.
+      subject: L'actualisation des métadonnées pour %{type}:%{id} est terminée.
+      success: L'actualisation des métadonnées s'est terminée avec succès.
     new_mobile_user:
       html:
         continue_transcribing: " continuer à transcrire."

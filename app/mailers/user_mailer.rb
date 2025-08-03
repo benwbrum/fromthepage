@@ -95,6 +95,18 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: I18n.t('user_mailer.metadata_csv_import_finished.subject')
   end
 
+  def metadata_refresh_finished(user, result, id, type, logs)
+    @user = user
+    @result = result
+
+    attachments['refresh_logs.txt'] = {
+      mime_type: 'text/plain',
+      content: logs.join("\n")
+    }
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_refresh_finished.subject', id: id, type: type)
+  end
+
   private
 
   def add_inline_attachments!

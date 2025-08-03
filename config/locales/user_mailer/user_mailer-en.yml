@@ -39,6 +39,10 @@ en:
       fail: Your upload has finished processing. %{count} works were updated successfully; %{error_count} rows encountered errors.
       subject: Your metadata CSV import is finished.
       success: Your upload has finished processing. %{count} works were updated successfully.
+    metadata_refresh_finished:
+      fail: Metadata refresh finished with errors.
+      subject: Metadata refresh for %{type}:%{id} is finished.
+      success: Metadata refresh finished successfully.
     new_mobile_user:
       html:
         continue_transcribing: " to continue transcribing."

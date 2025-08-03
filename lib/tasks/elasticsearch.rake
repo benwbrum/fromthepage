@@ -83,12 +83,31 @@ namespace :fromthepage do
       end
 
       desc 'Reindex elements'
-      task reindex: :environment do
-        CollectionsIndex.import Collection.includes(:owner)
-        DocumentSetsIndex.import DocumentSet.includes(:owner, :collection)
-        WorksIndex.import Work.includes({ collection: :owner }, :document_sets)
-        UsersIndex.import User.all
-        PagesIndex.import Page.includes(work: [{ collection: :owner }, :document_sets])
+      task :reindex, [:hours_ago] => :environment do |t, args|
+        collections_scope = Collection.includes(:owner)
+        document_sets_scope = DocumentSet.includes(:owner, :collection)
+        works_scope = Work.includes({ collection: :owner }, :document_sets)
+        users_scope = User.all
+        pages_scope = Page.includes(work: [{ collection: :owner }, :document_sets])
+
+        if args[:hours_ago]
+          hours_ago = args[:hours_ago].to_i
+          time_threshold = Time.current - hours_ago.hours
+
+          puts "Scoping reindex to records updated_at >= #{hours_ago} hours ago"
+
+          collections_scope = collections_scope.where('most_recent_deed_created_at >= ?', time_threshold)
+          document_sets_scope = document_sets_scope.where('updated_at >= ?', time_threshold)
+          works_scope = works_scope.where('most_recent_deed_created_at >= ?', time_threshold)
+          users_scope = users_scope.where('updated_at >= ?', time_threshold)
+          pages_scope = pages_scope.where('updated_at >= ?', time_threshold)
+        end
+
+        CollectionsIndex.import collections_scope
+        DocumentSetsIndex.import document_sets_scope
+        WorksIndex.import works_scope
+        UsersIndex.import users_scope
+        PagesIndex.import pages_scope
       end
 
       desc 'Delete Elasticsearch indices'
