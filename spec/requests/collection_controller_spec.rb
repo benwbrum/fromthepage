@@ -77,6 +77,75 @@ describe CollectionController do
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
+
+    context 'when user_type contributor' do
+      let(:params) { { term: 'Search', user_type: 'contributor' } }
+
+      it 'renders status and json' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq('application/json; charset=utf-8')
+      end
+
+      it 'returns users with activity on collection' do
+        # Create a user with deeds on the collection
+        contributor = create(:unique_user)
+        work = create(:work, collection: collection)
+        page = create(:page, work: work)
+        create(:deed, user: contributor, collection: collection, page: page)
+
+        login_as owner
+        get action_path, params: { term: contributor.display_name, user_type: 'contributor' }
+
+        expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body)
+        expect(json_response['results']).to include(
+          hash_including('id' => contributor.id, 'text' => "#{contributor.display_name} #{contributor.email}")
+        )
+      end
+    end
+  end
+
+  describe '#contributors' do
+    let(:action_path) { contributors_collection_path(owner, collection) }
+
+    it 'renders status and template for all users' do
+      login_as owner
+      get action_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template('contributors')
+      expect(assigns(:selected_user_id)).to be_nil
+    end
+
+    it 'renders status and template for specific user' do
+      contributor = create(:unique_user)
+      work = create(:work, collection: collection)
+      page = create(:page, work: work)
+      create(:deed, user: contributor, collection: collection, page: page)
+
+      login_as owner
+      get action_path, params: { user_id: contributor.id }
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template('contributors')
+      expect(assigns(:selected_user_id)).to eq(contributor.id.to_s)
+      expect(assigns(:selected_user)).to eq(contributor)
+    end
+
+    it 'handles date range parameters' do
+      login_as owner
+      start_date = '2024-01-01'
+      end_date = '2024-01-31'
+      
+      get action_path, params: { start_date: start_date, end_date: end_date }
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:start_deed)).to eq('Jan 01, 2024')
+      expect(assigns(:end_deed)).to eq('Jan 31, 2024')
+    end
   end
 
   describe '#edit' do
