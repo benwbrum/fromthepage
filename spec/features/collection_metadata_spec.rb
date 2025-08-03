@@ -165,6 +165,8 @@ describe "collection metadata", :order => :defined do
     
     # Create a collection owned by @user to test Individual Researcher restrictions
     visit dashboard_owner_path
+    # Open the actions dropdown to access the Create a Collection link
+    page.find('.headline_aside .dropdown dt').click
     page.find('a', text: 'Create a Collection').click
     fill_in 'collection_title', with: 'researcher_test_collection'
     click_button('Create Collection')
