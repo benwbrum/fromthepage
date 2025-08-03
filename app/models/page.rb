@@ -762,10 +762,13 @@ class Page < ApplicationRecord
 
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
-    # For soft line breaks (break="no"), remove the hyphen and join words directly
-    # This fixes the issue where hyphens were incorrectly preserved in downloads
     doc.xpath("//lb[@break='no']").each do |n|
-      n.replace("")  # Remove soft breaks entirely to join hyphenated words
+      if n.text.blank?
+        sigil = '-'
+      else
+        sigil = n.text
+      end
+      n.replace("#{sigil}\n")
     end
     doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
     doc.xpath("//lb").each { |n| n.replace("\n")}
