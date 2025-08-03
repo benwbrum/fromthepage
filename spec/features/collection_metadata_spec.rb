@@ -162,7 +162,14 @@ describe "collection metadata", :order => :defined do
     @user.account_type='Individual Researcher'
     @user.save
     login_as @user
-    c = Collection.where(title: "ladi").first
+    
+    # Create a collection owned by @user to test Individual Researcher restrictions
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    fill_in 'collection_title', with: 'researcher_test_collection'
+    click_button('Create Collection')
+    
+    c = Collection.where(title: "researcher_test_collection").first
     visit edit_collection_path(@user, c)
     page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_field("Enable metadata facets", disabled: true)

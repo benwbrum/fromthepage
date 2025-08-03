@@ -755,6 +755,7 @@ class CollectionController < ApplicationController
         format.html { redirect_to collection_path(@collection.owner, @collection) }
         format.js   { ajax_redirect_to collection_path(@collection.owner, @collection) }
       end
+      return
     end
   end
 
