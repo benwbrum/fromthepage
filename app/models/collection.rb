@@ -32,6 +32,7 @@
 #  subjects_disabled              :boolean          default(TRUE)
 #  supports_document_sets         :boolean          default(FALSE)
 #  text_language                  :string(255)
+#  text_orientation               :string(255)
 #  title                          :string(255)
 #  transcription_conventions      :text(65535)
 #  user_download                  :boolean          default(FALSE)
