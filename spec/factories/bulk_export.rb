@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :bulk_export do
-    collection_id { association(:collection).id }
-    user_id { association(:user).id }
+    collection
+    user
 
     trait :new do
       status { BulkExport::Status::NEW }

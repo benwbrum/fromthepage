@@ -146,8 +146,8 @@ pt:
       work_title: Título da obra
     edit_scribes:
       remove_collaborator: Remover colaborador
-      work_collaborators: Colaboradores de trabalho
-      work_collaborators_description: Os colaboradores podem transcrever e editar trabalhos privados.
+      work_collaborators: Colaboradores de obra
+      work_collaborators_description: Os colaboradores podem transcrever e editar obras privadas.
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas

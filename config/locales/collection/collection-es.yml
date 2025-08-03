@@ -169,8 +169,8 @@ es:
         one: "%{title} tiene convenciones de transcripción personalizadas"
         other: "%{title} y %{count} otros tienen convenciones de transcripción personalizadas"
     edit_look:
-      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
-      alphabetize_works_description: La visualización funciona alfabéticamente en lugar de en orden de cantidad de trabajo restante.
+      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de obra necesario.
+      alphabetize_works_description: La visualización funciona alfabéticamente en lugar de en orden de cantidad de obra restante.
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       default_orientation_description: Elija la orientación que mejor se adapte a la mayoría de las obras de esta colección. Los usuarios podrán cambiar la orientación a la que prefieran.
       document_sets_description: Los conjuntos de documentos son subconjuntos de las obras en esta colección que se pueden utilizar para darle foco a un proyecto de edición o para crear una exposición pública sobre un enfoque particular de los documentos.
@@ -196,7 +196,7 @@ es:
       spellcheck_description: No apto para textos con ortografía irregular.
       upload_metadata: Subir metadatos
       user_download: Permitir a los usuarios descargar obras.
-      user_download_description: Agrega una pestaña Descargar visible para el usuario a cada trabajo, que permite a los usuarios exportar la transcripción del documento en formatos fáciles de usar para los investigadores, como Microsoft Word o PDF.
+      user_download_description: Agrega una pestaña Descargar visible para el usuario a cada obra, que permite a los usuarios exportar la transcripción del documento en formatos fáciles de usar para los investigadores, como Microsoft Word o PDF.
       voice_recognition: Voz a texto disponible para transcribir
       voice_recognition_description: Sólo disponible con el navegador web Chrome.
     edit_privacy:

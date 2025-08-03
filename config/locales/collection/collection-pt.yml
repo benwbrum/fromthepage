@@ -145,7 +145,7 @@ pt:
     edit_danger:
       active: Ativo
       blank_collection: Repor Coleção em Branco
-      blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outros trabalhos sobre a coleção, como se fosse recentemente importado.
+      blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outras obras sobre a coleção, como se fosse recentemente importado.
       clear_transcripts: Transcrições claras
       collection_active_description: Esta é uma coleção ativa. Tornar uma coleção inativa impede que os usuários editem o conteúdo da coleção. O status da coleção não afeta a configuração de privacidade da coleção.
       collection_inactive_description: Esta é uma coleção inativa. Ativar uma coleção permite que os usuários editem o conteúdo dessa coleção. O status da coleção não afeta a configuração de privacidade da coleção.
@@ -169,8 +169,8 @@ pt:
         one: "%{title} tem convenções de transcrição personalizadas"
         other: "%{title} e %{count} outros têm convenções de transcrição personalizadas"
     edit_look:
-      alphabetize_works: A exibição funciona em ordem alfabética e não na ordem do trabalho necessário.
-      alphabetize_works_description: A exibição funciona em ordem alfabética e não em ordem de quantidade de trabalho restante.
+      alphabetize_works: A exibição funciona em ordem alfabética e não na ordem da obra necessário.
+      alphabetize_works_description: A exibição funciona em ordem alfabética e não em ordem de quantidade de obra restante.
       default_orientation: Selecione a orientação da página predeterminada da transcrição
       default_orientation_description: Escolha a orientação que melhor corresponde à maioria das obras desta coleção. Os usuários poderão alterar a orientação para a que preferirem.
       document_sets_description: Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos.
@@ -182,7 +182,7 @@ pt:
       enable_spellcheck: Ativar verificação ortográfica (não é adequado para textos com ortografia irregular)
       forums_description: Permite que os colaboradores discutam tópicos entre si e com os proprietários do projeto por meio de painéis de mensagens.
       hide_completed: Automaticamente não mostrar as obras completadas
-      hide_completed_description: Oculte trabalhos totalmente transcritos ou traduzidos por padrão.
+      hide_completed_description: Oculte obras totalmente transcritos ou traduzidos por padrão.
       metadata: Metadados
       metadata_description: Carregue metadados para itens desta coleção em massa.
       metadata_facets_description: Permitir que os usuários naveguem por obras nesta coleção por meio de metadados.
@@ -196,7 +196,7 @@ pt:
       spellcheck_description: Não é adequado para textos com ortografia irregular.
       upload_metadata: Carregar metadados
       user_download: Permitir que os usuários baixem obras.
-      user_download_description: Adiciona uma guia de download visível ao usuário a cada trabalho, que permite aos usuários exportar a transcrição do documento em formatos fáceis de pesquisar, como Microsoft Word ou PDF.
+      user_download_description: Adiciona uma guia de download visível ao usuário a cada obra, que permite aos usuários exportar a transcrição do documento em formatos fáceis de pesquisar, como Microsoft Word ou PDF.
       voice_recognition: Voz para texto disponível para a transcrição
       voice_recognition_description: Disponível apenas com o navegador Chrome.
     edit_privacy:

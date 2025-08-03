@@ -156,7 +156,7 @@ pt:
       import_form_message: Usando este formulário, você pode importar as suas imagens de página para FromThePage. Você deve selecionar uma coleção de destino para importar e anexar um arquivo ZIP ou PDF contendo imagens de página para o seu projeto.
       page_image_guidelines: Diretrizes de imagem da página
       select_a_collection: "- Selecione uma coleção -"
-      to_specify_metadata: Para especificar metadados você pode fazer upload de uma planilha após o upload das imagens ou pode incluir um arquivo %{link} em cada pasta especificando os campos para o trabalho.
+      to_specify_metadata: Para especificar metadados você pode fazer upload de uma planilha após o upload das imagens ou pode incluir um arquivo %{link} em cada pasta especificando os campos para a obra.
       trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para fazer upgrade da sua conta.
       upload_file: Subir arquivo
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP

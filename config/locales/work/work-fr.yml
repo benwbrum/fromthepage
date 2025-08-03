@@ -2,7 +2,7 @@
 fr:
   work:
     configurable_printout:
-      description: Exportez ce travail dans un format imprimable
+      description: Exportez cette œuvre dans un format imprimable
       export: Exporter
       file_format: Format de fichier
       file_format_description: Type de fichier pour l'exportation imprimable
@@ -12,7 +12,7 @@ fr:
       include_notes: Inclure des notes
       preserve_linebreaks: Conserver les sauts de ligne
       text_contents: Contenu
-      text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur le travail.
+      text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur l'œuvre.
       text_format: Formatage du texte
       text_format_description: Options de mise en forme du texte.
       text_format_docx: MS Word (.docx)
@@ -85,7 +85,7 @@ fr:
       verbatim_plaintext_zero_index_description: Fichier zip contenant des fichiers en texte brut indexés à zéro, pouvant être importés en tant que données d'entraînement pour Transkribus.
       voyant: Voyant
       voyant_analysis_description: Envoyer la transcription de ce œuvre à un Voyant Tools pour analyse.
-      warning_work_not_complete: 'Attention : ce travail peut ne pas être complet.'
+      warning_work_not_complete: 'Attention : cette œuvre peut ne pas être complète.'
       word_trees: Word Trees
       word_trees_analysis_description: Envoyer la transcription de ce œuvre au visualiseur Word Trees de Jason Davies pour analyse.
       zip_export_only_project_owners: Formats d'exportation de fichiers zip accessibles uniquement aux propriétaires de projets.
@@ -146,7 +146,7 @@ fr:
       work_title: Titre de l'œuvre
     edit_scribes:
       remove_collaborator: Supprimer un collaborateur
-      work_collaborators: Collaborateurs de travail
+      work_collaborators: Collaborateurs d'œuvre
       work_collaborators_description: Les collaborateurs peuvent transcrire et éditer des œuvres privées.
     incomplete: Métadonnées incomplètes.
     metadata_overview:
