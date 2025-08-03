@@ -89,7 +89,8 @@ class DeedType
         PAGE_TRANSLATED,
         PAGE_TRANSLATION_EDIT,
         DESCRIBED_METADATA,
-        EDITED_METADATA
+        EDITED_METADATA,
+        WORK_ADDED
       ]
     end
 
