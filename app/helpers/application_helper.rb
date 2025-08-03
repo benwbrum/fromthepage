@@ -245,7 +245,7 @@ module ApplicationHelper
   end
 
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
-  def to_snippet(intro_block)
+  def to_snippet(intro_block, length: 300)
     return '' if intro_block.blank?
     
     begin
@@ -254,7 +254,7 @@ module ApplicationHelper
       doc.xpath('//style').each { |n| n.remove }
       # strip tags and truncate
       text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
-      truncate(text.to_s, length: 300, separator: ' ') || ''
+      truncate(text.to_s, length: length, separator: ' ') || ''
     rescue => e
       # If anything goes wrong, return empty string
       ''
@@ -276,5 +276,87 @@ module ApplicationHelper
       ['200', 200],
       [I18n.t('will_paginate.all'), -1]
     ]
+  end
+
+  # Social Media Metadata Helpers
+
+  def set_social_media_meta_tags(title:, description:, image_url: nil, url: nil, type: 'website')
+    content_for :og_title, title
+    content_for :og_description, description
+    content_for :og_type, type
+    content_for :og_url, url || (defined?(request) ? request.original_url : url)
+    
+    # Set image with fallback
+    if image_url.present?
+      content_for :og_image, absolute_url(image_url)
+      content_for :twitter_image, absolute_url(image_url)
+    else
+      # Try to get a default image, fall back gracefully
+      begin
+        if respond_to?(:asset_url) && defined?(request) && request.present?
+          default_image = asset_url('logo.png')
+        else
+          default_image = '/assets/logo.png'
+        end
+        content_for :og_image, absolute_url(default_image)
+        content_for :twitter_image, absolute_url(default_image)
+      rescue => e
+        # Skip image if we can't generate URLs
+        Rails.logger.debug "Failed to generate default social media image: #{e.message}" if defined?(Rails)
+      end
+    end
+    
+    # Twitter cards
+    content_for :twitter_card, 'summary_large_image'
+    content_for :twitter_title, title
+    content_for :twitter_description, description
+    
+    # Regular meta tags
+    content_for :meta_description, description
+    
+    # oEmbed discovery URLs - only if request is available
+    if defined?(request) && request.present?
+      oembed_base_url = "#{request.protocol}#{request.host_with_port}/oembed"
+      oembed_params = "?url=#{CGI.escape(url || request.original_url)}"
+      content_for :oembed_json_url, "#{oembed_base_url}#{oembed_params}&format=json"
+      content_for :oembed_xml_url, "#{oembed_base_url}#{oembed_params}&format=xml"
+    end
+  end
+
+  def collection_image_url(collection)
+    return nil unless collection&.picture.present?
+    absolute_url(collection.picture)
+  end
+
+  def work_image_url(work)
+    return nil unless work&.picture.present?
+    absolute_url(work.picture)
+  end
+
+  def page_image_url(page)
+    return nil unless page&.base_image.present?
+    absolute_url(page.base_image)
+  end
+
+  private
+
+  def absolute_url(url)
+    return url if url.blank? || url.start_with?('http')
+    
+    # Try to get request context, fallback to asset_url if available
+    begin
+      # Check if request is actually available and not just defined
+      if defined?(request) && request.present? && respond_to?(:request)
+        "#{request.protocol}#{request.host_with_port}#{url.start_with?('/') ? url : "/#{url}"}"
+      elsif respond_to?(:asset_url)
+        asset_url(url)
+      else
+        # When request is not available, return URL unchanged as fallback
+        url
+      end
+    rescue => e
+      # If all else fails, return the URL as-is
+      url
+    end
   end
 end

@@ -582,6 +582,8 @@ Fromthepage::Application.routes.draw do
     end
   end
 
+  # oEmbed endpoint for social media embedding
+  get '/oembed', to: 'oembed#show', as: :oembed
   # Sitemap routes for web crawlers
   get '/sitemap.xml', to: 'sitemap#index', format: :xml
   get '/sitemap_collections.xml', to: 'sitemap#collections', format: :xml
