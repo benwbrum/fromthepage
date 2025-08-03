@@ -460,6 +460,9 @@ describe "document sets", :order => :defined do
   end
 
   it "disables document sets", js: true do
+    # Ensure document sets are enabled initially
+    @collection.update!(supports_document_sets: true)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
@@ -470,6 +473,9 @@ describe "document sets", :order => :defined do
   end
 
   it "enables document sets", js: true do
+    # Ensure document sets are disabled initially  
+    @collection.update!(supports_document_sets: false)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
