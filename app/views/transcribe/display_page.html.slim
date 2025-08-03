@@ -29,7 +29,7 @@
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
-        -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
+        -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom'), 'vertical-rl' => t('.vertical_rl'), 'vertical-lr' => t('.vertical_lr') }
         dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
@@ -85,7 +85,7 @@
 
       -else
         -if @preview_xml
-          .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
+          .page-preview[*language_attrs(@collection) data-writing-mode="#{@collection.writing_mode}"] ==xml_to_html(@preview_xml)
 
         .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
           -if @work.scribes_can_edit_titles
@@ -93,7 +93,7 @@
               =f.label :title, t('.title'), class: 'a50'
               =f.text_field :title
           -if !@collection.field_based
-            =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
+            =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'), 'data-writing-mode': @collection.writing_mode)
             -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
             =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction, :height => '', :show_line_numbers => true} })
           -else
@@ -184,14 +184,14 @@ h2.legend =t('.notes_and_questions')
       var resizableSplitter = Object.create(ResizableSplitter);
 
       function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
-        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
-        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+        const leftPanel = (mode === 'ltr' || mode === 'ttb' || mode === 'vertical-lr')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb' || mode === 'vertical-lr')?'#rightColumn':'#leftColumn';
 
         if(resizableSplitter && resizableSplitter.destroy) {
           resizableSplitter.destroy()
         }
 
-        resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+        resizableSplitter[(mode === 'ltr' || mode === 'rtl' || mode === 'vertical-rl' || mode === 'vertical-lr')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
           onPositionChange: function (pos) {
             window.localStorage.setItem('splitterPos', pos)
 

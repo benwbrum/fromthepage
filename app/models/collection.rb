@@ -381,13 +381,37 @@ class Collection < ApplicationRecord
     Section.where(work_id: self.works.ids)
   end
 
+  module TextOrientation
+    HORIZONTAL_LTR = 'ltr'
+    HORIZONTAL_RTL = 'rtl'
+    VERTICAL_RL = 'vertical-rl'
+    VERTICAL_LR = 'vertical-lr'
+    
+    # Legacy values for backward compatibility
+    TOP_TO_BOTTOM = 'ttb'
+    BOTTOM_TO_TOP = 'btt'
+  end
+
   def default_orientation
     if !self[:default_orientation].nil?
       self[:default_orientation]
     elsif self[:field_based]
-      'ttb'
+      TextOrientation::TOP_TO_BOTTOM
     else
-      'ltr'
+      TextOrientation::HORIZONTAL_LTR
+    end
+  end
+  
+  def writing_mode
+    case default_orientation
+    when TextOrientation::VERTICAL_RL, TextOrientation::TOP_TO_BOTTOM
+      'vertical-rl'
+    when TextOrientation::VERTICAL_LR
+      'vertical-lr'
+    when TextOrientation::HORIZONTAL_RTL
+      'horizontal-tb'
+    else
+      'horizontal-tb'
     end
   end
 

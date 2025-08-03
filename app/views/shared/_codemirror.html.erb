@@ -151,6 +151,11 @@
 
   // give codeMirror with class of respective text direction
   myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
+  
+  <% if defined?(@collection) && @collection&.writing_mode %>
+  // Add writing mode class for vertical text support
+  myCodeMirror.getWrapperElement().classList.add("<%= @collection.writing_mode %>");
+  <% end %>
 
   if("<%= height %>") {
     myCodeMirror.getWrapperElement().style.maxHeight = "<%= height %>px";

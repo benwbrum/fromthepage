@@ -225,4 +225,57 @@ describe Collection do
       end
     end
   end
+
+  describe '#default_orientation' do
+    context 'when default_orientation is explicitly set' do
+      it 'returns the set value' do
+        collection = build(:collection, default_orientation: 'vertical-rl')
+        expect(collection.default_orientation).to eq('vertical-rl')
+      end
+    end
+
+    context 'when default_orientation is not set' do
+      it 'returns ttb for field_based collections' do
+        collection = build(:collection, field_based: true, default_orientation: nil)
+        expect(collection.default_orientation).to eq('ttb')
+      end
+
+      it 'returns ltr for non-field_based collections' do
+        collection = build(:collection, field_based: false, default_orientation: nil)
+        expect(collection.default_orientation).to eq('ltr')
+      end
+    end
+  end
+
+  describe '#writing_mode' do
+    it 'returns vertical-rl for vertical-rl orientation' do
+      collection = build(:collection, default_orientation: 'vertical-rl')
+      expect(collection.writing_mode).to eq('vertical-rl')
+    end
+
+    it 'returns vertical-lr for vertical-lr orientation' do
+      collection = build(:collection, default_orientation: 'vertical-lr')
+      expect(collection.writing_mode).to eq('vertical-lr')
+    end
+
+    it 'returns vertical-rl for legacy ttb orientation' do
+      collection = build(:collection, default_orientation: 'ttb')
+      expect(collection.writing_mode).to eq('vertical-rl')
+    end
+
+    it 'returns horizontal-tb for rtl orientation' do
+      collection = build(:collection, default_orientation: 'rtl')
+      expect(collection.writing_mode).to eq('horizontal-tb')
+    end
+
+    it 'returns horizontal-tb for ltr orientation' do
+      collection = build(:collection, default_orientation: 'ltr')
+      expect(collection.writing_mode).to eq('horizontal-tb')
+    end
+
+    it 'returns horizontal-tb for nil orientation' do
+      collection = build(:collection, default_orientation: nil)
+      expect(collection.writing_mode).to eq('horizontal-tb')
+    end
+  end
 end
