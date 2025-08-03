@@ -360,28 +360,7 @@ class Work < ApplicationRecord
       .update_all(collection_id: collection_id)
   end
 
-  # TODO make not awful
-  def reviews
-    my_reviews = []
-    for page in self.pages
-      for comment in page.comments
-        my_reviews << comment if comment.comment_type == "review"
-      end
-    end
-    return my_reviews
-  end
 
-  # TODO make not awful (denormalize work_id, collection_id; use legitimate finds)
-  def recent_annotations
-    my_annotations = []
-    for page in self.pages
-      for comment in page.comments
-        my_annotations << comment if comment.comment_type == "annotation"
-      end
-    end
-    my_annotations.sort! { |a, b| b.created_at <=> a.created_at }
-    return my_annotations[0..9]
-  end
 
   def update_statistic(changed_page = nil) #association callbacks pass the page being added/removed, but we don't care
     self.work_statistic = WorkStatistic.new unless self.work_statistic
