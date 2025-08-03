@@ -387,40 +387,39 @@ describe "collection spec (isolated)" do
       click_link('Disable OCR')
       expect(page).to have_content("OCR correction has been disabled for all works.")
     end
-  end
 
-  it "configures text orientation settings", js: true do
-    login_as(@owner, :scope => :user)
-    visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    page.find('.side-tabs').click_link("Task Configuration")
+    it "configures text orientation settings", js: true do
+      collection = create(:collection, owner: @owner)
+      visit edit_collection_path(@owner, collection)
+      page.find('.side-tabs').click_link("Task Configuration")
 
-    # Check that the text orientation field exists
-    expect(page).to have_select('collection[default_orientation]')
-    
-    # Test setting to vertical right-to-left
-    select 'Vertical (Top-to-Bottom, Right-to-Left)', from: 'collection[default_orientation]'
-    page.click_button('Save')
+      # Check that the text orientation field exists
+      expect(page).to have_select('collection[default_orientation]')
+      
+      # Test setting to vertical right-to-left
+      select 'Vertical (Top-to-Bottom, Right-to-Left)', from: 'collection[default_orientation]'
+      page.click_button('Save Changes')
 
-    @collection.reload
-    expect(@collection.default_orientation).to eq('vertical-rl')
-    expect(@collection.writing_mode).to eq('vertical-rl')
+      collection.reload
+      expect(collection.default_orientation).to eq('vertical-rl')
+      expect(collection.writing_mode).to eq('vertical-rl')
 
-    # Test setting to vertical left-to-right  
-    select 'Vertical (Top-to-Bottom, Left-to-Right)', from: 'collection[default_orientation]'
-    page.click_button('Save')
+      # Test setting to vertical left-to-right  
+      select 'Vertical (Top-to-Bottom, Left-to-Right)', from: 'collection[default_orientation]'
+      page.click_button('Save Changes')
 
-    @collection.reload
-    expect(@collection.default_orientation).to eq('vertical-lr')
-    expect(@collection.writing_mode).to eq('vertical-lr')
+      collection.reload
+      expect(collection.default_orientation).to eq('vertical-lr')
+      expect(collection.writing_mode).to eq('vertical-lr')
 
-    # Test setting back to horizontal
-    select 'Horizontal (Left-to-Right)', from: 'collection[default_orientation]'
-    page.click_button('Save')
+      # Test setting back to horizontal
+      select 'Horizontal (Left-to-Right)', from: 'collection[default_orientation]'
+      page.click_button('Save Changes')
 
-    @collection.reload
-    expect(@collection.default_orientation).to eq('ltr')
-    expect(@collection.writing_mode).to eq('horizontal-tb')
+      collection.reload
+      expect(collection.default_orientation).to eq('ltr')
+      expect(collection.writing_mode).to eq('horizontal-tb')
+    end
   end
 
   after :all do
