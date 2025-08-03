@@ -23,6 +23,8 @@ describe ApplicationHelper do
       )
       allow(helper).to receive(:request).and_return(request_double)
       allow(helper).to receive(:content_for)
+      # Allow both respond_to? calls that might be made
+      allow(helper).to receive(:respond_to?).with(:request).and_return(true)
       allow(helper).to receive(:respond_to?).with(:asset_url).and_return(true)
       allow(helper).to receive(:asset_url).with('logo.png').and_return('/assets/logo-123.png')
     end
@@ -149,6 +151,9 @@ describe ApplicationHelper do
         present?: true
       )
       allow(helper).to receive(:request).and_return(request_double)
+      # Allow both respond_to? calls that might be made
+      allow(helper).to receive(:respond_to?).with(:request).and_return(true)
+      allow(helper).to receive(:respond_to?).with(:asset_url).and_return(true)
     end
 
     it 'returns blank for blank URL' do
@@ -175,6 +180,7 @@ describe ApplicationHelper do
 
     it 'falls back gracefully when request is not available' do
       allow(helper).to receive(:defined?).with(:request).and_return(false)
+      allow(helper).to receive(:respond_to?).with(:request).and_return(false)
       allow(helper).to receive(:respond_to?).with(:asset_url).and_return(false)
       
       relative_url = '/path/to/image.jpg'
