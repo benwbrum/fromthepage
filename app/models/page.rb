@@ -744,7 +744,21 @@ class Page < ApplicationRecord
     doc = Nokogiri::XML(source)
     doc.xpath("//link").each { |n| n.replace(n['target_title'])}
     doc.xpath("//abbr").each { |n| n.replace(n['expan'])}
-    formatted_plaintext_doc(doc)
+    emended_plaintext_doc(doc)
+  end
+
+  def emended_plaintext_doc(doc)
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
+    # For emended exports, join hyphenated words by removing soft line breaks entirely
+    # This provides a "modernized" reading experience while verbatim exports preserve original formatting
+    doc.xpath("//lb[@break='no']").each { |n| n.replace("") }
+    doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
+    doc.xpath("//lb").each { |n| n.replace("\n")}
+    doc.xpath("//br").each { |n| n.replace("\n")}
+    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//footnote").each { |n| n.replace('')}
+
+    doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
   end
 
   def formatted_plaintext(source)
