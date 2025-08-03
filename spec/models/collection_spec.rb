@@ -249,32 +249,32 @@ describe Collection do
 
   describe '#writing_mode' do
     it 'returns vertical-rl for vertical-rl orientation' do
-      collection = build(:collection, default_orientation: 'vertical-rl')
+      collection = build(:collection, text_orientation: 'vertical-rl')
       expect(collection.writing_mode).to eq('vertical-rl')
     end
 
     it 'returns vertical-lr for vertical-lr orientation' do
-      collection = build(:collection, default_orientation: 'vertical-lr')
+      collection = build(:collection, text_orientation: 'vertical-lr')
       expect(collection.writing_mode).to eq('vertical-lr')
     end
 
     it 'returns vertical-rl for legacy ttb orientation' do
-      collection = build(:collection, default_orientation: 'ttb')
+      collection = build(:collection, text_orientation: 'ttb')
       expect(collection.writing_mode).to eq('vertical-rl')
     end
 
     it 'returns horizontal-tb for rtl orientation' do
-      collection = build(:collection, default_orientation: 'rtl')
+      collection = build(:collection, text_orientation: 'rtl')
       expect(collection.writing_mode).to eq('horizontal-tb')
     end
 
     it 'returns horizontal-tb for ltr orientation' do
-      collection = build(:collection, default_orientation: 'ltr')
+      collection = build(:collection, text_orientation: 'ltr')
       expect(collection.writing_mode).to eq('horizontal-tb')
     end
 
     it 'returns horizontal-tb for nil orientation' do
-      collection = build(:collection, default_orientation: nil)
+      collection = build(:collection, text_orientation: nil)
       expect(collection.writing_mode).to eq('horizontal-tb')
     end
   end

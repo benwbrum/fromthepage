@@ -394,30 +394,30 @@ describe "collection spec (isolated)" do
       page.find('.side-tabs').click_link("Task Configuration")
 
       # Check that the text orientation field exists
-      expect(page).to have_select('collection[default_orientation]')
+      expect(page).to have_select('collection[text_orientation]')
       
       # Test setting to vertical right-to-left
-      select 'Vertical (Top-to-Bottom, Right-to-Left)', from: 'collection[default_orientation]'
+      select 'Vertical (Top-to-Bottom, Right-to-Left)', from: 'collection[text_orientation]'
       page.click_button('Save Changes')
 
       collection.reload
-      expect(collection.default_orientation).to eq('vertical-rl')
+      expect(collection.text_orientation).to eq('vertical-rl')
       expect(collection.writing_mode).to eq('vertical-rl')
 
       # Test setting to vertical left-to-right  
-      select 'Vertical (Top-to-Bottom, Left-to-Right)', from: 'collection[default_orientation]'
+      select 'Vertical (Top-to-Bottom, Left-to-Right)', from: 'collection[text_orientation]'
       page.click_button('Save Changes')
 
       collection.reload
-      expect(collection.default_orientation).to eq('vertical-lr')
+      expect(collection.text_orientation).to eq('vertical-lr')
       expect(collection.writing_mode).to eq('vertical-lr')
 
       # Test setting back to horizontal
-      select 'Horizontal (Left-to-Right)', from: 'collection[default_orientation]'
+      select 'Horizontal (Left-to-Right)', from: 'collection[text_orientation]'
       page.click_button('Save Changes')
 
       collection.reload
-      expect(collection.default_orientation).to eq('ltr')
+      expect(collection.text_orientation).to eq('ltr')
       expect(collection.writing_mode).to eq('horizontal-tb')
     end
   end

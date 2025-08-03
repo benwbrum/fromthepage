@@ -800,6 +800,7 @@ class CollectionController < ApplicationController
       :hide_completed,
       :text_language,
       :default_orientation,
+      :text_orientation,
       :voice_recognition,
       :picture,
       :user_download,

@@ -392,9 +392,9 @@ class Collection < ApplicationRecord
     BOTTOM_TO_TOP = 'btt'
   end
 
-  def default_orientation
-    if !self[:default_orientation].nil?
-      self[:default_orientation]
+  def text_orientation
+    if !self[:text_orientation].nil?
+      self[:text_orientation]
     elsif self[:field_based]
       TextOrientation::TOP_TO_BOTTOM
     else
@@ -403,7 +403,7 @@ class Collection < ApplicationRecord
   end
   
   def writing_mode
-    case default_orientation
+    case text_orientation
     when TextOrientation::VERTICAL_RL, TextOrientation::TOP_TO_BOTTOM
       'vertical-rl'
     when TextOrientation::VERTICAL_LR

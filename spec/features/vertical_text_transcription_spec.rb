@@ -13,7 +13,7 @@ describe "vertical text transcription", :order => :defined do
 
   it "applies vertical writing mode CSS classes for vertical-rl orientation", js: true do
     # Set collection to vertical-rl orientation
-    @collection.update(default_orientation: 'vertical-rl')
+    @collection.update(text_orientation: 'vertical-rl')
     
     login_as(@owner, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
@@ -32,7 +32,7 @@ describe "vertical text transcription", :order => :defined do
 
   it "applies vertical writing mode CSS classes for vertical-lr orientation", js: true do
     # Set collection to vertical-lr orientation
-    @collection.update(default_orientation: 'vertical-lr')
+    @collection.update(text_orientation: 'vertical-lr')
     
     login_as(@owner, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
@@ -50,7 +50,7 @@ describe "vertical text transcription", :order => :defined do
 
   it "applies horizontal writing mode for standard orientations", js: true do
     # Set collection to standard ltr orientation
-    @collection.update(default_orientation: 'ltr')
+    @collection.update(text_orientation: 'ltr')
     
     login_as(@owner, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
@@ -67,7 +67,7 @@ describe "vertical text transcription", :order => :defined do
   end
 
   it "includes vertical layout options in the layout dropdown", js: true do
-    @collection.update(default_orientation: 'vertical-rl')
+    @collection.update(text_orientation: 'vertical-rl')
     
     login_as(@owner, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
@@ -82,6 +82,6 @@ describe "vertical text transcription", :order => :defined do
 
   after :all do
     # Reset collection orientation
-    @collection.update(default_orientation: 'ltr')
+    @collection.update(text_orientation: 'ltr')
   end
 end
