@@ -670,10 +670,17 @@ class CollectionController < ApplicationController
     # Check if we're filtering by a specific user
     @selected_user_id = params[:user_id]
     if @selected_user_id.present?
-      @selected_user = User.find(@selected_user_id)
-      
-      # Show individual user statistics
-      single_user_contributors(@collection, start_date, end_date, @selected_user)
+      begin
+        @selected_user = User.find(@selected_user_id)
+        
+        # Show individual user statistics
+        single_user_contributors(@collection, start_date, end_date, @selected_user)
+      rescue ActiveRecord::RecordNotFound
+        # If user not found, fall back to showing all users
+        @selected_user_id = nil
+        @selected_user = nil
+        new_contributors(@collection, start_date, end_date)
+      end
     else
       # Show all contributors (existing functionality)
       new_contributors(@collection, start_date, end_date)

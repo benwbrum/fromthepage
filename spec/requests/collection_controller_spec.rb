@@ -146,6 +146,16 @@ describe CollectionController do
       expect(assigns(:start_deed)).to eq('Jan 01, 2024')
       expect(assigns(:end_deed)).to eq('Jan 31, 2024')
     end
+
+    it 'handles invalid user_id gracefully' do
+      login_as owner
+      get action_path, params: { user_id: 99999 }
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template('contributors')
+      expect(assigns(:selected_user_id)).to be_nil
+      expect(assigns(:selected_user)).to be_nil
+    end
   end
 
   describe '#edit' do

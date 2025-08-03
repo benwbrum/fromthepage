@@ -8,31 +8,26 @@ h4.normargin =t('.select_new_date')
 =form_tag(contributors_collection_path(@collection.owner, @collection), method: "get") do
   =hidden_field_tag(:collection_id, @collection)
   
-  .form-row
-    .form-group
-      =label_tag(:user_id, "Select User (optional):")
-      =select_tag 'user_id', options_for_select([['All Users', '']] + (@selected_user ? [[@selected_user.display_name, @selected_user.id]] : [])), \
-        include_blank: false, \
-        data: { \
-          controller: 'select2', \
-          select2_placeholder_value: 'Search for a specific user...', \
-          select2_ajax_url_value: collection_search_users_path(collection_id: @collection.slug, user_type: :contributor), \
-          select2_allow_clear_value: true }
+  .form-group(style="margin-bottom: 15px;")
+    =label_tag(:user_id, "Select User (optional):", style: "display: block; margin-bottom: 5px;")
+    =select_tag 'user_id', options_for_select([['All Users', '']] + (@selected_user ? [[@selected_user.display_name, @selected_user.id]] : [])), \
+      include_blank: false, \
+      style: "width: 50%; margin-bottom: 10px;", \
+      data: { \
+        controller: 'select2', \
+        select2_placeholder_value: 'Search for a specific user...', \
+        select2_ajax_url_value: collection_search_users_path(collection_id: @collection.slug, user_type: :contributor), \
+        select2_allow_clear_value: true }
   
-  .form-row
-    .form-group
-      =label_tag(:start_date, t('.start_date'))
-      |
-      =text_field_tag(:start_date, @start_deed, style: "width:30%")
-      |
-      =label_tag(:end_date, t('.end_date'))
-      |
-      =text_field_tag(:end_date, @end_deed, style: "width:30%")
-      |
-      =submit_tag(t('.update'))
+  .form-group
+    =label_tag(:start_date, t('.start_date'), style: "margin-right: 10px;")
+    =text_field_tag(:start_date, @start_deed, style: "width:30%; margin-right: 20px;")
+    =label_tag(:end_date, t('.end_date'), style: "margin-right: 10px;")
+    =text_field_tag(:end_date, @end_deed, style: "width:30%; margin-right: 20px;")
+    =submit_tag(t('.update'))
 br/
 
--if @selected_user_id.present?
+-if @selected_user_id.present? && @selected_user
   h3 = "Statistics for #{@selected_user.display_name}"
   p
     strong Total time: 
@@ -42,7 +37,7 @@ br/
       | No recorded time for this period
       
   -unless @collection_deeds.empty?
-    h4 Activity Details
+    h4 Activity Details (#{@collection_deeds.count} activities)
     table.datagrid.striped(style="width:100%")
       thead
         tr
@@ -50,7 +45,7 @@ br/
           th Activity
           th Page/Work
       tbody
-        -@collection_deeds.order(created_at: :desc).each do |deed|
+        -@collection_deeds.order(created_at: :desc).limit(50).each do |deed|
           tr
             td= deed.created_at.strftime('%m/%d/%Y %H:%M')
             td= deed.deed_type.humanize
@@ -62,6 +57,9 @@ br/
                 = link_to deed.work.title, collection_read_work_path(deed.collection.owner, deed.collection, deed.work)
               -else
                 | Collection activity
+    -if @collection_deeds.count > 50
+      p
+        em Showing most recent 50 activities. Total: #{@collection_deeds.count} activities.
   -else
     p No activity found for this user in the selected time period.
 -else
