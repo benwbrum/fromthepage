@@ -22,7 +22,10 @@
             td
               -if bulk_export.collection.present?
                 p.fgfaded(data-prefix=t('.collection'))
-                  =link_to(bulk_export.collection.title, collection_url(bulk_export.collection.owner, bulk_export.collection))
+                  -if bulk_export.collection.owner.present?
+                    =link_to(bulk_export.collection.title, collection_url(bulk_export.collection.owner, bulk_export.collection))
+                  -else
+                    =bulk_export.collection.title
               .small.fgfaded(data-prefix=t('.file_name'))
                 =bulk_export.zip_file_name
             td.nowrap
