@@ -20,7 +20,7 @@
               div =link_to bulk_export.user.login, user_profile_path(bulk_export.user)
               small =bulk_export.user.email
             td
-              -if bulk_export.collection.present?
+              -if bulk_export.collection.present? && bulk_export.collection.owner.present?
                 p.fgfaded(data-prefix=t('.collection'))
                   =link_to(bulk_export.collection.title, collection_url(bulk_export.collection.owner, bulk_export.collection))
               .small.fgfaded(data-prefix=t('.file_name'))
