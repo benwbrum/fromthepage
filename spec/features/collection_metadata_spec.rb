@@ -161,6 +161,10 @@ describe "collection metadata", :order => :defined do
     old_account_type=@user.account_type
     @user.account_type='Individual Researcher'
     @user.save
+    
+    # Clear any existing collections for this user to ensure Individual Researcher limit works
+    @user.all_owner_collections.destroy_all
+    
     login_as @user
     
     # Create a collection owned by @user to test Individual Researcher restrictions

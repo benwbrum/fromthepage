@@ -463,7 +463,7 @@ describe "document sets", :order => :defined do
     # Ensure document sets are enabled initially
     @collection.update!(supports_document_sets: true)
     # Ensure owner has right account type to see document sets option
-    @owner.update!(account_type: 'Standard') unless @owner.account_type.nil? || @owner.account_type == 'Individual Researcher'
+    @owner.update!(account_type: 'Standard')
     
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
@@ -478,7 +478,7 @@ describe "document sets", :order => :defined do
     # Ensure document sets are disabled initially  
     @collection.update!(supports_document_sets: false)
     # Ensure owner has right account type to see document sets option
-    @owner.update!(account_type: 'Standard') unless @owner.account_type.nil? || @owner.account_type == 'Individual Researcher'
+    @owner.update!(account_type: 'Standard')
     
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
