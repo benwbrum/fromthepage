@@ -2,7 +2,7 @@ collection_1:
   id: 1
   title: CS Pierce
   owner_user_id: 4
-  intro_block: 'This is the CS Pierce Collection'
+  intro_block: 'This is the CS Pierce Collection for testing'
   footer_block: Collection Footer
   restricted: false
   picture: 'pierce.jpg'
@@ -13,6 +13,7 @@ collection_1:
   subjects_disabled: false
   slug: cs-pierce
   review_type: optional
+  featured_at: <%= 1.week.ago.to_s :db %>
 collection_2:
   id: 2
   title: Imported Collection

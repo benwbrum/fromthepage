@@ -128,19 +128,6 @@ describe 'guest user actions' do
   it 'looks at the landing page', :guest_enabled do
     CollectionStatistic.update_recent_statistics
     visit landing_page_path
-    
-    # Debug: Check what's actually on the page
-    puts "DEBUG: Page title: #{page.title}"
-    puts "DEBUG: @owner: #{@owner.inspect}"
-    puts "DEBUG: @owner.display_name: #{@owner.display_name}"
-    puts "DEBUG: Page has .maincol: #{page.has_css?('.maincol')}"
-    if page.has_css?('.maincol')
-      maincol_content = page.find('.maincol').text
-      puts "DEBUG: .maincol content: #{maincol_content[0..200]}..."
-      puts "DEBUG: .maincol has any links: #{page.find('.maincol').has_css?('a')}"
-      puts "DEBUG: .maincol links: #{page.find('.maincol').all('a').map(&:text).join(', ')}"
-    end
-    
     expect(page.find('.maincol')).to have_link(@owner.display_name)
     page.find('.maincol').first('a', text: @owner.display_name).click
     expect(page.find('.maincol')).not_to have_content(@admin.display_name)
