@@ -75,6 +75,19 @@ describe StatisticsController, type: :request do
       expect(result[0][1]).to eq(2)
     end
 
+    it 'handles edge case where user is deleted between queries' do
+      # This tests the filter_map logic that handles nil users
+      allow(User).to receive(:where).with(id: anything).and_return(
+        # Mock a scenario where one user is not found
+        double(index_by: { @user2.id => @user2 })
+      )
+      
+      result = controller.send(:build_user_array, DeedType::PAGE_TRANSCRIPTION)
+      
+      # Should only include users that were actually found
+      expect(result.all? { |user, count| user.present? }).to be(true)
+    end
+
     it 'returns actual User objects with expected methods' do
       result = controller.send(:build_user_array, DeedType::PAGE_TRANSCRIPTION)
       

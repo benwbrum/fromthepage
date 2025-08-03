@@ -25,12 +25,19 @@ class StatisticsController < ApplicationController
                       .order('count_id desc')
                       .count('deeds.id')
     
+    # Return empty array if no deeds found
+    return [] if deed_counts.empty?
+    
     # Only load the specific users who have deeds (much more efficient than User.all)
     user_ids = deed_counts.keys
     users_by_id = User.where(id: user_ids).index_by(&:id)
     
     # Build the result array with actual User objects and their counts
-    deed_counts.map { |user_id, count| [users_by_id[user_id], count] }
+    # Filter out any nil users (in case a user was deleted between queries)
+    deed_counts.filter_map { |user_id, count| 
+      user = users_by_id[user_id]
+      [user, count] if user
+    }
   end
 
 end
