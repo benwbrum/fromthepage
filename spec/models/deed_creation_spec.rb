@@ -14,6 +14,24 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     collection.save!
   end
 
+  after do
+    # Clean up any deeds created during tests to avoid interfering with other tests
+    # This follows the same pattern as the existing deed_spec.rb test
+    created_deed_ids.each { |id| Deed.destroy(id) } if defined?(@created_deed_ids)
+    user.destroy if user.persisted?
+    collection.destroy if collection.persisted?
+  end
+
+  def created_deed_ids
+    @created_deed_ids ||= []
+  end
+
+  def track_deed(deed)
+    @created_deed_ids ||= []
+    @created_deed_ids << deed.id if deed.persisted?
+    deed
+  end
+
   describe "WORK_ADDED deed type inclusion" do
     it "includes WORK_ADDED in all_types" do
       expect(DeedType.all_types).to include(DeedType::WORK_ADDED)
@@ -40,6 +58,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
         deed.collection = work.collection
         deed.user = work.owner
         deed.save!
+        track_deed(deed)
       }.to change(Deed, :count).by(1)
 
       saved_deed = Deed.last
@@ -47,6 +66,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       expect(saved_deed.user).to eq(user)
       expect(saved_deed.collection).to eq(collection)
       expect(saved_deed.work).to eq(work)
+      work.destroy
     end
   end
 
@@ -61,10 +81,12 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       }.to change(Deed, :count).by(1)
 
       deed = Deed.last
+      track_deed(deed)
       expect(deed.deed_type).to eq(DeedType::WORK_ADDED)
       expect(deed.user).to eq(user)
       expect(deed.collection).to eq(collection)
       expect(deed.work).to eq(work)
+      work.destroy
     end
   end
 
@@ -79,10 +101,12 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       }.to change(Deed, :count).by(1)
 
       deed = Deed.last
+      track_deed(deed)
       expect(deed.deed_type).to eq(DeedType::WORK_ADDED)
       expect(deed.user).to eq(user)
       expect(deed.collection).to eq(collection)
       expect(deed.work).to eq(work)
+      work.destroy
     end
   end
 
@@ -109,6 +133,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
         deed.collection = work.collection
         deed.user = work.owner
         deed.save!
+        track_deed(deed)
       }.to change(Deed, :count).by(1)
 
       deed = Deed.last
@@ -116,6 +141,9 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       expect(deed.user).to eq(user)
       expect(deed.collection).to eq(target_collection)
       expect(deed.work).to eq(work)
+      
+      work.destroy
+      target_collection.destroy
     end
   end
 
@@ -129,8 +157,10 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
+      track_deed(deed)
       
       expect(deed.is_public).to be true
+      work.destroy
     end
 
     it "marks deed as private when collection is restricted" do
@@ -142,8 +172,10 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
+      track_deed(deed)
       
       expect(deed.is_public).to be false
+      work.destroy
     end
   end
 
@@ -154,11 +186,13 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
+      track_deed(deed)
       
       collection_deed_types = DeedType.collection_edits
       filtered_deeds = collection.deeds.where(deed_type: collection_deed_types)
       
       expect(filtered_deeds).to include(deed)
+      work.destroy
     end
   end
 end
