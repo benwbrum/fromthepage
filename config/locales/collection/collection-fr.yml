@@ -6,7 +6,7 @@ fr:
     blank_collection:
       notice: La collection a été réinitialisée.
     collection_works:
-      all_works: Tous les travaux
+      all_works: Toutes les œuvres
       collaboration: Collaboration
       most_recent_activity: Activité la plus récente
       n_pages:
@@ -145,7 +145,7 @@ fr:
     edit_danger:
       active: Actif
       blank_collection: Effacer collection
-      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres œuvres sur la collection, comme si elle venait d'être importée.
       clear_transcripts: Transcriptions claires
       collection_active_description: Il s'agit d'une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas les paramètres de confidentialité de la collection.
       collection_inactive_description: Il s'agit d'une collection inactive. Rendre une collection active permet aux utilisateurs de modifier le contenu de cette collection. L'état de la collection n'affecte pas les paramètres de confidentialité de la collection.
@@ -169,7 +169,7 @@ fr:
         one: "%{title} a des conventions de transcription personnalisées"
         other: "%{title} et %{count} autres ont des conventions de transcription personnalisées"
     edit_look:
-      alphabetize_works: L'affichage fonctionne par ordre alphabétique plutôt que par ordre de travail nécessaire.
+      alphabetize_works: L'affichage fonctionne par ordre alphabétique plutôt que par ordre d'œuvre nécessaire.
       alphabetize_works_description: L’affichage fonctionne par ordre alphabétique plutôt que par ordre de quantité de travail restant.
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       default_orientation_description: Choisissez l'orientation qui correspond le mieux à la majorité des œuvres de cette collection. Les utilisateurs pourront modifier l'orientation selon celle qu'ils préfèrent.
@@ -196,7 +196,7 @@ fr:
       spellcheck_description: Ne convient pas aux textes à l'orthographe irrégulière.
       upload_metadata: Télécharger les métadonnées
       user_download: Autoriser les utilisateurs à télécharger des œuvres.
-      user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque travail, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
+      user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque œuvre, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
       voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
       voice_recognition_description: Disponible uniquement avec le navigateur Web Chrome.
     edit_privacy:
@@ -331,7 +331,7 @@ fr:
       review: Révision
       user: Utilisateur
     restrict_scribes:
-      success: Les travaux terminés ont été restreints avec succès
+      success: Les œuvres terminées ont été restreintes avec succès
     reviewer_dashboard:
       one_off_contributions: Contributions uniques
       pages_needing_review: Pages à réviser
