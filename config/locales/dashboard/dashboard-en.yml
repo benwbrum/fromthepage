@@ -8,8 +8,6 @@ en:
       collections: Collections
       meta_description: You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age.
       recent_activity: Recent Activity
-    create_work:
-      work_created: Work created successfully
     editor:
       activity_stream: Activity Stream
       article_in_the_work: "%{article} article in the %{collection} collection"
@@ -21,15 +19,7 @@ en:
       your_recent_page_edits: Your Recent Page Edits
     editor_header:
       your_projects: Your Projects
-    empty:
-      add_new_collection: Add New Collection
-      create_empty_work: Create Empty Work
-      create_empty_work_description: Use this option to create an empty work. You can then upload individual page images into the work.
-      create_work: Create Work
-      description: Description
-      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
-      select_a_collection: "- Select a collection -"
-      title: Title
+
     exports:
       admin_searches: Searches
       bulk_exports_description: This lists all bulk exports you have run. Exports are cleaned after a few days, and are no longer available for download

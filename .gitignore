@@ -64,3 +64,4 @@ config/environments/*.local.yml
 .editorconfig
 
 index-state.json
+vendor/bundle/

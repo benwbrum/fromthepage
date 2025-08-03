@@ -8,8 +8,6 @@ es:
       collections: Colecciones
       meta_description: Eres libre de elegir entre los muchos proyectos interesantes disponibles en FromThePage. Puedes comenzar leyendo los escritos históricos que ya han sido transcritos por otros miembros. Te invitamos a colaborar en uno de los grandes proyectos de la era digital.
       recent_activity: Actividad reciente
-    create_work:
-      work_created: La obra ha sido creada exitosamente
     editor:
       activity_stream: Últimas acciones
       article_in_the_work: Artículo %{article} en la colección %{collection}
@@ -21,15 +19,7 @@ es:
       your_recent_page_edits: Tus ediciones recientes de la página
     editor_header:
       your_projects: Tus Proyectos
-    empty:
-      add_new_collection: Agregar nueva colección
-      create_empty_work: Crear obra vacío
-      create_empty_work_description: Utilice esta opción para crear una obra vacía. A continuación, puede cargar imágenes de páginas individuales en la obra.
-      create_work: Crear obra
-      description: Descripción
-      description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
-      select_a_collection: "- Seleccione una colección -"
-      title: Título
+
     exports:
       admin_searches: Búsquedas
       bulk_exports_description: Aquí se enumeran todas las exportaciones masivas que ha realizado. Las exportaciones se limpian después de unos días y ya no están disponibles para descargar

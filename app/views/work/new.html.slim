@@ -1,8 +1,6 @@
 .litebox-embed(style="width:550px")
-  h1= t('.create_empty_work')
+  h1 Create Work
   p= t('.work_description')
-  -start_project = link_to t('.start_a_project'), dashboard_startproject_path
-  p= t('.create_empty_work_description', start_project: (start_project))
   =form_for(@work, { :url => work_path }) do |f|
     =validation_summary @work.errors
     table.form
@@ -18,4 +16,4 @@
           br: i =t('.description_message')
           =f.text_area :description, rows: 4
     .toolbar
-      .toolbar_group.aright =f.button t('.create_work')
+      .toolbar_group.aright =f.button "Create Work"

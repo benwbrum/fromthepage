@@ -8,8 +8,6 @@ de:
       collections: Sammlungen
       meta_description: Wählen Sie frei aus den vielen interessanten Projekten, die auf FromThePage gehostet werden. Lesen Sie zuerst historische Schriften, die bereits von anderen Mitgliedern transkribiert wurden. Gerne können Sie einem der tollen Projekte dabei helfen, ins digitale Zeitalter zu kommen.
       recent_activity: Kürzliche Aktivitäten
-    create_work:
-      work_created: Werk erfolgreich erstellt
     editor:
       activity_stream: Aktivitätenüberblick
       article_in_the_work: "%{article}-Entität in der %{collection}-Sammlung"
@@ -21,15 +19,6 @@ de:
       your_recent_page_edits: Ihre letzten Seitenbearbeitungen
     editor_header:
       your_projects: Ihre Projekte
-    empty:
-      add_new_collection: Neue Sammlung hinzufügen
-      create_empty_work: Leeres Werk erstellen
-      create_empty_work_description: Verwenden Sie diese Option, um ein leeres Werk zu erstellen. Sie können dann einzelne Faksimiles in das Werk hochladen.
-      create_work: Werk erstellen
-      description: Beschreibung
-      description_message: Die Beschreibung wird auf der Projektübersichtsseite und in der Projektinfo angezeigt. Ein abgekürzter Teil der Beschreibung wird auf dem Startbildschirm der Organisation und unter „Projekt suchen“ angezeigt.
-      select_a_collection: "- Wählen Sie eine Sammlung aus -"
-      title: Titel
     exports:
       admin_searches: Suchen
       bulk_exports_description: Hier werden alle von ihnen ausgeführten Sammelexporte aufgelistet. Exporte werden nach einigen Tagen bereinigt und stehen nicht mehr zum Download zur Verfügung.
