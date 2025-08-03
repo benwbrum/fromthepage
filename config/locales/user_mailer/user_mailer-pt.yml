@@ -37,6 +37,10 @@ pt:
       fail: O processamento do seu upload foi concluído. %{count} obras foram atualizados com sucesso, mas %{error_count} linhas apresentaram erros.
       subject: A importação dos metadados CSV foi concluída.
       success: O processamento do seu upload foi concluído. %{count} obras foram atualizados com sucesso.
+    metadata_refresh_finished:
+      fail: Atualização de metadados concluída com erros.
+      subject: A atualização de metadados para %{type}:%{id} foi concluída.
+      success: Atualização de metadados concluída com sucesso.
     new_mobile_user:
       html:
         continue_transcribing: " para continuar a transcrição."
