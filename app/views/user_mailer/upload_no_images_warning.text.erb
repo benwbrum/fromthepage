@@ -1,0 +1,12 @@
+<%= t('.upload_processed_no_images') %>
+
+<%= t('.text.message', file: @document_upload.name) %>
+
+<%= t('.text.supported_formats') %>
+
+<%= t('.text.collection_link_message') %>
+<%= url_for({
+    controller: 'collection',
+    action: 'show',
+    collection_id: @document_upload.collection.id,
+    only_path: false }) %>

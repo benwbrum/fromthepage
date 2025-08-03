@@ -34,6 +34,9 @@ describe "testing deletions" do
   end
 
   it "deletes a document set" do
+    # Ensure the collection supports document sets so the Sets tab is visible
+    @collection.update!(supports_document_sets: true)
+    
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
