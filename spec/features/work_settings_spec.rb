@@ -42,4 +42,63 @@ describe "Work Settings" do
         # Check for change
         expect(page).to have_unchecked_field('work_ocr_correction')
     end
+
+    it "Inherits transcription conventions from collection by default" do
+        collection.update!(transcription_conventions: "Collection convention text")
+        
+        # Visit work settings tab
+        visit edit_collection_work_path(@owner, collection, work_no_ocr)
+        expect(page).to have_content(work_no_ocr.title)
+        
+        # Check that the transcription conventions field is empty (not pre-populated with collection conventions)
+        conventions_field = page.find('#work_transcription_conventions')
+        expect(conventions_field.value).to be_blank
+        
+        # Check that the placeholder shows collection conventions
+        expect(conventions_field['placeholder']).to eq("Collection convention text")
+        
+        # Save without changing conventions
+        page.click_button('Save Changes')
+        
+        # Verify work still inherits from collection
+        work_no_ocr.reload
+        expect(work_no_ocr.transcription_conventions).to be_nil
+        expect(work_no_ocr.set_transcription_conventions).to eq("Collection convention text")
+    end
+
+    it "Allows overriding collection conventions at work level" do
+        collection.update!(transcription_conventions: "Collection convention text")
+        
+        # Visit work settings tab
+        visit edit_collection_work_path(@owner, collection, work_no_ocr)
+        
+        # Enter custom work conventions
+        page.fill_in('work_transcription_conventions', with: 'Work-specific convention text')
+        page.click_button('Save Changes')
+        
+        # Verify work has its own conventions
+        work_no_ocr.reload
+        expect(work_no_ocr.transcription_conventions).to eq('Work-specific convention text')
+        expect(work_no_ocr.set_transcription_conventions).to eq('Work-specific convention text')
+    end
+
+    it "Reverts work conventions back to collection inheritance" do
+        collection.update!(transcription_conventions: "Collection convention text")
+        work_no_ocr.update!(transcription_conventions: "Work-specific convention")
+        
+        # Visit work settings tab
+        visit edit_collection_work_path(@owner, collection, work_no_ocr)
+        
+        # Verify the revert button is visible
+        expect(page).to have_button('Revert')
+        
+        # Clear the conventions field and save
+        page.fill_in('work_transcription_conventions', with: '')
+        page.click_button('Save Changes')
+        
+        # Verify work now inherits from collection
+        work_no_ocr.reload
+        expect(work_no_ocr.transcription_conventions).to be_nil
+        expect(work_no_ocr.set_transcription_conventions).to eq("Collection convention text")
+    end
 end
