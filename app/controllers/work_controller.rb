@@ -196,7 +196,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
-      record_deed(@work, DeedType::WORK_ADDED, work.owner)
+      record_deed(@work, DeedType::WORK_ADDED, @work.owner)
       flash[:notice] = t('.work_created')
       ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
