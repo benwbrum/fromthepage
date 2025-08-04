@@ -1,9 +1,10 @@
 class Article::Update < ApplicationInteractor
   attr_accessor :article, :notice
 
-  def initialize(article:, article_params:)
+  def initialize(article:, article_params:, user:)
     @article        = article
     @article_params = article_params
+    @user           = user
 
     super
   end
@@ -17,6 +18,7 @@ class Article::Update < ApplicationInteractor
     if @article.save
       if old_title != @article.title
         Article::RenameJob.perform_later(
+          user_id: @user.id,
           article_id: @article.id,
           old_name: old_title,
           new_name: @article.title

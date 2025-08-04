@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Work::Metadata::ExportCsv do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(login: OWNER) }

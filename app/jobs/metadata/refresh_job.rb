@@ -1,11 +1,12 @@
 class Metadata::RefreshJob < ApplicationJob
   queue_as :default
 
-  def perform(id:, type:, user: nil)
+  def perform(id:, type:, user_id:)
     @refresh_logs = []
     @id = id
     @type = type
-    @user = user
+    @user = User.find_by(id: user_id)
+
     FileUtils.mkdir_p(Rails.root.join('public', 'metadata', 'refresh', 'log'))
 
     @result = Work::Metadata::Refresh.new(work_ids: all_work_ids).call

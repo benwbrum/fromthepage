@@ -533,11 +533,7 @@ class Work < ApplicationRecord
       version = MetadataDescriptionVersion.new
       version.work = self
       version.metadata_description = self.metadata_description
-      unless User.current_user.nil?
-        version.user = User.current_user
-      else
-        version.user = User.find_by(id: self.work.owner_user_id)
-      end
+      version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
       previous_version =
         MetadataDescriptionVersion

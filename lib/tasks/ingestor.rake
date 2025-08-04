@@ -81,7 +81,7 @@ namespace :fromthepage do
     works_created = ingest_tree(document_upload, temp_dir)
     # clean
     clean_tmp_dir(temp_dir)
-    
+
     works_created
   end
 
@@ -179,7 +179,7 @@ namespace :fromthepage do
   def ingest_tree(document_upload, temp_dir)
     print "ingest_tree(#{temp_dir})\n"
     works_created = 0
-    
+
     # first process all sub-directories
     clean_dir=temp_dir.gsub('[','\[').gsub(']','\]')
     ls = Dir.glob(File.join(clean_dir, "*")).sort
@@ -229,7 +229,7 @@ namespace :fromthepage do
 
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
 
-    User.current_user=document_upload.user
+    Current.user = document_upload.user
     document_sets = []
     if yaml
       yaml.keep_if { |e| INGESTOR_ALLOWLIST.include? e }

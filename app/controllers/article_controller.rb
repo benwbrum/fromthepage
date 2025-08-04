@@ -26,8 +26,8 @@ class ArticleController < ApplicationController
   def delete
     result = Article::Destroy.new(
       article: @article,
-      user: current_user,
-      collection: @collection
+      collection: @collection,
+      user: current_user
     ).call
 
     if result.success?
@@ -47,7 +47,8 @@ class ArticleController < ApplicationController
     if params[:save]
       result = Article::Update.new(
         article: @article,
-        article_params: article_params
+        article_params: article_params,
+        user: current_user
       ).call
 
       if result.success?
@@ -81,7 +82,8 @@ class ArticleController < ApplicationController
   def combine_duplicate
     Article::Combine.new(
       article: @article,
-      from_article_ids: params[:from_article_ids]
+      from_article_ids: params[:from_article_ids],
+      user: current_user
     ).call
 
     flash[:notice] = t('.selected_subjects_combined', title: @article.title)
@@ -129,17 +131,17 @@ class ArticleController < ApplicationController
       # now construct the JSON response
       nodes=[]
       nodes << {
-        "id" => "S#{@article.id}", 
-        "title" => @article.title, 
-        "group" => @article.title, 
+        "id" => "S#{@article.id}",
+        "title" => @article.title,
+        "group" => @article.title,
         "link" => collection_article_show_url(@collection.owner, @collection, @article)}
       article_nodes.uniq.each do |article|
         if article != @article
           nodes << {
-            "id" => "S#{article.id}", 
+            "id" => "S#{article.id}",
             "title" => article.title,
             "bio" => xml_to_html(article.xml_text, false, nil, nil, nil, true),
-            "group" => article.categories.first&.title, 
+            "group" => article.categories.first&.title,
             "link" => collection_article_show_url(@collection.owner, @collection, article)
           }
         end
@@ -147,8 +149,8 @@ class ArticleController < ApplicationController
       if @collection.pages_are_meaningful?
         document_nodes.uniq.each do |page|
           nodes << {
-            "id" => "D#{page.id}", 
-            "title" => page.title + " in " + page.work.title, 
+            "id" => "D#{page.id}",
+            "title" => page.title + " in " + page.work.title,
             "group" => "Documents",
             "link" => collection_display_page_path(@collection.owner, @collection, page.work, page)
           }
@@ -156,37 +158,37 @@ class ArticleController < ApplicationController
       else
         document_nodes.uniq.each do |work|
           nodes << {
-            "id" => "D#{work.id}", 
-            "title" => work.title, 
+            "id" => "D#{work.id}",
+            "title" => work.title,
             "group" => "Documents",
             "link" => collection_read_work_url(@collection.owner, @collection, work)
           }
         end
       end
-  
+
       links=[]
       article_links.tally.each do |article_id,link_count|
         links << {
-          "source"=>"S#{@article.id}", 
-          "target"=>"S#{article_id}", 
-          "value"=>link_count, 
+          "source"=>"S#{@article.id}",
+          "target"=>"S#{article_id}",
+          "value"=>link_count,
           "group"=>"direct"
         }
       end
       center_article_to_document_links.tally.each do |work_id, link_count|
         links << {
-          "source"=>"S#{@article.id}", 
-          "target"=>"D#{work_id}", 
-          "value"=>link_count, 
+          "source"=>"S#{@article.id}",
+          "target"=>"D#{work_id}",
+          "value"=>link_count,
           "group"=>"mentioned in"
         }
       end
       second_document_to_article_links.tally.each do |link_pair, link_count|
         work_id,second_article_id = link_pair
         links << {
-          "source"=>"D#{work_id}", 
-          "target"=>"S#{second_article_id}", 
-          "value"=>link_count, 
+          "source"=>"D#{work_id}",
+          "target"=>"S#{second_article_id}",
+          "value"=>link_count,
           "group"=>"mentions"
         }
       end
