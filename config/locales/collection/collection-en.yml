@@ -263,6 +263,12 @@ en:
       subjects_enabled_description: Subjects are used to index pages in the collection.
       text_language: Transcription text language
       text_language_description: This setting will be used to determine the language of the text for correctly displaying right-to-left or left-to-right scripts.
+      text_orientation: Text orientation
+      text_orientation_description: This setting controls how text is displayed and entered in the transcription editor. Choose the orientation that matches your source documents.
+      orientation_horizontal_ltr: Horizontal (Left-to-Right)
+      orientation_horizontal_rtl: Horizontal (Right-to-Left)
+      orientation_vertical_rl: Vertical (Top-to-Bottom, Right-to-Left)
+      orientation_vertical_lr: Vertical (Top-to-Bottom, Left-to-Right)
       transcription_type: Transcription type
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
     enable_ocr:
