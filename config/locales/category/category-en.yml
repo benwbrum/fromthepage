@@ -27,6 +27,16 @@ en:
       enable_gis: Enable GIS
       enable_org_fields: Enable Organization Fields
       title: Title
+    manage:
+      manage_categories: Manage Categories
+      add_root_category: Add Root Category
+      upload_subjects: Upload Subjects
+      edit: Edit
+      add_child: Add Child
+      delete: Delete
+      confirm_delete_category: Are you sure you want to delete this category?
+      no_categories: No Categories
+      no_categories_message: There are no categories in this collection yet.
     options: options
     update:
       category_updated: Category has been updated
