@@ -3,8 +3,10 @@ require 'spec_helper'
 describe StatisticsController, type: :request do
   before do
     @owner = create(:user, :owner)
+    # Create collection without any works initially
     @collection = create(:collection, owner_user_id: @owner.id, works: [])
-    @work = create(:work, collection: @collection)
+    # Create work and explicitly associate it with the collection
+    @work = create(:work, collection: @collection, owner: @owner)
     
     # Create test users and deeds
     @user1 = create(:user)
@@ -12,13 +14,13 @@ describe StatisticsController, type: :request do
     
     # Create test deeds
     3.times do
-      create(:deed, user: @user1, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
+      create(:deed, user: @user1, work: @work, collection: @collection, deed_type: DeedType::PAGE_TRANSCRIPTION)
     end
     2.times do
-      create(:deed, user: @user2, work: @work, deed_type: DeedType::PAGE_TRANSCRIPTION)
+      create(:deed, user: @user2, work: @work, collection: @collection, deed_type: DeedType::PAGE_TRANSCRIPTION)
     end
     1.times do
-      create(:deed, user: @user1, work: @work, deed_type: DeedType::PAGE_EDIT)
+      create(:deed, user: @user1, work: @work, collection: @collection, deed_type: DeedType::PAGE_EDIT)
     end
   end
 
