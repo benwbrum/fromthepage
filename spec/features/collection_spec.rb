@@ -328,7 +328,7 @@ describe "collection spec (isolated)" do
 
   context 'Collection Settings' do
     before :all do
-      @owner = User.find_by(login: OWNER)
+      @owner = User.find_by(login: OWNER) || @factory_owner
     end
     before :each do
       login_as(@owner, :scope => :user)
@@ -389,9 +389,9 @@ describe "collection spec (isolated)" do
     end
 
     it "configures text orientation settings", js: true do
-      collection = create(:collection, owner: @owner)
-      visit edit_collection_path(@owner, collection)
-      page.find('.side-tabs').click_link("Task Configuration")
+      collection = create(:collection, owner: @factory_owner)
+      login_as(@factory_owner, scope: :user)
+      visit edit_tasks_collection_path(@factory_owner, collection)
 
       # Check that the text orientation field exists
       expect(page).to have_select('collection[text_orientation]')
