@@ -34,11 +34,12 @@ user_3:
 user_4:
   id: 4
   login: margaret
-  display_name: margaret
+  display_name: Margaret Reed
   real_name: Margaret Reed
   email: margaret@test.com
   owner: true
   admin: false
+  deleted: false
   activity_email: true
   account_type: Legacy
   paid_date: <%= 1.month.from_now.to_fs(:db) %>

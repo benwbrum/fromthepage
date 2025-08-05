@@ -581,5 +581,11 @@ Fromthepage::Application.routes.draw do
     end
   end
 
+  # Sitemap routes for web crawlers
+  get '/sitemap.xml', to: 'sitemap#index', format: :xml
+  get '/sitemap_collections.xml', to: 'sitemap#collections', format: :xml
+  get '/sitemap_works.xml', to: 'sitemap#works', format: :xml
+  get '/sitemap_pages.xml', to: 'sitemap#pages', format: :xml
+
   get '/:user_id', to: 'user#profile', as: :user_profile
 end

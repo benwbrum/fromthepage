@@ -173,6 +173,7 @@ fr:
       download_letter: Télécharger une lettre
       end_date: Date de fin
       hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
+      hours_update_note: Les statistiques de contribution sont calculées toutes les vingt-quatre heures. Ces statistiques reflètent l'activité jusqu'à %{time_ago}.
       select_new_date: Sélectionnez une nouvelle plage de dates
       start_date: Date de début
       update: Mise à jour

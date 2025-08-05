@@ -6,8 +6,8 @@ describe "collection settings js tasks", :order => :defined do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @work = @collection.works.second
+    @collection = @collections.second || @collections.first
+    @work = @collection.works.second || @collection.works.first
     @rest_user = User.find_by(login: REST_USER)
     #add a user to be emailed
     @notify_user = User.find_by(login: ADMIN)

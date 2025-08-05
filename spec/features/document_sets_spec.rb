@@ -76,6 +76,7 @@ describe "document sets", :order => :defined do
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: 'Test Document Set 3'
     page.find_button('Create Document Set').click
+    sleep(2)
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     page.find('.side-tabs').click_link('Privacy & Access')
     expect(page.find('h1')).to have_content('Test Document Set 3')
@@ -469,6 +470,9 @@ describe "document sets", :order => :defined do
   end
 
   it "disables document sets", js: true do
+    # Ensure document sets are enabled initially
+    @collection.update!(supports_document_sets: true)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
@@ -479,12 +483,17 @@ describe "document sets", :order => :defined do
   end
 
   it "enables document sets", js: true do
+    # Ensure document sets are disabled initially  
+    @collection.update!(supports_document_sets: false)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.check("Enable document sets")
     expect(page.find_link("Edit Sets")).not_to match_css('[disabled]')
+    sleep(2)
     page.click_link('Edit Sets')
+    sleep(2)
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true
