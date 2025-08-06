@@ -53,7 +53,7 @@ describe "Devise" do
       visit old_path
       click_link('Sign Up To Transcribe')
 #      visit new_user_registration_path
-      page.fill_in 'User Name', with: user.login
+      page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
