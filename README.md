@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/benwbrum/fromthepage/badge.svg?branch=master)](https://coveralls.io/github/benwbrum/fromthepage?branch=master) [![Build Status](https://travis-ci.com/benwbrum/fromthepage.svg?branch=main)](https://travis-ci.com/benwbrum/fromthepage)
+
 FromThePage is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
 
 ### Features

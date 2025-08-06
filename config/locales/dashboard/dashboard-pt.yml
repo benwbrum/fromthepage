@@ -128,7 +128,6 @@ pt:
         one: Coleção
         other: Coleções
       create_a_collection: Criar uma Coleção
-      current_subscription_expires: A assinatura atual expira %{date}
       document_set:
         one: Conjunto de documentos
         other: Conjuntos de documentos
@@ -138,7 +137,6 @@ pt:
       start_a_project: Iniciar um Projeto
       summary: Resumo
       total_pages: 'Total de páginas: %{pages}'
-      upgrade: Atualizar
       work:
         one: Obra
         other: Obras

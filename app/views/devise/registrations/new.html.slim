@@ -2,8 +2,10 @@
 
 section.signon
   h1= t('devise.sign_up')
-  small
-    i= t('devise.we_never_sell')
+
+  p Please fill in the following information to create a new FromThePage account.
+  p By registering with this website you certify that you are at least 13 years of age or have parental permission.
+
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
@@ -40,21 +42,3 @@ section.signon
   =render 'devise/shared/links'
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Sign Up");
-
-- content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      var passwordField = document.getElementById('user_password');
-      var passwordValidation = document.getElementById('password-validation');
-
-      passwordField.addEventListener('input', function() {
-        var password = passwordField.value;
-
-        if (password.length < 6 && password.length > 0) {
-          passwordValidation.textContent = "#{t('devise.passwords.validation')}";
-        }
-        else {
-          passwordValidation.textContent = '';
-        }
-      });
-    });

@@ -15,7 +15,7 @@ describe "different user role logins" do
     expect(page).to have_link("Sign In")
     expect(page).not_to have_link(I18n.t('dashboard.plain'))
     first(:link, 'Sign In').click
-    expect(page).to have_link("Sign Up Now")
+    expect(page).to have_link("Sign Up")
     click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
@@ -49,7 +49,7 @@ describe "different user role logins" do
     visit new_user_session_path
     fill_in 'Login', with: USER
     fill_in 'Password', with: @password
-    click_button('Sign In')
+    click_button("Sign In")
     expect(page.current_path).to eq dashboard_watchlist_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
     expect(page).to have_content(collections.first.title)
@@ -70,7 +70,7 @@ describe "different user role logins" do
     visit new_user_session_path
     fill_in 'Login', with: user.email
     fill_in 'Password', with: @password
-    click_button('Sign In')
+    click_button("Sign In")
     expect(page.current_path).to eq dashboard_watchlist_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
   end
@@ -82,7 +82,7 @@ describe "different user role logins" do
     visit new_user_session_path
     fill_in 'Login', with: OWNER
     fill_in 'Password', with: @password
-    click_button('Sign In')
+    click_button("Sign In")
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_content("Owner Dashboard")
     @collections.each do |c|

@@ -128,7 +128,6 @@ de:
         one: Sammlung
         other: Sammlungen
       create_a_collection: Eine Sammlung erstellen
-      current_subscription_expires: Das aktuelle Abonnement läuft am %{date} ab
       document_set:
         one: Dokumentenset
         other: Dokumentensets
@@ -138,7 +137,6 @@ de:
       start_a_project: Ein Projekt starten
       summary: Übersicht
       total_pages: 'Seitenanzahl: %{pages}'
-      upgrade: Aktualisierung
       work:
         one: Werk
         other: Werke

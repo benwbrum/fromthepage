@@ -128,7 +128,6 @@ es:
         one: Recopilación
         other: Colecciones
       create_a_collection: Crear una colección
-      current_subscription_expires: La suscripción actual caduca %{date}
       document_set:
         one: Conjunto de documentos
         other: Conjuntos de documentos
@@ -138,7 +137,6 @@ es:
       start_a_project: Iniciar Un Proyecto
       summary: Resumen
       total_pages: 'Páginas totales: %{pages}'
-      upgrade: Mejora
       work:
         one: Obra
         other: Obras

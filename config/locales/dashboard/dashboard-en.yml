@@ -128,7 +128,6 @@ en:
         one: Collection
         other: Collections
       create_a_collection: Create a Collection
-      current_subscription_expires: Current subscription expires %{date}
       document_set:
         one: Document Set
         other: Document Sets
@@ -138,7 +137,6 @@ en:
       start_a_project: Start A Project
       summary: Summary
       total_pages: 'Total pages: %{pages}'
-      upgrade: Upgrade
       work:
         one: Work
         other: Works

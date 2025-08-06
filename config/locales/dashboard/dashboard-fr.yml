@@ -128,7 +128,6 @@ fr:
         one: Collection
         other: Collections
       create_a_collection: Créer une collection
-      current_subscription_expires: L'abonnement actuel expire %{date}
       document_set:
         one: Jeu de documents
         other: Jeux de documents
@@ -138,7 +137,6 @@ fr:
       start_a_project: Démarrer un projet
       summary: Sommaire
       total_pages: 'Nombre total de pages : %{pages}'
-      upgrade: Mise à niveau
       work:
         one: Œuvre
         other: Œuvres
