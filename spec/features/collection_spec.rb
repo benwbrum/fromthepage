@@ -301,13 +301,11 @@ describe "collection spec (isolated)" do
 
     page.find(:css, '#create-empty-work').click
 
-    select('Add New Collection', from: 'work_collection_id')
-    expect(page).to have_selector('#new_collection', visible: true)
-    page.fill_in('collection_title', with: 'Stats Test Collection')
-    old_count = Collection.all.count
-    click_button('Create Collection')
-    sleep 3
-    expect(Collection.all.to_a.count).to eq(old_count+1)
+      select('Add New Collection', :from => 'work_collection_id')
+      page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
+      old_count = Collection.all.count
+      click_button('Create Collection')
+      expect(Collection.all.to_a.count).to eq(old_count+1)
 
     page.find(:css, '#create-empty-work').click
     sleep 3

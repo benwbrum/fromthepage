@@ -128,6 +128,7 @@ pt:
         one: Coleção
         other: Coleções
       create_a_collection: Criar uma Coleção
+      current_subscription_expires: A assinatura atual expira %{date}
       document_set:
         one: Conjunto de documentos
         other: Conjuntos de documentos
@@ -136,6 +137,7 @@ pt:
       since: desde %{date}
       start_a_project: Iniciar um Projeto
       summary: Resumo
+      to_upgrade_contact: Para atualizar, entre em contato com support@fromthepage.com
       total_pages: 'Total de páginas: %{pages}'
       work:
         one: Obra

@@ -2,6 +2,81 @@
 -content_for :meta_description, "FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search."
 -content_for :meta_keywords, "transcribe handwritten documents online free open-source wiki historical crowdsourcing transcription"
 
+-content_for :content_above
+  section.intro
+    .wrapper: .intro_box
+      h1.intro_box_title &ldquo;Simply the finest crowdsourcing manuscript transcription software on the planet.&rdquo;
+      p.intro_box_text -Max Spiegel, Director of Philip K. Dick’s Exegesis at Penn State
+      =link_to 'Learn More', about_path, class: 'button big learn-more'
+
+section#description
+  h1 FromThePage is software for transcribing documents and collaborating on transcriptions with others.
+  h2 Use FromThePage for everything from simple, plain-text transcription projects to bilingual digital scholarly editions with annotations.
+
+section.advantages
+  ol.advantages_list
+    li.advantages_list_item
+      h2.advantages_title Transcribe
+      p.advantages_text Transcribe documents from anywhere – upload PDFs and pictures, or directly import documents from a digital library.
+      ul
+        li Free-form text transcription
+        li Field-based transcription
+        li OCR correction
+        li Indexing
+        li Translation
+        li Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+    li.advantages_list_item
+      h2.advantages_title Collaborate
+      p.advantages_text Make your transcription project public or select authorized collaborators.
+      ul
+        li Version control
+        li Automatic markup
+        li In-document collaborator notes
+    li.advantages_list_item
+      h2.advantages_title Manage
+      p.advantages_text Review the progress of your transcription project and the most recent activity in the transcriber community at a glance.
+      ul
+        li Project dashboard
+        li Transcription quality review
+        li Collaborator engagement and time tracking tools
+        li Digital library system integrations (IIIF, ContentDM - OCLC, Internet Archive and Omeka)
+
+  .start
+    h4 Start transcribing your documents.
+    =link_to 'Learn More', about_path, class: 'button big learn-more'
+
+section.banner
+  a.link href='https://content.fromthepage.com/webinars/' target='_blank'
+    =image_tag 'static/home/webinar-banner.jpg', alt: 'Free Webinar - Launching your first crowdsourcing project'
+
+section.quotes
+  h2 What FromThePage Users Are Saying
+  ol.quotes_list
+    li.quotes_list_item
+      blockquote
+        p The interface is flexible. The images are easy to manipulate, the transcription pane is very easy to use. […] It is extremely easy to deploy—I got my project up and running in about an hour.
+      cite
+        span Sue Perdue
+        small Documentary Editor
+    li.quotes_list_item
+      blockquote
+        p I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform…
+      cite
+        span Victoria Duncan
+        small Indianapolis Public Library
+    li.quotes_list_item
+      blockquote
+        p We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level.
+      cite
+        span Stanford University Archives Team
+  .simplify
+    h4 Simplify your collaborative transcription.
+    =link_to 'Learn More', about_path, class: 'button big learn-more'
+
+section#transcription_count
+  span#count #{number_with_delimiter Page.where.not(:status=>nil).count}
+  p Pages Transcribed with FromThePage
+
 section.spotlight
   h3 Featured Projects
   ul.justified.vtop

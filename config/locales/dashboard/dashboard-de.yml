@@ -128,6 +128,7 @@ de:
         one: Sammlung
         other: Sammlungen
       create_a_collection: Eine Sammlung erstellen
+      current_subscription_expires: Das aktuelle Abonnement läuft am %{date} ab
       document_set:
         one: Dokumentenset
         other: Dokumentensets
@@ -136,6 +137,7 @@ de:
       since: seit %{date}
       start_a_project: Ein Projekt starten
       summary: Übersicht
+      to_upgrade_contact: Für ein Upgrade Wenden Sie sich an support@fromthepage.com
       total_pages: 'Seitenanzahl: %{pages}'
       work:
         one: Werk

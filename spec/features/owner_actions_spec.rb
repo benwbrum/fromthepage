@@ -363,5 +363,6 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Letters from America")
       expect(page).to have_content("Science Archives")
     end
+
   end
 end

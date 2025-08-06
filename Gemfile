@@ -151,6 +151,8 @@ gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
+gem 'newrelic_rpm'
+
 gem 'open3'
 
 # Copy to clipboard

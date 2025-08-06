@@ -1,40 +1,43 @@
--content_for :page_title, t('devise.sign_up')
+-content_for :page_title, t('.sign_up_for_trial')
 
 section.signon
-  h1= t('devise.sign_up')
+  h1= t('.sign_up_for_trial')
+  p
+    ==t('.message', schedule_a_kickoff_call: (link_to t('.schedule_a_kickoff_call'), 'https://calendly.com/fromthepage/30-minute-meeting/'))
+    <br><br>
+    ==t('.just_want_to_transcribe', sign_up_here: (link_to t('.sign_up_here'), new_user_registration_path))
+
+
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :login, t('devise.user_name')
+      =f.label :login, t('.login')
       =f.text_field :login, autofocus: true
-      small
-        i= t('devise.user_name_message')
     .signon_field
       =f.label :email, t('devise.email_address')
       =f.email_field :email
     .signon_field
       =f.label :password, t('devise.password')
       =f.password_field :password, autocomplete: 'off'
-      small#password-validation style='color: red;'
     .signon_field
       =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :real_name, t('devise.real_name')
+      =f.label :display_name, t('devise.display_name')
       =f.text_field :real_name
-      small
-        i= t('devise.real_name_message')
     .signon_field
-      =f.hidden_field :owner
-      =f.hidden_field :paid_date
+      =f.hidden_field :owner, value: true
+      =f.hidden_field :paid_date, value: 2.weeks.from_now
     -if RECAPTCHA_ENABLED
       .signon_field
         =recaptcha_tags
     .signon_field
       =f.check_box :activity_email, checked: true
       =f.label :receive_activity_emails, t('devise.receive_activity_emails')
+    <br>
     =f.button t('devise.create_account'), class: 'big'
-  hr
-  =render 'devise/shared/links'
--unless MIXPANEL_ID.blank?
+
   javascript:  mixpanel.track("Sign Up");
+
+  <script type="text/javascript" src="https://calendly.com/assets/external/widget.js"></script>
+
