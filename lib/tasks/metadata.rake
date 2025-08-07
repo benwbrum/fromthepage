@@ -8,6 +8,6 @@ namespace :fromthepage do
 
     puts 'NOTE: Logs will be handled by metadata refresh job — do not pipe this task’s output.'
 
-    Metadata::RefreshJob.perform_now(id: id, type: type)
+    Metadata::RefreshJob.perform_now(id: id, type: type, user_id: nil)
   end
 end

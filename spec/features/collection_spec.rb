@@ -228,6 +228,8 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "views completed works" do
+    Current.user = @owner
+
     #first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
@@ -237,7 +239,7 @@ describe "collection settings js tasks", :order => :defined do
     end
     hidden_work.work_statistic.recalculate
     #check to see if the work is visible
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)

@@ -35,7 +35,7 @@ namespace :fromthepage do
           end
         end
       end
-      
+
 
 
     end
@@ -48,7 +48,7 @@ namespace :fromthepage do
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)
       error_file=File.open("validation_errors.txt", "a+")
-      User.current_user = collection.owner
+      Current.user = collection.owner
       if xml_directory.nil? || collection_slug.nil?
         puts "Usage: rake fromthepage:import_cwgk_xml[xml_directory,collection_slug]"
         puts "  xml_directory: path to the directory containing CWGK XML files"
@@ -67,7 +67,7 @@ namespace :fromthepage do
         people = collection.categories.find_by(title: "People")
         places = collection.categories.find_by(title: "Places")
 
-        # We want to create subject articles from entity files; 
+        # We want to create subject articles from entity files;
         # these are XML files in the directory that begin with the letters O,N,P,G
         # and end with .xml
         Dir.glob(File.join(xml_directory, "[NOPG]*.xml")).each do |file|
@@ -85,7 +85,7 @@ namespace :fromthepage do
           formatted = paras.map { |p| p.text.strip.gsub(/\s+/m, ' ') }.join("\n\n")
           # TODO: test with O001001.xml
 
-          # TODO: Sometimes bibliography is in TEI with hi and links -- we didn't implement it that way in FromThePage, so what do we do?      
+          # TODO: Sometimes bibliography is in TEI with hi and links -- we didn't implement it that way in FromThePage, so what do we do?
           bibliography = doc.search("bibl").text.strip
 
 
@@ -114,7 +114,7 @@ namespace :fromthepage do
             title = doc.search("place/geogName").text.strip.gsub(/\s+/m, ' ')
           end
 
-          id_to_title_map[id] = title        
+          id_to_title_map[id] = title
           valid_ids << [id.sub(/^[A-Z]0+/, '').to_i, type.downcase]
 
           article = Article.new
@@ -163,7 +163,7 @@ namespace :fromthepage do
           end
         end
 
-    
+
         # now load the relationships file
         relationships = YAML.load_file(File.join(xml_directory, "mashbill_relationships.yml"))
 
@@ -180,7 +180,7 @@ namespace :fromthepage do
           # now pull the relationship type and title from the right entity
           unique_relationships = right_relationships.map{|r| {type: r[:type], entity: r[:right]} }.uniq
           # for each unique relationship, write a text line with a wikilink to the entity
-          lines = unique_relationships.map do |r| 
+          lines = unique_relationships.map do |r|
             if r[:entity][:type] == "person"
               "#{r[:type].titleize}: [[#{r[:entity][:name]} (#{r[:entity][:disambiguator]})]]"
             else
@@ -245,7 +245,7 @@ namespace :fromthepage do
         source_box_folder=source_block.search('idno').text
 
 
-        
+
         # TODO: prune cruft
         work = Work.new
         # set title and other attributes appropriately
@@ -265,7 +265,7 @@ namespace :fromthepage do
         if EXTRACT_PAGES
           work.uploaded_filename = File.basename(pdf_file)
         end
-    
+
         # then create a new subject article
         # then save the subject article
         if !work.save
@@ -286,12 +286,12 @@ namespace :fromthepage do
                                   "uploaded",
                                   work.id.to_s)
           print "\tconvert_to_work creating #{new_dir_name}\n"
-      
+
           FileUtils.mkdir_p(new_dir_name)
           clean_dir=File.join(File.dirname(path),id)
           FileUtils.cp(Dir.glob(File.join(clean_dir, "*.jpg")), new_dir_name)
           Dir.glob(File.join(clean_dir, "*.jpg")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }
-      
+
           # at this point, the new dir should have exactly what we want-- only image files that are adequately compressed.
           filenames = Dir.glob(File.join(new_dir_name, "*")).sort
           replace_entities_with_wikilinks(doc.search('body').first, id_to_title_map)
@@ -318,9 +318,9 @@ namespace :fromthepage do
           filenames.sort.each_with_index do |image_fn,i|
             page = Page.new
             print "\t\tconvert_to_work created new page\n"
-      
+
             page.title = "#{i+1}"
-      
+
 
             # TODO -- resume clean-up
             page.base_image = image_fn
@@ -360,7 +360,7 @@ namespace :fromthepage do
               page.save!
             end
           end
-      
+
           work.pages.each_with_index do |page, i|
             if page.page_article_links.count > 0
               page.update_attribute(:status, Page.statuses[:indexed])
@@ -369,7 +369,7 @@ namespace :fromthepage do
           work.update_statistic
         end
 
-          
+
 
 
 
@@ -437,7 +437,7 @@ namespace :fromthepage do
           text = element.text.strip
           # replace square braces with something which we can handle
           text = text.gsub('[','{').gsub(']','}')
-          
+
           # get the id of the element
           if element.attribute('ref')
             ref = element.attribute('ref').value
@@ -458,10 +458,10 @@ namespace :fromthepage do
         end
       end
     end
-          
-          
 
-          
+
+
+
 
     def body_array(doc)
       pages=[]
@@ -486,7 +486,7 @@ namespace :fromthepage do
     def date_element_to_edtf(date_element)
       date_element.attr('when')&.text
     end
-    
+
     def raw_date_to_edtf(raw_date)
       # Convert a raw date string to an EDTF date string
       # This is a simplified example; you may need to adjust the parsing logic

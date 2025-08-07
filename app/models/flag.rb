@@ -93,7 +93,7 @@ class Flag < ApplicationRecord
   end
 
   def self.remove_owner_marked_content
-    Flag.all.each do |flag| 
+    Flag.all.each do |flag|
       if flag.author_user !=nil && flag.author_user.owner? || (flag.author_user !=nil && flag.author_user.account_type == "Staff")
         flag.delete
       end
@@ -101,12 +101,12 @@ class Flag < ApplicationRecord
   end
 
   def ok_user
-    user=self.author_user
-    Flag.where(:author_user => user).update_all({:auditor_user_id=> User.current_user.id, :status => Status::FALSE_POSITIVE})
+    user = self.author_user
+    Flag.where(author_user: user).update_all({ auditor_user_id: Current.user.id, status: Status::FALSE_POSITIVE })
   end
 
   def mark_ok!
-    self.auditor_user = User.current_user
+    self.auditor_user = Current.user
     self.status = Status::FALSE_POSITIVE
     self.save!
   end
@@ -116,7 +116,7 @@ class Flag < ApplicationRecord
     article_version.expunge if article_version
     note.destroy if note
 
-    self.auditor_user = User.current_user
+    self.auditor_user = Current.user
     self.status = Status::CONFRIMED
     self.save!
   end

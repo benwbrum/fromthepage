@@ -30,7 +30,7 @@ class Collection::Update < ApplicationInteractor
 
     return unless saved_change_to_restricted
 
-    Elasticsearch::Collection::SyncJob.perform_later(collection_id: @collection.id)
+    Elasticsearch::Collection::SyncJob.perform_later(user_id: @user.id, collection_id: @collection.id)
   end
 
   private

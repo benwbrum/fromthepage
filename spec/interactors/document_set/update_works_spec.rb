@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DocumentSet::UpdateWorks do
-  let(:owner) { User.find_by(owner: true) }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work_1) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:work_2) { create(:work, collection: collection, owner_user_id: owner.id) }

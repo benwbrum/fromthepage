@@ -64,9 +64,6 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  # allows me to get at the user from other models
-  cattr_accessor :current_user
-
   attr_accessor :login_id
 
   mount_uploader :picture, PictureUploader

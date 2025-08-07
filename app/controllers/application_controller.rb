@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
 
   # Set the current user in User
   def set_current_user_in_model
-    User.current_user = current_user
+    Current.user = current_user
   end
 
   def current_user
