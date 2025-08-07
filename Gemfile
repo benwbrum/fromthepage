@@ -2,19 +2,22 @@
 
 source 'https://rubygems.org'
 
-ruby '2.7.3'
+ruby '3.3.5'
 
-gem 'rails', '6.1.7.6'
+gem 'rails', '~> 7.2.1'
 
 gem 'config'
 
 gem 'capistrano', '~> 3.10', require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'capistrano-rails', '~> 1.4', require: false
+gem 'html-pipeline', '~> 2.14'
 gem 'importmap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
 gem 'mysql2'
+gem 'net-pop', github: 'ruby/net-pop'
+gem 'nkf'
 gem 'nokogiri'
 gem 'postmark-rails'
 gem 'recaptcha', require: 'recaptcha/rails'
@@ -23,7 +26,7 @@ gem 'ruby-openai'
 gem 'rvm1-capistrano3', require: false
 gem 'savon', '~> 2.12.0'
 gem 'text'
-gem 'thredded', '~> 1.0'
+gem 'thredded', '~> 1.1'
 gem 'will_paginate'
 
 gem 'acts_as_list'
@@ -46,8 +49,8 @@ gem 'oink'
 gem 'pry'
 
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
-gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
-gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
+gem 'iiif-presentation'
+gem 'riiif'
 
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-google-oauth2'
@@ -66,7 +69,7 @@ gem 'mail', '~> 2.7'
 gem 'warning'
 
 gem 'http_accept_language'
-gem 'rails-i18n', '~> 6.0.0'
+gem 'rails-i18n', '~> 7.0.0'
 
 gem 'charlock_holmes'
 gem 'roo'
@@ -129,7 +132,7 @@ gem 'autoprefixer-rails'
 gem 'slim'
 
 # Gravatar Image Tag
-gem 'gravatar_image_tag'
+gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
 
 # Admin masquerade as a user
 gem 'devise_masquerade', '~> 1.2.0'
@@ -148,7 +151,6 @@ gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
-gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 gem 'newrelic_rpm'
 
 gem 'open3'

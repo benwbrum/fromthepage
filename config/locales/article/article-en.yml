@@ -46,8 +46,7 @@ en:
       title: Title
       uri: URI
     graph:
-      dot:
-        title: Subjects Mentioned Frequently With %{subject}
+      title: Subjects Mentioned Frequently With %{subject}
     list:
       actions: Actions
       add_child_category: Add Child Category

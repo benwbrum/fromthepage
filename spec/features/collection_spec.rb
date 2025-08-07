@@ -292,38 +292,38 @@ describe "collection spec (isolated)" do
     @factory_owner = create(:owner)
   end
 
-  it 'updates collection statistics', :js => true do
-      login_as(@factory_owner, :scope => :user)
-      visit dashboard_owner_path(@factory_owner)
-      expect(page).to have_content('Start A Project')
-      page.find('.tabs').click_link('Start A Project')
+  it 'updates collection statistics', js: true do
+    login_as(@factory_owner, scope: :user)
 
-      page.find(:css, '#create-empty-work').click
+    visit dashboard_owner_path(@factory_owner)
+    expect(page).to have_content('Start A Project')
+    page.find('.tabs').click_link('Start A Project')
+
+    page.find(:css, '#create-empty-work').click
 
       select('Add New Collection', :from => 'work_collection_id')
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
       old_count = Collection.all.count
       click_button('Create Collection')
-      sleep 3
       expect(Collection.all.to_a.count).to eq(old_count+1)
 
-      page.find(:css, '#create-empty-work').click
-      sleep 3
-      fill_in('work_title', with: 'Stats Test Work')
-      click_button('Create Work')
-      page.find('#new_page')
-      click_button('Save & New Work')
+    page.find(:css, '#create-empty-work').click
+    sleep 3
+    fill_in('work_title', with: 'Stats Test Work')
+    click_button('Create Work')
+    page.find('#new_page')
+    click_button('Save & New Work')
 
-      visit dashboard_owner_path
+    visit dashboard_owner_path
 
-      page.find('.collections').click_link('Stats Test Collection')
-      page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
-      page.find('.maincol h4').click_link('Page 1')
-      fill_in_editor_field('Transcription')
-      page.find('#finish_button_top').click
+    page.find('.collections').click_link('Stats Test Collection')
+    page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
+    page.find('.maincol h4').click_link('Page 1')
+    fill_in_editor_field('Transcription')
+    page.find('#finish_button_top').click
 
-      page.find('.breadcrumbs').click_link('Stats Test Collection')
-      expect(page).to have_content("All works are fully transcribed.")
+    page.find('.breadcrumbs').click_link('Stats Test Collection')
+    expect(page).to have_content("All works are fully transcribed.")
   end
 
   context 'Collection Settings' do
@@ -391,7 +391,7 @@ describe "collection spec (isolated)" do
 
   after :all do
     @factory_owner.collections.each do |c|
-        c.destroy
+      c.destroy
     end
     @factory_owner.destroy
   end

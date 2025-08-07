@@ -6,27 +6,26 @@ es:
     collection_inactive: Colección inactiva
     collection_joined: Colección Unida
     deed:
-      html:
-        added_a_note_to_page: añadió una nota a la página %{page}
-        added_work: "%{work} añadido"
-        corrected_page: página corregida %{page}
-        edited_article: editó el %{article} artículo
-        edited_page: editó la página %{page}
-        edited_translation_of_page: editó la traducción de la página %{page}
-        in_collection: " en la colección %{collection}"
-        in_the_work: " en la obra %{work}"
-        indexed_page: indexó la página %{page}
-        indexed_translation_of_page: indexó la traducción de la página %{page}
-        joined: 'se unió '
-        marked_page_as_blank: marcó la página %{page} como en blanco
-        marked_page_as_needing_review: marcó %{page} la página como en necesidad de revisión
-        marked_translation_page_as_needing_review: marcó la página de traducción %{page} como necesitando revisión
-        reviewed_page: revisada %{page}
-        reviewed_translation: traducción revisada de la página %{page}
-        saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
-        this_collection: esta colección
-        transcribed_page: transcribió la página %{page}
-        translated_page: tradujo la página %{page}
+      added_a_note_to_page: añadió una nota a la página %{page}
+      added_work: "%{work} añadido"
+      corrected_page: página corregida %{page}
+      edited_article: editó el %{article} artículo
+      edited_page: editó la página %{page}
+      edited_translation_of_page: editó la traducción de la página %{page}
+      in_collection: " en la colección %{collection}"
+      in_the_work: " en la obra %{work}"
+      indexed_page: indexó la página %{page}
+      indexed_translation_of_page: indexó la traducción de la página %{page}
+      joined: 'se unió '
+      marked_page_as_blank: marcó la página %{page} como en blanco
+      marked_page_as_needing_review: marcó %{page} la página como en necesidad de revisión
+      marked_translation_page_as_needing_review: marcó la página de traducción %{page} como necesitando revisión
+      reviewed_page: revisada %{page}
+      reviewed_translation: traducción revisada de la página %{page}
+      saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
+      this_collection: esta colección
+      transcribed_page: transcribió la página %{page}
+      translated_page: tradujo la página %{page}
     deeds:
       show_more: Mostrar Más
     described_metadata: Metadatos descritos

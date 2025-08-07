@@ -114,7 +114,7 @@ class Article < ApplicationRecord
   end
 
   def clear_relationship_graph
-    File.unlink(d3js_file) if File.exists?(d3js_file)
+    File.unlink(d3js_file) if File.exist?(d3js_file)
   end
 
   def d3js_file
