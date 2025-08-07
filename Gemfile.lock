@@ -5,6 +5,15 @@ GIT
     gravatar_image_tag (1.2.0)
 
 GIT
+  remote: https://github.com/bentonow/bento-ruby-sdk.git
+  revision: 40147a64c6d6d195a4fe21666da9d0f7811b9672
+  branch: master
+  specs:
+    bento-sdk (0.5.3)
+      base64 (~> 0.1)
+      faraday (>= 0.14)
+
+GIT
   remote: https://github.com/ruby/net-pop.git
   revision: e8d0afe2773b9eb6a23c39e9e437f6fc0fc7c733
   specs:
@@ -769,6 +778,7 @@ DEPENDENCIES
   ajax-datatables-rails (~> 1.0.0)
   annotaterb
   autoprefixer-rails
+  bento-sdk!
   better_errors
   binding_of_caller
   bootsnap

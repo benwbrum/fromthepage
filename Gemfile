@@ -152,6 +152,7 @@ gem 'rack-mini-profiler'
 gem 'stackprof'
 
 gem 'newrelic_rpm'
+gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 
 gem 'open3'
 
