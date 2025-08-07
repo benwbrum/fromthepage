@@ -724,6 +724,10 @@ class Page < ApplicationRecord
     end
   end
 
+  def is_public?
+    work.nil? || work.is_public?
+  end
+
   private
 
   def ai_plaintext_path

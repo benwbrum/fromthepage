@@ -69,6 +69,7 @@ describe DocumentSet do
 
     # We also query by intro_block, so this tests that
     let!(:no_owner_public_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: other_base_collection.id, owner_user_id: nil, visibility: :public) }
+    let!(:no_col_private_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: nil, owner_user_id: nil, visibility: :private) }
 
     let(:records) do
       [
@@ -81,7 +82,8 @@ describe DocumentSet do
         other_base_collection,
         other_public_docset,
         other_restricted_docset,
-        no_owner_public_docset
+        no_owner_public_docset,
+        no_col_private_docset
       ]
     end
 

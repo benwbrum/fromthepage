@@ -8,9 +8,7 @@ class CollectionsIndex < Chewy::Index
 
   field :is_public, type: 'boolean', value: -> { !restricted }
   field :is_docset, type: 'boolean', value: -> { false }
-  field :permissions_updated, type: 'long', ignore_blank: true, value: lambda {
-    saved_change_to_restricted? ? Time.now.utc.to_i : nil
-  }
+  field :permissions_updated, type: 'long', ignore_blank: true, value: -> { nil }
   field :intro_block, type: 'text', analyzer: 'general'
   field :language, type: 'keyword'
   field :collection_id, type: 'integer', ignore_blank: true, value: -> { nil }

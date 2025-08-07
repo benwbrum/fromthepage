@@ -128,11 +128,7 @@ class Collection < ApplicationRecord
       .distinct
   }
 
-  scope :random_sample, -> (sample_size = 5) do
-    carousel
-    reorder(Arel.sql("RAND()")) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql("RAND()"))
-  end
+  alias_attribute :created_at, :created_on
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -187,10 +183,6 @@ class Collection < ApplicationRecord
     )
   end
 
-  def created_at
-    created_on
-  end
-
   def pages_are_meaningful?
     self.works.where(pages_are_meaningful: true).present?
   end
@@ -223,14 +215,22 @@ class Collection < ApplicationRecord
 
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
-    one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
+    one_off_editors = all_edits_by_user.select { |_k, v| v == 1 }.map { |k, _v| k }
     self.pages.where(status: :needs_review).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
   end
 
   def never_reviewed_users
-    users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
-    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => 'review').pluck(:user_id).uniq
-    unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
+    users_with_complete_pages = self.deeds
+                                    .joins(:page)
+                                    .where(pages: { status: Page::COMPLETED_STATUSES })
+                                    .select(:user_id)
+    users_with_needs_review_pages = self.deeds
+                                        .joins(:page)
+                                        .where(pages: { status: :needs_review })
+                                        .select(:user_id)
+
+    User.where(id: users_with_needs_review_pages)
+        .where.not(id: users_with_complete_pages)
   end
 
   def review_workflow
@@ -253,56 +253,11 @@ class Collection < ApplicationRecord
     self.save!
   end
 
-
-  def use_as_template(new_title)
-    new_collection = self.dup
-    new_collection.title = new_title
-    new_collection.slug = nil
-    new_collection.save!
-    # now copy the child records like transcription_fields, categories, etc.
-    self.transcription_fields.each do |f|
-      new_field = f.dup
-      new_field.collection = new_collection
-      new_field.save!
-      # copy over the fields' spreadsheet columns
-      f.spreadsheet_columns.each do |c|
-        new_column = c.dup
-        new_column.transcription_field = new_field
-        new_column.save!
-      end
-    end
-    new_collection.metadata_fields = self.metadata_fields.map { |f| f.dup }
-    new_collection.categories = self.categories.map { |c| c.dup }
-    new_collection.editor_buttons = self.editor_buttons.map { |b| b.dup }
-    # now handle the many-to-many associations for collaborators, reviewers, owners, and blocks
-    new_collection.collaborator_ids = self.collaborator_ids
-    new_collection.reviewer_ids = self.reviewer_ids
-    new_collection.owner_ids = self.owner_ids
-    new_collection.collection_block_ids = self.collection_block_ids
-    # now save the collection
-    new_collection.save!
-    new_collection
-  end
-
-  def self.access_controlled(user)
-    if user.nil?
-      Collection.unrestricted
-    else
-      owned_collections          = user.all_owner_collections.pluck(:id)
-      collaborator_collections   = user.collection_collaborations.pluck(:id)
-      public_collections         = Collection.unrestricted.pluck(:id)
-
-      Collection.where(:id => owned_collections + collaborator_collections + public_collections)
-    end
-  end
-
   def page_metadata_fields
-    page_fields = []
-    works.each do |w|
-      page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
-    end
-
-    page_fields.uniq
+    works.map { |w| w.pages.first&.metadata&.keys }
+         .compact
+         .flatten
+         .uniq
   end
 
   def export_subject_index_as_csv(work)
@@ -362,9 +317,7 @@ class Collection < ApplicationRecord
   end
 
   def uniquify_slug
-    if DocumentSet.where(slug: self.slug).exists?
-      self.slug = self.slug+'-collection'
-    end
+    self.slug = "#{self.slug}-collection" if DocumentSet.where(slug: self.slug).exists?
   end
 
   def search_works(search)
@@ -539,32 +492,28 @@ class Collection < ApplicationRecord
   protected
 
   def set_transcription_conventions
-    unless self.transcription_conventions.present?
-      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
-    end
+    self.transcription_conventions ||= "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
   end
 
-    DEFAULT_HELP_TEXT = <<ENDHELP
-    <h2> Transcribing</h2>
-    <p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>
-    <p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>
-    <p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>
-    <h3>Helpful Documentation</h3>
-    <p><a href="https://content.fromthepage.com/project-owner-documentation/advanced-mark-up/">Advanced Markup</a><br><br>
-    <a href="https://content.fromthepage.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
-    <a href="https://content.fromthepage.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTex</a></p>
-ENDHELP
+  DEFAULT_HELP_TEXT = <<~ENDHELP
+    <h2>Transcribing</h2>
+    <p>Once you sign up for an account, a new Transcribe tab will appear above each page.</p>
+    <p>You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>
+    <p>Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>
 
+    <h3>Helpful Documentation</h3>
+    <p>
+      <a href="https://content.fromthepage.com/project-owner-documentation/advanced-mark-up/">Advanced Markup</a><br><br>
+      <a href="https://content.fromthepage.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
+      <a href="https://content.fromthepage.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTeX</a>
+    </p>
+  ENDHELP
   def set_help
-    unless self.help.present?
-      self.help = DEFAULT_HELP_TEXT
-    end
+    self.help ||= DEFAULT_HELP_TEXT
   end
 
   def set_link_help
-    unless self.link_help.present?
-      self.link_help = "<h2>Linking Subjects</h2>\n<p> To create a link within a transcription, surround the text with double square braces.</p>\n<p> Example: Say that we want to create a subject link for &ldquo;Dr. Owen&rdquo; in the text:</p>\n<code> Dr. Owen and his wife came by for fried chicken today.</code>\n<p> Place <code>[[ and ]]</code> around Dr Owen like this:</p>\n<code>[[Dr. Owen]] and his wife came by for fried chicken today.</code>\n<p> When you save the page, a new subject will be created for &ldquo;Dr. Owen&rdquo;, and the page will be added to its index. You can add an article about Dr. Owen&mdash;perhaps biographical notes or references&mdash;to the subject by clicking on &ldquo;Dr. Owen&rdquo; and clicking the Edit tab.</p>\n<p> To create a subject link with a different name from that used within the text, use double braces with a pipe as follows: <code>[[official name of subject|name used in the text]]</code>. For example:</p>\n<code> [[Dr. Owen]] and [[Dr. Owen's wife|his wife]] came by for fried chicken today.</code>\n<p> This will create a subject for &ldquo;Dr. Owen's wife&rdquo; and link the text &ldquo;his wife&rdquo; to that subject.</p></a>\n<h2> Renaming Subjects</h2>\n<p> In the example above, we don't know Dr. Owen's wife's name, but created a subject for her anyway. If we later discover that her name is &ldquo;Juanita&rdquo;, all we have to do is edit the subject title:</p>\n<ol><li>Click on &ldquo;his wife&rdquo; on the page, or navigate to &ldquo;Dr. Owen's wife&rdquo; on the home page for the project.</li>\n<li>Click the Edit tab.</li>\n<li> Change &ldquo;Dr. Owen's wife&rdquo; to &ldquo;Juanita Owen&rdquo;.</li></ol>\n<p> This will change the links on the pages that mention that subject, so our page is automatically updated:</p>\n    <code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for fried chicken today.</code>\n<h2> Combining Subjects</h2>\n<p> Occasionally you may find that two subjects actually refer to the same person. When this happens, rather than painstakingly updating each link, you can use the Combine button at the bottom of the subject page.</p>\n <p> For example, if one page reads:</p>\n<code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for [[fried chicken]] today.</code>\n<p> while a different page contains</p>\n<code> Jim bought a [[chicken]] today.</code>\n<p> you can combine &ldquo;chicken&rdquo; with &ldquo;fried chicken&rdquo; by going to the &ldquo;chicken&rdquo; article and reviewing the combination suggestions at the bottom of the screen. Combining &ldquo;fried chicken&rdquo; into &ldquo;chicken&rdquo; will update all links to point to &ldquo;chicken&rdquo; instead, copy any article text from the &ldquo;fried chicken&rdquo; article onto the end of the &ldquo;chicken&rdquo; article, then delete the &ldquo;fried chicken&rdquo; subject.</p>\n<h2> Auto-linking Subjects</h2>\n<p> Whenever text is linked to a subject, that fact can be used by the system to suggest links in new pages. At the bottom of the transcription screen, there is an Autolink button. This will refresh the transcription text with suggested links, which should then be reviewed and may be saved.</p>\n<p> Using our example, the system already knows that &ldquo;Dr. Owen&rdquo; links to &ldquo;Dr. Owen&rdquo; and &ldquo;his wife&rdquo; links to &ldquo;Juanita Owen&rdquo;. If a new page reads:</p>\n<code> We told Dr. Owen about Sam Jones and his wife.</code>\n<p> pressing Autolink will suggest these links:</p>\n<code> We told [[Dr. Owen]] about Sam Jones and [[Juanita Owen|his wife]].</code>\n<p> In this case, the link around &ldquo;Dr. Owen&rdquo; is correct, but we must edit the suggested link that incorrectly links Sam Jones's wife to &ldquo;Juanita Owen&rdquo;. The autolink feature can save a great deal of labor and prevent collaborators from forgetting to link a subject they previously thought was important, but its suggestions still need to be reviewed before the transcription is saved.</p>"
-    end
+    self.link_help ||= "<h2>Linking Subjects</h2>\n<p> To create a link within a transcription, surround the text with double square braces.</p>\n<p> Example: Say that we want to create a subject link for &ldquo;Dr. Owen&rdquo; in the text:</p>\n<code> Dr. Owen and his wife came by for fried chicken today.</code>\n<p> Place <code>[[ and ]]</code> around Dr Owen like this:</p>\n<code>[[Dr. Owen]] and his wife came by for fried chicken today.</code>\n<p> When you save the page, a new subject will be created for &ldquo;Dr. Owen&rdquo;, and the page will be added to its index. You can add an article about Dr. Owen&mdash;perhaps biographical notes or references&mdash;to the subject by clicking on &ldquo;Dr. Owen&rdquo; and clicking the Edit tab.</p>\n<p> To create a subject link with a different name from that used within the text, use double braces with a pipe as follows: <code>[[official name of subject|name used in the text]]</code>. For example:</p>\n<code> [[Dr. Owen]] and [[Dr. Owen's wife|his wife]] came by for fried chicken today.</code>\n<p> This will create a subject for &ldquo;Dr. Owen's wife&rdquo; and link the text &ldquo;his wife&rdquo; to that subject.</p></a>\n<h2> Renaming Subjects</h2>\n<p> In the example above, we don't know Dr. Owen's wife's name, but created a subject for her anyway. If we later discover that her name is &ldquo;Juanita&rdquo;, all we have to do is edit the subject title:</p>\n<ol><li>Click on &ldquo;his wife&rdquo; on the page, or navigate to &ldquo;Dr. Owen's wife&rdquo; on the home page for the project.</li>\n<li>Click the Edit tab.</li>\n<li> Change &ldquo;Dr. Owen's wife&rdquo; to &ldquo;Juanita Owen&rdquo;.</li></ol>\n<p> This will change the links on the pages that mention that subject, so our page is automatically updated:</p>\n    <code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for fried chicken today.</code>\n<h2> Combining Subjects</h2>\n<p> Occasionally you may find that two subjects actually refer to the same person. When this happens, rather than painstakingly updating each link, you can use the Combine button at the bottom of the subject page.</p>\n <p> For example, if one page reads:</p>\n<code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for [[fried chicken]] today.</code>\n<p> while a different page contains</p>\n<code> Jim bought a [[chicken]] today.</code>\n<p> you can combine &ldquo;chicken&rdquo; with &ldquo;fried chicken&rdquo; by going to the &ldquo;chicken&rdquo; article and reviewing the combination suggestions at the bottom of the screen. Combining &ldquo;fried chicken&rdquo; into &ldquo;chicken&rdquo; will update all links to point to &ldquo;chicken&rdquo; instead, copy any article text from the &ldquo;fried chicken&rdquo; article onto the end of the &ldquo;chicken&rdquo; article, then delete the &ldquo;fried chicken&rdquo; subject.</p>\n<h2> Auto-linking Subjects</h2>\n<p> Whenever text is linked to a subject, that fact can be used by the system to suggest links in new pages. At the bottom of the transcription screen, there is an Autolink button. This will refresh the transcription text with suggested links, which should then be reviewed and may be saved.</p>\n<p> Using our example, the system already knows that &ldquo;Dr. Owen&rdquo; links to &ldquo;Dr. Owen&rdquo; and &ldquo;his wife&rdquo; links to &ldquo;Juanita Owen&rdquo;. If a new page reads:</p>\n<code> We told Dr. Owen about Sam Jones and his wife.</code>\n<p> pressing Autolink will suggest these links:</p>\n<code> We told [[Dr. Owen]] about Sam Jones and [[Juanita Owen|his wife]].</code>\n<p> In this case, the link around &ldquo;Dr. Owen&rdquo; is correct, but we must edit the suggested link that incorrectly links Sam Jones's wife to &ldquo;Juanita Owen&rdquo;. The autolink feature can save a great deal of labor and prevent collaborators from forgetting to link a subject they previously thought was important, but its suggestions still need to be reviewed before the transcription is saved.</p>"
   end
 
   def fill_featured_at

@@ -609,6 +609,12 @@ class Work < ApplicationRecord
       self.scribes.include?(user)
   end
 
+  def is_public?
+    return true if collection.nil? || !collection.restricted?
+
+    document_sets.unrestricted.any?
+  end
+
   private
 
   def handle_index_deletion
