@@ -19,7 +19,6 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
     author: 'Author',
     recipient: 'Recipient',
     location_of_composition: 'Place of Creation',
-    document_date: 'Document Date',
     genre: 'Genre',
     source_location: 'Source Location',
     source_collection_name: 'Source Collection Name',
