@@ -46,4 +46,5 @@ class Article::Update < ApplicationInteractor
 
     lat_dec > dec || lon_dec > dec
   end
+
 end

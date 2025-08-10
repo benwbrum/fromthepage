@@ -21,6 +21,7 @@ describe 'IA import actions', order: :defined do
       page.find('.tabs').click_link('Start A Project')
       page.find(:css, '#import-internet-archive').click
       click_link('Import From Archive.org')
+      expect(page).to have_selector('#detail_url', visible: true)
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
       page.accept_confirm if page.has_button?('Import Anyway')

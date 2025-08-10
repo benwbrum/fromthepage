@@ -89,7 +89,7 @@ describe "Devise" do
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{owner.display_name}")
     end
-    it "redirects owner to dashboard/owner#freetrial after signup" do
+    it "redirects owner to dashboard/owner#freetrial after signup" do 
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Email Address', with: owner.email

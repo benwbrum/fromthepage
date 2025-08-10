@@ -1,0 +1,23 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://example.com/manifest
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Type:
+      - text/html
+    body:
+      encoding: UTF-8
+      string: '<html><body><h1>404 Not Found</h1></body></html>'
+    http_version: '1.1'
+  recorded_at: Thu, 28 Mar 2024 13:59:00 GMT

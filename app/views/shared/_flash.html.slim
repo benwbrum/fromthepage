@@ -1,7 +1,8 @@
 - icon = flash_icons[type.to_sym]
+- aria_attrs = flash_aria_attributes(type)
 
 -if icon.present?
-  div class="flash flash-#{type}" data-controller='flash' data-flash-type-value=type
+  div class="flash flash-#{type}" data-controller='flash' data-flash-type-value=type role=aria_attrs[:role] aria-live=aria_attrs[:'aria-live'] aria-atomic=aria_attrs[:'aria-atomic']
     span.flash_message
       =svg_symbol icon, class: 'icon'
       span =message.html_safe

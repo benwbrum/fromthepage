@@ -127,8 +127,8 @@ fr:
       since: depuis %{date}
       start_a_project: Démarrer un projet
       summary: Sommaire
+      to_upgrade_contact: Pour mettre à niveau, contactez support@fromthepage.com
       total_pages: 'Nombre total de pages : %{pages}'
-      upgrade: Mise à niveau
       work:
         one: Œuvre
         other: Œuvres
@@ -165,6 +165,7 @@ fr:
       download_letter: Télécharger une lettre
       end_date: Date de fin
       hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
+      hours_update_note: Les statistiques de contribution sont calculées toutes les vingt-quatre heures. Ces statistiques reflètent l'activité jusqu'à %{time_ago}.
       select_new_date: Sélectionnez une nouvelle plage de dates
       start_date: Date de début
       update: Mise à jour

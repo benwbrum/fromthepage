@@ -87,7 +87,7 @@ class Page < ApplicationRecord
   # after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
-  serialize :metadata, Hash
+  serialize :metadata, type: Hash
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -97,22 +97,22 @@ class Page < ApplicationRecord
     'image/tiff'
   ].freeze
 
-  enum status: {
+  enum :status, {
     new: 'new',
     blank: 'blank',
     incomplete: 'incomplete',
     indexed: 'indexed',
     needs_review: 'review',
     transcribed: 'transcribed'
-  }, _prefix: :status
+  }, prefix: :status
 
-  enum translation_status: {
+  enum :translation_status, {
     new: 'new',
     blank: 'blank',
     indexed: 'indexed',
     needs_review: 'review',
     translated: 'translated'
-  }, _prefix: :translation_status
+  }, prefix: :translation_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }
@@ -318,8 +318,8 @@ class Page < ApplicationRecord
     if self.base_image.blank?
       return nil
     end
-    if !File.exists?(thumbnail_filename())
-      if File.exists?(modernize_absolute(self.base_image))
+    if !File.exist?(thumbnail_filename())
+      if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
       end
     end
@@ -668,7 +668,7 @@ class Page < ApplicationRecord
   end
 
   def has_ai_plaintext?
-    File.exists?(ai_plaintext_path)
+    File.exist?(ai_plaintext_path)
   end
 
   def ai_plaintext
@@ -684,11 +684,9 @@ class Page < ApplicationRecord
     File.write(ai_plaintext_path, text)
   end
 
-
   def has_alto?
-    File.exists?(alto_path)
+    File.exist?(alto_path)
   end
-
 
   def alto_xml
     if has_alto?
@@ -709,8 +707,8 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      uri = File.join(File.dirname(file_to_url(self.canonical_facsimile_url)), ERB::Util.url_encode(File.basename(self.canonical_facsimile_url)))
-      uri = URI.parse(uri)
+      encoded_path = URI::DEFAULT_PARSER.escape(self.canonical_facsimile_url, /[^A-Za-z0-9\-._~\/]/)
+      uri = URI.parse(encoded_path)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
       host = raw_host.split(":")[0]

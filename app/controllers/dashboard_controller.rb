@@ -328,6 +328,12 @@ class DashboardController < ApplicationController
     end
     @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
 
+    last_summary = AhoyActivitySummary.where(user_id: current_user.id)
+                                      .where.not(collection_id: nil)
+                                      .order(date: :desc)
+                                      .first
+    @last_calculation_date = last_summary&.date&.end_of_day
+
     raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
     @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map{ |collection_id, page_id| collection_id }.tally
     @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
