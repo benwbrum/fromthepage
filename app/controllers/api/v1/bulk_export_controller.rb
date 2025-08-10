@@ -65,7 +65,7 @@ module Api::V1
           render status: 202, json: response.to_json
 
         else
-          render status: 403, json: "User #{@api_user} is not authorized to view #{collection.title}"
+          render status: 403, json: "User #{@api_user.login} is not authorized to view #{collection.title}"
         end
       else
         render status: 401, json: 'You must use an API token to access bulk exports'
@@ -86,7 +86,7 @@ module Api::V1
           }
           render status: 200, json: response.to_json
         else
-          render status: 403, json: "User #{@api_user} has no bulk export with ID #{bulk_export_id}"
+          render status: 403, json: "User #{@api_user.login} has no bulk export with ID #{bulk_export_id}"
         end
       else
         render status: 401, json: 'You must use an API token to access bulk exports'
@@ -113,7 +113,7 @@ module Api::V1
             render status: 409, json: "Bulk export #{bulk_export_id} is not ready to download.  It is probably still running, but might have failed with an un-caught error."
           end
         else
-          render status: 403, json: "User #{@api_user} has no bulk export with ID #{bulk_export_id}"
+          render status: 403, json: "User #{@api_user.login} has no bulk export with ID #{bulk_export_id}"
         end
       else
         render status: 401, json: 'You must use an API token to access bulk exports'

@@ -34,9 +34,9 @@ pt:
       closing: "Obrigado, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
     metadata_csv_import_finished:
-      fail: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso, mas %{error_count} linhas apresentaram erros.
+      fail: O processamento do seu upload foi concluído. %{count} obras foram atualizados com sucesso, mas %{error_count} linhas apresentaram erros.
       subject: A importação dos metadados CSV foi concluída.
-      success: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso.
+      success: O processamento do seu upload foi concluído. %{count} obras foram atualizados com sucesso.
     metadata_refresh_finished:
       fail: Atualização de metadados concluída com erros.
       subject: A atualização de metadados para %{type}:%{id} foi concluída.
