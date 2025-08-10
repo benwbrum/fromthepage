@@ -25,6 +25,7 @@ describe DisplayController do
         expect(response).to render_template(:read_work)
         expect(assigns(:pages)).to be_present
         expect(assigns(:page_range_filter)).to be_falsy
+        expect(assigns(:heading)).to eq('Pages')
       end
     end
 
@@ -39,7 +40,7 @@ describe DisplayController do
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
         expect(assigns(:end_page)).to eq(7)
-        # Note: The actual filtering depends on the pagination, but we verify the parameters are set
+        expect(assigns(:heading)).to eq('Pages (3-7)')
       end
     end
 
@@ -53,6 +54,7 @@ describe DisplayController do
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
         expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages (3-7)')
       end
     end
 
@@ -66,6 +68,7 @@ describe DisplayController do
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
         expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages (3-7)')
       end
     end
 
@@ -86,6 +89,22 @@ describe DisplayController do
         
         expect(response).to have_http_status(:ok)
         expect(assigns(:page_range_filter)).to be_falsy
+        expect(assigns(:heading)).to eq('Pages')
+      end
+    end
+
+    context 'with page range and review filter' do
+      let(:action_path) { collection_read_work_with_range_path(owner, collection, work, '3-7') }
+      let(:params) { { needs_review: 'review' } }
+
+      it 'applies both filters' do
+        get action_path, params: params
+        
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page_range_filter)).to be_truthy
+        expect(assigns(:start_page)).to eq(3)
+        expect(assigns(:end_page)).to eq(7)
+        expect(assigns(:heading)).to eq('Pages That Need Review (3-7)')
       end
     end
   end

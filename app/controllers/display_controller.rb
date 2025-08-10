@@ -38,37 +38,37 @@ class DisplayController < ApplicationController
       if @review == 'review'
         @pages = base_pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.pages_need_review_range', start: @start_page, end: @end_page) : t('.pages_need_review')
+        @heading = @page_range_filter ? "#{t('.pages_need_review')} (#{@start_page}-#{@end_page})" : t('.pages_need_review')
       elsif @review == 'incomplete'
         @pages = base_pages.incomplete.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.pages_need_completion_range', start: @start_page, end: @end_page) : t('.pages_need_completion')
+        @heading = @page_range_filter ? "#{t('.pages_need_completion')} (#{@start_page}-#{@end_page})" : t('.pages_need_completion')
       elsif @review == 'transcription'
         @pages = base_pages.needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
         @incomplete_pages = base_pages.needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @incomplete_count = @incomplete_pages.count
-        @heading = @page_range_filter ? t('.pages_need_transcription_range', start: @start_page, end: @end_page) : t('.pages_need_transcription')
+        @heading = @page_range_filter ? "#{t('.pages_need_transcription')} (#{@start_page}-#{@end_page})" : t('.pages_need_transcription')
       elsif @review == 'index'
         @pages = base_pages.needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.pages_need_indexing_range', start: @start_page, end: @end_page) : t('.pages_need_indexing')
+        @heading = @page_range_filter ? "#{t('.pages_need_indexing')} (#{@start_page}-#{@end_page})" : t('.pages_need_indexing')
       elsif @review == 'translation'
         @pages = base_pages.needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.pages_need_translation_range', start: @start_page, end: @end_page) : t('.pages_need_translation')
+        @heading = @page_range_filter ? "#{t('.pages_need_translation')} (#{@start_page}-#{@end_page})" : t('.pages_need_translation')
       elsif @review == 'translation_review'
         @pages = base_pages.translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.translations_need_review_range', start: @start_page, end: @end_page) : t('.translations_need_review')
+        @heading = @page_range_filter ? "#{t('.translations_need_review')} (#{@start_page}-#{@end_page})" : t('.translations_need_review')
       elsif @review == 'translation_index'
         @pages = base_pages.needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.translations_need_indexing_range', start: @start_page, end: @end_page) : t('.translations_need_indexing')
+        @heading = @page_range_filter ? "#{t('.translations_need_indexing')} (#{@start_page}-#{@end_page})" : t('.translations_need_indexing')
       else
         @pages = base_pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = @page_range_filter ? t('.pages_range', start: @start_page, end: @end_page) : t('.pages')
+        @heading = @page_range_filter ? "#{t('.pages')} (#{@start_page}-#{@end_page})" : t('.pages')
       end
     end
     session[:col_id] = @collection.slug
