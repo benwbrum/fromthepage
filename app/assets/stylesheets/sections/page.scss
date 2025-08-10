@@ -160,8 +160,18 @@
     flex-direction: column-reverse;
   }
 
+  &[data-layout-mode='vertical-rl'] {
+    flex-direction: row-reverse;
+  }
+
+  &[data-layout-mode='vertical-lr'] {
+    flex-direction: row;
+  }
+
   &[data-layout-mode='btt'],
-  &[data-layout-mode='ttb'] {
+  &[data-layout-mode='ttb'],
+  &[data-layout-mode='vertical-rl'],
+  &[data-layout-mode='vertical-lr'] {
     .cm-editor {
       min-height: 30vh;
     }
@@ -234,6 +244,21 @@
     flex: 1 1 auto;
     box-shadow: none;
     background: $bgWhite;
+    
+    // Support for vertical text orientations
+    &[data-writing-mode="vertical-rl"] {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+    
+    &[data-writing-mode="vertical-lr"] {
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+    }
+    
+    &[data-writing-mode="horizontal-tb"] {
+      writing-mode: horizontal-tb;
+    }
   }
 }
 
@@ -282,6 +307,21 @@
 
     &-scroll {
       flex-grow: 1;
+    }
+    
+    // Support for vertical text orientations
+    &.vertical-rl .CodeMirror {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+    
+    &.vertical-lr .CodeMirror {
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+    }
+    
+    &.horizontal-tb .CodeMirror {
+      writing-mode: horizontal-tb;
     }
   }
 }
@@ -351,6 +391,21 @@
 
   .field__label {
     color: rgba($bodyFg, 0.6);
+  }
+  
+  // Support for vertical text orientations
+  &[data-writing-mode="vertical-rl"] {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+  
+  &[data-writing-mode="vertical-lr"] {
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+  }
+  
+  &[data-writing-mode="horizontal-tb"] {
+    writing-mode: horizontal-tb;
   }
 
   table {
