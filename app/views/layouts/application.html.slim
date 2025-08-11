@@ -15,6 +15,36 @@ html lang="en-US"
     meta(name="author" content="FromThePage.com")
     meta(name="copyright" content="(c) #{Time.now.year} FromThePage.com")
     meta(name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=")
+
+    / Open Graph meta tags for Facebook
+    -if content_for?(:og_title)
+      meta(property="og:title" content="#{yield(:og_title).squish}")
+    -if content_for?(:og_description)
+      meta(property="og:description" content="#{yield(:og_description).squish}")
+    -if content_for?(:og_image)
+      meta(property="og:image" content="#{yield(:og_image)}")
+    -if content_for?(:og_url)
+      meta(property="og:url" content="#{yield(:og_url)}")
+    -if content_for?(:og_type)
+      meta(property="og:type" content="#{yield(:og_type)}")
+    meta(property="og:site_name" content="FromThePage")
+
+    / Twitter Card meta tags
+    -if content_for?(:twitter_card)
+      meta(name="twitter:card" content="#{yield(:twitter_card)}")
+    -if content_for?(:twitter_title)
+      meta(name="twitter:title" content="#{yield(:twitter_title).squish}")
+    -if content_for?(:twitter_description)
+      meta(name="twitter:description" content="#{yield(:twitter_description).squish}")
+    -if content_for?(:twitter_image)
+      meta(name="twitter:image" content="#{yield(:twitter_image)}")
+    meta(name="twitter:site" content="@_FromThePage_")
+
+    / oEmbed discovery
+    -if content_for?(:oembed_json_url)
+      link(rel="alternate" type="application/json+oembed" href="#{yield(:oembed_json_url)}" title="#{yield(:og_title) if content_for?(:og_title)}")
+    -if content_for?(:oembed_xml_url)
+      link(rel="alternate" type="text/xml+oembed" href="#{yield(:oembed_xml_url)}" title="#{yield(:og_title) if content_for?(:og_title)}")
     =csrf_meta_tags
     = turbo_refreshes_with method: :morph, scroll: :preserve
     ="\n"

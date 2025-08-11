@@ -36,6 +36,9 @@ module Fromthepage
     # override this in environment to set a different host for uploads
     config.upload_host=nil
 
+    # override this in environment to set the provider URL for social media sharing
+    config.provider_url = 'https://fromthepage.com'
+
 
   # load overrides for Thredded and other engines
   # config/application.rb
