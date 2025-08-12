@@ -35,7 +35,7 @@ FactoryBot.define do
       end
 
       trait :owner do
-        admin { true }
+        owner { true }
       end
 
       trait :admin do
