@@ -73,6 +73,7 @@ gem 'rails-i18n', '~> 7.0.0'
 
 gem 'charlock_holmes'
 gem 'roo'
+
 gem 'forty_facets'
 
 gem 'diffy'
@@ -152,6 +153,7 @@ gem 'rack-mini-profiler'
 gem 'stackprof'
 
 gem 'newrelic_rpm'
+
 gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
 
 gem 'open3'
@@ -164,3 +166,6 @@ gem 'ajax-datatables-rails', '~> 1.0.0'
 gem 'chewy'
 # Elasticsearch client
 # gem 'elasticsearch', '8.15.0'
+
+gem 'solid_queue', '~> 1.2'
+gem 'mission_control-jobs'

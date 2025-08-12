@@ -51,6 +51,8 @@ jobs:
         run: bundle exec rake db:create
       - name: Migrate
         run: bundle exec rake db:migrate
+      - name: Run solid_queue worker
+        run: nohup bundle exec bin/jobs > log/worker.log 2>&1 &
       - name: Load fixtures
         run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
       - name: Elasticsearch Initialize

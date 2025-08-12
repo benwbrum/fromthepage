@@ -83,7 +83,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
+  Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   config.action_mailer.default_url_options = { host: 'fromthepage.com' }
   config.action_mailer.default_options = { from: 'support@fromthepage.com' }
   config.action_mailer.delivery_method = :postmark
@@ -97,10 +97,12 @@ Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
 
   RAKE = '/usr/bin/env rake'
   NEATO = '/usr/bin/neato'
-  TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
-  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
-#  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
-#  Disable IIIF search while Pontiiif is down
-#  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
+  TEX_PATH = '/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK = 'https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
+  # BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
+  # Disable IIIF search while Pontiiif is down
+  # config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))
 end
