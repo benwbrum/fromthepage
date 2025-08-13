@@ -8,6 +8,8 @@ de:
     page_entries_info:
       multi_page: Anzeige von %{model} %{from} - %{to} von %{count} insgesamt
       multi_page_html: Anzeige von %{model} <b>%{from} - %{to}</b> von <b>%{count}</b> insgesamt
+      multi_page_filtered: Anzeige von gefilterten %{model} %{from} - %{to} von %{count} insgesamt
+      multi_page_filtered_html: Anzeige von gefilterten %{model} <b>%{from} - %{to}</b> von <b>%{count}</b> insgesamt
       single_page:
         one: Anzeige von 1 %{model}
         other: Anzeige aller %{count} %{model}
@@ -15,6 +17,14 @@ de:
       single_page_html:
         one: Anzeige von <b>1</b> %{model}
         other: Anzeige <b>aller %{count}</b> %{model}
+        zero: Keine %{model} gefunden
+      single_page_filtered:
+        one: Anzeige von 1 gefiltertem %{model}
+        other: Anzeige von %{count} gefilterten %{model}
+        zero: Keine %{model} gefunden
+      single_page_filtered_html:
+        one: Anzeige von <b>1</b> gefiltertem %{model}
+        other: Anzeige von <b>%{count}</b> gefilterten %{model}
         zero: Keine %{model} gefunden
     page_gap: "&hellip;"
     previous_label: "← Vorherige"
