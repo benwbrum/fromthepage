@@ -77,6 +77,9 @@ describe Page do
     # Set work_id to nil in before_block to avoid callback errors
     let!(:no_work_page) { create(:page, title: identifier, work_id: public_work.id) }
 
+    let!(:no_col_work) { create(:work, collection_id: nil, owner_user_id: other_user.id) }
+    let!(:no_col_page) { create(:page, work_id: no_col_work.id) }
+
     let(:records) do
       [
         owner,
@@ -99,7 +102,9 @@ describe Page do
         other_public_page,
         other_restricted_work,
         other_restricted_page,
-        no_work_page
+        no_work_page,
+        no_col_work,
+        no_col_page
       ]
     end
 
