@@ -13,10 +13,17 @@ describe Work::Metadata::ImportCsv do
   let!(:work_1) { create(:work, collection: collection, owner_user_id: owner.id) }
   let(:uploaded_filename) { "uploaded_filename_#{Time.current.to_i}" }
   let!(:work_2) do
-    create(:work, collection: collection, owner_user_id: owner.id,
-                  title: 'Unchanged title', description: 'Unchanged description',
-                  identifier: 'unchanged_identifier', uploaded_filename: uploaded_filename,
-                  original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json)
+    create(
+      :work,
+      collection: collection,
+      owner_user_id: owner.id,
+      title: 'Unchanged title',
+      description: 'Unchanged description',
+      identifier: 'unchanged_identifier', uploaded_filename: uploaded_filename,
+      original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json,
+      author: 'Unchanged author',
+      recipient: 'Nulled recipient'
+    )
   end
 
   let!(:collection_2) { create(:collection, owner_user_id: owner.id) }
@@ -30,6 +37,9 @@ describe Work::Metadata::ImportCsv do
       '*FromThePage ID*',
       'FromThePage Description',
       'Identifier',
+      # Additional metadata headers
+      'Author',
+      'Recipient',
       # Metadata fields
       'Label 1',
       'Label 2'
@@ -42,6 +52,8 @@ describe Work::Metadata::ImportCsv do
     # - FromThePage Title present
     # - FromThePage Description present
     # - Identifier present
+    # - Author present
+    # - Recipient present
     # - Metadata present
     [
       'New title',
@@ -50,6 +62,8 @@ describe Work::Metadata::ImportCsv do
       work_1.id,
       'New description',
       'new_identifier',
+      'New author',
+      'New recipient',
       'Value 1',
       'Value 2'
     ]
@@ -61,6 +75,8 @@ describe Work::Metadata::ImportCsv do
     # - FromThePage Title blank
     # - FromThePage Description blank
     # - Identifier blank
+    # - Author blank
+    # - Recipient set to ' ' to nullify column
     # - Metadata blank
     [
       '',
@@ -69,6 +85,8 @@ describe Work::Metadata::ImportCsv do
       '',
       '',
       '',
+      '',
+      ' ',
       '',
       ''
     ]
@@ -83,6 +101,8 @@ describe Work::Metadata::ImportCsv do
       work_3.collection.title,
       '',
       work_3.id,
+      '',
+      '',
       '',
       '',
       '',
@@ -101,6 +121,8 @@ describe Work::Metadata::ImportCsv do
       '',
       '',
       '',
+      '',
+      '',
       ''
     ]
   end
@@ -116,6 +138,8 @@ describe Work::Metadata::ImportCsv do
       '',
       '',
       '',
+      '',
+      '',
       ''
     ]
   end
@@ -125,6 +149,8 @@ describe Work::Metadata::ImportCsv do
     # - Missing ID and filename, so nothing to identify work
     [
       'Missing ID and Filename',
+      '',
+      '',
       '',
       '',
       '',
@@ -181,13 +207,17 @@ describe Work::Metadata::ImportCsv do
       title: 'New title',
       description: 'New description',
       identifier: 'new_identifier',
-      original_metadata: [{ label: 'Label 1', value: 'Value 1' }, { label: 'Label 2', value: 'Value 2' }].to_json
+      original_metadata: [{ label: 'Label 1', value: 'Value 1' }, { label: 'Label 2', value: 'Value 2' }].to_json,
+      author: 'New author',
+      recipient: 'New recipient'
     )
     expect(work_2.reload).to have_attributes(
       title: 'Unchanged title',
       description: 'Unchanged description',
       identifier: 'unchanged_identifier',
-      original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json
+      original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json,
+      author: 'Unchanged author',
+      recipient: nil
     )
   end
 end

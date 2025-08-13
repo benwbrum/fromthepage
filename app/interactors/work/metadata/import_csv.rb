@@ -15,6 +15,21 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
     '*Uploaded Filename*'
   ].freeze
 
+  ADDITIONAL_METADATA_HEADERS = {
+    author: 'Author',
+    recipient: 'Recipient',
+    location_of_composition: 'Place of Creation',
+    genre: 'Genre',
+    source_location: 'Source Location',
+    source_collection_name: 'Source Collection Name',
+    source_box_folder: 'Source Box/Folder',
+    in_scope: 'In Scope',
+    editorial_notes: 'Editorial notes',
+    physical_description: 'Physical description',
+    document_history: 'Document history',
+    permission_description: 'Permission description'
+  }.freeze
+
   attr_accessor :content, :rowset_errors
 
   def initialize(metadata_file:, collection:)
@@ -37,6 +52,9 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
 
         # Skip special headers
         next if SPECIAL_HEADERS.include?(header)
+
+        # Skip additional_metadata_headers
+        next if ADDITIONAL_METADATA_HEADERS.values.include?(header)
 
         metadata << { label: header, value: row[header] } if row[header].present?
       end
@@ -70,6 +88,8 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
         work.identifier = work_identifier if work_identifier.present?
         work.description = work_description if work_description.present?
         work.original_metadata = metadata.to_json if metadata.present?
+        work.assign_attributes(additional_metadata_attributes(row))
+
         work.save!
 
         @content += 1
@@ -105,5 +125,20 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
     else
       { error: I18n.t('metadata.import_csv.errors.not_existing_work', work_filename: work_filename) }
     end
+  end
+
+  def additional_metadata_attributes(row)
+    attributes_hash = {}
+    ADDITIONAL_METADATA_HEADERS.each do |key, header|
+      value = row[header]
+
+      next if value.nil? || value == ''
+      # When value is '', we leave unchanged
+      # Otherwise, we expect ' ' for setting the field to nil
+
+      attributes_hash[key] = value == ' ' ? nil : value
+    end
+
+    attributes_hash
   end
 end
