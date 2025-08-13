@@ -49,6 +49,7 @@ namespace :fromthepage do
         PagesIndex.delete
         WorksIndex.delete
         UsersIndex.delete
+        ArticlesIndex.delete
 
         client = Chewy.client
 
@@ -80,6 +81,7 @@ namespace :fromthepage do
         PagesIndex.create
         WorksIndex.create
         UsersIndex.create
+        ArticlesIndex.create
       end
 
       desc 'Reindex elements'
@@ -89,6 +91,7 @@ namespace :fromthepage do
         works_scope = Work.includes({ collection: :owner }, :document_sets)
         users_scope = User.all
         pages_scope = Page.includes(work: [{ collection: :owner }, :document_sets])
+        articles_scope = Article.includes(:collection, :categories, { works: :document_sets })
 
         if args[:hours_ago]
           hours_ago = args[:hours_ago].to_i
@@ -101,6 +104,7 @@ namespace :fromthepage do
           works_scope = works_scope.where('most_recent_deed_created_at >= ?', time_threshold)
           users_scope = users_scope.where('updated_at >= ?', time_threshold)
           pages_scope = pages_scope.where('updated_at >= ?', time_threshold)
+          # TODO: We may need updated_at timestamp on articles now
         end
 
         CollectionsIndex.import collections_scope
@@ -108,6 +112,7 @@ namespace :fromthepage do
         WorksIndex.import works_scope
         UsersIndex.import users_scope
         PagesIndex.import pages_scope
+        ArticlesIndex.import articles_scope
       end
 
       desc 'Delete Elasticsearch indices'
@@ -116,6 +121,7 @@ namespace :fromthepage do
         PagesIndex.purge
         WorksIndex.purge
         UsersIndex.purge
+        ArticlesIndex.purge
       end
 
       desc 'Gets Elasticsearch indices data'
@@ -140,6 +146,7 @@ namespace :fromthepage do
         all_indices.each { |idx| puts format_index_line(idx) }
       end
 
+      # TODO: Implement this
       desc 'Querries Elasticsearch via ID'
       task :query, [:id] => :environment do |_, args|
         id = args[:id]
