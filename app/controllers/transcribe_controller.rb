@@ -622,7 +622,8 @@ class TranscribeController  < ApplicationController
   def active?
     return if @collection.active?
 
-    redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+    # Redirect to collection overview instead of display page for inactive collections
+    redirect_to collection_path(@collection.owner, @collection)
   end
 
   def rollback_article_categories(destroy_ids, unset_ids)

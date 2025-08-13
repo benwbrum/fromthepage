@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TranscribeController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }
@@ -20,6 +20,22 @@ describe TranscribeController do
 
         expect(response).to have_http_status(:redirect)
         expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'when collection is inactive' do
+      let!(:user) { create(:unique_user) }
+
+      before do
+        collection.update!(is_active: false)
+      end
+
+      it 'redirects to collection overview instead of display page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
       end
     end
 
@@ -103,6 +119,20 @@ describe TranscribeController do
         expect(page.articles.reload).to include(article)
         expect(article.reload.categories).to include(category)
       end
+    end
+  end
+  
+  describe '#help' do
+    let(:action_path) { collection_help_page_path(owner, collection, work, page) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:help)
     end
   end
 end

@@ -87,6 +87,10 @@ class AdminMailer < ActionMailer::Base
         .group_by{ |d| d.collection.title }
     end
     
+    def has_activity?
+      !@collaborators.blank? || !@comments.blank? || !@activity.blank?
+    end
+    
     class << self
       def build(owner, activity_since=1.day.ago)
         AdminMailer::OwnerCollectionActivity.new(owner, activity_since)

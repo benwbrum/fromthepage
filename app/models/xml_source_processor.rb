@@ -383,7 +383,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
-        article.created_by_id = User.current_user.id if User.current_user.present?
+        article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
       end
 

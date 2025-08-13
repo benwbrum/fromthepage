@@ -39,6 +39,10 @@ en:
       fail: Your upload has finished processing. %{count} works were updated successfully; %{error_count} rows encountered errors.
       subject: Your metadata CSV import is finished.
       success: Your upload has finished processing. %{count} works were updated successfully.
+    metadata_refresh_finished:
+      fail: Metadata refresh finished with errors.
+      subject: Metadata refresh for %{type}:%{id} is finished.
+      success: Metadata refresh finished successfully.
     new_mobile_user:
       html:
         continue_transcribing: " to continue transcribing."
@@ -70,6 +74,16 @@ en:
       text:
         message: 'Your upload of "%{file}" has been processed and is ready at this URL:'
       your_upload_is_ready: Your upload is ready!
+    upload_no_images_warning:
+      html:
+        collection_link_message: You can still visit your collection at
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
+        supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'You can still visit your collection at this URL:'
+        message: Your upload of "%{file}" has been processed, but no supported image files were found.
+        supported_formats: 'Supported image formats are: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload processed - no images found
     work_collaborator:
       html:
         to_view: " to view %{collection} - %{work}."

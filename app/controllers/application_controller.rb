@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
 
   # Set the current user in User
   def set_current_user_in_model
-    User.current_user = current_user
+    Current.user = current_user
   end
 
   def current_user
@@ -225,11 +225,14 @@ class ApplicationController < ActionController::Base
 
   def load_html_blocks
     @html_blocks = {}
-    page_blocks =
-      PageBlock.where(controller: controller_name, view: action_name)
+    page_blocks = PageBlock.where(controller: controller_name, view: action_name)
     page_blocks.each do |b|
       if b && b.html
-        b.rendered_html = render_to_string(:inline => b.html)
+        begin
+          b.rendered_html = render_to_string(inline: b.html)
+        rescue StandardError => _e
+          b.rendered_html = ''
+        end
       else
         b.rendered_html = ''
       end

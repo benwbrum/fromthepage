@@ -137,8 +137,8 @@ de:
       since: seit %{date}
       start_a_project: Ein Projekt starten
       summary: Übersicht
+      to_upgrade_contact: Für ein Upgrade Wenden Sie sich an support@fromthepage.com
       total_pages: 'Seitenanzahl: %{pages}'
-      upgrade: Aktualisierung
       work:
         one: Werk
         other: Werke
@@ -175,6 +175,7 @@ de:
       download_letter: Laden Sie einen Brief herunter
       end_date: Endtermin
       hours_details_message: "%{user_name} hat zwischen %{start_date} und %{end_date} %{time_duration} beigetragen"
+      hours_update_note: Beitragsstatistiken werden alle vierundzwanzig Stunden berechnet. Diese Statistiken spiegeln die Nutzung bis %{time_ago} wider.
       select_new_date: Wählen Sie einen neuen Datumsbereich
       start_date: Startdatum
       update: Aktualisieren

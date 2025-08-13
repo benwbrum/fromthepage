@@ -50,7 +50,7 @@ describe "uploads data for collections", :order => :defined do
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
-    page.check('Import text from PDF text layers, text files or XML files.')
+    find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq @collection.title

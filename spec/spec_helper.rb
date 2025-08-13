@@ -39,12 +39,16 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = Rails.root.join('spec', 'fixtures')
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
+
+  config.before(:each) do
+    Chewy.strategy(:urgent)
+  end
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
@@ -123,10 +127,10 @@ end
 
 
 def fill_in_editor_field(text)
-  if page.has_field?('page_source_text') # we find page_source_text
-    fill_in('page_source_text', :with => text)
-  elsif page.has_field?('page_source_translation') # we find page_source_translation
-    fill_in('page_source_translation', :with => text)
+  if page.has_field?('page[source_text]') # we find page_source_text
+    fill_in('page[source_text]', with: text)
+  elsif page.has_field?('page[source_translation]') # we find page_source_translation
+    fill_in('page[source_translation]', with: text)
   else #codemirror
     script = "myCodeMirror.setValue(#{text.to_json});"
     page.execute_script(script)

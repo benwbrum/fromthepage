@@ -19,8 +19,8 @@ describe Article::Destroy do
   let(:result) do
     described_class.new(
       article: article,
-      user: user,
-      collection: collection
+      collection: collection,
+      user: user
     ).call
   end
 
@@ -44,7 +44,7 @@ describe Article::Destroy do
 
   it 'deletes articles and enqueues rename job' do
     expect(Article::RenameJob).to receive(:perform_later).with(
-      article_id: article.id, old_names: ['Original'], new_name: ''
+      user_id: user.id, article_id: article.id, old_names: ['Original'], new_name: ''
     ).and_call_original
 
     expect(result.success?).to be_truthy

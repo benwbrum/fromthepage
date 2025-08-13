@@ -23,7 +23,7 @@ describe Article::RenameJob do
     end
 
     let(:perform_worker) do
-      worker.perform(article_id: article.id, old_names: ['Original'], new_name: 'New')
+      worker.perform(user_id: user.id, article_id: article.id, old_names: ['Original'], new_name: 'New')
     end
 
     it 'updates source texts of related models' do
@@ -65,8 +65,13 @@ describe Article::RenameJob do
     end
 
     let(:perform_worker) do
-      worker.perform(article_id: from_article.id, old_names: ['Duplicate'], new_name: 'Original',
-                     new_article_id: to_article.id)
+      worker.perform(
+        user_id: user.id,
+        article_id: from_article.id,
+        old_names: ['Duplicate'],
+        new_name: 'Original',
+        new_article_id: to_article.id
+      )
     end
 
     it 'combines articles and updates source texts of related models' do
@@ -102,7 +107,7 @@ describe Article::RenameJob do
     end
 
     let(:perform_worker) do
-      worker.perform(article_id: article.id, old_names: ['Original'], new_name: '')
+      worker.perform(user_id: user.id, article_id: article.id, old_names: ['Original'], new_name: '')
     end
 
     it 'removes links in texts and deletes article links' do

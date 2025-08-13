@@ -39,6 +39,10 @@ fr:
       fail: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès ; %{error_count} lignes ont rencontré des erreurs.
       subject: Votre importation de métadonnées CSV est terminée.
       success: Votre téléchargement est terminé. %{count} œuvres ont été mises à jour avec succès.
+    metadata_refresh_finished:
+      fail: L'actualisation des métadonnées s'est terminée avec des erreurs.
+      subject: L'actualisation des métadonnées pour %{type}:%{id} est terminée.
+      success: L'actualisation des métadonnées s'est terminée avec succès.
     new_mobile_user:
       html:
         continue_transcribing: " continuer à transcrire."
@@ -70,6 +74,16 @@ fr:
       text:
         message: 'Votre téléchargement de "%{file}" a été traité et est prêt à cette URL :'
       your_upload_is_ready: Votre téléchargement est prêt !
+    upload_no_images_warning:
+      html:
+        collection_link_message: Vous pouvez toujours visiter votre collection à
+        message: Votre téléchargement de "%{file}" a été traité, mais aucun fichier image pris en charge n'a été trouvé.
+        supported_formats: 'Les formats d''image pris en charge sont : JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'Vous pouvez toujours visiter votre collection à cette URL :'
+        message: Votre téléchargement de "%{file}" a été traité, mais aucun fichier image pris en charge n'a été trouvé.
+        supported_formats: 'Les formats d''image pris en charge sont : JPG, JPEG, PNG'
+      upload_processed_no_images: Téléchargement traité - aucune image trouvée
     work_collaborator:
       html:
         to_view: " pour afficher %{collection} - %{work}."

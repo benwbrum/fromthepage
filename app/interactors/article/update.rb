@@ -1,9 +1,10 @@
 class Article::Update < ApplicationInteractor
   attr_accessor :article, :notice
 
-  def initialize(article:, article_params:)
+  def initialize(article:, article_params:, user:)
     @article        = article
     @article_params = article_params
+    @user           = user
 
     super
   end
@@ -19,6 +20,7 @@ class Article::Update < ApplicationInteractor
         versions = @article.article_versions.where('created_on > ?', 1.hour.ago)
 
         Article::RenameJob.perform_later(
+          user_id: @user.id,
           article_id: @article.id,
           old_names: versions.pluck(:title) + [old_title],
           new_name: @article.title
@@ -48,4 +50,5 @@ class Article::Update < ApplicationInteractor
 
     lat_dec > dec || lon_dec > dec
   end
+
 end

@@ -6,6 +6,7 @@ module AbstractXmlHelper
   SANITIZE_ALLOWED_ATTRIBUTES = [
     'abbr',
     'alt',
+    'aria-describedby',
     'break',
     'class',
     'data-controller',
@@ -23,6 +24,7 @@ module AbstractXmlHelper
     'rend',
     'src',
     'style',
+    'tabindex',
     'target',
     'target_id',
     'target_title',
@@ -70,7 +72,10 @@ module AbstractXmlHelper
           else
             unless suppress_tooltips
               anchor.add_attribute('data-controller', 'tooltip')
-              anchor.add_attribute('data-tooltip', article_tooltip_url(article_id: id, collection_id: collection.slug))
+              anchor.add_attribute('data-tooltip', url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => collection.slug))
+              # Add ARIA attributes for accessibility
+              anchor.add_attribute('aria-describedby', "tooltip-#{id}")
+              anchor.add_attribute('tabindex', '0')
             end
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
             if highlight_article_id && id == highlight_article_id
@@ -366,6 +371,9 @@ module AbstractXmlHelper
     doc.write(my_display_html)
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
+    # Add newlines before and after div elements
+    my_display_html.gsub!("<div", "\n<div")
+    my_display_html.gsub!("</div>", "</div>\n")
     my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')

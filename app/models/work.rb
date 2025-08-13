@@ -54,9 +54,6 @@
 #  fk_rails_...  (metadata_description_version_id => metadata_description_versions.id)
 #
 class Work < ApplicationRecord
-  require 'elastic_util'
-
-  include ElasticDelta
   include EdtfDate
   extend FriendlyId
   friendly_id :slug_candidates, use: %i[slugged history]
@@ -212,47 +209,29 @@ class Work < ApplicationRecord
     end
   end
 
-  def as_indexed_json
-    # Error handling for data that is missing parent relationships
-    # Some works have collection_id 0, others have ID's that don't exist
-    # Return object with error set so indexer knows to skip
-    if !self.collection.present?
-      return {
-        indexing_error: true
-      }
-    end
+  update_index('works', if: -> { ELASTIC_ENABLED && collection.present? && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
 
-    return {
-      _id: self.id,
-      is_public: !self.collection&.restricted || self.document_sets.where(visibility: [:public, :read_only]).exists?,
-      collection_id: self.collection&.id,
-      docset_id: self.document_sets.pluck(:id),
-      owner_user_id: self.collection&.owner_user_id,
-      title: self.title,
-      searchable_metadata: self.searchable_metadata
-    }
-  end
-
-  def self.es_match_query(query, user)
+  def self.es_search(query:, user: nil, is_public: true)
     blocked_collections = []
     collection_collabs = []
-    docset_collabs= []
+    docset_collabs = []
 
-    if !user.nil?
+    if user.present?
       blocked_collections = user.blocked_collections.pluck(:id)
-      collection_collabs = user.collection_collaborations.pluck(:id)
-      collection_collabs+= user.owned_collections.pluck(:id)
-      docset_collabs = user.document_set_collaborations.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id)
     end
 
     search_fields = [
-      "title^2",
-      "title.no_underscores^1.3",
-      "searchable_metadata.identifier_whitespace^1.5",
-      "searchable_metadata"
+      'title^2',
+      'title.no_underscores^1.3',
+      'searchable_metadata.identifier_whitespace^1.5',
+      'searchable_metadata'
     ]
 
-    return {
+    WorksIndex.query(
       bool: {
         must: {
           simple_query_string: {
@@ -264,22 +243,21 @@ class Work < ApplicationRecord
           {
             bool: {
               must_not: [
-                { terms: {collection_id: blocked_collections} }
+                { terms: { collection_id: blocked_collections } }
               ],
               # At least one of the following must be true
               should: [
-                { term: {is_public: true} },
-                { term: {owner_user_id: user.nil? ? -1 : user.id} },
-                { terms: {collection_id: collection_collabs} },
-                { terms: {docset_id: docset_collabs} },
-              ]
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { docset_id: docset_collabs } }
+              ],
+              minimum_should_match: 1
             }
-          },
-          # Need index filter for cross collection search
-          {prefix: {_index: "ftp_work"}}
+          }
         ]
       }
-    }
+    )
   end
 
   def update_derivatives
@@ -555,11 +533,7 @@ class Work < ApplicationRecord
       version = MetadataDescriptionVersion.new
       version.work = self
       version.metadata_description = self.metadata_description
-      unless User.current_user.nil?
-        version.user = User.current_user
-      else
-        version.user = User.find_by(id: self.work.owner_user_id)
-      end
+      version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
       previous_version =
         MetadataDescriptionVersion
@@ -629,5 +603,24 @@ class Work < ApplicationRecord
   def user_can_transcribe?(user)
     !self.restrict_scribes || user&.like_owner?(self) ||
       self.scribes.include?(user)
+  end
+
+  def is_public?
+    return true if collection.nil? || !collection.restricted?
+
+    document_sets.unrestricted.any?
+  end
+
+  private
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: WorksIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
   end
 end

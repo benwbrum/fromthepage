@@ -45,7 +45,6 @@ class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper
-  include ElasticDelta
 
   before_update :validate_blank_page
   before_update :process_source
@@ -88,7 +87,7 @@ class Page < ApplicationRecord
   # after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
-  serialize :metadata, Hash
+  serialize :metadata, type: Hash
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -98,22 +97,22 @@ class Page < ApplicationRecord
     'image/tiff'
   ].freeze
 
-  enum status: {
+  enum :status, {
     new: 'new',
     blank: 'blank',
     incomplete: 'incomplete',
     indexed: 'indexed',
     needs_review: 'review',
     transcribed: 'transcribed'
-  }, _prefix: :status
+  }, prefix: :status
 
-  enum translation_status: {
+  enum :translation_status, {
     new: 'new',
     blank: 'blank',
     indexed: 'indexed',
     needs_review: 'review',
     translated: 'translated'
-  }, _prefix: :translation_status
+  }, prefix: :translation_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }
@@ -139,45 +138,34 @@ class Page < ApplicationRecord
   NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
   NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
 
-  def as_indexed_json
-    return {
-      _id: self.id,
-      collection_id: self.collection&.id,
-      docset_id: self.work&.document_sets&.pluck(:id),
-      owner_user_id: self.collection&.owner_user_id,
-      work_id: self.work&.id,
-      is_public: !self.collection&.restricted || self.work&.document_sets.where(visibility: [:public, :read_only]).exists?,
-      title: self.title,
-      search_text: self.search_text,
-      content_english: self.source_text # TODO: Hook up language pipeline
-    }
-  end
+  update_index('pages', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
 
-  def self.es_match_query(query, user)
+  def self.es_search(query:, user: nil, is_public: true)
     blocked_collections = []
     collection_collabs = []
-    docset_collabs= []
+    docset_collabs = []
 
-    if !user.nil?
+    if user.present?
       blocked_collections = user.blocked_collections.pluck(:id)
-      collection_collabs = user.collection_collaborations.pluck(:id)
-      collection_collabs+= user.owned_collections.pluck(:id)
-      docset_collabs = user.document_set_collaborations.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id)
     end
 
     search_fields = [
-      "title^2",
-      "title.no_underscores^1.3",
-      "search_text^1.5",
-      "content_english",
-      "content_french",
-      "content_german",
-      "content_spanish",
-      "content_portuguese",
-      "content_swedish"
+      'title^2',
+      'title.no_underscores^1.3',
+      'search_text^1.5',
+      'content_english',
+      'content_french',
+      'content_german',
+      'content_spanish',
+      'content_portuguese',
+      'content_swedish'
     ]
 
-    return {
+    PagesIndex.query(
       bool: {
         must: {
           bool: {
@@ -188,7 +176,7 @@ class Page < ApplicationRecord
                 simple_query_string: {
                   query: query,
                   boost: 3.0,
-                  type: "phrase",
+                  type: 'phrase',
                   fields: search_fields
                 }
               },
@@ -196,7 +184,7 @@ class Page < ApplicationRecord
                 simple_query_string: {
                   query: query,
                   boost: 1.0,
-                  type: "most_fields",
+                  type: 'most_fields',
                   fields: search_fields
                 }
               }
@@ -207,22 +195,21 @@ class Page < ApplicationRecord
           {
             bool: {
               must_not: [
-                { terms: {collection_id: blocked_collections} }
+                { terms: { collection_id: blocked_collections } }
               ],
               # At least one of the following must be true
               should: [
-                { term: {is_public: true} },
-                { term: {owner_user_id: user.nil? ? -1 : user.id} },
-                { terms: {collection_id: collection_collabs} },
-                { terms: {docset_id: docset_collabs} }
-              ]
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { docset_id: docset_collabs } }
+              ],
+              minimum_should_match: 1
             }
-          },
-          # Need index filter for cross collection search
-          {prefix: {_index: "ftp_page"}}
+          }
         ]
       }
-    }
+    )
   end
 
   # tested
@@ -331,8 +318,8 @@ class Page < ApplicationRecord
     if self.base_image.blank?
       return nil
     end
-    if !File.exists?(thumbnail_filename())
-      if File.exists?(modernize_absolute(self.base_image))
+    if !File.exist?(thumbnail_filename())
+      if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
       end
     end
@@ -351,14 +338,14 @@ class Page < ApplicationRecord
 
   def calculate_last_editor
     unless COMPLETED_STATUSES.include? self.status
-      self.last_editor = User.current_user
+      self.last_editor = Current.user
     end
   end
 
   def calculate_approval_delta
     if source_text_changed?
       if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
         if most_recent_not_approver_version
           old_transcription = most_recent_not_approver_version.transcription || ''
         else
@@ -396,7 +383,7 @@ class Page < ApplicationRecord
 
     # Add other attributes as needed
 
-    version.user = User.current_user || User.find_by(id: self.work.owner_user_id)
+    version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
@@ -681,7 +668,7 @@ class Page < ApplicationRecord
   end
 
   def has_ai_plaintext?
-    File.exists?(ai_plaintext_path)
+    File.exist?(ai_plaintext_path)
   end
 
   def ai_plaintext
@@ -697,11 +684,9 @@ class Page < ApplicationRecord
     File.write(ai_plaintext_path, text)
   end
 
-
   def has_alto?
-    File.exists?(alto_path)
+    File.exist?(alto_path)
   end
-
 
   def alto_xml
     if has_alto?
@@ -722,8 +707,8 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      uri = File.join(File.dirname(file_to_url(self.canonical_facsimile_url)), ERB::Util.url_encode(File.basename(self.canonical_facsimile_url)))
-      uri = URI.parse(uri)
+      encoded_path = URI::DEFAULT_PARSER.escape(self.canonical_facsimile_url, /[^A-Za-z0-9\-._~\/]/)
+      uri = URI.parse(encoded_path)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
       host = raw_host.split(":")[0]
@@ -739,7 +724,12 @@ class Page < ApplicationRecord
     end
   end
 
+  def is_public?
+    work.nil? || work.is_public?
+  end
+
   private
+
   def ai_plaintext_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
   end
@@ -751,7 +741,6 @@ class Page < ApplicationRecord
   def original_htr_path
     '/not/implemented/yet/placeholder.xml'
   end
-
 
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
@@ -797,7 +786,6 @@ class Page < ApplicationRecord
     table_element.replace(text_table)
   end
 
-
   def modernize_absolute(filename)
     if filename
       File.join(Rails.root, 'public', filename.sub(/.*public/, ''))
@@ -821,4 +809,14 @@ class Page < ApplicationRecord
     self.work.update_columns(featured_page: nil)
   end
 
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: PagesIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
 end

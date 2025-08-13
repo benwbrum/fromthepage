@@ -1,10 +1,10 @@
 class Article::Destroy < ApplicationInteractor
   attr_accessor :article
 
-  def initialize(article:, user:, collection:)
+  def initialize(article:, collection:, user:)
     @article    = article
-    @user       = user
     @collection = collection
+    @user       = user
 
     super
   end
@@ -16,6 +16,7 @@ class Article::Destroy < ApplicationInteractor
     @article.destroy!
 
     Article::RenameJob.perform_later(
+      user_id: @user.id,
       article_id: @article.id,
       old_names: versions.pluck(:title) + [@article.title],
       new_name: ''
