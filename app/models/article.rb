@@ -204,7 +204,7 @@ class Article < ApplicationRecord
     version.source_text = self.source_text
     # set foreign keys
     version.article = self
-    version.user = User.current_user
+    version.user = Current.user
 
     # now do the complicated version update thing
 

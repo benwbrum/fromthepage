@@ -3,7 +3,7 @@ require 'csv'
 
 describe Work::Metadata::ImportCsv do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(login: OWNER) }

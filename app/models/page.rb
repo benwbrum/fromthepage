@@ -338,14 +338,14 @@ class Page < ApplicationRecord
 
   def calculate_last_editor
     unless COMPLETED_STATUSES.include? self.status
-      self.last_editor = User.current_user
+      self.last_editor = Current.user
     end
   end
 
   def calculate_approval_delta
     if source_text_changed?
       if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
         if most_recent_not_approver_version
           old_transcription = most_recent_not_approver_version.transcription || ''
         else
@@ -383,7 +383,7 @@ class Page < ApplicationRecord
 
     # Add other attributes as needed
 
-    version.user = User.current_user || User.find_by(id: self.work.owner_user_id)
+    version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version

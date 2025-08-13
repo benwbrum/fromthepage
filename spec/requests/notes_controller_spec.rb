@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe NotesController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }
@@ -239,7 +239,7 @@ describe NotesController do
     context 'with pages that have inconsistent note data' do
       let!(:page_with_notes) { create(:page, work: work, last_note_updated_at: 1.day.ago) }
       let!(:page_without_notes) { create(:page, work: work, last_note_updated_at: 1.day.ago) }
-      
+
       before do
         # Create a note for the first page
         create(:note, collection_id: collection.id, work_id: work.id, page_id: page_with_notes.id, user_id: owner.id)
