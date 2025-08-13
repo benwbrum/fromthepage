@@ -213,6 +213,7 @@ class CollectionController < ApplicationController
         order_clause = 'work_statistics.complete ASC, work_statistics.transcribed_percentage ASC, work_statistics.needs_review_percentage DESC'
       end
 
+      @showing_filtered_works = false
       @new_mobile_user = !!(session[:new_mobile_user])
       unless @collection.nil?
         if @collection.restricted
@@ -229,13 +230,16 @@ class CollectionController < ApplicationController
             session[:search_attempt_id] = @search_attempt.id
           end
           @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
+          @showing_filtered_works = true
 
         elsif (params[:works] == 'untranscribed')
           ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
+          @showing_filtered_works = true
           #show all works
         elsif (params[:works] == 'show')
           @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+          @showing_filtered_works = false
           #hide incomplete works
         elsif params[:works] == 'hide' || (@collection.hide_completed)
           #find ids of completed translation works
@@ -254,11 +258,14 @@ class CollectionController < ApplicationController
 
           if works.empty?
             @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+            @showing_filtered_works = false
           else
             @works = works
+            @showing_filtered_works = true
           end
         else
           @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+          @showing_filtered_works = false
         end
 
         if @collection.facets_enabled?
@@ -268,6 +275,7 @@ class CollectionController < ApplicationController
           # the search results are WorkFacets, not works, so we need to fetch the works themselves
           facet_ids = @search.result.pluck(:id)
           @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+          @showing_filtered_works = true unless params[:search].is_a?(String)
 
           @date_ranges = []
           date_configs = @collection.facet_configs.where(input_type: 'date').where.not(order: nil).order(order: :asc)
@@ -295,12 +303,15 @@ class CollectionController < ApplicationController
               session[:search_attempt_id] = @search_attempt.id
             end
             @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
+            @showing_filtered_works = true
           elsif (params[:works] == 'untranscribed')
             ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
+            @showing_filtered_works = true
             #show all works
           elsif (params[:works] == 'show')
             @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+            @showing_filtered_works = false
             #hide incomplete works
           elsif params[:works] == 'hide' || (@collection.hide_completed)
             #find ids of completed translation works
@@ -319,11 +330,14 @@ class CollectionController < ApplicationController
 
             if works.empty?
               @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+              @showing_filtered_works = false
             else
               @works = works
+              @showing_filtered_works = true
             end
           else
             @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+            @showing_filtered_works = false
           end
 
           if @collection.facets_enabled?

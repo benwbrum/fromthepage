@@ -73,7 +73,7 @@
             .collection-work_stats
               span =t("work.#{work.description_status}")
 
-      =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+      =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true, :showing_filtered_works => @showing_filtered_works })
 
     -unless @collection.facets_enabled?
       -unless (@collection.works.incomplete_transcription.count == @collection.works.count)
