@@ -6,29 +6,28 @@ en:
     collection_inactive: Collection Inactive
     collection_joined: Collection Joined
     deed:
-      html:
-        added_a_note_to_page: added a note to %{page}
-        added_work: added %{work}
-        corrected_page: corrected %{page}
-        described_metadata: described metadata
-        edited_article: edited %{article}
-        edited_metadata: edited metadata
-        edited_page: edited %{page}
-        edited_translation_of_page: edited the translation of %{page}
-        in_collection: " in %{collection}"
-        in_the_work: " in %{work}"
-        indexed_page: indexed %{page}
-        indexed_translation_of_page: indexed the translation of %{page}
-        joined: 'joined '
-        marked_page_as_blank: marked %{page} as blank
-        marked_page_as_needing_review: marked %{page} as needing review
-        marked_translation_page_as_needing_review: marked translation %{page} as needing review
-        reviewed_page: 'reviewed %{page} '
-        reviewed_translation: reviewed translation of %{page}
-        saying_deed: ", saying &ldquo;%{title}&rdquo;"
-        this_collection: this collection
-        transcribed_page: transcribed %{page}
-        translated_page: translated %{page}
+      added_a_note_to_page: added a note to %{page}
+      added_work: added %{work}
+      corrected_page: corrected %{page}
+      described_metadata: described metadata
+      edited_article: edited %{article}
+      edited_metadata: edited metadata
+      edited_page: edited %{page}
+      edited_translation_of_page: edited the translation of %{page}
+      in_collection: " in %{collection}"
+      in_the_work: " in %{work}"
+      indexed_page: indexed %{page}
+      indexed_translation_of_page: indexed the translation of %{page}
+      joined: 'joined '
+      marked_page_as_blank: marked %{page} as blank
+      marked_page_as_needing_review: marked %{page} as needing review
+      marked_translation_page_as_needing_review: marked translation %{page} as needing review
+      reviewed_page: 'reviewed %{page} '
+      reviewed_translation: reviewed translation of %{page}
+      saying_deed: ", saying &ldquo;%{title}&rdquo;"
+      this_collection: this collection
+      transcribed_page: transcribed %{page}
+      translated_page: translated %{page}
     deeds:
       show_more: Show More
     described_metadata: Described Metadata

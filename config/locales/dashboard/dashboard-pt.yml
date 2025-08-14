@@ -137,8 +137,8 @@ pt:
       since: desde %{date}
       start_a_project: Iniciar um Projeto
       summary: Resumo
+      to_upgrade_contact: Para atualizar, entre em contato com support@fromthepage.com
       total_pages: 'Total de páginas: %{pages}'
-      upgrade: Atualizar
       work:
         one: Obra
         other: Obras
@@ -175,6 +175,7 @@ pt:
       download_letter: Baixe uma carta
       end_date: Data final
       hours_details_message: "%{user_name} contribuiu com %{time_duration} entre %{start_date} e %{end_date}"
+      hours_update_note: As estatísticas de contribuição são calculadas a cada vinte e quatro horas. Essas estatísticas refletem o uso até %{time_ago}.
       select_new_date: Selecione um novo período
       start_date: Data de início
       update: Atualizar

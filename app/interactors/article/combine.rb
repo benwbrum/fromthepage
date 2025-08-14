@@ -1,7 +1,8 @@
 class Article::Combine < ApplicationInteractor
-  def initialize(article:, from_article_ids:)
+  def initialize(article:, from_article_ids:, user:)
     @article          = article
     @from_article_ids = from_article_ids
+    @user             = user
 
     super
   end
@@ -25,6 +26,7 @@ class Article::Combine < ApplicationInteractor
     from_article.save!
 
     Article::RenameJob.perform_later(
+      user_id: @user.id,
       article_id: from_article.id,
       old_name: old_from_title,
       new_name: to_article.title,

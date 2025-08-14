@@ -14,7 +14,7 @@ namespace :fromthepage do
         exit
       end
       owner = source_collection.owner
-      User.current_user=owner
+      Current.user = owner
       category_map = {}
       target_collection.categories.delete_all
       # categories are in a tree; we want to walk the tree and duplicate each category and its parent
@@ -103,7 +103,7 @@ namespace :fromthepage do
           new_page.status= page.status
           new_page.save!
         end
-        
+
       end
     end
   end

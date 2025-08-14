@@ -25,13 +25,13 @@ class DocumentUpload < ApplicationRecord
 
   mount_uploader :file, DocumentUploader
 
-  enum status: {
+  enum :status, {
     new: 'new',
     queued: 'queued',
     processing: 'processing',
     finished: 'finished',
     error: 'error'
-  }, _prefix: :status
+  }, prefix: :status
 
   def submit_process
     self.status = :queued

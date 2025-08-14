@@ -1,3 +1,13 @@
+-# Meta tags for better archival and SEO
+-content_for :page_title, @page_title if @page_title
+-content_for :meta_description, @meta_description if @meta_description  
+-content_for :meta_keywords, @meta_keywords if @meta_keywords
+
+-# Structured data for better content understanding by crawlers
+-if @structured_data
+  script type="application/ld+json"
+    =raw @structured_data.to_json
+
 -if current_page?(collection_forum_page_path(@collection.owner, @collection, @page.work, @page))
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
   =render('thredded/shared/breadcrumbs')

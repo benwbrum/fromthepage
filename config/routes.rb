@@ -7,9 +7,7 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
-  root to: redirect('/landing')
-  get '/landing', to: 'static#landing_page'
+  root to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -581,6 +579,12 @@ Fromthepage::Application.routes.draw do
       get 'article/:article_id/subject_distribution', to: 'export#subject_distribution_csv', as: 'subject_distribution'
     end
   end
+
+  # Sitemap routes for web crawlers
+  get '/sitemap.xml', to: 'sitemap#index', format: :xml
+  get '/sitemap_collections.xml', to: 'sitemap#collections', format: :xml
+  get '/sitemap_works.xml', to: 'sitemap#works', format: :xml
+  get '/sitemap_pages.xml', to: 'sitemap#pages', format: :xml
 
   get '/:user_id', to: 'user#profile', as: :user_profile
 end
