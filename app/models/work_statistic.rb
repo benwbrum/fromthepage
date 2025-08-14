@@ -115,6 +115,7 @@ class WorkStatistic < ApplicationRecord
     self.update(last_edit_at: Time.now)
   end
 
+  # TODO: Move to interactor
   def recalculate(_options = {})
     recalculate_from_hash
     recalculate_parent_statistics
