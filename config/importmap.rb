@@ -9,4 +9,5 @@ pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
 pin_all_from 'app/javascript/plugins', under: 'plugins'
 
 pin_all_from 'app/javascript/controllers', under: 'controllers'
+pin_all_from 'app/javascript/actions', under: 'actions'
 pin_all_from 'app/javascript/vendor', under: 'vendor', preload: false
