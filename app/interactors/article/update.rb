@@ -17,10 +17,12 @@ class Article::Update < ApplicationInteractor
 
     if @article.save
       if old_title != @article.title
+        versions = @article.article_versions.where('created_on > ?', 1.hour.ago)
+
         Article::RenameJob.perform_later(
           user_id: @user.id,
           article_id: @article.id,
-          old_name: old_title,
+          old_names: versions.pluck(:title) + [old_title],
           new_name: @article.title
         )
       end
