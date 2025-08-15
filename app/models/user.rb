@@ -334,9 +334,6 @@ class User < ApplicationRecord
     self.display_name + ' - ' + self.email
   end
 
-  def collections
-    self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
-  end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
@@ -460,7 +457,7 @@ class User < ApplicationRecord
     self.owner = false
     self.account_type = nil
 
-    self.collections.each do |c|
+    self.all_owner_collections.each do |c|
       c.is_active = false
       c.restricted = true
       c.save
