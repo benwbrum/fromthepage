@@ -293,7 +293,7 @@ describe "collection spec (isolated)" do
   before :all do
     @factory_owner = create(:owner)
   end
-
+  
   it 'updates collection statistics', js: true do
     login_as(@factory_owner, scope: :user)
 

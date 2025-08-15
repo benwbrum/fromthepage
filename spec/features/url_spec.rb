@@ -122,13 +122,14 @@ describe "URL tests" do
     visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
     expect(page).to have_selector('a', text: @collection.title)
     expect(page).to have_selector('h1', text: @work.title)
-    #blank out work slug
-    visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
+    #blank out work slug - should preserve the current slug
+    current_work = Work.find_by(id: @work.id)
+    visit "/#{@owner.slug}/#{@collection.slug}/#{current_work.slug}"
     expect(page).to have_selector('a', text: @collection.title)
     page.find('.tabs').click_link("Settings")
     page.fill_in 'work_slug', with: ""
     click_button('Save Changes')
-    expect(Work.find_by(id: @work.id).slug).to eq @work.slug
+    expect(Work.find_by(id: @work.id).slug).to eq current_work.slug
   end
 
   it "edits a user slug" do
