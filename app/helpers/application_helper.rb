@@ -277,4 +277,32 @@ module ApplicationHelper
       [I18n.t('will_paginate.all'), -1]
     ]
   end
+
+  def filtered_page_entries_info(collection, showing_filtered_works = false)
+    if showing_filtered_works
+      # Custom message for filtered results
+      model_name = collection.model_name.human.downcase.pluralize
+      if collection.total_pages > 1
+        t('will_paginate.page_entries_info.multi_page_filtered',
+          model: model_name,
+          from: collection.offset + 1,
+          to: collection.offset + collection.length,
+          count: collection.total_entries)
+      else
+        case collection.total_entries
+        when 0
+          t('will_paginate.page_entries_info.single_page.zero', model: model_name)
+        when 1
+          t('will_paginate.page_entries_info.single_page_filtered.one', model: model_name.singularize)
+        else
+          t('will_paginate.page_entries_info.single_page_filtered.other',
+            count: collection.total_entries,
+            model: model_name)
+        end
+      end
+    else
+      # Use the default will_paginate method
+      page_entries_info(collection)
+    end
+  end
 end

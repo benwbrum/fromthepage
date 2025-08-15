@@ -1,4 +1,5 @@
 -entries_info = false if local_assigns[:entries_info].nil?
+-showing_filtered_works = false if local_assigns[:showing_filtered_works].nil?
 -controller = local_assigns[:controller] || controller_name
 -action = local_assigns[:action] || action_name
 .toolbar
@@ -8,4 +9,4 @@
     .toolbar_group =will_paginate model, params: { controller: controller, action: action }
   -if entries_info
     .toolbar_group
-      .pagination_info =page_entries_info model
+      .pagination_info =filtered_page_entries_info model, showing_filtered_works
