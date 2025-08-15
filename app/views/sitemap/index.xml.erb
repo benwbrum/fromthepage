@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc><%= request.protocol + request.host_with_port %>/sitemap_collections.xml</loc>
+    <lastmod><%= Time.now.strftime('%Y-%m-%d') %></lastmod>
+  </sitemap>
+  <sitemap>
+    <loc><%= request.protocol + request.host_with_port %>/sitemap_works.xml</loc>
+    <lastmod><%= Time.now.strftime('%Y-%m-%d') %></lastmod>
+  </sitemap>
+  <sitemap>
+    <loc><%= request.protocol + request.host_with_port %>/sitemap_pages.xml</loc>
+    <lastmod><%= Time.now.strftime('%Y-%m-%d') %></lastmod>
+  </sitemap>
+</sitemapindex>

@@ -1,5 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  include ApplicationHelper
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
@@ -14,6 +15,7 @@ class CollectionController < ApplicationController
 
   edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
+  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :authorized?, only: [
     :new,
     :edit,
@@ -37,10 +39,11 @@ class CollectionController < ApplicationController
     :remove_reviewer,
     :add_reviewer,
     :new_mobile_user,
-    :search_users
+    :search_users,
+    :edit_buttons,
+    :update_buttons
   ]
   before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, only: [:upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
   before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
@@ -350,6 +353,33 @@ class CollectionController < ApplicationController
                 }
               end
             end
+          end
+        end
+        
+        # Set meta information for collection pages for better archival
+        @page_title = "#{@collection.title} - FromThePage"
+        @meta_description = "#{@collection.title}: #{to_snippet(@collection.intro_block)}".truncate(160)
+        @meta_keywords = [@collection.title, "historical documents", "digital archive", "transcription", "collection"].compact.join(", ")
+        
+        # Generate structured data for collection
+        @structured_data = {
+          "@context" => "https://schema.org",
+          "@type" => "Collection",
+          "name" => @collection.title,
+          "description" => to_snippet(@collection.intro_block),
+          "url" => request.original_url,
+          "dateModified" => @collection.most_recent_deed_created_at&.iso8601,
+          "publisher" => {
+            "@type" => "Organization",
+            "name" => "FromThePage"
+          },
+          "numberOfItems" => @collection.works_count
+        }
+
+        # Add archival-friendly headers
+        respond_to do |format|
+          format.html do
+            response.headers['X-Robots-Tag'] = 'index, follow, archive'
           end
         end
       else
@@ -713,12 +743,19 @@ class CollectionController < ApplicationController
 
   def authorized?
     unless user_signed_in?
-      ajax_redirect_to dashboard_path
+      respond_to do |format|
+        format.html { redirect_to dashboard_path }
+        format.js   { ajax_redirect_to dashboard_path }
+      end
       return
     end
 
     if @collection && !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
+      respond_to do |format|
+        format.html { redirect_to collection_path(@collection.owner, @collection) }
+        format.js   { ajax_redirect_to collection_path(@collection.owner, @collection) }
+      end
+      return
     end
   end
 

@@ -8,6 +8,9 @@ class CreateDocumentSets < ActiveRecord::Migration[5.0]
       t.text :description
       t.string :picture
 
+      # Backsupport for CI
+      t.integer :visibility
+
       t.timestamps
     end
   end

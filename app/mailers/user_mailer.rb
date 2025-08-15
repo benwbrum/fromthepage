@@ -18,6 +18,12 @@ class UserMailer < ActionMailer::Base
     mail to: @document_upload.user.email, subject: "Your upload is ready"
   end
 
+  def upload_no_images_warning(document_upload)
+    @document_upload = document_upload
+
+    mail to: @document_upload.user.email, subject: "Upload processing complete - no images found"
+  end
+
   def bulk_export_finished(bulk_export)
     @bulk_export = bulk_export
 
@@ -87,6 +93,18 @@ class UserMailer < ActionMailer::Base
     end
 
     mail to: @user.email, subject: I18n.t('user_mailer.metadata_csv_import_finished.subject')
+  end
+
+  def metadata_refresh_finished(user, result, id, type, logs)
+    @user = user
+    @result = result
+
+    attachments['refresh_logs.txt'] = {
+      mime_type: 'text/plain',
+      content: logs.join("\n")
+    }
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_refresh_finished.subject', id: id, type: type)
   end
 
   private

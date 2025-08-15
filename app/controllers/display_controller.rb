@@ -1,4 +1,5 @@
 class DisplayController < ApplicationController
+  include ApplicationHelper
   public :render_to_string
 
   protect_from_forgery :except => [:set_note_body]
@@ -16,45 +17,58 @@ class DisplayController < ApplicationController
     if params.has_key?(:needs_review)
       @review = params[:needs_review]
     end
+    
+    # Handle page range parameter
+    if params.has_key?(:page_range)
+      @page_range = parse_page_range(params[:page_range])
+      if @page_range
+        @start_page, @end_page = @page_range
+        @page_range_filter = true
+      end
+    end
+    
     @total = @work.pages.count
     if @article
       # restrict to pages that include that subject
       redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
     else
+      # Apply page range filter if specified
+      base_pages = @page_range_filter ? @work.pages.where(position: @start_page..@end_page) : @work.pages
+      
       if @review == 'review'
-        @pages = @work.pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.pages_need_review')
+        @heading = @page_range_filter ? "#{t('.pages_need_review')} (#{@start_page}-#{@end_page})" : t('.pages_need_review')
       elsif @review == 'incomplete'
-        @pages = @work.pages.incomplete.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.incomplete.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.pages_need_completion')
+        @heading = @page_range_filter ? "#{t('.pages_need_completion')} (#{@start_page}-#{@end_page})" : t('.pages_need_completion')
       elsif @review == 'transcription'
-        @pages = @work.pages.needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @incomplete_pages = @work.pages.needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @incomplete_pages = base_pages.needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @incomplete_count = @incomplete_pages.count
-        @heading = t('.pages_need_transcription')
+        @heading = @page_range_filter ? "#{t('.pages_need_transcription')} (#{@start_page}-#{@end_page})" : t('.pages_need_transcription')
       elsif @review == 'index'
-        @pages = @work.pages.needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.pages_need_indexing')
+        @heading = @page_range_filter ? "#{t('.pages_need_indexing')} (#{@start_page}-#{@end_page})" : t('.pages_need_indexing')
       elsif @review == 'translation'
-        @pages = @work.pages.needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.pages_need_translation')
+        @heading = @page_range_filter ? "#{t('.pages_need_translation')} (#{@start_page}-#{@end_page})" : t('.pages_need_translation')
       elsif @review == 'translation_review'
-        @pages = @work.pages.translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.translations_need_review')
+        @heading = @page_range_filter ? "#{t('.translations_need_review')} (#{@start_page}-#{@end_page})" : t('.translations_need_review')
       elsif @review == 'translation_index'
-        @pages = @work.pages.needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.translations_need_indexing')
+        @heading = @page_range_filter ? "#{t('.translations_need_indexing')} (#{@start_page}-#{@end_page})" : t('.translations_need_indexing')
       else
-        @pages = @work.pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = base_pages.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
-        @heading = t('.pages')
+        @heading = @page_range_filter ? "#{t('.pages')} (#{@start_page}-#{@end_page})" : t('.pages')
       end
     end
     session[:col_id] = @collection.slug
@@ -73,6 +87,50 @@ class DisplayController < ApplicationController
       @heading = t('.pages')
     end
     session[:col_id] = @collection.slug
+  end
+
+  def display_page
+    # Set meta information for web crawlers and archival only for pages with content
+    if @page.status != 'new'
+      @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
+      @meta_description = "Transcript of #{@page.title || "page #{@page.position}"} from #{@work.title} in the #{@collection.title} collection."
+      @meta_keywords = [@work.title, @collection.title, @page.title, "transcript", "transcription", "historical document"].compact.join(", ")
+      
+      # Generate structured data for better content understanding
+      @structured_data = {
+        "@context" => "https://schema.org",
+        "@type" => "DigitalDocument",
+        "name" => @page.title || "Page #{@page.position}",
+        "description" => @meta_description,
+        "text" => @page.verbatim_transcription_plaintext,
+        "inLanguage" => @collection.text_language || "en",
+        "isPartOf" => {
+          "@type" => "Book",
+          "name" => @work.title,
+          "author" => @work.author,
+          "dateCreated" => @work.document_date,
+          "isPartOf" => {
+            "@type" => "Collection",
+            "name" => @collection.title,
+            "description" => to_snippet(@collection.intro_block)
+          }
+        },
+        "url" => request.original_url,
+        "dateModified" => @page.updated_at&.iso8601,
+        "publisher" => {
+          "@type" => "Organization", 
+          "name" => @collection.owner&.display_name || "FromThePage"
+        }
+      }
+      
+      # Add archival-friendly meta tags
+      respond_to do |format|
+        format.html do
+          # Additional headers for better archival
+          response.headers['X-Robots-Tag'] = 'index, follow, archive'
+        end
+      end
+    end
   end
 
   def paged_search
@@ -151,5 +209,28 @@ class DisplayController < ApplicationController
       @search_string = params[:id].split('-')[0...-1].join(' ')
     end
     logger.debug "DEBUG #{@search_string}"
+  end
+
+  private
+
+  # Parse page range from parameter like "5-7", "pp5-7", "p5-7"
+  def parse_page_range(range_param)
+    return nil if range_param.blank?
+    
+    # Remove optional "pp" or "p" prefix and extract numbers
+    clean_range = range_param.gsub(/^pp?/, '')
+    
+    # Match pattern like "5-7"
+    if match = clean_range.match(/^(\d+)-(\d+)$/)
+      start_page = match[1].to_i
+      end_page = match[2].to_i
+      
+      # Validate that start is less than or equal to end
+      return nil if start_page > end_page || start_page < 1
+      
+      [start_page, end_page]
+    else
+      nil
+    end
   end
 end

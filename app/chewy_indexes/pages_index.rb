@@ -7,7 +7,7 @@ class PagesIndex < Chewy::Index
   index_scope Page
 
   field :db_id, type: 'integer', value: -> { id }
-  field :is_public, type: 'boolean', value: -> { !collection&.restricted || work&.document_sets&.unrestricted&.any? }
+  field :is_public, type: 'boolean', value: -> { is_public? }
   field :collection_id, type: 'integer', value: -> { work&.collection&.id }
   field :docset_id, type: 'integer', value: -> { work&.document_sets&.pluck(:id) }
   field :owner_user_id, type: 'integer', value: -> { collection&.owner_user_id }

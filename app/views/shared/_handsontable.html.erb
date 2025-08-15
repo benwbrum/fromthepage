@@ -182,6 +182,17 @@
     }
   });
 
+  var form = container.closest('form');
+  if (form) {
+    form.addEventListener('submit', function() {
+      var editor = hot.getActiveEditor();
+      if (editor && editor.isOpened()) {
+        editor.finishEditing();
+      }
+      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(hot.getData());
+    });
+  }
+
   window.addEventListener('load', function() {
     window.onscroll = function (e) {
       freezeTableColumn();

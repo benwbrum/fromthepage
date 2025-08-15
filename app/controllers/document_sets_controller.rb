@@ -143,7 +143,8 @@ class DocumentSetsController < ApplicationController
   def update
     @result = DocumentSet::Update.new(
       document_set: @document_set,
-      document_set_params: document_set_params
+      document_set_params: document_set_params,
+      user: current_user
     ).call
 
     @document_set = @result.document_set

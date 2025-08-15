@@ -76,12 +76,6 @@ class DocumentSet < ApplicationRecord
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
-  scope :random_sample, ->(sample_size = 5) do
-    carousel
-    reorder(Arel.sql('RAND()')) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql('RAND()'))
-  end
-
   scope :featured_projects, -> {
     joins(works: :pages)
       .joins(:owner)
@@ -91,11 +85,11 @@ class DocumentSet < ApplicationRecord
       .distinct
   }
 
-  enum visibility: {
+  enum :visibility, {
     private: 0,
     public: 1,
     read_only: 2
-  }, _prefix: :visibility
+  }, prefix: :visibility
 
   update_index('document_sets', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -256,7 +250,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def fill_featured_at
-    return if self.visibility.to_sym == :private
+    return if self.visibility.nil? || self.visibility.to_sym == :private
 
     self.featured_at = Time.current
   end
