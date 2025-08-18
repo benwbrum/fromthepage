@@ -118,8 +118,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails'
 
-  gem 'rubocop'
-  gem 'rubocop-rails'
+  gem 'rubocop-rails-omakase', require: false
 end
 
 gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
