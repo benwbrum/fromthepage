@@ -21,7 +21,7 @@ Analyze the code thoroughly until you feel you have a solid understanding of the
 
 5. Think deeply about all aspects of the task. Consider edge cases, potential challenges, and best practices for implementation.
 
-6. Document your plan in the following format in the issue:
+6. Document your plan in the following format:
 
 <plan>
 [Your comprehensive plan goes here. Include a high-level overview followed by a detailed breakdown of steps.]
