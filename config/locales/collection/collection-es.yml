@@ -426,3 +426,6 @@ es:
     link:
       incomplete_works: Obras incompletas
       show_all: Mostrar todo
+    pagination:
+      displaying_one_incomplete_work: Mostrando 1 obra incompleta
+      displaying_incomplete_works: Mostrando %{count} obras incompletas

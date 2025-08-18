@@ -133,6 +133,7 @@ RSpec.describe CollectionHelper, type: :helper do
     it 'returns custom text for single incomplete work' do
       allow(helper).to receive(:showing_all_works?).and_return(false)
       allow(works).to receive(:total_entries).and_return(1)
+      allow(helper).to receive(:t).with('collection_helper.pagination.displaying_one_incomplete_work').and_return('Displaying 1 incomplete work')
       
       expect(helper.collection_works_pagination_info(works)).to eq('Displaying 1 incomplete work')
     end
@@ -140,6 +141,7 @@ RSpec.describe CollectionHelper, type: :helper do
     it 'returns custom text for multiple incomplete works' do
       allow(helper).to receive(:showing_all_works?).and_return(false)
       allow(works).to receive(:total_entries).and_return(3)
+      allow(helper).to receive(:t).with('collection_helper.pagination.displaying_incomplete_works', count: 3).and_return('Displaying 3 incomplete works')
       
       expect(helper.collection_works_pagination_info(works)).to eq('Displaying 3 incomplete works')
     end

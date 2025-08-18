@@ -19,11 +19,12 @@ module CollectionHelper
     if showing_all_works?
       page_entries_info(works)
     else
-      # When showing incomplete works only, customize the message
-      if works.total_entries == 1
-        "Displaying 1 incomplete work"
+      # When showing incomplete works only, customize the message using translations
+      count = works.total_entries
+      if count == 1
+        t('collection_helper.pagination.displaying_one_incomplete_work')
       else
-        "Displaying #{works.total_entries} incomplete works"
+        t('collection_helper.pagination.displaying_incomplete_works', count: count)
       end
     end
   end

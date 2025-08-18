@@ -426,3 +426,6 @@ fr:
     link:
       incomplete_works: Œuvres incomplètes
       show_all: Afficher tout
+    pagination:
+      displaying_one_incomplete_work: Affichage de 1 œuvre incomplète
+      displaying_incomplete_works: Affichage de %{count} œuvres incomplètes
