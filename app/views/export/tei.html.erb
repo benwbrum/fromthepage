@@ -3,7 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd"
 xml:lang="EN"
-xml:id="<%=@work.identifier||@work.id%>">
+xml:id="W<%=@work.identifier||@work.id%>">
 
 <teiHeader>
   <fileDesc>
@@ -117,12 +117,14 @@ xml:id="<%=@work.identifier||@work.id%>">
                 <idno><%= h(person.uri) %></idno>
               <% end %>
               <% unless person.birth_date.blank? %>
-                <event type="birth"  when="<%=person.birth_date%>">
+                <% clean_birth_date = clean_date_for_when_attribute(person.birth_date) %>
+                <event type="birth"<% if clean_birth_date %> when="<%= clean_birth_date %>"<% end %>>
                   <ab><%=person.birth_date%></ab>
                 </event>
               <% end %>
               <% unless person.death_date.blank? %>
-                <event type="death"  when="<%=person.death_date%>">
+                <% clean_death_date = clean_date_for_when_attribute(person.death_date) %>
+                <event type="death"<% if clean_death_date %> when="<%= clean_death_date %>"<% end %>>
                   <ab><%=person.death_date%></ab>
                 </event>
               <% end %>
@@ -145,9 +147,9 @@ xml:id="<%=@work.identifier||@work.id%>">
                               category_class = "#category #branch"
                             end
                         %>
-                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> --
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"/> <%= parent.title %> --
                       <% end %>
-                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"/> <%= category.title %>
                     </ab>
                   <% end %>
                 </note>
@@ -191,9 +193,9 @@ xml:id="<%=@work.identifier||@work.id%>">
                               category_class = "#category #branch"
                             end
                         %>
-                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> --
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"/> <%= parent.title %> --
                       <% end %>
-                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"/> <%= category.title %>
                     </ab>
                   <% end %>
                 </note>
@@ -206,9 +208,7 @@ xml:id="<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless place.latitude.blank? %>
-                <note type="geography">
-                  <geo><%= place.latitude %>, <%= place.longitude %></geo>
-                </note>
+                <geo><%= place.latitude %>, <%= place.longitude %></geo>
               <% end %>
               <% unless place.bibliography.blank? %>
                 <% place.bibliography.split("\n").each do |line| %>
@@ -278,16 +278,16 @@ xml:id="<%=@work.identifier||@work.id%>">
         <% unless @work.original_metadata.blank? %>
           <% JSON[@work.original_metadata].each do |element| %>
             <element source="imported">
-              <label><%= element["label"] %></label>
-              <value><%= element["value"] %></value>
+              <label><%= h(element["label"]) %></label>
+              <value><%= h(element["value"]) %></value>
             </element>
           <% end %>
         <% end %>
         <% unless @work.metadata_description.blank? %>
           <% JSON[@work.metadata_description].each do |element| %>
             <element source="user-created">
-              <label><%= element["label"] %></label>
-              <value><%= element["value"] %></value>
+              <label><%= h(element["label"]) %></label>
+              <value><%= h(element["value"]) %></value>
             </element>
           <% end %>
         <% end %>

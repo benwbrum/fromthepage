@@ -419,7 +419,16 @@ module ExportHelper
     tei
   end
 
-
+  # Clean date for use in 'when' attribute - removes invalid characters like '?'
+  # but preserves the original for display
+  def clean_date_for_when_attribute(date_string)
+    return nil if date_string.blank?
+    # Remove trailing question marks and whitespace
+    cleaned = date_string.strip.gsub(/\?+$/, '')
+    # Return nil if the result is not a valid date format
+    return nil if cleaned.blank? || cleaned !~ /^\d{4}(-\d{2})?(-\d{2})?$/
+    cleaned
+  end
 
   def seen_subject_to_tei(subject, parent_category)
     tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
@@ -636,7 +645,7 @@ module ExportHelper
     p_element.elements.each('//entryHeading') do |entryHeading|
       gap = REXML::Element.new("head")
 
-      gap.add_attribute("depth", entryHeading.attributes["depth"])
+      # Don't add depth attribute as it's not allowed in TEI head elements
       gap.add_text(entryHeading.attributes["title"])
       entryHeading.replace_with(gap)
     end
@@ -719,7 +728,7 @@ module ExportHelper
 
           # Create the new section
           section = REXML::Element.new('section')
-          section.add_attribute('depth', header.attributes['depth'])
+          # Don't use depth attribute from header as it's not valid TEI
 
           # Handle where to put the new section
           if sections.empty?
@@ -741,7 +750,7 @@ module ExportHelper
 
           # Update the accumulator
           sections.push(section)
-          current_depth = section.attributes['depth'].to_i
+          current_depth += 1  # Just increment depth rather than using invalid attribute
         end
 
         # Adds the current element to the new section at the right location
