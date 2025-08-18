@@ -274,24 +274,24 @@ xml:id="W<%=@work.identifier||@work.id%>">
   </profileDesc>
   <% unless @work.original_metadata.blank? && @work.metadata_description.blank? %>
     <xenoData>
-      <iiifMetadata>
+      <metadata>
         <% unless @work.original_metadata.blank? %>
           <% JSON[@work.original_metadata].each do |element| %>
-            <element source="imported">
-              <label><%= h(element["label"]) %></label>
+            <item source="imported">
+              <name><%= h(element["label"]) %></name>
               <value><%= h(element["value"]) %></value>
-            </element>
+            </item>
           <% end %>
         <% end %>
         <% unless @work.metadata_description.blank? %>
           <% JSON[@work.metadata_description].each do |element| %>
-            <element source="user-created">
-              <label><%= h(element["label"]) %></label>
+            <item source="user-created">
+              <name><%= h(element["label"]) %></name>
               <value><%= h(element["value"]) %></value>
-            </element>
+            </item>
           <% end %>
         <% end %>
-      </iiifMetadata>
+      </metadata>
     </xenoData>
   <% end %>
 
