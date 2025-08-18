@@ -95,13 +95,12 @@ module ApplicationHelper
       condition << options[:not_user_id]
     end
 
-
     suppress_collection = false
     if options[:collection]
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
       suppress_collection = true
     else
-      #restricting to visible collections first speeds up the query
+      # restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner].id)
@@ -113,7 +112,7 @@ module ApplicationHelper
       end
     end
     options[:suppress_collection] = suppress_collection
-    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
+    render partial: 'deed/deeds', locals: { limit: limit, deeds: deeds, options: options }
   end
 
   def show_prerender(prerender, locale)
@@ -247,11 +246,19 @@ module ApplicationHelper
 
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
   def to_snippet(intro_block)
-    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
-    doc = Nokogiri::HTML(intro_block)
-    doc.xpath('//style').each { |n| n.remove }
-    # strip tags and truncate
-    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+    return '' if intro_block.blank?
+    
+    begin
+      # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+      doc = Nokogiri::HTML(intro_block)
+      doc.xpath('//style').each { |n| n.remove }
+      # strip tags and truncate
+      text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
+      truncate(text.to_s, length: 300, separator: ' ') || ''
+    rescue => e
+      # If anything goes wrong, return empty string
+      ''
+    end
   end
 
   def timeago(time, options = {})
@@ -265,8 +272,8 @@ module ApplicationHelper
 
   def pagination_options_collection
     [
-      ['15', 15],
       ['50', 50],
+      ['200', 200],
       [I18n.t('will_paginate.all'), -1]
     ]
   end

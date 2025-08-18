@@ -9,6 +9,8 @@ pt:
       document_set:
         slug: URL
         title: Titulo
+      page:
+        base_image: Imagem da página
       work:
         slug: URL
         title: Titulo
@@ -24,6 +26,10 @@ pt:
             slug:
               blank: É necessário
               invalid: deve ter pelo menos uma letra
+        user:
+          attributes:
+            email:
+              spammy: é de um domínio que não é permitido para inscrição
         work:
           attributes:
             slug:
@@ -39,8 +45,8 @@ pt:
           wrong_number_of_closing_braces: Número incorreto de chaves de fechamento após %{tag}
     models:
       bulk_export:
-        one: exportação a granel
-        other: exportações a granel
+        one: exportação em lote
+        other: exportações em lote
       ia_leaf:
         one: página
         other: Páginas

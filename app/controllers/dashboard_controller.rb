@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class DashboardController < ApplicationController
+  protect_from_forgery :except => [:new_upload]
+
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
@@ -13,12 +15,6 @@ class DashboardController < ApplicationController
            :startproject, :empty_work, :create_work, :summary, :exports]
 
   before_action :remove_col_id
-
-  def authorized?
-    unless user_signed_in? && current_user.owner
-      redirect_to dashboard_path
-    end
-  end
 
   def dashboard_role
     if user_signed_in?
@@ -34,8 +30,6 @@ class DashboardController < ApplicationController
     end
   end
 
-
-  # Public Dashboard - list of all collections
   def index
     if Collection.all.count > 1000
       redirect_to landing_page_path
@@ -44,7 +38,7 @@ class DashboardController < ApplicationController
     end
   end
 
-  def collections_list(private_only=false)
+  def collections_list(private_only: false)
     if private_only
       cds = []
     else
@@ -53,6 +47,7 @@ class DashboardController < ApplicationController
 
       cds = public_collections + public_document_sets
     end
+
     if user_signed_in?
       cds |= current_user.all_owner_collections.restricted.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_sets.restricted.includes(:owner, next_untranscribed_page: :work)
@@ -60,7 +55,8 @@ class DashboardController < ApplicationController
       cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
     end
-    @collections_and_document_sets = cds.sort { |a,b| a.slug <=> b.slug }
+
+    @collections_and_document_sets = cds.sort { |a, b| a.slug <=> b.slug }
   end
 
   # Owner Dashboard - start project
@@ -74,11 +70,17 @@ class DashboardController < ApplicationController
   end
 
   def your_hours
-    load_user_hours_data
-    if @start_date_hours > @end_date_hours
-      flash[:error] = "Invalid date range. Please make sure the end date is greater than the start date."
-      redirect_to dashboard_your_hours_path
+    unless user_signed_in?
+      redirect_to landing_page_path
+      return
     end
+
+    load_user_hours_data
+
+    return unless @start_date_hours > @end_date_hours
+
+    flash[:error] = 'Invalid date range. Please make sure the end date is greater than the start date.'
+    redirect_to dashboard_your_hours_path
   end
 
   def download_hours_letter
@@ -148,7 +150,7 @@ class DashboardController < ApplicationController
     recent_collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).where('deeds.created_at > ?', Time.now-2.days).distinct.order_by_recent_activity.limit(5)
     collections = Collection.where(id: current_user.ahoy_activity_summaries.pluck(:collection_id)).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
-    collections_list(true) # assigns @collections_and_document_sets for private collections only
+    collections_list(private_only: true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + recent_collections + document_sets)
                .uniq
                .sort_by do |collection|
@@ -162,11 +164,9 @@ class DashboardController < ApplicationController
                .take(10)
   end
 
-
   def exports
     @bulk_exports = current_user.bulk_exports.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
-
 
   # Collaborator Dashboard - activity
   def editor
@@ -179,44 +179,80 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    if params[:search]
-      # Get matching Collections and Docsets
-      @search_results = search_results(params[:search])
+    if ELASTIC_ENABLED && params[:search].present?
+      @es_query = Elasticsearch::MultiQuery.new(
+        query: params[:search],
+        query_params: {
+          org: params[:org],
+          mode: params[:mode],
+          slug: params[:slug]
+        },
+        page: params[:page] || 1,
+        scope: params[:filter],
+        user: current_user
+      ).call
 
-      # Get user_ids from the resulting search
-      search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
+      @breadcrumb_scope = { site: true }
+      @org_filter = @es_query.org_filter
+      @collection_filter = @es_query.collection_filter
+      @docset_filter = @es_query.docset_filter
+      @work_filter = @es_query.work_filter
 
-      # Get matching users and users from Collections and DocSets search
-      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
-    else
-      # Get random Collections and DocSets from paying users
-      @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
-
-      # Sampled Randomly down to 8 items for Carousel
-      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-      @collections = (docsets + colls).sample(8)
+      @search_results = @es_query.results
+      @full_count = @es_query.total_count
+      @type_counts = @es_query.type_counts
+    elsif params[:search].present?
+      @search_results = search_results(params[:search])&.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @search_results_map = {}
+      @search_results.each do |result|
+        @search_results_map[result.owner_user_id] ||= []
+        @search_results_map[result.owner_user_id] << result
+      end
     end
-  end
 
-  def new_landing_page
-    @search_results = search_results(params[:search])
+    users = User.owners.joins(:collections).left_outer_joins(:document_sets)
 
-    # Get random Collections and DocSets from paying users
-    @owners = User.findaproject_owners.order(:display_name).joins(:collections)
-                  .left_outer_joins(:document_sets).includes(:collections)
+    org_owners = users.findaproject_orgs.with_owner_works
+    individual_owners = users.findaproject_individuals.with_owner_works
+    @owners = users.where(id: org_owners.select(:id)).or(users.where(id: individual_owners.select(:id))).distinct
+                   .order(Arel.sql("COALESCE(NULLIF(display_name, ''), login) ASC"))
+    @collections = Collection.where(owner_user_id: users.select(:id)).unrestricted
 
-    # Sampled Randomly down to 8 items for Carousel
-    docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-    colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
-    @collections = (docsets + colls).sample(8)
+    new_collections = Collection.includes(:owner)
+                                .featured_projects
+                                .order(featured_at: :desc)
+                                .limit(20)
 
-    @tag_map = Tag.featured_tags.group(:ai_text).count
+    new_document_sets = DocumentSet.includes(:owner)
+                                   .featured_projects
+                                   .order(featured_at: :desc)
+                                   .limit(20)
+
+    respond_to do |format|
+      format.html do
+        @new_projects = (new_collections + new_document_sets).sort_by(&:featured_at).reverse
+        @tag_map = Tag.featured_tags.group(:ai_text).count
+      end
+
+      format.turbo_stream
+    end
   end
 
   def browse_tag
     @tag = Tag.find_by(ai_text: params[:ai_text])
-    @collections = @tag.collections.unrestricted.has_intro_block.has_picture.not_empty
+    tag_collections = @tag.collections
+    collections = tag_collections.includes(:owner, { works: :work_statistic })
+                                 .unrestricted
+                                 .has_intro_block
+                                 .not_empty
+
+    document_sets = DocumentSet.includes(:owner, :collection, { works: :work_statistic })
+                               .where(collection: { id: tag_collections.select(:id) })
+                               .unrestricted
+                               .has_intro_block
+                               .not_empty
+
+    @collections = collections + document_sets
   end
 
   def collaborator_time_export
@@ -237,7 +273,6 @@ class DashboardController < ApplicationController
 
     # Get Row Data (Users)
     owner_collections = current_user.all_owner_collections.map{ |c| c.id }
-
 
     contributor_ids_for_dates = AhoyActivitySummary
       .where(collection_id: owner_collections)
@@ -273,12 +308,14 @@ class DashboardController < ApplicationController
 
   private
 
-  def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
+  def authorized?
+    return if user_signed_in? && current_user.owner
+
+    redirect_to dashboard_path
   end
 
-  def work_params
-    params.require(:work).permit(:title, :description, :collection_id)
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
   end
 
   def load_user_hours_data
@@ -291,8 +328,14 @@ class DashboardController < ApplicationController
     end
     @time_duration = time_spent_in_date_range(current_user.id, @start_date_hours, @end_date_hours)
 
+    last_summary = AhoyActivitySummary.where(user_id: current_user.id)
+                                      .where.not(collection_id: nil)
+                                      .order(date: :desc)
+                                      .first
+    @last_calculation_date = last_summary&.date&.end_of_day
+
     raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
-    @collection_id_to_page_count = raw.select{|collection_id, page_id| !page_id.nil? }.map{|collection_id, page_id| collection_id}.tally
+    @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map{ |collection_id, page_id| collection_id }.tally
     @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
   end
 
@@ -344,6 +387,11 @@ class DashboardController < ApplicationController
   def search_results(search_key)
     return nil if search_key.nil?
 
-    Collection.search(search_key).unrestricted + DocumentSet.search(search_key).unrestricted
+    collections_query = Collection.search(search_key).unrestricted.includes(:owner)
+    document_sets_query = DocumentSet.search(search_key).unrestricted.includes(:owner)
+
+    collections_query + document_sets_query
   end
+
+
 end

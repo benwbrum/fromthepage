@@ -22,24 +22,32 @@
         dl.category-article(id="category-#{category.id}")
           dt
             .headline
-              //h3.headline_title ==(category.ancestors.reverse.push(category).map { |c| c.title }).join(" &rarr; ")
               h3.headline_title(data-category-title="#{category.id}") =category.title
               -if user_signed_in? && current_user.like_owner?(@collection)
                 .headline_aside
-                  dl.dropdown.right
+                  dl.dropdown.right data-controller='dropdown'
                     dt.h5 tabindex=0
                       span= t('.actions')
                       =svg_symbol '#big-menu', class: 'icon icon-big'
-                    dd
-                      =link_to t('.edit_category'), category_edit_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
-                      =link_to t('.add_child_category'), category_add_new_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
-                      =link_to t('.add_root_category'), category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
-                      -if category.gis_enabled
-                        =link_to t('.disable_gis_for_category'), category_disable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
-                      -else
-                        =link_to t('.enable_gis_for_category'), category_enable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
+                    dd.actions
+                      =link_to t('.edit_category'), category_edit_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
+                      =link_to t('.add_child_category'), category_add_new_path(collection_id: @collection.slug, category_id: category.id), data: { controller: 'litebox' }
+                      =link_to t('.add_root_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }
                       hr
-                      =link_to t('.delete_category'), { :controller => 'category', :action => 'delete', :collection_id => @collection.slug, :category_id => category.id }, class: 'fgred', data: { :confirm => t('.confirm_delete_category') }
+                      -if category.gis_enabled
+                        =link_to t('.disable_gis_for_category'), category_disable_gis_path(collection_id: @collection.slug, category_id: category.id)
+                      -else
+                        =link_to t('.enable_gis_for_category'), category_enable_gis_path(collection_id: @collection.slug, category_id: category.id)
+                      -if category.bio_fields_enabled
+                        =link_to t('.disable_bio_fields_for_category'), category_disable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -else
+                        =link_to t('.enable_bio_fields_for_category'), category_enable_bio_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -if category.org_fields_enabled
+                        =link_to t('.disable_org_fields_for_category'), category_disable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      -else
+                        =link_to t('.enable_org_fields_for_category'), category_enable_org_fields_path(collection_id: @collection.slug, category_id: category.id)
+                      hr
+                      =link_to t('.delete_category'), { controller: 'category', action: 'delete', collection_id: @collection.slug, category_id: category.id }, class: 'fgred', data: { confirm: t('.confirm_delete_category') }
                       hr
                       =link_to t('.upload_subjects'), article_upload_form_path(@collection.slug)
 
@@ -72,7 +80,7 @@
                   p.hidden
                     a.hidden a
 -else
-  -add_category = link_to t('.create_the_first_category'), category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
+  -add_category = link_to t('.create_the_first_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }
   .nodata
     h4.nodata_title= t('.no_categories')
     p.nodata_text

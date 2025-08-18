@@ -3,7 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd"
 xml:lang="EN"
-xml:id="export">
+xml:id="<%=@work.identifier||@work.id%>">
 
 <teiHeader>
   <fileDesc>
@@ -91,10 +91,10 @@ xml:id="export">
             <collection><%= @work.source_collection_name %></collection>
           <% end %>
           <% unless @work.identifier.blank? %>
-            <idno><%=@work.identifier%></idno>
+            <idno type='external id'><%=@work.identifier%></idno>
           <% end %>
           <% unless @work.source_box_folder.blank? %>
-            <idno><%=@work.source_box_folder%></idno>
+            <idno type='box-folder'><%=@work.source_box_folder%></idno>
           <% end %>
         </msIdentifier>
         <physDesc>
@@ -112,10 +112,27 @@ xml:id="export">
         <listPerson>
           <% @person_articles.each do |person| %>
             <person xml:id="S<%=person.id%>">
-              <persName><%= person.title %></persName>
+              <persName><%= h(person.title) %></persName>
               <% unless person.uri.blank? %>
-                <idno><%= person.uri %></idno>
+                <idno><%= h(person.uri) %></idno>
               <% end %>
+              <% unless person.birth_date.blank? %>
+                <event type="birth"  when="<%=person.birth_date%>">
+                  <ab><%=person.birth_date%></ab>
+                </event>
+              <% end %>
+              <% unless person.death_date.blank? %>
+                <event type="death"  when="<%=person.death_date%>">
+                  <ab><%=person.death_date%></ab>
+                </event>
+              <% end %>
+              <% unless person.race_description.blank? %>
+                <trait type="race" subtype="<%=person.race_description%>"/>
+              <% end %>
+              <% unless person.sex.blank? %>
+                <trait type="sex" subtype="<%=person.sex%>"/>
+              <% end %>
+ 
               <% if person.categories %>
                 <note type="categorization">
                   Categories:
@@ -142,6 +159,13 @@ xml:id="export">
                   <% end %>
                 </note>
               <% end %>
+              <% unless person.bibliography.blank? %>
+                <% person.bibliography.split("\n").each do |line| %>
+                  <% unless line.blank? %>
+                    <bibl><%= h(line.chomp) %></bibl>
+                  <% end %>
+                <% end %>
+              <% end %>
             </person>
           <% end %>
         </listPerson>
@@ -151,9 +175,9 @@ xml:id="export">
         <listPlace>
           <% @place_articles.each do |place| %>
             <place xml:id="S<%=place.id%>">
-              <placeName><%= place.title %></placeName>
+              <placeName><%= h(place.title) %></placeName>
               <% unless place.uri.blank? %>
-                <idno><%= place.uri %></idno>
+                <idno><%= h(place.uri) %></idno>
               <% end %>
               <% if place.categories %>
                 <note type="categorization">
@@ -185,6 +209,13 @@ xml:id="export">
                 <note type="geography">
                   <geo><%= place.latitude %>, <%= place.longitude %></geo>
                 </note>
+              <% end %>
+              <% unless place.bibliography.blank? %>
+                <% place.bibliography.split("\n").each do |line| %>
+                  <% unless line.blank? %>
+                    <bibl><%= h(line.chomp) %></bibl>
+                  <% end %>
+                <% end %>
               <% end %>
             </place>
           <% end %>

@@ -1,31 +1,36 @@
-class Article::Update
-  include Interactor
-  include Article::Lib::Common
+class Article::Update < ApplicationInteractor
+  attr_accessor :article, :notice
 
-  def initialize(article:, article_params:)
+  def initialize(article:, article_params:, user:)
     @article        = article
     @article_params = article_params
+    @user           = user
 
     super
   end
 
-  def call
+  def perform
     old_title = @article.title
-    @article.attributes = @article_params
+    @article.attributes = @article_params.except(:category_ids)
+    categories = Category.where(id: @article_params[:category_ids])
+    @article.categories = categories
 
     if @article.save
-      rename_article(@article, old_title, @article.title) if old_title != @article.title
-
-      notice = I18n.t('article.update.subject_successfully_updated')
-      if gis_truncated?
-        notice << I18n.t('article.update.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION,
-                                                                     count: GIS_DECIMAL_PRECISION)
+      if old_title != @article.title
+        Article::RenameJob.perform_later(
+          user_id: @user.id,
+          article_id: @article.id,
+          old_name: old_title,
+          new_name: @article.title
+        )
       end
 
-      context.article = @article
-      context.notice = notice
+      @notice = I18n.t('article.update.subject_successfully_updated')
+      if gis_truncated?
+        @notice << I18n.t('article.update.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION,
+                                                                      count: GIS_DECIMAL_PRECISION)
+      end
     else
-      context.article = @article
       context.fail!
     end
   end
@@ -43,4 +48,5 @@ class Article::Update
 
     lat_dec > dec || lon_dec > dec
   end
+
 end

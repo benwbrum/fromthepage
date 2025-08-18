@@ -9,6 +9,7 @@ en:
       heading: Printout Configuration
       include_contributors: Include Contributors
       include_metadata: Include Metadata
+      include_notes: Include Notes
       preserve_linebreaks: Preserve Linebreaks
       text_contents: Contents
       text_contents_description: The printable export will include the text of the transcription, and can also include information about the contributors to the project or metadata about the work.
@@ -186,6 +187,8 @@ en:
       upload_page_image: "%{upload} page image"
     save_description:
       work_described: Your description has been saved
+    search:
+      search_in_work: Search in Work
     show:
       author_name: Author Name
       description: Description

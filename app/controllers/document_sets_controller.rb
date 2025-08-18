@@ -1,17 +1,11 @@
 class DocumentSetsController < ApplicationController
+
+  DEFAULT_WORKS_PER_PAGE = 15
+
   before_action :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
-
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :edit, :update, :transfer_form, :edit_set_collaborators, :search_collaborators]
-
-  def authorized?
-    unless user_signed_in? && @collection && current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
-    end
-  end
 
   def transfer_form
   end
@@ -45,8 +39,8 @@ class DocumentSetsController < ApplicationController
   end
 
   def index
-    page = params[:page]
-    page = 1 if page.blank?
+    page = params[:page].presence || 1
+
     if params[:search]
       @works = @collection.search_works(params[:search]).order(:title).paginate(page: page, per_page: 20)
     else
@@ -127,6 +121,16 @@ class DocumentSetsController < ApplicationController
     redirect_to collection_works_list_path(@collection.owner, @collection)
   end
 
+  def update_works
+    document_set = DocumentSet.friendly.find(update_works_params[:document_set_id])
+    @result = DocumentSet::UpdateWorks.new(
+      document_set: document_set,
+      work_params: update_works_params[:works]
+    ).call
+
+    respond_to(&:turbo_stream)
+  end
+
   def remove_from_set
     @collection = DocumentSet.friendly.find(params[:collection_id])
     ids = params[:work].keys.map {|id| id.to_i}
@@ -137,35 +141,46 @@ class DocumentSetsController < ApplicationController
   end
 
   def update
-    @document_set.attributes = document_set_params
+    @result = DocumentSet::Update.new(
+      document_set: @document_set,
+      document_set_params: document_set_params,
+      user: current_user
+    ).call
 
-    if document_set_params[:slug].blank?
-      @document_set.slug = @document_set.title.parameterize
-    end
+    @document_set = @result.document_set
 
-    if @document_set.save
-      flash[:notice] = t('.document_updated')
-      unless request.referrer.include?("/settings")
-        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
-      else
-        redirect_to request.referrer
-      end
-    else
-      settings
-      render :settings
+    respond_to do |format|
+      template = case params[:scope]
+                 when 'edit_privacy'
+                   @collaborators = @document_set.collaborators
+                   @works_to_restrict_count = works_to_restrict_count
+                   'document_sets/update_privacy'
+                 else
+                   'document_sets/update_general'
+                 end
+
+      format.turbo_stream { render template }
     end
   end
 
   def settings
-    # works not yet in document set
-    if params[:search]
-      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
-    else
-      @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
-    end
-    # document set edit needs the @document set variable
+    @document_set ||= @collection
+  end
+
+  def settings_privacy
     @document_set ||= @collection
     @collaborators = @document_set.collaborators
+    @works_to_restrict_count = works_to_restrict_count
+  end
+
+  def settings_works
+    filtered_set_works
+    @document_set ||= @collection
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def add_set_collaborator
@@ -189,24 +204,18 @@ class DocumentSetsController < ApplicationController
     redirect_to collection_edit_set_collaborators_path(@collection.owner, @collection, @document_set)
   end
 
-  def publish_set
-    @collection.is_public = true
-    @collection.save!
-    redirect_to collection_settings_path(@collection.owner, @collection)
-  end
-
-  def restrict_set
-    @collection.is_public = false
-    @collection.save!
-    redirect_to collection_settings_path(@collection.owner, @collection)
-  end
-
   def destroy
     @document_set.destroy
     redirect_to action: 'index', collection_id: @document_set.collection_id
   end
 
   private
+
+  def authorized?
+    unless user_signed_in? && @collection && current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
+  end
 
   def set_document_set
     unless (defined? @document_set) && @document_set
@@ -216,8 +225,47 @@ class DocumentSetsController < ApplicationController
   end
 
   def document_set_params
-    params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+    params.require(:document_set).permit(:visibility, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
   end
 
+  def filtered_set_works
+    @ordering = (params[:order] || 'ASC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
 
+    set_works = @collection.works
+    collection_works = @collection.collection.works
+
+    works_scope = if params[:show] == 'included'
+                    set_works
+                  elsif params[:show] == 'not_included'
+                    collection_works.where.not(id: set_works.select(:id))
+                  else
+                    collection_works
+                  end
+
+    works_scope = works_scope.includes(:work_statistic).reorder(title: @ordering)
+
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+      works_scope = works_scope.where(
+        'LOWER(works.title) LIKE :search OR LOWER(works.searchable_metadata) like :search',
+        search: "%#{query}%"
+      )
+    end
+
+    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: DEFAULT_WORKS_PER_PAGE)
+    @works = works_scope
+    @set_work_ids = set_works.pluck(:id)
+  end
+
+  def update_works_params
+    params.permit(:document_set_id, works: {})
+  end
+
+  def works_to_restrict_count
+    @document_set.works
+                 .joins(:work_statistic)
+                 .where(work_statistics: { complete: 100 }, restrict_scribes: false)
+                 .count
+  end
 end

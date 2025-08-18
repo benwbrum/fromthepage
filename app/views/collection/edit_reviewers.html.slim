@@ -4,11 +4,17 @@
   p.fglight =t('collection.edit_quality_control.collection_reviewers_description')
   =form_tag(collection_add_reviewer_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id, id: 'add_reviewer_collection_id'
+
     -if User.count > 100
       -options = nil
     -else
       -options = options_from_collection_for_select(@nonreviewers, 'id', 'name_with_identifier')
-    =select_tag 'user_id', options, include_blank: true, id: 'add_reviewer_user_id'
+    =select_tag 'user_id', options, include_blank: true, \
+      data: { \
+        controller: 'select2', \
+        select2_placeholder_value: 'Add new reviewer...', \
+        select2_ajax_url_value: collection_search_users_path(collection_id: @collection.slug, user_type: :reviewer) }
+
     =button_tag t('collection.edit.add_button')
   -@reviewers.each do |user|
     -contributions = user.deeds.where(collection_id: @collection.id).count
@@ -25,21 +31,3 @@
   .toolbar
     .toolbar_group.aright
       =link_to(t('collection.edit.done'), edit_quality_control_collection_path(@collection.owner, @collection), class: 'button')
-
-javascript:
-  $('#add_reviewer_user_id').select2({
-    placeholder: 'Add new reviewer...',  
-    ajax: {
-      url: '#{collection_search_users_path(@collection)}',
-      dataType: 'json', 
-      delay: 250,
-      data: function (params) {
-        var query = {
-          term: params.term,
-          user_type: 'reviewer'
-        }
-        return query;
-      }
-    }
-  });
-

@@ -11,7 +11,7 @@ h1= t('.manage_archive_org_import')
       -@ia_leaves.each_with_index do |leaf, i|
         -page_index = index_offset + i + 1
         .ia-import_headline
-          dl.dropdown.right
+          dl.dropdown.right data-controller='dropdown'
             dt tabindex=0
               span= t('.actions')
               =svg_symbol '#icon-list', class: 'icon'

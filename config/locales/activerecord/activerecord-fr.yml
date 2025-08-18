@@ -9,6 +9,8 @@ fr:
       document_set:
         slug: URL
         title: Titre
+      page:
+        base_image: Image de la page
       work:
         slug: URL
         title: Titre
@@ -24,6 +26,10 @@ fr:
             slug:
               blank: est requis
               invalid: doit avoir au moins une lettre
+        user:
+          attributes:
+            email:
+              spammy: provient d'un domaine qui n'est pas autorisé à s'inscrire
         work:
           attributes:
             slug:

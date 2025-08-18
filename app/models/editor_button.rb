@@ -23,6 +23,7 @@ class EditorButton < ApplicationRecord
   module Keys
     ABBR = 'abbr'
     ADD = 'add'
+    BOLD = 'b'
     DATE = 'date'
     DEL = 'del'
     EXPAN = 'expan'
@@ -44,7 +45,8 @@ class EditorButton < ApplicationRecord
 
   BUTTON_MAP = {
     Keys::ABBR => ['<abbr expan="">'],
-    Keys::ADD => ['<add>'],
+    Keys::ADD => ['<add>', '<ins>'],
+    Keys::BOLD => ['<hi rend="bold">', '<b>'],
     Keys::DATE => ['<date when="">'],
     Keys::DEL => ['<del>'],
     Keys::EXPAN => ['<expan abbr="">'],

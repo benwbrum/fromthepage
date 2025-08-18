@@ -18,7 +18,7 @@
             =svg_symbol "#icon-expand", class: 'icon'
             span.hide-l =t('.fullscreen')
           -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
-          dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+          dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
             dt.button.outline
               =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
               span.hide-l =t('.layout')
@@ -28,7 +28,7 @@
                   =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                   span =text
           -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
-          dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+          dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
             dt.button.outline
               span.hide-l =t('.view_original')
             dd

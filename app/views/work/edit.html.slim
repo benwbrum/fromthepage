@@ -10,7 +10,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: work_update_path(id: @work.id), html: {id: :update} do |f|
+    =form_for :work, url: work_update_path(id: @work.id), html: { id: :update } do |f|
       =hidden_field_tag :collection_id, @collection.slug
       =validation_summary @work.errors
       table.form.settings
@@ -182,17 +182,13 @@
     -if @work.restrict_scribes
       .allowed-collaborators
         h3 =t('.allowed_collaborators')
-        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { litebox: { hash: 'edit-scribes', noscroll: false, noclose: true }})
+        p =link_to(t('.edit_collaborators'), work_edit_scribes_path(@collection, @work), id: 'edit-scribes-button', class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-scribes', noscroll: false, noclose: true }})
       =render 'collection/users_list', users: @scribes, type: 'collaborators'
 
 
 -content_for :javascript
   javascript:
     $(function() {
-      $('.user-select-form select').select2({
-        placeholder: 'Add new collaborator...',
-      });
-
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
@@ -246,7 +242,6 @@
           data: { collection_id: selectedId },
           success: function(response) {
             documentSetsDiv.html(response);
-            $('#work_document_set_ids').multiSelect();
           },
           error: function(xhr, status, error) {
             console.error('Error fetching document sets:', error);

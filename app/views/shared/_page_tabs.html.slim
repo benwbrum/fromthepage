@@ -1,103 +1,145 @@
--tabs = [{\
-  :name => t('.overview'),
-  :selected => 1,
-  :path => "#{collection_display_page_path(@collection.owner, @collection, @work, @page.id)}",
-}]
--if @collection.active? # Inactive Collections shouldn't displa this stuff
-  -if user_signed_in? && current_user.can_transcribe?(@work)
-    -if correction_mode?
-      -tabs += [{\
-        :name => t('.correct'),
-        :selected => 3,
-        :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
-      }]
-    -else
-      -tabs += [{\
-        :name => t('.transcribe'),
-        :selected => 3,
-        :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
-      }]
-
-    -if @work.supports_translation
-      -tabs += [{\
-        :name => t('.translate'),
-        :selected => 6,
-        :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
-      }]
-
-  -if !current_user && !@work.restrict_scribes
-    -tabs += [{\
-      :name => t('.transcribe'),
-      :selected => 3,
-      :path => "#{collection_guest_page_path(@collection.owner, @collection, @work, @page.id)}",
-    }]
-
-
--tabs += [{\
-  :name => t('.versions'),
-  :selected => 2,
-  :path => "#{collection_page_version_path(@collection.owner, @collection, @work, @page.id)}",
-  :opts => { :rel => 'nofollow' },
-}]
-
--tabs += [{\
-  :name => t('.help'),
-  :selected => 9,
-  :path => "#{collection_help_page_path(@collection.owner, @collection, @work, @page.id)}",
-}]
-
--if user_signed_in? && current_user.like_owner?(@work)
-  -tabs += [{\
-    :name => t('.settings'),
-    :selected => 4,
-    :path => "#{collection_edit_page_path(@collection.owner, @collection, @work, @page.id)}",
+ruby:
+  tabs = [{
+    name: t('.overview'),
+    selected: 1,
+    path: collection_display_page_path(@collection.owner, @collection, @work, @page.id)
   }]
 
--description = xml_to_html(@page.xml_text)
--selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--tab_title = ([3,6].include? selected) ? "#{selected_tab.downcase} #{t('.page')}" : "#{t('.page')} #{selected_tab.downcase}"
--page_title = @collection.present? ? "#{@page.title} (#{@collection.title}, #{@work.title})" : "#{@page.title} (#{@work.title})"
--content_for :page_title, selected == 1 ? "#{page_title}" : "#{selected_tab} - #{page_title}"
--content_for :meta_description, "#{page_title} - #{tab_title}. #{strip_tags(description).truncate(150, separator: ' ')}"
+  if @collection.active?
+    if current_user&.can_transcribe?(@work, @collection)
+      tabs << {
+        name: correction_mode? ? t('.correct') : t('.transcribe'),
+        selected: 3,
+        path: collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
+      }
 
--if @controller_path
-  -active_tab_id = "#{controller_name}-#{@controller_path}"
--else
-  -active_tab_id = controller_name
+      if @work.supports_translation
+        tabs << {
+          name: t('.translate'),
+          selected: 6,
+          path: collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
+        }
+      end
+    end
 
--@display_context ||= ''
+    if !(user_signed_in? || @collection.visibility_read_only? && @work.restrict_scribes)
+      tabs << {
+        name: t('.transcribe'),
+        selected: 3,
+        path: collection_guest_page_path(@collection.owner, @collection, @work, @page.id)
+      }
+    end
+  end
 
-div(class=('headline' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')))
-  h1.headline_title =@page.title
-  .headline_aside
-    -unless @display_context == 'preview'
-      nav.page-nav
-        -if @page != @work.pages.first
-          -higher_item = @page.higher_item
-          -unless higher_item.nil?
-            -prev_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, higher_item.id)
-            =link_to(prev_path, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
-        -else
-          span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+  if user_signed_in?
+    tabs << {
+      name: t('.versions'),
+      selected: 2,
+      path: collection_page_version_path(@collection.owner, @collection, @work, @page.id),
+      opts: { :rel => 'nofollow' },
+    }
+  end
 
-        span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
+  tabs << {
+    name: t('.help'),
+    selected: 9,
+    path: collection_help_page_path(@collection.owner, @collection, @work, @page.id),
+  }
 
-        -if !@page.last?
-          -lower_item = @page.lower_item
-          -lower_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, lower_item.id)
-          =link_to(lower_path, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
-            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-        -elsif selected == 3 # if we're in "transcribe"
-          -if @collection.metadata_entry?
-            =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
+  if user_signed_in? && current_user.like_owner?(@work)
+    tabs << {
+      name: t('.settings'),
+      selected: 4,
+      path: collection_edit_page_path(@collection.owner, @collection, @work, @page.id),
+    }
+  end
+
+  description = xml_to_html(@page.xml_text)
+  selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ''
+  tab_title = [3, 6].include?(selected) ? "#{selected_tab.downcase} #{t('.page')}" : "#{t('.page')} #{selected_tab.downcase}"
+  page_title = @collection.present? ? "#{@page.title} (#{@collection.title}, #{@work.title})" : "#{@page.title} (#{@work.title})"
+
+  @display_context ||= ''
+
+  active_tab_id = if @controller_path
+                    "#{controller_name}-#{@controller_path}"
+                  else
+                    controller_name
+                  end
+
+  is_rtl = Rtl.rtl?(@collection.text_language)
+
+
+-content_for :page_title do
+  = selected == 1 ? "#{page_title}" : "#{selected_tab} - #{page_title}"
+
+-content_for :meta_description do
+  = "#{page_title} - #{tab_title}. #{strip_tags(description).truncate(150, separator: ' ')}"
+
+#page-tabs
+  div[class="headline #{@auto_fullscreen == 'yes' ? 'fullscreen' : ''}"]
+    h1.headline_title
+      =@page.title
+
+    .headline_aside
+      -unless @display_context == 'preview'
+        nav.page-nav
+          -if is_rtl
+            -if !@page.last?
+              -lower_item = @page.lower_item
+              -lower_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, lower_item.id)
+              =link_to(lower_path, class: 'page-nav_prev', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Next page'
+            -elsif selected == 3 # if we're in "transcribe"
+              -if @collection.metadata_entry?
+                =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_prev', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Create metadata'
+              -else
+                =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_prev', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Next page'
+            -else
+              span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+
+            span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
+
+            -if @page != @work.pages.first
+              -higher_item = @page.higher_item
+              -unless higher_item.nil?
+                -prev_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, @page.higher_item.id)
+                =link_to(prev_path, class: 'page-nav_next', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Previous page'
+            -else
+              span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
+
           -else
-            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-        -else
-          span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
-.tabs
-  -for tab in tabs
-    = link_to_unless(tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]) do
-      a.active= tab[:name]
+            -if @page != @work.pages.first
+              -higher_item = @page.higher_item
+              -unless higher_item.nil?
+                -prev_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, @page.higher_item.id)
+                =link_to(prev_path, class: 'page-nav_prev', title: t('.previous_page'), 'aria-label' => t('.previous_page'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
+            -else
+              span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+
+            span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
+
+            -if !@page.last?
+              -lower_item = @page.lower_item
+              -lower_path = get_active_tab_path(active_tab_id, @collection.owner, @collection, @work, lower_item.id)
+              =link_to(lower_path, class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+            -elsif selected == 3 # if we're in "transcribe"
+              -if @collection.metadata_entry?
+                =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.describe_work'), 'aria-label' => t('.describe_work'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
+              -else
+                =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
+                  =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+            -else
+              span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
+
+  .tabs
+    -for tab in tabs
+      = link_to_unless(tab[:selected] == selected, tab[:name], tab[:path], tab[:opts]) do
+        a.active
+          = tab[:name]

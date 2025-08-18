@@ -50,7 +50,7 @@ describe "uploads data for collections", :order => :defined do
     page.execute_script(script)
 
     attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
-    page.check('Import text from PDF text layers, text files or XML files.')
+    find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq @collection.title
@@ -152,12 +152,13 @@ describe "uploads data for collections", :order => :defined do
     DocumentSet.last.work_ids = id
     DocumentSet.last.save!
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    expect(after_doc_set).to eq (doc_set + 1)
-    visit document_sets_path(:collection_id => @set_collection)
+    expect(after_doc_set).to eq(doc_set + 1)
+    visit document_sets_path(collection_id: @set_collection)
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.button', text: 'Create a Document Set').click
-    page.fill_in 'document_set_title', with: "Test Document Set 2"
-    page.uncheck 'Public'
+    page.fill_in 'document_set_title', with: 'Test Document Set 2'
+    find('#select2-document_set_visibility-container').click
+    find('.select2-results__option', text: 'Private').click
     page.find_button('Create Document Set').click
     sleep(3)
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)

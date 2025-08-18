@@ -4,7 +4,7 @@ pt:
     autoflag:
       flag_message: Procurando conteúdo adicional para marcar. Reveja esta página em poucos minutos.
     delete_upload:
-      uploaded_document_deleted: O documento subido foi apagado
+      uploaded_document_deleted: O documento enviado foi apagado
     delete_user:
       user_profile_deleted: O perfil do usuário foi deletado
     downgrade:
@@ -13,10 +13,10 @@ pt:
       user_expunged: Usuário %{user} foi eliminado
     index:
       database_version: Versão da base de dados %{version}
-      last_deed_logged: Última ação documentada há %{date} por %{author}
+      last_deed_logged: Última ação documentada em %{date} por %{author}
       software_version: Versão de software %{version}
     process_upload:
-      uploaded_document_queued: O documento subido está na fila para ser processado
+      uploaded_document_queued: O documento enviado está na fila para ser processado
     update:
       admin_settings_updated: A configuração da administração foi atualizada
     update_user:

@@ -43,7 +43,7 @@ table.admin-grid.datagrid.striped
           .instack
             =link_to t('.visits'), admin_user_visits_path(:user_id => o.id)
             =link_to t('.login_as'), user_masquerade_path(o)
-            =link_to t('.edit'), admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
-            =link_to t('.delete'), admin_delete_user_path(:user_id => o.id), data: { confirm: t('.are_you_sure') }
+            =link_to t('.edit'), admin_edit_user_path(user_id: o.id), data: { controller: 'litebox', litebox: { hash: '' } }
+            =link_to t('.delete'), admin_delete_user_path(user_id: o.id), data: { confirm: t('.are_you_sure') }
 
 =render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })

@@ -1,16 +1,17 @@
-=javascript_include_tag 'application'
+=javascript_include_tag 'ftp_interface'
+
 .litebox-embed(style="width:550px")
   h1 =t('.upload_metadata')
-  p =t('.upload_metadata_description', link: link_to(t('.template_file_anchor'), collection_metadata_example_path(params[:id]))).html_safe
+  p =t('.upload_metadata_description', link: link_to(t('.template_file_anchor'), collection_metadata_example_path(@collection.slug))).html_safe
 
   =form_for(:metadata, url: collection_metadata_create_path) do |f|
     table.form
       tr
         td
-        .input-file
-          =f.file_field :file
-          input(type="text" placeholder=t('.click_to_browse_a_file') readonly)
-          button(type="button") =t('.browse')
-        =f.hidden_field :collection_id, value: params[:id]
+          .input-file [data-controller='file-picker']
+            =f.file_field :file
+            input(type="text" placeholder=t('.click_to_browse_a_file') readonly)
+            button(type="button") =t('.browse')
+        =f.hidden_field :collection_id, value: @collection.id
     .toolbar
       .toolbar_group.aright =f.button t('.upload')

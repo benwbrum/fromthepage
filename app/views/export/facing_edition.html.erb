@@ -25,13 +25,7 @@
 
 <% if @edition_type == 'facing'%>
 \newpage
-  <% if @work.sc_manifest %>
-![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
-  <% elsif page.ia_leaf %>
-![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
-  <% else %>
-![<%= page.title %>](<%= main_app.root_url %><%= file_to_url(page.canonical_facsimile_url) %>)
-  <% end %>
+![<%= page.title %>](<%= page.image_url_for_download%>)
 \newpage
 <% end %>
 
@@ -40,9 +34,22 @@
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
 <% end %>
 
-<% if @work.supports_translation && !page.xml_translation.blank?%>
+<% if @work.supports_translation && !page.source_translation.blank? %>
 ### <%= page.title %>
 <%= raw(xml_to_pandoc_md(page.xml_translation, @preserve_linebreaks, true)) %>
+<% end %>
+
+<% if @include_notes && page.notes.any? %>
+::: {.smalltext}
+*Notes:*
+
+<% page.notes.each do |note| %>
+_<%= "#{note.user.display_name}:" %>_
+  <%= raw(note.body.gsub("\n", "\n\n")) %>
+
+<% end %>
+:::
+
 <% end %>
 
 <% end %>

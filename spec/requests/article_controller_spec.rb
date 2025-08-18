@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ArticleController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
-  let(:owner) { User.first }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
@@ -64,18 +64,6 @@ describe ArticleController do
 
         expect(response).to have_http_status(:redirect)
         expect(response).to redirect_to(collection_subjects_path(owner, collection))
-      end
-    end
-
-    context 'fail' do
-      let!(:article) { create(:article, collection: collection, pages: [page]) }
-
-      it 'redirects' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(collection_article_show_path(owner, collection, article))
       end
     end
   end
@@ -161,16 +149,14 @@ describe ArticleController do
 
   describe '#assign_category' do
     let!(:article) { create(:article, collection: collection) }
-    let(:status) { 'true' }
     let(:params) do
       {
-        status: status,
-        category_id: category.id
+        category_ids: [category.id]
       }
     end
 
     let(:action_path) { article_article_category_path(article_id: article.id) }
-    let(:subject) { post action_path, params: params }
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
 
     context 'not authorized' do
       it 'redirects' do
@@ -181,22 +167,12 @@ describe ArticleController do
       end
     end
 
-    it 'renders status' do
+    it 'renders status and template' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
-    end
-
-    context 'status false' do
-      let(:status) { 'false' }
-
-      it 'renders status' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:ok)
-      end
+      expect(response).to render_template(:article_category)
     end
   end
 
@@ -251,6 +227,31 @@ describe ArticleController do
         expect(response).to have_http_status(:redirect)
         expect(response).to redirect_to(collection_article_edit_path(owner, collection, to_article))
       end
+    end
+  end
+
+  describe '#relationship_graph' do
+    let!(:article) { create(:article, collection: collection, pages: [page]) }
+    let!(:linked_article) { create(:article, collection: collection) }
+
+    before do
+      create(:article_article_link, source_article: article, target_article: linked_article)
+      linked_article.pages << page
+      FileUtils.rm_f(article.d3js_file)
+    end
+
+    let(:action_path) { collection_article_relationship_graph_path(owner, collection, article) }
+    let(:subject) { get action_path }
+
+    it 'returns graph data without authentication' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      node_ids = json['nodes'].map { |n| n['id'] }
+      expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
+      expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
+      expect(File).to exist(article.d3js_file)
     end
   end
 end

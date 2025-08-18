@@ -1,7 +1,9 @@
--flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
-.flash(class='flash-#{type}')
-  span.flash_message
-    -if flash_icon.keys.include? type
-      =svg_symbol flash_icon[type], class: 'icon'
+- icon = flash_icons[type.to_sym]
+- aria_attrs = flash_aria_attributes(type)
+
+-if icon.present?
+  div class="flash flash-#{type}" data-controller='flash' data-flash-type-value=type role=aria_attrs[:role] aria-live=aria_attrs[:'aria-live'] aria-atomic=aria_attrs[:'aria-atomic']
+    span.flash_message
+      =svg_symbol icon, class: 'icon'
       span =message.html_safe
-  a.flash_close &times;
+    a.flash_close data-action='click->flash#close' &times;

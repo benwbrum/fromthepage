@@ -74,15 +74,14 @@ fr:
       volunteer_text: Chaque bénévole contribue à rendre l’histoire plus accessible. Nous apprécions la contribution de %{user_display_name} à notre effort de crowdsourcing !
       worked_on_collections: "%{user_name} a travaillé sur les collections suivantes par les institutions suivantes :"
     landing_page:
-      all_collections: Toutes les collections
-      more: Voir plus
-      next_image: Image suivante
-      previous_image: Image précédente
-      recent_activity: Activité récente
-      search: Chercher
+      by: " par "
+      institutions: Institutions
+      more: plus
+      new_projects: Nouveaux projets
+      search: Recherche
       search_for_collections: Rechercher des collections
-      search_for_collections_or_owners: Rechercher des projets
-      transcribe_a_page: Transcrire une page
+      search_org: Recherche au sein de l'organisation
+      search_org_label: Rechercher du contenu publié par cette organisation...
     new_upload:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
       reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
@@ -138,8 +137,8 @@ fr:
       since: depuis %{date}
       start_a_project: Démarrer un projet
       summary: Sommaire
+      to_upgrade_contact: Pour mettre à niveau, contactez support@fromthepage.com
       total_pages: 'Nombre total de pages : %{pages}'
-      upgrade: Mise à niveau
       work:
         one: Œuvre
         other: Œuvres
@@ -176,6 +175,7 @@ fr:
       download_letter: Télécharger une lettre
       end_date: Date de fin
       hours_details_message: "%{user_name} a contribué %{time_duration} entre le %{start_date} et %{end_date}"
+      hours_update_note: Les statistiques de contribution sont calculées toutes les vingt-quatre heures. Ces statistiques reflètent l'activité jusqu'à %{time_ago}.
       select_new_date: Sélectionnez une nouvelle plage de dates
       start_date: Date de début
       update: Mise à jour

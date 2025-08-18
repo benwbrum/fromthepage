@@ -18,6 +18,16 @@ describe "Devise" do
     let(:collection) { create(:collection) }
     let(:coll_path){ collection_path(collection.owner, collection) }
 
+    it 'fails to create a new user account' do
+      visit new_user_registration_path
+      page.fill_in 'Username', with: user.login
+      page.fill_in 'Email Address', with: 'spammy@email.xyz'
+      page.fill_in 'Password', with: user.password
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
+      click_button('Create Account')
+      expect(page).to have_content('Email is from a domain that is not allowed for sign up')
+    end
     it "creates a new user account" do
       visit new_user_registration_path
       page.fill_in 'Username', with: user.login
@@ -79,7 +89,7 @@ describe "Devise" do
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{owner.display_name}")
     end
-    it "redirects owner to dashboard/owner#freetrial after signup" do
+    it "redirects owner to dashboard/owner#freetrial after signup" do 
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Email Address', with: owner.email
@@ -127,12 +137,22 @@ describe "Devise" do
       click_button('Sign In')
       expect(page.current_path).to eq old_path
     end
-    it "redirects user back to user dashboard/watchlist if original path was nil" do
+    it "redirects user back to user landing_page if no deed yet" do
       visit new_user_session_path
       page.fill_in 'Login', with: user.login
       page.fill_in 'Password', with: user.password
       click_button('Sign In')
-      expect(page.current_path).to eq dashboard_watchlist_path
+      expect(page.current_path).to eq landing_page_path
+    end
+    context 'with deed' do
+      let!(:deed) { create(:deed, user: user, deed_type: DeedType::WORK_ADDED) }
+      it "redirects user back to user dashboard/watchlist if original path was nil" do
+        visit new_user_session_path
+        page.fill_in 'Login', with: user.login
+        page.fill_in 'Password', with: user.password
+        click_button('Sign In')
+        expect(page.current_path).to eq dashboard_watchlist_path
+      end
     end
   end
   context "owner login" do

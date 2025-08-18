@@ -30,13 +30,12 @@
 .headline
   h1.headline_title =t('.owner_dashboard')
   .headline_aside
-    dl.dropdown.right
+    dl.dropdown.right data-controller='dropdown'
       dt.h5 tabindex=0
         span= t('.actions')
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        -unless current_user.all_owner_collections.empty?
-        =link_to t('.create_a_collection'), collection_new_path, :data => { litebox: { hash: 'create-collection' } }
+        =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
@@ -47,25 +46,24 @@
         |&nbsp;
         =t('.since', date: l(current_user.start_date.to_date))
     -unless (current_user.paid_date == nil)
-      span
+      span 
         |&nbsp;&middot;&nbsp;
         =t('.current_subscription_expires', date: l(current_user.paid_date.to_date))
-    span
+    span 
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)
-    -if (current_user.account_type == 'Trial') && UPGRADE_FORM_LINK
-      span
-        |&nbsp;&nbsp;
-        =link_to t('.upgrade'), UPGRADE_FORM_LINK, class: 'button outline', target: '_blank'
+    -if (current_user.account_type == 'Trial') 
+      span 
+        |&nbsp;&middot;&nbsp; 
+        =t('.to_upgrade_contact')
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") =t('.collection', count: @collections.length)
   .counter(data-prefix="#{number_with_delimiter @works.length}") =t('.work', count: @works.length)
   -unless @document_sets.empty?
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") =t('.document_set', count: @document_sets.length)
-
 .tabs
-  =active_link_to t('.start_a_project'), dashboard_startproject_path
+  =active_link_to t('.start_a_project'), dashboard_startproject_url
   =active_link_to t('.your_collections'), dashboard_owner_path
   =active_link_to t('.summary'), dashboard_summary_path
   =active_link_to t('.exports'), dashboard_exports_path

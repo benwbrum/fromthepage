@@ -23,15 +23,15 @@
 # Indexes
 #
 #  index_deeds_on_article_id                                        (article_id)
-#  index_deeds_on_collection_id_and_created_at                      (collection_id,created_at DESC)
-#  index_deeds_on_collection_id_and_deed_type_and_created_at        (collection_id,deed_type,created_at DESC)
-#  index_deeds_on_created_at_and_collection_id                      (created_at DESC,collection_id)
+#  index_deeds_on_collection_id_and_created_at                      (collection_id,created_at)
+#  index_deeds_on_collection_id_and_deed_type_and_created_at        (collection_id,deed_type,created_at)
+#  index_deeds_on_created_at_and_collection_id                      (created_at,collection_id)
 #  index_deeds_on_note_id                                           (note_id)
 #  index_deeds_on_page_id                                           (page_id)
-#  index_deeds_on_user_id_and_created_at                            (user_id,created_at DESC)
+#  index_deeds_on_user_id_and_created_at                            (user_id,created_at)
 #  index_deeds_on_visit_id                                          (visit_id)
-#  index_deeds_on_work_id_and_created_at                            (work_id,created_at DESC)
-#  index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at  (work_id,deed_type,user_id,created_at DESC)
+#  index_deeds_on_work_id_and_created_at                            (work_id,created_at)
+#  index_deeds_on_work_id_and_deed_type_and_user_id_and_created_at  (work_id,deed_type,user_id,created_at)
 #
 class Deed < ApplicationRecord
   belongs_to :article, optional: true
@@ -42,7 +42,7 @@ class Deed < ApplicationRecord
   belongs_to :work, optional: true
 
   validates_inclusion_of :deed_type, in: DeedType.all_types
-  scope :order_by_recent_activity, -> { order('created_at DESC') }
+  scope :order_by_recent_activity, -> { order(created_at: :desc) }
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
 
@@ -69,22 +69,43 @@ class Deed < ApplicationRecord
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
       renderer = ApplicationController.renderer.new
       locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
-      self.prerender = locales.to_h { |locale| 
-        [ locale, 
-          renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true, locale: locale })
-        ] 
-      }.to_json
+      self.prerender = locales.to_h do |locale|
+        [
+          locale,
+          renderer.render(
+            partial: 'deed/deed',
+            locals: {
+              deed: self,
+              long_view: false,
+              prerender: true,
+              locale: locale
+            },
+            formats: [:html]
+          )
+        ]
+      end.to_json
     end
   end
 
   def calculate_prerender_mailer
     renderer = ApplicationController.renderer.new
     locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
-    self.prerender_mailer = locales.to_h { |locale|
-      [ locale,
-        renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true, locale: locale })
+    self.prerender_mailer = locales.to_h do |locale|
+      [
+        locale,
+        renderer.render(
+          partial: 'deed/deed',
+          locals: {
+            deed: self,
+            long_view: true,
+            prerender: true,
+            mailer: true,
+            locale: locale
+          },
+          formats: [:html]
+        )
       ]
-    }.to_json
+    end.to_json
   end
 
   def update_collections_most_recent_deed

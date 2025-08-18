@@ -1,19 +1,5 @@
 module XmlSourceProcessor
 
-  @text_dirty = false
-  @translation_dirty = false
-  #@fields = false
-
-  def source_text=(text)
-    @text_dirty = true
-    super
-  end
-
-  def source_translation=(translation)
-    @translation_dirty = true
-    super
-  end
-
   def validate_source
     if self.source_text.blank?
       return
@@ -76,16 +62,26 @@ module XmlSourceProcessor
     #    return errors.size > 0
   end
 
+def source_text=(text)
+    self.source_text_will_change!
+    super
+end
+
+def source_translation=(text)
+  self.source_translation_will_change!
+  super
+end
+
   ##############################################
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.
   ##############################################
   def process_source
-    if @text_dirty
+    if source_text_changed?
       self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
-    if @translation_dirty
+    if self.respond_to?(:source_translation) && source_translation_changed?
       self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
     end
   end
@@ -214,7 +210,7 @@ module XmlSourceProcessor
       if !current_table
         if line.match(HEADER)
           line.chomp
-          current_table = { :header => [], :rows => [], :section => @sections.last }
+          current_table = { header: [], rows: [], section: @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe
@@ -225,40 +221,38 @@ module XmlSourceProcessor
             else
               "<th>#{cell}</th>"
             end
-          end.join(" ")
+          end.join(' ')
           new_lines << "<table class=\"tabular\">\n<thead>\n<tr>#{heading}</tr></thead>"
         else
           # no current table, no table contents -- NO-OP
           new_lines << line
         end
       else
-        #this is either an end or a separator
+        # this is either an end or a separator
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
           # remove leading and trailing delimiters
-          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/,'')
+          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
-          cells = clean_line.split(/\s*\|\s*/,-1) # -1 means "don't prune empty values at the end"
+          cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
           current_table[:rows] << cells
-          rowline = ""
-          cells.each_with_index do |cell, i|
-            head = current_table[:header][i]
-            role_string = " role=\"#{head}\""
+          rowline = ''
+          cells.each_with_index do |cell, _i|
             rowline += "<td>#{cell}</td> "
           end
 
           if current_table[:rows].size == 1
-            new_lines << "<tbody>"
+            new_lines << '<tbody>'
           end
           new_lines << "<tr>#{rowline}</tr>"
         else
           # finished the last row
-          if current_table[:rows].size > 0 # only process tables with bodies
+          unless current_table[:rows].empty? # only process tables with bodies
             @tables << current_table
-            new_lines << "</tbody>"
+            new_lines << '</tbody>'
           end
-          new_lines << "</table>"
+          new_lines << '</table><lb/>'
           current_table = nil
         end
       end
@@ -267,14 +261,14 @@ module XmlSourceProcessor
     if current_table
       # unclosed table
       @tables << current_table
-      if current_table[:rows].size > 0 # only process tables with bodies
+      unless current_table[:rows].empty? # only process tables with bodies
         @tables << current_table
-        new_lines << "</tbody>"
+        new_lines << '</tbody>'
       end
-      new_lines << "</table>"
+      new_lines << '</table><lb/>'
     end
     # do something with the table data
-    new_lines.join(" ")
+    new_lines.join(' ')
   end
 
   def process_any_sections(line)
@@ -350,8 +344,6 @@ EOF
   def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links
     # log the count of articles before and after
-    old_article_count = collection.articles.count
-    logger.info("ISSUE4269 old_article_count = #{old_article_count}")
     clear_links(text_type) unless preview_mode
     processed = ""
     # process it
@@ -375,7 +367,7 @@ EOF
         article = Article.new
         article.title = title
         article.collection = collection
-        article.created_by_id = User.current_user.id if User.current_user.present?
+        article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
       end
       link_id = create_link(article, display_text, text_type) unless preview_mode
@@ -388,11 +380,6 @@ EOF
       link_element.add_attribute('target_id', article.id.to_s) unless preview_mode
       link_element.add_attribute('link_id', link_id.to_s) unless preview_mode
       element.replace_with(link_element)
-    end
-    new_article_count = collection.articles.count
-    logger.info("ISSUE4269 new_article_count = #{new_article_count}")
-    if new_article_count < old_article_count
-      logger.error("ISSUE4269 ERROR new_article_count #{new_article_count} < old_article_count #{old_article_count}!")
     end
     doc.write(processed)
     return processed
@@ -465,7 +452,7 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
-    title_regex = 
+    title_regex =
       Regexp.escape(old_title)
         .gsub('\\ ',' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
         .gsub(/\s+/, '\s+') # convert multiple whitespaces into 1+n space characters
@@ -479,10 +466,19 @@ EOF
   end
 
   def rename_link_in_text(text, title_regex, new_title)
-    # handle links of the format [[Old Title|Display Text]]
-    text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
-    # handle links of the format [[Old Title]]
-    text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+    if new_title == ''
+      # Link deleted, remove [[ ]] but keep the original title text
+
+      # Handle links of the form [[Old Title|Display Text]] => Display Text
+      text = text.gsub(/\[\[#{title_regex}\|([^\]]+)\]\]/i, '\1')
+      # Handle links of the form [[Old Title]] => Old Title
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, '\1')
+    else
+      # Replace the title part in [[Old Title|Display Text]]
+      text = text.gsub(/\[\[#{title_regex}\|/i, "[[#{new_title}|")
+      # Replace [[Old Title]] with [[New Title|Old Title]]
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, "[[#{new_title}|\\1]]")
+    end
 
     text
   end
@@ -494,7 +490,7 @@ EOF
     text.split("\n").map{|line| "|#{line}|"}.join("\n")
   end
 
-  def xml_table_to_markdown_table(table_element, pandoc_format=false)
+  def xml_table_to_markdown_table(table_element, pandoc_format=false, plaintext_export=false)
     text_table = ""
 
     # clean up in-cell line-breaks
@@ -526,18 +522,24 @@ EOF
         width = 80 #default for hand-coded tables
         index = e.path.match(/.*td\[(\d+)\]/)
         if index
-          width = column_widths[index[1].to_i] || 80 
+          width = column_widths[index[1].to_i] || 80
         else
           width = column_widths.values.first
         end
-        e.text.rjust(width, ' ') 
+
+        if plaintext_export
+          e.text.rjust(width, ' ')
+        else
+          inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+          inner_html.rjust(width, ' ')
+        end
       end.join(' | ') << "\n"
     end
     if pandoc_format
       text_table = pipe_tables_formatting(text_table)
     end
 
-    text_table
+    "#{text_table}\n\n"
   end
 
 

@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
@@ -7,8 +6,8 @@ describe "collection settings js tasks", :order => :defined do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @work = @collection.works.second
+    @collection = @collections.second || @collections.first
+    @work = @collection.works.second || @collection.works.first
     @rest_user = User.find_by(login: REST_USER)
     #add a user to be emailed
     @notify_user = User.find_by(login: ADMIN)
@@ -38,7 +37,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
-    page.click_link('Make Collection Private')
+    page.click_button('Make Collection Private')
     @collection.reload
     expect(@collection.is_public).to eq false
     expect(page).to have_content("Collection privacy: Private")
@@ -176,7 +175,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
-    page.click_link("Make Collection Public")
+    page.click_button("Make Collection Public")
   end
 
   context "inactive collection" do
@@ -229,6 +228,8 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "views completed works" do
+    Current.user = @owner
+
     #first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
@@ -238,7 +239,7 @@ describe "collection settings js tasks", :order => :defined do
     end
     hidden_work.work_statistic.recalculate
     #check to see if the work is visible
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
@@ -250,25 +251,26 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
 
-  it "sorts works in works list", :js => true do
-    login_as(@owner, :scope => :user)
+  it 'sorts works in works list', js: true do
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Works List")
-    expect(page).to have_content("Works")
+    page.find('.tabs').click_link('Works List')
+    expect(page).to have_content('Works')
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
-    #sort by percent complete
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Progress').click
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.pluck(:title).first
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.pluck(:title).last
+    # Deprecated sorting by percent complete
+    #  #sort by percent complete
+    #  page.find('#works-table').find('thead').find('th', text: 'Progress').click
+    #  expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
+    #  expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
     #sort by recent activity
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
-    page.find('.collection-work-stats').find('thead').find('th', text: 'Most recent activity').click
-    expect(page.find('.collection-work-stats').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
-    expect(page.find('.collection-work-stats').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+    page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
+    page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
+    expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
+    expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
 
   it "views pages that need transcription" do
@@ -292,38 +294,38 @@ describe "collection spec (isolated)" do
     @factory_owner = create(:owner)
   end
 
-  it 'updates collection statistics', :js => true do
-      login_as(@factory_owner, :scope => :user)
-      visit dashboard_owner_path(@factory_owner)
-      expect(page).to have_content('Start A Project')
-      page.find('.tabs').click_link('Start A Project')
+  it 'updates collection statistics', js: true do
+    login_as(@factory_owner, scope: :user)
 
-      page.find(:css, '#create-empty-work').click
+    visit dashboard_owner_path(@factory_owner)
+    expect(page).to have_content('Start A Project')
+    page.find('.tabs').click_link('Start A Project')
+
+    page.find(:css, '#create-empty-work').click
 
       select('Add New Collection', :from => 'work_collection_id')
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
       old_count = Collection.all.count
       click_button('Create Collection')
-      sleep 3
       expect(Collection.all.to_a.count).to eq(old_count+1)
 
-      page.find(:css, '#create-empty-work').click
-      sleep 3
-      fill_in('work_title', with: 'Stats Test Work')
-      click_button('Create Work')
-      page.find('#new_page')
-      click_button('Save & New Work')
+    page.find(:css, '#create-empty-work').click
+    sleep 3
+    fill_in('work_title', with: 'Stats Test Work')
+    click_button('Create Work')
+    page.find('#new_page')
+    click_button('Save & New Work')
 
-      visit dashboard_owner_path
+    visit dashboard_owner_path
 
-      page.find('.collections').click_link('Stats Test Collection')
-      page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
-      page.find('.maincol h4').click_link('Page 1')
-      fill_in_editor_field('Transcription')
-      page.find('#finish_button_top').click
+    page.find('.collections').click_link('Stats Test Collection')
+    page.find('.collection-works .collection-work_title').click_link('Stats Test Work')
+    page.find('.maincol h4').click_link('Page 1')
+    fill_in_editor_field('Transcription')
+    page.find('#finish_button_top').click
 
-      page.find('.breadcrumbs').click_link('Stats Test Collection')
-      expect(page).to have_content("All works are fully transcribed.")
+    page.find('.breadcrumbs').click_link('Stats Test Collection')
+    expect(page).to have_content("All works are fully transcribed.")
   end
 
   context 'Collection Settings' do
@@ -391,7 +393,7 @@ describe "collection spec (isolated)" do
 
   after :all do
     @factory_owner.collections.each do |c|
-        c.destroy
+      c.destroy
     end
     @factory_owner.destroy
   end

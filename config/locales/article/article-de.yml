@@ -2,6 +2,7 @@
 de:
   article:
     article_links:
+      in_the_work: " im %{work}"
       n_pages_refer_to:
         one: 1 Seite bezieht sich auf %{article}
         other: "%{count} Seiten beziehen sich auf %{article}"
@@ -12,15 +13,19 @@ de:
     combine_duplicate:
       selected_subjects_combined: Ausgewählte Entitäten kombiniert mit %{title}
     delete:
-      must_remove_referring_links: Sie müssen alle verweisenden Links entfernen, bevor Sie diese Entität löschen.
       only_subject_owner_can_delete: Nur der Betreffersteller oder Projekteigentümer kann dies löschen.
     edit:
       autolink: Autolink
+      begun: Begonnen
+      bibliography: Bibliographie
+      birth_date: Geburtsdatum
       categories: Kategorien
       combine_selected: Auswahl kombinieren
       confirm_delete_subject: Möchten Sie diese Entität wirklich löschen? Das Löschen kann nicht rückgängig gemacht werden!
+      death_date: Sterbedatum
       delete_subject: Entität löschen
       description: Beschreibung
+      ended: Beendet
       latitude: Breitengrad
       longitude: Längengrad
       microphone: Mikrofon
@@ -33,13 +38,15 @@ de:
         one: Mögliches Duplikat
         other: Mögliche Duplikate
       possible_duplicates_description: Bitte sehen Sie sich die Liste unterhalb an und wählen Sie die Entitäten aus, die kombiniert werden sollen. Duplikate werden neu zugeordnet, sodass alle vorhandenen Links auf die Entität „%{article}“ verweisen.
+      race_description: Rennbeschreibung
       save_changes: Änderungen speichern
       select_categories: Kategorien auswählen
+      sex: Sex
+      short_summary: Kurze Zusammenfassung
       title: Titel
       uri: URI
     graph:
-      dot:
-        title: Häufig in Verbindung mit %{subject} genannte Entitäten
+      title: Häufig in Verbindung mit %{subject} genannte Entitäten
     list:
       actions: Aktionen
       add_child_category: Untergeordnete Kategorie hinzufügen
@@ -51,9 +58,13 @@ de:
       create_category_message: "%{link}, die zum Gruppieren von Entitäten verwendet wird."
       create_the_first_category: Erste Kategorie erstellen
       delete_category: Kategorie löschen
+      disable_bio_fields_for_category: Deaktivieren Sie biografische Felder für die Kategorie
       disable_gis_for_category: GIS für Kategorie deaktivieren
+      disable_org_fields_for_category: Organisationsfelder für Kategorien deaktivieren
       edit_category: Kategorie bearbeiten
+      enable_bio_fields_for_category: Biografische Felder für die Kategorie aktivieren
       enable_gis_for_category: GIS für Kategorie aktivieren
+      enable_org_fields_for_category: Organisationsfelder für Kategorie aktivieren
       no_categories: Keine Kategorien
       no_categories_message: Es sind keine Entitätskategorien in der Sammlung vorhanden.<br>
       there_are_no_subjects: Es sind keine Entitäten für die ausgewählte Kategorie vorhanden
@@ -62,16 +73,25 @@ de:
       upload_subjects: Entitäten hochladen
     show:
       all_uncategorized_subjects: Alle unkategorisierten Entitäten in der Sammlung
+      begun: Begonnen
+      bibliography: Bibliographie
+      birth_date: Geburtsdatum
       categories: Kategorien
+      death_date: Sterbedatum
       description: Beschreibung
+      disambiguator: Begriffsklärer
       download: Download
       download_description: Laden Sie eine Tabelle mit gemeinsam auftretenden Entiäten sowie mit den Werken, in denen sie vorkommen, herunter.
       edit_description_description: Bearbeiten Sie die Beschreibung unter "Einstellungen".
+      ended: Beendet
       export: Export
+      latitude: Breite
+      longitude: Länge
       n_possible_duplicates:
         one: 1 mögliches Duplikat
         other: "%{count} mögliche Duplikate"
       no_category_message: Diese Entität gehört keiner Kategorie an
+      race_description: Rennbeschreibung
       references: Verweise
       related_subjects: Verwandte Entitäten
       related_subjects_1: Verwandte Entitäten
@@ -81,6 +101,7 @@ de:
       search_unlinked_pages: Nicht verlinkte Seiten durchsuchen
       search_unlinked_pages_description: Suchen Sie nur nach Seiten, die nicht auf <em>%{article}</em> verlinken
       see_also: 'Siehe auch:'
+      sex: Sex
       text_search: Textsuche
     subject_upload:
       csv_file_must_contain_headers: Die CSV-Datei muss Header für HEADING, ARTICLE, URI und CATEGORY enthalten
@@ -90,6 +111,7 @@ de:
         other: 'Kategorien:'
       explore_this_subject: Diese Entität erkunden
     update:
+      categories_updated: Artikelkategorien aktualisiert.
       gis_coordinates_truncated:
         one: " (GIS-Koordinaten auf %{precision} Dezimalstelle gekürzt)"
         other: " (GIS-Koordinaten auf %{precision} Dezimalstellen gekürzt)"

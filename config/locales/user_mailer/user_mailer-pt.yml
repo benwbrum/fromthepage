@@ -4,14 +4,14 @@ pt:
     added_note:
       html:
         view_note: " para responder à nota em %{collection}: %{work}."
-      message: Gostaríamos apenas de informar que a seguinte nota foi adicionada a uma página em que você trabalhou na obra %{work}, na coleção %{collection}.
+      message: Informamos que a seguinte nota foi adicionada a uma página em que você trabalhou na obra %{work}, na coleção %{collection}.
       text:
         view_note: 'Você pode responder à nota em %{collection}: %{work} no URL: %{url}.'
     bulk_export_finished:
       html:
         ready_message: foi processado e está pronto em %{this_link}.
       text:
-        ready_message: 'Sua exportação foi processada e está pronta neste URL:'
+        ready_message: 'Sua exportação foi processada e está disponível nesta URL:'
       this_link: esse link
       your_export_is_ready: Sua exportação está pronta!
       your_export_of: Sua exportação de
@@ -19,24 +19,28 @@ pt:
     collection_collaborator:
       html:
         to_view: " para ver %{collection}"
-      message: Gostaríamos apenas de informar que %{owner} adicionou você como colaborador em %{collection}.
+      message: Informamos que %{owner} adicionou você como colaborador na coleção %{collection}.
       text:
         to_view: 'Para visualizar %{collection}, visite o seguinte URL: %{url}'
     collection_reviewer:
       html:
         to_view: " para ver %{collection}"
-      message: "%{owner} adicionou você como revisor autorizado em %{collection}. Você deve poder editar e aprovar qualquer página que precise de revisão."
+      message: "%{owner} adicionou você como revisor autorizado na coleção %{collection}. Agora você pode editar e aprovar qualquer página que precise de revisão."
       text:
         to_view: 'Para visualizar %{collection}, visite o seguinte URL: %{url}'
     fromthepage: FromThePage
-    greeting: Oi %{user} --
+    greeting: Olá %{user} --
     html:
       closing: "Obrigado, <br><br> \n%{from}\n"
       turn_off_notification: " para desligar esta notificação."
     metadata_csv_import_finished:
-      fail: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso; %{error_count} linhas encontraram erros.
+      fail: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso, mas %{error_count} linhas apresentaram erros.
       subject: A importação dos metadados CSV foi concluída.
       success: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso.
+    metadata_refresh_finished:
+      fail: Atualização de metadados concluída com erros.
+      subject: A atualização de metadados para %{type}:%{id} foi concluída.
+      success: Atualização de metadados concluída com sucesso.
     new_mobile_user:
       html:
         continue_transcribing: " para continuar a transcrição."
@@ -49,7 +53,7 @@ pt:
       html:
         to_view_note: " para ver a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
         to_view_work: " para ver %{collection}: %{work}"
-      message: Só queríamos informar que houve atividade em uma coleção na qual você trabalhou.
+      message: Informamos que houve atividade em uma coleção na qual você trabalhou.
       new_notes: Novas Notas
       new_works: Novas Obras
       note_added: Uma nota foi adicionada a uma página em que você trabalhou na obra %{work}, na coleção %{collection}.
@@ -66,11 +70,21 @@ pt:
       html:
         message: Seu upload de "%{file}" foi processado e está pronto em
       text:
-        message: 'Seu upload de "%{file}" foi processado e está pronto neste URL:'
+        message: 'Seu upload de "%{file}" foi processado e está disponível nesta URL:'
       your_upload_is_ready: Seu carregamento está pronto!
+    upload_no_images_warning:
+      html:
+        collection_link_message: Você ainda pode visitar sua coleção em
+        message: Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'Você ainda pode visitar sua coleção nesta URL:'
+        message: Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload processado - nenhuma imagem encontrada
     work_collaborator:
       html:
         to_view: " para ver %{collection} - %{work}."
-      message: Gostaríamos apenas de informar que %{owner} adicionou você como colaborador em %{collection} - %{work}.
+      message: Informamos que %{owner} adicionou você como colaborador na obra %{work}, da coleção %{collection}.
       text:
         to_view: 'Você pode visualizar %{collection}: %{work} no URL: %{url}'

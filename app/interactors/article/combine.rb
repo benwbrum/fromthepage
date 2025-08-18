@@ -1,15 +1,13 @@
-class Article::Combine
-  include Interactor
-  include Article::Lib::Common
-
-  def initialize(article:, from_article_ids:)
+class Article::Combine < ApplicationInteractor
+  def initialize(article:, from_article_ids:, user:)
     @article          = article
     @from_article_ids = from_article_ids
+    @user             = user
 
     super
   end
 
-  def call
+  def perform
     return if @from_article_ids.blank?
 
     from_articles = Article.where(id: @from_article_ids)
@@ -27,18 +25,12 @@ class Article::Combine
     from_article.title = "TO_BE_DELETED:#{old_from_title}"
     from_article.save!
 
-    rename_article(from_article, old_from_title, to_article.title)
-    from_article.source_article_links.destroy_all
-
-    Deed.where(article_id: from_article.id).update_all(article_id: to_article.id)
-
-    if from_article.source_text
-      to_article.source_text ||= ''
-      to_article.source_text += from_article.source_text
-    end
-
-    to_article.save!
-    from_article.destroy
+    Article::RenameJob.perform_later(
+      user_id: @user.id,
+      article_id: from_article.id,
+      old_name: old_from_title,
+      new_name: to_article.title,
+      new_article_id: to_article.id
+    )
   end
-
 end

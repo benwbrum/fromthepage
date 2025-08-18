@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/article_tabs', :locals => { :selected => 1, :article_id => @article.id }})
+=render({ partial: '/shared/article_tabs', locals: { selected: 1, article_id: @article.id } })
 
 .article-columns.columns
   article.maincol
@@ -15,7 +15,15 @@
         = t('.see_also')
         a href="#{@article.uri}" target="_blank" #{@article.uri}
 
+    -[:short_summary, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :begun, :ended].each do |field|
+      -if @article.send(field).present?
+        br
+        b =t(".#{field}") + ": "
+        =@article.send(field)
+
     h3= t('.related_subjects')
+    -if !params['rsg'].blank?
+      =render :partial => 'subject_graph_d3'
     .article-graph
       =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: t('.related_subjects_1'))
       ==@map
@@ -47,27 +55,16 @@
       =button_to t('.search_all_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :collection_id => @collection }
       p= t('.search_unlinked_pages_description', article: (@article.title)).html_safe
       =button_to t('.search_unlinked_pages'), { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true, :collection_id => @collection}, { :rel => 'nofolllow' }
- 
+
     -if user_signed_in? && current_user.like_owner?(@collection)
       h3= t('.export')
       p= t('.download_description')
       =link_to t('.download'), collection_subject_distribution_path(@collection.owner, @collection, @article), class: 'button btnExport'
- 
+
 
 -content_for :javascript
   javascript:
     $(function() {
-
-      $('[data-graph-category]').select2({
-        placeholder: 'Select categories...',
-        templateResult: function(category) {
-          if(!category.id) { return category.text; }
-          var level = $(category.element).data('level');
-          var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-          return $category;
-        }
-      });
-
       $('.btnExport').on('click', function() {
         Cookies.remove('download_finished', {path: '/'});
         var downloadCheckTimer = window.setInterval(function() {

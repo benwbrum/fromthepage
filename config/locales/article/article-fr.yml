@@ -2,6 +2,7 @@
 fr:
   article:
     article_links:
+      in_the_work: dans %{work}
       n_pages_refer_to:
         one: 1 page fait référence à %{article}
         other: "%{count} pages renvoient à %{article}"
@@ -12,15 +13,19 @@ fr:
     combine_duplicate:
       selected_subjects_combined: Sujets sélectionnés combinés avec %{title}
     delete:
-      must_remove_referring_links: Vous devez supprimer tous les liens de référence avant de supprimer ce sujet.
       only_subject_owner_can_delete: Seul le créateur du sujet ou le propriétaire du projet peut le supprimer.
     edit:
       autolink: Lien automatique
+      begun: Commencé
+      bibliography: Bibliographie
+      birth_date: Date de naissance
       categories: Catégories
       combine_selected: Combiner la sélection
       confirm_delete_subject: Voulez-vous vraiment supprimer ce sujet ? Après la suppression, vous ne pourrez pas le récupérer !
+      death_date: Date de décès
       delete_subject: Supprimer le sujet
       description: Description
+      ended: Terminé
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
@@ -33,13 +38,15 @@ fr:
         one: Doublon possible
         other: Doublons possibles
       possible_duplicates_description: Veuillez consulter la liste ci-dessous et sélectionner les sujets à combiner. Les doublons seront regroupés afin que tous les liens existants redirigent vers le sujet "%{article}".
+      race_description: Description de la course
       save_changes: Sauvegarder les modifications
       select_categories: Sélectionnez les catégories
+      sex: Sexe
+      short_summary: Bref résumé
       title: Titre
       uri: URI
     graph:
-      dot:
-        title: Sujets fréquemment mentionnés avec %{subject}
+      title: Sujets fréquemment mentionnés avec %{subject}
     list:
       actions: Actions
       add_child_category: Ajouter une sous-catégorie
@@ -51,9 +58,13 @@ fr:
       create_category_message: "%{link} que vous utiliserez pour regrouper les sujets."
       create_the_first_category: Créer la première catégorie
       delete_category: Supprimer la catégorie
+      disable_bio_fields_for_category: Désactiver les champs biographiques pour la catégorie
       disable_gis_for_category: Désactiver le SIG pour la catégorie
+      disable_org_fields_for_category: Désactiver les champs d'organisation pour la catégorie
       edit_category: Modifier la catégorie
+      enable_bio_fields_for_category: Activer les champs biographiques pour la catégorie
       enable_gis_for_category: Activer le SIG pour la catégorie
+      enable_org_fields_for_category: Activer les champs d'organisation pour la catégorie
       no_categories: Aucune catégorie
       no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
       there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée
@@ -62,16 +73,25 @@ fr:
       upload_subjects: Téléverser des sujets
     show:
       all_uncategorized_subjects: Tous les sujets non catégorisés de la collection
+      begun: Commencé
+      bibliography: Bibliographie
+      birth_date: Date de naissance
       categories: Catégories
+      death_date: Date de décès
       description: Description
+      disambiguator: Désambiguïsateur
       download: Télécharger
       download_description: Télécharger un tableau CSV des sujets et des œuvres associées dans lesquels ils apparaissent.
       edit_description_description: Modifiez la description dans l'onglet Réglages.
+      ended: Terminé
       export: Exporter
+      latitude: Latitude
+      longitude: Longitude
       n_possible_duplicates:
         one: 1 doublon possible
         other: "%{count} Doublons possibles"
       no_category_message: Ce sujet n'appartient à aucune catégorie
+      race_description: Description de la course
       references: Références
       related_subjects: Sujets connexes
       related_subjects_1: Sujets connexes
@@ -81,6 +101,7 @@ fr:
       search_unlinked_pages: Rechercher des pages non liées
       search_unlinked_pages_description: 'Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>'
       see_also: 'Voir également:'
+      sex: Sexe
       text_search: Recherche de texte
     subject_upload:
       csv_file_must_contain_headers: Le fichier CSV doit contenir des en-têtes pour HEADING, ARTICLE, URI et CATEGORY
@@ -90,6 +111,7 @@ fr:
         other: 'Catégories :'
       explore_this_subject: Explorer ce sujet
     update:
+      categories_updated: Catégories d'articles mises à jour.
       gis_coordinates_truncated:
         one: " (Coordonnées SIG tronquées à la décimale %{precision})"
         other: " (Coordonnées SIG tronquées à %{precision} décimales)"

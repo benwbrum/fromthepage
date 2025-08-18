@@ -5,11 +5,12 @@
 #  id                         :integer          not null, primary key
 #  default_orientation        :string(255)
 #  description                :text(65535)
-#  is_public                  :boolean
+#  featured_at                :datetime
 #  pct_completed              :integer
 #  picture                    :string(255)
 #  slug                       :string(255)
 #  title                      :string(255)
+#  visibility                 :integer          default("private"), not null
 #  works_count                :integer          default(0)
 #  created_at                 :datetime
 #  updated_at                 :datetime
@@ -28,6 +29,8 @@ class DocumentSet < ApplicationRecord
 
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
+
+  before_create :fill_featured_at
   before_save :uniquify_slug
   # validate :slug_uniqueness_across_objects
 
@@ -40,7 +43,7 @@ class DocumentSet < ApplicationRecord
   has_many :document_set_works
   has_many :works, -> { order(:title) }, through: :document_set_works
   has_many :pages, through: :works
-  has_many :articles, -> { distinct }, through: :pages
+  has_many :articles, -> { distinct }, through: :works
   has_many :notes, -> { order(created_at: :desc) }, through: :works
   has_many :deeds, -> (document_set) {
     where(work_id: document_set.works.select(:id))
@@ -57,24 +60,84 @@ class DocumentSet < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(is_public: true) }
-  scope :restricted, -> { where(is_public: false) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: [:private]) }
+
   scope :carousel, -> {
     where(pct_completed: [nil, 1..90])
       .joins(:collection)
       .where.not(collections: { picture: nil })
       .where.not(description: [nil, ''])
-      .where(is_public: true)
+      .unrestricted
       .reorder(Arel.sql('RAND()'))
   }
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
+  scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
-  scope :random_sample, ->(sample_size = 5) do
-    carousel
-    reorder(Arel.sql('RAND()')) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql('RAND()'))
+  scope :featured_projects, -> {
+    joins(works: :pages)
+      .joins(:owner)
+      .where(owner: { deleted: false })
+      .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
+      .where.not(featured_at: nil)
+      .distinct
+  }
+
+  enum :visibility, {
+    private: 0,
+    public: 1,
+    read_only: 2
+  }, prefix: :visibility
+
+  update_index('document_sets', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id).map { |x| "docset-#{x}" }
+    end
+
+    DocumentSetsIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              'title^2',
+              'title.no_underscores^1.3',
+              'intro_block',
+              'slug'
+            ]
+          }
+        },
+        filter: [
+          { term: { is_docset: true } },
+          {
+            bool: {
+              must_not: [
+                { terms: { collection_id: blocked_collections } }
+              ],
+              should: [
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { _id: docset_collabs } }
+              ],
+              minimum_should_match: 1
+            }
+          }
+        ]
+      }
+    )
   end
 
   def show_to?(user)
@@ -152,7 +215,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def restricted
-    !is_public
+    visibility_private?
   end
 
   def picture_url(thumb = nil)
@@ -164,7 +227,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def set_next_untranscribed_page
-    first_work = works.order_by_incomplete.first
+    first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
     first_page = first_work&.next_untranscribed_page
     page_id = first_page&.id
 
@@ -173,25 +236,23 @@ class DocumentSet < ApplicationRecord
 
   def find_next_untranscribed_page_for_user(user)
     return nil unless has_untranscribed_pages?
-    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
-    public_works = works.where.not(next_untranscribed_page_id: nil)
-                        .unrestricted
-                        .order_by_incomplete
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
+                  .order_by_incomplete
 
-    return public_works.first.next_untranscribed_page unless public_works.empty?
-
-    private_works = works.where.not(next_untranscribed_page_id: nil)
-                         .restricted
-                         .order_by_incomplete
-
-    wk = private_works.find{ |w| user.can_transcribe?(w) }
-
-    wk&.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
     next_untranscribed_page.present?
+  end
+
+  def fill_featured_at
+    return if self.visibility.nil? || self.visibility.to_sym == :private
+
+    self.featured_at = Time.current
   end
 
   def slug_candidates
@@ -217,13 +278,9 @@ class DocumentSet < ApplicationRecord
     works.where('title LIKE ? OR searchable_metadata like ?', "%#{search}%", "%#{search}%")
   end
 
-  def search_collection_works(search)
-    collection.search_works(search)
-  end
-
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-    users where owner=1 and display_name like ?)"
+           users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 
@@ -246,5 +303,26 @@ class DocumentSet < ApplicationRecord
     collection.owner.help
   end
 
+  def is_public
+    visibility_public?
+  end
+
+  def is_public?
+    visibility_public?
+  end
+
   public :user_help
+
+  private
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: DocumentSetsIndex.index_name,
+      id: "docset-#{id}"
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
 end

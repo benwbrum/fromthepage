@@ -7,6 +7,15 @@ module ExportService
   require 'subject_exporter'
   require 'subject_details_exporter'
 
+  include Rails.application.routes.url_helpers
+
+  # Quick and dirty override to ensure default_url_options is set.
+  def default_url_options
+    Rails.application.config.action_mailer.default_url_options || {}
+  end
+
+
+
   def path_from_work(work, original_filenames=false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
@@ -26,7 +35,7 @@ module ExportService
     out.write file.read
   end
 
-  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors)
+  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
@@ -39,16 +48,16 @@ module ExportService
       path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
-    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors)
+    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors, include_notes)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
-  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors)
+  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors, include_notes)
     # render to a string
     rendered_markdown =
       ApplicationController.new.render_to_string(
-        template: '/export/facing_edition.html',
+        template: '/export/facing_edition',
         layout: false,
         assigns: {
           collection: work.collection,
@@ -57,19 +66,21 @@ module ExportService
           output_type: format,
           preserve_linebreaks: preserve_lb,
           include_metadata: include_metadata,
-          include_contributors: include_contributors
-        }
+          include_contributors: include_contributors,
+          include_notes: include_notes
+        },
+        formats: [:html]
       )
 
     # write the string to a temp directory
-    temp_dir = File.join(Rails.root, 'public', 'printable')
+    temp_dir = File.join(Rails.root, 'tmp', 'printable')
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/, '')
     temp_dir = File.join(temp_dir, time_stub)
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
+    file_stub = "#{@work.slug.gsub('-', '_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
 
     if format == 'pdf'
@@ -83,7 +94,9 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
 
-    cmd = "pandoc --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
+    tex_template = Rails.root.join('lib', 'pandoc', 'pdf_export_template.tex')
+    lua_filter = Rails.root.join('lib', 'pandoc', 'risky_soul_filter.lua')
+    cmd = "pandoc --template #{tex_template} --lua-filter=#{lua_filter} --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
@@ -92,8 +105,6 @@ module ExportService
 
     output_file
   end
-
-
 
   def export_owner_mailing_list_csv(out:, owner:)
     path = "mailing_list.csv"
@@ -129,7 +140,7 @@ module ExportService
     path = 'work_metadata.csv'
     out.put_next_entry(path)
 
-    result = Work::Metadata::ExportCsv.call(collection: collection, works: collection.works)
+    result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
     out.write(result.csv_string)
   end
 
@@ -467,7 +478,8 @@ module ExportService
       spreadsheet_count = input_types.count("spreadsheet")
       position = input_types.index("spreadsheet")
     else
-      renamed_cell_headings_count = 0
+      # this variable apparently tracks how many times we should attempt to process a set of headers, designed for sparse tables
+      renamed_cell_headings_count = 1
     end
     spreadsheet_field_ids = work.collection.transcription_fields.where(input_type: 'spreadsheet').order(:line_number).pluck(:id)
 
@@ -475,7 +487,7 @@ module ExportService
       unless page.table_cells.empty?
         has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
 
-        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+        page_url = collection_display_page_url(collection.owner, collection, work, page)
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
@@ -516,7 +528,7 @@ module ExportService
 
           grouped_hash.each do |row, cell_array|
             count = 0
-            while count < renamed_cell_headings_count
+            while count < renamed_cell_headings_count # this is 0 and should not be!
               #get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
               if has_spreadsheet
@@ -571,7 +583,6 @@ module ExportService
     metadata_cells
   end
 
-
   def index_for_cell(cell)
     if cell.transcription_field_id && cell.transcription_field.present?
       if cell.transcription_field.input_type == 'spreadsheet'
@@ -586,7 +597,6 @@ module ExportService
 
     index
   end
-
 
   def cell_data(array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
     if transcription_field_flag
@@ -768,7 +778,7 @@ module ExportService
 
     notes = collection.notes.order(created_at: :desc)
     rows = notes.map {|n|
-      page_url = url_for({:controller=>'display',:action => 'display_page', :page_id => n.page.id, :only_path => false})
+      page_url =collection_display_page_url(collection.owner, collection, n.page.work, n.page)
       page_contributors = n.page.deeds
         .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
         .uniq.join('|')
@@ -788,10 +798,10 @@ module ExportService
       ]
     }
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       rows.each do |row|
-          records << row
+        records << row
       end
     end
   end

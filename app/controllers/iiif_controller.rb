@@ -164,7 +164,7 @@ class IiifController < ApplicationController
   end
 
   def manifest
-    work_id =  params[:id]
+    work_id = params[:id]
     work = Work.where(id: work_id).includes(:ia_work, :sc_manifest, :work_statistic).first
 
     seed = {

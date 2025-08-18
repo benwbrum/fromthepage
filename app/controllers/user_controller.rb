@@ -1,8 +1,6 @@
 class UserController < ApplicationController
   before_action :remove_col_id, :only => [:profile, :update_profile]
   before_action :authorized?, :only => [:update_profile, :update]
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
 
   PAGES_PER_SCREEN = 50
 
@@ -140,9 +138,39 @@ class UserController < ApplicationController
 
     return unless @user.owner?
 
+    if params[:ai_text]
+      @tag = Tag.where(ai_text: params[:ai_text]).first
+      if @tag
+        tag_collections = @tag.collections.where(owner_user_id: @user.id)
+        tag_document_sets = tag_collections.map(&:document_sets).flatten
+        @tag_collections = tag_collections+tag_document_sets
+      end
+    end
     collections = @user.all_owner_collections.carousel
     sets = @user.document_sets.carousel
     @carousel_collections = (collections + sets).sample(8)
+  end
+
+  def search
+    @user = User.friendly.find(params[:user_slug])
+    @search_string = search_params[:term]
+
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        org: params[:user_slug]
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
+
+    @breadcrumb_scope = { owner: true }
+    @org_filter = @es_query.org_filter
+
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
   end
 
   private
@@ -155,6 +183,10 @@ class UserController < ApplicationController
     unless current_user && (@user == current_user || current_user.admin?)
       redirect_to dashboard_path
     end
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :user_id)
   end
 
 

@@ -1,6 +1,6 @@
 require 'csv'
 
-class Work::Metadata::ImportCsv
+class Work::Metadata::ImportCsv < ApplicationInteractor
   SPECIAL_HEADERS = [
     # legacy headers
     'work_id',
@@ -15,28 +15,46 @@ class Work::Metadata::ImportCsv
     '*Uploaded Filename*'
   ].freeze
 
-  include Interactor
+  ADDITIONAL_METADATA_HEADERS = {
+    author: 'Author',
+    recipient: 'Recipient',
+    location_of_composition: 'Place of Creation',
+    genre: 'Genre',
+    source_location: 'Source Location',
+    source_collection_name: 'Source Collection Name',
+    source_box_folder: 'Source Box/Folder',
+    in_scope: 'In Scope',
+    editorial_notes: 'Editorial notes',
+    physical_description: 'Physical description',
+    document_history: 'Document history',
+    permission_description: 'Permission description'
+  }.freeze
+
+  attr_accessor :content, :rowset_errors
 
   def initialize(metadata_file:, collection:)
     @metadata_file = metadata_file
     @collection = collection
+    @content = 0
     @rowset_errors = []
 
     super
   end
 
-  def call
+  def perform
     csv = read_csv(@metadata_file)
-    success = 0
 
     csv.each do |row|
       metadata = []
       csv.headers.each do |header|
         # Skip protected headers
-        next if header&.include?('*')
+        next if header.include?('*')
 
         # Skip special headers
         next if SPECIAL_HEADERS.include?(header)
+
+        # Skip additional_metadata_headers
+        next if ADDITIONAL_METADATA_HEADERS.values.include?(header)
 
         metadata << { label: header, value: row[header] } if row[header].present?
       end
@@ -70,16 +88,13 @@ class Work::Metadata::ImportCsv
         work.identifier = work_identifier if work_identifier.present?
         work.description = work_description if work_description.present?
         work.original_metadata = metadata.to_json if metadata.present?
+        work.assign_attributes(additional_metadata_attributes(row))
+
         work.save!
 
-        success += 1
+        @content += 1
       end
     end
-
-    context.content = success
-    context.rowset_errors = @rowset_errors
-
-    context
   end
 
   private
@@ -110,5 +125,20 @@ class Work::Metadata::ImportCsv
     else
       { error: I18n.t('metadata.import_csv.errors.not_existing_work', work_filename: work_filename) }
     end
+  end
+
+  def additional_metadata_attributes(row)
+    attributes_hash = {}
+    ADDITIONAL_METADATA_HEADERS.each do |key, header|
+      value = row[header]
+
+      next if value.nil? || value == ''
+      # When value is '', we leave unchanged
+      # Otherwise, we expect ' ' for setting the field to nil
+
+      attributes_hash[key] = value == ' ' ? nil : value
+    end
+
+    attributes_hash
   end
 end

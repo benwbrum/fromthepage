@@ -64,18 +64,13 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  # allows me to get at the user from other models
-  cattr_accessor :current_user
-
   attr_accessor :login_id
 
   mount_uploader :picture, PictureUploader
 
-  has_many(:owner_works,
-           :foreign_key => "owner_user_id",
-           :class_name => 'Work')
-  has_many :collections, :foreign_key => "owner_user_id"
-  has_many :document_sets, :foreign_key => "owner_user_id"
+  has_many :uploaded_works, foreign_key: 'owner_user_id', class_name: 'Work'
+  has_many :collections, foreign_key: 'owner_user_id'
+  has_many :document_sets, foreign_key: 'owner_user_id'
   has_many :ia_works
   has_many :visits
   has_many :bulk_exports
@@ -104,22 +99,24 @@ class User < ApplicationRecord
                           :join_table => 'collection_reviewers',
                           :class_name => 'Collection')
 
-
   has_many :page_versions, -> { order(created_on: :desc) }
   has_many :article_versions, -> { order(created_on: :desc) }
   has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   has_many :metadata_description_versions, :dependent => :destroy
 
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
-  scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }
+
+  scope :with_owner_works, -> { joins(:uploaded_works).distinct }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true)}
@@ -134,12 +131,34 @@ class User < ApplicationRecord
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
   validate :display_name_presence
+  validate :email_domain_blacklist, if: -> { validation_context == :registration }
 
   before_validation :update_display_name
 
   after_save :create_notifications
   after_create :set_default_footer_block
   # before_destroy :clean_up_orphans
+
+  update_index('users', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:)
+    UsersIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              'about',
+              'real_name',
+              'website'
+            ]
+          }
+        },
+        filter: []
+      }
+    )
+  end
 
   def email_does_not_match_denylist
     raw = PageBlock.where(view: "email_denylist").first
@@ -232,7 +251,7 @@ class User < ApplicationRecord
   end
 
   def all_owner_collections
-    Collection.where(owner_user_id: self.id).or(Collection.where(id: self.owned_collections.ids)).distinct.order(:title)
+    Collection.where(owner_user_id: id).or(Collection.where(id: owned_collections.select(:id))).distinct.order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -245,12 +264,20 @@ class User < ApplicationRecord
   end
 
   def owner_works
-    works = Work.where(collection_id: self.all_owner_collections.ids)
-    return works
+    Work.where(collection_id: all_owner_collections.select(:id))
   end
 
-  def can_transcribe?(work)
-    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  def can_transcribe?(work, collection=nil)
+    return true if like_owner?(collection)
+    collection ||= work.access_object(self) || work.collection
+
+    if collection.is_a? DocumentSet
+      return true if collection.visibility_public? || like_owner?(work)
+
+      collection.collaborators.find_by(id: id).present? || collection.collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
+    else
+      !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
+    end
   end
 
   def can_review?(obj)
@@ -325,7 +352,7 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+    document_sets.where(visibility: [:public, :read_only])
   end
 
 
@@ -345,13 +372,12 @@ class User < ApplicationRecord
 
     if user
       collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
-      owned_collections = self.owned_collections
 
-      collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
+      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
       parent_collaborator_sets = []
       collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
 
-      (filtered_public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
+      (filtered_public_collections+collaborator_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
       (filtered_public_collections+public_sets)
     end
@@ -400,6 +426,10 @@ class User < ApplicationRecord
     end
   end
 
+  def last_deed_at
+    deeds.maximum(:created_at)
+  end
+
   def self.search(search)
     wildcard = "%#{search}%"
     where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
@@ -439,7 +469,6 @@ class User < ApplicationRecord
     self.save
   end
 
-
   # Generate a unique API key
   def self.generate_api_key
     loop do
@@ -461,4 +490,27 @@ class User < ApplicationRecord
     self.account_type == 'Staff'
   end
 
+  private
+
+  def email_domain_blacklist
+    return if email.blank?
+
+    domain = email.split('@').last&.downcase
+    tld = domain.split('.').last
+
+    return unless Settings.spammy_emails.tlds.include?(tld)
+
+    errors.add(:email, :spammy)
+  end
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: UsersIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
 end

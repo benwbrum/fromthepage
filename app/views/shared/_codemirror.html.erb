@@ -4,6 +4,7 @@
 <%=javascript_include_tag "codemirror/addon/display/display/panel"%>
 <%=javascript_include_tag "codemirror/addon/hint/show-hint"%>
 <%=javascript_include_tag "codemirror/addon/hint/xml-hint"%>
+<%=javascript_include_tag "codemirror/addon/lint/lint"%>
 <%=javascript_include_tag "codemirror-buttons/buttons"%>
 
 <% if @page && !@page.ai_plaintext.blank? %>
@@ -16,7 +17,7 @@
       // append ai_plaintext to the end of the current text
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
       cm.markClean();
-    }; 
+    };
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
       appendAiPlaintext(myCodeMirror);
       // now disable the button
@@ -74,7 +75,7 @@
   ];
 
   var fromthepage_tags = {
-    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "head", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "span", "a", "i"],
+    "!top": ["abbr", "add", "b", "catchword", "cb", "date", "del", "expan", "figure", "footnote", "gap", "head", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "span", "a", "i"],
     abbr: { attrs: { expan: null}},
     add: { children: ["u", "s", "hi"] },
     cb: { attrs: { "n": null } },
@@ -87,6 +88,7 @@
     ins: { children: ["u", "s", "hi"]},
     lb: { attrs: { "break": "no"}},
     milestone: { attrs: { "unit": ["column"], "n": null}},
+    pb: { attrs: { "n": null }},
     reg: {attrs: { orig: null }},
     row: { children: ["cell"] },
     stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
@@ -123,7 +125,9 @@
     document.getElementById("<%= textarea %>"),
     {
       lineNumbers: <%= show_line_numbers %>,
-      mode: "xml",
+      mode: "text/html",
+      lint: true,
+      gutters: ["CodeMirror-lint-markers"],
       extraKeys: {
         "'<'": completeAfter,
         "'/'": completeIfAfterLt,
@@ -140,7 +144,11 @@
       rtlMoveVisually: true,
       direction: "<%= text_direction %>",
     });
-  
+
+  CodeMirror.registerHelper("lint", "html", function(content) {
+    return lintHTML(content);
+  });
+
   // give codeMirror with class of respective text direction
   myCodeMirror.getWrapperElement().classList.add("<%= text_direction %>");
 
@@ -165,7 +173,7 @@
   function generateTable(rows, cols) {
     let table = '| ' + Array(cols).fill('').join(' | ') + ' |\n';
     table += '| ' + Array(cols).fill('---').join(' | ') + ' |\n';
-    for (let i = 0; i < rows - 1; i++) {
+    for (let i = 0; i < rows; i++) {
       table += '| ' + Array(cols).fill('').join(' | ') + ' |\n';
     }
     return table;
@@ -195,6 +203,11 @@
       sendActiveEditing()
   });
 
+  // trigger any lint error when the page loaded
+  setTimeout(function(){
+    myCodeMirror.performLint();
+  }, 500);
+
   var canonicalSubjectTitles = <%= raw(canonical_subjects_for_autocomplete.to_json) %>;
   var subjectAutoListStartAt = null;
   var isAutoCompleteTriggered = false;
@@ -223,6 +236,11 @@
       var cursor = editor.getCursor();
       var start = cursor.ch - 2; // the start of the hint range
       var currentText = editor.getRange({line: cursor.line, ch: subjectAutoListStartAt}, cursor); // get the current text for hint
+
+      var MIN_SEARCH_LENGTH = 3;
+      if (currentText.length < MIN_SEARCH_LENGTH) {
+        return;
+      }
 
       suggestions = canonicalSubjectTitles.filter(item => item.toLowerCase().includes(currentText.toLowerCase()));
 

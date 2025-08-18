@@ -1,31 +1,18 @@
-class Work::Metadata::Refresh
-  include Interactor
+class Work::Metadata::Refresh < ApplicationInteractor
+  attr_reader :logs
 
   def initialize(work_ids: nil, batches: 100)
     @all_works      = Work.where(id: work_ids)
     @batches        = batches
-    @errors         = []
+    @logs           = []
 
     super
   end
 
-  def call
-    @all_works.in_batches(of: 100).each do |works|
+  def perform
+    @all_works.in_batches(of: @batches).each do |works|
       process_batches(works)
     end
-
-    finalize
-  rescue StandardError => e
-    # :nocov:
-    @errors << "Error: #{e}"
-    context.errors = @errors
-    context.fail!
-    # :nocov:
-  end
-
-  def finalize
-    context.errors = @errors
-    context
   end
 
   private
@@ -35,19 +22,25 @@ class Work::Metadata::Refresh
       next unless work.sc_manifest
 
       begin
+        log("Refreshing metadata for work: #{work.id}")
         refresh_metadata(work)
-      rescue
-        # :nocov:
-        @errors << "Failed to refresh metadata for #{work.slug}"
-        context.fail!
-        # :nocov:
+      rescue StandardError => e
+        @success = false
+
+        log("Failed to refresh metadata for #{work.slug}")
+        log("Error: #{e.message}")
+        log("Stacktrace: #{e.backtrace.join("\n")}")
       end
     end
   end
 
   def refresh_metadata(work)
-    manifest = JSON.parse URI.open(work.sc_manifest.at_id).read
+    manifest = JSON.parse(URI.open(work.sc_manifest.at_id).read)
     work.original_metadata = manifest['metadata'].to_json
     work.save
+  end
+
+  def log(text)
+    @logs << text
   end
 end

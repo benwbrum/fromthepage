@@ -27,17 +27,15 @@ class PageVersion < ApplicationRecord
 
   after_create :check_content
 
-    def check_content
-    if content_changed?
-      Flag.check_page(self)
-    end
+  def check_content
+    Flag.check_page(self) if content_changed?
   end
 
   def content_changed?
     previous_version = self.prev
     return true unless previous_version
 
-    %i[title transcription xml_transcription source_translation xml_translation].any? do |attribute|
+    %i[title status transcription xml_transcription source_translation xml_translation].any? do |attribute|
       self[attribute] != previous_version[attribute]
     end
   end
@@ -67,16 +65,29 @@ class PageVersion < ApplicationRecord
     if self.current_version?
       #   copy the previous version's contents into the page and save without callbacks
       previous_version = self.prev
-      page.update_columns(
-        :title => previous_version.title,
-        :source_text => previous_version.transcription,
-        :xml_text => previous_version.xml_transcription,
-        :source_translation => previous_version.source_translation,
-        :xml_translation => previous_version.xml_translation
-      )
-      if previous_version.page_version == 0
-        # reset the page and work status
-        page.update_columns(:status => nil)
+      if previous_version
+        page.update_columns(
+          :title => previous_version.title,
+          :source_text => previous_version.transcription,
+          :xml_text => previous_version.xml_transcription,
+          :source_translation => previous_version.source_translation,
+          :xml_translation => previous_version.xml_translation
+        )
+        if previous_version.page_version == 0
+          # reset the page and work status
+          page.update_columns(:status => 'new')
+          page.update_work_stats
+        end
+      else
+        # no previous version exists, reset the page to blank state
+        page.update_columns(
+          :title => nil,
+          :source_text => nil,
+          :xml_text => nil,
+          :source_translation => nil,
+          :xml_translation => nil,
+          :status => 'new'
+        )
         page.update_work_stats
       end
     else

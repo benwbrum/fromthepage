@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe MetadataController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
-  let(:owner) { User.find_by(login: OWNER) }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'Label', value: 'Value' }].to_json }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, original_metadata: original_metadata) }
 
   describe '#example' do
-    let(:action_path) { collection_metadata_example_path(collection.id) }
+    let(:action_path) { collection_metadata_example_path(collection_id: collection.id) }
     let(:subject) { get action_path }
 
     it 'renders status' do
@@ -38,7 +38,7 @@ describe MetadataController do
   describe '#create' do
     let(:action_path) { collection_metadata_create_path }
     let(:file) do
-      result = Work::Metadata::ExportCsv.call(collection: collection, works: Work.where(id: work.id))
+      result = Work::Metadata::ExportCsv.new(collection: collection, works: Work.where(id: work.id)).call
       temp_file = Tempfile.new(['metadata', '.csv'])
       temp_file.write(result.csv_string)
       temp_file.rewind

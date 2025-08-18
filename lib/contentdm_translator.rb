@@ -10,7 +10,7 @@ module ContentdmTranslator
       # get the fts field for this collection
       fts_error, fts_field = fts_field_for_collection(work.collection)
       if fts_error
-        puts "Error retrieving Full-Text Search field: #{error}\n"
+        puts "Error retrieving Full-Text Search field: #{fts_error}\n"
       end
     end
     # for each page
@@ -136,6 +136,26 @@ module ContentdmTranslator
     return error, fts
   end
 
+  def self.export_work_to_cdm_with_retry(work, username, password, license)
+    max_delay = 21_600
+    delay = 300
+
+    begin
+      ContentdmTranslator.export_work_to_cdm(work, username, password, license)
+    rescue Net::ReadTimeout => e
+      delay_to_use = [delay, max_delay].min
+      print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
+
+      sleep(delay_to_use)
+
+      delay = (delay * 1.5).round
+      if delay > max_delay
+        print "Net::ReadTimeout: Max retry delay reached, giving up. (#{e.message})"
+      else
+        retry
+      end
+    end
+  end
 
   def self.export_work_to_cdm(work, username, password, license)
     error, fieldname = fts_field_for_collection(work.collection)
@@ -144,11 +164,11 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
+    soap_client = Savon.client(:log=>true, filters: [:password], :wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
-      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title}.  CONTENTdm response:"
+      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title} at #{Time.current.strftime('%Y-%m-%d %I:%M %p')}.  CONTENTdm response:"
       metadata_wrapper = {
         'metadataList' => {
           'metadata' => [
@@ -225,12 +245,12 @@ module ContentdmTranslator
     raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..." if server.nil?
 
     matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
-    
+
     if matches
       collection = matches[1]
       record = matches[2]
     end
-    
+
     # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
       new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"

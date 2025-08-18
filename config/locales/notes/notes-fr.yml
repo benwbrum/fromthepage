@@ -13,6 +13,11 @@ fr:
       page_notes: Remarques sur les pages
       pages_and_notes_counts: "%{posts_count} notes sur %{topics_count} pages"
       total_notes: "%{count} remarques"
+    form:
+      microphone: Microphone
+      note_body: Corps de la note
+      save_note: Enregistrer la note
+      write_a_new_note: Écrivez une nouvelle note ou posez une question...
     index:
       collection_title: Collecte : %{title}
       notes: Remarques
@@ -21,23 +26,12 @@ fr:
       confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
       delete: Effacer
       edit: Éditer
-      html:
-        cancel: Annuler
-        confirm_delete_message: Voulez-vous vraiment supprimer cette note ?
-        delete: Effacer
-        edit: Éditer
-        microphone: Microphone
-        update: Mise à jour
       microphone: Microphone
       update: Mise à jour
     notes:
-      microphone: Microphone
       nobody_has_written_a_note: Personne n'a encore écrit de note pour cette page
-      note_body: Corps de la note
       please_sign_in_to_write: "%{link} pour écrire une note pour cette page"
-      save_note: Enregistrer la note
       sign_in: s'identifier
-      write_a_new_note: Écrivez une nouvelle note ou posez une question...
     table:
       collection: Collection
       note: Note

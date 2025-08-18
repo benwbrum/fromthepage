@@ -1,15 +1,15 @@
 class Work::Metadata::ImportCsvJob < ApplicationJob
   queue_as :default
 
-  def perform(metadata_file_path, collection_id, user_id)
+  def perform(metadata_file_path:, collection_id:, user_id:)
     metadata_file = File.open(metadata_file_path)
     collection = Collection.find(collection_id)
     user = User.find(user_id)
 
-    result = Work::Metadata::ImportCsv.call(
+    result = Work::Metadata::ImportCsv.new(
       metadata_file: metadata_file,
       collection: collection
-    )
+    ).call
 
     if SMTP_ENABLED
       begin

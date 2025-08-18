@@ -4,17 +4,49 @@ es:
     create:
       document_created: El documento ha sido creado
     edit:
-      current_url_for_this_work: La dirección URL actual de esta colección es %{current_url}. Si deseas editar la sección del conjunto de documentos en el URL, por favor utiliza letras minúsculas y guiones entre cualquiera de las palabras.
+      current_url: 'La URL actual de este conjunto de documentos:'
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
-      document_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
-      save_document_set: Guardar Conjunto de Documentos
+      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
+      document_set_image: Imagen del Conjunto de Documentos
+      document_set_image_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
+      here: aquí
+      no_image: No Hay Imagen
+      save_changes: Guardar cambios
       title: Título
+      upload_image: Subir Imagen
       url: URL
+      url_description: Utilice letras minúsculas y guiones entre cualquier palabra.
+    edit_privacy:
+      document_set_collaborators: Colaboradores permitidos
+      document_set_privacy_private: 'Privacidad del Conjunto de Documentos: <i>Privado</i>'
+      document_set_privacy_public: 'Privacidad del Conjunto de Documentos: <i>Público</i>'
+      document_set_privacy_read_only: 'Privacidad del Conjunto de Documentos: <i>Solo lectura</i>'
+      document_set_restricted_description: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
+      document_set_unrestricted_description: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
+      edit_collaborators: Editar colaboradores
+      private: Privado
+      public: Público
+      read_only: Sólo lectura
     edit_set_collaborators:
       remove_collaborator: Quitar colaborador
       set_collaborators: Colaboradores del conjunto de documentos
       set_collaborators_description: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
+    edit_tabs:
+      general: General
+      manage_works: Administrar Obras
+      privacy_access: Privacidad y acceso
+    edit_works:
+      add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
+      all_works: Todas las obras
+      document_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      included: Incluido
+      n_pages:
+        one: '1 página:'
+        other: "%{count} páginas:"
+      not_included: No incluido
+      status: Estado
+      work: Obras
     index:
       actions: Acciones
       aggregating_works_thematic_exhibits: Agregando obras a exposiciones temáticas
@@ -48,47 +80,14 @@ es:
       description: Descripción
       description_message: La descripción se mostrará en la pantalla Resumen del proyecto y en la pantalla Acerca del proyecto. Se mostrará una parte abreviada de la descripción en la pantalla de inicio de la organización y en la pantalla Buscar un proyecto.
       document_set_is_marked_public: Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.
+      private: Privado
       public: Público
+      read_only: Sólo lectura
       title: Título
-    set_works:
-      collaboration: Colaboración
-      most_recent_activity: Actividad más reciente
-      n_pages:
-        one: '1 página:'
-        other: "%{count} páginas:"
-      progress: Progreso
-      remove_from_set: Eliminar del conjunto
-      remove_title_from_document_set: Eliminar %{title} del Conjunto de Documentos
-      remove_works: Eliminar obras
-      restricted: Restringido
-      unrestricted: No restringido
-      work_title: Título de la obra
+      visibility: Visibilidad
     settings:
       add: Añadir
-      add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
-      document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos las obras y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
-      document_set_collaborators: Colaboradores permitidos
-      document_set_image: Imagen del Conjunto de Documentos
-      document_set_privacy: Privacidad del Conjunto de Documentos
-      document_set_restricted: El conjunto de documentos solo puede ser visto por los colaboradores enumerados a continuación. Es posible hacer que la colección sea legible públicamente.
-      document_set_unrestricted: El conjunto de documentos puede ser visto por cualquier persona en el Internet. Cualquier obra colocada dentro de un conjunto de documentos público será legible, incluso si la colección principal es privada. Puedes hacer que el conjunto de documentos sea privado para restringir su visibilidad a los colaboradores.
       done: Hecho
-      edit_collaborators: Editar colaboradores
-      here: aquí
-      make_document_set_private: Hacer Privado el Conjunto de Documentos
-      make_document_set_public: Hacer Público el Conjunto de Documentos
-      manage_works: Administrar Obras
-      n_pages:
-        one: '1 página:'
-        other: "%{count} páginas: pl"
-      no_image: No Hay Imagen
-      picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
-      save: Guardar
-      search: Búsqueda
-      search_for_works: Búsqueda de obras...
-      status: Estado
-      upload_image: Subir Imagen
-      work: Obras
     transfer:
       source_and_target_can_not_be_the_same: El origen y el destino no pueden ser el mismo.
     transfer_form:
@@ -105,4 +104,5 @@ es:
       transfer_works: Transferencia de obras
       transfer_works_description: Transferir obras entre conjuntos de documentos. (La copia colocará la mimsa obra dentro de dos conjuntos de documentos al mismo tiempo).
     update:
+      document_failed_update: No se pudo actualizar el conjunto de documentos
       document_updated: El documento ha sido actualizado

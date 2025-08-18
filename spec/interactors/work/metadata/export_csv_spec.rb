@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Work::Metadata::ExportCsv do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(login: OWNER) }
@@ -28,7 +28,7 @@ describe Work::Metadata::ExportCsv do
   let!(:work_2) { create(:work, collection: collection, owner_user_id: owner.id) }
 
   let(:result) do
-    described_class.call(collection: collection.reload, works: collection.works)
+    described_class.new(collection: collection.reload, works: collection.works).call
   end
 
   let(:expected_headers) do

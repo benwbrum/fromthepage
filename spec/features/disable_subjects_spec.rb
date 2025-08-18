@@ -99,7 +99,7 @@ describe "disable subject linking", :order => :defined do
     expect(collection.subjects_disabled).to be false
   end
 
- it "checks links work when enabled" do
+ it "checks links work when enabled", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
