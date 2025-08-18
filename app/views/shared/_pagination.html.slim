@@ -8,4 +8,8 @@
     .toolbar_group =will_paginate model, params: { controller: controller, action: action }
   -if entries_info
     .toolbar_group
-      .pagination_info =page_entries_info model
+      .pagination_info
+        -if controller == 'collection' && action == 'show' && respond_to?(:collection_works_pagination_info)
+          =collection_works_pagination_info model
+        -else
+          =page_entries_info model
