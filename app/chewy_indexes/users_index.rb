@@ -14,9 +14,7 @@ class UsersIndex < Chewy::Index
   field :login, type: 'keyword' do
     field :text, type: 'text'
   end
-  field :real_name, type: 'keyword' do
-    field :text, type: 'text'
-  end
+  field :real_name, type: 'text', analyzer: 'general'
   field :website, type: 'keyword' do
     field :text, type: 'text'
   end

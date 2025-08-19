@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CollectionController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }
@@ -728,6 +728,34 @@ describe CollectionController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:search)
       end
+    end
+  end
+
+  describe '#one_off_list' do
+    let(:action_path) { collection_one_off_list_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:one_off_list)
+    end
+  end
+
+  describe '#recent_contributor_list' do
+    let(:action_path) { collection_recent_contributor_list_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:recent_contributor_list)
     end
   end
 end

@@ -338,14 +338,14 @@ class Page < ApplicationRecord
 
   def calculate_last_editor
     unless COMPLETED_STATUSES.include? self.status
-      self.last_editor = User.current_user
+      self.last_editor = Current.user
     end
   end
 
   def calculate_approval_delta
     if source_text_changed?
       if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
         if most_recent_not_approver_version
           old_transcription = most_recent_not_approver_version.transcription || ''
         else
@@ -383,7 +383,7 @@ class Page < ApplicationRecord
 
     # Add other attributes as needed
 
-    version.user = User.current_user || User.find_by(id: self.work.owner_user_id)
+    version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
@@ -707,7 +707,9 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      encoded_path = URI::DEFAULT_PARSER.escape(self.canonical_facsimile_url, /[^A-Za-z0-9\-._~\/]/)
+      # Convert file path to web URL path using the helper
+      web_path = file_to_url(self.canonical_facsimile_url)
+      encoded_path = URI::DEFAULT_PARSER.escape(web_path, /[^A-Za-z0-9\-._~\/]/)
       uri = URI.parse(encoded_path)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
@@ -722,6 +724,10 @@ class Page < ApplicationRecord
       end
       uri.to_s
     end
+  end
+
+  def is_public?
+    work.nil? || work.is_public?
   end
 
   private
