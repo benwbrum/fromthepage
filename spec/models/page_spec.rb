@@ -198,6 +198,10 @@ describe Page do
       let(:page) { build_stubbed(:page, :with_image) }
       
       before do
+        # Ensure no sc_canvas or ia_leaf to test the local image scenario
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        
         # Simulate a base_image with deployment path like the issue shows
         page.base_image = '/home/fromthepage/deployment/releases/20250514221152/public/images/uploaded/32197883/page_0001.jpg'
         
@@ -211,7 +215,7 @@ describe Page do
         # Should not contain the deployment path
         expect(result).not_to include('/home/fromthepage/deployment/releases/')
         
-        # Should start with https://fromthepage.com
+        # Should start with https://fromthepage.com for local images
         expect(result).to start_with('https://fromthepage.com')
         
         # Should contain the correct image path relative to public
@@ -222,16 +226,20 @@ describe Page do
       end
     end
 
-    context 'when page has sc_canvas' do
-      let(:sc_canvas) { double('sc_canvas', sc_resource_id: 'https://example.com/canvas/123') }
+    context 'when page has sc_canvas (IIIF image)' do
+      let(:sc_canvas) { double('sc_canvas', sc_resource_id: 'https://iiif.durham.ac.uk/iiif/trifle/32150/t1/mg/73/t1mg732d945c/c449d8a03531bef78218f0b3f3db4f01.jp2/full/full/0/default.jpg') }
       let(:page) { build_stubbed(:page) }
 
       before do
         allow(page).to receive(:sc_canvas).and_return(sc_canvas)
       end
 
-      it 'returns sc_canvas resource id' do
-        expect(page.image_url_for_download).to eq('https://example.com/canvas/123')
+      it 'returns sc_canvas resource id as-is (external IIIF URLs should not be converted)' do
+        result = page.image_url_for_download
+        expect(result).to eq('https://iiif.durham.ac.uk/iiif/trifle/32150/t1/mg/73/t1mg732d945c/c449d8a03531bef78218f0b3f3db4f01.jp2/full/full/0/default.jpg')
+        
+        # IIIF images should not be converted to fromthepage.com URLs
+        expect(result).not_to start_with('https://fromthepage.com')
       end
     end
 
