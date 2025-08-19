@@ -419,11 +419,20 @@ module ExportHelper
     tei
   end
 
-  # Clean date for use in 'when' attribute - removes invalid characters like '?'
-  # but preserves the original for display
+  # Clean date for use in 'when' attribute using EDTF library
+  # Attempts to parse as EDTF and returns valid date string or nil
   def clean_date_for_when_attribute(date_string)
     return nil if date_string.blank?
-    # Remove trailing question marks and whitespace
+    
+    # Try to parse with EDTF library
+    begin
+      edtf_date = Date.edtf(date_string)
+      return edtf_date.edtf if edtf_date
+    rescue
+      # Fall back to basic cleaning if EDTF parsing fails
+    end
+    
+    # Fallback: Remove trailing question marks and whitespace
     cleaned = date_string.strip.gsub(/\?+$/, '')
     # Return nil if the result is not a valid date format
     return nil if cleaned.blank? || cleaned !~ /^\d{4}(-\d{2})?(-\d{2})?$/
@@ -645,7 +654,10 @@ module ExportHelper
     p_element.elements.each('//entryHeading') do |entryHeading|
       gap = REXML::Element.new("head")
 
-      # Don't add depth attribute as it's not allowed in TEI head elements
+      # Use subtype attribute instead of depth for TEI compliance
+      if entryHeading.attributes["depth"]
+        gap.add_attribute("subtype", "level-#{entryHeading.attributes["depth"]}")
+      end
       gap.add_text(entryHeading.attributes["title"])
       entryHeading.replace_with(gap)
     end
@@ -728,7 +740,10 @@ module ExportHelper
 
           # Create the new section
           section = REXML::Element.new('section')
-          # Don't use depth attribute from header as it's not valid TEI
+          # Use type attribute instead of depth for TEI compliance
+          if header.attributes['depth']
+            section.add_attribute('type', "level-#{header.attributes['depth']}")
+          end
 
           # Handle where to put the new section
           if sections.empty?
@@ -750,7 +765,12 @@ module ExportHelper
 
           # Update the accumulator
           sections.push(section)
-          current_depth += 1  # Just increment depth rather than using invalid attribute
+          # Use actual depth value if available, otherwise increment
+          if header.attributes['depth']
+            current_depth = header.attributes['depth'].to_i
+          else
+            current_depth += 1
+          end
         end
 
         # Adds the current element to the new section at the right location
