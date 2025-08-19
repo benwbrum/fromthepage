@@ -83,6 +83,7 @@ describe "document sets", :order => :defined do
     expect(DocumentSet.last.is_public).to be true
     # make the set private
     page.choose('document_set_visibility_private')
+    expect(page).to have_content('Document set has been saved')
     expect(DocumentSet.last.is_public).to be false
     expect(page).to have_content('Document set collaborators')
     # manually assign works until have the jqery test set
@@ -472,7 +473,7 @@ describe "document sets", :order => :defined do
   it "disables document sets", js: true do
     # Ensure document sets are enabled initially
     @collection.update!(supports_document_sets: true)
-    
+
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
@@ -483,9 +484,9 @@ describe "document sets", :order => :defined do
   end
 
   it "enables document sets", js: true do
-    # Ensure document sets are disabled initially  
+    # Ensure document sets are disabled initially
     @collection.update!(supports_document_sets: false)
-    
+
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
