@@ -533,11 +533,7 @@ class Work < ApplicationRecord
       version = MetadataDescriptionVersion.new
       version.work = self
       version.metadata_description = self.metadata_description
-      unless User.current_user.nil?
-        version.user = User.current_user
-      else
-        version.user = User.find_by(id: self.work.owner_user_id)
-      end
+      version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
       previous_version =
         MetadataDescriptionVersion
@@ -607,6 +603,12 @@ class Work < ApplicationRecord
   def user_can_transcribe?(user)
     !self.restrict_scribes || user&.like_owner?(self) ||
       self.scribes.include?(user)
+  end
+
+  def is_public?
+    return true if collection.nil? || !collection.restricted?
+
+    document_sets.unrestricted.any?
   end
 
   private

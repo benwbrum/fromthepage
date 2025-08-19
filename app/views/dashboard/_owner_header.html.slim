@@ -35,7 +35,6 @@
         span= t('.actions')
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        -unless current_user.all_owner_collections.empty?
         =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
@@ -47,16 +46,16 @@
         |&nbsp;
         =t('.since', date: l(current_user.start_date.to_date))
     -unless (current_user.paid_date == nil)
-      span
+      span 
         |&nbsp;&middot;&nbsp;
         =t('.current_subscription_expires', date: l(current_user.paid_date.to_date))
-    span
+    span 
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)
-    -if (current_user.account_type == 'Trial') && UPGRADE_FORM_LINK
-      span
-        |&nbsp;&nbsp;
-        =link_to t('.upgrade'), UPGRADE_FORM_LINK, class: 'button outline', target: '_blank'
+    -if (current_user.account_type == 'Trial') 
+      span 
+        |&nbsp;&middot;&nbsp; 
+        =t('.to_upgrade_contact')
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") =t('.collection', count: @collections.length)

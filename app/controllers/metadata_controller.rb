@@ -17,7 +17,11 @@ class MetadataController < ApplicationController
   def create
     metadata_file_path = params[:metadata]['file'].tempfile.path
     collection_id = params[:metadata][:collection_id]
-    Work::Metadata::ImportCsvJob.perform_later(metadata_file_path, collection_id, current_user.id)
+    Work::Metadata::ImportCsvJob.perform_later(
+      metadata_file_path: metadata_file_path,
+      collection_id: collection_id,
+      user_id: current_user.id
+    )
 
     collection = Collection.find(collection_id)
 
@@ -28,7 +32,7 @@ class MetadataController < ApplicationController
   def refresh
     collection = Collection.find(params[:id])
 
-    Metadata::RefreshJob.perform_later(id: collection.id, type: 'collection', user: current_user)
+    Metadata::RefreshJob.perform_later(id: collection.id, type: 'collection', user_id: current_user.id)
 
     # TODO: Use turbo_stream redirect when #4174 is merged
     flash[:notice] = t('.is_processing')

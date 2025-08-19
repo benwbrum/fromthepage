@@ -21,6 +21,29 @@ module ResourcesHelper
     }
   end
 
+  def flash_aria_attributes(type)
+    case type.to_sym
+    when :notice, :info
+      {
+        role: 'status',
+        'aria-live': 'polite',
+        'aria-atomic': 'true'
+      }
+    when :alert, :error
+      {
+        role: 'alert',
+        'aria-live': 'assertive',
+        'aria-atomic': 'true'
+      }
+    else
+      {
+        role: 'status',
+        'aria-live': 'polite',
+        'aria-atomic': 'true'
+      }
+    end
+  end
+
   def categories_options(categories)
     options = []
     categories.walk_tree do |c, level|

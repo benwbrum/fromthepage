@@ -1,0 +1,4 @@
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
