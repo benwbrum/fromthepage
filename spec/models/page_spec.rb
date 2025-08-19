@@ -192,4 +192,61 @@ describe Page do
       end
     end
   end
+
+  describe '#image_url_for_download' do
+    context 'when page has base_image with deployment path' do
+      let(:page) { build_stubbed(:page, :with_image) }
+      
+      before do
+        # Simulate a base_image with deployment path like the issue shows
+        page.base_image = '/home/fromthepage/deployment/releases/20250514221152/public/images/uploaded/32197883/page_0001.jpg'
+        
+        # Mock the default_url_options that would be set in production
+        allow(Rails.application.config.action_mailer).to receive(:default_url_options).and_return({ host: 'fromthepage.com' })
+      end
+
+      it 'converts deployment path to web URL correctly' do
+        result = page.image_url_for_download
+        
+        # Should not contain the deployment path
+        expect(result).not_to include('/home/fromthepage/deployment/releases/')
+        
+        # Should start with https://fromthepage.com
+        expect(result).to start_with('https://fromthepage.com')
+        
+        # Should contain the correct image path relative to public
+        expect(result).to include('/images/uploaded/32197883/page_0001.jpg')
+        
+        # Should be the complete expected URL
+        expect(result).to eq('https://fromthepage.com/images/uploaded/32197883/page_0001.jpg')
+      end
+    end
+
+    context 'when page has sc_canvas' do
+      let(:sc_canvas) { double('sc_canvas', sc_resource_id: 'https://example.com/canvas/123') }
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+      end
+
+      it 'returns sc_canvas resource id' do
+        expect(page.image_url_for_download).to eq('https://example.com/canvas/123')
+      end
+    end
+
+    context 'when page has ia_leaf' do
+      let(:ia_leaf) { double('ia_leaf', facsimile_url: 'https://archive.org/image/123') }
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(ia_leaf)
+      end
+
+      it 'returns ia_leaf facsimile url' do
+        expect(page.image_url_for_download).to eq('https://archive.org/image/123')
+      end
+    end
+  end
 end
