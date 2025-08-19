@@ -13,24 +13,24 @@ RSpec.describe TranscribeHelper, type: :helper do
 
     it 'should match translation based on option' do
       expected = "3\n2\n1\n<b>[[Translation]]</b>\n1\n2\n3"
-      expect(helper.excerpt_subject(page, 'Translation', {:text_type => 'translation'}))
+      expect(helper.excerpt_subject(page, 'Translation', { text_type: 'translation' }))
         .to eq(expected)
     end
 
     it 'should match the title and one line on either side' do
       expected = "1\n<b>[[Transcription]]</b>\n1"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => 1}))
+      expect(helper.excerpt_subject(page, 'Transcription', { radius: 1 }))
         .to eq(expected)
     end
 
     it 'should match only the title with radius 0' do
       expected = "<b>[[Transcription]]</b>"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => 0}))
+      expect(helper.excerpt_subject(page, 'Transcription', { radius: 0 }))
         .to eq(expected)
     end
     it 'should return only title with invalid parameter' do
       expected = "<b>[[Transcription]]</b>"
-      expect(helper.excerpt_subject(page, 'Transcription', {:radius => -1}))
+      expect(helper.excerpt_subject(page, 'Transcription', { radius: -1 }))
         .to eq(expected)
     end
     it "should return only title if there's no match" do

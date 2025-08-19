@@ -22,7 +22,7 @@ class DeedType
   COLLECTION_ACTIVE = 'coll_act'
   COLLECTION_INACTIVE = 'coll_inact'
   COLLECTION_JOINED = 'coll_join'
-  PAGE_REVIEWED = "pg_revd"
+  PAGE_REVIEWED = 'pg_revd'
   TRANSLATION_REVIEWED = 'xlat_revd'
   DESCRIBED_METADATA = 'md_desc'
   EDITED_METADATA = 'md_edit'

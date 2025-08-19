@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "collection settings js tasks", :order => :defined do
-
+describe "collection settings js tasks", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
@@ -9,9 +8,9 @@ describe "collection settings js tasks", :order => :defined do
     @collection = @collections.second || @collections.first
     @work = @collection.works.second || @collection.works.first
     @rest_user = User.find_by(login: REST_USER)
-    #add a user to be emailed
+    # add a user to be emailed
     @notify_user = User.find_by(login: ADMIN)
-    #set up the restricted user not to be emailed
+    # set up the restricted user not to be emailed
     notification = Notification.find_by(user_id: @rest_user.id)
     notification.add_as_collaborator = false
     notification.add_as_owner = false
@@ -22,18 +21,18 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "sets collection to private", js: true do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
 
     expect(@collection.is_public).to eq true
     expect(page).to have_content("Collection privacy: Public")
-    #check to see if Collaborators & API access are disabled
+    # check to see if Collaborators & API access are disabled
     expect(page.find('#users-list-collaborators')).to match_css('.disabled')
     expect(page.find_link('Edit Collaborators')).to match_css('[disabled]')
     expect(page).to have_field('collection[api_access]', disabled: true)
-    #check to see if Blocked Users is enabled
+    # check to see if Blocked Users is enabled
     expect(page.find('#users-list-blocked')).not_to match_css('.disabled')
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
@@ -41,17 +40,17 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Collection privacy: Private")
     @collection.reload
     expect(@collection.is_public).to eq false
-    #check to see if Collaborators & API access are enabled
+    # check to see if Collaborators & API access are enabled
     expect(page.find('#users-list-collaborators')).not_to match_css('.disabled')
     expect(page.find_link('Edit Collaborators')).not_to match_css('[disabled]')
     expect(page).to have_field('collection[api_access]', disabled: false)
-    #check to see if Blocked Users is disabled
+    # check to see if Blocked Users is disabled
     expect(page.find('#users-list-blocked')).to match_css('.disabled')
     expect(page.find_link('Block Users')).to match_css('[disabled]')
   end
 
   it "checks that a restricted user can't view the collection" do
-    login_as(@rest_user, :scope => :user)
+    login_as(@rest_user, scope: :user)
     visit dashboard_path
     expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
@@ -137,7 +136,7 @@ describe "collection settings js tasks", :order => :defined do
     @rest_user.reload
     @rest_user.account_type = nil
     @rest_user.save
-    login_as(@rest_user, :scope => :user)
+    login_as(@rest_user, scope: :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
     expect(page).to have_content(@collection.title)
@@ -171,7 +170,7 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "sets collection to public", js: true do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.find('.side-tabs').click_link("Privacy & Access")
@@ -179,7 +178,6 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   context "inactive collection" do
-
     # Current Deed Counts for comparison
     active_count    = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
     inactive_count  = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
@@ -190,7 +188,7 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "toggles collection inactive", js: true do
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit collection_path(@collection.owner, @collection)
       page.find('.tabs').click_link("Settings")
       page.find('.side-tabs').click_link("Danger Zone")
@@ -212,7 +210,7 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "toggles collection active", js: true do
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit collection_path(@collection.owner, @collection)
       page.find('.tabs').click_link("Settings")
       page.find('.side-tabs').click_link("Danger Zone")
@@ -230,7 +228,7 @@ describe "collection settings js tasks", :order => :defined do
   it "views completed works" do
     Current.user = @owner
 
-    #first need to set a work as complete
+    # first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
       p.status = "transcribed"
@@ -238,15 +236,15 @@ describe "collection settings js tasks", :order => :defined do
       p.save!
     end
     hidden_work.work_statistic.recalculate
-    #check to see if the work is visible
+    # check to see if the work is visible
     login_as(@owner, scope: :user)
     visit collection_path(@collection.owner, @collection)
-    #completed work shouldn't be visible at first
+    # completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
-    #click button to show all works
+    # click button to show all works
     page.click_link("Show All")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
-    #click button to hide completed works
+    # click button to hide completed works
     page.click_link("Incomplete Works")
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
@@ -266,7 +264,7 @@ describe "collection settings js tasks", :order => :defined do
     #  page.find('#works-table').find('thead').find('th', text: 'Progress').click
     #  expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
     #  expect(page.find('#works-table').find('tbody:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
-    #sort by recent activity
+    # sort by recent activity
     page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
     page.find('#works-table').find('thead').find('th', text: 'Most recent activity').click
     expect(page.find('#works-table').find('tbody:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
@@ -274,19 +272,18 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "views pages that need transcription" do
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
     page.click_link(I18n.t('collection.show.pages_need_correction_or_transcription'))
     expect(page).to have_selector('h3', text: "Pages That Need Transcription")
-    #make sure a page exists; don't specify which one
+    # make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
     click_link("Return to collection")
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
   end
-
 end
 
 describe "collection spec (isolated)" do
@@ -336,20 +333,20 @@ describe "collection spec (isolated)" do
       @owner = User.find_by(login: OWNER)
     end
     before :each do
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       DatabaseCleaner.start
     end
     after :each do
       DatabaseCleaner.clean
     end
 
-    let(:work_ocr){ create(:work, ocr_correction: true) }
-    let(:work_no_ocr){ create(:work, ocr_correction: false) }
-    let(:work_ocr_true){ create(:work, ocr_correction: true) }
-    let(:work_ocr_false){ create(:work, ocr_correction: false) }
-    let(:collection_ocr_mixed){ create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
-    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [work_ocr_true]) }
-    let(:collection_ocr_false){ create(:collection, owner: @owner, works: [work_ocr_false]) }
+    let(:work_ocr) { create(:work, ocr_correction: true) }
+    let(:work_no_ocr) { create(:work, ocr_correction: false) }
+    let(:work_ocr_true) { create(:work, ocr_correction: true) }
+    let(:work_ocr_false) { create(:work, ocr_correction: false) }
+    let(:collection_ocr_mixed) { create(:collection, owner: @owner, works: [ work_ocr, work_no_ocr ]) }
+    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [ work_ocr_true ]) }
+    let(:collection_ocr_false) { create(:collection, owner: @owner, works: [ work_ocr_false ]) }
 
     it 'shows OCR section' do
       visit edit_collection_path(@owner, collection_ocr_mixed)

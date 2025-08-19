@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "collection metadata", :order => :defined do
+describe "collection metadata", order: :defined do
   include ActiveJob::TestHelper
 
   before :each do
@@ -17,12 +17,12 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("ladi")
   end
 
-  it "uploads works from a zip file", :js => true do
+  it "uploads works from a zip file", js: true do
     login_as @owner
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select("ladi", :from => 'document_upload_collection_id')
+    select("ladi", from: 'document_upload_collection_id')
 
     attach_file(
       'document_upload_file',
@@ -37,7 +37,7 @@ describe "collection metadata", :order => :defined do
     sleep(10)
   end
 
-  it "uploads metadata for the imported works", :js => true do
+  it "uploads metadata for the imported works", js: true do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)

@@ -10,7 +10,7 @@ class CategoryController < ApplicationController
       flash[:notice] = t('.category_updated')
       ajax_redirect_to collection_subjects_path(@category.collection.owner, @category.collection)
     else
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
@@ -35,16 +35,16 @@ class CategoryController < ApplicationController
       flash[:notice] = t('.category_created')
       ajax_redirect_to collection_subjects_path(@new_category.collection.owner, @new_category.collection)
     else
-      render :action => 'add_new'
+      render action: 'add_new'
     end
   end
 
   def delete
     anchor = @category.parent_id.present? ? "category-#{@category.parent_id}" : nil
-    @category.destroy #_but_attach_children_to_parent
+    @category.destroy # _but_attach_children_to_parent
 
     flash[:notice] = t('.category_deleted')
-    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => anchor})
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, { anchor: anchor })
   end
 
   def enable_bio_fields
@@ -77,14 +77,14 @@ class CategoryController < ApplicationController
     attribute = "#{field}_enabled".to_sym
     message = ".fields_#{enable ? 'enabled' : 'disabled'}_for"
     @category.update_attribute(attribute, enable)
-    @category.descendants.each {|d| d.update_attribute(attribute, enable)}
+    @category.descendants.each { |d| d.update_attribute(attribute, enable) }
     notice = t(".#{message}", title: @category.title)
     count = @category.descendants.count
     if count > 0
-      notice << " and #{count} child " << "category".pluralize(count)
+      notice << " and #{count} child " << 'category'.pluralize(count)
     end
     flash[:notice] = notice
-    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, { anchor: "category-#{@category.id }" })
   end
 
   def category_params

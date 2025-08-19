@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AbstractXmlHelper, type: :helper do
-  fixtures [:collections]
+  fixtures [ :collections ]
 
   let(:user_signed_in?) { true }
 
@@ -34,7 +34,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     it "adds newlines before and after div elements" do
       xml_with_div = "<?xml version='1.0' encoding='UTF-8'?><page>Here is some texta div<div>another div</div>more text</page>"
       result = xml_to_html(xml_with_div, true, true)
-      
+
       # Should have newlines before and after div
       expect(result).to include("texta div\n<div>another div</div>\nmore text")
     end
@@ -42,7 +42,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     it "handles multiple div elements correctly" do
       xml_with_divs = "<?xml version='1.0' encoding='UTF-8'?><page><p>Paragraph</p><div>First div</div><div>Second div</div><p>Another paragraph</p></page>"
       result = xml_to_html(xml_with_divs, true, true)
-      
+
       # Should have newlines around each div
       expect(result).to include("\n<div>First div</div>\n")
       expect(result).to include("\n<div>Second div</div>\n")

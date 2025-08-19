@@ -2,7 +2,7 @@ class DisplayController < ApplicationController
   include ApplicationHelper
   public :render_to_string
 
-  protect_from_forgery :except => [:set_note_body]
+  protect_from_forgery except: [ :set_note_body ]
 
   PAGES_PER_SCREEN = 5
 
@@ -17,7 +17,7 @@ class DisplayController < ApplicationController
     if params.has_key?(:needs_review)
       @review = params[:needs_review]
     end
-    
+
     # Handle page range parameter
     if params.has_key?(:page_range)
       @page_range = parse_page_range(params[:page_range])
@@ -26,15 +26,15 @@ class DisplayController < ApplicationController
         @page_range_filter = true
       end
     end
-    
+
     @total = @work.pages.count
     if @article
       # restrict to pages that include that subject
-      redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
+      redirect_to action: 'read_all_works', article_id: @article.id, page: 1 and return
     else
       # Apply page range filter if specified
       base_pages = @page_range_filter ? @work.pages.where(position: @start_page..@end_page) : @work.pages
-      
+
       if @review == 'review'
         @pages = base_pages.review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
@@ -81,9 +81,9 @@ class DisplayController < ApplicationController
       @pages.distinct!
       @heading = t('.pages_that_mention', article: @article.title)
     else
-      @pages = Page.paginate :all, :page => params[:page],
-                                        :order => 'work_id, position',
-                                        :per_page => 5
+      @pages = Page.paginate :all, page: params[:page],
+                                        order: 'work_id, position',
+                                        per_page: 5
       @heading = t('.pages')
     end
     session[:col_id] = @collection.slug
@@ -94,35 +94,35 @@ class DisplayController < ApplicationController
     if @page.status != 'new'
       @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
       @meta_description = "Transcript of #{@page.title || "page #{@page.position}"} from #{@work.title} in the #{@collection.title} collection."
-      @meta_keywords = [@work.title, @collection.title, @page.title, "transcript", "transcription", "historical document"].compact.join(", ")
-      
+      @meta_keywords = [ @work.title, @collection.title, @page.title, 'transcript', 'transcription', 'historical document' ].compact.join(', ')
+
       # Generate structured data for better content understanding
       @structured_data = {
-        "@context" => "https://schema.org",
-        "@type" => "DigitalDocument",
-        "name" => @page.title || "Page #{@page.position}",
-        "description" => @meta_description,
-        "text" => @page.verbatim_transcription_plaintext,
-        "inLanguage" => @collection.text_language || "en",
-        "isPartOf" => {
-          "@type" => "Book",
-          "name" => @work.title,
-          "author" => @work.author,
-          "dateCreated" => @work.document_date,
-          "isPartOf" => {
-            "@type" => "Collection",
-            "name" => @collection.title,
-            "description" => to_snippet(@collection.intro_block)
+        '@context' => 'https://schema.org',
+        '@type' => 'DigitalDocument',
+        'name' => @page.title || "Page #{@page.position}",
+        'description' => @meta_description,
+        'text' => @page.verbatim_transcription_plaintext,
+        'inLanguage' => @collection.text_language || 'en',
+        'isPartOf' => {
+          '@type' => 'Book',
+          'name' => @work.title,
+          'author' => @work.author,
+          'dateCreated' => @work.document_date,
+          'isPartOf' => {
+            '@type' => 'Collection',
+            'name' => @collection.title,
+            'description' => to_snippet(@collection.intro_block)
           }
         },
-        "url" => request.original_url,
-        "dateModified" => @page.updated_at&.iso8601,
-        "publisher" => {
-          "@type" => "Organization", 
-          "name" => @collection.owner&.display_name || "FromThePage"
+        'url' => request.original_url,
+        'dateModified' => @page.updated_at&.iso8601,
+        'publisher' => {
+          '@type' => 'Organization',
+          'name' => @collection.owner&.display_name || 'FromThePage'
         }
       }
-      
+
       # Add archival-friendly meta tags
       respond_to do |format|
         format.html do
@@ -135,13 +135,13 @@ class DisplayController < ApplicationController
 
   def paged_search
     if @article
-      render plain: "This functionality has been disabled.  Please contact support@frothepage.com if you need it."
+      render plain: 'This functionality has been disabled.  Please contact support@frothepage.com if you need it.'
       return
 
       session[:col_id] = @collection.slug
       # get the unique search terms
       terms = []
-      @search_string = ""
+      @search_string = ''
       @article.page_article_links.each do |link|
         terms << link.display_text.gsub(/\s+/, ' ')
       end
@@ -152,21 +152,21 @@ class DisplayController < ApplicationController
         if term.match(/ /)
           @search_string += "\"#{term}\" "
         else
-          @search_string += term + "* "
+          @search_string += term + '* '
         end
       end
       if params[:unlinked_only]
         conditions =
-          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
-          " AND pages.id not in "+
-          "    (SELECT page_id FROM page_article_links WHERE article_id = ?)",
+          [ 'MATCH(search_text) AGAINST(? IN BOOLEAN MODE)'+
+          ' AND pages.id not in '+
+          '    (SELECT page_id FROM page_article_links WHERE article_id = ?)',
           @search_string,
-          @article.id]
+          @article.id ]
 
       else
         conditions =
-          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
-          @search_string]
+          [ 'MATCH(search_text) AGAINST(? IN BOOLEAN MODE)',
+          @search_string ]
       end
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
@@ -180,7 +180,7 @@ class DisplayController < ApplicationController
         search_mode = nil
         search_slug = nil
 
-        if @search_attempt.search_type == "collection"
+        if @search_attempt.search_type == 'collection'
           if @search_attempt.collection.present?
             search_mode = 'collection'
             search_slug = @search_attempt.collection.slug
@@ -188,7 +188,7 @@ class DisplayController < ApplicationController
             search_mode = 'docset'
             search_slug = @search_attempt.document_set.slug
           end
-        elsif @search_attempt.search_type == "work"
+        elsif @search_attempt.search_type == 'work'
           if @search_attempt.work.present?
             search_mode = 'work'
             search_slug = @search_attempt.work.slug
@@ -216,19 +216,19 @@ class DisplayController < ApplicationController
   # Parse page range from parameter like "5-7", "pp5-7", "p5-7"
   def parse_page_range(range_param)
     return nil if range_param.blank?
-    
+
     # Remove optional "pp" or "p" prefix and extract numbers
     clean_range = range_param.gsub(/^pp?/, '')
-    
+
     # Match pattern like "5-7"
     if match = clean_range.match(/^(\d+)-(\d+)$/)
       start_page = match[1].to_i
       end_page = match[2].to_i
-      
+
       # Validate that start is less than or equal to end
       return nil if start_page > end_page || start_page < 1
-      
-      [start_page, end_page]
+
+      [ start_page, end_page ]
     else
       nil
     end

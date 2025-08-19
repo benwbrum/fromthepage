@@ -5,12 +5,12 @@ describe Metadata::RefreshJob do
 
   let(:owner) { create(:unique_user, :owner) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
-  let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
+  let(:original_metadata) { [ { label: 'en', value: [ 'Original Metadata' ] } ].to_json }
   let(:at_id) { 'http://example.com/manifest' }
   let(:v3_hash) do
     {
       id: at_id,
-      label: { en: ['Original Metadata'] },
+      label: { en: [ 'Original Metadata' ] },
       metadata: original_metadata
     }.to_json.to_s
   end
@@ -20,7 +20,7 @@ describe Metadata::RefreshJob do
   let(:work_no_manifest) { create(:work, collection: collection) }
 
   let(:document_set) do
-    create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work, work_no_manifest])
+    create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work, work_no_manifest ])
   end
 
   subject(:worker) { described_class.new }

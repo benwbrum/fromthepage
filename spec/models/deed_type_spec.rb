@@ -51,7 +51,7 @@ RSpec.describe DeedType, type: :model do
 
     it 'returns 0 for the value of every pair' do
       all_values = DeedType.generate_zero_counts_hash.values
-      expect(all_values.uniq).to eq([0])
+      expect(all_values.uniq).to eq([ 0 ])
     end
   end
 end

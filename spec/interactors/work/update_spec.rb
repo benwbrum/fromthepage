@@ -153,7 +153,7 @@ describe Work::Update do
 
     context 'when collection is changed' do
       let!(:collection_2) { create(:collection, owner_user_id: owner.id) }
-      let!(:article) { create(:article, collection: collection, pages: [page]) }
+      let!(:article) { create(:article, collection: collection, pages: [ page ]) }
 
       let(:work_params) do
         {
