@@ -379,6 +379,12 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
+    libv8-node (24.1.0.0)
+    libv8-node (24.1.0.0-aarch64-linux)
+    libv8-node (24.1.0.0-arm64-darwin)
+    libv8-node (24.1.0.0-x86_64-darwin)
+    libv8-node (24.1.0.0-x86_64-linux)
+    libv8-node (24.1.0.0-x86_64-linux-musl)
     lint_roller (1.1.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -402,6 +408,8 @@ GEM
     mini_magick (5.3.0)
       logger
     mini_mime (1.1.5)
+    mini_racer (0.19.0)
+      libv8-node (~> 24.1.0.0)
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_json (1.17.0)
@@ -864,6 +872,7 @@ DEPENDENCIES
   mail (~> 2.7)
   memory_profiler
   meta_request
+  mini_racer
   mysql2
   net-pop!
   newrelic_rpm

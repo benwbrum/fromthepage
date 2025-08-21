@@ -101,6 +101,7 @@ group :test do
   gem 'vcr'
   gem 'webmock', require: false
   gem 'with_model'
+  gem 'mini_racer', platforms: :ruby
 end
 
 group :development, :test do
@@ -163,5 +164,3 @@ gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
 
 gem 'chewy'
-# Elasticsearch client
-# gem 'elasticsearch', '8.15.0'
