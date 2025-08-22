@@ -3,17 +3,17 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd"
 xml:lang="EN"
-xml:id="<%=@work.identifier||@work.id%>">
+xml:id="W<%=@work.identifier||@work.id%>">
 
 <teiHeader>
   <fileDesc>
     <titleStmt>
       <title type="full">
-        <title type="main"><%= @work.title %></title>
-        <title type="desc"><%= @work.description %></title>
+        <title type="main"><%= h(@work.title) %></title>
+        <title type="desc"><%= h(@work.description) %></title>
       </title>
       <author>
-        <persName><%= @work.author %></persName>
+        <persName><%= h(@work.author) %></persName>
       </author>
     </titleStmt>
 
@@ -21,12 +21,12 @@ xml:id="<%=@work.identifier||@work.id%>">
       <edition><%= t('export.tei.edition_created') %></edition>
       <respStmt xml:id="AU<%= @work.owner.id%>">
         <resp><%= t('export.tei.initial_upload') %></resp>
-        <persName><%= @work.owner.real_name%></persName>
+        <persName><%= h(@work.owner.real_name) %></persName>
       </respStmt>
 
       <respStmt xml:id="OU<%= @collection.owner.id%>">
         <resp><%= t('export.tei.administrator', collection: @collection.title) %></resp>
-        <persName><%= @collection.owner.real_name %></persName>
+        <persName><%= h(@collection.owner.real_name) %></persName>
       </respStmt>
 
       <% @user_contributions.each do |user| %>
@@ -36,7 +36,7 @@ xml:id="<%=@work.identifier||@work.id%>">
               type="pseudonym"
             <% end %>
             >
-            <%= user.real_name.blank? ? user.display_name : user.real_name %>
+            <%= h(user.real_name.blank? ? user.display_name : user.real_name) %>
             </persName>
           <% if user[:edit_count] == 1 %>
             <resp>
@@ -57,7 +57,7 @@ xml:id="<%=@work.identifier||@work.id%>">
         <% User.find(@work.deeds.where(deed_type: DeedType::PAGE_REVIEWED).pluck(:user_id)).each do |user| %>
           <respStmt xml:id="U<%= user.id %>">
             <resp n="proof_1"><%= t('export.tei.single_proof_by') %></resp>
-            <name><%= user.real_name || user.display_name %></name>
+            <name><%= h(user.real_name || user.display_name) %></name>
           </respStmt>
         <%end%>
       <%end%>
@@ -65,7 +65,7 @@ xml:id="<%=@work.identifier||@work.id%>">
       <% if @export_user %>
         <respStmt xml:id="OU<%= @export_user.id%>">
           <resp n="proof_2"><%= t('export.tei.double_proof_by') %></resp>
-          <persName><%= @export_user.real_name %></persName>
+          <persName><%= h(@export_user.real_name) %></persName>
         </respStmt>
       <% end %>
 
@@ -74,7 +74,7 @@ xml:id="<%=@work.identifier||@work.id%>">
     <publicationStmt>
     <publisher><%= t('export.tei.dynamic_tei_export', version: fromthepage_version) %></publisher>
       <availability>
-        <p><%= @work.permission_description %></p>
+        <p><%= h(@work.permission_description) %></p>
       </availability>
       <date when="<%= Time.now.iso8601 %>"><%= Time.now.strftime("%B %e, %Y") %></date>
     </publicationStmt>
@@ -83,28 +83,28 @@ xml:id="<%=@work.identifier||@work.id%>">
       <msDesc>
         <msIdentifier>
           <% unless @work.source_location.blank? %>
-            <repository><%=@work.source_location%></repository>
+            <repository><%= h(@work.source_location) %></repository>
           <% end %>
           <% if @work.source_collection_name.blank? %>
-            <collection><%= @collection.title %></collection>
+            <collection><%= h(@collection.title) %></collection>
           <% else %>
-            <collection><%= @work.source_collection_name %></collection>
+            <collection><%= h(@work.source_collection_name) %></collection>
           <% end %>
           <% unless @work.identifier.blank? %>
-            <idno type='external id'><%=@work.identifier%></idno>
+            <idno type='external id'><%= h(@work.identifier) %></idno>
           <% end %>
           <% unless @work.source_box_folder.blank? %>
-            <idno type='box-folder'><%=@work.source_box_folder%></idno>
+            <idno type='box-folder'><%= h(@work.source_box_folder) %></idno>
           <% end %>
         </msIdentifier>
         <physDesc>
-          <p><%= @work.physical_description%></p>
+          <p><%= h(@work.physical_description) %></p>
         </physDesc>
         <history>
           <origin>
-            <placeName><%= @work.location_of_composition %></placeName>
+            <placeName><%= h(@work.location_of_composition) %></placeName>
           </origin>
-          <provenance><%= @work.document_history %></provenance>
+          <provenance><%= h(@work.document_history) %></provenance>
         </history>
       </msDesc>
 
@@ -117,20 +117,22 @@ xml:id="<%=@work.identifier||@work.id%>">
                 <idno><%= h(person.uri) %></idno>
               <% end %>
               <% unless person.birth_date.blank? %>
-                <event type="birth"  when="<%=person.birth_date%>">
-                  <ab><%=person.birth_date%></ab>
+                <% clean_birth_date = clean_date_for_when_attribute(person.birth_date) %>
+                <event type="birth"<% if clean_birth_date %> when="<%= clean_birth_date %>"<% end %>>
+                  <ab><%= h(person.birth_date) %></ab>
                 </event>
               <% end %>
               <% unless person.death_date.blank? %>
-                <event type="death"  when="<%=person.death_date%>">
-                  <ab><%=person.death_date%></ab>
+                <% clean_death_date = clean_date_for_when_attribute(person.death_date) %>
+                <event type="death"<% if clean_death_date %> when="<%= clean_death_date %>"<% end %>>
+                  <ab><%= h(person.death_date) %></ab>
                 </event>
               <% end %>
               <% unless person.race_description.blank? %>
-                <trait type="race" subtype="<%=person.race_description%>"/>
+                <trait type="race" subtype="<%= h(person.race_description) %>"/>
               <% end %>
               <% unless person.sex.blank? %>
-                <trait type="sex" subtype="<%=person.sex%>"/>
+                <trait type="sex" subtype="<%= h(person.sex) %>"/>
               <% end %>
  
               <% if person.categories %>
@@ -145,9 +147,9 @@ xml:id="<%=@work.identifier||@work.id%>">
                               category_class = "#category #branch"
                             end
                         %>
-                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> --
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"/> <%= h(parent.title) %> --
                       <% end %>
-                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"/> <%= h(category.title) %>
                     </ab>
                   <% end %>
                 </note>
@@ -191,9 +193,9 @@ xml:id="<%=@work.identifier||@work.id%>">
                               category_class = "#category #branch"
                             end
                         %>
-                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> --
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"/> <%= h(parent.title) %> --
                       <% end %>
-                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"/> <%= h(category.title) %>
                     </ab>
                   <% end %>
                 </note>
@@ -206,9 +208,7 @@ xml:id="<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless place.latitude.blank? %>
-                <note type="geography">
-                  <geo><%= place.latitude %>, <%= place.longitude %></geo>
-                </note>
+                <geo><%= place.latitude %>, <%= place.longitude %></geo>
               <% end %>
               <% unless place.bibliography.blank? %>
                 <% place.bibliography.split("\n").each do |line| %>
@@ -238,10 +238,10 @@ xml:id="<%=@work.identifier||@work.id%>">
     <% unless @work.recipient.blank? %>
       <correspDesc>
         <correspAction type="sent">
-          <persName><%= @work.author %></persName>
+          <persName><%= h(@work.author) %></persName>
         </correspAction>
         <correspAction type="received">
-          <persName><%= @work.recipient %></persName>
+          <persName><%= h(@work.recipient) %></persName>
         </correspAction>
       </correspDesc>
     <% end %>
@@ -249,10 +249,10 @@ xml:id="<%=@work.identifier||@work.id%>">
     <% unless @work.location_of_composition.blank? && @work.document_date.blank? %>
       <creation>
         <% unless @work.location_of_composition.blank? %>
-          <placeName><%= @work.location_of_composition %></placeName>
+          <placeName><%= h(@work.location_of_composition) %></placeName>
         <% end %>
         <% unless @work.document_date.blank? %>
-          <date when="<%= @work.document_date %>"><%= @work.document_date %></date>
+          <date when="<%= @work.document_date %>"><%= h(@work.document_date) %></date>
         <% end %>
       </creation>
     <% end %>
@@ -260,7 +260,7 @@ xml:id="<%=@work.identifier||@work.id%>">
     <% unless @work.genre.blank? %>
      <textClass>
       <keywords>
-       <term type="genre"><%= @work.genre %></term>
+       <term type="genre"><%= h(@work.genre) %></term>
       </keywords>
      </textClass>
     <% end %>
@@ -268,30 +268,30 @@ xml:id="<%=@work.identifier||@work.id%>">
     <%unless @work.collection.text_language.blank?%>
       <%code = @work.collection.text_language%>
       <langUsage>
-        <language ident="<%=code%>"><%=ISO_639.find_by_code(code).english_name%></language>
+        <language ident="<%=code%>"><%= h(ISO_639.find_by_code(code).english_name) %></language>
       </langUsage>
     <%end%>
   </profileDesc>
   <% unless @work.original_metadata.blank? && @work.metadata_description.blank? %>
     <xenoData>
-      <iiifMetadata>
+      <metadata>
         <% unless @work.original_metadata.blank? %>
           <% JSON[@work.original_metadata].each do |element| %>
-            <element source="imported">
-              <label><%= element["label"] %></label>
-              <value><%= element["value"] %></value>
-            </element>
+            <item source="imported">
+              <name><%= h(element["label"]) %></name>
+              <value><%= h(element["value"]) %></value>
+            </item>
           <% end %>
         <% end %>
         <% unless @work.metadata_description.blank? %>
           <% JSON[@work.metadata_description].each do |element| %>
-            <element source="user-created">
-              <label><%= element["label"] %></label>
-              <value><%= element["value"] %></value>
-            </element>
+            <item source="user-created">
+              <name><%= h(element["label"]) %></name>
+              <value><%= h(element["value"]) %></value>
+            </item>
           <% end %>
         <% end %>
-      </iiifMetadata>
+      </metadata>
     </xenoData>
   <% end %>
 
@@ -299,7 +299,7 @@ xml:id="<%=@work.identifier||@work.id%>">
     <listChange ordered="true">
       <% @work_versions.each do |page_version| %>
         <change xml:id="CHG<%= page_version.work_version %>" who="U<%= page_version.user_id %>" when="<%= page_version.created_on.iso8601 %>" target="#P<%= page_version.page_id %>">
-          Version <%= page_version.page_version %> of page "<%= page_version.page.title %>":
+          Version <%= page_version.page_version %> of page "<%= h(page_version.page.title) %>":
           <% if page_version.transcription.blank? %>
             <%= t('export.tei.empty_transcript') %>
           <% else %>
@@ -325,14 +325,14 @@ xml:id="<%=@work.identifier||@work.id%>">
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
-          <fw type="pageNum"><%= page.title %></fw>
+          <fw type="pageNum"><%= h(page.title) %></fw>
           <% unless page.status_blank? %>
             <%= raw(xml_to_export_tei(page.xml_text, @context, page.id, true))%>
           <% end %>
           <% notes = page.notes %>
           <% if notes && notes.length > 0 %>
             <% notes.each do |note| %>
-              <note type='comment' resp="#U<%= note.user_id %>"><%= note.body %></note>
+              <note type='comment' resp="#U<%= note.user_id %>"><%= h(note.body) %></note>
             <% end %>
           <% end %>
         <% if @work.pages_are_meaningful? %>
@@ -347,7 +347,7 @@ xml:id="<%=@work.identifier||@work.id%>">
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
-          <fw type="pageNum"><%= page.title %></fw>
+          <fw type="pageNum"><%= h(page.title) %></fw>
           <%= raw(xml_to_export_tei(page.xml_translation, @context, page.id, true))%>
         <% if @work.pages_are_meaningful? %>
           </div>
@@ -360,14 +360,14 @@ xml:id="<%=@work.identifier||@work.id%>">
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
       <% end%>
-        <fw type="pageNum"><%= page.title %></fw>
+        <fw type="pageNum"><%= h(page.title) %></fw>
         <% unless page.status_blank? %>
           <%= raw(xml_to_export_tei(page.xml_text, @context, page.id, true))%>
         <% end %>
         <% notes = page.notes %>
         <% if notes && notes.length > 0 %>
           <% notes.each do |note| %>
-            <note resp="#U<%= note.user_id %>"><%= note.body %></note>
+            <note resp="#U<%= note.user_id %>"><%= h(note.body) %></note>
           <% end %>
         <% end %>
       <% if @work.pages_are_meaningful? %>
