@@ -293,7 +293,7 @@ describe "owner actions", :order => :defined do
     @owner.account_type = "Individual Researcher"
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
-    expect(@owner.collections.count).to be >= 1
+    expect(@owner.all_owner_collections.count).to be >= 1
     expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
   end
 

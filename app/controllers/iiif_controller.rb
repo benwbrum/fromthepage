@@ -38,7 +38,7 @@ class IiifController < ApplicationController
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = iiif_user_collections_url(@user)
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
-    (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
+    (@user.all_owner_collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
       if collection_or_ds.is_public || collection_or_ds.api_access || (@api_user && @api_user.like_owner?(collection_or_ds))
         site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
       end

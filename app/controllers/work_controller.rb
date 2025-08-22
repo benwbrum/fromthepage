@@ -136,7 +136,7 @@ class WorkController < ApplicationController
   end
 
   def edit
-    @collections = current_user.collections
+    @collections = current_user.all_owner_collections
     # set subjects to true if there are any articles/page_article_links
     @subjects = !@work.articles.blank?
     @scribes = @work.scribes
@@ -222,7 +222,7 @@ class WorkController < ApplicationController
     else
       @scribes = @work.scribes
       @nonscribes = User.where.not(id: @scribes.select(:id))
-      @collections = current_user.collections
+      @collections = current_user.all_owner_collections
       @subjects = @work.articles.any?
 
       render :edit, status: :unprocessable_entity

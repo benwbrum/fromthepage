@@ -82,7 +82,7 @@ class DocumentSetsController < ApplicationController
     if current_user.account_type != "Staff"
       @document_set.owner = current_user
     else
-      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      extant_collection = current_user.all_owner_collections.detect { |c| c.owner.account_type != "Staff" }
       @document_set.owner = extant_collection.owner
     end
     if @document_set.save
