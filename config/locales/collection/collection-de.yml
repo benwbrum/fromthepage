@@ -426,3 +426,6 @@ de:
     link:
       incomplete_works: Unvollendete Werke
       show_all: Zeige alles
+    pagination:
+      displaying_one_incomplete_work: Zeige 1 unvollendetes Werk
+      displaying_incomplete_works: Zeige %{count} unvollendete Werke

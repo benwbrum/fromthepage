@@ -1,5 +1,34 @@
 module CollectionHelper
 
+  def showing_all_works?
+    # Returns true if we're showing all works, false if filtering to incomplete works
+    # Based on the controller logic in collection_controller.rb
+    case params[:works]
+    when 'show'
+      true  # Explicitly showing all works
+    when 'hide', 'untranscribed'
+      false # Explicitly showing incomplete/filtered works
+    else
+      # Default case - show all unless collection is configured to hide completed
+      !@collection&.hide_completed
+    end
+  end
+
+  def collection_works_pagination_info(works)
+    # Custom pagination info that shows appropriate text based on filter context
+    if showing_all_works?
+      page_entries_info(works)
+    else
+      # When showing incomplete works only, customize the message using translations
+      count = works.total_entries
+      if count == 1
+        t('collection_helper.pagination.displaying_one_incomplete_work')
+      else
+        t('collection_helper.pagination.displaying_incomplete_works', count: count)
+      end
+    end
+  end
+
   def link
     if params[:works] == 'show'
       @link_title = t('.incomplete_works')

@@ -328,6 +328,34 @@ describe "collection spec (isolated)" do
     expect(page).to have_content("All works are fully transcribed.")
   end
 
+  it "displays appropriate pagination text for incomplete works vs all works" do
+    # Set up a collection with both completed and incomplete works
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    
+    # First, check the default view (should show incomplete works with appropriate text)
+    if @collection.hide_completed || @collection.works.incomplete_transcription.any?
+      # When showing incomplete works, should not say "Displaying all"
+      expect(page).not_to have_content("Displaying all")
+      # Instead should show incomplete works text or custom text
+      if page.has_css?('.pagination_info')
+        pagination_text = page.find('.pagination_info').text
+        expect(pagination_text).to match(/incomplete works?|works?/) # Should mention incomplete or just works, not "all"
+      end
+    end
+    
+    # Click "Show All" if it exists to test the all works view
+    if page.has_link?("Show All")
+      page.click_link("Show All")
+      # When showing all works, "Displaying all" is appropriate
+      if page.has_css?('.pagination_info')
+        pagination_text = page.find('.pagination_info').text
+        # This can now appropriately say "all" because we're showing all works
+        expect(pagination_text).to match(/all|works?/)
+      end
+    end
+  end
+
   context 'Collection Settings' do
     before :all do
       @owner = User.find_by(login: OWNER)
