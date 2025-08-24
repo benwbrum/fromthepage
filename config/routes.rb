@@ -227,6 +227,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'category', as: 'category' do
+    get 'manage', to: 'category#manage'
     get 'edit', to: 'category#edit'
     get 'add_new', to: 'category#add_new'
     get 'enable_bio_fields', to: 'category#enable_bio_fields'
