@@ -77,7 +77,7 @@ fr:
       zoom_in: Agrandir
       zoom_out: Dézoomer
     page_navigation:
-      describe_work: Décrire le travail
+      describe_work: Décrire l'œuvre
       nav_info: Page %{position} sur %{size}
       next_page: Page suivante
       previous_page: Page précédente
