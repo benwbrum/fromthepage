@@ -1,8 +1,8 @@
 class Article::Lib::Rename
-  def initialize(article_id:, old_name:, new_name:, new_article_id:)
+  def initialize(article_id:, old_names:, new_name:, new_article_id:)
     @article_id     = article_id
     @new_article_id = new_article_id
-    @old_name       = old_name
+    @old_names      = old_names
     @new_name       = new_name
 
     @article        = Article.find_by(id: article_id)
@@ -14,7 +14,9 @@ class Article::Lib::Rename
     page_article_links.each do |link|
       page = link.page
 
-      page.rename_article_links(@old_name, @new_name)
+      @old_names.each do |old_name|
+        page.rename_article_links(old_name, @new_name)
+      end
       page.save!
     end
 
@@ -22,7 +24,9 @@ class Article::Lib::Rename
     target_article_links.each do |link|
       source_article = link.source_article
 
-      source_article.rename_article_links(@old_name, @new_name)
+      @old_names.each do |old_name|
+        source_article.rename_article_links(old_name, @new_name)
+      end
       source_article.save!
     end
 
