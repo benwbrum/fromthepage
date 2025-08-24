@@ -386,6 +386,7 @@ class Work < ApplicationRecord
   def update_statistic(changed_page = nil) #association callbacks pass the page being added/removed, but we don't care
     self.work_statistic = WorkStatistic.new unless self.work_statistic
     self.work_statistic.recalculate
+    # Work::UpdateStatisticJob.perform_later(work_id: self.id)
   end
 
   def set_transcription_conventions

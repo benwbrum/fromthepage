@@ -386,6 +386,8 @@ class Collection < ApplicationRecord
       w.work_statistic.recalculate_from_hash(works_stats[w.id])
     end
     calculate_complete
+
+    # Collection::UpdateWorksStatsJob.perform_later(collection_id: id)
   end
 
   def enable_ocr
