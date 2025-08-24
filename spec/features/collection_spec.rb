@@ -330,7 +330,7 @@ describe "collection spec (isolated)" do
 
   context 'Collection Settings' do
     before :all do
-      @owner = User.find_by(login: OWNER)
+      @owner = User.find_by(login: OWNER) || @factory_owner
     end
     before :each do
       login_as(@owner, :scope => :user)
@@ -388,6 +388,39 @@ describe "collection spec (isolated)" do
       expect(page).to have_content(collection_ocr_mixed.title)
       click_link('Disable OCR')
       expect(page).to have_content("OCR correction has been disabled for all works.")
+    end
+
+    it "configures text orientation settings", js: true do
+      collection = create(:collection, owner: @factory_owner)
+      login_as(@factory_owner, scope: :user)
+      visit edit_tasks_collection_path(@factory_owner, collection)
+
+      # Check that the text orientation field exists
+      expect(page).to have_select('collection[text_orientation]')
+      
+      # Test setting to vertical right-to-left
+      select 'Vertical (Top-to-Bottom, Right-to-Left)', from: 'collection[text_orientation]'
+      page.click_button('Save Changes')
+
+      collection.reload
+      expect(collection.text_orientation).to eq('vertical-rl')
+      expect(collection.writing_mode).to eq('vertical-rl')
+
+      # Test setting to vertical left-to-right  
+      select 'Vertical (Top-to-Bottom, Left-to-Right)', from: 'collection[text_orientation]'
+      page.click_button('Save Changes')
+
+      collection.reload
+      expect(collection.text_orientation).to eq('vertical-lr')
+      expect(collection.writing_mode).to eq('vertical-lr')
+
+      # Test setting back to horizontal
+      select 'Horizontal (Left-to-Right)', from: 'collection[text_orientation]'
+      page.click_button('Save Changes')
+
+      collection.reload
+      expect(collection.text_orientation).to eq('ltr')
+      expect(collection.writing_mode).to eq('horizontal-tb')
     end
   end
 

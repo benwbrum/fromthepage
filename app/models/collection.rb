@@ -32,6 +32,7 @@
 #  subjects_disabled              :boolean          default(TRUE)
 #  supports_document_sets         :boolean          default(FALSE)
 #  text_language                  :string(255)
+#  text_orientation               :string(255)
 #  title                          :string(255)
 #  transcription_conventions      :text(65535)
 #  user_download                  :boolean          default(FALSE)
@@ -334,13 +335,37 @@ class Collection < ApplicationRecord
     Section.where(work_id: self.works.ids)
   end
 
-  def default_orientation
-    if !self[:default_orientation].nil?
-      self[:default_orientation]
+  module TextOrientation
+    HORIZONTAL_LTR = 'ltr'
+    HORIZONTAL_RTL = 'rtl'
+    VERTICAL_RL = 'vertical-rl'
+    VERTICAL_LR = 'vertical-lr'
+    
+    # Legacy values for backward compatibility
+    TOP_TO_BOTTOM = 'ttb'
+    BOTTOM_TO_TOP = 'btt'
+  end
+
+  def text_orientation
+    if self.class.column_names.include?('text_orientation') && !self[:text_orientation].nil?
+      self[:text_orientation]
     elsif self[:field_based]
-      'ttb'
+      TextOrientation::TOP_TO_BOTTOM
     else
-      'ltr'
+      TextOrientation::HORIZONTAL_LTR
+    end
+  end
+  
+  def writing_mode
+    case text_orientation
+    when TextOrientation::VERTICAL_RL, TextOrientation::TOP_TO_BOTTOM
+      'vertical-rl'
+    when TextOrientation::VERTICAL_LR
+      'vertical-lr'
+    when TextOrientation::HORIZONTAL_RTL
+      'horizontal-tb'
+    else
+      'horizontal-tb'
     end
   end
 

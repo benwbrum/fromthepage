@@ -8,6 +8,22 @@ tr
                 {},
                 { class: 'w50', data: { controller: 'select2' }, disabled: !collection.text_entry? }
       p = t('collection.edit_tasks.text_language_description')
+tr
+  td(colspan="2")
+    =f.label :text_orientation
+      h3(style="display:inline-block") =t('collection.edit_tasks.text_orientation')
+
+      - text_orientation_options = [
+      -   [t('collection.edit_tasks.orientation_horizontal_ltr'), 'ltr'],
+      -   [t('collection.edit_tasks.orientation_horizontal_rtl'), 'rtl'],
+      -   [t('collection.edit_tasks.orientation_vertical_rl'), 'vertical-rl'],
+      -   [t('collection.edit_tasks.orientation_vertical_lr'), 'vertical-lr']
+      - ]
+      =f.select :text_orientation, \
+                options_for_select(text_orientation_options, selected: collection.text_orientation.presence || 'ltr'), \
+                {}, \
+                { class: 'w50', data: { controller: 'select2' }, disabled: !collection.text_entry? }
+      p = t('collection.edit_tasks.text_orientation_description')
 tr: td
 tr
   td(colspan="2")
