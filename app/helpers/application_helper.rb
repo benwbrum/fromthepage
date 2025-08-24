@@ -1,7 +1,37 @@
 module ApplicationHelper
 
   def contact_form_token
-    ("#{Time.now.year}#{Time.now.month}#{Time.now.day}".to_i * 32 / 7)
+    # Generate a token based on current timestamp with hour granularity
+    # This makes it harder to predict and limits token validity to 1 hour
+    time = Time.now
+    hour_timestamp = time.strftime("%Y%m%d%H").to_i
+    
+    # Add complexity to make reverse engineering harder
+    # Using a combination of the timestamp and some mathematical operations
+    token = (hour_timestamp * 73 + 4127) % 999999
+    
+    # Ensure token is always at least 6 digits for consistency
+    token = token.to_s.rjust(6, '0')
+    
+    token
+  end
+
+  def valid_contact_form_token?(token)
+    return false if token.blank?
+    
+    current_time = Time.now
+    
+    # Check if token is valid for current hour or previous hour
+    # This provides a 1-2 hour window for token validity
+    [0, 1].each do |hours_back|
+      check_time = current_time - (hours_back * 3600)
+      hour_timestamp = check_time.strftime("%Y%m%d%H").to_i
+      valid_token = ((hour_timestamp * 73 + 4127) % 999999).to_s.rjust(6, '0')
+      
+      return true if token == valid_token
+    end
+    
+    false
   end
 
 
