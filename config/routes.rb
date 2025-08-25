@@ -7,8 +7,7 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
-  root to: redirect('/landing')
+  root to: 'static#landing_page'
   get '/landing', to: 'static#landing_page'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
@@ -521,6 +520,7 @@ Fromthepage::Application.routes.draw do
 
       #work related routes
       #have to use match because it must be both get and post
+      match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
