@@ -30,7 +30,7 @@ describe "needs review", :order => :defined do
     logout(@owner)
   end
 
-  it 'marks pages blank' do
+  it 'marks pages blank', js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(@page1.status_new?).to be_truthy
     expect(@page2.status_new?).to be_truthy
@@ -39,15 +39,16 @@ describe "needs review", :order => :defined do
     page.check('page_mark_blank')
     find('#save_button_top').click
     page.find('a.page-nav_prev').click
-    expect(page).to have_content("This page is marked blank")
+    expect(page).to have_content('This page is marked blank')
     expect(Page.find_by(id: @page1.id).status_blank?).to be_truthy
     expect(Page.find_by(id: @page1.id).translation_status_blank?).to be_truthy
     page.find('.page-nav_next').click
-    page.find('.tabs').click_link("Overview")
+    page.find('.tabs').click_link('Overview')
     expect(page).to have_content(@page2.title)
-    expect(page).to have_content("This page is not transcribed")
+    expect(page).to have_content('This page is not transcribed')
     page.find('a', text: 'mark the page blank').click
-    expect(page).to have_content("This page is blank")
+    expect(page).to have_content('Saved')
+    expect(page).to have_content('This page is blank')
     expect(Page.find_by(id: @page2.id).status_blank?).to be_truthy
     expect(Page.find_by(id: @page2.id).translation_status_blank?).to be_truthy
   end
