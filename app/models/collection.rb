@@ -130,6 +130,12 @@ class Collection < ApplicationRecord
 
   alias_attribute :created_at, :created_on
 
+  enum :review_type, {
+    optional: 'optional',
+    required: 'required',
+    restricted: 'restricted'
+  }, prefix: :review_type
+
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
 
@@ -207,12 +213,6 @@ class Collection < ApplicationRecord
     !subjects_disabled
   end
 
-  module ReviewType
-    OPTIONAL = 'optional'
-    REQUIRED = 'required'
-    RESTRICTED = 'restricted'
-  end
-
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select { |_k, v| v == 1 }.map { |k, _v| k }
@@ -234,7 +234,7 @@ class Collection < ApplicationRecord
   end
 
   def review_workflow
-    review_type != ReviewType::OPTIONAL
+    !review_type_optional?
   end
 
   def enable_messageboards

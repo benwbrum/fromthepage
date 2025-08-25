@@ -54,48 +54,6 @@ class TranscribeController  < ApplicationController
     respond_to(&:turbo_stream)
   end
 
-  def needs_review
-    if params[:type] == 'translation'
-      if @page.work.collection.review_workflow == true && @page.translation_status_new?
-        @page.translation_status = :needs_review
-        record_deed(DeedType::TRANSLATION_REVIEW)
-      elsif params[:page]['needs_review'] == '1'
-        unless @page.translation_status_needs_review?
-          @page.translation_status = :needs_review
-          record_deed(DeedType::TRANSLATION_REVIEW)
-        end
-      else
-        if @page.translation_status_needs_review?
-          @page.translation_status = :new
-          record_deed(DeedType::TRANSLATION_REVIEWED)
-        end
-        return
-      end
-    elsif params['save_to_needs_review'] && @page.work.collection.review_workflow
-      unless @page.status_needs_review?
-        # don't log a deed if the page was already in needs review
-        @page.status = :needs_review
-        record_deed(DeedType::NEEDS_REVIEW)
-      end
-    else
-      if params[:page]['needs_review'] == '1'
-        unless @page.status_needs_review?
-          @page.status = :needs_review
-          record_deed(DeedType::NEEDS_REVIEW)
-        end
-        #if @page.translation_status == 'blank'
-        #  @page.translation_status = nil
-        #end
-      else
-        if @page.status_needs_review?
-          @page.status = :new
-          record_deed(DeedType::PAGE_REVIEWED)
-          return
-        end
-      end
-    end
-  end
-
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     old_article_ids = @page.articles.pluck(:id)
@@ -126,8 +84,12 @@ class TranscribeController  < ApplicationController
       end
     end
 
-    # check to see if the page needs to be marked as needing review
-    needs_review
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      save_to_needs_review: params[:save_to_needs_review].present?
+    ).perform
 
     save_to_incomplete = params[:save_to_incomplete] || params[:done_to_incomplete]
     save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
@@ -343,8 +305,12 @@ class TranscribeController  < ApplicationController
       end
     end
 
-    # check to see if the page needs review
-    needs_review
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      type: :translation
+    ).perform
 
     if params['save']
       message = log_translation_attempt
@@ -647,6 +613,10 @@ class TranscribeController  < ApplicationController
 
   def mark_page_blank_params
     params.require(:page).permit(:mark_blank)
+  end
+
+  def needs_review_params
+    params.require(:page).permit(:needs_review)
   end
 
   # i18n-tasks-use t('transcribe.mark_page_blank.saved_notice')
