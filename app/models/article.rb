@@ -88,7 +88,8 @@ class Article < ApplicationRecord
 
     search_fields = [
       'title^2',
-      'title.no_underscores^1.3'
+      'title.no_underscores^1.3',
+      'content_english'
     ]
 
     ArticlesIndex.query(
@@ -96,10 +97,7 @@ class Article < ApplicationRecord
         must: {
           simple_query_string: {
             query: query,
-            fields: [
-              'title^2',
-              'title.no_underscores^1.3'
-            ]
+            fields: search_fields
           }
         },
         filter: [

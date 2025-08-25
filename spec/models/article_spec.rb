@@ -76,10 +76,10 @@ describe Article do
     let!(:article_4) do
       create(
         :article,
-        title: identifier,
         collection: other_public_collection,
         pages: [page_4],
-        created_by_id: other_user.id
+        created_by_id: other_user.id,
+        source_text: identifier
       )
     end
 
