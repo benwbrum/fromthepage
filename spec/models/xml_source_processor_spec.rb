@@ -2,14 +2,14 @@ require 'spec_helper'
 
 SOURCE_TEXT = "With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]"
 EXPECTED_XML = <<EOF.chomp
-<?xml version='1.0' encoding='UTF-8'?>    
+<?xml version='1.0' encoding='UTF-8'?>#{'    '}
       <page>
         <p>With an <link link_id='1' target_id='1' target_title='Old Subject'>old subject</link> and a short <link link_id='2' target_id='1' target_title='Old Subject'>Old Subject</link>. With a <link link_id='3' target_id='2' target_title='New Text Link'>new links</link> and a <link link_id='4' target_id='3' target_title='New Short Text Link'>New Short Text Link</link></p>
       </page>
 EOF
 
 EXPECTED_XML_DISABLED = <<EOF.chomp
-<?xml version='1.0' encoding='UTF-8'?>    
+<?xml version='1.0' encoding='UTF-8'?>#{'    '}
       <page>
         <p>With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]</p>
       </page>
@@ -17,7 +17,7 @@ EOF
 
 SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u000C charac\u0014ters and a tab\t"
 EXPECTED_XML_ILLEGAL_CHARS = <<EOF.chomp
-<?xml version='1.0' encoding='UTF-8'?>    
+<?xml version='1.0' encoding='UTF-8'?>#{'    '}
       <page>
         <p> With a lo ad of illegal   charac ters and a tab\t</p>
       </page>
@@ -25,16 +25,15 @@ EOF
 
 RSpec.describe XmlSourceProcessor, type: :model do
   describe '#wiki_to_xml' do
-  
   before :each do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  let(:collection){ create(:collection ) }
+  let(:collection) { create(:collection) }
   let(:work)      { create(:work, collection: collection) }
-  let(:page)      { create(:page, work: work, source_text: SOURCE_TEXT)}
-  let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
-    
+  let(:page)      { create(:page, work: work, source_text: SOURCE_TEXT) }
+  let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection) }
+
     context 'subject linking not disabled (default)' do
       it 'builds the xml document' do
         expect(work.collection).to eq(collection)
@@ -56,9 +55,9 @@ RSpec.describe XmlSourceProcessor, type: :model do
     end
   end
   describe '#valid_xml_from_source' do
-    let(:collection){ build_stubbed(:collection ) }
+    let(:collection) { build_stubbed(:collection) }
     let(:work)      { build_stubbed(:work, collection: collection) }
-    let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT_ILLEGAL_CHARS)}
+    let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT_ILLEGAL_CHARS) }
 
     it 'builds the xml document' do
       expect(work.collection).to eq(collection)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from thredded (originally 20160329231848)
 
 require 'thredded/base_migration'
@@ -34,7 +35,7 @@ class CreateThredded < Thredded::BaseMigration
               name: :index_thredded_categories_on_messageboard_id_and_slug,
               unique: true,
               length: { slug: max_key_length }
-      t.index [:messageboard_id], name: :index_thredded_categories_on_messageboard_id
+      t.index [ :messageboard_id ], name: :index_thredded_categories_on_messageboard_id
     end
     DbTextSearch::CaseInsensitive.add_index connection, :thredded_categories, :name,
                                             name: :thredded_categories_name_ci,
@@ -51,8 +52,8 @@ class CreateThredded < Thredded::BaseMigration
       t.references :messageboard_group, index: false
       t.timestamps null: false
       t.boolean :locked, null: false, default: false
-      t.index [:messageboard_group_id], name: :index_thredded_messageboards_on_messageboard_group_id
-      t.index [:slug],
+      t.index [ :messageboard_group_id ], name: :index_thredded_messageboards_on_messageboard_group_id
+      t.index [ :slug ],
               name: :index_thredded_messageboards_on_slug,
               unique: true,
               length: { slug: max_key_length }
@@ -69,10 +70,10 @@ class CreateThredded < Thredded::BaseMigration
       t.index %i[moderation_state updated_at],
               order: { updated_at: :asc },
               name:  :index_thredded_posts_for_display
-      t.index [:messageboard_id], name: :index_thredded_posts_on_messageboard_id
-      t.index [:postable_id], name: :index_thredded_posts_on_postable_id
+      t.index [ :messageboard_id ], name: :index_thredded_posts_on_messageboard_id
+      t.index [ :postable_id ], name: :index_thredded_posts_on_postable_id
       t.index %i[postable_id created_at], name: :index_thredded_posts_on_postable_id_and_created_at
-      t.index [:user_id], name: :index_thredded_posts_on_user_id
+      t.index [ :user_id ], name: :index_thredded_posts_on_user_id
     end
     DbTextSearch::FullText.add_index connection, :thredded_posts, :content, name: :thredded_posts_content_fts
 
@@ -93,9 +94,9 @@ class CreateThredded < Thredded::BaseMigration
       t.string :hash_id, limit: 20, null: false
       t.datetime :last_post_at
       t.timestamps null: false
-      t.index [:last_post_at], name: :index_thredded_private_topics_on_last_post_at
-      t.index [:hash_id], name: :index_thredded_private_topics_on_hash_id
-      t.index [:slug],
+      t.index [ :last_post_at ], name: :index_thredded_private_topics_on_last_post_at
+      t.index [ :hash_id ], name: :index_thredded_private_topics_on_hash_id
+      t.index [ :slug ],
               name: :index_thredded_private_topics_on_slug,
               unique: true,
               length: { slug: max_key_length }
@@ -105,15 +106,15 @@ class CreateThredded < Thredded::BaseMigration
       t.references :private_topic, index: false
       t.references :user, type: user_id_type, index: false
       t.timestamps null: false
-      t.index [:private_topic_id], name: :index_thredded_private_users_on_private_topic_id
-      t.index [:user_id], name: :index_thredded_private_users_on_user_id
+      t.index [ :private_topic_id ], name: :index_thredded_private_users_on_private_topic_id
+      t.index [ :user_id ], name: :index_thredded_private_users_on_user_id
     end
 
     create_table :thredded_topic_categories do |t|
       t.references :topic, null: false, index: false
       t.references :category, null: false, index: false
-      t.index [:category_id], name: :index_thredded_topic_categories_on_category_id
-      t.index [:topic_id], name: :index_thredded_topic_categories_on_topic_id
+      t.index [ :category_id ], name: :index_thredded_topic_categories_on_category_id
+      t.index [ :topic_id ], name: :index_thredded_topic_categories_on_topic_id
     end
 
     create_table :thredded_topics do |t|
@@ -132,14 +133,14 @@ class CreateThredded < Thredded::BaseMigration
       t.index %i[moderation_state sticky updated_at],
               order: { sticky: :desc, updated_at: :desc },
               name:  :index_thredded_topics_for_display
-      t.index [:last_post_at], name: :index_thredded_topics_on_last_post_at
-      t.index [:hash_id], name: :index_thredded_topics_on_hash_id
-      t.index [:slug],
+      t.index [ :last_post_at ], name: :index_thredded_topics_on_last_post_at
+      t.index [ :hash_id ], name: :index_thredded_topics_on_hash_id
+      t.index [ :slug ],
               name: :index_thredded_topics_on_slug,
               unique: true,
               length: { slug: max_key_length }
-      t.index [:messageboard_id], name: :index_thredded_topics_on_messageboard_id
-      t.index [:user_id], name: :index_thredded_topics_on_user_id
+      t.index [ :messageboard_id ], name: :index_thredded_topics_on_messageboard_id
+      t.index [ :user_id ], name: :index_thredded_topics_on_user_id
     end
     DbTextSearch::FullText.add_index connection, :thredded_topics, :title, name: :thredded_topics_title_fts
 
@@ -179,7 +180,7 @@ class CreateThredded < Thredded::BaseMigration
       t.boolean :follow_topics_on_mention, default: true, null: false
       t.boolean :auto_follow_topics, default: false, null: false
       t.timestamps null: false
-      t.index [:user_id], name: :index_thredded_user_preferences_on_user_id, unique: true
+      t.index [ :user_id ], name: :index_thredded_user_preferences_on_user_id, unique: true
     end
 
     create_table :thredded_user_messageboard_preferences do |t|

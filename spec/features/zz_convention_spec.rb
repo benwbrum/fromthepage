@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "convention related tasks", :order => :defined do
+describe "convention related tasks", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -20,13 +20,13 @@ describe "convention related tasks", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "checks for collection level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    #if the page isn't already transcribed, must go to Transcribe tab
+    # if the page isn't already transcribed, must go to Transcribe tab
     if page.has_content?("Facsimile")
       page.find('.tabs').click_link(@tab)
     end
@@ -73,7 +73,7 @@ describe "convention related tasks", :order => :defined do
     expect(page).to have_content @work_convention
   end
 
-  it "reverts to collection level transcription conventions", :js => true do
+  it "reverts to collection level transcription conventions", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     convention_work = Work.find_by(id: @work.id)
@@ -90,6 +90,4 @@ describe "convention related tasks", :order => :defined do
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
   end
-
 end
-

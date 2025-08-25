@@ -20,18 +20,18 @@ module AddWorkHelper
     if @document_upload.save
       if SMTP_ENABLED
         begin
-          flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
+          flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [ :dashboard, :new_upload ])
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+          flash[:info] = t('reload_this_page', scope: [ :dashboard, :new_upload ])
         end
       else
-        flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+        flash[:info] = t('reload_this_page', scope: [ :dashboard, :new_upload ])
       end
       @document_upload.submit_process
       upload_host = Rails.application.config.upload_host
       if upload_host.present?
-        host = request.host.gsub(/^#{upload_host}\./,'')
+        host = request.host.gsub(/^#{upload_host}\./, '')
       else
         host = request.host
       end
@@ -55,9 +55,9 @@ module AddWorkHelper
     @collections = current_user.all_owner_collections
 
     if @work.save
-      flash[:notice] = t('work_created', scope: [:dashboard, :create_work])
+      flash[:notice] = t('work_created', scope: [ :dashboard, :create_work ])
       record_deed
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
+      ajax_redirect_to(work_pages_tab_path(work_id: @work.id, anchor: 'create-page'))
     else
       render action: 'empty_work'
     end
@@ -80,5 +80,4 @@ module AddWorkHelper
   def work_params
     params.require(:work).permit(:title, :description, :collection_id)
   end
-
 end

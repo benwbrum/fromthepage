@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   DEFAULT_PER_PAGE = 200
 
-  protect_from_forgery with: :exception, except: [:switch_locale, :saml]
+  protect_from_forgery with: :exception, except: [ :switch_locale, :saml ]
 
   before_action do
     if current_user && current_user.admin
@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :load_objects_from_params
-  before_action :store_current_location, :unless => :devise_controller?
+  before_action :store_current_location, unless: :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   layout :set_layout
 
   def switch_locale(&action)
-    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
+    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? '-' }
 
     locale = nil
 
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
     # append region to locale
     related_locales = http_accept_language.user_preferred_languages.select do |loc|
       loc.to_s.include?(locale.to_s) &&                              # is related to the chosen locale (is the locale, or is a regional version of it)
-      I18n.available_locales.map{|e| e.to_s}.include?(loc.to_s) # is an available locale
+      I18n.available_locales.map { |e| e.to_s }.include?(loc.to_s) # is an available locale
     end
 
     unless related_locales.empty?
@@ -85,27 +85,26 @@ class ApplicationController < ActionController::Base
   def guest_transcription
     return head(:forbidden) unless GUEST_TRANSCRIPTION_ENABLED
 
-    if check_recaptcha(model: @page, :attribute => :errors)
+    if check_recaptcha(model: @page, attribute: :errors)
       User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      redirect_to controller: 'transcribe', action: 'display_page', page_id: @page.id
     else
       # TODO: Get some kind of flash notification on failure
       flash[:error] = t('layouts.application.recaptcha_validation_failed')
       flash.keep
-      redirect_to :controller => 'transcribe', :action => 'guest', :page_id => @page.id
+      redirect_to controller: 'transcribe', action: 'guest', page_id: @page.id
     end
-
   end
 
   def create_guest_user
-    user = User.new { |user| user.guest = true}
+    user = User.new { |user| user.guest = true }
     user.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com"
-    user.save(:validate => false)
+    user.save(validate: false)
     user
   end
 
   def remove_col_id
-    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    # if there's a col_id set, needs to be removed to prevent breadcrumb issues
     if session[:col_id]
       session[:col_id] = nil
     end
@@ -208,19 +207,19 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-    return @collection
+    @collection
   end
 
   def bad_record_id(e)
     logger.error("Bad record ID exception for params=#{params.inspect}")
     logger.error(e.backtrace[2])
     if @collection
-      redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
+      redirect_to controller: 'collection', action: 'show', collection_id: @collection.id
     else
-      redirect_to "/404"
+      redirect_to '/404'
     end
 
-    return
+    nil
   end
 
   def load_html_blocks
@@ -244,18 +243,18 @@ class ApplicationController < ActionController::Base
     return unless @collection
     if self.class.module_parent.name == 'Thredded'
       unless @collection.messageboards_enabled
-        flash[:error] = t('message_boards_are_disabled', :project => @collection.title)
+        flash[:error] = t('message_boards_are_disabled', project: @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
 
     return unless @collection.restricted
-    return if (params[:controller] == 'iiif')
+    return if params[:controller] == 'iiif'
 
     unless @collection.show_to?(current_user)
       # second chance?
       unless set_fallback_collection
-        flash[:error] = t('unauthorized_collection', :project => @collection.title)
+        flash[:error] = t('unauthorized_collection', project: @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
@@ -313,7 +312,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Wrapper around redirect_to for modal ajax forms
-  def ajax_redirect_to(options={}, response_status={})
+  def ajax_redirect_to(options = {}, response_status = {})
     if request.xhr?
       head :created, location: url_for(options)
     else
@@ -332,9 +331,9 @@ class ApplicationController < ActionController::Base
 
     @per_page = if params[:per_page].present?
                   params[:per_page].to_i
-                else
+    else
                   default_per_page
-                end
+    end
 
     @per_page
   end
@@ -382,14 +381,14 @@ def track_action
   extras[:page_title] = @page.title if @page
   extras[:article_id] = @article.id if @article
   extras[:article_title] = @article.title if @article
-  ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == "still_editing"
+  ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == 'still_editing'
 end
 
 def check_api_access
   if (defined? @collection) && @collection
     if @collection.restricted && !@collection.api_access
       if @api_user.nil? || !(@api_user.like_owner?(@collection))
-        render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+        render status: 403, plain: 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
       end
     end
   end
@@ -403,8 +402,8 @@ end
 
 def check_search_attempt
   if session[:search_attempt_id]
-    your_profile = controller_name == "user" && @user == current_user
-    if ["dashboard", "static"].include?(controller_name) || your_profile
+    your_profile = controller_name == 'user' && @user == current_user
+    if [ 'dashboard', 'static' ].include?(controller_name) || your_profile
       session[:search_attempt_id] = nil
     end
   end
@@ -439,5 +438,5 @@ def check_recaptcha(options)
 end
 
 def codespaces_environment?
-  Rails.env.development? && ENV["CODESPACES"] == "true"
+  Rails.env.development? && ENV['CODESPACES'] == 'true'
 end

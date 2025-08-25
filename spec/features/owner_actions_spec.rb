@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe "owner actions", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -11,14 +11,14 @@ describe "owner actions", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
-  it "fails to upload a document", :js => true do
+  it "fails to upload a document", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collections.first.title, :from => 'document_upload_collection_id')
+    select(@collections.first.title, from: 'document_upload_collection_id')
     click_button('Upload File')
     expect(page).to have_content("prohibited the form from being saved")
     expect(page).to have_content("File can't be blank")
@@ -38,7 +38,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
-  it "creates an empty new work in a collection", :js => true do
+  it "creates an empty new work in a collection", js: true do
     @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
@@ -83,7 +83,7 @@ describe "owner actions", :order => :defined do
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
   end
 
-  it "creates a collection from work dropdown", :js => true do
+  it "creates a collection from work dropdown", js: true do
     @owner.account_type = "Small Organization"
     col_title = "New Work Collection"
     visit dashboard_owner_path
@@ -102,7 +102,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)
     expect(Collection.last.title).to eq col_title
-    #need to remove this collection to prevent conflicts in later tests
+    # need to remove this collection to prevent conflicts in later tests
     Collection.last.destroy
   end
 
@@ -155,11 +155,11 @@ describe "owner actions", :order => :defined do
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end
 
-  it "fails to create an empty work", :js => true do
+  it "fails to create an empty work", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(@collections.last.title, :from => 'work_collection_id')
+    select(@collections.last.title, from: 'work_collection_id')
     fill_in 'work_description', with: "This work should fail to create."
     click_button('Create Work')
     expect(page).to have_content("Create Empty Work")
@@ -177,16 +177,16 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
     expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
-    select(@collection.title, :from => 'work_collection_id')
+    select(@collection.title, from: 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     work = Work.find_by(title: @title)
     expect(Deed.last.work_id).to eq(work.id)
-    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
+    expect(work.deeds.where.not(collection_id: work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 
-  it "doesn't move a work with articles", :js => true do
+  it "doesn't move a work with articles", js: true do
     col = Collection.second
     work = col.works.second
     test_page = work.pages.first
@@ -199,8 +199,8 @@ describe "owner actions", :order => :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, :from => 'work_collection_id')
-    #reject the modal and get text
+    select(@collection.title, from: 'work_collection_id')
+    # reject the modal and get text
     message = page.dismiss_confirm do
       click_button('Save Changes')
     end
@@ -213,7 +213,7 @@ describe "owner actions", :order => :defined do
     work = col.works.second
     test_page = work.pages.first
 
-    #note: this is probably redundant, but it prevents failure from other tests
+    # note: this is probably redundant, but it prevents failure from other tests
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
@@ -222,12 +222,12 @@ describe "owner actions", :order => :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, :from => 'work_collection_id')
+    select(@collection.title, from: 'work_collection_id')
     click_button('Save Changes')
-    #the modal is silently accepted by default
+    # the modal is silently accepted by default
     expect(Work.find_by(id: work.id).collection).not_to eq col
     expect(Work.find_by(id: work.id).collection).to eq @collection
-    #check the links
+    # check the links
     expect(PageArticleLink.where(page_id: work.pages.ids)).to be_empty
     test_page2 = Page.find_by(id: test_page.id)
     expect(test_page2.source_text).not_to have_content('[[')
@@ -275,9 +275,9 @@ describe "owner actions", :order => :defined do
   it "checks rtl transcription page views" do
     rtl_page = @rtl_collection.works.first.pages.first
     visit collection_transcribe_page_path(@rtl_collection.owner, @rtl_collection, rtl_page.work, rtl_page)
-    #check transcription page direction
+    # check transcription page direction
     expect(page.find('.page-editarea')[:dir]).to eq 'rtl'
-    #check overview page direction
+    # check overview page direction
     page.find('.tabs').click_link('Overview')
     expect(page.find('.page-preview')[:dir]).to eq 'rtl'
   end
@@ -363,6 +363,5 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Letters from America")
       expect(page).to have_content("Science Archives")
     end
-
   end
 end

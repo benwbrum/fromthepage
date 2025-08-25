@@ -350,7 +350,7 @@ describe ExportController do
   end
 
   describe '#work_plaintext_verbatim' do
-    let(:action_path) {}
+    let(:action_path) { }
 
     let(:subject) { get action_path }
 

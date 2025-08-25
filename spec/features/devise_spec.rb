@@ -8,15 +8,14 @@ describe "Devise" do
     DatabaseCleaner.clean
   end
 
-  let(:old_user){ create(:user) }
-  let(:old_path){ user_profile_path(old_user) }
+  let(:old_user) { create(:user) }
+  let(:old_path) { user_profile_path(old_user) }
 
   context "registration" do
-
     let(:user)  { build(:user) }
     let(:owner) { build(:owner) }
     let(:collection) { create(:collection) }
-    let(:coll_path){ collection_path(collection.owner, collection) }
+    let(:coll_path) { collection_path(collection.owner, collection) }
 
     it 'fails to create a new user account' do
       visit new_user_registration_path
@@ -52,7 +51,7 @@ describe "Devise" do
       # Previous page
       visit old_path
       click_link('Sign Up To Transcribe')
-#      visit new_user_registration_path
+      #      visit new_user_registration_path
       page.fill_in 'Username', with: user.login
       page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
@@ -89,7 +88,7 @@ describe "Devise" do
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{owner.display_name}")
     end
-    it "redirects owner to dashboard/owner#freetrial after signup" do 
+    it "redirects owner to dashboard/owner#freetrial after signup" do
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
       page.fill_in 'Email Address', with: owner.email
@@ -120,7 +119,7 @@ describe "Devise" do
   end
 
   context "user login" do
-    let(:user){ create(:user) }
+    let(:user) { create(:user) }
     it "signs in a user" do
       visit new_user_session_path
       page.fill_in 'Login', with: user.login
@@ -156,7 +155,7 @@ describe "Devise" do
     end
   end
   context "owner login" do
-    let(:owner){ create(:owner) }
+    let(:owner) { create(:owner) }
     it "signs in an owner" do
       visit new_user_session_path
       page.fill_in 'Login', with: owner.login
@@ -190,7 +189,7 @@ describe "Devise" do
     end
   end
   context "admin login" do
-    let(:admin){ create(:admin) }
+    let(:admin) { create(:admin) }
     it "signs in an admin" do
       visit new_user_session_path
       page.fill_in 'Login', with: admin.login
@@ -215,5 +214,4 @@ describe "Devise" do
       expect(page.current_path).to eq admin_path
     end
   end
-
 end

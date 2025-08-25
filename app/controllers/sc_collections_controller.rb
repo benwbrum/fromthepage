@@ -1,7 +1,7 @@
 require 'contentdm_translator'
 
 class ScCollectionsController < ApplicationController
-  before_action :set_sc_collection, only: [:show, :edit, :update, :destroy, :explore_manifest, :import_manifest]
+  before_action :set_sc_collection, only: [ :show, :edit, :update, :destroy, :explore_manifest, :import_manifest ]
 
   respond_to :html
 
@@ -12,7 +12,6 @@ class ScCollectionsController < ApplicationController
   end
 
   def cdm_bulk_import_new
-
   end
 
   def cdm_bulk_import_create
@@ -44,9 +43,9 @@ class ScCollectionsController < ApplicationController
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = t('.using_manifest_for', url: cdm_url)
       if @collection
-        redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url, :collection_id => @collection.slug
+        redirect_to action: :import, at_id: at_id, source: 'contentdm', source_url: cdm_url, collection_id: @collection.slug
       else
-        redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
+        redirect_to action: :import, at_id: at_id, source: 'contentdm', source_url: cdm_url
       end
     rescue => e
       logger.error t('.bad_contentdm_url', url: cdm_url, message: e.message)
@@ -63,25 +62,25 @@ class ScCollectionsController < ApplicationController
       if version == 2
         service = find_service(at_id)
 
-        if service["@type"] == "sc:Collection"
+        if service['@type'] == 'sc:Collection'
           @sc_collection = ScCollection.collection_for_at_id(at_id)
           @collection = set_collection
 
           render 'explore_collection', at_id: at_id
-        elsif service["@type"] == "sc:Manifest"
+        elsif service['@type'] == 'sc:Manifest'
           @sc_manifest = ScManifest.manifest_for_at_id(at_id)
-          find_parent = @sc_manifest.service["within"]
+          find_parent = @sc_manifest.service['within']
           if find_parent.nil? || !find_parent.is_a?(Hash)
             @sc_collection = nil
           else
-            parent_at_id = @sc_manifest.service["within"]["@id"]
+            parent_at_id = @sc_manifest.service['within']['@id']
             unless parent_at_id.nil?
               @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
             else
               @sc_collection = nil
             end
           end
-          #this allows jquery to recover if there is no parent collection
+          # this allows jquery to recover if there is no parent collection
           if @sc_collection
             @label = @sc_collection.label
             @col = @sc_collection.collection
@@ -131,7 +130,7 @@ class ScCollectionsController < ApplicationController
         @sc_manifest = ScManifest.manifest_for_at_id(at_id)
       end
     rescue ArgumentError
-      redirect_to :action => 'explore_collection', :at_id => at_id
+      redirect_to action: 'explore_collection', at_id: at_id
       return
     end
     @collection = set_collection
@@ -165,7 +164,7 @@ class ScCollectionsController < ApplicationController
     annotation_ocr = !params[:annotation_ocr].blank?
     import_ocr = cdm_ocr || annotation_ocr
 
-    #if collection id is set to sc_collection or no collection is set,
+    # if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
     if collection_id == 'sc_collection'
       collection = create_collection(sc_collection, current_user)
@@ -180,18 +179,18 @@ class ScCollectionsController < ApplicationController
     end
 
 
-    #make sure import folder exists
+    # make sure import folder exists
     unless Dir.exist?("#{Rails.root}/public/imports")
       Dir.mkdir("#{Rails.root}/public/imports")
     end
-    #create logfile for collection
+    # create logfile for collection
     log_file = "#{Rails.root}/public/imports/#{collection_id}_iiif.log"
 
-    #map an array of at_ids for the selected manifests
-    manifest_array = params[:manifest_id].keys.map {|id| id}
-    #get a list of the manifests to pass to the rake task
-    manifest_ids = manifest_array.join(" ")
-    #kick off the rake task here, then redirect to the collection
+    # map an array of at_ids for the selected manifests
+    manifest_array = params[:manifest_id].keys.map { |id| id }
+    # get a list of the manifests to pass to the rake task
+    manifest_ids = manifest_array.join(' ')
+    # kick off the rake task here, then redirect to the collection
     rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
@@ -199,7 +198,7 @@ class ScCollectionsController < ApplicationController
 
     logger.info rake_call
     system(rake_call)
-    #flash notice about the rake task
+    # flash notice about the rake task
     flash[:notice] = t('.import_is_processing')
 
     ajax_redirect_to collection_path(collection.owner, collection)
@@ -211,7 +210,7 @@ class ScCollectionsController < ApplicationController
     collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
     collection.save!
     sc_collection.update_column(:collection_id, collection.id)
-    return collection
+    collection
   end
 
   def convert_manifest
@@ -239,12 +238,12 @@ class ScCollectionsController < ApplicationController
         end
         work = @sc_manifest.convert_with_collection(current_user, @collection, document_set, annotation_ocr)
       else
-        work = @sc_manifest.convert_with_no_collection(current_user, annotation_ocr) 
+        work = @sc_manifest.convert_with_no_collection(current_user, annotation_ocr)
       end
     end
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
       ocr = !params[:contentdm_ocr].blank?
-      #make sure import folder exists
+      # make sure import folder exists
       unless Dir.exist?("#{Rails.root}/public/imports")
         Dir.mkdir("#{Rails.root}/public/imports")
       end
@@ -253,7 +252,7 @@ class ScCollectionsController < ApplicationController
       rake_call = "#{RAKE} fromthepage:cdm_work_update[#{work.id},#{ocr}] --trace >> #{log_file} 2>&1 &"
       logger.info rake_call
       system(rake_call)
-      #flash notice about the rake task
+      # flash notice about the rake task
       ocr_text = ocr ? 'and OCR text ' : ''
       flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
@@ -305,20 +304,20 @@ class ScCollectionsController < ApplicationController
   end
 
   def set_collection
-    #used to add new collections to select box on import
+    # used to add new collections to select box on import
     if session[:iiif_collection]
       @collection = Collection.find_by(id: session[:iiif_collection])
       session[:iiif_collection]=nil
-      return @collection
+      @collection
     else
-      return @collection
+      @collection
     end
   end
 
   def find_service(at_id)
     manifest_json = fetch_manifest(at_id)
     service = IIIF::Service.parse(manifest_json)
-    return service
+    service
   end
 
   V3_CONTEXT = 'http://iiif.io/api/presentation/3/context.json'
@@ -331,23 +330,21 @@ class ScCollectionsController < ApplicationController
 
     if context.is_a? Array
       if context.include? V2_CONTEXT
-        return 2
+        2
       elsif context.include? V3_CONTEXT
-        return 3
+        3
       else
-        return nil
+        nil
       end
     else
       if context == V2_CONTEXT
-        return 2
+        2
       elsif context == V3_CONTEXT
-        return 3
+        3
       else
-        return nil
+        nil
       end
     end
-        
-
   end
 
   def fetch_manifest(at_id)

@@ -122,7 +122,7 @@ group :development, :test do
   gem 'rubocop-rails-omakase', require: false
 end
 
-gem 'dotenv', group: [:development, :test], require: 'dotenv/load'
+gem 'dotenv', group: [ :development, :test ], require: 'dotenv/load'
 
 # Use SassC for stylesheets
 gem 'sassc-rails'

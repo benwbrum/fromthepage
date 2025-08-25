@@ -51,7 +51,7 @@ class CreateVisits < ActiveRecord::Migration[5.0]
       t.timestamp :started_at
     end
 
-    add_index :visits, [:visit_token], unique: true
-    add_index :visits, [:user_id]
+    add_index :visits, [ :visit_token ], unique: true
+    add_index :visits, [ :user_id ]
   end
 end

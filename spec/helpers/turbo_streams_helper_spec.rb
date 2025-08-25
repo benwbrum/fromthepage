@@ -10,14 +10,14 @@ RSpec.describe TurboStreamsHelper, type: :helper do
         error: '#icon-remove-sign',
         info: '#icon-warning-sign'
       })
-      
+
       # Stub the svg_symbol helper
       allow(helper).to receive(:svg_symbol).and_return('<svg></svg>'.html_safe)
     end
 
     it 'generates turbo stream with accessible flash message for notice' do
       result = helper.turbo_flash('Success message', 'notice')
-      
+
       # The turbo stream should append a flash message with proper accessibility attributes
       expect(result).to include('turbo-stream action="append" target="flash_wrapper"')
       expect(result).to include('role="status"')
@@ -28,7 +28,7 @@ RSpec.describe TurboStreamsHelper, type: :helper do
 
     it 'generates turbo stream with accessible flash message for error' do
       result = helper.turbo_flash('Error occurred', 'error')
-      
+
       expect(result).to include('turbo-stream action="append" target="flash_wrapper"')
       expect(result).to include('role="alert"')
       expect(result).to include('aria-live="assertive"')

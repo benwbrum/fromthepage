@@ -1,9 +1,8 @@
 
-#Note - this test must fall at the very end of the features specs
+# Note - this test must fall at the very end of the features specs
 require 'spec_helper'
 
 describe "testing deletions" do
-
   before :all do
     @owner = User.find_by(login: 'margaret')
     @collections = @owner.all_owner_collections
@@ -12,11 +11,11 @@ describe "testing deletions" do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "blanks out the data in a collection" do
-    #note, don't use last collection because it causes problems with later tests
+    # note, don't use last collection because it causes problems with later tests
     col = @collections.first
     visit collection_path(col.owner, col)
     page.find('.tabs').click_link("Settings")
@@ -36,7 +35,7 @@ describe "testing deletions" do
   it "deletes a document set" do
     # Ensure the collection supports document sets so the Sets tab is visible
     @collection.update!(supports_document_sets: true)
-    
+
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
@@ -92,7 +91,7 @@ describe "testing deletions" do
     expect(page).to have_content(work.title)
     expect(page).to have_selector('a', text: 'Delete Work')
     page.find('a', text: 'Delete Work').click
-    #check that each child association has deleted
+    # check that each child association has deleted
     del_work_count = Work.all.count
     expect(del_work_count).to eq (work_count - 1)
     pages = work.pages
@@ -100,7 +99,7 @@ describe "testing deletions" do
     deeds = Deed.where(work_id: work.id)
     expect(deeds).to be_empty
     expect(Dir.exist?(path)).to be false
-  end
+    end
 end
 
   it "deletes a collection" do
@@ -124,7 +123,7 @@ end
     page.find('a', text: 'Delete Collection').click
     del_count = @owner.all_owner_collections.count
     expect(del_count).to eq (count - 1)
-    #make sure child associations are also deleted
+    # make sure child associations are also deleted
     works = Work.where(collection_id: @collection.id)
     expect(works).to be_empty
     articles = Article.where(collection_id: @collection.id)
@@ -132,5 +131,4 @@ end
     doc_sets = DocumentSet.where(collection_id: @collection.id)
     expect(doc_sets).to be_empty
   end
-
 end

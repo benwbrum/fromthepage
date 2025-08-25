@@ -5,7 +5,7 @@ RSpec.describe CollectionHelper, type: :helper do
     it 'returns true if any of the collections in this group of objects is not restricted AND supports doc sets' do
       user = build_stubbed(:user)
       collection = build_stubbed(:collection, owner_user_id: user.id, restricted: false, supports_document_sets: true)
-      group = [collection]
+      group = [ collection ]
 
       expect(any_public_collections_with_document_sets?(group)).to be true
     end
@@ -14,7 +14,7 @@ RSpec.describe CollectionHelper, type: :helper do
       user = build_stubbed(:user)
       collection1 = build_stubbed(:collection, owner_user_id: user.id, restricted: true, supports_document_sets: true)
       collection2 = build_stubbed(:collection, owner_user_id: user.id, restricted: false, supports_document_sets: false)
-      group = [collection1, collection2]
+      group = [ collection1, collection2 ]
 
       expect(any_public_collections_with_document_sets?(group)).to be false
     end
@@ -74,5 +74,4 @@ RSpec.describe CollectionHelper, type: :helper do
       expect(is_a_private_document_set?(collection_or_doc_set)).to be false
     end
   end
-
 end

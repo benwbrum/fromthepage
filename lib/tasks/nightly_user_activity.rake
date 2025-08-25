@@ -12,7 +12,7 @@ namespace :fromthepage do
 
     # All users related to these criteria
     all_collection_scribes = User.joins(:deeds)
-                                 .where({deeds: {collection_id: new_works_collections.ids}})
+                                 .where({ deeds: { collection_id: new_works_collections.ids } })
                                  .distinct
 
     # Note_Added Deeds within the last 24 Hours

@@ -1,5 +1,4 @@
 module DeviseHelper
-
   def devise_error_messages!
     flash_alerts = []
     error_key = 'errors.messages.not_saved'
@@ -25,7 +24,7 @@ module DeviseHelper
 
     errors = if resource.errors.empty?
                flash_alerts
-             else
+    else
                resource.errors.messages.map do |key, msg|
                  if key == :reset_password_token
                    I18n.t('devise.errors.messages.reset_password.invalid_token')
@@ -33,12 +32,12 @@ module DeviseHelper
                    "#{I18n.t("devise.errors.keys.#{key}")} #{msg.first}"
                  end
                end
-             end
+    end
 
     messages = errors.map { |msg| content_tag(:li, msg) }.join
 
     if error_key
-      sentence = I18n.t(error_key, :count => errors.count, :resource => resource.class.model_name.human.downcase)
+      sentence = I18n.t(error_key, count: errors.count, resource: resource.class.model_name.human.downcase)
       html = <<-HTML
       <div class="validation">
         <h5 class="validation_title">#{sentence}</h5>
@@ -55,5 +54,4 @@ module DeviseHelper
 
     html.html_safe
   end
-
 end

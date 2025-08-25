@@ -1,9 +1,8 @@
 class DeedController < ApplicationController
-
   PAGES_PER_SCREEN = 50
 
   def list
-    #get rid of col_id if no breadcrumbs
+    # get rid of col_id if no breadcrumbs
     remove_col_id
     if @collection
       # show more link on collections and document sets
@@ -14,7 +13,7 @@ class DeedController < ApplicationController
         @deed = Deed.where(collection_id: @user.all_owner_collections.ids)
       else
         # user activity stream show more link
-        @deed = @user.deeds.includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+        @deed = @user.deeds.includes(:note, :page, :user, :work, :collection).paginate page: params[:page], per_page: PAGES_PER_SCREEN
       end
     else
       # show more link for site-wide/find-a-project Show More links
@@ -35,15 +34,14 @@ class DeedController < ApplicationController
     # Scope for date
     if params[:start_date]
       start_date = params[:start_date].to_datetime.to_fs(:db)
-      @deed = @deed.where("created_at >= ?", start_date)
+      @deed = @deed.where('created_at >= ?', start_date)
     end
 
     if params[:end_date]
       end_date = params[:end_date].to_datetime.to_fs(:db)
-      @deed = @deed.where("created_at <= ?", end_date)
+      @deed = @deed.where('created_at <= ?', end_date)
     end
 
-    @deeds = @deed.order('deeds.created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @deeds = @deed.order('deeds.created_at DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
   end
-
 end

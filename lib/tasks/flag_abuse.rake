@@ -1,10 +1,8 @@
 require 'flagger'
 
 namespace :fromthepage do
-
-  desc "Check for abusive content retrospectively" 
-  task :flag_abuse => :environment do |t|
-
+  desc 'Check for abusive content retrospectively'
+  task flag_abuse: :environment do |t|
     PageVersion.all.each do |version|
       Flag.check_page(version) unless version.flags.present?
     end

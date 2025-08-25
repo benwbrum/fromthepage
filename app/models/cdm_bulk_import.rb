@@ -29,7 +29,6 @@ class CdmBulkImport < ApplicationRecord
 
     logger.info rake_call
     system(rake_call)
-
   end
 
   def collection_or_document_set
@@ -39,6 +38,4 @@ class CdmBulkImport < ApplicationRecord
       Collection.find_by(id: self.collection_param)
     end
   end
-
-
 end

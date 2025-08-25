@@ -1,14 +1,13 @@
 namespace :fromthepage do
   namespace :cwgk do
-
-    desc "Create sample set of documents and entities"
-    task :create_sample_set, [:source_dir,:target_dir,:number] => :environment do |t,args|
+    desc 'Create sample set of documents and entities'
+    task :create_sample_set, [ :source_dir, :target_dir, :number ] => :environment do |t, args|
       source_dir = args.source_dir
       target_dir = args.target_dir
       number = args.number.to_i
 
       # find all the files in the source dir matching KYR*.xml
-      all_document_files = Dir.glob(File.join(source_dir, "KYR*.xml"))
+      all_document_files = Dir.glob(File.join(source_dir, 'KYR*.xml'))
       # sample only the number we care about
       document_files = all_document_files.sample(number)
       # for each document file, copy it to the target dir
@@ -23,7 +22,7 @@ namespace :fromthepage do
         # read the document file into a nokogiri object
         doc = Nokogiri::XML(File.read(file))
         body = doc.search('body').first
-        ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
+        [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
           body.search(type).each do |element|
             # get the id of the element
             ref = element.attribute('ref').value
@@ -35,24 +34,21 @@ namespace :fromthepage do
           end
         end
       end
-
-
-
     end
 
 
     # code to migrate data from CWGK XML files and Mashbill to FromThePage
-    desc "Import CWGK XML files"
-    task :import_cwgk_xml, [:xml_directory, :collection_slug] => :environment do |t,args|
+    desc 'Import CWGK XML files'
+    task :import_cwgk_xml, [ :xml_directory, :collection_slug ] => :environment do |t, args|
       xml_directory = args.xml_directory
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)
-      error_file=File.open("validation_errors.txt", "a+")
+      error_file=File.open('validation_errors.txt', 'a+')
       Current.user = collection.owner
       if xml_directory.nil? || collection_slug.nil?
-        puts "Usage: rake fromthepage:import_cwgk_xml[xml_directory,collection_slug]"
-        puts "  xml_directory: path to the directory containing CWGK XML files"
-        puts "  collection_slug: slug of the collection to import into"
+        puts 'Usage: rake fromthepage:import_cwgk_xml[xml_directory,collection_slug]'
+        puts '  xml_directory: path to the directory containing CWGK XML files'
+        puts '  collection_slug: slug of the collection to import into'
         exit
       end
 
@@ -62,16 +58,16 @@ namespace :fromthepage do
 
       CREATE_SUBJECTS=false
       if CREATE_SUBJECTS
-        geographic_feature = Category.find_or_create_by(title: "Geographic Features",collection: collection)
-        organization = Category.find_or_create_by(title: "Organizations",collection: collection)
-        people = collection.categories.find_by(title: "People")
-        places = collection.categories.find_by(title: "Places")
+        geographic_feature = Category.find_or_create_by(title: 'Geographic Features', collection: collection)
+        organization = Category.find_or_create_by(title: 'Organizations', collection: collection)
+        people = collection.categories.find_by(title: 'People')
+        places = collection.categories.find_by(title: 'Places')
 
         # We want to create subject articles from entity files;
         # these are XML files in the directory that begin with the letters O,N,P,G
         # and end with .xml
-        Dir.glob(File.join(xml_directory, "[NOPG]*.xml")).each do |file|
-          id = File.basename(file).sub('.xml','')
+        Dir.glob(File.join(xml_directory, '[NOPG]*.xml')).each do |file|
+          id = File.basename(file).sub('.xml', '')
 
           # first read the XML file
           file_contents = File.read(file)
@@ -81,41 +77,41 @@ namespace :fromthepage do
 
           article = doc.search('body')
           # break each paragraph into a new line
-          paras = article.search("p")
+          paras = article.search('p')
           formatted = paras.map { |p| p.text.strip.gsub(/\s+/m, ' ') }.join("\n\n")
           # TODO: test with O001001.xml
 
           # TODO: Sometimes bibliography is in TEI with hi and links -- we didn't implement it that way in FromThePage, so what do we do?
-          bibliography = doc.search("bibl").text.strip
+          bibliography = doc.search('bibl').text.strip
 
 
           # type may be Person, Place, Organization, or Geographical Feature
-          type = doc.search("term[type=type]").text
+          type = doc.search('term[type=type]').text
 
-          if type == "Person"
+          if type == 'Person'
             # the title is the persName element of the person element
-            title = doc.search("person/persName").text.strip.gsub(/\s+/m, ' ')
+            title = doc.search('person/persName').text.strip.gsub(/\s+/m, ' ')
             # parse out birth and death dates from event elements of the person element
             birth_date = raw_date_to_edtf(doc.search("person/event[@type='birth']")&.text.strip)
             death_date = raw_date_to_edtf(doc.search("person/event[@type='death']")&.text.strip)
             # parse out race and sex from trait elements of the person element
-            gender = doc.search("person/trait[type=gender]").attr("subtype")&.text
-            race = doc.search("person/trait[type=race]").attr("subtype")&.text
-          elsif type == "Place"
-            title = doc.search("place/placeName/location/settlement")&.text.strip.gsub(/\s+/m, ' ')
-            geo = doc.search("place/placeName/location/geo")&.text.strip.gsub(/\s+/m, ' ')
+            gender = doc.search('person/trait[type=gender]').attr('subtype')&.text
+            race = doc.search('person/trait[type=race]').attr('subtype')&.text
+          elsif type == 'Place'
+            title = doc.search('place/placeName/location/settlement')&.text.strip.gsub(/\s+/m, ' ')
+            geo = doc.search('place/placeName/location/geo')&.text.strip.gsub(/\s+/m, ' ')
             # parse out latitude and longitude from the geo element
             lat, lon = geo.split(/\s+/).map(&:strip)
-          elsif type == "Organization"
-            title = doc.search("org/orgName").text.strip.gsub(/\s+/m, ' ')
+          elsif type == 'Organization'
+            title = doc.search('org/orgName').text.strip.gsub(/\s+/m, ' ')
             begun = raw_date_to_edtf(doc.search("org/event[@type='begun']")&.text.strip)
             ended = raw_date_to_edtf(doc.search("org/event[@type='ended']")&.text.strip)
           else
-            title = doc.search("place/geogName").text.strip.gsub(/\s+/m, ' ')
+            title = doc.search('place/geogName').text.strip.gsub(/\s+/m, ' ')
           end
 
           id_to_title_map[id] = title
-          valid_ids << [id.sub(/^[A-Z]0+/, '').to_i, type.downcase]
+          valid_ids << [ id.sub(/^[A-Z]0+/, '').to_i, type.downcase ]
 
           article = Article.new
           article.title = title
@@ -146,15 +142,13 @@ namespace :fromthepage do
             error_file.puts(message)
           end
 
-
-#          binding.pry unless article.valid?
-          if type == "Person"
+          if type == 'Person'
             # assign the article to the People category
             article.categories << people
-          elsif type == "Place"
+          elsif type == 'Place'
             # assign the article to the Places category
             article.categories << places
-          elsif type == "Organization"
+          elsif type == 'Organization'
             # assign the article to the Organizations category
             article.categories << organization
           else
@@ -165,7 +159,7 @@ namespace :fromthepage do
 
 
         # now load the relationships file
-        relationships = YAML.load_file(File.join(xml_directory, "mashbill_relationships.yml"))
+        relationships = YAML.load_file(File.join(xml_directory, 'mashbill_relationships.yml'))
 
         # for each entity in the id map
         id_to_title_map.each do |raw_id, title|
@@ -174,14 +168,14 @@ namespace :fromthepage do
           id = raw_id.sub(/^[A-Z]0+/, '').to_i
           entity_type=article.categories.first.title.downcase.singularize
           # find the relationships in which the left entity has a matching ID
-          left_relationships = relationships.select{|r| r[:left][:id] == id && r[:left][:type] == entity_type}
+          left_relationships = relationships.select { |r| r[:left][:id] == id && r[:left][:type] == entity_type }
           # prune the right relationships to only ones that are in the list of valid IDs
-          right_relationships = left_relationships.select{|r| valid_ids.include?([r[:right][:id], r[:right][:type]])}
+          right_relationships = left_relationships.select { |r| valid_ids.include?([ r[:right][:id], r[:right][:type] ]) }
           # now pull the relationship type and title from the right entity
-          unique_relationships = right_relationships.map{|r| {type: r[:type], entity: r[:right]} }.uniq
+          unique_relationships = right_relationships.map { |r| { type: r[:type], entity: r[:right] } }.uniq
           # for each unique relationship, write a text line with a wikilink to the entity
           lines = unique_relationships.map do |r|
-            if r[:entity][:type] == "person"
+            if r[:entity][:type] == 'person'
               "#{r[:type].titleize}: [[#{r[:entity][:name]} (#{r[:entity][:disambiguator]})]]"
             else
               "#{r[:type].titleize}: [[#{r[:entity][:name]}]]"
@@ -203,9 +197,9 @@ namespace :fromthepage do
       temp_dir = File.join('/tmp', temporary_path)
       FileUtils.mkdir_p(temp_dir)
       # we want to loop through the document files which start with CWGK
-      Dir.glob(File.join(xml_directory, "KYR*.xml")).sort.each do |file|
+      Dir.glob(File.join(xml_directory, 'KYR*.xml')).sort.each do |file|
         puts file
-        id = File.basename(file).sub('.xml','')
+        id = File.basename(file).sub('.xml', '')
         if EXTRACT_PAGES
           pdf_file = "#{id}.pdf"
           pdf_url = "http://discovery.civilwargovernors.org/files/pdf/#{pdf_file}"
@@ -238,7 +232,7 @@ namespace :fromthepage do
         creation_date=creation.search('date')
         genre=doc.search('profileDesc//term[type=genre]').text
 
-        permission_description="This image and transcription is publicly accessible. The image appears courtesy of the repository named in the Source Description. The transcription and annotation were undertaken by Kentucky Historical Society staff, volunteers, and interns. If referencing this document title, accession number, and permanent URL."
+        permission_description='This image and transcription is publicly accessible. The image appears courtesy of the repository named in the Source Description. The transcription and annotation were undertaken by Kentucky Historical Society staff, volunteers, and interns. If referencing this document title, accession number, and permanent URL.'
         source_block=doc.search('msIdentifier')
         source_location=source_block.search('repository').text
         source_collection_name=source_block.search('collection').text
@@ -281,26 +275,26 @@ namespace :fromthepage do
         end
         if EXTRACT_PAGES
           new_dir_name = File.join(Rails.root,
-                                  "public",
-                                  "images",
-                                  "uploaded",
+                                  'public',
+                                  'images',
+                                  'uploaded',
                                   work.id.to_s)
           print "\tconvert_to_work creating #{new_dir_name}\n"
 
           FileUtils.mkdir_p(new_dir_name)
-          clean_dir=File.join(File.dirname(path),id)
-          FileUtils.cp(Dir.glob(File.join(clean_dir, "*.jpg")), new_dir_name)
-          Dir.glob(File.join(clean_dir, "*.jpg")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }
+          clean_dir=File.join(File.dirname(path), id)
+          FileUtils.cp(Dir.glob(File.join(clean_dir, '*.jpg')), new_dir_name)
+          Dir.glob(File.join(clean_dir, '*.jpg')).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }
 
           # at this point, the new dir should have exactly what we want-- only image files that are adequately compressed.
-          filenames = Dir.glob(File.join(new_dir_name, "*")).sort
+          filenames = Dir.glob(File.join(new_dir_name, '*')).sort
           replace_entities_with_wikilinks(doc.search('body').first, id_to_title_map)
           page_array = body_array(doc)
           text_array = []
           page_array.each do |page_elements|
             # first prune the empty elements
             text_paragraphs = []
-            page_elements.keep_if{|e| e.present?}
+            page_elements.keep_if { |e| e.present? }
             page_elements.each do |e|
               e.xpath('.//text()').each do |text_node|
                 # remove text nodes that contain a newline character and no other text
@@ -308,14 +302,14 @@ namespace :fromthepage do
                   text_node.remove
                 end
               end
-              text_paragraphs << e.children.to_a.select{|n| n.present?}.map{|n| n.name=='lb' ? "\n" : n.to_html}.join("").gsub(/\n+/,"\n").strip
+              text_paragraphs << e.children.to_a.select { |n| n.present? }.map { |n| n.name=='lb' ? "\n" : n.to_html }.join('').gsub(/\n+/, "\n").strip
             end
             text_array << text_paragraphs.join("\n\n")
           end
 
 
           GC.start
-          filenames.sort.each_with_index do |image_fn,i|
+          filenames.sort.each_with_index do |image_fn, i|
             page = Page.new
             print "\t\tconvert_to_work created new page\n"
 
@@ -338,14 +332,11 @@ namespace :fromthepage do
           end
           work.save!
 
-
           # we want to assign the last element of text_array to the last page
           last_page = work.pages.last
           last_page.source_text = text_array.last
           last_page.status = Page.statuses[:transcribed]
-#          binding.pry unless last_page.valid?
           last_page.save!
-
 
           # get the remaining pages excluding the last
           remaining_pages = work.pages[0..-2]
@@ -356,7 +347,6 @@ namespace :fromthepage do
               # add the text to the page
               page.source_text = text_array[i]
               page.status = Page.statuses[:transcribed]
-#              binding.pry unless page.valid?
               page.save!
             end
           end
@@ -368,14 +358,8 @@ namespace :fromthepage do
           end
           work.update_statistic
         end
-
-
-
-
-
       end
     end
-
 
     def split_doc_on_pb(doc)
       page_number = 1
@@ -418,15 +402,15 @@ namespace :fromthepage do
 
     def replace_entities_with_wikilinks(body, id_to_title_map)
       # first remove placeName elements that are children of orgName elements
-      body.search('orgName//orgName').each{|e| e.replace(e.children)}
-      body.search('orgName//placeName').each{|e| e.replace(e.children)}
-      body.search('persName//orgName').each{|e| e.replace(e.children)}
-      body.search('persName//placeName').each{|e| e.replace(e.children)}
+      body.search('orgName//orgName').each { |e| e.replace(e.children) }
+      body.search('orgName//placeName').each { |e| e.replace(e.children) }
+      body.search('persName//orgName').each { |e| e.replace(e.children) }
+      body.search('persName//placeName').each { |e| e.replace(e.children) }
 
 
       # for the element types placeName persName orgName geographicalFeature
       # find all elements of that type
-      ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
+      [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
         body.search(type).each do |element|
           element.search('unclear').each do |unclear|
             if unclear.text.strip.blank?
@@ -436,7 +420,7 @@ namespace :fromthepage do
           # get the text of the element
           text = element.text.strip
           # replace square braces with something which we can handle
-          text = text.gsub('[','{').gsub(']','}')
+          text = text.gsub('[', '{').gsub(']', '}')
 
           # get the id of the element
           if element.attribute('ref')
@@ -458,10 +442,6 @@ namespace :fromthepage do
         end
       end
     end
-
-
-
-
 
     def body_array(doc)
       pages=[]
@@ -491,9 +471,9 @@ namespace :fromthepage do
       # Convert a raw date string to an EDTF date string
       # This is a simplified example; you may need to adjust the parsing logic
       if raw_date.start_with?('c')
-        return "#{raw_date[1..-1]}?"
+        "#{raw_date[1..-1]}?"
       else
-        return raw_date
+        raw_date
       end
     end
   end

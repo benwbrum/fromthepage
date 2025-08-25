@@ -7,7 +7,7 @@ describe Article::Update do
   let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
 
   let!(:article) do
-    create(:article, title: 'Original', collection: collection, pages: [related_page])
+    create(:article, title: 'Original', collection: collection, pages: [ related_page ])
   end
 
   let!(:source_article) do
@@ -97,7 +97,7 @@ describe Article::Update do
 
   context 'when adding category' do
     let!(:category) { create(:category) }
-    let(:category_ids) { [category.id] }
+    let(:category_ids) { [ category.id ] }
 
     it 'updates article' do
       expect(result.success?).to be_truthy

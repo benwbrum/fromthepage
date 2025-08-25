@@ -9,13 +9,13 @@ class CreatePageBlocks < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    add_index :page_blocks, [:controller, :view]
+    add_index :page_blocks, [ :controller, :view ]
 
     populate
   end
 
   def self.down
-    remove_index :page_blocks, [:controller, :view]
+    remove_index :page_blocks, [ :controller, :view ]
     drop_table :page_blocks
   end
 
@@ -86,10 +86,9 @@ class CreatePageBlocks < ActiveRecord::Migration[5.0]
     make_block "work", "scribes_tab", "Work Access Help"
     make_block "work", "show", "Work About Help"
     make_block "work", "versions", "Work Versions Help"
-
   end
 
-  def self.make_block(controller, view, description, tag="right", default=nil)
+  def self.make_block(controller, view, description, tag = "right", default = nil)
     pb = PageBlock.new
     pb.controller=controller
     pb.view=view
@@ -275,7 +274,7 @@ See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Co
 </p>
 <p>
 Need help?  We offer the <a href="http://fromthepage.com/static/run_server">following services to help you run your FromThePage project</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
-  
+#{'  '}
 </p>
 </div>
 

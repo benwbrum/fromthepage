@@ -12,7 +12,7 @@ describe Article::Combine do
   end
   let!(:from_article) do
     create(:article, title: 'Duplicate', source_text: 'appended text', collection: collection,
-                     pages: [from_related_page])
+                     pages: [ from_related_page ])
   end
   let!(:article_article_link) do
     create(:article_article_link, source_article: from_source_article, target_article: from_article)
@@ -23,7 +23,7 @@ describe Article::Combine do
     create(:article, title: 'Original', source_text: 'To have ', collection: collection)
   end
 
-  let(:from_article_ids) { [from_article.id] }
+  let(:from_article_ids) { [ from_article.id ] }
 
   let(:result) do
     described_class.new(

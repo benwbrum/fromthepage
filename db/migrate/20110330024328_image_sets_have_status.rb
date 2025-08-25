@@ -6,7 +6,7 @@ class ImageSetsHaveStatus < ActiveRecord::Migration[5.0]
 
     add_column :image_sets, :crop_band_start, :integer
     add_column :image_sets, :crop_band_height, :integer
-=end  
+=end
   end
 
   def self.down
@@ -16,6 +16,6 @@ class ImageSetsHaveStatus < ActiveRecord::Migration[5.0]
 
     remove_column :image_sets, :crop_band_start
     remove_column :image_sets, :crop_band_height
-=end  
+=end
   end
 end

@@ -8,29 +8,29 @@ Fromthepage::Application.routes.draw do
   end
 
   root to: 'static#landing_page'
-  get '/blog' => redirect("https://fromthepage.com/blog/")
+  get '/blog' => redirect('https://fromthepage.com/blog/')
 
-  devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { masquerades: 'masquerades', registrations: 'registrations', omniauth_callbacks: 'users/omniauth_callbacks' }
 
   devise_scope :user do
-    get "users/new_trial" => "registrations#new_trial"
-    get ":user_slug/sign_up", to: "registrations#owner_new", as: 'new_for_owner'
-    post "registrations/choose_provider", to: 'registrations#choose_saml'
-    post "registrations/set_provider", to: 'registrations#set_saml'
+    get 'users/new_trial' => 'registrations#new_trial'
+    get ':user_slug/sign_up', to: 'registrations#owner_new', as: 'new_for_owner'
+    post 'registrations/choose_provider', to: 'registrations#choose_saml'
+    post 'registrations/set_provider', to: 'registrations#set_saml'
     match '/users/auth/saml/:identity_provider_id/callback',
-          via: [:get, :post],
+          via: [ :get, :post ],
           to: 'users/omniauth_callbacks#saml',
           as: 'user_omniauth_callback'
 
     match '/users/auth/saml/:identity_provider_id',
-          via: [:get, :post],
+          via: [ :get, :post ],
           to: 'users/omniauth_callbacks#passthru',
           as: 'user_omniauth_authorize'
   end
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  resources :notes, except: [:show]
+  resources :notes, except: [ :show ]
   get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
@@ -55,18 +55,18 @@ Fromthepage::Application.routes.draw do
     get 'delete_upload', to: 'admin#delete_upload'
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'
-    get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
-    get 'ok_user', :to => 'admin#ok_user'
+    get 'expunge_confirmation', to: 'admin#expunge_confirmation'
+    get 'ok_user', to: 'admin#ok_user'
     get 'downgrade', to: 'admin#downgrade'
     post 'update', to: 'admin#update'
-    patch 'update_user', :to => 'admin#update_user'
-    patch 'expunge_user', :to => 'admin#expunge_user'
+    patch 'update_user', to: 'admin#update_user'
+    patch 'expunge_user', to: 'admin#expunge_user'
     scope 'tags', as: 'tags' do
       delete ':tag_id/delete', to: 'admin#delete_tag', as: 'delete'
       get ':tag_id/edit', to: 'admin#edit_tag', as: 'edit'
       get 'new', to: 'admin#new_tag'
       post 'create', to: 'admin#create_tag'
-      patch ':tag_id/update', :to => 'admin#update_tag'
+      patch ':tag_id/update', to: 'admin#update_tag'
       get 'index', to: 'admin#tag_list'
       get ':tag_id', to: 'admin#show_tag', as: 'show'
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
@@ -138,7 +138,7 @@ Fromthepage::Application.routes.draw do
     get 'document_sets_select', to: 'work#document_sets_select'
   end
 
-  resources :page, except: [:index, :show, :edit], param: :page_id do
+  resources :page, except: [ :index, :show, :edit ], param: :page_id do
     post :reorder, on: :collection
     post :rotate, on: :collection
   end
@@ -191,7 +191,7 @@ Fromthepage::Application.routes.draw do
     get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
     post 'convert', to: 'ia#convert'
     post 'import_work', to: 'ia#import_work'
-    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
+    match 'confirm_import', to: 'ia#confirm_import', via: [ :get, :post ]
   end
 
   if Rails.application.config.upload_host.present?
@@ -221,7 +221,7 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
 
-  resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
+  resources :search_attempt, path: 'search_attempt', only: [ :show, :create ] do
     get :click, to: 'search_attempt#click', on: :collection
   end
 
@@ -236,7 +236,7 @@ Fromthepage::Application.routes.draw do
     get 'disable_org_fields', to: 'category#disable_org_fields'
     get 'delete', to: 'category#delete'
     post 'create', to: 'category#create'
-    patch 'update', :to => 'category#update'
+    patch 'update', to: 'category#update'
   end
 
   scope 'transcribe', as: 'transcribe' do
@@ -246,8 +246,8 @@ Fromthepage::Application.routes.draw do
     get 'guest', to: 'transcribe#guest'
     get 'edit_fields', to: 'transcribe#edit_fields'
     get 'translate', to: 'transcribe#translate'
-    patch 'save_transcription', :to => 'transcribe#save_transcription'
-    patch 'save_translation', :to => 'transcribe#save_translation'
+    patch 'save_transcription', to: 'transcribe#save_transcription'
+    patch 'save_translation', to: 'transcribe#save_translation'
   end
 
   scope 'deed', as: 'deed' do
@@ -276,7 +276,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'user', as: 'user' do
     get 'update_profile', to: 'user#update_profile'
-    patch 'update', :to => 'user#update'
+    patch 'update', to: 'user#update'
     get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
     post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
     post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
@@ -285,13 +285,13 @@ Fromthepage::Application.routes.draw do
 
   scope 'page_block', as: 'page_block' do
     get 'list', to: 'page_block#list'
-    patch 'update', :to => 'page_block#update'
+    patch 'update', to: 'page_block#update'
     get 'edit', to: 'page_block#edit'
   end
 
   scope 'rails', as: 'rails' do
-    get 'mailers' => "rails/mailers#index"
-    get 'mailers/*path' => "rails/mailers#preview"
+    get 'mailers' => 'rails/mailers#index'
+    get 'mailers/*path' => 'rails/mailers#preview'
   end
 
   scope 'sc_collections', as: 'sc_collections' do
@@ -300,9 +300,9 @@ Fromthepage::Application.routes.draw do
     post 'import_cdm', to: 'sc_collections#import_cdm'
     get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
     post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
-    match 'import', to: 'sc_collections#import', via: [:get, :post]
-    match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
-    match 'import_collection', to: 'sc_collections#import_collection', via: [:get, :post]
+    match 'import', to: 'sc_collections#import', via: [ :get, :post ]
+    match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [ :get, :post ]
+    match 'import_collection', to: 'sc_collections#import_collection', via: [ :get, :post ]
   end
 
   scope 'application', as: 'application' do
@@ -310,12 +310,12 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'document_set', as: 'document_set' do
-    get 'edit/:id', :to => 'document_sets#edit', as: 'edit'
+    get 'edit/:id', to: 'document_sets#edit', as: 'edit'
     get 'remove_from_set', to: 'document_sets#remove_from_set'
-    post 'create', :to => 'document_sets#create'
-    post 'assign_works', :to => 'document_sets#assign_works'
-    get 'transfer_works', :to => 'document_sets#transfer_form', :as => 'transfer_form'
-    post 'transfer_works', :to => 'document_sets#transfer', :as => 'transfer_works'
+    post 'create', to: 'document_sets#create'
+    post 'assign_works', to: 'document_sets#assign_works'
+    get 'transfer_works', to: 'document_sets#transfer_form', as: 'transfer_form'
+    post 'transfer_works', to: 'document_sets#transfer', as: 'transfer_works'
   end
 
   scope 'document_sets', as: 'document_sets' do
@@ -364,7 +364,7 @@ Fromthepage::Application.routes.draw do
 
 
   namespace :api do
-    get '/', to: "api#help"
+    get '/', to: 'api#help'
     namespace :v1 do
       get 'bulk_export', to: 'bulk_export#index'
       get 'bulk_export/:collection_slug', to: 'bulk_export#index'
@@ -375,31 +375,31 @@ Fromthepage::Application.routes.draw do
   end
 
 
-  get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
-  get '/iiif/:id/layer/:type', :to => 'iiif#layer'
-  get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
-  get '/iiif/set/:document_set_id', :to => 'iiif#document_set', as: :iiif_document_set
-  get '/iiif/collections', :to => 'iiif#collections'
-  get '/iiif/collections/:user_id', :to => 'iiif#user_collections', as: :iiif_user_collections
-  get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
-  get '/iiif/:page_id/notes', :to => 'iiif#notes'
-  get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas', as: 'iiif_canvas'
-  get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
-  get '/iiif/:work_id/structured', :to => 'iiif#structured_data_endpoint', as: 'iiif_work_strucured_data'
-  get '/iiif/:work_id/structured/:page_id', :to => 'iiif#structured_data_endpoint', as: 'iiif_page_strucured_data'
-  get '/iiif/:collection_id/structured/config/work', :to => 'iiif#structured_data_work_config_endpoint', as: 'iiif_work_strucured_data_config'
-  get '/iiif/:collection_id/structured/config/page', :to => 'iiif#structured_data_page_config_endpoint', as: 'iiif_page_strucured_data_config'
-  get '/iiif/structured/config/field/:transcription_field_id', :to => 'iiif#structured_data_field_config_endpoint', as: 'iiif_strucured_data_field_config'
-  get '/iiif/structured/config/column/:spreadsheet_column_id', :to => 'iiif#structured_data_column_config_endpoint', as: 'iiif_strucured_data_column_config'
-  get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
+  get '/iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
+  get '/iiif/:id/layer/:type', to: 'iiif#layer'
+  get '/iiif/collection/:collection_id', to: 'iiif#collection', as: :iiif_collection
+  get '/iiif/set/:document_set_id', to: 'iiif#document_set', as: :iiif_document_set
+  get '/iiif/collections', to: 'iiif#collections'
+  get '/iiif/collections/:user_id', to: 'iiif#user_collections', as: :iiif_user_collections
+  get '/iiif/:page_id/list/:annotation_type', to: 'iiif#list'
+  get '/iiif/:page_id/notes', to: 'iiif#notes'
+  get '/iiif/:page_id/note/:note_id', to: 'iiif#note'
+  get '/iiif/:work_id/canvas/:page_id', to: 'iiif#canvas', as: 'iiif_canvas'
+  get '/iiif/:work_id/status', to: 'iiif#manifest_status'
+  get '/iiif/:work_id/structured', to: 'iiif#structured_data_endpoint', as: 'iiif_work_strucured_data'
+  get '/iiif/:work_id/structured/:page_id', to: 'iiif#structured_data_endpoint', as: 'iiif_page_strucured_data'
+  get '/iiif/:collection_id/structured/config/work', to: 'iiif#structured_data_work_config_endpoint', as: 'iiif_work_strucured_data_config'
+  get '/iiif/:collection_id/structured/config/page', to: 'iiif#structured_data_page_config_endpoint', as: 'iiif_page_strucured_data_config'
+  get '/iiif/structured/config/field/:transcription_field_id', to: 'iiif#structured_data_field_config_endpoint', as: 'iiif_strucured_data_field_config'
+  get '/iiif/structured/config/column/:spreadsheet_column_id', to: 'iiif#structured_data_column_config_endpoint', as: 'iiif_strucured_data_column_config'
+  get '/iiif/:work_id/:page_id/status', to: 'iiif#canvas_status'
   # {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
-  get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
-  get '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
-  get '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
-  get '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
-  get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
-  get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
+  get '/iiif/:page_id/annotation/:annotation_type', to: 'iiif#annotation'
+  get '/iiif/:work_id/sequence/:sequence_name', to: 'iiif#sequence'
+  get '/iiif/for/:id', to: 'iiif#for', constraints: { id: /.*/ } # redirector
+  get '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, to: 'iiif#contributions'
+  get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ }, to: 'iiif#contributions'
+  get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, to: 'iiif#contributions'
 
   get '/iiif/:work_id/export/tei', as: 'iiif_work_export_tei', to: 'iiif#export_work_tei'
   get '/iiif/:work_id/export/html', as: 'iiif_work_export_html', to: 'iiif#export_work_html'
@@ -414,33 +414,33 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/export/:page_id/plaintext/emended', as: 'iiif_page_export_plaintext_emended', to: 'iiif#export_page_plaintext_emended'
   get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
 
-  get '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
-  get '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+  get '/iiif/admin/explore/:at_id', to: 'sc_collections#explore', constraints: { at_id: /.*/ }
+  get '/iiif/admin/import_manifest', to: 'sc_collections#import_manifest'
 
-  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
-  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+  get   '/iiif/admin/explore/:at_id', to: 'sc_collections#explore', constraints: { at_id: /.*/ }
+  get   '/iiif/admin/import_manifest', to: 'sc_collections#import_manifest'
 
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get   'YaquinaLights' => 'collection#show', :collection_id => 58
 
-  patch 'work/update_work', :to => 'work#update_work'
-  patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
-  patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
-  put   'article/article_category', :to => 'article#article_category'
-  patch 'category/update', :to => 'category#update'
-  patch 'user/update', :to => 'user#update'
-  get   ':collection_id/article/upload', :to => 'article#upload_form', :as => 'article_upload_form'
-  post  'article/upload', :to => 'article#subject_upload', :as => 'article_subject_upload'
-  get   '/article/upload_example', :to => 'article#upload_example', :as => 'article_upload_example'
+  patch 'work/update_work', to: 'work#update_work'
+  patch 'transcribe/save_transcription', to: 'transcribe#save_transcription'
+  patch 'transcribe/save_translation', to: 'transcribe#save_translation'
+  put   'article/article_category', to: 'article#article_category'
+  patch 'category/update', to: 'category#update'
+  patch 'user/update', to: 'user#update'
+  get   ':collection_id/article/upload', to: 'article#upload_form', as: 'article_upload_form'
+  post  'article/upload', to: 'article#subject_upload', as: 'article_subject_upload'
+  get   '/article/upload_example', to: 'article#upload_example', as: 'article_upload_example'
 
-  patch 'page_block/update', :to => 'page_block#update'
-  patch 'admin/update_user', :to => 'admin#update_user'
-  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
-  patch 'admin/expunge_user', :to => 'admin#expunge_user'
+  patch 'page_block/update', to: 'page_block#update'
+  patch 'admin/update_user', to: 'admin#update_user'
+  get   'admin/expunge_confirmation', to: 'admin#expunge_confirmation'
+  patch 'admin/expunge_user', to: 'admin#expunge_user'
 
-  get '/rails/mailers' => "rails/mailers#index"
-  get '/rails/mailers/*path' => "rails/mailers#preview"
+  get '/rails/mailers' => 'rails/mailers#index'
+  get '/rails/mailers/*path' => 'rails/mailers#preview'
 
   get '/software', to: 'static#software', as: :about
   get '/about', to: 'static#about', as: :about_us
@@ -460,7 +460,7 @@ Fromthepage::Application.routes.draw do
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
-  resources :document_sets, except: [:show, :create, :edit]
+  resources :document_sets, except: [ :show, :create, :edit ]
 
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
@@ -468,7 +468,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
     get 'search', to: 'user#search', as: :owner_search
 
-    resources :collection, path: '', only: [:show] do
+    resources :collection, path: '', only: [ :show ] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
@@ -517,12 +517,12 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-      #work related routes
-      #have to use match because it must be both get and post
-      match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
-      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
+      # work related routes
+      # have to use match because it must be both get and post
+      match ':work_id/:page_range', to: 'display#read_work', via: [ :get, :post ], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
+      match ':work_id', to: 'display#read_work', via: [ :get, :post ], as: :read_work
 
-      resources :work, path: '', param: :work_id, only: [:edit] do
+      resources :work, path: '', param: :work_id, only: [ :edit ] do
         get 'download', on: :member
         get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
@@ -547,7 +547,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
       get ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
       get ':work_id/search', to: 'work#search', as: 'work_search'
-      #page related routes
+      # page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
       get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
       get ':work_id/transcribe_monitor/:page_id', as: 'monitor_view', to: 'transcribe#monitor_view'
@@ -571,7 +571,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
       get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
 
-      #article related routes
+      # article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'
       get 'article/:article_id/relationship_graph', to: 'article#relationship_graph', as: 'article_relationship_graph'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'

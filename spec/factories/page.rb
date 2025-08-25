@@ -10,8 +10,8 @@ FactoryBot.define do
     trait :transcribed do
       status { :transcribed }
     end
-    factory :transcribed_page, :traits => [:transcribed]
-    factory :page_with_links, :traits => [:with_links]
+    factory :transcribed_page, traits: [ :transcribed ]
+    factory :page_with_links, traits: [ :with_links ]
 
     trait :with_image do
       base_image { Rails.root.join('test_data/images/pages/sanskrit.jpg') }

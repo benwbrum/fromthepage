@@ -1,4 +1,4 @@
-#require_dependency "user"
+# require_dependency "user"
 require 'fileutils'
 require 'rmagick'
 require 'zip'
@@ -6,7 +6,6 @@ require 'shellwords'
 include Magick
 
 module ImageHelper
-
   #############################
   # Code for new zoom feature
   #############################
@@ -25,17 +24,16 @@ module ImageHelper
         zip_file.extract(f, outfile)
       end
     end
-
   end
 
   def self.calculate_page_size_and_dpi(filename)
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
-    raw_page_size=`pdfinfo #{Shellwords.escape(filename)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
+    raw_page_size=`pdfinfo #{Shellwords.escape(filename)} | grep "Page size"`.gsub(/Page size:\s+/, '').gsub(' pts', '').chomp
     dpi=300
-    pixel_dim=raw_page_size.split(' x ').map{|e| e.to_f / 72 * dpi}
+    pixel_dim=raw_page_size.split(' x ').map { |e| e.to_f / 72 * dpi }
     if pixel_dim.max >= 16000
       dpi=150
-      pixel_dim=raw_page_size.split(' x ').map{|e| e.to_f / 72 * dpi}
+      pixel_dim=raw_page_size.split(' x ').map { |e| e.to_f / 72 * dpi }
       if pixel_dim.max >= 16000
         dpi=72
       end
@@ -43,11 +41,11 @@ module ImageHelper
     { raw_page_size: raw_page_size, dpi: dpi }
   end
 
-  def self.extract_pdf(filename, ocr=false)
-    pattern = Regexp.new(File.extname(filename) + "$")
+  def self.extract_pdf(filename, ocr = false)
+    pattern = Regexp.new(File.extname(filename) + '$')
     destination = filename.gsub(pattern, '')
     FileUtils.mkdir(destination) unless File.exist?(destination)
-    pattern = File.join(destination, "page_%04d.jpg")
+    pattern = File.join(destination, 'page_%04d.jpg')
 
     page_info = calculate_page_size_and_dpi(filename)
     dpi = page_info[:dpi]
@@ -58,8 +56,8 @@ module ImageHelper
 
     if ocr
       # now extract OCR text
-      pattern = File.join(destination, "page_%04d.txt")
-      page_count = Dir.glob(File.join(destination, "*.jpg")).count
+      pattern = File.join(destination, 'page_%04d.txt')
+      page_count = Dir.glob(File.join(destination, '*.jpg')).count
       1.upto(page_count) do |page_num|
         output_file = pattern % page_num
         pdftotext = "pdftotext -f #{page_num} -l #{page_num} #{Shellwords.escape(filename)} #{Shellwords.escape(output_file)}"
@@ -86,24 +84,24 @@ module ImageHelper
   MAX_FILE_SIZE = 2000000
 
   def self.compress_files_in_dir(dirname)
-    files = Dir.glob(File.join(dirname, "*.*"))
+    files = Dir.glob(File.join(dirname, '*.*'))
     files.each { |filename| compress_file(filename) }
   end
 
   def self.compress_image(filename)
     if needs_compression?(filename)
       extension = File.extname(filename)
-      working_file = File.join(File.dirname(filename),"resizing.#{extension}")
+      working_file = File.join(File.dirname(filename), "resizing.#{extension}")
       9.downto(2).each do |decile|
         GC.start
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)
-        compressed.write(working_file) { |options| options.quality = percent}
+        compressed.write(working_file) { |options| options.quality = percent }
         p "Compressed file is now #{File.size(working_file)} at quality #{percent}"
 
         unless needs_compression? working_file
           print "compressed.write('#{filename}')  { self.quality = #{percent} }"
-          break #we're done here
+          break # we're done here
         end
       end
       File.unlink(filename)
@@ -114,10 +112,10 @@ module ImageHelper
 
   def self.convert_tiff(filename)
     original = Magick::ImageList.new(filename)
-    new_file = File.join((File.dirname(filename)), (File.basename(filename, ".*") + ".jpg"))
+    new_file = File.join((File.dirname(filename)), (File.basename(filename, '.*') + '.jpg'))
     print "Converted file path is #{new_file}"
     converted = original.write("#{new_file}")
-    return converted
+    converted
   end
 
   def self.needs_compression?(filename)
@@ -169,7 +167,7 @@ module ImageHelper
 
   def shrink_to_sextodecimo(image)
     shrink(image, 2)
-    safe_update(image, { :shrink_completed => true })
+    safe_update(image, { shrink_completed: true })
   end
 
   def rotate_file(file, orientation)
@@ -184,7 +182,7 @@ module ImageHelper
     if @logger
       @logger.debug("ImageHelper rotate(#{image.id}, #{orientation}, #{factor})")
     end
-    if ( 0 != orientation)
+    if 0 != orientation
       file = image.shrunk_file(factor)
       if @logger
         @logger.debug("ImageHelper rotating #{file}")
@@ -196,7 +194,7 @@ module ImageHelper
   # This may now be dead code
   def rotate_sextodecimo(image, orientation)
     rotate(image, orientation, 2)
-    safe_update(image, { :rotate_completed => true })
+    safe_update(image, { rotate_completed: true })
   end
 
   def crop_sextodecimo(image, start_y, height)
@@ -208,13 +206,12 @@ module ImageHelper
     orig = nil
     crop = nil
     GC.start
-##    image.update_attribute(:crop_completed, true)
-##    TitledImage.transaction(image) do
-#      image = TitledImage.find(image.id)
-#      image.crop_completed = true
-#      image.save!
-##    end
-    safe_update(image, { :crop_completed => true })
+    ##    image.update_attribute(:crop_completed, true)
+    ##    TitledImage.transaction(image) do
+    #      image = TitledImage.find(image.id)
+    #      image.crop_completed = true
+    #      image.save!
+    ##    end
+    safe_update(image, { crop_completed: true })
   end
-
 end

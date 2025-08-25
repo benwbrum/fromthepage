@@ -82,7 +82,7 @@ class NotesController < ApplicationController
   def filtered_notes
     @sorting = (params[:sort] || 'time').to_sym
     @ordering = (params[:order] || 'DESC').downcase.to_sym
-    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+    @ordering = [ :asc, :desc ].include?(@ordering) ? @ordering : :desc
 
     if @collection.present?
       notes_scope = @collection.notes.includes(:user, :work, :page, { collection: :owner })
@@ -145,5 +145,4 @@ class NotesController < ApplicationController
     deed.save!
     update_search_attempt_contributions
   end
-
 end

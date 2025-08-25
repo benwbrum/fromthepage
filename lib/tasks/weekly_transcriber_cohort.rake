@@ -1,11 +1,11 @@
 namespace :fromthepage do
-  desc "weekly transcriber cohort"
-  task :weekly_transcriber_cohort => :environment do
+  desc 'weekly transcriber cohort'
+  task weekly_transcriber_cohort: :environment do
     # generate a csv file of users who signed up in the last week and write it out to a temporary file
     target_actions = AhoyActivitySummary::WEEKLY_TRANSCRIBER_COHORT_TARGET_ACTIONS
     TRANSCRIBER_TEMP_FILE='/tmp/transcriber_conversion_cohorts.csv'
     week_cohorts=[]
-    current_day=Date.new(2023,2,12)
+    current_day=Date.new(2023, 2, 12)
     while current_day+1.week < Date.today
       week_cohorts << current_day
       current_day=current_day+1.week
@@ -80,6 +80,5 @@ namespace :fromthepage do
         print "SMTP Failed: Exception: #{e.message} \n"
       end
     end
-
   end
 end

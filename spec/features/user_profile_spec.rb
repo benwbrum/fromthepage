@@ -10,7 +10,7 @@ describe 'User profile and settings actions' do
       display_name: 'user_login'
     )
     @user.save
-  
+
     visit new_user_session_path
     fill_in 'Login', with: 'user_login'
     fill_in 'Password', with: 'password'
@@ -41,6 +41,4 @@ describe 'User profile and settings actions' do
     expect(page).to have_content(@user.display_name)
     expect(page).to have_content('Contributions')
   end
-
-
 end

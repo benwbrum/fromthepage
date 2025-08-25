@@ -1,8 +1,7 @@
 namespace :fromthepage do
   namespace :transkribus do
-
-    desc "Check outstanding Transkribus API requests"
-    task :check_outstanding_requests => :environment do |t,args|
+    desc 'Check outstanding Transkribus API requests'
+    task check_outstanding_requests: :environment do |t, args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
@@ -15,11 +14,10 @@ namespace :fromthepage do
         page_processor = PageProcessor.new(page, external_api_request, transkribus_username, transkribus_password)
         page_processor.check_status_and_update_page
       end
-
     end
 
-    desc "Process an entire collection: collection_id, [all|unprocessed]"
-    task :process_collection, [:collection_id, :page_filter, :model_id] => :environment do |t,args|
+    desc 'Process an entire collection: collection_id, [all|unprocessed]'
+    task :process_collection, [ :collection_id, :page_filter, :model_id ] => :environment do |t, args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
@@ -44,7 +42,7 @@ namespace :fromthepage do
 
 
       if args.page_filter.nil?
-        page_filter = "all"
+        page_filter = 'all'
       else
         page_filter = args.page_filter
       end
@@ -65,8 +63,8 @@ namespace :fromthepage do
       end
     end
 
-    desc "Process a work: work_id, [all|unprocessed]"
-    task :process_work, [:work_id, :page_filter] => :environment do |t,args|
+    desc 'Process a work: work_id, [all|unprocessed]'
+    task :process_work, [ :work_id, :page_filter ] => :environment do |t, args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
@@ -79,7 +77,7 @@ namespace :fromthepage do
         work = Work.find args.work_id
       end
       if args.page_filter.nil?
-        page_filter = "all"
+        page_filter = 'all'
       else
         page_filter = args.page_filter
       end
@@ -92,6 +90,5 @@ namespace :fromthepage do
         end
       end
     end
-
   end
 end

@@ -27,7 +27,7 @@ module AhoyActivityUtils
 
       # We group by collection first, so we can sort and sum the timestamps
       events.group_by { |e| e.properties['collection_id'] }.each do |cid, event|
-        timestamps = event.map { |e| [e[:time], e[:name]] }
+        timestamps = event.map { |e| [ e[:time], e[:name] ] }
 
         minutes = total_contiguous_seconds(timestamps) / 60
 
@@ -52,7 +52,7 @@ module AhoyActivityUtils
     end
 
     latest_ahoy_activity_summary = AhoyActivitySummary.order(date: :desc).first
-    keep_after_date = [AhoyActivitySummary::KEEP_AFTER.ago.to_date, latest_ahoy_activity_summary.date.yesterday].min
+    keep_after_date = [ AhoyActivitySummary::KEEP_AFTER.ago.to_date, latest_ahoy_activity_summary.date.yesterday ].min
 
     exclude_actions = AhoyActivitySummary::WEEKLY_TRIAL_COHORT_TARGET_ACTIONS +
                       AhoyActivitySummary::WEEKLY_TRANSCRIBER_COHORT_TARGET_ACTIONS
@@ -70,11 +70,11 @@ module AhoyActivityUtils
                 .delete_all
   end
 
-  def self.total_contiguous_seconds(times_and_names, tolerance=90.minutes)
+  def self.total_contiguous_seconds(times_and_names, tolerance = 90.minutes)
     total_seconds = 0
     from_time = nil
 
-    grouped_events = times_and_names.group_by{|e| e[0]}
+    grouped_events = times_and_names.group_by { |e| e[0] }
     times=grouped_events.keys.sort
 
     for time in times.sort do
@@ -82,11 +82,11 @@ module AhoyActivityUtils
       if time_diff < tolerance && time_diff > 0
         total_seconds += time_diff
       else
-        #if less than tolerance and there's a discontinuity
-        #is the first event a save
-        #use save transcription or assign categories for indicating a save since they happen at the same event time
+        # if less than tolerance and there's a discontinuity
+        # is the first event a save
+        # use save transcription or assign categories for indicating a save since they happen at the same event time
         events = grouped_events[time]
-        names = events.map{|e| e[1]}
+        names = events.map { |e| e[1] }
         if names.include?('transcribe#assign_categories') || names.include?('transcribe#save_transcription')
           # if the first event was a save, they were transcribing and we need to pad
           # just pad by adding 20 minutes
@@ -96,6 +96,6 @@ module AhoyActivityUtils
       end
       from_time = time
     end
-    return total_seconds
+    total_seconds
   end
 end

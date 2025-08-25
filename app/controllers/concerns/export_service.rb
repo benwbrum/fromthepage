@@ -16,11 +16,11 @@ module ExportService
 
 
 
-  def path_from_work(work, original_filenames=false)
+  def path_from_work(work, original_filenames = false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')
     else
-      dirname = work.slug.truncate(200, omission: "")
+      dirname = work.slug.truncate(200, omission: '')
     end
 
     dirname
@@ -29,7 +29,7 @@ module ExportService
   def add_readme_to_zip(work:, out:, by_work:, original_filenames:)
     dirname = path_from_work(work)
     readme = "#{Rails.root}/doc/zip/README"
-    file = File.open(readme, "r")
+    file = File.open(readme, 'r')
     path = File.join dirname, 'README.txt'
     out.put_next_entry path
     out.write file.read
@@ -40,11 +40,11 @@ module ExportService
 
     dirname = path_from_work(work)
     case edition
-    when "facing"
-      path = File.join dirname, 'printable', "facing_edition.pdf"
-    when "text"
+    when 'facing'
+      path = File.join dirname, 'printable', 'facing_edition.pdf'
+    when 'text'
       path = File.join dirname, 'printable', "text.#{output_format}"
-    when "text_only"
+    when 'text_only'
       path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
@@ -69,7 +69,7 @@ module ExportService
           include_contributors: include_contributors,
           include_notes: include_notes
         },
-        formats: [:html]
+        formats: [ :html ]
       )
 
     # write the string to a temp directory
@@ -107,33 +107,33 @@ module ExportService
   end
 
   def export_owner_mailing_list_csv(out:, owner:)
-    path = "mailing_list.csv"
+    path = 'mailing_list.csv'
     out.put_next_entry(path)
     out.write(owner_mailing_list_csv(owner))
   end
 
   def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
-    path = "all_collaborator_time.csv"
+    path = 'all_collaborator_time.csv'
     out.put_next_entry(path)
-    out.write(detailed_activity_csv(owner, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+    out.write(detailed_activity_csv(owner, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
   end
 
   def export_admin_searches_csv(out:, report_arguments:)
-    path = "admin_searches.csv"
+    path = 'admin_searches.csv'
     out.put_next_entry(path)
-    out.write(admin_searches_csv(report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+    out.write(admin_searches_csv(report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
   end
 
   def export_collection_activity_csv(out:, collection:, report_arguments:)
-    path = "collection_detailed_activity.csv"
+    path = 'collection_detailed_activity.csv'
     out.put_next_entry(path)
-    out.write(collection_activity_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+    out.write(collection_activity_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
   end
 
   def export_collection_contributors_csv(out:, collection:, report_arguments:)
-    path = "collection_contributors_activity.csv"
+    path = 'collection_contributors_activity.csv'
     out.put_next_entry(path)
-    out.write(collection_contributors_csv(collection, report_arguments["start_date"].to_datetime, report_arguments["end_date"].to_datetime))
+    out.write(collection_contributors_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
   end
 
   def export_work_metadata_csv(out:, collection:)
@@ -145,44 +145,44 @@ module ExportService
   end
 
   def export_subject_csv(out:, collection:, work:)
-    path = "subject_index.csv"
+    path = 'subject_index.csv'
     out.put_next_entry(path)
     out.write(collection.export_subject_index_as_csv(work))
   end
 
   def export_subject_details_csv(out:, collection:)
-    path = "subject_details.csv"
+    path = 'subject_details.csv'
     out.put_next_entry(path)
     out.write(collection.export_subject_details_as_csv)
   end
 
   def export_table_csv_collection(out:, collection:)
-    path = "fields_and_tables.csv"
+    path = 'fields_and_tables.csv'
     out.put_next_entry(path)
     out.write(export_tables_as_csv(collection))
   end
 
   def export_table_csv_work(out:, work:, by_work:, original_filenames:)
     if by_work
-      path = File.join(path_from_work(work, original_filenames), 'csv', "fields_and_tables.csv")
+      path = File.join(path_from_work(work, original_filenames), 'csv', 'fields_and_tables.csv')
     else
-      path = File.join("fields_and_tables", "#{path_from_work(work, original_filenames)}.csv")
+      path = File.join('fields_and_tables', "#{path_from_work(work, original_filenames)}.csv")
     end
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
   end
 
   def export_collection_notes_csv(out:, collection:)
-    path = "collection_notes.csv"
+    path = 'collection_notes.csv'
     out.put_next_entry(path)
     out.write(export_notes_as_csv(collection))
   end
 
   def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
     if by_work
-      path = File.join(path_from_work(work, original_filenames), 'tei', "tei.xml")
+      path = File.join(path_from_work(work, original_filenames), 'tei', 'tei.xml')
     else
-      path = File.join("tei", "#{path_from_work(work, original_filenames)}.xml")
+      path = File.join('tei', "#{path_from_work(work, original_filenames)}.xml")
     end
     out.put_next_entry path
     out.write work_to_tei(work, export_user)
@@ -196,15 +196,15 @@ module ExportService
     end
 
     case name
-    when "verbatim"
+    when 'verbatim'
       out.put_next_entry path
       out.write @work.verbatim_transcription_plaintext
-    when "expanded"
+    when 'expanded'
       if @work.collection.subjects_disabled
         out.put_next_entry path
         out.write @work.emended_transcription_plaintext
       end
-    when "searchable"
+    when 'searchable'
       out.put_next_entry path
       out.write @work.searchable_plaintext
     end
@@ -219,10 +219,10 @@ module ExportService
 
     if @work.supports_translation?
       case name
-      when "verbatim"
+      when 'verbatim'
         out.put_next_entry path
         out.write @work.verbatim_translation_plaintext
-      when "expanded"
+      when 'expanded'
         if @work.collection.subjects_disabled
           out.put_next_entry path
           out.write @work.emended_translation_plaintext
@@ -234,24 +234,24 @@ module ExportService
   def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:, index:)
     if by_work
       if original_filenames == :zero_index
-        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{index}.txt")
+        path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_transcript_pages", "#{index}.txt")
       else
-        path = File.join(path_from_work(page.work, original_filenames), "plaintext", "#{name}_transcript_pages", "#{page.title}.txt")
+        path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_transcript_pages", "#{page.title}.txt")
       end
     else
       path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
     end
 
     case name
-    when "verbatim"
+    when 'verbatim'
       out.put_next_entry path
       out.write page.verbatim_transcription_plaintext unless page.status_blank?
-    when "expanded"
+    when 'expanded'
       if page.collection.subjects_disabled
         out.put_next_entry path
         out.write page.emended_transcription_plaintext unless page.status_blank?
       end
-    when "searchable"
+    when 'searchable'
       out.put_next_entry path
       out.write page.search_text unless page.status_blank?
     end
@@ -266,10 +266,10 @@ module ExportService
 
     if @work.supports_translation?
       case name
-      when "verbatim"
+      when 'verbatim'
         out.put_next_entry path
         out.write page.verbatim_translation_plaintext unless page.status_blank?
-      when "expanded"
+      when 'expanded'
         if page.collection.subjects_disabled
           out.put_next_entry path
           out.write page.emended_translation_plaintext unless page.status_blank?
@@ -286,60 +286,60 @@ module ExportService
     end
 
     case name
-    when "full"
+    when 'full'
       full_view = ApplicationController.new.render_to_string(
-        :template => 'export/show',
-        :formats => [:html],
-        :work_id => @work.id,
-        :layout => false,
-        :encoding => 'utf-8',
-        :assigns => {
-          :collection => @work.collection,
-          :work => @work,
-          :export_user => export_user
+        template: 'export/show',
+        formats: [ :html ],
+        work_id: @work.id,
+        layout: false,
+        encoding: 'utf-8',
+        assigns: {
+          collection: @work.collection,
+          work: @work,
+          export_user: export_user
         })
       out.put_next_entry path
       out.write full_view
-    when "text"
+    when 'text'
       text_view = ApplicationController.new.render_to_string(
-        :template => 'export/text',
-        :formats => [:html],
-        :work_id => @work.id,
-        :layout => false,
-        :encoding => 'utf-8',
-        :assigns => {
-          :collection => @work.collection,
-          :work => @work,
-          :export_user => export_user
+        template: 'export/text',
+        formats: [ :html ],
+        work_id: @work.id,
+        layout: false,
+        encoding: 'utf-8',
+        assigns: {
+          collection: @work.collection,
+          work: @work,
+          export_user: export_user
         })
       out.put_next_entry path
       out.write text_view
-    when "transcript"
+    when 'transcript'
       transcript_view = ApplicationController.new.render_to_string(
-        :template => 'export/transcript',
-        :formats => [:html],
-        :work_id => @work.id,
-        :layout => false,
-        :encoding => 'utf-8',
-        :assigns => {
-          :collection => @work.collection,
-          :work => @work,
-          :export_user => export_user
+        template: 'export/transcript',
+        formats: [ :html ],
+        work_id: @work.id,
+        layout: false,
+        encoding: 'utf-8',
+        assigns: {
+          collection: @work.collection,
+          work: @work,
+          export_user: export_user
         })
       out.put_next_entry path
       out.write transcript_view
-    when "translation"
+    when 'translation'
       if @work.supports_translation?
         translation_view = ApplicationController.new.render_to_string(
-          :template => 'export/translation',
-          :formats => [:html],
-          :work_id => @work.id,
-          :layout => false,
-          :encoding => 'utf-8',
-          :assigns => {
-            :collection => @work.collection,
-            :work => @work,
-            :export_user => export_user
+          template: 'export/translation',
+          formats: [ :html ],
+          work_id: @work.id,
+          layout: false,
+          encoding: 'utf-8',
+          assigns: {
+            collection: @work.collection,
+            work: @work,
+            export_user: export_user
           })
         out.put_next_entry path
         out.write translation_view
@@ -351,7 +351,7 @@ module ExportService
     if by_work
       path = File.join(path_from_work(page.work, original_filenames), 'html', 'full_pages', "#{page.title}.html")
     else
-      path = File.join("html_full_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
+      path = File.join('html_full_pages', "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
     end
 
     out.put_next_entry path
@@ -363,7 +363,7 @@ module ExportService
   private
 
   def spreadsheet_heading_to_indexable(field_id, column_label)
-    {field_id => column_label}
+    { field_id => column_label }
   end
 
   def spreadsheet_column_to_indexable(column)
@@ -372,9 +372,9 @@ module ExportService
 
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:line_number, :position).where.not(input_type: 'instruction').pluck(:id)
-    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
-    renamed_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
-    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
+    orphan_cell_headings = TableCell.where(work_id: ids).where('transcription_field_id not in (select id from transcription_fields)').pluck(Arel.sql('DISTINCT header'))
+    renamed_cell_headings = TableCell.where(work_id: ids).where('transcription_field_id is not null').pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
+    markdown_cell_headings = TableCell.where(work_id: ids).where('transcription_field_id is null').pluck(Arel.sql('DISTINCT header'))
     cell_headings = orphan_cell_headings + markdown_cell_headings
 
     @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
@@ -385,11 +385,11 @@ module ExportService
     @headings += @page_metadata_headings
 
     input_types = collection.transcription_fields.pluck(:input_type)
-    spreadsheet_count = input_types.count("spreadsheet")
+    spreadsheet_count = input_types.count('spreadsheet')
 
-    #get headings from field-based
+    # get headings from field-based
     field_headings.each do |field_id|
-      field = TranscriptionField.where(:id => field_id).first
+      field = TranscriptionField.where(id: field_id).first
       if field && field.input_type == 'spreadsheet'
           raw_field_index = @raw_headings.index(field_id)
           field.spreadsheet_columns.each do |column|
@@ -406,7 +406,7 @@ module ExportService
         @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
       end
     end
-    #get headings from non-field-based
+    # get headings from non-field-based
     cell_headings.each do |raw_heading|
       @headings << (collection.transcription_fields.present? ? "#{raw_heading}" : "#{raw_heading} (text)")
       @headings << "#{raw_heading} (subject)" unless collection.transcription_fields.present?
@@ -421,15 +421,14 @@ module ExportService
       works = table_obj.works
     elsif table_obj.is_a?(Work)
       collection = table_obj.collection
-      #need arrays so they will act equivalently to the collection works
-      ids = [table_obj.id]
-      works = [table_obj]
+      # need arrays so they will act equivalently to the collection works
+      ids = [ table_obj.id ]
+      works = [ table_obj ]
     end
 
     get_headings(collection, ids)
 
-    csv_string = CSV.generate(:force_quotes => true) do |csv|
-
+    csv_string = CSV.generate(force_quotes: true) do |csv|
       page_cells = [
         'Work Title',
         'Work Identifier',
@@ -459,7 +458,6 @@ module ExportService
       works.each do |w|
         csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?, collection)
       end
-
     end
     csv_string
   end
@@ -473,10 +471,10 @@ module ExportService
       # for field-based projects in which some field labels had been changed halfway through
       # the transcription process.  As a result, it sees spreadsheet columns as "renamed" fields.
       # We think that there is some work-around code further down to support supreadsheets.
-      renamed_cell_headings = TableCell.where(work_id: work.id).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
+      renamed_cell_headings = TableCell.where(work_id: work.id).where('transcription_field_id is not null').pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
       input_types = collection.transcription_fields.pluck(:input_type)
-      spreadsheet_count = input_types.count("spreadsheet")
-      position = input_types.index("spreadsheet")
+      spreadsheet_count = input_types.count('spreadsheet')
+      position = input_types.index('spreadsheet')
     else
       # this variable apparently tracks how many times we should attempt to process a set of headers, designed for sparse tables
       renamed_cell_headings_count = 1
@@ -489,10 +487,10 @@ module ExportService
 
         page_url = collection_display_page_url(collection.owner, collection, work, page)
         page_notes = page.notes
-          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
+          .map { |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
-          .select{ |d| d.page_id == page.id}
-          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+          .select { |d| d.page_id == page.id }
+          .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
           .uniq.join('|')
 
         page_cells = [
@@ -508,20 +506,20 @@ module ExportService
         ]
 
         page_metadata_cells = page_metadata_cells(page)
-        data_cells = Array.new(@headings.count, "")
+        data_cells = Array.new(@headings.count, '')
         running_data = []
 
         if page.sections.blank?
           if has_spreadsheet
             grouped_hash = {}
-            spreadsheet_rows_and_ids = page.table_cells.where("transcription_field_id in (?)", spreadsheet_field_ids).pluck(:transcription_field_id, :row).uniq
+            spreadsheet_rows_and_ids = page.table_cells.where('transcription_field_id in (?)', spreadsheet_field_ids).pluck(:transcription_field_id, :row).uniq
             spreadsheet_rows_and_ids.each_with_index do |field_id_and_row, i|
               # find the cells with this id and row
               transcription_field_id = field_id_and_row[0]
               row = field_id_and_row[1]
               grouped_hash[i+1] = page.table_cells.where(row: row, transcription_field_id: transcription_field_id).to_a
             end
-            grouped_hash[1] += page.table_cells.where("transcription_field_id not in (?)", spreadsheet_field_ids).to_a
+            grouped_hash[1] += page.table_cells.where('transcription_field_id not in (?)', spreadsheet_field_ids).to_a
           else
             grouped_hash = page.table_cells.includes(:transcription_field).group_by(&:row)
           end
@@ -529,49 +527,49 @@ module ExportService
           grouped_hash.each do |row, cell_array|
             count = 0
             while count < renamed_cell_headings_count # this is 0 and should not be!
-              #get the cell data and add it to the array
+              # get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, count, position, spreadsheet_count)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, count, position, spreadsheet_count, row)
               end
-              #shift cells over if any page has sections
+              # shift cells over if any page has sections
               if !col_sections
                 section_cells = []
               else
-                section_cells = ["", "", ""]
+                section_cells = [ '', '', '' ]
               end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-              #create a new array for the next row
-              data_cells = Array.new(@headings.count, "")
+              # create a new array for the next row
+              data_cells = Array.new(@headings.count, '')
               count = count + 1
             end
           end
 
         else
-          #get the table sections/headers and iterate cells within the sections
-          page.sections.each_with_index do |section,rownum|
-            section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
-            section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
-            section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
-            section_cells = [section_title_text, section_title_subjects, section_title_categories]
-            #group the table cells per section into rows
+          # get the table sections/headers and iterate cells within the sections
+          page.sections.each_with_index do |section, rownum|
+            section_title_text = XmlSourceProcessor.cell_to_plaintext(section.title) || nil
+            section_title_subjects = XmlSourceProcessor.cell_to_subject(section.title) || nil
+            section_title_categories = XmlSourceProcessor.cell_to_category(section.title) || nil
+            section_cells = [ section_title_text, section_title_subjects, section_title_categories ]
+            # group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
-              #get the cell data and add it to the array
+              # get the cell data and add it to the array
               cell_data(cell_array, data_cells, transcription_field_flag, rownum, position, 0)
               if has_spreadsheet
                 running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
               end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-              #create a new array for the next row
-              data_cells = Array.new(@headings.count, "")
+              # create a new array for the next row
+              data_cells = Array.new(@headings.count, '')
             end
           end
         end
       end
   end
-    return csv
+    csv
   end
 
   def page_metadata_cells(page)
@@ -645,7 +643,7 @@ module ExportService
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
-    recent_activity = collection.deeds.where({created_at: start_date...end_date})
+    recent_activity = collection.deeds.where({ created_at: start_date...end_date })
         .where(deed_type: DeedType.contributor_types)
 
     headers = [
@@ -663,8 +661,7 @@ module ExportService
       :subject_url
     ]
 
-    rows = recent_activity.map {|d|
-
+    rows = recent_activity.map { |d|
     note = ''
     note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
 
@@ -677,7 +674,7 @@ module ExportService
       ]
 
       if d.deed_type == DeedType::ARTICLE_EDIT
-        record += ['','','','','',]
+        record += [ '', '', '', '', '' ]
         record += [
           d.article ? d.article.title : '[deleted]',
           d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
@@ -689,16 +686,16 @@ module ExportService
             collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
             d.work.title,
             collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
-            note,
+            note
           ]
           record += pagedeeds
-          record += ['','']
+          record += [ '', '' ]
         end
       end
       record
     }
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       rows.each do |row|
           records << row
@@ -726,16 +723,16 @@ module ExportService
       :page_reviews,
       :pages_translated,
       :ocr_corrections,
-      :notes,
+      :notes
     ]
 
-    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
+    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [ start_date..end_date ]).group(:user_id).sum(:minutes)
 
     stats = @active_transcribers.map do |user|
       time_proportional = user_time_proportional[user.id]
 
-      id_data = [user.display_name, user.real_name, user.email]
-      time_data = [time_proportional]
+      id_data = [ user.display_name, user.real_name, user.email ]
+      time_data = [ time_proportional ]
 
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
 
@@ -751,7 +748,7 @@ module ExportService
       id_data + time_data + user_stats
     end
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       stats.each do |user|
           records << user
@@ -777,7 +774,7 @@ module ExportService
     ]
 
     notes = collection.notes.order(created_at: :desc)
-    rows = notes.map {|n|
+    rows = notes.map { |n|
       page_url =collection_display_page_url(collection.owner, collection, n.page.work, n.page)
       page_contributors = n.page.deeds
         .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }

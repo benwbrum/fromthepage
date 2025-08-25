@@ -13,11 +13,11 @@ describe Work::Metadata::ExportCsv do
   let!(:metadata_field_2) { create(:transcription_field, :as_metadata, collection: collection, label: 'Label 2') }
   let!(:metadata_field_3) { create(:transcription_field, :as_metadata, collection: collection, label: 'Label 3') }
 
-  let(:original_metadata) { [{ label: 'en', value: 'Original Metadata' }].to_json }
+  let(:original_metadata) { [ { label: 'en', value: 'Original Metadata' } ].to_json }
   let(:metadata_description) do
     [
       { transcription_field_id: metadata_field_1.id, value: 'Value 1' },
-      { transcription_field_id: metadata_field_2.id, value: ['Value 2', 'Value 3'] }
+      { transcription_field_id: metadata_field_2.id, value: [ 'Value 2', 'Value 3' ] }
     ].to_json
   end
   let!(:work_1) do

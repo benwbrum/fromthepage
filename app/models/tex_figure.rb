@@ -15,7 +15,7 @@
 #
 class TexFigure < ApplicationRecord
   belongs_to :page, optional: true
-  acts_as_list :scope => :page
+  acts_as_list scope: :page
 
   before_save :review_artifact
 
@@ -33,15 +33,15 @@ class TexFigure < ApplicationRecord
 
   def self.process_artifacts(page)
     puts "TexFigure.process_artifacts(page_id = #{page.id})"
-    puts "PATH="
+    puts 'PATH='
     puts ENV['PATH']
-    puts "Modifying path"
-    ENV['PATH'] = ENV["PATH"].split(":").push(TEX_PATH).join(":")
+    puts 'Modifying path'
+    ENV['PATH'] = ENV['PATH'].split(':').push(TEX_PATH).join(':')
 
     page.tex_figures.each do |figure|
       puts "TexFigure.process_artifacts considering figure #{figure.id} source #{figure.source}"
       if figure.needs_artifact?
-        puts "figure needs artifact.  creating"
+        puts 'figure needs artifact.  creating'
         figure.create_artifact
       end
     end
@@ -55,7 +55,7 @@ class TexFigure < ApplicationRecord
 
   def self.log_file(page_id)
     FileUtils.mkdir_p(TexFigure.artifact_dir_name(page_id))
-    File.join(TexFigure.artifact_dir_name(page_id), "process.log")
+    File.join(TexFigure.artifact_dir_name(page_id), 'process.log')
   end
 
   ###################
@@ -63,24 +63,24 @@ class TexFigure < ApplicationRecord
   ###################
 
   def create_artifact
-    puts "TexFigure.create_artifact conditionally creating directory"
+    puts 'TexFigure.create_artifact conditionally creating directory'
     # make sure we have a full directory
     FileUtils.mkdir_p(TexFigure.artifact_dir_name(self.page_id))
 
-    puts "TexFigure.create_artifact conditionally creating directory"
+    puts 'TexFigure.create_artifact conditionally creating directory'
     ## actual code to run latex, etc
     write_source_file
 
-    puts "TexFigure.create_artifact preprocessing latex"
+    puts 'TexFigure.create_artifact preprocessing latex'
     # latex
     preprocess_latex
 
-    puts "TexFigure.create_artifact running latex"
+    puts 'TexFigure.create_artifact running latex'
     if run_latex
-      puts "TexFigure.create_artifact postprocessing latex"
+      puts 'TexFigure.create_artifact postprocessing latex'
       postprocess_latex
     else
-      puts "TexFigure.create_artifact processing errors"
+      puts 'TexFigure.create_artifact processing errors'
       postprocess_errors
     end
   end
@@ -111,7 +111,7 @@ class TexFigure < ApplicationRecord
     puts crop_command
     puts `#{crop_command}  2>&1`
 
-    #convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
+    # convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
     convert_command = "#{PDF2SVG} #{cropped_pdf_file_path} #{artifact_file_path}"
     logger.info(convert_command)
     puts convert_command
@@ -127,7 +127,7 @@ class TexFigure < ApplicationRecord
       error_lines << text.sub(line_id, new_number.to_s)
     end
 
-    error_line_string = ""
+    error_line_string = ''
     y = 45
     error_lines.each do |error|
       error_line_string << "<tspan x=\"10\" y=\"#{y}\"> #{error} </tspan>"
@@ -165,9 +165,9 @@ EOF
   ##############
   # Low-level
   ##############
-  ARTIFACT_EXTENSION = "svg"
+  ARTIFACT_EXTENSION = 'svg'
 
-  def text_to_png(infile,outfile)
+  def text_to_png(infile, outfile)
     puts "TexFiture.text_to_png(#{infile},#{outfile})"
     command = "convert -size 1000x2000 xc:white -pointsize 12 -fill red -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
     puts command
@@ -184,29 +184,29 @@ EOF
   end
 
   def review_artifact
-    if changed.include? "source"
+    if changed.include? 'source'
       clear_artifact
     end
   end
 
   def tex_log_file_path
-    artifact_file_path.sub(ARTIFACT_EXTENSION, "log")
+    artifact_file_path.sub(ARTIFACT_EXTENSION, 'log')
   end
 
   def raw_pdf_file_path
-    artifact_file_path.sub(ARTIFACT_EXTENSION, "pdf")
+    artifact_file_path.sub(ARTIFACT_EXTENSION, 'pdf')
   end
 
   def cropped_pdf_file_path
-    artifact_file_path.sub(ARTIFACT_EXTENSION, "crop.pdf")
+    artifact_file_path.sub(ARTIFACT_EXTENSION, 'crop.pdf')
   end
 
   def source_file_path
-    artifact_file_path.sub(ARTIFACT_EXTENSION, "tex")
+    artifact_file_path.sub(ARTIFACT_EXTENSION, 'tex')
   end
 
   def text_file_path
-    artifact_file_path.sub(ARTIFACT_EXTENSION, "txt")
+    artifact_file_path.sub(ARTIFACT_EXTENSION, 'txt')
   end
 
   def artifact_file_path
