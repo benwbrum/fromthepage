@@ -171,6 +171,9 @@ class DocumentSet < ApplicationRecord
   delegate :hide_completed,              to: :collection
   delegate :review_workflow,             to: :collection
   delegate :review_type,                 to: :collection
+  delegate :review_type_optional?,       to: :collection
+  delegate :review_type_required?,       to: :collection
+  delegate :review_type_restricted?,     to: :collection
   delegate :user_download,               to: :collection
   delegate :subjects_disabled,           to: :collection
   delegate :editor_buttons,              to: :collection
@@ -191,6 +194,7 @@ class DocumentSet < ApplicationRecord
   delegate :alphabetize_works,           to: :collection
   delegate :institution_signature,       to: :collection
   delegate :most_recent_deed_created_at, to: :collection
+
 
   def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)

@@ -5,6 +5,9 @@ class CreateCollection < ActiveRecord::Migration[5.0]
       t.column :title, :string, :limit => 255
       t.column :owner_user_id, :integer
       t.column :created_on, :datetime
+
+      # Backsupport for CI
+      t.string :review_type
     end
     # work fk
     add_column :works, :collection_id, :integer
