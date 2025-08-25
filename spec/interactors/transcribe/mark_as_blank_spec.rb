@@ -23,7 +23,7 @@ describe Transcribe::MarkAsBlank do
     let!(:page) { create(:page, work: work, status: :blank, translation_status: :blank) }
 
     it 'does not make any change' do
-      expect { result }.not_to change Deed.count
+      expect { result }.not_to(change { Deed.count })
       expect(result.success?).to be_truthy
     end
   end

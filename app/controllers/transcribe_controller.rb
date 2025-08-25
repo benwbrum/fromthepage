@@ -118,7 +118,7 @@ class TranscribeController  < ApplicationController
       ).perform
 
       if params[:page]['mark_blank'] == '1' || @page.saved_change_to_status?
-        next_page_id, flash_msg = next_lower_page_and_flash(@page, [:transcribe, :mark_page_blank])
+        next_page_id, flash_msg = next_lower_page_and_flash(@page, [ :transcribe, :mark_page_blank ])
 
         flash[:notice] = flash_msg
         redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, next_page_id)
@@ -649,10 +649,12 @@ class TranscribeController  < ApplicationController
     params.require(:page).permit(:mark_blank)
   end
 
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_notice')
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_and_next_notice')
   def next_lower_page_and_flash(page, scope)
     next_page_id = page.last? ? page.id : page.lower_item.id
     flash_msg = page.id == next_page_id ? t('saved_notice', scope: scope) : t('saved_and_next_notice', scope: scope)
 
-    [next_page_id, flash_msg]
+    [ next_page_id, flash_msg ]
   end
 end
