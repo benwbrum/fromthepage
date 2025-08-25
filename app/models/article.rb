@@ -71,6 +71,54 @@ class Article < ApplicationRecord
   edtf_date_attribute :begun
   edtf_date_attribute :ended
 
+  update_index('articles', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id)
+    end
+
+    search_fields = [
+      'title^2',
+      'title.no_underscores^1.3',
+      'content_english'
+    ]
+
+    ArticlesIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: search_fields
+          }
+        },
+        filter: [
+          bool: {
+            must_not: [
+              { terms: { collection_id: blocked_collections } }
+            ],
+            # At least one of the following must be true
+            should: [
+              { term: { is_public: is_public } },
+              { term: { owner_user_id: user&.id || -1 } },
+              { terms: { collection_id: collection_collabs } },
+              { terms: { docset_id: docset_collabs } }
+            ],
+            minimum_should_match: 1
+          }
+        ]
+      }
+    )
+  end
+
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
   end
@@ -228,5 +276,15 @@ class Article < ApplicationRecord
 
     [category] + ancestors
   end
-end
 
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: ArticlesIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
+  end
+end
