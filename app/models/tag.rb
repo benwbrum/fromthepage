@@ -22,7 +22,7 @@ class Tag < ApplicationRecord
   def self.featured_tags
     joins(:collections).where(canonical: true).merge(Collection.unrestricted.has_intro_block.has_picture.not_empty)
   end
-    
+
 
   module TagType
     DATE='date'
@@ -42,7 +42,7 @@ class Tag < ApplicationRecord
   def self.tag_by_subject(description, title)
     # get the subject tags
     subject_tags = Tag.where(tag_type: TagType::SUBJECT, canonical: true).pluck(:ai_text)
-    suggested_tags = DescriptionTagger::tag_description_by_subject(description, subject_tags, title)
+    suggested_tags = DescriptionTagger.tag_description_by_subject(description, subject_tags, title)
     # now find the tag records
     canonical_tags = find_from_string_list(suggested_tags, TagType::SUBJECT)
 
@@ -82,6 +82,4 @@ class Tag < ApplicationRecord
     end
     tag_list
   end
-
-
 end

@@ -3,7 +3,7 @@ require 'csv'
 class UserMailer < ActionMailer::Base
   include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
-  layout "mailer"
+  layout 'mailer'
 
   before_action :add_inline_attachments!
 
@@ -15,32 +15,32 @@ class UserMailer < ActionMailer::Base
   def upload_finished(document_upload)
     @document_upload = document_upload
 
-    mail to: @document_upload.user.email, subject: "Your upload is ready"
+    mail to: @document_upload.user.email, subject: 'Your upload is ready'
   end
 
   def upload_no_images_warning(document_upload)
     @document_upload = document_upload
 
-    mail to: @document_upload.user.email, subject: "Upload processing complete - no images found"
+    mail to: @document_upload.user.email, subject: 'Upload processing complete - no images found'
   end
 
   def bulk_export_finished(bulk_export)
     @bulk_export = bulk_export
 
-    mail to: @bulk_export.user.email, subject: "Your export is ready"
+    mail to: @bulk_export.user.email, subject: 'Your export is ready'
   end
 
   def new_owner(user, text)
     @owner = user
     @text = text
-    mail to: @owner.email, subject: "New FromThePage Owner"
+    mail to: @owner.email, subject: 'New FromThePage Owner'
   end
 
   def added_note(user, note)
     @user = user
     @note = note
     @page = note.page
-    mail to: @user.email, subject: "New FromThePage Note", reply_to: @note.collection.owner.email
+    mail to: @user.email, subject: 'New FromThePage Note', reply_to: @note.collection.owner.email
   end
 
   def collection_reviewer(user, obj)
@@ -67,7 +67,7 @@ class UserMailer < ActionMailer::Base
 
   def nightly_user_activity(user_activity)
     @user_activity = user_activity
-    mail to: @user_activity.user.email, subject: "New FromThePage Activity"
+    mail to: @user_activity.user.email, subject: 'New FromThePage Activity'
   end
 
   def new_mobile_user(user, obj)
@@ -82,10 +82,10 @@ class UserMailer < ActionMailer::Base
 
     if @result.rowset_errors.any?
       csv_data = CSV.generate(headers: true) do |csv|
-        csv << [:error, :work_id, :title]
+        csv << [ :error, :work_id, :title ]
 
         @result.rowset_errors.each do |error|
-          csv << [error[:error], error[:work_id], error[:title]]
+          csv << [ error[:error], error[:work_id], error[:title] ]
         end
       end
 
@@ -110,7 +110,7 @@ class UserMailer < ActionMailer::Base
   private
 
   def add_inline_attachments!
-    attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+    attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end
 
   class Activity
@@ -161,7 +161,7 @@ class UserMailer < ActionMailer::Base
 
         works.select { |work| work.access_object(user) && work.user_can_transcribe?(user) }
       end
-    end #end class << self
+    end # end class << self
 
     def has_contributions?
       (
@@ -169,5 +169,5 @@ class UserMailer < ActionMailer::Base
         @active_note_pages
       ).any?
     end
-  end #end Activity
+  end # end Activity
 end

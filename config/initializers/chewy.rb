@@ -8,11 +8,11 @@ Chewy.settings = if cloud_id.present?
                      api_key: Settings.elasticsearch.api_key,
                      prefix: Settings.elasticsearch.prefix
                    }
-                 else
+else
                    {
                      host: Settings.elasticsearch.host,
                      prefix: Settings.elasticsearch.prefix
                    }
-                 end
+end
 
 Chewy.root_strategy = :active_job

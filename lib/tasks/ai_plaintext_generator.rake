@@ -2,9 +2,8 @@ require 'alto_transformer'
 require 'openai/text_normalizer'
 require 'diff_tools'
 namespace :fromthepage do
-
-  desc "Generate AI Plaintext for Pages from ALTO XML"
-  task :generate_ai_plaintext, [:work_id, :diff_level] => :environment do |t,args|
+  desc 'Generate AI Plaintext for Pages from ALTO XML'
+  task :generate_ai_plaintext, [ :work_id, :diff_level ] => :environment do |t, args|
     diff_level=:none
     if !args.diff_level.nil?
       diff_level = args.diff_level.to_sym
@@ -32,8 +31,8 @@ namespace :fromthepage do
     end
   end
 
-  desc "Update initial transcriptions from Alto XML"
-  task :update_transcription_from_alto, [:work_id, :diff_level] => :environment do |t,args|
+  desc 'Update initial transcriptions from Alto XML'
+  task :update_transcription_from_alto, [ :work_id, :diff_level ] => :environment do |t, args|
     diff_level=:none
     if !args.diff_level.nil?
       diff_level = args.diff_level.to_sym
@@ -74,7 +73,7 @@ namespace :fromthepage do
       # normalize the plaintext
       normalized_plaintext = TextNormalizer.normalize_text(plaintext)
       # generate the diff
-      new_plaintext = DiffTools.diff_and_replace(plaintext, normalized_plaintext, "🤔")
+      new_plaintext = DiffTools.diff_and_replace(plaintext, normalized_plaintext, '🤔')
       if diff_level == :word
         new_plaintext.gsub!(/\b\w+🤔\w+\b/m, '🤔')
       end
@@ -83,6 +82,4 @@ namespace :fromthepage do
     end
     plaintext
   end
-
-
 end

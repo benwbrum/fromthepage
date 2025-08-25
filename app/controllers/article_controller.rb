@@ -2,8 +2,8 @@ class ArticleController < ApplicationController
   include AbstractXmlController
   include AbstractXmlHelper
 
-  skip_before_action :verify_authenticity_token, only: [:relationship_graph]
-  before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
+  skip_before_action :verify_authenticity_token, only: [ :relationship_graph ]
+  before_action :authorized?, except: [ :list, :show, :tooltip, :graph, :relationship_graph ]
 
   def tooltip
     render partial: 'tooltip'
@@ -39,8 +39,8 @@ class ArticleController < ApplicationController
   end
 
   def edit
-    @sex_autocomplete=@collection.articles.distinct.pluck(:sex).select{|e| !e.blank?}
-    @race_description_autocomplete=@collection.articles.distinct.pluck(:race_description).select{|e| !e.blank?}
+    @sex_autocomplete=@collection.articles.distinct.pluck(:sex).select { |e| !e.blank? }
+    @race_description_autocomplete=@collection.articles.distinct.pluck(:race_description).select { |e| !e.blank? }
   end
 
   def update
@@ -91,7 +91,7 @@ class ArticleController < ApplicationController
   end
 
   def graph
-    redirect_to :action => :show, :article_id => @article.id
+    redirect_to action: :show, article_id: @article.id
   end
 
   def relationship_graph
@@ -124,81 +124,81 @@ class ArticleController < ApplicationController
         center_article_to_document_links << document.id
         document.articles.each do |article|
           article_nodes << article
-          second_document_to_article_links << [document.id, article.id]
+          second_document_to_article_links << [ document.id, article.id ]
         end
       end
 
       # now construct the JSON response
       nodes=[]
       nodes << {
-        "id" => "S#{@article.id}",
-        "title" => @article.title,
-        "group" => @article.title,
-        "link" => collection_article_show_url(@collection.owner, @collection, @article)}
+        'id' => "S#{@article.id}",
+        'title' => @article.title,
+        'group' => @article.title,
+        'link' => collection_article_show_url(@collection.owner, @collection, @article) }
       article_nodes.uniq.each do |article|
         if article != @article
           nodes << {
-            "id" => "S#{article.id}",
-            "title" => article.title,
-            "bio" => xml_to_html(article.xml_text, false, nil, nil, nil, true),
-            "group" => article.categories.first&.title,
-            "link" => collection_article_show_url(@collection.owner, @collection, article)
+            'id' => "S#{article.id}",
+            'title' => article.title,
+            'bio' => xml_to_html(article.xml_text, false, nil, nil, nil, true),
+            'group' => article.categories.first&.title,
+            'link' => collection_article_show_url(@collection.owner, @collection, article)
           }
         end
       end
       if @collection.pages_are_meaningful?
         document_nodes.uniq.each do |page|
           nodes << {
-            "id" => "D#{page.id}",
-            "title" => page.title + " in " + page.work.title,
-            "group" => "Documents",
-            "link" => collection_display_page_path(@collection.owner, @collection, page.work, page)
+            'id' => "D#{page.id}",
+            'title' => page.title + ' in ' + page.work.title,
+            'group' => 'Documents',
+            'link' => collection_display_page_path(@collection.owner, @collection, page.work, page)
           }
         end
       else
         document_nodes.uniq.each do |work|
           nodes << {
-            "id" => "D#{work.id}",
-            "title" => work.title,
-            "group" => "Documents",
-            "link" => collection_read_work_url(@collection.owner, @collection, work)
+            'id' => "D#{work.id}",
+            'title' => work.title,
+            'group' => 'Documents',
+            'link' => collection_read_work_url(@collection.owner, @collection, work)
           }
         end
       end
 
       links=[]
-      article_links.tally.each do |article_id,link_count|
+      article_links.tally.each do |article_id, link_count|
         links << {
-          "source"=>"S#{@article.id}",
-          "target"=>"S#{article_id}",
-          "value"=>link_count,
-          "group"=>"direct"
+          'source'=>"S#{@article.id}",
+          'target'=>"S#{article_id}",
+          'value'=>link_count,
+          'group'=>'direct'
         }
       end
       center_article_to_document_links.tally.each do |work_id, link_count|
         links << {
-          "source"=>"S#{@article.id}",
-          "target"=>"D#{work_id}",
-          "value"=>link_count,
-          "group"=>"mentioned in"
+          'source'=>"S#{@article.id}",
+          'target'=>"D#{work_id}",
+          'value'=>link_count,
+          'group'=>'mentioned in'
         }
       end
       second_document_to_article_links.tally.each do |link_pair, link_count|
-        work_id,second_article_id = link_pair
+        work_id, second_article_id = link_pair
         links << {
-          "source"=>"D#{work_id}",
-          "target"=>"S#{second_article_id}",
-          "value"=>link_count,
-          "group"=>"mentions"
+          'source'=>"D#{work_id}",
+          'target'=>"S#{second_article_id}",
+          'value'=>link_count,
+          'group'=>'mentions'
         }
       end
 
-      doc={ "nodes" => nodes, "links" => links}
+      doc={ 'nodes' => nodes, 'links' => links }
       File.write(@article.d3js_file, doc.to_json)
     end
 
     # now render the d3js file
-    render file: @article.d3js_file, type: "application/javascript; charset=utf-8", layout: false
+    render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
   end
 
 
@@ -214,7 +214,7 @@ class ArticleController < ApplicationController
       '  ON from_links.article_id = a.id '+
       "WHERE to_links.article_id = #{@article.id} "+
       " AND from_links.article_id != #{@article.id} "
-    sql += "GROUP BY a.title, a.id "
+    sql += 'GROUP BY a.title, a.id '
     logger.debug(sql)
     article_links = Article.connection.select_all(sql)
     link_total = 0
@@ -223,7 +223,7 @@ class ArticleController < ApplicationController
     article_links.each do |l|
       link_count = l['link_count'].to_i
       link_total += link_count
-      link_max = [link_count, link_max].max
+      link_max = [ link_count, link_max ].max
 
       count_per_rank[link_count] ||= 0
       count_per_rank[link_count] += 1
@@ -254,11 +254,11 @@ class ArticleController < ApplicationController
         link_max: link_max,
         min_rank: min_rank
       },
-      formats: [:dot]
+      formats: [ :dot ]
     )
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    File.open(dot_file, "w") do |f|
+    File.open(dot_file, 'w') do |f|
       f.write(dot_source)
     end
     dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
@@ -284,15 +284,15 @@ class ArticleController < ApplicationController
 
     # csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
     begin
-      csv = CSV.read(params[:upload][:file].tempfile, :headers=>true)
+      csv = CSV.read(params[:upload][:file].tempfile, headers: true)
     rescue
       contents = File.read(params[:upload][:file].tempfile)
       detection = CharlockHolmes::EncodingDetector.detect(contents)
 
       csv = CSV.read(params[:upload][:file].tempfile,
-                      :encoding => "bom|#{detection[:encoding]}",
-                      :liberal_parsing => true,
-                      :headers => true)
+                      encoding: "bom|#{detection[:encoding]}",
+                      liberal_parsing: true,
+                      headers: true)
     end
 
     provenance = params[:upload][:file].original_filename + " (uploaded #{Time.now} UTC)"
@@ -302,7 +302,7 @@ class ArticleController < ApplicationController
       # create subjects if heading checks out
       csv.each do |row|
         title = row['HEADING']
-        article = @collection.articles.where(:title => title).first || Article.new(:title => title, :provenance => provenance)
+        article = @collection.articles.where(title: title).first || Article.new(title: title, provenance: provenance)
         article.collection = @collection
         article.source_text = row['ARTICLE']
         article.uri = row['URI']
@@ -320,7 +320,7 @@ class ArticleController < ApplicationController
 
   def upload_example
     example = File.read(File.join(Rails.root, 'app', 'views', 'static', 'subject_example.csv'))
-    send_data example, filename: "subject_example.csv"
+    send_data example, filename: 'subject_example.csv'
   end
 
   protected

@@ -10,7 +10,7 @@ class AddOwnerEmailToBlock < ActiveRecord::Migration[5.0]
       pb.save!
     end
   end
-  
+
   def down
   end
 end

@@ -48,6 +48,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Search for binding.pry
+        run: '! grep -R "binding.pry" . --exclude-dir=.git --exclude-dir=.github --exclude-dir=vendor'
+
       - name: Install Ruby gems
         run: bundle install --jobs 4 --retry 3
 
@@ -77,7 +80,6 @@ jobs:
 
       - name: Run RuboCop
         run: bundle exec rubocop
-        continue-on-error: true
 
       - name: Run tests
         run: xvfb-run -a bundle exec rspec spec

@@ -9,7 +9,7 @@ RSpec.describe 'shared/_flash', type: :view do
       error: '#icon-remove-sign',
       info: '#icon-warning-sign'
     })
-    
+
     # Stub the svg_symbol helper that renders the icon
     allow(view).to receive(:svg_symbol).and_return('<svg></svg>'.html_safe)
   end
@@ -17,7 +17,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'for notice flash messages' do
     it 'renders with correct ARIA attributes for status messages' do
       render partial: 'shared/flash', locals: { type: 'notice', message: 'Success!' }
-      
+
       expect(rendered).to have_css('div.flash.flash-notice[role="status"]')
       expect(rendered).to have_css('div[aria-live="polite"]')
       expect(rendered).to have_css('div[aria-atomic="true"]')
@@ -28,7 +28,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'for info flash messages' do
     it 'renders with correct ARIA attributes for status messages' do
       render partial: 'shared/flash', locals: { type: 'info', message: 'Information message' }
-      
+
       expect(rendered).to have_css('div.flash.flash-info[role="status"]')
       expect(rendered).to have_css('div[aria-live="polite"]')
       expect(rendered).to have_css('div[aria-atomic="true"]')
@@ -39,7 +39,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'for alert flash messages' do
     it 'renders with correct ARIA attributes for alert messages' do
       render partial: 'shared/flash', locals: { type: 'alert', message: 'Warning!' }
-      
+
       expect(rendered).to have_css('div.flash.flash-alert[role="alert"]')
       expect(rendered).to have_css('div[aria-live="assertive"]')
       expect(rendered).to have_css('div[aria-atomic="true"]')
@@ -50,7 +50,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'for error flash messages' do
     it 'renders with correct ARIA attributes for alert messages' do
       render partial: 'shared/flash', locals: { type: 'error', message: 'Error occurred!' }
-      
+
       expect(rendered).to have_css('div.flash.flash-error[role="alert"]')
       expect(rendered).to have_css('div[aria-live="assertive"]')
       expect(rendered).to have_css('div[aria-atomic="true"]')
@@ -65,7 +65,7 @@ RSpec.describe 'shared/_flash', type: :view do
 
     it 'does not render the flash message' do
       render partial: 'shared/flash', locals: { type: 'notice', message: 'Success!' }
-      
+
       expect(rendered).to be_blank
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'with Stimulus controller attributes' do
     it 'includes the flash controller and type data attributes' do
       render partial: 'shared/flash', locals: { type: 'notice', message: 'Success!' }
-      
+
       expect(rendered).to have_css('div[data-controller="flash"]')
       expect(rendered).to have_css('div[data-flash-type-value="notice"]')
     end
@@ -82,7 +82,7 @@ RSpec.describe 'shared/_flash', type: :view do
   context 'with close button' do
     it 'renders a close button with proper data action' do
       render partial: 'shared/flash', locals: { type: 'notice', message: 'Success!' }
-      
+
       expect(rendered).to have_css('a.flash_close[data-action="click->flash#close"]')
       expect(rendered).to include('&times;')
     end

@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe "owner view - collection" do
-
   before :all do
-
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
@@ -11,17 +9,17 @@ describe "owner view - collection" do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
-  end    
+    login_as(@owner, scope: :user)
+  end
 
   it "looks at owner tabs" do
     visit dashboard_owner_path
     expect(page).to have_selector('.owner-info')
     expect(page).to have_content("#{@owner.account_type} account since #{@owner.start_date.strftime('%b %d, %Y')}")
-    #look at owner stats in dashboard
+    # look at owner stats in dashboard
     expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
-    #look at tabs
+    # look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'
     expect(page).to have_content("Upload PDF or ZIP File")
@@ -89,10 +87,9 @@ describe "owner view - collection" do
     expect(page).to have_content("Contributions Between")
     expect(page).to have_content("Active Collaborators")
     expect(page).to have_content("All Collaborator Emails")
-    all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
+    all_transcribers = User.includes(:deeds).where(deeds: { collection_id: @collection.id }).distinct
     all_transcribers.each do |t|
       expect(page.find('#collaborators')).to have_content(t.email)
     end
   end
-
 end

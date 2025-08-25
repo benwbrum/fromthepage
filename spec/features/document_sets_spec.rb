@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "document sets", :order => :defined do
-
+describe "document sets", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
@@ -20,10 +19,10 @@ describe "document sets", :order => :defined do
   end
 
   it "sets up works for doc set tests" do
-    #turns off hiding worksso it doesn't mess up doc sets test (it isn't relevant)
+    # turns off hiding worksso it doesn't mess up doc sets test (it isn't relevant)
     @collection.hide_completed = false
     @collection.save
-    #change work restrictions temporarily so they don't interfere with doc set permissions
+    # change work restrictions temporarily so they don't interfere with doc set permissions
     work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = false
     work.save!
@@ -94,12 +93,12 @@ describe "document sets", :order => :defined do
   end
 
   it "views document sets - regular user" do
-    #need to restrict collection to test user view
+    # need to restrict collection to test user view
     @collection.restricted = true
     @collection.save!
-    #user with no privileges first
+    # user with no privileges first
     @test_set = DocumentSet.last
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     visit dashboard_path
     @collections.each do |c|
       unless c.restricted
@@ -115,7 +114,7 @@ describe "document sets", :order => :defined do
         expect(page).not_to have_content(set.title)
       end
     end
-    #check to view public document set
+    # check to view public document set
     page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.title)
@@ -132,11 +131,11 @@ describe "document sets", :order => :defined do
     page.find('.work-page_title').click_link(@set.works.first.pages.first.title)
     expect(page.current_path).not_to eq collections_list_path
     expect(page.find('h1')).to have_content(@set.works.first.pages.first.title)
-    #can a restricted user access a private doc set through a link
+    # can a restricted user access a private doc set through a link
     visit collection_path(@owner, @test_set)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@test_set.title)
-    #can a restricted user see a work from a private collection through a link
+    # can a restricted user see a work from a private collection through a link
     visit collection_read_work_path(@owner, @collection, @collection.works.last)
     expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
@@ -199,7 +198,7 @@ describe "document sets", :order => :defined do
   end
 
   it "checks notes on a public doc set/private collection", js: true do
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     fill_in 'Write a new note or ask a question...', with: "Test private note"
     find('#save_note_button').click
@@ -220,7 +219,7 @@ describe "document sets", :order => :defined do
 
 
     # test activity stream for collection
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit collection_path(@set.owner, @set.collection)
     expect(page).to have_content "Test private note"
     find("#show-more-deeds").click
@@ -233,9 +232,9 @@ describe "document sets", :order => :defined do
     @test_set = DocumentSet.last
     @collection.restricted = false
     @collection.save!
-    #delete the new document set
-    login_as(@owner, :scope => :user)
-    visit document_sets_path(:collection_id => @collection)
+    # delete the new document set
+    login_as(@owner, scope: :user)
+    visit document_sets_path(collection_id: @collection)
     within(page.find('#sets')) do
       within(page.find('tr', text: @test_set.title)) do
         page.find('a', text: 'Delete').click
@@ -245,7 +244,7 @@ describe "document sets", :order => :defined do
   end
 
   it "looks at document sets owner tabs" do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
     page.find('.tabs').click_link("Settings")
@@ -268,7 +267,7 @@ describe "document sets", :order => :defined do
   end
 
   it "checks document set breadcrumbs - collection" do
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
@@ -287,7 +286,7 @@ describe "document sets", :order => :defined do
     expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
     expect(page.find('h1')).to have_content(@set.title)
-    #expect to have only article from document sets
+    # expect to have only article from document sets
     expect(page).to have_selector('.category-article', text: @article.title)
     expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
     page.find('a', text: @article.title).click
@@ -402,18 +401,18 @@ describe "document sets", :order => :defined do
   end
 
   it "checks document set breadcrumbs - page level" do
-    login_as(@user, :scope => :user)
+    login_as(@user, scope: :user)
     work = @set.works.first
     @page = work.pages.first
 
-    #make sure it's right if you click on the page from the work
+    # make sure it's right if you click on the page from the work
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.work-page_title', text: @page.title).click_link
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
 
-    #so that it doesn't matter if the page has been transcribed, go directly to overview
+    # so that it doesn't matter if the page has been transcribed, go directly to overview
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
@@ -474,7 +473,7 @@ describe "document sets", :order => :defined do
     # Ensure document sets are enabled initially
     @collection.update!(supports_document_sets: true)
 
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.uncheck('Enable document sets')
@@ -487,7 +486,7 @@ describe "document sets", :order => :defined do
     # Ensure document sets are disabled initially
     @collection.update!(supports_document_sets: false)
 
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
     page.check("Enable document sets")
@@ -501,7 +500,7 @@ describe "document sets", :order => :defined do
   end
 
   it 'edits a document set slug', js: true do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     slug = "new-#{@set.slug}"
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
@@ -517,20 +516,20 @@ describe "document sets", :order => :defined do
     sleep(3)
     expect(page.find('h1')).to have_content @set.title
     expect(DocumentSet.find_by(id: @set.id).slug).to eq "#{slug}"
-    #check new path
+    # check new path
     visit "/#{@owner.slug}/#{slug}"
     expect(page).to have_selector('h1', text: @set.title)
     @set.works.each do |w|
       expect(page).to have_content w.title
     end
-    #check the old path
-    #(this variable is stored at the beginning of the test, so it's the original)
+    # check the old path
+    # (this variable is stored at the beginning of the test, so it's the original)
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
     @set.works.each do |w|
       expect(page).to have_content w.title
     end
-    #blank out doc set slug
+    # blank out doc set slug
     visit "/#{@owner.slug}/#{@set.slug}"
     expect(page).to have_selector('h1', text: @set.title)
     page.find('.tabs').click_link('Settings')
@@ -542,20 +541,19 @@ describe "document sets", :order => :defined do
     page.execute_script(script)
     sleep(3)
     docset = DocumentSet.find_by(id: @set.id)
-    #note - the document set title was changed so the slug is slightly different
+    # note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
   end
 
   it "resets work settings" do
-    #resets hiding completed works
+    # resets hiding completed works
     @collection.hide_completed = true
     @collection.save
-    #resets work restrictions
+    # resets work restrictions
     unless @owner.account_type == "Individual Researcher"
       work = Work.find_by(id: @set.works.first.id)
     work.restrict_scribes = true
     work.save!
     end
   end
-
 end

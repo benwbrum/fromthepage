@@ -9,9 +9,9 @@ class SitemapController < ApplicationController
     respond_to do |format|
       format.xml do
         @collections = Collection.where(restricted: false)
-                                .includes(:owner, works: [:pages])
+                                .includes(:owner, works: [ :pages ])
                                 .limit(10000)
-        
+
         render template: 'sitemap/index', layout: false, content_type: 'application/xml'
       end
     end
@@ -26,7 +26,7 @@ class SitemapController < ApplicationController
                                 .order(:id)
                                 .offset(offset)
                                 .limit(1000)
-        
+
         render template: 'sitemap/collections', layout: false, content_type: 'application/xml'
       end
     end
@@ -38,11 +38,11 @@ class SitemapController < ApplicationController
         offset = params[:offset].to_i
         @works = Work.joins(:collection)
                      .where(collections: { restricted: false })
-                     .includes(:collection => :owner)
+                     .includes(collection: :owner)
                      .order(:id)
                      .offset(offset)
                      .limit(1000)
-        
+
         render template: 'sitemap/works', layout: false, content_type: 'application/xml'
       end
     end
@@ -54,12 +54,12 @@ class SitemapController < ApplicationController
         offset = params[:offset].to_i
         @pages = Page.joins(work: :collection)
                      .where(collections: { restricted: false })
-                     .where.not(status: ['blank', 'new'])
+                     .where.not(status: [ 'blank', 'new' ])
                      .includes(work: { collection: :owner })
                      .order(:id)
                      .offset(offset)
                      .limit(1000)
-        
+
         render template: 'sitemap/pages', layout: false, content_type: 'application/xml'
       end
     end

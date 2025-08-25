@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Import GRI spreadsheet and update pages with markdown tables'
-  task :import_GRI, [:spreadsheet_path, :work_id] => :environment do |t, args|
+  task :import_GRI, [ :spreadsheet_path, :work_id ] => :environment do |t, args|
     require 'roo'
     spreadsheet_path = args[:spreadsheet_path]
     work_id = args[:work_id]

@@ -1,5 +1,4 @@
 module AltoTransformer
-  
   def self.plaintext_from_alto_xml(alto_xml)
     # convert the alto XML string to plaintext using Nokogiri
     doc = Nokogiri::XML(alto_xml)

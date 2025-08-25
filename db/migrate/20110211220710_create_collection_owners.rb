@@ -1,6 +1,6 @@
 class CreateCollectionOwners < ActiveRecord::Migration[5.0]
   def self.up
-    create_table :collection_owners, :id => false  do |t|
+    create_table :collection_owners, id: false  do |t|
       t.integer :user_id
       t.integer :collection_id
       t.timestamps

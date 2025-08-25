@@ -12,7 +12,7 @@ describe SearchAttemptController do
     "<?xml version='1.0' encoding='UTF-8'?><page><p>The quick <unclear> <link link_id='1428965' target_id='62422' target_title='fox'>fox</link> brown </unclear></p></page>"
   end
   let!(:page) { create(:page, work: work, xml_text: xml_text, search_text: "The quick fox brown\n\nfox\n\n") }
-  let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+  let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
 
   describe '#create' do
     let(:action_path) { search_attempt_index_path }

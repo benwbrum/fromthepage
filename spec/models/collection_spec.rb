@@ -34,8 +34,8 @@ describe Collection do
   end
 
   describe '#set_next_untranscribed_page' do
-    let(:collection){ create(:collection, works: []) }
-    let(:work){ create(:work, collection_id: collection.id) }
+    let(:collection) { create(:collection, works: []) }
+    let(:work) { create(:work, collection_id: collection.id) }
     it "sets nil with no works" do
       collection.set_next_untranscribed_page
       expect(collection.next_untranscribed_page).to eq(nil)
@@ -85,18 +85,18 @@ describe Collection do
     let(:work_no_ocr) { create(:work) }
     let(:work_ocr)    { create(:work) }
 
-    let(:collection) { create(:collection, works: [work_no_ocr, work_ocr]) }
+    let(:collection) { create(:collection, works: [ work_no_ocr, work_ocr ]) }
     describe '#enable_ocr' do
       it 'Enables OCR for all works' do
         collection.enable_ocr
-        all_enabled = collection.works.all? {|w| w.ocr_correction }
+        all_enabled = collection.works.all? { |w| w.ocr_correction }
         expect(all_enabled)
       end
     end
     describe '#disable_ocr' do
       it 'Disables OCR for all works' do
         collection.disable_ocr
-        all_disabled = collection.works.none? {|w| w.ocr_correction }
+        all_disabled = collection.works.none? { |w| w.ocr_correction }
         expect(all_disabled)
       end
     end

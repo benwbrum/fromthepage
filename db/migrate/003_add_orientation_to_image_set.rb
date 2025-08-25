@@ -6,7 +6,7 @@ class AddOrientationToImageSet < ActiveRecord::Migration[5.0]
     # this one represents the number of times you can half the image
     # resolution to get to the baseline (minimum visible)
     add_column :image_sets, :original_to_base_halvings, :integer, :null => true
-=end  
+=end
   end
 
   def self.down
@@ -14,6 +14,6 @@ class AddOrientationToImageSet < ActiveRecord::Migration[5.0]
     remove_column :image_sets, :original_width
     remove_column :image_sets, :original_height
     remove_column :image_sets, :original_to_base_halvings
-=end  
+=end
   end
 end

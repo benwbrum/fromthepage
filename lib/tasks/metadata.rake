@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Refresh metadata'
-  task :refresh_metadata, [:id, :type] => :environment do |_task, args|
+  task :refresh_metadata, [ :id, :type ] => :environment do |_task, args|
     id = args[:id]
     type = args[:type]
 

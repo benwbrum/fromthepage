@@ -1,7 +1,6 @@
-namespace :fromthepage do 
-
-  desc "Import all pages of a IIIF collection"
-  task :import_paged_iiif_collection, [:at_id, :collection_id] => :environment do |t, args|
+namespace :fromthepage do
+  desc 'Import all pages of a IIIF collection'
+  task :import_paged_iiif_collection, [ :at_id, :collection_id ] => :environment do |t, args|
     collection_at_id = args.at_id
     collection_id = args.collection_id.to_i
     collection = Collection.find collection_id
@@ -11,7 +10,7 @@ namespace :fromthepage do
     hash = JSON.parse(raw_json)
     manifests=[]
     page_uri = hash['first']
-    
+
     # loop through each sub-page
     while page_uri
       print "fetching collection page #{page_uri}\n"
@@ -28,7 +27,7 @@ namespace :fromthepage do
             print "Skipping #{at_id} because it already exists in the collection\n"
             next
           end
-            
+
           sc_manifest = ScManifest.manifest_for_at_id(at_id)
           work = nil
           work = sc_manifest.convert_with_collection(collection.owner, collection, nil, import_ocr)
@@ -39,12 +38,11 @@ namespace :fromthepage do
         end
       end
       page_uri = hash['next']
-    end    
+    end
   end
 
-  desc "Import an IIIF collection"
-  task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr] => :environment do |t, args|
-  
+  desc 'Import an IIIF collection'
+  task :import_iiif_collection, [ :sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr ] => :environment do |t, args|
     sc_collection = ScCollection.find_by(id: args.sc_collection_id)
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id
@@ -59,7 +57,7 @@ namespace :fromthepage do
       collection = Collection.find_by(id: collection_id)
     end
     user = User.find_by(id: user_id)
-    manifest_array = manifest_indices.split(" ")
+    manifest_array = manifest_indices.split(' ')
     puts "manifest_indices were #{manifest_indices.inspect}"
     puts "collection_id is #{collection_id.inspect}"
     errors = {}
@@ -73,7 +71,7 @@ namespace :fromthepage do
     sc_collection.manifests.each_with_index do |manifest, index|
       if manifest_array.include?(index.to_s)
         begin
-          at_id = manifest["@id"] || manifest['id']
+          at_id = manifest['@id'] || manifest['id']
           print "\n[#{index}/#{sc_collection.manifests.count}] attempting #{at_id}\n"
           if sc_collection.v3?
             # TODO
@@ -98,7 +96,7 @@ namespace :fromthepage do
           puts "#{e.message}"
           puts e.backtrace.join("\n")
           errors.store(at_id, e.message)
-#          errors.store(at_id, e.backtrace.join("\n"))
+          #          errors.store(at_id, e.backtrace.join("\n"))
         end
       end
     end
@@ -115,13 +113,12 @@ namespace :fromthepage do
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
-
   end
-  
+
   def fetch_service(at_id)
     IIIF::Service.parse(fetch_raw(at_id))
   end
-  
+
 
   def fetch_manifest(at_id)
     JSON.parse(fetch_raw(at_id))
@@ -134,5 +131,4 @@ namespace :fromthepage do
 
     manifest_json
   end
-
 end

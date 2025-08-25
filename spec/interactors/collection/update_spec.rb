@@ -58,7 +58,7 @@ describe Collection::Update do
         messageboards_enabled: true,
         is_active: true,
         field_based: true,
-        tags: [tag.id]
+        tags: [ tag.id ]
       }
     end
 

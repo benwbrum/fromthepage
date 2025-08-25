@@ -15,10 +15,10 @@ class CreateTitledImages < ActiveRecord::Migration[5.0]
       t.column :position, :integer
       t.column :created_on, :datetime
     end
-=end  
+=end
   end
 
   def self.down
-#    drop_table :titled_images
+    #    drop_table :titled_images
   end
 end

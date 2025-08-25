@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "export tasks" do
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collection = @owner.all_owner_collections.second
@@ -10,11 +9,11 @@ describe "export tasks" do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "exports all works in a collection" do
-    #TODO add better export tests for new UI
+    # TODO add better export tests for new UI
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Export")
@@ -41,7 +40,7 @@ describe "export tasks" do
     page.find('button', text: 'Start Export').click
     expect(page).to have_content("Queued")
 
-    login_as(User.where(admin: true).first, :scope => :user)
+    login_as(User.where(admin: true).first, scope: :user)
 
     # wait for the background process to run
     1.upto(10) do
@@ -84,13 +83,11 @@ describe "export tasks" do
   end
 
   it "fails to export a table csv" do
-    #this collection has no table data, so these shouldn't be available
+    # this collection has no table data, so these shouldn't be available
     visit "/export?collection_id=#{@collection.id}"
     expect(page).to have_content("Export Individual Works")
     expect(page.find('tr', text: @work.title)).not_to have_selector('.btnCsvTblExport')
     expect(page).not_to have_content("Export All Tables")
     expect(page).not_to have_selector('#btnExportTables')
-
   end
-
 end

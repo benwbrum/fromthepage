@@ -1,6 +1,6 @@
 namespace :fromthepage do
-  desc "DEPRACATED -- use collection_stats_by_owner instead"
-  task :contributor_stats, [:collection_id, :email] => :environment do |t,args|
+  desc 'DEPRACATED -- use collection_stats_by_owner instead'
+  task :contributor_stats, [ :collection_id, :email ] => :environment do |t, args|
       collection_id = args.collection_id
       email = []
       email << args.email
@@ -14,5 +14,4 @@ namespace :fromthepage do
       end_date = DateTime.now.utc
       AdminMailer.contributor_stats(collection_id, start_date, end_date, email).deliver!
   end
-
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 class DashboardController < ApplicationController
-  protect_from_forgery :except => [:new_upload]
+  protect_from_forgery except: [ :new_upload ]
 
   include AddWorkHelper
   include DashboardHelper
@@ -8,11 +9,11 @@ class DashboardController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
-    only: [:owner, :staging, :startproject, :summary]
+    only: [ :owner, :staging, :startproject, :summary ]
 
   before_action :get_data,
-    only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+    only: [ :owner, :staging, :upload, :new_upload,
+           :startproject, :empty_work, :create_work, :summary, :exports ]
 
   before_action :remove_col_id
 
@@ -92,7 +93,7 @@ class DashboardController < ApplicationController
     temp_dir = File.join(Rails.root, 'public', 'printable')
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/, '')
     temp_dir = File.join(temp_dir, time_stub)
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
@@ -130,7 +131,7 @@ class DashboardController < ApplicationController
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
 
     # Stats
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    owner_collections = current_user.all_owner_collections.map { |c| c.id }
     contributor_ids_for_dates = AhoyActivitySummary
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
@@ -165,7 +166,7 @@ class DashboardController < ApplicationController
   end
 
   def exports
-    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
   end
 
   # Collaborator Dashboard - activity
@@ -265,14 +266,14 @@ class DashboardController < ApplicationController
     dates = (start_date..end_date)
 
     headers = [
-      "Username",
-      "Email",
+      'Username',
+      'Email'
     ]
 
-    headers += dates.map{|d| d.strftime("%b %d, %Y")}
+    headers += dates.map { |d| d.strftime('%b %d, %Y') }
 
     # Get Row Data (Users)
-    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    owner_collections = current_user.all_owner_collections.map { |c| c.id }
 
     contributor_ids_for_dates = AhoyActivitySummary
       .where(collection_id: owner_collections)
@@ -280,10 +281,10 @@ class DashboardController < ApplicationController
 
     contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
 
-    csv = CSV.generate(:headers => true) do |records|
+    csv = CSV.generate(headers: true) do |records|
       records << headers
       contributors.each do |user|
-        row = [user.display_name, user.email]
+        row = [ user.display_name, user.email ]
 
         activity = AhoyActivitySummary
           .where(user_id: user.id)
@@ -291,9 +292,9 @@ class DashboardController < ApplicationController
           .where('date BETWEEN ? AND ?', start_date, end_date)
           .group(:date)
           .sum(:minutes)
-          .transform_keys{ |k| k.to_date }
+          .transform_keys { |k| k.to_date }
 
-        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
+        user_activity = dates.map { |d| activity[d.to_date] || 0 }
 
         row += user_activity
 
@@ -301,9 +302,9 @@ class DashboardController < ApplicationController
       end
     end
 
-    send_data( csv,
-              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-              :type => "application/csv")
+    send_data(csv,
+              filename: "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+              type: 'application/csv')
   end
 
   private
@@ -334,9 +335,9 @@ class DashboardController < ApplicationController
                                       .first
     @last_calculation_date = last_summary&.date&.end_of_day
 
-    raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
-    @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map{ |collection_id, page_id| collection_id }.tally
-    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort{|a,b| a.owner.display_name <=> b.owner.display_name}
+    raw = Deed.where(user_id: current_user.id, created_at: [ @start_date_hours..@end_date_hours ]).pluck(:collection_id, :page_id).uniq
+    @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map { |collection_id, page_id| collection_id }.tally
+    @user_collections = Collection.find(@collection_id_to_page_count.keys).sort { |a, b| a.owner.display_name <=> b.owner.display_name }
   end
 
   def generate_markdown_text
@@ -367,7 +368,7 @@ class DashboardController < ApplicationController
   end
 
   def generated_format_date(date)
-    formatted_date = date.strftime("%B %d, %Y")
+    formatted_date = date.strftime('%B %d, %Y')
   end
 
   def generate_pdf(input_path, output_path, markdown_text)
@@ -379,8 +380,8 @@ class DashboardController < ApplicationController
   def send_generated_pdf(output_path)
     # spew the output to the browser
     send_data(File.read(output_path),
-      filename: File.basename("letter.pdf"),
-      :content_type => "application/pdf")
+      filename: File.basename('letter.pdf'),
+      content_type: 'application/pdf')
     cookies['download_finished'] = 'true'
   end
 
@@ -392,6 +393,4 @@ class DashboardController < ApplicationController
 
     collections_query + document_sets_query
   end
-
-
 end

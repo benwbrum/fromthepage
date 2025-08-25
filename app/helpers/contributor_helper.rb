@@ -1,5 +1,4 @@
 module ContributorHelper
-
   def new_contributors(collection_id, start_date, end_date)
     @collection ||= Collection.find_by(id: collection_id)
     condition = 'created_at >= ? AND created_at <= ?'
@@ -16,7 +15,7 @@ module ContributorHelper
     @recent_notes = deeds_scope.where(deed_type: DeedType::NOTE_ADDED)
     @recent_transcriptions = deeds_scope.where(deed_type: DeedType.transcriptions)
     @recent_articles = deeds_scope.where(deed_type: DeedType::ARTICLE_EDIT)
-    @recent_translations = deeds_scope.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
+    @recent_translations = deeds_scope.where(deed_type: [ DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT ])
     @recent_ocr = deeds_scope.where(deed_type: DeedType::OCR_CORRECTED)
     @recent_index = deeds_scope.where(deed_type: DeedType::PAGE_INDEXED)
     @recent_review = deeds_scope.where(deed_type: DeedType::NEEDS_REVIEW)
@@ -33,15 +32,15 @@ module ContributorHelper
     # use ahoy activity summary to calculate ranges
     @user_time_proportional = AhoyActivitySummary.where(
       collection_id: @collection.id,
-      date: [start_date..end_date]
+      date: [ start_date..end_date ]
     ).group(:user_id).sum(:minutes)
 
     user_active_mailers = User.active_mailers.joins(:deeds)
 
     # Find recent transcription deeds by user, then older deeds by user
-    recent_users_ids = transcription_deeds.where(created_at: [start_date..end_date]).select(:user_id)
+    recent_users_ids = transcription_deeds.where(created_at: [ start_date..end_date ]).select(:user_id)
 
-    older_users_ids = transcription_deeds.where(created_at: [..start_date]).select(:user_id)
+    older_users_ids = transcription_deeds.where(created_at: [ ..start_date ]).select(:user_id)
 
     # compare older to recent list to get new transcribers
     @new_transcribers = user_active_mailers.where(id: recent_users_ids)
@@ -57,18 +56,18 @@ module ContributorHelper
 
   def show_email_stats(hours)
     @hours = hours
-    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
-    @recent_collections = Collection.where("created_on > ?", Time.now - hours.to_i.hours)
+    @recent_users = User.where('created_at > ?', Time.now - hours.to_i.hours)
+    @recent_collections = Collection.where('created_on > ?', Time.now - hours.to_i.hours)
     @collections = Collection.all
   end
 
   def activity(collection, hours)
     @collection = collection
-    new_works = Work.includes(:collection).where(collection_id: collection.id).where("created_on > ?", Time.now - hours.to_i.hours)
+    new_works = Work.includes(:collection).where(collection_id: collection.id).where('created_on > ?', Time.now - hours.to_i.hours)
     @recent_iiif = new_works.joins(:sc_manifest)
     @recent_ia = new_works.joins(:ia_work)
     @recent_works = new_works - @recent_iiif - @recent_ia
-    @uploads = DocumentUpload.where(collection_id: collection.id).where.not(status: 'finished').where("created_at > ?", Time.now - hours.to_i.hours)
+    @uploads = DocumentUpload.where(collection_id: collection.id).where.not(status: 'finished').where('created_at > ?', Time.now - hours.to_i.hours)
     new_contributors(collection.id, (Time.now - hours.to_i.hours), Time.now)
     if @collection_deeds.present? || new_works.present?
       @col_activity = true
@@ -77,5 +76,4 @@ module ContributorHelper
     end
     render 'admin/collection_activity'
   end
-
 end

@@ -17,7 +17,7 @@ describe Database::Export::DumpBuilder do
   let(:path) { "/tmp/dumps/#{dump_key}" }
 
   let(:result) do
-    described_class.new(collection_slugs: [collection.slug], path: path).call
+    described_class.new(collection_slugs: [ collection.slug ], path: path).call
   end
 
   before do

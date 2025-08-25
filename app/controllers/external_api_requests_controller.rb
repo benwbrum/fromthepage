@@ -1,5 +1,5 @@
 class ExternalApiRequestsController < ApplicationController
-  before_action :set_external_api_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_external_api_request, only: [ :show, :edit, :update, :destroy ]
 
   # GET /external_api_requests
   def index

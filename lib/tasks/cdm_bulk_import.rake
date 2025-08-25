@@ -1,7 +1,6 @@
-namespace :fromthepage do 
-
-  desc "Import several CONTENTdm compound objects"
-  task :bulk_import_cdm, [:cdm_bulk_import_id] => :environment do |t, args|
+namespace :fromthepage do
+  desc 'Import several CONTENTdm compound objects'
+  task :bulk_import_cdm, [ :cdm_bulk_import_id ] => :environment do |t, args|
     bulk_import = CdmBulkImport.find(args.cdm_bulk_import_id.to_i)
 
 
@@ -40,7 +39,7 @@ namespace :fromthepage do
       rescue Exception => e
         puts "#{e.message}"
         errors.store(at_id, e.message)
-#        errors.store(at_id, e.backtrace.join("\n"))
+        #        errors.store(at_id, e.backtrace.join("\n"))
       end
     end
     puts "CONTENTdm bulk import has completed with these errors: \n#{errors.flatten.join("\n")}"
@@ -57,8 +56,5 @@ namespace :fromthepage do
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
-
-
   end
-  
 end

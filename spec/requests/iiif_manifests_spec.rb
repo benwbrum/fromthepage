@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'IIIF Manifests API' do
-  fixtures [:collections]
+  fixtures [ :collections ]
 
   it 'returns JSON' do
     get iiif_manifest_path(1)

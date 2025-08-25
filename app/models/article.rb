@@ -34,14 +34,14 @@ class Article < ApplicationRecord
   include XmlSourceProcessor
   include EdtfDate
 
-  #include ActiveModel::Dirty
+  # include ActiveModel::Dirty
 
   before_save :process_source
 
   validates_presence_of :title
 
-  validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90}
-  validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
+  validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+  validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
 
   has_many :articles_categories
   has_many :categories, -> { distinct }, through: :articles_categories
@@ -50,14 +50,14 @@ class Article < ApplicationRecord
 
   has_many :target_article_links, foreign_key: 'target_article_id', class_name: 'ArticleArticleLink'
   scope :target_article_links, -> { include 'source_article' }
-  scope :target_article_links, -> { order "articles.title ASC" }
+  scope :target_article_links, -> { order 'articles.title ASC' }
 
   has_many :source_article_links, foreign_key: 'source_article_id', class_name: 'ArticleArticleLink'
   has_many :page_article_links
   scope :page_article_links, -> { includes(:page) }
-  scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
+  scope :page_article_links, -> { order('pages.work_id, pages.position ASC') }
 
-  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages) }
+  scope :pages_for_this_article, -> { order('pages.work_id, pages.position ASC').includes(:pages) }
 
   has_many :pages, through: :page_article_links
   has_many :works, through: :page_article_links
@@ -72,16 +72,16 @@ class Article < ApplicationRecord
   edtf_date_attribute :ended
 
   def link_list
-    self.page_article_links.includes(:page).order("pages.work_id, pages.title")
+    self.page_article_links.includes(:page).order('pages.work_id, pages.title')
   end
 
   # Needed for document sets to correctly display articles
   def show_links(collection)
-    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids})
+    self.page_article_links.includes(:page).where(pages: { work_id: collection.works.ids })
   end
 
   def page_list
-    self.pages.order("pages.work_id, pages.position")
+    self.pages.order('pages.work_id, pages.position')
   end
 
   def source_text
@@ -98,19 +98,18 @@ class Article < ApplicationRecord
   # Related Articles
   #######################
   def related_article_ranks
-
   end
 
   def gis_enabled?
-    self.categories.where(:gis_enabled => true).present?
+    self.categories.where(gis_enabled: true).present?
   end
 
   def bio_fields_enabled?
-    self.categories.where(:bio_fields_enabled => true).present?
+    self.categories.where(bio_fields_enabled: true).present?
   end
 
   def org_fields_enabled?
-    self.categories.where(:org_fields_enabled => true).present?
+    self.categories.where(org_fields_enabled: true).present?
   end
 
   def clear_relationship_graph
@@ -127,13 +126,13 @@ class Article < ApplicationRecord
   #######################
   # tested
   def possible_duplicates
-    logger.debug "------------------------------"
-    logger.debug "article.possible_duplicates"
+    logger.debug '------------------------------'
+    logger.debug 'article.possible_duplicates'
     # take each element of this article name
     words = self.title.tr(',.', ' ').split(' ')
     # sort it by word length, longest to shortest
     words.keep_if { |word| word.match(/\w\w/) }
-    words.sort! { |x,y| x.length <=> y.length }
+    words.sort! { |x, y| x.length <=> y.length }
     words.reverse!
     # for each word
     all_matches = []
@@ -146,7 +145,7 @@ class Article < ApplicationRecord
       # logger.debug("@collection.id: #{self.collection.id}")
 
       current_matches =
-        self.collection.articles.where("id <> ? AND title like ?", self.id, "%#{word}%" )
+        self.collection.articles.where('id <> ? AND title like ?', self.id, "%#{word}%")
       # current_matches.delete self
       #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
@@ -160,9 +159,9 @@ class Article < ApplicationRecord
     end
     #    logger.debug("DEBUG: found #{all_matches.size} matches:")
     #    logger.debug("DEBUG: #{all_matches.inspect}")
-    logger.debug("at the end of article.possible_duplicates")
-    logger.debug("--------------------------------------")
-    return all_matches
+    logger.debug('at the end of article.possible_duplicates')
+    logger.debug('--------------------------------------')
+    all_matches
   end
 
 
@@ -170,7 +169,7 @@ class Article < ApplicationRecord
   # XML Source support
   #######################
   # tested
-  def clear_links(type='does_not_apply')
+  def clear_links(type = 'does_not_apply')
     # clear out the existing links to this page
     if self.id
       ArticleArticleLink.where("source_article_id = #{self.id}").destroy_all
@@ -184,7 +183,7 @@ class Article < ApplicationRecord
     link.target_article = article
     link.display_text = display_text
     link.save!
-    return link.id
+    link.id
   end
 
   #######################
@@ -192,7 +191,6 @@ class Article < ApplicationRecord
   #######################
   # tested
   def create_version
-
     unless self.saved_change_to_title? || self.saved_change_to_source_text?
       return
     end
@@ -208,7 +206,7 @@ class Article < ApplicationRecord
 
     # now do the complicated version update thing
 
-    previous_version = ArticleVersion.where(["article_id = ?", self.id]).order("version DESC").all
+    previous_version = ArticleVersion.where([ 'article_id = ?', self.id ]).order('version DESC').all
     if previous_version.first
       version.version = previous_version.first.version + 1
     end
@@ -226,7 +224,6 @@ class Article < ApplicationRecord
   def ancestors_and_self(category)
     ancestors = category.ancestors.reverse
 
-    [category] + ancestors
+    [ category ] + ancestors
   end
 end
-

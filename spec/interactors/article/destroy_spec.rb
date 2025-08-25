@@ -7,7 +7,7 @@ describe Article::Destroy do
   let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
 
   let!(:article) do
-    create(:article, title: 'Original', collection: collection, pages: [related_page])
+    create(:article, title: 'Original', collection: collection, pages: [ related_page ])
   end
   let!(:source_article) do
     create(:article, collection: collection.reload)
@@ -50,5 +50,4 @@ describe Article::Destroy do
     expect(result.success?).to be_truthy
     expect(result.article.destroyed?).to be_truthy
   end
-
 end

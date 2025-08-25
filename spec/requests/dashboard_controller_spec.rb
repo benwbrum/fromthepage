@@ -335,9 +335,9 @@ describe DashboardController do
     let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let!(:document_set) do
       create(:document_set, :public, :with_picture, collection_id: collection.id, owner_user_id: owner.id,
-                                                    description: intro_block, works: [work])
+                                                    description: intro_block, works: [ work ])
     end
-    let!(:tag) { create(:tag, collections: [collection]) }
+    let!(:tag) { create(:tag, collections: [ collection ]) }
     let(:action_path) { browse_tag_path(ai_text: tag.ai_text) }
 
     let(:subject) { get action_path }

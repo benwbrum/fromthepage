@@ -16,5 +16,5 @@ class WorkSearch < FortyFacets::FacetSearch
   range :d1, name: 'Date 1'
   range :d2, name: 'Date 2'
 
-  facet [:work, :collection_id]
+  facet [ :work, :collection_id ]
 end

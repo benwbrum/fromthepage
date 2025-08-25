@@ -1,5 +1,4 @@
 class RegistrationsController < Devise::RegistrationsController
-
   def new
     super
   end
@@ -18,7 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
     set_flash_message :notice, :destroyed if is_flashing_format?
     yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name)}
+    respond_with_navigational(resource) { redirect_to after_sign_out_path_for(resource_name) }
   end
 
   def create
@@ -87,27 +86,27 @@ class RegistrationsController < Devise::RegistrationsController
     if @user.save
       bypass_sign_in(@user)
       flash[:notice] = t('user.update.user_updated')
-      ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
+      ajax_redirect_to({ controller: 'user', action: 'profile', user_id: @user.slug, anchor: '' })
     else
-      render :controller => 'user', :action => 'edit'
+      render controller: 'user', action: 'edit'
     end
   end
 
   def set_saml
     institution = saml_provider_param
-    redirect_to user_omniauth_authorize_path(institution)  #go to users/auth/saml/instution_name
+    redirect_to user_omniauth_authorize_path(institution)  # go to users/auth/saml/instution_name
   end
 
   def choose_saml
   end
 
-  def alert_bento()
+  def alert_bento
     if defined?(BENTO_ENABLED) && BENTO_ENABLED
-      $bento.track(identity: {email: current_user.email}, event: '$action', details: {action_information: "signed_up_for_trial"})
+      $bento.track(identity: { email: current_user.email }, event: '$action', details: { action_information: 'signed_up_for_trial' })
     end
   end
 
-  #redirect new sign up back to starting page
+  # redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
     if @user.owner
       # Always send new owners to their dashboard for analytics purposes
@@ -154,8 +153,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   def joined_from_collection(visit_id)
     first_event = Ahoy::Event.where(visit_id: visit_id).first
-    collection = first_event.properties["collection_id"] || nil
-    return collection
+    collection = first_event.properties['collection_id'] || nil
+    collection
   end
 
   def landing_pages
@@ -168,6 +167,4 @@ class RegistrationsController < Devise::RegistrationsController
       state_archives_path
     ]
   end
-
-
 end

@@ -46,7 +46,7 @@ Rails.application.configure do
   # BWB 2018-11-17 changed from :warn to :info
   # Set to :debug to see everything in the log.
   config.log_level = :info
-  #config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -93,14 +93,13 @@ Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
   }
 
   Ahoy.geocode = false
-  config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for apache
 
   RAKE = '/usr/bin/env rake'
   NEATO = '/usr/bin/neato'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
   UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
-#  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
-#  Disable IIIF search while Pontiiif is down
-#  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
-
+  #  BILLING_HOST_DEVELOPMENT = 'billing.fromthepage.com'
+  #  Disable IIIF search while Pontiiif is down
+  #  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 end

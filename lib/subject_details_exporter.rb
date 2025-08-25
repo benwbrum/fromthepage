@@ -18,8 +18,8 @@ module SubjectDetailsExporter
         'Race Description',
         'Sex',
         'Bibliography',
-        'Article Length (Words)', 
-        'Article Length (Characters)', 
+        'Article Length (Words)',
+        'Article Length (Characters)',
         'Article Text',
         'Number Occurrences',
         'Origin',
@@ -36,7 +36,7 @@ module SubjectDetailsExporter
           row = []
           row << subject.title
           row << subject.uri
-          row << subject.categories.map { |category| category.title }.join("; ")
+          row << subject.categories.map { |category| category.title }.join('; ')
           row << Rails.application.routes.url_helpers.collection_article_show_url(@collection.owner, @collection, subject.id)
           row << subject.short_summary
           row << subject.latitude
@@ -60,6 +60,5 @@ module SubjectDetailsExporter
 
       csv_string
     end
-
   end
 end

@@ -7,7 +7,7 @@ describe Page::Reorder do
   let!(:page_1) { create(:page, :with_image, work: work, position: 1) }
   let!(:page_2) { create(:page, :with_image, work: work, position: 2) }
   let!(:page_3) { create(:page, :with_image, work: work, position: 3) }
-  let(:direction) {}
+  let(:direction) { }
 
   let(:result) do
     described_class.new(page: page_2, direction: direction).call

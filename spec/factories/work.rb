@@ -20,7 +20,7 @@ FactoryBot.define do
       restrict_scribes { true }
     end
 
-    factory :work_with_links, :traits => [:with_links]
-    factory :work_with_pages, :traits => [:with_pages]
+    factory :work_with_links, traits: [ :with_links ]
+    factory :work_with_pages, traits: [ :with_pages ]
   end
 end

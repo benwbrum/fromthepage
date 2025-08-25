@@ -7,7 +7,7 @@ module SubjectExporter
     def initialize(collection, works)
       @works = works ? works : collection.works
       @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI Subject_Latitude Subject_Longitude Subject_Description Category_Hierarchy]
-      @metadata_keys = collection.metadata_coverages.map{|c| c.key}
+      @metadata_keys = collection.metadata_coverages.map { |c| c.key }
     end
 
     def export
@@ -18,18 +18,18 @@ module SubjectExporter
         collection = @works.first.collection
         owner = collection.owner
         collection.articles.includes(:categories).each do |article|
-          ac_map[article] = article.categories.map{|c| c.title}.sort
+          ac_map[article] = article.categories.map { |c| c.title }.sort
         end
 
         @works.each do |work|
           GC.start
-          transcription_sections  = ['']
-          translation_sections    = ['']
+          transcription_sections  = [ '' ]
+          translation_sections    = [ '' ]
 
           metadata_row = []
           unless work.original_metadata.blank?
             metadata = {}
-            JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
+            JSON.parse(work.original_metadata).each { |e| metadata[e['label']] = e['value'] }
 
             @metadata_keys.each do |header|
               # look up the value for this index
@@ -37,11 +37,11 @@ module SubjectExporter
             end
           end
 
-          work.pages.includes(:page_article_links, articles: [:page_article_links]).each do |page|
+          work.pages.includes(:page_article_links, articles: [ :page_article_links ]).each do |page|
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
-            page_url = url_for(:controller => 'display', :action => 'display_page', :page_id => page.id, :only_path => false)
+            page_url = url_for(controller: 'display', action: 'display_page', page_id: page.id, only_path: false)
             # page.page_article_links.includes(:article).each do |link|
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
@@ -50,8 +50,8 @@ module SubjectExporter
                 Rails.logger.warn("WARNING: Export could not find article for link #{link.display_text} on page #{page.title}")
               else
                 categories = ac_map[article] || []
-                article_link = Rails.application.routes.url_helpers.collection_article_show_url(owner, collection, article.id, :only_path => false)
-                section_header = sections_by_link[link.id] 
+                article_link = Rails.application.routes.url_helpers.collection_article_show_url(owner, collection, article.id, only_path: false)
+                section_header = sections_by_link[link.id]
                 row = [
                   work.title,
                   work.identifier,
@@ -80,7 +80,7 @@ module SubjectExporter
       csv_string
     end
 
-    def links_by_section(xml, links_hash, section_array, section_to_subjects={})
+    def links_by_section(xml, links_hash, section_array, section_to_subjects = {})
       page = Nokogiri::XML(xml)
 
       page.search('*').each do |e|
@@ -93,12 +93,12 @@ module SubjectExporter
           pop_depth = e['depth'].to_i - section_array.length
 
           section_title = e['title']
-          link_for_section = ""
+          link_for_section = ''
           links = e.xpath('link')
           if links.count > 0
-            section_to_subjects[section_title] = links.map{|link| link['target_title']}.join('||') 
+            section_to_subjects[section_title] = links.map { |link| link['target_title'] }.join('||')
           end
-          
+
           if pop_depth > 0
             section_array << section_title
           elsif pop_depth == 0
@@ -112,7 +112,7 @@ module SubjectExporter
         end
       end
 
-      [links_hash, section_array, section_to_subjects]
+      [ links_hash, section_array, section_to_subjects ]
     end
   end
 end

@@ -1,7 +1,7 @@
 class AddDefaultToStatusInPages < ActiveRecord::Migration[6.1]
   def up
-    Page.where(status: [nil, '']).in_batches.update_all(status: Page.statuses[:new])
-    Page.where(translation_status: [nil, '']).in_batches.update_all(
+    Page.where(status: [ nil, '' ]).in_batches.update_all(status: Page.statuses[:new])
+    Page.where(translation_status: [ nil, '' ]).in_batches.update_all(
       translation_status: Page.translation_statuses[:new]
     )
 

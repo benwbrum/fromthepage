@@ -8,20 +8,20 @@ FIELD_XML = <<EOF
 EOF
 
 
-describe "editor actions" , :order => :defined do
+describe "editor actions", order: :defined do
   context "Factory" do
     before :all do
       @user = User.find_by(login: USER)
     end
     before :each do
-      login_as(@user, :scope => :user)
+      login_as(@user, scope: :user)
       DatabaseCleaner.start
     end
     after :each do
       DatabaseCleaner.clean
     end
 
-    let(:collection){ create(:collection ) }
+    let(:collection) { create(:collection) }
     let(:work)      { create(:work, collection: collection) }
     let(:page_fact) { create(:page, work: work) }
 
@@ -81,19 +81,19 @@ describe "editor actions" , :order => :defined do
       @work = @collection.works.first
       @page = @work.pages.first
       @auth_work = Collection.find(3).works.second
-      #set up the restricted user not to be emailed
+      # set up the restricted user not to be emailed
       notification = Notification.find_by(user_id: @rest_user.id)
       notification.add_as_collaborator = false
       notification.save!
     end
 
     before :each do
-      login_as(@user, :scope => :user)
+      login_as(@user, scope: :user)
     end
 
     it "checks that a restricted editor can't see a work" do
       logout(:user)
-      login_as(@rest_user, :scope => :user)
+      login_as(@rest_user, scope: :user)
       visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
       page.find('.work-page_title', text: @work.pages.first.title).click_link
       expect(page.find('.tabs')).not_to have_content("Transcribe")
@@ -139,15 +139,15 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("Works")
       expect(page).to have_content(@work.title)
       expect(page).not_to have_content("Collection Footer")
-      #check the tabs in the collection
-      #Subjects
+      # check the tabs in the collection
+      # Subjects
       page.find('.tabs').click_link("Subjects")
       expect(page).to have_content("People")
       expect(page).to have_content("Places")
-      #Statistics
+      # Statistics
       page.find('.tabs').click_link("Statistics")
       expect(page).to have_content("Collaborators")
-      #make sure we don't have the owner tabs
+      # make sure we don't have the owner tabs
       expect(page.find('.tabs')).not_to have_content("Settings")
       expect(page.find('.tabs')).not_to have_content("Export")
       expect(page.find('.tabs')).not_to have_content("Collaborators")
@@ -157,16 +157,16 @@ describe "editor actions" , :order => :defined do
       visit collection_path(@collection.owner, @collection)
       page.find('.collection-work_title', text: @work.title).click_link
       expect(page).to have_content(@page.title)
-      #Check the tabs in the work
-      #About
+      # Check the tabs in the work
+      # About
       page.find('.tabs').click_link("About")
       expect(page).to have_content(@work.title)
       expect(page).to have_content("Description")
-      #Help
+      # Help
       page.find('.tabs').click_link("Help")
       expect(page).to have_content("Transcribing")
       expect(page).to have_content("Linking Subjects")
-      #Contents
+      # Contents
       page.find('.tabs').click_link("Contents")
       expect(page).to have_content("Page Title")
       expect(page).to have_content(@work.pages.last.title)
@@ -185,7 +185,7 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_button('Preview')
       expect(page).to have_content(@page.title)
       expect(page).not_to have_content("Collection Footer")
-      #Versions
+      # Versions
       page.find('.tabs').click_link("Versions")
       expect(page).to have_content("revisions")
     end
@@ -223,7 +223,7 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("Test Translation")
     end
 
-    it "translation displays transcription text by default", :js => true do
+    it "translation displays transcription text by default", js: true do
       @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
       page.find('.tabs').click_link("Translate")
@@ -267,7 +267,7 @@ describe "editor actions" , :order => :defined do
     # end
 
     it "checks a plain user profile" do
-      login_as(@user, :scope => :user)
+      login_as(@user, scope: :user)
       visit dashboard_path
       page.find('a', text: 'Your Profile').click
       expect(page).to have_content(@user.display_name)
@@ -293,7 +293,7 @@ describe "editor actions" , :order => :defined do
     end
 
     it "Allows owner to delete note", skip_before: true do
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
       expect(page).to have_content "Test note"
       expect(page).to have_selector('.user-bubble_actions > a[title="Delete"]')
@@ -312,9 +312,9 @@ describe "editor actions" , :order => :defined do
       sleep(2)
       expect(message).to have_content("You have unsaved notes.")
       new_text = Page.find_by(id: test_page.id).source_text
-      #because of the note, page.source_text should not have changed
+      # because of the note, page.source_text should not have changed
       expect(new_text).to eq text
-      #save the note
+      # save the note
       begin
         find('#blankPageButton').click
       rescue Capybara::ElementNotFound => e
@@ -324,7 +324,7 @@ describe "editor actions" , :order => :defined do
       expect(test_page.notes.count).not_to be nil
     end
 
-    it "deletes a note", :js => true do
+    it "deletes a note", js: true do
       col = Collection.second
       test_page = col.works.first.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
@@ -338,10 +338,10 @@ describe "editor actions" , :order => :defined do
       expect(Note.find_by(id: title)).to be_nil
     end
 
-    it "uses page arrows with unsaved transcription", :js => true do
+    it "uses page arrows with unsaved transcription", js: true do
       col = Collection.second
       test_page = col.works.first.pages.second
-      #next page arrow
+      # next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       fill_in_editor_field "Attempt to save"
       message = accept_alert do
@@ -350,7 +350,7 @@ describe "editor actions" , :order => :defined do
       sleep(10)
       expect(message).to have_content("You have unsaved changes.")
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
-      #previous page arrow - make sure it also works with notes
+      # previous page arrow - make sure it also works with notes
       fill_in('Write a new note or ask a question...', with: "Test two")
       message = accept_alert do
         page.click_link("Previous page")
@@ -367,20 +367,20 @@ describe "editor actions" , :order => :defined do
         expect(page.find('.maincol')).to have_selector('.work-page_title', text: p.title)
       end
 
-      #look at pages that need transcription
+      # look at pages that need transcription
       click_button('Pages That Need Transcription')
 
-      #first two pages are transcribed; they shouldn't show up
+      # first two pages are transcribed; they shouldn't show up
       expect(page.find('.maincol')).not_to have_selector('.work-page_title', text: pages.first.title)
       expect(page.find('.maincol')).not_to have_selector('.work-page_title', text: pages.second.title)
-      #next three pages aren't transcribed; they shold show up
+      # next three pages aren't transcribed; they shold show up
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.third.title)
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.fourth.title)
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.fifth.title)
       expect(page).to have_button('View All Pages')
       expect(page.find('.pagination_info')).to have_content(@work.pages.needs_transcription.count)
 
-      #return to original list
+      # return to original list
       click_button('View All Pages')
       pages = @work.pages.limit(5)
       pages.each do |p|
@@ -399,18 +399,18 @@ describe "editor actions" , :order => :defined do
         expect(page.find('.maincol')).to have_selector('.work-page_title', text: p.title)
       end
 
-      #look at pages that need transcription
+      # look at pages that need transcription
       click_button('Pages That Need Translation')
-      #first page is translated; it shouldn't show up
+      # first page is translated; it shouldn't show up
       expect(page.find('.maincol')).not_to have_selector('.work-page_title', text: pages.first.title)
-      #next three pages aren't translated; they shold show up
+      # next three pages aren't translated; they shold show up
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.second.title)
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.third.title)
       expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.fourth.title)
       expect(page).to have_button('View All Pages')
       expect(page.find('.pagination_info')).to have_content(@work.pages.needs_translation.count)
 
-      #return to original list
+      # return to original list
       click_button('View All Pages')
       pages = @work.pages.limit(5)
       pages.each do |p|
@@ -455,6 +455,5 @@ describe "editor actions" , :order => :defined do
       find('#save_button_top').click
       expect(Flag.count).to eq(flag_count + 1)
     end
-
   end
 end

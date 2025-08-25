@@ -1,35 +1,34 @@
 module CollectionHelper
-
   def link
     if params[:works] == 'show'
       @link_title = t('.incomplete_works')
-      @link_type = "hide"
+      @link_type = 'hide'
     elsif params[:works] == 'hide'
       @link_title = t('.show_all')
-      @link_type = "show"
+      @link_type = 'show'
     else
       if @collection.hide_completed
         @link_title = t('.show_all')
-        @link_type = "show"
+        @link_type = 'show'
       else
         @link_title = t('.incomplete_works')
-        @link_type = "hide"
+        @link_type = 'hide'
       end
     end
   end
 
   def all_complete
-    #if the collection is completed transcribed/translated
+    # if the collection is completed transcribed/translated
     if @collection.pct_completed == 100
-      #if it's set to hide completed and the show button hasn't been pressed, don't show
+      # if it's set to hide completed and the show button hasn't been pressed, don't show
       if (@collection.hide_completed) && params[:works] != 'show'
-        return true
-      #if the hide button is pressed, don't show
+        true
+      # if the hide button is pressed, don't show
       elsif params[:works] == 'hide'
-        return true
-      #otherwise do show
+        true
+      # otherwise do show
       else
-        return false
+        false
       end
     end
   end
@@ -112,32 +111,32 @@ module CollectionHelper
   end
 
   def find_transcribe_pages
-   #find works with deeds in the last 48 hours (not including add the work)
+   # find works with deeds in the last 48 hours (not including add the work)
    active_works = Deed.where.not(deed_type: DeedType::WORK_ADDED).where('created_at >= ?', 48.hours.ago).where(collection_id: @collection.id).distinct.pluck(:work_id)
-    #get work ids for the rest of the works
+    # get work ids for the rest of the works
     inactive_works = @collection.works.unrestricted.pluck(:id) - active_works
-    #find pages in those works that aren't transcribed
+    # find pages in those works that aren't transcribed
     pages = Page.where(work_id: inactive_works).needs_transcription
-    return pages
+    pages
   end
 
   def find_untranscribed_page
     # Get first untranscribed work
-    untranscribed_works = @collection.works.joins(:work_statistic).where(work_statistics: {complete: 0})
+    untranscribed_works = @collection.works.joins(:work_statistic).where(work_statistics: { complete: 0 })
 
-    if untranscribed_works.any?{|w| w.untranscribed?}
-      work_ids = untranscribed_works.select{|w| w.untranscribed?}
+    if untranscribed_works.any? { |w| w.untranscribed? }
+      work_ids = untranscribed_works.select { |w| w.untranscribed? }
     else
       work_ids = @collection.works.incomplete_transcription.order_by_recent_inactivity
     end
-    Page.where({work_id: work_ids})
+    Page.where({ work_id: work_ids })
       .needs_transcription
       .reorder('position ASC')
       .first
   end
 
   def any_public_collections_with_document_sets?(collections_and_doc_sets)
-    collections = collections_and_doc_sets.select { |c_or_ds| c_or_ds.class == Collection}
+    collections = collections_and_doc_sets.select { |c_or_ds| c_or_ds.class == Collection }
     collections.any? { |c| c.is_public && c.supports_document_sets }
   end
 

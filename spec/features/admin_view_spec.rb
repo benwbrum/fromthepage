@@ -1,19 +1,18 @@
 require 'spec_helper'
 
 describe "admin actions" do
-
   before :all do
     @admin = User.find_by(login: ADMIN)
     @owner = User.find_by(login: OWNER)
   end
 
   before :each do
-    login_as(@admin, :scope => :user)
-  end  
+    login_as(@admin, scope: :user)
+  end
 
   it "looks at admin tabs" do
     user = User.find_by(login: USER)
-    #click on each tab in the admin dashboard
+    # click on each tab in the admin dashboard
     visit admin_path
     page.find('.tabs').click_link("Users")
     expect(page.current_path).to eq '/admin/user_list'
@@ -68,11 +67,11 @@ describe "admin actions" do
     visit admin_path
     page.find('.tabs').click_link("Owners")
     expect(page).to have_content("Owner Login")
-    #masquerade as the owner and see permissions
+    # masquerade as the owner and see permissions
     page.find('tr', text: @owner.login).click_link("Login As")
     expect(page).to have_selector('a', text: 'Undo Login As')
     click_link(I18n.t('dashboard.plain'))
-    #check the owner dashboard for correct contents
+    # check the owner dashboard for correct contents
     expect(page).to have_content("Owner Dashboard")
     collections = Collection.where(owner_user_id: @owner.id)
     collections.each do |c|
@@ -80,13 +79,13 @@ describe "admin actions" do
       work_count=c.works.count==0 ? "no works" : "#{c.works.count} works"
       expect(page).to have_content(work_count)
     end
-    #make the masqueraded user doesn't have access to the admin dashboard
+    # make the masqueraded user doesn't have access to the admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
     visit admin_path
     expect(page.current_path).to eq collections_list_path
 
-    #un-masquerade and make sure the user is the admin again
+    # un-masquerade and make sure the user is the admin again
     click_link('Undo Login As')
     expect(page).not_to have_selector('a', text: 'Undo Login As')
     expect(page).to have_content @admin.display_name
@@ -120,7 +119,7 @@ describe "admin actions" do
     page.fill_in 'search', with: user2.display_name
     click_button('Search')
     expect(page).to have_content(user2.email)
-  end    
+  end
 
   it "downgrades a user" do
     visit admin_path
@@ -132,14 +131,14 @@ describe "admin actions" do
 
   it "can't access owner dashboard as a downgraded user" do
     du = User.where(login: 'brian').first
-    login_as(du, :scope => :user)
+    login_as(du, scope: :user)
     visit "/dashboard/owner"
     expect(page).not_to have_content("Owner Dashboard")
   end
 
   it "can't create a collection as a downgraded user" do
     du = User.where(login: 'brian').first
-    login_as(du, :scope => :user)
+    login_as(du, scope: :user)
     visit "/dashboard/startproject"
     expect(page).not_to have_link("Create a Collection")
   end

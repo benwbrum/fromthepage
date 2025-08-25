@@ -48,9 +48,9 @@ class Collection::Update < ApplicationInteractor
 
     @collection_params[:data_entry_type] = if ActiveRecord::Type::Boolean.new.cast(@collection_params[:data_entry_type])
                                              Collection::DataEntryType::TEXT_AND_METADATA
-                                           else
+    else
                                              Collection::DataEntryType::TEXT_ONLY
-                                           end
+    end
   end
 
   def set_slug
