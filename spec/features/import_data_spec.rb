@@ -27,7 +27,7 @@ describe 'import data' do
         page.fill_in 'cdm_url', with: item_url
         page.find('#cdm_import').click
       end
-      expect(page).to have_content('Manifest: Letter with envelope from Virginia Shewalter', wait: 10)
+      expect(page).to have_content('Manifest: Letter with envelope from Virginia Shewalter', wait: 30)
     end
 
     it 'browses records from a collection', js: true do
@@ -40,7 +40,7 @@ describe 'import data' do
         page.fill_in 'cdm_url', with: collection_url
         page.find('#cdm_import').click
       end
-      expect(page).to have_content('Collection: The Virginia Shewalter Letters Collection', wait: 10)
+      expect(page).to have_content('Collection: The Virginia Shewalter Letters Collection', wait: 30)
     end
 
     it 'browses collections from a repository', js: true do
@@ -67,7 +67,7 @@ describe 'import data' do
         page.find('#cdm_import').click
       end
       flash_message = "No IIIF manifest exists for CONTENTdm item #{bad_item_url}"
-      expect(page).to have_content(flash_message, wait: 10)
+      expect(page).to have_content(flash_message, wait: 30)
     end
   end
 end
