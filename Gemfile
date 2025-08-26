@@ -45,7 +45,6 @@ gem 'ahoy_matey'
 gem 'browser', '~> 2.0'
 gem 'user_agent_parser'
 
-gem 'oink'
 gem 'pry'
 
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
@@ -163,5 +162,3 @@ gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
 
 gem 'chewy'
-# Elasticsearch client
-# gem 'elasticsearch', '8.15.0'
