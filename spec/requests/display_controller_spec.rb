@@ -11,7 +11,7 @@ describe DisplayController do
   end
 
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   describe '#read_work' do
@@ -20,7 +20,7 @@ describe DisplayController do
     context 'without page range' do
       it 'renders all pages' do
         get action_path
-        
+
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:read_work)
         expect(assigns(:pages)).to be_present
@@ -34,7 +34,7 @@ describe DisplayController do
 
       it 'filters pages by range' do
         get action_path
-        
+
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:read_work)
         expect(assigns(:page_range_filter)).to be_truthy
@@ -49,7 +49,7 @@ describe DisplayController do
 
       it 'filters pages by range' do
         get action_path
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
@@ -63,7 +63,7 @@ describe DisplayController do
 
       it 'filters pages by range' do
         get action_path
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
@@ -86,7 +86,7 @@ describe DisplayController do
 
       it 'handles invalid range gracefully' do
         get action_path
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:page_range_filter)).to be_falsy
         expect(assigns(:heading)).to eq('Pages')
@@ -99,7 +99,7 @@ describe DisplayController do
 
       it 'applies both filters' do
         get action_path, params: params
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:page_range_filter)).to be_truthy
         expect(assigns(:start_page)).to eq(3)
