@@ -432,8 +432,6 @@ module ExportHelper
       # Fall back to basic cleaning if EDTF parsing fails
     end
     
-    # Fallback: Remove trailing question marks and whitespace
-    cleaned = date_string.strip.gsub(/\?+$/, '')
     # Return nil if the result is not a valid date format
     return nil if cleaned.blank? || cleaned !~ /^\d{4}(-\d{2})?(-\d{2})?$/
     cleaned

@@ -10,8 +10,8 @@ describe ExportHelper do
       expect(clean_date_for_when_attribute('1866-05-15')).to eq('1866-05-15')
     end
 
-    it 'falls back to basic cleaning for dates with question marks' do
-      expect(clean_date_for_when_attribute('1866?')).to eq('1866')
+    it 'does not eliminate question marks' do
+      expect(clean_date_for_when_attribute('1866?')).to eq('1866?')
     end
 
     it 'handles multiple question marks' do
@@ -22,11 +22,6 @@ describe ExportHelper do
       expect(clean_date_for_when_attribute('invalid')).to be_nil
       expect(clean_date_for_when_attribute('')).to be_nil
       expect(clean_date_for_when_attribute(nil)).to be_nil
-    end
-
-    it 'validates date format for fallback cleaning' do
-      expect(clean_date_for_when_attribute('1866-13')).to be_nil  # Invalid month
-      expect(clean_date_for_when_attribute('186')).to be_nil     # Too short
     end
 
     it 'handles EDTF parsing errors gracefully' do
