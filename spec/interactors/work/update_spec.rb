@@ -87,6 +87,70 @@ describe Work::Update do
       end
     end
 
+    context 'when submitting blank transcription conventions' do
+      let(:work_params) do
+        {
+          title: 'New title',
+          collection_id: collection.id,
+          transcription_conventions: ''
+        }
+      end
+
+      it 'inherits from collection (sets to nil)' do
+        expect(result.success?).to be_truthy
+        expect(result.work).to have_attributes(
+          title: 'New title',
+          collection_id: collection.id,
+          transcription_conventions: nil
+        )
+      end
+    end
+
+    context 'when submitting whitespace-only transcription conventions' do
+      let(:work_params) do
+        {
+          title: 'New title',
+          collection_id: collection.id,
+          transcription_conventions: "  \n\r  "
+        }
+      end
+
+      it 'inherits from collection (sets to nil)' do
+        expect(result.success?).to be_truthy
+        expect(result.work).to have_attributes(
+          title: 'New title',
+          collection_id: collection.id,
+          transcription_conventions: nil
+        )
+      end
+    end
+
+    context 'when work already has conventions but submitting collection conventions' do
+      let!(:work_with_conventions) { create(:work, collection: collection, owner_user_id: owner.id, transcription_conventions: "Old work convention") }
+      let(:work_params) do
+        {
+          title: 'Updated title',
+          collection_id: collection.id,
+          transcription_conventions: "Original convention \n"
+        }
+      end
+      let(:result) do
+        described_class.new(
+          work: work_with_conventions,
+          work_params: work_params
+        ).call
+      end
+
+      it 'removes work-level conventions to inherit from collection' do
+        expect(result.success?).to be_truthy
+        expect(result.work).to have_attributes(
+          title: 'Updated title',
+          collection_id: collection.id,
+          transcription_conventions: nil
+        )
+      end
+    end
+
     context 'when collection is changed' do
       let!(:collection_2) { create(:collection, owner_user_id: owner.id) }
       let!(:article) { create(:article, collection: collection, pages: [page]) }

@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe MetadataController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
-  let(:owner) { User.find_by(login: OWNER) }
+  let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:original_metadata) { [{ label: 'Label', value: 'Value' }].to_json }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, original_metadata: original_metadata) }

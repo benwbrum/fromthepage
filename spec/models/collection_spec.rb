@@ -103,9 +103,10 @@ describe Collection do
   end
 
   describe '#enable_messageboards' do
-    context 'when messageboard_group is nil' do
-      let(:collection) { create(:collection, messageboard_group: nil) }
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, messageboard_group: nil) }
 
+    context 'when messageboard_group is nil' do
       it 'creates a messageboard group and default messageboards' do
         expect {
           collection.enable_messageboards
@@ -126,6 +127,30 @@ describe Collection do
           collection.enable_messageboards
         }.not_to change(Thredded::MessageboardGroup, :count)
       end
+    end
+
+    context 'when messageboard_group is not nil' do
+      before do
+        collection.enable_messageboards
+        collection.disable_messageboards
+      end
+
+      it 'does not create new messageboard_group' do
+        expect {
+          collection.enable_messageboards
+        }.not_to change(Thredded::MessageboardGroup, :count)
+      end
+    end
+  end
+
+  describe '#uniquify_slug' do
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+
+    it 'uniquifies slug' do
+      collection.update!(slug: document_set.slug)
+      expect(collection.slug).to eq("#{document_set.slug}-collection")
     end
   end
 

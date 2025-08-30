@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TranscribeController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }
@@ -59,6 +59,20 @@ describe TranscribeController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:display_page)
+    end
+  end
+
+  describe '#help' do
+    let(:action_path) { collection_help_page_path(owner, collection, work, page) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:help)
     end
   end
 end

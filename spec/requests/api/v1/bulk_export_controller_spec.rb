@@ -111,7 +111,7 @@ describe Api::V1::BulkExportController do
     end
 
     context 'when bulk export does not exist' do
-      let(:action_path) { api_v1_bulk_export_status_path(bulk_export_id: SecureRandom.hex(4)) }
+      let(:action_path) { api_v1_bulk_export_status_path(bulk_export_id: -1) }
 
       it 'renders status and json' do
         subject

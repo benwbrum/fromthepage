@@ -43,7 +43,7 @@ jobs:
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 3.3.5
           bundler-cache: true
       - name: Bundle install
         run: bundle install --jobs 4 --retry 3

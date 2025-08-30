@@ -57,9 +57,9 @@ describe "collection metadata", :order => :defined do
     end
   end
 
-  it "increments occurrences as works are re-imported", :js => true do
+  it "increments occurrences as works are re-imported", js: true do
     login_as @owner
-    c = Collection.where(title: "ladi").first
+    c = Collection.find_by(title: 'ladi')
     filename = c.metadata_coverages.where(key: 'filename').first
     expect(filename.count).to eq 3
 

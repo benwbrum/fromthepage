@@ -332,6 +332,8 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       @type_counts[WorksIndex.index_name.to_sym]
     when 'page'
       @type_counts[PagesIndex.index_name.to_sym]
+    when 'user'
+      @type_counts[UsersIndex.index_name.to_sym]
     else
       @total_count
     end

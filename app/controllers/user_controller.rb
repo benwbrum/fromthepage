@@ -126,7 +126,7 @@ class UserController < ApplicationController
     # Find the user if it isn't already set
     @user ||= User.friendly.find(params[:id])
 
-    if !@user.deleted || current_user.admin
+    if !@user.deleted || current_user&.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map(&:id)
       @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection)

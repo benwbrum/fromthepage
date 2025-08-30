@@ -1,9 +1,10 @@
 class DocumentSet::Update < ApplicationInteractor
   attr_accessor :document_set
 
-  def initialize(document_set:, document_set_params:)
+  def initialize(document_set:, document_set_params:, user:)
     @document_set        = document_set
     @document_set_params = document_set_params
+    @user                = user
 
     super
   end
@@ -19,7 +20,7 @@ class DocumentSet::Update < ApplicationInteractor
 
     return unless @document_set.saved_change_to_visibility?
 
-    Elasticsearch::Collection::SyncJob.perform_later(collection_id: @document_set.id, type: :document_set)
+    Elasticsearch::Collection::SyncJob.perform_later(user_id: @user.id, collection_id: @document_set.id, type: :document_set)
   end
 
   private
