@@ -32,4 +32,36 @@ describe UserController do
       expect(response).to render_template(:search)
     end
   end
+
+  describe '#profile' do
+    context 'when user is deleted and visitor is not logged in' do
+      let(:deleted_user) { create(:user, deleted: true, slug: 'deleted-user') }
+
+      it 'does not raise 500 error for site visitors accessing deleted user' do
+        # Simulate site visitor (not logged in)
+        expect {
+          get user_profile_path(deleted_user.slug)
+        }.not_to raise_error
+
+        # Should redirect to dashboard with notice
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+        expect(flash[:notice]).to be_present
+      end
+    end
+
+    context 'when user is deleted and visitor is admin' do
+      let(:admin_user) { create(:admin) }
+      let(:deleted_user) { create(:user, deleted: true, slug: 'deleted-user-admin-test') }
+
+      it 'allows admin to view deleted user profile' do
+        login_as admin_user
+
+        get user_profile_path(deleted_user.slug)
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:profile)
+      end
+    end
+  end
 end
