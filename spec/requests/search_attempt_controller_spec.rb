@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SearchAttemptController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }

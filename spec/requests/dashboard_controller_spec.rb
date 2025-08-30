@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DashboardController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { build(:owner).tap { |o| o.save(validate: false) } }

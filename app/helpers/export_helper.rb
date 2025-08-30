@@ -224,10 +224,9 @@ module ExportHelper
     end
   end
 
-
   def work_to_xhtml(work)
-    @work = Work.includes(pages: [{notes: :user}, {page_versions: :user}]).find_by(id: work.id)
-    render_to_string :layout => false, :template => "export/show.html.erb"
+    @work = Work.includes(pages: [{ notes: :user }, { page_versions: :user }]).find_by(id: work.id)
+    render_to_string template: 'export/show', layout: false, formats: [:html], handlers: [:erb]
   end
 
   def work_to_tei(work, exporting_user)
@@ -288,7 +287,8 @@ module ExportHelper
     ### Catch the rendered Work for post-processing
     xml = ApplicationController.renderer.render_to_string(
       layout: false,
-      template: "export/tei.html.erb",
+      template: 'export/tei',
+      formats: [:html],
       assigns: {
         work: @work,
         context: @context,
@@ -300,7 +300,8 @@ module ExportHelper
         other_articles: @other_articles,
         collection: @work.collection,
         user: exporting_user
-      })
+      }
+    )
     post_process_xml(xml, @work)
 
     xml
@@ -331,7 +332,7 @@ module ExportHelper
   end
 
   def category_to_tei(category, subjects, seen_subjects)
-    return "" if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
+    return '' if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
 
     has_content = false
     tei = ""

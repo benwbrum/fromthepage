@@ -1,6 +1,46 @@
 require 'spec_helper'
 
 RSpec.describe UserMailer, type: :mailer do
+  describe 'upload_no_images_warning' do
+    let(:user) { create(:user) }
+    let(:collection) { create(:collection, owner_user_id: user.id) }
+    let(:document_upload) { create(:document_upload, user: user, collection: collection) }
+
+    after do
+      # Clean up created records
+      document_upload.destroy
+      collection.destroy  
+      user.destroy
+    end
+
+    it 'renders the subject' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.subject).to eq('Upload processing complete - no images found')
+    end
+
+    it 'renders the receiver email' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.to).to eq([user.email])
+    end
+
+    it 'renders the sender email' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.from).to eq(['support@fromthepage.com'])
+    end
+
+    it 'includes the filename in the message' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      expect(mail.body.encoded).to include(document_upload.name)
+    end
+
+    it 'includes supported formats information' do
+      mail = UserMailer.upload_no_images_warning(document_upload)
+      # Test for the actual translated content that should be rendered
+      expect(mail.body.encoded).to include('JPG, JPEG, PNG')
+      expect(mail.body.encoded).to include('no supported image files were found')
+    end
+  end
+
   describe 'nightly_user_activity' do
     context "inside the mailer email" do
       it 'renders the subject' do

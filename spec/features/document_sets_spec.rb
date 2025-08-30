@@ -276,8 +276,9 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content(@set.title)
   end
 
-  it "checks document set breadcrumbs - subjects" do
-    login_as(@user, :scope => :user)
+  it "checks document set breadcrumbs - subjects", js: true do
+    login_as(@user, scope: :user)
+
     @article = @set.articles.first
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
@@ -289,15 +290,24 @@ describe "document sets", :order => :defined do
     expect(page).to have_selector('.category-article', text: @article.title)
     expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
     page.find('a', text: @article.title).click
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     page.find('.tabs').click_link("Settings")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     click_button 'Autolink'
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     click_button('Save Changes')
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
+
     page.find('.tabs').click_link("Versions")
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_selector('.breadcrumbs')
+    expect(page).to have_selector('a', text: @set.title)
   end
 
   it 'checks document set subject tabs' do
@@ -460,6 +470,9 @@ describe "document sets", :order => :defined do
   end
 
   it "disables document sets", js: true do
+    # Ensure document sets are enabled initially
+    @collection.update!(supports_document_sets: true)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')
@@ -470,6 +483,9 @@ describe "document sets", :order => :defined do
   end
 
   it "enables document sets", js: true do
+    # Ensure document sets are disabled initially  
+    @collection.update!(supports_document_sets: false)
+    
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.side-tabs').click_link('Look & Feel')

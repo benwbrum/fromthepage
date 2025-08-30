@@ -6,7 +6,7 @@ h2.nomargin =t('.recent_activity')
   h3 =t('.you_have_new_collaborators')
   - @activity.collaborators.each do |user|
     a href="mailto:#{user.email}" "#{user.email} #{user.login}"<br />
-  p 
+  p
     =t('.you_may_consider', link: link_to("How to write a welcome email", "https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/")).html_safe
 
 / New Notes and Comments
@@ -17,7 +17,7 @@ h2.nomargin =t('.recent_activity')
       -if comment.prerender_mailer
         =raw(show_prerender(comment.prerender_mailer, I18n.locale))
       -else
-        =render(:partial => 'deed/deed.html', :locals => { :deed => comment, :long_view => true, :mailer => true })
+        =render(partial: 'deed/deed', locals: { deed: comment, long_view: true, mailer: true }, formats: [:html])
       | <br>
 
 / Raw Activity stream (without notes)
@@ -25,17 +25,17 @@ h2.nomargin =t('.recent_activity')
   h3 =t('.other_recent_activity')
   - @activity.activity.each do |collection_title,deeds|
     h4 #{collection_title}
-    p 
+    p
       - deeds.each do |deed|
         -if deed.prerender
           =raw(show_prerender(deed.prerender_mailer, I18n.locale))
         -else
-          =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true, :mailer => true })
+          =render(partial: 'deed/deed', locals: { deed: comment, long_view: true, mailer: true }, formats: [:html])
         | <br>
-      
+
 
 h3 =t('.how_is_your_project_going')
-p 
+p
   i =t('.what_is_easy').html_safe
 p
  =t('.opt_out_email', link: link_to("here", update_profile_url(@activity.owner, only_path: false))).html_safe

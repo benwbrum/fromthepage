@@ -29,8 +29,9 @@ namespace :fromthepage do
     document_upload.status = :processing
     document_upload.save
 
+    works_created = 0
     begin
-      process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+      works_created = process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
 
       document_upload.status = :finished
       document_upload.save
@@ -42,9 +43,21 @@ namespace :fromthepage do
 
     if SMTP_ENABLED
       begin
-        UserMailer.upload_finished(document_upload).deliver!
+        if works_created > 0
+          print "Processing completed successfully: #{works_created} works created from upload. Sending success email.\n"
+          UserMailer.upload_finished(document_upload).deliver!
+        else
+          print "Processing completed but no works were created: no supported image files found in upload. Sending warning email.\n"
+          UserMailer.upload_no_images_warning(document_upload).deliver!
+        end
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
+      end
+    else
+      if works_created > 0
+        print "Processing completed successfully: #{works_created} works created from upload. SMTP disabled, no email sent.\n"
+      else
+        print "Processing completed but no works were created: no supported image files found in upload. SMTP disabled, no email sent.\n"
       end
     end
 
@@ -65,9 +78,11 @@ namespace :fromthepage do
     # resize files
     compress_tree(temp_dir)
     # ingest
-    ingest_tree(document_upload, temp_dir)
+    works_created = ingest_tree(document_upload, temp_dir)
     # clean
     clean_tmp_dir(temp_dir)
+
+    works_created
   end
 
   def clean_tmp_dir(temp_dir)
@@ -163,6 +178,8 @@ namespace :fromthepage do
 
   def ingest_tree(document_upload, temp_dir)
     print "ingest_tree(#{temp_dir})\n"
+    works_created = 0
+
     # first process all sub-directories
     clean_dir=temp_dir.gsub('[','\[').gsub(']','\]')
     ls = Dir.glob(File.join(clean_dir, "*")).sort
@@ -170,7 +187,7 @@ namespace :fromthepage do
       print "ingest_tree considering #{path})\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
-        ingest_tree(document_upload, path) #recurse
+        works_created += ingest_tree(document_upload, path) #recurse
       end
     end
 
@@ -179,10 +196,12 @@ namespace :fromthepage do
     if image_files.length > 0
       print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
+      works_created += 1
       print "Finished converting files in #{temp_dir} to a work\n"
     end
-    print "Finished ingest_tree for #{temp_dir}\n"
+    print "Finished ingest_tree for #{temp_dir} - created #{works_created} works\n"
 
+    works_created
   end
 
 
@@ -210,7 +229,7 @@ namespace :fromthepage do
 
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
 
-    User.current_user=document_upload.user
+    Current.user = document_upload.user
     document_sets = []
     if yaml
       yaml.keep_if { |e| INGESTOR_ALLOWLIST.include? e }

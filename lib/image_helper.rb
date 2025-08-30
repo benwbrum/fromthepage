@@ -6,28 +6,28 @@ require 'shellwords'
 include Magick
 
 module ImageHelper
-  
+
   #############################
   # Code for new zoom feature
   #############################
 
   def self.unzip_file (file, destination)
     print "upzip_file(#{file})\n"
-    
+
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
-#        f_path=File.join(destination, File.basename(f.name))
+        # f_path=File.join(destination, File.basename(f.name))
         # FileUtils.mkdir_p(File.dirname(destination)) unless Dir.exist? destination
         outfile = File.join(destination, f.name)
         FileUtils.mkdir_p(File.dirname(outfile))
- 
+
         print "\textracting #{outfile}\n"
         zip_file.extract(f, outfile)
       end
     end
-    
+
   end
-  
+
   def self.calculate_page_size_and_dpi(filename)
     # some PDFs have page sizes so big that our 300x300 DPI creates images wider than the max 16000
     raw_page_size=`pdfinfo #{Shellwords.escape(filename)} | grep "Page size"`.gsub(/Page size:\s+/,'').gsub(' pts','').chomp
@@ -46,12 +46,12 @@ module ImageHelper
   def self.extract_pdf(filename, ocr=false)
     pattern = Regexp.new(File.extname(filename) + "$")
     destination = filename.gsub(pattern, '')
-    FileUtils.mkdir(destination) unless File.exists?(destination)
+    FileUtils.mkdir(destination) unless File.exist?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
-    
+
     page_info = calculate_page_size_and_dpi(filename)
     dpi = page_info[:dpi]
-    
+
     gs = "gs -r#{dpi}x#{dpi} -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg #{Shellwords.escape(filename)}"
     print "\t\t#{gs}\n"
     system(gs)
@@ -67,7 +67,7 @@ module ImageHelper
         system(pdftotext)
       end
     end
-    
+
     destination
   end
 
@@ -81,8 +81,8 @@ module ImageHelper
       compress_image(filename)
     end
   end
-      
-  
+
+
   MAX_FILE_SIZE = 2000000
 
   def self.compress_files_in_dir(dirname)
@@ -109,7 +109,7 @@ module ImageHelper
       File.unlink(filename)
       FileUtils.cp(working_file, filename)
       File.unlink(working_file)
-    end  
+    end
   end
 
   def self.convert_tiff(filename)

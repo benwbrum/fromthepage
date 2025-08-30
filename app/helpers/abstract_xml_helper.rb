@@ -371,6 +371,9 @@ module AbstractXmlHelper
     doc.write(my_display_html)
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
+    # Add newlines before and after div elements
+    my_display_html.gsub!("<div", "\n<div")
+    my_display_html.gsub!("</div>", "</div>\n")
     my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
     my_display_html.gsub!('<p/>','')
     my_display_html.gsub!(/<\/?page>/,'')

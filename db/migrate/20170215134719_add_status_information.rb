@@ -4,7 +4,9 @@ class AddStatusInformation < ActiveRecord::Migration[5.0]
     add_column :work_statistics, :needs_review, :integer
 
     #add translation status to pages
-    add_column :pages, :translation_status, :string
+    unless column_exists?(:pages, :translation_status)
+      add_column :pages, :translation_status, :string
+    end
 
     #add translation columns to work statistics
     add_column :work_statistics, :translated_pages, :integer

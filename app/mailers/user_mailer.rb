@@ -18,6 +18,12 @@ class UserMailer < ActionMailer::Base
     mail to: @document_upload.user.email, subject: "Your upload is ready"
   end
 
+  def upload_no_images_warning(document_upload)
+    @document_upload = document_upload
+
+    mail to: @document_upload.user.email, subject: "Upload processing complete - no images found"
+  end
+
   def bulk_export_finished(bulk_export)
     @bulk_export = bulk_export
 

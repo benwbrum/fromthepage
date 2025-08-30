@@ -17,7 +17,7 @@ class Database::Import::DumpIngestor < Database::Base
 
   def import_dump(table_name)
     records = []
-    rows = YAML.load_file(path_to_dump(table_name))
+    rows = YAML.load_file(path_to_dump(table_name), permitted_classes: [Time, Date, Symbol])
 
     rows.each do |row|
       if row['metadata'].present?

@@ -6,29 +6,28 @@ fr:
     collection_inactive: Collecte inactive
     collection_joined: Collection rejointe
     deed:
-      html:
-        added_a_note_to_page: a ajouté une note à la page %{page}
-        added_work: a ajouté %{work}
-        corrected_page: a corrigé %{page}
-        described_metadata: métadonnées décrites
-        edited_article: a modifié %{article}
-        edited_metadata: métadonnées modifiées
-        edited_page: a modifié %{page}
-        edited_translation_of_page: a édité la traduction de %{page}
-        in_collection: " dans la collection %{collection}"
-        in_the_work: " dans l'œuvre %{work}"
-        indexed_page: a indexée %{page}
-        indexed_translation_of_page: a indexé la traduction de %{page}
-        joined: 'a rejoint '
-        marked_page_as_blank: a marqué la page %{page} comme vierge
-        marked_page_as_needing_review: a marqué la page %{page} comme nécessitant une révision
-        marked_translation_page_as_needing_review: a marqué la page à traduire %{page} comme nécessitant une révision
-        reviewed_page: a révisé %{page}
-        reviewed_translation: a révisé la traduction %{page}
-        saying_deed: ", disant &laquo;%{title}&raquo;"
-        this_collection: cette collection
-        transcribed_page: a transcrit %{page}
-        translated_page: a traduit %{page}
+      added_a_note_to_page: a ajouté une note à la page %{page}
+      added_work: a ajouté %{work}
+      corrected_page: a corrigé %{page}
+      described_metadata: métadonnées décrites
+      edited_article: a modifié %{article}
+      edited_metadata: métadonnées modifiées
+      edited_page: a modifié %{page}
+      edited_translation_of_page: a édité la traduction de %{page}
+      in_collection: " dans la collection %{collection}"
+      in_the_work: " dans l'œuvre %{work}"
+      indexed_page: a indexée %{page}
+      indexed_translation_of_page: a indexé la traduction de %{page}
+      joined: 'a rejoint '
+      marked_page_as_blank: a marqué la page %{page} comme vierge
+      marked_page_as_needing_review: a marqué la page %{page} comme nécessitant une révision
+      marked_translation_page_as_needing_review: a marqué la page à traduire %{page} comme nécessitant une révision
+      reviewed_page: a révisé %{page}
+      reviewed_translation: a révisé la traduction %{page}
+      saying_deed: ", disant &laquo;%{title}&raquo;"
+      this_collection: cette collection
+      transcribed_page: a transcrit %{page}
+      translated_page: a traduit %{page}
     deeds:
       show_more: Voir plus
     described_metadata: Métadonnées décrites

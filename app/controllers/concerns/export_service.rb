@@ -56,8 +56,8 @@ module ExportService
   def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors, include_notes)
     # render to a string
     rendered_markdown =
-      ApplicationController.renderer.render_to_string(
-        template: '/export/facing_edition.html',
+      ApplicationController.new.render_to_string(
+        template: '/export/facing_edition',
         layout: false,
         assigns: {
           collection: work.collection,
@@ -68,7 +68,8 @@ module ExportService
           include_metadata: include_metadata,
           include_contributors: include_contributors,
           include_notes: include_notes
-        }
+        },
+        formats: [:html]
       )
 
     # write the string to a temp directory

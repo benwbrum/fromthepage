@@ -93,11 +93,11 @@ module DocumentSetStatistic
   def timeframe(start_date, end_date, column='created_at')
     timeframe_clause = ""
     if start_date && end_date
-      timeframe_clause = "#{column} BETWEEN '#{start_date.to_s(:db)}' AND '#{end_date.to_s(:db)}'"
+      timeframe_clause = "#{column} BETWEEN '#{start_date.to_fs(:db)}' AND '#{end_date.to_fs(:db)}'"
     elsif start_date
-      timeframe_clause = "#{column} >= '#{start_date.to_s(:db)}'"
+      timeframe_clause = "#{column} >= '#{start_date.to_fs(:db)}'"
     elsif end_date
-      timeframe_clause = "#{column} <= '#{end_date.to_s(:db)}'"
+      timeframe_clause = "#{column} <= '#{end_date.to_fs(:db)}'"
     else
     end
 
