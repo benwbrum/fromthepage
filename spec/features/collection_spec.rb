@@ -392,7 +392,7 @@ describe "collection spec (isolated)" do
   end
 
   after :all do
-    @factory_owner.collections.each do |c|
+    @factory_owner.all_owner_collections.each do |c|
       c.destroy
     end
     @factory_owner.destroy
