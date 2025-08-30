@@ -269,6 +269,7 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -291,7 +292,6 @@ GEM
     hashie (5.0.0)
     highline (3.1.2)
       reline
-    hodel_3000_compliant_logger (0.1.1)
     html-pipeline (2.14.3)
       activesupport (>= 2)
       nokogiri (>= 1.4)
@@ -402,6 +402,7 @@ GEM
     mini_magick (5.3.0)
       logger
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_json (1.17.0)
@@ -427,6 +428,9 @@ GEM
     newrelic_rpm (9.20.0)
     nio4r (2.7.4)
     nkf (0.2.0)
+    nokogiri (1.18.9)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-musl)
@@ -452,9 +456,6 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
     observer (0.1.2)
-    oink (0.10.1)
-      activerecord
-      hodel_3000_compliant_logger
     omniauth (1.9.2)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
@@ -805,6 +806,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  ruby
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
@@ -869,7 +871,6 @@ DEPENDENCIES
   newrelic_rpm
   nkf
   nokogiri
-  oink
   omniauth (~> 1.9)
   omniauth-google-oauth2
   omniauth-multi-provider (~> 0.2.1)
