@@ -96,7 +96,7 @@ namespace :fromthepage do
           new_page.status=page.status
           new_page.source_text=''
           new_page.xml_text=''
-          new_work.pages << new_page || binding.pry
+          new_work.pages << new_page
 
           # now re-save the page with the original source text and status to fix the versions
           new_page.source_text= page.source_text||''

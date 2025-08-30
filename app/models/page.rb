@@ -707,7 +707,9 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      encoded_path = URI::DEFAULT_PARSER.escape(self.canonical_facsimile_url, /[^A-Za-z0-9\-._~\/]/)
+      # Convert file path to web URL path using the helper
+      web_path = file_to_url(self.canonical_facsimile_url)
+      encoded_path = URI::DEFAULT_PARSER.escape(web_path, /[^A-Za-z0-9\-._~\/]/)
       uri = URI.parse(encoded_path)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
