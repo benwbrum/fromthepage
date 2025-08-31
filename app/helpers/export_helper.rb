@@ -431,7 +431,7 @@ module ExportHelper
     rescue
       # Fall back to basic cleaning if EDTF parsing fails
     end
-    
+    cleaned = date_string.strip
     # Return nil if the result is not a valid date format
     return nil if cleaned.blank? || cleaned !~ /^\d{4}(-\d{2})?(-\d{2})?$/
     cleaned
