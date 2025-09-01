@@ -23,7 +23,7 @@ describe 'import data' do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, '#import-contentdm').click
-      VCR.use_cassette('cdm/midpoint-shelwater-item', record: :once) do
+      VCR.use_cassette('cdm/midpoint-shelwater-item', record: :none) do
         page.fill_in 'cdm_url', with: item_url
         page.find('#cdm_import').click
       end
@@ -36,7 +36,7 @@ describe 'import data' do
       visit dashboard_owner_path
       page.find('.tabs').click_link('Start A Project')
       page.find(:css, "#import-contentdm").click
-      VCR.use_cassette('cdm/midpoint-shelwater-collection', record: :once) do
+      VCR.use_cassette('cdm/midpoint-shelwater-collection', record: :none) do
         page.fill_in 'cdm_url', with: collection_url
         page.find('#cdm_import').click
       end
@@ -49,7 +49,7 @@ describe 'import data' do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, '#import-contentdm').click
-      VCR.use_cassette('cdm/midpoint-repository', record: :once) do
+      VCR.use_cassette('cdm/midpoint-repository', record: :none) do
         page.fill_in 'cdm_url', with: repository_url
         page.find('#cdm_import').click
       end
@@ -62,7 +62,7 @@ describe 'import data' do
       visit dashboard_owner_path
       page.find('.tabs').click_link('Start A Project')
       page.find(:css, '#import-contentdm').click
-      VCR.use_cassette('cdm/bad_iiif_manifest', record: :once) do
+      VCR.use_cassette('cdm/bad_iiif_manifest', record: :none) do
         page.fill_in 'cdm_url', with: bad_item_url
         page.find('#cdm_import').click
       end

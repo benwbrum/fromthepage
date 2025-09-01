@@ -101,7 +101,6 @@ group :test do
   gem 'vcr'
   gem 'webmock', require: false
   gem 'with_model'
-  gem 'mini_racer', platforms: :ruby
 end
 
 group :development, :test do
