@@ -7,7 +7,6 @@ def set_up_spreadsheet_field(owner, collection)
   page.find('#new-fields tr[3]').select('spreadsheet', from: 'transcription_fields__input_type')
   # hit save
   click_button 'Save'
-
 end
 
 def set_up_columns(owner, collection)
@@ -18,9 +17,8 @@ def set_up_columns(owner, collection)
   page.find('#new-columns tr[2]').select('text', from: 'spreadsheet_columns__input_type')
   page.find('#new-columns tr[3]').fill_in('spreadsheet_columns__label', with: 'Date field')
   page.find('#new-columns tr[3]').select('date', from: 'spreadsheet_columns__input_type')
-# hit save
+  # hit save
   click_button 'Save'
-
 end
 
 
@@ -43,9 +41,8 @@ describe "spreadsheet" do
   let(:new_work) { create(:work, :with_pages, collection_id: collection.id) }
 
   describe 'configuration' do
-
     it 'adds a spreadsheet field to a field-based collection' do
-      set_up_spreadsheet_field(owner,collection)
+      set_up_spreadsheet_field(owner, collection)
 
       # verify the spreadhseet configuration button is present
       expect(page).to have_content("Configure Spreadsheet")
@@ -53,14 +50,12 @@ describe "spreadsheet" do
 
 
     context 'spreadsheet field' do
-
       it 'configures columns' do
-        set_up_spreadsheet_field(owner,collection)
-        set_up_columns(owner,collection)
+        set_up_spreadsheet_field(owner, collection)
+        set_up_columns(owner, collection)
         expect(page).to have_content("Spreadsheet Configuration")
         expect(SpreadsheetColumn.all.count).to eq 2
       end
     end
   end
-
 end

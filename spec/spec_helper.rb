@@ -26,7 +26,7 @@ Rails.root.glob('lib/**/*.rb').each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-#ActiveRecord::Migration.maintain_test_schema!
+# ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.extend WithModel
@@ -51,7 +51,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    %x[bundle exec rake assets:precompile]
+    %x(bundle exec rake assets:precompile)
 
     puts "Setting Collection Work Counts..."
     Collection.all.each do |c|
@@ -113,7 +113,7 @@ end
 ActionMailer::Base.perform_deliveries = true
 
 def wait_for_upload_processing
-  while DocumentUpload.where.not(:status => 'finished').count > 0
+  while DocumentUpload.where.not(status: 'finished').count > 0
     sleep 2
   end
 end
@@ -125,9 +125,8 @@ def fill_in_editor_field(text)
     fill_in('page[source_text]', with: text)
   elsif page.has_field?('page[source_translation]') # we find page_source_translation
     fill_in('page[source_translation]', with: text)
-  else #codemirror
+  else # codemirror
     script = "myCodeMirror.setValue(#{text.to_json});"
     page.execute_script(script)
   end
 end
-

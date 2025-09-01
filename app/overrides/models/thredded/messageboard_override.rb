@@ -7,5 +7,4 @@ Thredded::Messageboard.class_eval do
             presence: true
   validates :topics_count, numericality: true
   validates :position, presence: true, on: :update
-
 end

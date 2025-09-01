@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "uploads data for collections", :order => :defined do
-
+describe "uploads data for collections", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -11,7 +10,7 @@ describe "uploads data for collections", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "sets slugs" do
@@ -20,11 +19,11 @@ describe "uploads data for collections", :order => :defined do
     User.find_each(&:save)
   end
 
-  it "starts a new project from tab", :js => true do
+  it "starts a new project from tab", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collection.title, :from => 'document_upload_collection_id')
+    select(@collection.title, from: 'document_upload_collection_id')
 
     attach_file(
       'document_upload_file',
@@ -40,11 +39,11 @@ describe "uploads data for collections", :order => :defined do
     sleep(10)
   end
 
-  it "starts an ocr project", :js => true do
+  it "starts an ocr project", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collection.title, :from => 'document_upload_collection_id')
+    select(@collection.title, from: 'document_upload_collection_id')
 
     attach_file(
       'document_upload_file',
@@ -62,8 +61,8 @@ describe "uploads data for collections", :order => :defined do
     expect(uploaded_work.pages.first.source_text).to match 'dagegen'
   end
 
-  it "imports IIIF manifests", :js => true do
-    #import a manifest for test data
+  it "imports IIIF manifests", js: true do
+    # import a manifest for test data
     VCR.use_cassette('iiif/imports_iiif_manifests', record: :new_episodes) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
@@ -72,19 +71,19 @@ describe "uploads data for collections", :order => :defined do
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
-      select(@collection.title, :from => 'sc_manifest_collection_id')
+      select(@collection.title, from: 'sc_manifest_collection_id')
       click_button('Import Manifest')
       expect(page).to have_content(@collection.title)
       visit dashboard_owner_path
       works_count = Work.all.count
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
-      #this manifest has a very long title
+      # this manifest has a very long title
       page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2654"
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
-      select(@collection.title, :from => 'sc_manifest_collection_id')
+      select(@collection.title, from: 'sc_manifest_collection_id')
       click_button('Import')
       expect(page).to have_content(@collection.title)
       expect((@collection.works.last.title).length).to be < 255
@@ -93,11 +92,11 @@ describe "uploads data for collections", :order => :defined do
     end
   end
 
-  it "creates an empty work", :js => true do
+  it "creates an empty work", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(@collection.title, :from => 'work_collection_id')
+    select(@collection.title, from: 'work_collection_id')
     fill_in 'work_title', with: @title
     fill_in 'work_description', with: "This work contains no pages."
     click_button('Create Work')
@@ -133,7 +132,7 @@ describe "uploads data for collections", :order => :defined do
     work = Work.find(work.id)
     expect(work.work_statistic[:total_pages]).to eq 2
     expect(page).to have_content("Create Empty Work")
-    #testing the cancel button involves ajax
+    # testing the cancel button involves ajax
   end
 
   it "adds new document sets", js: true do
@@ -156,7 +155,7 @@ describe "uploads data for collections", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
     expect(page.find('h1')).to have_content("Test Document Set 1")
-    #add a work - has to be done manually b/c it's jquery
+    # add a work - has to be done manually b/c it's jquery
     id = @set_collection.works.second.id
     DocumentSet.last.work_ids = id
     DocumentSet.last.save!

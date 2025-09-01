@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 if ELASTIC_ENABLED
   describe Elasticsearch::MultiQuery do
     let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
@@ -70,14 +71,14 @@ if ELASTIC_ENABLED
     before(:each) do
       stub_const('ELASTIC_ENABLED', true)
 
-      [owner, other_user, collection, other_collection, document_set, work_1, work_2, page_1, page_2, page_3]
+      [ owner, other_user, collection, other_collection, document_set, work_1, work_2, page_1, page_2, page_3 ]
         .each(&:save!)
     end
 
     after(:each) do
       stub_const('ELASTIC_ENABLED', true)
 
-      [page_1, page_2, page_3, work_1, work_2, document_set, other_collection, collection, other_user, owner]
+      [ page_1, page_2, page_3, work_1, work_2, document_set, other_collection, collection, other_user, owner ]
         .each(&:destroy!)
     end
 

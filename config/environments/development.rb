@@ -72,8 +72,8 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   # Allow codespaces host
-  unless ENV["CODESPACE_NAME"].nil?
-    config.hosts << ENV["CODESPACE_NAME"]+"-3000.app.github.dev"
+  unless ENV['CODESPACE_NAME'].nil?
+    config.hosts << ENV['CODESPACE_NAME']+'-3000.app.github.dev'
   end
 
   # location of system calls on this machine
@@ -91,7 +91,6 @@ Rails.application.configure do
 
   Ahoy.geocode = false
   # Add a custom hostname for uploads
-  #config.upload_host = 'uploads'
-  #config.hosts << "#{config.upload_host}.localhost"
-
+  # config.upload_host = 'uploads'
+  # config.hosts << "#{config.upload_host}.localhost"
 end

@@ -20,7 +20,7 @@ describe Work::Metadata::ImportCsv do
       title: 'Unchanged title',
       description: 'Unchanged description',
       identifier: 'unchanged_identifier', uploaded_filename: uploaded_filename,
-      original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json,
+      original_metadata: [ { label: 'Unchanged', value: 'Metadata' } ].to_json,
       author: 'Unchanged author',
       recipient: 'Nulled recipient'
     )
@@ -164,11 +164,11 @@ describe Work::Metadata::ImportCsv do
   let(:metadata_file) do
     csv_data = CSV.generate(headers: true) do |csv|
       csv << headers
-      [work_1_data, work_2_data, work_3_data, work_4_data, work_5_data, work_6_data].each do |work_data|
+      [ work_1_data, work_2_data, work_3_data, work_4_data, work_5_data, work_6_data ].each do |work_data|
         csv << work_data
       end
     end
-    temp_file = Tempfile.new(['metadata', '.csv'])
+    temp_file = Tempfile.new([ 'metadata', '.csv' ])
     temp_file.write(csv_data)
     temp_file.rewind
 
@@ -207,7 +207,7 @@ describe Work::Metadata::ImportCsv do
       title: 'New title',
       description: 'New description',
       identifier: 'new_identifier',
-      original_metadata: [{ label: 'Label 1', value: 'Value 1' }, { label: 'Label 2', value: 'Value 2' }].to_json,
+      original_metadata: [ { label: 'Label 1', value: 'Value 1' }, { label: 'Label 2', value: 'Value 2' } ].to_json,
       author: 'New author',
       recipient: 'New recipient'
     )
@@ -215,7 +215,7 @@ describe Work::Metadata::ImportCsv do
       title: 'Unchanged title',
       description: 'Unchanged description',
       identifier: 'unchanged_identifier',
-      original_metadata: [{ label: 'Unchanged', value: 'Metadata' }].to_json,
+      original_metadata: [ { label: 'Unchanged', value: 'Metadata' } ].to_json,
       author: 'Unchanged author',
       recipient: nil
     )

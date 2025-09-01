@@ -1,8 +1,7 @@
 module ExportHelper
   include XmlSourceProcessor
 
-  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
-
+  def xml_to_pandoc_md(xml_text, preserve_lb = true, flatten_links = false, collection = nil, div_pad = true)
     # do some escaping of the document for markdown
     preprocessed = xml_text || ''
     # preprocessed.gsub!("[","\\[")
@@ -11,8 +10,8 @@ module ExportHelper
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
     doc = REXML::Document.new(preprocessed)
-    doc.elements.each_with_index("//footnote") do |e,i|
-      marker = "#{i+1}" #e.attributes['marker'] || '*'
+    doc.elements.each_with_index('//footnote') do |e, i|
+      marker = "#{i+1}" # e.attributes['marker'] || '*'
 
       doc.root.add REXML::Text.new("\n\n#{marker}: ")
       e.children.each do |child|
@@ -20,14 +19,14 @@ module ExportHelper
       end
       doc.root.add REXML::Text.new(" \n")
 
-      sup = REXML::Element.new("sup")
+      sup = REXML::Element.new('sup')
       sup.add(REXML::Text.new(marker))
       e.replace_with(sup)
     end
 
     markdown_risky_tags = Xml::Lib::Utils.handle_soul_risky_tags(doc)
 
-    postprocessed = ""
+    postprocessed = ''
     doc.write(postprocessed)
 
     # use Nokogiri for doc
@@ -49,18 +48,18 @@ module ExportHelper
       doc = REXML::Document.new("#{html}")
     end
 
-    doc.elements.each("//span") do |e|
+    doc.elements.each('//span') do |e|
       if e.attributes['class'] == 'line-break'
-        e.replace_with(REXML::Text.new(" "))
+        e.replace_with(REXML::Text.new(' '))
       end
     end
 
     html=''
     doc.write(html)
 
-    processed = "never ran"
+    processed = 'never ran'
 
-    cmd = "pandoc --from html --to markdown+pipe_tables"
+    cmd = 'pandoc --from html --to markdown+pipe_tables'
     Open3.popen2(cmd) do |stdin, stdout, t|
       stdin.print(html)
       stdin.close
@@ -75,7 +74,7 @@ module ExportHelper
       processed.gsub!("REPLACEMERISKYTAGS#{key}", risky_tag)
     end
 
-    return processed
+    processed
   end
 
   def write_work_exports(works, out, export_user, bulk_export)
@@ -130,7 +129,7 @@ module ExportHelper
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t#{DateTime.now.to_s} Exporting work\t#{work.id}\t#{work.title}\n"
+        print "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n"
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
@@ -142,7 +141,7 @@ module ExportHelper
         end
 
         if bulk_export.tei_work
-          export_tei(work: work, out:out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
+          export_tei(work: work, out: out, export_user: export_user, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.plaintext_verbatim_work
@@ -163,8 +162,8 @@ module ExportHelper
         end
 
         if bulk_export.html_work
-          %w(full text transcript translation).each do |format|
-            export_view(work: work, name: format, out: out, export_user:export_user, by_work: by_work, original_filenames: original_filenames)
+          %w[full text transcript translation].each do |format|
+            export_view(work: work, name: format, out: out, export_user: export_user, by_work: by_work, original_filenames: original_filenames)
           end
         end
 
@@ -190,7 +189,7 @@ module ExportHelper
 
         # Page-specific exports
 
-        @work.pages.each_with_index do |page,i|
+        @work.pages.each_with_index do |page, i|
           if bulk_export.plaintext_verbatim_page
             format='verbatim'
             export_plaintext_transcript_pages(name: format, out: out, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
@@ -225,8 +224,8 @@ module ExportHelper
   end
 
   def work_to_xhtml(work)
-    @work = Work.includes(pages: [{ notes: :user }, { page_versions: :user }]).find_by(id: work.id)
-    render_to_string template: 'export/show', layout: false, formats: [:html], handlers: [:erb]
+    @work = Work.includes(pages: [ { notes: :user }, { page_versions: :user } ]).find_by(id: work.id)
+    render_to_string template: 'export/show', layout: false, formats: [ :html ], handlers: [ :erb ]
   end
 
   def work_to_tei(work, exporting_user)
@@ -255,15 +254,15 @@ module ExportHelper
                         GROUP BY user_id
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
+    @work_versions = PageVersion.joins(:page).where([ 'pages.work_id = ?', @work.id ]).order('work_version DESC').includes(:page).all
 
     @all_articles = @work.articles
     people = work.collection.categories.where(title: 'People').first
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
-    @person_articles = @all_articles.joins(:categories).where(categories: {id: people_and_descendants.map(&:id)}).to_a
-    @place_articles = @all_articles.joins(:categories).where(categories: {id: places_and_descendants.map(&:id)}).to_a
+    @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
+    @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
@@ -288,7 +287,7 @@ module ExportHelper
     xml = ApplicationController.renderer.render_to_string(
       layout: false,
       template: 'export/tei',
-      formats: [:html],
+      formats: [ :html ],
       assigns: {
         work: @work,
         context: @context,
@@ -309,8 +308,8 @@ module ExportHelper
 
 
 
-  def page_id_to_xml_id(id, translation=false)
-    return "" if id.blank?
+  def page_id_to_xml_id(id, translation = false)
+    return '' if id.blank?
 
     if translation
       "TTP#{id}"
@@ -332,13 +331,13 @@ module ExportHelper
   end
 
   def category_to_tei(category, subjects, seen_subjects)
-    return '' if (category.ancestors << category).detect{|c| c.title == 'People' || c.title == 'Places'}
+    return '' if (category.ancestors << category).detect { |c| c.title == 'People' || c.title == 'Places' }
 
     has_content = false
-    tei = ""
+    tei = ''
     tei << "<category xml:id=\"C#{category.id}\">\n"
     tei << "<catDesc>#{ERB::Util.html_escape(category.title)}</catDesc>\n"
-    category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
+    category.articles.where('id in (?)', subjects.map { |s| s.id }).each do |subject|
       has_content = true
       if seen_subjects.include?(subject)
         tei << seen_subject_to_tei(subject, category)
@@ -353,11 +352,11 @@ module ExportHelper
     end
     tei << "</category>\n"
 
-    has_content ? tei : ""
+    has_content ? tei : ''
   end
 
   def expand_subject(subject)
-    subjects = [subject]
+    subjects = [ subject ]
 
     parts = subject.title.split(/(\. |--)/)
     0.upto(parts.size/2 - 1) do |i|
@@ -388,9 +387,9 @@ module ExportHelper
       tei << '<ab>'
       category.ancestors.reverse.each do |parent|
         if parent.root?
-          category_class = "#category #root"
+          category_class = '#category #root'
         else
-          category_class = "#category #branch"
+          category_class = '#category #branch'
         end
         tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{ERB::Util.html_escape(parent.title)}</ptr> -- "
       end
@@ -404,7 +403,7 @@ module ExportHelper
       tei << "              </note>\n"
     end
 
-    tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    tei << "              <gloss>#{xml_to_export_tei(subject.xml_text, ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
     unless subject.bibliography.blank?
       subject.bibliography.split("\n").each do |line|
         next if line.blank?
@@ -429,24 +428,22 @@ module ExportHelper
     tei << "</category>\n"
 
     tei
-
   end
 
-  def xml_to_export_tei(xml_text, context, page_id = "", add_corrsp=false)
-
-    return "" if xml_text.blank?
-#    xml_text.gsub!(/\n/, "")
+  def xml_to_export_tei(xml_text, context, page_id = '', add_corrsp = false)
+    return '' if xml_text.blank?
+    #    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     xml_text.gsub!('&', '&amp;')
     xml_text.gsub!('&amp;amp;', '&amp;')
 
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
-    #paras_string = ""
-    my_display_html = ""
-    tags = ['p']
+    # paras_string = ""
+    my_display_html = ''
+    tags = [ 'p' ]
     tags.each do |tag|
-      doc.elements.each_with_index("//#{tag}") do |e,i|
+      doc.elements.each_with_index("//#{tag}") do |e, i|
         transform_links(e)
         transform_expansions(e)
         transform_regularizations(e)
@@ -454,27 +451,27 @@ module ExportHelper
         transform_footnotes(e)
         transform_lb(e)
         transform_tables(e)
-        e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+        e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
         if add_corrsp
-          e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+          e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
         end
         my_display_html << e.to_s
       end
     end
 
-    return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
   def transform_expansions(p_element)
     p_element.elements.each('//expan') do |expan|
       orig = expan.attributes['orig']
       unless orig.blank?
-        choice = REXML::Element.new("choice")
-        tei_expan = REXML::Element.new("expan")
+        choice = REXML::Element.new('choice')
+        tei_expan = REXML::Element.new('expan')
         expan.children.each { |c| tei_expan.add(c) }
         choice.add(tei_expan)
         unless orig.blank?
-          tei_abbr = REXML::Element.new("abbr")
+          tei_abbr = REXML::Element.new('abbr')
           tei_abbr.add_text(orig)
           choice.add(tei_abbr)
         end
@@ -485,31 +482,30 @@ module ExportHelper
     p_element.elements.each('//abbr') do |abbr|
       expan = abbr.attributes['expan']
       unless expan.blank?
-        choice = REXML::Element.new("choice")
-        tei_expan = REXML::Element.new("expan")
+        choice = REXML::Element.new('choice')
+        tei_expan = REXML::Element.new('expan')
         tei_expan.add_text(expan)
         choice.add(tei_expan)
 
-        tei_abbr = REXML::Element.new("abbr")
+        tei_abbr = REXML::Element.new('abbr')
         abbr.children.each { |c| tei_abbr.add(c) }
         choice.add(tei_abbr)
 
         abbr.replace_with(choice)
       end
     end
-
   end
 
   def transform_regularizations(p_element)
     p_element.elements.each('//reg') do |reg|
       orig = reg.attributes['orig']
       unless orig.blank? || reg.parent.name == 'choice'
-        choice = REXML::Element.new("choice")
-        tei_reg = REXML::Element.new("reg")
+        choice = REXML::Element.new('choice')
+        tei_reg = REXML::Element.new('reg')
         reg.children.each { |c| tei_reg.add(c) }
         choice.add(tei_reg)
         unless orig.blank?
-          tei_orig = REXML::Element.new("orig")
+          tei_orig = REXML::Element.new('orig')
           tei_orig.add_text(orig)
           choice.add(tei_orig)
         end
@@ -533,32 +529,32 @@ module ExportHelper
   def transform_tables(p_element)
     # convert HTML tables to TEI tables
     p_element_string = p_element.to_s
-    p_element.elements.each("//table") do |e|
+    p_element.elements.each('//table') do |e|
       unless e.get_elements('.//tr').empty? # TEI tables use row and cell elements, not tr and td
         row_count = 0
         max_column_count = 0
-        table = REXML::Element.new("table")
+        table = REXML::Element.new('table')
         # does the table have a header?
 
-        if e.elements["thead"]
+        if e.elements['thead']
           # convert the header into a row element with role="label"
-          header = REXML::Element.new("row")
-          header.add_attribute("role", "label")
-          e.elements.each("thead/tr/th") do |th|
+          header = REXML::Element.new('row')
+          header.add_attribute('role', 'label')
+          e.elements.each('thead/tr/th') do |th|
             # convert the th into a cell element
-            cell = REXML::Element.new("cell")
-            cell.add_attribute("role", "data")
+            cell = REXML::Element.new('cell')
+            cell.add_attribute('role', 'data')
             th.children.each { |child| cell.add(child) }
             header.add(cell)
           end
           table.add(header)
         end
         # now convert the body of the table
-        e.elements.each("tbody/tr") do |tr|
-          row = REXML::Element.new("row")
-          tr.elements.each("td") do |td|
-            cell = REXML::Element.new("cell")
-            cell.add_attribute("role", "data")
+        e.elements.each('tbody/tr') do |tr|
+          row = REXML::Element.new('row')
+          tr.elements.each('td') do |td|
+            cell = REXML::Element.new('cell')
+            cell.add_attribute('role', 'data')
             td.children.each { |child| cell.add(child) }
             if cell.children.count > max_column_count
               max_column_count = cell.children.count
@@ -568,19 +564,17 @@ module ExportHelper
           row_count += 1
           table.add(row)
         end # end of tbody
-        table.add_attribute("rows", row_count)
-        table.add_attribute("cols", max_column_count)
+        table.add_attribute('rows', row_count)
+        table.add_attribute('cols', max_column_count)
         e.replace_with(table)
       end
-
     end # end of tables
     # now delete any lb elements from tables elements in the document
-    p_element.elements.each("//table") do |table|
-      table.elements.each("//lb") do |lb|
+    p_element.elements.each('//table') do |table|
+      table.elements.each('//lb') do |lb|
         lb.remove
       end
     end
-
   end
 
   def transform_footnotes(p_element)
@@ -607,95 +601,93 @@ module ExportHelper
         end
       end
     end
-
   end
 
 
   # def titles_to_divs(xml_text, context)
-    # logger.debug("FOO #{context.div_stack.count}\n")
-    # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
+  # logger.debug("FOO #{context.div_stack.count}\n")
+  # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
   # end
 
   def transform_links(p_element)
     p_element.elements.each('//link') do |link|
-      rs = REXML::Element.new("rs")
+      rs = REXML::Element.new('rs')
 
       id = link.attributes['target_id']
-      rs.add_attribute("ref", "#S#{id}")
+      rs.add_attribute('ref', "#S#{id}")
 
       link.children.each { |c| rs.add(c) }
       link.replace_with(rs)
-
     end
     p_element.elements.each('//sensitive') do |sensitive|
-      gap = REXML::Element.new("gap")
+      gap = REXML::Element.new('gap')
 
-      gap.add_attribute("reason", "redacted")
+      gap.add_attribute('reason', 'redacted')
       sensitive.replace_with(gap)
     end
     p_element.elements.each('//entryHeading') do |entryHeading|
-      gap = REXML::Element.new("head")
+      gap = REXML::Element.new('head')
 
-      gap.add_attribute("depth", entryHeading.attributes["depth"])
-      gap.add_text(entryHeading.attributes["title"])
+      gap.add_attribute('depth', entryHeading.attributes['depth'])
+      gap.add_text(entryHeading.attributes['title'])
       entryHeading.replace_with(gap)
     end
     p_element.elements.each('//a') do |a|
-      rs = REXML::Element.new("rs")
+      rs = REXML::Element.new('rs')
       href = a.attributes['href']
 
-      rs.add_attribute("ref", href)
+      rs.add_attribute('ref', href)
       a.children.each { |c| rs.add(c) }
       a.replace_with(rs)
     end
     p_element.elements.each('//strike') do |strike|
-      del = REXML::Element.new("del")
+      del = REXML::Element.new('del')
 
-      del.add_attribute("rend", "overstrike")
+      del.add_attribute('rend', 'overstrike')
       strike.children.each { |c| del.add(c) }
       strike.replace_with(del)
     end
     p_element.elements.each('//s') do |strike|
-      del = REXML::Element.new("del")
+      del = REXML::Element.new('del')
 
-      del.add_attribute("rend", "overstrike")
+      del.add_attribute('rend', 'overstrike')
       strike.children.each { |c| del.add(c) }
       strike.replace_with(del)
     end
     p_element.elements.each('//u') do |u|
-      hi = REXML::Element.new("hi")
+      hi = REXML::Element.new('hi')
 
-      hi.add_attribute("rend", "underline")
+      hi.add_attribute('rend', 'underline')
       u.children.each { |c| hi.add(c) }
 
       u.replace_with(hi)
     end
     p_element.elements.each('//i') do |i|
-      hi = REXML::Element.new("hi")
+      hi = REXML::Element.new('hi')
 
-      hi.add_attribute("rend", "italic")
+      hi.add_attribute('rend', 'italic')
       i.children.each { |c| hi.add(c) }
 
       i.replace_with(hi)
     end
     p_element.elements.each('//ins') do |ins|
-      add = REXML::Element.new("add")
+      add = REXML::Element.new('add')
       ins.children.each { |c| add.add(c) }
 
       ins.replace_with(add)
     end
     p_element.elements.each('//b') do |i|
-      hi = REXML::Element.new("hi")
+      hi = REXML::Element.new('hi')
 
-      hi.add_attribute("rend", "bold")
+      hi.add_attribute('rend', 'bold')
       i.children.each { |c| hi.add(c) }
 
       i.replace_with(hi)
     end
     p_element.elements.each('//sup') do |sup|
-      hi = REXML::Element.new("hi")
+      hi = REXML::Element.new('hi')
 
-      hi.add_attribute("rend", "sup")
+      hi.add_attribute('rend', 'sup')
       sup.children.each { |c| hi.add(c) }
       sup.replace_with(hi)
     end
@@ -703,7 +695,7 @@ module ExportHelper
 
   def post_process_xml(xml, work)
     if work.pages_are_meaningful?
-      return xml
+      xml
     else
       doc = REXML::Document.new(xml)
       doc_body = doc.get_elements('//body').first
@@ -713,8 +705,7 @@ module ExportHelper
       sections = []
 
       doc_body.children.each do |e|
-
-        if(e.node_type != :text && e.get_elements('head').length > 0)
+        if e.node_type != :text && e.get_elements('head').length > 0
           header = e.get_elements('head').first
 
           # Create the new section
@@ -726,7 +717,7 @@ module ExportHelper
             # Inserts the new section into the doc before the current element
             e.parent.insert_before(e, section)
             sections.push(section)
-            # section.add(e)
+          # section.add(e)
           # elsif current_depth < header.attributes['depth'].to_i
           #   sections.first.add(section)
           #   # section.add(e)
@@ -746,10 +737,9 @@ module ExportHelper
 
         # Adds the current element to the new section at the right location
         sections.first.add(e) unless sections.empty?
-
       end
 
-      return doc
+      doc
     end
   end
 
@@ -757,14 +747,14 @@ module ExportHelper
   def work_metadata_contributions(work)
     {
       contributors: work_metadata_contributors_to_array(work),
-      data: work_metadata_to_hash(work),
+      data: work_metadata_to_hash(work)
     }
   end
 
   def page_field_contributions(page)
     {
       contributors: page_contributors_to_array(page),
-      data: field_data_to_hash(page),
+      data: field_data_to_hash(page)
     }
   end
 
@@ -773,7 +763,7 @@ module ExportHelper
   def work_metadata_to_hash(work)
     collection=work.collection
     fields = {}
-    collection.metadata_fields.each { |field| fields[field.id] = field}
+    collection.metadata_fields.each { |field| fields[field.id] = field }
     response_array = []
     if work.metadata_description
       metadata = JSON.parse(work.metadata_description)
@@ -781,7 +771,7 @@ module ExportHelper
       metadata.each do |metadata_hash|
         value = metadata_hash['value']
         unless value.blank?
-          element = {label: metadata_hash['label'], value: value}
+          element = { label: metadata_hash['label'], value: value }
           element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
 
           response_array << element
@@ -795,11 +785,11 @@ module ExportHelper
   def field_data_to_hash(page)
     collection=page.collection
     fields = {}
-    collection.transcription_fields.each { |field| fields[field.label] = field}
-    spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet'}
+    collection.transcription_fields.each { |field| fields[field.label] = field }
+    spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet' }
     columns = {}
     if spreadsheet
-      spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column}
+      spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column }
     end
 
     response_array = []
@@ -807,8 +797,8 @@ module ExportHelper
       unless columns[cell.header]
 
         field = fields[cell.header]
-        element = {label: cell.header, value: cell.content}
-        if field #field-based project
+        element = { label: cell.header, value: cell.content }
+        if field # field-based project
           element[:config] = iiif_strucured_data_field_config_url(field.id)
         else
           element[:row] = cell.row
@@ -826,7 +816,7 @@ module ExportHelper
         # eliminate header cells
         unless fields[cell.header]
           unless cell.content.blank?
-            element = {label: cell.header, value: cell.content}
+            element = { label: cell.header, value: cell.content }
             column = columns[cell.header]
             unless column.blank?
               element[:config] = iiif_strucured_data_column_config_url(column.id)
@@ -862,7 +852,7 @@ module ExportHelper
       profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-spreadsheet-column-configuration-response'
     }
     if column.options
-      column_config[:options] = column.options.split(";")
+      column_config[:options] = column.options.split(';')
     end
     column_config['@id'] = iiif_strucured_data_column_config_url(column.id)
 
@@ -886,7 +876,7 @@ module ExportHelper
       if field.input_type == 'multiselect'
         element[:options] = field.options.split(/[\n\r]+/)
       else
-        element[:options] = field.options.split(";")
+        element[:options] = field.options.split(';')
       end
     end
     if field.page_number
@@ -930,7 +920,7 @@ module ExportHelper
 
     user_ids = page.deeds.where(deed_type: DeedType.transcriptions_or_corrections).pluck(:user_id).uniq
     User.find(user_ids).each do |user|
-      element = { 'userName' => user.display_name}
+      element = { 'userName' => user.display_name }
       element['realName'] = user.real_name unless user.real_name.blank?
       element[:orcid] = user.real_name unless user.orcid.blank?
       array << element
@@ -944,7 +934,7 @@ module ExportHelper
 
     user_ids = work.deeds.where(deed_type: DeedType.metadata_creation_or_edits).pluck(:user_id).uniq
     User.find(user_ids).each do |user|
-      element = { 'userName' => user.display_name}
+      element = { 'userName' => user.display_name }
       element['realName'] = user.real_name unless user.real_name.blank?
       element[:orcid] = user.real_name unless user.orcid.blank?
       array << element
@@ -954,7 +944,5 @@ module ExportHelper
   end
 
   def handle_soul_risky_tags(doc)
-
   end
-
 end

@@ -1,12 +1,12 @@
 class PagesHaveStatus < ActiveRecord::Migration[5.0]
   def self.up
     unless column_exists?(:pages, :status)
-      add_column :pages, :status, :string, :length => 10
+      add_column :pages, :status, :string, length: 10
     end
 
 
-    add_column :work_statistics, :blank_pages, :integer, :default => 0, :force => true
-    add_column :work_statistics, :incomplete_pages, :integer, :default => 0, :force => true
+    add_column :work_statistics, :blank_pages, :integer, default: 0, force: true
+    add_column :work_statistics, :incomplete_pages, :integer, default: 0, force: true
   end
 
   def self.down
