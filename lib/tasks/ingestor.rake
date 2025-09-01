@@ -246,8 +246,21 @@ namespace :fromthepage do
     work.uploaded_filename = File.basename(path)
 
     if document_upload.ocr
-      clean_dir=path.gsub('[','\[').gsub(']','\]')
-      if (Dir.glob(File.join(clean_dir, "*.txt")).count + Dir.glob(File.join(clean_dir, "*.xml")).count) > 0
+      clean_dir = path.gsub('[', '\[').gsub(']', '\]')
+
+      image_basenames = IMAGE_FILE_EXTENSIONS.flat_map do |ext|
+        Dir.glob(File.join(clean_dir, "*.#{ext}")).map { |f| File.basename(f, '.*') }
+      end.uniq
+
+      has_matching_annotation = image_basenames.any? do |basename|
+        txt_path = File.join(clean_dir, "#{basename}.txt")
+        xml_path = File.join(clean_dir, "#{basename}.xml")
+
+        (File.exist?(txt_path) && File.read(txt_path).present?) ||
+          (File.exist?(xml_path) && File.read(xml_path).present?)
+      end
+
+      if has_matching_annotation
         work.ocr_correction = true
       else
         print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")} or #{File.join(path, "page*.xml")}\n"
