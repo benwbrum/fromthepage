@@ -1,10 +1,15 @@
 name: "CI"
+
 on:
   push: {}
   pull_request: {}
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/willnigel23/ftp-ci:latest
+
     services:
       mysql:
         image: mysql:5.7
@@ -13,69 +18,74 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: "false"
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd="curl -s http://localhost:9200/_cluster/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     env:
       RAILS_ENV: test
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_SOCKET: /tmp/mysql.sock
-      ELASTIC_HOST_URL: http://localhost:9200
+      MYSQL_HOST: mysql
+      ELASTIC_HOST_URL: http://elasticsearch:9200
       ELASTIC_SUFFIX: ci
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - name: Run Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: 8.15.0
-          security-enabled: false
-          port: 9200
-          nodes: 1
-      - name: Install dependencies
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y ghostscript poppler-utils graphviz pandoc texlive-full libmagickwand-dev imagemagick
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3.5
-          bundler-cache: true
-      - name: Bundle install
+
+      - name: Install Ruby gems
         run: bundle install --jobs 4 --retry 3
-      - name: Create db
+
+      - name: Create database
         run: bundle exec rake db:create
-      - name: Migrate
+
+      - name: Migrate database
         run: bundle exec rake db:migrate
+
       - name: Load fixtures
         run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+
       - name: Elasticsearch Initialize
         run: bundle exec rake fromthepage:es:setup:init
         env:
           ELASTIC_ENABLED: true
+
       - name: Elasticsearch Build Indices
         run: bundle exec rake fromthepage:es:data:build
         env:
           ELASTIC_ENABLED: true
+
       - name: Elasticsearch Reindex
         run: bundle exec rake fromthepage:es:data:reindex
         env:
           ELASTIC_ENABLED: true
+
       - name: Run RuboCop
         run: bundle exec rubocop
         continue-on-error: true
+
       - name: Run tests
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: bundle exec rspec spec
+        run: xvfb-run -a bundle exec rspec spec
         env:
-          COVERAGE: 'true'
-          CI: 'true'
+          COVERAGE: true
+          CI: true
           ELASTIC_ENABLED: false
+
       - name: Run Coveralls
         if: ${{ (github.event_name == 'pull_request' && github.ref != 'refs/heads/development') || (github.event_name == 'push' && github.ref == 'refs/heads/development') }}
         uses: coverallsapp/github-action@v2.3.0

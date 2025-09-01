@@ -14,7 +14,7 @@ describe 'IA import actions', order: :defined do
   end
 
   it 'imports a work from IA', js: true do
-    VCR.use_cassette('ia/lettertosamuelma00estl', record: :new_episodes) do
+    VCR.use_cassette('ia/lettertosamuelma00estl', record: :once) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertosamuelma00estl'
       visit dashboard_owner_path
@@ -34,7 +34,7 @@ describe 'IA import actions', order: :defined do
   end
 
   it 'uses OCR when importing a work from IA', js: true do
-    VCR.use_cassette('ia/lettertodeargarr00mays', record: :new_episodes) do
+    VCR.use_cassette('ia/lettertodeargarr00mays', record: :once) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertodeargarr00mays'
       visit dashboard_owner_path
@@ -44,11 +44,12 @@ describe 'IA import actions', order: :defined do
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
       page.accept_confirm if page.has_button?('Import Anyway')
-      expect(ia_work_count + 1).to eq IaWork.all.count
       expect(page).to have_content('Manage Archive.org Import')
+      expect(ia_work_count + 1).to eq IaWork.all.count
       page.check('use_ocr')
       select @collection.title, from: 'collection_id'
       click_button('Publish Work')
+      expect(page).to have_content(@title)
       new_work = Work.find_by(title: @title)
       first_page = new_work.pages.first
       expect(new_work.ocr_correction).to be

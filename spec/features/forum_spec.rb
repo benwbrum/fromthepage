@@ -26,7 +26,7 @@ describe "forum tab for collection", :order => :defined do
     page.find('.side-tabs').click_link('Look & Feel')
     page.check('Enable forums')
     expect(page).to have_checked_field('Enable forums')
-    visit current_path # reload page to get the new forum tab
+    expect(page).to have_content('Collection has been updated')
     page.find('.tabs').click_link("Forum")
     expect(page).to have_content("All Messageboards")
     expect(page).to have_content("Create a New Messageboard")

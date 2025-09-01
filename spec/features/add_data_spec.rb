@@ -26,12 +26,13 @@ describe "uploads data for collections", :order => :defined do
     page.find(:css, "#document-upload").click
     select(@collection.title, :from => 'document_upload_collection_id')
 
-    # workaround
-    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
-    page.execute_script(script)
-
-    attach_file('document_upload_file', './test_data/uploads/test.pdf')
+    attach_file(
+      'document_upload_file',
+      Rails.root.join('test_data/uploads/test.pdf'),
+      make_visible: true
+    )
     click_button('Upload File')
+
     title = find('h1').text
     expect(title).to eq @collection.title
     expect(page).to have_content("Document has been uploaded")
@@ -45,11 +46,11 @@ describe "uploads data for collections", :order => :defined do
     page.find(:css, "#document-upload").click
     select(@collection.title, :from => 'document_upload_collection_id')
 
-    # workaround
-    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
-    page.execute_script(script)
-
-    attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
+    attach_file(
+      'document_upload_file',
+      Rails.root.join('test_data/uploads/ocr.pdf'),
+      make_visible: true
+    )
     find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
     title = find('h1').text
@@ -110,14 +111,22 @@ describe "uploads data for collections", :order => :defined do
     page.find('.maincol').find('a', text: @title).click
     page.find('.tabs').click_link("Pages")
     page.find('a', text: "Add New Page").click
-    attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage1.jpg')
+    attach_file(
+      'page_base_image',
+      Rails.root.join('test_data/uploads/JWGravesAmnestyPage1.jpg'),
+      make_visible: true
+    )
     click_button('Save & Add Next Page')
     work = Work.find_by(title: @title)
     pages = work.pages
     expect(pages).not_to be nil
     expect(page).to have_content(pages.first.title)
     page.find('a', text: "Add New Page").click
-    attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage2.jpg')
+    attach_file(
+      'page_base_image',
+      Rails.root.join('test_data/uploads/JWGravesAmnestyPage2.jpg'),
+      make_visible: true
+    )
     click_button('Save & New Work')
     count = work.pages.count
     expect(count).to eq 2

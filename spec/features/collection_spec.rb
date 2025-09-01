@@ -38,9 +38,9 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find_link('Block Users')).not_to match_css('[disabled]')
 
     page.click_button('Make Collection Private')
+    expect(page).to have_content("Collection privacy: Private")
     @collection.reload
     expect(@collection.is_public).to eq false
-    expect(page).to have_content("Collection privacy: Private")
     #check to see if Collaborators & API access are enabled
     expect(page.find('#users-list-collaborators')).not_to match_css('.disabled')
     expect(page.find_link('Edit Collaborators')).not_to match_css('[disabled]')
@@ -303,15 +303,18 @@ describe "collection spec (isolated)" do
 
     page.find(:css, '#create-empty-work').click
 
-      select('Add New Collection', :from => 'work_collection_id')
-      page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
-      old_count = Collection.all.count
-      click_button('Create Collection')
-      expect(Collection.all.to_a.count).to eq(old_count+1)
+    select('Add New Collection', from: 'work_collection_id')
+    page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
+    old_count = Collection.all.count
+
+    click_button('Create Collection')
+    expect(page).to have_content('Stats Test Collection')
+
+    expect(Collection.all.to_a.count).to eq(old_count+1)
 
     page.find(:css, '#create-empty-work').click
-    sleep 3
-    fill_in('work_title', with: 'Stats Test Work')
+    work_input = page.find('#work_title', visible: true)
+    work_input.fill_in(with: 'Stats Test Work')
     click_button('Create Work')
     page.find('#new_page')
     click_button('Save & New Work')

@@ -289,6 +289,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link('Settings')
     page.find('.side-tabs').click_link('Quality Control')
     page.choose('collection_review_type_required')
+    expect(page).to have_content('Collection has been updated')
     review_page = @work.pages.first
     expect(review_page.status_new?).to be_truthy
     expect(review_page.translation_status_new?).to be_truthy
@@ -296,6 +297,7 @@ describe "needs review", :order => :defined do
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     fill_in_editor_field 'Needs Review Workflow Text'
     find('#finish_button_top').click
+    expect(page).to have_content('Saved')
     page.find('a.page-nav_prev').click
     expect(page).to have_content('Needs Review Workflow Text')
     expect(Page.find_by(id: review_page.id).status_needs_review?).to be_truthy
