@@ -45,13 +45,13 @@ class TranscribeController  < ApplicationController
 
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id]) if params[:quality_sampling_id].present?
 
-    if @page.field_based
-      @field_cells = request.params[:fields]
-      table_cells = @page.process_fields(@field_cells)
-    end
-
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
+
+    if @page.field_based
+      @field_cells = request.params[:fields]
+      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: @field_cells)
+    end
 
     unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
@@ -101,8 +101,6 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
-        @page.replace_table_cells(table_cells) if @page.field_based && !table_cells.empty?
-
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
@@ -181,15 +179,9 @@ class TranscribeController  < ApplicationController
     elsif params['preview']
       @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)
-      if @page.field_based
-        @field_preview = table_cells.group_by(&:transcription_field_id)
-      end
 
       handle_display_page_data
     elsif params['edit']
-      if @page.field_based
-        @field_preview = table_cells.group_by(&:transcription_field_id)
-      end
       handle_display_page_data
     elsif params['autolink']
       autolinked_source_text = autolink(@page.source_text)
@@ -213,6 +205,8 @@ class TranscribeController  < ApplicationController
     end # :nocov:
 
     logger.fatal "\n\n#{e.class} (#{e.message}):\n"
+
+    handle_transcription_json_data
     render action: 'display_page', status: :unprocessable_entity
     flash.clear
   end
@@ -586,6 +580,8 @@ class TranscribeController  < ApplicationController
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
 
+    handle_transcription_json_data
+
     return if @page.edit_started_at.nil?
 
     cutoff_time = Time.now - 1.minute
@@ -593,6 +589,32 @@ class TranscribeController  < ApplicationController
 
     flash.now[:info] = t('transcribe.display_page.alert')
     @current_user_alerted = true
+  end
+
+  def handle_transcription_json_data
+    return unless @page.field_based
+
+    if @page.transcription_json.nil?
+      transcription_fields = @collection.transcription_fields
+                                        .order(:line_number, :position)
+      spreadsheet_columns_map = SpreadsheetColumn.where(transcription_field_id: transcription_fields.select(:id))
+                                                 .order(:position).group_by(&:transcription_field_id)
+      grouped_transcription_fields = transcription_fields.group_by(&:line_number)
+
+      field_cells = TranscriptionField::Lib::Utils.table_cells_to_field_cells(
+        page: @page,
+        grouped_transcription_fields: grouped_transcription_fields,
+        spreadsheet_columns_map: spreadsheet_columns_map
+      )
+
+      @page = TranscriptionField::Lib::Utils.parse_fields(page: @page, field_cells: field_cells)
+    end
+
+    @field_presenter = TranscriptionField::Lib::Presenter.new(
+      view_context: view_context,
+      collection: @collection,
+      page: @page
+    )
   end
 
   def handle_translate_data

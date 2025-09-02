@@ -75,6 +75,7 @@ class BulkExport < ApplicationRecord
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
+  # TODO: Use enum
   module Status
     NEW = 'new'
     QUEUED = 'queued'
@@ -84,6 +85,7 @@ class BulkExport < ApplicationRecord
     ERROR = 'error'
   end
 
+  # TODO: Use enum
   module Organization
     FORMAT_THEN_WORK = 'by_format'
     WORK_THEN_FORMAT = 'by_work'
