@@ -53,7 +53,14 @@ module AbstractXmlHelper
 
     collection ||= @collection
 
-    doc = REXML::Document.new(xml_text)
+    # Handle XML fragments with multiple root elements by wrapping them
+    wrapped_xml = if xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/)
+      "<root>#{xml_text}</root>"
+    else
+      xml_text
+    end
+
+    doc = REXML::Document.new(wrapped_xml)
     # unless subject linking is disabled, do this
     unless collection.subjects_disabled
       doc.elements.each('//link') do |e|
@@ -377,6 +384,8 @@ module AbstractXmlHelper
     my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
     my_display_html.gsub!('<p/>', '')
     my_display_html.gsub!(/<\/?page>/, '')
+    # Remove the temporary root wrapper if we added one
+    my_display_html.gsub!(/<\/?root>/, '')
 
     ActionController::Base.helpers.sanitize(
       my_display_html.strip,
