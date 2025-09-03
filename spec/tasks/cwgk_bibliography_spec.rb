@@ -74,6 +74,12 @@ RSpec.describe 'CWGK Rake Tasks' do
       expect(result).to include('<a href="https://example.com">https://example.com</a>')
       expect(result).to include('<a href="https://test.org">https://test.org</a>')
     end
+    
+    it 'handles URLs with complex query parameters' do
+      content = 'Citation: https://www.findagrave.com/cgi-bin/fg.cgi?page=gr&amp;GSln=test&amp;GRid=123456'
+      result = convert_urls_to_links(content)
+      expect(result).to include('<a href="https://www.findagrave.com/cgi-bin/fg.cgi?page=gr&amp;GSln=test&amp;GRid=123456">https://www.findagrave.com/cgi-bin/fg.cgi?page=gr&amp;GSln=test&amp;GRid=123456</a>')
+    end
   end
   
   describe 'update_cwgk_bibliography task' do

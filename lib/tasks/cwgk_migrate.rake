@@ -527,10 +527,25 @@ namespace :fromthepage do
 
     def convert_urls_to_links(content)
       # Regex to match URLs that are not already wrapped in anchor tags
-      url_regex = /\b(?<!href=["'])(?<!<a[^>]*>)(https?:\/\/[^\s<>"']+)(?![^<]*<\/a>)/i
-      
-      content.gsub(url_regex) do |url|
-        %(<a href="#{url}">#{url}</a>)
+      # First, avoid URLs that are already in href attributes or anchor tags
+      if content.include?('<a ') && content.include?('</a>')
+        # If content already has anchor tags, be more careful
+        url_regex = /\b(https?:\/\/[^\s<>"']+)(?![^<]*<\/a>)/i
+        
+        content.gsub(url_regex) do |url|
+          # Check if this URL is already in an href attribute
+          preceding_context = content[0, content.index(url)]
+          if preceding_context.match(/href=["'][^"']*\z/)
+            # This URL is part of an href attribute, don't wrap it
+            url
+          else
+            %(<a href="#{url}">#{url}</a>)
+          end
+        end
+      else
+        # Simple case: no existing anchor tags
+        url_regex = /\b(https?:\/\/[^\s<>"']+)/i
+        content.gsub(url_regex, '<a href="\1">\1</a>')
       end
     end
 

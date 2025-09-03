@@ -215,7 +215,7 @@ module AbstractXmlHelper
         span.name='sup'
       when 'underline'
         span.name='u'
-      when 'italics'
+      when 'italics', 'italic'
         span.name='i'
         span.attributes.delete 'rend'
       when 'bold'

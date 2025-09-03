@@ -19,6 +19,15 @@ RSpec.describe AbstractXmlHelper, type: :helper do
         expect(result).to include("and regular text")
       end
       
+      it "handles both italic and italics rend attributes" do
+        bibliography_xml = "<bibl>First <hi rend=\"italic\">singular form</hi> and <hi rend=\"italics\">plural form</hi></bibl>"
+        
+        result = xml_to_html(bibliography_xml, true, false, @collection)
+        
+        expect(result).to include("<i>singular form</i>")
+        expect(result).to include("<i>plural form</i>")
+      end
+      
       it "handles multiple bibl elements" do
         bibliography_xml = "<bibl>First citation with <hi rend=\"italic\">Book Title</hi></bibl>\n<bibl>Second citation with <hi rend=\"italic\">Another Title</hi></bibl>"
         
