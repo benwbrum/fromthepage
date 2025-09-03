@@ -221,6 +221,63 @@ xml:id="<%=@work.identifier||@work.id%>">
           <% end %>
         </listPlace>
       <% end %>
+
+      <% unless @organization_articles.empty? %>
+        <listOrg>
+          <% @organization_articles.each do |organization| %>
+            <org xml:id="S<%=organization.id%>">
+              <orgName><%= h(organization.title) %></orgName>
+              <% unless organization.uri.blank? %>
+                <idno><%= h(organization.uri) %></idno>
+              <% end %>
+              <% unless organization.begun.blank? %>
+                <event type="begun"  when="<%=organization.begun%>">
+                  <ab><%=organization.begun%></ab>
+                </event>
+              <% end %>
+              <% unless organization.ended.blank? %>
+                <event type="ended"  when="<%=organization.ended%>">
+                  <ab><%=organization.ended%></ab>
+                </event>
+              <% end %>
+ 
+              <% if organization.categories %>
+                <note type="categorization">
+                  Categories:
+                  <% organization.categories.each do |category| %>
+                    <ab>
+                      <% category.ancestors.reverse.each do |parent| %>
+                        <%  if parent.root?
+                              category_class = "#category #root"
+                            else
+                              category_class = "#category #branch"
+                            end
+                        %>
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> --
+                      <% end %>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                    </ab>
+                  <% end %>
+                </note>
+              <% end %>
+              <% unless organization.source_text.blank? %>
+                <note type="article">
+                  <% unless organization.source_text.blank? %>
+                    <%= raw(xml_to_export_tei(organization.xml_text, @context, "S#{organization.id}")) %>
+                  <% end %>
+                </note>
+              <% end %>
+              <% unless organization.bibliography.blank? %>
+                <% organization.bibliography.split("\n").each do |line| %>
+                  <% unless line.blank? %>
+                    <bibl><%= h(line.chomp) %></bibl>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </org>
+          <% end %>
+        </listOrg>
+      <% end %>
     </sourceDesc>
 
   </fileDesc>

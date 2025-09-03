@@ -168,6 +168,38 @@ describe ExportController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:tei)
     end
+
+    context 'with organization articles' do
+      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection) }
+      let!(:organization_article) do
+        create(:article, 
+               title: 'T. & R. Slevin & Cain',
+               begun: '1854',
+               ended: '1877',
+               collection: collection,
+               uri: 'O00007391')
+      end
+
+      before do
+        organization_article.categories << organizations_category
+      end
+
+      it 'includes organization data in TEI export' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+        
+        # Check that the organization is included in the TEI output
+        expect(response.body).to include('<listOrg>')
+        expect(response.body).to include('<org xml:id="S' + organization_article.id.to_s + '">')
+        expect(response.body).to include('<orgName>T. &amp; R. Slevin &amp; Cain</orgName>')
+        expect(response.body).to include('<event type="begun"  when="1854">')
+        expect(response.body).to include('<event type="ended"  when="1877">')
+        expect(response.body).to include('<idno>O00007391</idno>')
+      end
+    end
   end
 
   describe '#subject_details_csv' do

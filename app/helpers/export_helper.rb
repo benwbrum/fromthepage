@@ -261,9 +261,12 @@ module ExportHelper
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
+    organizations = work.collection.categories.where(title: 'Organizations').first
+    organizations_and_descendants = organizations.descendants << organizations if organizations
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @other_articles = @all_articles - @person_articles - @place_articles
+    @organization_articles = organizations && organizations_and_descendants ? @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a : []
+    @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
@@ -272,6 +275,8 @@ module ExportHelper
             @person_articles << expanded
           elsif expanded.categories.where(title: 'Places').present?
             @place_articles << expanded
+          elsif expanded.categories.where(title: 'Organizations').present?
+            @organization_articles << expanded
           else
             @other_articles << expanded
           end
@@ -281,6 +286,7 @@ module ExportHelper
 
     @person_articles.uniq!
     @place_articles.uniq!
+    @organization_articles.uniq!
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
@@ -296,6 +302,7 @@ module ExportHelper
         all_articles: @all_articles,
         person_articles: @person_articles,
         place_articles: @place_articles,
+        organization_articles: @organization_articles,
         other_articles: @other_articles,
         collection: @work.collection,
         user: exporting_user
