@@ -469,7 +469,7 @@ namespace :fromthepage do
       xml_directory = args.xml_directory
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)
-      
+
       if xml_directory.nil? || collection_slug.nil?
         puts 'Usage: rake fromthepage:cwgk:update_cwgk_bibliography[xml_directory,collection_slug]'
         puts '  xml_directory: path to the directory containing CWGK XML files'
@@ -478,39 +478,39 @@ namespace :fromthepage do
       end
 
       updated_count = 0
-      
+
       # Process entity files (subjects) starting with O, N, P, G
       Dir.glob(File.join(xml_directory, '[NOPG]*.xml')).each do |file|
         id = File.basename(file).sub('.xml', '')
-        
+
         # Find the corresponding article by uri
         article = collection.articles.find_by(uri: id)
         next unless article
-        
+
         # Read and parse the XML file
         file_contents = File.read(file)
         doc = Nokogiri::XML(file_contents)
-        
+
         # Extract bibliography with markup preserved
         bibl_elements = doc.search('bibl')
         next if bibl_elements.empty?
-        
+
         bibliography_content = []
         bibl_elements.each do |bibl|
           # Get the inner content while preserving markup
           inner_content = bibl.inner_html.strip
-          
+
           # Convert bare URLs to anchor tags
           inner_content = convert_urls_to_links(inner_content)
-          
+
           # Wrap in bibl tags for proper TEI structure
           bibliography_content << "<bibl>#{inner_content}</bibl>"
         end
-        
+
         if bibliography_content.any?
           # Join multiple bibl entries with newlines
           formatted_bibliography = bibliography_content.join("\n")
-          
+
           # Update the article
           article.bibliography = formatted_bibliography
           if article.save
@@ -521,7 +521,7 @@ namespace :fromthepage do
           end
         end
       end
-      
+
       puts "Updated bibliography for #{updated_count} articles"
     end
 
@@ -531,7 +531,7 @@ namespace :fromthepage do
       if content.include?('<a ') && content.include?('</a>')
         # If content already has anchor tags, be more careful
         url_regex = /\b(https?:\/\/[^\s<>"']+)(?![^<]*<\/a>)/i
-        
+
         content.gsub(url_regex) do |url|
           # Check if this URL is already in an href attribute
           preceding_context = content[0, content.index(url)]
