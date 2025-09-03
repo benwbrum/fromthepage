@@ -463,6 +463,77 @@ namespace :fromthepage do
       pages
     end
 
+    # Update bibliography fields with TEI markup from source files
+    desc 'Update CWGK bibliography fields with TEI markup'
+    task :update_cwgk_bibliography, [ :xml_directory, :collection_slug ] => :environment do |t, args|
+      xml_directory = args.xml_directory
+      collection_slug = args.collection_slug
+      collection = Collection.find_by(slug: collection_slug)
+      
+      if xml_directory.nil? || collection_slug.nil?
+        puts 'Usage: rake fromthepage:cwgk:update_cwgk_bibliography[xml_directory,collection_slug]'
+        puts '  xml_directory: path to the directory containing CWGK XML files'
+        puts '  collection_slug: slug of the collection to update'
+        exit
+      end
+
+      updated_count = 0
+      
+      # Process entity files (subjects) starting with O, N, P, G
+      Dir.glob(File.join(xml_directory, '[NOPG]*.xml')).each do |file|
+        id = File.basename(file).sub('.xml', '')
+        
+        # Find the corresponding article by uri
+        article = collection.articles.find_by(uri: id)
+        next unless article
+        
+        # Read and parse the XML file
+        file_contents = File.read(file)
+        doc = Nokogiri::XML(file_contents)
+        
+        # Extract bibliography with markup preserved
+        bibl_elements = doc.search('bibl')
+        next if bibl_elements.empty?
+        
+        bibliography_content = []
+        bibl_elements.each do |bibl|
+          # Get the inner content while preserving markup
+          inner_content = bibl.inner_html.strip
+          
+          # Convert bare URLs to anchor tags
+          inner_content = convert_urls_to_links(inner_content)
+          
+          # Wrap in bibl tags for proper TEI structure
+          bibliography_content << "<bibl>#{inner_content}</bibl>"
+        end
+        
+        if bibliography_content.any?
+          # Join multiple bibl entries with newlines
+          formatted_bibliography = bibliography_content.join("\n")
+          
+          # Update the article
+          article.bibliography = formatted_bibliography
+          if article.save
+            updated_count += 1
+            puts "Updated bibliography for #{article.title} (#{id})"
+          else
+            puts "Failed to update #{article.title} (#{id}): #{article.errors.full_messages.join(', ')}"
+          end
+        end
+      end
+      
+      puts "Updated bibliography for #{updated_count} articles"
+    end
+
+    def convert_urls_to_links(content)
+      # Regex to match URLs that are not already wrapped in anchor tags
+      url_regex = /\b(?<!href=["'])(?<!<a[^>]*>)(https?:\/\/[^\s<>"']+)(?![^<]*<\/a>)/i
+      
+      content.gsub(url_regex) do |url|
+        %(<a href="#{url}">#{url}</a>)
+      end
+    end
+
     def date_element_to_edtf(date_element)
       date_element.attr('when')&.text
     end
