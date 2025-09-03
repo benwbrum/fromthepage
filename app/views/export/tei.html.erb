@@ -222,7 +222,7 @@ xml:id="<%=@work.identifier||@work.id%>">
         </listPlace>
       <% end %>
 
-      <% unless @organization_articles.empty? %>
+      <% unless @organization_articles.nil? || @organization_articles.empty? %>
         <listOrg>
           <% @organization_articles.each do |organization| %>
             <org xml:id="S<%=organization.id%>">

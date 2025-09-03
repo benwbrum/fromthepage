@@ -182,6 +182,8 @@ describe ExportController do
 
       before do
         organization_article.categories << organizations_category
+        # Link the organization article to the work through the page
+        page.page_article_links.create!(article: organization_article)
       end
 
       it 'includes organization data in TEI export' do

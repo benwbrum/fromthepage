@@ -262,10 +262,10 @@ module ExportHelper
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
     organizations = work.collection.categories.where(title: 'Organizations').first
-    organizations_and_descendants = organizations.descendants << organizations if organizations
+    organizations_and_descendants = organizations ? (organizations.descendants << organizations) : []
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @organization_articles = organizations && organizations_and_descendants ? @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a : []
+    @organization_articles = organizations_and_descendants.empty? ? [] : @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
