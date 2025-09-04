@@ -46,6 +46,26 @@ RSpec.describe AbstractXmlHelper, type: :helper do
 
         expect(result).to include('<a href="https://example.com">https://example.com</a>')
       end
+
+      it "handles plain HTML content without TEI markup" do
+        html_content = '<i>This</i> is a <a href="https://www.wikipedia.com">bibliography</a>.'
+
+        result = xml_to_html(html_content, true, false, @collection)
+
+        expect(result).to include('<i>This</i>')
+        expect(result).to include('<a href="https://www.wikipedia.com">bibliography</a>')
+        expect(result).to include('is a')
+      end
+
+      it "handles mixed plain HTML elements" do
+        html_content = '<b>Bold text</b> and <em>emphasized text</em> with a <u>underlined part</u>.'
+
+        result = xml_to_html(html_content, true, false, @collection)
+
+        expect(result).to include('<b>Bold text</b>')
+        expect(result).to include('<em>emphasized text</em>')
+        expect(result).to include('<u>underlined part</u>')
+      end
     end
   end
 end

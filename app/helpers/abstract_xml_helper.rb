@@ -53,6 +53,21 @@ module AbstractXmlHelper
 
     collection ||= @collection
 
+    # Check if content appears to be plain HTML rather than TEI markup
+    # TEI elements include: bibl, hi, lb, pb, cb, add, del, unclear, etc.
+    tei_elements = %w[bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
+    has_tei_elements = tei_elements.any? { |element| xml_text.include?("<#{element}") }
+    
+    # If it looks like plain HTML (no TEI elements), handle it directly
+    unless has_tei_elements
+      # For plain HTML content, just sanitize it without XML processing
+      return ActionController::Base.helpers.sanitize(
+        xml_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+    end
+
     # Handle XML fragments with multiple root elements by wrapping them
     wrapped_xml = if xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/)
       "<root>#{xml_text}</root>"
