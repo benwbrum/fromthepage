@@ -66,6 +66,30 @@ RSpec.describe AbstractXmlHelper, type: :helper do
         expect(result).to include('<em>emphasized text</em>')
         expect(result).to include('<u>underlined part</u>')
       end
+
+      it "handles TEI content with HTML entities" do
+        tei_content = '<ab><bibl><hi rend="italic">Seventh Manuscript Census of the United States</hi> (1850), Population Schedules, Kentucky, Jefferson County, Louisville District 1, stamped p. 8. <hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Population Schedules, Kentucky, Jefferson County, Louisville Ward 8, p. 67.  <hi rend="italic">Find A Grave</hi>, &quot;Joseph C. Baird (unknown-1881),&quot; Memorial #100674176, https://www.findagrave.com/cgi-bin/fg.cgi?page=gr&amp;GSln=baird&amp;GSfn=Joseph&amp;GSmn=c&amp;GSbyrel=all&amp;GSdyrel=all&amp;GSst=19&amp;GScnty=1044&amp;GScntry=4&amp;GSob=n&amp;GRid=100674176&amp;df=all&amp; (accessed August, 11, 2017).
+</bibl></ab>'
+
+        result = xml_to_html(tei_content, true, false, @collection)
+
+        expect(result).to include('<i>Seventh Manuscript Census of the United States</i>')
+        expect(result).to include('<i>Eighth Manuscript Census of the United States</i>')
+        expect(result).to include('<i>Find A Grave</i>')
+        expect(result).to include('"Joseph C. Baird (unknown-1881),"')
+        expect(result).to include('&amp;GSln=baird')
+      end
+
+      it "handles XML parsing errors gracefully by falling back to HTML processing" do
+        # Test with content that might cause XML parsing issues
+        problematic_content = '<bibl>Citation with <hi rend="italic>Invalid XML</bibl>'
+
+        result = xml_to_html(problematic_content, true, false, @collection)
+
+        # Should still produce some output, even if not perfectly formatted
+        expect(result).not_to be_empty
+        expect(result).to include('Citation with')
+      end
     end
   end
 end

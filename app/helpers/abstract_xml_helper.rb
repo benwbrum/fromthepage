@@ -55,7 +55,7 @@ module AbstractXmlHelper
 
     # Check if content appears to be plain HTML rather than TEI markup
     # TEI elements include: bibl, hi, lb, pb, cb, add, del, unclear, etc.
-    tei_elements = %w[bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
+    tei_elements = %w[ab bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
     has_tei_elements = tei_elements.any? { |element| xml_text.include?("<#{element}") }
     
     # If it looks like plain HTML (no TEI elements), handle it directly
@@ -75,7 +75,20 @@ module AbstractXmlHelper
       xml_text
     end
 
-    doc = REXML::Document.new(wrapped_xml)
+    begin
+      doc = REXML::Document.new(wrapped_xml)
+    rescue REXML::ParseException => e
+      # If XML parsing fails, fall back to treating as plain HTML
+      # This handles cases where URLs with parameters or other content
+      # cause XML parsing issues
+      Rails.logger.warn "XML parsing failed for TEI content, falling back to HTML processing: #{e.message}" if defined?(Rails)
+      
+      return ActionController::Base.helpers.sanitize(
+        xml_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+    end
     # unless subject linking is disabled, do this
     unless collection.subjects_disabled
       doc.elements.each('//link') do |e|
