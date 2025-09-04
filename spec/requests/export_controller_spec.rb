@@ -172,7 +172,7 @@ describe ExportController do
     context 'with organization articles' do
       let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection) }
       let!(:organization_article) do
-        create(:article, 
+        create(:article,
                title: 'T. & R. Slevin & Cain',
                begun: '1854',
                ended: '1877',
@@ -192,7 +192,7 @@ describe ExportController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:tei)
-        
+
         # Check that the organization is included in the TEI output
         expect(response.body).to include('<listOrg>')
         expect(response.body).to include('<org xml:id="S' + organization_article.id.to_s + '">')
