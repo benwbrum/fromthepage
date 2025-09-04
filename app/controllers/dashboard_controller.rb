@@ -12,8 +12,7 @@ class DashboardController < ApplicationController
     only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+    only: [:owner, :staging, :upload, :startproject, :empty_work, :create_work, :summary, :exports]
 
   before_action :remove_col_id
 
@@ -307,6 +306,18 @@ class DashboardController < ApplicationController
               type: 'application/csv')
   end
 
+  def upload
+    @result = DocumentUpload::Create.new(
+      document_upload_params: document_upload_params,
+      user: current_user
+    ).call
+
+    @document_upload = @result.document_upload
+    @attachment = @result.attachment
+
+    respond_to(&:turbo_stream)
+  end
+
   private
 
   def authorized?
@@ -316,7 +327,14 @@ class DashboardController < ApplicationController
   end
 
   def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id, :generate_ai_draft)
+    params.require(:document_upload).permit(
+      :document_upload,
+      :attachment,
+      :preserve_titles,
+      :ocr,
+      :collection_id,
+      :generate_ai_draft
+    )
   end
 
   def load_user_hours_data

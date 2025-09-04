@@ -210,16 +210,14 @@ Fromthepage::Application.routes.draw do
   if Rails.application.config.upload_host.present?
     constraints subdomain: Rails.application.config.upload_host do
       scope 'dashboard', as: 'dashboard' do
-        post 'new_upload', to: 'dashboard#new_upload'
+        post 'upload', to: 'dashboard#upload'
       end
     end
   else
     scope 'dashboard', as: 'dashboard' do
-      post 'new_upload', to: 'dashboard#new_upload'
+      post 'upload', to: 'dashboard#upload'
     end
   end
-
-
 
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
@@ -228,7 +226,6 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf

@@ -44,7 +44,6 @@ Rails.application.configure do
     api_token: ''
   }
 
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
