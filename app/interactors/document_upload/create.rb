@@ -9,8 +9,11 @@ class DocumentUpload::Create < ApplicationInteractor
   end
 
   def perform
+    @attachment = ActiveStorage::Blob.find_signed(@document_upload_params.delete(:attachment))
+
     @document_upload = DocumentUpload.new(@document_upload_params)
     @document_upload.user = @user
+    @document_upload.attachment = @attachment if @attachment.present?
     @document_upload.save!
 
     # TODO: We will move this to async job soon
