@@ -261,8 +261,8 @@ module ExportHelper
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
-    organizations = work.collection.categories.where(title: 'Organizations').first
-    organizations_and_descendants = organizations ? (organizations.descendants << organizations) : []
+    organization_categories = work.collection.categories.where(org_fields_enabled: true)
+    organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @organization_articles = organizations_and_descendants.empty? ? [] : @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a
@@ -275,7 +275,7 @@ module ExportHelper
             @person_articles << expanded
           elsif expanded.categories.where(title: 'Places').present?
             @place_articles << expanded
-          elsif expanded.categories.where(title: 'Organizations').present?
+          elsif expanded.categories.where(org_fields_enabled: true).present?
             @organization_articles << expanded
           else
             @other_articles << expanded

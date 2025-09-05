@@ -170,7 +170,7 @@ describe ExportController do
     end
 
     context 'with organization articles' do
-      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection) }
+      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
       let!(:organization_article) do
         create(:article,
                title: 'T. & R. Slevin & Cain',
@@ -200,6 +200,54 @@ describe ExportController do
         expect(response.body).to include('<event type="begun"  when="1854">')
         expect(response.body).to include('<event type="ended"  when="1877">')
         expect(response.body).to include('<idno>O00007391</idno>')
+      end
+    end
+
+    context 'with multiple organization categories' do
+      let!(:companies_category) { create(:category, title: 'Companies', collection: collection, org_fields_enabled: true) }
+      let!(:universities_category) { create(:category, title: 'Universities', collection: collection, org_fields_enabled: true) }
+      let!(:company_article) do
+        create(:article,
+               title: 'ABC Manufacturing Co.',
+               begun: '1890',
+               ended: '1920',
+               collection: collection,
+               uri: 'O00001')
+      end
+      let!(:university_article) do
+        create(:article,
+               title: 'State University',
+               begun: '1875',
+               collection: collection,
+               uri: 'O00002')
+      end
+
+      before do
+        company_article.categories << companies_category
+        university_article.categories << universities_category
+        # Link the organization articles to the work through the page
+        page.page_article_links.create!(article: company_article)
+        page.page_article_links.create!(article: university_article)
+      end
+
+      it 'includes multiple organization types in TEI export' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check that both organizations are included in the TEI output
+        expect(response.body).to include('<listOrg>')
+        expect(response.body).to include('<org xml:id="S' + company_article.id.to_s + '">')
+        expect(response.body).to include('<org xml:id="S' + university_article.id.to_s + '">')
+        expect(response.body).to include('<orgName>ABC Manufacturing Co.</orgName>')
+        expect(response.body).to include('<orgName>State University</orgName>')
+        expect(response.body).to include('<event type="begun"  when="1890">')
+        expect(response.body).to include('<event type="begun"  when="1875">')
+        expect(response.body).to include('<event type="ended"  when="1920">')
+        expect(response.body).to include('<idno>O00001</idno>')
+        expect(response.body).to include('<idno>O00002</idno>')
       end
     end
   end
