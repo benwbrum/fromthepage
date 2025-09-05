@@ -57,7 +57,7 @@ module AbstractXmlHelper
     # TEI elements include: bibl, hi, lb, pb, cb, add, del, unclear, etc.
     tei_elements = %w[ab bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
     has_tei_elements = tei_elements.any? { |element| xml_text.include?("<#{element}") }
-    
+
     # If it looks like plain HTML (no TEI elements), handle it directly
     unless has_tei_elements
       # For plain HTML content, just sanitize it without XML processing
@@ -82,7 +82,7 @@ module AbstractXmlHelper
       # This handles cases where URLs with parameters or other content
       # cause XML parsing issues
       Rails.logger.warn "XML parsing failed for TEI content, falling back to HTML processing: #{e.message}" if defined?(Rails)
-      
+
       return ActionController::Base.helpers.sanitize(
         xml_text.strip,
         tags: SANITIZE_ALLOWED_TAGS,
