@@ -251,6 +251,51 @@ describe ExportController do
       end
     end
 
+    context 'with articles containing complex TEI bibliography data' do
+      let!(:people_category) { create(:category, title: 'People', collection: collection) }
+      
+      let!(:person_article_complex) do
+        create(:article,
+               title: 'Test Person',
+               collection: collection,
+               bibliography: ' (1850), Population Schedules, Mississippi, Wilkinson County, p. 295A.<lb>
+<hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Population Schedules, Kentucky, Jefferson County, Louisville Ward 5, p. 119.<lb>
+<hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Slave Schedules, Kentucky, Jefferson County, Louisville, p. 272B.<lb>')
+      end
+
+      before do
+        person_article_complex.categories << people_category
+        # Link the article to the work through the page
+        page.page_article_links.create!(article: person_article_complex)
+      end
+
+      it 'preserves complex TEI formatting with line breaks and italics in bibliography' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check that the complex TEI content is preserved
+        expect(response.body).to include('<listPerson>')
+        expect(response.body).to include('<person xml:id="S' + person_article_complex.id.to_s + '">')
+        
+        # Check for preserved line breaks
+        expect(response.body).to match(/<lb\/>\s*\n/)
+        
+        # Check for preserved italic formatting (allowing for single or double quotes)
+        expect(response.body).to match(/<hi rend=['"]italic['"]>Eighth Manuscript Census of the United States<\/hi>/)
+        
+        # Check that both elements appear multiple times as expected
+        person_section = response.body[response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">')..response.body.index('</person>', response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">'))]
+        hi_count = person_section.scan(/<hi rend=['"]italic['"]>/).count
+        lb_count = person_section.scan(/<lb\/>/).count
+        
+        expect(hi_count).to eq(2)  # Two instances of hi rend="italic"
+        expect(lb_count).to eq(3)  # Three line breaks
+      end
+    end
+
     context 'with articles containing bibliography data' do
       let!(:people_category) { create(:category, title: 'People', collection: collection) }
       let!(:places_category) { create(:category, title: 'Places', collection: collection) }
@@ -287,18 +332,26 @@ describe ExportController do
         page.page_article_links.create!(article: organization_article)
       end
 
-      it 'includes bibl elements for all article types with bibliography data' do
+      it 'includes bibl elements for all article types with bibliography data and preserves TEI formatting' do
         login_as owner
         subject
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:tei)
 
+        # Debug: Print the actual response body around the person bibliography
+        person_section = response.body[response.body.index('<person xml:id="S' + person_article.id.to_s + '">')..response.body.index('</person>', response.body.index('<person xml:id="S' + person_article.id.to_s + '">'))]
+        puts "\n=== DEBUG: Person section ==="
+        puts person_section
+        puts "=== END DEBUG ===\n"
+
         # Check that person bibliography is wrapped in bibl element
         expect(response.body).to include('<listPerson>')
         expect(response.body).to include('<person xml:id="S' + person_article.id.to_s + '">')
         expect(response.body).to include('<bibl>')
         expect(response.body).to include('Sample person bibliography entry')
+        # Check that TEI formatting is preserved in bibliography (allowing for single or double quotes)
+        expect(response.body).to match(/<hi rend=['"]italic['"]>italic text<\/hi>/)
 
         # Check that place bibliography is wrapped in bibl element
         expect(response.body).to include('<listPlace>')
