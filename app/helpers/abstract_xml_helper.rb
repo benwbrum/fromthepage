@@ -61,11 +61,15 @@ module AbstractXmlHelper
     # If it looks like plain HTML (no TEI elements), handle it directly
     unless has_tei_elements
       # For plain HTML content, just sanitize it without XML processing
-      return ActionController::Base.helpers.sanitize(
+      html_result = ActionController::Base.helpers.sanitize(
         xml_text.strip,
         tags: SANITIZE_ALLOWED_TAGS,
         attributes: SANITIZE_ALLOWED_ATTRIBUTES
       ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty HTML results return empty string
+      cleaned_html = html_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_html.empty? ? '' : html_result
     end
 
     # Handle XML fragments with multiple root elements by wrapping them
@@ -83,11 +87,15 @@ module AbstractXmlHelper
       # cause XML parsing issues
       Rails.logger.warn "XML parsing failed for TEI content, falling back to HTML processing: #{e.message}" if defined?(Rails)
 
-      return ActionController::Base.helpers.sanitize(
+      fallback_result = ActionController::Base.helpers.sanitize(
         xml_text.strip,
         tags: SANITIZE_ALLOWED_TAGS,
         attributes: SANITIZE_ALLOWED_ATTRIBUTES
       ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty fallback results return empty string
+      cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_fallback.empty? ? '' : fallback_result
     end
     # unless subject linking is disabled, do this
     unless collection.subjects_disabled
@@ -415,10 +423,16 @@ module AbstractXmlHelper
     # Remove the temporary root wrapper if we added one
     my_display_html.gsub!(/<\/?root>/, '')
 
-    ActionController::Base.helpers.sanitize(
+    final_result = ActionController::Base.helpers.sanitize(
       my_display_html.strip,
       tags: SANITIZE_ALLOWED_TAGS,
       attributes: SANITIZE_ALLOWED_ATTRIBUTES
     ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+    # Ensure truly empty content returns empty string to maintain UI behavior
+    # (e.g., showing edit description links when content is empty)
+    # Check if result is effectively empty (just whitespace, empty tags, etc.)
+    cleaned_result = final_result.gsub(/<[^>]*>/, '').strip
+    cleaned_result.empty? ? '' : final_result
   end
 end
