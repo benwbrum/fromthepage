@@ -72,8 +72,25 @@ module AbstractXmlHelper
       return cleaned_html.empty? ? '' : html_result
     end
 
-    # Handle XML fragments with multiple root elements by wrapping them
-    wrapped_xml = if xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/)
+    # Clean up malformed lb elements and other self-closing tags
+    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
+    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
+    # Remove orphaned closing lb tags (like </lb></lb></lb>)
+    xml_text.gsub!(/<\/lb>/, '')
+    # Convert non-self-closing lb tags to self-closing
+    xml_text.gsub!(/<lb>/, '<lb/>')
+    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
+    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
+    
+    # Handle XML fragments that need wrapping:
+    # 1. Multiple root elements: <elem>...</elem><elem>...
+    # 2. Content with text before first XML element
+    # 3. TEI content that doesn't have a single root element
+    needs_wrapping = xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     xml_text.strip.match(/^[^<]/) || # Starts with text
+                     !xml_text.strip.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+    
+    wrapped_xml = if needs_wrapping
       "<root>#{xml_text}</root>"
     else
       xml_text
