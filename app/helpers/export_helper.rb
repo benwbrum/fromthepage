@@ -477,29 +477,36 @@ module ExportHelper
       Rails.logger.error "XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
       return ''
     end
-    # paras_string = ""
-    my_display_html = ''
-    tags = [ 'p' ]
-    tags.each do |tag|
-      doc.elements.each_with_index("//#{tag}") do |e, i|
-        transform_links(e)
-        transform_expansions(e)
-        transform_regularizations(e)
-        transform_marginalia_and_catchwords(e)
-        transform_footnotes(e)
-        transform_lb(e)
-        transform_tables(e)
-        e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-        if add_corrsp
-          e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
-        end
-        my_display_html << e.to_s
+    # Apply transformations to all elements in the document
+    transform_links(doc.root)
+    transform_expansions(doc.root)
+    transform_regularizations(doc.root)
+    transform_marginalia_and_catchwords(doc.root)
+    transform_footnotes(doc.root)
+    transform_lb(doc.root)
+    transform_tables(doc.root)
+
+    # Process paragraph elements with special attributes if they exist
+    doc.elements.each_with_index("//p") do |e, i|
+      e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+      if add_corrsp
+        e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
       end
     end
 
+    # Generate the output HTML from the transformed document
+    my_display_html = ''
+    if needs_wrapping
+      # If we wrapped content, output only the children of the root wrapper
+      doc.root.children.each { |child| my_display_html << child.to_s }
+    else
+      # Output the entire document
+      doc.write(my_display_html)
+      # Remove XML declaration if present
+      my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
+    end
+
     my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n")
-    # Remove the temporary root wrapper if we added one
-    my_display_html.gsub!(/<\/?root>/, '') if needs_wrapping
     my_display_html.encode('utf-8')
   end
 
