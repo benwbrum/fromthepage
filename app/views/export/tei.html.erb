@@ -160,7 +160,7 @@ xml:id="<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless person.bibliography.blank? %>
-                <%= raw(xml_to_export_tei(person.bibliography, @context, "S#{person.id}")) %>
+                <bibl><%= raw(xml_to_export_tei(person.bibliography, @context, "S#{person.id}")) %></bibl>
               <% end %>
             </person>
           <% end %>
@@ -207,7 +207,7 @@ xml:id="<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless place.bibliography.blank? %>
-                <%= raw(xml_to_export_tei(place.bibliography, @context, "S#{place.id}")) %>
+                <bibl><%= raw(xml_to_export_tei(place.bibliography, @context, "S#{place.id}")) %></bibl>
               <% end %>
             </place>
           <% end %>
@@ -260,11 +260,7 @@ xml:id="<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless organization.bibliography.blank? %>
-                <% organization.bibliography.split("\n").each do |line| %>
-                  <% unless line.blank? %>
-                    <bibl><%= h(line.chomp) %></bibl>
-                  <% end %>
-                <% end %>
+                <bibl><%= raw(xml_to_export_tei(organization.bibliography, @context, "S#{organization.id}")) %></bibl>
               <% end %>
             </org>
           <% end %>

@@ -250,6 +250,76 @@ describe ExportController do
         expect(response.body).to include('<idno>O00002</idno>')
       end
     end
+
+    context 'with articles containing bibliography data' do
+      let!(:people_category) { create(:category, title: 'People', collection: collection) }
+      let!(:places_category) { create(:category, title: 'Places', collection: collection) }
+      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
+      
+      let!(:person_article) do
+        create(:article,
+               title: 'John Doe',
+               collection: collection,
+               bibliography: 'Sample person bibliography entry with <hi rend="italic">italic text</hi>.')
+      end
+      
+      let!(:place_article) do
+        create(:article,
+               title: 'Louisville',
+               collection: collection,
+               bibliography: 'Sample place bibliography entry.')
+      end
+      
+      let!(:organization_article) do
+        create(:article,
+               title: 'Test Company',
+               collection: collection,
+               bibliography: 'Sample organization bibliography entry.')
+      end
+
+      before do
+        person_article.categories << people_category
+        place_article.categories << places_category
+        organization_article.categories << organizations_category
+        # Link the articles to the work through the page
+        page.page_article_links.create!(article: person_article)
+        page.page_article_links.create!(article: place_article)
+        page.page_article_links.create!(article: organization_article)
+      end
+
+      it 'includes bibl elements for all article types with bibliography data' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check that person bibliography is wrapped in bibl element
+        expect(response.body).to include('<listPerson>')
+        expect(response.body).to include('<person xml:id="S' + person_article.id.to_s + '">')
+        expect(response.body).to include('<bibl>')
+        expect(response.body).to include('Sample person bibliography entry')
+
+        # Check that place bibliography is wrapped in bibl element
+        expect(response.body).to include('<listPlace>')
+        expect(response.body).to include('<place xml:id="S' + place_article.id.to_s + '">')
+        expect(response.body).to include('Sample place bibliography entry')
+
+        # Check that organization bibliography is wrapped in bibl element
+        expect(response.body).to include('<listOrg>')
+        expect(response.body).to include('<org xml:id="S' + organization_article.id.to_s + '">')
+        expect(response.body).to include('Sample organization bibliography entry')
+
+        # Ensure all bibliography entries are properly wrapped in bibl tags
+        person_bibl_count = response.body.scan(/<bibl>.*Sample person bibliography entry.*<\/bibl>/m).count
+        place_bibl_count = response.body.scan(/<bibl>.*Sample place bibliography entry.*<\/bibl>/m).count
+        org_bibl_count = response.body.scan(/<bibl>.*Sample organization bibliography entry.*<\/bibl>/m).count
+        
+        expect(person_bibl_count).to eq(1)
+        expect(place_bibl_count).to eq(1)
+        expect(org_bibl_count).to eq(1)
+      end
+    end
   end
 
   describe '#subject_details_csv' do
