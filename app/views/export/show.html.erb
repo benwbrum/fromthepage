@@ -138,9 +138,7 @@
               <div class="article-bibliography">
                 <strong><%= t('.bibliography') %>:</strong>
                 <p>
-                  <% article.bibliography.split("\n").select{|line| !line.blank? }.each do |line| %>
-                    <%= line %><br />
-                  <% end %>
+                  <%= raw(xml_to_html(article.bibliography, true, true)) %>
                 </p>
               </div>
             <% end %>

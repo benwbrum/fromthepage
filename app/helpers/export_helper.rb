@@ -444,8 +444,39 @@ module ExportHelper
     xml_text.gsub!('&', '&amp;')
     xml_text.gsub!('&amp;amp;', '&amp;')
 
+    # Clean up malformed lb elements and other self-closing tags
+    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
+    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
+    # Remove orphaned closing lb tags (like </lb></lb></lb>)
+    xml_text.gsub!(/<\/lb>/, '')
+    # Convert non-self-closing lb tags to self-closing
+    xml_text.gsub!(/<lb>/, '<lb/>')
+    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
+    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
+    
+    # Handle XML fragments that need wrapping:
+    # 1. Multiple root elements: <elem>...</elem><elem>...
+    # 2. Content with text before first XML element
+    # 3. TEI content that doesn't have a single root element
+    needs_wrapping = xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     xml_text.strip.match(/^[^<]/) || # Starts with text
+                     !xml_text.strip.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+    
+    wrapped_xml = if needs_wrapping
+      "<root>#{xml_text}</root>"
+    else
+      xml_text
+    end
+
     # xml_text = titles_to_divs(xml_text, context)
-    doc = REXML::Document.new(xml_text)
+    begin
+      doc = REXML::Document.new(wrapped_xml)
+    rescue REXML::ParseException => e
+      # If XML parsing fails for TEI export, we need to return empty or log error
+      # since we can't fall back to HTML in TEI context
+      Rails.logger.error "XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
+      return ''
+    end
     # paras_string = ""
     my_display_html = ''
     tags = [ 'p' ]
@@ -466,7 +497,10 @@ module ExportHelper
       end
     end
 
-    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n")
+    # Remove the temporary root wrapper if we added one
+    my_display_html.gsub!(/<\/?root>/, '') if needs_wrapping
+    my_display_html.encode('utf-8')
   end
 
   def transform_expansions(p_element)
