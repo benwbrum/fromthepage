@@ -86,14 +86,17 @@ module AbstractXmlHelper
     # 1. Multiple root elements: <elem>...</elem><elem>...
     # 2. Content with text before first XML element
     # 3. TEI content that doesn't have a single root element
-    needs_wrapping = xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
-                     xml_text.strip.match(/^[^<]/) || # Starts with text
-                     !xml_text.strip.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+    # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
+    cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
+    
+    needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     cleaned_text.match(/^[^<]/) || # Starts with text
+                     !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
 
     wrapped_xml = if needs_wrapping
       "<root>#{xml_text}</root>"
     else
-      xml_text
+      cleaned_text  # Use cleaned text when no wrapping is needed
     end
 
     begin
