@@ -109,7 +109,7 @@ Robert A. Powell, <hi rend=\"italic\">Kentucky Governors</hi> (Frankfort, KY, 19
 
         # Should handle the leading text properly
         expect(result).to include('(1850), Population Schedules, Mississippi, Wilkinson County, p. 295A.')
-        
+
         # Should handle the URLs and other content
         expect(result).to include('https://www.findagrave.com/memorial/26780638')
         expect(result).to include('Judge Horatio Fleming Simrall')
@@ -118,9 +118,9 @@ Robert A. Powell, <hi rend=\"italic\">Kentucky Governors</hi> (Frankfort, KY, 19
       it "handles TEI content with malformed lb elements" do
         # Test various malformed lb tag scenarios
         malformed_content = "Text before <lb> more text <lb></lb> and <lb/> final text</lb></lb>"
-        
+
         result = xml_to_html(malformed_content, true, false, @collection)
-        
+
         # Should convert all to proper line breaks
         expect(result).to include('<br/>')
         expect(result).to include('Text before')

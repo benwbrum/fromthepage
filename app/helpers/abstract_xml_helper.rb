@@ -81,7 +81,7 @@ module AbstractXmlHelper
     xml_text.gsub!(/<lb>/, '<lb/>')
     xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
     xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
-    
+
     # Handle XML fragments that need wrapping:
     # 1. Multiple root elements: <elem>...</elem><elem>...
     # 2. Content with text before first XML element
@@ -89,7 +89,7 @@ module AbstractXmlHelper
     needs_wrapping = xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
                      xml_text.strip.match(/^[^<]/) || # Starts with text
                      !xml_text.strip.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
-    
+
     wrapped_xml = if needs_wrapping
       "<root>#{xml_text}</root>"
     else

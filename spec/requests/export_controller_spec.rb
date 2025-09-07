@@ -253,7 +253,7 @@ describe ExportController do
 
     context 'with articles containing complex TEI bibliography data' do
       let!(:people_category) { create(:category, title: 'People', collection: collection) }
-      
+
       let!(:person_article_complex) do
         create(:article,
                title: 'Test Person',
@@ -279,18 +279,18 @@ describe ExportController do
         # Check that the complex TEI content is preserved
         expect(response.body).to include('<listPerson>')
         expect(response.body).to include('<person xml:id="S' + person_article_complex.id.to_s + '">')
-        
+
         # Check for preserved line breaks
         expect(response.body).to match(/<lb\/>\s*\n/)
-        
+
         # Check for preserved italic formatting (allowing for single or double quotes)
         expect(response.body).to match(/<hi rend=['"]italic['"]>Eighth Manuscript Census of the United States<\/hi>/)
-        
+
         # Check that both elements appear multiple times as expected
         person_section = response.body[response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">')..response.body.index('</person>', response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">'))]
         hi_count = person_section.scan(/<hi rend=['"]italic['"]>/).count
         lb_count = person_section.scan(/<lb\/>/).count
-        
+
         expect(hi_count).to eq(2)  # Two instances of hi rend="italic"
         expect(lb_count).to eq(3)  # Three line breaks
       end
@@ -300,21 +300,21 @@ describe ExportController do
       let!(:people_category) { create(:category, title: 'People', collection: collection) }
       let!(:places_category) { create(:category, title: 'Places', collection: collection) }
       let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
-      
+
       let!(:person_article) do
         create(:article,
                title: 'John Doe',
                collection: collection,
                bibliography: 'Sample person bibliography entry with <hi rend="italic">italic text</hi>.')
       end
-      
+
       let!(:place_article) do
         create(:article,
                title: 'Louisville',
                collection: collection,
                bibliography: 'Sample place bibliography entry.')
       end
-      
+
       let!(:organization_article) do
         create(:article,
                title: 'Test Company',
@@ -367,7 +367,7 @@ describe ExportController do
         person_bibl_count = response.body.scan(/<bibl>.*Sample person bibliography entry.*<\/bibl>/m).count
         place_bibl_count = response.body.scan(/<bibl>.*Sample place bibliography entry.*<\/bibl>/m).count
         org_bibl_count = response.body.scan(/<bibl>.*Sample organization bibliography entry.*<\/bibl>/m).count
-        
+
         expect(person_bibl_count).to eq(1)
         expect(place_bibl_count).to eq(1)
         expect(org_bibl_count).to eq(1)

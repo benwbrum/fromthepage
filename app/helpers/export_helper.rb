@@ -453,7 +453,7 @@ module ExportHelper
     xml_text.gsub!(/<lb>/, '<lb/>')
     xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
     xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
-    
+
     # Handle XML fragments that need wrapping:
     # 1. Multiple root elements: <elem>...</elem><elem>...
     # 2. Content with text before first XML element
@@ -461,7 +461,7 @@ module ExportHelper
     needs_wrapping = xml_text.strip.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
                      xml_text.strip.match(/^[^<]/) || # Starts with text
                      !xml_text.strip.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
-    
+
     wrapped_xml = if needs_wrapping
       "<root>#{xml_text}</root>"
     else
@@ -487,7 +487,7 @@ module ExportHelper
     transform_tables(doc.root)
 
     # Process paragraph elements with special attributes if they exist
-    doc.elements.each_with_index("//p") do |e, i|
+    doc.elements.each_with_index('//p') do |e, i|
       e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
         e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
