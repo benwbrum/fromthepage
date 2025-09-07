@@ -88,7 +88,7 @@ module AbstractXmlHelper
     # 3. TEI content that doesn't have a single root element
     # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
     cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
-    
+
     needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
                      cleaned_text.match(/^[^<]/) || # Starts with text
                      !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
