@@ -106,16 +106,34 @@ ignore_missing:
     - 'deed.deed.*'
     - 'article.graph.title'
     - 'thredded.*'
-  es: &NOT_EN
+  es:
     - '{!, !0, next, throw}'
     - 'deed.deed.*'
     - 'article.graph.title'
     - 'admin.*'
     - 'admin_mailer.*'
     - 'thredded.*'
-  pt: *NOT_EN
-  fr: *NOT_EN
-  de: *NOT_EN
+  pt:
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'article.graph.title'
+    - 'admin.*'
+    - 'admin_mailer.*'
+    - 'thredded.*'
+  fr:
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'article.graph.title'
+    - 'admin.*'
+    - 'admin_mailer.*'
+    - 'thredded.*'
+  de:
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'article.graph.title'
+    - 'admin.*'
+    - 'admin_mailer.*'
+    - 'thredded.*'
 
 ## Consider these keys used:
 ignore_unused:

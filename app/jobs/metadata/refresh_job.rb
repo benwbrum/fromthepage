@@ -1,11 +1,12 @@
 class Metadata::RefreshJob < ApplicationJob
   queue_as :default
 
-  def perform(id:, type:, user: nil)
+  def perform(id:, type:, user_id:)
     @refresh_logs = []
     @id = id
     @type = type
-    @user = user
+    @user = User.find_by(id: user_id)
+
     FileUtils.mkdir_p(Rails.root.join('public', 'metadata', 'refresh', 'log'))
 
     @result = Work::Metadata::Refresh.new(work_ids: all_work_ids).call
@@ -51,7 +52,7 @@ class Metadata::RefreshJob < ApplicationJob
 
       log("Refreshing metadata for work #{@id}")
 
-      @all_work_ids = [@id]
+      @all_work_ids = [ @id ]
     else
       raise ArgumentError, 'Type can only be collection, document_set, or work'
     end

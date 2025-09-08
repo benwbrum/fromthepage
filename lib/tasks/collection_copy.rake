@@ -1,20 +1,20 @@
 namespace :fromthepage do
   # code to copy a collection into a new collection owned by the same user, with subjects, works, and pages
   namespace :copy do
-    desc "Copy a collection into a new collection owned by the same user, with subjects, works, and pages"
-    task :collection, [:source_collection_slug, :target_collection_slug] => :environment do |t,args|
+    desc 'Copy a collection into a new collection owned by the same user, with subjects, works, and pages'
+    task :collection, [ :source_collection_slug, :target_collection_slug ] => :environment do |t, args|
       source_collection_slug = args.source_collection_slug
       target_collection_slug = args.target_collection_slug
       source_collection = Collection.find_by(slug: source_collection_slug)
       target_collection = Collection.find_by(slug: target_collection_slug)
       if source_collection.nil? || target_collection.nil?
-        puts "Usage: rake fromthepage:copy:collection[source_collection_slug,target_collection_slug]"
-        puts "  source_collection_slug: slug of the collection to copy from"
-        puts "  target_collection_slug: slug of the collection to copy to"
+        puts 'Usage: rake fromthepage:copy:collection[source_collection_slug,target_collection_slug]'
+        puts '  source_collection_slug: slug of the collection to copy from'
+        puts '  target_collection_slug: slug of the collection to copy to'
         exit
       end
       owner = source_collection.owner
-      User.current_user=owner
+      Current.user = owner
       category_map = {}
       target_collection.categories.delete_all
       # categories are in a tree; we want to walk the tree and duplicate each category and its parent
@@ -67,14 +67,7 @@ namespace :fromthepage do
         new_article.xml_text=''
         new_article.source_text = ''
 
-        # if !new_article.save
-        #   binding.pry
-        # end
-
         new_article.source_text= article.source_text || ''
-        # if !new_article.save
-        #   binding.pry
-        # end
       end
 
       # now copy the works
@@ -96,14 +89,13 @@ namespace :fromthepage do
           new_page.status=page.status
           new_page.source_text=''
           new_page.xml_text=''
-          new_work.pages << new_page || binding.pry
+          new_work.pages << new_page
 
           # now re-save the page with the original source text and status to fix the versions
           new_page.source_text= page.source_text||''
           new_page.status= page.status
           new_page.save!
         end
-        
       end
     end
   end

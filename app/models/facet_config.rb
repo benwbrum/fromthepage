@@ -28,9 +28,9 @@ class FacetConfig < ApplicationRecord
   def label_hash
     label_hash = JSON.parse(self.label)
   end
-  
+
   def localized_label(locale)
-    return nil if self.label.nil? 
+    return nil if self.label.nil?
 
     locale_label = label_hash[locale.to_s]
     if locale_label
@@ -68,7 +68,7 @@ class FacetConfig < ApplicationRecord
             input_type = facet['input_type']
 
             case input_type
-            when "text"
+            when 'text'
               unless facet['order'].nil?
                 if value.kind_of? Hash
                   value = value['value'] || value['@value']
@@ -76,7 +76,7 @@ class FacetConfig < ApplicationRecord
                 value = Nokogiri::HTML(value).text
                 new_attributes["s#{facet['order']}".to_sym] = value
               end
-            when "date"
+            when 'date'
               unless facet['order'].nil?
                 begin
                   date = Date.edtf(value)
@@ -101,10 +101,10 @@ class FacetConfig < ApplicationRecord
   end
 
   def type_text?
-    self.input_type == "text"
+    self.input_type == 'text'
   end
 
   def type_date?
-    self.input_type == "date"
+    self.input_type == 'date'
   end
 end

@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Import GRI spreadsheet and update pages with markdown tables'
-  task :import_GRI, [:spreadsheet_path, :work_id] => :environment do |t, args|
+  task :import_GRI, [ :spreadsheet_path, :work_id ] => :environment do |t, args|
     require 'roo'
     spreadsheet_path = args[:spreadsheet_path]
     work_id = args[:work_id]
@@ -10,7 +10,7 @@ namespace :fromthepage do
     end
 
     work = Work.find(work_id)
-    User.current_user = work.collection.owner
+    Current.user = work.collection.owner
     sheet = Roo::Spreadsheet.open(spreadsheet_path).sheet(0)
     headers = sheet.row(1)
 
@@ -70,9 +70,7 @@ namespace :fromthepage do
 
       page.source_text = lines.join("\n")
       page.status = Page.statuses[:transcribed]
-      if !page.save 
-	       binding.pry 
-      end
+      page.save
       puts "Updated page #{page.title} with #{rows.length} rows"
     end
   end

@@ -124,7 +124,7 @@ describe Work do
 
       context 'when not logged in' do
         it 'returns correct work ids' do
-          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+          expect(es_search.pluck('_id').map(&:to_i)).to match_array(
             [
               public_work.id,
               restricted_col_public_set_work.id,
@@ -132,13 +132,30 @@ describe Work do
             ]
           )
         end
+
+        context 'when indexing work with collection' do
+          before do
+            WorksIndex.import no_collection_work
+          end
+
+          it 'returns correct work ids' do
+            expect(es_search.pluck('_id').map(&:to_i)).to match_array(
+              [
+                public_work.id,
+                restricted_col_public_set_work.id,
+                other_public_work.id,
+                no_collection_work.id
+              ]
+            )
+          end
+        end
       end
 
       context 'when logged in as owner' do
         let(:user) { owner }
 
         it 'returns correct work ids' do
-          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+          expect(es_search.pluck('_id').map(&:to_i)).to match_array(
             [
               public_work.id,
               restricted_work.id,
@@ -158,7 +175,7 @@ describe Work do
         end
 
         it 'returns correct work ids' do
-          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+          expect(es_search.pluck('_id').map(&:to_i)).to match_array(
             [
               restricted_col_public_set_work.id,
               other_public_work.id,

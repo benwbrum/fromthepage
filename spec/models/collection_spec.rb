@@ -34,8 +34,8 @@ describe Collection do
   end
 
   describe '#set_next_untranscribed_page' do
-    let(:collection){ create(:collection, works: []) }
-    let(:work){ create(:work, collection_id: collection.id) }
+    let(:collection) { create(:collection, works: []) }
+    let(:work) { create(:work, collection_id: collection.id) }
     it "sets nil with no works" do
       collection.set_next_untranscribed_page
       expect(collection.next_untranscribed_page).to eq(nil)
@@ -85,27 +85,28 @@ describe Collection do
     let(:work_no_ocr) { create(:work) }
     let(:work_ocr)    { create(:work) }
 
-    let(:collection) { create(:collection, works: [work_no_ocr, work_ocr]) }
+    let(:collection) { create(:collection, works: [ work_no_ocr, work_ocr ]) }
     describe '#enable_ocr' do
       it 'Enables OCR for all works' do
         collection.enable_ocr
-        all_enabled = collection.works.all? {|w| w.ocr_correction }
+        all_enabled = collection.works.all? { |w| w.ocr_correction }
         expect(all_enabled)
       end
     end
     describe '#disable_ocr' do
       it 'Disables OCR for all works' do
         collection.disable_ocr
-        all_disabled = collection.works.none? {|w| w.ocr_correction }
+        all_disabled = collection.works.none? { |w| w.ocr_correction }
         expect(all_disabled)
       end
     end
   end
 
   describe '#enable_messageboards' do
-    context 'when messageboard_group is nil' do
-      let(:collection) { create(:collection, messageboard_group: nil) }
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id, messageboard_group: nil) }
 
+    context 'when messageboard_group is nil' do
       it 'creates a messageboard group and default messageboards' do
         expect {
           collection.enable_messageboards
@@ -126,6 +127,30 @@ describe Collection do
           collection.enable_messageboards
         }.not_to change(Thredded::MessageboardGroup, :count)
       end
+    end
+
+    context 'when messageboard_group is not nil' do
+      before do
+        collection.enable_messageboards
+        collection.disable_messageboards
+      end
+
+      it 'does not create new messageboard_group' do
+        expect {
+          collection.enable_messageboards
+        }.not_to change(Thredded::MessageboardGroup, :count)
+      end
+    end
+  end
+
+  describe '#uniquify_slug' do
+    let!(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+
+    it 'uniquifies slug' do
+      collection.update!(slug: document_set.slug)
+      expect(collection.slug).to eq("#{document_set.slug}-collection")
     end
   end
 

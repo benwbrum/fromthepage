@@ -18,7 +18,7 @@ class InitializeFeaturedAtValues < ActiveRecord::Migration[6.1]
       collection
     end
 
-    Collection.import collections, on_duplicate_key_update: [:featured_at], validate: false
+    Collection.import collections, on_duplicate_key_update: [ :featured_at ], validate: false
 
     document_sets = DocumentSet.includes(:owner)
                                .joins(works: :pages)
@@ -32,6 +32,6 @@ class InitializeFeaturedAtValues < ActiveRecord::Migration[6.1]
       document_set
     end
 
-    DocumentSet.import document_sets, on_duplicate_key_update: [:featured_at], validate: false
+    DocumentSet.import document_sets, on_duplicate_key_update: [ :featured_at ], validate: false
   end
 end

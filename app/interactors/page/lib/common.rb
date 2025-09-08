@@ -1,5 +1,4 @@
 module Page::Lib::Common
-
   def process_uploaded_file(image_file)
     unless Page::ACCEPTED_FILE_TYPES.include?(image_file.content_type)
       error_msg = I18n.t('errors.unsupported_file_type')
@@ -32,5 +31,4 @@ module Page::Lib::Common
 
     @page.thumbnail_image
   end
-
 end

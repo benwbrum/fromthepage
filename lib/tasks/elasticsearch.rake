@@ -6,7 +6,7 @@ namespace :fromthepage do
       desc 'Initialize Elasticsearch configuration'
       task init: :environment do
         def parse_es_config(target:, format: :json)
-          target = ['lib', 'elastic'] + target
+          target = [ 'lib', 'elastic' ] + target
           src = File.read(File.join(Rails.root.join(*target)))
 
           return src unless format == :json
@@ -18,7 +18,7 @@ namespace :fromthepage do
 
         response = client.indices.put_template(
           name: 'fromthepage',
-          body: parse_es_config(target: ['schema', 'template.json'])
+          body: parse_es_config(target: [ 'schema', 'template.json' ])
         )
 
         raise 'Failed to apply template' unless response['acknowledged']
@@ -28,7 +28,7 @@ namespace :fromthepage do
           body: {
             script: {
               lang: 'painless',
-              source: parse_es_config(target: ['scripts', 'multilingual_content.painless'], format: :txt)
+              source: parse_es_config(target: [ 'scripts', 'multilingual_content.painless' ], format: :txt)
             }
           }
         )
@@ -37,7 +37,7 @@ namespace :fromthepage do
 
         response = client.ingest.put_pipeline(
           id: 'multilingual',
-          body: parse_es_config(target: ['pipeline', 'multilingual.json'])
+          body: parse_es_config(target: [ 'pipeline', 'multilingual.json' ])
         )
 
         raise 'Failed to apply pipeline' unless response['acknowledged']
@@ -83,12 +83,12 @@ namespace :fromthepage do
       end
 
       desc 'Reindex elements'
-      task :reindex, [:hours_ago] => :environment do |t, args|
+      task :reindex, [ :hours_ago ] => :environment do |t, args|
         collections_scope = Collection.includes(:owner)
         document_sets_scope = DocumentSet.includes(:owner, :collection)
         works_scope = Work.includes({ collection: :owner }, :document_sets)
         users_scope = User.all
-        pages_scope = Page.includes(work: [{ collection: :owner }, :document_sets])
+        pages_scope = Page.includes(work: [ { collection: :owner }, :document_sets ])
 
         if args[:hours_ago]
           hours_ago = args[:hours_ago].to_i
@@ -141,7 +141,7 @@ namespace :fromthepage do
       end
 
       desc 'Querries Elasticsearch via ID'
-      task :query, [:id] => :environment do |_, args|
+      task :query, [ :id ] => :environment do |_, args|
         id = args[:id]
         unless id
           puts 'Usage: rake fromthepage:es:data:query[ID]'

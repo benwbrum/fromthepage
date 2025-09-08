@@ -5,12 +5,12 @@ describe Metadata::RefreshJob do
 
   let(:owner) { create(:unique_user, :owner) }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
-  let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
+  let(:original_metadata) { [ { label: 'en', value: [ 'Original Metadata' ] } ].to_json }
   let(:at_id) { 'http://example.com/manifest' }
   let(:v3_hash) do
     {
       id: at_id,
-      label: { en: ['Original Metadata'] },
+      label: { en: [ 'Original Metadata' ] },
       metadata: original_metadata
     }.to_json.to_s
   end
@@ -20,13 +20,13 @@ describe Metadata::RefreshJob do
   let(:work_no_manifest) { create(:work, collection: collection) }
 
   let(:document_set) do
-    create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work, work_no_manifest])
+    create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work, work_no_manifest ])
   end
 
   subject(:worker) { described_class.new }
 
   let(:perform_worker) do
-    worker.perform(id: collection.id, type: 'collection')
+    worker.perform(id: collection.id, type: 'collection', user_id: nil)
   end
 
   context 'collection' do
@@ -42,10 +42,28 @@ describe Metadata::RefreshJob do
       expect(work.reload.original_metadata).to eq(original_metadata)
     end
 
+    context 'with user_id' do
+      let(:perform_worker) do
+        worker.perform(id: collection.id, type: 'collection', user_id: owner.id)
+      end
+
+      it 'refreshes metadata' do
+        expect(work.original_metadata).to be_nil
+
+        VCR.use_cassette('iiif/refresh_metadata', record: :none) do
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        end
+
+        expect(work.reload.original_metadata).to eq(original_metadata)
+      end
+    end
+
     context 'with graceful errors' do
       context 'missing collection id' do
         let(:perform_worker) do
-          worker.perform(id: 'wrong collection id', type: 'collection')
+          worker.perform(id: 'wrong collection id', type: 'collection', user_id: nil)
         end
 
         it 'error is handled' do
@@ -75,7 +93,7 @@ describe Metadata::RefreshJob do
 
   context 'document_set' do
     let(:perform_worker) do
-      worker.perform(id: document_set.id, type: 'document_set')
+      worker.perform(id: document_set.id, type: 'document_set', user_id: nil)
     end
 
     it 'refreshes metadata' do
@@ -93,7 +111,7 @@ describe Metadata::RefreshJob do
     context 'with graceful errors' do
       context 'missing document set id' do
         let(:perform_worker) do
-          worker.perform(id: 'wrong document set id', type: 'document_set')
+          worker.perform(id: 'wrong document set id', type: 'document_set', user_id: nil)
         end
 
         it 'error is handled' do
@@ -123,7 +141,7 @@ describe Metadata::RefreshJob do
 
   context 'work' do
     let(:perform_worker) do
-      worker.perform(id: work.id, type: 'work')
+      worker.perform(id: work.id, type: 'work', user_id: nil)
     end
 
     it 'refreshes metadata' do
@@ -141,7 +159,7 @@ describe Metadata::RefreshJob do
     context 'with graceful errors' do
       context 'missing work id' do
         let(:perform_worker) do
-          worker.perform(id: 'wrong work id', type: 'work')
+          worker.perform(id: 'wrong work id', type: 'work', user_id: nil)
         end
 
         it 'error is handled' do
@@ -171,7 +189,7 @@ describe Metadata::RefreshJob do
 
   context 'bad type' do
     let(:perform_worker) do
-      worker.perform(id: collection.id, type: 'user')
+      worker.perform(id: collection.id, type: 'user', user_id: nil)
     end
 
     it 'error is handled' do

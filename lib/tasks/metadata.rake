@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Refresh metadata'
-  task :refresh_metadata, [:id, :type] => :environment do |_task, args|
+  task :refresh_metadata, [ :id, :type ] => :environment do |_task, args|
     id = args[:id]
     type = args[:type]
 
@@ -8,6 +8,6 @@ namespace :fromthepage do
 
     puts 'NOTE: Logs will be handled by metadata refresh job — do not pipe this task’s output.'
 
-    Metadata::RefreshJob.perform_now(id: id, type: type)
+    Metadata::RefreshJob.perform_now(id: id, type: type, user_id: nil)
   end
 end

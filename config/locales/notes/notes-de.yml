@@ -26,13 +26,6 @@ de:
       confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?
       delete: Löschen
       edit: Bearbeiten
-      html:
-        cancel: Abbrechen
-        confirm_delete_message: Möchten Sie diese Anmerkung wirklich löschen?
-        delete: Löschen
-        edit: Bearbeiten
-        microphone: Mikrofon
-        update: Aktualisieren
       microphone: Mikrofon
       update: Aktualisieren
     notes:

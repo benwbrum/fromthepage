@@ -25,13 +25,13 @@ class DocumentUpload < ApplicationRecord
 
   mount_uploader :file, DocumentUploader
 
-  enum status: {
+  enum :status, {
     new: 'new',
     queued: 'queued',
     processing: 'processing',
     finished: 'finished',
     error: 'error'
-  }, _prefix: :status
+  }, prefix: :status
 
   def submit_process
     self.status = :queued
@@ -46,7 +46,7 @@ class DocumentUpload < ApplicationRecord
   end
 
   def log_file
-    File.join(upload_dir, "process.log")
+    File.join(upload_dir, 'process.log')
   end
 
   def name
@@ -58,5 +58,4 @@ class DocumentUpload < ApplicationRecord
   def upload_dir
     File.dirname(self.file.path)
   end
-
 end

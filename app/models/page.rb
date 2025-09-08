@@ -85,9 +85,9 @@ class Page < ApplicationRecord
   after_initialize :defaults
   after_destroy :update_work_stats
   # after_destroy :delete_deeds
-  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
+  after_destroy :update_featured_page, if: Proc.new { |page| page.work.featured_page == page.id }
 
-  serialize :metadata, Hash
+  serialize :metadata, type: Hash
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -97,22 +97,22 @@ class Page < ApplicationRecord
     'image/tiff'
   ].freeze
 
-  enum status: {
+  enum :status, {
     new: 'new',
     blank: 'blank',
     incomplete: 'incomplete',
     indexed: 'indexed',
     needs_review: 'review',
     transcribed: 'transcribed'
-  }, _prefix: :status
+  }, prefix: :status
 
-  enum translation_status: {
+  enum :translation_status, {
     new: 'new',
     blank: 'blank',
     indexed: 'indexed',
     needs_review: 'review',
     translated: 'translated'
-  }, _prefix: :translation_status
+  }, prefix: :translation_status
 
   scope :review, -> { where(status: :needs_review) }
   scope :incomplete, -> { where(status: :incomplete) }
@@ -120,8 +120,8 @@ class Page < ApplicationRecord
   scope :needs_transcription, -> { where(status: :new) }
   scope :needs_completion, -> { where(status: :incomplete) }
   scope :needs_translation, -> { where(translation_status: :new) }
-  scope :needs_index, -> { where.not(status: [:new, :indexed]) }
-  scope :needs_translation_index, -> { where.not(translation_status: [:new, :indexed]) }
+  scope :needs_index, -> { where.not(status: [ :new, :indexed ]) }
+  scope :needs_translation_index, -> { where.not(translation_status: [ :new, :indexed ]) }
 
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -135,8 +135,8 @@ class Page < ApplicationRecord
     Page.translation_statuses[:translated]
   ].freeze
 
-  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
-  NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [ Page.statuses[:needs_review] ]
+  NEEDS_WORK_STATUSES = [ Page.statuses[:new], Page.statuses[:incomplete] ].freeze
 
   update_index('pages', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -222,7 +222,7 @@ class Page < ApplicationRecord
   end
 
   def articles_with_text
-    articles :conditions => ['articles.source_text is not null']
+    articles conditions: [ 'articles.source_text is not null' ]
   end
 
   def defaults
@@ -294,7 +294,7 @@ class Page < ApplicationRecord
   end
 
   def base_image
-    self[:base_image] || ""
+    self[:base_image] || ''
   end
 
   def shrink_factor
@@ -318,12 +318,12 @@ class Page < ApplicationRecord
     if self.base_image.blank?
       return nil
     end
-    if !File.exists?(thumbnail_filename())
-      if File.exists?(modernize_absolute(self.base_image))
+    if !File.exist?(thumbnail_filename())
+      if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
       end
     end
-    return thumbnail_filename
+    thumbnail_filename
   end
 
   def thumbnail_url
@@ -338,14 +338,14 @@ class Page < ApplicationRecord
 
   def calculate_last_editor
     unless COMPLETED_STATUSES.include? self.status
-      self.last_editor = User.current_user
+      self.last_editor = Current.user
     end
   end
 
   def calculate_approval_delta
     if source_text_changed?
       if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
         if most_recent_not_approver_version
           old_transcription = most_recent_not_approver_version.transcription || ''
         else
@@ -383,7 +383,7 @@ class Page < ApplicationRecord
 
     # Add other attributes as needed
 
-    version.user = User.current_user || User.find_by(id: self.work.owner_user_id)
+    version.user = Current.user || User.find_by(id: self.work.owner_user_id)
 
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
@@ -410,9 +410,9 @@ class Page < ApplicationRecord
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
-            tc = TableCell.new(:row => rownum,
-                               :content => cell,
-                               :header => table[:header][cell_index] )
+            tc = TableCell.new(row: rownum,
+                               content: cell,
+                               header: table[:header][cell_index])
             tc.work = self.work
             tc.page = self
             tc.section = table[:section]
@@ -425,9 +425,9 @@ class Page < ApplicationRecord
   end
 
   def submit_background_processes(type)
-    if type == "transcription"
+    if type == 'transcription'
       latex = self.source_text.scan(LATEX_SNIPPET)
-    elsif type == "translation"
+    elsif type == 'translation'
       latex = self.source_translation.scan(LATEX_SNIPPET)
     end
 
@@ -458,7 +458,7 @@ class Page < ApplicationRecord
         if self.source_text.nil?
           0
         else
-          self.source_text.lines.select{|line| line.match(/\S/)}.count
+          self.source_text.lines.select { |line| line.match(/\S/) }.count
         end
       end
     else
@@ -472,8 +472,8 @@ class Page < ApplicationRecord
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
     article_ids = self.page_article_links.pluck(:article_id)
-    Article.where(id: article_ids).update_all(:graph_image=>nil)
-    Article.where(id: article_ids).each{|article| article.clear_relationship_graph}
+    Article.where(id: article_ids).update_all(graph_image: nil)
+    Article.where(id: article_ids).each { |article| article.clear_relationship_graph }
   end
 
   def populate_search
@@ -503,22 +503,22 @@ class Page < ApplicationRecord
     new_table_cells = []
 
     # read spreadsheet-wide data like table heading
-    formatted << "<table class=\"tabular\"><thead>"
+    formatted << '<table class="tabular"><thead>'
 
     # read column-specific data like column heading
     column_configs = field.spreadsheet_columns.to_a
     column_configs.each do |column|
       formatted << "<th>#{column.label}</th>"
     end
-    checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
+    checkbox_headers = column_configs.select { |cc| cc.input_type == 'checkbox' }.map { |cc| cc.label }.flatten
 
-    formatted << "</thead><tbody>"
+    formatted << '</thead><tbody>'
     # write out
     parsed_cell_data = JSON.parse(cell_data.values.first)
     parsed_cell_data.each_with_index do |row, rownum|
       unless this_and_following_rows_empty?(parsed_cell_data, rownum)
         # row = parsed_cell_data[row_key]
-        formatted_row = "<tr>"
+        formatted_row = '<tr>'
         row.each_with_index do |cell, colnum|
           column = column_configs[colnum]
           # save the table cell object
@@ -542,28 +542,28 @@ class Page < ApplicationRecord
           # format the cell
           formatted_row << "<td>#{cell}</td>"
         end
-        formatted_row << "</tr>"
+        formatted_row << '</tr>'
         formatted << formatted_row
       end
     end
-    formatted << "</tbody></table>"
+    formatted << '</tbody></table>'
 
-    [formatted, new_table_cells]
+    [ formatted, new_table_cells ]
   end
 
   def this_and_following_rows_empty?(cell_data, rownum)
     remaining_rows = cell_data[rownum..(cell_data.count - 1)]
 
-    row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
+    row_with_value = remaining_rows.detect { |row|  row.detect { |cell| !cell.blank? } }
 
     row_with_value.nil?
   end
 
   def replace_table_cells(new_table_cells)
-    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
+    self.table_cells.insert_all(new_table_cells.map { |obj| obj.attributes.merge({ created_at: Time.now, updated_at: Time.now }) })
   end
 
-  #create table cells if the collection is field based
+  # create table cells if the collection is field based
   def process_fields(field_cells)
     new_table_cells = []
     string = String.new
@@ -587,8 +587,8 @@ class Page < ApplicationRecord
             end
             tc.header = key
             tc.content = value
-            key = (input_type == "description") ? (key + " ") : (key + ": ")
-            string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
+            key = (input_type == 'description') ? (key + ' ') : (key + ': ')
+            string << '<span class="field__label">' + key + '</span>' + value + "\n\n"
           end
 
           new_table_cells << tc
@@ -616,13 +616,13 @@ class Page < ApplicationRecord
     link = PageArticleLink.new(page: self, article: article, work: self.work,
                                display_text: display_text, text_type: text_type)
     link.save!
-    return link.id
+    link.id
   end
 
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub(/#{ext}$/,"_thumb#{ext}")
+    filename.sub(/#{ext}$/, "_thumb#{ext}")
   end
 
   def remove_transcription_links(text)
@@ -668,14 +668,14 @@ class Page < ApplicationRecord
   end
 
   def has_ai_plaintext?
-    File.exists?(ai_plaintext_path)
+    File.exist?(ai_plaintext_path)
   end
 
   def ai_plaintext
     if has_ai_plaintext?
       File.read(ai_plaintext_path)
     else
-      ""
+      ''
     end
   end
 
@@ -684,17 +684,15 @@ class Page < ApplicationRecord
     File.write(ai_plaintext_path, text)
   end
 
-
   def has_alto?
-    File.exists?(alto_path)
+    File.exist?(alto_path)
   end
-
 
   def alto_xml
     if has_alto?
       File.read(alto_path)
     else
-      ""
+      ''
     end
   end
 
@@ -709,13 +707,15 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      uri = File.join(File.dirname(file_to_url(self.canonical_facsimile_url)), ERB::Util.url_encode(File.basename(self.canonical_facsimile_url)))
-      uri = URI.parse(uri)
+      # Convert file path to web URL path using the helper
+      web_path = file_to_url(self.canonical_facsimile_url)
+      encoded_path = URI::DEFAULT_PARSER.escape(web_path, /[^A-Za-z0-9\-._~\/]/)
+      uri = URI.parse(encoded_path)
       # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
       raw_host = Rails.application.config.action_mailer.default_url_options[:host]
-      host = raw_host.split(":")[0]
+      host = raw_host.split(':')[0]
       uri.host = host
-      port = raw_host.split(":")[1]
+      port = raw_host.split(':')[1]
       if port
         uri.scheme = 'http'
         uri.port = port
@@ -724,6 +724,10 @@ class Page < ApplicationRecord
       end
       uri.to_s
     end
+  end
+
+  def is_public?
+    work.nil? || work.is_public?
   end
 
   private
@@ -742,18 +746,18 @@ class Page < ApplicationRecord
 
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//link").each { |n| n.replace(n['target_title'])}
-    doc.xpath("//abbr").each { |n| n.replace(n['expan'])}
+    doc.xpath('//link').each { |n| n.replace(n['target_title']) }
+    doc.xpath('//abbr').each { |n| n.replace(n['expan']) }
     formatted_plaintext_doc(doc)
   end
 
   def formatted_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//expan").each do |n|
+    doc.xpath('//expan').each do |n|
       replacement = n['abbr'] || n['orig'] || n.text
       n.replace(replacement)
     end
-    doc.xpath("//reg").each do |n|
+    doc.xpath('//reg').each do |n|
       replacement = n['orig'] || n.text
       n.replace(replacement)
     end
@@ -761,7 +765,7 @@ class Page < ApplicationRecord
   end
 
   def formatted_plaintext_doc(doc)
-    doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
+    doc.xpath('//p').each { |n| n.add_next_sibling("\n\n") }
     doc.xpath("//lb[@break='no']").each do |n|
       if n.text.blank?
         sigil = '-'
@@ -770,13 +774,13 @@ class Page < ApplicationRecord
       end
       n.replace("#{sigil}\n")
     end
-    doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
-    doc.xpath("//lb").each { |n| n.replace("\n")}
-    doc.xpath("//br").each { |n| n.replace("\n")}
-    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
-    doc.xpath("//footnote").each { |n| n.replace('')}
+    doc.xpath('//table').each { |n| formatted_plaintext_table(n) }
+    doc.xpath('//lb').each { |n| n.replace("\n") }
+    doc.xpath('//br').each { |n| n.replace("\n") }
+    doc.xpath('//div').each { |n| n.add_next_sibling("\n") }
+    doc.xpath('//footnote').each { |n| n.replace('') }
 
-    doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
+    doc.text.sub(/^\s*/m, '').gsub(/ *$/m, '')
   end
 
   def formatted_plaintext_table(table_element)
@@ -788,7 +792,7 @@ class Page < ApplicationRecord
     if filename
       File.join(Rails.root, 'public', filename.sub(/.*public/, ''))
     else
-      ""
+      ''
     end
   end
 

@@ -137,8 +137,8 @@ de:
       since: seit %{date}
       start_a_project: Ein Projekt starten
       summary: Übersicht
+      to_upgrade_contact: Für ein Upgrade Wenden Sie sich an support@fromthepage.com
       total_pages: 'Seitenanzahl: %{pages}'
-      upgrade: Aktualisierung
       work:
         one: Werk
         other: Werke

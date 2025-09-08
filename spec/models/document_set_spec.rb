@@ -8,8 +8,8 @@ describe DocumentSet do
     DatabaseCleaner.clean
   end
   describe '#set_next_untranscribed_page' do
-    let(:collection){ create(:collection, works:[]) }
-    let(:work){ create(:work, collection_id: collection.id) }
+    let(:collection) { create(:collection, works: []) }
+    let(:work) { create(:work, collection_id: collection.id) }
     it "sets nil with no works" do
       docset = create(:document_set)
       docset.set_next_untranscribed_page
@@ -17,7 +17,7 @@ describe DocumentSet do
     end
     it "sets to untranscribed page in work" do
       page = create(:page, work_id: work.id)
-      docset = create(:document_set, works:[work] )
+      docset = create(:document_set, works: [ work ])
 
       work.set_next_untranscribed_page
       expect(work.next_untranscribed_page).to eq(page)
@@ -27,7 +27,7 @@ describe DocumentSet do
     end
     it "sets to nil for no works with untranscribed pages" do
       create(:page, work_id: work.id, status: :transcribed)
-      docset = create(:document_set, works:[work] )
+      docset = create(:document_set, works: [ work ])
 
       work.set_next_untranscribed_page
       expect(work.next_untranscribed_page).to eq(nil)
@@ -41,7 +41,7 @@ describe DocumentSet do
       page_incomplete = create(:page, status: :new, work_id: work_incomplete.id)
       create(:page, status: :transcribed, work_id: work_incomplete.id)
 
-      docset = create(:document_set, works:[work, work_incomplete] )
+      docset = create(:document_set, works: [ work, work_incomplete ])
 
       work.save!
       work_incomplete.save!
@@ -69,6 +69,7 @@ describe DocumentSet do
 
     # We also query by intro_block, so this tests that
     let!(:no_owner_public_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: other_base_collection.id, owner_user_id: nil, visibility: :public) }
+    let!(:no_col_private_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: nil, owner_user_id: nil, visibility: :private) }
 
     let(:records) do
       [
@@ -81,7 +82,8 @@ describe DocumentSet do
         other_base_collection,
         other_public_docset,
         other_restricted_docset,
-        no_owner_public_docset
+        no_owner_public_docset,
+        no_col_private_docset
       ]
     end
 
