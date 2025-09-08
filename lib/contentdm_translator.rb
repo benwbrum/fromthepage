@@ -163,11 +163,30 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(log: true, filters: [ :password ], wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
+    # Configure Savon client with proper string conversion to avoid snakecase method error
+    # Use underscore method if available (Rails/ActiveSupport), otherwise provide a fallback
+    tag_converter = lambda do |tag|
+      if tag.respond_to?(:underscore)
+        tag.underscore.to_sym
+      else
+        # Fallback implementation for underscore conversion
+        tag.gsub(/([A-Z])/, '_\1').downcase.sub(/^_/, '').to_sym
+      end
+    end
+    
+    soap_client = Savon.client(
+      log: true, 
+      filters: [ :password ], 
+      wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', 
+      follow_redirects: true,
+      convert_response_tags_to: tag_converter
+    )
+    
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
       puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title} at #{Time.current.strftime('%Y-%m-%d %I:%M %p')}.  CONTENTdm response:"
+      
       metadata_wrapper = {
         'metadataList' => {
           'metadata' => [
@@ -186,9 +205,23 @@ module ContentdmTranslator
         metadata: metadata_wrapper,
         action: 'edit'
       }
-      resp = soap_client.call(:process_conten_tdm, message: message)
-
-      puts resp.to_hash[:process_conten_tdm_response][:return]
+      
+      begin
+        resp = soap_client.call(:process_conten_tdm, message: message)
+        response_text = resp.to_hash[:process_conten_tdm_response][:return]
+        
+        # Check if the response indicates a locked item
+        if response_text&.include?('This item is currently locked')
+          puts "Skipping locked item: #{response_text}"
+          next # Skip to the next page
+        else
+          puts response_text
+        end
+      rescue => e
+        puts "Error processing page #{page.title} (#{page.id}): #{e.class}: #{e.message}"
+        puts "Skipping to next page..."
+        next
+      end
     end
   end
 
