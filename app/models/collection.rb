@@ -64,7 +64,7 @@ class Collection < ApplicationRecord
   include DuplicateSlugCleanup
   
   extend FriendlyId
-  friendly_id :slug_candidates, use: [:slugged, :history]
+  friendly_id :slug_candidates, use: [ :slugged, :history ]
   before_save :uniquify_slug
 
   has_many :collection_blocks, dependent: :destroy
@@ -116,12 +116,12 @@ class Collection < ApplicationRecord
   scope :order_by_recent_activity, -> { order(most_recent_deed_created_at: :desc) }
   scope :unrestricted, -> { where(restricted: false) }
   scope :restricted, -> { where(restricted: true) }
-  scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
-  scope :carousel, -> {where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
-  scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
+  scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC') }
+  scope :carousel, -> { where(pct_completed: [ nil, 0..90 ]).where.not(picture: nil).where.not(intro_block: [ nil, '' ]).where(restricted: false).reorder(Arel.sql('RAND()')) }
+  scope :has_intro_block, -> { where.not(intro_block: [ nil, '' ]) }
   scope :has_picture, -> { where.not(picture: nil) }
-  scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
-  scope :not_empty, -> { where.not(works_count: [0, nil]) }
+  scope :not_near_complete, -> { where(pct_completed: [ nil, 0..90 ]) }
+  scope :not_empty, -> { where.not(works_count: [ 0, nil ]) }
   scope :featured_projects, -> {
     joins(works: :pages)
       .joins(:owner)
@@ -131,11 +131,7 @@ class Collection < ApplicationRecord
       .distinct
   }
 
-  scope :random_sample, -> (sample_size = 5) do
-    carousel
-    reorder(Arel.sql("RAND()")) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql("RAND()"))
-  end
+  alias_attribute :created_at, :created_on
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -190,10 +186,6 @@ class Collection < ApplicationRecord
     )
   end
 
-  def created_at
-    created_on
-  end
-
   def pages_are_meaningful?
     self.works.where(pages_are_meaningful: true).present?
   end
@@ -226,14 +218,22 @@ class Collection < ApplicationRecord
 
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
-    one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
+    one_off_editors = all_edits_by_user.select { |_k, v| v == 1 }.map { |k, _v| k }
     self.pages.where(status: :needs_review).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
   end
 
   def never_reviewed_users
-    users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
-    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => 'review').pluck(:user_id).uniq
-    unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
+    users_with_complete_pages = self.deeds
+                                    .joins(:page)
+                                    .where(pages: { status: Page::COMPLETED_STATUSES })
+                                    .select(:user_id)
+    users_with_needs_review_pages = self.deeds
+                                        .joins(:page)
+                                        .where(pages: { status: :needs_review })
+                                        .select(:user_id)
+
+    User.where(id: users_with_needs_review_pages)
+        .where.not(id: users_with_complete_pages)
   end
 
   def review_workflow
@@ -256,56 +256,11 @@ class Collection < ApplicationRecord
     self.save!
   end
 
-
-  def use_as_template(new_title)
-    new_collection = self.dup
-    new_collection.title = new_title
-    new_collection.slug = nil
-    new_collection.save!
-    # now copy the child records like transcription_fields, categories, etc.
-    self.transcription_fields.each do |f|
-      new_field = f.dup
-      new_field.collection = new_collection
-      new_field.save!
-      # copy over the fields' spreadsheet columns
-      f.spreadsheet_columns.each do |c|
-        new_column = c.dup
-        new_column.transcription_field = new_field
-        new_column.save!
-      end
-    end
-    new_collection.metadata_fields = self.metadata_fields.map { |f| f.dup }
-    new_collection.categories = self.categories.map { |c| c.dup }
-    new_collection.editor_buttons = self.editor_buttons.map { |b| b.dup }
-    # now handle the many-to-many associations for collaborators, reviewers, owners, and blocks
-    new_collection.collaborator_ids = self.collaborator_ids
-    new_collection.reviewer_ids = self.reviewer_ids
-    new_collection.owner_ids = self.owner_ids
-    new_collection.collection_block_ids = self.collection_block_ids
-    # now save the collection
-    new_collection.save!
-    new_collection
-  end
-
-  def self.access_controlled(user)
-    if user.nil?
-      Collection.unrestricted
-    else
-      owned_collections          = user.all_owner_collections.pluck(:id)
-      collaborator_collections   = user.collection_collaborations.pluck(:id)
-      public_collections         = Collection.unrestricted.pluck(:id)
-
-      Collection.where(:id => owned_collections + collaborator_collections + public_collections)
-    end
-  end
-
   def page_metadata_fields
-    page_fields = []
-    works.each do |w|
-      page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
-    end
-
-    page_fields.uniq
+    works.map { |w| w.pages.first&.metadata&.keys }
+         .compact
+         .flatten
+         .uniq
   end
 
   def export_subject_index_as_csv(work)
@@ -338,20 +293,20 @@ class Collection < ApplicationRecord
   end
 
   def create_categories
-    #create two default categories
-    category1 = Category.new(collection_id: self.id, title: "People")
+    # create two default categories
+    category1 = Category.new(collection_id: self.id, title: 'People')
     category1.save
-    category2 = Category.new(collection_id: self.id, title: "Places")
+    category2 = Category.new(collection_id: self.id, title: 'Places')
     category2.save
   end
 
   def slug_candidates
     if self.slug
-      [:slug]
+      [ :slug ]
     else
       [
         :title,
-        [:title, :id]
+        [ :title, :id ]
       ]
     end
   end
@@ -365,13 +320,11 @@ class Collection < ApplicationRecord
   end
 
   def uniquify_slug
-    if DocumentSet.where(slug: self.slug).exists?
-      self.slug = self.slug+'-collection'
-    end
+    self.slug = "#{self.slug}-collection" if DocumentSet.where(slug: self.slug).exists?
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where('title LIKE ? OR searchable_metadata like ?', "%#{search}%", "%#{search}%")
   end
 
   def self.search(search)
@@ -477,97 +430,93 @@ class Collection < ApplicationRecord
     stats
   end
 
-  #constant
-  LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
-                    ['አማርኛ', 'am', ['am-ET']],
-                    ['Azərbaycanca', 'az', ['az-AZ']],
-                    ['বাংলা', 'bn', ['bn-BD', 'বাংলাদেশ'], ['bn-IN', 'ভারত']],
-                    ['Bahasa Indonesia', 'id', ['id-ID']],
-                    ['Bahasa Melayu', 'ms', ['ms-MY']],
-                    ['Català', 'ca', ['ca-ES']],
-                    ['Čeština', 'cs', ['cs-CZ']],
-                    ['Dansk', 'da', ['da-DK']],
-                    ['Deutsch', 'de', ['de-DE']],
-                    ['English', 'en', ['en-AU', 'Australia'], ['en-CA', 'Canada'], ['en-IN', 'India'], ['en-KE', 'Kenya'], ['en-TZ', 'Tanzania'], ['en-GH', 'Ghana'], ['en-NZ', 'New Zealand'], ['en-NG', 'Nigeria'], ['en-ZA', 'South Africa'], ['en-PH', 'Philippines'], ['en-GB', 'United Kingdom'], ['en-US', 'United States']],
-                    ['Español', 'es', ['es-AR', 'Argentina'], ['es-BO', 'Bolivia'], ['es-CL', 'Chile'], ['es-CO', 'Colombia'], ['es-CR', 'Costa Rica'], ['es-EC', 'Ecuador'], ['es-SV', 'El Salvador'], ['es-ES', 'España'], ['es-US', 'Estados Unidos'], ['es-GT', 'Guatemala'], ['es-HN', 'Honduras'], ['es-MX', 'México'], ['es-NI', 'Nicaragua'], ['es-PA', 'Panamá'], ['es-PY', 'Paraguay'], ['es-PE', 'Perú'], ['es-PR', 'Puerto Rico'], ['es-DO', 'República Dominicana'], ['es-UY', 'Uruguay'], ['es-VE', 'Venezuela']],
-                    ['Euskara', 'eu', ['eu-ES']],
-                    ['Filipino', 'fil', ['fil-PH']],
-                    ['Français', 'fr', ['fr-FR']],
-                    ['Basa Jawa', 'jv', ['jv-ID']],
-                    ['Galego', 'gl', ['gl-ES']],
-                    ['ગુજરાતી', 'gu', ['gu-IN']],
-                    ['Hrvatski', 'hr', ['hr-HR']],
-                    ['IsiZulu', 'zu', ['zu-ZA']],
-                    ['Íslenska', 'is', ['is-IS']],
-                    ['Italiano', 'is', ['it-IT', 'Italia'], ['it-CH', 'Svizzera']],
-                    ['ಕನ್ನಡ', 'kn', ['kn-IN']],
-                    ['ភាសាខ្មែរ', 'km', ['km-KH']],
-                    ['Latviešu', 'lv', ['lv-LV']],
-                    ['Lietuvių', 'lt', ['lt-LT']],
-                    ['മലയാളം', 'ml', ['ml-IN']],
-                    ['मराठी', 'mr', ['mr-IN']],
-                    ['Magyar', 'hu', ['hu-HU']],
-                    ['ລາວ', 'lo', ['lo-LA']],
-                    ['Nederlands', 'nl', ['nl-NL']],
-                    ['नेपाली भाषा', 'ne', ['ne-NP']],
-                    ['Norsk bokmål', 'nb', ['nb-NO']],
-                    ['Polski', 'pl', ['pl-PL']],
-                    ['Português', 'pt', ['pt-BR', 'Brasil'], ['pt-PT', 'Portugal']],
-                    ['Română', 'ro', ['ro-RO']],
-                    ['සිංහල', 'si', ['si-LK']],
-                    ['Slovenščina', 'sl', ['sl-SI']],
-                    ['Basa Sunda', 'su', ['su-ID']],
-                    ['Slovenčina', 'sk', ['sk-SK']],
-                    ['Suomi', 'fi', ['fi-FI']],
-                    ['Svenska', 'sv', ['sv-SE']],
-                    ['Kiswahili', 'sw', ['sw-TZ', 'Tanzania'], ['sw-KE', 'Kenya']],
-                    ['ქართული', 'ka', ['ka-GE']],
-                    ['Հայերեն', 'hy', ['hy-AM']],
-                    ['தமிழ்', 'ta', ['ta-IN', 'இந்தியா'], ['ta-SG', 'சிங்கப்பூர்'], ['ta-LK', 'இலங்கை'], ['ta-MY', 'மலேசியா']],
-                    ['తెలుగు', 'te', ['te-IN']],
-                    ['Tiếng Việt', 'vi', ['vi-VN']],
-                    ['Türkçe', 'tr', ['tr-TR']],
-                    ['اُردُو', 'ur', ['ur-PK', 'پاکستان'], ['ur-IN', 'بھارت']],
-                    ['Ελληνικά', 'el', ['el-GR']],
-                    ['български', 'bg', ['bg-BG']],
-                    ['Pусский', 'ru', ['ru-RU']],
-                    ['Српски', 'sr', ['sr-RS']],
-                    ['Українська', 'uk', ['uk-UA']],
-                    ['한국어', 'ko', ['ko-KR']],
-                    ['中文', 'cmn', 'yue', ['cmn-Hans-CN', '普通话 (中国大陆)'], ['cmn-Hans-HK', '普通话 (香港)'], ['cmn-Hant-TW', '中文 (台灣)'], ['yue-Hant-HK', '粵語 (香港)']],
-                    ['日本語', 'ja', ['ja-JP']],
-                    ['हिन्दी', 'hi', ['hi-IN']],
-                    ['ภาษาไทย', 'th', ['th-TH']]];
+  # constant
+  LANGUAGE_ARRAY = [ [ 'Afrikaans', 'af', [ 'af-ZA' ] ],
+                    [ 'አማርኛ', 'am', [ 'am-ET' ] ],
+                    [ 'Azərbaycanca', 'az', [ 'az-AZ' ] ],
+                    [ 'বাংলা', 'bn', [ 'bn-BD', 'বাংলাদেশ' ], [ 'bn-IN', 'ভারত' ] ],
+                    [ 'Bahasa Indonesia', 'id', [ 'id-ID' ] ],
+                    [ 'Bahasa Melayu', 'ms', [ 'ms-MY' ] ],
+                    [ 'Català', 'ca', [ 'ca-ES' ] ],
+                    [ 'Čeština', 'cs', [ 'cs-CZ' ] ],
+                    [ 'Dansk', 'da', [ 'da-DK' ] ],
+                    [ 'Deutsch', 'de', [ 'de-DE' ] ],
+                    [ 'English', 'en', [ 'en-AU', 'Australia' ], [ 'en-CA', 'Canada' ], [ 'en-IN', 'India' ], [ 'en-KE', 'Kenya' ], [ 'en-TZ', 'Tanzania' ], [ 'en-GH', 'Ghana' ], [ 'en-NZ', 'New Zealand' ], [ 'en-NG', 'Nigeria' ], [ 'en-ZA', 'South Africa' ], [ 'en-PH', 'Philippines' ], [ 'en-GB', 'United Kingdom' ], [ 'en-US', 'United States' ] ],
+                    [ 'Español', 'es', [ 'es-AR', 'Argentina' ], [ 'es-BO', 'Bolivia' ], [ 'es-CL', 'Chile' ], [ 'es-CO', 'Colombia' ], [ 'es-CR', 'Costa Rica' ], [ 'es-EC', 'Ecuador' ], [ 'es-SV', 'El Salvador' ], [ 'es-ES', 'España' ], [ 'es-US', 'Estados Unidos' ], [ 'es-GT', 'Guatemala' ], [ 'es-HN', 'Honduras' ], [ 'es-MX', 'México' ], [ 'es-NI', 'Nicaragua' ], [ 'es-PA', 'Panamá' ], [ 'es-PY', 'Paraguay' ], [ 'es-PE', 'Perú' ], [ 'es-PR', 'Puerto Rico' ], [ 'es-DO', 'República Dominicana' ], [ 'es-UY', 'Uruguay' ], [ 'es-VE', 'Venezuela' ] ],
+                    [ 'Euskara', 'eu', [ 'eu-ES' ] ],
+                    [ 'Filipino', 'fil', [ 'fil-PH' ] ],
+                    [ 'Français', 'fr', [ 'fr-FR' ] ],
+                    [ 'Basa Jawa', 'jv', [ 'jv-ID' ] ],
+                    [ 'Galego', 'gl', [ 'gl-ES' ] ],
+                    [ 'ગુજરાતી', 'gu', [ 'gu-IN' ] ],
+                    [ 'Hrvatski', 'hr', [ 'hr-HR' ] ],
+                    [ 'IsiZulu', 'zu', [ 'zu-ZA' ] ],
+                    [ 'Íslenska', 'is', [ 'is-IS' ] ],
+                    [ 'Italiano', 'is', [ 'it-IT', 'Italia' ], [ 'it-CH', 'Svizzera' ] ],
+                    [ 'ಕನ್ನಡ', 'kn', [ 'kn-IN' ] ],
+                    [ 'ភាសាខ្មែរ', 'km', [ 'km-KH' ] ],
+                    [ 'Latviešu', 'lv', [ 'lv-LV' ] ],
+                    [ 'Lietuvių', 'lt', [ 'lt-LT' ] ],
+                    [ 'മലയാളം', 'ml', [ 'ml-IN' ] ],
+                    [ 'मराठी', 'mr', [ 'mr-IN' ] ],
+                    [ 'Magyar', 'hu', [ 'hu-HU' ] ],
+                    [ 'ລາວ', 'lo', [ 'lo-LA' ] ],
+                    [ 'Nederlands', 'nl', [ 'nl-NL' ] ],
+                    [ 'नेपाली भाषा', 'ne', [ 'ne-NP' ] ],
+                    [ 'Norsk bokmål', 'nb', [ 'nb-NO' ] ],
+                    [ 'Polski', 'pl', [ 'pl-PL' ] ],
+                    [ 'Português', 'pt', [ 'pt-BR', 'Brasil' ], [ 'pt-PT', 'Portugal' ] ],
+                    [ 'Română', 'ro', [ 'ro-RO' ] ],
+                    [ 'සිංහල', 'si', [ 'si-LK' ] ],
+                    [ 'Slovenščina', 'sl', [ 'sl-SI' ] ],
+                    [ 'Basa Sunda', 'su', [ 'su-ID' ] ],
+                    [ 'Slovenčina', 'sk', [ 'sk-SK' ] ],
+                    [ 'Suomi', 'fi', [ 'fi-FI' ] ],
+                    [ 'Svenska', 'sv', [ 'sv-SE' ] ],
+                    [ 'Kiswahili', 'sw', [ 'sw-TZ', 'Tanzania' ], [ 'sw-KE', 'Kenya' ] ],
+                    [ 'ქართული', 'ka', [ 'ka-GE' ] ],
+                    [ 'Հայերեն', 'hy', [ 'hy-AM' ] ],
+                    [ 'தமிழ்', 'ta', [ 'ta-IN', 'இந்தியா' ], [ 'ta-SG', 'சிங்கப்பூர்' ], [ 'ta-LK', 'இலங்கை' ], [ 'ta-MY', 'மலேசியா' ] ],
+                    [ 'తెలుగు', 'te', [ 'te-IN' ] ],
+                    [ 'Tiếng Việt', 'vi', [ 'vi-VN' ] ],
+                    [ 'Türkçe', 'tr', [ 'tr-TR' ] ],
+                    [ 'اُردُو', 'ur', [ 'ur-PK', 'پاکستان' ], [ 'ur-IN', 'بھارت' ] ],
+                    [ 'Ελληνικά', 'el', [ 'el-GR' ] ],
+                    [ 'български', 'bg', [ 'bg-BG' ] ],
+                    [ 'Pусский', 'ru', [ 'ru-RU' ] ],
+                    [ 'Српски', 'sr', [ 'sr-RS' ] ],
+                    [ 'Українська', 'uk', [ 'uk-UA' ] ],
+                    [ '한국어', 'ko', [ 'ko-KR' ] ],
+                    [ '中文', 'cmn', 'yue', [ 'cmn-Hans-CN', '普通话 (中国大陆)' ], [ 'cmn-Hans-HK', '普通话 (香港)' ], [ 'cmn-Hant-TW', '中文 (台灣)' ], [ 'yue-Hant-HK', '粵語 (香港)' ] ],
+                    [ '日本語', 'ja', [ 'ja-JP' ] ],
+                    [ 'हिन्दी', 'hi', [ 'hi-IN' ] ],
+                    [ 'ภาษาไทย', 'th', [ 'th-TH' ] ] ]
 
   protected
 
   def set_transcription_conventions
-    unless self.transcription_conventions.present?
-      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
-    end
+    self.transcription_conventions ||= "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
   end
 
-    DEFAULT_HELP_TEXT = <<ENDHELP
-    <h2> Transcribing</h2>
-    <p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>
-    <p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>
-    <p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>
-    <h3>Helpful Documentation</h3>
-    <p><a href="https://content.fromthepage.com/project-owner-documentation/advanced-mark-up/">Advanced Markup</a><br><br>
-    <a href="https://content.fromthepage.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
-    <a href="https://content.fromthepage.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTex</a></p>
-ENDHELP
+  DEFAULT_HELP_TEXT = <<~ENDHELP
+    <h2>Transcribing</h2>
+    <p>Once you sign up for an account, a new Transcribe tab will appear above each page.</p>
+    <p>You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>
+    <p>Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>
 
+    <h3>Helpful Documentation</h3>
+    <p>
+      <a href="https://content.fromthepage.com/project-owner-documentation/advanced-mark-up/">Advanced Markup</a><br><br>
+      <a href="https://content.fromthepage.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
+      <a href="https://content.fromthepage.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTeX</a>
+    </p>
+  ENDHELP
   def set_help
-    unless self.help.present?
-      self.help = DEFAULT_HELP_TEXT
-    end
+    self.help ||= DEFAULT_HELP_TEXT
   end
 
   def set_link_help
-    unless self.link_help.present?
-      self.link_help = "<h2>Linking Subjects</h2>\n<p> To create a link within a transcription, surround the text with double square braces.</p>\n<p> Example: Say that we want to create a subject link for &ldquo;Dr. Owen&rdquo; in the text:</p>\n<code> Dr. Owen and his wife came by for fried chicken today.</code>\n<p> Place <code>[[ and ]]</code> around Dr Owen like this:</p>\n<code>[[Dr. Owen]] and his wife came by for fried chicken today.</code>\n<p> When you save the page, a new subject will be created for &ldquo;Dr. Owen&rdquo;, and the page will be added to its index. You can add an article about Dr. Owen&mdash;perhaps biographical notes or references&mdash;to the subject by clicking on &ldquo;Dr. Owen&rdquo; and clicking the Edit tab.</p>\n<p> To create a subject link with a different name from that used within the text, use double braces with a pipe as follows: <code>[[official name of subject|name used in the text]]</code>. For example:</p>\n<code> [[Dr. Owen]] and [[Dr. Owen's wife|his wife]] came by for fried chicken today.</code>\n<p> This will create a subject for &ldquo;Dr. Owen's wife&rdquo; and link the text &ldquo;his wife&rdquo; to that subject.</p></a>\n<h2> Renaming Subjects</h2>\n<p> In the example above, we don't know Dr. Owen's wife's name, but created a subject for her anyway. If we later discover that her name is &ldquo;Juanita&rdquo;, all we have to do is edit the subject title:</p>\n<ol><li>Click on &ldquo;his wife&rdquo; on the page, or navigate to &ldquo;Dr. Owen's wife&rdquo; on the home page for the project.</li>\n<li>Click the Edit tab.</li>\n<li> Change &ldquo;Dr. Owen's wife&rdquo; to &ldquo;Juanita Owen&rdquo;.</li></ol>\n<p> This will change the links on the pages that mention that subject, so our page is automatically updated:</p>\n    <code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for fried chicken today.</code>\n<h2> Combining Subjects</h2>\n<p> Occasionally you may find that two subjects actually refer to the same person. When this happens, rather than painstakingly updating each link, you can use the Combine button at the bottom of the subject page.</p>\n <p> For example, if one page reads:</p>\n<code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for [[fried chicken]] today.</code>\n<p> while a different page contains</p>\n<code> Jim bought a [[chicken]] today.</code>\n<p> you can combine &ldquo;chicken&rdquo; with &ldquo;fried chicken&rdquo; by going to the &ldquo;chicken&rdquo; article and reviewing the combination suggestions at the bottom of the screen. Combining &ldquo;fried chicken&rdquo; into &ldquo;chicken&rdquo; will update all links to point to &ldquo;chicken&rdquo; instead, copy any article text from the &ldquo;fried chicken&rdquo; article onto the end of the &ldquo;chicken&rdquo; article, then delete the &ldquo;fried chicken&rdquo; subject.</p>\n<h2> Auto-linking Subjects</h2>\n<p> Whenever text is linked to a subject, that fact can be used by the system to suggest links in new pages. At the bottom of the transcription screen, there is an Autolink button. This will refresh the transcription text with suggested links, which should then be reviewed and may be saved.</p>\n<p> Using our example, the system already knows that &ldquo;Dr. Owen&rdquo; links to &ldquo;Dr. Owen&rdquo; and &ldquo;his wife&rdquo; links to &ldquo;Juanita Owen&rdquo;. If a new page reads:</p>\n<code> We told Dr. Owen about Sam Jones and his wife.</code>\n<p> pressing Autolink will suggest these links:</p>\n<code> We told [[Dr. Owen]] about Sam Jones and [[Juanita Owen|his wife]].</code>\n<p> In this case, the link around &ldquo;Dr. Owen&rdquo; is correct, but we must edit the suggested link that incorrectly links Sam Jones's wife to &ldquo;Juanita Owen&rdquo;. The autolink feature can save a great deal of labor and prevent collaborators from forgetting to link a subject they previously thought was important, but its suggestions still need to be reviewed before the transcription is saved.</p>"
-    end
+    self.link_help ||= "<h2>Linking Subjects</h2>\n<p> To create a link within a transcription, surround the text with double square braces.</p>\n<p> Example: Say that we want to create a subject link for &ldquo;Dr. Owen&rdquo; in the text:</p>\n<code> Dr. Owen and his wife came by for fried chicken today.</code>\n<p> Place <code>[[ and ]]</code> around Dr Owen like this:</p>\n<code>[[Dr. Owen]] and his wife came by for fried chicken today.</code>\n<p> When you save the page, a new subject will be created for &ldquo;Dr. Owen&rdquo;, and the page will be added to its index. You can add an article about Dr. Owen&mdash;perhaps biographical notes or references&mdash;to the subject by clicking on &ldquo;Dr. Owen&rdquo; and clicking the Edit tab.</p>\n<p> To create a subject link with a different name from that used within the text, use double braces with a pipe as follows: <code>[[official name of subject|name used in the text]]</code>. For example:</p>\n<code> [[Dr. Owen]] and [[Dr. Owen's wife|his wife]] came by for fried chicken today.</code>\n<p> This will create a subject for &ldquo;Dr. Owen's wife&rdquo; and link the text &ldquo;his wife&rdquo; to that subject.</p></a>\n<h2> Renaming Subjects</h2>\n<p> In the example above, we don't know Dr. Owen's wife's name, but created a subject for her anyway. If we later discover that her name is &ldquo;Juanita&rdquo;, all we have to do is edit the subject title:</p>\n<ol><li>Click on &ldquo;his wife&rdquo; on the page, or navigate to &ldquo;Dr. Owen's wife&rdquo; on the home page for the project.</li>\n<li>Click the Edit tab.</li>\n<li> Change &ldquo;Dr. Owen's wife&rdquo; to &ldquo;Juanita Owen&rdquo;.</li></ol>\n<p> This will change the links on the pages that mention that subject, so our page is automatically updated:</p>\n    <code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for fried chicken today.</code>\n<h2> Combining Subjects</h2>\n<p> Occasionally you may find that two subjects actually refer to the same person. When this happens, rather than painstakingly updating each link, you can use the Combine button at the bottom of the subject page.</p>\n <p> For example, if one page reads:</p>\n<code>[[Dr. Owen]] and [[Juanita Owen|his wife]] came by for [[fried chicken]] today.</code>\n<p> while a different page contains</p>\n<code> Jim bought a [[chicken]] today.</code>\n<p> you can combine &ldquo;chicken&rdquo; with &ldquo;fried chicken&rdquo; by going to the &ldquo;chicken&rdquo; article and reviewing the combination suggestions at the bottom of the screen. Combining &ldquo;fried chicken&rdquo; into &ldquo;chicken&rdquo; will update all links to point to &ldquo;chicken&rdquo; instead, copy any article text from the &ldquo;fried chicken&rdquo; article onto the end of the &ldquo;chicken&rdquo; article, then delete the &ldquo;fried chicken&rdquo; subject.</p>\n<h2> Auto-linking Subjects</h2>\n<p> Whenever text is linked to a subject, that fact can be used by the system to suggest links in new pages. At the bottom of the transcription screen, there is an Autolink button. This will refresh the transcription text with suggested links, which should then be reviewed and may be saved.</p>\n<p> Using our example, the system already knows that &ldquo;Dr. Owen&rdquo; links to &ldquo;Dr. Owen&rdquo; and &ldquo;his wife&rdquo; links to &ldquo;Juanita Owen&rdquo;. If a new page reads:</p>\n<code> We told Dr. Owen about Sam Jones and his wife.</code>\n<p> pressing Autolink will suggest these links:</p>\n<code> We told [[Dr. Owen]] about Sam Jones and [[Juanita Owen|his wife]].</code>\n<p> In this case, the link around &ldquo;Dr. Owen&rdquo; is correct, but we must edit the suggested link that incorrectly links Sam Jones's wife to &ldquo;Juanita Owen&rdquo;. The autolink feature can save a great deal of labor and prevent collaborators from forgetting to link a subject they previously thought was important, but its suggestions still need to be reviewed before the transcription is saved.</p>"
   end
 
   def fill_featured_at

@@ -1,18 +1,18 @@
 namespace :fromthepage do
   namespace :remediator do
-    desc "Fixes deleted subjects and update references"
+    desc 'Fixes deleted subjects and update references'
 
 
 
-    task :fix_subjects, [:collection_id] => :environment do |t, args|
-      User.current_user = User.find(2)
+    task :fix_subjects, [ :collection_id ] => :environment do |t, args|
+      Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
-    
+
       # Remediation script
       # First, find all the articles that have been deleted
       # Find the pages that point to them
       missing_article_hash = find_deleted_articles_and_references(collection)
-      # For each deleted article, 
+      # For each deleted article,
       # * Find the lowest ID in the orphan references (that's the old ID, which external things like CWRGM ID will point to
       # * Find the corresponding new article (if one exists)
       #   ? Create an article at the old ID with the old title (note--we may need to rename a new article because of uniqueness constraints)
@@ -34,10 +34,10 @@ namespace :fromthepage do
           if entry[:new_article]
             redundant_article=entry[:new_article]
             redundent_reference_pages+=redundant_article.pages.to_a
-            replacement_article.source_text = redundant_article.source_text 
+            replacement_article.source_text = redundant_article.source_text
             # TODO all the things that the existing dedup merge code does here
             # rename the redundant article to something that won't conflict
-            
+
             # copy the categories from the redundant article to the replacement article
             for category in redundant_article.categories
               replacement_article.categories << category
@@ -90,11 +90,11 @@ namespace :fromthepage do
       missing_article_hash = {}
 
       collection.pages.each do |page|
-        print "."
+        print '.'
         unless page.xml_text.blank?
-      #    page_url="#{url_stub}/#{page.work.slug}/#{page.id}"
+          #    page_url="#{url_stub}/#{page.work.slug}/#{page.id}"
           doc = REXML::Document.new(page.xml_text)
-          doc.elements.each("//link") do |e|
+          doc.elements.each('//link') do |e|
             title = e.attributes['target_title']
             id = e.attributes['target_id']
             article = collection.articles.where(id: id.to_i).first
@@ -104,7 +104,7 @@ namespace :fromthepage do
               # now we have a reference to a missing article, including title and id, as well as (possibly) the new article that replaced it
               entry = missing_article_hash[title]
               if entry.nil?
-                entry={ :ids => [], :new_article => nil, :pages => [] }
+                entry={ ids: [], new_article: nil, pages: [] }
               end
               entry[:ids] << id.to_i
               entry[:pages] << page
@@ -116,6 +116,5 @@ namespace :fromthepage do
       end
       missing_article_hash
     end
-
   end
 end

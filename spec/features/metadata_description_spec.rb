@@ -23,6 +23,7 @@ describe "Metadata Description" do
     visit edit_collection_path(@owner, @collection)
     page.find('.side-tabs').click_link("Task Configuration")
     page.check("Enable metadata description")
+    sleep(2)
     expect(page).to have_checked_field('Enable metadata description')
 
     expect(page.find("#metadata-fields-edit")[:disabled]).not_to eq("disabled")
@@ -31,6 +32,8 @@ describe "Metadata Description" do
     visit edit_collection_path(@owner, @collection)
     page.find('.side-tabs').click_link("Task Configuration")
     page.uncheck("Enable metadata description")
+    sleep(2)
+
     expect(page).to have_unchecked_field('Enable metadata description')
 
     expect(page.find("#metadata-fields-edit")[:disabled]).to eq("disabled")
@@ -40,7 +43,7 @@ describe "Metadata Description" do
 
   describe "Owner Flow" do
     before :each do
-      login_as(@owner, :scope => :user)
+      login_as(@owner, scope: :user)
       visit '/feature/description/enable'
     end
 
@@ -80,12 +83,10 @@ describe "Metadata Description" do
       expect(page.find('div.fields-preview')).to have_content("First metadata field")
       expect(page.find('div.fields-preview')).to have_content("Second metadata field")
       expect(page.find('div.fields-preview')).to have_content("Third metadata field")
-      #check field width for first field (set to 20%)
+      # check field width for first field (set to 20%)
       expect(page.find('div.fields-preview .field-wrapper:nth-child(1)')[:style]).to eq "width: 20%;"
-      #check field width for second field (not set)
+      # check field width for second field (not set)
       expect(page.find('div.fields-preview .field-wrapper:nth-child(2)')[:style]).not_to eq "width: 20%;"
     end
-
   end
 end
-

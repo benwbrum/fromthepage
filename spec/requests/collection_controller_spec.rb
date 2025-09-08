@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CollectionController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let!(:owner) { create(:unique_user, :owner) }
@@ -27,7 +27,7 @@ describe CollectionController do
       subject
 
       expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(dashboard_path)
+      expect(response).to redirect_to(collection_path(collection.owner, collection))
     end
 
     context 'when user_type owner' do
@@ -84,12 +84,31 @@ describe CollectionController do
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -99,12 +118,31 @@ describe CollectionController do
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_tasks)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -113,12 +151,31 @@ describe CollectionController do
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_look)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -134,18 +191,37 @@ describe CollectionController do
     end
 
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
+      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
     end
     let(:action_path) { edit_privacy_collection_path(owner, collection) }
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_privacy)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -155,7 +231,7 @@ describe CollectionController do
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
@@ -188,6 +264,25 @@ describe CollectionController do
         expect(response).to render_template(:edit_help)
       end
     end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
   end
 
   describe '#edit_quality_control' do
@@ -195,18 +290,37 @@ describe CollectionController do
       create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
     end
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [reviewer])
+      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [ reviewer ])
     end
     let(:action_path) { edit_quality_control_collection_path(owner, collection) }
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_quality_control)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -215,12 +329,97 @@ describe CollectionController do
 
     let(:subject) { get action_path }
 
-    it 'renders status and template' do
+    it 'renders status and template when accessed by owner' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:edit_danger)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#edit_buttons' do
+    let(:action_path) { collection_editor_button_edit_path(collection_id: collection.id) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_buttons)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#update_buttons' do
+    let(:action_path) { collection_editor_button_update_path(collection_id: collection.id) }
+    let(:params) { { collection: { buttons: {} } } }
+
+    let(:subject) { post action_path, params: params }
+
+    it 'updates when accessed by owner' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:redirect)
+    end
+
+    context 'when accessed by non-owner user' do
+      it 'redirects to collection show page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_path(owner, collection))
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'redirects to dashboard' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
     end
   end
 
@@ -282,7 +481,7 @@ describe CollectionController do
       end
 
       let!(:collection) do
-        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
+        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
       end
 
       let(:scope) { 'edit_privacy' }
@@ -376,6 +575,25 @@ describe CollectionController do
       expect(response).to render_template(:works_list)
     end
 
+    context 'when accessed by non-owner user' do
+      it 'renders status and template' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:works_list)
+      end
+    end
+
+    context 'when accessed by unauthenticated user' do
+      it 'renders status and template' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:works_list)
+      end
+    end
+
     context 'with filters' do
       let(:work) { create(:work, collection: collection) }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
@@ -459,7 +677,7 @@ describe CollectionController do
     end
 
     context 'when document set' do
-      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
 
       let(:action_path) { collection_restrict_transcribed_path(collection_id: document_set) }
 
@@ -474,7 +692,7 @@ describe CollectionController do
   end
 
   describe '#search' do
-    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
     let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let!(:page) { create(:page, work: work) }
 
@@ -510,6 +728,34 @@ describe CollectionController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:search)
       end
+    end
+  end
+
+  describe '#one_off_list' do
+    let(:action_path) { collection_one_off_list_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:one_off_list)
+    end
+  end
+
+  describe '#recent_contributor_list' do
+    let(:action_path) { collection_recent_contributor_list_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:recent_contributor_list)
     end
   end
 end

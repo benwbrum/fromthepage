@@ -17,7 +17,11 @@ class MetadataController < ApplicationController
   def create
     metadata_file_path = params[:metadata]['file'].tempfile.path
     collection_id = params[:metadata][:collection_id]
-    Work::Metadata::ImportCsvJob.perform_later(metadata_file_path, collection_id, current_user.id)
+    Work::Metadata::ImportCsvJob.perform_later(
+      metadata_file_path: metadata_file_path,
+      collection_id: collection_id,
+      user_id: current_user.id
+    )
 
     collection = Collection.find(collection_id)
 
@@ -28,18 +32,9 @@ class MetadataController < ApplicationController
   def refresh
     collection = Collection.find(params[:id])
 
-    # Make sure import logs folder exists
-    unless Dir.exist?("#{Rails.root}/public/metadata/refresh/log")
-      FileUtils.mkdir_p("#{Rails.root}/public/metadata/refresh/log")
-    end
+    Metadata::RefreshJob.perform_later(id: collection.id, type: 'collection', user_id: current_user.id)
 
-    # Create logfile for collection
-    log_file = "#{Rails.root}/public/metadata/refresh/log/#{collection.id}_#{Time.current.to_i}_refresh_collection.log"
-
-    rake_call = "#{RAKE} fromthepage:refresh_metadata[#{collection.id},collection] --trace >> #{log_file} 2>&1 &"
-    logger.info rake_call
-    system(rake_call)
-
+    # TODO: Use turbo_stream redirect when #4174 is merged
     flash[:notice] = t('.is_processing')
     ajax_redirect_to edit_look_collection_path(collection.owner, collection)
   end

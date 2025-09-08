@@ -37,6 +37,10 @@ pt:
       fail: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso, mas %{error_count} linhas apresentaram erros.
       subject: A importação dos metadados CSV foi concluída.
       success: O processamento do seu upload foi concluído. %{count} trabalhos foram atualizados com sucesso.
+    metadata_refresh_finished:
+      fail: Atualização de metadados concluída com erros.
+      subject: A atualização de metadados para %{type}:%{id} foi concluída.
+      success: Atualização de metadados concluída com sucesso.
     new_mobile_user:
       html:
         continue_transcribing: " para continuar a transcrição."
@@ -68,6 +72,16 @@ pt:
       text:
         message: 'Seu upload de "%{file}" foi processado e está disponível nesta URL:'
       your_upload_is_ready: Seu carregamento está pronto!
+    upload_no_images_warning:
+      html:
+        collection_link_message: Você ainda pode visitar sua coleção em
+        message: Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'Você ainda pode visitar sua coleção nesta URL:'
+        message: Seu upload de "%{file}" foi processado, mas nenhum arquivo de imagem suportado foi encontrado.
+        supported_formats: 'Os formatos de imagem suportados são: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload processado - nenhuma imagem encontrada
     work_collaborator:
       html:
         to_view: " para ver %{collection} - %{work}."

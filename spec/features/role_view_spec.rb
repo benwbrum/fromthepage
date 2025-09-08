@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "different user role logins" do
-
   before :all do
     @collections = Collection.all
     @collection = @collections.find(3)
@@ -40,12 +39,12 @@ describe "different user role logins" do
   end
 
   it "signs in an editor with activity" do
-    #note: signs in with login id
-    #find user activity
+    # note: signs in with login id
+    # find user activity
     user = User.find_by(login: USER)
-    collection_ids = Deed.where(:user_id => user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-    collections = Collection.where(:id => collection_ids).order_by_recent_activity
-    #check sign in with editor permissions
+    collection_ids = Deed.where(user_id: user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
+    collections = Collection.where(id: collection_ids).order_by_recent_activity
+    # check sign in with editor permissions
     visit new_user_session_path
     fill_in 'Login', with: USER
     fill_in 'Password', with: @password
@@ -59,7 +58,7 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_watchlist_path
-    #make sure user doesn't have admin access
+    # make sure user doesn't have admin access
     expect(page).to have_selector('a', text: I18n.t('dashboard.collaborator'))
     expect(page).not_to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
@@ -95,13 +94,13 @@ describe "different user role logins" do
     visit root_path
     click_link(I18n.t('dashboard.plain'))
     expect(page.current_path).to eq dashboard_owner_path
-    #check for owner but not admin dashboard
+    # check for owner but not admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
   end
 
   it "signs an admin in" do
-    #check sign in with admin permissions
+    # check sign in with admin permissions
     visit new_user_session_path
     fill_in 'Login', with: ADMIN
     fill_in 'Password', with: @password
@@ -113,5 +112,4 @@ describe "different user role logins" do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_selector('a', text: 'Admin Dashboard')
   end
-
 end

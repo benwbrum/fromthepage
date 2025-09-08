@@ -7,7 +7,7 @@ describe Article::Destroy do
   let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
 
   let!(:article) do
-    create(:article, title: 'Original', collection: collection, pages: [related_page])
+    create(:article, title: 'Original', collection: collection, pages: [ related_page ])
   end
   let!(:source_article) do
     create(:article, collection: collection.reload)
@@ -19,8 +19,8 @@ describe Article::Destroy do
   let(:result) do
     described_class.new(
       article: article,
-      user: user,
-      collection: collection
+      collection: collection,
+      user: user
     ).call
   end
 
@@ -44,11 +44,10 @@ describe Article::Destroy do
 
   it 'deletes articles and enqueues rename job' do
     expect(Article::RenameJob).to receive(:perform_later).with(
-      article_id: article.id, old_name: 'Original', new_name: ''
+      user_id: user.id, article_id: article.id, old_name: 'Original', new_name: ''
     ).and_call_original
 
     expect(result.success?).to be_truthy
     expect(result.article.destroyed?).to be_truthy
   end
-
 end

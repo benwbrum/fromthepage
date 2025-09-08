@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe WorkController do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(owner: true) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
-  let!(:article) { create(:article, collection: collection, pages: [page]) }
+  let!(:article) { create(:article, collection: collection, pages: [ page ]) }
 
   describe '#edit' do
     let(:action_path) { edit_collection_work_path(owner, collection, work) }

@@ -5,7 +5,7 @@ describe Work::Metadata::ImportCsvJob do
   include ActiveJob::TestHelper
 
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   subject(:worker) { described_class.new }
@@ -25,7 +25,7 @@ describe Work::Metadata::ImportCsvJob do
   end
   let(:rows) do
     [
-      [work.title, work.collection.title, '', work.id, work.description, work.identifier]
+      [ work.title, work.collection.title, '', work.id, work.description, work.identifier ]
     ]
   end
   let(:metadata_file_path) do
@@ -35,7 +35,7 @@ describe Work::Metadata::ImportCsvJob do
         csv << row
       end
     end
-    temp_file = Tempfile.new(['metadata', '.csv'])
+    temp_file = Tempfile.new([ 'metadata', '.csv' ])
     temp_file.write(csv_data)
     temp_file.rewind
 
@@ -43,7 +43,11 @@ describe Work::Metadata::ImportCsvJob do
   end
 
   let(:perform_worker) do
-    worker.perform(metadata_file_path, collection.reload.id, owner.id)
+    worker.perform(
+      metadata_file_path: metadata_file_path,
+      collection_id: collection.reload.id,
+      user_id: owner.id
+    )
   end
 
   context 'without errors' do
@@ -68,8 +72,8 @@ describe Work::Metadata::ImportCsvJob do
   context 'with errors' do
     let(:rows) do
       [
-        [work.title, work.collection.title, '', work.id, work.description, work.identifier],
-        ['missing', 'missing', 'missing', 'missing', 'missing', 'missing']
+        [ work.title, work.collection.title, '', work.id, work.description, work.identifier ],
+        [ 'missing', 'missing', 'missing', 'missing', 'missing', 'missing' ]
       ]
     end
 

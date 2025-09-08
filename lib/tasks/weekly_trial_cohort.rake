@@ -1,11 +1,11 @@
 namespace :fromthepage do
-  desc "weekly trial cohort"
-  task :weekly_trial_cohort => :environment do
+  desc 'weekly trial cohort'
+  task weekly_trial_cohort: :environment do
     # generate a csv file of users who signed up in the last week and write it out to a temporary file
     target_actions = AhoyActivitySummary::WEEKLY_TRIAL_COHORT_TARGET_ACTIONS
     TEMP_FILE='/tmp/conversion_cohorts.csv'
     week_cohorts=[]
-    current_day=Date.new(2023,2,12)
+    current_day=Date.new(2023, 2, 12)
     while current_day+1.week < Date.today
       week_cohorts << current_day
       current_day=current_day+1.week
@@ -46,7 +46,7 @@ namespace :fromthepage do
 
       # additional statistics require non-Ahoy data
       collection_users = User.where(id: Visit.where(id: previous_visits).pluck(:user_id))
-      ids_with_collections = collection_users.select{|u| u.collections.present? }.map{|u| u.id}
+      ids_with_collections = collection_users.select { |u| u.collections.present? }.map { |u| u.id }
       action_count = ids_with_collections.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")
@@ -54,7 +54,7 @@ namespace :fromthepage do
       previous_actions=action_count
 
       users_with_collections = User.find(ids_with_collections)
-      ids_with_pages = users_with_collections.select{|u| u.owner_works.present? }.map{|u| u.id}
+      ids_with_pages = users_with_collections.select { |u| u.owner_works.present? }.map { |u| u.id }
       action_count = ids_with_pages.count
       pct = (action_count.to_f/previous_actions).round(4)
       f.print("#{pct}\t")
@@ -62,7 +62,7 @@ namespace :fromthepage do
       previous_actions=action_count
 
       users_with_pages = User.find(ids_with_pages)
-      ids_with_activity = users_with_pages.select{|u| u.owner_works.detect{|w| (w.work_statistic.line_count||0) > 0} }.map{|u| u.id}
+      ids_with_activity = users_with_pages.select { |u| u.owner_works.detect { |w| (w.work_statistic.line_count||0) > 0 } }.map { |u| u.id }
       action_count = ids_with_activity.count
       users_with_pages_transcribed = action_count
       pct = (action_count.to_f/previous_actions).round(4)
@@ -72,7 +72,7 @@ namespace :fromthepage do
 
 
       users_with_activity = User.find(ids_with_activity)
-      ids_with_multiple_contributors = users_with_activity.select{|u| u.owned_collections.detect{|c| c.deeds.pluck(:user_id).uniq.count > 1} }.map{|u| u.id}
+      ids_with_multiple_contributors = users_with_activity.select { |u| u.owned_collections.detect { |c| c.deeds.pluck(:user_id).uniq.count > 1 } }.map { |u| u.id }
       action_count = ids_with_multiple_contributors.count
       users_with_pages_transcribed_by_others = action_count
       pct = (action_count.to_f/previous_actions).round(4)
@@ -94,7 +94,7 @@ namespace :fromthepage do
       # for each user, find out when their account was created (user.creation_date?) and find the first page transcribed deed
       users_with_pages_transcribed.each do |user|
         first_edit_dates = user.collections.map { |c| c.deeds.where(deed_type: DeedType.collection_edits).minimum(:created_at) }
-        first_edit_date = first_edit_dates.select{|e| !e.nil?}.sort.first
+        first_edit_date = first_edit_dates.select { |e| !e.nil? }.sort.first
         durations_to_first_transcription << first_edit_date - user.created_at
       end
       median_ttfpt = durations_to_first_transcription.sort[durations_to_first_transcription.count/2]
@@ -110,7 +110,7 @@ namespace :fromthepage do
       # for each user, find out when their account was created (user.creation_date?) and find the first page transcribed deed
       users_with_pages_transcribed_by_others.each do |user|
         first_edit_dates = user.collections.map { |c| c.deeds.where(deed_type: DeedType.collection_edits).where.not(user_id: user.id).minimum(:created_at) }
-        first_edit_date = first_edit_dates.select{|e| !e.nil?}.sort.first
+        first_edit_date = first_edit_dates.select { |e| !e.nil? }.sort.first
         durations_to_first_transcription_by_others << first_edit_date - user.created_at
       end
       median_ttfpt = durations_to_first_transcription_by_others.sort[durations_to_first_transcription_by_others.count/2]
@@ -132,6 +132,5 @@ namespace :fromthepage do
         print "SMTP Failed: Exception: #{e.message} \n"
       end
     end
-
   end
 end

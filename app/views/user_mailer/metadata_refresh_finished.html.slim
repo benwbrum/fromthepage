@@ -1,0 +1,8 @@
+p= t('user_mailer.greeting', user: @user.display_name)
+
+-if @result.success?
+  p= t('user_mailer.metadata_refresh_finished.success')
+-else
+  p= t('user_mailer.metadata_refresh_finished.fail')
+
+p== t('user_mailer.html.closing', from: t('user_mailer.fromthepage'))

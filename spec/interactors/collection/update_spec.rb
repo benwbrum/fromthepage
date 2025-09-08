@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Collection::Update do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(owner: true) }
@@ -58,7 +58,7 @@ describe Collection::Update do
         messageboards_enabled: true,
         is_active: true,
         field_based: true,
-        tags: [tag.id]
+        tags: [ tag.id ]
       }
     end
 

@@ -19,7 +19,7 @@ describe Collection::RestrictTranscribed do
 
   context 'when document set' do
     let(:document_set) do
-      create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work_1, work_2])
+      create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work_1, work_2 ])
     end
 
     let(:result) do

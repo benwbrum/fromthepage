@@ -12,7 +12,7 @@ describe Article::Combine do
   end
   let!(:from_article) do
     create(:article, title: 'Duplicate', source_text: 'appended text', collection: collection,
-                     pages: [from_related_page])
+                     pages: [ from_related_page ])
   end
   let!(:article_article_link) do
     create(:article_article_link, source_article: from_source_article, target_article: from_article)
@@ -23,18 +23,19 @@ describe Article::Combine do
     create(:article, title: 'Original', source_text: 'To have ', collection: collection)
   end
 
-  let(:from_article_ids) { [from_article.id] }
+  let(:from_article_ids) { [ from_article.id ] }
 
   let(:result) do
     described_class.new(
       article: to_article,
-      from_article_ids: from_article_ids
+      from_article_ids: from_article_ids,
+      user: user
     ).call
   end
 
   it 'combines articles and updates source texts of related models' do
     expect(Article::RenameJob).to receive(:perform_later).with(
-      article_id: from_article.id, old_name: 'Duplicate', new_name: 'Original', new_article_id: to_article.id
+      user_id: user.id, article_id: from_article.id, old_name: 'Duplicate', new_name: 'Original', new_article_id: to_article.id
     ).and_call_original
 
     # Set source text like this to avoid before save callbacks

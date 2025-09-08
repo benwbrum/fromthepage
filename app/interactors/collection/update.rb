@@ -30,7 +30,7 @@ class Collection::Update < ApplicationInteractor
 
     return unless saved_change_to_restricted
 
-    Elasticsearch::Collection::SyncJob.perform_later(collection_id: @collection.id)
+    Elasticsearch::Collection::SyncJob.perform_later(user_id: @user.id, collection_id: @collection.id)
   end
 
   private
@@ -48,9 +48,9 @@ class Collection::Update < ApplicationInteractor
 
     @collection_params[:data_entry_type] = if ActiveRecord::Type::Boolean.new.cast(@collection_params[:data_entry_type])
                                              Collection::DataEntryType::TEXT_AND_METADATA
-                                           else
+    else
                                              Collection::DataEntryType::TEXT_ONLY
-                                           end
+    end
   end
 
   def set_slug

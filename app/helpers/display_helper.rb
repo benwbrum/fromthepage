@@ -19,7 +19,7 @@ module DisplayHelper
   end
 
   def notes_for(commentable)
-    render({ :partial => 'note/notes', :locals => { :commentable => commentable }})
+    render({ partial: 'note/notes', locals: { commentable: commentable } })
   end
 
   def page_action(page)
@@ -64,5 +64,4 @@ module DisplayHelper
       @wording = t('.incomplete')
     end
   end
-
 end

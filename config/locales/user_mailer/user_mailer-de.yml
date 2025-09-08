@@ -39,6 +39,10 @@ de:
       fail: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert; bei %{error_count} Zeilen sind Fehler aufgetreten.
       subject: Der Import Ihrer Metadaten-CSV ist abgeschlossen.
       success: Die Verarbeitung Ihres Uploads ist abgeschlossen. %{count} Werke wurden erfolgreich aktualisiert.
+    metadata_refresh_finished:
+      fail: Die Metadatenaktualisierung wurde mit Fehlern abgeschlossen.
+      subject: Die Metadatenaktualisierung für %{type}:%{id} ist abgeschlossen.
+      success: Die Aktualisierung der Metadaten wurde erfolgreich abgeschlossen.
     new_mobile_user:
       html:
         continue_transcribing: " weiter zu transkribieren."
@@ -70,6 +74,16 @@ de:
       text:
         message: 'Ihr Upload von "%{file}" wurde verarbeitet und steht unter dieser URL bereit:'
       your_upload_is_ready: Ihr Upload ist fertig!
+    upload_no_images_warning:
+      html:
+        collection_link_message: Sie können Ihre Sammlung weiterhin besuchen unter
+        message: Ihr Upload von "%{file}" wurde verarbeitet, aber es wurden keine unterstützten Bilddateien gefunden.
+        supported_formats: 'Unterstützte Bildformate sind: JPG, JPEG, PNG'
+      text:
+        collection_link_message: 'Sie können Ihre Sammlung weiterhin unter dieser URL besuchen:'
+        message: Ihr Upload von "%{file}" wurde verarbeitet, aber es wurden keine unterstützten Bilddateien gefunden.
+        supported_formats: 'Unterstützte Bildformate sind: JPG, JPEG, PNG'
+      upload_processed_no_images: Upload verarbeitet - keine Bilder gefunden
     work_collaborator:
       html:
         to_view: " um %{collection} - %{work} anzuzeigen."

@@ -3,3 +3,10 @@
 # To ban all spiders from the entire site uncomment the next two lines:
 User-agent: *
 Disallow: /display/search
+
+# Allow crawling of transcripts and other content for archival purposes
+Allow: /*/display/*
+Allow: /*/*/*/display/*
+
+# Sitemap location for better content discovery
+Sitemap: https://fromthepage.com/sitemap.xml

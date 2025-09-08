@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Collection::Blankout do
   before do
-    User.current_user = owner
+    Current.user = owner
   end
 
   let(:owner) { User.find_by(owner: true) }
@@ -31,7 +31,7 @@ describe Collection::Blankout do
 
   it 'blanks out collection' do
     expect(result.success?).to be_truthy
-    expect(Deed.where(id: [deed_1.id, deed_2.id]).any?).to be_falsey
+    expect(Deed.where(id: [ deed_1.id, deed_2.id ]).any?).to be_falsey
     expect(Article.where(id: article.id).any?).to be_falsey
     expect(Category.where(id: category.id).any?).to be_falsey
     expect(Note.where(id: note.id).any?).to be_falsey

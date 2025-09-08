@@ -13,7 +13,7 @@ module Fromthepage
 
     config.action_dispatch.default_headers = {
       'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Request-Method' => "GET"
+      'Access-Control-Request-Method' => 'GET'
     }
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -29,16 +29,16 @@ module Fromthepage
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
     config.i18n.default_locale = :en
-    config.i18n.available_locales = [:de, :en, :'en-GB', :es, :fr, :'fr-CA', :pt]
+    config.i18n.available_locales = [ :de, :en, :'en-GB', :es, :fr, :'fr-CA', :pt ]
     config.i18n.fallbacks = true
-    config.i18n.fallbacks = [:en]
+    config.i18n.fallbacks = [ :en ]
 
     # override this in environment to set a different host for uploads
     config.upload_host=nil
 
 
-  # load overrides for Thredded and other engines
-  # config/application.rb
+    # load overrides for Thredded and other engines
+    # config/application.rb
     overrides = "#{Rails.root}/app/overrides"
     Rails.autoloaders.main.ignore(overrides)
 
@@ -50,6 +50,6 @@ module Fromthepage
   end
 
 
-  #uncomment for development of SSO
-  #Rails.application.config.action_controller.forgery_protection_origin_check=false
+  # uncomment for development of SSO
+  # Rails.application.config.action_controller.forgery_protection_origin_check=false
 end

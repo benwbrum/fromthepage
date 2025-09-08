@@ -46,8 +46,7 @@ pt:
       title: Título
       uri: URI
     graph:
-      dot:
-        title: Assuntos mencionados frequentemente com %{subject}
+      title: Assuntos mencionados frequentemente com %{subject}
     list:
       actions: Ações
       add_child_category: Adicionar categoria secundária
