@@ -34,6 +34,14 @@ RSpec.describe PageVersionsHelper, type: :helper do
         expect(result).to include('alt="blank Icon"')
         expect(result).to include('title="blank"')
       end
+
+      it 'renders icon with correct translation for needs_review status' do
+        result = helper.render_status_icon('page_version_status_needs_review')
+
+        expect(result).to include('page_version_status_needs_review-icon.svg')
+        expect(result).to include('alt="review Icon"')
+        expect(result).to include('title="review"')
+      end
     end
 
     context 'with unknown status' do

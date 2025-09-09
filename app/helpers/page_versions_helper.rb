@@ -3,7 +3,7 @@ module PageVersionsHelper
         # Use the helper method `t` with explicit scope instead of I18n.t
         status_translation = t(status, scope: 'page_version.show', default: status)
 
-        if status == 'page_version_status_transcribed' || status == 'page_version_status_incomplete' || status == 'page_version_status_review' || status == 'page_version_status_blank'
+        if status == 'page_version_status_transcribed' || status == 'page_version_status_incomplete' || status == 'page_version_status_review' || status == 'page_version_status_needs_review' || status == 'page_version_status_blank'
             image_tag(
                 "icons/#{status}-icon.svg",
                 alt: "#{status_translation} Icon",
