@@ -32,7 +32,8 @@ class MetadataController < ApplicationController
   def refresh
     collection = Collection.find(params[:id])
 
-    Metadata::RefreshJob.perform_later(id: collection.id, type: 'collection', user_id: current_user.id)
+    # TODO: Use perform_later when solid_queue is integrated
+    Metadata::RefreshJob.perform_now(id: collection.id, type: 'collection', user_id: current_user.id)
 
     # TODO: Use turbo_stream redirect when #4174 is merged
     flash[:notice] = t('.is_processing')

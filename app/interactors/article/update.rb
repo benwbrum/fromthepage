@@ -17,7 +17,8 @@ class Article::Update < ApplicationInteractor
 
     if @article.save
       if old_title != @article.title
-        Article::RenameJob.perform_later(
+        # TODO: Use perform_later when solid_queue is integrated
+        Article::RenameJob.perform_now(
           user_id: @user.id,
           article_id: @article.id,
           old_name: old_title,

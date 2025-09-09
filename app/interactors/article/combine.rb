@@ -25,7 +25,8 @@ class Article::Combine < ApplicationInteractor
     from_article.title = "TO_BE_DELETED:#{old_from_title}"
     from_article.save!
 
-    Article::RenameJob.perform_later(
+    # TODO: Use perform_later when solid_queue is integrated
+    Article::RenameJob.perform_now(
       user_id: @user.id,
       article_id: from_article.id,
       old_name: old_from_title,

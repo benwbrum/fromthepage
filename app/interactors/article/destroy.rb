@@ -14,7 +14,8 @@ class Article::Destroy < ApplicationInteractor
 
     @article.destroy!
 
-    Article::RenameJob.perform_later(
+    # TODO: Use perform_later when solid_queue is integrated
+    Article::RenameJob.perform_now(
       user_id: @user.id,
       article_id: @article.id,
       old_name: @article.title,
