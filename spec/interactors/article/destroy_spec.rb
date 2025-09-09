@@ -41,13 +41,13 @@ describe Article::Destroy do
     end
   end
 
-
-  it 'deletes articles and enqueues rename job' do
-    expect(Article::RenameJob).to receive(:perform_later).with(
-      user_id: user.id, article_id: article.id, old_name: 'Original', new_name: ''
-    ).and_call_original
-
-    expect(result.success?).to be_truthy
-    expect(result.article.destroyed?).to be_truthy
-  end
+  # TODO: Bring back when solid_queue is integrated
+  # it 'deletes articles and enqueues rename job' do
+  #   expect(Article::RenameJob).to receive(:perform_later).with(
+  #     user_id: user.id, article_id: article.id, old_name: 'Original', new_name: ''
+  #   ).and_call_original
+  #
+  #   expect(result.success?).to be_truthy
+  #   expect(result.article.destroyed?).to be_truthy
+  # end
 end

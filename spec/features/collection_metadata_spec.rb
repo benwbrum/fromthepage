@@ -52,11 +52,9 @@ describe "collection metadata", order: :defined do
       make_visible: true
     )
 
-    # TODO: Bring this back when we have solid_queue
-    # perform_enqueued_jobs do
-    #   click_button('Upload')
-    # end
-    click_button('Upload')
+    perform_enqueued_jobs do
+      click_button('Upload')
+    end
   end
 
   it "increments occurrences as works are re-imported", js: true do
@@ -82,11 +80,9 @@ describe "collection metadata", order: :defined do
       make_visible: true
     )
 
-    # TODO: Bring this back when we integrate solid_queue
-    # perform_enqueued_jobs do
-    #   click_button('Upload')
-    # end
-    click_button('Upload')
+    perform_enqueued_jobs do
+      click_button('Upload')
+    end
 
     filename.reload
     expect(filename.count).to eq 3
