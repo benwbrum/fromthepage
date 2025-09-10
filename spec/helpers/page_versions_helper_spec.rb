@@ -39,8 +39,8 @@ RSpec.describe PageVersionsHelper, type: :helper do
         result = helper.render_status_icon('page_version_status_needs_review')
 
         expect(result).to include('page_version_status_needs_review-icon.svg')
-        expect(result).to include('alt="review Icon"')
-        expect(result).to include('title="review"')
+        expect(result).to include('alt="needs review Icon"')
+        expect(result).to include('title="needs review"')
       end
     end
 
