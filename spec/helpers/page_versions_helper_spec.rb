@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe PageVersionsHelper, type: :helper do
   describe '#render_status_icon' do
