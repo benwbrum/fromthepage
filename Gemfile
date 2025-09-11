@@ -35,7 +35,7 @@ gem 'rubyzip'
 
 # HTTP / API / External SDKs
 gem 'httparty'
-gem 'savon', '~> 2.12.0'
+gem 'savon', '~> 2.15', '>= 2.15.1'
 gem 'ruby-openai'
 gem 'open3'
 gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
