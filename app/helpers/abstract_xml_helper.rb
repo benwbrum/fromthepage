@@ -399,7 +399,6 @@ module AbstractXmlHelper
       rend = e.attributes['rend']
       pb.add(REXML::Element.new('br'))
       pb.add_text(text)
-      e.children.each { |c| unclear.add(c) }
       pb.add(REXML::Element.new('br'))
 
       pb.add_attribute('class', 'pb')

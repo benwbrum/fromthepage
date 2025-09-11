@@ -8,6 +8,8 @@ Date <date when="2020-12-09">December 9, 2020</date> to indicate a date, with an
 
 Figure tag <figure>drawing or graph here</figure> to indicate a figure or illustration in the text
 
+<figure rend="hr"></figure>
+
 Footnote <footnote marker="*">This is a footnote</footnote> contains the body of a footnote within the original document. This tag should be placed where the footnote marker appears in the text.
 
 Gap <gap>page is torn</gap> for missing text
@@ -19,7 +21,8 @@ Stamp <stamp>stamp here</stamp> for stamps on envelops
 
 | Col 1 |Col 2 |Col 3 |
 | --- | --- | --- | --- |
-|<i>Val </i> |<u><del> Va'l </del></u>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
+|''<i>Val </i> |<u><del> Va'l </del></u>  |Nested <s>s<ins>tr'</ins>ikethrough</s>  |
+
 <unclear>Unclear </unclear> for text that is difficult to read
 
 <hi rend="str"><add>and of little importance</add></hi>
@@ -45,3 +48,9 @@ Abbr <abbr expan="expanded text">abbreviated text</abbr>
 Marginalia <marginalia>marginalia here</marginalia>  for noting marginalia
 
 Catchword <catchword>catchword</catchword> for catchwords
+
+[[Subject]]
+
+<pb n="1"/>
+
+{{tex: $(\psi_1, \psi_2,  \psi_3) = \vec{\psi}(\vec{x},t) = V^{-1/2}\sum_k \sqrt{\frac{\hbar}{2k}} (\vec{a_k} e^{i \vec{k}\dot\vec{x} - ikt} + c.c.)$ :tex}}
