@@ -147,7 +147,7 @@ de:
     edit_scribes:
       remove_collaborator: Mitarbeiter entfernen
       work_collaborators: Arbeitskollaborateure
-      work_collaborators_description: Mitarbeiter können private Arbeiten transkribieren und bearbeiten.
+      work_collaborators_description: Mitarbeiter können private Werke transkribieren und bearbeiten.
     incomplete: Unvollständige Metadaten.
     metadata_overview:
       notes_and_questions: Anmerkungen und Fragen
