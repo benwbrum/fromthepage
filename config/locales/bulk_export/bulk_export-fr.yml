@@ -46,7 +46,7 @@ fr:
       organization: Organisation des dossiers
       organization_description: Les fichiers zip peuvent être organisés avec un dossier par œuvre contenant des fichiers ou des sous-dossiers pour chaque format d'exportation, ou avec un dossier par format d'exportation contenant des fichiers par œuvre.
       organization_format: Formater les dossiers
-      organization_work: Dossiers de travail
+      organization_work: Dossiers d'œuvre
       preserve_linebreaks: Conserver les sauts de ligne
       previous_exports: Exportations précédentes
       search_optimized_plaintext: Texte brut optimisé pour la recherche
@@ -71,7 +71,7 @@ fr:
       text_pdf_description: Un fichier PDF contenant des transcriptions de texte.
       time: Temps
       use_uploaded_filename: Noms de fichiers/dossiers
-      use_uploaded_filename_description: Les fichiers ou dossiers d'exportation sont basés sur le slug de travail par défaut. Si une œuvre a été téléchargée à l'origine, vous pouvez utiliser le nom de fichier d'origine pour les exportations à la place.
+      use_uploaded_filename_description: Les fichiers ou dossiers d'exportation sont basés sur le slug d'œuvre par défaut. Si une œuvre a été téléchargée à l'origine, vous pouvez utiliser le nom de fichier d'origine pour les exportations à la place.
       use_uploaded_filename_label: Utilisez des noms originaux
       verbatim_plaintext: Texte brut verbatim
       verbatim_plaintext_description: Ce fichier de texte brut représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.
