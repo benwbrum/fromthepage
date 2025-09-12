@@ -8,7 +8,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     # Mock prerender methods to avoid complex rendering during tests
     allow_any_instance_of(Deed).to receive(:calculate_prerender)
     allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
-    
+
     # Save the user and collection for use in tests
     user.save!
     collection.save!
@@ -115,7 +115,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     it "should create a deed when work is moved to a different collection" do
       target_collection = Collection.new(title: "Target Collection", owner_user_id: user.id)
       target_collection.save!
-      
+
       work = Work.new(title: "Moveable Work", collection: collection, owner: user)
       work.save!
 
@@ -142,7 +142,7 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
       expect(deed.user).to eq(user)
       expect(deed.collection).to eq(target_collection)
       expect(deed.work).to eq(work)
-      
+
       work.destroy
       target_collection.destroy
     end
@@ -152,14 +152,14 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     it "marks deed as public when collection is public" do
       collection.restricted = false
       collection.save!
-      
+
       work = Work.new(title: "Public Work", collection: collection, owner: user)
       work.save!
-      
+
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
       track_deed(deed)
-      
+
       expect(deed.is_public).to be true
       work.destroy
     end
@@ -167,14 +167,14 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     it "marks deed as private when collection is restricted" do
       collection.restricted = true
       collection.save!
-      
+
       work = Work.new(title: "Private Work", collection: collection, owner: user)
       work.save!
-      
+
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
       track_deed(deed)
-      
+
       expect(deed.is_public).to be false
       work.destroy
     end
@@ -184,14 +184,14 @@ RSpec.describe "Deed Creation for Work Imports", type: :model do
     it "includes WORK_ADDED deeds when filtering by collection_edits" do
       work = Work.new(title: "Display Test Work", collection: collection, owner: user)
       work.save!
-      
+
       deed = Deed.new(deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: user)
       deed.save!
       track_deed(deed)
-      
+
       collection_deed_types = DeedType.collection_edits
       filtered_deeds = collection.deeds.where(deed_type: collection_deed_types)
-      
+
       expect(filtered_deeds).to include(deed)
       work.destroy
     end
