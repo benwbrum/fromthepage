@@ -10,5 +10,4 @@ Thredded::PreferencesController.class_eval do
       params: preferences_params
     )
   end
-
 end

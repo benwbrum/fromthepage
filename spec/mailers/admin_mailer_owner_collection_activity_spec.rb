@@ -20,11 +20,11 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
           created_at: 2.days.ago
         })
       end
-  
+
       after :each do
         @new_collaborator_deed.destroy if @new_collaborator_deed
       end
-  
+
       after :all do
         @owner.destroy
         @collection.destroy
@@ -33,17 +33,17 @@ RSpec.describe AdminMailer::OwnerCollectionActivity do
         @new_deed.destroy
         @old_deed.destroy
       end
-  
+
       it "stores the owner as an attribute" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         expect(activity.owner).to eq(@owner)
       end
-      
+
       it "retrieves owner collections and sets as an attribute" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         expect(activity.collections.first).to eq(@collection)
       end
-      
+
       it "retrieves new owner collaborators and sets as an attribute" do
         @new_collaborator_deed = create(:deed, {
           deed_type: DeedType::WORK_ADDED,

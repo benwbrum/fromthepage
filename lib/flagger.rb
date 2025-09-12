@@ -3,9 +3,9 @@ class Flagger
 
   def self.initialize_denylist
     if @@denylist.nil?
-      pb = PageBlock.find_by(:controller => 'admin', :view => 'flag_denylist')
+      pb = PageBlock.find_by(controller: 'admin', view: 'flag_denylist')
       if pb
-        @@denylist = pb.html.split("\n").map { |badness| badness.gsub(".", "\\.") }
+        @@denylist = pb.html.split("\n").map { |badness| badness.gsub('.', '\\.') }
       else
         @@denylist = []
       end
@@ -28,6 +28,6 @@ class Flagger
         return "#{prefix}#{domain}#{fixed}#{suffix}"
       end
     end
-    return nil
+    nil
   end
 end

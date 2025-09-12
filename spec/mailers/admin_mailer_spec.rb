@@ -32,7 +32,7 @@ RSpec.describe AdminMailer, type: :mailer do
       it "mailer has correct recipient" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
-        expect(mail.to).to eq([@owner.email])
+        expect(mail.to).to eq([ @owner.email ])
       end
     end
     context "email content" do

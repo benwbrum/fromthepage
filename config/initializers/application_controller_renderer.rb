@@ -2,7 +2,7 @@
 
 ActiveSupport::Reloader.to_prepare do
   ApplicationController.renderer.defaults.merge!(
-	  http_host: 'fromthepage.com',
+    http_host: 'fromthepage.com',
     https: false
   )
 end

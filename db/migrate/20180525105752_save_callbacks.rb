@@ -23,7 +23,5 @@ class SaveCallbacks < ActiveRecord::Migration[5.0]
     # # from 20180316133826_update_collection_statistics
     # Collection.all.each { |c| c.calculate_complete }
     # DocumentSet.all.each {|d| d.calculate_complete}
-
-
   end
 end

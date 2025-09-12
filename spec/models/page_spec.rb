@@ -196,31 +196,31 @@ describe Page do
   describe '#image_url_for_download' do
     context 'when page has base_image with deployment path' do
       let(:page) { build_stubbed(:page, :with_image) }
-      
+
       before do
         # Ensure no sc_canvas or ia_leaf to test the local image scenario
         allow(page).to receive(:sc_canvas).and_return(nil)
         allow(page).to receive(:ia_leaf).and_return(nil)
-        
+
         # Simulate a base_image with deployment path like the issue shows
         page.base_image = '/home/fromthepage/deployment/releases/20250514221152/public/images/uploaded/32197883/page_0001.jpg'
-        
+
         # Mock the default_url_options that would be set in production
         allow(Rails.application.config.action_mailer).to receive(:default_url_options).and_return({ host: 'fromthepage.com' })
       end
 
       it 'converts deployment path to web URL correctly' do
         result = page.image_url_for_download
-        
+
         # Should not contain the deployment path
         expect(result).not_to include('/home/fromthepage/deployment/releases/')
-        
+
         # Should start with https://fromthepage.com for local images
         expect(result).to start_with('https://fromthepage.com')
-        
+
         # Should contain the correct image path relative to public
         expect(result).to include('/images/uploaded/32197883/page_0001.jpg')
-        
+
         # Should be the complete expected URL
         expect(result).to eq('https://fromthepage.com/images/uploaded/32197883/page_0001.jpg')
       end
@@ -237,7 +237,7 @@ describe Page do
       it 'returns sc_canvas resource id as-is (external IIIF URLs should not be converted)' do
         result = page.image_url_for_download
         expect(result).to eq('https://iiif.durham.ac.uk/iiif/trifle/32150/t1/mg/73/t1mg732d945c/c449d8a03531bef78218f0b3f3db4f01.jp2/full/full/0/default.jpg')
-        
+
         # IIIF images should not be converted to fromthepage.com URLs
         expect(result).not_to start_with('https://fromthepage.com')
       end
