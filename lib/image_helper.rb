@@ -115,6 +115,9 @@ module ImageHelper
     new_file = File.join((File.dirname(filename)), (File.basename(filename, '.*') + '.jpg'))
     print "Converted file path is #{new_file}"
     converted = original.write("#{new_file}")
+    # Remove the original TIFF file to prevent duplicate pages during ingest
+    File.delete(filename) if File.exist?(filename)
+    print " and removed original TIFF file"
     converted
   end
 
