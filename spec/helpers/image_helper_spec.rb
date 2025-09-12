@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ImageHelper do
@@ -19,14 +21,14 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
 
       it 'calculates DPI correctly' do
         result = ImageHelper.calculate_page_size_and_dpi(test_pdf_with_spaces)
 
         expect(result[:raw_page_size]).not_to be_empty
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
 
         # Test that the DPI calculation logic works correctly
         raw_page_size = result[:raw_page_size]
@@ -39,12 +41,10 @@ describe ImageHelper do
         expect(pixel_dim[1]).to be > 0
 
         # Verify the DPI reduction logic matches the result
-        if pixel_dim.max >= 16000
+        if pixel_dim.max >= 16_000
           dpi = 150
           pixel_dim = raw_page_size.split(' x ').map { |e| e.to_f / 72 * dpi }
-          if pixel_dim.max >= 16000
-            dpi = 72
-          end
+          dpi = 72 if pixel_dim.max >= 16_000
         end
 
         expect(result[:dpi]).to eq(dpi)
@@ -68,7 +68,7 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
 
       it 'maintains backward compatibility' do
@@ -97,7 +97,7 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
     end
   end
@@ -150,10 +150,10 @@ describe ImageHelper do
 
       # The original TIFF should be deleted
       expect(File.exist?(test_tiff)).to be false
-      
+
       # The JPG should be created
       expect(File.exist?(expected_jpg)).to be true
-      
+
       # The result should be the JPG filename
       expect(result).to be_a(Magick::ImageList)
     end
@@ -161,9 +161,9 @@ describe ImageHelper do
     it 'handles the case when original file does not exist' do
       # Remove the file before conversion to test safety check
       File.delete(test_tiff)
-      
+
       expect(File.exist?(test_tiff)).to be false
-      
+
       # This should not raise an error even if the file doesn't exist
       expect { ImageHelper.convert_tiff(test_tiff) }.to raise_error(Magick::ImageMagickError)
     end
