@@ -144,7 +144,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    bigdecimal (3.2.2)
+    bigdecimal (3.2.3)
     binding_of_caller (1.0.1)
       debug_inspector (>= 1.2.0)
     bootsnap (1.18.6)
@@ -269,6 +269,7 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -300,9 +301,11 @@ GEM
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    httpi (2.5.0)
-      rack
-      socksify
+    httpi (4.0.4)
+      base64
+      mutex_m
+      nkf
+      rack (>= 2.0, < 4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.15)
@@ -401,6 +404,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_json (1.17.0)
@@ -408,6 +412,7 @@ GEM
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
     mustache (1.1.1)
+    mutex_m (0.3.0)
     mysql2 (0.5.6)
     net-http (0.6.0)
       uri
@@ -426,6 +431,9 @@ GEM
     newrelic_rpm (9.21.0)
     nio4r (2.7.4)
     nkf (0.2.0)
+    nokogiri (1.18.9)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-musl)
@@ -581,7 +589,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.2)
+    rexml (3.4.4)
     riiif (2.7.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -668,14 +676,15 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    savon (2.12.1)
+    savon (2.15.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
-      httpi (~> 2.3)
+      httpi (>= 4, < 5)
+      mail (~> 2.5)
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
-      wasabi (~> 3.4)
+      wasabi (>= 3.7, < 6)
     securerandom (0.4.1)
     selenium-webdriver (4.35.0)
       base64 (~> 0.2)
@@ -699,7 +708,6 @@ GEM
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
-    socksify (1.8.1)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
       logger
@@ -774,10 +782,10 @@ GEM
     warden (1.2.9)
       rack (>= 2.0.9)
     warning (1.5.0)
-    wasabi (3.7.0)
+    wasabi (5.1.0)
       addressable
-      httpi (~> 2.0)
-      nokogiri (>= 1.4.2)
+      faraday (>= 1.9, < 3)
+      nokogiri (>= 1.13.9)
     webmock (3.25.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -802,6 +810,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  ruby
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
@@ -893,7 +902,7 @@ DEPENDENCIES
   rubyzip
   rvm1-capistrano3
   sassc-rails
-  savon (~> 2.12.0)
+  savon (~> 2.15, >= 2.15.1)
   selenium-webdriver
   shoulda
   simplecov
