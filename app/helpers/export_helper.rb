@@ -446,23 +446,35 @@ module ExportHelper
 
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
-    # paras_string = ""
+    
+    # Extract and transform entryHeading elements that are in paragraph-only contexts
+    # This returns both the transformed heads and a modified document
+    transformed_elements = extract_and_transform_head_elements(doc)
+    
     my_display_html = ''
-    tags = [ 'p' ]
-    tags.each do |tag|
-      doc.elements.each_with_index("//#{tag}") do |e, i|
-        transform_links(e)
-        transform_expansions(e)
-        transform_regularizations(e)
-        transform_marginalia_and_catchwords(e)
-        transform_footnotes(e)
-        transform_lb(e)
-        transform_tables(e)
-        e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-        if add_corrsp
-          e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+    para_index = 0
+    
+    # Process all remaining paragraphs and head elements in document order
+    doc.root.children.each do |element|
+      if element.node_type == :element
+        if element.name == 'p'
+          transform_links(element)
+          transform_expansions(element)
+          transform_regularizations(element)
+          transform_marginalia_and_catchwords(element)
+          transform_footnotes(element)
+          transform_lb(element)
+          transform_tables(element)
+          element.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{para_index}")
+          if add_corrsp
+            element.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{para_index}")
+          end
+          my_display_html << element.to_s
+          para_index += 1
+        elsif element.name == 'head'
+          # Head elements are already transformed, just add them to output
+          my_display_html << element.to_s
         end
-        my_display_html << e.to_s
       end
     end
 
@@ -616,6 +628,42 @@ module ExportHelper
   # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
   # end
 
+  def extract_and_transform_head_elements(doc)
+    # Find paragraphs that contain only entryHeading elements (and possibly whitespace)
+    # Transform them to head elements and replace the paragraph with the head element
+    doc.elements.each('//p') do |p|
+      entry_headings = p.elements.to_a('entryHeading')
+      
+      # Check if paragraph contains only entryHeading elements and whitespace
+      if entry_headings.length > 0
+        non_heading_content = p.children.reject do |child|
+          child.node_type == :element && child.name == 'entryHeading' ||
+          child.node_type == :text && child.value.strip.empty?
+        end
+        
+        # If paragraph contains only headings (and whitespace), replace with head elements
+        if non_heading_content.empty?
+          entry_headings.each_with_index do |entry_heading, index|
+            head = REXML::Element.new('head')
+            head.add_attribute('depth', entry_heading.attributes['depth'])
+            head.add_text(entry_heading.attributes['title'])
+            
+            if index == 0
+              # Replace the paragraph with the first head element
+              p.parent.insert_after(p, head)
+              p.remove
+            else
+              # Insert additional head elements after the first one
+              p.parent.insert_after(head.previous_sibling, head)
+            end
+          end
+        end
+      end
+    end
+    
+    true # Return value indicating completion
+  end
+
   def transform_links(p_element)
     p_element.elements.each('//link') do |link|
       rs = REXML::Element.new('rs')
@@ -633,11 +681,14 @@ module ExportHelper
       sensitive.replace_with(gap)
     end
     p_element.elements.each('//entryHeading') do |entryHeading|
-      gap = REXML::Element.new('head')
+      # Note: entryHeading processing is now handled in extract_head_elements_from_paragraphs
+      # to ensure head elements are not nested within paragraphs in TEI output.
+      # This transformation is only kept for cases where entryHeading appears in mixed content.
+      head = REXML::Element.new('head')
 
-      gap.add_attribute('depth', entryHeading.attributes['depth'])
-      gap.add_text(entryHeading.attributes['title'])
-      entryHeading.replace_with(gap)
+      head.add_attribute('depth', entryHeading.attributes['depth'])
+      head.add_text(entryHeading.attributes['title'])
+      entryHeading.replace_with(head)
     end
     p_element.elements.each('//a') do |a|
       rs = REXML::Element.new('rs')
