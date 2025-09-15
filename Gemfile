@@ -7,6 +7,7 @@ ruby '3.3.5'
 gem 'rails', '~> 7.2.1'
 gem 'puma'
 gem 'bootsnap', require: false
+gem 'terser'
 
 # Core / Models / Business logic
 gem 'mysql2'
@@ -108,7 +109,6 @@ end
 
 group :assets do
   gem 'uglifier'
-  gem 'terser'
 end
 
 group :development, :test do
