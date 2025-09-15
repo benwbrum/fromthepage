@@ -147,4 +147,3 @@ group :test do
   gem 'webmock', require: false
   gem 'with_model'
 end
-
