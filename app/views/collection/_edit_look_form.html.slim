@@ -64,6 +64,11 @@ tr
         p =t('collection.edit_look.spellcheck_description')
 tr
   td(colspan="2")
+    h3 =f.label :legend, t('collection.edit_look.legend')
+    p =t('collection.edit_look.legend_description')
+    =f.text_area :legend, rows: 3
+tr
+  td(colspan="2")
     =f.check_box :voice_recognition, disabled: !collection.text_entry? || collection.field_based?
     =f.label :voice_recognition
       h3 =t('collection.edit_look.voice_recognition')

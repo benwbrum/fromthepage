@@ -483,6 +483,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit_look with legend' do
+      let(:scope) { 'edit_look' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the look settings</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_look)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the look settings</p>')
+      end
+    end
+
     context 'when scope edit_privacy' do
       let!(:collaborator) do
         create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
