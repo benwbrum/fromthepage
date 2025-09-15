@@ -110,8 +110,9 @@ group :assets do
   gem 'sprockets', '~> 4.2'
   gem 'sprockets-rails', '>= 3.4'
   gem 'uglifier'
-  gem 'terser'
 end
+
+gem 'terser'
 
 group :development, :test do
   gem 'dotenv-rails'
