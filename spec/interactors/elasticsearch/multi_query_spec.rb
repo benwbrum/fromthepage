@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+if ELASTIC_ENABLED
 describe Elasticsearch::MultiQuery do
   let(:identifier) { 'pneumonoultramicroscopicsilicovolcanoconiosis' }
 
@@ -96,14 +97,8 @@ describe Elasticsearch::MultiQuery do
         expect(result.results).to eq([])
       end
 
-<<<<<<< HEAD
-      [ owner, other_user, collection, other_collection, document_set, work_1, work_2, page_1, page_2, page_3 ]
-        .each(&:save!)
-    end
-=======
       it 'performs multiquery including docset' do
         document_set.update!(title: "docset #{identifier}")
->>>>>>> parent of f1bdb3e7d... Remove duplicate and unused methods in User and Work models (#4786)
 
         expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
@@ -111,16 +106,10 @@ describe Elasticsearch::MultiQuery do
         )
       end
 
-<<<<<<< HEAD
-      [ page_1, page_2, page_3, work_1, work_2, document_set, other_collection, collection, other_user, owner ]
-        .each(&:destroy!)
-    end
-=======
       it 'performs multiquery including page_3 when work_2 added to public document set' do
         document_set.works << work_2
         document_set.reload.works.each(&:save!)
         document_set.reload.works.flat_map(&:pages).each(&:save!)
->>>>>>> parent of f1bdb3e7d... Remove duplicate and unused methods in User and Work models (#4786)
 
         expect(result.success?).to be_truthy
 
