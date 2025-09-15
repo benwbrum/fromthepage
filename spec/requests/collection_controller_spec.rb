@@ -443,6 +443,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit with legend' do
+      let(:scope) { 'edit' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the collection</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the collection</p>')
+      end
+    end
+
     context 'when scope edit_tasks' do
       let(:scope) { 'edit_tasks' }
       let(:params) { { collection: { text_language: 'eng', field_based: true } } }

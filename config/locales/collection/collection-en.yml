@@ -70,6 +70,8 @@ en:
       current_url: 'The current URL for this collection:'
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      legend: Legend
+      legend_description: This text will be displayed on each page's transcription display view to provide context or guidance for understanding the content.
       done: Done
       footer: Footer
       footer_description: This text will be displayed at the bottom of every page in the collection.

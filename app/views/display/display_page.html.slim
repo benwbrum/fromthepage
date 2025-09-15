@@ -84,6 +84,12 @@
             -else
               ==t('.collection_is_not_active')
 
+-if @collection.legend.present?
+  .page-legend
+    h2.legend-title =t('.legend')
+    .legend-content
+      ==@collection.legend
+
 h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"

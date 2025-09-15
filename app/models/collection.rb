@@ -99,6 +99,7 @@ class Collection < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :legend, html: true, length: { maximum: 65535 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
