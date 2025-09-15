@@ -518,6 +518,33 @@
   &_subject:before { color: $bodyFgLight; }
 }
 
+// Page legend
+
+.page-legend {
+  margin: 2em auto 0 auto;
+  max-width: 800px;
+  padding: 1.5em;
+  background-color: mix(#FFF, $bodyBg, 90);
+  border: 1px solid $borderColor;
+  border-radius: 0.5em;
+  
+  .legend-title {
+    margin: 0 0 1em 0;
+    color: $bodyFg;
+    font-size: $fontSizeMedium;
+  }
+  
+  .legend-content {
+    color: $bodyFgFaded;
+    line-height: 1.6;
+    
+    p {
+      margin: 0 0 1em 0;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+}
+
 
 // Page notes
 

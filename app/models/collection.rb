@@ -19,6 +19,7 @@
 #  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
+#  legend                         :text(65535)
 #  license_key                    :string(255)
 #  link_help                      :text(65535)
 #  messageboard_slug              :string(255)
