@@ -494,6 +494,9 @@ EOF
     # clean up in-cell line-breaks
     table_element.xpath('//lb').each { |n| n.replace(' ') }
 
+    # Sanitize single quotes with backticks
+    # table_element.xpath('//*').each { |n| n.content.gsub("'", '`') }
+
     # calculate the widths of each column based on max(header, cell[0...end])
     column_count = ([ table_element.xpath('//th').count ] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
     column_widths = {}
@@ -528,7 +531,7 @@ EOF
         if plaintext_export
           e.text.rjust(width, ' ')
         else
-          inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+          inner_html = xml_to_pandoc_md(e.to_s.gsub("'", '&#39;'), false, false, nil, false).gsub("\n", '')
           inner_html.rjust(width, ' ')
         end
       end.join(' | ') << "\n"
