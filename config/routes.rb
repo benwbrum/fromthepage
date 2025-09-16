@@ -1,4 +1,6 @@
 Fromthepage::Application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: '/solid_queue'
+
   resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
