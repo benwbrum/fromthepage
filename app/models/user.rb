@@ -335,7 +335,7 @@ class User < ApplicationRecord
   end
 
   def collections
-    self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
+    self.owned_collections + Collection.where(owner_user_id: self.id)# .all
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

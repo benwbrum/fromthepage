@@ -54,11 +54,11 @@ module OwnerExporter
 
   def owner_mailing_list_csv(owner)
     rows = []
-    header = ['User Login', 'User Name', 'Email', 'Opt-In']
+    header = [ 'User Login', 'User Name', 'Email', 'Opt-In' ]
     collection_ids = owner.collections.map { |c| c.id }.sort
-    deed_map = Deed.where(:collection_id => collection_ids).group(:user_id, :collection_id).count
-    user_ids = deed_map.keys.map {|e| e[0]}.uniq
-    Collection.where(:id => collection_ids).order(:id).each { |c| header << c.title }
+    deed_map = Deed.where(collection_id: collection_ids).group(:user_id, :collection_id).count
+    user_ids = deed_map.keys.map { |e| e[0] }.uniq
+    Collection.where(id: collection_ids).order(:id).each { |c| header << c.title }
 
     User.find(user_ids).each do |user|
       row = []

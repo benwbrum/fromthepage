@@ -365,10 +365,10 @@ class Work < ApplicationRecord
     my_reviews = []
     for page in self.pages
       for comment in page.comments
-        my_reviews << comment if comment.comment_type == "review"
+        my_reviews << comment if comment.comment_type == 'review'
       end
     end
-    return my_reviews
+    my_reviews
   end
 
   # TODO make not awful (denormalize work_id, collection_id; use legitimate finds)
@@ -376,14 +376,14 @@ class Work < ApplicationRecord
     my_annotations = []
     for page in self.pages
       for comment in page.comments
-        my_annotations << comment if comment.comment_type == "annotation"
+        my_annotations << comment if comment.comment_type == 'annotation'
       end
     end
     my_annotations.sort! { |a, b| b.created_at <=> a.created_at }
-    return my_annotations[0..9]
+    my_annotations[0..9]
   end
 
-  def update_statistic(changed_page = nil) #association callbacks pass the page being added/removed, but we don't care
+  def update_statistic(changed_page = nil) # association callbacks pass the page being added/removed, but we don't care
     self.work_statistic = WorkStatistic.new unless self.work_statistic
     self.work_statistic.recalculate
   end
