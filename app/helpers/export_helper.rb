@@ -446,14 +446,14 @@ module ExportHelper
 
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
-    
+
     # Extract and transform entryHeading elements that are in paragraph-only contexts
     # This returns both the transformed heads and a modified document
     transformed_elements = extract_and_transform_head_elements(doc)
-    
+
     my_display_html = ''
     para_index = 0
-    
+
     # Process all remaining paragraphs and head elements in document order
     doc.root.children.each do |element|
       if element.node_type == :element
@@ -633,21 +633,21 @@ module ExportHelper
     # Transform them to head elements and replace the paragraph with the head element
     doc.elements.each('//p') do |p|
       entry_headings = p.elements.to_a('entryHeading')
-      
+
       # Check if paragraph contains only entryHeading elements and whitespace
       if entry_headings.length > 0
         non_heading_content = p.children.reject do |child|
           child.node_type == :element && child.name == 'entryHeading' ||
           child.node_type == :text && child.value.strip.empty?
         end
-        
+
         # If paragraph contains only headings (and whitespace), replace with head elements
         if non_heading_content.empty?
           entry_headings.each_with_index do |entry_heading, index|
             head = REXML::Element.new('head')
             head.add_attribute('depth', entry_heading.attributes['depth'])
             head.add_text(entry_heading.attributes['title'])
-            
+
             if index == 0
               # Replace the paragraph with the first head element
               p.parent.insert_after(p, head)
@@ -660,7 +660,7 @@ module ExportHelper
         end
       end
     end
-    
+
     true # Return value indicating completion
   end
 

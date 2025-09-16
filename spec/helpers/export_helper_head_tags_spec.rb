@@ -20,17 +20,17 @@ describe ExportHelper do
 
       it 'should not place head elements inside p elements' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
-        
+
         # Should not have head elements inside p elements
         expect(result).not_to match(/<p[^>]*>.*<head[^>]*>.*<\/head>.*<\/p>/m)
-        
+
         # Should have head elements outside of p elements
         expect(result).to match(/<head[^>]*>.*<\/head>/m)
       end
 
       it 'should maintain proper div structure around head elements' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
-        
+
         # Head elements should be properly structured with divs
         # This is the expected TEI structure where head elements are not nested in paragraphs
         expect(result).to match(/<\/p>.*<head[^>]*>.*<\/head>.*<p[^>]*>/m)
@@ -38,7 +38,7 @@ describe ExportHelper do
 
       it 'should preserve head element attributes and content' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
-        
+
         expect(result).to include('depth="2"')
         expect(result).to include('Sept 28 Wednesday')
       end
@@ -60,10 +60,10 @@ describe ExportHelper do
 
       it 'should handle multiple head elements correctly' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
-        
+
         # Should not have any head elements inside p elements
         expect(result).not_to match(/<p[^>]*>.*<head[^>]*>.*<\/head>.*<\/p>/m)
-        
+
         # Should have both head elements
         expect(result).to include('First Heading')
         expect(result).to include('Second Heading')
