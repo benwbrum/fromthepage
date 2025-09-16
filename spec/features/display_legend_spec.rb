@@ -9,7 +9,7 @@ describe "collection legend display" do
   it 'displays legend on page view when legend is present' do
     # Visit the display page
     visit collection_display_page_path(collection.owner, collection, work, page.id)
-    
+
     expect(page).to have_content('Legend')
     expect(page).to have_content('This is a test legend for the collection.')
   end
@@ -19,10 +19,10 @@ describe "collection legend display" do
     collection_without_legend = create(:collection, owner_user_id: user.id, legend: '')
     work_without_legend = create(:work, owner_user_id: user.id, collection_id: collection_without_legend.id)
     page_without_legend = create(:page, work_id: work_without_legend.id, title: 'Test Page Without Legend')
-    
+
     # Visit the display page
     visit collection_display_page_path(collection_without_legend.owner, collection_without_legend, work_without_legend, page_without_legend.id)
-    
+
     expect(page).not_to have_content('Legend')
   end
 end
