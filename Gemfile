@@ -7,6 +7,7 @@ ruby '3.3.5'
 gem 'rails', '~> 7.2.1'
 gem 'puma'
 gem 'bootsnap', require: false
+gem 'terser'
 
 # Core / Models / Business logic
 gem 'mysql2'
