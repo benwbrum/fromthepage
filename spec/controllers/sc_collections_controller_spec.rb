@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe ScCollectionsController, type: :controller do
-
   describe '#fetch_manifest' do
     let(:controller) { ScCollectionsController.new }
     let(:manifest_url) { 'https://texashistory.unt.edu/ark:/67531/metapth1741604/manifest/' }
@@ -14,7 +13,7 @@ describe ScCollectionsController, type: :controller do
     it 'fetches manifest with custom headers for SSL compatibility' do
       expected_options = {
         "Accept-Encoding" => "identity",
-        "User-Agent"      => "FromThePage-IIIF/1.0", 
+        "User-Agent"      => "FromThePage-IIIF/1.0",
         "Connection"      => "close",
         open_timeout: 10,
         read_timeout: 20,
