@@ -1,3 +1,4 @@
+require 'open-uri'
 require 'contentdm_translator'
 
 class ScCollectionsController < ApplicationController
@@ -349,8 +350,6 @@ class ScCollectionsController < ApplicationController
 
   def fetch_manifest(at_id)
     if @raw_manifest.nil?
-      require 'open-uri'
-
       # Custom headers to avoid SSL/compression issues with OpenSSL 3.0
       options = {
         'Accept-Encoding' => 'identity',  # Disable compression to avoid inflater path
