@@ -444,6 +444,9 @@ GEM
     newrelic_rpm (9.21.0)
     nio4r (2.7.4)
     nkf (0.2.0)
+    nokogiri (1.18.10)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-musl)
@@ -926,6 +929,8 @@ DEPENDENCIES
   simplecov-lcov
   slim
   solid_queue (~> 1.2)
+  sprockets (~> 4.2)
+  sprockets-rails (>= 3.4)
   stackprof
   stimulus-rails
   terser
