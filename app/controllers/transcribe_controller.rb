@@ -42,7 +42,6 @@ class TranscribeController  < ApplicationController
   def guest
   end
 
-<<<<<<< HEAD
   def mark_page_blank
     @result = Transcribe::MarkAsBlank.new(
       page: @page,
@@ -52,39 +51,6 @@ class TranscribeController  < ApplicationController
     @page = @result.page
 
     respond_to(&:turbo_stream)
-=======
-  def mark_page_blank(options = { redirect: 'display' })
-    redirect_path = case options[:redirect]
-    when 'transcribe'
-                      page_id = @page.last? ? @page.id : @page.lower_item.id
-                      notice_msg = @page.id == page_id ? t('.saved_notice') : t('.saved_and_next_notice')
-                      collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
-    else
-                      notice_msg = t('.saved_notice')
-                      collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-    end
-
-    if params[:page]['mark_blank'] == '1'
-      @page.status = :blank
-      @page.translation_status = :blank
-      @page.save
-      record_deed(DeedType::PAGE_MARKED_BLANK)
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      false
-    elsif @page.status_blank? && params[:page]['mark_blank'] == '0'
-      @page.status = :new
-      @page.translation_status = :new
-      @page.save
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      false
-    else
-      true
-    end
->>>>>>> development
   end
 
   def needs_review
