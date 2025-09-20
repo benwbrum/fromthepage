@@ -4,6 +4,5 @@ class ProductizeScCollection < ActiveRecord::Migration[5.0]
     add_column    :sc_collections, :parent_id, :integer
     add_column    :sc_collections, :label, :string
     remove_column :sc_collections, :context
-
   end
 end

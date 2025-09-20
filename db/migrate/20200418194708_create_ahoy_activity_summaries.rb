@@ -9,8 +9,8 @@ class CreateAhoyActivitySummaries < ActiveRecord::Migration[5.0]
       t.integer   :minutes
       t.timestamps
     end
-    add_index :ahoy_activity_summaries, [:date, :collection_id, :user_id, :activity], 
+    add_index :ahoy_activity_summaries, [ :date, :collection_id, :user_id, :activity ],
       unique: true,
-      name:'ahoy_activity_day_user_collection'
+      name: 'ahoy_activity_day_user_collection'
   end
 end

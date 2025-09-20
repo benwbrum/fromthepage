@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "collection settings js tasks", :order => :defined do
+describe "collection settings js tasks", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -8,7 +8,7 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "sets collection to field based transcription", js: true do
@@ -51,7 +51,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.count).to eq 3
   end
 
-  it "adds fields for transcription", :js => true do
+  it "adds fields for transcription", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Fields")
     count = page.all('#new-fields tr').count
@@ -60,7 +60,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.count).to eq 3
   end
 
-  it "adds new line", :js => true do
+  it "adds new line", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Fields")
     count = page.all('#new-fields tr').count
@@ -101,9 +101,9 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to be < count
   end
 
-  it "uses page arrows with unsaved transcription", :js => true do
+  it "uses page arrows with unsaved transcription", js: true do
     test_page = @collection.works.first.pages.second
-    #next page arrow
+    # next page arrow
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
     page.fill_in('fields_1_first-field', with: "Field one")
     message = accept_alert do
@@ -111,7 +111,7 @@ describe "collection settings js tasks", :order => :defined do
     end
     expect(message).to have_content("You have unsaved changes.", wait: 3)
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
-    #previous page arrow - make sure it also works with notes
+    # previous page arrow - make sure it also works with notes
     fill_in('Write a new note or ask a question...', with: "Test two")
     message = accept_alert do
       page.click_link("Previous page")
@@ -119,7 +119,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(message).to have_content("You have unsaved changes.", wait: 3)
   end
 
-  #note: these are hidden unless there is table data
+  # note: these are hidden unless there is table data
   it "exports a table csv" do
     work = @collection.works.first
     visit collection_export_path(@collection.owner, @collection)
@@ -138,5 +138,4 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find_link('Edit Fields')).to match_css('[disabled]')
     expect(page.find_link('Configure Buttons')).to_not match_css('[disabled]')
   end
-
 end

@@ -6,13 +6,13 @@ class InteractionTable < ActiveRecord::Migration[5.0]
       t.column :collection_id,    :integer
       t.column :work_id,  :integer
       t.column :page_id,  :integer
-      t.column :action,     :string, :limit => 20
-      t.column :description,:string, :limit => 255
-      t.column :params,     :string, :limit => 128
+      t.column :action,     :string, limit: 20
+      t.column :description, :string, limit: 255
+      t.column :params,     :string, limit: 128
       # session information that should really be normalized out
-      t.column :browser,    :string, :limit => 128
-      t.column :session_id, :string, :limit => 40
-      t.column :ip_address, :string, :limit => 16
+      t.column :browser,    :string, limit: 128
+      t.column :session_id, :string, limit: 40
+      t.column :ip_address, :string, limit: 16
       t.column :created_on, :datetime
     end
 

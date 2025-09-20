@@ -1,7 +1,7 @@
 class Xml::Lib::Utils
-  STRIKETHROUGH_TAGS = ['s', 'del', 'strike'].freeze
-  UNDERLINE_TAGS = ['ins', 'u'].freeze
-  UNCLEAR_TAGS = ['unclear'].freeze
+  STRIKETHROUGH_TAGS = [ 's', 'del', 'strike' ].freeze
+  UNDERLINE_TAGS = [ 'ins', 'u' ].freeze
+  UNCLEAR_TAGS = [ 'unclear' ].freeze
 
   SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS + UNCLEAR_TAGS
 
@@ -40,9 +40,9 @@ class Xml::Lib::Utils
     risky_element.children.each do |child|
       output_segments << if child.is_a?(REXML::Element) && SOUL_RISKY_TAGS.include?(child.name)
                            handle_soul_risky_element(child)
-                         else
+      else
                            child.to_s.strip
-                         end
+      end
     end
 
     # Extend this for different tags with special handling
@@ -52,15 +52,15 @@ class Xml::Lib::Utils
                else
                  "~~#{output_segments.join}~~"
                end
-             elsif UNDERLINE_TAGS.include?(risky_element.name)
+    elsif UNDERLINE_TAGS.include?(risky_element.name)
                if STRIKETHROUGH_TAGS.include?(risky_element.parent.name)
                  "~~[#{output_segments.join}]{.ulst}~~"
                else
                  "[#{output_segments.join}]{.ul}"
                end
-             elsif UNCLEAR_TAGS.include?(risky_element.name)
+    elsif UNCLEAR_TAGS.include?(risky_element.name)
                "\\[#{output_segments.join}\\]"
-             end
+    end
 
     output.gsub('~~~~', '').gsub('[]{.ul}', '')
   end

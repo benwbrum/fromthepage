@@ -9,7 +9,7 @@ RSpec.describe UserMailer, type: :mailer do
     after do
       # Clean up created records
       document_upload.destroy
-      collection.destroy  
+      collection.destroy
       user.destroy
     end
 
@@ -20,12 +20,12 @@ RSpec.describe UserMailer, type: :mailer do
 
     it 'renders the receiver email' do
       mail = UserMailer.upload_no_images_warning(document_upload)
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
     end
 
     it 'renders the sender email' do
       mail = UserMailer.upload_no_images_warning(document_upload)
-      expect(mail.from).to eq(['support@fromthepage.com'])
+      expect(mail.from).to eq([ 'support@fromthepage.com' ])
     end
 
     it 'includes the filename in the message' do
@@ -59,7 +59,7 @@ RSpec.describe UserMailer, type: :mailer do
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
-        expect(mail.to).to eq([user.email])
+        expect(mail.to).to eq([ user.email ])
       end
 
       it 'renders the sender email' do
@@ -69,7 +69,7 @@ RSpec.describe UserMailer, type: :mailer do
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
-        expect(mail.from).to eq(['support@fromthepage.com'])
+        expect(mail.from).to eq([ 'support@fromthepage.com' ])
       end
 
       it 'renders display_name' do
@@ -90,7 +90,7 @@ RSpec.describe UserMailer, type: :mailer do
 
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
-        allow(user_activity).to receive(:added_works).and_return([work])
+        allow(user_activity).to receive(:added_works).and_return([ work ])
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
@@ -111,7 +111,7 @@ RSpec.describe UserMailer, type: :mailer do
 
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
-        allow(user_activity).to receive(:active_note_pages).and_return([page])
+        allow(user_activity).to receive(:active_note_pages).and_return([ page ])
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
@@ -131,12 +131,12 @@ RSpec.describe UserMailer, type: :mailer do
     context 'inside the mailer email' do
       let(:user) { create(:unique_user, :owner) }
       let(:collection) { create(:collection, owner_user_id: user.id) }
-      let(:original_metadata) { [{ label: 'en', value: ['Original Metadata'] }].to_json }
+      let(:original_metadata) { [ { label: 'en', value: [ 'Original Metadata' ] } ].to_json }
       let(:at_id) { 'http://example.com/manifest' }
       let(:v3_hash) do
         {
           id: at_id,
-          label: { en: ['Original Metadata'] },
+          label: { en: [ 'Original Metadata' ] },
           metadata: original_metadata
         }.to_json.to_s
       end
@@ -147,14 +147,14 @@ RSpec.describe UserMailer, type: :mailer do
       let(:id) { collection.id }
       let(:type) { 'collection' }
 
-      let(:result) { Work::Metadata::Refresh.new(work_ids: [work.id, work_no_manifest.id]).call }
+      let(:result) { Work::Metadata::Refresh.new(work_ids: [ work.id, work_no_manifest.id ]).call }
       let(:mail) { UserMailer.metadata_refresh_finished(user, result, id, type, result.logs) }
 
       it 'renders success email' do
         VCR.use_cassette('iiif/refresh_metadata', record: :none) do
           expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
-          expect(mail.to).to eq([user.email])
-          expect(mail.from).to eq(['support@fromthepage.com'])
+          expect(mail.to).to eq([ user.email ])
+          expect(mail.from).to eq([ 'support@fromthepage.com' ])
           expect(mail.body.encoded).to match(user.display_name)
           expect(mail.body.encoded).to match('Metadata refresh finished successfully.')
           expect(mail.attachments.count).to eq(2)
@@ -165,8 +165,8 @@ RSpec.describe UserMailer, type: :mailer do
         VCR.use_cassette('iiif/refresh_metadata_failed', record: :none) do
           it 'renders failed email' do
             expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
-            expect(mail.to).to eq([user.email])
-            expect(mail.from).to eq(['support@fromthepage.com'])
+            expect(mail.to).to eq([ user.email ])
+            expect(mail.from).to eq([ 'support@fromthepage.com' ])
             expect(mail.body.encoded).to match(user.display_name)
             expect(mail.body.encoded).to match('Metadata refresh finished with errors.')
             expect(mail.attachments.count).to eq(2)

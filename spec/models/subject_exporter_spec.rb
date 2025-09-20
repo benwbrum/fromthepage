@@ -15,12 +15,12 @@ RSpec.describe SubjectExporter do
     let(:page_1)     { FactoryBot.build(:page, title: 'Page 1', position: '1', page_article_links: links_a) }
     let(:page_2)     { FactoryBot.build(:page, title: 'Page 2', position: '2', page_article_links: links_b) }
 
-    let(:work_1)     { FactoryBot.build(:work, title: 'Work 1', identifier: 'work_id_1', pages: [page_1]) }
-    let(:work_2)     { FactoryBot.build(:work, title: 'Work 2', identifier: 'work_id_2', pages: [page_2]) }
+    let(:work_1)     { FactoryBot.build(:work, title: 'Work 1', identifier: 'work_id_1', pages: [ page_1 ]) }
+    let(:work_2)     { FactoryBot.build(:work, title: 'Work 2', identifier: 'work_id_2', pages: [ page_2 ]) }
 
     let(:user)       { FactoryBot.build(:user, slug: 'owner') }
-    let(:collection) { FactoryBot.create(:collection, works: [work_1, work_2], owner: user, articles: [article_a, article_b] ) }
-    
+    let(:collection) { FactoryBot.create(:collection, works: [ work_1, work_2 ], owner: user, articles: [ article_a, article_b ]) }
+
     it 'exports all fields from Models' do
       # this is probably the wrong way to do this
       article_a.collection = collection

@@ -144,17 +144,17 @@ class Work < ApplicationRecord
   scope :unrestricted, -> { where(restrict_scribes: false) }
   scope :restricted, -> { where(restrict_scribes: true) }
   scope :order_by_recent_activity,
-        -> { joins(:deeds).reorder("deeds.created_at DESC").distinct }
+        -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
   scope :order_by_recent_inactivity,
-        -> { joins(:deeds).reorder("deeds.created_at ASC").distinct }
+        -> { joins(:deeds).reorder('deeds.created_at ASC').distinct }
   scope :order_by_completed,
-        -> { joins(:work_statistic).reorder("work_statistics.complete DESC") }
+        -> { joins(:work_statistic).reorder('work_statistics.complete DESC') }
   scope :order_by_incomplete,
-        -> { joins(:work_statistic).reorder("work_statistics.complete ASC") }
+        -> { joins(:work_statistic).reorder('work_statistics.complete ASC') }
   scope :order_by_translation_completed,
         -> do
           joins(:work_statistic).reorder(
-            "work_statistics.translation_complete DESC"
+            'work_statistics.translation_complete DESC'
           )
         end
   scope :incomplete_transcription,
@@ -177,21 +177,21 @@ class Work < ApplicationRecord
   after_commit :save_metadata, on: %i[create update]
 
   module DescriptionStatus
-    UNDESCRIBED = "undescribed"
-    NEEDS_REVIEW = "needsreview"
-    INCOMPLETE = "incomplete"
-    DESCRIBED = "described"
-    NEEDS_WORK = [UNDESCRIBED, INCOMPLETE]
+    UNDESCRIBED = 'undescribed'
+    NEEDS_REVIEW = 'needsreview'
+    INCOMPLETE = 'incomplete'
+    DESCRIBED = 'described'
+    NEEDS_WORK = [ UNDESCRIBED, INCOMPLETE ]
   end
 
   module TitleStyle
-    REPLACE = "REPLACE"
+    REPLACE = 'REPLACE'
 
     PAGE_ARABIC = "Page #{REPLACE}"
     PAGE_ROMAN = "Page #{REPLACE}"
     ENVELOPE = "Envelope (#{REPLACE})"
     COVER = 'Cover (#{REPLACE})'
-    ENCLOSURE = "Enclosure REPLACE"
+    ENCLOSURE = 'Enclosure REPLACE'
     DEFAULT = PAGE_ARABIC
 
     def self.render(style, number)
@@ -202,7 +202,7 @@ class Work < ApplicationRecord
       PAGE_ARABIC
     end
     def self.number_from_prior_title(style, title)
-      regex_string = style.sub("REPLACE", "(\\d+)")
+      regex_string = style.sub('REPLACE', '(\\d+)')
       md = title.match(/#{regex_string}/)
 
       md ? md.captures.first : nil
@@ -263,7 +263,7 @@ class Work < ApplicationRecord
   def update_derivatives
     # searchable_metadata is currently the only derivative
     metadata_hash = self.merge_metadata(true)
-    value_array = metadata_hash.map { |e| e["value"] }
+    value_array = metadata_hash.map { |e| e['value'] }
 
     self.searchable_metadata = value_array.flatten.join("\n\n")
   end
@@ -277,7 +277,7 @@ class Work < ApplicationRecord
       end
 
     work_metadata.each_pair do |label, value|
-      metadata << { "label" => label.titleize, "value" => value.to_s }
+      metadata << { 'label' => label.titleize, 'value' => value.to_s }
     end
 
     if include_user && !self.metadata_description.blank?
@@ -301,7 +301,7 @@ class Work < ApplicationRecord
         nil
       end
     else
-      nil #false
+      nil # false
     end
   end
 
@@ -365,10 +365,10 @@ class Work < ApplicationRecord
     my_reviews = []
     for page in self.pages
       for comment in page.comments
-        my_reviews << comment if comment.comment_type == "review"
+        my_reviews << comment if comment.comment_type == 'review'
       end
     end
-    return my_reviews
+    my_reviews
   end
 
   # TODO make not awful (denormalize work_id, collection_id; use legitimate finds)
@@ -376,14 +376,14 @@ class Work < ApplicationRecord
     my_annotations = []
     for page in self.pages
       for comment in page.comments
-        my_annotations << comment if comment.comment_type == "annotation"
+        my_annotations << comment if comment.comment_type == 'annotation'
       end
     end
     my_annotations.sort! { |a, b| b.created_at <=> a.created_at }
-    return my_annotations[0..9]
+    my_annotations[0..9]
   end
 
-  def update_statistic(changed_page = nil) #association callbacks pass the page being added/removed, but we don't care
+  def update_statistic(changed_page = nil) # association callbacks pass the page being added/removed, but we don't care
     self.work_statistic = WorkStatistic.new unless self.work_statistic
     self.work_statistic.recalculate
   end
@@ -398,12 +398,12 @@ class Work < ApplicationRecord
 
   def cleanup_images
     absolute_filenames =
-      pages.map { |page| [page.base_image, page.thumbnail_filename] }.flatten
+      pages.map { |page| [ page.base_image, page.thumbnail_filename ] }.flatten
     modern_filenames =
       absolute_filenames.map do |fn|
         fn.sub(
           /^.*uploaded/,
-          File.join(Rails.root, "public", "images", "uploaded")
+          File.join(Rails.root, 'public', 'images', 'uploaded')
         )
       end
     modern_filenames.each do |fn|
@@ -414,10 +414,10 @@ class Work < ApplicationRecord
       end
     end
     new_dir_name =
-      File.join(Rails.root, "public", "images", "uploaded", self.id.to_s)
+      File.join(Rails.root, 'public', 'images', 'uploaded', self.id.to_s)
     if Dir.exist?(new_dir_name)
       # test to see if the directory is empty
-      if Dir.glob(File.join(new_dir_name, "*")).empty?
+      if Dir.glob(File.join(new_dir_name, '*')).empty?
         # if it is, delete it
         Dir.rmdir(new_dir_name)
       else
@@ -447,19 +447,19 @@ class Work < ApplicationRecord
         featured_page = Page.find_by(id: self.featured_page)
         featured_page.thumbnail_url
       else
-        return nil
+        nil
       end
     end
   end
 
   def normalize_friendly_id(string)
-    string = string.truncate(230, separator: " ", omission: "")
+    string = string.truncate(230, separator: ' ', omission: '')
     string = "work-#{string}" unless string.match? /[[:alpha:]]/
-    super.gsub("_", "-")
+    super.gsub('_', '-')
   end
 
   def slug_candidates
-    self.slug ? [:slug] : [:title, %i[title id]]
+    self.slug ? [ :slug ] : [ :title, %i[title id] ]
   end
 
   def should_generate_new_friendly_id?
@@ -490,7 +490,7 @@ class Work < ApplicationRecord
   end
 
   def set_next_untranscribed_page
-    next_page = untranscribed_pages.order("position ASC").first
+    next_page = untranscribed_pages.order('position ASC').first
     page_id = next_page.nil? ? nil : next_page.id
     update_columns(next_untranscribed_page_id: page_id)
   end
@@ -510,12 +510,12 @@ class Work < ApplicationRecord
         # TODO don't save instruction or description types
 
         element = {}
-        element["transcription_field_id"] = id.to_i
+        element['transcription_field_id'] = id.to_i
 
         cell_data.each do |key, value|
-          element["label"] = key
+          element['label'] = key
 
-          element["value"] = value
+          element['value'] = value
         end
 
         metadata_fields << element
@@ -537,8 +537,8 @@ class Work < ApplicationRecord
 
       previous_version =
         MetadataDescriptionVersion
-          .where("work_id = ?", self.id)
-          .order("version_number DESC")
+          .where('work_id = ?', self.id)
+          .order('version_number DESC')
           .first
       if previous_version
         version.version_number = previous_version.version_number + 1
@@ -556,9 +556,9 @@ class Work < ApplicationRecord
           identity: {
             email: self.owner.email
           },
-          event: "$action",
+          event: '$action',
           details: {
-            action_information: "first-upload"
+            action_information: 'first-upload'
           }
         )
       end
@@ -570,9 +570,9 @@ class Work < ApplicationRecord
     if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only
       om = JSON.parse(self.original_metadata)
       om.each do |m|
-        unless m["label"].blank?
-          label = m["label"]
-          label = label.first["@value"] if label.is_a? Array
+        unless m['label'].blank?
+          label = m['label']
+          label = label.first['@value'] if label.is_a? Array
 
           collection = self.collection
 

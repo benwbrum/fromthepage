@@ -77,7 +77,7 @@ pt:
       zoom_in: Mais Zoom
       zoom_out: Reduzir o zoom
     page_navigation:
-      describe_work: Descrever o trabalho
+      describe_work: Descrever a obra
       nav_info: Página %{position} de %{size}
       next_page: Próxima página
       previous_page: Página anterior
