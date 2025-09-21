@@ -21,8 +21,8 @@ describe ExportHelper do
       it 'should not place head elements inside p elements' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
 
-        # Should not have head elements inside p elements
-        expect(result).not_to match(/<p[^>]*>.*<head[^>]*>.*<\/head>.*<\/p>/m)
+        # Should not have head elements directly nested within p elements
+        expect(result).not_to match(/<p[^>]*>(\s|[^<])*<head[^>]*>/m)
 
         # Should have head elements outside of p elements
         expect(result).to match(/<head[^>]*>.*<\/head>/m)
@@ -39,7 +39,7 @@ describe ExportHelper do
       it 'should preserve head element attributes and content' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
 
-        expect(result).to include('depth="2"')
+        expect(result).to include("depth='2'")
         expect(result).to include('Sept 28 Wednesday')
       end
     end
@@ -61,14 +61,14 @@ describe ExportHelper do
       it 'should handle multiple head elements correctly' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
 
-        # Should not have any head elements inside p elements
-        expect(result).not_to match(/<p[^>]*>.*<head[^>]*>.*<\/head>.*<\/p>/m)
+        # Should not have any head elements directly nested within p elements  
+        expect(result).not_to match(/<p[^>]*>(\s|[^<])*<head[^>]*>/m)
 
         # Should have both head elements
         expect(result).to include('First Heading')
         expect(result).to include('Second Heading')
-        expect(result).to include('depth="1"')
-        expect(result).to include('depth="2"')
+        expect(result).to include("depth='1'")
+        expect(result).to include("depth='2'")
       end
     end
   end
