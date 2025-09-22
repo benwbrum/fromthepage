@@ -258,14 +258,6 @@ class ScCollectionsController < ApplicationController
       flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
 
-    # TODO: This patches CDM imports. It would be good to refactor it into interactor to make testing easier
-    Elasticsearch::Collection::SyncJob.perform_later(
-      user_id: current_user.id,
-      collection_id: @collection.id,
-      type: @collection.is_a?(DocumentSet) ? :document_set : :collection,
-      skip_collection: false
-    )
-
     if @collection.text_entry?
       redirect_to collection_read_work_path(@collection.owner, @collection, work)
     else
