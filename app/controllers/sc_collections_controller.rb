@@ -1,3 +1,4 @@
+require 'open-uri'
 require 'contentdm_translator'
 
 class ScCollectionsController < ApplicationController
@@ -349,8 +350,25 @@ class ScCollectionsController < ApplicationController
 
   def fetch_manifest(at_id)
     if @raw_manifest.nil?
-      connection = URI.open(at_id)
-      @raw_manifest = connection.read
+      # Custom headers to avoid SSL/compression issues with OpenSSL 3.0
+      options = {
+        'Accept-Encoding' => 'identity',  # Disable compression to avoid inflater path
+        'User-Agent'      => 'FromThePage-IIIF/1.0',
+        'Connection'      => 'close',
+        open_timeout: 10,
+        read_timeout: 20,
+        ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
+      }
+
+      # Retry logic for SSL/EOF errors common with OpenSSL 3.0
+      attempts = 0
+      begin
+        @raw_manifest = URI.open(at_id, options).read
+      rescue OpenSSL::SSL::SSLError, EOFError => e
+        attempts += 1
+        retry if attempts < 2
+        raise e
+      end
     end
     @raw_manifest
   end

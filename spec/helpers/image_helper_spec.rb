@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ImageHelper do
@@ -39,12 +41,10 @@ describe ImageHelper do
         expect(pixel_dim[1]).to be > 0
 
         # Verify the DPI reduction logic matches the result
-        if pixel_dim.max >= 16000
+        if pixel_dim.max >= 16_000
           dpi = 150
           pixel_dim = raw_page_size.split(' x ').map { |e| e.to_f / 72 * dpi }
-          if pixel_dim.max >= 16000
-            dpi = 72
-          end
+          dpi = 72 if pixel_dim.max >= 16_000
         end
 
         expect(result[:dpi]).to eq(dpi)
@@ -122,6 +122,50 @@ describe ImageHelper do
         # Test that the full extraction process works with spaces in filename
         expect { ImageHelper.extract_pdf(test_pdf_with_spaces) }.not_to raise_error
       end
+    end
+  end
+
+  describe '.convert_tiff' do
+    let(:test_dir) { '/tmp/tiff_test' }
+    let(:test_tiff) { File.join(test_dir, 'test.tif') }
+    let(:expected_jpg) { File.join(test_dir, 'test.jpg') }
+
+    before do
+      FileUtils.mkdir_p(test_dir)
+      # Create a simple 1x1 TIFF image for testing
+      require 'rmagick'
+      image = Magick::Image.new(1, 1)
+      image.write(test_tiff)
+    end
+
+    after do
+      FileUtils.rm_rf(test_dir) if Dir.exist?(test_dir)
+    end
+
+    it 'converts TIFF to JPG and removes original file' do
+      expect(File.exist?(test_tiff)).to be true
+
+      # Convert the TIFF file
+      result = ImageHelper.convert_tiff(test_tiff)
+
+      # The original TIFF should be deleted
+      expect(File.exist?(test_tiff)).to be false
+
+      # The JPG should be created
+      expect(File.exist?(expected_jpg)).to be true
+
+      # The result should be the JPG filename
+      expect(result).to be_a(Magick::ImageList)
+    end
+
+    it 'handles the case when original file does not exist' do
+      # Remove the file before conversion to test safety check
+      File.delete(test_tiff)
+
+      expect(File.exist?(test_tiff)).to be false
+
+      # This should not raise an error even if the file doesn't exist
+      expect { ImageHelper.convert_tiff(test_tiff) }.to raise_error(Magick::ImageMagickError)
     end
   end
 end

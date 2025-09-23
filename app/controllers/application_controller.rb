@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   skip_before_action :verify_authenticity_token, if: (:devise_controller? && :codespaces_environment?)
   before_action :set_current_user_in_model
+  before_action :set_current_session_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
@@ -67,9 +68,14 @@ class ApplicationController < ActionController::Base
     I18n.with_locale(locale, &action)
   end
 
-  # Set the current user in User
+  # Set the current user in Current
   def set_current_user_in_model
     Current.user = current_user
+  end
+
+  # Set the current session in Current
+  def set_current_session_in_model
+    Current.session = session
   end
 
   def current_user
@@ -291,7 +297,7 @@ class ApplicationController < ActionController::Base
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
-      if current_user.all_owner_collections.any?
+      if current_user.collections.any?
         dashboard_owner_path
       else
         dashboard_startproject_path

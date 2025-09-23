@@ -33,3 +33,6 @@ Remember, your task is to create a plan, not to implement the changes. Focus on 
 
 8.  FromThePage Notes:
    We have multiple types of users in FromThePage:  Transcribers see and transcribe public collections in FromThePage.  Project Owners create collections, upload material and change their settings.  (Trial users are a special type of Project Owner and are flagged as such.  They have the same access a Project Owner does, with some upload restrictions and additional messages.)  Staff are added as Owners to a specific collection, which then gives them the ability to create more collections under the original project owner's account.  For staff, the like_owner? method in the user model can be used to determine if a user should see owner sorts of things for the objects in FromThePage.  Administrators or Admins are FromThePage staff that can see system wide settings and can log in as any user.  Administrators often are Project Owners as well.
+
+9.  Code Quality:
+   Always run `bundle exec rubocop -A` to fix syntax errors and style issues before committing code changes. This ensures consistent code formatting and catches potential issues early.
