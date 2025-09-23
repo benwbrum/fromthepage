@@ -1,5 +1,4 @@
 class UserMailerPreview < ActionMailer::Preview
-
   def upload_finished
     UserMailer.upload_finished(DocumentUpload.last)
   end
@@ -38,5 +37,4 @@ class UserMailerPreview < ActionMailer::Preview
     user = User.find_by(login: 'admin')
     UserMailer.nightly_user_activity(UserMailer::Activity.build(user))
   end
-
 end

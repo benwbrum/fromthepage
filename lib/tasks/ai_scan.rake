@@ -1,5 +1,5 @@
 namespace :fromthepage do
-  desc "looks for users who have page_trans deeds with little time between them "
+  desc 'looks for users who have page_trans deeds with little time between them '
   task detect_frequent_contributions: :environment do
     # only look at the last 24 hours
     start_time = 24.hours.ago
@@ -10,7 +10,7 @@ namespace :fromthepage do
     users.each do |user|
       # find the time between each of the page_trans deeds
       # why does this return no deeds?
-      deeds = user.deeds.where(created_at: [start_time..end_time], deed_type: DeedType::PAGE_TRANSCRIPTION).order(:created_at)
+      deeds = user.deeds.where(created_at: [ start_time..end_time ], deed_type: DeedType::PAGE_TRANSCRIPTION).order(:created_at)
       # bail out if there is only one deed
       if deeds.length < 2
         next
@@ -30,14 +30,11 @@ namespace :fromthepage do
         puts user.display_name
       end
     end;0
-
-
-
   end
-  desc "create a CSV file listing all pages in a collection and their contributors and status"
+  desc 'create a CSV file listing all pages in a collection and their contributors and status'
   task create_page_export_csv: :environment do
     collection = Collection.find(ARGV[1])
-    CSV.open("pages.csv", "wb") do |csv|
+    CSV.open('pages.csv', 'wb') do |csv|
       headers = %w[Work_Title Identifier Work_URL Page_Title Page_Position Page_URL Transcribe_URL Page_Status Contributors]
       csv << headers
       collection.pages.each do |page|
@@ -50,12 +47,10 @@ namespace :fromthepage do
           Rails.application.routes.url_helpers.collection_display_page_url(collection.owner, collection, page.work, page),
           Rails.application.routes.url_helpers.collection_transcribe_page_url(collection.owner, collection, page.work, page),
           page.status,
-          page.contributors.map { |hash| hash[:name] }.join(", ")
+          page.contributors.map { |hash| hash[:name] }.join(', ')
         ]
         csv << row
       end
     end
   end
-
-
 end

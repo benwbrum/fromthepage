@@ -21,7 +21,7 @@ describe 'Next untranscribed page logic' do
   let(:restricted_work) { create(:work, :restricted, :with_pages) }
 
   it 'does not show the next button on reading page' do
-    collection = create(:collection, works: [new_work])
+    collection = create(:collection, works: [ new_work ])
     visit collection_display_page_path(collection.owner, collection, new_work, new_work.pages.last)
 
     expect(page).to(have_content(new_work.pages.last.title))
@@ -30,7 +30,7 @@ describe 'Next untranscribed page logic' do
   end
 
   it 'shows the next button on the transcribe page' do
-    collection = create(:collection, works: [new_work])
+    collection = create(:collection, works: [ new_work ])
     visit collection_transcribe_page_path(collection.owner, collection, new_work, new_work.pages.last)
 
     expect(page).to(have_content(new_work.pages.last.title))
@@ -40,7 +40,7 @@ describe 'Next untranscribed page logic' do
 
   context 'Clicking `next` on the last page of a work' do
     it 'takes user to page in work when the work is incomplete' do
-      collection = create(:collection, works: [new_work])
+      collection = create(:collection, works: [ new_work ])
       visit collection_transcribe_page_path(collection.owner, collection, new_work, new_work.pages.last)
 
       expect(page).to(have_content(new_work.pages.last.title))
@@ -51,8 +51,8 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'takes user to page in docset when work is complete' do
-      collection = create(:collection, works: [new_work, completed_work])
-      docset = create(:document_set, :public, collection_id: collection.id, works: [new_work, completed_work])
+      collection = create(:collection, works: [ new_work, completed_work ])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [ new_work, completed_work ])
 
       visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
       expect(page).to(have_content(docset.title))
@@ -65,8 +65,8 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'takes user to page in collection when docset is complete' do
-      collection = create(:collection, works: [new_work, completed_work])
-      docset = create(:document_set, :public, collection_id: collection.id, works: [completed_work])
+      collection = create(:collection, works: [ new_work, completed_work ])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [ completed_work ])
 
       visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
       expect(page).to(have_content(docset.title))
@@ -79,7 +79,7 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'takes user to page in collection when work is complete' do
-      collection = create(:collection, works: [new_work, completed_work])
+      collection = create(:collection, works: [ new_work, completed_work ])
       visit collection_transcribe_page_path(collection.owner, collection, completed_work, completed_work.pages.last)
 
       expect(page).to(have_content(completed_work.pages.last.title))
@@ -90,7 +90,7 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'takes user to owner profile page when collection is complete' do
-      collection = create(:collection, works: [completed_work])
+      collection = create(:collection, works: [ completed_work ])
       visit collection_transcribe_page_path(collection.owner, collection, completed_work, completed_work.pages.last)
 
       expect(page).to(have_content(completed_work.pages.last.title))
@@ -101,8 +101,8 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'handles when user lacks permissions to view page in a work in a docset' do
-      collection = create(:collection, works: [restricted_work, completed_work, new_work])
-      docset = create(:document_set, :public, collection_id: collection.id, works: [restricted_work, completed_work, new_work])
+      collection = create(:collection, works: [ restricted_work, completed_work, new_work ])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [ restricted_work, completed_work, new_work ])
 
       visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
       expect(page).to(have_content(docset.title))
@@ -115,8 +115,8 @@ describe 'Next untranscribed page logic' do
     end
 
     it 'handles when user lacks permissions to view page in collection' do
-      collection = create(:collection, works: [restricted_work, completed_work, new_work])
-      docset = create(:document_set, :public, collection_id: collection.id, works: [restricted_work, completed_work])
+      collection = create(:collection, works: [ restricted_work, completed_work, new_work ])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [ restricted_work, completed_work ])
 
       visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
       expect(page).to(have_content(docset.title))

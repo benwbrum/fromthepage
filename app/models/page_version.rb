@@ -45,15 +45,15 @@ class PageVersion < ApplicationRecord
   end
 
   def display
-    self.created_on.strftime("%b %d, %Y") + " - " + self.user.display_name
+    self.created_on.strftime('%b %d, %Y') + ' - ' + self.user.display_name
   end
 
   def prev
-    page.page_versions.where("id < ?", id).first
+    page.page_versions.where('id < ?', id).first
   end
 
   def next
-    page.page_versions.where("id > ?", id).last
+    page.page_versions.where('id > ?', id).last
   end
 
   def current_version?
@@ -67,26 +67,26 @@ class PageVersion < ApplicationRecord
       previous_version = self.prev
       if previous_version
         page.update_columns(
-          :title => previous_version.title,
-          :source_text => previous_version.transcription,
-          :xml_text => previous_version.xml_transcription,
-          :source_translation => previous_version.source_translation,
-          :xml_translation => previous_version.xml_translation
+          title: previous_version.title,
+          source_text: previous_version.transcription,
+          xml_text: previous_version.xml_transcription,
+          source_translation: previous_version.source_translation,
+          xml_translation: previous_version.xml_translation
         )
         if previous_version.page_version == 0
           # reset the page and work status
-          page.update_columns(:status => 'new')
+          page.update_columns(status: 'new')
           page.update_work_stats
         end
       else
         # no previous version exists, reset the page to blank state
         page.update_columns(
-          :title => nil,
-          :source_text => nil,
-          :xml_text => nil,
-          :source_translation => nil,
-          :xml_translation => nil,
-          :status => 'new'
+          title: nil,
+          source_text: nil,
+          xml_text: nil,
+          source_translation: nil,
+          xml_translation: nil,
+          status: 'new'
         )
         page.update_work_stats
       end

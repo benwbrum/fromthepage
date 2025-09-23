@@ -3,14 +3,14 @@ class WorkController < ApplicationController
   include ApplicationHelper
   include XmlSourceProcessor
 
-  protect_from_forgery :except => [:set_work_title,
+  protect_from_forgery except: [ :set_work_title,
                                    :set_work_description,
                                    :set_work_physical_description,
                                    :set_work_document_history,
                                    :set_work_permission_description,
                                    :set_work_location_of_composition,
                                    :set_work_author,
-                                   :set_work_transcription_conventions]
+                                   :set_work_transcription_conventions ]
   # tested
   before_action :authorized?, only: [
     :edit,
@@ -25,11 +25,11 @@ class WorkController < ApplicationController
   ]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [ :new, :create, :configurable_printout, :edit_scribes, :remove_scribe ]
 
   def metadata_overview_monitor
     @is_monitor_view = true
-    render :template => "transcribe/monitor_view"
+    render template: 'transcribe/monitor_view'
   end
 
   def configurable_printout
@@ -104,7 +104,6 @@ class WorkController < ApplicationController
     else
       render :describe
     end
-
   end
 
   def description_versions
@@ -149,7 +148,7 @@ class WorkController < ApplicationController
 
   def search_scribes
     query = "%#{params[:term].to_s.downcase}%"
-    excluded_ids = @work.scribes.pluck(:id) + [@work.owner.id]
+    excluded_ids = @work.scribes.pluck(:id) + [ @work.owner.id ]
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
                 .limit(100)
@@ -198,7 +197,7 @@ class WorkController < ApplicationController
     if @work.save
       record_deed(@work, DeedType::WORK_ADDED, work.owner)
       flash[:notice] = t('.work_created')
-      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
+      ajax_redirect_to(work_pages_tab_path(work_id: @work.id, anchor: 'create-page'))
     else
       render :new
     end
@@ -232,7 +231,7 @@ class WorkController < ApplicationController
   def revert
     work = Work.find_by(id: params[:work_id])
     work.update_attribute(:transcription_conventions, nil)
-    render :plain => work.collection.transcription_conventions
+    render plain: work.collection.transcription_conventions
   end
 
   def update_featured_page
@@ -262,31 +261,31 @@ class WorkController < ApplicationController
     # Set meta information for work pages for better archival
     @page_title = "#{@work.title} - #{@collection.title}"
     @meta_description = "Historical document: #{@work.title}#{@work.author.present? ? " by #{@work.author}" : ""} in the #{@collection.title} collection. #{@work.description}".truncate(160)
-    @meta_keywords = [@work.title, @work.author, @collection.title, "historical document", "digital archive"].compact.join(", ")
-    
+    @meta_keywords = [ @work.title, @work.author, @collection.title, 'historical document', 'digital archive' ].compact.join(', ')
+
     # Generate structured data for work
     @structured_data = {
-      "@context" => "https://schema.org",
-      "@type" => "DigitalDocument",
-      "name" => @work.title,
-      "description" => @work.description,
-      "inLanguage" => @collection.text_language || "en",
-      "isPartOf" => {
-        "@type" => "Collection",
-        "name" => @collection.title,
-        "description" => to_snippet(@collection.intro_block)
+      '@context' => 'https://schema.org',
+      '@type' => 'DigitalDocument',
+      'name' => @work.title,
+      'description' => @work.description,
+      'inLanguage' => @collection.text_language || 'en',
+      'isPartOf' => {
+        '@type' => 'Collection',
+        'name' => @collection.title,
+        'description' => to_snippet(@collection.intro_block)
       },
-      "url" => request.original_url,
-      "dateModified" => @work.most_recent_deed_created_at&.iso8601,
-      "publisher" => {
-        "@type" => "Organization",
-        "name" => @collection.owner&.display_name || "FromThePage"
+      'url' => request.original_url,
+      'dateModified' => @work.most_recent_deed_created_at&.iso8601,
+      'publisher' => {
+        '@type' => 'Organization',
+        'name' => @collection.owner&.display_name || 'FromThePage'
       }
     }
-    
+
     # Add optional fields conditionally
-    @structured_data["author"] = @work.author if @work.author.present?
-    @structured_data["dateCreated"] = @work.document_date if @work.document_date.present?
+    @structured_data['author'] = @work.author if @work.author.present?
+    @structured_data['dateCreated'] = @work.document_date if @work.document_date.present?
 
     # Add archival-friendly headers
     respond_to do |format|
@@ -342,5 +341,4 @@ class WorkController < ApplicationController
       document_set_ids: []
     )
   end
-
 end

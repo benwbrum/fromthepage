@@ -1,9 +1,8 @@
 class DocumentSetsController < ApplicationController
-
   DEFAULT_WORKS_PER_PAGE = 15
 
   before_action :authorized?
-  before_action :set_document_set, only: [:show, :edit, :update, :destroy]
+  before_action :set_document_set, only: [ :show, :edit, :update, :destroy ]
 
   respond_to :html
 
@@ -16,7 +15,7 @@ class DocumentSetsController < ApplicationController
 
     if source_set == target_set
       flash[:error] = t('.source_and_target_can_not_be_the_same')
-      render :action => 'transfer_form', :layout => false
+      render action: 'transfer_form', layout: false
       flash.clear
     else
       if params[:status_filter] == 'all'
@@ -34,7 +33,7 @@ class DocumentSetsController < ApplicationController
         end
       end
 
-      ajax_redirect_to document_sets_path(:collection_id => @collection)
+      ajax_redirect_to document_sets_path(collection_id: @collection)
     end
   end
 
@@ -69,7 +68,7 @@ class DocumentSetsController < ApplicationController
 
   def search_collaborators
     query = "%#{params[:term].to_s.downcase}%"
-    excluded_ids = @document_set.collaborators.pluck(:id) + [@document_set.owner.id]
+    excluded_ids = @document_set.collaborators.pluck(:id) + [ @document_set.owner.id ]
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
                 .limit(100)
@@ -79,10 +78,10 @@ class DocumentSetsController < ApplicationController
 
   def create
     @document_set = DocumentSet.new(document_set_params)
-    if current_user.account_type != "Staff"
+    if current_user.account_type != 'Staff'
       @document_set.owner = current_user
     else
-      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != 'Staff' }
       @document_set.owner = extant_collection.owner
     end
     if @document_set.save
@@ -91,7 +90,6 @@ class DocumentSetsController < ApplicationController
     else
       render action: 'new'
     end
-
   end
 
   def assign_works
@@ -114,7 +112,7 @@ class DocumentSetsController < ApplicationController
     unless @collection
       @collection = DocumentSet.friendly.find(params[:collection_id])
     end
-    new_ids = params[:work].keys.map {|id| id.to_i}
+    new_ids = params[:work].keys.map { |id| id.to_i }
     ids = @collection.work_ids + new_ids
     @collection.work_ids = ids
     @collection.save!
@@ -133,7 +131,7 @@ class DocumentSetsController < ApplicationController
 
   def remove_from_set
     @collection = DocumentSet.friendly.find(params[:collection_id])
-    ids = params[:work].keys.map {|id| id.to_i}
+    ids = params[:work].keys.map { |id| id.to_i }
     new_ids = @collection.work_ids - ids
     @collection.work_ids = new_ids
     @collection.save!
@@ -151,13 +149,13 @@ class DocumentSetsController < ApplicationController
 
     respond_to do |format|
       template = case params[:scope]
-                 when 'edit_privacy'
+      when 'edit_privacy'
                    @collaborators = @document_set.collaborators
                    @works_to_restrict_count = works_to_restrict_count
                    'document_sets/update_privacy'
-                 else
+      else
                    'document_sets/update_general'
-                 end
+      end
 
       format.turbo_stream { render template }
     end
@@ -230,18 +228,18 @@ class DocumentSetsController < ApplicationController
 
   def filtered_set_works
     @ordering = (params[:order] || 'ASC').downcase.to_sym
-    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+    @ordering = [ :asc, :desc ].include?(@ordering) ? @ordering : :desc
 
     set_works = @collection.works
     collection_works = @collection.collection.works
 
     works_scope = if params[:show] == 'included'
                     set_works
-                  elsif params[:show] == 'not_included'
+    elsif params[:show] == 'not_included'
                     collection_works.where.not(id: set_works.select(:id))
-                  else
+    else
                     collection_works
-                  end
+    end
 
     works_scope = works_scope.includes(:work_statistic).reorder(title: @ordering)
 

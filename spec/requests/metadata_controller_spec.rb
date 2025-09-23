@@ -7,7 +7,7 @@ describe MetadataController do
 
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
-  let(:original_metadata) { [{ label: 'Label', value: 'Value' }].to_json }
+  let(:original_metadata) { [ { label: 'Label', value: 'Value' } ].to_json }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, original_metadata: original_metadata) }
 
   describe '#example' do
@@ -39,7 +39,7 @@ describe MetadataController do
     let(:action_path) { collection_metadata_create_path }
     let(:file) do
       result = Work::Metadata::ExportCsv.new(collection: collection, works: Work.where(id: work.id)).call
-      temp_file = Tempfile.new(['metadata', '.csv'])
+      temp_file = Tempfile.new([ 'metadata', '.csv' ])
       temp_file.write(result.csv_string)
       temp_file.rewind
       Rack::Test::UploadedFile.new(temp_file.path, 'text/csv')
