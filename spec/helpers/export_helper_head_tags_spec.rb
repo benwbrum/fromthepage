@@ -61,7 +61,7 @@ describe ExportHelper do
       it 'should handle multiple head elements correctly' do
         result = xml_to_export_tei(xml_text, context, 'TEST123')
 
-        # Should not have any head elements directly nested within p elements  
+        # Should not have any head elements directly nested within p elements
         expect(result).not_to match(/<p[^>]*>(\s|[^<])*<head[^>]*>/m)
 
         # Should have both head elements
