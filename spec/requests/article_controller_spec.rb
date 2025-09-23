@@ -259,10 +259,10 @@ describe ArticleController do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      
+
       # Find article nodes (not document nodes)
       article_nodes = json['nodes'].select { |n| n['id'].start_with?('S') }
-      
+
       # Verify that no article nodes contain bio field
       article_nodes.each do |node|
         expect(node).not_to have_key('bio')
