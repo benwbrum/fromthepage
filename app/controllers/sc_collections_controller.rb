@@ -257,6 +257,7 @@ class ScCollectionsController < ApplicationController
       ocr_text = ocr ? 'and OCR text ' : ''
       flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
+
     if @collection.text_entry?
       redirect_to collection_read_work_path(@collection.owner, @collection, work)
     else
