@@ -95,10 +95,10 @@ describe ScCollectionsController, type: :controller do
       # Mock the DEFAULT_PARAMS hash to track changes first
       default_params = { options: 0 }
       stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
-      
+
       # Mock OP_IGNORE_UNEXPECTED_EOF constant
       stub_const('OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF', 0x80000)
-      
+
       # Mock the OpenSSL constant check - allow it to be called with different arguments
       allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
       allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(true)
@@ -116,7 +116,7 @@ describe ScCollectionsController, type: :controller do
       # Mock the DEFAULT_PARAMS hash
       default_params = { options: 0 }
       stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
-      
+
       # Mock the OpenSSL constant check to return false - allow other calls too
       allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
       allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(false)
