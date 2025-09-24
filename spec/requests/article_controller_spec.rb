@@ -253,5 +253,20 @@ describe ArticleController do
       expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
       expect(File).to exist(article.d3js_file)
     end
+
+    it 'excludes bio field from article nodes in JSON response' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      # Find article nodes (not document nodes)
+      article_nodes = json['nodes'].select { |n| n['id'].start_with?('S') }
+
+      # Verify that no article nodes contain bio field
+      article_nodes.each do |node|
+        expect(node).not_to have_key('bio')
+      end
+    end
   end
 end
