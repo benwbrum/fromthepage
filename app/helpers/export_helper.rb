@@ -637,8 +637,8 @@ module ExportHelper
       # Check if paragraph contains only entryHeading elements and whitespace
       if entry_headings.length > 0
         non_heading_content = p.children.reject do |child|
-          child.node_type == :element && child.name == 'entryHeading' ||
-          child.node_type == :text && child.value.strip.empty?
+          (child.node_type == :element && child.name == 'entryHeading') ||
+          (child.node_type == :text && child.value.strip.empty?)
         end
 
         # If paragraph contains only headings (and whitespace), replace with head elements
