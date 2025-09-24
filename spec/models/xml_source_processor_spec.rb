@@ -133,55 +133,55 @@ RSpec.describe XmlSourceProcessor, type: :model do
       expect(page_multilink.source_text).to eq(expected)
     end
   end
-  
+
   describe 'validation' do
     before :each do
       DatabaseCleaner.clean_with(:truncation)
     end
-    
+
     let(:collection) { create(:collection) }
     let(:work) { create(:work, collection: collection) }
-    
+
     # Text with unbalanced brackets that would normally cause validation errors
     let(:problematic_text) { 'MEDBREY[[SIC] and other [[ unbalanced brackets' }
-    
+
     context 'regular collections' do
       let(:page) { create(:page, work: work, source_text: problematic_text) }
-      
+
       it 'should validate subject linking syntax and add errors' do
         page.validate_source
         expect(page.errors).not_to be_empty
         expect(page.errors[:base]).to include(match(/Subject Linking Error/))
       end
     end
-    
+
     context 'field-based collections' do
       let(:field_based_collection) { create(:collection, field_based: true) }
       let(:field_based_work) { create(:work, collection: field_based_collection) }
       let(:field_based_page) { create(:page, work: field_based_work, source_text: problematic_text) }
-      
+
       it 'should skip subject linking validation' do
         field_based_page.validate_source
         expect(field_based_page.errors).to be_empty
       end
     end
-    
+
     context 'collections with subjects disabled' do
       let(:subjects_disabled_collection) { create(:collection, subjects_disabled: true) }
       let(:subjects_disabled_work) { create(:work, collection: subjects_disabled_collection) }
       let(:subjects_disabled_page) { create(:page, work: subjects_disabled_work, source_text: problematic_text) }
-      
+
       it 'should skip subject linking validation' do
         subjects_disabled_page.validate_source
         expect(subjects_disabled_page.errors).to be_empty
       end
     end
-    
+
     context 'translation validation' do
       let(:field_based_collection) { create(:collection, field_based: true) }
       let(:field_based_work) { create(:work, collection: field_based_collection) }
       let(:field_based_page) { create(:page, work: field_based_work, source_translation: problematic_text) }
-      
+
       it 'should skip subject linking validation for translations in field-based collections' do
         field_based_page.validate_source_translation
         expect(field_based_page.errors).to be_empty

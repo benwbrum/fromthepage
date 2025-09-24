@@ -97,17 +97,17 @@ describe "collection settings js tasks", order: :defined do
     work = @collection.works.first
     field_page = work.pages.first
     visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
-    
+
     # This should not cause a validation error even though it has unbalanced brackets
     page.fill_in('fields_1_first-field', with: 'MEDBREY[[SIC] - problematic text with unbalanced brackets')
     page.fill_in('fields_2_second-field', with: 'Another field with [[unbalanced brackets')
     find('#save_button_top').click
-    
+
     # Should succeed without showing "Subject Linking Error" or 500 error
     expect(page).not_to have_content('Subject Linking Error')
     expect(page).not_to have_content('500')
     expect(page).not_to have_content('undefined method')
-    
+
     # Should show successful save
     expect(page).to have_content('Saved')
   end
