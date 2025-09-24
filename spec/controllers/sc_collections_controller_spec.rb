@@ -92,15 +92,16 @@ describe ScCollectionsController, type: :controller do
     end
 
     it 'sets OpenSSL flag to ignore unexpected EOF when available' do
-      # Mock the OpenSSL constant check
-      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(true)
-
-      # Mock the DEFAULT_PARAMS hash to track changes
+      # Mock the DEFAULT_PARAMS hash to track changes first
       default_params = { options: 0 }
       stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
-
+      
       # Mock OP_IGNORE_UNEXPECTED_EOF constant
       stub_const('OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF', 0x80000)
+      
+      # Mock the OpenSSL constant check - allow it to be called with different arguments
+      allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
+      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(true)
 
       # Mock URI.open
       allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
@@ -112,12 +113,13 @@ describe ScCollectionsController, type: :controller do
     end
 
     it 'does not set OpenSSL flag when not available' do
-      # Mock the OpenSSL constant check to return false
-      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(false)
-
       # Mock the DEFAULT_PARAMS hash
       default_params = { options: 0 }
       stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
+      
+      # Mock the OpenSSL constant check to return false - allow other calls too
+      allow(OpenSSL::SSL).to receive(:const_defined?).and_call_original
+      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(false)
 
       # Mock URI.open
       allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
