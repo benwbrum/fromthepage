@@ -94,6 +94,10 @@ describe "collection settings js tasks", order: :defined do
   end
 
   it "handles unbalanced brackets in field-based works without validation errors" do
+    # Ensure collection is field-based before testing
+    @collection.update!(field_based: true)
+    expect(@collection.field_based).to be true
+
     work = @collection.works.first
     field_page = work.pages.first
     visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)

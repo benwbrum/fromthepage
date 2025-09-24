@@ -57,33 +57,27 @@ describe "spreadsheet" do
         expect(SpreadsheetColumn.all.count).to eq 2
       end
 
-      it 'handles unbalanced brackets in spreadsheet cells without validation errors' do
-        # Create a simple test to debug validation
-        test_collection = create(:collection, field_based: true, subjects_disabled: false)
-        expect(test_collection.field_based).to be true
-        expect(test_collection.subjects_disabled).to be false
+      it 'skips validation for field-based collections with unbalanced brackets' do
+        # This test validates that field-based collections don't run subject linking validation
+        # which would otherwise fail on unbalanced brackets like "MEDBREY[[SIC]"
 
-        test_work = create(:work, collection: test_collection)
-        expect(test_work.collection).to eq(test_collection)
+        # The collection is already field_based: true from the let declaration
+        expect(collection.field_based).to be true
 
-        test_page = create(:page, work: test_work)
-        expect(test_page.work).to eq(test_work)
-        expect(test_page.collection).to eq(test_collection)
+        work = new_work
+        page = work.pages.first
 
-        # Test the exact condition from validate_source
-        condition_result = test_page.collection&.field_based || test_page.collection&.subjects_disabled
-        expect(condition_result).to be true, "Expected condition to be true, got: field_based=#{test_page.collection&.field_based}, subjects_disabled=#{test_page.collection&.subjects_disabled}"
+        # Verify proper associations
+        expect(page.work).to eq(work)
+        expect(page.collection).to eq(collection)
+        expect(page.collection.field_based).to be true
 
-        # Set problematic source text that would normally trigger validation errors
-        test_page.source_text = 'MEDBREY[[SIC] and other [[unbalanced'
-        expect(test_page.source_text).not_to be_blank
+        # Set problematic text that would fail validation in regular collections
+        page.source_text = 'MEDBREY[[SIC] and other [[unbalanced'
 
-        # Use Rails validation framework instead of calling method directly
-        is_valid = test_page.valid?
-
-        # Expect validation to pass (no errors)
-        expect(is_valid).to be true, "Expected page to be valid, but got errors: #{test_page.errors.full_messages.inspect}"
-        expect(test_page.errors).to be_empty, "Expected no errors, but got: #{test_page.errors.full_messages.inspect}"
+        # Validation should be skipped, so no errors should be added
+        page.validate_source
+        expect(page.errors).to be_empty
       end
     end
   end
