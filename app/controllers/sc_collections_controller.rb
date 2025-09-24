@@ -121,7 +121,7 @@ class ScCollectionsController < ApplicationController
       @sc_manifest = if version == 3
                        ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
                      else
-                       ScManifest.manifest_for_at_id(at_id)
+        ScManifest.manifest_for_at_id(at_id)
                      end
     rescue ArgumentError
       redirect_to action: 'explore_collection', at_id: at_id
@@ -210,7 +210,7 @@ class ScCollectionsController < ApplicationController
     @sc_manifest = if version == 3
                      ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
                    else
-                     ScManifest.manifest_for_at_id(at_id)
+      ScManifest.manifest_for_at_id(at_id)
                    end
     work = nil
     if params[:sc_manifest][:collection_id] == 'sc_collection'
