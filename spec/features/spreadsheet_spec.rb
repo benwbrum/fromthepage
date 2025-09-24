@@ -58,28 +58,32 @@ describe "spreadsheet" do
       end
 
       it 'handles unbalanced brackets in spreadsheet cells without validation errors' do
-        set_up_spreadsheet_field(owner, collection)
-        set_up_columns(owner, collection)
+        # Create a simple test to debug validation
+        test_collection = create(:collection, field_based: true, subjects_disabled: false)
+        expect(test_collection.field_based).to be true
+        expect(test_collection.subjects_disabled).to be false
 
-        # Navigate to transcription page
-        work = new_work
-        page_to_transcribe = work.pages.first
-        visit collection_transcribe_page_path(owner, collection, work, page_to_transcribe)
+        test_work = create(:work, collection: test_collection)
+        expect(test_work.collection).to eq(test_collection)
 
-        # This simulates the actual error case from the logs - unbalanced brackets in spreadsheet data
-        # The problematic data was: "MEDBREY[[SIC]" which has unbalanced brackets
+        test_page = create(:page, work: test_work)
+        expect(test_page.work).to eq(test_work)
+        expect(test_page.collection).to eq(test_collection)
 
-        # Note: The actual spreadsheet input mechanism may require different interaction
-        # This test validates that the server-side validation doesn't fail
-        problematic_data = 'MEDBREY[[SIC] and other [[unbalanced'
+        # Test the exact condition from validate_source
+        condition_result = test_page.collection&.field_based || test_page.collection&.subjects_disabled
+        expect(condition_result).to be true, "Expected condition to be true, got: field_based=#{test_page.collection&.field_based}, subjects_disabled=#{test_page.collection&.subjects_disabled}"
 
-        # Create a page with problematic spreadsheet content to test validation
-        page_to_transcribe.source_text = problematic_data
+        # Set problematic source text that would normally trigger validation errors
+        test_page.source_text = 'MEDBREY[[SIC] and other [[unbalanced'
+        expect(test_page.source_text).not_to be_blank
 
-        # This should not raise validation errors for field-based collections
-        expect { page_to_transcribe.validate_source }.not_to raise_error
-        page_to_transcribe.validate_source
-        expect(page_to_transcribe.errors).to be_empty
+        # Use Rails validation framework instead of calling method directly
+        is_valid = test_page.valid?
+
+        # Expect validation to pass (no errors)
+        expect(is_valid).to be true, "Expected page to be valid, but got errors: #{test_page.errors.full_messages.inspect}"
+        expect(test_page.errors).to be_empty, "Expected no errors, but got: #{test_page.errors.full_messages.inspect}"
       end
     end
   end
