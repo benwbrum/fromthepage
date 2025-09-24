@@ -199,6 +199,8 @@ fr:
       user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque œuvre, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
       voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
       voice_recognition_description: Disponible uniquement avec le navigateur Web Chrome.
+      legend: Légende
+      legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
     edit_privacy:
       api_access: Accès API
       api_access_description: Autoriser l'accès aux transcriptions via l'API IIIF

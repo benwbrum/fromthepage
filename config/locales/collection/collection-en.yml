@@ -200,7 +200,7 @@ en:
       voice_recognition: Enable speech to text
       voice_recognition_description: Only available with the Chrome web browser.
       legend: Legend
-      legend_description: HTML content to display on each page view to provide context or guidance for transcribers. This will appear below the transcription on every page in the collection.
+      legend_description: HTML content to display on each page view to provide context for readers. This will appear below the transcription in the page overview.
     edit_privacy:
       api_access: API access
       api_access_description: Allow access to transcriptions via IIIF API.
