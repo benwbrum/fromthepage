@@ -146,7 +146,7 @@ RSpec.describe XmlSourceProcessor, type: :model do
     let(:problematic_text) { 'MEDBREY[[SIC] and other [[ unbalanced brackets' }
 
     context 'regular collections' do
-      let(:page) { create(:page, work: work, source_text: problematic_text) }
+      let(:page) { build(:page, work: work, source_text: problematic_text) }
 
       it 'should validate subject linking syntax and add errors' do
         page.validate_source
@@ -158,7 +158,7 @@ RSpec.describe XmlSourceProcessor, type: :model do
     context 'field-based collections' do
       let(:field_based_collection) { create(:collection, field_based: true) }
       let(:field_based_work) { create(:work, collection: field_based_collection) }
-      let(:field_based_page) { create(:page, work: field_based_work, source_text: problematic_text) }
+      let(:field_based_page) { build(:page, work: field_based_work, source_text: problematic_text) }
 
       it 'should skip subject linking validation' do
         field_based_page.validate_source
@@ -169,7 +169,7 @@ RSpec.describe XmlSourceProcessor, type: :model do
     context 'collections with subjects disabled' do
       let(:subjects_disabled_collection) { create(:collection, subjects_disabled: true) }
       let(:subjects_disabled_work) { create(:work, collection: subjects_disabled_collection) }
-      let(:subjects_disabled_page) { create(:page, work: subjects_disabled_work, source_text: problematic_text) }
+      let(:subjects_disabled_page) { build(:page, work: subjects_disabled_work, source_text: problematic_text) }
 
       it 'should skip subject linking validation' do
         subjects_disabled_page.validate_source
@@ -180,7 +180,7 @@ RSpec.describe XmlSourceProcessor, type: :model do
     context 'translation validation' do
       let(:field_based_collection) { create(:collection, field_based: true) }
       let(:field_based_work) { create(:work, collection: field_based_collection) }
-      let(:field_based_page) { create(:page, work: field_based_work, source_translation: problematic_text) }
+      let(:field_based_page) { build(:page, work: field_based_work, source_translation: problematic_text) }
 
       it 'should skip subject linking validation for translations in field-based collections' do
         field_based_page.validate_source_translation
