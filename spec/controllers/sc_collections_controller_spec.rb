@@ -12,9 +12,9 @@ describe ScCollectionsController, type: :controller do
 
     it 'fetches manifest with custom headers for SSL compatibility' do
       expected_options = {
-        "Accept-Encoding" => "identity",
-        "User-Agent"      => "FromThePage-IIIF/1.0",
-        "Connection"      => "close",
+        'Accept-Encoding' => 'identity',
+        'User-Agent' => 'FromThePage-IIIF/1.0',
+        'Connection' => 'close',
         open_timeout: 10,
         read_timeout: 20,
         ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER
@@ -47,11 +47,9 @@ describe ScCollectionsController, type: :controller do
       call_count = 0
       allow(URI).to receive(:open) do
         call_count += 1
-        if call_count <= 1
-          raise OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading')
-        else
-          double(read: mock_manifest_content)
-        end
+        raise OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading') if call_count <= 1
+
+        double(read: mock_manifest_content)
       end
 
       result = controller.send(:fetch_manifest, manifest_url)
@@ -63,11 +61,9 @@ describe ScCollectionsController, type: :controller do
       call_count = 0
       allow(URI).to receive(:open) do
         call_count += 1
-        if call_count <= 1
-          raise EOFError.new('unexpected end of file')
-        else
-          double(read: mock_manifest_content)
-        end
+        raise EOFError.new('unexpected end of file') if call_count <= 1
+
+        double(read: mock_manifest_content)
       end
 
       result = controller.send(:fetch_manifest, manifest_url)
@@ -78,9 +74,9 @@ describe ScCollectionsController, type: :controller do
     it 'raises error after 2 failed attempts' do
       allow(URI).to receive(:open).and_raise(OpenSSL::SSL::SSLError.new('SSL_read: unexpected eof while reading'))
 
-      expect {
+      expect do
         controller.send(:fetch_manifest, manifest_url)
-      }.to raise_error(OpenSSL::SSL::SSLError)
+      end.to raise_error(OpenSSL::SSL::SSLError)
 
       expect(URI).to have_received(:open).twice
     end
@@ -88,11 +84,48 @@ describe ScCollectionsController, type: :controller do
     it 'does not retry on other types of errors' do
       allow(URI).to receive(:open).and_raise(StandardError.new('Some other error'))
 
-      expect {
+      expect do
         controller.send(:fetch_manifest, manifest_url)
-      }.to raise_error(StandardError, 'Some other error')
+      end.to raise_error(StandardError, 'Some other error')
 
       expect(URI).to have_received(:open).once
+    end
+
+    it 'sets OpenSSL flag to ignore unexpected EOF when available' do
+      # Mock the OpenSSL constant check
+      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(true)
+
+      # Mock the DEFAULT_PARAMS hash to track changes
+      default_params = { options: 0 }
+      stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
+
+      # Mock OP_IGNORE_UNEXPECTED_EOF constant
+      stub_const('OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF', 0x80000)
+
+      # Mock URI.open
+      allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
+
+      controller.send(:fetch_manifest, manifest_url)
+
+      # Verify the flag was set
+      expect(default_params[:options] & OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF).to eq(OpenSSL::SSL::OP_IGNORE_UNEXPECTED_EOF)
+    end
+
+    it 'does not set OpenSSL flag when not available' do
+      # Mock the OpenSSL constant check to return false
+      allow(OpenSSL::SSL).to receive(:const_defined?).with(:OP_IGNORE_UNEXPECTED_EOF).and_return(false)
+
+      # Mock the DEFAULT_PARAMS hash
+      default_params = { options: 0 }
+      stub_const('OpenSSL::SSL::SSLContext::DEFAULT_PARAMS', default_params)
+
+      # Mock URI.open
+      allow(URI).to receive(:open).and_return(double(read: mock_manifest_content))
+
+      controller.send(:fetch_manifest, manifest_url)
+
+      # Verify the flag was not modified
+      expect(default_params[:options]).to eq(0)
     end
   end
 end
