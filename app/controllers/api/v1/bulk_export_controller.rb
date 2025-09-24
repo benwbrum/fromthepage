@@ -100,11 +100,15 @@ module Api::V1
         if bulk_export
           case bulk_export.status
           when BulkExport::Status::FINISHED
-            send_file(
-              bulk_export.zip_file_name,
-              filename: 'fromthepage_export.zip',
-              content_type: 'application/zip'
-            )
+            if File.exist?(bulk_export.zip_file_name)
+              send_file(
+                bulk_export.zip_file_name,
+                filename: 'fromthepage_export.zip',
+                content_type: 'application/zip'
+              )
+            else
+              render status: 410, json: "Bulk export #{bulk_export_id} file has been deleted. Please start a new export."
+            end
           when BulkExport::Status::CLEANED
             render status: 410, json: "Bulk export #{bulk_export_id} has been deleted.  Please start a new export."
           when BulkExport::Status::ERROR
