@@ -38,7 +38,7 @@ describe "spreadsheet" do
   let(:owner) { create(:owner) }
   let(:collection) { create(:collection, owner_user_id: owner.id, field_based: true) }
 
-  let(:new_work) { create(:work, :with_pages, collection_id: collection.id) }
+  let(:new_work) { create(:work, :with_pages, collection: collection) }
 
   describe 'configuration' do
     it 'adds a spreadsheet field to a field-based collection' do
@@ -67,9 +67,9 @@ describe "spreadsheet" do
         work = new_work
         page = work.pages.first
 
-        # Verify proper associations
+        # Verify proper associations - check IDs instead of object identity
         expect(page.work).to eq(work)
-        expect(page.collection).to eq(collection)
+        expect(page.collection.id).to eq(collection.id)
         expect(page.collection.field_based).to be true
 
         # Set problematic text that would fail validation in regular collections
