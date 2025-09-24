@@ -56,6 +56,31 @@ describe "spreadsheet" do
         expect(page).to have_content("Spreadsheet Configuration")
         expect(SpreadsheetColumn.all.count).to eq 2
       end
+      
+      it 'handles unbalanced brackets in spreadsheet cells without validation errors' do
+        set_up_spreadsheet_field(owner, collection)
+        set_up_columns(owner, collection)
+        
+        # Navigate to transcription page
+        work = new_work
+        page_to_transcribe = work.pages.first
+        visit collection_transcribe_page_path(owner, collection, work, page_to_transcribe)
+        
+        # This simulates the actual error case from the logs - unbalanced brackets in spreadsheet data
+        # The problematic data was: "MEDBREY[[SIC]" which has unbalanced brackets
+        
+        # Note: The actual spreadsheet input mechanism may require different interaction
+        # This test validates that the server-side validation doesn't fail
+        problematic_data = 'MEDBREY[[SIC] and other [[unbalanced'
+        
+        # Create a page with problematic spreadsheet content to test validation
+        page_to_transcribe.source_text = problematic_data
+        
+        # This should not raise validation errors for field-based collections
+        expect { page_to_transcribe.validate_source }.not_to raise_error
+        page_to_transcribe.validate_source
+        expect(page_to_transcribe.errors).to be_empty
+      end
     end
   end
 end
