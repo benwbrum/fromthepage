@@ -104,11 +104,11 @@ class ScCollectionsController < ApplicationController
     rescue StandardError => e
       logger.error(e.message + "\n\n" + e.backtrace.join("\n"))
       flash[:error] = case params[:source]
-                      when 'contentdm'
+      when 'contentdm'
                         t('.no_manifest_exist', url: params[:source_url])
-                      else
+      else
                         t('.please_enter_valid_url')
-                      end
+      end
       redirect_back fallback_location: { action: 'import' }
     end
   end
@@ -120,9 +120,9 @@ class ScCollectionsController < ApplicationController
     begin
       @sc_manifest = if version == 3
                        ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
-                     else
+      else
         ScManifest.manifest_for_at_id(at_id)
-                     end
+      end
     rescue ArgumentError
       redirect_to action: 'explore_collection', at_id: at_id
       return
@@ -209,9 +209,9 @@ class ScCollectionsController < ApplicationController
     version = detect_version(at_id)
     @sc_manifest = if version == 3
                      ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
-                   else
+    else
       ScManifest.manifest_for_at_id(at_id)
-                   end
+    end
     work = nil
     if params[:sc_manifest][:collection_id] == 'sc_collection'
       set_sc_collection
