@@ -85,6 +85,7 @@
         preserveViewport: true,
         showReferenceStrip: #{@page.nil?},
         referenceStripScroll: 'vertical',
+        referenceStripSizeRatio: #{@page.nil? ? '0.2' : '0'},
         sequenceMode: #{@page.nil?},
         tileSources: #{raw(osd_source(@page, @work))}
       });

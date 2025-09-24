@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe DashboardHelper, type: :helper do
-
   describe '#time_spent_in_date_range' do
     user_id = User.first.id
     let(:start_date) { Date.new(2023, 1, 1) }
@@ -12,7 +11,7 @@ RSpec.describe DashboardHelper, type: :helper do
 
       expected_result = '16 hours and 40 minutes'
       result = helper.time_spent_in_date_range(user_id, start_date, end_date)
-      
+
       expect(result).to eq(expected_result)
     end
 
@@ -20,9 +19,9 @@ RSpec.describe DashboardHelper, type: :helper do
       create(:ahoy_activity_summary, user_id: user_id, created_at: start_date, minutes: 120)
       create(:ahoy_activity_summary, user_id: user_id, created_at: end_date, minutes: 180)
       create(:ahoy_activity_summary, user_id: user_id, created_at: Date.new(2023, 2, 1), minutes: 90)
-      
+
       result = helper.minutes_worked_in_range(user_id, start_date, end_date)
-      
+
       expect(result).to be_an(Integer)
     end
   end
@@ -35,5 +34,4 @@ RSpec.describe DashboardHelper, type: :helper do
       expect(helper.formatted_time(121)).to eq('2 hours and 1 minutes')
     end
   end
-
 end

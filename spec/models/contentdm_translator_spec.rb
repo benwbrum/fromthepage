@@ -3,15 +3,14 @@ require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
     describe '#cdm_url_to_iiif' do
+        let(:item_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
+        let(:collection_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
+        let(:repository_url) { 'https://digital.archives.alabama.gov' }
 
-        let(:item_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
-        let(:collection_url){ 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
-        let(:repository_url){ 'https://digital.archives.alabama.gov' }
-        
-        let(:vanity_item){ 'http://www.digitalindy.org/cdm/compoundobject/collection/ahs/id/200/rec/3' }
-        let(:vanity_collection){ 'http://www.digitalindy.org/cdm/landingpage/collection/ahs' }
-        let(:vanity_collection_2){ 'http://www.digitalindy.org/cdm/search/collection/ahs' }
-        let(:vanity_repository){ 'http://www.digitalindy.org' }
+        let(:vanity_item) { 'http://www.digitalindy.org/cdm/compoundobject/collection/ahs/id/200/rec/3' }
+        let(:vanity_collection) { 'http://www.digitalindy.org/cdm/landingpage/collection/ahs' }
+        let(:vanity_collection_2) { 'http://www.digitalindy.org/cdm/search/collection/ahs' }
+        let(:vanity_repository) { 'http://www.digitalindy.org' }
 
         it "returns a message for a bad URL" do
             expect { ContentdmTranslator.cdm_url_to_iiif('BadUrl') }.to raise_error StandardError

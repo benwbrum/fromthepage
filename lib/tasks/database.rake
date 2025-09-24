@@ -3,7 +3,7 @@ require 'fileutils'
 namespace :fromthepage do
   namespace :export do
     desc 'Dump collections by SLUG (USAGE: rake fromthepage:export:database_dump[slug-1,slug-2])'
-    task :database_dump, [:slugs] => :environment do |_t, args|
+    task :database_dump, [ :slugs ] => :environment do |_t, args|
       slugs = (args[:slugs] || '').split(',').map(&:strip)
 
       current_time = Time.current.to_i
@@ -23,7 +23,7 @@ namespace :fromthepage do
 
   namespace :import do
     desc 'Import collections dump (USAGE: rake fromthepage:import:database_dump[path_to_dump])'
-    task :database_dump, [:path_to_dump] => :environment do |_t, args|
+    task :database_dump, [ :path_to_dump ] => :environment do |_t, args|
       path_to_dump = args[:path_to_dump]
       path = Rails.root.join('tmp', 'dumps', path_to_dump)
 

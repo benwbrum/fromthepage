@@ -3,8 +3,8 @@ class PageController < ApplicationController
   require 'image_helper'
   include ImageHelper
 
-  protect_from_forgery except: [:set_page_title]
-  before_action :authorized?, except: [:alto_xml]
+  protect_from_forgery except: [ :set_page_title ]
+  before_action :authorized?, except: [ :alto_xml ]
 
   def authorized?
     if user_signed_in?
@@ -87,7 +87,7 @@ class PageController < ApplicationController
       string['ID'] = "string_#{i}"
     end
 
-    render :plain => doc.to_xml, :layout => false, :content_type => 'text/xml'
+    render plain: doc.to_xml, layout: false, content_type: 'text/xml'
   end
 
   private
@@ -101,5 +101,4 @@ class PageController < ApplicationController
       :translation_status
     )
   end
-
 end

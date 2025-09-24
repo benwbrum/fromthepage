@@ -23,7 +23,7 @@ class Collection::Blankout < ApplicationInteractor
   def destroy_items
     articles = Article.where(collection_id: @collection.id)
     deeds = Deed.where(page_id: @pages.select(:id)).or(Deed.where(article_id: articles.select(:id)))
-    categories = Category.where(collection_id: @collection.id).where.not(title: ['People', 'Places'])
+    categories = Category.where(collection_id: @collection.id).where.not(title: [ 'People', 'Places' ])
     notes = Note.where(page_id: @pages.select(:id))
     page_article_links = PageArticleLink.where(page_id: @pages.select(:id))
 

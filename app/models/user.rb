@@ -57,12 +57,12 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1,
-         :omniauth_providers => [:google_oauth2,:saml]
+         :omniauthable, :encryptable, encryptor: :restful_authentication_sha1,
+         omniauth_providers: [ :google_oauth2, :saml ]
 
   include OwnerStatistic
   extend FriendlyId
-  friendly_id :slug_candidates, :use => [:slugged, :history]
+  friendly_id :slug_candidates, use: [ :slugged, :history ]
 
   attr_accessor :login_id
 
@@ -76,28 +76,28 @@ class User < ApplicationRecord
   has_many :bulk_exports
   has_many :document_uploads
   has_many :external_api_requests
-  has_many :flags, :foreign_key => "author_user_id"
-  has_one :notification, :dependent => :destroy
+  has_many :flags, foreign_key: 'author_user_id'
+  has_one :notification, dependent: :destroy
 
   has_many :collection_blocks, dependent: :destroy
   has_many :blocked_collections, through: :collection_blocks, source: :collection
   has_many :ahoy_activity_summaries
 
   has_and_belongs_to_many(:scribe_works,
-                          :join_table => 'transcribe_authorizations',
-                          :class_name => 'Work')
+                          join_table: 'transcribe_authorizations',
+                          class_name: 'Work')
   has_and_belongs_to_many(:owned_collections,
-                          :join_table => 'collection_owners',
-                          :class_name => 'Collection')
+                          join_table: 'collection_owners',
+                          class_name: 'Collection')
   has_and_belongs_to_many(:document_set_collaborations,
-                          :join_table => 'document_set_collaborators',
-                          :class_name => 'DocumentSet')
+                          join_table: 'document_set_collaborators',
+                          class_name: 'DocumentSet')
   has_and_belongs_to_many(:collection_collaborations,
-                          :join_table => 'collection_collaborators',
-                          :class_name => 'Collection')
+                          join_table: 'collection_collaborators',
+                          class_name: 'Collection')
   has_and_belongs_to_many(:review_collections,
-                          :join_table => 'collection_reviewers',
-                          :class_name => 'Collection')
+                          join_table: 'collection_reviewers',
+                          class_name: 'Collection')
 
   has_many :page_versions, -> { order(created_on: :desc) }
   has_many :article_versions, -> { order(created_on: :desc) }
@@ -105,21 +105,21 @@ class User < ApplicationRecord
   has_many :deeds
 
   has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
-    class_name: "Collection",  :foreign_key => "owner_user_id"
+    class_name: 'Collection',  foreign_key: 'owner_user_id'
   has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty },
-    class_name: "DocumentSet", :foreign_key => "owner_user_id"
+    class_name: 'DocumentSet', foreign_key: 'owner_user_id'
 
-  has_many :metadata_description_versions, :dependent => :destroy
+  has_many :metadata_description_versions, dependent: :destroy
 
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
 
   scope :with_owner_works, -> { joins(:uploaded_works).distinct }
-  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
-  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
+  scope :findaproject_orgs, -> { owners.where(account_type: [ 'Large Institution', 'Small Organization' ]) }
+  scope :findaproject_individuals, -> { owners.where(account_type: [ 'Legacy', 'Individual Researcher' ]) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
-  scope :active_mailers,   -> { where(activity_email: true)}
+  scope :active_mailers,   -> { where(activity_email: true) }
 
   validates :login, presence: true,
                     uniqueness: { case_sensitive: false },
@@ -161,10 +161,10 @@ class User < ApplicationRecord
   end
 
   def email_does_not_match_denylist
-    raw = PageBlock.where(view: "email_denylist").first
+    raw = PageBlock.where(view: 'email_denylist').first
     if raw
       patterns = raw.html.split(/\s+/)
-      if patterns.detect {|pattern| self.email.match(/#{pattern}/) }
+      if patterns.detect { |pattern| self.email.match(/#{pattern}/) }
         errors.add(:email, 'error 38')
       end
     end
@@ -214,9 +214,9 @@ class User < ApplicationRecord
       user = User.where(email: data['email3']).first
     end
 
-    logger.info("User record before save:")
+    logger.info('User record before save:')
     logger.info(user.to_json)
-    logger.info("Data from SAML response:")
+    logger.info('Data from SAML response:')
     logger.info(data.to_json)
 
     # update the user's SSO if they don't have one
@@ -230,7 +230,7 @@ class User < ApplicationRecord
       email = data['email3'] unless data['email3'].blank?
       email = data['email2'] unless data['email2'].blank?
       email = data['email'] unless data['email'].blank?
-      login = email.gsub(/@.*/,'')
+      login = email.gsub(/@.*/, '')
       # avoid duplicate logins
       while User.where(login: login).exists? do
         login += '_'
@@ -240,7 +240,7 @@ class User < ApplicationRecord
          login: login,
          email: email,
          external_id: data['external_id'],
-         password: Devise.friendly_token[0,20],
+         password: Devise.friendly_token[0, 20],
          display_name: data['name'],
          real_name: data['name'],
          sso_issuer: issuer
@@ -267,7 +267,7 @@ class User < ApplicationRecord
     Work.where(collection_id: all_owner_collections.select(:id))
   end
 
-  def can_transcribe?(work, collection=nil)
+  def can_transcribe?(work, collection = nil)
     return true if like_owner?(collection)
     collection ||= work.access_object(self) || work.collection
 
@@ -319,7 +319,7 @@ class User < ApplicationRecord
         self == obj.owner
       end
     end
-    return false
+    false
   end
 
   def display_name
@@ -335,13 +335,13 @@ class User < ApplicationRecord
   end
 
   def collections
-    self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
+    self.owned_collections + Collection.where(owner_user_id: self.id)# .all
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login_id)
-      where(conditions).where(["login = :value OR lower(email) = lower(:value)", { :value => login}]).first
+      where(conditions).where([ 'login = :value OR lower(email) = lower(:value)', { value: login } ]).first
     else
       where(conditions).first
     end
@@ -352,12 +352,12 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    document_sets.where(visibility: [:public, :read_only])
+    document_sets.where(visibility: [ :public, :read_only ])
   end
 
 
   def collections_and_document_sets
-    (collections + document_sets).sort_by {|obj| obj.title}
+    (collections + document_sets).sort_by { |obj| obj.title }
   end
 
   def visible_collections_and_document_sets(user)
@@ -371,11 +371,11 @@ class User < ApplicationRecord
     public_sets = self.unrestricted_document_sets
 
     if user
-      collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", user.id)
+      collaborator_collections = self.all_owner_collections.where(restricted: true).joins(:collaborators).where('collection_collaborators.user_id = ?', user.id)
 
-      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where("document_set_collaborators.user_id = ?", user.id)
+      collaborator_sets = self.document_sets.restricted.joins(:collaborators).where('document_set_collaborators.user_id = ?', user.id)
       parent_collaborator_sets = []
-      collaborator_collections.each{|c| parent_collaborator_sets += c.document_sets}
+      collaborator_collections.each { |c| parent_collaborator_sets += c.document_sets }
 
       (filtered_public_collections+collaborator_collections+public_sets+collaborator_sets+parent_collaborator_sets).uniq
     else
@@ -385,11 +385,11 @@ class User < ApplicationRecord
 
   def slug_candidates
     if self.slug
-      [:slug]
+      [ :slug ]
     else
       [
         :login,
-        [:login, :id]
+        [ :login, :id ]
       ]
     end
   end
@@ -407,7 +407,7 @@ class User < ApplicationRecord
     self.page_versions.each { |version| version.expunge }
     self.article_versions.each { |version| version.expunge }
     self.deeds.each { |deed| deed.destroy }
-    self.destroy!  #need to decide whether to truly delete users or not
+    self.destroy!  # need to decide whether to truly delete users or not
     self.flags.each { |flag| flag.revert_content! }
   end
 
@@ -417,11 +417,11 @@ class User < ApplicationRecord
     else
       self.login = "deleted_#{self.id}_#{self.login}"
       self.email = "deleted_#{self.email}"
-      self.display_name = "[deleted]"
+      self.display_name = '[deleted]'
       self.deleted = true
       self.admin = false
       self.owner = false
-      self.password = [*'A'..'Z'].sample(8).join
+      self.password = [ *'A'..'Z' ].sample(8).join
       self.save!
     end
   end
@@ -432,7 +432,7 @@ class User < ApplicationRecord
 
   def self.search(search)
     wildcard = "%#{search}%"
-    where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
+    where('display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?', wildcard, wildcard, wildcard, wildcard)
   end
 
   def create_notifications
@@ -478,7 +478,7 @@ class User < ApplicationRecord
   end
 
   def set_default_footer_block
-    self.footer_block = "For questions about this project, contact at."
+    self.footer_block = 'For questions about this project, contact at.'
     save
   end
 

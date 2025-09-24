@@ -234,7 +234,7 @@ class Database::Export::DumpBuilder < Database::Base
       thumb_url = record.picture_url(:thumb)&.delete_prefix('/')
       thumb_path = File.join(Rails.root.join('public', thumb_url || ''))
 
-      [picture_path, scaled_path, thumb_path].each do |file|
+      [ picture_path, scaled_path, thumb_path ].each do |file|
         FileUtils.cp(file, new_path) if File.file?(file)
       end
     end
@@ -251,7 +251,7 @@ class Database::Export::DumpBuilder < Database::Base
       thumb_url = picture_url&.gsub('.jpg', '_thumb.jpg')
       thumb_path = File.join(Rails.root.join('public', thumb_url || ''))
 
-      [picture_path, thumb_path].each do |file|
+      [ picture_path, thumb_path ].each do |file|
         FileUtils.cp(file, assets_path) if File.file?(file)
       end
     end
