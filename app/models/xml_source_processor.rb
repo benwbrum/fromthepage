@@ -3,11 +3,21 @@ module XmlSourceProcessor
     if self.source_text.blank?
       return
     end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
+      return
+    end
     validate_links(self.source_text)
   end
 
   def validate_source_translation
     if self.source_translation.blank?
+      return
+    end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
       return
     end
     validate_links(self.source_translation)
