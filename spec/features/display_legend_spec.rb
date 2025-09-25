@@ -4,11 +4,11 @@ describe "collection legend display" do
   let(:user) { create(:user) }
   let(:collection) { create(:collection, owner_user_id: user.id, legend: '<p>This is a test legend for the collection.</p>') }
   let(:work) { create(:work, owner_user_id: user.id, collection_id: collection.id) }
-  let(:page) { create(:page, work_id: work.id, title: 'Test Page') }
+  let(:test_page) { create(:page, work_id: work.id, title: 'Test Page') }
 
   it 'displays legend on page view when legend is present' do
     # Visit the display page
-    visit collection_display_page_path(collection.owner, collection, work, page.id)
+    visit collection_display_page_path(collection.owner, collection, work, test_page.id)
 
     expect(page).to have_content('Legend')
     expect(page).to have_content('This is a test legend for the collection.')
