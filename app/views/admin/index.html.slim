@@ -36,7 +36,7 @@ table.admin-grid.datagrid.striped
     tr
       td Hours Spent
       -@week_intervals.each do |week_interval|
-        td.aright = number_with_precision(@hours_spent_counts[week_interval], precision: 2)
+        td.aright = number_with_precision(@hours_spent_counts[week_interval], precision: 0)
 
 .section.admin-counters
   =link_to admin_collection_list_path do
