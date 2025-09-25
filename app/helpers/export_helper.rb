@@ -668,10 +668,10 @@ module ExportHelper
       gap = REXML::Element.new('head')
 
       # Use subtype attribute instead of depth for TEI compliance
-      if entryHeading.attributes["depth"]
-        gap.add_attribute("subtype", "level-#{entryHeading.attributes["depth"]}")
+      if entryHeading.attributes['depth']
+        gap.add_attribute('subtype', "level-#{entryHeading.attributes['depth']}")
       end
-      gap.add_text(entryHeading.attributes["title"])
+      gap.add_text(entryHeading.attributes['title'])
       entryHeading.replace_with(gap)
     end
     p_element.elements.each('//a') do |a|
