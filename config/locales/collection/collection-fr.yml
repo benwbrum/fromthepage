@@ -183,6 +183,8 @@ fr:
       forums_description: Permet aux collaborateurs de discuter de sujets entre eux et avec les propriétaires de projets via des forums de discussion.
       hide_completed: Masquer les œuvres terminés par défaut
       hide_completed_description: Masquer les œuvres entièrement transcrites ou traduites par défaut.
+      legend: Légende
+      legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_facets_description: Autoriser les utilisateurs à parcourir les œuvres de cette collection via les métadonnées.
@@ -199,8 +201,6 @@ fr:
       user_download_description: Ajoute un onglet de téléchargement visible par l'utilisateur à chaque œuvre, qui permet aux utilisateurs d'exporter la transcription du document dans des formats conviviaux pour les chercheurs tels que Microsoft Word ou PDF.
       voice_recognition: Discours en texte disponible pour la transcription (non compatible avec l'éditeur avancé)
       voice_recognition_description: Disponible uniquement avec le navigateur Web Chrome.
-      legend: Légende
-      legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
     edit_privacy:
       api_access: Accès API
       api_access_description: Autoriser l'accès aux transcriptions via l'API IIIF
