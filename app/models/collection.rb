@@ -19,6 +19,7 @@
 #  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
+#  legend                         :text(65535)
 #  license_key                    :string(255)
 #  link_help                      :text(65535)
 #  messageboard_slug              :string(255)
@@ -99,6 +100,7 @@ class Collection < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :legend, html: true, length: { maximum: 65535 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
