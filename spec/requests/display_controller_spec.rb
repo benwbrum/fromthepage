@@ -115,27 +115,27 @@ describe DisplayController do
     context 'with valid ranges' do
       it 'parses simple range' do
         result = controller.send(:parse_page_range, '3-7')
-        expect(result).to eq([3, 7])
+        expect(result).to eq([ 3, 7 ])
       end
 
       it 'parses range with pp prefix' do
         result = controller.send(:parse_page_range, 'pp3-7')
-        expect(result).to eq([3, 7])
+        expect(result).to eq([ 3, 7 ])
       end
 
       it 'parses range with p prefix' do
         result = controller.send(:parse_page_range, 'p3-7')
-        expect(result).to eq([3, 7])
+        expect(result).to eq([ 3, 7 ])
       end
 
       it 'parses single digit range' do
         result = controller.send(:parse_page_range, '1-2')
-        expect(result).to eq([1, 2])
+        expect(result).to eq([ 1, 2 ])
       end
 
       it 'parses multi-digit range' do
         result = controller.send(:parse_page_range, '15-25')
-        expect(result).to eq([15, 25])
+        expect(result).to eq([ 15, 25 ])
       end
     end
 

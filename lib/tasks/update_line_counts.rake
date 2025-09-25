@@ -1,6 +1,6 @@
 namespace :fromthepage do
-  desc "update line counts for pages and works [first_index,last_index]"
-  task :update_line_counts, [:first_index,:last_index] => :environment do |t,args|
+  desc 'update line counts for pages and works [first_index,last_index]'
+  task :update_line_counts, [ :first_index, :last_index ] => :environment do |t, args|
     first_index = args.first_index.to_i
     last_index = args.last_index.to_i
 
@@ -16,6 +16,5 @@ namespace :fromthepage do
         GC.start
       end
     end
-
-  end #end task
-end #end namespace
+  end # end task
+end # end namespace

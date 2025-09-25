@@ -1,10 +1,10 @@
 namespace :fromthepage do
   namespace :remediator do
-    desc "Fixes deleted subjects and update references"
+    desc 'Fixes deleted subjects and update references'
 
 
 
-    task :fix_subjects, [:collection_id] => :environment do |t, args|
+    task :fix_subjects, [ :collection_id ] => :environment do |t, args|
       Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
 
@@ -90,11 +90,11 @@ namespace :fromthepage do
       missing_article_hash = {}
 
       collection.pages.each do |page|
-        print "."
+        print '.'
         unless page.xml_text.blank?
-      #    page_url="#{url_stub}/#{page.work.slug}/#{page.id}"
+          #    page_url="#{url_stub}/#{page.work.slug}/#{page.id}"
           doc = REXML::Document.new(page.xml_text)
-          doc.elements.each("//link") do |e|
+          doc.elements.each('//link') do |e|
             title = e.attributes['target_title']
             id = e.attributes['target_id']
             article = collection.articles.where(id: id.to_i).first
@@ -104,7 +104,7 @@ namespace :fromthepage do
               # now we have a reference to a missing article, including title and id, as well as (possibly) the new article that replaced it
               entry = missing_article_hash[title]
               if entry.nil?
-                entry={ :ids => [], :new_article => nil, :pages => [] }
+                entry={ ids: [], new_article: nil, pages: [] }
               end
               entry[:ids] << id.to_i
               entry[:pages] << page
@@ -116,6 +116,5 @@ namespace :fromthepage do
       end
       missing_article_hash
     end
-
   end
 end

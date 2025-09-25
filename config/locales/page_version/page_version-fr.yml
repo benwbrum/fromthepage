@@ -12,6 +12,7 @@ fr:
       no_translation_provided: Aucune traduction fournie
       page_version_status_blank: vide
       page_version_status_incomplete: incomplet
+      page_version_status_needs_review: nécessite révision
       page_version_status_review: revoir
       page_version_status_transcribed: transcrit
       translation: Traduction

@@ -49,7 +49,7 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   RAKE = '/usr/bin/env rake'
-  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
+  UPGRADE_FORM_LINK = 'https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 
-  config.action_mailer.default_url_options =  { host: 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 end

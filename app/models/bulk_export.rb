@@ -88,11 +88,11 @@ class BulkExport < ApplicationRecord
   end
 
   def work_level?
-    self.attributes.detect{|k,v| k.match(/_work/) && v==true }
+    self.attributes.detect { |k, v| k.match(/_work/) && v==true }
   end
 
   def page_level?
-    self.attributes.detect{|k,v| k.match(/_page/) && v==true }
+    self.attributes.detect { |k, v| k.match(/_page/) && v==true }
   end
 
   def export_to_zip
@@ -101,11 +101,11 @@ class BulkExport < ApplicationRecord
 
     begin
       if self.work
-        works=[self.work]
+        works=[ self.work ]
       elsif self.document_set
-        works = self.document_set.works.includes(pages: [:notes, {page_versions: :user}])
+        works = self.document_set.works.includes(pages: [ :notes, { page_versions: :user } ])
       elsif self.collection
-        works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+        works = Work.includes(pages: [ :notes, { page_versions: :user } ]).where(collection_id: self.collection.id)
       else
         works = []
       end
@@ -157,12 +157,12 @@ class BulkExport < ApplicationRecord
     if File.exist?(log_file)
       File.read(log_file)
     else
-      "Log file has been cleaned"
+      'Log file has been cleaned'
     end
   end
 
   def zip_file_path
-    path = "/tmp/fromthepage_exports"
+    path = '/tmp/fromthepage_exports'
     FileUtils.mkdir_p(path)
 
     path
@@ -171,5 +171,4 @@ class BulkExport < ApplicationRecord
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
   end
-
 end

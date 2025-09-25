@@ -6,11 +6,11 @@ class TranscribeHelpPageBlock < ActiveRecord::Migration[5.0]
 
   def self.down
     pbs = PageBlock.find_all_by_view('transcribe_help')
-    pbs.each {|pb| pb.delete }
+    pbs.each { |pb| pb.delete }
   end
 
 
-  def self.make_block(controller, view, description, tag="right", default=nil)
+  def self.make_block(controller, view, description, tag = "right", default = nil)
     pb = PageBlock.new
     pb.controller=controller
     pb.view=view

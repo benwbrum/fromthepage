@@ -1,6 +1,6 @@
 class SearchAttempt::Lib::Utils
   def self.highlight_terms(transcription, search_string)
-    doc = Nokogiri::HTML::fragment(transcription)
+    doc = Nokogiri::HTML.fragment(transcription)
     words_regex = /\b(#{search_string.split(' ').join('|')})\b/i
 
     doc.traverse do |node|
@@ -73,7 +73,7 @@ class SearchAttempt::Lib::Utils
   def self.sanitize_and_format_search_string(search_string)
     return '' unless search_string.present?
 
-    CGI::escapeHTML(search_string)
+    CGI.escapeHTML(search_string)
   end
 
   def self.precise_search_string(search_string)

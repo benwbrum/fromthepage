@@ -12,7 +12,7 @@ describe Article::RenameJob do
   context 'from update' do
     let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
     let!(:article) do
-      create(:article, title: 'New', collection: collection, pages: [related_page])
+      create(:article, title: 'New', collection: collection, pages: [ related_page ])
     end
 
     let!(:source_article) do
@@ -23,7 +23,7 @@ describe Article::RenameJob do
     end
 
     let(:perform_worker) do
-      worker.perform(user_id: user.id, article_id: article.id, old_name: 'Original', new_name: 'New')
+      worker.perform(user_id: user.id, article_id: article.id, old_names: [ 'Original' ], new_name: 'New')
     end
 
     it 'updates source texts of related models' do
@@ -53,7 +53,7 @@ describe Article::RenameJob do
     end
     let!(:from_article) do
       create(:article, title: 'Duplicate', source_text: 'appended text', collection: collection,
-                       pages: [from_related_page])
+                       pages: [ from_related_page ])
     end
     let!(:article_article_link) do
       create(:article_article_link, source_article: from_source_article, target_article: from_article)
@@ -68,7 +68,7 @@ describe Article::RenameJob do
       worker.perform(
         user_id: user.id,
         article_id: from_article.id,
-        old_name: 'Duplicate',
+        old_names: [ 'Duplicate' ],
         new_name: 'Original',
         new_article_id: to_article.id
       )
@@ -96,7 +96,7 @@ describe Article::RenameJob do
   context 'from destroy' do
     let!(:related_page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
     let!(:article) do
-      create(:article, title: 'Original', collection: collection, pages: [related_page])
+      create(:article, title: 'Original', collection: collection, pages: [ related_page ])
     end
 
     let!(:source_article) do
@@ -107,7 +107,7 @@ describe Article::RenameJob do
     end
 
     let(:perform_worker) do
-      worker.perform(user_id: user.id, article_id: article.id, old_name: 'Original', new_name: '')
+      worker.perform(user_id: user.id, article_id: article.id, old_names: [ 'Original' ], new_name: '')
     end
 
     it 'removes links in texts and deletes article links' do

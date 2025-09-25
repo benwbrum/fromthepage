@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "IIIF Annotations API" do
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collection = @owner.all_owner_collections.first
