@@ -35,6 +35,7 @@ class AdminController < ApplicationController
     @contribution_counts = {}
     @activity_project_counts = {}
     @unique_contributor_counts = {}
+    @hours_spent_counts = {}
     @week_intervals=[ 1, 2, 4, 12, 26, 52, 104, 156, 208 ]
     @week_intervals.each do |weeks_ago|
       start_date = Date.yesterday - weeks_ago.weeks
@@ -43,6 +44,8 @@ class AdminController < ApplicationController
       @contribution_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).count
       @activity_project_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).distinct.count(:collection_id)
       @unique_contributor_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).distinct.count(:user_id)
+      minutes_spent = AhoyActivitySummary.where('date between ? and ?', start_date, end_date).sum(:minutes)
+      @hours_spent_counts[weeks_ago] = minutes_spent.to_f / 60
     end
 
     @version = ActiveRecord::Migrator.current_version
