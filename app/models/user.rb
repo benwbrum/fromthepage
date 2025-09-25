@@ -286,7 +286,7 @@ class User < ApplicationRecord
       obj=obj.work.collection
     end
 
-    if obj.review_type == Collection::ReviewType::RESTRICTED
+    if obj.review_type_restricted?
       obj.reviewers.include?(self) || self.like_owner?(obj)
     else
       true

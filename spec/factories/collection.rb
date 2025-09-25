@@ -26,5 +26,9 @@ FactoryBot.define do
     trait :with_picture do
       picture { Rack::Test::UploadedFile.new(Rails.root.join('test_data/uploads/collection_image.jpg'), 'image/jpeg') }
     end
+
+    trait :review_required do
+      review_type { :required }
+    end
   end
 end
