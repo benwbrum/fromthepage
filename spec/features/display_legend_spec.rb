@@ -18,7 +18,7 @@ describe "collection legend display" do
     # Create collection without legend
     collection_without_legend = create(:collection, owner_user_id: user.id, legend: '')
     work_without_legend = create(:work, owner_user_id: user.id, collection_id: collection_without_legend.id)
-    test_page_without_legend = create(:page, work_id: work_without_legend.id, title: 'Test Page Without Legend')
+    test_page_without_legend = create(:page, work_id: work_without_legend.id, title: 'Test Page With No Explanation')
 
     # Visit the display page
     visit collection_display_page_path(collection_without_legend.owner, collection_without_legend, work_without_legend, test_page_without_legend.id)
