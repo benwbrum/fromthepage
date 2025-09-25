@@ -19,7 +19,7 @@
 #  index_ia_leaves_on_page_id  (page_id)
 #
 class IaLeaf < ApplicationRecord
-  self.table_name = "ia_leaves"
+  self.table_name = 'ia_leaves'
   belongs_to :ia_work, optional: true
   belongs_to :page, optional: true
 
@@ -38,5 +38,4 @@ class IaLeaf < ApplicationRecord
   def iiif_image_info_url
     "https://iiif.archive.org/iiif/#{ia_work.book_id}$#{leaf_number}/info.json"
   end
-
 end

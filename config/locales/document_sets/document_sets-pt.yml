@@ -94,7 +94,7 @@ pt:
       all: Todas as obras
       cancel: Cancelar
       completed: Apenas obras concluídas
-      copy: Copiar (não cria obras duplicados)
+      copy: Copiar (não cria obras duplicadas)
       move: Jogada
       source_set: Conjunto de documentos de origem
       status_filter: O que funciona

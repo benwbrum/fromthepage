@@ -44,26 +44,26 @@ class EditorButton < ApplicationRecord
   end
 
   BUTTON_MAP = {
-    Keys::ABBR => ['<abbr expan="">'],
-    Keys::ADD => ['<add>', '<ins>'],
-    Keys::BOLD => ['<hi rend="bold">', '<b>'],
-    Keys::DATE => ['<date when="">'],
-    Keys::DEL => ['<del>'],
-    Keys::EXPAN => ['<expan abbr="">'],
-    Keys::FIG => ['<fig rend="hr">'],
-    Keys::FOOTNOTE => ['<footnote marker="*">'],
-    Keys::GAP => ['<gap>'],
-    Keys::HEAD => ['<head>'],
-    Keys::ITALIC => ['<hi rend="italics">', '<i>'],
-    Keys::SOFT_BREAK => ['<lb break="no">'],
-    Keys::MARGINALIA => ['<marginalia>'],
-    Keys::REG => ['<reg orig="">'],
-    Keys::STRIKE => ['<hi rend="str">', '<strike>'],
-    Keys::SUB => ['<hi rend="sub">', '<sub>'],
-    Keys::SUP => ['<hi rend="sup">', '<sup>'],
-    Keys::TABLE => [''],
-    Keys::UNCLEAR => ['<unclear>'],
-    Keys::UNDERLINE => ['<hi rend="underline">', '<u>']
+    Keys::ABBR => [ '<abbr expan="">' ],
+    Keys::ADD => [ '<add>', '<ins>' ],
+    Keys::BOLD => [ '<hi rend="bold">', '<b>' ],
+    Keys::DATE => [ '<date when="">' ],
+    Keys::DEL => [ '<del>' ],
+    Keys::EXPAN => [ '<expan abbr="">' ],
+    Keys::FIG => [ '<fig rend="hr">' ],
+    Keys::FOOTNOTE => [ '<footnote marker="*">' ],
+    Keys::GAP => [ '<gap>' ],
+    Keys::HEAD => [ '<head>' ],
+    Keys::ITALIC => [ '<hi rend="italics">', '<i>' ],
+    Keys::SOFT_BREAK => [ '<lb break="no">' ],
+    Keys::MARGINALIA => [ '<marginalia>' ],
+    Keys::REG => [ '<reg orig="">' ],
+    Keys::STRIKE => [ '<hi rend="str">', '<strike>' ],
+    Keys::SUB => [ '<hi rend="sub">', '<sub>' ],
+    Keys::SUP => [ '<hi rend="sup">', '<sup>' ],
+    Keys::TABLE => [ '' ],
+    Keys::UNCLEAR => [ '<unclear>' ],
+    Keys::UNDERLINE => [ '<hi rend="underline">', '<u>' ]
   }
 
 
@@ -78,7 +78,7 @@ class EditorButton < ApplicationRecord
 
 
   def close_tag
-    ('</' + open_tag.sub('<', '').sub(/\s.*/, '').sub('>','') + '>').html_safe
+    ('</' + open_tag.sub('<', '').sub(/\s.*/, '').sub('>', '') + '>').html_safe
   end
 
   def cursor_offset
@@ -90,7 +90,6 @@ class EditorButton < ApplicationRecord
   end
 
   def hotkey
-    "Ctrl-E"
+    'Ctrl-E'
   end
-
 end

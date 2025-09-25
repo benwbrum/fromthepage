@@ -24,3 +24,9 @@ FromThePage has been run successfully under both Linux and Windows. It currently
 Detailed Installation Instructions are available [in the wiki](https://github.com/benwbrum/fromthepage/wiki), including a link to a Docker file.
 
 If you install FromThePage, please join the low volume [FromThePage Google Group](https://groups.google.com/forum/#!forum/fromthepage) so we can keep you informed of bug fixes and new releases.
+
+### Developer resources
+
+- [Contributing guidelines](CONTRIBUTING.md)
+- [Pull request guidelines](doc/pull_request_guidelines.md)
+- [GitHub Copilot Agent setup](doc/copilot_agent_setup.md)

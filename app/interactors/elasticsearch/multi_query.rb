@@ -42,7 +42,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
     inflate_results
 
     @results = WillPaginate::Collection.create(@page, DEFAULT_PAGE_SIZE,
-                                               [MAX_SEARCH_RESULTS, filtered_count].min) do |pager|
+                                               [ MAX_SEARCH_RESULTS, filtered_count ].min) do |pager|
       pager.replace(@results)
     end
   end
@@ -143,7 +143,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [CollectionsIndex.index_name, PagesIndex.index_name, WorksIndex.index_name]
+        return [ CollectionsIndex.index_name, PagesIndex.index_name, WorksIndex.index_name ]
       end
     end
 
@@ -157,7 +157,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [PagesIndex.index_name, WorksIndex.index_name]
+        return [ PagesIndex.index_name, WorksIndex.index_name ]
       end
     end
 
@@ -171,7 +171,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [PagesIndex.index_name, WorksIndex.index_name]
+        return [ PagesIndex.index_name, WorksIndex.index_name ]
       end
     end
 
@@ -184,7 +184,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
 
         base_query[:query][:bool][:must][:bool][:should] << page_query
 
-        return [PagesIndex.index_name]
+        return [ PagesIndex.index_name ]
       end
     end
 
@@ -194,7 +194,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
     base_query[:query][:bool][:must][:bool][:should] << page_query
     base_query[:query][:bool][:must][:bool][:should] << work_query
 
-    [CollectionsIndex.index_name, PagesIndex.index_name, UsersIndex.index_name, WorksIndex.index_name]
+    [ CollectionsIndex.index_name, PagesIndex.index_name, UsersIndex.index_name, WorksIndex.index_name ]
   end
 
   def collection_query
@@ -271,7 +271,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
 
     collections_map = Collection.includes(:owner).where(id: collection_ids).index_by(&:id)
     docsets_map = DocumentSet.includes(collection: :owner).where(id: docset_ids).index_by(&:id)
-    pages_map = Page.includes(work: [{ collection: :owner }, :document_sets]).where(id: page_ids).index_by(&:id)
+    pages_map = Page.includes(work: [ { collection: :owner }, :document_sets ]).where(id: page_ids).index_by(&:id)
     users_map = User.where(id: user_ids).index_by(&:id)
     works_map = Work.includes(collection: :owner).where(id: work_ids).index_by(&:id)
 

@@ -12,7 +12,7 @@ describe ArticleController do
   let!(:category) { create(:category) }
 
   describe '#tooltip' do
-    let!(:article) { create(:article, collection: collection, pages: [page], categories: [category]) }
+    let!(:article) { create(:article, collection: collection, pages: [ page ], categories: [ category ]) }
 
     let(:action_path) { article_tooltip_path(article_id: article.id) }
     let(:subject) { get action_path }
@@ -27,8 +27,8 @@ describe ArticleController do
   end
 
   describe '#list' do
-    let!(:categorized_article) { create(:article, collection: collection, pages: [page], categories: [category]) }
-    let!(:uncategorized_article) { create(:article, collection: collection, pages: [page]) }
+    let!(:categorized_article) { create(:article, collection: collection, pages: [ page ], categories: [ category ]) }
+    let!(:uncategorized_article) { create(:article, collection: collection, pages: [ page ]) }
 
     let(:action_path) { collection_subjects_path(owner, collection) }
     let(:subject) { get action_path }
@@ -151,7 +151,7 @@ describe ArticleController do
     let!(:article) { create(:article, collection: collection) }
     let(:params) do
       {
-        category_ids: [category.id]
+        category_ids: [ category.id ]
       }
     end
 
@@ -181,7 +181,7 @@ describe ArticleController do
     let!(:to_article) { create(:article, collection: collection) }
     let(:params) do
       {
-        from_article_ids: [from_article.id],
+        from_article_ids: [ from_article.id ]
       }
     end
 
@@ -218,7 +218,7 @@ describe ArticleController do
     end
 
     context 'when from_article_ids passed does not exist' do
-      let(:params) { { from_article_ids: ['non-existing-article-id'] } }
+      let(:params) { { from_article_ids: [ 'non-existing-article-id' ] } }
 
       it 'redirects' do
         login_as owner
@@ -231,7 +231,7 @@ describe ArticleController do
   end
 
   describe '#relationship_graph' do
-    let!(:article) { create(:article, collection: collection, pages: [page]) }
+    let!(:article) { create(:article, collection: collection, pages: [ page ]) }
     let!(:linked_article) { create(:article, collection: collection) }
 
     before do
@@ -252,6 +252,21 @@ describe ArticleController do
       expect(node_ids).to include("S#{article.id}", "S#{linked_article.id}", "D#{page.id}")
       expect(json['links']).to include(a_hash_including('source' => "S#{article.id}", 'target' => "S#{linked_article.id}", 'group' => 'direct'))
       expect(File).to exist(article.d3js_file)
+    end
+
+    it 'excludes bio field from article nodes in JSON response' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      # Find article nodes (not document nodes)
+      article_nodes = json['nodes'].select { |n| n['id'].start_with?('S') }
+
+      # Verify that no article nodes contain bio field
+      article_nodes.each do |node|
+        expect(node).not_to have_key('bio')
+      end
     end
   end
 end

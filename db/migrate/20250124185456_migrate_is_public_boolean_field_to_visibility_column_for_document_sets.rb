@@ -4,7 +4,7 @@ class MigrateIsPublicBooleanFieldToVisibilityColumnForDocumentSets < ActiveRecor
   end
 
   def down
-    DocumentSet.where(visibility: [:private, :read_only]).in_batches.update_all(is_public: false)
-    DocumentSet.where(visibility: [:public]).in_batches.update_all(is_public: true)
+    DocumentSet.where(visibility: [ :private, :read_only ]).in_batches.update_all(is_public: false)
+    DocumentSet.where(visibility: [ :public ]).in_batches.update_all(is_public: true)
   end
 end

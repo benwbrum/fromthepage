@@ -46,7 +46,7 @@ class DocumentUpload < ApplicationRecord
   end
 
   def log_file
-    File.join(upload_dir, "process.log")
+    File.join(upload_dir, 'process.log')
   end
 
   def name
@@ -58,5 +58,4 @@ class DocumentUpload < ApplicationRecord
   def upload_dir
     File.dirname(self.file.path)
   end
-
 end

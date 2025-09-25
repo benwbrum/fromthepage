@@ -4,12 +4,12 @@ module StaticSiteExporter
 
 
   def export_static_site(dirname:, out:, collection:)
-    write_gemfile(dirname,out,collection)
-    write_subject_layout(dirname,out,collection)
-    write_work_layout(dirname,out,collection)
-    write_listing_layout(dirname,out,collection)
-    write_tree_include(dirname,out,collection)
-    write_footer_include(dirname,out,collection)
+    write_gemfile(dirname, out, collection)
+    write_subject_layout(dirname, out, collection)
+    write_work_layout(dirname, out, collection)
+    write_listing_layout(dirname, out, collection)
+    write_tree_include(dirname, out, collection)
+    write_footer_include(dirname, out, collection)
     write_index_markdown(dirname, out, collection)
     write_config_yaml(dirname, out, collection)
     write_navigation_yaml(dirname, out, collection)
@@ -57,7 +57,7 @@ layout: archive
 <ul>
   {% for page_link in page.page_links %}
     <li>
-      <a href="{{page_link.work_url  | relative_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a> 
+      <a href="{{page_link.work_url  | relative_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a>#{' '}
     </li>
   {% endfor %}
 </ul>
@@ -140,7 +140,7 @@ EOF_TREE_INCLUDE
 EOF_FOOTER_INCLUDE
 
 
-  def category_to_tree(category) 
+  def category_to_tree(category)
     element = {}
     element['title'] = category.title
     children = []
@@ -166,7 +166,7 @@ EOF_FOOTER_INCLUDE
   end
 
   def write_gemfile(dirname, out, collection)
-    path = File.join dirname, "Gemfile"
+    path = File.join dirname, 'Gemfile'
     out.put_next_entry(path)
     out.write(GEMFILE_CONTENTS)
   end
@@ -202,23 +202,23 @@ EOF_FOOTER_INCLUDE
   end
 
   def write_config_yaml(dirname, out, collection)
-    path = File.join dirname, "_config.yml"
+    path = File.join dirname, '_config.yml'
     out.put_next_entry(path)
     site_config = {
       'title' => collection.title,
       'email' => collection.owner.email,
       'owner' => collection.owner.display_name,
       'description' => collection.intro_block,
-      'plugins' => ['jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache'], 
-      'remote_theme' => "mmistakes/minimal-mistakes",
+      'plugins' => [ 'jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache' ],
+      'remote_theme' => 'mmistakes/minimal-mistakes',
       'defaults' => [
-        { 'scope' => 
-          { 
+        { 'scope' =>
+          {
             'path' => ''
           },
-          'values' => 
-          { 
-            'layout' => 'archive', 
+          'values' =>
+          {
+            'layout' => 'archive'
           }
         }
       ]
@@ -227,13 +227,13 @@ EOF_FOOTER_INCLUDE
   end
 
   def write_index_markdown(dirname, out, collection)
-    path = File.join dirname, "index.md"
+    path = File.join dirname, 'index.md'
     out.put_next_entry(path)
     out.write("---\n"+collection.intro_block)
   end
 
   def write_navigation_yaml(dirname, out, collection)
-    path = File.join dirname, "_data", "navigation.yml"
+    path = File.join dirname, '_data', 'navigation.yml'
     out.put_next_entry(path)
 
     work_nav = []
@@ -253,7 +253,7 @@ EOF_FOOTER_INCLUDE
     end
 
     nav_contents = [
-      { 
+      {
         'title' => 'Works',
         'url' => '/pages/work-list',
         'children' => work_nav
@@ -269,7 +269,7 @@ EOF_FOOTER_INCLUDE
         }
     end
 
-    nav_contents << 
+    nav_contents <<
       {
         'title' => 'Contributors',
         'url' => '/pages/about'
@@ -282,23 +282,23 @@ EOF_FOOTER_INCLUDE
   end
 
   def write_work_listing(dirname, out, collection)
-    path = File.join dirname, "pages", "work-list.md"
+    path = File.join dirname, 'pages', 'work-list.md'
     out.put_next_entry(path)
     work_listing_frontmatter = {
       'layout' => 'listing',
       'title' => 'Works'
     }
-    work_listing_frontmatter['listing'] = collection.works.map do |work| 
-      { 
-        'title' => work.title, 
+    work_listing_frontmatter['listing'] = collection.works.map do |work|
+      {
+        'title' => work.title,
         'url' => "/pages/works/#{work.slug}"
-      } 
+      }
     end
     out.write(work_listing_frontmatter.to_yaml+"\n---\n")
   end
 
   def write_subject_listing(dirname, out, collection)
-    path = File.join dirname, "pages", "subject-list.md"
+    path = File.join dirname, 'pages', 'subject-list.md'
     out.put_next_entry(path)
     subject_listing_frontmatter = {
       'layout' => 'listing',
@@ -309,7 +309,7 @@ EOF_FOOTER_INCLUDE
       tree << category_to_tree(category)
     end
 
-    uncategorized_articles = collection.articles.where.not(:id => collection.articles.joins(:categories).pluck(:id))
+    uncategorized_articles = collection.articles.where.not(id: collection.articles.joins(:categories).pluck(:id))
     if uncategorized_articles.count > 0
       children = []
       uncategorized_articles.each do |subject|
@@ -319,7 +319,7 @@ EOF_FOOTER_INCLUDE
          }
       end
 
-      uncategorized = { 
+      uncategorized = {
         'title' => 'Uncategorized',
         'has_children' => true,
         'children' => children
@@ -332,20 +332,20 @@ EOF_FOOTER_INCLUDE
   end
 
   def write_contributor_page(dirname, out, collection)
-    path = File.join dirname, "pages", "about.md"
+    path = File.join dirname, 'pages', 'about.md'
     out.put_next_entry(path)
     contributor_listing_frontmatter = {
       'layout' => 'listing',
       'title' => 'Contributors'
     }
-    contributor_ids = collection.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]}
+    contributor_ids = collection.deeds.group(:user_id).count.sort { |a, b| b[1] <=> a[1] }.map { |e| e[0] }
     listing = []
     contributor_ids.each do |user_id|
       user = User.find(user_id)
       if user.real_name.blank?
-        listing << { 'title' => user.display_name}
+        listing << { 'title' => user.display_name }
       else
-        listing << { 'title' => user.real_name}
+        listing << { 'title' => user.real_name }
       end
     end
     contributor_listing_frontmatter['listing'] = listing
@@ -365,19 +365,19 @@ EOF_FOOTER_INCLUDE
     }
 
     text = ApplicationController.new.render_to_string(
-      :template => 'export/show', 
-      :formats => [:html], 
-      :work_id => work.id, 
-      :layout => false, 
-      :encoding => 'utf-8',
-      :assigns => {
-        :collection => work.collection,
-        :work => work,
-        :export_user => nil,
-        :target => :jekyll
+      template: 'export/show',
+      formats: [ :html ],
+      work_id: work.id,
+      layout: false,
+      encoding: 'utf-8',
+      assigns: {
+        collection: work.collection,
+        work: work,
+        export_user: nil,
+        target: :jekyll
       }
     )
-    text.gsub!(/^\s+/,'')
+    text.gsub!(/^\s+/, '')
     markdown = frontmatter.to_yaml+"\n---\n"+text
     out.write(markdown)
   end
@@ -406,8 +406,4 @@ EOF_FOOTER_INCLUDE
     markdown = frontmatter.to_yaml+"\n---\n"+text
     out.write(markdown)
   end
-
-
-
-
 end

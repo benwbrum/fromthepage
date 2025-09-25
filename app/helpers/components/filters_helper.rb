@@ -65,5 +65,4 @@ module Components::FiltersHelper
   def fe_table_no_contents
     render('shared/components/table_no_contents')
   end
-
 end

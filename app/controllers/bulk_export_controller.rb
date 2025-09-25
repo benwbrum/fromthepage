@@ -7,7 +7,7 @@ class BulkExportController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   def index
-    @bulk_exports = BulkExport.all.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @bulk_exports = BulkExport.all.order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
   end
 
   def show
@@ -78,8 +78,8 @@ class BulkExportController < ApplicationController
     if @bulk_export.status == BulkExport::Status::FINISHED
       # read and spew the file
       send_file(@bulk_export.zip_file_name,
-        filename: "fromthepage_export.zip",
-        :content_type => "application/zip")
+        filename: 'fromthepage_export.zip',
+        content_type: 'application/zip')
       cookies['download_finished'] = 'true'
     else
       flash[:info] = t('.download_cleaned_message')
@@ -132,7 +132,7 @@ class BulkExportController < ApplicationController
       :include_notes,
       :notes_csv,
       :admin_searches,
-      :report_arguments => [
+      report_arguments: [
         :start_date,
         :end_date,
         :preserve_linebreaks,
