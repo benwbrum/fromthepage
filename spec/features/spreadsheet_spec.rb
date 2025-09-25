@@ -64,8 +64,9 @@ describe "spreadsheet" do
         # The collection is already field_based: true from the let declaration
         expect(collection.field_based).to be true
 
-        work = new_work
-        page = work.pages.first
+        # Create work and manually create pages with proper associations
+        work = create(:work, collection: collection)
+        page = create(:page, work: work)
 
         # Verify proper associations - check IDs instead of object identity
         expect(page.work).to eq(work)
