@@ -429,7 +429,7 @@ module ExportHelper
   # Attempts to parse as EDTF and returns valid date string or nil
   def clean_date_for_when_attribute(date_string)
     return nil if date_string.blank?
-    
+
     # Try to parse with EDTF library
     begin
       edtf_date = Date.edtf(date_string)
@@ -437,9 +437,25 @@ module ExportHelper
     rescue
       # Fall back to basic cleaning if EDTF parsing fails
     end
+
+    # Fallback processing
     cleaned = date_string.strip
-    # Return nil if the result is not a valid date format
-    return nil if cleaned.blank? || cleaned !~ /^\d{4}(-\d{2})?(-\d{2})?$/
+    return nil if cleaned.blank?
+
+    # For fallback, remove multiple question marks but keep single ones
+    if cleaned =~ /\?{2,}/
+      cleaned = cleaned.gsub(/\?+/, '')
+    end
+
+    # Validate basic date format - allow single question mark at end
+    return nil unless cleaned =~ /^\d{4}(-\d{2})?(-\d{2})?(\?)?$/
+
+    # Check for invalid months (13-20) - months 21+ are valid EDTF sub-year groupings
+    if cleaned =~ /^\d{4}-(\d{2})/
+      month = $1.to_i
+      return nil if month >= 13 && month <= 20
+    end
+
     cleaned
   end
 

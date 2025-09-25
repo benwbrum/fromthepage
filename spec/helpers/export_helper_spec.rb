@@ -24,11 +24,18 @@ describe ExportHelper do
       expect(clean_date_for_when_attribute(nil)).to be_nil
     end
 
+    it 'validates date format for fallback cleaning' do
+      # Invalid months 13-20 should be suppressed
+      expect(clean_date_for_when_attribute('1866-13')).to be_nil  # Invalid month
+      expect(clean_date_for_when_attribute('1866-20')).to be_nil  # Invalid month
+      expect(clean_date_for_when_attribute('1866-21')).to eq('1866-21')  # Valid EDTF sub-year grouping
+    end
+
     it 'handles EDTF parsing errors gracefully' do
       # Test that we gracefully handle when EDTF can't parse something
-      # but our fallback can
+      # but our fallback can - should preserve single question marks
       allow(Date).to receive(:edtf).and_raise(StandardError)
-      expect(clean_date_for_when_attribute('1866?')).to eq('1866')
+      expect(clean_date_for_when_attribute('1866?')).to eq('1866?')
     end
   end
 
@@ -54,7 +61,7 @@ describe ExportHelper do
       it 'should be directly in place element not in note' do
         # This is a template structure test
         # The actual fix moves geo out of note wrapper
-        expect(true).to be true  # Placeholder for template structure  
+        expect(true).to be true  # Placeholder for template structure
       end
     end
 
