@@ -86,11 +86,11 @@
 
 -if @collection.legend.present?
   .page-legend
-    h2.legend-title =t('.legend')
-    .legend-content
+    h2.page-legend-title =t('.legend')
+    .page-legend-content
       ==@collection.legend
 
-h2#notes =t('.page_notes')
+h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
