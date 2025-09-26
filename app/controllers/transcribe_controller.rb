@@ -1,25 +1,24 @@
 class TranscribeController  < ApplicationController
-
   include AbstractXmlController
   include DisplayHelper
 
   require 'rexml/document'
   include Magick
-  before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
-  before_action :active?, except: [:still_editing, :active_editing]
+  before_action :authorized?, except: [ :zoom, :guest, :help, :still_editing, :active_editing ]
+  before_action :active?, except: [ :still_editing, :active_editing ]
 
-  protect_from_forgery except: [:zoom, :unzoom]
+  protect_from_forgery except: [ :zoom, :unzoom ]
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
-  skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
-  skip_around_action :switch_locale, only: [:still_editing, :active_editing]
+  skip_before_action :load_html_blocks, only: [ :still_editing, :active_editing ]
+  skip_around_action :switch_locale, only: [ :still_editing, :active_editing ]
 
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
     @collection = page.collection unless @collection
-    @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
+    @auto_fullscreen = cookies[:auto_fullscreen] || 'no'
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
     @current_user_alerted = false
@@ -64,79 +63,15 @@ class TranscribeController  < ApplicationController
   def guest
   end
 
-  def mark_page_blank(options = { redirect: 'display' })
-    redirect_path = case options[:redirect]
-                    when 'transcribe'
-                      page_id = @page.last? ? @page.id : @page.lower_item.id
-                      notice_msg = @page.id == page_id ? t('.saved_notice') : t('.saved_and_next_notice')
-                      collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
-                    else
-                      notice_msg = t('.saved_notice')
-                      collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-                    end
+  def mark_page_blank
+    @result = Transcribe::MarkAsBlank.new(
+      page: @page,
+      user: current_user
+    ).call
 
-    if params[:page]['mark_blank'] == '1'
-      @page.status = :blank
-      @page.translation_status = :blank
-      @page.save
-      record_deed(DeedType::PAGE_MARKED_BLANK)
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      return false
-    elsif @page.status_blank? && params[:page]['mark_blank'] == '0'
-      @page.status = :new
-      @page.translation_status = :new
-      @page.save
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      return false
-    else
-      return true
-    end
-  end
+    @page = @result.page
 
-  def needs_review
-    if params[:type] == 'translation'
-      if @page.work.collection.review_workflow == true && @page.translation_status_new?
-        @page.translation_status = :needs_review
-        record_deed(DeedType::TRANSLATION_REVIEW)
-      elsif params[:page]['needs_review'] == '1'
-        unless @page.translation_status_needs_review?
-          @page.translation_status = :needs_review
-          record_deed(DeedType::TRANSLATION_REVIEW)
-        end
-      else
-        if @page.translation_status_needs_review?
-          @page.translation_status = :new
-          record_deed(DeedType::TRANSLATION_REVIEWED)
-        end
-        return
-      end
-    elsif params['save_to_needs_review'] && @page.work.collection.review_workflow
-      unless @page.status_needs_review?
-        # don't log a deed if the page was already in needs review
-        @page.status = :needs_review
-        record_deed(DeedType::NEEDS_REVIEW)
-      end
-    else
-      if params[:page]['needs_review'] == '1'
-        unless @page.status_needs_review?
-          @page.status = :needs_review
-          record_deed(DeedType::NEEDS_REVIEW)
-        end
-        #if @page.translation_status == 'blank'
-        #  @page.translation_status = nil
-        #end
-      else
-        if @page.status_needs_review?
-          @page.status = :new
-          record_deed(DeedType::PAGE_REVIEWED)
-          return
-        end
-      end
-    end
+    respond_to(&:turbo_stream)
   end
 
   def save_transcription
@@ -153,11 +88,28 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
 
-    # if page has been marked blank, call the mark_blank code
-    mark_page_blank(redirect: 'transcribe') || return unless params[:page]['needs_review'] == '1'
+    unless params[:page]['needs_review'] == '1'
+      @page = Transcribe::Lib::MarkAsBlankHandler.new(
+        page: @page,
+        page_params: mark_page_blank_params,
+        user: current_user
+      ).perform
 
-    # check to see if the page needs to be marked as needing review
-    needs_review
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_status?
+        next_page_id, flash_msg = next_lower_page_and_flash(@page, [ :transcribe, :mark_page_blank ])
+
+        flash[:notice] = flash_msg
+        redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, next_page_id)
+        return
+      end
+    end
+
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      save_to_needs_review: params[:save_to_needs_review].present?
+    ).perform
 
     save_to_incomplete = params[:save_to_incomplete] || params[:done_to_incomplete]
     save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
@@ -359,11 +311,26 @@ class TranscribeController  < ApplicationController
 
     @page.attributes = page_params
 
-    #check to see if the page is marked blank
-    mark_page_blank or return
+    unless params[:page]['needs_review'] == '1'
+      @page = Transcribe::Lib::MarkAsBlankHandler.new(
+        page: @page,
+        page_params: mark_page_blank_params,
+        user: current_user
+      ).perform
 
-    #check to see if the page needs review
-    needs_review
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_translation_status?
+        flash[:notice] = t('transcribe.mark_page_blank.saved_notice')
+        redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+        return
+      end
+    end
+
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      type: :translation
+    ).perform
 
     if params['save']
       message = log_translation_attempt
@@ -375,7 +342,7 @@ class TranscribeController  < ApplicationController
           log_translation_success
           record_translation_deed
 
-          unless @page.collection.subjects_disabled || (@page.source_translation.include?("[[") == false)
+          unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)
             new_link_count = @page.page_article_links.where(text_type: 'translation').count
             logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
             if old_link_count == 0 && new_link_count > 0
@@ -386,17 +353,17 @@ class TranscribeController  < ApplicationController
             end
           end
 
-          @work.work_statistic.recalculate({type: @page.translation_status}) if @work.work_statistic
-          @page.submit_background_processes("translation")
+          @work.work_statistic.recalculate({ type: @page.translation_status }) if @work.work_statistic
+          @page.submit_background_processes('translation')
 
-          #if this is a guest user, force them to sign up after three saves
+          # if this is a guest user, force them to sign up after three saves
           if current_user.guest?
             deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
             else
               session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
-              redirect_to new_user_registration_path, :resource => current_user
+              redirect_to new_user_registration_path, resource: current_user
               return
             end
           end
@@ -405,20 +372,20 @@ class TranscribeController  < ApplicationController
                       collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
         else
           log_translation_error(message)
-          render :action => 'translate'
+          render action: 'translate'
         end
       rescue REXML::ParseException => ex
         log_translation_exception(ex, message)
         flash[:error] = t('.error_message', error_message: ex.message)
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render :action => 'translate'
+        render action: 'translate'
         flash.clear
         # raise ex
       rescue  => ex
         log_translation_exception(ex, message)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render :action => 'translate'
+        render action: 'translate'
         flash.clear
         # raise ex
       end
@@ -426,14 +393,14 @@ class TranscribeController  < ApplicationController
       @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSLATION)
       translate
-      render :action => 'translate'
+      render action: 'translate'
     elsif params['edit']
       translate
-      render :action => 'translate'
+      render action: 'translate'
     elsif params['autolink']
       @page.source_translation = autolink(@page.source_translation)
       translate
-      render :action => 'translate'
+      render action: 'translate'
 
     end
   end
@@ -489,8 +456,8 @@ class TranscribeController  < ApplicationController
 
   protected
 
-  TRANSLATION="TRANSLATION"
-  TRANSCRIPTION="TRANSCRIPTION"
+  TRANSLATION='TRANSLATION'
+  TRANSCRIPTION='TRANSCRIPTION'
 
   def log_attempt(attempt_type, source_text)
     # we have access to @page, @user, and params
@@ -503,7 +470,7 @@ class TranscribeController  < ApplicationController
     log_message << "#{attempt_type}\tSource Text:\nBEGIN_SOURCE_TEXT\n#{source_text}\nEND_SOURCE_TEXT\n\n"
 
     logger.info(log_message)
-    return log_message
+    log_message
   end
 
   def log_exception(attempt_type, ex, message)
@@ -529,7 +496,7 @@ class TranscribeController  < ApplicationController
     # we have access to @page, @user, and params
     if @page.field_based
       if request.params[:fields].nil?
-        source_text = "[NULL FIELD-BASED PARAMS]"
+        source_text = '[NULL FIELD-BASED PARAMS]'
       else
         source_text = request.params[:fields].pretty_inspect
       end
@@ -538,7 +505,7 @@ class TranscribeController  < ApplicationController
     end
 
     log_message = log_attempt(TRANSCRIPTION, source_text)
-    return log_message
+    log_message
   end
 
   def log_transcript_exception(ex, message)
@@ -556,7 +523,7 @@ class TranscribeController  < ApplicationController
   def log_translation_attempt
     # we have access to @page, @user, and params
     log_message = log_attempt(TRANSLATION, params[:page][:source_translation])
-    return log_message
+    log_message
   end
 
   def log_translation_exception(ex, message)
@@ -662,5 +629,22 @@ class TranscribeController  < ApplicationController
 
   def page_params
     params.require(:page).permit(:source_text, :source_translation, :title)
+  end
+
+  def mark_page_blank_params
+    params.require(:page).permit(:mark_blank)
+  end
+
+  def needs_review_params
+    params.require(:page).permit(:needs_review)
+  end
+
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_notice')
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_and_next_notice')
+  def next_lower_page_and_flash(page, scope)
+    next_page_id = page.last? ? page.id : page.lower_item.id
+    flash_msg = page.id == next_page_id ? t('saved_notice', scope: scope) : t('saved_and_next_notice', scope: scope)
+
+    [ next_page_id, flash_msg ]
   end
 end

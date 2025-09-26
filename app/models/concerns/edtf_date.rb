@@ -28,7 +28,7 @@ module EdtfDate
           raw_date = self[attribute]
           next if raw_date.blank?
 
-          errors.add(attribute, "must be in EDTF format") if Date.edtf(raw_date).nil?
+          errors.add(attribute, 'must be in EDTF format') if Date.edtf(raw_date).nil?
         end
       end
     end

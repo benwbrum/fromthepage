@@ -1,5 +1,5 @@
 class QualitySamplingsController < ApplicationController
-  before_action :set_quality_sampling, only: [:show, :edit, :update, :destroy, :review]
+  before_action :set_quality_sampling, only: [ :show, :edit, :update, :destroy, :review ]
   before_action :authorized?
 
 
@@ -24,14 +24,14 @@ class QualitySamplingsController < ApplicationController
 
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
     # TODO sometimes work_samplings returns bad data -- why?
-    @works = Work.where(id: @work_samplings.keys).sort{|a,b| a.id <=> b.id }
-    @users = User.where(id: @user_samplings.keys).sort{|a,b| a.id <=> b.id }
+    @works = Work.where(id: @work_samplings.keys).sort { |a, b| a.id <=> b.id }
+    @users = User.where(id: @user_samplings.keys).sort { |a, b| a.id <=> b.id }
     @max_approval_delta = @quality_sampling.max_approval_delta
   end
 
 
   def review
-    redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling")
+    redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: 'quality-sampling')
   end
 
   def initialize_sample

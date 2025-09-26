@@ -41,7 +41,7 @@ class ExternalApiRequest < ApplicationRecord
     FAILED = 'failed'
 
     def self.running
-      [QUEUED, RUNNING, WAITING]
+      [ QUEUED, RUNNING, WAITING ]
     end
   end
 
@@ -62,5 +62,4 @@ class ExternalApiRequest < ApplicationRecord
   module Engine
     TRANSKRIBUS = 'transkribus'
   end
-  
 end

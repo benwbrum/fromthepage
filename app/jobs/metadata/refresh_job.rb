@@ -52,7 +52,7 @@ class Metadata::RefreshJob < ApplicationJob
 
       log("Refreshing metadata for work #{@id}")
 
-      @all_work_ids = [@id]
+      @all_work_ids = [ @id ]
     else
       raise ArgumentError, 'Type can only be collection, document_set, or work'
     end

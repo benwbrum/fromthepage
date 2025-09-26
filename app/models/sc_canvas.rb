@@ -23,15 +23,15 @@
 #  index_sc_canvases_on_sc_manifest_id  (sc_manifest_id)
 #
 class ScCanvas < ApplicationRecord
-  self.table_name = "sc_canvases"
+  self.table_name = 'sc_canvases'
 
   belongs_to :sc_manifest, optional: true
   belongs_to :page, optional: true
 
   def thumbnail_url
     if sc_service_id
-      service_id = sc_service_id.sub(/\/$/,'')
-      if sc_service_context ==  "http://iiif.io/api/image/1/context.json"
+      service_id = sc_service_id.sub(/\/$/, '')
+      if sc_service_context ==  'http://iiif.io/api/image/1/context.json'
         "#{service_id}/full/100,/0/native.jpg"
       else
         "#{service_id}/full/100,/0/default.jpg"
@@ -51,12 +51,12 @@ class ScCanvas < ApplicationRecord
 
   def iiif_image_info_url
     if sc_service_id
-      service_id = sc_service_id.sub(/\/$/,'')
+      service_id = sc_service_id.sub(/\/$/, '')
       "#{service_id}/info.json"
     else
       # special handling for NARA images -- treat them as an image
       if sc_resource_id.include?('catalog.archives.gov')
-        {type: 'image', url: sc_resource_id}.to_json
+        { type: 'image', url: sc_resource_id }.to_json
       else
         self.sc_resource_id.sub(/full\/\w+\/\w+\/.*/, 'info.json')
       end
@@ -70,12 +70,12 @@ class ScCanvas < ApplicationRecord
     annotation_list = JSON.parse(self.annotations)
     transcript_list = annotation_list.detect do |element|
       # Use the page-level annotation if possible
-      element['data']['@type'] == "sc:AnnotationList" && element['data']["textGranularity"] == "page"
+      element['data']['@type'] == 'sc:AnnotationList' && element['data']['textGranularity'] == 'page'
     end
     unless transcript_list
       # Use any annotation list if not
       transcript_list = annotation_list.detect do |element|
-        element['data']['@type'] == "sc:AnnotationList"
+        element['data']['@type'] == 'sc:AnnotationList'
       end
     end
 
@@ -100,5 +100,4 @@ class ScCanvas < ApplicationRecord
     end
     transcript
   end
-
 end

@@ -24,7 +24,7 @@ class Category < ApplicationRecord
   has_many :articles_categories
   has_many :articles, -> { distinct.order(:title) }, through: :articles_categories
 
-  validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id], case_sensitive: true }
+  validates :title, presence: true, uniqueness: { scope: [ :collection_id, :parent_id ], case_sensitive: true }
 
   # def destroy_but_attach_children_to_parent
   #   self.children.each do |child|

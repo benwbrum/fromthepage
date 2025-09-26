@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "collection statistics", :order => :defined do
+describe "collection statistics", order: :defined do
   before :each do
     @owner = User.where(login: 'carlos').first
     @user = User.where(login: 'jose').first
@@ -21,7 +21,7 @@ describe "collection statistics", :order => :defined do
     visit dashboard_summary_path
     expect(page).to have_content("Collaborators")
     expect(page).to have_css('#mailing-list-export-submit')
-    #expect(page).to have_content("Export Mailing List")
+    # expect(page).to have_content("Export Mailing List")
   end
 
   it "cannot view the owner's Mailing List Export link as user" do

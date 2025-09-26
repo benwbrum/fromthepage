@@ -191,7 +191,7 @@ describe CollectionController do
     end
 
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
+      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
     end
     let(:action_path) { edit_privacy_collection_path(owner, collection) }
 
@@ -290,7 +290,7 @@ describe CollectionController do
       create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
     end
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [reviewer])
+      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [ reviewer ])
     end
     let(:action_path) { edit_quality_control_collection_path(owner, collection) }
 
@@ -443,6 +443,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit with legend' do
+      let(:scope) { 'edit' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the collection</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the collection</p>')
+      end
+    end
+
     context 'when scope edit_tasks' do
       let(:scope) { 'edit_tasks' }
       let(:params) { { collection: { text_language: 'eng', field_based: true } } }
@@ -469,6 +483,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit_look with legend' do
+      let(:scope) { 'edit_look' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the look settings</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_look)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the look settings</p>')
+      end
+    end
+
     context 'when scope edit_privacy' do
       let!(:collaborator) do
         create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
@@ -481,7 +509,7 @@ describe CollectionController do
       end
 
       let!(:collection) do
-        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
+        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
       end
 
       let(:scope) { 'edit_privacy' }
@@ -677,7 +705,7 @@ describe CollectionController do
     end
 
     context 'when document set' do
-      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
 
       let(:action_path) { collection_restrict_transcribed_path(collection_id: document_set) }
 
@@ -692,7 +720,7 @@ describe CollectionController do
   end
 
   describe '#search' do
-    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
+    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
     let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let!(:page) { create(:page, work: work) }
 

@@ -17,7 +17,7 @@ module Api::V1
         else
           exports = @api_user.bulk_exports
         end
-        render json: exports.to_json(except: [:updated_at, :user_id, :collection_id], include: { collection: { only: [:title, :slug] } })
+        render json: exports.to_json(except: [ :updated_at, :user_id, :collection_id ], include: { collection: { only: [ :title, :slug ] } })
       else
         render status: 401, json: 'You must use an API token to access bulk exports'
       end

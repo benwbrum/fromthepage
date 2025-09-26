@@ -2,7 +2,7 @@ class CreateNotes < ActiveRecord::Migration[5.0]
   def self.up
     create_table :notes do |t|
       # data
-      t.column :title, :string, :limit => 255
+      t.column :title, :string, limit: 255
       t.column :body, :text
 
       # associations

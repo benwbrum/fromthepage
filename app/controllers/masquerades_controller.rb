@@ -12,16 +12,16 @@ class MasqueradesController < Devise::MasqueradesController
 
   def show
     user = User.friendly.find(params[:id])
-    self.resource = resource_class.to_adapter.find_first(:id => user.id)
+    self.resource = resource_class.to_adapter.find_first(id: user.id)
     redirect_to(new_user_session_path) and return unless self.resource
     self.resource.masquerade!
-    request.env["devise.skip_trackable"] = "1"
+    request.env['devise.skip_trackable'] = '1'
 
     if Devise.masquerade_bypass_warden_callback
       if respond_to?(:bypass_sign_in)
         bypass_sign_in(self.resource)
       else
-        sign_in(self.resource, :bypass => true)
+        sign_in(self.resource, bypass: true)
       end
     else
       sign_in(self.resource)
@@ -49,5 +49,4 @@ class MasqueradesController < Devise::MasqueradesController
   def after_masquerade_path_for(user)
     dashboard_role_path
   end
-
 end
