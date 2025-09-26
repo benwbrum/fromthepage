@@ -138,7 +138,7 @@
               <div class="article-bibliography">
                 <strong><%= t('.bibliography') %>:</strong>
                 <p>
-                  <%= raw(xml_to_html(article.bibliography, true, true)) %>
+                  <%= raw(bibliography_to_html(article.bibliography, true, true)) %>
                 </p>
               </div>
             <% end %>

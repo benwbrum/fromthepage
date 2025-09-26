@@ -23,7 +23,7 @@
 
     -if @article.bibliography.present?
       h3= t('.bibliography')
-      -bibliography_html = xml_to_html(@article.bibliography, true, false, @collection)
+      -bibliography_html = bibliography_to_html(@article.bibliography, true, false, @collection)
       .big[*language_attrs(@collection)] ==bibliography_html
 
     h3= t('.related_subjects')

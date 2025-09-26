@@ -8,11 +8,11 @@ RSpec.describe AbstractXmlHelper, type: :helper do
   end
 
   describe "Bibliography formatting" do
-    context "xml_to_html with bibliography content" do
+    context "bibliography_to_html with bibliography content" do
       it "processes TEI markup in bibliography content" do
         bibliography_xml = "<bibl>Test citation with <hi rend=\"italic\">italicized title</hi> and regular text</bibl>"
 
-        result = xml_to_html(bibliography_xml, true, false, @collection)
+        result = bibliography_to_html(bibliography_xml, true, false, @collection)
 
         expect(result).to include("<i>italicized title</i>")
         expect(result).to include("Test citation with")
@@ -22,7 +22,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       it "handles both italic and italics rend attributes" do
         bibliography_xml = "<bibl>First <hi rend=\"italic\">singular form</hi> and <hi rend=\"italics\">plural form</hi></bibl>"
 
-        result = xml_to_html(bibliography_xml, true, false, @collection)
+        result = bibliography_to_html(bibliography_xml, true, false, @collection)
 
         expect(result).to include("<i>singular form</i>")
         expect(result).to include("<i>plural form</i>")
@@ -31,7 +31,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       it "handles multiple bibl elements" do
         bibliography_xml = "<bibl>First citation with <hi rend=\"italic\">Book Title</hi></bibl>\n<bibl>Second citation with <hi rend=\"italic\">Another Title</hi></bibl>"
 
-        result = xml_to_html(bibliography_xml, true, false, @collection)
+        result = bibliography_to_html(bibliography_xml, true, false, @collection)
 
         expect(result).to include("<i>Book Title</i>")
         expect(result).to include("<i>Another Title</i>")
@@ -42,7 +42,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       it "handles URLs in bibliography" do
         bibliography_xml = "<bibl>Citation with URL: <a href=\"https://example.com\">https://example.com</a></bibl>"
 
-        result = xml_to_html(bibliography_xml, true, false, @collection)
+        result = bibliography_to_html(bibliography_xml, true, false, @collection)
 
         expect(result).to include('<a href="https://example.com">https://example.com</a>')
       end
@@ -50,7 +50,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       it "handles plain HTML content without TEI markup" do
         html_content = '<i>This</i> is a <a href="https://www.wikipedia.com">bibliography</a>.'
 
-        result = xml_to_html(html_content, true, false, @collection)
+        result = bibliography_to_html(html_content, true, false, @collection)
 
         expect(result).to include('<i>This</i>')
         expect(result).to include('<a href="https://www.wikipedia.com">bibliography</a>')
@@ -60,7 +60,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       it "handles mixed plain HTML elements" do
         html_content = '<b>Bold text</b> and <em>emphasized text</em> with a <u>underlined part</u>.'
 
-        result = xml_to_html(html_content, true, false, @collection)
+        result = bibliography_to_html(html_content, true, false, @collection)
 
         expect(result).to include('<b>Bold text</b>')
         expect(result).to include('<em>emphasized text</em>')
@@ -71,7 +71,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
         tei_content = '<ab><bibl><hi rend="italic">Seventh Manuscript Census of the United States</hi> (1850), Population Schedules, Kentucky, Jefferson County, Louisville District 1, stamped p. 8. <hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Population Schedules, Kentucky, Jefferson County, Louisville Ward 8, p. 67.  <hi rend="italic">Find A Grave</hi>, &quot;Joseph C. Baird (unknown-1881),&quot; Memorial #100674176, https://www.findagrave.com/cgi-bin/fg.cgi?page=gr&amp;GSln=baird&amp;GSfn=Joseph&amp;GSmn=c&amp;GSbyrel=all&amp;GSdyrel=all&amp;GSst=19&amp;GScnty=1044&amp;GScntry=4&amp;GSob=n&amp;GRid=100674176&amp;df=all&amp; (accessed August, 11, 2017).
 </bibl></ab>'
 
-        result = xml_to_html(tei_content, true, false, @collection)
+        result = bibliography_to_html(tei_content, true, false, @collection)
 
         expect(result).to include('<i>Seventh Manuscript Census of the United States</i>')
         expect(result).to include('<i>Eighth Manuscript Census of the United States</i>')
@@ -93,7 +93,7 @@ G. Glenn Clift, <hi rend=\"italic\">Governors of Kentucky, 1792-1942</hi> (Cynth
 Robert A. Powell, <hi rend=\"italic\">Kentucky Governors</hi> (Frankfort, KY, 1976), 116.
 </lb></lb></lb></lb></lb></lb></lb></lb>"
 
-        result = xml_to_html(complex_tei, true, false, @collection)
+        result = bibliography_to_html(complex_tei, true, false, @collection)
 
         # Should render line breaks
         expect(result).to include('<br/>')
@@ -119,13 +119,69 @@ Robert A. Powell, <hi rend=\"italic\">Kentucky Governors</hi> (Frankfort, KY, 19
         # Test various malformed lb tag scenarios
         malformed_content = "Text before <lb> more text <lb></lb> and <lb/> final text</lb></lb>"
 
-        result = xml_to_html(malformed_content, true, false, @collection)
+        result = bibliography_to_html(malformed_content, true, false, @collection)
 
         # Should convert all to proper line breaks
         expect(result).to include('<br/>')
         expect(result).to include('Text before')
         expect(result).to include('more text')
         expect(result).to include('final text')
+      end
+
+      it "returns empty string for empty content to show edit links" do
+        result = bibliography_to_html('', true, false, @collection)
+        expect(result).to eq('')
+        
+        result = bibliography_to_html('   ', true, false, @collection)
+        expect(result).to eq('')
+        
+        result = bibliography_to_html('<p></p>', true, false, @collection)
+        expect(result).to eq('')
+      end
+    end
+  end
+
+  describe "Bibliography TEI export formatting" do
+    before do
+      @context = double("context", translation_mode: false)
+    end
+
+    context "bibliography_to_export_tei" do
+      it "processes TEI markup in bibliography for export" do
+        bibliography_xml = "<bibl>Test citation with <hi rend=\"italic\">italicized title</hi> and <lb/>line break</bibl>"
+
+        result = bibliography_to_export_tei(bibliography_xml, @context)
+
+        expect(result).to include("<hi rend='italic'>italicized title</hi>")
+        expect(result).to include("<lb/>")
+        expect(result).to include("Test citation with")
+      end
+
+      it "handles complex TEI content with multiple hi and lb elements" do
+        complex_tei = " (1850), Population Schedules, Kentucky.<lb>
+<hi rend=\"italic\">Eighth Manuscript Census</hi> (1860), Population Schedules.<lb>
+Henry Tanner, ed., <hi rend=\"italic\">Directory</hi> (Louisville, 1861), 227."
+
+        result = bibliography_to_export_tei(complex_tei, @context)
+
+        expect(result).to include("<hi rend='italic'>Eighth Manuscript Census</hi>")
+        expect(result).to include("<hi rend='italic'>Directory</hi>")
+        expect(result).to include("<lb/>")
+        expect(result).to include("(1850), Population Schedules, Kentucky.")
+      end
+
+      it "returns empty string for empty content" do
+        result = bibliography_to_export_tei('', @context)
+        expect(result).to eq('')
+      end
+
+      it "handles malformed XML gracefully" do
+        malformed_xml = "Text with <invalid>unclosed tag and <lb> tags"
+        
+        result = bibliography_to_export_tei(malformed_xml, @context)
+        
+        # Should return empty string for malformed XML in TEI export context
+        expect(result).to eq('')
       end
     end
   end

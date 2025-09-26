@@ -261,12 +261,9 @@ module ExportHelper
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
-    organization_categories = work.collection.categories.where(org_fields_enabled: true)
-    organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @organization_articles = organizations_and_descendants.empty? ? [] : @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a
-    @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
+    @other_articles = @all_articles - @person_articles - @place_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
@@ -275,8 +272,6 @@ module ExportHelper
             @person_articles << expanded
           elsif expanded.categories.where(title: 'Places').present?
             @place_articles << expanded
-          elsif expanded.categories.where(org_fields_enabled: true).present?
-            @organization_articles << expanded
           else
             @other_articles << expanded
           end
@@ -286,7 +281,6 @@ module ExportHelper
 
     @person_articles.uniq!
     @place_articles.uniq!
-    @organization_articles.uniq!
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
@@ -302,7 +296,6 @@ module ExportHelper
         all_articles: @all_articles,
         person_articles: @person_articles,
         place_articles: @place_articles,
-        organization_articles: @organization_articles,
         other_articles: @other_articles,
         collection: @work.collection,
         user: exporting_user
@@ -437,14 +430,56 @@ module ExportHelper
     tei
   end
 
-  def xml_to_export_tei(xml_text, context, page_id = '', add_corrsp = false)
+  def bibliography_to_export_tei(bibliography_text, context, page_id = '', add_corrsp = false)
+    return '' if bibliography_text.blank?
+
+    # Preprocess bibliography content for TEI export
+    processed_xml = preprocess_bibliography_for_tei_export(bibliography_text)
+    return '' if processed_xml.blank?
+    
+    # Use a modified version of xml_to_export_tei that processes entire document structure
+    xml_to_export_tei_full_document(processed_xml, context, page_id, add_corrsp)
+  end
+
+  def xml_to_export_tei_full_document(xml_text, context, page_id = '', add_corrsp = false)
     return '' if xml_text.blank?
-    #    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     xml_text.gsub!('&', '&amp;')
     xml_text.gsub!('&amp;amp;', '&amp;')
 
+    doc = REXML::Document.new(xml_text)
+    
+    # Process all elements in the document, not just <p> elements
+    transform_all_elements_for_tei_export(doc.root)
+    
+    my_display_html = ''
+    doc.write(my_display_html)
+    
+    # Clean up XML declaration and root wrapper
+    my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
+    my_display_html.gsub!(/<\/?root>/, '')
+    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+  end
+
+  def transform_all_elements_for_tei_export(element)
+    return unless element.is_a?(REXML::Element)
+    
+    # Transform child elements first (depth-first)
+    element.elements.each { |child| transform_all_elements_for_tei_export(child) }
+    
+    # Apply TEI transformations to this element
+    transform_links(element) if element.elements['link']
+    transform_expansions(element) if element.elements['expan'] || element.elements['abbr']
+    transform_regularizations(element) if element.elements['reg']
+    transform_marginalia_and_catchwords(element) if element.elements['marginalia'] || element.elements['catchword']
+    transform_footnotes(element) if element.elements['footnote']
+    transform_lb(element) if element.elements['lb']
+    transform_tables(element) if element.elements['table']
+  end
+
+  def preprocess_bibliography_for_tei_export(bibliography_text)
     # Clean up malformed lb elements and other self-closing tags
+    xml_text = bibliography_text.dup
     xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
     xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
     # Remove orphaned closing lb tags (like </lb></lb></lb>)
@@ -471,46 +506,47 @@ module ExportHelper
       cleaned_text  # Use cleaned text when no wrapping is needed
     end
 
-    # xml_text = titles_to_divs(xml_text, context)
+    # Test if the XML can be parsed, if not return empty to avoid TEI export errors
     begin
-      doc = REXML::Document.new(wrapped_xml)
+      test_doc = REXML::Document.new(wrapped_xml)
+      return wrapped_xml
     rescue REXML::ParseException => e
-      # If XML parsing fails for TEI export, we need to return empty or log error
-      # since we can't fall back to HTML in TEI context
-      Rails.logger.error "XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
+      # For TEI export, we can't fall back to HTML, so log error and return empty
+      Rails.logger.error "Bibliography XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
       return ''
     end
-    # Apply transformations to all elements in the document
-    transform_links(doc.root)
-    transform_expansions(doc.root)
-    transform_regularizations(doc.root)
-    transform_marginalia_and_catchwords(doc.root)
-    transform_footnotes(doc.root)
-    transform_lb(doc.root)
-    transform_tables(doc.root)
+  end
 
-    # Process paragraph elements with special attributes if they exist
-    doc.elements.each_with_index('//p') do |e, i|
-      e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-      if add_corrsp
-        e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+  def xml_to_export_tei(xml_text, context, page_id = '', add_corrsp = false)
+    return '' if xml_text.blank?
+    #    xml_text.gsub!(/\n/, "")
+    xml_text.gsub!('ISO-8859-15', 'UTF-8')
+    xml_text.gsub!('&', '&amp;')
+    xml_text.gsub!('&amp;amp;', '&amp;')
+
+    # xml_text = titles_to_divs(xml_text, context)
+    doc = REXML::Document.new(xml_text)
+    # paras_string = ""
+    my_display_html = ''
+    tags = [ 'p' ]
+    tags.each do |tag|
+      doc.elements.each_with_index("//#{tag}") do |e, i|
+        transform_links(e)
+        transform_expansions(e)
+        transform_regularizations(e)
+        transform_marginalia_and_catchwords(e)
+        transform_footnotes(e)
+        transform_lb(e)
+        transform_tables(e)
+        e.add_attribute('xml:id', "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+        if add_corrsp
+          e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+        end
+        my_display_html << e.to_s
       end
     end
 
-    # Generate the output HTML from the transformed document
-    my_display_html = ''
-    if needs_wrapping
-      # If we wrapped content, output only the children of the root wrapper
-      doc.root.children.each { |child| my_display_html << child.to_s }
-    else
-      # Output the entire document
-      doc.write(my_display_html)
-      # Remove XML declaration if present
-      my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
-    end
-
-    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n")
-    my_display_html.encode('utf-8')
+    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
   def transform_expansions(p_element)
