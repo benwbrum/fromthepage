@@ -799,6 +799,7 @@ class CollectionController < ApplicationController
       :title,
       :slug,
       :intro_block,
+      :legend,
       :transcription_conventions,
       :help,
       :link_help,

@@ -33,6 +33,10 @@ table.admin-grid.datagrid.striped
       td Unique Active Contributors
       -@week_intervals.each do |week_interval|
         td.aright =@unique_contributor_counts[week_interval]
+    tr
+      td Hours Spent
+      -@week_intervals.each do |week_interval|
+        td.aright = number_with_precision(@hours_spent_counts[week_interval], precision: 0)
 
 .section.admin-counters
   =link_to admin_collection_list_path do

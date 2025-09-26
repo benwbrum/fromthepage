@@ -183,6 +183,8 @@ fr:
       forums_description: Permet aux collaborateurs de discuter de sujets entre eux et avec les propriétaires de projets via des forums de discussion.
       hide_completed: Masquer les œuvres terminés par défaut
       hide_completed_description: Masquer les œuvres entièrement transcrites ou traduites par défaut.
+      legend: Légende
+      legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_facets_description: Autoriser les utilisateurs à parcourir les œuvres de cette collection via les métadonnées.

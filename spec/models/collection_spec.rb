@@ -14,6 +14,14 @@ describe Collection do
         collection.intro_block = valid_html
         expect(collection.valid?).to be_truthy
       end
+
+      it 'validates legend html syntax' do
+        collection.legend = invalid_html
+        expect(collection.valid?).to be_falsey
+
+        collection.legend = valid_html
+        expect(collection.valid?).to be_truthy
+      end
     end
   end
 

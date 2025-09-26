@@ -19,6 +19,7 @@
 #  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
+#  legend                         :text(65535)
 #  license_key                    :string(255)
 #  link_help                      :text(65535)
 #  messageboard_slug              :string(255)
@@ -99,6 +100,7 @@ class Collection < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :legend, html: true, length: { maximum: 65535 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
@@ -129,6 +131,12 @@ class Collection < ApplicationRecord
   }
 
   alias_attribute :created_at, :created_on
+
+  enum :review_type, {
+    optional: 'optional',
+    required: 'required',
+    restricted: 'restricted'
+  }, prefix: :review_type
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -207,12 +215,6 @@ class Collection < ApplicationRecord
     !subjects_disabled
   end
 
-  module ReviewType
-    OPTIONAL = 'optional'
-    REQUIRED = 'required'
-    RESTRICTED = 'restricted'
-  end
-
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select { |_k, v| v == 1 }.map { |k, _v| k }
@@ -234,7 +236,7 @@ class Collection < ApplicationRecord
   end
 
   def review_workflow
-    review_type != ReviewType::OPTIONAL
+    !review_type_optional?
   end
 
   def enable_messageboards

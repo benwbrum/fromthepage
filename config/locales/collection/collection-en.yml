@@ -183,6 +183,8 @@ en:
       forums_description: Allows collaborators to discuss topics with each other and project owners via message boards.
       hide_completed: Hide completed works by default
       hide_completed_description: Hide works that are fully transcribed or translated by default.
+      legend: Legend
+      legend_description: HTML content to display on each page view to provide context for readers. This will appear below the transcription in the page overview.
       metadata: Metadata
       metadata_description: Upload metadata for items in this collection in bulk.
       metadata_facets_description: Allow users to browse works within this collection via metadata.

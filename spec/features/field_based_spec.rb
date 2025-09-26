@@ -93,6 +93,29 @@ describe "collection settings js tasks", order: :defined do
     expect(page.find('.page-editarea')).to have_selector('#fields_1_first-field')
   end
 
+  it "handles unbalanced brackets in field-based works without validation errors" do
+    # Ensure collection is field-based before testing
+    @collection.update!(field_based: true)
+    expect(@collection.field_based).to be true
+
+    work = @collection.works.first
+    field_page = work.pages.first
+    visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
+
+    # This should not cause a validation error even though it has unbalanced brackets
+    page.fill_in('fields_1_first-field', with: 'MEDBREY[[SIC] - problematic text with unbalanced brackets')
+    page.fill_in('fields_2_second-field', with: 'Another field with [[unbalanced brackets')
+    find('#save_button_top').click
+
+    # Should succeed without showing "Subject Linking Error" or 500 error
+    expect(page).not_to have_content('Subject Linking Error')
+    expect(page).not_to have_content('500')
+    expect(page).not_to have_content('undefined method')
+
+    # Should show successful save
+    expect(page).to have_content('Saved')
+  end
+
   it "deletes a transcription field" do
     count = TranscriptionField.all.count
     visit collection_path(@collection.owner, @collection)
