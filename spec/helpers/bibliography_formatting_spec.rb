@@ -131,10 +131,10 @@ Robert A. Powell, <hi rend=\"italic\">Kentucky Governors</hi> (Frankfort, KY, 19
       it "returns empty string for empty content to show edit links" do
         result = bibliography_to_html('', true, false, @collection)
         expect(result).to eq('')
-        
+
         result = bibliography_to_html('   ', true, false, @collection)
         expect(result).to eq('')
-        
+
         result = bibliography_to_html('<p></p>', true, false, @collection)
         expect(result).to eq('')
       end
@@ -177,9 +177,9 @@ Henry Tanner, ed., <hi rend=\"italic\">Directory</hi> (Louisville, 1861), 227."
 
       it "handles malformed XML gracefully" do
         malformed_xml = "Text with <invalid>unclosed tag and <lb> tags"
-        
+
         result = bibliography_to_export_tei(malformed_xml, @context)
-        
+
         # Should return empty string for malformed XML in TEI export context
         expect(result).to eq('')
       end

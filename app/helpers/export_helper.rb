@@ -436,7 +436,7 @@ module ExportHelper
     # Preprocess bibliography content for TEI export
     processed_xml = preprocess_bibliography_for_tei_export(bibliography_text)
     return '' if processed_xml.blank?
-    
+
     # Use a modified version of xml_to_export_tei that processes entire document structure
     xml_to_export_tei_full_document(processed_xml, context, page_id, add_corrsp)
   end
@@ -448,13 +448,13 @@ module ExportHelper
     xml_text.gsub!('&amp;amp;', '&amp;')
 
     doc = REXML::Document.new(xml_text)
-    
+
     # Process all elements in the document, not just <p> elements
     transform_all_elements_for_tei_export(doc.root)
-    
+
     my_display_html = ''
     doc.write(my_display_html)
-    
+
     # Clean up XML declaration and root wrapper
     my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
     my_display_html.gsub!(/<\/?root>/, '')
@@ -463,10 +463,10 @@ module ExportHelper
 
   def transform_all_elements_for_tei_export(element)
     return unless element.is_a?(REXML::Element)
-    
+
     # Transform child elements first (depth-first)
     element.elements.each { |child| transform_all_elements_for_tei_export(child) }
-    
+
     # Apply TEI transformations to this element
     transform_links(element) if element.elements['link']
     transform_expansions(element) if element.elements['expan'] || element.elements['abbr']
@@ -509,11 +509,11 @@ module ExportHelper
     # Test if the XML can be parsed, if not return empty to avoid TEI export errors
     begin
       test_doc = REXML::Document.new(wrapped_xml)
-      return wrapped_xml
+      wrapped_xml
     rescue REXML::ParseException => e
       # For TEI export, we can't fall back to HTML, so log error and return empty
       Rails.logger.error "Bibliography XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
-      return ''
+      ''
     end
   end
 

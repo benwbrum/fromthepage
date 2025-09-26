@@ -64,7 +64,7 @@ module AbstractXmlHelper
 
     # For TEI content, clean up malformed elements
     xml_text = bibliography_text.dup
-    
+
     # Clean up malformed lb elements and other self-closing tags
     xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
     xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
@@ -95,7 +95,7 @@ module AbstractXmlHelper
     # Test if the XML can be parsed
     begin
       test_doc = REXML::Document.new(wrapped_xml)
-      return wrapped_xml
+      wrapped_xml
     rescue REXML::ParseException => e
       # If XML parsing fails, fall back to treating as plain HTML
       # This handles cases where URLs with parameters or other content
@@ -110,7 +110,7 @@ module AbstractXmlHelper
 
       # Ensure empty fallback results return empty string
       cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
-      return cleaned_fallback.empty? ? '' : fallback_result
+      cleaned_fallback.empty? ? '' : fallback_result
     end
   end
 
@@ -119,20 +119,20 @@ module AbstractXmlHelper
 
     # Preprocess bibliography content to handle special cases
     processed_result = preprocess_bibliography_xml(bibliography_text)
-    
+
     # If preprocessing returned plain HTML (not XML), return it directly
     if processed_result.is_a?(String) && !processed_result.include?('<root>') && !processed_result.match(/^<\w+.*?>.*<\/\w+>$/)
       # Check if result is effectively empty (just whitespace, empty tags, etc.)
       cleaned_result = processed_result.gsub(/<[^>]*>/, '').strip
       return cleaned_result.empty? ? '' : processed_result
     end
-    
+
     # Use existing xml_to_html method for the actual XML processing
     begin
       result = xml_to_html(processed_result, preserve_lb, flatten_links, collection, highlight_article_id, suppress_tooltips)
       # Remove the temporary root wrapper if we added one
       result.gsub!(/<\/?root>/, '') if processed_result.include?('<root>')
-      
+
       # Ensure truly empty content returns empty string to maintain UI behavior
       # (e.g., showing edit description links when content is empty)
       # Check if result is effectively empty (just whitespace, empty tags, etc.)
@@ -141,13 +141,13 @@ module AbstractXmlHelper
     rescue REXML::ParseException => e
       # Final fallback if xml_to_html still fails
       Rails.logger.warn "Final fallback: xml_to_html failed for bibliography content: #{e.message}" if defined?(Rails)
-      
+
       fallback_result = ActionController::Base.helpers.sanitize(
         bibliography_text.strip,
         tags: SANITIZE_ALLOWED_TAGS,
         attributes: SANITIZE_ALLOWED_ATTRIBUTES
       ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
-      
+
       # Ensure empty fallback results return empty string
       cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
       cleaned_fallback.empty? ? '' : fallback_result
