@@ -9,9 +9,9 @@ RSpec.describe 'static/landing_page', type: :view do
       error: '#icon-remove-sign',
       info: '#icon-warning-sign'
     })
-    
+
     allow(view).to receive(:svg_symbol).and_return('<svg></svg>'.html_safe)
-    
+
     # Mock user authentication status
     allow(view).to receive(:user_signed_in?).and_return(false)
     allow(view).to receive(:signed_in?).and_return(false)
