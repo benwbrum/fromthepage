@@ -1,0 +1,56 @@
+-content_for :page_title, "FAQ - Frequently Asked Questions"
+-content_for :meta_description, "Frequently asked questions about FromThePage transcription platform, including browser compatibility and troubleshooting."
+
+h2 Frequently Asked Questions
+
+.content
+  h3 Browser Compatibility Issues
+
+  h4 "Connection is not private" message in Safari
+  p Some transcribers may encounter a "Connection is not private" warning message when trying to access FromThePage in Safari. This is commonly caused by antivirus software, particularly Avast, interfering with SSL connections.
+
+  p 
+    strong Solution:
+  ul
+    li If you are using Avast antivirus, you can resolve this by excluding FromThePage from Avast's web scanning:
+      ol
+        li Open Avast Antivirus
+        li Go to Settings → General → Exceptions
+        li Add <code>*.fromthepage.com</code> to the website exceptions
+        li Restart your browser and try accessing FromThePage again
+    li Alternatively, you can temporarily disable Avast's HTTPS scanning feature while using FromThePage
+    li If the issue persists, try accessing FromThePage using a different browser such as Chrome or Firefox
+
+  p 
+    | For more detailed instructions on configuring Avast exclusions, please see the 
+    = link_to "official Avast support guide", "https://support.avast.com/en-ww/article/Antivirus-scan-exclusions", target: "_blank", rel: "noopener"
+    | .
+
+  p 
+    | Learn more about this issue in this 
+    = link_to "technical article", "https://itnerd.blog/2015/05/21/avast-responds-to-my-post-about-their-anti-virus-product/", target: "_blank", rel: "noopener"
+    | .
+
+.content  
+  h3 General Questions
+
+  h4 What is FromThePage?
+  p FromThePage is a collaborative transcription platform that allows institutions and volunteers to work together to transcribe historical documents and make them searchable and accessible online.
+
+  h4 How do I get started transcribing?
+  p Simply browse our public collections, find a document that interests you, and click "Transcribe" to begin. No account registration is required for guest transcription, though creating an account allows you to track your contributions.
+
+  h4 What browsers work best with FromThePage?
+  p FromThePage works with all modern browsers including Chrome, Firefox, Safari, and Edge. For the best experience, we recommend using the latest version of your preferred browser.
+
+.content
+  h3 Need More Help?
+  p 
+    | If you can't find the answer to your question here, please feel free to 
+    = link_to "contact us", contact_path(contact_form_token)
+    |  and we'll be happy to help.
+
+  p 
+    | You can also learn more 
+    = link_to "about us", about_path
+    |  and our platform.

@@ -103,6 +103,15 @@ html lang="en-US"
       h2.strong
         =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
+    // Browser compatibility banner for Safari users
+    div(data-controller="browser-compatibility")
+      div(data-browser-compatibility-target="banner" style="display: none; background-color: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 10px; margin: 10px 0; border-radius: 4px;")
+        strong Connection issues with Safari?
+        span<> If you're experiencing "Connection is not private" warnings, this may be caused by Avast antivirus. 
+        = link_to "Check our FAQ", faq_path, style: "color: #856404; text-decoration: underline;"
+        | for solutions.
+        button(type="button" data-action="click->browser-compatibility#dismiss" style="float: right; background: none; border: none; font-size: 18px; cursor: pointer; color: #856404;") ×
+
     =(yield :content_above).force_encoding 'UTF-8'
 
     main.wrapper
@@ -123,6 +132,7 @@ html lang="en-US"
           =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
           =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
           =link_to t('.about'), 'https://content.fromthepage.com/about/'
+          =link_to t('.faq'), faq_path
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           -if request.original_url.include?("fromthepage.com")

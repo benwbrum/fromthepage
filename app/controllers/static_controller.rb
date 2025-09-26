@@ -42,4 +42,10 @@ class StaticController < ApplicationController
   def digital_scholarship
     render layout: false
   end
+
+  def about
+  end
+
+  def faq
+  end
 end
