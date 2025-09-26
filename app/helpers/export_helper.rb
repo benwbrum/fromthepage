@@ -34,7 +34,7 @@ module ExportHelper
     doc = Nokogiri::XML(postprocessed)
     doc.xpath('//table').each do |table_element|
       key = SecureRandom.uuid
-      markdown_tables[key] = xml_table_to_markdown_table(table_element, true)
+      markdown_tables[key] = xml_table_to_markdown_table(table_element, true, flatten_links)
       table_element.replace("REPLACEMETABLE#{key}")
     end
 
