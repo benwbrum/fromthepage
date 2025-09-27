@@ -150,4 +150,19 @@ describe 'guest user actions' do
     expect(page.current_path).not_to eq dashboard_path
     expect(page).to have_button('Transcribe as guest')
   end
+
+  it 'guest users should have proper login for URL generation', :guest_enabled do
+    visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
+    page.find('.tabs').click_link('Transcribe')
+    click_button('Transcribe as guest')
+
+    # Check that the guest user has proper login for slug generation
+    guest_user = User.where(guest: true).last
+    expect(guest_user.login).not_to be_nil
+    expect(guest_user.login).to start_with('guest_')
+    expect(guest_user.slug).to eq(guest_user.login)
+    
+    # Verify URL generation works
+    expect(guest_user.to_param).to eq(guest_user.login)
+  end
 end
