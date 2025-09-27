@@ -291,16 +291,19 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
     old_article_ids = @page.articles.pluck(:id)
 
-    @page.attributes = page_params
+    if params[:page].present?
+      page_attributes = page_params
+      @page.attributes = page_attributes unless page_attributes.empty?
+    end
 
-    unless params[:page]['needs_review'] == '1'
+    unless params[:page].present? && params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
         page: @page,
         page_params: mark_page_blank_params,
         user: current_user
       ).perform
 
-      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_translation_status?
+      if (params[:page].present? && params[:page]['mark_blank'] == '1') || @page.saved_change_to_translation_status?
         flash[:notice] = t('transcribe.mark_page_blank.saved_notice')
         redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
         return
@@ -610,7 +613,7 @@ class TranscribeController  < ApplicationController
   end
 
   def page_params
-    params.require(:page).permit(:source_text, :source_translation, :title)
+    params[:page].present? ? params.require(:page).permit(:source_text, :source_translation, :title) : ActionController::Parameters.new
   end
 
   def mark_page_blank_params

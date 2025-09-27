@@ -56,4 +56,26 @@ describe TranscribeController, 'navigation fix' do
       end
     end
   end
+
+  describe '#save_translation' do
+    let(:action_path) { transcribe_save_translation_path }
+    let(:subject) { patch action_path, params: params }
+
+    context 'when navigation triggers save_translation without page params' do
+      let(:params) do
+        {
+          page_id: page.id
+          # Note: no page params are sent, simulating navigation arrow click
+        }
+      end
+
+      it 'handles missing page params gracefully without ArgumentError' do
+        login_as owner
+        
+        expect { subject }.not_to raise_error
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:translate)
+      end
+    end
+  end
 end
