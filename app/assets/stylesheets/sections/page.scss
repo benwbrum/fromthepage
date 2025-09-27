@@ -44,6 +44,19 @@
     }
     &:active { @include button-state(active); }
   }
+  
+  // Disabled state for preview mode
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    .page-nav_prev, .page-nav_next {
+      &.disabled {
+        cursor: not-allowed;
+        color: rgba($bodyFgFaded, 0.3);
+        background-color: mix(#FFF, $bodyBg, 15);
+      }
+    }
+  }
 }
 
 

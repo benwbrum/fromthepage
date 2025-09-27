@@ -65,19 +65,16 @@ class TranscribeController  < ApplicationController
     end
 
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
-    if params[:page].present?
-      page_attributes = page_params
-      @page.attributes = page_attributes unless page_attributes.empty?
-    end
+    @page.attributes = page_params unless page_params.empty?
 
-    unless params[:page].present? && params[:page]['needs_review'] == '1'
+    unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
         page: @page,
         page_params: mark_page_blank_params,
         user: current_user
       ).perform
 
-      if (params[:page].present? && params[:page]['mark_blank'] == '1') || @page.saved_change_to_status?
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_status?
         next_page_id, flash_msg = next_lower_page_and_flash(@page, [ :transcribe, :mark_page_blank ])
 
         flash[:notice] = flash_msg
@@ -101,21 +98,21 @@ class TranscribeController  < ApplicationController
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       message = log_transcript_attempt
       # leave the status alone if it's needs review, but otherwise set it to transcribed
-      if save_to_incomplete && (!params[:page].present? || params[:page]['needs_review'] != '1')
+      if save_to_incomplete && params[:page]['needs_review'] != '1'
         @page.status = :incomplete
       elsif save_to_needs_review && @page.work.collection.review_workflow
         @page.status = :needs_review
       elsif save_to_needs_review
-        if (!params[:page].present? || params[:page]['needs_review'] != '1') && Page::COMPLETED_STATUSES.include?(@page.status)
+        if params[:page]['needs_review'] != '1' && Page::COMPLETED_STATUSES.include?(@page.status)
           skip_re_review = @collection.owner == current_user ||
                            @collection.reviewers.ids.include?(current_user.id) ||
                            Deed.where(deed_type: DeedType::COMPLETED_TYPES, user_id: current_user.id, page_id: @page.id).any?
 
           @page.status = skip_re_review ? :transcribed : :needs_review
         else
-          @page.status = (params[:page].present? && params[:page]['needs_review'] == '1') ? :needs_review : :transcribed
+          @page.status = params[:page]['needs_review'] == '1' ? :needs_review : :transcribed
         end
-      elsif (save_to_transcribed && (!params[:page].present? || params[:page]['needs_review'] != '1')) || approve_to_transcribed
+      elsif (save_to_transcribed && params[:page]['needs_review'] != '1') || approve_to_transcribed
         @page.status = :transcribed
       else
         # old code; possibly dead
@@ -291,19 +288,16 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
     old_article_ids = @page.articles.pluck(:id)
 
-    if params[:page].present?
-      page_attributes = page_params
-      @page.attributes = page_attributes unless page_attributes.empty?
-    end
+    @page.attributes = page_params
 
-    unless params[:page].present? && params[:page]['needs_review'] == '1'
+    unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
         page: @page,
         page_params: mark_page_blank_params,
         user: current_user
       ).perform
 
-      if (params[:page].present? && params[:page]['mark_blank'] == '1') || @page.saved_change_to_translation_status?
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_translation_status?
         flash[:notice] = t('transcribe.mark_page_blank.saved_notice')
         redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
         return
@@ -613,15 +607,15 @@ class TranscribeController  < ApplicationController
   end
 
   def page_params
-    params[:page].present? ? params.require(:page).permit(:source_text, :source_translation, :title) : ActionController::Parameters.new
+    params.require(:page).permit(:source_text, :source_translation, :title)
   end
 
   def mark_page_blank_params
-    params[:page].present? ? params.require(:page).permit(:mark_blank) : ActionController::Parameters.new
+    params.require(:page).permit(:mark_blank)
   end
 
   def needs_review_params
-    params[:page].present? ? params.require(:page).permit(:needs_review) : ActionController::Parameters.new
+    params.require(:page).permit(:needs_review)
   end
 
   # i18n-tasks-use t('transcribe.mark_page_blank.saved_notice')

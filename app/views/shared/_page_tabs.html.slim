@@ -82,7 +82,13 @@ ruby:
       =@page.title
 
     .headline_aside
-      -unless @display_context == 'preview'
+      -if @display_context == 'preview'
+        nav.page-nav.disabled
+          -# Navigation is disabled in preview mode to prevent form submission errors
+          span.page-nav_prev.disabled =svg_symbol '#icon-arrow-left', class: 'icon'
+          span.page-nav_info = t('.nav_info', position: @page.position, size: @work.pages.size)
+          span.page-nav_next.disabled =svg_symbol '#icon-arrow-right', class: 'icon'
+      -else
         nav.page-nav
           -if is_rtl
             -if !@page.last?
