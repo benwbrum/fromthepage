@@ -161,7 +161,7 @@ describe 'guest user actions' do
     expect(guest_user.login).not_to be_nil
     expect(guest_user.login).to start_with('guest_')
     expect(guest_user.slug).to eq(guest_user.login)
-    
+
     # Verify URL generation works
     expect(guest_user.to_param).to eq(guest_user.login)
   end

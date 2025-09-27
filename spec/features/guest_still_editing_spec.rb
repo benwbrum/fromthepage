@@ -27,10 +27,10 @@ describe 'guest user still_editing functionality' do
     expect(guest_user.login).not_to be_nil
     expect(guest_user.login).to start_with('guest_')
     expect(guest_user.slug).to eq(guest_user.login)
-    
+
     # Verify that the user can be used in URL generation
     expect(guest_user.to_param).to eq(guest_user.login)
-    
+
     guest_user.destroy
   end
 
@@ -38,17 +38,17 @@ describe 'guest user still_editing functionality' do
     visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
     page.find('.tabs').click_link('Transcribe')
     click_button('Transcribe as guest')
-    
+
     # Get the guest user that was created
     guest_user = User.where(guest: true).last
     expect(guest_user).not_to be_nil
     expect(guest_user.login).not_to be_nil
-    
+
     # Simulate the still_editing AJAX call that would happen from the frontend
     # This should not fail due to slug issues
     post collection_transcribe_still_editing_path(guest_user.slug, @collection.id, @work.id, @page.id)
     expect(response.status).to eq(200)
-    
+
     # Verify that the page was updated with editing information
     @page.reload
     expect(@page.edit_started_by_user_id).to eq(guest_user.id)
