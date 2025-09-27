@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
 
   def create_guest_user
     user = User.new { |user| user.guest = true }
-    timestamp_rand = "#{Time.now.to_i}#{rand(99)}"
+    timestamp_rand = "#{Time.now.to_f}#{rand(99999)}".gsub('.', '')
     user.email = "guest_#{timestamp_rand}@example.com"
     user.login = "guest_#{timestamp_rand}"
     user.save(validate: false)

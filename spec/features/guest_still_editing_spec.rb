@@ -18,7 +18,7 @@ describe 'guest user still_editing functionality' do
   it 'guest users should have proper login and slug for URL generation' do
     # Simulate creating a guest user like the application does
     guest_user = User.new { |user| user.guest = true }
-    timestamp_rand = "#{Time.now.to_i}#{rand(99)}"
+    timestamp_rand = "#{Time.now.to_f}#{rand(99999)}".gsub('.', '')
     guest_user.email = "guest_#{timestamp_rand}@example.com"
     guest_user.login = "guest_#{timestamp_rand}"
     guest_user.save(validate: false)
