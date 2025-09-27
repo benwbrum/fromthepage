@@ -240,10 +240,17 @@ end
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
+          # handle initial blank cells - if line starts with whitespace followed by pipe, preserve empty cell
+          line_chomp = line.chomp
+          has_initial_empty_cell = line_chomp.match(/^\s+\|/)
+          
           # remove leading and trailing delimiters
-          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
+          clean_line = line_chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
+          
+          # if there was initial whitespace before pipe, add empty cell at beginning
+          cells.unshift('') if has_initial_empty_cell
           current_table[:rows] << cells
           rowline = ''
           cells.each_with_index do |cell, _i|
