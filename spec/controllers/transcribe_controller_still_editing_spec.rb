@@ -10,16 +10,18 @@ describe TranscribeController do
     @page = @work.pages.last
   end
 
-  before :each do
-    # Enable guest transcription for these tests
-    silence_warnings do
-      GUEST_TRANSCRIPTION_ENABLED = true
+  before :each do |test|
+    if test.metadata[:guest_enabled]
+      # Enable guest transcription for specific tests
+      silence_warnings do
+        GUEST_TRANSCRIPTION_ENABLED = true
+      end
     end
   end
 
   describe '#still_editing' do
     context 'when user is a guest' do
-      it 'should successfully update page editing status' do
+      it 'should successfully update page editing status', :guest_enabled do
         # Create a guest user with proper login
         guest_user = User.new(guest: true)
         timestamp_rand = "#{Time.now.to_f}#{rand(99999)}".gsub('.', '')
@@ -30,8 +32,13 @@ describe TranscribeController do
         # Set session to simulate guest user session
         session[:guest_user_id] = guest_user.id
 
-        # Call the still_editing endpoint
-        get :still_editing, params: { page_id: @page.id }
+        # Call the still_editing endpoint with proper route parameters
+        get :still_editing, params: {
+          user_slug: guest_user.slug,
+          collection_id: @collection.id,
+          work_id: @work.id,
+          page_id: @page.id
+        }
 
         expect(response.status).to eq(200)
 
@@ -50,7 +57,12 @@ describe TranscribeController do
         # Clear any session data
         session[:guest_user_id] = nil
 
-        get :still_editing, params: { page_id: @page.id }
+        get :still_editing, params: {
+          user_slug: 'nonexistent',
+          collection_id: @collection.id,
+          work_id: @work.id,
+          page_id: @page.id
+        }
 
         expect(response.status).to eq(401)
         expect(response.body).to eq('session expired')
