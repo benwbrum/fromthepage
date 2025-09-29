@@ -217,7 +217,7 @@ end
       # look for a header
       if !current_table
         if line.match(HEADER)
-          line.chomp
+          line = line.chomp
           current_table = { header: [], rows: [], section: @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
