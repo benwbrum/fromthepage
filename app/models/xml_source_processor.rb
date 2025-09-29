@@ -222,10 +222,10 @@ end
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe
-          
+
           # trim whitespace from each header cell
           cells = cells.map(&:strip)
-          
+
           current_table[:header] = cells.map { |cell_title| cell_title.sub(/^!\s*/, '') }
           heading = cells.map do |cell|
             if cell.match(/^!/)
@@ -252,7 +252,7 @@ end
           clean_line = line_chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
-          
+
           # trim whitespace from each cell
           cells = cells.map(&:strip)
 
