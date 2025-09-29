@@ -27,12 +27,9 @@ describe 'TranscribeController still_editing endpoint' do
         guest_user.login = "guest_#{timestamp_rand}"
         guest_user.save(validate: false)
 
-        # Set session to simulate guest user session
-        allow(Current).to receive(:session).and_return({ guest_user_id: guest_user.id })
-
-        # Call the still_editing endpoint with proper route parameters
+        # Call the still_editing endpoint with proper route parameters and session
         action_path = collection_transcribe_still_editing_path(guest_user.slug, collection.id, work.id, page.id)
-        get action_path
+        get action_path, params: {}, session: { guest_user_id: guest_user.id }
 
         expect(response).to have_http_status(:ok)
 
@@ -48,9 +45,7 @@ describe 'TranscribeController still_editing endpoint' do
 
     context 'when user is not signed in and not a guest' do
       it 'should return 401 unauthorized' do
-        # Clear any session data
-        allow(Current).to receive(:session).and_return({})
-
+        # Call without any session or authentication
         action_path = collection_transcribe_still_editing_path('nonexistent', collection.id, work.id, page.id)
         get action_path
 
