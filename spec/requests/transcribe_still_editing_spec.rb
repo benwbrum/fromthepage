@@ -27,9 +27,12 @@ describe 'TranscribeController still_editing endpoint' do
         guest_user.login = "guest_#{timestamp_rand}"
         guest_user.save(validate: false)
 
-        # Call the still_editing endpoint with proper route parameters and session
+        # Mock the session to simulate guest user session
+        allow_any_instance_of(ApplicationController).to receive(:session).and_return({ guest_user_id: guest_user.id })
+
+        # Call the still_editing endpoint with proper route parameters
         action_path = collection_transcribe_still_editing_path(guest_user.slug, collection.id, work.id, page.id)
-        get action_path, params: {}, session: { guest_user_id: guest_user.id }
+        get action_path
 
         expect(response).to have_http_status(:ok)
 
