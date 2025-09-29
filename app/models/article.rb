@@ -191,9 +191,7 @@ class Article < ApplicationRecord
   #######################
   # tested
   def create_version
-    unless self.saved_change_to_title? || self.saved_change_to_source_text?
-      return
-    end
+    return unless self.saved_change_to_title? || self.saved_change_to_source_text?
 
     version = ArticleVersion.new
     # copy article data
@@ -205,11 +203,8 @@ class Article < ApplicationRecord
     version.user = Current.user
 
     # now do the complicated version update thing
-
-    previous_version = ArticleVersion.where([ 'article_id = ?', self.id ]).order('version DESC').all
-    if previous_version.first
-      version.version = previous_version.first.version + 1
-    end
+    previous_version = ArticleVersion.where(article_id: self.id).order(version: :desc).all
+    version.version = previous_version.first.version + 1 if previous_version.first
     version.save!
   end
 

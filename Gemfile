@@ -16,6 +16,8 @@ gem 'acts_as_tree'
 gem 'interactor-rails', '~> 2.0'
 gem 'friendly_id'
 gem 'thredded', '~> 1.1'
+gem 'solid_queue', '~> 1.2'
+gem 'mission_control-jobs'
 
 # Authentication / Security
 gem 'devise'
@@ -35,7 +37,7 @@ gem 'rubyzip'
 
 # HTTP / API / External SDKs
 gem 'httparty'
-gem 'savon', '~> 2.12.0'
+gem 'savon', '~> 2.15', '>= 2.15.1'
 gem 'ruby-openai'
 gem 'open3'
 gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
@@ -49,6 +51,7 @@ gem 'roo'
 gem 'charlock_holmes'
 gem 'nkf'
 gem 'net-pop', github: 'ruby/net-pop'
+
 gem 'forty_facets'
 gem 'chewy'
 
@@ -107,9 +110,12 @@ group :development do
 end
 
 group :assets do
+  gem 'sprockets', '~> 4.2'
+  gem 'sprockets-rails', '>= 3.4'
   gem 'uglifier'
-  gem 'terser'
 end
+
+gem 'terser'
 
 group :development, :test do
   gem 'dotenv-rails'

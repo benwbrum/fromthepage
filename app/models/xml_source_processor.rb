@@ -3,11 +3,21 @@ module XmlSourceProcessor
     if self.source_text.blank?
       return
     end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
+      return
+    end
     validate_links(self.source_text)
   end
 
   def validate_source_translation
     if self.source_translation.blank?
+      return
+    end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
       return
     end
     validate_links(self.source_translation)
@@ -207,11 +217,15 @@ end
       # look for a header
       if !current_table
         if line.match(HEADER)
-          line.chomp
+          line = line.chomp
           current_table = { header: [], rows: [], section: @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe
+
+          # trim whitespace from each header cell
+          cells = cells.map(&:strip)
+
           current_table[:header] = cells.map { |cell_title| cell_title.sub(/^!\s*/, '') }
           heading = cells.map do |cell|
             if cell.match(/^!/)
@@ -230,10 +244,20 @@ end
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
+          # handle initial blank cells - if line starts with whitespace followed by pipe, preserve empty cell
+          line_chomp = line.chomp
+          has_initial_empty_cell = line_chomp.match(/^\s+\|/)
+
           # remove leading and trailing delimiters
-          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
+          clean_line = line_chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
+
+          # trim whitespace from each cell
+          cells = cells.map(&:strip)
+
+          # if there was initial whitespace before pipe, add empty cell at beginning
+          cells.unshift('') if has_initial_empty_cell
           current_table[:rows] << cells
           rowline = ''
           cells.each_with_index do |cell, _i|
@@ -343,12 +367,16 @@ EOF
     # first clear out the existing links
     # log the count of articles before and after
     clear_links(text_type) unless preview_mode
+
+    candidate_articles = collection.articles.left_joins(:article_versions)
+    page_update_timestamp = 1.hour.ago
+
     processed = ''
     # process it
     doc = REXML::Document.new xml_string
     doc.elements.each('//link') do |element|
       # default the title to the text if it's not specified
-      if !(title=element.attributes['target_title'])
+      if !(title = element.attributes['target_title'])
         title = element.text
       end
       # display_text = element.text
@@ -360,14 +388,27 @@ EOF
       # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
+      article = candidate_articles.find_by(title: title)
+
+      if article.nil?
+        article = candidate_articles.where('article_versions.title': title)
+                                    .where('article_versions.created_on > ?', page_update_timestamp)
+                                    .first
+        if article.present?
+          display_text = article.title
+          title = article.title
+        end
+      end
+
       # create new blank articles if they don't exist already
-      if !(article = collection.articles.where(title: title).first)
+      if article.nil?
         article = Article.new
         article.title = title
         article.collection = collection
         article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
       end
+
       link_id = create_link(article, display_text, text_type) unless preview_mode
       # now update the attribute
       link_element = REXML::Element.new('link')
@@ -382,7 +423,6 @@ EOF
     doc.write(processed)
     processed
   end
-
 
   # handle XML-dependent post-processing
   def postprocess_xml_markup(xml_string)
@@ -494,6 +534,9 @@ EOF
     # clean up in-cell line-breaks
     table_element.xpath('//lb').each { |n| n.replace(' ') }
 
+    # Sanitize single quotes with backticks
+    # table_element.xpath('//*').each { |n| n.content.gsub("'", '`') }
+
     # calculate the widths of each column based on max(header, cell[0...end])
     column_count = ([ table_element.xpath('//th').count ] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
     column_widths = {}
@@ -528,7 +571,7 @@ EOF
         if plaintext_export
           e.text.rjust(width, ' ')
         else
-          inner_html = xml_to_pandoc_md(e.to_s, false, false, nil, false).gsub("\n", '')
+          inner_html = xml_to_pandoc_md(e.to_s.gsub("'", '&#39;'), false, false, nil, false).gsub("\n", '')
           inner_html.rjust(width, ' ')
         end
       end.join(' | ') << "\n"

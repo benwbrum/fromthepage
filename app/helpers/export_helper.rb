@@ -34,7 +34,7 @@ module ExportHelper
     doc = Nokogiri::XML(postprocessed)
     doc.xpath('//table').each do |table_element|
       key = SecureRandom.uuid
-      markdown_tables[key] = xml_table_to_markdown_table(table_element, true)
+      markdown_tables[key] = xml_table_to_markdown_table(table_element, true, flatten_links)
       table_element.replace("REPLACEMETABLE#{key}")
     end
 
@@ -418,7 +418,39 @@ module ExportHelper
     tei
   end
 
+  # Clean date for use in 'when' attribute using EDTF library
+  # Attempts to parse as EDTF and returns valid date string or nil
+  def clean_date_for_when_attribute(date_string)
+    return nil if date_string.blank?
 
+    # Try to parse with EDTF library
+    begin
+      edtf_date = Date.edtf(date_string)
+      return edtf_date.edtf if edtf_date
+    rescue
+      # Fall back to basic cleaning if EDTF parsing fails
+    end
+
+    # Fallback processing
+    cleaned = date_string.strip
+    return nil if cleaned.blank?
+
+    # For fallback, remove multiple question marks but keep single ones
+    if cleaned =~ /\?{2,}/
+      cleaned = cleaned.gsub(/\?+/, '')
+    end
+
+    # Validate basic date format - allow single question mark at end
+    return nil unless cleaned =~ /^\d{4}(-\d{2})?(-\d{2})?(\?)?$/
+
+    # Check for invalid months (13-20) - months 21+ are valid EDTF sub-year groupings
+    if cleaned =~ /^\d{4}-(\d{2})/
+      month = $1.to_i
+      return nil if month >= 13 && month <= 20
+    end
+
+    cleaned
+  end
 
   def seen_subject_to_tei(subject, parent_category)
     tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
@@ -715,7 +747,10 @@ module ExportHelper
     p_element.elements.each('//entryHeading') do |entryHeading|
       gap = REXML::Element.new('head')
 
-      gap.add_attribute('depth', entryHeading.attributes['depth'])
+      # Use subtype attribute instead of depth for TEI compliance
+      if entryHeading.attributes['depth']
+        gap.add_attribute('subtype', "level-#{entryHeading.attributes['depth']}")
+      end
       gap.add_text(entryHeading.attributes['title'])
       entryHeading.replace_with(gap)
     end
@@ -797,7 +832,10 @@ module ExportHelper
 
           # Create the new section
           section = REXML::Element.new('section')
-          section.add_attribute('depth', header.attributes['depth'])
+          # Use type attribute instead of depth for TEI compliance
+          if header.attributes['depth']
+            section.add_attribute('type', "level-#{header.attributes['depth']}")
+          end
 
           # Handle where to put the new section
           if sections.empty?
@@ -819,7 +857,12 @@ module ExportHelper
 
           # Update the accumulator
           sections.push(section)
-          current_depth = section.attributes['depth'].to_i
+          # Use actual depth value if available, otherwise increment
+          if header.attributes['depth']
+            current_depth = header.attributes['depth'].to_i
+          else
+            current_depth += 1
+          end
         end
 
         # Adds the current element to the new section at the right location

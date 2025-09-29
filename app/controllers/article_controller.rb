@@ -140,7 +140,6 @@ class ArticleController < ApplicationController
           nodes << {
             'id' => "S#{article.id}",
             'title' => article.title,
-            'bio' => xml_to_html(article.xml_text, false, nil, nil, nil, true),
             'group' => article.categories.first&.title,
             'link' => collection_article_show_url(@collection.owner, @collection, article)
           }

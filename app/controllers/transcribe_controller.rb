@@ -42,79 +42,15 @@ class TranscribeController  < ApplicationController
   def guest
   end
 
-  def mark_page_blank(options = { redirect: 'display' })
-    redirect_path = case options[:redirect]
-    when 'transcribe'
-                      page_id = @page.last? ? @page.id : @page.lower_item.id
-                      notice_msg = @page.id == page_id ? t('.saved_notice') : t('.saved_and_next_notice')
-                      collection_transcribe_page_path(@collection.owner, @collection, @page.work, page_id)
-    else
-                      notice_msg = t('.saved_notice')
-                      collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-    end
+  def mark_page_blank
+    @result = Transcribe::MarkAsBlank.new(
+      page: @page,
+      user: current_user
+    ).call
 
-    if params[:page]['mark_blank'] == '1'
-      @page.status = :blank
-      @page.translation_status = :blank
-      @page.save
-      record_deed(DeedType::PAGE_MARKED_BLANK)
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      false
-    elsif @page.status_blank? && params[:page]['mark_blank'] == '0'
-      @page.status = :new
-      @page.translation_status = :new
-      @page.save
-      @work.work_statistic&.recalculate({ type: Page.statuses[:blank] })
-      flash[:notice] = notice_msg
-      redirect_to redirect_path
-      false
-    else
-      true
-    end
-  end
+    @page = @result.page
 
-  def needs_review
-    if params[:type] == 'translation'
-      if @page.work.collection.review_workflow == true && @page.translation_status_new?
-        @page.translation_status = :needs_review
-        record_deed(DeedType::TRANSLATION_REVIEW)
-      elsif params[:page]['needs_review'] == '1'
-        unless @page.translation_status_needs_review?
-          @page.translation_status = :needs_review
-          record_deed(DeedType::TRANSLATION_REVIEW)
-        end
-      else
-        if @page.translation_status_needs_review?
-          @page.translation_status = :new
-          record_deed(DeedType::TRANSLATION_REVIEWED)
-        end
-        nil
-      end
-    elsif params['save_to_needs_review'] && @page.work.collection.review_workflow
-      unless @page.status_needs_review?
-        # don't log a deed if the page was already in needs review
-        @page.status = :needs_review
-        record_deed(DeedType::NEEDS_REVIEW)
-      end
-    else
-      if params[:page]['needs_review'] == '1'
-        unless @page.status_needs_review?
-          @page.status = :needs_review
-          record_deed(DeedType::NEEDS_REVIEW)
-        end
-        # if @page.translation_status == 'blank'
-        #  @page.translation_status = nil
-        # end
-      else
-        if @page.status_needs_review?
-          @page.status = :new
-          record_deed(DeedType::PAGE_REVIEWED)
-          nil
-        end
-      end
-    end
+    respond_to(&:turbo_stream)
   end
 
   def save_transcription
@@ -131,11 +67,28 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
 
-    # if page has been marked blank, call the mark_blank code
-    mark_page_blank(redirect: 'transcribe') || return unless params[:page]['needs_review'] == '1'
+    unless params[:page]['needs_review'] == '1'
+      @page = Transcribe::Lib::MarkAsBlankHandler.new(
+        page: @page,
+        page_params: mark_page_blank_params,
+        user: current_user
+      ).perform
 
-    # check to see if the page needs to be marked as needing review
-    needs_review
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_status?
+        next_page_id, flash_msg = next_lower_page_and_flash(@page, [ :transcribe, :mark_page_blank ])
+
+        flash[:notice] = flash_msg
+        redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, next_page_id)
+        return
+      end
+    end
+
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      save_to_needs_review: params[:save_to_needs_review].present?
+    ).perform
 
     save_to_incomplete = params[:save_to_incomplete] || params[:done_to_incomplete]
     save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
@@ -337,11 +290,26 @@ class TranscribeController  < ApplicationController
 
     @page.attributes = page_params
 
-    # check to see if the page is marked blank
-    mark_page_blank or return
+    unless params[:page]['needs_review'] == '1'
+      @page = Transcribe::Lib::MarkAsBlankHandler.new(
+        page: @page,
+        page_params: mark_page_blank_params,
+        user: current_user
+      ).perform
 
-    # check to see if the page needs review
-    needs_review
+      if params[:page]['mark_blank'] == '1' || @page.saved_change_to_translation_status?
+        flash[:notice] = t('transcribe.mark_page_blank.saved_notice')
+        redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+        return
+      end
+    end
+
+    @page = Transcribe::Lib::NeedsReviewHandler.new(
+      page: @page,
+      page_params: needs_review_params,
+      user: current_user,
+      type: :translation
+    ).perform
 
     if params['save']
       message = log_translation_attempt
@@ -640,5 +608,22 @@ class TranscribeController  < ApplicationController
 
   def page_params
     params.require(:page).permit(:source_text, :source_translation, :title)
+  end
+
+  def mark_page_blank_params
+    params.require(:page).permit(:mark_blank)
+  end
+
+  def needs_review_params
+    params.require(:page).permit(:needs_review)
+  end
+
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_notice')
+  # i18n-tasks-use t('transcribe.mark_page_blank.saved_and_next_notice')
+  def next_lower_page_and_flash(page, scope)
+    next_page_id = page.last? ? page.id : page.lower_item.id
+    flash_msg = page.id == next_page_id ? t('saved_notice', scope: scope) : t('saved_and_next_notice', scope: scope)
+
+    [ next_page_id, flash_msg ]
   end
 end

@@ -1,4 +1,6 @@
 Fromthepage::Application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: '/solid_queue'
+
   resources :external_api_requests
   # TODO make the URL fall under user and collection profile
   scope ':user_slug' do
@@ -241,7 +243,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'transcribe', as: 'transcribe' do
-    get 'mark_page_blank', to: 'transcribe#mark_page_blank'
+    post 'mark_page_blank', to: 'transcribe#mark_page_blank'
     get 'display_page', to: 'transcribe#display_page'
     get 'assign_categories', to: 'transcribe#assign_categories'
     get 'guest', to: 'transcribe#guest'

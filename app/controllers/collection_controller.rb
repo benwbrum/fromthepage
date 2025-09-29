@@ -599,7 +599,7 @@ class CollectionController < ApplicationController
     if current_user.account_type != 'Staff'
       @collection.owner = current_user
     else
-      extant_collection = current_user.all_owner_collections.detect { |c| c.owner.account_type != 'Staff' }
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != 'Staff' }
       @collection.owner = extant_collection.owner
       @collection.owners << current_user
     end
@@ -799,6 +799,7 @@ class CollectionController < ApplicationController
       :title,
       :slug,
       :intro_block,
+      :legend,
       :transcription_conventions,
       :help,
       :link_help,
