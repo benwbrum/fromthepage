@@ -495,18 +495,18 @@ module ExportHelper
           e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
         end
         elements = extract_heads_from_parargraph(e)
-        
-        my_display_html << elements.map{|e| e.to_s}.join("\n\n")
+
+        my_display_html << elements.map { |e| e.to_s }.join("\n\n")
       end
     end
 
     my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
-  # The TEI standard does not allow head elements within p elements so we want 
-  # to extract them into a previous sibling of the paragraph, then remove them 
-  # from the paragraph element.  If the paragraph tag is empty, we want to 
-  # remove it.  (If there are no head elements in the paragraph elements, 
+  # The TEI standard does not allow head elements within p elements so we want
+  # to extract them into a previous sibling of the paragraph, then remove them
+  # from the paragraph element.  If the paragraph tag is empty, we want to
+  # remove it.  (If there are no head elements in the paragraph elements,
   # we will want to simply return that.)
   def extract_heads_from_parargraph(p_element)
     heads = []
@@ -516,9 +516,9 @@ module ExportHelper
     end
     if p_element.children.empty?
       p_element.remove
-      return heads
+      heads
     else
-      return heads + [p_element]
+      heads + [ p_element ]
     end
   end
 
