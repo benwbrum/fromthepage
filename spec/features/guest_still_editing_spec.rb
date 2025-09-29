@@ -28,10 +28,10 @@ describe 'guest user still_editing functionality' do
     # Check that the guest user has proper attributes for URL generation
     expect(guest_user.login).not_to be_nil
     expect(guest_user.login).to start_with('guest_')
-    expect(guest_user.slug).to eq(guest_user.login)
+    expect(guest_user.slug).to eq(guest_user.login.gsub('_', '-'))
 
     # Verify that the user can be used in URL generation
-    expect(guest_user.to_param).to eq(guest_user.login)
+    expect(guest_user.to_param).to eq(guest_user.login.gsub('_', '-'))
 
     guest_user.destroy
   end
@@ -47,8 +47,8 @@ describe 'guest user still_editing functionality' do
     expect(guest_user.login).not_to be_nil
 
     # Verify that the guest user has proper attributes for URL generation
-    expect(guest_user.slug).to eq(guest_user.login)
-    expect(guest_user.to_param).to eq(guest_user.login)
+    expect(guest_user.slug).to eq(guest_user.login.gsub('_', '-'))
+    expect(guest_user.to_param).to eq(guest_user.login.gsub('_', '-'))
 
     # The still_editing functionality is tested via JavaScript periodically in the browser
     # We can't easily test the AJAX call in a feature test, but we can verify

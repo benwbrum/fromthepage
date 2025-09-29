@@ -160,9 +160,9 @@ describe 'guest user actions' do
     guest_user = User.where(guest: true).last
     expect(guest_user.login).not_to be_nil
     expect(guest_user.login).to start_with('guest_')
-    expect(guest_user.slug).to eq(guest_user.login)
+    expect(guest_user.slug).to eq(guest_user.login.gsub('_', '-'))
 
     # Verify URL generation works
-    expect(guest_user.to_param).to eq(guest_user.login)
+    expect(guest_user.to_param).to eq(guest_user.login.gsub('_', '-'))
   end
 end
