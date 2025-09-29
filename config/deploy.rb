@@ -47,7 +47,16 @@ namespace :deploy do
 
   after :publishing, :restart
 
-  after :restart, :clear_cache do
+  after :restart, :restart_solid_queue
+
+  desc 'Restart Solid Queue service'
+  task :restart_solid_queue do
+    on roles(:app) do
+      execute :sudo, :systemctl, 'restart solid_queue'
+    end
+  end
+
+  after :restart_solid_queue, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       # within release_path do
