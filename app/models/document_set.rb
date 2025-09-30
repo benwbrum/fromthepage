@@ -316,10 +316,6 @@ class DocumentSet < ApplicationRecord
     visibility_public?
   end
 
-  public :user_help
-
-  private
-
   def handle_index_deletion
     return unless ELASTIC_ENABLED
 
@@ -330,4 +326,6 @@ class DocumentSet < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :user_help, :handle_index_deletion
 end

@@ -779,4 +779,6 @@ class Page < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :handle_index_deletion
 end

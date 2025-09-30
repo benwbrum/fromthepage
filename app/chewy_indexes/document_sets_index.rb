@@ -4,7 +4,7 @@ class DocumentSetsIndex < Chewy::Index
   index_name formatted_index_name('collection')
   default_import_options batch_size: 1000
 
-  index_scope DocumentSet
+  index_scope DocumentSet.joins(:owner, :collection)
 
   root _id: -> { "docset-#{id}" }
   field :is_public, type: 'boolean', value: -> { is_public }
