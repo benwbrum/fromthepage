@@ -284,22 +284,22 @@ class IaWork < ApplicationRecord
     djvu_doc
   end
 
-  ARCHIVE_FORMATS = [ 'zip', 'tar' ]
-  IMAGE_FORMATS = [ 'jp2', 'jpg' ]
+  ARCHIVE_FORMATS = ['zip', 'tar']
+  IMAGE_FORMATS = ['jp2', 'jpg']
 
   def formats_from_loc(loc_doc)
     files = loc_doc.search 'file'
     locations = files.map { |f| f['location'] }
     # handle new upload format
-    if locations.uniq == [ nil ]
-      return [ 'jp2', 'zip' ]
+    if locations.uniq == [nil]
+      return ['jp2', 'zip']
     end
     # handle old upload format
     ARCHIVE_FORMATS.each do |aft|
       IMAGE_FORMATS.each do |ift|
         suffix = "#{ift}.#{aft}"
         if locations.count { |l| l.end_with? suffix } > 0
-          return [ ift, aft ]
+          return [ift, aft]
         end
       end
     end
@@ -330,7 +330,7 @@ class IaWork < ApplicationRecord
 
     zip = zips.first.parent['name']
 
-    [ scandata, djvu, zip ]
+    [scandata, djvu, zip]
   end
 
   protected

@@ -4,15 +4,15 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_action :authorized?, except: [ :zoom, :guest, :help, :still_editing, :active_editing ]
-  before_action :active?, except: [ :still_editing, :active_editing ]
+  before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
+  before_action :active?, except: [:still_editing, :active_editing]
 
-  protect_from_forgery except: [ :zoom, :unzoom ]
+  protect_from_forgery except: [:zoom, :unzoom]
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
-  skip_before_action :load_html_blocks, only: [ :still_editing, :active_editing ]
-  skip_around_action :switch_locale, only: [ :still_editing, :active_editing ]
+  skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
+  skip_around_action :switch_locale, only: [:still_editing, :active_editing]
 
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
@@ -75,7 +75,7 @@ class TranscribeController  < ApplicationController
       ).perform
 
       if params[:page]['mark_blank'] == '1' || @page.saved_change_to_status?
-        next_page_id, flash_msg = next_lower_page_and_flash(@page, [ :transcribe, :mark_page_blank ])
+        next_page_id, flash_msg = next_lower_page_and_flash(@page, [:transcribe, :mark_page_blank])
 
         flash[:notice] = flash_msg
         redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, next_page_id)
@@ -624,6 +624,6 @@ class TranscribeController  < ApplicationController
     next_page_id = page.last? ? page.id : page.lower_item.id
     flash_msg = page.id == next_page_id ? t('saved_notice', scope: scope) : t('saved_and_next_notice', scope: scope)
 
-    [ next_page_id, flash_msg ]
+    [next_page_id, flash_msg]
   end
 end

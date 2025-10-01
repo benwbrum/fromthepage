@@ -41,7 +41,7 @@ class ExternalApiRequest < ApplicationRecord
     FAILED = 'failed'
 
     def self.running
-      [ QUEUED, RUNNING, WAITING ]
+      [QUEUED, RUNNING, WAITING]
     end
   end
 

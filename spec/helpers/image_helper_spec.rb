@@ -21,14 +21,14 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
 
       it 'calculates DPI correctly' do
         result = ImageHelper.calculate_page_size_and_dpi(test_pdf_with_spaces)
 
         expect(result[:raw_page_size]).not_to be_empty
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
 
         # Test that the DPI calculation logic works correctly
         raw_page_size = result[:raw_page_size]
@@ -68,7 +68,7 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
 
       it 'maintains backward compatibility' do
@@ -97,7 +97,7 @@ describe ImageHelper do
 
         expect(result[:raw_page_size]).not_to be_empty
         expect(result[:raw_page_size]).to match(/\d+(\.\d+)? x \d+(\.\d+)?/)
-        expect(result[:dpi]).to be_in([ 72, 150, 300 ])
+        expect(result[:dpi]).to be_in([72, 150, 300])
       end
     end
   end

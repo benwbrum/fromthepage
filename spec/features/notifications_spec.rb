@@ -55,8 +55,8 @@ describe "notifications", order: :defined do
     # user should receive an email, but owner should not
     expect(ActionMailer::Base.deliveries).not_to be_empty
     emails = ActionMailer::Base.deliveries.map { |mail| mail.to }
-    expect(emails).to include [ @user.email ]
-    expect(emails).not_to include [ @owner.email ]
+    expect(emails).to include [@user.email]
+    expect(emails).not_to include [@owner.email]
     expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Note"
   end
 end

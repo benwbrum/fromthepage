@@ -2,7 +2,7 @@ class DocumentSetsController < ApplicationController
   DEFAULT_WORKS_PER_PAGE = 15
 
   before_action :authorized?
-  before_action :set_document_set, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 
@@ -68,7 +68,7 @@ class DocumentSetsController < ApplicationController
 
   def search_collaborators
     query = "%#{params[:term].to_s.downcase}%"
-    excluded_ids = @document_set.collaborators.pluck(:id) + [ @document_set.owner.id ]
+    excluded_ids = @document_set.collaborators.pluck(:id) + [@document_set.owner.id]
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
                 .limit(100)
@@ -228,7 +228,7 @@ class DocumentSetsController < ApplicationController
 
   def filtered_set_works
     @ordering = (params[:order] || 'ASC').downcase.to_sym
-    @ordering = [ :asc, :desc ].include?(@ordering) ? @ordering : :desc
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
 
     set_works = @collection.works
     collection_works = @collection.collection.works

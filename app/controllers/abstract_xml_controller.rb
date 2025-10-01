@@ -8,8 +8,8 @@ module AbstractXmlController
   ##############################################
 
   # constant - words to ignore when autolinking
-  STOPWORDS = [ 'Mrs', 'Mrs.', 'Mr.', 'Mr', 'Dr.', 'Dr', 'Miss', 'he', 'she', 'it',
-    'wife', 'husband', 'I', 'him', 'her', 'son', 'daughter' ]
+  STOPWORDS = ['Mrs', 'Mrs.', 'Mr.', 'Mr', 'Dr.', 'Dr', 'Miss', 'he', 'she', 'it',
+    'wife', 'husband', 'I', 'him', 'her', 'son', 'daughter']
   STOPREGEX = /^\w\.?\$/
 
 
@@ -38,7 +38,7 @@ module AbstractXmlController
 
 
     matches = Page.connection.select_all(sql).to_a
-    matches.sort! { |x, y| [ y['display_text'].length, y['last_reference'] ] <=> [ x['display_text'].length, x['last_reference'] ] }
+    matches.sort! { |x, y| [y['display_text'].length, y['last_reference']] <=> [x['display_text'].length, x['last_reference']] }
     # for each article, check text to see if it needs to be linked
     for match in matches
       match_regex = Regexp.new('\b'+Regexp.escape(match['display_text'])+'\b', Regexp::IGNORECASE)

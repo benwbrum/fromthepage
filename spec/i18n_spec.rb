@@ -39,7 +39,7 @@ RSpec.describe I18n do
 
   describe 'translations' do
     let(:incorrect_translations) do
-      [ 'travail', 'travaux', 'trabalho', 'trabalhos', 'arbeit', 'arbeiten', 'trabajo', 'trabajos', 'dokumentensatz' ]
+      ['travail', 'travaux', 'trabalho', 'trabalhos', 'arbeit', 'arbeiten', 'trabajo', 'trabajos', 'dokumentensatz']
     end
 
     it 'does not contain incorrect translations in locale files' do

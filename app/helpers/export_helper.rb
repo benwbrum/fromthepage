@@ -224,8 +224,8 @@ module ExportHelper
   end
 
   def work_to_xhtml(work)
-    @work = Work.includes(pages: [ { notes: :user }, { page_versions: :user } ]).find_by(id: work.id)
-    render_to_string template: 'export/show', layout: false, formats: [ :html ], handlers: [ :erb ]
+    @work = Work.includes(pages: [{ notes: :user }, { page_versions: :user }]).find_by(id: work.id)
+    render_to_string template: 'export/show', layout: false, formats: [:html], handlers: [:erb]
   end
 
   def work_to_tei(work, exporting_user)
@@ -254,7 +254,7 @@ module ExportHelper
                         GROUP BY user_id
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.joins(:page).where([ 'pages.work_id = ?', @work.id ]).order('work_version DESC').includes(:page).all
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('work_version DESC').includes(:page).all
 
     @all_articles = @work.articles
     people = work.collection.categories.where(title: 'People').first
@@ -293,7 +293,7 @@ module ExportHelper
     xml = ApplicationController.renderer.render_to_string(
       layout: false,
       template: 'export/tei',
-      formats: [ :html ],
+      formats: [:html],
       assigns: {
         work: @work,
         context: @context,
@@ -363,7 +363,7 @@ module ExportHelper
   end
 
   def expand_subject(subject)
-    subjects = [ subject ]
+    subjects = [subject]
 
     parts = subject.title.split(/(\. |--)/)
     0.upto(parts.size/2 - 1) do |i|
@@ -480,7 +480,7 @@ module ExportHelper
     doc = REXML::Document.new(xml_text)
     # paras_string = ""
     my_display_html = ''
-    tags = [ 'p' ]
+    tags = ['p']
     tags.each do |tag|
       doc.elements.each_with_index("//#{tag}") do |e, i|
         transform_links(e)
@@ -518,7 +518,7 @@ module ExportHelper
       p_element.remove
       heads
     else
-      heads + [ p_element ]
+      heads + [p_element]
     end
   end
 

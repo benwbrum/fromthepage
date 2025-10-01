@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Import several CONTENTdm compound objects'
-  task :bulk_import_cdm, [ :cdm_bulk_import_id ] => :environment do |t, args|
+  task :bulk_import_cdm, [:cdm_bulk_import_id] => :environment do |t, args|
     bulk_import = CdmBulkImport.find(args.cdm_bulk_import_id.to_i)
 
 
