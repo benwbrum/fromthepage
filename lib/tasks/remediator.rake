@@ -1,9 +1,6 @@
 namespace :fromthepage do
   namespace :remediator do
     desc 'Fixes deleted subjects and update references'
-
-
-
     task :fix_subjects, [ :collection_id ] => :environment do |t, args|
       Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
@@ -84,7 +81,6 @@ namespace :fromthepage do
       end
     end
 
-
     def find_deleted_articles_and_references(collection)
       # track missing articles with a key of canonical title, and contents listing the ids pointed to, pages referencing them, and the new article (if any)
       missing_article_hash = {}
@@ -115,6 +111,31 @@ namespace :fromthepage do
         end
       end
       missing_article_hash
+    end
+
+    desc 'Fixes failed article rename jobs'
+    task :fix_article_renames, [ :article_id, :version_id ] => :environment do |t, args|
+      article = Article.find(args.article_id)
+      version = article.article_versions.find(args.version_id)
+
+      retries = 0
+
+      puts "Remediating old articles #{version.title} to new article #{article.title}\n"
+      ActiveRecord::Base.transaction do
+        begin
+          Article::Lib::Rename.new(
+            article_id: article.id,
+            old_names: [ version.title ],
+            new_name: article.title
+          ).call
+        rescue StandardError => e
+          retries += 1
+          puts "Failed due to error: #{e.message}\n"
+          retry if retries < 3
+
+          raise e
+        end
+      end
     end
   end
 end
