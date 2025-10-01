@@ -81,6 +81,7 @@ namespace :fromthepage do
       end
     end
 
+
     def find_deleted_articles_and_references(collection)
       # track missing articles with a key of canonical title, and contents listing the ids pointed to, pages referencing them, and the new article (if any)
       missing_article_hash = {}
@@ -98,6 +99,8 @@ namespace :fromthepage do
               # this is a reference to a missing article
               new_article = collection.articles.where(title: title).first
               # now we have a reference to a missing article, including title and id, as well as (possibly) the new article that replaced it
+              old_article_version = ArticleVersion.where(title: title, article_id: collection.articles.pluck(:id)).first
+
               entry = missing_article_hash[title]
               if entry.nil?
                 entry={ ids: [], new_article: nil, pages: [] }
@@ -105,6 +108,9 @@ namespace :fromthepage do
               entry[:ids] << id.to_i
               entry[:pages] << page
               entry[:new_article] = new_article if new_article
+              if old_article_version
+                entry[:old_article] = old_article_version.article
+              end
               missing_article_hash[title]=entry
             end
           end
@@ -114,10 +120,23 @@ namespace :fromthepage do
     end
 
     desc 'Fixes failed article rename jobs'
-    task :fix_article_renames, [ :article_id, :version_id ] => :environment do |t, args|
-      article = Article.find(args.article_id)
-      version = article.article_versions.find(args.version_id)
+    task :fix_article_renames, [ :collection_slug ] => :environment do |t, args|
+      collection = Collection.find(args.collection_slug)
+      missing_article_hash = find_deleted_articles_and_references(collection)
+      missing_article_hash.each_pair do |title, entry|
+        if article = entry[:old_article]
+          # get the version of the article matching the title
+          version = entry[:old_article].article_versions.where(title: title).first
+          if version
+            fix_article_rename_job(article, version)
+          end
+        end
+      end
+    end
 
+
+
+    def fix_article_rename_job(article, version)
       retries = 0
 
       puts "Remediating old articles #{version.title} to new article #{article.title}\n"
