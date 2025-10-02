@@ -1,7 +1,7 @@
 namespace :fromthepage do
   namespace :remediator do
     desc 'Fixes deleted subjects and update references'
-    task :fix_subjects, [ :collection_id ] => :environment do |t, args|
+    task :fix_subjects, [:collection_id] => :environment do |t, args|
       Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
 
@@ -120,7 +120,7 @@ namespace :fromthepage do
     end
 
     desc 'Fixes failed article rename jobs'
-    task :fix_article_renames, [ :collection_slug ] => :environment do |t, args|
+    task :fix_article_renames, [:collection_slug] => :environment do |t, args|
       collection = Collection.find(args.collection_slug)
       Current.user = User.find(2)
       missing_article_hash = find_deleted_articles_and_references(collection)
@@ -145,7 +145,7 @@ namespace :fromthepage do
         begin
           Article::Lib::Rename.new(
             article_id: article.id,
-            old_names: [ version.title ],
+            old_names: [version.title],
             new_name: article.title,
             new_article_id: article.id # Added new_article_id
           ).call
