@@ -122,6 +122,7 @@ namespace :fromthepage do
     desc 'Fixes failed article rename jobs'
     task :fix_article_renames, [ :collection_slug ] => :environment do |t, args|
       collection = Collection.find(args.collection_slug)
+      Current.user = User.find(2)
       missing_article_hash = find_deleted_articles_and_references(collection)
       missing_article_hash.each_pair do |title, entry|
         if article = entry[:old_article]
@@ -145,7 +146,8 @@ namespace :fromthepage do
           Article::Lib::Rename.new(
             article_id: article.id,
             old_names: [ version.title ],
-            new_name: article.title
+            new_name: article.title,
+            new_article_id: article.id # Added new_article_id
           ).call
         rescue StandardError => e
           retries += 1
