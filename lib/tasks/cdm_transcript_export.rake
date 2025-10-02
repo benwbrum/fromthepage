@@ -1,7 +1,7 @@
 require 'contentdm_translator'
 namespace :fromthepage do
   desc 'Export transcripts for completed works to CONTENTdm'
-  task :cdm_transcript_export, [ :collection_id ] => :environment do |t, args|
+  task :cdm_transcript_export, [:collection_id] => :environment do |t, args|
     collection_id = args.collection_id.to_i
     collection = Collection.find(collection_id)
     username = ENV['contentdm_username']

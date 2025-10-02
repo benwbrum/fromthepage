@@ -86,7 +86,7 @@ namespace :fromthepage do
   def generate_pages_sitemap(sitemap_dir, base_url, max_urls_per_file)
     pages = Page.joins(work: :collection)
                .where(collections: { restricted: false })
-               .where.not(status: [ 'blank', 'new' ])
+               .where.not(status: ['blank', 'new'])
                .includes(work: { collection: :owner })
                .order(:id)
 

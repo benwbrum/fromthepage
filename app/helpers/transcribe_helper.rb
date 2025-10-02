@@ -58,7 +58,7 @@ module TranscribeHelper
       pivot, end_index = match.offset(0)
 
       # Generate a list of \n indexes including 0 index and final index
-      newlines = [ 0 ]
+      newlines = [0]
       text.to_enum(:scan, /\n/).each { |_m,| newlines.push $`.size }
       newlines.push(text.length)
 
@@ -91,13 +91,13 @@ module TranscribeHelper
       sources
     else
       if page.sc_canvas
-        [ page.sc_canvas.iiif_image_info_url ]
+        [page.sc_canvas.iiif_image_info_url]
       elsif page.ia_leaf
-        [ page.ia_leaf.iiif_image_info_url ]
+        [page.ia_leaf.iiif_image_info_url]
       elsif browser.platform.ios? && browser.webkit?
-        [ "#{url_for(:root)}image-service/#{page.id}/info.json" ]
+        ["#{url_for(:root)}image-service/#{page.id}/info.json"]
       else
-        [ { type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json ]
+        [{ type: 'image', url: file_to_url(page.canonical_facsimile_url) }.to_json]
       end
     end
   end

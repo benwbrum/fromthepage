@@ -58,11 +58,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :encryptable, encryptor: :restful_authentication_sha1,
-         omniauth_providers: [ :google_oauth2, :saml ]
+         omniauth_providers: [:google_oauth2, :saml]
 
   include OwnerStatistic
   extend FriendlyId
-  friendly_id :slug_candidates, use: [ :slugged, :history ]
+  friendly_id :slug_candidates, use: [:slugged, :history]
 
   attr_accessor :login_id
 
@@ -115,8 +115,8 @@ class User < ApplicationRecord
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
 
   scope :with_owner_works, -> { joins(:uploaded_works).distinct }
-  scope :findaproject_orgs, -> { owners.where(account_type: [ 'Large Institution', 'Small Organization' ]) }
-  scope :findaproject_individuals, -> { owners.where(account_type: [ 'Legacy', 'Individual Researcher' ]) }
+  scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
+  scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
   scope :active_mailers,   -> { where(activity_email: true) }
@@ -341,7 +341,7 @@ class User < ApplicationRecord
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login_id)
-      where(conditions).where([ 'login = :value OR lower(email) = lower(:value)', { value: login } ]).first
+      where(conditions).where(['login = :value OR lower(email) = lower(:value)', { value: login }]).first
     else
       where(conditions).first
     end
@@ -352,7 +352,7 @@ class User < ApplicationRecord
   end
 
   def unrestricted_document_sets
-    document_sets.where(visibility: [ :public, :read_only ])
+    document_sets.where(visibility: [:public, :read_only])
   end
 
 
@@ -385,11 +385,11 @@ class User < ApplicationRecord
 
   def slug_candidates
     if self.slug
-      [ :slug ]
+      [:slug]
     else
       [
         :login,
-        [ :login, :id ]
+        [:login, :id]
       ]
     end
   end
@@ -421,7 +421,7 @@ class User < ApplicationRecord
       self.deleted = true
       self.admin = false
       self.owner = false
-      self.password = [ *'A'..'Z' ].sample(8).join
+      self.password = [*'A'..'Z'].sample(8).join
       self.save!
     end
   end

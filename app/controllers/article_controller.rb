@@ -2,8 +2,8 @@ class ArticleController < ApplicationController
   include AbstractXmlController
   include AbstractXmlHelper
 
-  skip_before_action :verify_authenticity_token, only: [ :relationship_graph ]
-  before_action :authorized?, except: [ :list, :show, :tooltip, :graph, :relationship_graph ]
+  skip_before_action :verify_authenticity_token, only: [:relationship_graph]
+  before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
 
   def tooltip
     render partial: 'tooltip'
@@ -124,7 +124,7 @@ class ArticleController < ApplicationController
         center_article_to_document_links << document.id
         document.articles.each do |article|
           article_nodes << article
-          second_document_to_article_links << [ document.id, article.id ]
+          second_document_to_article_links << [document.id, article.id]
         end
       end
 
@@ -222,7 +222,7 @@ class ArticleController < ApplicationController
     article_links.each do |l|
       link_count = l['link_count'].to_i
       link_total += link_count
-      link_max = [ link_count, link_max ].max
+      link_max = [link_count, link_max].max
 
       count_per_rank[link_count] ||= 0
       count_per_rank[link_count] += 1
@@ -253,7 +253,7 @@ class ArticleController < ApplicationController
         link_max: link_max,
         min_rank: min_rank
       },
-      formats: [ :dot ]
+      formats: [:dot]
     )
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"

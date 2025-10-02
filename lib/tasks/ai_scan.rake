@@ -10,7 +10,7 @@ namespace :fromthepage do
     users.each do |user|
       # find the time between each of the page_trans deeds
       # why does this return no deeds?
-      deeds = user.deeds.where(created_at: [ start_time..end_time ], deed_type: DeedType::PAGE_TRANSCRIPTION).order(:created_at)
+      deeds = user.deeds.where(created_at: [start_time..end_time], deed_type: DeedType::PAGE_TRANSCRIPTION).order(:created_at)
       # bail out if there is only one deed
       if deeds.length < 2
         next

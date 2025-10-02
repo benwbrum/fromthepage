@@ -23,8 +23,8 @@ module SubjectExporter
 
         @works.each do |work|
           GC.start
-          transcription_sections  = [ '' ]
-          translation_sections    = [ '' ]
+          transcription_sections  = ['']
+          translation_sections    = ['']
 
           metadata_row = []
           unless work.original_metadata.blank?
@@ -37,7 +37,7 @@ module SubjectExporter
             end
           end
 
-          work.pages.includes(:page_article_links, articles: [ :page_article_links ]).each do |page|
+          work.pages.includes(:page_article_links, articles: [:page_article_links]).each do |page|
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
@@ -112,7 +112,7 @@ module SubjectExporter
         end
       end
 
-      [ links_hash, section_array, section_to_subjects ]
+      [links_hash, section_array, section_to_subjects]
     end
   end
 end
