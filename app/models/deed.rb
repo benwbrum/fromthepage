@@ -80,7 +80,7 @@ class Deed < ApplicationRecord
               prerender: true,
               locale: locale
             },
-            formats: [ :html ]
+            formats: [:html]
           )
         ]
       end.to_json
@@ -102,7 +102,7 @@ class Deed < ApplicationRecord
             mailer: true,
             locale: locale
           },
-          formats: [ :html ]
+          formats: [:html]
         )
       ]
     end.to_json

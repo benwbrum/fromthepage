@@ -78,9 +78,6 @@ jobs:
         env:
           ELASTIC_ENABLED: true
 
-      - name: Run RuboCop
-        run: bundle exec rubocop
-
       - name: Run tests
         run: xvfb-run -a bundle exec rspec spec
         env:
@@ -94,3 +91,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/lcov.info"
+
+  rubocop:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    container:
+      image: ghcr.io/willnigel23/ftp-ci:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Run RuboCop
+        run: bundle exec rubocop

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   DEFAULT_PER_PAGE = 200
 
-  protect_from_forgery with: :exception, except: [ :switch_locale, :saml ]
+  protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
   before_action do
     if current_user && current_user.admin
@@ -409,7 +409,7 @@ end
 def check_search_attempt
   if session[:search_attempt_id]
     your_profile = controller_name == 'user' && @user == current_user
-    if [ 'dashboard', 'static' ].include?(controller_name) || your_profile
+    if ['dashboard', 'static'].include?(controller_name) || your_profile
       session[:search_attempt_id] = nil
     end
   end

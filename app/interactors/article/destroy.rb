@@ -18,7 +18,7 @@ class Article::Destroy < ApplicationInteractor
     Article::RenameJob.perform_later(
       user_id: @user.id,
       article_id: @article.id,
-      old_names: versions.pluck(:title) + [ @article.title ],
+      old_names: versions.pluck(:title) + [@article.title],
       new_name: ''
     )
   end

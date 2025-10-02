@@ -3,14 +3,14 @@ class WorkController < ApplicationController
   include ApplicationHelper
   include XmlSourceProcessor
 
-  protect_from_forgery except: [ :set_work_title,
+  protect_from_forgery except: [:set_work_title,
                                    :set_work_description,
                                    :set_work_physical_description,
                                    :set_work_document_history,
                                    :set_work_permission_description,
                                    :set_work_location_of_composition,
                                    :set_work_author,
-                                   :set_work_transcription_conventions ]
+                                   :set_work_transcription_conventions]
   # tested
   before_action :authorized?, only: [
     :edit,
@@ -25,7 +25,7 @@ class WorkController < ApplicationController
   ]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [ :new, :create, :configurable_printout, :edit_scribes, :remove_scribe ]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
   def metadata_overview_monitor
     @is_monitor_view = true
@@ -148,7 +148,7 @@ class WorkController < ApplicationController
 
   def search_scribes
     query = "%#{params[:term].to_s.downcase}%"
-    excluded_ids = @work.scribes.pluck(:id) + [ @work.owner.id ]
+    excluded_ids = @work.scribes.pluck(:id) + [@work.owner.id]
     users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
                 .where.not(id: excluded_ids)
                 .limit(100)
@@ -261,7 +261,7 @@ class WorkController < ApplicationController
     # Set meta information for work pages for better archival
     @page_title = "#{@work.title} - #{@collection.title}"
     @meta_description = "Historical document: #{@work.title}#{@work.author.present? ? " by #{@work.author}" : ""} in the #{@collection.title} collection. #{@work.description}".truncate(160)
-    @meta_keywords = [ @work.title, @work.author, @collection.title, 'historical document', 'digital archive' ].compact.join(', ')
+    @meta_keywords = [@work.title, @work.author, @collection.title, 'historical document', 'digital archive'].compact.join(', ')
 
     # Generate structured data for work
     @structured_data = {

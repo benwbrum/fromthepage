@@ -73,7 +73,7 @@ module ApplicationHelper
   def deeds_for(options = {})
     limit = options[:limit] || 20
 
-    condition = [ String.new ]
+    condition = [String.new]
 
     if options[:types]
       types = options[:types]
@@ -270,9 +270,9 @@ module ApplicationHelper
 
   def pagination_options_collection
     [
-      [ '50', 50 ],
-      [ '200', 200 ],
-      [ I18n.t('will_paginate.all'), -1 ]
+      ['50', 50],
+      ['200', 200],
+      [I18n.t('will_paginate.all'), -1]
     ]
   end
 end

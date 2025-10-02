@@ -82,10 +82,10 @@ class UserMailer < ActionMailer::Base
 
     if @result.rowset_errors.any?
       csv_data = CSV.generate(headers: true) do |csv|
-        csv << [ :error, :work_id, :title ]
+        csv << [:error, :work_id, :title]
 
         @result.rowset_errors.each do |error|
-          csv << [ error[:error], error[:work_id], error[:title] ]
+          csv << [error[:error], error[:work_id], error[:title]]
         end
       end
 

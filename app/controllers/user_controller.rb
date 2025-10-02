@@ -1,6 +1,6 @@
 class UserController < ApplicationController
-  before_action :remove_col_id, only: [ :profile, :update_profile ]
-  before_action :authorized?, only: [ :update_profile, :update ]
+  before_action :remove_col_id, only: [:profile, :update_profile]
+  before_action :authorized?, only: [:update_profile, :update]
 
   PAGES_PER_SCREEN = 50
 
@@ -190,6 +190,6 @@ class UserController < ApplicationController
 
 
   def user_params
-    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [ :user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer ])
+    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
   end
 end

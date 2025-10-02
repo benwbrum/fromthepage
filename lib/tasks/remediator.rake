@@ -4,7 +4,7 @@ namespace :fromthepage do
 
 
 
-    task :fix_subjects, [ :collection_id ] => :environment do |t, args|
+    task :fix_subjects, [:collection_id] => :environment do |t, args|
       Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
 
