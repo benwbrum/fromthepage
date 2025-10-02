@@ -254,10 +254,17 @@ h2.legend =t('.notes_and_questions')
 
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
+        $('button[name="preview"], input[name="preview"]').prop('disabled', false);
       });
 
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
+
+        if ($(this).is(':checked')) {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', true);
+        } else {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', false);
+        }
       });
     });
 
