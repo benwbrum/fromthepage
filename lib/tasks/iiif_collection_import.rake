@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Import all pages of a IIIF collection'
-  task :import_paged_iiif_collection, [ :at_id, :collection_id ] => :environment do |t, args|
+  task :import_paged_iiif_collection, [:at_id, :collection_id] => :environment do |t, args|
     collection_at_id = args.at_id
     collection_id = args.collection_id.to_i
     collection = Collection.find collection_id
@@ -42,7 +42,7 @@ namespace :fromthepage do
   end
 
   desc 'Import an IIIF collection'
-  task :import_iiif_collection, [ :sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr ] => :environment do |t, args|
+  task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr] => :environment do |t, args|
     sc_collection = ScCollection.find_by(id: args.sc_collection_id)
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id

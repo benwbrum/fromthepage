@@ -1,5 +1,5 @@
 class QualitySamplingsController < ApplicationController
-  before_action :set_quality_sampling, only: [ :show, :edit, :update, :destroy, :review ]
+  before_action :set_quality_sampling, only: [:show, :edit, :update, :destroy, :review]
   before_action :authorized?
 
 

@@ -2,7 +2,7 @@ namespace :fromthepage do
   # code to copy a collection into a new collection owned by the same user, with subjects, works, and pages
   namespace :copy do
     desc 'Copy a collection into a new collection owned by the same user, with subjects, works, and pages'
-    task :collection, [ :source_collection_slug, :target_collection_slug ] => :environment do |t, args|
+    task :collection, [:source_collection_slug, :target_collection_slug] => :environment do |t, args|
       source_collection_slug = args.source_collection_slug
       target_collection_slug = args.target_collection_slug
       source_collection = Collection.find_by(slug: source_collection_slug)

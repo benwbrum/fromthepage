@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc 'Remove guest accounts more than a week old'
-  task :guest_cleanup, [ :days ] => :environment do |t, args|
+  task :guest_cleanup, [:days] => :environment do |t, args|
     num = args.days.to_i
 
     # permanent "Guest User" to migrate orphaned data

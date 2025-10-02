@@ -344,9 +344,9 @@ describe "collection spec (isolated)" do
     let(:work_no_ocr) { create(:work, ocr_correction: false) }
     let(:work_ocr_true) { create(:work, ocr_correction: true) }
     let(:work_ocr_false) { create(:work, ocr_correction: false) }
-    let(:collection_ocr_mixed) { create(:collection, owner: @owner, works: [ work_ocr, work_no_ocr ]) }
-    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [ work_ocr_true ]) }
-    let(:collection_ocr_false) { create(:collection, owner: @owner, works: [ work_ocr_false ]) }
+    let(:collection_ocr_mixed) { create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
+    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [work_ocr_true]) }
+    let(:collection_ocr_false) { create(:collection, owner: @owner, works: [work_ocr_false]) }
 
     it 'shows OCR section' do
       visit edit_collection_path(@owner, collection_ocr_mixed)

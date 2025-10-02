@@ -172,7 +172,7 @@ class QualitySampling < ApplicationRecord
       end
     end
 
-    [ work_hash, user_hash ]
+    [work_hash, user_hash]
   end
 
   class PageSampling

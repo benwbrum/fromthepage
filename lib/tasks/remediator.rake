@@ -1,10 +1,7 @@
 namespace :fromthepage do
   namespace :remediator do
     desc 'Fixes deleted subjects and update references'
-
-
-
-    task :fix_subjects, [ :collection_id ] => :environment do |t, args|
+    task :fix_subjects, [:collection_id] => :environment do |t, args|
       Current.user = User.find(2)
       collection = Collection.find(args.collection_id.to_i)
 
@@ -102,6 +99,8 @@ namespace :fromthepage do
               # this is a reference to a missing article
               new_article = collection.articles.where(title: title).first
               # now we have a reference to a missing article, including title and id, as well as (possibly) the new article that replaced it
+              old_article_version = ArticleVersion.where(title: title, article_id: collection.articles.pluck(:id)).first
+
               entry = missing_article_hash[title]
               if entry.nil?
                 entry={ ids: [], new_article: nil, pages: [] }
@@ -109,12 +108,55 @@ namespace :fromthepage do
               entry[:ids] << id.to_i
               entry[:pages] << page
               entry[:new_article] = new_article if new_article
+              if old_article_version
+                entry[:old_article] = old_article_version.article
+              end
               missing_article_hash[title]=entry
             end
           end
         end
       end
       missing_article_hash
+    end
+
+    desc 'Fixes failed article rename jobs'
+    task :fix_article_renames, [:collection_slug] => :environment do |t, args|
+      collection = Collection.find(args.collection_slug)
+      Current.user = User.find(2)
+      missing_article_hash = find_deleted_articles_and_references(collection)
+      missing_article_hash.each_pair do |title, entry|
+        if article = entry[:old_article]
+          # get the version of the article matching the title
+          version = entry[:old_article].article_versions.where(title: title).first
+          if version
+            fix_article_rename_job(article, version)
+          end
+        end
+      end
+    end
+
+
+
+    def fix_article_rename_job(article, version)
+      retries = 0
+
+      puts "Remediating old articles #{version.title} to new article #{article.title}\n"
+      ActiveRecord::Base.transaction do
+        begin
+          Article::Lib::Rename.new(
+            article_id: article.id,
+            old_names: [version.title],
+            new_name: article.title,
+            new_article_id: article.id # Added new_article_id
+          ).call
+        rescue StandardError => e
+          retries += 1
+          puts "Failed due to error: #{e.message}\n"
+          retry if retries < 3
+
+          raise e
+        end
+      end
     end
   end
 end

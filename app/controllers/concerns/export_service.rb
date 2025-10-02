@@ -69,7 +69,7 @@ module ExportService
           include_contributors: include_contributors,
           include_notes: include_notes
         },
-        formats: [ :html ]
+        formats: [:html]
       )
 
     # write the string to a temp directory
@@ -289,7 +289,7 @@ module ExportService
     when 'full'
       full_view = ApplicationController.new.render_to_string(
         template: 'export/show',
-        formats: [ :html ],
+        formats: [:html],
         work_id: @work.id,
         layout: false,
         encoding: 'utf-8',
@@ -303,7 +303,7 @@ module ExportService
     when 'text'
       text_view = ApplicationController.new.render_to_string(
         template: 'export/text',
-        formats: [ :html ],
+        formats: [:html],
         work_id: @work.id,
         layout: false,
         encoding: 'utf-8',
@@ -317,7 +317,7 @@ module ExportService
     when 'transcript'
       transcript_view = ApplicationController.new.render_to_string(
         template: 'export/transcript',
-        formats: [ :html ],
+        formats: [:html],
         work_id: @work.id,
         layout: false,
         encoding: 'utf-8',
@@ -332,7 +332,7 @@ module ExportService
       if @work.supports_translation?
         translation_view = ApplicationController.new.render_to_string(
           template: 'export/translation',
-          formats: [ :html ],
+          formats: [:html],
           work_id: @work.id,
           layout: false,
           encoding: 'utf-8',
@@ -422,8 +422,8 @@ module ExportService
     elsif table_obj.is_a?(Work)
       collection = table_obj.collection
       # need arrays so they will act equivalently to the collection works
-      ids = [ table_obj.id ]
-      works = [ table_obj ]
+      ids = [table_obj.id]
+      works = [table_obj]
     end
 
     get_headings(collection, ids)
@@ -536,7 +536,7 @@ module ExportService
               if !col_sections
                 section_cells = []
               else
-                section_cells = [ '', '', '' ]
+                section_cells = ['', '', '']
               end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
@@ -552,7 +552,7 @@ module ExportService
             section_title_text = XmlSourceProcessor.cell_to_plaintext(section.title) || nil
             section_title_subjects = XmlSourceProcessor.cell_to_subject(section.title) || nil
             section_title_categories = XmlSourceProcessor.cell_to_category(section.title) || nil
-            section_cells = [ section_title_text, section_title_subjects, section_title_categories ]
+            section_cells = [section_title_text, section_title_subjects, section_title_categories]
             # group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               # get the cell data and add it to the array
@@ -674,7 +674,7 @@ module ExportService
       ]
 
       if d.deed_type == DeedType::ARTICLE_EDIT
-        record += [ '', '', '', '', '' ]
+        record += ['', '', '', '', '']
         record += [
           d.article ? d.article.title : '[deleted]',
           d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
@@ -689,7 +689,7 @@ module ExportService
             note
           ]
           record += pagedeeds
-          record += [ '', '' ]
+          record += ['', '']
         end
       end
       record
@@ -726,13 +726,13 @@ module ExportService
       :notes
     ]
 
-    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [ start_date..end_date ]).group(:user_id).sum(:minutes)
+    user_time_proportional = AhoyActivitySummary.where(collection_id: @collection.id, date: [start_date..end_date]).group(:user_id).sum(:minutes)
 
     stats = @active_transcribers.map do |user|
       time_proportional = user_time_proportional[user.id]
 
-      id_data = [ user.display_name, user.real_name, user.email ]
-      time_data = [ time_proportional ]
+      id_data = [user.display_name, user.real_name, user.email]
+      time_data = [time_proportional]
 
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
 

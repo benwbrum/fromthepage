@@ -17,7 +17,7 @@ namespace :fromthepage do
     end
 
     desc 'Process an entire collection: collection_id, [all|unprocessed]'
-    task :process_collection, [ :collection_id, :page_filter, :model_id ] => :environment do |t, args|
+    task :process_collection, [:collection_id, :page_filter, :model_id] => :environment do |t, args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?
@@ -64,7 +64,7 @@ namespace :fromthepage do
     end
 
     desc 'Process a work: work_id, [all|unprocessed]'
-    task :process_work, [ :work_id, :page_filter ] => :environment do |t, args|
+    task :process_work, [:work_id, :page_filter] => :environment do |t, args|
       transkribus_username = ENV['TRANSKRIBUS_USERNAME']
       transkribus_password = ENV['TRANSKRIBUS_PASSWORD']
       if transkribus_username.nil? || transkribus_password.nil?

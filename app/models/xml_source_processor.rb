@@ -25,12 +25,12 @@ module XmlSourceProcessor
 
   # check the text for problems or typos with the subject links
   def validate_links(text)
-    error_scope = [ :activerecord, :errors, :models, :xml_source_processor ]
+    error_scope = [:activerecord, :errors, :models, :xml_source_processor]
     # split on all begin-braces
     tags = text.split('[[')
     # remove the initial string which occurs before the first tag
     debug("validate_source: tags to process are #{tags.inspect}")
-    tags = tags - [ tags[0] ]
+    tags = tags - [tags[0]]
     debug("validate_source: massaged tags to process are #{tags.inspect}")
     for tag in tags
       debug(tag)
@@ -538,13 +538,13 @@ EOF
     # table_element.xpath('//*').each { |n| n.content.gsub("'", '`') }
 
     # calculate the widths of each column based on max(header, cell[0...end])
-    column_count = ([ table_element.xpath('//th').count ] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
+    column_count = ([table_element.xpath('//th').count] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
     column_widths = {}
     1.upto(column_count) do |column_index|
       longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map { |e| e.text().length }.max || 0)
       corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
       heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
-      column_widths[column_index] = [ longest_cell, heading_length ].max
+      column_widths[column_index] = [longest_cell, heading_length].max
     end
 
     # print the header as markdown
