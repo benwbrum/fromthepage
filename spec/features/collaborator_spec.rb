@@ -89,7 +89,7 @@ describe "Collaborator actions" do
         end
         context "when added as a collaborator to a private collection" do
             let(:collection) { create(:collection, :private,
-                collaborators: [ collaborator ]
+                collaborators: [collaborator]
             )}
             let(:docset) { create(:document_set, :private,
                 collection: collection,
@@ -111,7 +111,7 @@ describe "Collaborator actions" do
             let(:collection) { create(:collection, :private) }
             let(:docset) { create(:document_set, :private,
                 collection: collection,
-                collaborators: [ collaborator ]
+                collaborators: [collaborator]
             )}
             it "cannot view private collections" do
                 login_as(collaborator, scope: :user)

@@ -9,13 +9,13 @@ class CreatePageBlocks < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    add_index :page_blocks, [ :controller, :view ]
+    add_index :page_blocks, [:controller, :view]
 
     populate
   end
 
   def self.down
-    remove_index :page_blocks, [ :controller, :view ]
+    remove_index :page_blocks, [:controller, :view]
     drop_table :page_blocks
   end
 

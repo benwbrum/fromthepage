@@ -6,7 +6,7 @@ namespace :fromthepage do
   end
 
   desc 'Run/Re-run summarize task for the past N days'
-  task :summarize_ahoy_activity_for_last_n_days, [ :days ] => :environment do |task, args|
+  task :summarize_ahoy_activity_for_last_n_days, [:days] => :environment do |task, args|
     since = args[:days].to_i
 
     # Count back from yesterday into the past N days

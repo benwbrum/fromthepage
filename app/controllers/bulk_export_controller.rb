@@ -182,5 +182,4 @@ class BulkExportController < ApplicationController
       redirect_to dashboard_path
     end
   end
-
 end

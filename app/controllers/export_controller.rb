@@ -195,7 +195,7 @@ class ExportController < ApplicationController
   def filtered_data
     @sorting = (params[:sort] || 'title').to_sym
     @ordering = (params[:order] || 'ASC').downcase.to_sym
-    @ordering = [ :asc, :desc ].include?(@ordering) ? @ordering : :desc
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
 
     # Check if there are any translated works in the collection
     @header = @collection.works.where(supports_translation: true).exists? ? 'Translated' : 'Transcribed'

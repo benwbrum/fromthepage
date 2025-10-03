@@ -28,7 +28,7 @@ class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
 
   extend FriendlyId
-  friendly_id :slug_candidates, use: [ :slugged, :history ]
+  friendly_id :slug_candidates, use: [:slugged, :history]
 
   before_create :fill_featured_at
   before_save :uniquify_slug
@@ -60,21 +60,21 @@ class DocumentSet < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(visibility: [ :public, :read_only ]) }
-  scope :restricted, -> { where(visibility: [ :private ]) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: [:private]) }
 
   scope :carousel, -> {
-    where(pct_completed: [ nil, 1..90 ])
+    where(pct_completed: [nil, 1..90])
       .joins(:collection)
       .where.not(collections: { picture: nil })
-      .where.not(description: [ nil, '' ])
+      .where.not(description: [nil, ''])
       .unrestricted
       .reorder(Arel.sql('RAND()'))
   }
-  scope :has_intro_block, -> { where.not(description: [ nil, '' ]) }
+  scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :has_picture, -> { where.not(picture: nil) }
-  scope :not_near_complete, -> { where(pct_completed: [ nil, 0..90 ]) }
-  scope :not_empty, -> { where.not(works_count: [ 0, nil ]) }
+  scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
+  scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
   scope :featured_projects, -> {
     joins(works: :pages)
@@ -262,11 +262,11 @@ class DocumentSet < ApplicationRecord
 
   def slug_candidates
     if self.slug
-      [ :slug ]
+      [:slug]
     else
       [
         :title,
-        [ :title, :id ]
+        [:title, :id]
       ]
     end
   end

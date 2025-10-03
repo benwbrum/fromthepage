@@ -22,7 +22,7 @@ class Article::Update < ApplicationInteractor
         Article::RenameJob.perform_later(
           user_id: @user.id,
           article_id: @article.id,
-          old_names: versions.pluck(:title) + [ old_title ],
+          old_names: versions.pluck(:title) + [old_title],
           new_name: @article.title
         )
       end

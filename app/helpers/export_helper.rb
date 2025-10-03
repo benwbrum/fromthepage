@@ -34,7 +34,7 @@ module ExportHelper
     doc = Nokogiri::XML(postprocessed)
     doc.xpath('//table').each do |table_element|
       key = SecureRandom.uuid
-      markdown_tables[key] = xml_table_to_markdown_table(table_element, true)
+      markdown_tables[key] = xml_table_to_markdown_table(table_element, true, flatten_links)
       table_element.replace("REPLACEMETABLE#{key}")
     end
 
@@ -224,8 +224,8 @@ module ExportHelper
   end
 
   def work_to_xhtml(work)
-    @work = Work.includes(pages: [ { notes: :user }, { page_versions: :user } ]).find_by(id: work.id)
-    render_to_string template: 'export/show', layout: false, formats: [ :html ], handlers: [ :erb ]
+    @work = Work.includes(pages: [{ notes: :user }, { page_versions: :user }]).find_by(id: work.id)
+    render_to_string template: 'export/show', layout: false, formats: [:html], handlers: [:erb]
   end
 
   def work_to_tei(work, exporting_user)
@@ -254,7 +254,7 @@ module ExportHelper
                         GROUP BY user_id
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.joins(:page).where([ 'pages.work_id = ?', @work.id ]).order('work_version DESC').includes(:page).all
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('work_version DESC').includes(:page).all
 
     @all_articles = @work.articles
     people = work.collection.categories.where(title: 'People').first
@@ -293,7 +293,7 @@ module ExportHelper
     xml = ApplicationController.renderer.render_to_string(
       layout: false,
       template: 'export/tei',
-      formats: [ :html ],
+      formats: [:html],
       assigns: {
         work: @work,
         context: @context,
@@ -363,7 +363,7 @@ module ExportHelper
   end
 
   def expand_subject(subject)
-    subjects = [ subject ]
+    subjects = [subject]
 
     parts = subject.title.split(/(\. |--)/)
     0.upto(parts.size/2 - 1) do |i|
@@ -425,7 +425,39 @@ module ExportHelper
     tei
   end
 
+  # Clean date for use in 'when' attribute using EDTF library
+  # Attempts to parse as EDTF and returns valid date string or nil
+  def clean_date_for_when_attribute(date_string)
+    return nil if date_string.blank?
 
+    # Try to parse with EDTF library
+    begin
+      edtf_date = Date.edtf(date_string)
+      return edtf_date.edtf if edtf_date
+    rescue
+      # Fall back to basic cleaning if EDTF parsing fails
+    end
+
+    # Fallback processing
+    cleaned = date_string.strip
+    return nil if cleaned.blank?
+
+    # For fallback, remove multiple question marks but keep single ones
+    if cleaned =~ /\?{2,}/
+      cleaned = cleaned.gsub(/\?+/, '')
+    end
+
+    # Validate basic date format - allow single question mark at end
+    return nil unless cleaned =~ /^\d{4}(-\d{2})?(-\d{2})?(\?)?$/
+
+    # Check for invalid months (13-20) - months 21+ are valid EDTF sub-year groupings
+    if cleaned =~ /^\d{4}-(\d{2})/
+      month = $1.to_i
+      return nil if month >= 13 && month <= 20
+    end
+
+    cleaned
+  end
 
   def seen_subject_to_tei(subject, parent_category)
     tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
@@ -448,7 +480,7 @@ module ExportHelper
     doc = REXML::Document.new(xml_text)
     # paras_string = ""
     my_display_html = ''
-    tags = [ 'p' ]
+    tags = ['p']
     tags.each do |tag|
       doc.elements.each_with_index("//#{tag}") do |e, i|
         transform_links(e)
@@ -462,15 +494,36 @@ module ExportHelper
         if add_corrsp
           e.add_attribute('corresp', "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
         end
-        my_display_html << e.to_s
+        elements = extract_heads_from_parargraph(e)
+
+        my_display_html << elements.map { |e| e.to_s }.join("\n\n")
       end
     end
 
     my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
+  # The TEI standard does not allow head elements within p elements so we want
+  # to extract them into a previous sibling of the paragraph, then remove them
+  # from the paragraph element.  If the paragraph tag is empty, we want to
+  # remove it.  (If there are no head elements in the paragraph elements,
+  # we will want to simply return that.)
+  def extract_heads_from_parargraph(p_element)
+    heads = []
+    p_element.elements.each('head') do |head|
+      heads << head
+      head.remove
+    end
+    if p_element.children.empty?
+      p_element.remove
+      heads
+    else
+      heads + [p_element]
+    end
+  end
+
   def transform_expansions(p_element)
-    p_element.elements.each('//expan') do |expan|
+    p_element.elements.each('.//expan') do |expan|
       orig = expan.attributes['orig']
       unless orig.blank?
         choice = REXML::Element.new('choice')
@@ -486,7 +539,7 @@ module ExportHelper
       end
     end
 
-    p_element.elements.each('//abbr') do |abbr|
+    p_element.elements.each('.//abbr') do |abbr|
       expan = abbr.attributes['expan']
       unless expan.blank?
         choice = REXML::Element.new('choice')
@@ -504,7 +557,7 @@ module ExportHelper
   end
 
   def transform_regularizations(p_element)
-    p_element.elements.each('//reg') do |reg|
+    p_element.elements.each('.//reg') do |reg|
       orig = reg.attributes['orig']
       unless orig.blank? || reg.parent.name == 'choice'
         choice = REXML::Element.new('choice')
@@ -522,12 +575,12 @@ module ExportHelper
   end
 
   def transform_marginalia_and_catchwords(p_element)
-    p_element.elements.each('//marginalia') do |e|
+    p_element.elements.each('.//marginalia') do |e|
       e.name='note'
       e.add_attribute('type', 'marginalia')
     end
 
-    p_element.elements.each('//catchword') do |e|
+    p_element.elements.each('.//catchword') do |e|
       e.name='fw'
       e.add_attribute('type', 'catchword')
     end
@@ -536,7 +589,7 @@ module ExportHelper
   def transform_tables(p_element)
     # convert HTML tables to TEI tables
     p_element_string = p_element.to_s
-    p_element.elements.each('//table') do |e|
+    p_element.elements.each('.//table') do |e|
       unless e.get_elements('.//tr').empty? # TEI tables use row and cell elements, not tr and td
         row_count = 0
         max_column_count = 0
@@ -577,15 +630,15 @@ module ExportHelper
       end
     end # end of tables
     # now delete any lb elements from tables elements in the document
-    p_element.elements.each('//table') do |table|
-      table.elements.each('//lb') do |lb|
+    p_element.elements.each('.//table') do |table|
+      table.elements.each('.//lb') do |lb|
         lb.remove
       end
     end
   end
 
   def transform_footnotes(p_element)
-    p_element.elements.each('//footnote') do |e|
+    p_element.elements.each('.//footnote') do |e|
       marker = e.attributes['marker']
 
       e.name='note'
@@ -598,7 +651,7 @@ module ExportHelper
   def transform_lb(p_element)
     # while we support text within an LB tag to encode line
     # continuation sigla, TEI doesn't and recommends the sigil be part of the text before the LB
-    p_element.elements.each('//lb') do |e|
+    p_element.elements.each('.//lb') do |e|
       if e['break'] == 'no'
         unless e.text.blank?
           previous_element = e.previous_sibling
@@ -617,7 +670,7 @@ module ExportHelper
   # end
 
   def transform_links(p_element)
-    p_element.elements.each('//link') do |link|
+    p_element.elements.each('.//link') do |link|
       rs = REXML::Element.new('rs')
 
       id = link.attributes['target_id']
@@ -626,20 +679,23 @@ module ExportHelper
       link.children.each { |c| rs.add(c) }
       link.replace_with(rs)
     end
-    p_element.elements.each('//sensitive') do |sensitive|
+    p_element.elements.each('.//sensitive') do |sensitive|
       gap = REXML::Element.new('gap')
 
       gap.add_attribute('reason', 'redacted')
       sensitive.replace_with(gap)
     end
-    p_element.elements.each('//entryHeading') do |entryHeading|
+    p_element.elements.each('.//entryHeading') do |entryHeading|
       gap = REXML::Element.new('head')
 
-      gap.add_attribute('depth', entryHeading.attributes['depth'])
+      # Use subtype attribute instead of depth for TEI compliance
+      if entryHeading.attributes['depth']
+        gap.add_attribute('subtype', "level-#{entryHeading.attributes['depth']}")
+      end
       gap.add_text(entryHeading.attributes['title'])
       entryHeading.replace_with(gap)
     end
-    p_element.elements.each('//a') do |a|
+    p_element.elements.each('.//a') do |a|
       rs = REXML::Element.new('rs')
       href = a.attributes['href']
 
@@ -647,21 +703,21 @@ module ExportHelper
       a.children.each { |c| rs.add(c) }
       a.replace_with(rs)
     end
-    p_element.elements.each('//strike') do |strike|
+    p_element.elements.each('.//strike') do |strike|
       del = REXML::Element.new('del')
 
       del.add_attribute('rend', 'overstrike')
       strike.children.each { |c| del.add(c) }
       strike.replace_with(del)
     end
-    p_element.elements.each('//s') do |strike|
+    p_element.elements.each('.//s') do |strike|
       del = REXML::Element.new('del')
 
       del.add_attribute('rend', 'overstrike')
       strike.children.each { |c| del.add(c) }
       strike.replace_with(del)
     end
-    p_element.elements.each('//u') do |u|
+    p_element.elements.each('.//u') do |u|
       hi = REXML::Element.new('hi')
 
       hi.add_attribute('rend', 'underline')
@@ -669,7 +725,7 @@ module ExportHelper
 
       u.replace_with(hi)
     end
-    p_element.elements.each('//i') do |i|
+    p_element.elements.each('.//i') do |i|
       hi = REXML::Element.new('hi')
 
       hi.add_attribute('rend', 'italic')
@@ -677,13 +733,13 @@ module ExportHelper
 
       i.replace_with(hi)
     end
-    p_element.elements.each('//ins') do |ins|
+    p_element.elements.each('.//ins') do |ins|
       add = REXML::Element.new('add')
       ins.children.each { |c| add.add(c) }
 
       ins.replace_with(add)
     end
-    p_element.elements.each('//b') do |i|
+    p_element.elements.each('.//b') do |i|
       hi = REXML::Element.new('hi')
 
       hi.add_attribute('rend', 'bold')
@@ -691,7 +747,7 @@ module ExportHelper
 
       i.replace_with(hi)
     end
-    p_element.elements.each('//sup') do |sup|
+    p_element.elements.each('.//sup') do |sup|
       hi = REXML::Element.new('hi')
 
       hi.add_attribute('rend', 'sup')
@@ -717,7 +773,10 @@ module ExportHelper
 
           # Create the new section
           section = REXML::Element.new('section')
-          section.add_attribute('depth', header.attributes['depth'])
+          # Use type attribute instead of depth for TEI compliance
+          if header.attributes['depth']
+            section.add_attribute('type', "level-#{header.attributes['depth']}")
+          end
 
           # Handle where to put the new section
           if sections.empty?
@@ -739,7 +798,12 @@ module ExportHelper
 
           # Update the accumulator
           sections.push(section)
-          current_depth = section.attributes['depth'].to_i
+          # Use actual depth value if available, otherwise increment
+          if header.attributes['depth']
+            current_depth = header.attributes['depth'].to_i
+          else
+            current_depth += 1
+          end
         end
 
         # Adds the current element to the new section at the right location
