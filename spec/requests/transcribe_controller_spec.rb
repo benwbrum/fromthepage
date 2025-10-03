@@ -103,7 +103,7 @@ describe TranscribeController do
       let!(:page) { create(:page, work: work, source_text: '[[Original]]', source_translation: '[[Original]]') }
       let!(:category) { create(:category) }
       let!(:article) do
-        create(:article, title: 'Original', collection: collection, pages: [ page ], categories: [ category ])
+        create(:article, title: 'Original', collection: collection, pages: [page], categories: [category])
       end
       let!(:source_article) do
         create(:article, collection: collection.reload)

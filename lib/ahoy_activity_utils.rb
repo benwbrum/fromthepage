@@ -27,7 +27,7 @@ module AhoyActivityUtils
 
       # We group by collection first, so we can sort and sum the timestamps
       events.group_by { |e| e.properties['collection_id'] }.each do |cid, event|
-        timestamps = event.map { |e| [ e[:time], e[:name] ] }
+        timestamps = event.map { |e| [e[:time], e[:name]] }
 
         minutes = total_contiguous_seconds(timestamps) / 60
 
@@ -52,7 +52,7 @@ module AhoyActivityUtils
     end
 
     latest_ahoy_activity_summary = AhoyActivitySummary.order(date: :desc).first
-    keep_after_date = [ AhoyActivitySummary::KEEP_AFTER.ago.to_date, latest_ahoy_activity_summary.date.yesterday ].min
+    keep_after_date = [AhoyActivitySummary::KEEP_AFTER.ago.to_date, latest_ahoy_activity_summary.date.yesterday].min
 
     exclude_actions = AhoyActivitySummary::WEEKLY_TRIAL_COHORT_TARGET_ACTIONS +
                       AhoyActivitySummary::WEEKLY_TRANSCRIBER_COHORT_TARGET_ACTIONS

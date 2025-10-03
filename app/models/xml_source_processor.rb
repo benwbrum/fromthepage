@@ -25,12 +25,12 @@ module XmlSourceProcessor
 
   # check the text for problems or typos with the subject links
   def validate_links(text)
-    error_scope = [ :activerecord, :errors, :models, :xml_source_processor ]
+    error_scope = [:activerecord, :errors, :models, :xml_source_processor]
     # split on all begin-braces
     tags = text.split('[[')
     # remove the initial string which occurs before the first tag
     debug("validate_source: tags to process are #{tags.inspect}")
-    tags = tags - [ tags[0] ]
+    tags = tags - [tags[0]]
     debug("validate_source: massaged tags to process are #{tags.inspect}")
     for tag in tags
       debug(tag)
@@ -220,11 +220,15 @@ end
       # look for a header
       if !current_table
         if line.match(HEADER)
-          line.chomp
+          line = line.chomp
           current_table = { header: [], rows: [], section: @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe
+
+          # trim whitespace from each header cell
+          cells = cells.map(&:strip)
+
           current_table[:header] = cells.map { |cell_title| cell_title.sub(/^!\s*/, '') }
           heading = cells.map do |cell|
             if cell.match(/^!/)
@@ -243,10 +247,20 @@ end
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
+          # handle initial blank cells - if line starts with whitespace followed by pipe, preserve empty cell
+          line_chomp = line.chomp
+          has_initial_empty_cell = line_chomp.match(/^\s+\|/)
+
           # remove leading and trailing delimiters
-          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
+          clean_line = line_chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
           cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
+
+          # trim whitespace from each cell
+          cells = cells.map(&:strip)
+
+          # if there was initial whitespace before pipe, add empty cell at beginning
+          cells.unshift('') if has_initial_empty_cell
           current_table[:rows] << cells
           rowline = ''
           cells.each_with_index do |cell, _i|
@@ -527,13 +541,13 @@ EOF
     # table_element.xpath('//*').each { |n| n.content.gsub("'", '`') }
 
     # calculate the widths of each column based on max(header, cell[0...end])
-    column_count = ([ table_element.xpath('//th').count ] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
+    column_count = ([table_element.xpath('//th').count] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
     column_widths = {}
     1.upto(column_count) do |column_index|
       longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map { |e| e.text().length }.max || 0)
       corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
       heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
-      column_widths[column_index] = [ longest_cell, heading_length ].max
+      column_widths[column_index] = [longest_cell, heading_length].max
     end
 
     # print the header as markdown

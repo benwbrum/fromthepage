@@ -2,6 +2,11 @@
 <body>
     <%= render "shared/landingbodyheader" %>
 
+    <div id="flash_wrapper">
+        <% flash.each do |type, message| %>
+            <%= render partial: 'shared/flash', locals: { type: type, message: message } %>
+        <% end %>
+    </div>
 
     <!-- Home Main -->
     <section class="home-main">

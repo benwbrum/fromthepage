@@ -120,8 +120,8 @@ class Page < ApplicationRecord
   scope :needs_transcription, -> { where(status: :new) }
   scope :needs_completion, -> { where(status: :incomplete) }
   scope :needs_translation, -> { where(translation_status: :new) }
-  scope :needs_index, -> { where.not(status: [ :new, :indexed ]) }
-  scope :needs_translation_index, -> { where.not(translation_status: [ :new, :indexed ]) }
+  scope :needs_index, -> { where.not(status: [:new, :indexed]) }
+  scope :needs_translation_index, -> { where.not(translation_status: [:new, :indexed]) }
 
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -135,8 +135,8 @@ class Page < ApplicationRecord
     Page.translation_statuses[:translated]
   ].freeze
 
-  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [ Page.statuses[:needs_review] ]
-  NEEDS_WORK_STATUSES = [ Page.statuses[:new], Page.statuses[:incomplete] ].freeze
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [Page.statuses[:needs_review]]
+  NEEDS_WORK_STATUSES = [Page.statuses[:new], Page.statuses[:incomplete]].freeze
 
   update_index('pages', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -222,7 +222,7 @@ class Page < ApplicationRecord
   end
 
   def articles_with_text
-    articles conditions: [ 'articles.source_text is not null' ]
+    articles conditions: ['articles.source_text is not null']
   end
 
   def defaults
@@ -548,7 +548,7 @@ class Page < ApplicationRecord
     end
     formatted << '</tbody></table>'
 
-    [ formatted, new_table_cells ]
+    [formatted, new_table_cells]
   end
 
   def this_and_following_rows_empty?(cell_data, rownum)

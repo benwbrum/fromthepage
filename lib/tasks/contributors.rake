@@ -1,7 +1,7 @@
 
 namespace :fromthepage do
   desc 'Display all transcriber names and emails'
-  task :all_transcribers, [ :collection_id ] => :environment do |t, args|
+  task :all_transcribers, [:collection_id] => :environment do |t, args|
     collection_id = args.collection_id
     trans_deeds = DeedType.transcriptions_or_corrections
 
@@ -16,7 +16,7 @@ namespace :fromthepage do
   end
 
   desc 'Display all recent activity for a collection'
-  task :recent_activity, [ :collection_id ] => :environment do |t, args|
+  task :recent_activity, [:collection_id] => :environment do |t, args|
     collection_id = args.collection_id
     trans_deeds = DeedType.transcriptions_or_corrections
 

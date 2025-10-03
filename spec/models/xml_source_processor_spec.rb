@@ -188,4 +188,70 @@ RSpec.describe XmlSourceProcessor, type: :model do
       end
     end
   end
+
+  describe '#process_linewise_markup table processing' do
+    let(:collection) { build_stubbed(:collection) }
+    let(:work) { build_stubbed(:work, collection: collection) }
+    let(:page) { build_stubbed(:page, work: work) }
+
+    it 'should handle tables with initial blank cells' do
+      table_text = <<~TABLE
+        Title | Author | Publisher
+        --- | --- | ---
+         | Steam and the Steam Engine | Crosby Lockwood & Co.
+        Book Title | John Author | Some Publisher
+      TABLE
+
+      page.source_text = table_text
+      result = page.process_linewise_markup(table_text)
+
+      # The result should contain a table with an empty first cell in the first data row
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<th>Title</th>')
+      expect(result).to include('<th>Author</th>')
+      expect(result).to include('<th>Publisher</th>')
+
+      # Most importantly, the first data row should have an empty first cell
+      expect(result).to include('<td></td> <td>Steam and the Steam Engine</td>')
+      expect(result).to include('<td>Crosby Lockwood & Co.</td>')
+    end
+
+    it 'should handle single row table starting with blank cell' do
+      table_text = " | Steam and the Steam Engine | Crosby Lockwood & Co.\n"
+
+      page.source_text = table_text
+      result = page.process_linewise_markup(table_text)
+
+      # Should create a table with empty first header
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<th></th>')
+      expect(result).to include('<th>Steam and the Steam Engine</th>')
+      expect(result).to include('<th>Crosby Lockwood & Co.</th>')
+    end
+
+    it 'should handle multiple initial blank cells' do
+      table_text = " | | Third Column\n"
+
+      page.source_text = table_text
+      result = page.process_linewise_markup(table_text)
+
+      # Should create a table with empty first and second headers
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<th></th> <th></th>')
+      expect(result).to include('<th>Third Column</th>')
+    end
+
+    it 'should preserve existing behavior for tables starting with pipe' do
+      table_text = "| First | Second | Third\n"
+
+      page.source_text = table_text
+      result = page.process_linewise_markup(table_text)
+
+      # Should work as before
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<th>First</th>')
+      expect(result).to include('<th>Second</th>')
+      expect(result).to include('<th>Third</th>')
+    end
+  end
 end

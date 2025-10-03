@@ -1,6 +1,6 @@
 class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
-  before_action :authorized?, only: [ :new, :edit_fields, :add_field ]
+  before_action :authorized?, only: [:new, :edit_fields, :add_field]
 
   def multiselect_form
     @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
@@ -255,7 +255,7 @@ class TranscriptionFieldController < ApplicationController
   private
 
   def spreadsheet_column_params
-    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [ :label, :input_type, :options, :id ])
+    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [:label, :input_type, :options, :id])
   end
 
   def authorized?

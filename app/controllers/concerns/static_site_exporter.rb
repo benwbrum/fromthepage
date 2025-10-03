@@ -209,7 +209,7 @@ EOF_FOOTER_INCLUDE
       'email' => collection.owner.email,
       'owner' => collection.owner.display_name,
       'description' => collection.intro_block,
-      'plugins' => [ 'jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache' ],
+      'plugins' => ['jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache'],
       'remote_theme' => 'mmistakes/minimal-mistakes',
       'defaults' => [
         { 'scope' =>
@@ -366,7 +366,7 @@ EOF_FOOTER_INCLUDE
 
     text = ApplicationController.new.render_to_string(
       template: 'export/show',
-      formats: [ :html ],
+      formats: [:html],
       work_id: work.id,
       layout: false,
       encoding: 'utf-8',

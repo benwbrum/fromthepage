@@ -13,9 +13,9 @@ class CollectionController < ApplicationController
     :set_collection_footer_block
   ]
 
-  edit_actions = [ :edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger ]
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
-  before_action :set_collection, only: edit_actions + [ :show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing ]
+  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :authorized?, only: [
     :new,
     :edit,
@@ -43,9 +43,9 @@ class CollectionController < ApplicationController
     :edit_buttons,
     :update_buttons
   ]
-  before_action :review_authorized?, only: [ :reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list ]
-  before_action :load_settings, only: [ :upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer ]
-  before_action :permit_only_transcribed_works_flag, only: [ :works_list ]
+  before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
+  before_action :load_settings, only: [:upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
   def search_users
     query = "%#{params[:term].to_s.downcase}%"
@@ -193,7 +193,7 @@ class CollectionController < ApplicationController
     @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], per_page: 10)
     @search = WorkSearch.new(params[:page])
 
-    render plain: @works.to_json(methods: [ :thumbnail ])
+    render plain: @works.to_json(methods: [:thumbnail])
   end
 
   def new_mobile_user
@@ -263,7 +263,7 @@ class CollectionController < ApplicationController
         if @collection.facets_enabled?
           # construct the search object from the parameters
           @search = WorkSearch.new(params)
-          @search.filter([ :work, :collection_id ]).value=@collection.id
+          @search.filter([:work, :collection_id]).value=@collection.id
           # the search results are WorkFacets, not works, so we need to fetch the works themselves
           facet_ids = @search.result.pluck(:id)
           @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], per_page: @per_page) unless params[:search].is_a?(String)
@@ -273,7 +273,7 @@ class CollectionController < ApplicationController
           if date_configs.size > 0
             collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
             date_configs.each do |facet_config|
-              facet_attr = [ :d0, :d1, :d2 ][facet_config.order]
+              facet_attr = [:d0, :d1, :d2][facet_config.order]
 
               selection_values = @works.map { |w| w.work_facet.send(facet_attr) }.reject { |v| v.nil? }
               collection_values = collection_facets.map { |work_facet| work_facet.send(facet_attr) }.reject { |v| v.nil? }
@@ -328,7 +328,7 @@ class CollectionController < ApplicationController
           if @collection.facets_enabled?
             # construct the search object from the parameters
             @search = WorkSearch.new(params)
-            @search.filter([ :work, :collection_id ]).value=@collection.id
+            @search.filter([:work, :collection_id]).value=@collection.id
             # the search results are WorkFacets, not works, so we need to fetch the works themselves
             facet_ids = @search.result.pluck(:id)
             @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], per_page: @per_page) unless params[:search].is_a?(String)
@@ -338,7 +338,7 @@ class CollectionController < ApplicationController
             if date_configs.size > 0
               collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
               date_configs.each do |facet_config|
-                facet_attr = [ :d0, :d1, :d2 ][facet_config.order]
+                facet_attr = [:d0, :d1, :d2][facet_config.order]
 
                 selection_values = @works.map { |w| w.work_facet.send(facet_attr) }.reject { |v| v.nil? }
                 collection_values = collection_facets.map { |work_facet| work_facet.send(facet_attr) }.reject { |v| v.nil? }
@@ -373,7 +373,7 @@ class CollectionController < ApplicationController
         # Set meta information for collection pages for better archival
         @page_title = "#{@collection.title} - FromThePage"
         @meta_description = "#{@collection.title}: #{to_snippet(@collection.intro_block)}".truncate(160)
-        @meta_keywords = [ @collection.title, 'historical documents', 'digital archive', 'transcription', 'collection' ].compact.join(', ')
+        @meta_keywords = [@collection.title, 'historical documents', 'digital archive', 'transcription', 'collection'].compact.join(', ')
 
         # Generate structured data for collection
         @structured_data = {
@@ -711,7 +711,7 @@ class CollectionController < ApplicationController
     if params['need_review']
       @works = @collection.works.where(description_status: 'needsreview')
     else
-      @works = @collection.works.where(description_status: [ 'incomplete', 'undescribed' ])
+      @works = @collection.works.where(description_status: ['incomplete', 'undescribed'])
     end
   end
 
@@ -806,7 +806,7 @@ class CollectionController < ApplicationController
   end
 
   def updated_fields_hash
-    @collection.changed.to_h { |field| [ field, @collection.send(field) ] }
+    @collection.changed.to_h { |field| [field, @collection.send(field)] }
   end
 
   def collection_params
@@ -844,7 +844,7 @@ class CollectionController < ApplicationController
 
   def load_settings
     @main_owner = @collection.owner
-    @owners = ([ @main_owner ] + @collection.owners).sort_by(&:display_name)
+    @owners = ([@main_owner] + @collection.owners).sort_by(&:display_name)
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
     @reviewers = @collection.reviewers
@@ -866,7 +866,7 @@ class CollectionController < ApplicationController
   def filtered_works
     @sorting = (params[:sort] || 'title').to_sym
     @ordering = (params[:order] || 'ASC').downcase.to_sym
-    @ordering = [ :asc, :desc ].include?(@ordering) ? @ordering : :desc
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
 
     works_scope = @collection.works.includes(:work_statistic, :deeds)
     if params[:show] == 'need_transcription'

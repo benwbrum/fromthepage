@@ -219,6 +219,6 @@ class Article < ApplicationRecord
   def ancestors_and_self(category)
     ancestors = category.ancestors.reverse
 
-    [ category ] + ancestors
+    [category] + ancestors
   end
 end

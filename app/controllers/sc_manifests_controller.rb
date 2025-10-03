@@ -1,5 +1,5 @@
 class ScManifestsController < ApplicationController
-  before_action :set_sc_manifest, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_sc_manifest, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 

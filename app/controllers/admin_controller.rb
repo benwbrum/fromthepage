@@ -36,7 +36,7 @@ class AdminController < ApplicationController
     @activity_project_counts = {}
     @unique_contributor_counts = {}
     @hours_spent_counts = {}
-    @week_intervals=[ 1, 2, 4, 12, 26, 52, 104, 156, 208 ]
+    @week_intervals=[1, 2, 4, 12, 26, 52, 104, 156, 208]
     @week_intervals.each do |weeks_ago|
       start_date = Date.yesterday - weeks_ago.weeks
       end_date = start_date + 1.week

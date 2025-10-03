@@ -21,19 +21,19 @@ Fromthepage::Application.routes.draw do
     post 'registrations/choose_provider', to: 'registrations#choose_saml'
     post 'registrations/set_provider', to: 'registrations#set_saml'
     match '/users/auth/saml/:identity_provider_id/callback',
-          via: [ :get, :post ],
+          via: [:get, :post],
           to: 'users/omniauth_callbacks#saml',
           as: 'user_omniauth_callback'
 
     match '/users/auth/saml/:identity_provider_id',
-          via: [ :get, :post ],
+          via: [:get, :post],
           to: 'users/omniauth_callbacks#passthru',
           as: 'user_omniauth_authorize'
   end
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  resources :notes, except: [ :show ]
+  resources :notes, except: [:show]
   get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 
   scope 'admin', as: 'admin' do
@@ -141,7 +141,7 @@ Fromthepage::Application.routes.draw do
     get 'document_sets_select', to: 'work#document_sets_select'
   end
 
-  resources :page, except: [ :index, :show, :edit ], param: :page_id do
+  resources :page, except: [:index, :show, :edit], param: :page_id do
     post :reorder, on: :collection
     post :rotate, on: :collection
   end
@@ -194,7 +194,7 @@ Fromthepage::Application.routes.draw do
     get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
     post 'convert', to: 'ia#convert'
     post 'import_work', to: 'ia#import_work'
-    match 'confirm_import', to: 'ia#confirm_import', via: [ :get, :post ]
+    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
   if Rails.application.config.upload_host.present?
@@ -224,7 +224,7 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
   end
 
-  resources :search_attempt, path: 'search_attempt', only: [ :show, :create ] do
+  resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
     get :click, to: 'search_attempt#click', on: :collection
   end
 
@@ -303,9 +303,9 @@ Fromthepage::Application.routes.draw do
     post 'import_cdm', to: 'sc_collections#import_cdm'
     get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
     post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
-    match 'import', to: 'sc_collections#import', via: [ :get, :post ]
-    match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [ :get, :post ]
-    match 'import_collection', to: 'sc_collections#import_collection', via: [ :get, :post ]
+    match 'import', to: 'sc_collections#import', via: [:get, :post]
+    match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
+    match 'import_collection', to: 'sc_collections#import_collection', via: [:get, :post]
   end
 
   scope 'application', as: 'application' do
@@ -463,7 +463,7 @@ Fromthepage::Application.routes.draw do
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
 
-  resources :document_sets, except: [ :show, :create, :edit ]
+  resources :document_sets, except: [:show, :create, :edit]
 
   get '/:user_id/tagged/:ai_text', to: 'user#profile', as: :tagged_user_profile
 
@@ -471,7 +471,7 @@ Fromthepage::Application.routes.draw do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
     get 'search', to: 'user#search', as: :owner_search
 
-    resources :collection, path: '', only: [ :show ] do
+    resources :collection, path: '', only: [:show] do
       get 'page-notes', to: 'notes#discussions', as: 'page_discussions'
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
@@ -522,10 +522,10 @@ Fromthepage::Application.routes.draw do
 
       # work related routes
       # have to use match because it must be both get and post
-      match ':work_id/:page_range', to: 'display#read_work', via: [ :get, :post ], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
-      match ':work_id', to: 'display#read_work', via: [ :get, :post ], as: :read_work
+      match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
+      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
-      resources :work, path: '', param: :work_id, only: [ :edit ] do
+      resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member
         get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
