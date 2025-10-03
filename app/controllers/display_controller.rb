@@ -72,12 +72,12 @@ class DisplayController < ApplicationController
       end
     end
     session[:col_id] = @collection.slug
-    
+
     # Set social media meta tags for work
     unless @work.nil?
       description = view_context.to_snippet(@work.description, length: 200) if @work.description.present?
       description ||= "A document in the #{@work.collection&.title || 'Unknown Collection'} project on FromThePage"
-      
+
       view_context.set_social_media_meta_tags(
         title: @work.title,
         description: description,

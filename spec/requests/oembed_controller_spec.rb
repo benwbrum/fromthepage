@@ -16,7 +16,7 @@ describe OembedController do
 
         expect(response).to have_http_status(:success)
         expect(response.content_type).to include('application/json')
-        
+
         json_response = JSON.parse(response.body)
         expect(json_response['version']).to eq('1.0')
         expect(json_response['type']).to eq('rich')
@@ -55,7 +55,7 @@ describe OembedController do
 
         expect(response).to have_http_status(:success)
         expect(response.content_type).to include('application/json')
-        
+
         json_response = JSON.parse(response.body)
         expect(json_response['version']).to eq('1.0')
         expect(json_response['type']).to eq('rich')
@@ -77,7 +77,7 @@ describe OembedController do
 
         expect(response).to have_http_status(:success)
         expect(response.content_type).to include('application/json')
-        
+
         json_response = JSON.parse(response.body)
         expect(json_response['version']).to eq('1.0')
         expect(json_response['type']).to eq('rich')

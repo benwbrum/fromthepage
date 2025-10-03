@@ -354,13 +354,13 @@ class CollectionController < ApplicationController
             end
           end
         end
-        
+
         # Set social media meta tags for collection only if active
         unless @collection.nil? || !@collection.active?
           description = view_context.to_snippet(@collection.intro_block, length: 200) if @collection.intro_block.present?
           works_count = @collection.respond_to?(:works_count) ? @collection.works_count : @collection.works.count rescue 0
           description ||= "A transcription project on FromThePage with #{works_count} #{'work'.pluralize(works_count)}"
-          
+
           view_context.set_social_media_meta_tags(
             title: @collection.title,
             description: description,

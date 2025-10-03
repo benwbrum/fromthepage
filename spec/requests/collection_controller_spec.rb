@@ -759,7 +759,6 @@ describe CollectionController do
     end
   end
 
-<<<<<<< HEAD
   describe '#one_off_list' do
     let(:action_path) { collection_one_off_list_path(owner, collection) }
 

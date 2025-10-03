@@ -73,7 +73,7 @@ describe ApplicationHelper do
     it 'returns absolute URL when collection has picture' do
       allow(collection).to receive(:picture).and_return('/path/to/image.jpg')
       allow(helper).to receive(:absolute_url).with('/path/to/image.jpg').and_return('http://example.com/path/to/image.jpg')
-      
+
       expect(helper.collection_image_url(collection)).to eq('http://example.com/path/to/image.jpg')
     end
   end
@@ -90,7 +90,7 @@ describe ApplicationHelper do
     it 'returns absolute URL when work has picture' do
       allow(work).to receive(:picture).and_return('/path/to/work.jpg')
       allow(helper).to receive(:absolute_url).with('/path/to/work.jpg').and_return('http://example.com/path/to/work.jpg')
-      
+
       expect(helper.work_image_url(work)).to eq('http://example.com/path/to/work.jpg')
     end
   end
@@ -107,7 +107,7 @@ describe ApplicationHelper do
     it 'returns absolute URL when page has base_image' do
       allow(page).to receive(:base_image).and_return('/path/to/page.jpg')
       allow(helper).to receive(:absolute_url).with('/path/to/page.jpg').and_return('http://example.com/path/to/page.jpg')
-      
+
       expect(helper.page_image_url(page)).to eq('http://example.com/path/to/page.jpg')
     end
   end
@@ -182,7 +182,7 @@ describe ApplicationHelper do
       allow(helper).to receive(:defined?).with(:request).and_return(false)
       allow(helper).to receive(:respond_to?).with(:request).and_return(false)
       allow(helper).to receive(:respond_to?).with(:asset_url).and_return(false)
-      
+
       relative_url = '/path/to/image.jpg'
       expect(helper.send(:absolute_url, relative_url)).to eq(relative_url)
     end

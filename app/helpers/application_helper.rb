@@ -283,7 +283,7 @@ module ApplicationHelper
     content_for :og_description, description
     content_for :og_type, type
     content_for :og_url, url || (defined?(request) ? request.original_url : url)
-    
+
     # Set image with fallback
     if image_url.present?
       content_for :og_image, absolute_url(image_url)
@@ -303,15 +303,15 @@ module ApplicationHelper
         Rails.logger.debug "Failed to generate default social media image: #{e.message}" if defined?(Rails)
       end
     end
-    
+
     # Twitter cards
     content_for :twitter_card, 'summary_large_image'
     content_for :twitter_title, title
     content_for :twitter_description, description
-    
+
     # Regular meta tags
     content_for :meta_description, description
-    
+
     # oEmbed discovery URLs - only if request is available
     if defined?(request) && request.present?
       oembed_base_url = "#{request.protocol}#{request.host_with_port}/oembed"
@@ -340,7 +340,7 @@ module ApplicationHelper
 
   def absolute_url(url)
     return url if url.blank? || url.start_with?('http')
-    
+
     # Try to get request context, fallback to asset_url if available
     begin
       # Check if request is actually available and not just defined

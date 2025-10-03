@@ -1,22 +1,22 @@
-class OembedController < ApplicationController  
+class OembedController < ApplicationController
   protect_from_forgery with: :null_session
-  
+
   before_action :set_format
   before_action :validate_url
-  
+
   def show
     # Parse the URL to determine what content to embed
     @content_data = parse_url_for_content(params[:url])
-    
+
     if @content_data.nil?
       render json: { error: 'URL not found or not supported' }, status: 404
       return
     end
 
     response_data = {
-      version: "1.0",
-      type: "rich",
-      provider_name: "FromThePage",
+      version: '1.0',
+      type: 'rich',
+      provider_name: 'FromThePage',
       provider_url: Rails.application.config.provider_url,
       title: @content_data[:title],
       author_name: @content_data[:author],
@@ -51,13 +51,13 @@ class OembedController < ApplicationController
   def validate_url
     url = params[:url]
     return head :bad_request if url.blank?
-    
+
     # Ensure the URL is from this domain
     uri = URI.parse(url) rescue nil
     return head :bad_request if uri.nil?
-    
+
     allowed_hosts = [request.host, 'fromthepage.com', 'www.fromthepage.com']
-    return head :bad_request unless allowed_hosts.include?(uri.host)
+    head :bad_request unless allowed_hosts.include?(uri.host)
   end
 
   def parse_url_for_content(url)
@@ -95,7 +95,7 @@ class OembedController < ApplicationController
 
     {
       title: collection.title,
-      description: view_context.to_snippet(collection.intro_block || "A transcription project on FromThePage", length: 200),
+      description: view_context.to_snippet(collection.intro_block || 'A transcription project on FromThePage', length: 200),
       author: collection.owner.display_name,
       author_url: author_url,
       image_url: view_context.collection_image_url(collection),
@@ -126,7 +126,7 @@ class OembedController < ApplicationController
   def parse_page_content(params)
     work = Work.friendly.find(params[:work_id]) rescue nil
     return nil unless work&.collection&.active?
-    
+
     page = work.pages.find(params[:page_id]) rescue nil
     return nil unless page
 
@@ -148,23 +148,23 @@ class OembedController < ApplicationController
   def embed_html(content_data)
     case content_data[:type]
     when 'collection'
-      %{<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
+      %(<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
           <h3 style="margin: 0 0 8px 0;"><a href="#{content_data[:url]}" target="_blank">#{CGI.escapeHTML(content_data[:title])}</a></h3>
           <p style="margin: 0 0 8px 0; color: #666;">#{CGI.escapeHTML(content_data[:description])}</p>
           <p style="margin: 0; font-size: 12px; color: #999;">Transcription project by #{CGI.escapeHTML(content_data[:author])} on FromThePage</p>
-        </div>}
+        </div>)
     when 'work'
-      %{<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
+      %(<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
           <h3 style="margin: 0 0 8px 0;"><a href="#{content_data[:url]}" target="_blank">#{CGI.escapeHTML(content_data[:title])}</a></h3>
           <p style="margin: 0 0 8px 0; color: #666;">#{CGI.escapeHTML(content_data[:description])}</p>
           <p style="margin: 0; font-size: 12px; color: #999;">Document by #{CGI.escapeHTML(content_data[:author])} on FromThePage</p>
-        </div>}
+        </div>)
     when 'page'
-      %{<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
+      %(<div style="border: 1px solid #ccc; padding: 16px; font-family: Arial, sans-serif; max-width: 600px;">
           <h3 style="margin: 0 0 8px 0;"><a href="#{content_data[:url]}" target="_blank">#{CGI.escapeHTML(content_data[:title])}</a></h3>
           <p style="margin: 0 0 8px 0; color: #666;">#{CGI.escapeHTML(content_data[:description])}</p>
           <p style="margin: 0; font-size: 12px; color: #999;">Page transcription by #{CGI.escapeHTML(content_data[:author])} on FromThePage</p>
-        </div>}
+        </div>)
     end
   end
 
