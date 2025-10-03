@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AbstractXmlHelper, type: :helper do
-  fixtures [ :collections ]
+  fixtures [:collections]
 
   let(:user_signed_in?) { true }
 

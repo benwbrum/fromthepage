@@ -72,7 +72,7 @@ module ContentdmTranslator
     'cdmfilesizeformatted',
     'cdmprintpdf',
     'cdmhasocr',
-    'cdmisnewspaper' ]
+    'cdmisnewspaper']
 
   def self.metadata_from_cdm_info(info)
     # only return useful and unique things
@@ -142,7 +142,7 @@ module ContentdmTranslator
     begin
       ContentdmTranslator.export_work_to_cdm(work, username, password, license)
     rescue Net::ReadTimeout => e
-      delay_to_use = [ delay, max_delay ].min
+      delay_to_use = [delay, max_delay].min
       print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
 
       sleep(delay_to_use)
@@ -163,7 +163,7 @@ module ContentdmTranslator
       exit
     end
 
-    soap_client = Savon.client(log: true, filters: [ :password ], wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
+    soap_client = Savon.client(log: true, filters: [:password], wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
     work.pages.each do |page|
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id

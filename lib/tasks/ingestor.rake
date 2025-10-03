@@ -2,7 +2,7 @@ require 'image_helper'
 require 'open-uri' # TODO: Move elsewhere
 namespace :fromthepage do
   desc 'Resize image file or directories of image files'
-  task :compress_images, [ :pathname ] => :environment  do  |t, args|
+  task :compress_images, [:pathname] => :environment  do  |t, args|
     pathname = args.pathname
     p "compressing #{pathname}"
 
@@ -15,7 +15,7 @@ namespace :fromthepage do
   end
 
   desc 'Process a document upload'
-  task :process_document_upload, [ :document_upload_id ] => :environment do |t, args|
+  task :process_document_upload, [:document_upload_id] => :environment do |t, args|
     require "#{Rails.root}/app/helpers/error_helper"
     include ErrorHelper
 
@@ -381,7 +381,7 @@ namespace :fromthepage do
   end
 
   desc 'Import IIIF Collection'
-  task :import_iiif, [ :collection_url ] => :environment  do  |t, args|
+  task :import_iiif, [:collection_url] => :environment  do  |t, args|
     ScCollection.delete_all
     ScManifest.delete_all
     ScCanvas.delete_all

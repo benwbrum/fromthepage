@@ -1,7 +1,7 @@
 namespace :fromthepage do
   namespace :cwgk do
     desc 'Create sample set of documents and entities'
-    task :create_sample_set, [ :source_dir, :target_dir, :number ] => :environment do |t, args|
+    task :create_sample_set, [:source_dir, :target_dir, :number] => :environment do |t, args|
       source_dir = args.source_dir
       target_dir = args.target_dir
       number = args.number.to_i
@@ -22,7 +22,7 @@ namespace :fromthepage do
         # read the document file into a nokogiri object
         doc = Nokogiri::XML(File.read(file))
         body = doc.search('body').first
-        [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
+        ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
           body.search(type).each do |element|
             # get the id of the element
             ref = element.attribute('ref').value
@@ -39,7 +39,7 @@ namespace :fromthepage do
 
     # code to migrate data from CWGK XML files and Mashbill to FromThePage
     desc 'Import CWGK XML files'
-    task :import_cwgk_xml, [ :xml_directory, :collection_slug ] => :environment do |t, args|
+    task :import_cwgk_xml, [:xml_directory, :collection_slug] => :environment do |t, args|
       xml_directory = args.xml_directory
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)
@@ -111,7 +111,7 @@ namespace :fromthepage do
           end
 
           id_to_title_map[id] = title
-          valid_ids << [ id.sub(/^[A-Z]0+/, '').to_i, type.downcase ]
+          valid_ids << [id.sub(/^[A-Z]0+/, '').to_i, type.downcase]
 
           article = Article.new
           article.title = title
@@ -170,7 +170,7 @@ namespace :fromthepage do
           # find the relationships in which the left entity has a matching ID
           left_relationships = relationships.select { |r| r[:left][:id] == id && r[:left][:type] == entity_type }
           # prune the right relationships to only ones that are in the list of valid IDs
-          right_relationships = left_relationships.select { |r| valid_ids.include?([ r[:right][:id], r[:right][:type] ]) }
+          right_relationships = left_relationships.select { |r| valid_ids.include?([r[:right][:id], r[:right][:type]]) }
           # now pull the relationship type and title from the right entity
           unique_relationships = right_relationships.map { |r| { type: r[:type], entity: r[:right] } }.uniq
           # for each unique relationship, write a text line with a wikilink to the entity
@@ -410,7 +410,7 @@ namespace :fromthepage do
 
       # for the element types placeName persName orgName geographicalFeature
       # find all elements of that type
-      [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
+      ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
         body.search(type).each do |element|
           element.search('unclear').each do |unclear|
             if unclear.text.strip.blank?

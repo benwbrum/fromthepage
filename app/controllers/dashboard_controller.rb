@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DashboardController < ApplicationController
-  protect_from_forgery except: [ :new_upload ]
+  protect_from_forgery except: [:new_upload]
 
   include AddWorkHelper
   include DashboardHelper
@@ -9,11 +9,11 @@ class DashboardController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
-    only: [ :owner, :staging, :startproject, :summary ]
+    only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [ :owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports ]
+    only: [:owner, :staging, :upload, :new_upload,
+           :startproject, :empty_work, :create_work, :summary, :exports]
 
   before_action :remove_col_id
 
@@ -284,7 +284,7 @@ class DashboardController < ApplicationController
     csv = CSV.generate(headers: true) do |records|
       records << headers
       contributors.each do |user|
-        row = [ user.display_name, user.email ]
+        row = [user.display_name, user.email]
 
         activity = AhoyActivitySummary
           .where(user_id: user.id)
@@ -335,7 +335,7 @@ class DashboardController < ApplicationController
                                       .first
     @last_calculation_date = last_summary&.date&.end_of_day
 
-    raw = Deed.where(user_id: current_user.id, created_at: [ @start_date_hours..@end_date_hours ]).pluck(:collection_id, :page_id).uniq
+    raw = Deed.where(user_id: current_user.id, created_at: [@start_date_hours..@end_date_hours]).pluck(:collection_id, :page_id).uniq
     @collection_id_to_page_count = raw.select { |collection_id, page_id| !page_id.nil? }.map { |collection_id, page_id| collection_id }.tally
     @user_collections = Collection.find(@collection_id_to_page_count.keys).sort { |a, b| a.owner.display_name <=> b.owner.display_name }
   end
