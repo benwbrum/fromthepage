@@ -2,6 +2,8 @@ class Flagger
   @@denylist = nil
   @@allowlist = nil
 
+  # Initialize the denylist from the PageBlock database table.
+  # The denylist contains patterns that trigger spam detection.
   def self.initialize_denylist
     if @@denylist.nil?
       pb = PageBlock.find_by(controller: 'admin', view: 'flag_denylist')
@@ -13,6 +15,9 @@ class Flagger
     end
   end
 
+  # Initialize the allowlist from the PageBlock database table.
+  # The allowlist contains trusted domain patterns that should be excluded
+  # from spam detection (e.g., research websites like wikipedia.org, ancestry.com).
   def self.initialize_allowlist
     if @@allowlist.nil?
       pb = PageBlock.find_by(controller: 'admin', view: 'flag_allowlist')
@@ -24,6 +29,9 @@ class Flagger
     end
   end
 
+  # Check content for suspicious patterns.
+  # Returns a snippet of the suspicious content if found, or nil if the content is clean.
+  # Content matching allowlist patterns will not be flagged even if they match denylist patterns.
   def self.check(content)
     initialize_denylist
     initialize_allowlist
