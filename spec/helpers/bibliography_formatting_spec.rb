@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AbstractXmlHelper, type: :helper do
-  fixtures [ :collections ]
+  fixtures [:collections]
 
   before do
     @collection = Collection.first

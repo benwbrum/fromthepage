@@ -465,7 +465,7 @@ namespace :fromthepage do
 
     # Update bibliography fields with TEI markup from source files
     desc 'Update CWGK bibliography fields with TEI markup'
-    task :update_cwgk_bibliography, [ :xml_directory, :collection_slug ] => :environment do |t, args|
+    task :update_cwgk_bibliography, [:xml_directory, :collection_slug] => :environment do |t, args|
       xml_directory = args.xml_directory
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)

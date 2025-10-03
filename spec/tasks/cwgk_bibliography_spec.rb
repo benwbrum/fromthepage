@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe 'CWGK Rake Tasks' do
-  fixtures [ :collections, :users, :articles ]
+  fixtures [:collections, :users, :articles]
 
   let(:collection) { Collection.first }
   let(:xml_directory) { File.join(Rails.root, 'test_data', 'cwgk') }
