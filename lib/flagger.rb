@@ -40,8 +40,7 @@ class Flagger
         
         # Check if any allowed domain is present in the matched snippet
         is_allowed = @@allowlist.any? do |trusted|
-          trusted.chomp!
-          matched_snippet.match(/#{trusted}/)
+          matched_snippet.match(/#{trusted.chomp}/)
         end
         
         # Only return the snippet if it's not in the allowlist
