@@ -68,7 +68,9 @@ Administrators can view flagged content at `/admin/flag_list`. From there, they 
 - Revert spam content
 - Mark all content from a user as OK
 
-## Background Job
+## Background Jobs
+
+### Flag New Content
 
 The spam detection can be run as a background job to check all existing content:
 
@@ -77,3 +79,22 @@ rake fromthepage:flag_abuse
 ```
 
 This rake task checks all PageVersions, ArticleVersions, and Notes that haven't already been flagged.
+
+### Re-check Existing Flags with Allowlist
+
+After updating the allowlist, you can re-examine existing unconfirmed flags to automatically clear any that now match the allowlist criteria:
+
+```bash
+rake fromthepage:recheck_flags_with_allowlist
+```
+
+This rake task:
+- Finds all unconfirmed flags created by the regex-based spam detection
+- Re-checks the content against the current allowlist
+- Automatically marks flags as false positives (ham) if the content is now allowed
+- Provides a summary of how many flags were cleared
+
+This is particularly useful after:
+- Adding new trusted domains to the allowlist
+- Initially enabling the allowlist feature on an existing installation
+- Adjusting allowlist patterns to reduce false positives
