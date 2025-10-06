@@ -15,10 +15,22 @@ class MetadataController < ApplicationController
   end
 
   def create
-    metadata_file_path = params[:metadata]['file'].tempfile.path
+    uploaded_io   = params[:metadata]['file']
     collection_id = params[:metadata][:collection_id]
+
+    import_dir = Rails.root.join('tmp', 'import_csv')
+    FileUtils.mkdir_p(import_dir)
+
+    ext       = File.extname(uploaded_io.original_filename)
+    filename  = "#{Time.current.to_i}#{ext}"
+    metadata_file_path = import_dir.join(filename)
+
+    File.open(metadata_file_path, 'wb') do |f|
+      f.write(uploaded_io.read)
+    end
+
     Work::Metadata::ImportCsvJob.perform_later(
-      metadata_file_path: metadata_file_path,
+      metadata_file_path: metadata_file_path.to_s,
       collection_id: collection_id,
       user_id: current_user.id
     )

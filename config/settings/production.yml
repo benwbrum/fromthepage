@@ -1,3 +1,5 @@
+active_job:
+  attempts: 5
 elasticsearch:
   cloud_id: <%= ENV['ELASTIC_CLOUD_ID'] %>
   api_key: <%= ENV['ELASTIC_API_KEY'] %>
