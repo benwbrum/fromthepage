@@ -45,12 +45,12 @@ class Flagger
         fixed = $3
         suffix = $4
         matched_snippet = "#{prefix}#{domain}#{fixed}#{suffix}"
-        
+
         # Check if any allowed domain is present in the matched snippet
         is_allowed = @@allowlist.any? do |trusted|
           matched_snippet.match(/#{trusted.chomp}/)
         end
-        
+
         # Only return the snippet if it's not in the allowlist
         return matched_snippet unless is_allowed
       end

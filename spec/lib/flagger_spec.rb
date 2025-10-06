@@ -5,14 +5,14 @@ describe Flagger do
     # Reset class variables
     Flagger.class_variable_set(:@@denylist, nil)
     Flagger.class_variable_set(:@@allowlist, nil)
-    
+
     # Set up denylist
     denylist_block = PageBlock.find_or_create_by(controller: 'admin', view: 'flag_denylist') do |pb|
       pb.html = "href\n.com\n.net"
     end
     denylist_block.html = "href\n.com\n.net"
     denylist_block.save!
-    
+
     # Set up allowlist
     allowlist_block = PageBlock.find_or_create_by(controller: 'admin', view: 'flag_allowlist') do |pb|
       pb.html = "merriam-webster.com\nancestry.com\nfindagrave.com\nwikipedia.org\nbooks.google.com\nthefreedictionary.com\nnewspapers.com"
