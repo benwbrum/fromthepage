@@ -79,9 +79,9 @@ describe ExportHelper do
       xml_text = '<?xml version="1.0" encoding="UTF-8"?><page><p><head depth="1">Section Title</head>This is the content.</p></page>'
       doc = REXML::Document.new(xml_text)
       p_element = doc.elements['//p']
-      
+
       elements = extract_heads_from_parargraph(p_element)
-      
+
       expect(elements.length).to eq(2)
       expect(elements[0].name).to eq('div')
       expect(elements[0].elements['head']).not_to be_nil
@@ -95,9 +95,9 @@ describe ExportHelper do
       xml_text = '<?xml version="1.0" encoding="UTF-8"?><page><p><head depth="1">Section Title</head></p></page>'
       doc = REXML::Document.new(xml_text)
       p_element = doc.elements['//p']
-      
+
       elements = extract_heads_from_parargraph(p_element)
-      
+
       expect(elements.length).to eq(1)
       expect(elements[0].name).to eq('div')
       expect(elements[0].elements['head']).not_to be_nil
@@ -109,9 +109,9 @@ describe ExportHelper do
       xml_text = '<?xml version="1.0" encoding="UTF-8"?><page><p><head depth="1">Title 1</head><head depth="2">Title 2</head>Content here.</p></page>'
       doc = REXML::Document.new(xml_text)
       p_element = doc.elements['//p']
-      
+
       elements = extract_heads_from_parargraph(p_element)
-      
+
       expect(elements.length).to eq(3)
       expect(elements[0].name).to eq('div')
       expect(elements[0].elements['head'].text).to eq('Title 1')
@@ -126,9 +126,9 @@ describe ExportHelper do
       xml_text = '<?xml version="1.0" encoding="UTF-8"?><page><p>Just regular content.</p></page>'
       doc = REXML::Document.new(xml_text)
       p_element = doc.elements['//p']
-      
+
       elements = extract_heads_from_parargraph(p_element)
-      
+
       expect(elements.length).to eq(1)
       expect(elements[0].name).to eq('p')
       expect(elements[0].text).to eq('Just regular content.')

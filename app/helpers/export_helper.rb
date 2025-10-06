@@ -515,16 +515,16 @@ module ExportHelper
       heads << head
       head.remove
     end
-    
+
     result = []
-    
+
     # Wrap each head in a div element
     heads.each do |head|
       div = REXML::Element.new('div')
       div.add(head)
       result << div
     end
-    
+
     if p_element.children.empty?
       p_element.remove
       result
