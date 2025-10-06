@@ -91,8 +91,8 @@ rake fromthepage:recheck_flags_with_allowlist
 This rake task:
 - Finds all unconfirmed flags created by the regex-based spam detection
 - Re-checks the content against the current allowlist
-- Automatically marks flags as false positives (ham) if the content is now allowed
-- Provides a summary of how many flags were cleared
+- Automatically removes flags if the content is now allowed
+- Provides a summary of how many flags were removed
 
 This is particularly useful after:
 - Adding new trusted domains to the allowlist

@@ -40,14 +40,14 @@ namespace :fromthepage do
 
       # Re-check the content with current criteria
       if content && Flagger.check(content).nil?
-        # Content is now allowed, mark as false positive
-        flag.status = Flag::Status::FALSE_POSITIVE
-        flag.save!
+        # Content is now allowed, remove the flag
+        flag_id = flag.id
+        flag.destroy
         cleared_flags += 1
-        puts "  Cleared flag ##{flag.id} - content now matches allowlist"
+        puts "  Removed flag ##{flag_id} - content now matches allowlist"
       end
     end
 
-    puts "\nCompleted: #{cleared_flags} of #{total_flags} flags cleared"
+    puts "\nCompleted: #{cleared_flags} of #{total_flags} flags removed"
   end
 end

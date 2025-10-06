@@ -31,7 +31,7 @@ describe 'Flag abuse rake tasks' do
     let(:work) { create(:work) }
     let(:page) { create(:page, work: work) }
 
-    it 'clears flags that now match the allowlist' do
+    it 'removes flags that now match the allowlist' do
       # Create a page version with wikipedia.org URL
       page_version = PageVersion.create!(
         page: page,
@@ -50,15 +50,15 @@ describe 'Flag abuse rake tasks' do
         content_at: Time.now
       )
 
+      flag_id = flag.id
       expect(flag.status).to eq(Flag::Status::UNCONFIRMED)
 
       # Run the rake task
       Rake::Task['fromthepage:recheck_flags_with_allowlist'].reenable
       capture_stdout { Rake::Task['fromthepage:recheck_flags_with_allowlist'].invoke }
 
-      # Verify the flag was cleared
-      flag.reload
-      expect(flag.status).to eq(Flag::Status::FALSE_POSITIVE)
+      # Verify the flag was removed
+      expect(Flag.find_by(id: flag_id)).to be_nil
     end
 
     it 'does not clear flags for content that should still be flagged' do
