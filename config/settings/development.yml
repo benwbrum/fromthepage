@@ -1,3 +1,5 @@
+active_job:
+  attempts: 3
 elasticsearch:
   host: <%= ENV.fetch('ELASTIC_HOST_URL', 'http://localhost:9200') %>
   prefix: ftp
