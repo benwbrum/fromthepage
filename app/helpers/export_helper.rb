@@ -261,9 +261,13 @@ module ExportHelper
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
+    # organization categories are defined by having org_fields enabled
+    organization_categories = work.collection.categories.where(org_fields_enabled: true)
+
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @other_articles = @all_articles - @person_articles - @place_articles
+    @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
+    @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1

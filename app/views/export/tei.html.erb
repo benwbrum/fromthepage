@@ -219,7 +219,6 @@ xml:id="W<%=@work.identifier||@work.id%>">
           <% end %>
         </listPlace>
       <% end %>
-
       <% unless @organization_articles.nil? || @organization_articles.empty? %>
         <listOrg>
           <% @organization_articles.each do |organization| %>

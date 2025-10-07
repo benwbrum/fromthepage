@@ -252,7 +252,8 @@ describe ExportController do
     end
 
     context 'with articles containing complex TEI bibliography data' do
-      let!(:people_category) { create(:category, title: 'People', collection: collection) }
+      # all collections have a category titled 'People' by default
+      let!(:people_category) { collection.categories.find_by(title: 'People') }
 
       let!(:person_article_complex) do
         create(:article,
@@ -297,8 +298,8 @@ describe ExportController do
     end
 
     context 'with articles containing bibliography data' do
-      let!(:people_category) { create(:category, title: 'People', collection: collection) }
-      let!(:places_category) { create(:category, title: 'Places', collection: collection) }
+      let!(:people_category) { collection.categories.find_by(title: 'People') }
+      let!(:places_category) { collection.categories.find_by(title: 'Places') }
       let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
 
       let!(:person_article) do
@@ -338,12 +339,6 @@ describe ExportController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:tei)
-
-        # Debug: Print the actual response body around the person bibliography
-        person_section = response.body[response.body.index('<person xml:id="S' + person_article.id.to_s + '">')..response.body.index('</person>', response.body.index('<person xml:id="S' + person_article.id.to_s + '">'))]
-        puts "\n=== DEBUG: Person section ==="
-        puts person_section
-        puts "=== END DEBUG ===\n"
 
         # Check that person bibliography is wrapped in bibl element
         expect(response.body).to include('<listPerson>')
