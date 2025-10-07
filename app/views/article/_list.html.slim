@@ -1,0 +1,22 @@
+-if categories.any?
+  -if @page
+    .category-back-message ==t('article.list.category_back_message', page_link: link_to(t('article.list.click_here'), transcribe_assign_categories_path(page_id: @page.id)), page: @page.title)
+    -static_params = { selected_category_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id, page_id: @page.id, collection_id: @page.collection.slug }
+  -else
+    -static_params = { selected_category_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id }
+
+  =fe_filter_table_wrapper(selector: 'collection-categories-table', classes: 'collection-categories') do
+    =fe_filter_form_wrapper(url: collection_subjects_path(@collection.owner, @collection), selector: 'collection-categories-table', sorting: false, ordering: false, static_params: static_params, classes: 'category-tree')
+      h3[style='margin-top: 0;']= t('article.list.categories')
+      =category_tree_accordion(categories_tree, show_uncategorized: @uncategorized_articles.any?, selected_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id)
+
+    =fe_filter_table(selector: 'collection-categories-table', classes: 'category-articles') do
+      -if selected_category.present?
+        =render partial: 'table', locals: { category: selected_category, articles: articles }
+-else
+  .nodata
+    h4.nodata_title= t('article.list.no_categories')
+    p.nodata_text
+      ==t('article.list.no_categories_message')
+      -if user_signed_in? && current_user.like_owner?(@collection)
+        ==t('article.list.create_category_message', link: link_to(t('article.list.create_the_first_category'), category_add_new_path(collection_id: @collection.slug), data: { controller: 'litebox' }))

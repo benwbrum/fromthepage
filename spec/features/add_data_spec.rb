@@ -104,7 +104,7 @@ describe "uploads data for collections", order: :defined do
     expect(Work.find_by(title: @title)).not_to be nil
   end
 
-  it "adds pages to an empty work" do
+  it 'adds pages to an empty work' do
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
     page.find('.maincol').find('a', text: @title).click

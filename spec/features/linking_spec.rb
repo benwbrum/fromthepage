@@ -14,17 +14,18 @@ describe "subject linking" do
   end
 
   # it checks to make sure the subject is on the page
-  it "looks at subjects in a collection" do
+  it 'looks at subjects in a collection', js: true do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Categories")
+    page.find('.tabs').click_link('Subjects')
+    expect(page).to have_content('Categories')
     categories = Category.where(collection_id: @collection.id)
     categories.each do |c|
-      column = page.find('div.category-tree')
+      column = page.find('form.category-tree')
       expect(column).to have_content(c.title)
-      column.click_link c.title
+      column.find('a.tree-item', text: c.title, exact_text: false).click
+
       c.articles.each do |a|
-        expect(page).to have_content(a.title)
+        expect(page).to have_content(a.title, wait: 5)
       end
     end
   end
@@ -61,17 +62,20 @@ describe "subject linking" do
     expect(page).to have_content("Latitude")
   end
 
-  it "deletes a subject" do
+  it 'deletes a subject', js: true do
     logout(:user)
     login_as(@owner, scope: :user)
     collection = @collections.find(3)
     visit collection_path(collection.owner, collection)
-    page.find('.tabs').click_link("Subjects")
-    page.find('a', text: "Testing").click
-    page.find('.tabs').click_link("Settings")
-    click_link('Delete Subject')
-    expect(page).to have_content("People")
-    expect(page).to have_content("There are no subjects for the category selected")
+    page.find('.tabs').click_link('Subjects')
+    page.find('a', text: 'Testing').click
+    page.find('.tabs').click_link('Settings')
+    accept_confirm do
+      click_link('Delete Subject')
+    end
+    expect(page).to have_content('Places')
+    page.find('a.tree-item', text: 'Places').click
+    expect(page).to have_content('There are no subjects for the category selected')
   end
 
   it "links a categorized subject" do

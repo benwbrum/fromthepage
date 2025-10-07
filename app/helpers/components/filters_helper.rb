@@ -1,14 +1,13 @@
 module Components::FiltersHelper
-  def fe_filter_table_wrapper(selector:, &block)
+  def fe_filter_table_wrapper(selector:, classes: 'dataTables_wrapper', &block)
     selector = "#{selector}-wrapper"
-    classes = 'dataTables_wrapper'
 
     render('shared/components/filter_table_wrapper', selector: selector, classes: classes) do
       capture(&block)
     end
   end
 
-  def fe_filter_form_wrapper(url:, selector:, sorting:, ordering:, static_params: {}, &block)
+  def fe_filter_form_wrapper(url:, selector:, sorting:, ordering:, static_params: {}, classes: '', &block)
     selector = "#{selector}-form"
 
     dataset = {
@@ -18,13 +17,13 @@ module Components::FiltersHelper
 
     render('shared/components/filter_table_form_wrapper',
            url: url, selector: selector, dataset: dataset, sorting: sorting, ordering: ordering,
-           static_params: static_params) do
+           static_params: static_params, classes: classes) do
       capture(&block)
     end
   end
 
-  def fe_filter_table(selector:, &block)
-    render('shared/components/filter_table', selector: selector) do
+  def fe_filter_table(selector:, classes: '', &block)
+    render('shared/components/filter_table', selector: selector, classes: classes) do
       capture(&block)
     end
   end

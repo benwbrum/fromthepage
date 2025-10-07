@@ -8,7 +8,7 @@ class CategoryController < ApplicationController
   def update
     if @category.update(category_params)
       flash[:notice] = t('.category_updated')
-      ajax_redirect_to collection_subjects_path(@category.collection.owner, @category.collection)
+      ajax_redirect_to collection_subjects_path(@category.collection.owner, @category.collection, selected_category_id: @category.id)
     else
       render action: 'edit'
     end
@@ -33,18 +33,18 @@ class CategoryController < ApplicationController
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
       flash[:notice] = t('.category_created')
-      ajax_redirect_to collection_subjects_path(@new_category.collection.owner, @new_category.collection)
+      ajax_redirect_to collection_subjects_path(@new_category.collection.owner, @new_category.collection,
+        selected_category_id: @new_category.id)
     else
       render action: 'add_new'
     end
   end
 
   def delete
-    anchor = @category.parent_id.present? ? "category-#{@category.parent_id}" : nil
-    @category.destroy # _but_attach_children_to_parent
+    @category.destroy
 
     flash[:notice] = t('.category_deleted')
-    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, { anchor: anchor })
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, selected_category_id: @category.parent_id)
   end
 
   def enable_bio_fields
@@ -84,7 +84,7 @@ class CategoryController < ApplicationController
       notice << " and #{count} child " << 'category'.pluralize(count)
     end
     flash[:notice] = notice
-    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, { anchor: "category-#{@category.id }" })
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, selected_category_id: @category.id)
   end
 
   def category_params

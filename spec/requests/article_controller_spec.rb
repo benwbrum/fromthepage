@@ -9,7 +9,7 @@ describe ArticleController do
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
-  let!(:category) { create(:category) }
+  let!(:category) { create(:category, collection_id: collection.id) }
 
   describe '#tooltip' do
     let!(:article) { create(:article, collection: collection, pages: [page], categories: [category]) }
@@ -27,11 +27,14 @@ describe ArticleController do
   end
 
   describe '#list' do
+    let!(:child_category) { create(:category, collection_id: collection.id, parent_id: category.id) }
+    let!(:empty_category) { create(:category, collection_id: collection.id) }
     let!(:categorized_article) { create(:article, collection: collection, pages: [page], categories: [category]) }
     let!(:uncategorized_article) { create(:article, collection: collection, pages: [page]) }
 
+    let(:params) { {} }
     let(:action_path) { collection_subjects_path(owner, collection) }
-    let(:subject) { get action_path }
+    let(:subject) { get action_path, params: params }
 
     it 'renders status and template' do
       login_as owner
@@ -39,6 +42,70 @@ describe ArticleController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:list)
+    end
+
+    context 'filters' do
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      context 'when page_id param present' do
+        let(:params) { { page_id: page.id } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
+
+      context 'when selecting child category' do
+        let(:params) { { selected_category_id: child_category.id } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
+
+      context 'when selecting category' do
+        let(:params) { { selected_category_id: category.id } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
+
+      context 'when selecting empty category' do
+        let(:params) { { selected_category_id: empty_category.id } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
+
+      context 'when selecting uncategorized' do
+        let(:params) { { selected_category_id: 'uncategorized' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
     end
   end
 

@@ -11,16 +11,31 @@ class ArticleController < ApplicationController
 
   def list
     articles = @collection.articles.includes(:categories)
+    @uncategorized_articles = articles.where(categories: { id: nil })
     @categories = @collection.categories
-    @vertical_articles = {}
-    @categories.each do |category|
-      current_articles = articles.where(categories: { id: category.id }).reorder(:title)
-      @vertical_articles[category] = sort_vertically(current_articles)
+    @categories_tree = build_categories_tree(@categories.group_by(&:parent_id))
+
+    if params[:selected_category_id] == 'uncategorized'
+      @selected_category = 'uncategorized'
+      articles = @uncategorized_articles.reorder(:title)
+    elsif params[:selected_category_id].present?
+      @selected_category = @categories.find(params[:selected_category_id])
+      articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+    else
+      @selected_category = @categories_tree.first.dig(:category)
+      articles = @selected_category.present? ? articles.where(categories: { id: @selected_category.id }).reorder(:title) : articles.none
     end
 
-    @uncategorized_articles = sort_vertically(
-      articles.where(categories: { id: nil }).reorder(:title)
-    )
+    @pages_count_map = articles.left_joins(:page_article_links)
+                               .group('articles.id')
+                               .pluck('articles.id, COUNT(page_article_links.id)')
+                               .to_h
+    @articles = sort_vertically(articles)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def delete
@@ -200,7 +215,6 @@ class ArticleController < ApplicationController
     render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
   end
 
-
   def show
     sql =
       'SELECT count(*) as link_count, '+
@@ -367,5 +381,14 @@ class ArticleController < ApplicationController
     end
 
     category
+  end
+
+  def build_categories_tree(grouped_categories, parent_id: nil)
+    (grouped_categories[parent_id] || []).map do |category|
+      {
+        category: category,
+        children: build_categories_tree(grouped_categories, parent_id: category.id)
+      }
+    end
   end
 end
