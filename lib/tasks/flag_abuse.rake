@@ -23,7 +23,7 @@ namespace :fromthepage do
     total_flags = 0
     cleared_flags = 0
 
-    puts "Re-examining unconfirmed flags with current allowlist criteria..."
+    puts 'Re-examining unconfirmed flags with current allowlist criteria...'
 
     Flag.where(status: Flag::Status::UNCONFIRMED, provenance: Flag::Provenance::REGEX).find_each do |flag|
       total_flags += 1
