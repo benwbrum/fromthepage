@@ -46,11 +46,15 @@ class Flagger
         suffix = $4
         matched_snippet = "#{prefix}#{domain}#{fixed}#{suffix}"
 
-        # Check if any allowed domain is present in the actual flagged URL (domain + fixed)
-        # not just anywhere in the context (which includes prefix and suffix)
-        flagged_url = "#{domain}#{fixed}"
+        # Extract the actual URL/domain being flagged
+        # The URL includes the last "word" from prefix (if domain is empty) + domain + fixed
+        # Look for the URL pattern in the context around the match
+        url_context = "#{prefix}#{domain}#{fixed}"
+        
+        # Check if any allowed domain is present in the URL being flagged
+        # We check the context that includes the matched pattern, not the entire snippet with suffix
         is_allowed = @@allowlist.any? do |trusted|
-          flagged_url.match(/#{trusted.chomp}/)
+          url_context.match(/#{trusted.chomp}/)
         end
 
         # Only return the snippet if it's not in the allowlist
