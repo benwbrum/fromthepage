@@ -596,17 +596,28 @@ module ExportHelper
   # from the paragraph element.  If the paragraph tag is empty, we want to
   # remove it.  (If there are no head elements in the paragraph elements,
   # we will want to simply return that.)
+  # Head elements must be wrapped in a div element per TEI standard.
   def extract_heads_from_parargraph(p_element)
     heads = []
     p_element.elements.each('head') do |head|
       heads << head
       head.remove
     end
+
+    result = []
+
+    # Wrap each head in a div element
+    heads.each do |head|
+      div = REXML::Element.new('div')
+      div.add(head)
+      result << div
+    end
+
     if p_element.children.empty?
       p_element.remove
-      heads
+      result
     else
-      heads + [p_element]
+      result + [p_element]
     end
   end
 
