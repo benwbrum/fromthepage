@@ -262,7 +262,7 @@ module ExportHelper
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
     # organization categories are defined by having org_fields enabled
-    organization_categories = work.collection.categories.where(org_fields_enabled: true)    
+    organization_categories = work.collection.categories.where(org_fields_enabled: true)
     organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
