@@ -180,15 +180,9 @@ describe CollectionController do
   end
 
   describe '#edit_privacy' do
-    let!(:collaborator) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
-    let!(:noncollaborator) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
-    let!(:blocked_user) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
+    let!(:collaborator) { create(:unique_user) }
+    let!(:noncollaborator) { create(:unique_user) }
+    let!(:blocked_user) { create(:unique_user) }
 
     let!(:collection) do
       create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
