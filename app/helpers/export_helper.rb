@@ -262,8 +262,8 @@ module ExportHelper
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
     # organization categories are defined by having org_fields enabled
-    organization_categories = work.collection.categories.where(org_fields_enabled: true)
-
+    organization_categories = work.collection.categories.where(org_fields_enabled: true)    
+    organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
@@ -276,6 +276,8 @@ module ExportHelper
             @person_articles << expanded
           elsif expanded.categories.where(title: 'Places').present?
             @place_articles << expanded
+          elsif expanded.categories.where(org_fields_enabled: true).present?
+            @organization_articles << expanded
           else
             @other_articles << expanded
           end
@@ -285,6 +287,7 @@ module ExportHelper
 
     @person_articles.uniq!
     @place_articles.uniq!
+    @organization_articles.uniq!
     @other_articles.uniq!
 
     ### Catch the rendered Work for post-processing
@@ -300,6 +303,7 @@ module ExportHelper
         all_articles: @all_articles,
         person_articles: @person_articles,
         place_articles: @place_articles,
+        organization_articles: @organization_articles,
         other_articles: @other_articles,
         collection: @work.collection,
         user: exporting_user
