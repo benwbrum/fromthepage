@@ -50,7 +50,7 @@ class Flagger
         # The URL includes the last "word" from prefix (if domain is empty) + domain + fixed
         # Look for the URL pattern in the context around the match
         url_context = "#{prefix}#{domain}#{fixed}"
-        
+
         # Check if any allowed domain is present in the URL being flagged
         # We check the context that includes the matched pattern, not the entire snippet with suffix
         is_allowed = @@allowlist.any? do |trusted|
