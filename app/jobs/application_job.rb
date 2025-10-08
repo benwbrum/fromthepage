@@ -7,6 +7,8 @@ class ApplicationJob < ActiveJob::Base
 
   before_perform :set_current_user
 
+  retry_on StandardError, wait: 5.seconds, attempts: Settings.active_job.attempts
+
   private
 
   def set_current_user
