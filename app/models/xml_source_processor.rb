@@ -95,7 +95,7 @@ end
     end
   end
 
-  def wiki_to_xml(page, text_type)
+  def wiki_to_xml(page, text_type, preview_mode = false)
     subjects_disabled = page.collection.subjects_disabled
 
     source_text = case text_type
@@ -115,7 +115,7 @@ end
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string, false, text_type)
+    xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
