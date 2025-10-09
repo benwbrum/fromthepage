@@ -52,16 +52,17 @@
 
       .flex-toolbar_group.push-right
 
-      .flex-toolbar_group
-        =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status_blank?})
+      -if @preview_xml.blank?
+        .flex-toolbar_group
+          =f.label 'mark_blank', t('.mark_as_blank')
+          =f.check_box('mark_blank', {checked: @page.status_blank?})
 
       -if !@collection.review_workflow
         .flex-toolbar_group
           =f.label 'needs_review', t('.needs_review')
           =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
-      =render(:partial => 'save_buttons')
+      =render partial: 'save_buttons'
 
   -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
