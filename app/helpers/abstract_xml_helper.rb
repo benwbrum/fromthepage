@@ -42,6 +42,118 @@ module AbstractXmlHelper
     html
   end
 
+  def preprocess_bibliography_xml(bibliography_text)
+    # Check if content appears to be plain HTML rather than TEI markup
+    # TEI elements include: bibl, hi, lb, pb, cb, add, del, unclear, etc.
+    tei_elements = %w[ab bibl hi lb pb cb add del unclear expan abbr reg footnote entryHeading head figure marginalia catchword gap stamp table row cell texFigure link date]
+    has_tei_elements = tei_elements.any? { |element| bibliography_text.include?("<#{element}") }
+
+    # If it looks like plain HTML (no TEI elements), handle it directly
+    unless has_tei_elements
+      # For plain HTML content, just sanitize it without XML processing
+      html_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty HTML results return empty string
+      cleaned_html = html_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_html.empty? ? '' : html_result
+    end
+
+    # For TEI content, clean up malformed elements
+    xml_text = bibliography_text.dup
+
+    # Clean up malformed lb elements and other self-closing tags
+    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
+    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
+    # Remove orphaned closing lb tags (like </lb></lb></lb>)
+    xml_text.gsub!(/<\/lb>/, '')
+    # Convert non-self-closing lb tags to self-closing
+    xml_text.gsub!(/<lb>/, '<lb/>')
+    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
+    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
+
+    # Handle XML fragments that need wrapping:
+    # 1. Multiple root elements: <elem>...</elem><elem>...
+    # 2. Content with text before first XML element
+    # 3. TEI content that doesn't have a single root element
+    # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
+    cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
+
+    needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     cleaned_text.match(/^[^<]/) || # Starts with text
+                     !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+
+    wrapped_xml = if needs_wrapping
+      "<root>#{xml_text}</root>"
+    else
+      cleaned_text  # Use cleaned text when no wrapping is needed
+    end
+
+    # Test if the XML can be parsed
+    begin
+      test_doc = REXML::Document.new(wrapped_xml)
+      wrapped_xml
+    rescue REXML::ParseException => e
+      # If XML parsing fails, fall back to treating as plain HTML
+      # This handles cases where URLs with parameters or other content
+      # cause XML parsing issues
+      Rails.logger.warn "XML parsing failed for bibliography content, falling back to HTML processing: #{e.message}" if defined?(Rails)
+
+      fallback_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty fallback results return empty string
+      cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
+      cleaned_fallback.empty? ? '' : fallback_result
+    end
+  end
+
+  def bibliography_to_html(bibliography_text, preserve_lb = true, flatten_links = false, collection = nil, highlight_article_id = nil, suppress_tooltips = false)
+    return '' if bibliography_text.blank?
+
+    # Preprocess bibliography content to handle special cases
+    processed_result = preprocess_bibliography_xml(bibliography_text)
+
+    # If preprocessing returned plain HTML (not XML), return it directly
+    if processed_result.is_a?(String) && !processed_result.include?('<root>') && !processed_result.match(/^<\w+.*?>.*<\/\w+>$/)
+      # Check if result is effectively empty (just whitespace, empty tags, etc.)
+      cleaned_result = processed_result.gsub(/<[^>]*>/, '').strip
+      return cleaned_result.empty? ? '' : processed_result
+    end
+
+    # Use existing xml_to_html method for the actual XML processing
+    begin
+      result = xml_to_html(processed_result, preserve_lb, flatten_links, collection, highlight_article_id, suppress_tooltips)
+      # Remove the temporary root wrapper if we added one
+      result.gsub!(/<\/?root>/, '') if processed_result.include?('<root>')
+
+      # Ensure truly empty content returns empty string to maintain UI behavior
+      # (e.g., showing edit description links when content is empty)
+      # Check if result is effectively empty (just whitespace, empty tags, etc.)
+      cleaned_result = result.gsub(/<[^>]*>/, '').strip
+      cleaned_result.empty? ? '' : result
+    rescue REXML::ParseException => e
+      # Final fallback if xml_to_html still fails
+      Rails.logger.warn "Final fallback: xml_to_html failed for bibliography content: #{e.message}" if defined?(Rails)
+
+      fallback_result = ActionController::Base.helpers.sanitize(
+        bibliography_text.strip,
+        tags: SANITIZE_ALLOWED_TAGS,
+        attributes: SANITIZE_ALLOWED_ATTRIBUTES
+      ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+
+      # Ensure empty fallback results return empty string
+      cleaned_fallback = fallback_result.gsub(/<[^>]*>/, '').strip
+      cleaned_fallback.empty? ? '' : fallback_result
+    end
+  end
+
   def xml_to_html(xml_text, preserve_lb = true, flatten_links = false, collection = nil, highlight_article_id = nil, suppress_tooltips = false)
     return '' if xml_text.blank?
     xml_text.gsub!(/\n/, '')
@@ -215,7 +327,7 @@ module AbstractXmlHelper
         span.name='sup'
       when 'underline'
         span.name='u'
-      when 'italics'
+      when 'italics', 'italic'
         span.name='i'
         span.attributes.delete 'rend'
       when 'bold'
