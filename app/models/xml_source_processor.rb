@@ -338,14 +338,44 @@ end
 
   # transformations converting source mode transcription to xml
   def process_line_breaks(text)
+    # Handle tables separately to avoid wrapping them in paragraph tags
+    # Tables are already properly formatted HTML and shouldn't have <p> tags inside <td>
+    tables = []
+    table_counter = 0
+    
+    # Extract tables and replace them with placeholders
+    text = text.gsub(/<table[^>]*>.*?<\/table>/m) do |table|
+      placeholder = "___TABLE_#{table_counter}___"
+      tables[table_counter] = table
+      table_counter += 1
+      placeholder
+    end
+    
+    # Process non-table content with paragraph wrapping
     text="<p>#{text}</p>"
     text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
+    
+    # Apply line break conversions
     text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\n\s*/, '<lb/>')
     text = text.gsub(/([[:word:]]+)-\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\n\s*/, '<lb/>')
     text = text.gsub(/([[:word:]]+)-\r\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\s*/, '<lb/>')
+    
+    # Restore tables, processing their content for line breaks only (no paragraph wrapping)
+    tables.each_with_index do |table, index|
+      # Convert newlines inside table cells to <lb/> tags
+      processed_table = table.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
+      processed_table = processed_table.gsub(/\r\n\s*/, '<lb/>')
+      processed_table = processed_table.gsub(/([[:word:]]+)-\n\s*/, '\1<lb break="no" />')
+      processed_table = processed_table.gsub(/\n\s*/, '<lb/>')
+      processed_table = processed_table.gsub(/([[:word:]]+)-\r\s*/, '\1<lb break="no" />')
+      processed_table = processed_table.gsub(/\r\s*/, '<lb/>')
+      
+      text = text.sub("___TABLE_#{index}___", processed_table)
+    end
+    
     text
   end
 

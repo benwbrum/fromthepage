@@ -254,4 +254,49 @@ RSpec.describe XmlSourceProcessor, type: :model do
       expect(result).to include('<th>Third</th>')
     end
   end
+
+  describe '#process_line_breaks with tables' do
+    let(:collection) { build_stubbed(:collection, field_based: true) }
+    let(:work) { build_stubbed(:work, collection: collection) }
+    let(:page) { build_stubbed(:page, work: work) }
+
+    it 'should handle blank lines in table cells without creating paragraph tags' do
+      # Simulate what process_spreadsheet generates: HTML table with cells containing newlines
+      table_html = '<table class="tabular"><thead><th>Column 1</th></thead><tbody>' \
+                   '<tr><td>First line\n\nSecond line</td></tr>' \
+                   '</tbody></table>'
+      
+      page.source_text = table_html
+      result = page.process_line_breaks(table_html)
+      
+      # Should convert newlines to <lb/> tags but NOT wrap in <p> tags inside <td>
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<td>')
+      expect(result).to include('</td>')
+      expect(result).to include('<lb/>')
+      
+      # Should NOT have paragraph tags inside table cells
+      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+    end
+
+    it 'should handle tables mixed with regular text' do
+      mixed_content = "Some intro text\n\n<table class=\"tabular\"><tbody>" \
+                      '<tr><td>Cell with\n\nblank lines</td></tr>' \
+                      "</tbody></table>\n\nSome closing text"
+      
+      page.source_text = mixed_content
+      result = page.process_line_breaks(mixed_content)
+      
+      # Regular text should have paragraph tags
+      expect(result).to include('<p>Some intro text</p>')
+      expect(result).to include('<p>Some closing text</p>')
+      
+      # Table should be preserved without paragraph wrapping inside cells
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<td>')
+      
+      # Newlines in table cells should become <lb/> not create <p> tags
+      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+    end
+  end
 end
