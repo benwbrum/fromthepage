@@ -277,6 +277,9 @@ RSpec.describe XmlSourceProcessor, type: :model do
       
       # Should NOT have paragraph tags inside table cells
       expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+      
+      # Table itself should not be wrapped in paragraph tags
+      expect(result).not_to match(/<p>\s*<table/m)
     end
 
     it 'should handle tables mixed with regular text' do
@@ -291,9 +294,10 @@ RSpec.describe XmlSourceProcessor, type: :model do
       expect(result).to include('<p>Some intro text</p>')
       expect(result).to include('<p>Some closing text</p>')
       
-      # Table should be preserved without paragraph wrapping inside cells
+      # Table should be preserved without paragraph wrapping inside cells or around it
       expect(result).to include('<table class="tabular">')
       expect(result).to include('<td>')
+      expect(result).not_to match(/<p>\s*<table.*?<\/table>\s*<\/p>/m)
       
       # Newlines in table cells should become <lb/> not create <p> tags
       expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)

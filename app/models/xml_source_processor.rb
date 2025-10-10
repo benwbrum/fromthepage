@@ -376,6 +376,9 @@ end
       text = text.sub("___TABLE_#{index}___", processed_table)
     end
     
+    # Clean up paragraph tags around tables (tables shouldn't be wrapped in <p>)
+    text = text.gsub(/<p>\s*(<table[^>]*>.*?<\/table>)\s*<\/p>/m, '\1')
+    
     text
   end
 
