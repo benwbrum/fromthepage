@@ -275,8 +275,8 @@ RSpec.describe XmlSourceProcessor, type: :model do
       expect(result).to include('</td>')
       expect(result).to include('<lb/>')
       
-      # Should NOT have paragraph tags inside table cells
-      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+      # Should NOT have paragraph tags inside table cells (use non-greedy match)
+      expect(result).not_to match(/<td[^>]*>.*?<p>.*?<\/p>.*?<\/td>/m)
       
       # Table itself should not be wrapped in paragraph tags
       expect(result).not_to match(/<p>\s*<table/m)
@@ -299,8 +299,8 @@ RSpec.describe XmlSourceProcessor, type: :model do
       expect(result).to include('<td>')
       expect(result).not_to match(/<p>\s*<table.*?<\/table>\s*<\/p>/m)
       
-      # Newlines in table cells should become <lb/> not create <p> tags
-      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+      # Newlines in table cells should become <lb/> not create <p> tags (use non-greedy match)
+      expect(result).not_to match(/<td[^>]*>.*?<p>.*?<\/p>.*?<\/td>/m)
     end
 
     it 'should handle complex spreadsheet data like from the reported issue' do
@@ -340,8 +340,8 @@ RSpec.describe XmlSourceProcessor, type: :model do
       # Multi-line content in cells should have <lb/> tags
       expect(result).to include('<lb/>')
       
-      # Should NOT create invalid HTML with <p> tags inside <td>
-      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+      # Should NOT create invalid HTML with <p> tags inside <td> (use non-greedy match)
+      expect(result).not_to match(/<td[^>]*>.*?<p>.*?<\/p>.*?<\/td>/m)
       
       # Verify the structure remains valid - all td tags should have closing tags
       td_open_count = result.scan(/<td[^>]*>/).count
