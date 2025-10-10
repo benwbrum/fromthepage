@@ -302,5 +302,51 @@ RSpec.describe XmlSourceProcessor, type: :model do
       # Newlines in table cells should become <lb/> not create <p> tags
       expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
     end
+
+    it 'should handle complex spreadsheet data like from the reported issue' do
+      # This simulates the actual error scenario where users enter multi-line text in spreadsheet cells
+      # The issue log showed content like:
+      # "administrators of John Mills to be discharged in 4 diff[different] payments viz.[videlicet]
+      #  1st on the 18th Octo. [October] 1786  50.......
+      #  2nd......... 18th Jany [January] 1787...50......."
+      spreadsheet_table = '<table class="tabular"><thead>' \
+                          '<th>Date</th><th>Type</th><th>Description</th>' \
+                          '</thead><tbody>' \
+                          '<tr>' \
+                          '<td>1787-01-31</td>' \
+                          '<td>Debit</td>' \
+                          '<td>administrators of John Mills to be discharged in 4 diff[different] payments viz.[videlicet]\n' \
+                          '1st on the 18th Octo. [October] 1786  50.......\n' \
+                          '2nd......... 18th Jany [January] 1787...50.......\n' \
+                          '3rd...........18th April 1787................50.......\n' \
+                          '4th...........18th July 1787..................50......</td>' \
+                          '</tr>' \
+                          '<tr>' \
+                          '<td>1787-02-01</td>' \
+                          '<td>Debit</td>' \
+                          '<td>to Rolland & Co [Company] for 20ct[hundredweight],, 2qr[quart], 3w[pound] iron in 56 barrel\n' \
+                          'at 22 £[pounds] p[per]Ton</td>' \
+                          '</tr>' \
+                          '</tbody></table>'
+      
+      page.source_text = spreadsheet_table
+      result = page.process_line_breaks(spreadsheet_table)
+      
+      # Should successfully process without XML parsing errors
+      expect(result).to include('<table class="tabular">')
+      expect(result).to include('<thead>')
+      expect(result).to include('<tbody>')
+      
+      # Multi-line content in cells should have <lb/> tags
+      expect(result).to include('<lb/>')
+      
+      # Should NOT create invalid HTML with <p> tags inside <td>
+      expect(result).not_to match(/<td>.*<p>.*<\/p>.*<\/td>/m)
+      
+      # Verify the structure remains valid - all td tags should have closing tags
+      td_open_count = result.scan(/<td[^>]*>/).count
+      td_close_count = result.scan(/<\/td>/).count
+      expect(td_open_count).to eq(td_close_count)
+    end
   end
 end
