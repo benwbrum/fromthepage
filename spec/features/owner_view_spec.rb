@@ -22,7 +22,7 @@ describe "owner view - collection" do
     # look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'
-    expect(page).to have_content("Upload PDF or ZIP File")
+    expect(page).to have_content("Upload Files")
     page.find('.tabs').click_link("Your Collections")
     expect(page.current_path).to eq dashboard_owner_path
   end

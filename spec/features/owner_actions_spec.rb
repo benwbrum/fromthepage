@@ -35,7 +35,7 @@ describe "owner actions", order: :defined do
     expect(test_collection.subjects_disabled).to be true
     expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Upload PDF or ZIP File")
+    expect(page).to have_content("Upload Files")
   end
 
   it "creates an empty new work in a collection", js: true do
