@@ -153,13 +153,13 @@ es:
       for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último obra con las 5 imágenes de la carpeta.'
       image_naming_guidelines: 'Las imágenes se deben nombrar de modo que una ordenación alfabética resulte en el orden de página correcto.<br> (Esto puede requerir "relleno con ceros" para cualquier número de página: <code>page_09.jpg, page_10.jpg</code> ordenará correctamente, pero <code>page_9.jpg, page_10.jpg</code> no).'
       image_orientation_guidelines: Las imágenes deben estar orientadas de manera que queden boca arriba.
-      import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto.
+      import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto. Los archivos ZIP pueden contener archivos de imagen (PNG, GIF, JPG, BMP o TIFF).
       page_image_guidelines: Directrices de imagen de página
       select_a_collection: "- Seleccione una colección -"
       to_specify_metadata: Para especificar metadatos, puede cargar una hoja de cálculo después de cargar las imágenes o puede incluir un archivo %{link} en cada carpeta especificando campos para la obra.
       trial_accounts_are_limited: Las cuentas de prueba están limitadas a 200 páginas. Por favor contacta a support@fromthepage.com para actualizar tu cuenta.
       upload_file: Subir archivo
-      upload_pdf_or_zip_file: Subir archivo PDF o ZIP
+      upload_pdf_or_zip_file: Subir archivos
       use_image_filenames: Utilizar los nombres de archivo de las imágenes como títulos de página.
       use_ocr_from_pdf: Utilizar el OCR de la capa de texto del PDF.
       zip_files_may_contain: Los archivos ZIP pueden contener carpetas con imágenes, PDFs o carpetas que contengan archivos PDF.

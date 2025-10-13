@@ -153,13 +153,13 @@ fr:
       for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
       image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
-      import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
+      import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet. Les fichiers ZIP peuvent contenir des fichiers d'image (PNG, GIF, JPG, BMP ou TIFF).
       page_image_guidelines: Directives relatives aux images de page
       select_a_collection: "- Sélectionner une collection -"
       to_specify_metadata: Pour spécifier les métadonnées, vous pouvez télécharger une feuille de calcul après le téléchargement des images ou vous pouvez inclure un fichier %{link} dans chaque dossier spécifiant les champs de l'œuvre.
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
       upload_file: Téléverser un fichier
-      upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
+      upload_pdf_or_zip_file: Téléverser des fichiers
       use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
       use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
