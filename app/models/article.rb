@@ -13,7 +13,6 @@
 #  latitude         :decimal(7, 5)
 #  lock_version     :integer          default(0)
 #  longitude        :decimal(8, 5)
-#  pages_count      :integer          default(0)
 #  provenance       :string(255)
 #  race_description :string(255)
 #  sex              :string(255)
