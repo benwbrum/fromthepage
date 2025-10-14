@@ -14,7 +14,7 @@
               -preview_cells=@field_preview[field.id]
             -else
               -preview_cells=nil
-            =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => preview_cells} })
+            =render({ partial: '/shared/handsontable', locals: {transcription_field: field, preview_cells: preview_cells} })
         -else
           -span_width = !field.percentage.blank? ? field.percentage : @width
           .field-wrapper(style="width: #{span_width}%")
