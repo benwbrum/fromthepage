@@ -4,6 +4,7 @@ class ArticleController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:relationship_graph]
   before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
+  before_action :authorize_collection, only: [:upload_form, :subject_upload]
 
   def tooltip
     render partial: 'tooltip'
@@ -277,7 +278,6 @@ class ArticleController < ApplicationController
 
   # TODO: Move to async job if performance is slow
   def subject_upload
-    @collection = Collection.find(params[:upload][:collection_id])
     file = params[:upload][:file]
 
     result = Article::ImportCsv.new(
