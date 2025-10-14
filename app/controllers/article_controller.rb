@@ -275,43 +275,20 @@ class ArticleController < ApplicationController
   def upload_form
   end
 
-  # actually process the uploaded CSV
+  # TODO: Move to async job if performance is slow
   def subject_upload
-    @collection = Collection.find params[:upload][:collection_id]
-    # read the file
-    file = params[:upload][:file].tempfile
+    @collection = Collection.find(params[:upload][:collection_id])
+    file = params[:upload][:file]
 
-    # csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
-    begin
-      csv = CSV.read(params[:upload][:file].tempfile, headers: true)
-    rescue
-      contents = File.read(params[:upload][:file].tempfile)
-      detection = CharlockHolmes::EncodingDetector.detect(contents)
+    result = Article::ImportCsv.new(
+      file: file.tempfile,
+      collection: @collection,
+      original_filename: file.original_filename
+    ).call
 
-      csv = CSV.read(params[:upload][:file].tempfile,
-                      encoding: "bom|#{detection[:encoding]}",
-                      liberal_parsing: true,
-                      headers: true)
-    end
-
-    provenance = params[:upload][:file].original_filename + " (uploaded #{Time.now} UTC)"
-
-    # check the values
-    if csv.headers.include?('HEADING') && csv.headers.include?('URI') && csv.headers.include?('ARTICLE') && csv.headers.include?('CATEGORY')
-      # create subjects if heading checks out
-      csv.each do |row|
-        title = row['HEADING']
-        article = @collection.articles.where(title: title).first || Article.new(title: title, provenance: provenance)
-        article.collection = @collection
-        article.source_text = row['ARTICLE']
-        article.uri = row['URI']
-        article.categories << find_or_create_category(@collection, row['CATEGORY'])
-        article.save!
-      end
-      # redirect to subject list
+    if result.success?
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else
-      # flash message and redirect to upload form on problems
       flash[:error] = t('.csv_file_must_contain_headers')
       redirect_to article_upload_form_path(@collection)
     end
@@ -357,15 +334,5 @@ class ArticleController < ApplicationController
     end
 
     vertical_articles
-  end
-
-  def find_or_create_category(collection, title)
-    category = collection.categories.where(title: title).first
-    if category.nil?
-      category = Category.new(title: title)
-      collection.categories << category
-    end
-
-    category
   end
 end

@@ -269,4 +269,40 @@ describe ArticleController do
       end
     end
   end
+
+  describe '#subject_upload' do
+    let(:action_path) { article_subject_upload_path }
+
+    let(:file_path) { Rails.root.join('test_data/imports/subject_upload.csv') }
+    let(:file_type) { 'text/csv' }
+    let(:params) do
+      {
+        upload: {
+          collection_id: collection.id,
+          file: Rack::Test::UploadedFile.new(file_path, file_type)
+        }
+      }
+    end
+    let(:subject) { post action_path, params: params }
+
+    it 'redirects' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(collection_subjects_path(owner, collection))
+    end
+
+    context 'incomplete headers' do
+      let(:file_path) { Rails.root.join('test_data/imports/wrong_subject_upload.csv') }
+
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(article_upload_form_path(collection))
+      end
+    end
+  end
 end
