@@ -261,11 +261,12 @@ module ExportHelper
     people_and_descendants = people.descendants << people
     places = work.collection.categories.where(title: 'Places').first
     places_and_descendants = places.descendants << places
+    # organization categories are defined by having org_fields enabled
     organization_categories = work.collection.categories.where(org_fields_enabled: true)
     organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @organization_articles = organizations_and_descendants.empty? ? [] : @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a
+    @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
     @other_articles.each do |subject|
       subjects = expand_subject(subject)
@@ -467,6 +468,93 @@ module ExportHelper
     tei << "</category>\n"
 
     tei
+  end
+
+  def bibliography_to_export_tei(bibliography_text, context, page_id = '', add_corrsp = false)
+    return '' if bibliography_text.blank?
+
+    # Preprocess bibliography content for TEI export
+    processed_xml = preprocess_bibliography_for_tei_export(bibliography_text)
+    return '' if processed_xml.blank?
+
+    # Use a modified version of xml_to_export_tei that processes entire document structure
+    xml_to_export_tei_full_document(processed_xml, context, page_id, add_corrsp)
+  end
+
+  def xml_to_export_tei_full_document(xml_text, context, page_id = '', add_corrsp = false)
+    return '' if xml_text.blank?
+    xml_text.gsub!('ISO-8859-15', 'UTF-8')
+    xml_text.gsub!('&', '&amp;')
+    xml_text.gsub!('&amp;amp;', '&amp;')
+
+    doc = REXML::Document.new(xml_text)
+
+    # Process all elements in the document, not just <p> elements
+    transform_all_elements_for_tei_export(doc.root)
+
+    my_display_html = ''
+    doc.write(my_display_html)
+
+    # Clean up XML declaration and root wrapper
+    my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '')
+    my_display_html.gsub!(/<\/?root>/, '')
+    my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+  end
+
+  def transform_all_elements_for_tei_export(element)
+    return unless element.is_a?(REXML::Element)
+
+    # Transform child elements first (depth-first)
+    element.elements.each { |child| transform_all_elements_for_tei_export(child) }
+
+    # Apply TEI transformations to this element
+    transform_links(element) if element.elements['link']
+    transform_expansions(element) if element.elements['expan'] || element.elements['abbr']
+    transform_regularizations(element) if element.elements['reg']
+    transform_marginalia_and_catchwords(element) if element.elements['marginalia'] || element.elements['catchword']
+    transform_footnotes(element) if element.elements['footnote']
+    transform_lb(element) if element.elements['lb']
+    transform_tables(element) if element.elements['table']
+  end
+
+  def preprocess_bibliography_for_tei_export(bibliography_text)
+    # Clean up malformed lb elements and other self-closing tags
+    xml_text = bibliography_text.dup
+    xml_text.gsub!(/<lb><\/lb>/, '<lb/>')
+    xml_text.gsub!(/<lb>\s*<\/lb>/, '<lb/>')
+    # Remove orphaned closing lb tags (like </lb></lb></lb>)
+    xml_text.gsub!(/<\/lb>/, '')
+    # Convert non-self-closing lb tags to self-closing
+    xml_text.gsub!(/<lb>/, '<lb/>')
+    xml_text.gsub!(/<lb\s+/, '<lb ')  # Handle <lb attributes>
+    xml_text.gsub!(/<lb\s+([^>]*)>/, '<lb \1/>')
+
+    # Handle XML fragments that need wrapping:
+    # 1. Multiple root elements: <elem>...</elem><elem>...
+    # 2. Content with text before first XML element
+    # 3. TEI content that doesn't have a single root element
+    # Use Unicode-aware whitespace removal to handle non-breaking spaces and other Unicode whitespace
+    cleaned_text = xml_text.strip.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
+
+    needs_wrapping = cleaned_text.match(/^<\w+.*?>.*<\/\w+>\s*<\w+/) || # Multiple roots
+                     cleaned_text.match(/^[^<]/) || # Starts with text
+                     !cleaned_text.match(/^<\w+.*?>.*<\/\w+>$/) # Not a single well-formed element
+
+    wrapped_xml = if needs_wrapping
+      "<root>#{xml_text}</root>"
+    else
+      cleaned_text  # Use cleaned text when no wrapping is needed
+    end
+
+    # Test if the XML can be parsed, if not return empty to avoid TEI export errors
+    begin
+      test_doc = REXML::Document.new(wrapped_xml)
+      wrapped_xml
+    rescue REXML::ParseException => e
+      # For TEI export, we can't fall back to HTML, so log error and return empty
+      Rails.logger.error "Bibliography XML parsing failed for TEI export: #{e.message}" if defined?(Rails)
+      ''
+    end
   end
 
   def xml_to_export_tei(xml_text, context, page_id = '', add_corrsp = false)

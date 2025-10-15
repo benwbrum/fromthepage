@@ -205,6 +205,24 @@ describe Api::V1::BulkExportController do
       end
     end
 
+    context 'when bulk export exists but file is missing' do
+      let!(:bulk_export) { create(:bulk_export, :finished, collection_id: collection.id, user_id: owner.id) }
+      let(:action_path) { api_v1_bulk_export_download_path(bulk_export_id: bulk_export.id) }
+
+      before do
+        # Ensure the zip file does not exist to simulate the race condition
+        FileUtils.rm_f(bulk_export.zip_file_name) if File.exist?(bulk_export.zip_file_name)
+      end
+
+      it 'renders 410 status when file is missing instead of 500 error' do
+        subject
+
+        expect(response).to have_http_status(:gone)  # 410
+        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(response.body).to include('file has been deleted')
+      end
+    end
+
     context 'without api_key' do
       let(:headers) { {} }
 

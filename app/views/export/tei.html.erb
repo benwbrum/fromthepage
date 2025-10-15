@@ -162,10 +162,9 @@ xml:id="W<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless person.bibliography.blank? %>
-                <% person.bibliography.split("\n").each do |line| %>
-                  <% unless line.blank? %>
-                    <bibl><%= h(line.chomp) %></bibl>
-                  <% end %>
+                <% bibl_content = bibliography_to_export_tei(person.bibliography, @context, "S#{person.id}") %>
+                <% unless bibl_content.blank? %>
+                  <bibl><%= raw(bibl_content) %></bibl>
                 <% end %>
               <% end %>
             </person>
@@ -211,17 +210,15 @@ xml:id="W<%=@work.identifier||@work.id%>">
                 <geo><%= place.latitude %>, <%= place.longitude %></geo>
               <% end %>
               <% unless place.bibliography.blank? %>
-                <% place.bibliography.split("\n").each do |line| %>
-                  <% unless line.blank? %>
-                    <bibl><%= h(line.chomp) %></bibl>
-                  <% end %>
+                <% bibl_content = bibliography_to_export_tei(place.bibliography, @context, "S#{place.id}") %>
+                <% unless bibl_content.blank? %>
+                  <bibl><%= raw(bibl_content) %></bibl>
                 <% end %>
               <% end %>
             </place>
           <% end %>
         </listPlace>
       <% end %>
-
       <% unless @organization_articles.nil? || @organization_articles.empty? %>
         <listOrg>
           <% @organization_articles.each do |organization| %>
@@ -268,10 +265,9 @@ xml:id="W<%=@work.identifier||@work.id%>">
                 </note>
               <% end %>
               <% unless organization.bibliography.blank? %>
-                <% organization.bibliography.split("\n").each do |line| %>
-                  <% unless line.blank? %>
-                    <bibl><%= h(line.chomp) %></bibl>
-                  <% end %>
+                <% bibl_content = bibliography_to_export_tei(organization.bibliography, @context, "S#{organization.id}") %>
+                <% unless bibl_content.blank? %>
+                  <bibl><%= raw(bibl_content) %></bibl>
                 <% end %>
               <% end %>
             </org>

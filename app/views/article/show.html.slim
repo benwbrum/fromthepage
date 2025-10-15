@@ -21,6 +21,11 @@
         b =t(".#{field}") + ": "
         =@article.send(field)
 
+    -if @article.bibliography.present?
+      h3= t('.bibliography')
+      -bibliography_html = bibliography_to_html(@article.bibliography, true, false, @collection)
+      .big[*language_attrs(@collection)] ==bibliography_html
+
     h3= t('.related_subjects')
     -if !params['rsg'].blank?
       =render :partial => 'subject_graph_d3'

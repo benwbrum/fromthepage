@@ -10,7 +10,11 @@
         -if field.input_type == 'spreadsheet'
           -span_width = !field.percentage.blank? ? field.percentage : @width
           .field-wrapper.spreadsheet(style="width: #{span_width}%")
-            =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
+            -if @field_preview
+              -preview_cells=@field_preview[field.id]
+            -else
+              -preview_cells=nil
+            =render({ partial: '/shared/handsontable', locals: {transcription_field: field, preview_cells: preview_cells} })
         -else
           -span_width = !field.percentage.blank? ? field.percentage : @width
           .field-wrapper(style="width: #{span_width}%")

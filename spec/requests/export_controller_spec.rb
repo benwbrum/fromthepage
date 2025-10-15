@@ -250,6 +250,124 @@ describe ExportController do
         expect(response.body).to include('<idno>O00002</idno>')
       end
     end
+
+    context 'with articles containing complex TEI bibliography data' do
+      # all collections have a category titled 'People' by default
+      let!(:people_category) { collection.categories.find_by(title: 'People') }
+
+      let!(:person_article_complex) do
+        create(:article,
+               title: 'Test Person',
+               collection: collection,
+               bibliography: ' (1850), Population Schedules, Mississippi, Wilkinson County, p. 295A.<lb>
+<hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Population Schedules, Kentucky, Jefferson County, Louisville Ward 5, p. 119.<lb>
+<hi rend="italic">Eighth Manuscript Census of the United States</hi> (1860), Slave Schedules, Kentucky, Jefferson County, Louisville, p. 272B.<lb>')
+      end
+
+      before do
+        person_article_complex.categories << people_category
+        # Link the article to the work through the page
+        page.page_article_links.create!(article: person_article_complex)
+      end
+
+      it 'preserves complex TEI formatting with line breaks and italics in bibliography' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check that the complex TEI content is preserved
+        expect(response.body).to include('<listPerson>')
+        expect(response.body).to include('<person xml:id="S' + person_article_complex.id.to_s + '">')
+
+        # Check for preserved line breaks
+        expect(response.body).to match(/<lb\/>\s*\n/)
+
+        # Check for preserved italic formatting (allowing for single or double quotes)
+        expect(response.body).to match(/<hi rend=['"]italic['"]>Eighth Manuscript Census of the United States<\/hi>/)
+
+        # Check that both elements appear multiple times as expected
+        person_section = response.body[response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">')..response.body.index('</person>', response.body.index('<person xml:id="S' + person_article_complex.id.to_s + '">'))]
+        hi_count = person_section.scan(/<hi rend=['"]italic['"]>/).count
+        lb_count = person_section.scan(/<lb\/>/).count
+
+        expect(hi_count).to eq(2)  # Two instances of hi rend="italic"
+        expect(lb_count).to eq(3)  # Three line breaks
+      end
+    end
+
+    context 'with articles containing bibliography data' do
+      let!(:people_category) { collection.categories.find_by(title: 'People') }
+      let!(:places_category) { collection.categories.find_by(title: 'Places') }
+      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
+
+      let!(:person_article) do
+        create(:article,
+               title: 'John Doe',
+               collection: collection,
+               bibliography: 'Sample person bibliography entry with <hi rend="italic">italic text</hi>.')
+      end
+
+      let!(:place_article) do
+        create(:article,
+               title: 'Louisville',
+               collection: collection,
+               bibliography: 'Sample place bibliography entry.')
+      end
+
+      let!(:organization_article) do
+        create(:article,
+               title: 'Test Company',
+               collection: collection,
+               bibliography: 'Sample organization bibliography entry.')
+      end
+
+      before do
+        person_article.categories << people_category
+        place_article.categories << places_category
+        organization_article.categories << organizations_category
+        # Link the articles to the work through the page
+        page.page_article_links.create!(article: person_article)
+        page.page_article_links.create!(article: place_article)
+        page.page_article_links.create!(article: organization_article)
+      end
+
+      it 'includes bibl elements for all article types with bibliography data and preserves TEI formatting' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check that person bibliography is wrapped in bibl element
+        expect(response.body).to include('<listPerson>')
+        expect(response.body).to include('<person xml:id="S' + person_article.id.to_s + '">')
+        expect(response.body).to include('<bibl>')
+        expect(response.body).to include('Sample person bibliography entry')
+        # Check that TEI formatting is preserved in bibliography (allowing for single or double quotes)
+        expect(response.body).to match(/<hi rend=['"]italic['"]>italic text<\/hi>/)
+
+        # Check that place bibliography is wrapped in bibl element
+        expect(response.body).to include('<listPlace>')
+        expect(response.body).to include('<place xml:id="S' + place_article.id.to_s + '">')
+        expect(response.body).to include('Sample place bibliography entry')
+
+        # Check that organization bibliography is wrapped in bibl element
+        expect(response.body).to include('<listOrg>')
+        expect(response.body).to include('<org xml:id="S' + organization_article.id.to_s + '">')
+        expect(response.body).to include('Sample organization bibliography entry')
+
+        # Ensure all bibliography entries are properly wrapped in bibl tags
+        person_bibl_count = response.body.scan(/<bibl>.*Sample person bibliography entry.*<\/bibl>/m).count
+        place_bibl_count = response.body.scan(/<bibl>.*Sample place bibliography entry.*<\/bibl>/m).count
+        org_bibl_count = response.body.scan(/<bibl>.*Sample organization bibliography entry.*<\/bibl>/m).count
+
+        expect(person_bibl_count).to eq(1)
+        expect(place_bibl_count).to eq(1)
+        expect(org_bibl_count).to eq(1)
+      end
+    end
   end
 
   describe '#subject_details_csv' do

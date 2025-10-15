@@ -231,7 +231,7 @@ describe TranscribeController do
 
           # This branch will go through the rest of the save_transcription logic
           # TODO: Add tests for said branch
-          expect(response).to have_http_status(:no_content)
+          expect(response).to have_http_status(:ok)
         end
       end
 
@@ -275,7 +275,55 @@ describe TranscribeController do
 
           # This branch will go through the rest of the needs_review logic
           # TODO: Add tests for said branch
-          expect(response).to have_http_status(:no_content)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context 'preview logic' do
+      let(:source_text) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          preview: '1',
+          page: {
+            source_text: source_text
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:display_page)
+      end
+
+      context 'when previewing subjects' do
+        let(:source_text) { '[[Hello]] world' }
+
+        it 'renders status and template and does not create articles' do
+          articles_count = collection.articles.count
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:display_page)
+
+          expect(articles_count).to eq(collection.reload.articles.count)
+        end
+      end
+
+      context 'with transcription errors' do
+        let(:source_text) { '<hi rend="bold">Unclosed' }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to render_template(:display_page)
         end
       end
     end
@@ -348,7 +396,7 @@ describe TranscribeController do
 
           # This branch will go through the rest of the save_transcription logic
           # TODO: Add tests for said branch
-          expect(response).to have_http_status(:no_content)
+          expect(response).to have_http_status(:ok)
         end
       end
 
@@ -392,7 +440,55 @@ describe TranscribeController do
 
           # This branch will go through the rest of the needs_review logic
           # TODO: Add tests for said branch
-          expect(response).to have_http_status(:no_content)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context 'preview logic' do
+      let(:source_translation) { 'Hello world' }
+      let(:params) do
+        {
+          page_id: page.id,
+          preview: '1',
+          page: {
+            source_translation: source_translation
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:translate)
+      end
+
+      context 'when previewing subjects' do
+        let(:source_translation) { '[[Hello]] world' }
+
+        it 'renders status and template and does not create articles' do
+          articles_count = collection.articles.count
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:translate)
+
+          expect(articles_count).to eq(collection.reload.articles.count)
+        end
+      end
+
+      context 'with transcription errors' do
+        let(:source_translation) { '<hi rend="bold">Unclosed' }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to render_template(:translate)
         end
       end
     end
