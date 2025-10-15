@@ -3,7 +3,8 @@ require 'rake'
 
 describe 'Flag abuse rake tasks' do
   before(:all) do
-    Rails.application.load_tasks if Rake::Task.tasks.empty?
+    Rake.application = Rake::Application.new
+    Rails.application.load_tasks
   end
 
   before(:each) do
