@@ -113,7 +113,7 @@ end
     xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
-    xml_string = process_line_breaks(xml_string)
+    xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
     xml_string = postprocess_xml_markup(xml_string)
@@ -337,9 +337,13 @@ end
   end
 
   # transformations converting source mode transcription to xml
-  def process_line_breaks(text)
-    text="<p>#{text}</p>"
-    text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
+  def process_line_breaks(text, add_paragraph_tags = true)
+    if add_paragraph_tags
+      text="<p>#{text}</p>"
+      text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
+    else
+      text = text.gsub(/\s*\n\s*\n\s*/, '<lb/><lb/>')
+    end
     text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\n\s*/, '<lb/>')
     text = text.gsub(/([[:word:]]+)-\n\s*/, '\1<lb break="no" />')
