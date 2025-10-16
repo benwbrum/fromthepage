@@ -106,6 +106,19 @@ describe ArticleController do
           expect(response).to render_template(:list)
         end
       end
+
+      context 'when document_set' do
+        let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+        let(:action_path) { collection_subjects_path(owner, document_set) }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
     end
   end
 

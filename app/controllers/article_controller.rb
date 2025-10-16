@@ -12,7 +12,7 @@ class ArticleController < ApplicationController
   def list
     articles = @collection.articles.includes(:categories)
     @uncategorized_articles = articles.where(categories: { id: nil })
-    @categories = Category.recursive_tree_for(@collection.id)
+    @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
 
     if params[:selected_category_id] == 'uncategorized'
