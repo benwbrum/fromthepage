@@ -7,13 +7,13 @@ module Components::FiltersHelper
     end
   end
 
-  def fe_filter_form_wrapper(url:, selector:, sorting:, ordering:, static_params: {}, classes: '', &block)
+  def fe_filter_form_wrapper(url:, selector:, sorting:, ordering:, static_params: {}, classes: '', data: {}, &block)
     selector = "#{selector}-form"
 
     dataset = {
       filter_table_target: 'form',
       turbo: true
-    }
+    }.merge(data)
 
     render('shared/components/filter_table_form_wrapper',
            url: url, selector: selector, dataset: dataset, sorting: sorting, ordering: ordering,

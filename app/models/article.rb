@@ -70,6 +70,15 @@ class Article < ApplicationRecord
   edtf_date_attribute :begun
   edtf_date_attribute :ended
 
+  def self.sort_vertically(records, columns: LIST_NUM_COLUMNS)
+    return records if records.empty? || columns <= 1
+
+    per_col = (records.size.to_f / columns).ceil
+    cols = records.each_slice(per_col).to_a
+
+    cols.transpose.flatten.compact
+  end
+
   def link_list
     self.page_article_links.includes(:page).order('pages.work_id, pages.title')
   end

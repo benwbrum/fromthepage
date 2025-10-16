@@ -12,25 +12,33 @@ class ArticleController < ApplicationController
   def list
     articles = @collection.articles.includes(:categories)
     @uncategorized_articles = articles.where(categories: { id: nil })
-    @categories = @collection.categories
-    @categories_tree = build_categories_tree(@categories.group_by(&:parent_id))
+    @categories = Category.recursive_tree_for(@collection.id)
+    @categories_tree = @categories.group_by(&:parent_id)
 
     if params[:selected_category_id] == 'uncategorized'
       @selected_category = 'uncategorized'
-      articles = @uncategorized_articles.reorder(:title)
+      @articles = @uncategorized_articles.reorder(:title)
+      @ancestor_ids = []
     elsif params[:selected_category_id].present?
-      @selected_category = @categories.find(params[:selected_category_id])
-      articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+      @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
+      @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+      @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else
-      @selected_category = @categories_tree.first.dig(:category)
-      articles = @selected_category.present? ? articles.where(categories: { id: @selected_category.id }).reorder(:title) : articles.none
+      @selected_category = @categories_tree.dig(nil).first
+      if @selected_category.present?
+        @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+        @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
+      else
+        @articles = articles.none
+        @ancestor_ids = []
+      end
     end
 
-    @pages_count_map = articles.left_joins(:page_article_links)
-                               .group('articles.id')
-                               .pluck('articles.id, COUNT(page_article_links.id)')
-                               .to_h
-    @articles = sort_vertically(articles)
+    @pages_count_map = @articles.left_joins(:page_article_links)
+                                .group('articles.id')
+                                .pluck('articles.id, COUNT(page_article_links.id)')
+                                .to_h
+    @articles = Article.sort_vertically(@articles)
 
     respond_to do |format|
       format.html
@@ -356,39 +364,5 @@ class ArticleController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
-  end
-
-  def sort_vertically(articles)
-    return [] unless articles.any?
-
-    rows = (articles.length.to_f / LIST_NUM_COLUMNS).ceil
-    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) }
-
-    articles.each_with_index do |article, index|
-      row = index % rows
-      col = index / rows
-      vertical_articles[row][col] = article
-    end
-
-    vertical_articles
-  end
-
-  def find_or_create_category(collection, title)
-    category = collection.categories.where(title: title).first
-    if category.nil?
-      category = Category.new(title: title)
-      collection.categories << category
-    end
-
-    category
-  end
-
-  def build_categories_tree(grouped_categories, parent_id: nil)
-    (grouped_categories[parent_id] || []).map do |category|
-      {
-        category: category,
-        children: build_categories_tree(grouped_categories, parent_id: category.id)
-      }
-    end
   end
 end

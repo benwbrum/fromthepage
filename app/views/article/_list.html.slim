@@ -6,9 +6,11 @@
     -static_params = { selected_category_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id }
 
   =fe_filter_table_wrapper(selector: 'collection-categories-table', classes: 'collection-categories') do
-    =fe_filter_form_wrapper(url: collection_subjects_path(@collection.owner, @collection), selector: 'collection-categories-table', sorting: false, ordering: false, static_params: static_params, classes: 'category-tree')
+    =fe_filter_form_wrapper(url: collection_subjects_path(@collection.owner, @collection), selector: 'collection-categories-table', sorting: false, ordering: false, static_params: static_params, classes: 'category-tree', data: { controller: 'toggle-view' }) do
       h3[style='margin-top: 0;']= t('article.list.categories')
-      =category_tree_accordion(categories_tree, show_uncategorized: @uncategorized_articles.any?, selected_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id)
+      =render partial: 'article/categories/category_tree', \
+        locals: { categories_tree: categories_tree, show_uncategorized: @uncategorized_articles.any?, parent_id: nil, \
+          selected_id: selected_category == 'uncategorized' ? selected_category : selected_category&.id, ancestor_ids: ancestor_ids }
 
     =fe_filter_table(selector: 'collection-categories-table', classes: 'category-articles') do
       -if selected_category.present?
