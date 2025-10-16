@@ -7,13 +7,14 @@ dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : catego
         =render partial: 'table_actions', locals: { category: category }
   dd
     -if articles.any?
-      -articles.each do |article|
-        -if article.nil?
-          p.hidden
-        -else
-          p[*language_attrs(@collection)]
-            = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
-              = article.title
-              = content_tag :span, "(#{@pages_count_map[article.id] || 0})", class: 'grey-number'
+      -articles.each do |row|
+        -row.each do |article|
+          -if article.nil?
+            p.hidden
+          -else
+            p[*language_attrs(@collection)]
+              = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
+                = article.title
+                = content_tag :span, "(#{@pages_count_map[article.id] || 0})", class: 'grey-number'
     -else
       p.acenter.fglight= t('article.list.there_are_no_subjects')

@@ -70,13 +70,19 @@ class Article < ApplicationRecord
   edtf_date_attribute :begun
   edtf_date_attribute :ended
 
-  def self.sort_vertically(records, columns: LIST_NUM_COLUMNS)
-    return records if records.empty? || columns <= 1
+  def self.sort_vertically(articles)
+    return [] unless articles.any?
 
-    per_col = (records.size.to_f / columns).ceil
-    cols = records.each_slice(per_col).to_a
+    rows = (articles.length.to_f / LIST_NUM_COLUMNS).ceil
+    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) }
 
-    cols.transpose.flatten.compact
+    articles.each_with_index do |article, index|
+      row = index % rows
+      col = index / rows
+      vertical_articles[row][col] = article
+    end
+
+    vertical_articles
   end
 
   def link_list
