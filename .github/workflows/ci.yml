@@ -12,17 +12,19 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: diary_test
-          MYSQL_ROOT_PASSWORD: password
+        image: mariadb:10.11
         ports:
           - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: diary_test
+          MYSQL_USER: rails
+          MYSQL_PASSWORD: password
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping -h localhost -u root -ppassword"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
