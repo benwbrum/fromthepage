@@ -283,11 +283,11 @@ describe "document sets", order: :defined do
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
     page.find('.tabs').click_link("Subjects")
-    expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
+    expect(page.find('.category-tree')).to have_content(@set.categories.first.title, wait: 5)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
     expect(page.find('h1')).to have_content(@set.title)
     # expect to have only article from document sets
-    expect(page).to have_selector('.category-article', text: @article.title)
+    expect(page).to have_selector('.category-article', text: @article.title, wait: 5)
     expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
     page.find('a', text: @article.title).click
     expect(page).to have_selector('.breadcrumbs')

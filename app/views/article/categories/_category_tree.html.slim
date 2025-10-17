@@ -1,0 +1,37 @@
+ul
+  -(categories_tree[parent_id] || []).each do |category|
+    -is_selected = (category.id == selected_id)
+    -is_expanded = ancestor_ids.include?(category.id)
+    -children = categories_tree[category.id] || []
+
+    li {
+      class="#{is_expanded ? 'expanded' : ''}"
+      data-toggle-view-target='toggleable'
+      data-toggle-class='expanded'
+      data-toggle-self=true
+      data-action='click->toggle-view#toggle'
+    }
+      a {
+        class="tree-item #{'selected' if category.id == selected_id}",
+        data-filter-table-target='listButton'
+        data-list='selected_category_id'
+        data-value=category.id
+      }
+        -if children.any?
+          span.tree-bullet
+        span = category.title
+
+      -if children.any?
+        =render partial: 'article/categories/category_tree', \
+          locals: { categories_tree: categories_tree, show_uncategorized: show_uncategorized, parent_id: category.id, \
+            selected_id: selected_id, ancestor_ids: ancestor_ids }
+
+  -if parent_id.nil? && show_uncategorized
+    li
+      a {
+        class="tree-item #{'selected' if selected_id == 'uncategorized'}"
+        data-filter-table-target='listButton'
+        data-list='selected_category_id'
+        data-value='uncategorized'
+      }
+        =t('article.list.uncategorized')
