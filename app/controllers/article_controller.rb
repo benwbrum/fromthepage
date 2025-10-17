@@ -12,16 +12,39 @@ class ArticleController < ApplicationController
 
   def list
     articles = @collection.articles.includes(:categories)
-    @categories = @collection.categories
-    @vertical_articles = {}
-    @categories.each do |category|
-      current_articles = articles.where(categories: { id: category.id }).reorder(:title)
-      @vertical_articles[category] = sort_vertically(current_articles)
+    @uncategorized_articles = articles.where(categories: { id: nil })
+    @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
+    @categories_tree = @categories.group_by(&:parent_id)
+
+    if params[:selected_category_id] == 'uncategorized'
+      @selected_category = 'uncategorized'
+      @articles = @uncategorized_articles.reorder(:title)
+      @ancestor_ids = []
+    elsif params[:selected_category_id].present?
+      @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
+      @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+      @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
+    else
+      @selected_category = @categories_tree.dig(nil).first
+      if @selected_category.present?
+        @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+        @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
+      else
+        @articles = articles.none
+        @ancestor_ids = []
+      end
     end
 
-    @uncategorized_articles = sort_vertically(
-      articles.where(categories: { id: nil }).reorder(:title)
-    )
+    @pages_count_map = @articles.left_joins(:page_article_links)
+                                .group('articles.id')
+                                .pluck('articles.id, COUNT(page_article_links.id)')
+                                .to_h
+    @articles = Article.sort_vertically(@articles)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def delete
@@ -200,7 +223,6 @@ class ArticleController < ApplicationController
     # now render the d3js file
     render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
   end
-
 
   def show
     sql =
