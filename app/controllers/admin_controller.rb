@@ -225,6 +225,7 @@ class AdminController < ApplicationController
   def settings
     @email_text = PageBlock.find_by(view: 'new_owner').html
     @flag_denylist = PageBlock.find_by(view: 'flag_denylist').html
+    @flag_allowlist = (PageBlock.where(view: 'flag_allowlist').first ? PageBlock.where(view: 'flag_allowlist').first.html : '')
     @email_denylist = (PageBlock.where(view: 'email_denylist').first ? PageBlock.where(view: 'email_denylist').first.html : '')
   end
 
@@ -239,6 +240,12 @@ class AdminController < ApplicationController
     block = PageBlock.find_by(view: 'flag_denylist')
     if params[:admin][:flag_denylist] != block.html
       block.html = params[:admin][:flag_denylist]
+      block.save!
+    end
+
+    block = PageBlock.where(view: 'flag_allowlist').first || PageBlock.new(view: 'flag_allowlist', controller: 'admin')
+    if params[:admin][:flag_allowlist] != block.html
+      block.html = params[:admin][:flag_allowlist]
       block.save!
     end
 

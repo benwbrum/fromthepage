@@ -17,21 +17,7 @@ class TranscribeController  < ApplicationController
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])
 
-    @collection = page.collection unless @collection
-    @auto_fullscreen = cookies[:auto_fullscreen] || 'no'
-    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
-    session[:col_id] = @collection.slug
-    @current_user_alerted = false
-    @field_preview ||= {}
-    unless params[:quality_sampling_id].blank?
-      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
-    end
-
-    if @page.edit_started_by_user_id != current_user.id &&
-       @page.edit_started_at > Time.now - 1.minute
-      flash.now[:info] = t('.alert')
-      @current_user_alerted = true
-    end unless @page.edit_started_at.nil?
+    handle_display_page_data
   end
 
   def monitor_view
@@ -87,13 +73,8 @@ class TranscribeController  < ApplicationController
       page: @page,
       page_params: needs_review_params,
       user: current_user,
-      save_to_needs_review: params[:save_to_needs_review].present?
+      save_to_needs_review: !params[:save_to_needs_review].nil?
     ).perform
-
-    save_to_incomplete = params[:save_to_incomplete] || params[:done_to_incomplete]
-    save_to_needs_review = params[:save_to_needs_review] || params[:done_to_needs_review]
-    save_to_transcribed = params[:save_to_transcribed] || params[:done_to_transcribed]
-    approve_to_transcribed = params[:approve_to_transcribed]
 
     if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
       message = log_transcript_attempt
@@ -119,130 +100,121 @@ class TranscribeController  < ApplicationController
         @page.status = :transcribed unless @page.status_needs_review?
       end
 
-      begin
-        if @page.save
-          @page.replace_table_cells(table_cells) if @page.field_based && !table_cells.empty?
+      if @page.save
+        @page.replace_table_cells(table_cells) if @page.field_based && !table_cells.empty?
 
-          log_transcript_success
-          flash[:notice] = t('.saved_notice')
+        log_transcript_success
+        flash[:notice] = t('.saved_notice')
 
-          if @page.work.ocr_correction
-            record_deed(DeedType::OCR_CORRECTED)
-          elsif @page.source_text_previously_changed?
-            record_transcription_deed
+        if @page.work.ocr_correction
+          record_deed(DeedType::OCR_CORRECTED)
+        elsif @page.source_text_previously_changed?
+          record_transcription_deed
+        end
+
+        # don't reset subjects if they're disabled
+        unless @page.collection.subjects_disabled || (@page.source_text.include?('[[') == false)
+          # use the new links to blank the graphs
+          @page.clear_article_graphs
+
+          new_link_count = @page.page_article_links.where(text_type: 'transcription').count
+
+          record_deed(DeedType::PAGE_INDEXED) if old_link_count.zero? && new_link_count.positive?
+
+          if new_link_count.positive? &&
+             !@page.status_needs_review? &&
+             !@page.status_incomplete?
+
+            @page.update_columns(status: Page.statuses[:indexed])
           end
+        end
 
-          # don't reset subjects if they're disabled
-          unless @page.collection.subjects_disabled || (@page.source_text.include?('[[') == false)
-            # use the new links to blank the graphs
-            @page.clear_article_graphs
+        @work.work_statistic&.recalculate({ type: @page.status })
+        @page.submit_background_processes('transcription')
 
-            new_link_count = @page.page_article_links.where(text_type: 'transcription').count
-
-            record_deed(DeedType::PAGE_INDEXED) if old_link_count.zero? && new_link_count.positive?
-
-            if new_link_count.positive? &&
-               !@page.status_needs_review? &&
-               !@page.status_incomplete?
-
-              @page.update_columns(status: Page.statuses[:indexed])
-            end
-          end
-
-          @work.work_statistic&.recalculate({ type: @page.status })
-          @page.submit_background_processes('transcription')
-
-          # if this is a guest user, force them to sign up after three saves
-          if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
-            if deeds < GUEST_DEED_COUNT
-              flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
-            else
-              session[:user_return_to] = collection_transcribe_page_path(
-                @collection.owner, @collection, @work, @page.id
-              )
-              redirect_to new_user_registration_path, resource: current_user
-              return
-            end
-          end
-
-          if params[:flow] == 'one-off' && !@page.status_needs_review?
-            redirect_to collection_one_off_list_path(@collection.owner, @collection)
-          elsif params[:flow] =~ /user-contributions/ && !@page.status_needs_review?
-            user_slug = params[:flow].sub('user-contributions ', '')
-            redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)
-          elsif @quality_sampling
-            next_page = @quality_sampling.next_unsampled_page
-            if next_page
-              flash[:notice] = t('.saved_and_next_notice') if next_page.id != @page.id
-              redirect_to collection_sampling_review_page_path(@collection.owner,
-                                                               @collection, @quality_sampling,
-                                                               next_page.id, flow: 'quality-sampling')
-            else
-              redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)
-            end
+        # if this is a guest user, force them to sign up after three saves
+        if current_user.guest?
+          deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
+          if deeds < GUEST_DEED_COUNT
+            flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
           else
-            save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
-                                  params[:save_to_transcribed]
+            session[:user_return_to] = collection_transcribe_page_path(
+              @collection.owner, @collection, @work, @page.id
+            )
+            redirect_to new_user_registration_path, resource: current_user
+            return
+          end
+        end
 
-            next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
-            flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
-            redirect_to action: 'assign_categories', page_id: @page.id,
-                        collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
+        if params[:flow] == 'one-off' && !@page.status_needs_review?
+          redirect_to collection_one_off_list_path(@collection.owner, @collection)
+          return
+        elsif params[:flow] =~ /user-contributions/ && !@page.status_needs_review?
+          user_slug = params[:flow].sub('user-contributions ', '')
+          redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)
+          return
+        elsif @quality_sampling
+          next_page = @quality_sampling.next_unsampled_page
+          if next_page
+            flash[:notice] = t('.saved_and_next_notice') if next_page.id != @page.id
+            redirect_to collection_sampling_review_page_path(@collection.owner,
+                                                             @collection, @quality_sampling,
+                                                             next_page.id, flow: 'quality-sampling')
+            return
+          else
+            redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)
+            return
           end
         else
-          log_transcript_error(message)
-          render action: 'display_page'
+          save_button_clicked = params[:save_to_incomplete] || params[:save_to_needs_review] ||
+                                params[:save_to_transcribed]
+
+          next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
+          flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
+          redirect_to action: 'assign_categories', page_id: @page.id,
+                      collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
+          return
         end
-      rescue REXML::ParseException => ex
-        log_transcript_exception(ex, message)
-        flash[:error] = t('.error_message', error_message: ex.message)
-        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render action: 'display_page'
-        flash.clear
-        # raise ex
-      rescue => ex
-        log_transcript_exception(ex, message)
-        flash[:error] = ex.message
-        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render action: 'display_page'
-        flash.clear
-        # raise ex
+      else
+        log_transcript_error(message)
       end
     elsif params['preview']
-      begin
-        @display_context = 'preview'
-        @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
-        if @page.field_based
-          # what do we do about the table cells?
-          @field_preview = table_cells.group_by(&:transcription_field_id)
-        end
-
-        display_page
-        render action: 'display_page'
-      rescue REXML::ParseException => ex
-        flash[:error] = t('.error_message', error_message: ex.message)
-        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render action: 'display_page'
-        flash.clear
-      end
-
-    elsif params['edit']
+      @display_context = 'preview'
+      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)
       if @page.field_based
-        # what do we do about the table cells?
         @field_preview = table_cells.group_by(&:transcription_field_id)
       end
-      display_page
-      render action: 'display_page'
+
+      handle_display_page_data
+    elsif params['edit']
+      if @page.field_based
+        @field_preview = table_cells.group_by(&:transcription_field_id)
+      end
+      handle_display_page_data
     elsif params['autolink']
       autolinked_source_text = autolink(@page.source_text)
       if Page.find(@page.id).source_text != autolinked_source_text
         @page.source_text = autolinked_source_text
         @autolinked_changed = true
       end
-      display_page
-      render action: 'display_page'
+      handle_display_page_data
     end
+
+    render action: 'display_page'
+  rescue REXML::ParseException, StandardError => e
+    if params['save'] || save_to_incomplete || save_to_needs_review || save_to_transcribed || approve_to_transcribed
+      log_transcript_exception(e, message)
+    end
+
+    if e.is_a?(REXML::ParseException)
+      flash[:error] = t('.error_message', error_message: e.message)
+    else # :nocov:
+      flash[:error] = e.message
+    end # :nocov:
+
+    logger.fatal "\n\n#{e.class} (#{e.message}):\n"
+    render action: 'display_page', status: :unprocessable_entity
+    flash.clear
   end
 
   def assign_categories
@@ -275,9 +247,7 @@ class TranscribeController  < ApplicationController
   end
 
   def translate
-    session[:col_id] = @collection.slug
-    @controller_path = 'translate'
-    @fromImage = cookies[:fromImage] || false
+    handle_translate_data
   end
 
   def help
@@ -316,72 +286,71 @@ class TranscribeController  < ApplicationController
       # leave the status alone if it's needs review, but otherwise set it to translated
       @page.translation_status = :translated unless @page.translation_status_needs_review?
 
-      begin
-        if @page.save
-          log_translation_success
-          record_translation_deed
+      if @page.save
+        log_translation_success
+        record_translation_deed
 
-          unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)
-            new_link_count = @page.page_article_links.where(text_type: 'translation').count
-            logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
-            if old_link_count == 0 && new_link_count > 0
-              record_deed(DeedType::TRANSLATION_INDEXED)
-            end
-            if new_link_count > 0 && !@page.translation_status_needs_review?
-              @page.update_columns(translation_status: Page.translation_statuses[:indexed])
-            end
+        unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)
+          new_link_count = @page.page_article_links.where(text_type: 'translation').count
+          logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+          if old_link_count == 0 && new_link_count > 0
+            record_deed(DeedType::TRANSLATION_INDEXED)
           end
-
-          @work.work_statistic.recalculate({ type: @page.translation_status }) if @work.work_statistic
-          @page.submit_background_processes('translation')
-
-          # if this is a guest user, force them to sign up after three saves
-          if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
-            if deeds < GUEST_DEED_COUNT
-              flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
-            else
-              session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
-              redirect_to new_user_registration_path, resource: current_user
-              return
-            end
+          if new_link_count > 0 && !@page.translation_status_needs_review?
+            @page.update_columns(translation_status: Page.translation_statuses[:indexed])
           end
-
-          redirect_to action: 'assign_categories', page_id: @page.id,
-                      collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
-        else
-          log_translation_error(message)
-          render action: 'translate'
         end
-      rescue REXML::ParseException => ex
-        log_translation_exception(ex, message)
-        flash[:error] = t('.error_message', error_message: ex.message)
-        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render action: 'translate'
-        flash.clear
-        # raise ex
-      rescue  => ex
-        log_translation_exception(ex, message)
-        flash[:error] = ex.message
-        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
-        render action: 'translate'
-        flash.clear
-        # raise ex
+
+        @work.work_statistic.recalculate({ type: @page.translation_status }) if @work.work_statistic
+        @page.submit_background_processes('translation')
+
+        # if this is a guest user, force them to sign up after three saves
+        if current_user.guest?
+          deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
+          if deeds < GUEST_DEED_COUNT
+            flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
+          else
+            session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
+            redirect_to new_user_registration_path, resource: current_user
+            return
+          end
+        end
+
+        redirect_to action: 'assign_categories', page_id: @page.id,
+                    collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
+        return
+      else
+        log_translation_error(message)
       end
     elsif params['preview']
       @display_context = 'preview'
-      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSLATION)
-      translate
-      render action: 'translate'
+      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSLATION, true)
+
+      handle_translate_data
     elsif params['edit']
-      translate
-      render action: 'translate'
+      handle_translate_data
     elsif params['autolink']
       @page.source_translation = autolink(@page.source_translation)
-      translate
-      render action: 'translate'
 
+      handle_translate_data
     end
+
+    render action: 'translate'
+  rescue REXML::ParseException, StandardError => e
+    if params['save']
+      log_translation_exception(e, message)
+    end
+
+    if e.is_a?(REXML::ParseException)
+      flash[:error] = t('.error_message', error_message: e.message)
+    else # :nocov:
+      flash[:error] = e.message
+    end # :nocov:
+
+    logger.fatal "\n\n#{e.class} (#{e.message}):\n"
+
+    render action: 'translate', status: :unprocessable_entity
+    flash.clear
   end
 
   def still_editing
@@ -606,6 +575,32 @@ class TranscribeController  < ApplicationController
     end
   end
 
+  def handle_display_page_data
+    @collection ||= page.collection
+    @auto_fullscreen = cookies[:auto_fullscreen] || 'no'
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
+    session[:col_id] = @collection.slug
+    @current_user_alerted = false
+    @field_preview ||= {}
+    unless params[:quality_sampling_id].blank?
+      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    end
+
+    return if @page.edit_started_at.nil?
+
+    cutoff_time = Time.now - 1.minute
+    return unless @page.edit_started_by_user_id != current_user.id && @page.edit_started_at > cutoff_time
+
+    flash.now[:info] = t('transcribe.display_page.alert')
+    @current_user_alerted = true
+  end
+
+  def handle_translate_data
+    session[:col_id] = @collection.slug
+    @controller_path = 'translate'
+    @fromImage = cookies[:fromImage] || false
+  end
+
   def page_params
     params.require(:page).permit(:source_text, :source_translation, :title)
   end
@@ -625,5 +620,21 @@ class TranscribeController  < ApplicationController
     flash_msg = page.id == next_page_id ? t('saved_notice', scope: scope) : t('saved_and_next_notice', scope: scope)
 
     [next_page_id, flash_msg]
+  end
+
+  def save_to_incomplete
+    params[:save_to_incomplete] || params[:done_to_incomplete]
+  end
+
+  def save_to_needs_review
+    params[:save_to_needs_review] || params[:done_to_needs_review]
+  end
+
+  def save_to_transcribed
+    params[:save_to_transcribed] || params[:done_to_transcribed]
+  end
+
+  def approve_to_transcribed
+    params[:approve_to_transcribed]
   end
 end

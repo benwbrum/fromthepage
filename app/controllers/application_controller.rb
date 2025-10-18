@@ -401,6 +401,7 @@ def check_api_access
 end
 
 def set_api_user
+  @api_user = nil
   authenticate_with_http_token do |token, options|
     @api_user = User.find_by(api_key: token)
   end
