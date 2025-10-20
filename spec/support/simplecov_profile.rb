@@ -27,5 +27,6 @@ if ENV['COVERAGE'] == 'true'
     add_filter '/config/'
     add_filter '/vendor/'
     add_filter '/.bundle/'
+    add_filter '/lib/tasks/'
   end
 end
