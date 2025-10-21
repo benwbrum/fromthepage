@@ -794,7 +794,7 @@ describe CollectionController do
           subject
 
           expect(response).to have_http_status(:ok)
-          expect(response.body).to include('filter')
+          expect(response.body).to include('facet-label')
         end
       end
 
@@ -803,7 +803,7 @@ describe CollectionController do
           subject
 
           expect(response).to have_http_status(:ok)
-          expect(response.body).not_to include('filter')
+          expect(response.body).not_to include('facet-label')
         end
       end
     end
@@ -816,7 +816,7 @@ describe CollectionController do
         subject
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).not_to include('filter')
+        expect(response.body).not_to include('facet-label')
       end
     end
   end
