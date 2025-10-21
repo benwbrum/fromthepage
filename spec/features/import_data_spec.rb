@@ -31,7 +31,7 @@ describe 'import data' do
     end
 
     it 'browses records from a collection', js: true do
-      VCR.use_cassette('cdm/midpoint-shelwater-collection', record: :none) do
+      VCR.use_cassette('cdm/midpoint-shelwater-collection', record: :none, allow_playback_repeats: false) do
         owner = User.first
         login_as(owner, scope: :user)
         visit dashboard_owner_path
