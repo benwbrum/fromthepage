@@ -780,4 +780,44 @@ describe CollectionController do
       expect(response).to render_template(:recent_contributor_list)
     end
   end
+
+  describe '#show' do
+    let(:action_path) { collection_path(owner, collection) }
+    let(:subject) { get action_path }
+
+    context 'when facets are enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
+
+      context 'when user is logged in' do
+        it 'renders the facet form' do
+          login_as user
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include('filter')
+        end
+      end
+
+      context 'when user is not logged in' do
+        it 'does not render the facet form' do
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('filter')
+        end
+      end
+    end
+
+    context 'when facets are not enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: false) }
+
+      it 'does not render the facet form' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('filter')
+      end
+    end
+  end
 end
