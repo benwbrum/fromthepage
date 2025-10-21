@@ -39,20 +39,22 @@ describe "owner actions", order: :defined do
   end
 
   it "creates an empty new work in a collection", js: true do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    work_title = "New Test Work"
-    visit dashboard_owner_path
-    click_link("#{test_collection.title}")
-    click_link("Add a new work")
-    expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Create Empty Work")
-    page.find(:css, "#create-empty-work").click
-    fill_in 'work_title', with: work_title
-    fill_in 'work_description', with: "This work contains no pages."
-    click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: work_title)).not_to be nil
+    VCR.use_cassette('sc_collections/gist', record: :none) do
+      @owner.account_type = "Small Organization"
+      test_collection = Collection.find_by(title: 'New Test Collection')
+      work_title = "New Test Work"
+      visit dashboard_owner_path
+      click_link("#{test_collection.title}")
+      click_link("Add a new work")
+      expect(page).to have_content("#{test_collection.title}")
+      expect(page).to have_content("Create Empty Work")
+      page.find(:css, "#create-empty-work").click
+      fill_in 'work_title', with: work_title
+      fill_in 'work_description', with: "This work contains no pages."
+      click_button('Create Work')
+      expect(page).to have_content("Here you see the list of all pages in the work.")
+      expect(Work.find_by(title: work_title)).not_to be nil
+    end
   end
 
   it "checks for subject in a new collection" do
