@@ -1,0 +1,25 @@
+#cookies-banner
+  .h3 =t('.title')
+
+  =form_with model: @privacy_preference, url: cookies_path, method: :post, data: { turbo: true } do |f|
+    .fields
+      .field
+        =f.label :essential do
+          =f.check_box :essential, { checked: true, disabled: true }, '1', '0'
+          .h5 =t('.essential')
+        p =t('.essential_description')
+      .field
+        =f.label :marketing do
+          =f.check_box :marketing
+          .h5 =t('.marketing')
+        p =t('.marketing_description')
+      .field
+        =f.label :analytics do
+          =f.check_box :analytics
+          .h5 =t('.analytics')
+        p =t('.analytics_description')
+    .actions
+      =link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank'
+      .buttons
+        =link_to t('.back'), new_cooky_path, class: 'button', data: { turbo: true, turbo_stream: true }
+        =f.submit t('.confirm')

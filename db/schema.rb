@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_14_190012) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_23_165053) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -549,6 +549,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_14_190012) do
     t.integer "section_id", null: false
     t.index ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id"
     t.index ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id"
+  end
+
+  create_table "privacy_preferences", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "recorded", default: false, null: false
+    t.boolean "analytics", default: false, null: false
+    t.boolean "marketing", default: false, null: false
+    t.index ["user_id"], name: "index_privacy_preferences_on_user_id", unique: true
   end
 
   create_table "quality_samplings", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|

@@ -47,6 +47,10 @@ en:
       page_edited: Note added in response to a comment you made
       picture: Profile Picture
       select_notification: 'Select which of the following notifications you want to receive:'
+      select_cookies: 'Select which of the following cookies you want to allow:'
+      cookies_essential: Required for the app to work.
+      cookies_marketing: Helps improve outreach and show relevant content.
+      cookies_analytics: Helps understand site usage for improvement.
       sign_up_url: 'Sign-up URL:'
       suggestions_help_tab: Suggestions for your help tab.
       update_profile: Update Profile

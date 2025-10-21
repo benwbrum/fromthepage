@@ -76,7 +76,6 @@
     <%= javascript_include_tag 'landing/main.js' %>
 
 
-    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED %>
-      <%=render :partial => '/shared/bento' %>
-      <%= render :partial => '/shared/bento_chat' %>
+    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED && current_user&.privacy_preference&.marketing %>
+      <%= render partial: '/shared/third_party/bento' %>
     <% end %>
