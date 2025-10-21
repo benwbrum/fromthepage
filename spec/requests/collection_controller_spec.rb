@@ -805,6 +805,15 @@ describe CollectionController do
           expect(response).to have_http_status(:ok)
           expect(response.body).not_to include('facet-label')
         end
+
+        it 'does not process facet search parameters from URL' do
+          get action_path, params: { search: { s1: ['test'] } }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('facet-label')
+          # Verify that facet filtering was not applied by checking @search is not set
+          expect(assigns(:search)).to be_nil
+        end
       end
     end
 
