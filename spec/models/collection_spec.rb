@@ -191,6 +191,8 @@ describe Collection do
     end
 
     before(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       CollectionsIndex.purge
@@ -200,10 +202,14 @@ describe Collection do
     end
 
     after(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       records.reverse.each(&:destroy!)
       CollectionsIndex.purge
+
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     describe '#self.es_search' do

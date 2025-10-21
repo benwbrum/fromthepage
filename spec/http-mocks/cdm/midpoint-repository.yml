@@ -19,7 +19,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:35 GMT
+      - Tue, 21 Oct 2025 19:07:35 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -40,7 +40,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:35 GMT
+      - Tue, 21 Oct 2025 19:07:35 GMT
       Content-Length:
       - '262'
       Content-Type:
@@ -55,7 +55,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:35 GMT
+  recorded_at: Tue, 21 Oct 2025 19:07:36 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
@@ -75,7 +75,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:35 GMT
+      - Tue, 21 Oct 2025 19:07:36 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -94,7 +94,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:35 GMT
+      - Tue, 21 Oct 2025 19:07:36 GMT
       Content-Length:
       - '240'
       Content-Type:
@@ -109,7 +109,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:35 GMT
+  recorded_at: Tue, 21 Oct 2025 19:07:36 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
@@ -129,7 +129,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:07:37 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -152,51 +152,266 @@ http_interactions:
       Content-Type:
       - application/json
       Etag:
-      - '"09da1b738bb3910f558ba394418dfa50a--gzip"'
+      - '"005a3fe80bd9c483a27a8944ad873f112--gzip"'
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '832'
+      - '4909'
       Set-Cookie:
-      - JSESSIONID=NTEzNDFlNDUtOTU1MC00NzQ0LWJjYTctZjg4ODEzMzcyMTA1; Path=/; HttpOnly;
+      - JSESSIONID=OTJkZjE2NzctYWUzNS00ZDMwLWExYmUtZmMzY2M5M2JmNWIz; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:07:37 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityofMidd/manifest.json","@type":"sc:Collection","label":"The
         City of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Crout/manifest.json","@type":"sc:Collection","label":"The
-        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
-        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
-        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
-        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
-        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
-        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
-        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
-        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
-        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
-        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
-        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
+        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityDirectory/manifest.json","@type":"sc:Collection","label":"Middletown
+        City Directories"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
+        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
+        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
+        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
+        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
+        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/SevenMileHS/manifest.json","@type":"sc:Collection","label":"Seven
+        Mile High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
+        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
+        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
+        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
+        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
+        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
+        Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
+        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
         Historic Book Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Chrisholm/manifest.json","@type":"sc:Collection","label":"Chrisholm
-        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
-        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
-        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
+        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
         G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
-        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
-        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
-        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
-        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
-        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
-        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
+        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
+        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
+        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
+        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
+        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
+        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
         Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll7/manifest.json","@type":"sc:Collection","label":"First
         United Methodist Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll1/manifest.json","@type":"sc:Collection","label":"Dell-Kerschbaum
         Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
         Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
-        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
-        Collection"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:36 GMT
+        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MidFire/manifest.json","@type":"sc:Collection","label":"City
+        of Middletown Division of Fire"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:07:37 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:07:38 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm16488.contentdm.oclc.org/iiif/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:07:38 GMT
+      Content-Length:
+      - '262'
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:07:38 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:07:39 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:07:39 GMT
+      Content-Length:
+      - '240'
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:07:39 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:30:15 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Accept-Encoding,Access-Control-Request-Method,Access-Control-Request-Headers,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"005a3fe80bd9c483a27a8944ad873f112"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '4909'
+      Set-Cookie:
+      - JSESSIONID=N2EwYjk1OTYtMWE2NS00ZDY3LWI2NjYtZjM3YTdmZmZmNmQ5; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:30:15 GMT
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityofMidd/manifest.json","@type":"sc:Collection","label":"The
+        City of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Crout/manifest.json","@type":"sc:Collection","label":"The
+        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityDirectory/manifest.json","@type":"sc:Collection","label":"Middletown
+        City Directories"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
+        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
+        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
+        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
+        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
+        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/SevenMileHS/manifest.json","@type":"sc:Collection","label":"Seven
+        Mile High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
+        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
+        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
+        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
+        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
+        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
+        Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
+        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
+        Historic Book Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Chrisholm/manifest.json","@type":"sc:Collection","label":"Chrisholm
+        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
+        G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
+        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
+        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
+        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
+        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
+        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
+        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
+        Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll7/manifest.json","@type":"sc:Collection","label":"First
+        United Methodist Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll1/manifest.json","@type":"sc:Collection","label":"Dell-Kerschbaum
+        Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
+        Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
+        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MidFire/manifest.json","@type":"sc:Collection","label":"City
+        of Middletown Division of Fire"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:30:15 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
@@ -216,7 +431,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:16 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -237,7 +452,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:16 GMT
       Content-Length:
       - '262'
       Content-Type:
@@ -252,7 +467,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:36 GMT
+  recorded_at: Tue, 21 Oct 2025 19:30:16 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
@@ -272,7 +487,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:17 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -291,7 +506,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:17 GMT
       Content-Length:
       - '240'
       Content-Type:
@@ -306,7 +521,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:36 GMT
+  recorded_at: Tue, 21 Oct 2025 19:30:17 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
@@ -326,7 +541,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:18 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -349,246 +564,52 @@ http_interactions:
       Content-Type:
       - application/json
       Etag:
-      - '"09da1b738bb3910f558ba394418dfa50a--gzip"'
+      - '"005a3fe80bd9c483a27a8944ad873f112--gzip"'
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '832'
+      - '4909'
       Set-Cookie:
-      - JSESSIONID=MjRjYjAzNzYtYTU2Mi00MzNkLWFhYzUtNmM4ZWFiZWMzODYy; Path=/; HttpOnly;
+      - JSESSIONID=ZGUzNzlmZjMtZmVjNC00N2MxLThhOTEtOGRmMmI0ZTNiMWUx; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:36 GMT
+      - Tue, 21 Oct 2025 19:30:18 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityofMidd/manifest.json","@type":"sc:Collection","label":"The
         City of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Crout/manifest.json","@type":"sc:Collection","label":"The
-        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
-        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
-        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
-        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
-        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
-        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
-        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
-        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
-        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
-        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
-        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
+        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityDirectory/manifest.json","@type":"sc:Collection","label":"Middletown
+        City Directories"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
+        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
+        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
+        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
+        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
+        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/SevenMileHS/manifest.json","@type":"sc:Collection","label":"Seven
+        Mile High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
+        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
+        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
+        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
+        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
+        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
+        Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
+        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
         Historic Book Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Chrisholm/manifest.json","@type":"sc:Collection","label":"Chrisholm
-        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
-        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
-        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
+        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
         G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
-        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
-        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
-        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
-        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
-        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
-        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
+        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
+        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
+        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
+        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
+        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
+        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
         Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll7/manifest.json","@type":"sc:Collection","label":"First
         United Methodist Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll1/manifest.json","@type":"sc:Collection","label":"Dell-Kerschbaum
         Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
         Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
-        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
-        Collection"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:36 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 301
-      message: Moved Permanently
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:37 GMT
-      Server:
-      - Apache
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Location:
-      - https://cdm16488.contentdm.oclc.org/iiif/manifest.json
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:37 GMT
-      Content-Length:
-      - '262'
-      Content-Type:
-      - text/html; charset=iso-8859-1
-    body:
-      encoding: UTF-8
-      string: |
-        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-        <html><head>
-        <title>301 Moved Permanently</title>
-        </head><body>
-        <h1>Moved Permanently</h1>
-        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
-        </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:37 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 302
-      message: Found
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:38 GMT
-      Server:
-      - Apache
-      X-Content-Type-Options:
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Location:
-      - https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:38 GMT
-      Content-Length:
-      - '240'
-      Content-Type:
-      - text/html; charset=iso-8859-1
-    body:
-      encoding: UTF-8
-      string: |
-        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-        <html><head>
-        <title>302 Found</title>
-        </head><body>
-        <h1>Found</h1>
-        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
-        </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:38 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:38 GMT
-      Server:
-      - Apache
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Vary:
-      - Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding,User-Agent
-      Content-Type:
-      - application/json
-      Etag:
-      - '"09da1b738bb3910f558ba394418dfa50a--gzip"'
-      X-Frame-Options:
-      - SAMEORIGIN
-      Content-Length:
-      - '832'
-      Set-Cookie:
-      - JSESSIONID=MzlkODc0MWUtM2VlOS00NzBjLTg0MTUtZjJlNWZkNjFhZTg4; Path=/; HttpOnly;
-        SameSite=Lax
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:38 GMT
-    body:
-      encoding: ASCII-8BIT
-      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/CityofMidd/manifest.json","@type":"sc:Collection","label":"The
-        City of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Crout/manifest.json","@type":"sc:Collection","label":"The
-        George C. Crout Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
-        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Fenwick/manifest.json","@type":"sc:Collection","label":"Turres
-        - Bishop Fenwick High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/LakotaYearBks/manifest.json","@type":"sc:Collection","label":"Lakota
-        and Liberty-Union School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MonroeHS/manifest.json","@type":"sc:Collection","label":"The
-        Monocle - Monroe Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/ECSYearbooks/manifest.json","@type":"sc:Collection","label":"Edgewood
-        City Schools and Trenton Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll9/manifest.json","@type":"sc:Collection","label":"The
-        Tomahawk - Madison Local School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
-        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll21/manifest.json","@type":"sc:Collection","label":"Armco
-        Publications"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll14/manifest.json","@type":"sc:Collection","label":"R.
-        Harold and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","@type":"sc:Collection","label":"The
-        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll6/manifest.json","@type":"sc:Collection","label":"MidPointe
-        Historic Book Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Chrisholm/manifest.json","@type":"sc:Collection","label":"Chrisholm
-        Historic Farmstead"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
-        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
-        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
-        G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
-        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Kramer/manifest.json","@type":"sc:Collection","label":"Harold
-        and Carolyn G. Kramer Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
-        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll2/manifest.json","@type":"sc:Collection","label":"J.
-        Thomas Sebald Realty Company Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
-        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
-        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
-        Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll7/manifest.json","@type":"sc:Collection","label":"First
-        United Methodist Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll1/manifest.json","@type":"sc:Collection","label":"Dell-Kerschbaum
-        Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
-        Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
-        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Sebald-Kinder/manifest.json","@type":"sc:Collection","label":"Sebald-Kinder
-        Collection"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:38 GMT
-recorded_with: VCR 6.2.0
+        Aids"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MidFire/manifest.json","@type":"sc:Collection","label":"City
+        of Middletown Division of Fire"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:30:18 GMT
+recorded_with: VCR 6.3.1
