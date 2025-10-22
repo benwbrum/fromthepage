@@ -141,7 +141,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def show_to?(user)
-    is_public? || visibility_private? || user&.like_owner?(self) || user&.collaborator?(self)
+    is_public? || visibility_read_only? || user&.like_owner?(self) || user&.collaborator?(self)
   end
 
   def intro_block
