@@ -260,7 +260,7 @@ class CollectionController < ApplicationController
           @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
         end
 
-        if @collection.facets_enabled?
+        if @collection.facets_enabled? && user_signed_in?
           # construct the search object from the parameters
           @search = WorkSearch.new(params)
           @search.filter([:work, :collection_id]).value=@collection.id
@@ -325,7 +325,7 @@ class CollectionController < ApplicationController
             @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           end
 
-          if @collection.facets_enabled?
+          if @collection.facets_enabled? && user_signed_in?
             # construct the search object from the parameters
             @search = WorkSearch.new(params)
             @search.filter([:work, :collection_id]).value=@collection.id

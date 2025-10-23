@@ -22,6 +22,7 @@
     <%= stylesheet_link_tag 'optimize' %>
     <%= stylesheet_link_tag 'main' %>
 
+    <%=javascript_importmap_tags %>
 
 
 
@@ -38,32 +39,32 @@
             line-height: 80px;
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
         }
-        
+
         .flash-notice {
             color: #490;
             background: rgba(240, 249, 217, 0.9);
         }
-        
+
         .flash-info {
             color: #08D;
             background: rgba(217, 240, 255, 0.9);
         }
-        
+
         .flash-alert {
             color: #E60;
             background: rgba(255, 246, 204, 0.9);
         }
-        
+
         .flash-error {
             color: #D00;
             background: rgba(255, 240, 240, 0.9);
         }
-        
+
         .flash_message {
             display: inline-block;
             line-height: 1.375;
         }
-        
+
         .flash_close {
             top: 50%;
             right: 18px;
@@ -78,11 +79,11 @@
             text-decoration: none;
             color: rgba(0, 0, 0, 0.4);
         }
-        
+
         .flash_close:hover {
             color: #000;
         }
-        
+
         /* Icon styles for flash messages */
         .flash .icon {
             width: 1em;

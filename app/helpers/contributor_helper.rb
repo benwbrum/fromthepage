@@ -45,6 +45,7 @@ module ContributorHelper
     # compare older to recent list to get new transcribers
     @new_transcribers = user_active_mailers.where(id: recent_users_ids)
                                            .where.not(id: older_users_ids)
+                                           .distinct
 
     @all_collaborators = user_active_mailers.where(id: deeds_scope.select(:user_id)).distinct
   end
