@@ -8,6 +8,7 @@
 #  activity_email            :boolean
 #  admin                     :boolean          default(FALSE)
 #  api_key                   :string(255)
+#  cookies_consent           :integer          default(0), not null
 #  current_sign_in_at        :datetime
 #  current_sign_in_ip        :string(255)
 #  deleted                   :boolean          default(FALSE)
@@ -110,6 +111,12 @@ class User < ApplicationRecord
     class_name: 'DocumentSet', foreign_key: 'owner_user_id'
 
   has_many :metadata_description_versions, dependent: :destroy
+
+  enum :cookies_consent, {
+    pending: 0,
+    accepted: 1,
+    declined: 2
+  }, prefix: :cookies_consent
 
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }

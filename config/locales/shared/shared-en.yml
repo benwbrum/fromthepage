@@ -45,6 +45,11 @@ en:
       statistics: Statistics
       subjects: Subjects
       works_list: Works List
+    cookies_banner:
+      accept_all: Accept All
+      description: We use essential cookies for functionality and optional cookies (with your consent) to enhance your experience.
+      essentials_only: Essentials Only
+      title: Cookie Preferences
     description_tabs:
       describe: Metadata
       help: Help

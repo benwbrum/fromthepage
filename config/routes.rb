@@ -13,7 +13,13 @@ Fromthepage::Application.routes.draw do
   get '/landing', to: 'static#landing_page'
   get '/blog' => redirect('https://fromthepage.com/blog/')
 
-  devise_for :users, controllers: { masquerades: 'masquerades', registrations: 'registrations', omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: {
+    masquerades: 'masquerades',
+    registrations: 'registrations',
+    sessions: 'sessions',
+    omniauth_callbacks:
+    'users/omniauth_callbacks'
+  }
 
   devise_scope :user do
     get 'users/new_trial' => 'registrations#new_trial'
@@ -33,6 +39,7 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
+  resources :cookies, only: [:create]
   resources :notes, except: [:show]
   get ':collection_id/notes', to: 'notes#index', as: :collection_notes
 

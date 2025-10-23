@@ -1,0 +1,13 @@
+#dynamic-scripts
+  -if cookies_consented?
+    -if GA_ACCOUNT.present?
+      =render partial: 'shared/third_party/ga'
+
+    -if MIXPANEL_ID.present?
+      =render partial: 'shared/third_party/mixpanel'
+
+    -if FACEBOOK_PIXEL_ID.present?
+      =render partial: 'shared/third_party/fb_pixel'
+
+    -if CLARITY.present?
+      =render partial: 'shared/third_party/clarity'

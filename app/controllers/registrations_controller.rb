@@ -32,6 +32,8 @@ class RegistrationsController < Devise::RegistrationsController
       @user = build_resource(sign_up_params)
     end
 
+    @user.cookies_consent = cookies[:cookies_consent]&.to_sym || :pending
+
     # This is the default Devise code
     yield resource if block_given?
 

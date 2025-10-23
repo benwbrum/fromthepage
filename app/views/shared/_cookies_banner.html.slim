@@ -1,0 +1,9 @@
+#cookies-banner
+  h1 =t('.title')
+  p =t('.description')
+
+  .actions
+    =link_to t('layouts.application.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/', target: '_blank'
+    .buttons
+      =button_to t('.essentials_only'), cookies_path(value: :declined), method: :post, form: { data: { turbo: true } }
+      =button_to t('.accept_all'), cookies_path(value: :accepted), method: :post, form: { data: { turbo: true } }

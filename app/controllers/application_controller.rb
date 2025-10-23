@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include CookiesConsent
+
   DEFAULT_PER_PAGE = 200
 
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]

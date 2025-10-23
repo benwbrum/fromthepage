@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_14_190012) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_23_165053) do
 
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date"
@@ -1110,6 +1110,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_14_190012) do
     t.string "picture"
     t.text "footer_block", size: :medium
     t.text "help"
+    t.integer "cookies_consent", default: 0, null: false
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
