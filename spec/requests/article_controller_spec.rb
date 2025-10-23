@@ -348,5 +348,22 @@ describe ArticleController do
         expect(node).not_to have_key('bio')
       end
     end
+
+    it 'includes work_id in document nodes' do
+      subject
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      # Find document nodes (not article nodes)
+      document_nodes = json['nodes'].select { |n| n['id'].start_with?('D') }
+
+      # Verify that all document nodes contain work_id field
+      expect(document_nodes).not_to be_empty
+      document_nodes.each do |node|
+        expect(node).to have_key('work_id')
+        expect(node['work_id']).to eq(work.id)
+      end
+    end
   end
 end
