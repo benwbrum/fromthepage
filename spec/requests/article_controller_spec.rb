@@ -365,5 +365,31 @@ describe ArticleController do
         expect(node['work_id']).to eq(work.id)
       end
     end
+
+    context 'when pages_are_not_meaningful' do
+      let!(:work_not_meaningful) { create(:work, collection: collection, owner_user_id: owner.id, pages_are_meaningful: false) }
+      let!(:article_in_work) { create(:article, collection: collection, works: [work_not_meaningful]) }
+
+      before do
+        FileUtils.rm_f(article_in_work.d3js_file)
+      end
+
+      it 'includes work_id in work-based document nodes' do
+        get collection_article_relationship_graph_path(owner, collection, article_in_work)
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        # Find document nodes (not article nodes)
+        document_nodes = json['nodes'].select { |n| n['id'].start_with?('D') }
+
+        # Verify that all document nodes contain work_id field
+        expect(document_nodes).not_to be_empty
+        document_nodes.each do |node|
+          expect(node).to have_key('work_id')
+          expect(node['work_id']).to eq(work_not_meaningful.id)
+        end
+      end
+    end
   end
 end
