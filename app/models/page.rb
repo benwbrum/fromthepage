@@ -47,8 +47,8 @@ class Page < ApplicationRecord
   include ApplicationHelper
 
   before_update :validate_blank_page
-  before_update :process_source
-  before_update :populate_search
+  before_save :process_source
+  before_save :populate_search
   before_update :update_line_count
   before_save :calculate_last_editor
   before_save :calculate_approval_delta
@@ -477,7 +477,9 @@ class Page < ApplicationRecord
   end
 
   def populate_search
-    self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
+    if xml_text_changed? || xml_translation_changed?
+      self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
+    end
   end
 
   def verbatim_transcription_plaintext

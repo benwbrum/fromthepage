@@ -9,6 +9,45 @@ describe Page do
   #     it { should validate_inclusion_of(:deed_type).in_array(DeedType.all_types) }
   #   end
 
+  describe 'OCR text processing on page creation' do
+    let(:owner) { create(:user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:ocr_text) { "This is some OCR extracted text.\nWith multiple lines." }
+
+    it 'populates xml_text and search_text when page is created with source_text' do
+      page = Page.new
+      page.work = work
+      page.title = 'Test Page'
+      page.source_text = ocr_text
+      
+      expect(page.xml_text).to be_nil
+      expect(page.search_text).to be_nil
+      
+      page.save!
+      
+      expect(page.xml_text).not_to be_nil
+      expect(page.xml_text).to include('<?xml version="1.0" encoding="UTF-8"?>')
+      expect(page.xml_text).to include(ocr_text)
+      
+      expect(page.search_text).not_to be_nil
+      expect(page.search_text).to include('This is some OCR extracted text')
+    end
+
+    it 'populates search_text when page is updated with source_text' do
+      page = Page.create!(work: work, title: 'Test Page', source_text: '')
+      
+      expect(page.search_text).to be_blank
+      
+      page.source_text = ocr_text
+      page.save!
+      
+      expect(page.xml_text).not_to be_nil
+      expect(page.search_text).not_to be_nil
+      expect(page.search_text).to include('This is some OCR extracted text')
+    end
+  end
+
   describe '#validate_blank_page' do
     let(:page) { build_stubbed(:page) }
     it 'sets :blank' do
