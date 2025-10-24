@@ -19,7 +19,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:23 GMT
+      - Tue, 21 Oct 2025 19:06:24 GMT
       Server:
       - Apache
       Content-Type:
@@ -42,7 +42,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:23 GMT
+      - Tue, 21 Oct 2025 19:06:24 GMT
       Content-Length:
       - '270'
     body:
@@ -55,7 +55,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:23 GMT
+  recorded_at: Tue, 21 Oct 2025 19:06:24 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
@@ -75,7 +75,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:24 GMT
+      - Tue, 21 Oct 2025 19:06:25 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -96,7 +96,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:24 GMT
+      - Tue, 21 Oct 2025 19:06:25 GMT
       Content-Length:
       - '248'
       Content-Type:
@@ -111,7 +111,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:24 GMT
+  recorded_at: Tue, 21 Oct 2025 19:06:25 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
@@ -131,7 +131,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:24 GMT
+      - Tue, 21 Oct 2025 19:06:26 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -156,14 +156,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '1369'
+      - '4750'
       Set-Cookie:
-      - JSESSIONID=ZDdhMGQzZjEtNDMxMC00ZGMwLWFlYWUtZTk3ZjJiYmE2ZThj; Path=/; HttpOnly;
+      - JSESSIONID=ZDI4NGYwOGYtMzBmNy00ZGEzLWE5MzItNjQ3ZDlhMGRmZGVl; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:24 GMT
+      - Tue, 21 Oct 2025 19:06:26 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json","label":"Letter
@@ -195,7 +195,215 @@ http_interactions:
         8, page 2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/range/r0","@type":"sc:Range","label":"Letter
         with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
         8","ranges":[],"canvases":["https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"],"viewingHint":"top"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:24 GMT
+  recorded_at: Tue, 21 Oct 2025 19:06:26 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:06:27 GMT
+      Server:
+      - Apache
+      Content-Type:
+      - application/json;charset=UTF-8
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:06:27 GMT
+      Content-Length:
+      - '270'
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>301 Moved Permanently</title>
+        </head><body>
+        <h1>Moved Permanently</h1>
+        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:06:27 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:06:28 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Location:
+      - https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:06:28 GMT
+      Content-Length:
+      - '248'
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=iso-8859-1
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>302 Found</title>
+        </head><body>
+        <h1>Found</h1>
+        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json">here</a>.</p>
+        </body></html>
+  recorded_at: Tue, 21 Oct 2025 19:06:28 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Oct 2025 19:29:35 GMT
+      Server:
+      - Apache
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      - 1; mode=block
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+      X-Oclc-Iiif-Provider:
+      - cantaloupe
+      Vary:
+      - Origin,Accept-Encoding,Access-Control-Request-Method,Access-Control-Request-Headers,User-Agent
+      Content-Type:
+      - application/json
+      Etag:
+      - '"0d68a58af3744b02afbfe8042a670b6a8"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '4750'
+      Set-Cookie:
+      - JSESSIONID=MmM4Yzc1NTYtZDM4Ny00MWE5LWE3NDktYjIzOTQxOGQ4NTMx; Path=/; HttpOnly;
+        SameSite=Lax
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Tue, 21 Oct 2025 19:29:35 GMT
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","metadata":[{"label":"Creator","value":"Shewalter, Virginia 1916-1978."},{"label":"Date","value":"1942-11-08"},{"label":"Description","value":"This
+        letter from Virginia Shewalter to her folks details her experiences on a train
+        trip, with stops in Lafayette and Chicago. She was unable to obtain a reservation
+        on a train to Des Moines."},{"label":"Finding Aid","value":"http://rave.ohiolink.edu/archives/ead/OMid0001"},{"label":"Format","value":"Correspondence;
+        Letters (correspondence); TIFF"},{"label":"Identifier","value":"Box 1, Folder
+        001"},{"label":"Extent","value":"1 Page, Envelope"},{"label":"Language","value":"English"},{"label":"Standardized
+        Rights Statement","value":"http://rightsstatements.org/vocab/InC-EDU/1.0/"},{"label":"Physical
+        Access","value":"To view the physical collection, please contact the MidPointe
+        Library System."},{"label":"Rights","value":"No permission is required from
+        the rights-holder(s) for non-commercial, non-derivative uses. For other uses
+        you need to obtain permission from the rightsholder(s)."},{"label":"Source","value":"The
+        Virginia Shewalter Letters Collection"},{"label":"Subject","value":"Shewalter,
+        Virginia 1916-1978; Shewalter, John 1884-1967; Shewalter, Mabel 1887-1964;
+        World War, 1939-1945; United States -- Army -- Women''s Army Auxiliary Corps."},{"label":"Title","value":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8"},{"label":"Type","value":"Text"},{"label":"Repository","value":"MidPointe
+        Digital Archives"},{"label":"Source","value":"<span>From: <a href=\"https://midpointedigitalarchives.contentdm.oclc.org/digital/collection/MPD01/id/2\">Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8</a></span>"}],"attribution":["","http://rightsstatements.org/vocab/InC-EDU/1.0/"],"seeAlso":{"@id":"https://cdm16488.contentdm.oclc.org/oai/oai.php?verb=GetRecord&identifier=oai:cdm16488.contentdm.oclc.org:MPD01/2&metadataPrefix=oai_qdc","format":"application/xml","profile":"http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"},"within":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","sequences":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/sequence/s0","@type":"sc:Sequence","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","canvases":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","@type":"sc:Canvas","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8, page 1","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/annotation/a0","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:0/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:0","width":1468,"height":2372,"tiles":[{"width":1468,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":1468,"height":2372},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0"}],"width":1468,"height":2372},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1","@type":"sc:Canvas","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8, page 2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/range/r0","@type":"sc:Range","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","ranges":[],"canvases":["https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"],"viewingHint":"top"}]}'
+  recorded_at: Tue, 21 Oct 2025 19:29:35 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json
@@ -215,7 +423,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:36 GMT
       Server:
       - Apache
       Content-Type:
@@ -238,7 +446,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:36 GMT
       Content-Length:
       - '270'
     body:
@@ -251,7 +459,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:25 GMT
+  recorded_at: Tue, 21 Oct 2025 19:29:36 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
@@ -271,7 +479,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:37 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -292,7 +500,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:37 GMT
       Content-Length:
       - '248'
       Content-Type:
@@ -307,7 +515,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:25 GMT
+  recorded_at: Tue, 21 Oct 2025 19:29:37 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
@@ -327,7 +535,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:38 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -352,14 +560,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '1369'
+      - '4750'
       Set-Cookie:
-      - JSESSIONID=NmY3MjgwZTgtMWUxZS00N2UyLTgwODUtMTAxYmRhNmUwZWM2; Path=/; HttpOnly;
+      - JSESSIONID=OTU2N2Y4NjctZDdhMi00NTM0LTk1OWMtNmRlYTZmZTA5ZWZl; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Wed, 06 Mar 2024 20:37:25 GMT
+      - Tue, 21 Oct 2025 19:29:38 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json","label":"Letter
@@ -391,201 +599,5 @@ http_interactions:
         8, page 2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/range/r0","@type":"sc:Range","label":"Letter
         with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
         8","ranges":[],"canvases":["https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"],"viewingHint":"top"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:25 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 301
-      message: Moved Permanently
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-      Server:
-      - Apache
-      Content-Type:
-      - application/json;charset=UTF-8
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Location:
-      - https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-      Content-Length:
-      - '270'
-    body:
-      encoding: UTF-8
-      string: |
-        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-        <html><head>
-        <title>301 Moved Permanently</title>
-        </head><body>
-        <h1>Moved Permanently</h1>
-        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json">here</a>.</p>
-        </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:25 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 302
-      message: Found
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-      Server:
-      - Apache
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Location:
-      - https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-      Content-Length:
-      - '248'
-      Content-Type:
-      - text/html; charset=iso-8859-1
-    body:
-      encoding: UTF-8
-      string: |
-        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-        <html><head>
-        <title>302 Found</title>
-        </head><body>
-        <h1>Found</h1>
-        <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json">here</a>.</p>
-        </body></html>
-  recorded_at: Wed, 06 Mar 2024 20:37:26 GMT
-- request:
-    method: get
-    uri: https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:2/manifest.json
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-      Server:
-      - Apache
-      X-Content-Type-Options:
-      - nosniff
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      - 1; mode=block
-      Access-Control-Allow-Headers:
-      - X-Requested-With
-      Link:
-      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-      X-Oclc-Iiif-Provider:
-      - cantaloupe
-      Vary:
-      - Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding,User-Agent
-      Content-Type:
-      - application/json
-      Etag:
-      - '"0d68a58af3744b02afbfe8042a670b6a8--gzip"'
-      X-Frame-Options:
-      - SAMEORIGIN
-      Content-Length:
-      - '1369'
-      Set-Cookie:
-      - JSESSIONID=ZTA5OTkxY2ItMTE2ZS00NzRiLWEzODQtZWFkNjhkYjFhYjM4; Path=/; HttpOnly;
-        SameSite=Lax
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 06 Mar 2024 20:37:26 GMT
-    body:
-      encoding: ASCII-8BIT
-      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/manifest.json","label":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8","metadata":[{"label":"Creator","value":"Shewalter, Virginia 1916-1978."},{"label":"Date","value":"1942-11-08"},{"label":"Description","value":"This
-        letter from Virginia Shewalter to her folks details her experiences on a train
-        trip, with stops in Lafayette and Chicago. She was unable to obtain a reservation
-        on a train to Des Moines."},{"label":"Finding Aid","value":"http://rave.ohiolink.edu/archives/ead/OMid0001"},{"label":"Format","value":"Correspondence;
-        Letters (correspondence); TIFF"},{"label":"Identifier","value":"Box 1, Folder
-        001"},{"label":"Extent","value":"1 Page, Envelope"},{"label":"Language","value":"English"},{"label":"Standardized
-        Rights Statement","value":"http://rightsstatements.org/vocab/InC-EDU/1.0/"},{"label":"Physical
-        Access","value":"To view the physical collection, please contact the MidPointe
-        Library System."},{"label":"Rights","value":"No permission is required from
-        the rights-holder(s) for non-commercial, non-derivative uses. For other uses
-        you need to obtain permission from the rightsholder(s)."},{"label":"Source","value":"The
-        Virginia Shewalter Letters Collection"},{"label":"Subject","value":"Shewalter,
-        Virginia 1916-1978; Shewalter, John 1884-1967; Shewalter, Mabel 1887-1964;
-        World War, 1939-1945; United States -- Army -- Women''s Army Auxiliary Corps."},{"label":"Title","value":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8"},{"label":"Type","value":"Text"},{"label":"Repository","value":"MidPointe
-        Digital Archives"},{"label":"Source","value":"<span>From: <a href=\"https://midpointedigitalarchives.contentdm.oclc.org/digital/collection/MPD01/id/2\">Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8</a></span>"}],"attribution":["","http://rightsstatements.org/vocab/InC-EDU/1.0/"],"seeAlso":{"@id":"https://cdm16488.contentdm.oclc.org/oai/oai.php?verb=GetRecord&identifier=oai:cdm16488.contentdm.oclc.org:MPD01/2&metadataPrefix=oai_qdc","format":"application/xml","profile":"http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"},"within":"https://cdm16488.contentdm.oclc.org/iiif/MPD01/manifest.json","sequences":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/sequence/s0","@type":"sc:Sequence","label":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8","canvases":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","@type":"sc:Canvas","label":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8, page 1","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/annotation/a0","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:0/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:0","width":1468,"height":2372,"tiles":[{"width":1468,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":1468,"height":2372},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0"}],"width":1468,"height":2372},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1","@type":"sc:Canvas","label":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8, page 2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/2/MPD01:1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/MPD01:2/range/r0","@type":"sc:Range","label":"Letter
-        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
-        8","ranges":[],"canvases":["https://cdm16488.contentdm.oclc.org/iiif/MPD01:0/canvas/c0","https://cdm16488.contentdm.oclc.org/iiif/MPD01:1/canvas/c1"],"viewingHint":"top"}]}'
-  recorded_at: Wed, 06 Mar 2024 20:37:26 GMT
-recorded_with: VCR 6.2.0
+  recorded_at: Tue, 21 Oct 2025 19:29:38 GMT
+recorded_with: VCR 6.3.1
