@@ -50,7 +50,7 @@ describe Article::Combine do
 
       expect(result.success?).to be_truthy
       to_article.reload
-      expect(to_article.source_text).to eq('To have appended text')
+      expect(to_article.source_text).to eq("To have \n\nappended text")
     end
 
     it 'copies from_article source_text to to_article when to_article has no source_text' do

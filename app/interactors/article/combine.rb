@@ -24,7 +24,7 @@ class Article::Combine < ApplicationInteractor
     # Concatenate source_text from from_article to to_article
     if from_article.source_text
       if to_article.source_text
-        to_article.source_text += from_article.source_text
+        to_article.source_text += "\n\n" + from_article.source_text
       else
         to_article.source_text = from_article.source_text
       end
