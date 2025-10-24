@@ -21,6 +21,16 @@ class Article::Combine < ApplicationInteractor
   private
 
   def combine_articles(from_article, to_article)
+    # Concatenate source_text from from_article to to_article
+    if from_article.source_text
+      if to_article.source_text
+        to_article.source_text += from_article.source_text
+      else
+        to_article.source_text = from_article.source_text
+      end
+      to_article.save!
+    end
+
     old_from_title = from_article.title
     from_article.title = "TO_BE_DELETED:#{old_from_title}"
     from_article.save!

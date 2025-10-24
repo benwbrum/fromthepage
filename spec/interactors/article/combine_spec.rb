@@ -43,4 +43,34 @@ describe Article::Combine do
 
     expect(result.success?).to be_truthy
   end
+
+  describe 'source_text concatenation' do
+    it 'concatenates from_article source_text to to_article source_text when both exist' do
+      expect(Article::RenameJob).to receive(:perform_later).and_call_original
+
+      expect(result.success?).to be_truthy
+      to_article.reload
+      expect(to_article.source_text).to eq('To have appended text')
+    end
+
+    it 'copies from_article source_text to to_article when to_article has no source_text' do
+      to_article.update_column(:source_text, nil)
+
+      expect(Article::RenameJob).to receive(:perform_later).and_call_original
+
+      expect(result.success?).to be_truthy
+      to_article.reload
+      expect(to_article.source_text).to eq('appended text')
+    end
+
+    it 'does not modify to_article source_text when from_article has no source_text' do
+      from_article.update_column(:source_text, nil)
+
+      expect(Article::RenameJob).to receive(:perform_later).and_call_original
+
+      expect(result.success?).to be_truthy
+      to_article.reload
+      expect(to_article.source_text).to eq('To have ')
+    end
+  end
 end
