@@ -147,7 +147,7 @@ html lang="en-US"
 
     =yield :javascript
 
-    -if defined?(BENTO_ENABLED) && BENTO_ENABLED
+    -if defined?(BENTO_ENABLED) && BENTO_ENABLED && !@disable_bento
         =render :partial => '/shared/bento'
         -if (user_signed_in? && current_user.owner?) || controller_name=='static'
           =render :partial => '/shared/bento_chat'

@@ -4,6 +4,7 @@ class ArticleController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:relationship_graph]
   before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
+  before_action :disable_bento, only: [:edit, :update]
 
   def tooltip
     render partial: 'tooltip'
@@ -364,5 +365,9 @@ class ArticleController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
+  end
+
+  def disable_bento
+    @disable_bento = true
   end
 end
