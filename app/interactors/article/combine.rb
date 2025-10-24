@@ -22,8 +22,8 @@ class Article::Combine < ApplicationInteractor
 
   def combine_articles(from_article, to_article)
     # Concatenate source_text from from_article to to_article
-    if from_article.source_text
-      if to_article.source_text
+    if from_article.source_text.present?
+      if to_article.source_text.present?
         to_article.source_text += "\n\n" + from_article.source_text
       else
         to_article.source_text = from_article.source_text
