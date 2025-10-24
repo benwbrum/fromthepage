@@ -349,7 +349,7 @@ describe ArticleController do
       end
     end
 
-    it 'includes work_id in document nodes' do
+    it 'includes identifier in document nodes' do
       subject
 
       expect(response).to have_http_status(:ok)
@@ -358,11 +358,11 @@ describe ArticleController do
       # Find document nodes (not article nodes)
       document_nodes = json['nodes'].select { |n| n['id'].start_with?('D') }
 
-      # Verify that all document nodes contain work_id field
+      # Verify that all document nodes contain identifier field
       expect(document_nodes).not_to be_empty
       document_nodes.each do |node|
-        expect(node).to have_key('work_id')
-        expect(node['work_id']).to eq(work.id)
+        expect(node).to have_key('identifier')
+        expect(node['identifier']).to eq(work.identifier)
       end
     end
 
@@ -374,7 +374,7 @@ describe ArticleController do
         FileUtils.rm_f(article_in_work.d3js_file)
       end
 
-      it 'includes work_id in work-based document nodes' do
+      it 'includes identifier in work-based document nodes' do
         get collection_article_relationship_graph_path(owner, collection, article_in_work)
 
         expect(response).to have_http_status(:ok)
@@ -383,11 +383,11 @@ describe ArticleController do
         # Find document nodes (not article nodes)
         document_nodes = json['nodes'].select { |n| n['id'].start_with?('D') }
 
-        # Verify that all document nodes contain work_id field
+        # Verify that all document nodes contain identifier field
         expect(document_nodes).not_to be_empty
         document_nodes.each do |node|
-          expect(node).to have_key('work_id')
-          expect(node['work_id']).to eq(work_not_meaningful.id)
+          expect(node).to have_key('identifier')
+          expect(node['identifier']).to eq(work_not_meaningful.identifier)
         end
       end
     end

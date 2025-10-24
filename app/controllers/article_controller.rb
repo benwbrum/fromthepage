@@ -175,7 +175,7 @@ class ArticleController < ApplicationController
             'title' => page.title + ' in ' + page.work.title,
             'group' => 'Documents',
             'link' => collection_display_page_path(@collection.owner, @collection, page.work, page),
-            'work_id' => page.work_id
+            'identifier' => page.work.identifier
           }
         end
       else
@@ -185,7 +185,7 @@ class ArticleController < ApplicationController
             'title' => work.title,
             'group' => 'Documents',
             'link' => collection_read_work_url(@collection.owner, @collection, work),
-            'work_id' => work.id
+            'identifier' => work.identifier
           }
         end
       end
