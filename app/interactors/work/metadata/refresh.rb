@@ -1,4 +1,11 @@
 class Work::Metadata::Refresh < ApplicationInteractor
+  MAX_RETRIES = 3
+  RETRY_DELAYS = [5, 10, 15].freeze
+  ERRORS_TO_RETRY = [
+    'Net::ReadTimeout',
+    '503 Service Unavailable'
+  ].freeze
+
   attr_reader :logs
 
   def initialize(work_ids: nil, batches: 100)
@@ -22,14 +29,23 @@ class Work::Metadata::Refresh < ApplicationInteractor
       next unless work.sc_manifest
 
       begin
+        retries ||= 0
         log("Refreshing metadata for work: #{work.id}")
         refresh_metadata(work)
       rescue StandardError => e
-        @success = false
+        if ERRORS_TO_RETRY.any? { |msg| e.message.include?(msg) } && retries < MAX_RETRIES
+          wait_time = RETRY_DELAYS[retries]
+          log("#{e.message} - retrying in #{wait_time}s (attempt #{retries + 1}/#{MAX_RETRIES})")
+          sleep(wait_time)
+          retries += 1
+          retry
+        else
+          @success = false
 
-        log("Failed to refresh metadata for #{work.slug}")
-        log("Error: #{e.message}")
-        log("Stacktrace: #{e.backtrace.join("\n")}")
+          log("Failed to refresh metadata for #{work.slug}")
+          log("Error: #{e.message}")
+          log("Stacktrace: #{e.backtrace.join("\n")}")
+        end
       end
     end
   end
