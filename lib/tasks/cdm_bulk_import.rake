@@ -3,7 +3,6 @@ namespace :fromthepage do
   task :bulk_import_cdm, [:cdm_bulk_import_id] => :environment do |t, args|
     bulk_import = CdmBulkImport.find(args.cdm_bulk_import_id.to_i)
 
-
     collection_or_set = bulk_import.collection_or_document_set
     if collection_or_set.is_a? DocumentSet
       collection = collection_or_set.collection
@@ -42,8 +41,6 @@ namespace :fromthepage do
         #        errors.store(at_id, e.backtrace.join("\n"))
       end
     end
-    puts "CONTENTdm bulk import has completed with these errors: \n#{errors.flatten.join("\n")}"
-
 
     if SMTP_ENABLED
       begin
@@ -56,5 +53,15 @@ namespace :fromthepage do
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
+
+    # TODO: This patches CDM imports. It would be good to refactor it into interactor to make testing easier
+    Elasticsearch::Collection::SyncJob.perform_now(
+      user_id: nil,
+      collection_id: collection_or_set.id,
+      type: collection_or_set.is_a?(DocumentSet) ? :document_set : :collection,
+      skip_collection: false
+    )
+
+    puts "CONTENTdm bulk import has completed with these errors: \n#{errors.flatten.join("\n")}"
   end
 end
