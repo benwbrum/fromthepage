@@ -61,4 +61,25 @@ describe Work::Metadata::Refresh do
       )
     end
   end
+
+  context 'when 503 error' do
+    it 'handles error gracefully' do
+      expect(work.original_metadata).to be_nil
+      VCR.use_cassette('iiif/refresh_metadata_unavailable', record: :none, allow_playback_repeats: false) do
+        result
+      end
+
+      expect(result.success?).to be_falsey
+      expect(result.logs).to include(
+        "Refreshing metadata for work: #{work.id}",
+        "503 Service Unavailable - retrying in 5s (attempt 1/3)",
+        "Refreshing metadata for work: #{work.id}",
+        "503 Service Unavailable - retrying in 10s (attempt 2/3)",
+        "Refreshing metadata for work: #{work.id}",
+        "503 Service Unavailable - retrying in 15s (attempt 3/3)",
+        "Failed to refresh metadata for #{work.slug}",
+        'Error: 503 Service Unavailable'
+      )
+    end
+  end
 end
