@@ -368,9 +368,10 @@ describe ArticleController do
 
     context 'when pages_are_not_meaningful' do
       let!(:work_not_meaningful) { create(:work, collection: collection, owner_user_id: owner.id, pages_are_meaningful: false) }
-      let!(:article_in_work) { create(:article, collection: collection, works: [work_not_meaningful]) }
+      let!(:article_in_work) { create(:article, collection: collection) }
 
       before do
+        create(:page_article_link, article: article_in_work, work: work_not_meaningful, page: nil)
         FileUtils.rm_f(article_in_work.d3js_file)
       end
 
