@@ -203,6 +203,12 @@
       sendActiveEditing()
   });
 
+  // Refresh CodeMirror to ensure proper dimension calculation and cursor positioning
+  // This fixes the issue where cursor appears in wrong position when scrollbar is not initially visible
+  setTimeout(function(){
+    myCodeMirror.refresh();
+  }, 100);
+
   // trigger any lint error when the page loaded
   setTimeout(function(){
     myCodeMirror.performLint();
