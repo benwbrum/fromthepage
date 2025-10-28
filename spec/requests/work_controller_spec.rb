@@ -116,11 +116,17 @@ describe WorkController do
     let(:subject) { get action_path, params: params }
 
     before do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       CollectionsIndex.import collection.reload
       WorksIndex.import collection.works
       PagesIndex.import collection.works.flat_map(&:pages)
+    end
+
+    after do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     it 'renders status and template' do

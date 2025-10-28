@@ -8,18 +8,20 @@ http_interactions:
       string: ''
     headers:
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - identity
+      User-Agent:
+      - FromThePage-IIIF/1.0
+      Connection:
+      - close
       Accept:
       - "*/*"
-      User-Agent:
-      - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
       Date:
-      - Thu, 28 Mar 2024 13:59:02 GMT
+      - Tue, 21 Oct 2025 19:10:03 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -27,20 +29,22 @@ http_interactions:
       Last-Modified:
       - Thu, 21 Apr 2022 16:22:25 GMT
       Etag:
-      - '"3c7-5dd2c83f62f29-gzip"'
+      - '"3c7-5dd2c83f62f29"'
       Accept-Ranges:
       - bytes
+      Content-Length:
+      - '967'
       Vary:
       - Accept-Encoding
-      Content-Length:
-      - '485'
+      Connection:
+      - close
       Content-Type:
       - application/json;charset=utf-8
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         ewogICJAY29udGV4dCI6ICJodHRwOi8vaWlpZi5pby9hcGkvcHJlc2VudGF0aW9uLzIvY29udGV4dC5qc29uIiwKICAiQGlkIjogImh0dHBzOi8vaWlpZi5kdXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS9jb2xsZWN0aW9uLzMyMTUwL3QyYzBnMzU0ZjIwNSIsCiAgIkB0eXBlIjogInNjOkNvbGxlY3Rpb24iLAogICJsYWJlbCI6ICJDb3NpbidzIExpYnJhcnkiLAogICJsaWNlbnNlIjogImh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMCIsCiAgImF0dHJpYnV0aW9uIjogIkRpZ2l0aXNlZCBieSBEdXJoYW0gVW5pdmVyc2l0eSBMaWJyYXJ5IiwKICAibG9nbyI6ICJodHRwczovL2lpaWYuZHVyaGFtLmFjLnVrL2ltYWdlcy9sb2dvcy9kdXJ1bmlfbG9nby5wbmciLAogICJtYW5pZmVzdHMiOiBbCiAgICB7CiAgICAgICJAaWQiOiAiaHR0cHM6Ly9paWlmLmR1cmhhbS5hYy51ay9tYW5pZmVzdHMvdHJpZmxlLzMyMTUwL3QyL20zL3IwL3QybTNyMDc0djAway9tYW5pZmVzdCIsCiAgICAgICJAdHlwZSI6ICJzYzpNYW5pZmVzdCIsCiAgICAgICJsYWJlbCI6ICJSZXNwb25jZSBhdSB0cmFpY3TDqSBkZSBsYSBwcmVkZXN0aW5hdGlvbiwgY29tcG9zw6kgLi4uIHBhciBsZSBzaWV1ciBDb3VldCAuLi4gUGFyIE0uIEFybmF1ZCBTb3JiaW4iCiAgICB9LAogICAgewogICAgICAiQGlkIjogImh0dHBzOi8vaWlpZi5kdXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS8zMjE1MC90MS9tZy83My90MW1nNzMyZDk0NWMvbWFuaWZlc3QiLAogICAgICAiQHR5cGUiOiAic2M6TWFuaWZlc3QiLAogICAgICAibGFiZWwiOiAiVGhlIGJvb2tlIG9mIGNvbW1vbiBwcmF5ZXIgYW5kIGFkbWluaXN0cmF0aW9uIG9mIHRoZSBzYWNyYW1lbnRzLiBBbmQgb3RoZXIgcml0ZXMgYW5kIGNlcmVtb25pZXMgb2YgdGhlIENodXJjaCBvZiBFbmdsYW5kLiAtIFNCKyAwOTA0IgogICAgfQogIF0KfQ==
-  recorded_at: Thu, 28 Mar 2024 13:59:02 GMT
+  recorded_at: Tue, 21 Oct 2025 19:10:03 GMT
 - request:
     method: get
     uri: https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205
@@ -60,7 +64,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 28 Mar 2024 13:59:02 GMT
+      - Tue, 21 Oct 2025 19:10:04 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -74,12 +78,12 @@ http_interactions:
       Vary:
       - Accept-Encoding
       Content-Length:
-      - '485'
+      - '967'
       Content-Type:
       - application/json;charset=utf-8
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         ewogICJAY29udGV4dCI6ICJodHRwOi8vaWlpZi5pby9hcGkvcHJlc2VudGF0aW9uLzIvY29udGV4dC5qc29uIiwKICAiQGlkIjogImh0dHBzOi8vaWlpZi5kdXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS9jb2xsZWN0aW9uLzMyMTUwL3QyYzBnMzU0ZjIwNSIsCiAgIkB0eXBlIjogInNjOkNvbGxlY3Rpb24iLAogICJsYWJlbCI6ICJDb3NpbidzIExpYnJhcnkiLAogICJsaWNlbnNlIjogImh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMCIsCiAgImF0dHJpYnV0aW9uIjogIkRpZ2l0aXNlZCBieSBEdXJoYW0gVW5pdmVyc2l0eSBMaWJyYXJ5IiwKICAibG9nbyI6ICJodHRwczovL2lpaWYuZHVyaGFtLmFjLnVrL2ltYWdlcy9sb2dvcy9kdXJ1bmlfbG9nby5wbmciLAogICJtYW5pZmVzdHMiOiBbCiAgICB7CiAgICAgICJAaWQiOiAiaHR0cHM6Ly9paWlmLmR1cmhhbS5hYy51ay9tYW5pZmVzdHMvdHJpZmxlLzMyMTUwL3QyL20zL3IwL3QybTNyMDc0djAway9tYW5pZmVzdCIsCiAgICAgICJAdHlwZSI6ICJzYzpNYW5pZmVzdCIsCiAgICAgICJsYWJlbCI6ICJSZXNwb25jZSBhdSB0cmFpY3TDqSBkZSBsYSBwcmVkZXN0aW5hdGlvbiwgY29tcG9zw6kgLi4uIHBhciBsZSBzaWV1ciBDb3VldCAuLi4gUGFyIE0uIEFybmF1ZCBTb3JiaW4iCiAgICB9LAogICAgewogICAgICAiQGlkIjogImh0dHBzOi8vaWlpZi5kdXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS8zMjE1MC90MS9tZy83My90MW1nNzMyZDk0NWMvbWFuaWZlc3QiLAogICAgICAiQHR5cGUiOiAic2M6TWFuaWZlc3QiLAogICAgICAibGFiZWwiOiAiVGhlIGJvb2tlIG9mIGNvbW1vbiBwcmF5ZXIgYW5kIGFkbWluaXN0cmF0aW9uIG9mIHRoZSBzYWNyYW1lbnRzLiBBbmQgb3RoZXIgcml0ZXMgYW5kIGNlcmVtb25pZXMgb2YgdGhlIENodXJjaCBvZiBFbmdsYW5kLiAtIFNCKyAwOTA0IgogICAgfQogIF0KfQ==
-  recorded_at: Thu, 28 Mar 2024 13:59:02 GMT
-recorded_with: VCR 6.2.0
+  recorded_at: Tue, 21 Oct 2025 19:10:04 GMT
+recorded_with: VCR 6.3.1

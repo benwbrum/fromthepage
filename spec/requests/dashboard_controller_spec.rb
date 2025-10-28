@@ -275,8 +275,14 @@ describe DashboardController do
 
     context 'with elasticsearch' do
       before do
+        VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
         stub_const('ELASTIC_ENABLED', true)
         CollectionsIndex.import collection
+      end
+
+      after do
+        VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
       end
 
       let(:params) { { search: collection.title } }

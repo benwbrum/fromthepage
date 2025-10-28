@@ -56,6 +56,8 @@
         .flex-toolbar_group
           =f.label 'mark_blank', t('.mark_as_blank')
           =f.check_box('mark_blank', {checked: @page.status_blank?})
+      -else
+        =f.hidden_field(:mark_blank, value: @page.status_blank?)
 
       -if !@collection.review_workflow
         .flex-toolbar_group
