@@ -849,7 +849,6 @@ module ExportService
       'Work FromThePage ID',
       'Work FromThePage URL',
       'Work Description',
-      'Work Status',
       'Work Total Pages',
       'Work Pages Transcribed',
       'Work Pages Corrected',
@@ -876,7 +875,6 @@ module ExportService
       works.each do |work|
         # Get work-level data that will be repeated for each page
         work_users = work.deeds.map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
-        work_status = work.work_statistic ? calculate_work_status(work.work_statistic) : 'Unknown'
 
         work_data = [
           work.title,
@@ -884,7 +882,6 @@ module ExportService
           work.id,
           collection_read_work_url(collection.owner, collection, work),
           work.description,
-          work_status,
           work.work_statistic&.total_pages || 0,
           work.work_statistic&.transcribed_pages || 0,
           work.work_statistic&.corrected_pages || 0,
@@ -939,24 +936,5 @@ module ExportService
     end
 
     csv_string
-  end
-
-  def calculate_work_status(work_statistic)
-    total = work_statistic.total_pages
-    return 'Empty' if total == 0
-
-    transcribed = work_statistic.transcribed_pages
-    corrected = work_statistic.corrected_pages
-    blank = work_statistic.blank_pages
-
-    completed = transcribed + corrected + blank
-
-    if completed >= total
-      'Complete'
-    elsif transcribed > 0 || corrected > 0
-      'In Progress'
-    else
-      'Not Started'
-    end
   end
 end
