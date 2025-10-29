@@ -28,6 +28,6 @@ class PageArticleLink < ApplicationRecord
   before_create :set_work
 
   def set_work
-    self.work_id = page.work_id
+    self.work_id = page.work_id if page.present?
   end
 end
