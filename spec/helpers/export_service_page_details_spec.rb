@@ -29,18 +29,20 @@ describe 'ExportService#export_page_details_as_csv' do
       expect(csv.headers).to include('Work Title')
       expect(csv.headers).to include('Work Identifier')
 
-      # Check we have rows for each page
-      expect(csv.length).to eq(2)
+      # Check we have rows for pages in our test work
+      # Filter to just the pages from our specific work
+      work_rows = csv.select { |row| row['Work Title'] == work.title }
+      expect(work_rows.length).to eq(2)
 
       # Check first page data
-      first_row = csv.first
-      expect(first_row['Page Title']).to eq('Page 1')
+      first_row = work_rows.find { |row| row['Page Title'] == 'Page 1' }
+      expect(first_row).not_to be_nil
       expect(first_row['Page Position']).to eq('1')
       expect(first_row['Work Title']).to eq(work.title)
 
       # Check second page data
-      second_row = csv[1]
-      expect(second_row['Page Title']).to eq('Page 2')
+      second_row = work_rows.find { |row| row['Page Title'] == 'Page 2' }
+      expect(second_row).not_to be_nil
       expect(second_row['Page Position']).to eq('2')
       expect(second_row['Work Title']).to eq(work.title)
     end

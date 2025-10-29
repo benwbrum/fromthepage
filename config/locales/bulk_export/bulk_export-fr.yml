@@ -39,6 +39,8 @@ fr:
       html_description: Cela peut être utile pour la conservation dans d'autres systèmes ou comme point de départ pour l'affichage sur un autre site Web.
       notes_csv: Notes CSV
       notes_csv_description: Une feuille de calcul répertoriant chaque note de la collection.
+      page_details_csv: Page Details CSV
+      page_details_csv_description: A spreadsheet with one row per page, including page information and parent work metadata.
       one_file_per_collection: Un fichier par collection
       one_file_per_page: Un fichier par page
       one_file_per_work: Un fichier par œuvre
