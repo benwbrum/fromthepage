@@ -941,8 +941,6 @@ module ExportService
     csv_string
   end
 
-  private
-
   def calculate_work_status(work_statistic)
     total = work_statistic.total_pages
     return 'Empty' if total == 0
