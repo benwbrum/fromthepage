@@ -381,6 +381,7 @@ class Collection < ApplicationRecord
     next_untranscribed_page.present?
   end
 
+  # TODO: Move to interactor
   def update_works_stats
     works = self.works.includes(:work_statistic)
     works_stats = get_works_stats_hash(works.ids)
@@ -401,31 +402,25 @@ class Collection < ApplicationRecord
   end
 
   def get_works_stats_hash(work_ids)
-    stats = {}
-    work_prototype = {
-      transcription: {},
-      translation: {},
-      total: 0
-    }
+    stats = Hash.new { |h, id| h[id] = { transcription: {}, translation: {}, total: 0 } }
 
-    transcription = Page.where(work_id: work_ids).group(:work_id, :status).count
-    translation = Page.where(work_id: work_ids).group(:work_id, :translation_status).count
-    totals = Page.where(work_id: work_ids).group(:work_id).count
+    pages_scope = Page.where(work_id: work_ids)
+    transcriptions_group = pages_scope.group(:work_id, :status).count
+    translations_group = pages_scope.group(:work_id, :translation_status).count
+    counts_group = pages_scope.group(:work_id).count
 
-    transcription.each do |(id, status), value|
-      stats[id] = work_prototype if stats[id].nil?
+    transcriptions_group.each do |(id, status), value|
       stats[id][:transcription][status] = value
     end
 
-    translation.each do |(id, status), value|
-      stats[id] = work_prototype if stats[id].nil?
+    translations_group.each do |(id, status), value|
       stats[id][:translation][status] = value
     end
 
-    totals.each do |id, value|
-      stats[id] = work_prototype if stats[id].nil?
+    counts_group.each do |id, value|
       stats[id][:total] = value
     end
+
     stats
   end
 
