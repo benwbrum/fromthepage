@@ -125,6 +125,10 @@ module ExportHelper
       export_collection_notes_csv(out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.page_details_csv_collection
+      export_page_details_csv_collection(out: out, collection: bulk_export.collection)
+    end
+
     if bulk_export.work_level? || bulk_export.page_level?
       by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
       original_filenames = bulk_export.use_uploaded_filename
@@ -138,6 +142,10 @@ module ExportHelper
         # work-specific exports
         if bulk_export.table_csv_work
           export_table_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
+        end
+
+        if bulk_export.page_details_csv_work
+          export_page_details_csv_work(out: out, work: work, by_work: by_work, original_filenames: original_filenames)
         end
 
         if bulk_export.tei_work

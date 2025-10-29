@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="filter-table"
 export default class extends Controller {
-  static targets = ['form', 'table', 'sortButton']
+  static targets = ['form', 'table', 'sortButton', 'listButton']
 
   formTargetConnected(target) {
     const $element = $(target);
@@ -61,5 +61,23 @@ export default class extends Controller {
 
   sortButtonTargetDisconnected(target) {
     $(target).off('click');
+  }
+
+  listButtonTargetConnected(target) {
+    const $listElement = $(target);
+    const listParam = $listElement.attr('data-list');
+    const listValue = $listElement.attr('data-value');
+
+    $listElement.on('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      $(this.formTarget).find(`#${listParam}`).val(listValue);
+
+      $(this.listButtonTargets).removeClass('selected');
+      $listElement.addClass('selected');
+
+      $(this.formTarget).trigger('change');
+    });
   }
 }

@@ -39,20 +39,22 @@ describe "owner actions", order: :defined do
   end
 
   it "creates an empty new work in a collection", js: true do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    work_title = "New Test Work"
-    visit dashboard_owner_path
-    click_link("#{test_collection.title}")
-    click_link("Add a new work")
-    expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Create Empty Work")
-    page.find(:css, "#create-empty-work").click
-    fill_in 'work_title', with: work_title
-    fill_in 'work_description', with: "This work contains no pages."
-    click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: work_title)).not_to be nil
+    VCR.use_cassette('sc_collections/gist', record: :none) do
+      @owner.account_type = "Small Organization"
+      test_collection = Collection.find_by(title: 'New Test Collection')
+      work_title = "New Test Work"
+      visit dashboard_owner_path
+      click_link("#{test_collection.title}")
+      click_link("Add a new work")
+      expect(page).to have_content("#{test_collection.title}")
+      expect(page).to have_content("Create Empty Work")
+      page.find(:css, "#create-empty-work").click
+      fill_in 'work_title', with: work_title
+      fill_in 'work_description', with: "This work contains no pages."
+      click_button('Create Work')
+      expect(page).to have_content("Here you see the list of all pages in the work.")
+      expect(Work.find_by(title: work_title)).not_to be nil
+    end
   end
 
   it "checks for subject in a new collection" do
@@ -133,24 +135,38 @@ describe "owner actions", order: :defined do
     expect(page).not_to have_content("New Test Category")
   end
 
-  it "enables GIS for subject category" do
-    category = @collection.categories.find_by(title: "Places")
+  it 'enables GIS for subject category', js: true do
+    category = @collection.categories.find_by(title: 'Places')
     category.gis_enabled = false
     category.save
 
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    @name = "#category-" + "#{category.id}"
+    page.find('.tabs').click_link('Subjects')
+    @name = "#category-#{category.id}"
+    expect(page).to have_content('Places')
+    page.find('a.tree-item', text: 'Places').click
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places")
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS'
     click_button('Create Category')
+
+    page.find('a.tree-item', text: 'Places').click
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Disable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS disabled for Places and 1 child category")
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS-2'
     click_button('Create Category')
+
+    page.find('a.tree-item', text: 'Places').click
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end

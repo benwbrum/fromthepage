@@ -46,9 +46,9 @@ tr
   td(colspan="2")
     h3 =t('collection.edit_tasks.ocr_correction')
     -if collection.works.ocr_disabled.any? || collection.works.empty?
-      =link_to(collection_enable_ocr_path(collection_id: collection.id), class: 'button action-btn', disabled: collection.works.empty? || !collection.text_entry?)
+      =link_to collection_enable_ocr_path(collection_id: collection.id), method: :post, class: 'button action-btn', disabled: collection.works.empty? || !collection.text_entry? do
         span =t('collection.edit_tasks.enable_ocr')
     -if collection.works.ocr_enabled.any?
-      =link_to(collection_disable_ocr_path(collection_id: collection.id), class: 'button action-btn', disabled: !collection.text_entry?)
+      =link_to collection_disable_ocr_path(collection_id: collection.id), method: :post, class: 'button action-btn', disabled: !collection.text_entry? do
         span =t('collection.edit_tasks.disable_ocr')
     p =t('collection.edit_tasks.ocr_description')

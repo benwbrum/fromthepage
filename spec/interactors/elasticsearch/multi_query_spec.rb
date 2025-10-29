@@ -69,6 +69,8 @@ if ELASTIC_ENABLED
     end
 
     before(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       [owner, other_user, collection, other_collection, document_set, work_1, work_2, page_1, page_2, page_3]
@@ -80,6 +82,8 @@ if ELASTIC_ENABLED
 
       [page_1, page_2, page_3, work_1, work_2, document_set, other_collection, collection, other_user, owner]
         .each(&:destroy!)
+
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     context 'Guest user' do

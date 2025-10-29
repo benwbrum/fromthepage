@@ -47,6 +47,8 @@ es:
       organization_description: Los archivos zip se pueden organizar con una carpeta por obra que contenga archivos o subcarpetas para cada formato de exportación, o con una carpeta por formato de exportación que contenga archivos por obra.
       organization_format: Formatear carpetas
       organization_work: Carpetas de obras
+      page_details_csv: Detalles de página CSV
+      page_details_csv_description: Una hoja de cálculo con una fila por página, incluyendo información de la página y metadatos de la obra principal.
       preserve_linebreaks: Conservar saltos de línea
       previous_exports: Exportaciones anteriores
       search_optimized_plaintext: Texto sin formato optimizado para búsqueda

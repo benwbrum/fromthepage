@@ -89,8 +89,8 @@ Fromthepage::Application.routes.draw do
     get 'new', to: 'collection#new'
     delete 'delete/:collection_id', to: 'collection#delete', as: :delete_collection
     get 'show', to: 'collection#show', as: :show
-    get 'enable_ocr', to: 'collection#enable_ocr'
-    get 'disable_ocr', to: 'collection#disable_ocr'
+    post 'enable_ocr', to: 'collection#enable_ocr'
+    post 'disable_ocr', to: 'collection#disable_ocr'
     post 'blank_collection/:collection_id', to: 'collection#blank_collection', as: :blank_collection
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: :edit_owners

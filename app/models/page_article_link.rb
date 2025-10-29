@@ -23,11 +23,11 @@
 class PageArticleLink < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :work, optional: true
-  belongs_to :article, counter_cache: :pages_count, optional: true
+  belongs_to :article, optional: true
 
   before_create :set_work
 
   def set_work
-    self.work_id = page.work_id
+    self.work_id = page.work_id if page.present?
   end
 end

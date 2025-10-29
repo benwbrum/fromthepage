@@ -110,6 +110,19 @@ namespace :fromthepage do
         PagesIndex.import pages_scope
       end
 
+      desc 'Update collection indices'
+      task :update_collection, [:collection_id] => :environment do |t, args|
+        collection = Collection.find(args[:collection_id])
+        document_sets = collection.document_sets.includes(:owner, :collection)
+        works = collection.works.includes({ collection: :owner }, :document_sets)
+        pages = collection.pages.includes(work: [{ collection: :owner }, :document_sets])
+
+        CollectionsIndex.import collection
+        DocumentSetsIndex.import document_sets
+        WorksIndex.import works
+        PagesIndex.import pages
+      end
+
       desc 'Delete Elasticsearch indices'
       task reset: :environment do
         CollectionsIndex.purge

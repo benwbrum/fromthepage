@@ -129,6 +129,8 @@ class BulkExportController < ApplicationController
       :include_notes,
       :notes_csv,
       :admin_searches,
+      :page_details_csv_work,
+      :page_details_csv_collection,
       report_arguments: [
         :start_date,
         :end_date,

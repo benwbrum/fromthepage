@@ -724,12 +724,18 @@ describe CollectionController do
     let(:subject) { get action_path, params: params }
 
     before do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       CollectionsIndex.import collection.reload
       DocumentSetsIndex.import document_set.reload
       WorksIndex.import collection.works
       PagesIndex.import collection.works.flat_map(&:pages)
+    end
+
+    after do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     it 'renders status and template' do
@@ -778,6 +784,55 @@ describe CollectionController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:recent_contributor_list)
+    end
+  end
+
+  describe '#show' do
+    let(:action_path) { collection_path(owner, collection) }
+    let(:subject) { get action_path }
+
+    context 'when facets are enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
+
+      context 'when user is logged in' do
+        it 'renders the facet form' do
+          login_as user
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include('facet-label')
+        end
+      end
+
+      context 'when user is not logged in' do
+        it 'does not render the facet form' do
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('facet-label')
+        end
+
+        it 'does not process facet search parameters from URL' do
+          get action_path, params: { search: { s1: ['test'] } }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('facet-label')
+          # Verify that facet filtering was not applied by checking @search is not set
+          expect(assigns(:search)).to be_nil
+        end
+      end
+    end
+
+    context 'when facets are not enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: false) }
+
+      it 'does not render the facet form' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('facet-label')
+      end
     end
   end
 end

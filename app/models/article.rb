@@ -13,7 +13,6 @@
 #  latitude         :decimal(7, 5)
 #  lock_version     :integer          default(0)
 #  longitude        :decimal(8, 5)
-#  pages_count      :integer          default(0)
 #  provenance       :string(255)
 #  race_description :string(255)
 #  sex              :string(255)
@@ -70,6 +69,21 @@ class Article < ApplicationRecord
   edtf_date_attribute :death_date
   edtf_date_attribute :begun
   edtf_date_attribute :ended
+
+  def self.sort_vertically(articles)
+    return [] unless articles.any?
+
+    rows = (articles.length.to_f / LIST_NUM_COLUMNS).ceil
+    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) }
+
+    articles.each_with_index do |article, index|
+      row = index % rows
+      col = index / rows
+      vertical_articles[row][col] = article
+    end
+
+    vertical_articles
+  end
 
   def link_list
     self.page_article_links.includes(:page).order('pages.work_id, pages.title')
