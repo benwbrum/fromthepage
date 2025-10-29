@@ -39,8 +39,8 @@ pt:
       html_description: Isso pode ser útil para preservação em outros sistemas ou como ponto de partida para exibição em outro site.
       notes_csv: Notas CSV
       notes_csv_description: Uma planilha listando cada nota na coleção.
-      page_details_csv: Page Details CSV
-      page_details_csv_description: A spreadsheet with one row per page, including page information and parent work metadata.
+      page_details_csv: Detalhes da página CSV
+      page_details_csv_description: Uma planilha com uma linha por página, incluindo informações da página e metadados da obra principal.
       one_file_per_collection: Um arquivo por coleção
       one_file_per_page: Um arquivo por página
       one_file_per_work: Um arquivo por obra
