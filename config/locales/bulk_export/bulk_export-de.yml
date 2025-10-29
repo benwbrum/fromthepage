@@ -39,8 +39,6 @@ de:
       html_description: Dies kann für die Aufbewahrung in anderen Systemen oder als Ausgangspunkt für die Anzeige auf einer anderen Website nützlich sein.
       notes_csv: Notizen CSV
       notes_csv_description: Eine Tabelle, in der jede Notiz in der Sammlung aufgeführt ist.
-      page_details_csv: Seitendetails CSV
-      page_details_csv_description: Eine Tabelle mit einer Zeile pro Seite, einschließlich Seiteninformationen und übergeordneten Werkmetadaten.
       one_file_per_collection: Eine Datei pro Sammlung
       one_file_per_page: Eine Datei pro Seite
       one_file_per_work: Eine Datei pro Werk
@@ -49,6 +47,8 @@ de:
       organization_description: ZIP-Dateien können je einen Ordner pro Werk enthalten, der Dateien oder Unterordner für jedes Exportformat enthält, oder sie enthalten einen Ordner pro Exportformat, der Dateien pro Werk enthält.
       organization_format: Ordner nach Formaten
       organization_work: Ordner nach Werken
+      page_details_csv: Seitendetails CSV
+      page_details_csv_description: Eine Tabelle mit einer Zeile pro Seite, einschließlich Seiteninformationen und übergeordneten Werkmetadaten.
       preserve_linebreaks: Zeilenumbrüche beibehalten
       previous_exports: Frühere Exporte
       search_optimized_plaintext: Suchoptimierter Plaintext
