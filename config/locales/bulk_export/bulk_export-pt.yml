@@ -47,6 +47,8 @@ pt:
       organization_description: Os arquivos zip podem ser organizados com uma pasta por obra contendo arquivos ou subpastas para cada formato de exportação, ou com uma pasta por formato de exportação contendo arquivos por obra.
       organization_format: Formatar pastas
       organization_work: Pastas de obras
+      page_details_csv: Detalhes da página CSV
+      page_details_csv_description: Uma planilha com uma linha por página, incluindo informações da página e metadados da obra principal.
       preserve_linebreaks: Preservar quebras de linha
       previous_exports: Exportações anteriores
       search_optimized_plaintext: Texto simples otimizado para pesquisa

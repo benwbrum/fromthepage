@@ -802,4 +802,139 @@ module ExportService
       end
     end
   end
+
+  def export_page_details_csv_collection(out:, collection:)
+    path = 'page_details.csv'
+    out.put_next_entry(path)
+    out.write(export_page_details_as_csv(collection))
+  end
+
+  def export_page_details_csv_work(out:, work:, by_work:, original_filenames:)
+    if by_work
+      path = File.join(path_from_work(work, original_filenames), 'csv', 'page_details.csv')
+    else
+      path = File.join('page_details', "#{path_from_work(work, original_filenames)}.csv")
+    end
+    out.put_next_entry(path)
+    out.write(export_page_details_as_csv(work))
+  end
+
+  def export_page_details_as_csv(page_source)
+    # page_source can be either a Collection or a Work
+    if page_source.is_a?(Collection)
+      collection = page_source
+      works = collection.works.includes(:work_statistic, :sc_manifest, :document_sets, pages: [:notes, { page_versions: :user }, { deeds: :user }])
+    elsif page_source.is_a?(Work)
+      collection = page_source.collection
+      works = [page_source].each { |w| w.pages.includes(:notes, { page_versions: :user }, { deeds: :user }) }
+    else
+      return ''
+    end
+
+    # Build headers - combining page info and work metadata
+    page_headers = [
+      'Page URL',
+      'Page Title',
+      'Page Position',
+      'Page Status',
+      'Page Translation Status',
+      'Page Contributors',
+      'Page Notes Count',
+      'Page Last Updated'
+    ]
+
+    work_headers = [
+      'Work Title',
+      'Work Identifier',
+      'Work FromThePage ID',
+      'Work FromThePage URL',
+      'Work Description',
+      'Work Total Pages',
+      'Work Pages Transcribed',
+      'Work Pages Corrected',
+      'Work Pages Indexed',
+      'Work Pages Translated',
+      'Work Pages Needing Review',
+      'Work Pages Marked Blank',
+      'Work Contributors',
+      'Work Document Sets',
+      'Work Uploaded Filename',
+      'Work Creation Date'
+    ]
+
+    # Get metadata headers from work original_metadata
+    raw_metadata_strings = works.pluck(:original_metadata)
+    metadata_headers = raw_metadata_strings
+                       .compact
+                       .flat_map { |raw| JSON.parse(raw).map { |element| element['label'] } }
+                       .uniq
+
+    csv_string = CSV.generate(force_quotes: true) do |csv|
+      csv << (page_headers + work_headers + metadata_headers)
+
+      works.each do |work|
+        # Get work-level data that will be repeated for each page
+        work_users = work.deeds.map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
+
+        work_data = [
+          work.title,
+          work.identifier,
+          work.id,
+          collection_read_work_url(collection.owner, collection, work),
+          work.description,
+          work.work_statistic&.total_pages || 0,
+          work.work_statistic&.transcribed_pages || 0,
+          work.work_statistic&.corrected_pages || 0,
+          work.work_statistic&.annotated_pages || 0,
+          work.work_statistic&.translated_pages || 0,
+          work.work_statistic&.needs_review || 0,
+          work.work_statistic&.blank_pages || 0,
+          work_users,
+          work.document_sets.map(&:title).join('|'),
+          work.uploaded_filename,
+          work.created_on
+        ]
+
+        # Add work metadata
+        work_metadata_values = []
+        if work.original_metadata.present?
+          metadata = {}
+          JSON.parse(work.original_metadata).each { |e| metadata[e['label']] = e['value'] }
+
+          metadata_headers.each do |header|
+            work_metadata_values << metadata[header]
+          end
+        else
+          work_metadata_values = Array.new(metadata_headers.length, nil)
+        end
+
+        # Iterate through each page in the work
+        work.pages.each do |page|
+          page_url = collection_display_page_url(collection.owner, collection, work, page)
+
+          # Get page contributors
+          page_contributors = page.deeds
+            .select { |d| DeedType.contributor_types.include?(d.deed_type) }
+            .map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+            .uniq
+            .join('|')
+
+          page_data = [
+            page_url,
+            page.title,
+            page.position,
+            I18n.t("page.edit.page_status_#{page.status}"),
+            work.supports_translation ? I18n.t("page.edit.page_status_#{page.translation_status}") : 'N/A',
+            page_contributors,
+            page.notes.count,
+            page.updated_at
+          ]
+
+          csv << (page_data + work_data + work_metadata_values)
+        end
+      end
+    end
+
+    csv_string
+  end
 end

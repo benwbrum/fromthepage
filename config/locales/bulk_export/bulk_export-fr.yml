@@ -47,6 +47,8 @@ fr:
       organization_description: Les fichiers zip peuvent être organisés avec un dossier par œuvre contenant des fichiers ou des sous-dossiers pour chaque format d'exportation, ou avec un dossier par format d'exportation contenant des fichiers par œuvre.
       organization_format: Formater les dossiers
       organization_work: Dossiers d'œuvre
+      page_details_csv: Détails de la page CSV
+      page_details_csv_description: Une feuille de calcul avec une ligne par page, comprenant les informations de page et les métadonnées de l'œuvre parent.
       preserve_linebreaks: Conserver les sauts de ligne
       previous_exports: Exportations précédentes
       search_optimized_plaintext: Texte brut optimisé pour la recherche
