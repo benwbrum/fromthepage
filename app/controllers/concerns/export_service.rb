@@ -877,7 +877,7 @@ module ExportService
         # Get work-level data that will be repeated for each page
         work_users = work.deeds.map { |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }.uniq.join('|')
         work_status = work.work_statistic ? calculate_work_status(work.work_statistic) : 'Unknown'
-        
+
         work_data = [
           work.title,
           work.identifier,
@@ -903,7 +903,7 @@ module ExportService
         if work.original_metadata.present?
           metadata = {}
           JSON.parse(work.original_metadata).each { |e| metadata[e['label']] = e['value'] }
-          
+
           metadata_headers.each do |header|
             work_metadata_values << metadata[header]
           end
@@ -914,7 +914,7 @@ module ExportService
         # Iterate through each page in the work
         work.pages.each do |page|
           page_url = collection_display_page_url(collection.owner, collection, work, page)
-          
+
           # Get page contributors
           page_contributors = page.deeds
             .select { |d| DeedType.contributor_types.include?(d.deed_type) }
@@ -950,7 +950,7 @@ module ExportService
     blank = work_statistic.blank_pages
 
     completed = transcribed + corrected + blank
-    
+
     if completed >= total
       'Complete'
     elsif transcribed > 0 || corrected > 0
