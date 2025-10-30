@@ -13,3 +13,7 @@ window.addEventListener("bento:ready", function () {
   }
 })
 </script>
+
+<% if (user_signed_in? && current_user.owner?) || controller_name=='static' %>
+  <%= render partial: '/shared/third_party/bento_chat' %>
+<% end %>

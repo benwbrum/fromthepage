@@ -65,7 +65,13 @@ class UserController < ApplicationController
       else
         @user.update(params_hash)
       end
-        @user.notification.update(notifications_hash)
+
+      @user.notification.update(notifications_hash)
+      Cookies::Lib::CreateOrUpdateHandler.new(
+        cookies: cookies,
+        privacy_preference_params: privacy_params[:privacy_preferences],
+        user: @user
+      ).perform
 
       if @user.save!
         flash[:notice] = t('.user_updated')
@@ -188,8 +194,11 @@ class UserController < ApplicationController
     params.permit(:term, :page, :filter, :user_id)
   end
 
-
   def user_params
     params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
+  end
+
+  def privacy_params
+    params.require(:user).permit(privacy_preferences: [:marketing, :analytics])
   end
 end

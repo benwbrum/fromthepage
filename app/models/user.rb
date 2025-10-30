@@ -111,6 +111,9 @@ class User < ApplicationRecord
 
   has_many :metadata_description_versions, dependent: :destroy
 
+  has_one :privacy_preference
+  accepts_nested_attributes_for :privacy_preference
+
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
 

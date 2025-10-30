@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include CookiesConsent
+
   DEFAULT_PER_PAGE = 200
 
   protect_from_forgery with: :exception, except: [:switch_locale, :saml]
@@ -79,12 +81,23 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    super || guest_user
+    return @current_user if defined?(@current_user)
+
+    user = super || guest_user
+
+    if user.present?
+      ActiveRecord::Associations::Preloader.new(
+        records: [user],
+        associations: [:privacy_preference]
+      ).call
+    end
+
+    @current_user = user
   end
 
   # find the guest user account if a guest user session is currently active
   def guest_user
-    User.find_by(id: session[:guest_user_id])
+    @guest_user ||= User.find_by(id: session[:guest_user_id])
   end
 
   # when the user chooses to transcribe as guest, find guest user id or create new guest user

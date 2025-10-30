@@ -32,6 +32,8 @@ class RegistrationsController < Devise::RegistrationsController
       @user = build_resource(sign_up_params)
     end
 
+    @user.build_privacy_preference(recorded: cookies[:cookies_recorded]&.to_sym == :recorded)
+
     # This is the default Devise code
     yield resource if block_given?
 
@@ -63,6 +65,7 @@ class RegistrationsController < Devise::RegistrationsController
         @user.save
         alert_bento
       end
+
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
@@ -166,5 +169,9 @@ class RegistrationsController < Devise::RegistrationsController
       digital_scholarship_path,
       state_archives_path
     ]
+  end
+
+  def show_consent_banner?
+    false
   end
 end

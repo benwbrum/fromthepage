@@ -1,0 +1,18 @@
+---
+pt:
+  cookies:
+    banner:
+      accept_all: Aceitar tudo
+      description: Usamos cookies essenciais para o funcionamento do FromThePage e cookies opcionais (com o seu consentimento) para nos ajudar a melhorar o nosso serviço e o nosso alcance.
+      manage_preferences: Gerenciar preferências
+      title: Preferências de cookies
+    new:
+      analytics: Análise
+      analytics_description: Ajude-nos a entender como as pessoas usam o FromThePage para que possamos melhorar o site. Inclui ferramentas como Google Analytics e Microsoft Clarity.
+      back: Voltar
+      confirm: Confirmar
+      essential: Essencial
+      essential_description: Necessários para funcionalidades essenciais, como sessões de login e autenticação. Esses cookies estão sempre ativos.
+      marketing: Marketing
+      marketing_description: Ajude-nos a medir e melhorar nosso alcance e a exibir conteúdo relevante. Isso inclui ferramentas como o Pixel do Facebook e o Bento.
+      title: Preferências de cookies

@@ -29,15 +29,6 @@ html lang="en-US"
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.umd.min.js'
     =javascript_include_tag 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
-    -unless GA_ACCOUNT.blank?
-      =render :partial => '/layouts/ga'
-    -unless MIXPANEL_ID.blank?
-      =render :partial => '/layouts/mixpanel'
-    -unless FACEBOOK_PIXEL_ID.blank?
-      =render :partial => '/layouts/fb_pixel'
-    -unless CLARITY.blank?
-      =render :partial => '/layouts/clarity'
-
   body class="#{'monitor-view' if @is_monitor_view}"
     #flash_wrapper
       -flash.each do |type, message|
@@ -147,7 +138,6 @@ html lang="en-US"
 
     =yield :javascript
 
-    -if defined?(BENTO_ENABLED) && BENTO_ENABLED
-        =render :partial => '/shared/bento'
-        -if (user_signed_in? && current_user.owner?) || controller_name=='static'
-          =render :partial => '/shared/bento_chat'
+    =render partial: 'shared/third_party/dynamic_scripts'
+    -if show_consent_banner?
+      =render partial: 'cookies/banner'
