@@ -152,6 +152,7 @@ en:
       each_pdf_will_be_treated: Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
       for_example_a_zip_file: 'For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.'
       image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
+      image_naming_guidelines_bullet: 'Images should be named so that an alphabetical sort will result in the correct page order. (This may require "zero-padding" for any page numbers: page_09.jpg, page_10.jpg will sort correctly, but page_9.jpg, page_10.jpg will not.)'
       image_orientation_guidelines: Images should be oriented so that they are right-side-up.
       import_form_message: Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project. ZIP files may contain image files (PNG, GIF, JPG, BMP, or TIFF).
       page_image_guidelines: Page Image Guidelines
@@ -162,7 +163,7 @@ en:
       upload_pdf_or_zip_file: Upload Files
       use_image_filenames: " Use image filenames as page titles."
       use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
-      zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
+      zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing PDFs.
     watchlist:
       collections: collections
       private_collections_you_belong_to: Private collections you're a collaborator on

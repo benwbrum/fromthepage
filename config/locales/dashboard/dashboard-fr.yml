@@ -152,6 +152,7 @@ fr:
       each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
       for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
       image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      image_naming_guidelines_bullet: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages. (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : page_09.jpg, page_10.jpg triera correctement, mais page_9.jpg, page_10.jpg ne le sera pas.)'
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet. Les fichiers ZIP peuvent contenir des fichiers d'image (PNG, GIF, JPG, BMP ou TIFF).
       page_image_guidelines: Directives relatives aux images de page
@@ -162,7 +163,7 @@ fr:
       upload_pdf_or_zip_file: Téléverser des fichiers
       use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
       use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
-      zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
+      zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDFs.
     watchlist:
       collections: collections
       private_collections_you_belong_to: Collections privées sur lesquelles vous êtes collaborateur
