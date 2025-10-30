@@ -3,7 +3,7 @@ es:
   cookies:
     banner:
       accept_all: Aceptar todo
-      description: Utilizamos cookies esenciales para la funcionalidad y cookies opcionales (con su consentimiento) para mejorar su experiencia.
+      description: Utilizamos cookies esenciales para que FromThePage funcione y cookies opcionales (con su consentimiento) para ayudarnos a mejorar nuestro servicio y alcance.
       manage_preferences: Administrar preferencias
       title: Preferencias de cookies
     new:
@@ -12,7 +12,7 @@ es:
       back: Atrás
       confirm: Confirmar
       essential: Básico
-      essential_description: Necesario para la funcionalidad de la aplicación (por ejemplo, sesión, autenticación).
+      essential_description: Necesarias para funciones básicas como las sesiones de inicio de sesión y la autenticación. Estas cookies están siempre activas.
       marketing: Marketing
-      marketing_description: Permítanos medir y mejorar nuestro alcance y mostrarle contenido u ofertas relevantes. Incluye herramientas como Facebook Pixel y Bentonow.
+      marketing_description: Ayúdanos a medir y mejorar nuestro alcance y a mostrar contenido relevante. Incluye herramientas como Facebook Pixel y Bento.
       title: Preferencias de cookies
