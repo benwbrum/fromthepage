@@ -13,6 +13,8 @@
 #  organization                       :string(255)      default("by_work")
 #  owner_detailed_activity            :boolean
 #  owner_mailing_list                 :boolean
+#  page_details_csv_collection        :boolean          default(FALSE)
+#  page_details_csv_work              :boolean          default(FALSE)
 #  plaintext_emended_page             :boolean
 #  plaintext_emended_work             :boolean
 #  plaintext_searchable_page          :boolean
