@@ -49,10 +49,3 @@
       =link_to t('.import_from_archive_dot_org'), ia_book_form_path, data: { controller: 'litebox', litebox: { hash: 'import-ia' } }, class: 'button'
 
     =render 'dashboard/empty'
-
-  aside.sidecol
-    h4 =t('.page_image_guidelines')
-    .fglight
-      p =t('.acceptable_formats')
-      p =t('.images_should_be_oriented')
-      p =t('.images_should_be_named').html_safe
