@@ -178,6 +178,17 @@
             =f.label :notes_csv
               =f.check_box :notes_csv, value: @bulk_export.notes_csv
               span= t('.one_file_per_collection')
+        li 
+          .bulk-export_format
+            h5= t('.page_details_csv')
+            p.nomargin= t('.page_details_csv_description')
+          .bulk-export_options
+            =f.label :page_details_csv_work
+              =f.check_box :page_details_csv_work, value: @bulk_export.page_details_csv_work
+              span= t('.one_file_per_work')
+            =f.label :page_details_csv_collection
+              =f.check_box :page_details_csv_collection, value: @bulk_export.page_details_csv_collection
+              span= t('.one_file_per_collection')
             
 
       .toolbar

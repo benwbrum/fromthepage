@@ -47,6 +47,8 @@ en:
       organization_description: Zip files can be organized with a folder per work containing files or subfolders for each export format, or with a folder per export format containing files per work.
       organization_format: Format folders
       organization_work: Work folders
+      page_details_csv: Page Details CSV
+      page_details_csv_description: A spreadsheet with one row per page, including page information and parent work metadata.
       preserve_linebreaks: Preserve Linebreaks
       previous_exports: Previous Exports
       search_optimized_plaintext: Search-optimized Plaintext
