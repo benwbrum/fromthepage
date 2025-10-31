@@ -388,10 +388,6 @@ fr:
     update_buttons:
       editor_buttons_updated: Boutons de l'éditeur mis à jour
     upload:
-      acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
-      image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse au bon ordre des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
-      image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
-      page_image_guidelines: Directives relatives aux images de page
     user_contribution_list:
       approve_all: Tout approuver
       date: Date

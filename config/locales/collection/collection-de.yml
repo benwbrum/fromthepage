@@ -388,10 +388,6 @@ de:
     update_buttons:
       editor_buttons_updated: Editor-Buttons aktualisiert
     upload:
-      acceptable_image_files: 'Zulässige Formate: PNG-, GIF- und JPG.'
-      image_naming_guidelines: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
-      image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
-      page_image_guidelines: Richtlinien für Bildseiten
     user_contribution_list:
       approve_all: Alle freigeben
       date: Datum

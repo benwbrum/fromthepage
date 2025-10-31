@@ -86,9 +86,6 @@ fr:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
       reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
     new_work:
-      acceptable_formats: Les fichiers PNG, GIF et JPG sont tous acceptables.
-      images_should_be_named: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
-      images_should_be_oriented: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import: Importer
       import_a_iiif_manifest_or_collection: Importer un manifeste ou une collection IIIF
       import_from_archive_dot_org: Importer depuis Archive.org
@@ -96,7 +93,6 @@ fr:
       import_from_the_internet_archive: Importer à partir des archives Internet
       import_many_link: importer plusieurs objets composés individuels.
       or_import_many: 'Ou '
-      page_image_guidelines: Directives relatives aux images de page
       paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
       active_collections: Collections actives
@@ -144,7 +140,6 @@ fr:
         other: Œuvres
       your_collections: Vos collections
     upload:
-      acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
       browse: Parcourir
       click_to_browse_a_file: Cliquer pour parcourir un fichier...
       click_to_browse_files: Cliquer pour parcourir les fichiers
@@ -155,7 +150,6 @@ fr:
       image_naming_guidelines_bullet: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages. (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : page_09.jpg, page_10.jpg triera correctement, mais page_9.jpg, page_10.jpg ne le sera pas.)'
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet. Les fichiers ZIP peuvent contenir des fichiers d'image (PNG, GIF, JPG, BMP ou TIFF).
-      page_image_guidelines: Directives relatives aux images de page
       select_a_collection: "- Sélectionner une collection -"
       to_specify_metadata: Pour spécifier les métadonnées, vous pouvez télécharger une feuille de calcul après le téléchargement des images ou vous pouvez inclure un fichier %{link} dans chaque dossier spécifiant les champs de l'œuvre.
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.

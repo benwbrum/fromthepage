@@ -86,9 +86,6 @@ en:
       document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
       reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.
     new_work:
-      acceptable_formats: PNG, GIF, and JPG files are all acceptable.
-      images_should_be_named: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
-      images_should_be_oriented: Images should be oriented so that they are right-side-up.
       import: Import
       import_a_iiif_manifest_or_collection: Import a IIIF Manifest or Collection
       import_from_archive_dot_org: Import From Archive.org
@@ -96,7 +93,6 @@ en:
       import_from_the_internet_archive: Import from the Internet Archive
       import_many_link: import several individual compound objects.
       or_import_many: 'Or '
-      page_image_guidelines: Page Image Guidelines
       paste_in_the_url: Paste in the URL of a compound object or a collection on your CONTENTdm site.
     owner:
       active_collections: Active Collections
@@ -144,18 +140,15 @@ en:
         other: Works
       your_collections: Your Collections
     upload:
-      acceptable_image_files: PNG, GIF, and JPG files are all acceptable.
       browse: Browse
       click_to_browse_a_file: Click to browse a file...
       click_to_browse_files: Click to browse files
       each_folder_will_be_treated: Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
       each_pdf_will_be_treated: Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
       for_example_a_zip_file: 'For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.'
-      image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
       image_naming_guidelines_bullet: 'Images should be named so that an alphabetical sort will result in the correct page order. (This may require "zero-padding" for any page numbers: page_09.jpg, page_10.jpg will sort correctly, but page_9.jpg, page_10.jpg will not.)'
       image_orientation_guidelines: Images should be oriented so that they are right-side-up.
       import_form_message: Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project. ZIP files may contain image files (PNG, GIF, JPG, BMP, or TIFF).
-      page_image_guidelines: Page Image Guidelines
       select_a_collection: "- Select a collection -"
       to_specify_metadata: To specify metadata you can upload a spreadsheet after the images are uploaded or you can include a %{link} file in each folder specifying fields for the work.
       trial_accounts_are_limited: Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.
