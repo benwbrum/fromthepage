@@ -63,7 +63,7 @@ describe DocumentSet do
       collection.update!(slug: dup_slug)
 
       types = FriendlyId::Slug.where(slug: dup_slug).pluck(:sluggable_type)
-      expect(types).to eq(['Collection'])
+      expect(types).to eq([ 'Collection' ])
     end
   end
 
