@@ -61,7 +61,7 @@ require 'subject_distribution_exporter'
 class Collection < ApplicationRecord
   include CollectionStatistic
   include DuplicateSlugCleanup
-  
+
   extend FriendlyId
   friendly_id :slug_candidates, use: [ :slugged, :history ]
   before_save :uniquify_slug
