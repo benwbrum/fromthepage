@@ -60,7 +60,6 @@ require 'subject_distribution_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
-  include ElasticDelta
   include DuplicateSlugCleanup
   
   extend FriendlyId

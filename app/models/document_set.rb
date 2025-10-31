@@ -26,7 +26,6 @@
 #
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
-  include ElasticDelta
   include DuplicateSlugCleanup
 
   extend FriendlyId
