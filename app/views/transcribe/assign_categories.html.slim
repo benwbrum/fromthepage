@@ -15,7 +15,7 @@ ruby:
   h2.headline_title =t('.uncategorized_subjects')
   -if user_signed_in? && current_user.like_owner?(@collection)
     .headline_aside
-      =link_to t('.manage_categories'), article_list_path(:page_id => @page.id), class: 'button'
+      =link_to t('.manage_categories'), article_list_path(page_id: @page.id), class: 'button'
 
 p.big =t('.uncategorized_subjects_mentioned')
 

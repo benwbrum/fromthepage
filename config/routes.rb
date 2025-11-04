@@ -155,6 +155,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
+    get 'items', to: 'article#items'
     get 'tooltip', to: 'article#tooltip'
     delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'

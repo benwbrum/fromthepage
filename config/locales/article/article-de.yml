@@ -65,6 +65,7 @@ de:
       enable_bio_fields_for_category: Biografische Felder für die Kategorie aktivieren
       enable_gis_for_category: GIS für Kategorie aktivieren
       enable_org_fields_for_category: Organisationsfelder für Kategorie aktivieren
+      loading_more_subjects: Weitere Themen werden geladen...
       no_categories: Keine Kategorien
       no_categories_message: Es sind keine Entitätskategorien in der Sammlung vorhanden.<br>
       there_are_no_subjects: Es sind keine Entitäten für die ausgewählte Kategorie vorhanden
