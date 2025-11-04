@@ -65,6 +65,7 @@ fr:
       enable_bio_fields_for_category: Activer les champs biographiques pour la catégorie
       enable_gis_for_category: Activer le SIG pour la catégorie
       enable_org_fields_for_category: Activer les champs d'organisation pour la catégorie
+      loading_more_subjects: Chargement d'autres sujets...
       no_categories: Aucune catégorie
       no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
       there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée

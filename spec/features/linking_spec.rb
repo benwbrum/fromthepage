@@ -242,7 +242,7 @@ describe "subject linking" do
     expect(page).to have_content("[[Texas]]")
   end
 
-  it "checks the number of subject links" do
+  it 'checks the number of subject links', js: true do
     link_page = @work.pages.last
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, link_page)
     fill_in_editor_field "[[Ada Lovelace]] [[Ada Lovelace]]"

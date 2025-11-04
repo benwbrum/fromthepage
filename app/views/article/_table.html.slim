@@ -5,16 +5,9 @@ dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : catego
         ="#{category == 'uncategorized' ? t('article.list.uncategorized_subjects') : category.title}"
       -if user_signed_in? && current_user.like_owner?(@collection) && category != 'uncategorized'
         =render partial: 'table_actions', locals: { category: category }
-  dd
-    -if articles.any?
-      -articles.each do |row|
-        -row.each do |article|
-          -if article.nil?
-            p.hidden
-          -else
-            p[*language_attrs(@collection)]
-              = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
-                = article.title
-                = content_tag :span, "(#{@pages_count_map[article.id] || 0})", class: 'grey-number'
-    -else
+
+  -if articles.any?
+    =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: 0, timestamp: Time.now.to_i }
+  -else
+    dd
       p.acenter.fglight= t('article.list.there_are_no_subjects')

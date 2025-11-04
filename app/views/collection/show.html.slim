@@ -87,7 +87,7 @@
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
         h3 =t('.subject_categories')
-        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(:collection_id => @collection, anchor: "category-#{c.id}") }.join(', ')
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(collection_id: @collection, selected_category_id: c.id) }.join(', ')
 
   aside.sidecol
 
@@ -98,7 +98,7 @@
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    -if ELASTIC_ENABLED 
+    -if ELASTIC_ENABLED
       =form_tag(collection_search_path(@collection.owner, @collection), :method => :get, class: 'collection-search') do
         =search_field_tag :term, nil, :placeholder => t('.search_in_collection'), "aria-label" => t('.search_in_collection')
         =button_tag t('.search')

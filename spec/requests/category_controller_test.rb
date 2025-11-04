@@ -61,7 +61,7 @@ describe CategoryController do
       category.descendants.each do |descendant|
         expect(descendant.bio_fields_enabled).to be_truthy
       end
-      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, anchor: "category-#{category.id}"))
+      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, selected_cateogory_id: category.id))
     end
   end
 
@@ -72,7 +72,7 @@ describe CategoryController do
       category.descendants.each do |descendant|
         expect(descendant.bio_fields_enabled).to be_falsey
       end
-      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, anchor: "category-#{category.id}"))
+      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, selected_cateogory_id: category.id))
     end
   end
 
@@ -84,7 +84,7 @@ describe CategoryController do
       category.descendants.each do |descendant|
         expect(descendant.org_fields_enabled).to be_truthy
       end
-      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, anchor: "category-#{category.id}"))
+      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, selected_cateogory_id: category.id))
     end
   end
 
@@ -95,7 +95,7 @@ describe CategoryController do
       category.descendants.each do |descendant|
         expect(descendant.org_fields_enabled).to be_falsey
       end
-      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, anchor: "category-#{category.id}"))
+      expect(response).to redirect_to(collection_subjects_path(collection.owner, collection, selected_cateogory_id: category.id))
     end
   end
 

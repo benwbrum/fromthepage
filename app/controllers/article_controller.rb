@@ -1,9 +1,11 @@
 class ArticleController < ApplicationController
+  ARTICLES_BATCH_SIZE = 900
+
   include AbstractXmlController
   include AbstractXmlHelper
 
   skip_before_action :verify_authenticity_token, only: [:relationship_graph]
-  before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
+  before_action :authorized?, except: [:list, :items, :show, :tooltip, :graph, :relationship_graph]
 
   def tooltip
     render partial: 'tooltip'
@@ -17,16 +19,16 @@ class ArticleController < ApplicationController
 
     if params[:selected_category_id] == 'uncategorized'
       @selected_category = 'uncategorized'
-      @articles = @uncategorized_articles.reorder(:title)
+      @articles = @uncategorized_articles
       @ancestor_ids = []
     elsif params[:selected_category_id].present?
       @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
-      @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+      @articles = articles.where(categories: { id: @selected_category.id })
       @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else
       @selected_category = @categories_tree.dig(nil).first
       if @selected_category.present?
-        @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+        @articles = articles.where(categories: { id: @selected_category.id })
         @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
       else
         @articles = articles.none
@@ -34,16 +36,38 @@ class ArticleController < ApplicationController
       end
     end
 
-    @pages_count_map = @articles.left_joins(:page_article_links)
-                                .group('articles.id')
-                                .pluck('articles.id, COUNT(page_article_links.id)')
-                                .to_h
-    @articles = Article.sort_vertically(@articles)
-
     respond_to do |format|
       format.html
       format.turbo_stream
     end
+  end
+
+  def items
+    articles_scope = @collection.articles.includes(:categories)
+    @batch = params[:batch].to_i
+    @timestamp = params[:timestamp]
+
+    if params[:selected_category_id] == 'uncategorized'
+      @category = 'uncategorized'
+      articles_scope = articles_scope.where(categories: { id: nil })
+    else
+      @category = @collection.categories.find(params[:selected_category_id])
+      articles_scope = articles_scope.where(categories: { id: @category.id })
+    end
+
+    @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
+    @pages_count_map = articles_scope.left_joins(:page_article_links)
+                                     .group('articles.id')
+                                     .pluck('articles.id, COUNT(page_article_links.id)')
+                                     .to_h
+
+    @articles = Article.sort_vertically(articles_scope)
+                       .limit(ARTICLES_BATCH_SIZE)
+                       .offset(@batch * ARTICLES_BATCH_SIZE)
+
+    render turbo_stream: turbo_stream.replace(
+      "lazy_items_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
+    )
   end
 
   def delete
