@@ -80,7 +80,7 @@ class ArticleController < ApplicationController
     if result.success?
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else
-      flash.alert = result.message
+      flash[:alert] = result.message || t('errors.error')
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
     end
   end
