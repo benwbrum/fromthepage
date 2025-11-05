@@ -103,10 +103,10 @@ class ExportController < ApplicationController
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
         collection: collection,
-        works: collection.works.includes(
-          { pages: [:notes, { page_versions: :user }] }, :deeds
-        ).where(id: @work.id)
+        work_ids: [@work.id]
       ).call
+
+      raise 'Failed to export csv' unless result.success?
 
       csv_string = result.csv_string
     else
@@ -127,9 +127,7 @@ class ExportController < ApplicationController
     if @collection.field_based?
       result = Work::Table::ExportCsv.new(
         collection: @collection,
-        works: @collection.works.includes(
-          { pages: [:notes, { page_versions: :user }] }, :deeds
-        )
+        work_ids: @collection.works.pluck(:id)
       ).call
 
       csv_string = result.csv_string

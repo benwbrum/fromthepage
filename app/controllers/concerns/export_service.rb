@@ -163,9 +163,7 @@ module ExportService
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
         collection: collection,
-        works: collection.works.includes(
-          { pages: [:notes, { page_versions: :user }] }, :deeds
-        )
+        work_ids: collection.works.pluck(:id)
       ).call
 
       csv_string = result.csv_string
@@ -187,9 +185,7 @@ module ExportService
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
         collection: collection,
-        works: collection.works.includes(
-          { pages: [:notes, { page_versions: :user }] }, :deeds
-        ).where(id: work.id)
+        work_ids: collection.works.pluck(:id)
       ).call
 
       csv_string = result.csv_string

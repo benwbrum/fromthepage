@@ -52,7 +52,7 @@ describe Work::Table::ExportCsv do
   let!(:deed) { create(:deed, work: work, page: page, user: user, deed_type: DeedType::PAGE_TRANSCRIPTION) }
 
   let(:result) do
-    described_class.new(collection: collection.reload, works: collection.works).call
+    described_class.new(collection: collection.reload, work_ids: collection.works.pluck(:id)).call
   end
 
   let(:expected_headers) do
@@ -96,6 +96,52 @@ describe Work::Table::ExportCsv do
       # Transcription fields
       expect(csv[i]['Text Field']).to eq('Text Field Value')
       expect(csv[i]['Spreadsheet Field Text Column']).to eq("Text Column Value #{i}")
+    end
+  end
+
+  context 'when page is using old table_cell system' do
+    before do
+      page.update_column(:transcription_json, nil)
+    end
+
+    let!(:text_field_cell) do
+      create(:table_cell, work: work, page: page,
+        transcription_field: text_field, header: 'Text Field', content: 'Text Field Value')
+    end
+    let!(:spreadsheet_column_cell_1) do
+      create(:table_cell, work: work, page: page,
+        transcription_field: spreadsheet_field, header: 'Text Column', content: 'Text Column Value 0', row: 0)
+    end
+    let!(:spreadsheet_column_cell_2) do
+      create(:table_cell, work: work, page: page,
+        transcription_field: spreadsheet_field, header: 'Text Column', content: 'Text Column Value 1', row: 1)
+    end
+
+    it 'exports csv' do
+      expect(result.success?).to be_truthy
+      csv_string = result.csv_string
+      csv = CSV.parse(csv_string, headers: true, encoding: 'UTF-8')
+
+      expect(csv.headers).to eq(expected_headers)
+
+      [0, 1].each do |i|
+        expect(csv[i]['Work Title']).to eq(work.title)
+        expect(csv[i]['Work Identifier']).to eq(work.identifier)
+        expect(csv[i]['FromThePage Identifier']).to eq(work.id.to_s)
+        expect(csv[i]['Page Title']).to eq(page.title)
+        expect(csv[i]['Page Position']).to eq(page.position.to_s)
+        expect(csv[i]['Page URL']).to eq(collection_display_page_url(owner, collection, work, page))
+        expect(csv[i]['Page Contributors']).to eq("#{user.display_name}<#{user.email}>")
+        expect(csv[i]['Page Notes']).to eq("[#{owner.display_name}<#{owner.email}>]: Note")
+        expect(csv[i]['Page Status']).to eq('Complete')
+
+        # Metadata headers
+        expect(csv[i]['Metadata Field']).to eq('Value 1')
+
+        # Transcription fields
+        expect(csv[i]['Text Field']).to eq('Text Field Value')
+        expect(csv[i]['Spreadsheet Field Text Column']).to eq("Text Column Value #{i}")
+      end
     end
   end
 

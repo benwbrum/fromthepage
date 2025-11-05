@@ -17,9 +17,11 @@ class Work::Table::ExportCsv < ApplicationInteractor
 
   attr_accessor :csv_string
 
-  def initialize(collection:, works:)
+  def initialize(collection:, work_ids:)
     @collection = collection
-    @works = works
+    @works = @collection.works.includes(
+      { pages: [:notes, { page_versions: :user }] }, :deeds
+    ).where(id: work_ids)
     @owner = @collection.owner
 
     super
@@ -27,6 +29,11 @@ class Work::Table::ExportCsv < ApplicationInteractor
 
   def perform
     raise ArgumentError, "Collection with id=#{@id} is not field-based." unless @collection.field_based?
+
+    # Migrate relevant pages before exporting
+    if @collection.pages.where(work_id: @works.select(:id)).where(transcription_json: nil).any?
+      TranscriptionField::Lib::MigrateHandler.new(collection: @collection).perform
+    end
 
     @csv_string = CSV.generate(force_quotes: true) do |csv|
       csv << STATIC_HEADERS + page_metadata_headers + field_headers
