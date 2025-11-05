@@ -63,7 +63,7 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   include ElasticDelta
   include DuplicateSlugCleanup
-  
+
   extend FriendlyId
   friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
