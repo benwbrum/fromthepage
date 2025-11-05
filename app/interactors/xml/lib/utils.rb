@@ -1,7 +1,7 @@
 class Xml::Lib::Utils
-  STRIKETHROUGH_TAGS = [ 's', 'del', 'strike' ].freeze
-  UNDERLINE_TAGS = [ 'ins', 'u' ].freeze
-  UNCLEAR_TAGS = [ 'unclear' ].freeze
+  STRIKETHROUGH_TAGS = ['s', 'del', 'strike'].freeze
+  UNDERLINE_TAGS = ['ins', 'u'].freeze
+  UNCLEAR_TAGS = ['unclear'].freeze
 
   SOUL_RISKY_TAGS = STRIKETHROUGH_TAGS + UNDERLINE_TAGS + UNCLEAR_TAGS
 

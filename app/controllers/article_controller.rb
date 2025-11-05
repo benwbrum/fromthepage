@@ -2,8 +2,8 @@ class ArticleController < ApplicationController
   include AbstractXmlController
   include AbstractXmlHelper
 
-  skip_before_action :verify_authenticity_token, only: [ :relationship_graph ]
-  before_action :authorized?, except: [ :list, :show, :tooltip, :graph, :relationship_graph ]
+  skip_before_action :verify_authenticity_token, only: [:relationship_graph]
+  before_action :authorized?, except: [:list, :show, :tooltip, :graph, :relationship_graph]
 
   def tooltip
     render partial: 'tooltip'
@@ -11,16 +11,39 @@ class ArticleController < ApplicationController
 
   def list
     articles = @collection.articles.includes(:categories)
-    @categories = @collection.categories
-    @vertical_articles = {}
-    @categories.each do |category|
-      current_articles = articles.where(categories: { id: category.id }).reorder(:title)
-      @vertical_articles[category] = sort_vertically(current_articles)
+    @uncategorized_articles = articles.where(categories: { id: nil })
+    @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
+    @categories_tree = @categories.group_by(&:parent_id)
+
+    if params[:selected_category_id] == 'uncategorized'
+      @selected_category = 'uncategorized'
+      @articles = @uncategorized_articles.reorder(:title)
+      @ancestor_ids = []
+    elsif params[:selected_category_id].present?
+      @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
+      @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+      @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
+    else
+      @selected_category = @categories_tree.dig(nil).first
+      if @selected_category.present?
+        @articles = articles.where(categories: { id: @selected_category.id }).reorder(:title)
+        @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
+      else
+        @articles = articles.none
+        @ancestor_ids = []
+      end
     end
 
-    @uncategorized_articles = sort_vertically(
-      articles.where(categories: { id: nil }).reorder(:title)
-    )
+    @pages_count_map = @articles.left_joins(:page_article_links)
+                                .group('articles.id')
+                                .pluck('articles.id, COUNT(page_article_links.id)')
+                                .to_h
+    @articles = Article.sort_vertically(@articles)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def delete
@@ -124,7 +147,7 @@ class ArticleController < ApplicationController
         center_article_to_document_links << document.id
         document.articles.each do |article|
           article_nodes << article
-          second_document_to_article_links << [ document.id, article.id ]
+          second_document_to_article_links << [document.id, article.id]
         end
       end
 
@@ -140,7 +163,6 @@ class ArticleController < ApplicationController
           nodes << {
             'id' => "S#{article.id}",
             'title' => article.title,
-            'bio' => xml_to_html(article.xml_text, false, nil, nil, nil, true),
             'group' => article.categories.first&.title,
             'link' => collection_article_show_url(@collection.owner, @collection, article)
           }
@@ -201,7 +223,6 @@ class ArticleController < ApplicationController
     render file: @article.d3js_file, type: 'application/javascript; charset=utf-8', layout: false
   end
 
-
   def show
     sql =
       'SELECT count(*) as link_count, '+
@@ -223,7 +244,7 @@ class ArticleController < ApplicationController
     article_links.each do |l|
       link_count = l['link_count'].to_i
       link_total += link_count
-      link_max = [ link_count, link_max ].max
+      link_max = [link_count, link_max].max
 
       count_per_rank[link_count] ||= 0
       count_per_rank[link_count] += 1
@@ -254,7 +275,7 @@ class ArticleController < ApplicationController
         link_max: link_max,
         min_rank: min_rank
       },
-      formats: [ :dot ]
+      formats: [:dot]
     )
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
@@ -343,30 +364,5 @@ class ArticleController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
-  end
-
-  def sort_vertically(articles)
-    return [] unless articles.any?
-
-    rows = (articles.length.to_f / LIST_NUM_COLUMNS).ceil
-    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) }
-
-    articles.each_with_index do |article, index|
-      row = index % rows
-      col = index / rows
-      vertical_articles[row][col] = article
-    end
-
-    vertical_articles
-  end
-
-  def find_or_create_category(collection, title)
-    category = collection.categories.where(title: title).first
-    if category.nil?
-      category = Category.new(title: title)
-      collection.categories << category
-    end
-
-    category
   end
 end

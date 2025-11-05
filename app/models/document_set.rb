@@ -30,7 +30,7 @@ class DocumentSet < ApplicationRecord
   include DuplicateSlugCleanup
 
   extend FriendlyId
-  friendly_id :slug_candidates, use: [ :slugged, :history ]
+  friendly_id :slug_candidates, use: [:slugged, :history]
 
   before_create :fill_featured_at
   before_save :uniquify_slug
@@ -62,21 +62,21 @@ class DocumentSet < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(visibility: [ :public, :read_only ]) }
-  scope :restricted, -> { where(visibility: [ :private ]) }
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: [:private]) }
 
   scope :carousel, -> {
-    where(pct_completed: [ nil, 1..90 ])
+    where(pct_completed: [nil, 1..90])
       .joins(:collection)
       .where.not(collections: { picture: nil })
-      .where.not(description: [ nil, '' ])
+      .where.not(description: [nil, ''])
       .unrestricted
       .reorder(Arel.sql('RAND()'))
   }
-  scope :has_intro_block, -> { where.not(description: [ nil, '' ]) }
+  scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :has_picture, -> { where.not(picture: nil) }
-  scope :not_near_complete, -> { where(pct_completed: [ nil, 0..90 ]) }
-  scope :not_empty, -> { where.not(works_count: [ 0, nil ]) }
+  scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
+  scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
   scope :featured_projects, -> {
     joins(works: :pages)
@@ -143,7 +143,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def show_to?(user)
-    is_public? || user&.like_owner?(self) || user&.collaborator?(self)
+    is_public? || visibility_read_only? || user&.like_owner?(self) || user&.collaborator?(self)
   end
 
   def intro_block
@@ -173,6 +173,9 @@ class DocumentSet < ApplicationRecord
   delegate :hide_completed,              to: :collection
   delegate :review_workflow,             to: :collection
   delegate :review_type,                 to: :collection
+  delegate :review_type_optional?,       to: :collection
+  delegate :review_type_required?,       to: :collection
+  delegate :review_type_restricted?,     to: :collection
   delegate :user_download,               to: :collection
   delegate :subjects_disabled,           to: :collection
   delegate :editor_buttons,              to: :collection
@@ -193,6 +196,8 @@ class DocumentSet < ApplicationRecord
   delegate :alphabetize_works,           to: :collection
   delegate :institution_signature,       to: :collection
   delegate :most_recent_deed_created_at, to: :collection
+  delegate :legend,                      to: :collection
+
 
   def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
@@ -259,11 +264,11 @@ class DocumentSet < ApplicationRecord
 
   def slug_candidates
     if self.slug
-      [ :slug ]
+      [:slug]
     else
       [
         :title,
-        [ :title, :id ]
+        [:title, :id]
       ]
     end
   end

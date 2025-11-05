@@ -19,6 +19,7 @@
 #  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
+#  legend                         :text(65535)
 #  license_key                    :string(255)
 #  link_help                      :text(65535)
 #  messageboard_slug              :string(255)
@@ -64,7 +65,7 @@ class Collection < ApplicationRecord
   include DuplicateSlugCleanup
   
   extend FriendlyId
-  friendly_id :slug_candidates, use: [ :slugged, :history ]
+  friendly_id :slug_candidates, use: [:slugged, :history]
   before_save :uniquify_slug
 
   has_many :collection_blocks, dependent: :destroy
@@ -102,6 +103,7 @@ class Collection < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }
+  validates :legend, html: true, length: { maximum: 65535 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
@@ -117,11 +119,11 @@ class Collection < ApplicationRecord
   scope :unrestricted, -> { where(restricted: false) }
   scope :restricted, -> { where(restricted: true) }
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC') }
-  scope :carousel, -> { where(pct_completed: [ nil, 0..90 ]).where.not(picture: nil).where.not(intro_block: [ nil, '' ]).where(restricted: false).reorder(Arel.sql('RAND()')) }
-  scope :has_intro_block, -> { where.not(intro_block: [ nil, '' ]) }
+  scope :carousel, -> { where(pct_completed: [nil, 0..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql('RAND()')) }
+  scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
   scope :has_picture, -> { where.not(picture: nil) }
-  scope :not_near_complete, -> { where(pct_completed: [ nil, 0..90 ]) }
-  scope :not_empty, -> { where.not(works_count: [ 0, nil ]) }
+  scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
+  scope :not_empty, -> { where.not(works_count: [0, nil]) }
   scope :featured_projects, -> {
     joins(works: :pages)
       .joins(:owner)
@@ -132,6 +134,12 @@ class Collection < ApplicationRecord
   }
 
   alias_attribute :created_at, :created_on
+
+  enum :review_type, {
+    optional: 'optional',
+    required: 'required',
+    restricted: 'restricted'
+  }, prefix: :review_type
 
   update_index('collections', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
@@ -210,12 +218,6 @@ class Collection < ApplicationRecord
     !subjects_disabled
   end
 
-  module ReviewType
-    OPTIONAL = 'optional'
-    REQUIRED = 'required'
-    RESTRICTED = 'restricted'
-  end
-
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select { |_k, v| v == 1 }.map { |k, _v| k }
@@ -237,7 +239,7 @@ class Collection < ApplicationRecord
   end
 
   def review_workflow
-    review_type != ReviewType::OPTIONAL
+    !review_type_optional?
   end
 
   def enable_messageboards
@@ -302,11 +304,11 @@ class Collection < ApplicationRecord
 
   def slug_candidates
     if self.slug
-      [ :slug ]
+      [:slug]
     else
       [
         :title,
-        [ :title, :id ]
+        [:title, :id]
       ]
     end
   end
@@ -431,66 +433,66 @@ class Collection < ApplicationRecord
   end
 
   # constant
-  LANGUAGE_ARRAY = [ [ 'Afrikaans', 'af', [ 'af-ZA' ] ],
-                    [ 'አማርኛ', 'am', [ 'am-ET' ] ],
-                    [ 'Azərbaycanca', 'az', [ 'az-AZ' ] ],
-                    [ 'বাংলা', 'bn', [ 'bn-BD', 'বাংলাদেশ' ], [ 'bn-IN', 'ভারত' ] ],
-                    [ 'Bahasa Indonesia', 'id', [ 'id-ID' ] ],
-                    [ 'Bahasa Melayu', 'ms', [ 'ms-MY' ] ],
-                    [ 'Català', 'ca', [ 'ca-ES' ] ],
-                    [ 'Čeština', 'cs', [ 'cs-CZ' ] ],
-                    [ 'Dansk', 'da', [ 'da-DK' ] ],
-                    [ 'Deutsch', 'de', [ 'de-DE' ] ],
-                    [ 'English', 'en', [ 'en-AU', 'Australia' ], [ 'en-CA', 'Canada' ], [ 'en-IN', 'India' ], [ 'en-KE', 'Kenya' ], [ 'en-TZ', 'Tanzania' ], [ 'en-GH', 'Ghana' ], [ 'en-NZ', 'New Zealand' ], [ 'en-NG', 'Nigeria' ], [ 'en-ZA', 'South Africa' ], [ 'en-PH', 'Philippines' ], [ 'en-GB', 'United Kingdom' ], [ 'en-US', 'United States' ] ],
-                    [ 'Español', 'es', [ 'es-AR', 'Argentina' ], [ 'es-BO', 'Bolivia' ], [ 'es-CL', 'Chile' ], [ 'es-CO', 'Colombia' ], [ 'es-CR', 'Costa Rica' ], [ 'es-EC', 'Ecuador' ], [ 'es-SV', 'El Salvador' ], [ 'es-ES', 'España' ], [ 'es-US', 'Estados Unidos' ], [ 'es-GT', 'Guatemala' ], [ 'es-HN', 'Honduras' ], [ 'es-MX', 'México' ], [ 'es-NI', 'Nicaragua' ], [ 'es-PA', 'Panamá' ], [ 'es-PY', 'Paraguay' ], [ 'es-PE', 'Perú' ], [ 'es-PR', 'Puerto Rico' ], [ 'es-DO', 'República Dominicana' ], [ 'es-UY', 'Uruguay' ], [ 'es-VE', 'Venezuela' ] ],
-                    [ 'Euskara', 'eu', [ 'eu-ES' ] ],
-                    [ 'Filipino', 'fil', [ 'fil-PH' ] ],
-                    [ 'Français', 'fr', [ 'fr-FR' ] ],
-                    [ 'Basa Jawa', 'jv', [ 'jv-ID' ] ],
-                    [ 'Galego', 'gl', [ 'gl-ES' ] ],
-                    [ 'ગુજરાતી', 'gu', [ 'gu-IN' ] ],
-                    [ 'Hrvatski', 'hr', [ 'hr-HR' ] ],
-                    [ 'IsiZulu', 'zu', [ 'zu-ZA' ] ],
-                    [ 'Íslenska', 'is', [ 'is-IS' ] ],
-                    [ 'Italiano', 'is', [ 'it-IT', 'Italia' ], [ 'it-CH', 'Svizzera' ] ],
-                    [ 'ಕನ್ನಡ', 'kn', [ 'kn-IN' ] ],
-                    [ 'ភាសាខ្មែរ', 'km', [ 'km-KH' ] ],
-                    [ 'Latviešu', 'lv', [ 'lv-LV' ] ],
-                    [ 'Lietuvių', 'lt', [ 'lt-LT' ] ],
-                    [ 'മലയാളം', 'ml', [ 'ml-IN' ] ],
-                    [ 'मराठी', 'mr', [ 'mr-IN' ] ],
-                    [ 'Magyar', 'hu', [ 'hu-HU' ] ],
-                    [ 'ລາວ', 'lo', [ 'lo-LA' ] ],
-                    [ 'Nederlands', 'nl', [ 'nl-NL' ] ],
-                    [ 'नेपाली भाषा', 'ne', [ 'ne-NP' ] ],
-                    [ 'Norsk bokmål', 'nb', [ 'nb-NO' ] ],
-                    [ 'Polski', 'pl', [ 'pl-PL' ] ],
-                    [ 'Português', 'pt', [ 'pt-BR', 'Brasil' ], [ 'pt-PT', 'Portugal' ] ],
-                    [ 'Română', 'ro', [ 'ro-RO' ] ],
-                    [ 'සිංහල', 'si', [ 'si-LK' ] ],
-                    [ 'Slovenščina', 'sl', [ 'sl-SI' ] ],
-                    [ 'Basa Sunda', 'su', [ 'su-ID' ] ],
-                    [ 'Slovenčina', 'sk', [ 'sk-SK' ] ],
-                    [ 'Suomi', 'fi', [ 'fi-FI' ] ],
-                    [ 'Svenska', 'sv', [ 'sv-SE' ] ],
-                    [ 'Kiswahili', 'sw', [ 'sw-TZ', 'Tanzania' ], [ 'sw-KE', 'Kenya' ] ],
-                    [ 'ქართული', 'ka', [ 'ka-GE' ] ],
-                    [ 'Հայերեն', 'hy', [ 'hy-AM' ] ],
-                    [ 'தமிழ்', 'ta', [ 'ta-IN', 'இந்தியா' ], [ 'ta-SG', 'சிங்கப்பூர்' ], [ 'ta-LK', 'இலங்கை' ], [ 'ta-MY', 'மலேசியா' ] ],
-                    [ 'తెలుగు', 'te', [ 'te-IN' ] ],
-                    [ 'Tiếng Việt', 'vi', [ 'vi-VN' ] ],
-                    [ 'Türkçe', 'tr', [ 'tr-TR' ] ],
-                    [ 'اُردُو', 'ur', [ 'ur-PK', 'پاکستان' ], [ 'ur-IN', 'بھارت' ] ],
-                    [ 'Ελληνικά', 'el', [ 'el-GR' ] ],
-                    [ 'български', 'bg', [ 'bg-BG' ] ],
-                    [ 'Pусский', 'ru', [ 'ru-RU' ] ],
-                    [ 'Српски', 'sr', [ 'sr-RS' ] ],
-                    [ 'Українська', 'uk', [ 'uk-UA' ] ],
-                    [ '한국어', 'ko', [ 'ko-KR' ] ],
-                    [ '中文', 'cmn', 'yue', [ 'cmn-Hans-CN', '普通话 (中国大陆)' ], [ 'cmn-Hans-HK', '普通话 (香港)' ], [ 'cmn-Hant-TW', '中文 (台灣)' ], [ 'yue-Hant-HK', '粵語 (香港)' ] ],
-                    [ '日本語', 'ja', [ 'ja-JP' ] ],
-                    [ 'हिन्दी', 'hi', [ 'hi-IN' ] ],
-                    [ 'ภาษาไทย', 'th', [ 'th-TH' ] ] ]
+  LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
+                    ['አማርኛ', 'am', ['am-ET']],
+                    ['Azərbaycanca', 'az', ['az-AZ']],
+                    ['বাংলা', 'bn', ['bn-BD', 'বাংলাদেশ'], ['bn-IN', 'ভারত']],
+                    ['Bahasa Indonesia', 'id', ['id-ID']],
+                    ['Bahasa Melayu', 'ms', ['ms-MY']],
+                    ['Català', 'ca', ['ca-ES']],
+                    ['Čeština', 'cs', ['cs-CZ']],
+                    ['Dansk', 'da', ['da-DK']],
+                    ['Deutsch', 'de', ['de-DE']],
+                    ['English', 'en', ['en-AU', 'Australia'], ['en-CA', 'Canada'], ['en-IN', 'India'], ['en-KE', 'Kenya'], ['en-TZ', 'Tanzania'], ['en-GH', 'Ghana'], ['en-NZ', 'New Zealand'], ['en-NG', 'Nigeria'], ['en-ZA', 'South Africa'], ['en-PH', 'Philippines'], ['en-GB', 'United Kingdom'], ['en-US', 'United States']],
+                    ['Español', 'es', ['es-AR', 'Argentina'], ['es-BO', 'Bolivia'], ['es-CL', 'Chile'], ['es-CO', 'Colombia'], ['es-CR', 'Costa Rica'], ['es-EC', 'Ecuador'], ['es-SV', 'El Salvador'], ['es-ES', 'España'], ['es-US', 'Estados Unidos'], ['es-GT', 'Guatemala'], ['es-HN', 'Honduras'], ['es-MX', 'México'], ['es-NI', 'Nicaragua'], ['es-PA', 'Panamá'], ['es-PY', 'Paraguay'], ['es-PE', 'Perú'], ['es-PR', 'Puerto Rico'], ['es-DO', 'República Dominicana'], ['es-UY', 'Uruguay'], ['es-VE', 'Venezuela']],
+                    ['Euskara', 'eu', ['eu-ES']],
+                    ['Filipino', 'fil', ['fil-PH']],
+                    ['Français', 'fr', ['fr-FR']],
+                    ['Basa Jawa', 'jv', ['jv-ID']],
+                    ['Galego', 'gl', ['gl-ES']],
+                    ['ગુજરાતી', 'gu', ['gu-IN']],
+                    ['Hrvatski', 'hr', ['hr-HR']],
+                    ['IsiZulu', 'zu', ['zu-ZA']],
+                    ['Íslenska', 'is', ['is-IS']],
+                    ['Italiano', 'is', ['it-IT', 'Italia'], ['it-CH', 'Svizzera']],
+                    ['ಕನ್ನಡ', 'kn', ['kn-IN']],
+                    ['ភាសាខ្មែរ', 'km', ['km-KH']],
+                    ['Latviešu', 'lv', ['lv-LV']],
+                    ['Lietuvių', 'lt', ['lt-LT']],
+                    ['മലയാളം', 'ml', ['ml-IN']],
+                    ['मराठी', 'mr', ['mr-IN']],
+                    ['Magyar', 'hu', ['hu-HU']],
+                    ['ລາວ', 'lo', ['lo-LA']],
+                    ['Nederlands', 'nl', ['nl-NL']],
+                    ['नेपाली भाषा', 'ne', ['ne-NP']],
+                    ['Norsk bokmål', 'nb', ['nb-NO']],
+                    ['Polski', 'pl', ['pl-PL']],
+                    ['Português', 'pt', ['pt-BR', 'Brasil'], ['pt-PT', 'Portugal']],
+                    ['Română', 'ro', ['ro-RO']],
+                    ['සිංහල', 'si', ['si-LK']],
+                    ['Slovenščina', 'sl', ['sl-SI']],
+                    ['Basa Sunda', 'su', ['su-ID']],
+                    ['Slovenčina', 'sk', ['sk-SK']],
+                    ['Suomi', 'fi', ['fi-FI']],
+                    ['Svenska', 'sv', ['sv-SE']],
+                    ['Kiswahili', 'sw', ['sw-TZ', 'Tanzania'], ['sw-KE', 'Kenya']],
+                    ['ქართული', 'ka', ['ka-GE']],
+                    ['Հայերեն', 'hy', ['hy-AM']],
+                    ['தமிழ்', 'ta', ['ta-IN', 'இந்தியா'], ['ta-SG', 'சிங்கப்பூர்'], ['ta-LK', 'இலங்கை'], ['ta-MY', 'மலேசியா']],
+                    ['తెలుగు', 'te', ['te-IN']],
+                    ['Tiếng Việt', 'vi', ['vi-VN']],
+                    ['Türkçe', 'tr', ['tr-TR']],
+                    ['اُردُو', 'ur', ['ur-PK', 'پاکستان'], ['ur-IN', 'بھارت']],
+                    ['Ελληνικά', 'el', ['el-GR']],
+                    ['български', 'bg', ['bg-BG']],
+                    ['Pусский', 'ru', ['ru-RU']],
+                    ['Српски', 'sr', ['sr-RS']],
+                    ['Українська', 'uk', ['uk-UA']],
+                    ['한국어', 'ko', ['ko-KR']],
+                    ['中文', 'cmn', 'yue', ['cmn-Hans-CN', '普通话 (中国大陆)'], ['cmn-Hans-HK', '普通话 (香港)'], ['cmn-Hant-TW', '中文 (台灣)'], ['yue-Hant-HK', '粵語 (香港)']],
+                    ['日本語', 'ja', ['ja-JP']],
+                    ['हिन्दी', 'hi', ['hi-IN']],
+                    ['ภาษาไทย', 'th', ['th-TH']]]
 
   protected
 

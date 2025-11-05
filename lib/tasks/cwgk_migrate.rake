@@ -1,7 +1,7 @@
 namespace :fromthepage do
   namespace :cwgk do
     desc 'Create sample set of documents and entities'
-    task :create_sample_set, [ :source_dir, :target_dir, :number ] => :environment do |t, args|
+    task :create_sample_set, [:source_dir, :target_dir, :number] => :environment do |t, args|
       source_dir = args.source_dir
       target_dir = args.target_dir
       number = args.number.to_i
@@ -22,7 +22,7 @@ namespace :fromthepage do
         # read the document file into a nokogiri object
         doc = Nokogiri::XML(File.read(file))
         body = doc.search('body').first
-        [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
+        ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
           body.search(type).each do |element|
             # get the id of the element
             ref = element.attribute('ref').value
@@ -39,7 +39,7 @@ namespace :fromthepage do
 
     # code to migrate data from CWGK XML files and Mashbill to FromThePage
     desc 'Import CWGK XML files'
-    task :import_cwgk_xml, [ :xml_directory, :collection_slug ] => :environment do |t, args|
+    task :import_cwgk_xml, [:xml_directory, :collection_slug] => :environment do |t, args|
       xml_directory = args.xml_directory
       collection_slug = args.collection_slug
       collection = Collection.find_by(slug: collection_slug)
@@ -111,7 +111,7 @@ namespace :fromthepage do
           end
 
           id_to_title_map[id] = title
-          valid_ids << [ id.sub(/^[A-Z]0+/, '').to_i, type.downcase ]
+          valid_ids << [id.sub(/^[A-Z]0+/, '').to_i, type.downcase]
 
           article = Article.new
           article.title = title
@@ -170,7 +170,7 @@ namespace :fromthepage do
           # find the relationships in which the left entity has a matching ID
           left_relationships = relationships.select { |r| r[:left][:id] == id && r[:left][:type] == entity_type }
           # prune the right relationships to only ones that are in the list of valid IDs
-          right_relationships = left_relationships.select { |r| valid_ids.include?([ r[:right][:id], r[:right][:type] ]) }
+          right_relationships = left_relationships.select { |r| valid_ids.include?([r[:right][:id], r[:right][:type]]) }
           # now pull the relationship type and title from the right entity
           unique_relationships = right_relationships.map { |r| { type: r[:type], entity: r[:right] } }.uniq
           # for each unique relationship, write a text line with a wikilink to the entity
@@ -410,7 +410,7 @@ namespace :fromthepage do
 
       # for the element types placeName persName orgName geographicalFeature
       # find all elements of that type
-      [ 'placeName', 'persName', 'orgName', 'geographicalFeature' ].each do |type|
+      ['placeName', 'persName', 'orgName', 'geographicalFeature'].each do |type|
         body.search(type).each do |element|
           element.search('unclear').each do |unclear|
             if unclear.text.strip.blank?
@@ -461,6 +461,92 @@ namespace :fromthepage do
       end
       pages << page
       pages
+    end
+
+    # Update bibliography fields with TEI markup from source files
+    desc 'Update CWGK bibliography fields with TEI markup'
+    task :update_cwgk_bibliography, [:xml_directory, :collection_slug] => :environment do |t, args|
+      xml_directory = args.xml_directory
+      collection_slug = args.collection_slug
+      collection = Collection.find_by(slug: collection_slug)
+
+      if xml_directory.nil? || collection_slug.nil?
+        puts 'Usage: rake fromthepage:cwgk:update_cwgk_bibliography[xml_directory,collection_slug]'
+        puts '  xml_directory: path to the directory containing CWGK XML files'
+        puts '  collection_slug: slug of the collection to update'
+        exit
+      end
+
+      updated_count = 0
+
+      # Process entity files (subjects) starting with O, N, P, G
+      Dir.glob(File.join(xml_directory, '[NOPG]*.xml')).each do |file|
+        id = File.basename(file).sub('.xml', '')
+
+        # Find the corresponding article by uri
+        article = collection.articles.find_by(uri: id)
+        next unless article
+
+        # Read and parse the XML file
+        file_contents = File.read(file)
+        doc = Nokogiri::XML(file_contents)
+
+        # Extract bibliography with markup preserved
+        bibl_elements = doc.search('bibl')
+        next if bibl_elements.empty?
+
+        bibliography_content = []
+        bibl_elements.each do |bibl|
+          # Get the inner content while preserving markup
+          inner_content = bibl.inner_html.strip
+
+          # Convert bare URLs to anchor tags
+          inner_content = convert_urls_to_links(inner_content)
+
+          # Wrap in bibl tags for proper TEI structure
+          bibliography_content << "<bibl>#{inner_content}</bibl>"
+        end
+
+        if bibliography_content.any?
+          # Join multiple bibl entries with newlines
+          formatted_bibliography = bibliography_content.join("\n")
+
+          # Update the article
+          article.bibliography = formatted_bibliography
+          if article.save
+            updated_count += 1
+            puts "Updated bibliography for #{article.title} (#{id})"
+          else
+            puts "Failed to update #{article.title} (#{id}): #{article.errors.full_messages.join(', ')}"
+          end
+        end
+      end
+
+      puts "Updated bibliography for #{updated_count} articles"
+    end
+
+    def convert_urls_to_links(content)
+      # Regex to match URLs that are not already wrapped in anchor tags
+      # First, avoid URLs that are already in href attributes or anchor tags
+      if content.include?('<a ') && content.include?('</a>')
+        # If content already has anchor tags, be more careful
+        url_regex = /\b(https?:\/\/[^\s<>"']+)(?![^<]*<\/a>)/i
+
+        content.gsub(url_regex) do |url|
+          # Check if this URL is already in an href attribute
+          preceding_context = content[0, content.index(url)]
+          if preceding_context.match(/href=["'][^"']*\z/)
+            # This URL is part of an href attribute, don't wrap it
+            url
+          else
+            %(<a href="#{url}">#{url}</a>)
+          end
+        end
+      else
+        # Simple case: no existing anchor tags
+        url_regex = /\b(https?:\/\/[^\s<>"']+)/i
+        content.gsub(url_regex, '<a href="\1">\1</a>')
+      end
     end
 
     def date_element_to_edtf(date_element)

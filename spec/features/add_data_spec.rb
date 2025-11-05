@@ -63,7 +63,7 @@ describe "uploads data for collections", order: :defined do
 
   it "imports IIIF manifests", js: true do
     # import a manifest for test data
-    VCR.use_cassette('iiif/imports_iiif_manifests', record: :new_episodes) do
+    VCR.use_cassette('iiif/imports_iiif_manifests', record: :none) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
@@ -104,7 +104,7 @@ describe "uploads data for collections", order: :defined do
     expect(Work.find_by(title: @title)).not_to be nil
   end
 
-  it "adds pages to an empty work" do
+  it 'adds pages to an empty work' do
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
     page.find('.maincol').find('a', text: @title).click
@@ -116,11 +116,12 @@ describe "uploads data for collections", order: :defined do
       make_visible: true
     )
     click_button('Save & Add Next Page')
+    expect(page).to have_content('Page created successfully')
     work = Work.find_by(title: @title)
     pages = work.pages
     expect(pages).not_to be nil
     expect(page).to have_content(pages.first.title)
-    page.find('a', text: "Add New Page").click
+    click_link('Add New Page')
     attach_file(
       'page_base_image',
       Rails.root.join('test_data/uploads/JWGravesAmnestyPage2.jpg'),
@@ -146,15 +147,15 @@ describe "uploads data for collections", order: :defined do
     page.check('Enable document sets')
     page.click_link('Edit Sets')
     expect(page).to have_content('Create a Document Set')
-    page.find('.button', text: 'Create a Document Set').click
-    sleep(1)
+    click_link('Create a Document Set')
+    expect(page).to have_selector('form#new_document_set')
     page.fill_in 'document_set_title', with: "Test Document Set 1"
-    page.find_button('Create Document Set').click
-    sleep(3)
+    click_button('Create Document Set')
+    expect(page).to have_content('Document set has been created')
     expect(DocumentSet.last.is_public).to be true
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
-    expect(page).to have_content("Manage Works")
-    expect(page.find('h1')).to have_content("Test Document Set 1")
+    expect(page).to have_content('Manage Works')
+    expect(page.find('h1')).to have_content('Test Document Set 1')
     # add a work - has to be done manually b/c it's jquery
     id = @set_collection.works.second.id
     DocumentSet.last.work_ids = id

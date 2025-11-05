@@ -181,7 +181,7 @@ class Work < ApplicationRecord
     NEEDS_REVIEW = 'needsreview'
     INCOMPLETE = 'incomplete'
     DESCRIBED = 'described'
-    NEEDS_WORK = [ UNDESCRIBED, INCOMPLETE ]
+    NEEDS_WORK = [UNDESCRIBED, INCOMPLETE]
   end
 
   module TitleStyle
@@ -360,6 +360,29 @@ class Work < ApplicationRecord
       .update_all(collection_id: collection_id)
   end
 
+  # TODO make not awful
+  def reviews
+    my_reviews = []
+    for page in self.pages
+      for comment in page.comments
+        my_reviews << comment if comment.comment_type == 'review'
+      end
+    end
+    my_reviews
+  end
+
+  # TODO make not awful (denormalize work_id, collection_id; use legitimate finds)
+  def recent_annotations
+    my_annotations = []
+    for page in self.pages
+      for comment in page.comments
+        my_annotations << comment if comment.comment_type == 'annotation'
+      end
+    end
+    my_annotations.sort! { |a, b| b.created_at <=> a.created_at }
+    my_annotations[0..9]
+  end
+
   def update_statistic(changed_page = nil) # association callbacks pass the page being added/removed, but we don't care
     self.work_statistic = WorkStatistic.new unless self.work_statistic
     self.work_statistic.recalculate
@@ -375,7 +398,7 @@ class Work < ApplicationRecord
 
   def cleanup_images
     absolute_filenames =
-      pages.map { |page| [ page.base_image, page.thumbnail_filename ] }.flatten
+      pages.map { |page| [page.base_image, page.thumbnail_filename] }.flatten
     modern_filenames =
       absolute_filenames.map do |fn|
         fn.sub(
@@ -436,7 +459,7 @@ class Work < ApplicationRecord
   end
 
   def slug_candidates
-    self.slug ? [ :slug ] : [ :title, %i[title id] ]
+    self.slug ? [:slug] : [:title, %i[title id]]
   end
 
   def should_generate_new_friendly_id?

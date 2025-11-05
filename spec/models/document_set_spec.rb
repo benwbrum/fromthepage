@@ -17,7 +17,7 @@ describe DocumentSet do
     end
     it "sets to untranscribed page in work" do
       page = create(:page, work_id: work.id)
-      docset = create(:document_set, works: [ work ])
+      docset = create(:document_set, works: [work])
 
       work.set_next_untranscribed_page
       expect(work.next_untranscribed_page).to eq(page)
@@ -27,7 +27,7 @@ describe DocumentSet do
     end
     it "sets to nil for no works with untranscribed pages" do
       create(:page, work_id: work.id, status: :transcribed)
-      docset = create(:document_set, works: [ work ])
+      docset = create(:document_set, works: [work])
 
       work.set_next_untranscribed_page
       expect(work.next_untranscribed_page).to eq(nil)
@@ -41,7 +41,7 @@ describe DocumentSet do
       page_incomplete = create(:page, status: :new, work_id: work_incomplete.id)
       create(:page, status: :transcribed, work_id: work_incomplete.id)
 
-      docset = create(:document_set, works: [ work, work_incomplete ])
+      docset = create(:document_set, works: [work, work_incomplete])
 
       work.save!
       work_incomplete.save!
@@ -104,6 +104,8 @@ describe DocumentSet do
     end
 
     before(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       DocumentSetsIndex.purge
@@ -113,10 +115,14 @@ describe DocumentSet do
     end
 
     after(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       records.reverse.each(&:destroy!)
       DocumentSetsIndex.purge
+
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     describe '#self.es_search' do

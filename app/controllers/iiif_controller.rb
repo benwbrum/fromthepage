@@ -7,7 +7,7 @@ class IiifController < ApplicationController
   before_action :set_cors_headers
   before_action :set_api_user
   before_action :load_objects_from_ids
-  before_action :check_api_access, except: [ :collections, :contributions, :for, :collection_for_domain ]
+  before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
 
   def load_objects_from_ids
     if @work && params[:work_id]
@@ -38,7 +38,7 @@ class IiifController < ApplicationController
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = iiif_user_collections_url(@user)
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
-    (@user.all_owner_collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
+    (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
       if collection_or_ds.is_public || collection_or_ds.api_access || (@api_user && @api_user.like_owner?(collection_or_ds))
         site_collection.collections << iiif_collection_from_collection(collection_or_ds, false)
       end
@@ -154,7 +154,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [ { 'label' => 'dc:source', 'value' => work.sc_manifest.at_id } ] if work.sc_manifest
+      manifest.metadata = [{ 'label' => 'dc:source', 'value' => work.sc_manifest.at_id }] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -175,7 +175,7 @@ class IiifController < ApplicationController
     manifest.label = work.title
     dc_source = dc_source_from_work(work)
     if dc_source
-      manifest.metadata = [ dc_source ]
+      manifest.metadata = [dc_source]
     else
       manifest.metadata = []
     end
@@ -250,7 +250,7 @@ class IiifController < ApplicationController
               'label' => 'transcription layer'
             }
     layer = IIIF::Presentation::Layer.new(seed)
-    manifest['otherContent'] = [ layer ]
+    manifest['otherContent'] = [layer]
 
     if work.supports_translation?
       seed = {
@@ -591,7 +591,7 @@ private
     sequence = IIIF::Presentation::Sequence.new
     sequence['@id'] = url_for({ controller: 'iiif', action: 'sequence', work_id: work_id, sequence_name: 'default', only_path: false })
     sequence.label = 'Pages'
-    work = Work.includes(pages: [ :sc_canvas, :notes ]).where(id: work_id).first
+    work = Work.includes(pages: [:sc_canvas, :notes]).where(id: work_id).first
     sequence['rendering'] = [
       { 'label' => 'Verbatim Plaintext',
         'format' => 'text/plain',
@@ -633,7 +633,7 @@ private
     iiif_collection.label = collection.title
     iiif_collection['@id'] = iiif_collection_id_from_collection(collection)
     if collection.sc_collection
-      iiif_collection.metadata = [ { 'label' => 'dc:source', 'value' => collection.sc_collection.at_id } ]
+      iiif_collection.metadata = [{ 'label' => 'dc:source', 'value' => collection.sc_collection.at_id }]
     end
 
     if depth == true
@@ -645,7 +645,7 @@ private
         manifest = IIIF::Presentation::Manifest.new(seed)
         manifest.label = work.title
         dc_source = dc_source_from_work(work)
-        manifest.metadata = [ dc_source ] if dc_source
+        manifest.metadata = [dc_source] if dc_source
         manifest.service = status_service_for_manifest(work)
 
         iiif_collection.manifests << manifest
@@ -974,6 +974,7 @@ private
   end
 
   def set_api_user
+    @api_user = nil
     authenticate_with_http_token do |token, options|
       @api_user = User.find_by(api_key: token)
     end

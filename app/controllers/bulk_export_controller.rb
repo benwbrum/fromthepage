@@ -1,5 +1,5 @@
 class BulkExportController < ApplicationController
-  before_action :set_bulk_export, only: [ :show, :edit, :download ]
+  before_action :set_bulk_export, only: [:show, :edit, :download]
 
   PAGES_PER_SCREEN = 20
 

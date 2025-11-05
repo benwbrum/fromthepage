@@ -15,6 +15,10 @@
             =f.text_area :flag_denylist, rows: 12, value: @flag_denylist
         tr
           td(colspan="2")
+            =f.label :flag_allowlist, "URL patterns to exclude from spam detection (one per line):", class: 'above'
+            =f.text_area :flag_allowlist, rows: 12, value: @flag_allowlist
+        tr
+          td(colspan="2")
             =f.label :email_denylist, "Email patterns to ban:", class: 'above'
             =f.text_area :email_denylist, rows: 12, value: @email_denylist
 

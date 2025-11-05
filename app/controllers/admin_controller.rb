@@ -7,7 +7,7 @@ class AdminController < ApplicationController
 
   def authorized?
     unless user_signed_in? && current_user.admin
-      redirect_to dashboard_path
+      redirect_to main_app.dashboard_path
     end
   end
 
@@ -35,7 +35,8 @@ class AdminController < ApplicationController
     @contribution_counts = {}
     @activity_project_counts = {}
     @unique_contributor_counts = {}
-    @week_intervals=[ 1, 2, 4, 12, 26, 52, 104, 156, 208 ]
+    @hours_spent_counts = {}
+    @week_intervals=[1, 2, 4, 12, 26, 52, 104, 156, 208]
     @week_intervals.each do |weeks_ago|
       start_date = Date.yesterday - weeks_ago.weeks
       end_date = start_date + 1.week
@@ -43,6 +44,8 @@ class AdminController < ApplicationController
       @contribution_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).count
       @activity_project_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).distinct.count(:collection_id)
       @unique_contributor_counts[weeks_ago] = contributor_deeds.where('created_at between ? and ?', start_date, end_date).distinct.count(:user_id)
+      minutes_spent = AhoyActivitySummary.where('date between ? and ?', start_date, end_date).sum(:minutes)
+      @hours_spent_counts[weeks_ago] = minutes_spent.to_f / 60
     end
 
     @version = ActiveRecord::Migrator.current_version
@@ -222,6 +225,7 @@ class AdminController < ApplicationController
   def settings
     @email_text = PageBlock.find_by(view: 'new_owner').html
     @flag_denylist = PageBlock.find_by(view: 'flag_denylist').html
+    @flag_allowlist = (PageBlock.where(view: 'flag_allowlist').first ? PageBlock.where(view: 'flag_allowlist').first.html : '')
     @email_denylist = (PageBlock.where(view: 'email_denylist').first ? PageBlock.where(view: 'email_denylist').first.html : '')
   end
 
@@ -236,6 +240,12 @@ class AdminController < ApplicationController
     block = PageBlock.find_by(view: 'flag_denylist')
     if params[:admin][:flag_denylist] != block.html
       block.html = params[:admin][:flag_denylist]
+      block.save!
+    end
+
+    block = PageBlock.where(view: 'flag_allowlist').first || PageBlock.new(view: 'flag_allowlist', controller: 'admin')
+    if params[:admin][:flag_allowlist] != block.html
+      block.html = params[:admin][:flag_allowlist]
       block.save!
     end
 

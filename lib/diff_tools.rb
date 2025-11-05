@@ -20,7 +20,7 @@ module DiffTools
     # iterate through the li tags
     doc.search('li').each do |li|
       # if the li tag has a class of del, ignore it
-      next if [ 'del', 'diff-comment', 'diff-block-info' ].include? li['class']
+      next if ['del', 'diff-comment', 'diff-block-info'].include? li['class']
       # add the plaintext content of the li tag to the lines array
       lines << li.content
     end

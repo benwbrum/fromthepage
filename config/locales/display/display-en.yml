@@ -9,6 +9,7 @@ en:
       help_correct: help correct
       help_transcribe: help transcribe
       help_translate: help translate
+      legend: Legend
       mark_the_page_blank: mark the page blank
       or_mark_blank: "<br>or %{mark_blank}"
       page_notes: Notes and Questions

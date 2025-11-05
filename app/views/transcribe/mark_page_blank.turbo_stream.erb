@@ -1,0 +1,8 @@
+<% if @result.success? %>
+  <%= turbo_stream.redirect(
+    collection_display_page_path(@collection.owner, @collection, @page.work, @page.id),
+    response: turbo_flash(t('.saved_notice'), :notice)
+  )%>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

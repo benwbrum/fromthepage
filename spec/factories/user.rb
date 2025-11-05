@@ -25,8 +25,8 @@ FactoryBot.define do
     end
 
     factory :unique_user do
-      sequence(:login) { "user_#{SecureRandom.hex(4)}_login" }
-      sequence(:email) { "user_#{SecureRandom.hex(4)}@sample.com" }
+      sequence(:login) { "user_#{SecureRandom.uuid}_login" }
+      sequence(:email) { "user_#{SecureRandom.uuid}@sample.com" }
       password { 'password' }
       password_confirmation { 'password' }
 
@@ -35,7 +35,7 @@ FactoryBot.define do
       end
 
       trait :owner do
-        admin { true }
+        owner { true }
       end
 
       trait :admin do

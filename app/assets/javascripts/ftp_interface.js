@@ -28,6 +28,7 @@ $(function() {
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
+  // TODO: Remove this when all display_categories are migrated
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
     e.preventDefault();

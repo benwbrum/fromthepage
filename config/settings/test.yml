@@ -1,3 +1,5 @@
+active_job:
+  attempts: 3
 elasticsearch:
   host: <%= ENV['ELASTIC_HOST_URL'] %>
   prefix: ftp

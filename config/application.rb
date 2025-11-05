@@ -29,13 +29,12 @@ module Fromthepage
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
     config.i18n.default_locale = :en
-    config.i18n.available_locales = [ :de, :en, :'en-GB', :es, :fr, :'fr-CA', :pt ]
+    config.i18n.available_locales = [:de, :en, :'en-GB', :es, :fr, :'fr-CA', :pt]
     config.i18n.fallbacks = true
-    config.i18n.fallbacks = [ :en ]
+    config.i18n.fallbacks = [:en]
 
     # override this in environment to set a different host for uploads
-    config.upload_host=nil
-
+    config.upload_host = nil
 
     # load overrides for Thredded and other engines
     # config/application.rb
@@ -47,8 +46,10 @@ module Fromthepage
         load override
       end
     end
-  end
 
+    MissionControl::Jobs.base_controller_class = 'AdminController'
+    config.mission_control.jobs.http_basic_auth_enabled = false
+  end
 
   # uncomment for development of SSO
   # Rails.application.config.action_controller.forgery_protection_origin_check=false

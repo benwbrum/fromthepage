@@ -1,6 +1,6 @@
 namespace :fromthepage do
   desc "Check email configuration and sendability.\n\nUsage: rake fromthepage:check_email_config[target@address.com]"
-  task :check_email_config, [ :target ] => :environment  do  |t, args|
+  task :check_email_config, [:target] => :environment  do  |t, args|
     raise "No email address specified to rake task!\n\n" unless args.target
 
     unless Rails.application.config.action_mailer.default_url_options

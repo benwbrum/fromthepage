@@ -14,6 +14,14 @@ describe Collection do
         collection.intro_block = valid_html
         expect(collection.valid?).to be_truthy
       end
+
+      it 'validates legend html syntax' do
+        collection.legend = invalid_html
+        expect(collection.valid?).to be_falsey
+
+        collection.legend = valid_html
+        expect(collection.valid?).to be_truthy
+      end
     end
   end
 
@@ -85,7 +93,7 @@ describe Collection do
     let(:work_no_ocr) { create(:work) }
     let(:work_ocr)    { create(:work) }
 
-    let(:collection) { create(:collection, works: [ work_no_ocr, work_ocr ]) }
+    let(:collection) { create(:collection, works: [work_no_ocr, work_ocr]) }
     describe '#enable_ocr' do
       it 'Enables OCR for all works' do
         collection.enable_ocr
@@ -183,6 +191,8 @@ describe Collection do
     end
 
     before(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       CollectionsIndex.purge
@@ -192,10 +202,14 @@ describe Collection do
     end
 
     after(:each) do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       records.reverse.each(&:destroy!)
       CollectionsIndex.purge
+
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     describe '#self.es_search' do

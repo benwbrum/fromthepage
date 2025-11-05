@@ -19,7 +19,7 @@ class StatisticsController < ApplicationController
   def build_user_array(deed_type)
     user_array = []
     deeds_by_user = Deed.group('user_id').where(work_id: @collection.works.ids).where(deed_type: deed_type).order('count_id desc').count('id')
-    deeds_by_user.each { |user_id, count| user_array << [ @users.find { |u| u.id == user_id }, count ] }
+    deeds_by_user.each { |user_id, count| user_array << [@users.find { |u| u.id == user_id }, count] }
 
     user_array
   end

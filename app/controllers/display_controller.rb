@@ -2,7 +2,7 @@ class DisplayController < ApplicationController
   include ApplicationHelper
   public :render_to_string
 
-  protect_from_forgery except: [ :set_note_body ]
+  protect_from_forgery except: [:set_note_body]
 
   PAGES_PER_SCREEN = 5
 
@@ -77,7 +77,7 @@ class DisplayController < ApplicationController
   def read_all_works
     if @article
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where(['pal.article_id = ?', @article.id]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @pages.distinct!
       @heading = t('.pages_that_mention', article: @article.title)
     else
@@ -94,7 +94,7 @@ class DisplayController < ApplicationController
     if @page.status != 'new'
       @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
       @meta_description = "Transcript of #{@page.title || "page #{@page.position}"} from #{@work.title} in the #{@collection.title} collection."
-      @meta_keywords = [ @work.title, @collection.title, @page.title, 'transcript', 'transcription', 'historical document' ].compact.join(', ')
+      @meta_keywords = [@work.title, @collection.title, @page.title, 'transcript', 'transcription', 'historical document'].compact.join(', ')
 
       # Generate structured data for better content understanding
       @structured_data = {
@@ -157,16 +157,16 @@ class DisplayController < ApplicationController
       end
       if params[:unlinked_only]
         conditions =
-          [ 'MATCH(search_text) AGAINST(? IN BOOLEAN MODE)'+
+          ['MATCH(search_text) AGAINST(? IN BOOLEAN MODE)'+
           ' AND pages.id not in '+
           '    (SELECT page_id FROM page_article_links WHERE article_id = ?)',
           @search_string,
-          @article.id ]
+          @article.id]
 
       else
         conditions =
-          [ 'MATCH(search_text) AGAINST(? IN BOOLEAN MODE)',
-          @search_string ]
+          ['MATCH(search_text) AGAINST(? IN BOOLEAN MODE)',
+          @search_string]
       end
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
@@ -228,7 +228,7 @@ class DisplayController < ApplicationController
       # Validate that start is less than or equal to end
       return nil if start_page > end_page || start_page < 1
 
-      [ start_page, end_page ]
+      [start_page, end_page]
     else
       nil
     end

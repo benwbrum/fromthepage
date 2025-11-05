@@ -180,18 +180,12 @@ describe CollectionController do
   end
 
   describe '#edit_privacy' do
-    let!(:collaborator) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
-    let!(:noncollaborator) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
-    let!(:blocked_user) do
-      create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
-    end
+    let!(:collaborator) { create(:unique_user) }
+    let!(:noncollaborator) { create(:unique_user) }
+    let!(:blocked_user) { create(:unique_user) }
 
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
+      create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
     end
     let(:action_path) { edit_privacy_collection_path(owner, collection) }
 
@@ -290,7 +284,7 @@ describe CollectionController do
       create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
     end
     let!(:collection) do
-      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [ reviewer ])
+      create(:collection, owner_user_id: owner.id, field_based: true, reviewers: [reviewer])
     end
     let(:action_path) { edit_quality_control_collection_path(owner, collection) }
 
@@ -443,6 +437,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit with legend' do
+      let(:scope) { 'edit' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the collection</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the collection</p>')
+      end
+    end
+
     context 'when scope edit_tasks' do
       let(:scope) { 'edit_tasks' }
       let(:params) { { collection: { text_language: 'eng', field_based: true } } }
@@ -469,6 +477,20 @@ describe CollectionController do
       end
     end
 
+    context 'when scope edit_look with legend' do
+      let(:scope) { 'edit_look' }
+      let(:params) { { collection: { legend: '<p>This is a legend for the look settings</p>' } } }
+
+      it 'renders status and template and updates legend' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_look)
+        expect(collection.reload.legend).to eq('<p>This is a legend for the look settings</p>')
+      end
+    end
+
     context 'when scope edit_privacy' do
       let!(:collaborator) do
         create(:user, email: "#{SecureRandom.base64(4)}@email.com", login: SecureRandom.base64(4).to_s)
@@ -481,7 +503,7 @@ describe CollectionController do
       end
 
       let!(:collection) do
-        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [ collaborator ], blocked_users: [ blocked_user ])
+        create(:collection, owner_user_id: owner.id, field_based: true, collaborators: [collaborator], blocked_users: [blocked_user])
       end
 
       let(:scope) { 'edit_privacy' }
@@ -677,7 +699,7 @@ describe CollectionController do
     end
 
     context 'when document set' do
-      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
+      let(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
 
       let(:action_path) { collection_restrict_transcribed_path(collection_id: document_set) }
 
@@ -692,7 +714,7 @@ describe CollectionController do
   end
 
   describe '#search' do
-    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [ work ]) }
+    let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
     let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let!(:page) { create(:page, work: work) }
 
@@ -702,12 +724,18 @@ describe CollectionController do
     let(:subject) { get action_path, params: params }
 
     before do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
       stub_const('ELASTIC_ENABLED', true)
 
       CollectionsIndex.import collection.reload
       DocumentSetsIndex.import document_set.reload
       WorksIndex.import collection.works
       PagesIndex.import collection.works.flat_map(&:pages)
+    end
+
+    after do
+      VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
     end
 
     it 'renders status and template' do
@@ -756,6 +784,55 @@ describe CollectionController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:recent_contributor_list)
+    end
+  end
+
+  describe '#show' do
+    let(:action_path) { collection_path(owner, collection) }
+    let(:subject) { get action_path }
+
+    context 'when facets are enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
+
+      context 'when user is logged in' do
+        it 'renders the facet form' do
+          login_as user
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include('facet-label')
+        end
+      end
+
+      context 'when user is not logged in' do
+        it 'does not render the facet form' do
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('facet-label')
+        end
+
+        it 'does not process facet search parameters from URL' do
+          get action_path, params: { search: { s1: ['test'] } }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('facet-label')
+          # Verify that facet filtering was not applied by checking @search is not set
+          expect(assigns(:search)).to be_nil
+        end
+      end
+    end
+
+    context 'when facets are not enabled' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: false) }
+
+      it 'does not render the facet form' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('facet-label')
+      end
     end
   end
 end

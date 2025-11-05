@@ -183,6 +183,8 @@ es:
       forums_description: Permite a los colaboradores discutir temas entre sí y con los propietarios del proyecto a través de foros de mensajes.
       hide_completed: Ocultar obras completadas de forma predeterminada
       hide_completed_description: Ocultar obras que estén completamente transcritas o traducidas de forma predeterminada.
+      legend: Leyenda
+      legend_description: Contenido HTML para mostrar en cada vista de página para proporcionar contexto a los lectores. Aparecerá debajo de la transcripción en el resumen de la página.
       metadata: metadatos
       metadata_description: Cargue los metadatos de los elementos de esta colección de forma masiva.
       metadata_facets_description: Permita a los usuarios buscar obras dentro de esta colección a través de metadatos.
@@ -196,7 +198,7 @@ es:
       spellcheck_description: No apto para textos con ortografía irregular.
       upload_metadata: Subir metadatos
       user_download: Permitir a los usuarios descargar obras.
-      user_download_description: Agrega una pestaña Descargar visible para el usuario a cada trabajo, que permite a los usuarios exportar la transcripción del documento en formatos fáciles de usar para los investigadores, como Microsoft Word o PDF.
+      user_download_description: Agrega una pestaña Descargar visible para el usuario a cada obra, que permite a los usuarios exportar la transcripción del documento en formatos fáciles de usar para los investigadores, como Microsoft Word o PDF.
       voice_recognition: Voz a texto disponible para transcribir
       voice_recognition_description: Sólo disponible con el navegador web Chrome.
     edit_privacy:

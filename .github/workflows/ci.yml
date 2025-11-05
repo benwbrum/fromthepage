@@ -12,17 +12,19 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: diary_test
-          MYSQL_ROOT_PASSWORD: password
+        image: mariadb:10.11
         ports:
           - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: diary_test
+          MYSQL_USER: rails
+          MYSQL_PASSWORD: password
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping -h localhost -u root -ppassword"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
@@ -78,9 +80,6 @@ jobs:
         env:
           ELASTIC_ENABLED: true
 
-      - name: Run RuboCop
-        run: bundle exec rubocop
-
       - name: Run tests
         run: xvfb-run -a bundle exec rspec spec
         env:
@@ -94,3 +93,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/lcov.info"
+
+  rubocop:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    container:
+      image: ghcr.io/willnigel23/ftp-ci:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Run RuboCop
+        run: bundle exec rubocop

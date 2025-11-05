@@ -27,7 +27,7 @@ set :linked_files, %w[config.ru config/database.yml config/environments/producti
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, [ 'log', 'public/images/working', 'public/uploads', 'tmp', 'public/images/uploaded', 'public/images/fordham', 'public/images/zebrapedia', 'public/text' ]
+set :linked_dirs, ['log', 'public/images/working', 'public/uploads', 'tmp', 'public/images/uploaded', 'public/images/fordham', 'public/images/zebrapedia', 'public/text']
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -35,7 +35,7 @@ set :linked_dirs, [ 'log', 'public/images/working', 'public/uploads', 'tmp', 'pu
 # Default value for keep_releases is 5
 set :keep_releases, 20
 
-set :assets_roles, [ :web, :app ]
+set :assets_roles, [:web, :app]
 
 namespace :deploy do
   desc 'Restart application'
@@ -47,7 +47,16 @@ namespace :deploy do
 
   after :publishing, :restart
 
-  after :restart, :clear_cache do
+  after :restart, :restart_solid_queue
+
+  desc 'Restart Solid Queue service'
+  task :restart_solid_queue do
+    on roles(:app) do
+      execute :sudo, :systemctl, 'restart solid_queue'
+    end
+  end
+
+  after :restart_solid_queue, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       # within release_path do

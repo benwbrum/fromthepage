@@ -15,10 +15,10 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://ident.churchofjesuschrist.org/sso/SSORedirect/metaAlias/church/idp',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'churchaccountid' ],
-            email: [ 'workforceemail' ],
-            email2: [ 'missionaryemail' ],
-            name: [ 'preferredname' ]
+            external_id: ['churchaccountid'],
+            email: ['workforceemail'],
+            email2: ['missionaryemail'],
+            name: ['preferredname']
           }
         }
       elsif identity_provider_id == 'ldstest'
@@ -27,10 +27,10 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://ident-uat.churchofjesuschrist.org/sso/SSORedirect/metaAlias/church/idp',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'churchaccountid' ],
-            email: [ 'workforceemail' ],
-            email2: [ 'missionaryemail' ],
-            name: [ 'preferredname' ]
+            external_id: ['churchaccountid'],
+            email: ['workforceemail'],
+            email2: ['missionaryemail'],
+            name: ['preferredname']
           }
         }
       elsif identity_provider_id == 'harvard'
@@ -39,9 +39,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://fed.huit.harvard.edu/idp/shibboleth',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'eppn' ],
-            email: [ 'mail' ],
-            name: [ 'displayName' ]
+            external_id: ['eppn'],
+            email: ['mail'],
+            name: ['displayName']
           }
         }
       elsif identity_provider_id == 'jhu'
@@ -50,9 +50,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://idp.jh.edu/idp/profile/SAML2/Redirect/SSO',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'NameID' ],
-            email: [ 'urn:oid:0.9.2342.19200300.100.1.3' ],
-            name: [ 'urn:oid:2.16.840.1.113730.3.1.241' ]
+            external_id: ['NameID'],
+            email: ['urn:oid:0.9.2342.19200300.100.1.3'],
+            name: ['urn:oid:2.16.840.1.113730.3.1.241']
           }
         }
       elsif identity_provider_id == 'ilstu'
@@ -61,9 +61,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://sso.illinoisstate.edu/idp/profile/SAML2/Redirect/SSO',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'employeeNumber' ],
-            email: [ 'mail' ],
-            name: [ 'givenname_sn' ]
+            external_id: ['employeeNumber'],
+            email: ['mail'],
+            name: ['givenname_sn']
           }
         }
       elsif identity_provider_id == 'utah'
@@ -72,9 +72,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           idp_sso_target_url: 'https://saml.dts.utah.gov/sso/SSORedirect/metaAlias/fromthepage',
           issuer: 'https://fromthepage.com',
           attribute_statements: {
-            external_id: [ 'mail' ],
-            email: [ 'mail' ],
-            name: [ 'fullname' ]
+            external_id: ['mail'],
+            email: ['mail'],
+            name: ['fullname']
           }
         }
       elsif identity_provider_id == 'samling'

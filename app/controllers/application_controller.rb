@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   DEFAULT_PER_PAGE = 200
 
-  protect_from_forgery with: :exception, except: [ :switch_locale, :saml ]
+  protect_from_forgery with: :exception, except: [:switch_locale, :saml]
 
   before_action do
     if current_user && current_user.admin
@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   skip_before_action :verify_authenticity_token, if: (:devise_controller? && :codespaces_environment?)
   before_action :set_current_user_in_model
+  before_action :set_current_session_in_model
   before_action :masquerade_user!
   before_action :check_search_attempt
   after_action :track_action
@@ -67,9 +68,14 @@ class ApplicationController < ActionController::Base
     I18n.with_locale(locale, &action)
   end
 
-  # Set the current user in User
+  # Set the current user in Current
   def set_current_user_in_model
     Current.user = current_user
+  end
+
+  # Set the current session in Current
+  def set_current_session_in_model
+    Current.session = session
   end
 
   def current_user
@@ -240,16 +246,16 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_collection
+    return if params[:controller] == 'iiif'
+
     return unless @collection
+
     if self.class.module_parent.name == 'Thredded'
       unless @collection.messageboards_enabled
         flash[:error] = t('message_boards_are_disabled', project: @collection.title)
         redirect_to main_app.user_profile_path(@collection.owner)
       end
     end
-
-    return unless @collection.restricted
-    return if params[:controller] == 'iiif'
 
     unless @collection.show_to?(current_user)
       # second chance?
@@ -291,7 +297,7 @@ class ApplicationController < ActionController::Base
     elsif !session[:user_return_to].blank? && session[:user_return_to] != '/' && !session[:user_return_to].include?('/landing')
       session[:user_return_to]
     elsif current_user.owner
-      if current_user.all_owner_collections.any?
+      if current_user.collections.any?
         dashboard_owner_path
       else
         dashboard_startproject_path
@@ -395,6 +401,7 @@ def check_api_access
 end
 
 def set_api_user
+  @api_user = nil
   authenticate_with_http_token do |token, options|
     @api_user = User.find_by(api_key: token)
   end
@@ -403,7 +410,7 @@ end
 def check_search_attempt
   if session[:search_attempt_id]
     your_profile = controller_name == 'user' && @user == current_user
-    if [ 'dashboard', 'static' ].include?(controller_name) || your_profile
+    if ['dashboard', 'static'].include?(controller_name) || your_profile
       session[:search_attempt_id] = nil
     end
   end

@@ -22,7 +22,7 @@ module OwnerExporter
     csv = CSV.generate(headers: true) do |records|
       records << headers
       contributors.each do |user|
-        row = [ user.display_name, user.email ]
+        row = [user.display_name, user.email]
 
         activity = AhoyActivitySummary
           .where(user_id: user.id)
@@ -54,8 +54,8 @@ module OwnerExporter
 
   def owner_mailing_list_csv(owner)
     rows = []
-    header = [ 'User Login', 'User Name', 'Email', 'Opt-In' ]
-    collection_ids = owner.all_owner_collections.map { |c| c.id }.sort
+    header = ['User Login', 'User Name', 'Email', 'Opt-In']
+    collection_ids = owner.collections.map { |c| c.id }.sort
     deed_map = Deed.where(collection_id: collection_ids).group(:user_id, :collection_id).count
     user_ids = deed_map.keys.map { |e| e[0] }.uniq
     Collection.where(id: collection_ids).order(:id).each { |c| header << c.title }
@@ -68,7 +68,7 @@ module OwnerExporter
       row << user.activity_email
 
       collection_ids.each do |collection_id|
-        row << deed_map[[ user.id, collection_id ]] || 0
+        row << deed_map[[user.id, collection_id]] || 0
       end
 
       rows << row
