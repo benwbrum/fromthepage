@@ -1,0 +1,55 @@
+privacy_preference_1:
+  user_id: 1
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_2:
+  user_id: 2
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_3:
+  user_id: 3
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_4:
+  user_id: 4
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_5:
+  user_id: 5
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_6:
+  user_id: 6
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_7:
+  user_id: 7
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_8:
+  user_id: 8
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_9:
+  user_id: 9
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_10:
+  user_id: 10
+  analytics: true
+  marketing: true
+  recorded: true
+privacy_preference_11:
+  user_id: 11
+  analytics: true
+  marketing: true
+  recorded: true
