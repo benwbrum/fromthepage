@@ -144,13 +144,14 @@ describe 'IIIF Translation Status API' do
         login_as owner
         
         # Save translation with wiki-markup
-        post collection_save_translation_page_path(owner, collection, work, page),
-             params: {
-               save: 'save',
-               page: {
-                 source_translation: 'This has a [[TestSubject]] link'
-               }
-             }
+        patch transcribe_save_translation_path,
+              params: {
+                page_id: page.id,
+                save: 'save',
+                page: {
+                  source_translation: 'This has a [[TestSubject]] link'
+                }
+              }
 
         page.reload
         # After processing, if the page has links, status should be indexed
@@ -178,13 +179,14 @@ describe 'IIIF Translation Status API' do
         login_as owner
         
         # Save translation with wiki-markup
-        post collection_save_translation_page_path(owner, collection, work, page),
-             params: {
-               save: 'save',
-               page: {
-                 source_translation: 'This has a [[TestSubject]] link'
-               }
-             }
+        patch transcribe_save_translation_path,
+              params: {
+                page_id: page.id,
+                save: 'save',
+                page: {
+                  source_translation: 'This has a [[TestSubject]] link'
+                }
+              }
 
         page.reload
         # When subjects are disabled, status should remain translated, not indexed
