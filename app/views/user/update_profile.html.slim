@@ -1,7 +1,7 @@
 .litebox-embed(style="width:570px")
   h1 =t('.update_user_profile')
 
-  =form_for(@user, { :url => { :action => 'update' }}) do |f|
+  =form_with(model: @user, url: user_update_path) do |f|
     =hidden_field_tag :user_id, @user.id
     =validation_summary @user.errors
     table.form
@@ -13,7 +13,7 @@
         td =f.text_field :orcid, :placeholder => t('.your_ocrid_id')
         tr
           th =f.label :picture, t('.picture')
-          td 
+          td
             =f.file_field :picture, accept: 'image/*'
             -if @user.picture_url(:thumb)
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
@@ -50,13 +50,13 @@
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
-      tr  
+      tr
         th =f.label :preferred_locale, t('.interface_language'), class: 'collection-label'
         td =f.select :preferred_locale, options_for_select(@dropdown_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale), :include_blank => true
-      tr  
+      tr
         td(colspan="2")
           =label_tag :dictation_language, t('.default_dictation_language'), class: 'collection-label'
-      tr  
+      tr
         td(colspan="2")
           =select_tag :dictation_language, {}, {onchange:'updateCountry()', class: 'w30'}
           |&nbsp;
@@ -84,6 +84,19 @@
         td =f.check_box("notifications[note_added]", {checked: @user.notification.note_added})
         th =f.label :page_edited, t('.page_edited')
 
+    =f.fields_for :privacy_preferences do |pp|
+      p.privacy_preferences =t('.select_cookies')
+      table.form.privacy_preferences style='width: 500px;'
+        tr
+          td =pp.check_box :essential, { checked: true, disabled: true }
+          th =pp.label :essential, t('.cookies_essential')
+        tr
+          td =pp.check_box :marketing, { checked: @user.privacy_preference&.marketing }
+          th =pp.label :marketing, t('.cookies_marketing')
+        tr
+          td =pp.check_box :analytics, { checked: @user.privacy_preference&.analytics }
+          th =pp.label :analytics, t('.cookies_analytics')
+
     .toolbar
       .toolbar_group.aright =f.button t('.update_profile')
 
@@ -91,12 +104,12 @@ javascript:
   $(function(){
     var initialLang = "#{@lang_index}";
     var initialDialect = "#{@dialect_index}";
-    
+
     console.log("Init Lang: ", initialLang, " Initial Dialect: ", initialDialect)
-    
+
     for (var i = 0; i < langs.length; i++) {
       dictation_language.options[i] = new Option(langs[i][0], i);
     }
-    
+
     findDefault(initialLang, initialDialect);
   });

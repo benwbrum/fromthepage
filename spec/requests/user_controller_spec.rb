@@ -5,7 +5,7 @@ describe UserController do
     Current.user = owner
   end
 
-  let(:owner) { User.find_by(owner: true) }
+  let(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:page) { create(:page, work: work) }
@@ -68,6 +68,41 @@ describe UserController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:profile)
       end
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { user_update_path(user_slug: owner.slug) }
+    let(:params) do
+      {
+        user: {
+          real_name: 'New Real Name',
+          notifications: {
+            user_activity: '0'
+          },
+          privacy_preferences: {
+            analytics: '1',
+            marketing: '1'
+          }
+        }
+      }
+    end
+
+    let(:subject) { patch action_path, params: params }
+
+    it 'renders status' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:found)
+      expect(owner.reload.notification).to have_attributes(
+        user_activity: false
+      )
+      expect(owner.reload.privacy_preference).to have_attributes(
+        recorded: true,
+        analytics: true,
+        marketing: true
+      )
     end
   end
 end

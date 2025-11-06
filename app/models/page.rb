@@ -20,6 +20,7 @@
 #  source_translation      :text(16777215)
 #  status                  :string(255)      default("new"), not null
 #  title                   :string(255)
+#  transcription_json      :text(4294967295)
 #  translation_status      :string(255)      default("new"), not null
 #  xml_text                :text(16777215)
 #  xml_translation         :text(16777215)

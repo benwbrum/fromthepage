@@ -23,7 +23,7 @@ module ImageHelper
         FileUtils.mkdir_p(File.dirname(outfile))
 
         print "\textracting #{outfile}\n"
-        zip_file.extract(f, outfile)
+        zip_file.extract(f, destination_directory: destination)
       end
     end
   end

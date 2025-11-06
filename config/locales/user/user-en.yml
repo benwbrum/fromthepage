@@ -35,6 +35,9 @@ en:
       add_as_collaborator: Added to private collection as a collaborator
       add_as_owner: Added to collection as a co-owner
       add_as_reviewer: Added to collection as an authorized reviewer
+      cookies_analytics: Helps understand site usage for improvement.
+      cookies_essential: Required for the app to work.
+      cookies_marketing: Helps improve outreach and show relevant content.
       default_dictation_language: 'Default dictation language: '
       footer: Footer
       help: Basic Help Text
@@ -46,6 +49,7 @@ en:
       owner_stats: Nightly emails with owned collection activity
       page_edited: Note added in response to a comment you made
       picture: Profile Picture
+      select_cookies: 'Select which of the following cookies you want to allow:'
       select_notification: 'Select which of the following notifications you want to receive:'
       sign_up_url: 'Sign-up URL:'
       suggestions_help_tab: Suggestions for your help tab.

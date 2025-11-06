@@ -122,6 +122,60 @@ describe ArticleController do
     end
   end
 
+  describe '#items' do
+    let!(:child_category) { create(:category, collection_id: collection.id, parent_id: category.id) }
+    let!(:empty_category) { create(:category, collection_id: collection.id) }
+    let!(:categorized_article) { create(:article, collection: collection, pages: [page], categories: [category]) }
+    let!(:uncategorized_article) { create(:article, collection: collection, pages: [page]) }
+
+    let(:selected_category_id) { category.id }
+    let(:params) do
+      {
+        batch: 0,
+        timestamp: Time.now.to_i,
+        selected_category_id: selected_category_id
+      }
+    end
+
+    let(:action_path) { article_items_path(collection_id: collection.slug) }
+    let(:subject) { get action_path, params: params }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_items)
+    end
+
+    context 'when uncategorized' do
+      let(:selected_category_id) { 'uncategorized' }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+      end
+    end
+
+    context 'with next batch' do
+      let!(:other_articles) { create_list(:article, 3, collection: collection, pages: [page], categories: [category]) }
+      before do
+        stub_const('ArticleController::ARTICLES_BATCH_SIZE', 3)
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+      end
+    end
+  end
+
   describe '#delete' do
     let!(:article) { create(:article, collection: collection) }
 

@@ -143,7 +143,7 @@ describe Api::V1::BulkExportController do
       context 'when bulk export is finished' do
         before do
           FileUtils.mkdir_p(bulk_export.zip_file_path)
-          Zip::File.open(bulk_export.zip_file_name, Zip::File::CREATE) do |_zipfile|
+          Zip::File.open(bulk_export.zip_file_name, create: true) do |_zipfile|
             # Create temp empty zip
           end
         end

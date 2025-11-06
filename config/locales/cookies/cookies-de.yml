@@ -1,0 +1,18 @@
+---
+de:
+  cookies:
+    banner:
+      accept_all: Alle akzeptieren
+      description: Wir verwenden notwendige Cookies, um die Funktion von FromThePage zu gewährleisten, und optionale Cookies (mit Ihrer Zustimmung), um unseren Service und unsere Reichweite zu verbessern.
+      manage_preferences: Einstellungen verwalten
+      title: Cookie-Einstellungen
+    new:
+      analytics: Analyse
+      analytics_description: Hilft uns zu verstehen, wie Benutzer FromThePage verwenden, damit wir die Website verbessern können. Enthält Tools wie Google Analytics und Microsoft Clarity.
+      back: Zurück
+      confirm: Bestätigen
+      essential: Essentiell
+      essential_description: Diese Cookies sind für grundlegende Funktionen wie Anmeldesitzungen und Authentifizierung erforderlich und immer aktiv.
+      marketing: Marketing
+      marketing_description: Helfen Sie uns, unsere Reichweite zu messen und zu verbessern und relevante Inhalte anzuzeigen. Dazu gehören Tools wie Facebook Pixel und Bento.
+      title: Cookie-Einstellungen
