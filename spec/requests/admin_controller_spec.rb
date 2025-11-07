@@ -72,14 +72,14 @@ describe AdminController do
     end
 
     context 'with search parameter' do
-      let!(:searchable_user) { create(:unique_user, login: 'searchable_user', display_name: 'Searchable User') }
+      let!(:searchable_user) { create(:unique_user, display_name: 'Searchable User Unique') }
       let!(:searchable_upload) { create(:document_upload, collection: collection, user: searchable_user) }
-      let!(:other_user) { create(:unique_user, login: 'other_user', display_name: 'Other User') }
+      let!(:other_user) { create(:unique_user, display_name: 'Other User Different') }
       let!(:other_upload) { create(:document_upload, collection: collection, user: other_user) }
 
       it 'filters uploads by user login' do
         login_as admin
-        get action_path, params: { search: 'searchable' }
+        get action_path, params: { search: searchable_user.login }
         expect(response).to have_http_status(:ok)
         expect(assigns(:document_uploads)).to include(searchable_upload)
         expect(assigns(:document_uploads)).not_to include(other_upload)
