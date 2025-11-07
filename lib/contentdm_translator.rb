@@ -184,7 +184,8 @@ module ContentdmTranslator
         license: license,
         collection: cdm_collection(manifest_at_id),
         metadata: metadata_wrapper,
-        action: 'edit'
+        action: 'edit',
+        disableValidation: true
       }
       resp = soap_client.call(:process_conten_tdm, message: message)
 
