@@ -31,8 +31,8 @@ describe DocumentUpload do
   describe '.search' do
     let!(:user1) { create(:unique_user, login: 'testuser', display_name: 'Test User', email: 'test@example.com') }
     let!(:user2) { create(:unique_user, login: 'otheruser', display_name: 'Other User', email: 'other@example.com') }
-    let!(:collection1) { create(:collection, owner_user_id: user1.id) }
-    let!(:collection2) { create(:collection, owner_user_id: user2.id) }
+    let!(:collection1) { create(:collection, owner_user_id: user1.id, title: 'Searchable Collection') }
+    let!(:collection2) { create(:collection, owner_user_id: user2.id, title: 'Other Collection') }
     let(:file1) { Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, 'test_data/uploads/test.pdf'))) }
     let(:file2) { Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, 'test_data/uploads/test.pdf'))) }
     let!(:upload1) { create(:document_upload, collection: collection1, user: user1, file: file1) }
@@ -52,6 +52,12 @@ describe DocumentUpload do
 
     it 'finds uploads by user email' do
       results = DocumentUpload.search('test@example.com')
+      expect(results).to include(upload1)
+      expect(results).not_to include(upload2)
+    end
+
+    it 'finds uploads by collection title' do
+      results = DocumentUpload.search('Searchable')
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
