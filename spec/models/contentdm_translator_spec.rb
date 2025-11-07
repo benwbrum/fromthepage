@@ -59,16 +59,4 @@ RSpec.describe ContentdmTranslator do
       end
     end
   end
-
-  describe '#export_work_to_cdm method signatures' do
-    it 'accepts disable_validation parameter for export_work_to_cdm_with_retry' do
-      # Verify the method accepts the new parameter without raising an error
-      expect(ContentdmTranslator.method(:export_work_to_cdm_with_retry).arity).to be_between(-6, -5)
-    end
-
-    it 'accepts disable_validation parameter for export_work_to_cdm' do
-      # Verify the method accepts the new parameter without raising an error
-      expect(ContentdmTranslator.method(:export_work_to_cdm).arity).to be_between(-6, -5)
-    end
-  end
 end

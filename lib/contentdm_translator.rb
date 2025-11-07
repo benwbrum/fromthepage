@@ -135,12 +135,12 @@ module ContentdmTranslator
     return error, fts
   end
 
-  def self.export_work_to_cdm_with_retry(work, username, password, license, disable_validation = false)
+  def self.export_work_to_cdm_with_retry(work, username, password, license)
     max_delay = 21_600
     delay = 300
 
     begin
-      ContentdmTranslator.export_work_to_cdm(work, username, password, license, disable_validation)
+      ContentdmTranslator.export_work_to_cdm(work, username, password, license)
     rescue Net::ReadTimeout => e
       delay_to_use = [delay, max_delay].min
       print "Net::ReadTimeout: Retrying in #{delay_to_use} seconds... (#{e.message})"
@@ -156,7 +156,7 @@ module ContentdmTranslator
     end
   end
 
-  def self.export_work_to_cdm(work, username, password, license, disable_validation = false)
+  def self.export_work_to_cdm(work, username, password, license)
     error, fieldname = fts_field_for_collection(work.collection)
     if error
       puts "Error retrieving Full-Text Search field: #{error}\n"
@@ -185,7 +185,7 @@ module ContentdmTranslator
         collection: cdm_collection(manifest_at_id),
         metadata: metadata_wrapper,
         action: 'edit',
-        disableValidation: disable_validation
+        disableValidation: true
       }
       resp = soap_client.call(:process_conten_tdm, message: message)
 
