@@ -77,6 +77,17 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             name: ['fullname']
           }
         }
+      elsif identity_provider_id == 'dartmouth'
+        options = {
+          idp_cert: ENV['IDP_CERT_DARTMOUTH'],
+          idp_sso_target_url: 'https://login.dartmouth.edu/cas/idp/profile/SAML2/Redirect/SSO',
+          issuer: 'https://fromthepage.com',
+          attribute_statements: {
+            external_id: ["urn:oid:0.9.2342.19200300.100.1.1"],
+            email: ['urn:oid:0.9.2342.19200300.100.1.3'],
+            name: ['urn:oid:2.16.840.1.113730.3.1.241']
+          }
+        }
       elsif identity_provider_id == 'samling'
         options = {
           idp_sso_target_url: 'https://capriza.github.io/samling/samling.html',
