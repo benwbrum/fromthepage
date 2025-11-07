@@ -31,8 +31,8 @@ describe DocumentUpload do
   describe '.search' do
     let!(:user1) { create(:unique_user, display_name: 'Test User Alpha') }
     let!(:user2) { create(:unique_user, display_name: 'Other User Beta') }
-    let!(:collection1) { create(:collection, owner_user_id: user1.id, title: 'Searchable Collection') }
-    let!(:collection2) { create(:collection, owner_user_id: user2.id, title: 'Other Collection') }
+    let!(:collection1) { Collection.create!(title: 'Searchable Collection', owner_user_id: user1.id) }
+    let!(:collection2) { Collection.create!(title: 'Other Collection', owner_user_id: user2.id) }
     let(:file1) { Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, 'test_data/uploads/test.pdf'))) }
     let(:file2) { Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, 'test_data/uploads/test.pdf'))) }
     let!(:upload1) { create(:document_upload, collection: collection1, user: user1, file: file1) }
