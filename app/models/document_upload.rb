@@ -53,6 +53,14 @@ class DocumentUpload < ApplicationRecord
     File.basename(self.file.to_s)
   end
 
+  def self.search(search)
+    wildcard = "%#{search}%"
+    joins(:user).where(
+      'users.display_name LIKE ? OR users.login LIKE ? OR users.email LIKE ? OR document_uploads.file LIKE ?',
+      wildcard, wildcard, wildcard, wildcard
+    )
+  end
+
   private
 
   def upload_dir

@@ -183,7 +183,11 @@ class AdminController < ApplicationController
   end
 
   def uploads
-    @document_uploads = DocumentUpload.order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
+    if params[:search]
+      @document_uploads = DocumentUpload.search(params[:search]).order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
+    else
+      @document_uploads = DocumentUpload.order('id DESC').paginate page: params[:page], per_page: PAGES_PER_SCREEN
+    end
   end
 
   def delete_upload

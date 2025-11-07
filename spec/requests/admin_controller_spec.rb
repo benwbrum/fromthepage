@@ -60,6 +60,41 @@ describe AdminController do
     end
   end
 
+  describe '#uploads' do
+    let(:action_path) { admin_uploads_path }
+    let(:subject) { get action_path }
+
+    it 'renders for admin' do
+      login_as admin
+      subject
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:uploads)
+    end
+
+    context 'with search parameter' do
+      let!(:searchable_user) { create(:unique_user, login: 'searchable_user', display_name: 'Searchable User') }
+      let!(:searchable_upload) { create(:document_upload, collection: collection, user: searchable_user) }
+      let!(:other_user) { create(:unique_user, login: 'other_user', display_name: 'Other User') }
+      let!(:other_upload) { create(:document_upload, collection: collection, user: other_user) }
+
+      it 'filters uploads by user login' do
+        login_as admin
+        get action_path, params: { search: 'searchable' }
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:document_uploads)).to include(searchable_upload)
+        expect(assigns(:document_uploads)).not_to include(other_upload)
+      end
+
+      it 'filters uploads by user display name' do
+        login_as admin
+        get action_path, params: { search: 'Searchable' }
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:document_uploads)).to include(searchable_upload)
+        expect(assigns(:document_uploads)).not_to include(other_upload)
+      end
+    end
+  end
+
   describe '#solid_queue' do
     # Test for MissionControl UI
     let!(:owner) { create(:unique_user, :owner) }

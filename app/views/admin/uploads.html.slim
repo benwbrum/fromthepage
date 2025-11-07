@@ -1,5 +1,10 @@
 =render(:partial => 'header', :locals => { :selected => 5 })
 
+=form_tag(admin_uploads_path, method: :get, enforce_utf8: false, class: 'collection-search') do
+  =search_field_tag :search, params[:search], placeholder: t('.search_uploads')
+  =button_tag t('.search'), :name => nil
+  =label_tag :search, t('.search_uploads_label'), class: "hidden"
+
 table.admin-grid.datagrid.striped
   thead
     tr

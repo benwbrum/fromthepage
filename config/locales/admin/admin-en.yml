@@ -125,6 +125,9 @@ en:
       date: Date
       delete_upload: Delete Upload
       process_upload: Process Upload
+      search: Search
+      search_uploads: Search Uploads...
+      search_uploads_label: Search uploads
       show_processing_log: Show Processing Log
       status: Status
       upload_details: Upload Details
