@@ -7,11 +7,12 @@ namespace :fromthepage do
     username = ENV['contentdm_username']
     password = ENV['contentdm_password']
     license = ENV['contentdm_license']
+    disable_validation = ENV['contentdm_disable_validation'] == 'true'
 
     collection.works.joins(:sc_manifest, :work_statistic).each do |work|
       if work.work_statistic.complete >= 99
         print "\tBeginning export of work #{work.id}, '#{work.title}' \n"
-        ContentdmTranslator.export_work_to_cdm_with_retry(work, username, password, license)
+        ContentdmTranslator.export_work_to_cdm_with_retry(work, username, password, license, disable_validation)
         print "Finished export of work #{work.id}, '#{work.title}' \n"
       else
         print "\tSkipping export of uncompleted work #{work.id}, '#{work.title}' \n"
