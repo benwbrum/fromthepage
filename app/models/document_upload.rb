@@ -55,7 +55,7 @@ class DocumentUpload < ApplicationRecord
 
   def self.search(search)
     wildcard = "%#{search}%"
-    left_outer_joins(:user, :collection).where(
+    joins(:user).joins(:collection).where(
       'users.display_name LIKE ? OR users.login LIKE ? OR users.email LIKE ? OR document_uploads.file LIKE ? OR collections.title LIKE ?',
       wildcard, wildcard, wildcard, wildcard, wildcard
     )
