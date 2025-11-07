@@ -13,13 +13,16 @@ describe 'Bulk export rake tasks' do
 
     before(:each) do
       # Create the export directory if it doesn't exist
-      FileUtils.mkdir_p('/tmp/fromthepage_exports')
+      # Using a temporary BulkExport instance to get the configured path
+      export_path = build(:bulk_export).zip_file_path
+      FileUtils.mkdir_p(export_path)
     end
 
     after(:each) do
       # Clean up any remaining files
-      Dir.glob('/tmp/fromthepage_exports/export_*.zip').each { |f| File.delete(f) if File.exist?(f) }
-      Dir.glob('/tmp/fromthepage_exports/rake_bulk_export_*.log').each { |f| File.delete(f) if File.exist?(f) }
+      export_path = build(:bulk_export).zip_file_path
+      Dir.glob("#{export_path}/export_*.zip").each { |f| File.delete(f) if File.exist?(f) }
+      Dir.glob("#{export_path}/rake_bulk_export_*.log").each { |f| File.delete(f) if File.exist?(f) }
     end
 
     it 'deletes old bulk export records and their associated files' do
