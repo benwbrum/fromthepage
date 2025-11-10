@@ -1,4 +1,6 @@
 class Article::Lib::Rename
+  BATCH_SIZE = 10_000
+
   def initialize(article_id:, old_names:, new_name:, new_article_id:)
     @article_id     = article_id
     @new_article_id = new_article_id
@@ -31,20 +33,20 @@ class Article::Lib::Rename
     end
 
     if @article.nil?
-      page_article_links.destroy_all
-      target_article_links.destroy_all
-      source_article_links.destroy_all
+      page_article_links.in_batches(of: BATCH_SIZE).destroy_all
+      target_article_links.in_batches(of: BATCH_SIZE).destroy_all
+      source_article_links.in_batches(of: BATCH_SIZE).destroy_all
 
       return
     end
 
     return if @new_article.nil?
 
-    source_article_links.destroy_all
+    source_article_links.in_batches(of: BATCH_SIZE).destroy_all
 
     return unless @article&.persisted? && @new_article&.persisted?
 
-    Deed.where(article_id: @article.id).update_all(article_id: @new_article.id)
+    Deed.where(article_id: @article.id).in_batches(of: BATCH_SIZE).update_all(article_id: @new_article.id)
 
     if @article.source_text
       @new_article.source_text ||= ''
