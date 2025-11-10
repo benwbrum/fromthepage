@@ -48,6 +48,13 @@ class ArticleController < ApplicationController
     @batch = params[:batch].to_i
     @timestamp = params[:timestamp]
 
+    if ELASTIC_ENABLED && search.present?
+      article_ids = Article.es_search(query: search, user: current_user).pluck('_id')
+      articles_scope = articles_scope.where(id: article_ids)
+    elsif search.present?
+      articles_scope = articles_scope.where('articles.title LIKE ?', "%#{search}%")
+    end
+
     if params[:selected_category_id] == 'uncategorized'
       @category = 'uncategorized'
       articles_scope = articles_scope.where(categories: { id: nil })
@@ -367,5 +374,9 @@ class ArticleController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
+  end
+
+  def search
+    @search ||= Elasticsearch::Lib::AugmentedQuery.new(query: params[:search]).perform
   end
 end

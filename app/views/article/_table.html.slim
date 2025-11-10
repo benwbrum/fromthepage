@@ -7,7 +7,7 @@ dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : catego
         =render partial: 'table_actions', locals: { category: category }
 
   -if articles.any?
-    =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: 0, timestamp: Time.now.to_i }
+    =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, search: params[:search], batch: 0, timestamp: Time.now.to_i }
   -else
     dd
       p.acenter.fglight= t('article.list.there_are_no_subjects')

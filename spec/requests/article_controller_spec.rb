@@ -148,6 +148,46 @@ describe ArticleController do
       expect(response).to render_template(:_items)
     end
 
+    context 'when searching' do
+      let(:params) do
+        {
+          search: categorized_article.title,
+          batch: 0,
+          timestamp: Time.now.to_i,
+          selected_category_id: selected_category_id
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+      end
+
+      context 'with elasticsearch' do
+        before do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+          stub_const('ELASTIC_ENABLED', true)
+          ArticlesIndex.import [categorized_article, uncategorized_article]
+        end
+
+        after do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:_items)
+        end
+      end
+    end
+
     context 'when uncategorized' do
       let(:selected_category_id) { 'uncategorized' }
 

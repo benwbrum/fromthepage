@@ -69,6 +69,7 @@ fr:
       no_categories: Aucune catégorie
       no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
       there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée
+      there_are_no_subjects_for_the_search: Aucun sujet ne correspond à la recherche
       uncategorized: Non catégorisé
       uncategorized_subjects: Sujets non catégorisés
       upload_subjects: Téléverser des sujets
