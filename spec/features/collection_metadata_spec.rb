@@ -44,7 +44,7 @@ describe "collection metadata", order: :defined do
     page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
     visit collection_metadata_upload_path(c)
-    expect(page).to have_content("To update metadata for several works within this collection")
+    expect(page).to have_content('To update metadata for several works within this collection')
 
     attach_file(
       'metadata_file',
@@ -52,9 +52,9 @@ describe "collection metadata", order: :defined do
       make_visible: true
     )
 
-    perform_enqueued_jobs do
-      click_button('Upload')
-    end
+    click_button('Upload')
+    expect(page).to have_content('Your upload is being processed. An email will be sent to update its status')
+    perform_enqueued_jobs
   end
 
   it "increments occurrences as works are re-imported", js: true do
@@ -80,9 +80,9 @@ describe "collection metadata", order: :defined do
       make_visible: true
     )
 
-    perform_enqueued_jobs do
-      click_button('Upload')
-    end
+    click_button('Upload')
+    expect(page).to have_content('Your upload is being processed. An email will be sent to update its status')
+    perform_enqueued_jobs
 
     filename.reload
     expect(filename.count).to eq 3
