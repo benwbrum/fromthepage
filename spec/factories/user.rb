@@ -42,5 +42,15 @@ FactoryBot.define do
         admin { true }
       end
     end
+
+    transient do
+      with_privacy_preference { true }
+    end
+
+    after :create do |user, evaluator|
+      if evaluator.with_privacy_preference
+        create(:privacy_preference, user: user)
+      end
+    end
   end
 end
