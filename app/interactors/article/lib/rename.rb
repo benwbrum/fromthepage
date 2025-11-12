@@ -13,7 +13,7 @@ class Article::Lib::Rename
 
   def call
     # walk through all pages referring to this
-    page_article_links.each do |link|
+    page_article_links.find_each do |link|
       page = link.page
 
       @old_names.each do |old_name|
@@ -23,7 +23,7 @@ class Article::Lib::Rename
     end
 
     # walk through all articles referring to this
-    target_article_links.each do |link|
+    target_article_links.find_each do |link|
       source_article = link.source_article
 
       @old_names.each do |old_name|
