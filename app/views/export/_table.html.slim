@@ -57,7 +57,7 @@ table.datagrid.striped.dataTable.no-footer
               =svg_symbol '#icon-export', class: 'icon'
               span= t('export.index.iiif')
           ruby:
-            if @collection.field_based?
+            if @collection.field_based
               total_table_cells = work.pages.sum("JSON_LENGTH(transcription_json)")
             else
               total_table_cells = work.table_cells.count
