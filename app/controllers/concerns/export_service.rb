@@ -185,7 +185,7 @@ module ExportService
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
         collection: collection,
-        work_ids: collection.works.pluck(:id)
+        work_ids: [work.id]
       ).call
 
       csv_string = result.csv_string
