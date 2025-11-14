@@ -263,4 +263,23 @@ describe Page do
       end
     end
   end
+
+  describe '#thumbnail_url' do
+    context 'when page has base_image with special characters' do
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        allow(page).to receive(:thumbnail_image).and_return('/public/images/uploaded/32237431/ASS 642 #11 f. 1r_thumb.jpeg')
+      end
+
+      it 'returns URL encoded thumbnail path' do
+        # Include the ApplicationHelper to access file_to_url
+        page.extend(ApplicationHelper)
+        result = page.thumbnail_url
+        expect(result).to eq('/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r_thumb.jpeg')
+      end
+    end
+  end
 end

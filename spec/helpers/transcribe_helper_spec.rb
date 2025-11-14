@@ -39,4 +39,29 @@ RSpec.describe TranscribeHelper, type: :helper do
         .to eq(expected)
     end
   end
+
+  describe '#osd_source' do
+    let(:work) { FactoryBot.build_stubbed(:work) }
+
+    context 'when page has base_image with special characters' do
+      let(:page) { FactoryBot.build_stubbed(:page, base_image: '/public/images/uploaded/32237431/ASS 642 #11 f. 1r.jpeg') }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        allow(page).to receive(:canonical_facsimile_url).and_return('/public/images/uploaded/32237431/ASS 642 #11 f. 1r.jpeg')
+        allow(helper).to receive(:browser).and_return(double(platform: double(ios?: false), webkit?: false))
+      end
+
+      it 'returns URL encoded image source' do
+        result = helper.osd_source(page, work)
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(1)
+        
+        parsed = JSON.parse(result[0])
+        expect(parsed['type']).to eq('image')
+        expect(parsed['url']).to eq('/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r.jpeg')
+      end
+    end
+  end
 end
