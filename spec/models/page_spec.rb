@@ -232,6 +232,38 @@ describe Page do
       end
     end
 
+    context 'when page has base_image with special characters' do
+      let(:page) { build_stubbed(:page, :with_image) }
+
+      before do
+        # Ensure no sc_canvas or ia_leaf to test the local image scenario
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+
+        # Simulate a base_image with special characters like # and spaces
+        page.base_image = '/home/fromthepage/deployment/releases/20250514221152/public/images/uploaded/32237431/ASS 642 #11 f. 1r.jpeg'
+
+        # Mock the default_url_options that would be set in production
+        allow(Rails.application.config.action_mailer).to receive(:default_url_options).and_return({ host: 'fromthepage.com' })
+      end
+
+      it 'converts path with special characters to properly encoded URL' do
+        result = page.image_url_for_download
+
+        # Should not contain the deployment path
+        expect(result).not_to include('/home/fromthepage/deployment/releases/')
+
+        # Should start with https://fromthepage.com for local images
+        expect(result).to start_with('https://fromthepage.com')
+
+        # Should contain URL-encoded special characters
+        expect(result).to include('ASS%20642%20%2311%20f.%201r.jpeg')
+
+        # Should be the complete expected URL with proper encoding
+        expect(result).to eq('https://fromthepage.com/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r.jpeg')
+      end
+    end
+
     context 'when page has sc_canvas (IIIF image)' do
       let(:sc_canvas) { double('sc_canvas', sc_resource_id: 'https://iiif.durham.ac.uk/iiif/trifle/32150/t1/mg/73/t1mg732d945c/c449d8a03531bef78218f0b3f3db4f01.jp2/full/full/0/default.jpg') }
       let(:page) { build_stubbed(:page) }
