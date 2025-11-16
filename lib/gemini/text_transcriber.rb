@@ -56,18 +56,27 @@ module Gemini
     end
 
     # Fetches an image from a URL and encodes it as base64
+    # Follows redirects up to a maximum of 10 times
     #
     # @param url [String] The URL of the image
+    # @param limit [Integer] Maximum number of redirects to follow
     # @return [String] Base64-encoded image data
-    def self.fetch_and_encode_image(url)
+    def self.fetch_and_encode_image(url, limit = 10)
+      raise ArgumentError, 'Too many HTTP redirects' if limit.zero?
+
       uri = URI.parse(url)
       response = Net::HTTP.get_response(uri)
 
-      unless response.is_a?(Net::HTTPSuccess)
+      case response
+      when Net::HTTPSuccess
+        Base64.strict_encode64(response.body)
+      when Net::HTTPRedirection
+        location = response['location']
+        Rails.logger.info("Following redirect to: #{location}")
+        fetch_and_encode_image(location, limit - 1)
+      else
         raise "Failed to fetch image from #{url}: #{response.code} #{response.message}"
       end
-
-      Base64.strict_encode64(response.body)
     end
 
     # Extracts transcribed text from Gemini API response

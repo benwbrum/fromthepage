@@ -78,10 +78,14 @@ text = Gemini::TextTranscriber.transcribe_image(image_url, prompt: custom_prompt
 ## How It Works
 
 1. The interactor retrieves the page image URL using `page.image_url_for_download`
-2. The image is downloaded and encoded as base64
+2. The image is downloaded and encoded as base64 (automatically follows HTTP redirects)
 3. The encoded image and prompt are sent to the Gemini API
 4. The API returns transcribed text in a streaming response
 5. The transcribed text is saved to the page using `page.ai_plaintext=`
+
+### Redirect Handling
+
+The image fetcher automatically follows HTTP redirects (301, 302, etc.) up to a maximum of 10 redirects. This ensures compatibility with image URLs that use CDNs or redirect services.
 
 ## Storage
 
@@ -109,6 +113,7 @@ The interactor handles several error cases:
 - **No image**: Returns failure if the page has no associated image
 - **Missing API key**: Raises `ArgumentError` if `GEMINI_API_KEY` is not set
 - **Network errors**: Raises exception if image download fails
+- **Too many redirects**: Raises exception if more than 10 redirects are encountered
 - **API errors**: Logs error and raises exception if Gemini API call fails
 
 ## Testing
