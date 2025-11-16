@@ -4,7 +4,7 @@ describe Page::FetchAiText do
   let(:owner) { User.first }
   let(:collection) { create(:collection, owner_user_id: owner.id) }
   let(:work) { create(:work, collection: collection) }
-  let(:page) { create(:page, work: work) }
+  let(:page) { create(:page, :with_image, work: work) }
 
   let(:result) do
     described_class.new(page: page).call
