@@ -5,9 +5,9 @@ require 'base64'
 module Gemini
   class TextTranscriber
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to gemini-2.0-flash-exp but can be configured via GEMINI_MODEL env var
-    # Note: The issue mentions Gemini 2.5, but we use 2.0-flash-exp as it's the latest
-    # available model. This can be updated when Gemini 2.5 is released.
+    # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
+    # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
+    # available. This can be updated when Gemini 2.5 is released.
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
@@ -16,7 +16,7 @@ module Gemini
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model = ENV['GEMINI_MODEL'] || 'gemini-2.0-flash-exp'
+      model = ENV['GEMINI_MODEL'] || 'gemini-1.5-flash'
 
       client = ::Gemini.new(
         credentials: {
@@ -28,7 +28,7 @@ module Gemini
 
       # Use provided prompt or default transcription prompt
       transcription_prompt = prompt || default_prompt
-      binding.pry
+
       # Download and encode the image
       image_data = fetch_and_encode_image(image_url)
 

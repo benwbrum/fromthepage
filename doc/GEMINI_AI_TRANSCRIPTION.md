@@ -27,16 +27,16 @@ To obtain a Gemini API key:
 
 ### 3. (Optional) Configure Model
 
-By default, the integration uses `gemini-2.0-flash-exp`. You can override this by setting:
+By default, the integration uses `gemini-1.5-flash`. You can override this by setting:
 
 ```bash
 export GEMINI_MODEL='gemini-1.5-pro'
 ```
 
 Available models include:
-- `gemini-2.0-flash-exp` (default, experimental, fast)
-- `gemini-1.5-pro` (stable, more accurate)
-- `gemini-1.5-flash` (stable, fast)
+- `gemini-1.5-flash` (default, stable, fast, good for transcription)
+- `gemini-1.5-pro` (stable, more accurate, slower)
+- `gemini-pro-vision` (older model with vision capabilities)
 
 ## Usage
 
