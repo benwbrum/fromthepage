@@ -28,7 +28,7 @@ module Gemini
 
       # Use provided prompt or default transcription prompt
       transcription_prompt = prompt || default_prompt
-
+      binding.pry
       # Download and encode the image
       image_data = fetch_and_encode_image(image_url)
 
@@ -98,10 +98,10 @@ module Gemini
       )
     rescue Errno::ENOENT
       # Fallback prompt if file doesn't exist
-      "Please transcribe all the text you see in this image. " \
-      "Preserve the original formatting, line breaks, and layout as much as possible. " \
-      "If the text is handwritten, do your best to interpret it accurately. " \
-      "Do not add any commentary or explanations - only provide the transcribed text."
+      'Please transcribe all the text you see in this image. ' \
+      'Preserve the original formatting, line breaks, and layout as much as possible. ' \
+      'If the text is handwritten, do your best to interpret it accurately. ' \
+      'Do not add any commentary or explanations - only provide the transcribed text.'
     end
   end
 end
