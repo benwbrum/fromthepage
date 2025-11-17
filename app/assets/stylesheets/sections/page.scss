@@ -587,14 +587,14 @@
 .ai-text-notice {
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: #e8f4f8;
+  background-color: #d9edf7;
   border-left: 4px solid #0066cc;
   border-radius: 4px;
 
   .info-message {
     margin: 0;
-    color: #004080;
-    font-size: 0.95rem;
+    color: #003d5c;
+    font-size: $fontSize;
   }
 }
 
@@ -603,11 +603,12 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
+    font-size: $fontSizeBig;
     line-height: 1.6;
     background-color: #f5f5f5;
     padding: 1rem;
     border-radius: 4px;
     margin: 0;
+    color: #000;
   }
 }
