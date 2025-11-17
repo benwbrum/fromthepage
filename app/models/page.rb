@@ -408,14 +408,16 @@ class Page < ApplicationRecord
                   self.saved_change_to_status? ||
                   self.saved_change_to_translation_status?
 
-    version = PageVersion.new
-    version.page = self
-    version.title = self.title
-    version.transcription = self.source_text
-    version.xml_transcription = self.xml_text
-    version.source_translation = self.source_translation
-    version.xml_translation = self.xml_translation
-    version.status = self.status
+    version = PageVersion.new(
+      page: self,
+      title: self.title,
+      transcription: self.source_text,
+      xml_transcription: self.xml_text,
+      source_translation: self.source_translation,
+      xml_translation: self.xml_translation,
+      status: self.status,
+      transcription_json: self.transcription_json
+    )
 
     # Add other attributes as needed
 
