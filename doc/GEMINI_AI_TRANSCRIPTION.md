@@ -133,53 +133,49 @@ For processing multiple pages at once, use the provided rake tasks:
 ### Transcribe all pages in a work
 
 ```bash
-# By work slug
+# By work slug (skips pages with existing AI plaintext)
 rake fromthepage:gemini:transcribe_work[my-work-slug]
 
 # By work ID
 rake fromthepage:gemini:transcribe_work[123]
+
+# Force re-transcribe (overwrites existing AI plaintext)
+rake fromthepage:gemini:transcribe_work[my-work-slug,retranscribe]
 ```
 
 This task:
 - Processes all pages in the specified work
-- Skips pages that already have AI plaintext
+- By default, skips pages that already have AI plaintext
+- Pass `retranscribe` as second parameter to overwrite existing AI plaintext
 - Provides progress updates and statistics
 - Includes a small delay between requests to avoid rate limiting
 
 ### Transcribe all pages in a collection
 
 ```bash
-# By collection slug
+# By collection slug (skips pages with existing AI plaintext)
 rake fromthepage:gemini:transcribe_collection[my-collection-slug]
 
 # By collection ID
 rake fromthepage:gemini:transcribe_collection[456]
+
+# Force re-transcribe (overwrites existing AI plaintext)
+rake fromthepage:gemini:transcribe_collection[my-collection-slug,retranscribe]
 ```
 
 This task:
 - Processes all pages in all works within the collection
-- Skips pages that already have AI plaintext
+- By default, skips pages that already have AI plaintext
+- Pass `retranscribe` as second parameter to overwrite existing AI plaintext
 - Shows progress for each work and overall statistics
 - Includes a small delay between requests to avoid rate limiting
 
-### Force re-transcribe (overwrite existing)
-
-If you need to re-transcribe pages that already have AI plaintext:
-
-```bash
-# Re-transcribe a single work
-rake fromthepage:gemini:retranscribe_work[my-work-slug]
-
-# Re-transcribe entire collection
-rake fromthepage:gemini:retranscribe_collection[my-collection-slug]
-```
-
-**Warning:** These tasks will overwrite existing AI plaintext without confirmation.
-
 ### Example Output
 
+Normal mode (skips existing):
 ```
 Starting Gemini AI transcription for work: Historical Letters Collection
+Mode: NORMAL (skips existing)
 Total pages: 25
 ================================================================================
 [1/25] Page 101 (Letter 1, Page 1): SUCCESS
@@ -187,6 +183,24 @@ Total pages: 25
 [3/25] Page 103 (Letter 2, Page 1): SUCCESS
 ...
 ================================================================================
+Transcription complete!
+Success: 20, Skipped: 3, Errors: 2
+```
+
+Retranscribe mode (overwrites existing):
+```
+Starting Gemini AI transcription for work: Historical Letters Collection
+Mode: RETRANSCRIBE (will overwrite existing)
+Total pages: 25
+================================================================================
+[1/25] Page 101 (Letter 1, Page 1): SUCCESS
+[2/25] Page 102 (Letter 1, Page 2): SUCCESS
+[3/25] Page 103 (Letter 2, Page 1): SUCCESS
+...
+================================================================================
+Transcription complete!
+Success: 23, Errors: 2
+```
 Transcription complete!
 Success: 20, Skipped: 3, Errors: 2
 ```
