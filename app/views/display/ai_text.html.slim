@@ -1,0 +1,26 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 5, :page_id => @page.id }})
+
+.page-headlines
+  .headline
+    h3.headline_title =t('.facsimile')
+  .headline
+    h3.headline_title =t('.ai_text')
+    .page_info
+      =t('.ai_generated_text')
+
+.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render :partial => '/shared/osd_div'
+  .splitter(id="splitter")
+  .page-column(id="rightColumn")
+    .page-preview[*language_attrs(@collection)]
+      .ai-text-notice
+        p.info-message =t('.ai_text_edit_notice')
+      .ai-text-content
+        pre.ai-plaintext =@page.ai_plaintext
+
+-content_for :javascript
+  javascript:
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');

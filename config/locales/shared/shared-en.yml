@@ -82,6 +82,7 @@ en:
       next_page: Next page
       previous_page: Previous page
     page_tabs:
+      ai: AI
       correct: Correct
       describe_work: Describe work
       help: Help
