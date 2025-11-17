@@ -13,15 +13,6 @@ ruby:
         path: collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
       }
 
-      # Add AI tab after transcribe tab if page has AI plaintext
-      if @page.has_ai_plaintext?
-        tabs << {
-          name: t('.ai'),
-          selected: 5,
-          path: collection_ai_text_page_path(@collection.owner, @collection, @work, @page.id)
-        }
-      end
-
       if @work.supports_translation
         tabs << {
           name: t('.translate'),
@@ -38,6 +29,15 @@ ruby:
         path: collection_guest_page_path(@collection.owner, @collection, @work, @page.id)
       }
     end
+  end
+
+  # Add AI tab for anyone who can see the page if it has AI plaintext
+  if @page.has_ai_plaintext?
+    tabs << {
+      name: t('.ai'),
+      selected: 5,
+      path: collection_ai_text_page_path(@collection.owner, @collection, @work, @page.id)
+    }
   end
 
   if user_signed_in?
