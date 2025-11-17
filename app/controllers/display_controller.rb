@@ -134,12 +134,6 @@ class DisplayController < ApplicationController
   end
 
   def ai_text
-    # AI text view is only accessible to owners
-    unless user_signed_in? && current_user.like_owner?(@work)
-      redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
-      return
-    end
-
     # Redirect if page doesn't have AI plaintext
     unless @page.has_ai_plaintext?
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)

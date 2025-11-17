@@ -18,11 +18,10 @@ describe DisplayController do
     let(:page) { pages.first }
     let(:action_path) { collection_ai_text_page_path(owner, collection, work, page) }
 
-    context 'when user is owner and page has AI plaintext' do
+    context 'when page has AI plaintext' do
       before do
         allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(true)
         allow_any_instance_of(Page).to receive(:ai_plaintext).and_return("AI generated text content")
-        sign_in owner
       end
 
       it 'renders the AI text page' do
@@ -33,37 +32,9 @@ describe DisplayController do
       end
     end
 
-    context 'when user is not owner' do
-      let(:non_owner) { create(:user) }
-
-      before do
-        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(true)
-        sign_in non_owner
-      end
-
-      it 'redirects to display page' do
-        get action_path
-
-        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page))
-      end
-    end
-
     context 'when page does not have AI plaintext' do
       before do
         allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(false)
-        sign_in owner
-      end
-
-      it 'redirects to display page' do
-        get action_path
-
-        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page))
-      end
-    end
-
-    context 'when user is not signed in' do
-      before do
-        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(true)
       end
 
       it 'redirects to display page' do

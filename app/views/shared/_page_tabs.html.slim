@@ -13,8 +13,8 @@ ruby:
         path: collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
       }
 
-      # Add AI tab after transcribe tab if user is owner and page has AI plaintext
-      if user_signed_in? && current_user.like_owner?(@work) && @page.has_ai_plaintext?
+      # Add AI tab after transcribe tab if page has AI plaintext
+      if @page.has_ai_plaintext?
         tabs << {
           name: t('.ai'),
           selected: 5,
