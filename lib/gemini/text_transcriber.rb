@@ -16,7 +16,7 @@ module Gemini
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model = ENV['GEMINI_MODEL'] || 'gemini-1.5-flash'
+      model = ENV['GEMINI_MODEL'] || 'gemini-2.5-pro'
 
       client = ::Gemini.new(
         credentials: {
@@ -31,7 +31,6 @@ module Gemini
 
       # Download and encode the image
       image_data = fetch_and_encode_image(image_url)
-
       # Make request to Gemini API
       response = client.stream_generate_content({
         contents: {
@@ -47,7 +46,6 @@ module Gemini
           ]
         }
       })
-
       # Extract transcribed text from response
       extract_text_from_response(response)
     rescue StandardError => e
