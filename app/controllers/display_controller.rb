@@ -133,6 +133,14 @@ class DisplayController < ApplicationController
     end
   end
 
+  def ai_text
+    # Redirect if page doesn't have AI plaintext
+    unless @page.has_ai_plaintext?
+      redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
+      nil
+    end
+  end
+
   def paged_search
     if @article
       render plain: 'This functionality has been disabled.  Please contact support@frothepage.com if you need it.'

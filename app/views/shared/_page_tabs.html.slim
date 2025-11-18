@@ -31,6 +31,15 @@ ruby:
     end
   end
 
+  # Add AI tab for anyone who can see the page if it has AI plaintext
+  if @page.has_ai_plaintext?
+    tabs << {
+      name: t('.ai'),
+      selected: 5,
+      path: collection_ai_text_page_path(@collection.owner, @collection, @work, @page.id)
+    }
+  end
+
   if user_signed_in?
     tabs << {
       name: t('.versions'),
