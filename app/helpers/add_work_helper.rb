@@ -74,7 +74,7 @@ module AddWorkHelper
   end
 
   def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :collection_id, :ocr, :preserve_titles)
+    params.require(:document_upload).permit(:document_upload, :file, :collection_id, :ocr, :preserve_titles, :generate_ai_draft)
   end
 
   def work_params

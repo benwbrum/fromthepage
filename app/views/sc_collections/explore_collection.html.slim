@@ -39,6 +39,9 @@
           =label_tag :contentdm_ocr, t('.import_ocr_text')
           =check_box_tag :contentdm_ocr
         br
+        =label_tag :generate_ai_draft, t('.generate_ai_draft_text')
+        =check_box_tag :generate_ai_draft
+        br
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
         .iiif-select-form

@@ -42,12 +42,13 @@ namespace :fromthepage do
   end
 
   desc 'Import an IIIF collection'
-  task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr] => :environment do |t, args|
+  task :import_iiif_collection, [:sc_collection_id, :manifest_ids, :collection_id, :user_id, :import_ocr, :generate_ai_draft] => :environment do |t, args|
     sc_collection = ScCollection.find_by(id: args.sc_collection_id)
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id
     user_id = args.user_id
     import_ocr = ActiveRecord::Type::Boolean.new.cast(args.import_ocr)
+    generate_ai_draft = ActiveRecord::Type::Boolean.new.cast(args.generate_ai_draft)
     document_set = nil
 
     if md=collection_id.match(/D(\d+)/)
@@ -61,6 +62,7 @@ namespace :fromthepage do
     puts "manifest_indices were #{manifest_indices.inspect}"
     puts "collection_id is #{collection_id.inspect}"
     errors = {}
+    imported_work_ids = []
 
     if sc_collection.v3?
       sc_collection.v3_hash = fetch_manifest(sc_collection.at_id)
@@ -84,6 +86,7 @@ namespace :fromthepage do
           if document_set
             document_set.works << work
           end
+          imported_work_ids << work.id if work
           puts "#{work.title} has been imported"
           unless work.errors.blank?
             error.update(work.errors)
@@ -101,6 +104,38 @@ namespace :fromthepage do
       end
     end
     puts "Collection import has completed with these errors: \n#{errors.flatten.join("\n")}"
+
+    # Trigger AI Draft generation if requested
+    if generate_ai_draft && !imported_work_ids.empty?
+      puts "\n\n=== Starting AI Draft Text Generation ==="
+      imported_work_ids.each do |work_id|
+        work = Work.find(work_id)
+        puts "Generating AI Draft text for work: #{work.title} (ID: #{work.id})"
+        
+        success_count = 0
+        error_count = 0
+        
+        work.pages.each_with_index do |page, page_index|
+          print "[#{page_index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
+          
+          result = Page::FetchAiText.new(page: page).call
+          
+          if result.success?
+            print "SUCCESS\n"
+            success_count += 1
+          else
+            print "ERROR - #{result.message}\n"
+            error_count += 1
+          end
+          
+          # Small delay to avoid rate limiting
+          sleep(0.5)
+        end
+        
+        puts "AI Draft generation completed for #{work.title}: #{success_count} successful, #{error_count} errors"
+      end
+      puts "=== AI Draft Text Generation Complete ===\n\n"
+    end
 
     if SMTP_ENABLED
       begin

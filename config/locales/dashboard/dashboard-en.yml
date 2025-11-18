@@ -162,6 +162,7 @@ en:
       upload_pdf_or_zip_file: Upload PDF or ZIP File
       use_image_filenames: " Use image filenames as page titles."
       use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
+      generate_ai_draft_text: " Generate AI Draft text using Gemini AI."
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
     watchlist:
       collections: collections
