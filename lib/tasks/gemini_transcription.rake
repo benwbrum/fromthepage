@@ -18,14 +18,14 @@ namespace :fromthepage do
       # Find work by ID or slug
       work = if args.work_slug.match?(/^\d+$/)
                Work.find(args.work_slug.to_i)
-             else
+      else
                Work.friendly.find(args.work_slug)
-             end
+      end
 
       puts "Starting Gemini AI transcription for work: #{work.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
       puts "Total pages: #{work.pages.count}"
-      puts "=" * 80
+      puts '=' * 80
 
       success_count = 0
       skip_count = 0
@@ -36,7 +36,7 @@ namespace :fromthepage do
 
         # Skip pages that already have ai_plaintext unless retranscribe mode
         if !retranscribe && page.has_ai_plaintext?
-          puts "SKIPPED (already has AI plaintext)"
+          puts 'SKIPPED (already has AI plaintext)'
           skip_count += 1
           next
         end
@@ -45,7 +45,7 @@ namespace :fromthepage do
         result = Page::FetchAiText.new(page: page, model: model).call
 
         if result.success?
-          puts "SUCCESS"
+          puts 'SUCCESS'
           success_count += 1
         else
           puts "ERROR - #{result.message}"
@@ -56,8 +56,8 @@ namespace :fromthepage do
         sleep(0.5)
       end
 
-      puts "=" * 80
-      puts "Transcription complete!"
+      puts '=' * 80
+      puts 'Transcription complete!'
       if retranscribe
         puts "Success: #{success_count}, Errors: #{error_count}"
       else
@@ -83,9 +83,9 @@ namespace :fromthepage do
       # Find collection by ID or slug
       collection = if args.collection_slug.match?(/^\d+$/)
                      Collection.find(args.collection_slug.to_i)
-                   else
+      else
                      Collection.friendly.find(args.collection_slug)
-                   end
+      end
 
       puts "Starting Gemini AI transcription for collection: #{collection.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
@@ -93,7 +93,7 @@ namespace :fromthepage do
 
       total_pages = collection.works.sum { |w| w.pages.count }
       puts "Total pages: #{total_pages}"
-      puts "=" * 80
+      puts '=' * 80
 
       overall_success = 0
       overall_skip = 0
@@ -102,7 +102,7 @@ namespace :fromthepage do
 
       collection.works.each do |work|
         puts "\nProcessing work: #{work.title} (#{work.pages.count} pages)"
-        puts "-" * 80
+        puts '-' * 80
 
         work.pages.each do |page|
           current_page += 1
@@ -110,7 +110,7 @@ namespace :fromthepage do
 
           # Skip pages that already have ai_plaintext unless retranscribe mode
           if !retranscribe && page.has_ai_plaintext?
-            puts "SKIPPED (already has AI plaintext)"
+            puts 'SKIPPED (already has AI plaintext)'
             overall_skip += 1
             next
           end
@@ -119,7 +119,7 @@ namespace :fromthepage do
           result = Page::FetchAiText.new(page: page, model: model).call
 
           if result.success?
-            puts "SUCCESS"
+            puts 'SUCCESS'
             overall_success += 1
           else
             puts "ERROR - #{result.message}"
@@ -131,8 +131,8 @@ namespace :fromthepage do
         end
       end
 
-      puts "=" * 80
-      puts "Collection transcription complete!"
+      puts '=' * 80
+      puts 'Collection transcription complete!'
       if retranscribe
         puts "Success: #{overall_success}, Errors: #{overall_error}"
       else
