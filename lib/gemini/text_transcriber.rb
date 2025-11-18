@@ -4,6 +4,13 @@ require 'base64'
 
 module Gemini
   class TextTranscriber
+    # Follows key (model_name) value (version)
+    # Add custom handling here if the model you are using
+    # does not use `v1`
+    VERSION_MAP = {
+      'gemini-3-pro-preview': 'v1beta'
+    }.freeze
+
     # Transcribes text from a page image using Google's Gemini multi-modal model
     # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
     # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
@@ -24,7 +31,8 @@ module Gemini
       client = ::Gemini.new(
         credentials: {
           service: 'generative-language-api',
-          api_key: api_key
+          api_key: api_key,
+          version: VERSION_MAP[model] || 'v1'
         },
         options: { model: model, server_sent_events: true }
       )
@@ -58,6 +66,7 @@ module Gemini
             }
           })
 
+          binding.pry
           # Extract transcribed text from response
           return extract_text_from_response(response)
         rescue StandardError => e
