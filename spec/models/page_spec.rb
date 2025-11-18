@@ -314,4 +314,36 @@ describe Page do
       end
     end
   end
+
+  describe 'AI draft usage tracking' do
+    let!(:owner) { create(:unique_user, :owner) }
+    let!(:collection) { create(:collection, owner_user_id: owner.id) }
+    let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let!(:page) { create(:page, work: work, source_text: 'initial text') }
+
+    before do
+      Current.user = owner
+    end
+
+    context 'when ai_draft_used_flag is set to true' do
+      it 'creates a page version with ai_draft_used set to true' do
+        page.ai_draft_used_flag = true
+        page.source_text = 'updated with AI draft'
+        page.save!
+
+        latest_version = page.page_versions.first
+        expect(latest_version.ai_draft_used).to be true
+      end
+    end
+
+    context 'when ai_draft_used_flag is not set' do
+      it 'creates a page version with ai_draft_used set to false' do
+        page.source_text = 'updated without AI draft'
+        page.save!
+
+        latest_version = page.page_versions.first
+        expect(latest_version.ai_draft_used).to be false
+      end
+    end
+  end
 end

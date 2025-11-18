@@ -493,4 +493,52 @@ describe TranscribeController do
       end
     end
   end
+
+  describe '#record_ai_draft_usage' do
+    let(:action_path) { transcribe_record_ai_draft_usage_path }
+    let(:params) do
+      {
+        page_id: page.id,
+        work_id: work.id,
+        collection_id: collection.id
+      }
+    end
+    let(:subject) { post action_path, params: params }
+
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        login_as owner
+      end
+
+      it 'creates an AI_DRAFT deed' do
+        expect { subject }.to change { Deed.where(deed_type: DeedType::AI_DRAFT).count }.by(1)
+      end
+
+      it 'returns success json' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)).to eq({ 'success' => true })
+      end
+
+      it 'associates the deed with the correct page, work, and collection' do
+        subject
+
+        deed = Deed.where(deed_type: DeedType::AI_DRAFT).last
+        expect(deed.page_id).to eq(page.id)
+        expect(deed.work_id).to eq(work.id)
+        expect(deed.collection_id).to eq(collection.id)
+        expect(deed.user_id).to eq(owner.id)
+      end
+    end
+  end
 end
