@@ -82,6 +82,7 @@ pt:
       next_page: Próxima página
       previous_page: Página anterior
     page_tabs:
+      ai: IA
       correct: Corrigir
       describe_work: Descrever obra
       help: Ajuda
