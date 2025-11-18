@@ -81,11 +81,18 @@ namespace :fromthepage do
       model = args.model
 
       # Find collection by ID or slug
-      collection = if args.collection_slug.match?(/^\d+$/)
-                     Collection.find(args.collection_slug.to_i)
-      else
-                     Collection.friendly.find(args.collection_slug)
+      id = args.collection_slug
+      if Collection.friendly.exists?(id)
+        collection = Collection.friendly.find(id)
+      elsif DocumentSet.friendly.exists?(id)
+        collection = DocumentSet.friendly.find(id)
+      elsif !DocumentSet.find_by(slug: id).nil?
+        collection = DocumentSet.find_by(slug: id)
+      elsif !Collection.find_by(slug: id).nil?
+        collection = Collection.find_by(slug: id)
       end
+
+      raise 'Collection does not exist' if collection.nil?
 
       puts "Starting Gemini AI transcription for collection: #{collection.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
