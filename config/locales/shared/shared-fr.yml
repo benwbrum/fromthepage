@@ -12,7 +12,7 @@ fr:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
       add_description: Marque le texte inséré après coup par l'auteur.
       ai_plaintext_caveat: "<!-- Le texte suivant a été généré par l'intelligence artificielle et contient probablement des erreurs. Certaines erreurs évidentes ont été remplacées par des symboles 🤔, mais les plus délicates ne peuvent pas être marquées. (Veuillez supprimer cet avertissement.) -->"
-      copy_ai_plaintext: Texte IA
+      copy_ai_plaintext: Brouillon IA
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       del_description: Marque le texte qui a été supprimé par effacement ou barré.
       expan_description: Marque les abréviations développées avec les formes originales dans l'attribut abbr.
@@ -82,6 +82,7 @@ fr:
       next_page: Page suivante
       previous_page: Page précédente
     page_tabs:
+      ai: IA
       correct: Corriger
       describe_work: Décrire l'œuvre
       help: Aide

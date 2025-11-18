@@ -14,6 +14,37 @@ describe DisplayController do
     Current.user = owner
   end
 
+  describe '#ai_text' do
+    let(:page) { pages.first }
+    let(:action_path) { collection_ai_text_page_path(owner, collection, work, page) }
+
+    context 'when page has AI plaintext' do
+      before do
+        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(true)
+        allow_any_instance_of(Page).to receive(:ai_plaintext).and_return("AI generated text content")
+      end
+
+      it 'renders the AI text page' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+    end
+
+    context 'when page does not have AI plaintext' do
+      before do
+        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(false)
+      end
+
+      it 'redirects to display page' do
+        get action_path
+
+        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page))
+      end
+    end
+  end
+
   describe '#read_work' do
     let(:action_path) { collection_read_work_path(owner, collection, work) }
 
