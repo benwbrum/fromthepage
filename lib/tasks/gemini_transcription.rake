@@ -1,7 +1,7 @@
 namespace :fromthepage do
   namespace :gemini do
     desc 'Transcribe all pages in a work using Gemini AI (pass "retranscribe" to overwrite existing)'
-    task :transcribe_work, [:work_slug, :retranscribe] => :environment do |_t, args|
+    task :transcribe_work, [:work_slug, :retranscribe, :model] => :environment do |_t, args|
       require 'gemini/text_transcriber'
 
       unless args.work_slug
@@ -12,6 +12,8 @@ namespace :fromthepage do
       end
 
       retranscribe = args.retranscribe == 'retranscribe'
+
+      model = args.model
 
       # Find work by ID or slug
       work = if args.work_slug.match?(/^\d+$/)
@@ -40,7 +42,7 @@ namespace :fromthepage do
         end
 
         # Call the interactor
-        result = Page::FetchAiText.new(page: page).call
+        result = Page::FetchAiText.new(page: page, model: model).call
 
         if result.success?
           puts "SUCCESS"
@@ -64,7 +66,7 @@ namespace :fromthepage do
     end
 
     desc 'Transcribe all pages in all works in a collection using Gemini AI (pass "retranscribe" to overwrite existing)'
-    task :transcribe_collection, [:collection_slug, :retranscribe] => :environment do |_t, args|
+    task :transcribe_collection, [:collection_slug, :retranscribe, :model] => :environment do |_t, args|
       require 'gemini/text_transcriber'
 
       unless args.collection_slug
@@ -75,6 +77,8 @@ namespace :fromthepage do
       end
 
       retranscribe = args.retranscribe == 'retranscribe'
+
+      model = args.model
 
       # Find collection by ID or slug
       collection = if args.collection_slug.match?(/^\d+$/)
@@ -112,7 +116,7 @@ namespace :fromthepage do
           end
 
           # Call the interactor
-          result = Page::FetchAiText.new(page: page).call
+          result = Page::FetchAiText.new(page: page, model: model).call
 
           if result.success?
             puts "SUCCESS"

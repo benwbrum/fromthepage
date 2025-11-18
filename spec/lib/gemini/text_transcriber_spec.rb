@@ -20,7 +20,7 @@ describe Gemini::TextTranscriber do
 
     context 'when API returns 503 error and then succeeds' do
       it 'retries with exponential backoff and eventually succeeds' do
-        mock_client = instance_double(Gemini)
+        mock_client = double("GeminiClient")
         allow(Gemini).to receive(:new).and_return(mock_client)
 
         # First two calls raise 503, third succeeds
@@ -45,7 +45,7 @@ describe Gemini::TextTranscriber do
 
     context 'when API returns 503 error repeatedly' do
       it 'retries up to max_retries times then raises error' do
-        mock_client = instance_double(Gemini)
+        mock_client = double("GeminiClient")
         allow(Gemini).to receive(:new).and_return(mock_client)
 
         # Always raise 503
@@ -64,7 +64,7 @@ describe Gemini::TextTranscriber do
 
     context 'when API returns non-503 error' do
       it 'does not retry and raises error immediately' do
-        mock_client = instance_double(Gemini)
+        mock_client = double("GeminiClient")
         allow(Gemini).to receive(:new).and_return(mock_client)
 
         call_count = 0

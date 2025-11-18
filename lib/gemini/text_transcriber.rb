@@ -15,11 +15,11 @@ module Gemini
     # @param prompt [String] Optional custom prompt for transcription
     # @param max_retries [Integer] Maximum number of retry attempts for 503 errors
     # @return [String] The transcribed text from the image
-    def self.transcribe_image(image_url, prompt: nil, max_retries: 5)
+    def self.transcribe_image(image_url, prompt: nil, model: 'gemini-2.5-pro', max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model = ENV['GEMINI_MODEL'] || 'gemini-2.5-pro'
+      model ||= 'gemini-2.5-pro'
 
       client = ::Gemini.new(
         credentials: {
