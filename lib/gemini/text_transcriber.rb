@@ -66,7 +66,6 @@ module Gemini
             }
           })
 
-          binding.pry
           # Extract transcribed text from response
           return extract_text_from_response(response)
         rescue StandardError => e
