@@ -1,6 +1,7 @@
 ---
 pt:
   deed:
+    ai_draft: Rascunho de IA usado
     article_edit: Artigo editado
     collection_active: Coleção ativa
     collection_inactive: Coleção inativa
@@ -56,4 +57,3 @@ pt:
     translation_review: A página de tradução precisa de revisão
     translation_reviewed: Tradução revisada
     work_added: Obra adicionada
-    ai_draft: Rascunho de IA usado

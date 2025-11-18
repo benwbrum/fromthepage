@@ -1,6 +1,7 @@
 ---
 fr:
   deed:
+    ai_draft: Brouillon IA utilisé
     article_edit: Article modifié
     collection_active: Collecte active
     collection_inactive: Collecte inactive
@@ -58,4 +59,3 @@ fr:
     translation_review: La page de traduction doit être révisée
     translation_reviewed: Traduction révisée
     work_added: Œuvre ajoutée
-    ai_draft: Brouillon IA utilisé

@@ -1,6 +1,7 @@
 ---
 de:
   deed:
+    ai_draft: KI-Entwurf verwendet
     article_edit: Entität bearbeitet
     collection_active: Sammlung aktiv
     collection_inactive: Sammlung inaktiv
@@ -34,4 +35,3 @@ de:
     translation_review: Übersetzung muss überprüft werden
     translation_reviewed: Übersetzung überprüft
     work_added: Werk hinzugefügt
-    ai_draft: KI-Entwurf verwendet

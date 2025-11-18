@@ -1,6 +1,7 @@
 ---
 en:
   deed:
+    ai_draft: AI Draft Used
     article_edit: Article Edited
     collection_active: Collection Active
     collection_inactive: Collection Inactive
@@ -58,4 +59,3 @@ en:
     translation_review: Translation Page Needs Review
     translation_reviewed: Translation Reviewed
     work_added: Work Added
-    ai_draft: AI Draft Used
