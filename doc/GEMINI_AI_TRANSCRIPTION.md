@@ -115,6 +115,20 @@ The interactor handles several error cases:
 - **Network errors**: Raises exception if image download fails
 - **Too many redirects**: Raises exception if more than 10 redirects are encountered
 - **API errors**: Logs error and raises exception if Gemini API call fails
+- **503 Server Overload**: Automatically retries with exponential backoff (up to 5 attempts)
+
+### Automatic Retry with Exponential Backoff
+
+When the Gemini API returns a 503 error (server overload), the system automatically retries the request with exponential backoff:
+
+- **Attempt 1**: Immediate first request
+- **Attempt 2**: Retry after 2 seconds
+- **Attempt 3**: Retry after 4 seconds
+- **Attempt 4**: Retry after 8 seconds
+- **Attempt 5**: Retry after 16 seconds
+- **Attempt 6**: Final retry after 32 seconds
+
+After 5 retries (6 total attempts), if the error persists, the operation fails. This follows Google's recommended best practices for handling temporary service overload.
 
 ## Testing
 

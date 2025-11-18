@@ -9,10 +9,13 @@ module Gemini
     # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
     # available. This can be updated when Gemini 2.5 is released.
     #
+    # Implements exponential backoff retry logic for 503 errors (server overload)
+    #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
+    # @param max_retries [Integer] Maximum number of retry attempts for 503 errors
     # @return [String] The transcribed text from the image
-    def self.transcribe_image(image_url, prompt: nil)
+    def self.transcribe_image(image_url, prompt: nil, max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
@@ -31,23 +34,49 @@ module Gemini
 
       # Download and encode the image
       image_data = fetch_and_encode_image(image_url)
-      # Make request to Gemini API
-      response = client.stream_generate_content({
-        contents: {
-          role: 'user',
-          parts: [
-            { text: transcription_prompt },
-            {
-              inline_data: {
-                mime_type: 'image/jpeg',
-                data: image_data
-              }
+
+      # Make request to Gemini API with retry logic
+      attempt = 0
+      last_error = nil
+
+      loop do
+        attempt += 1
+
+        begin
+          response = client.stream_generate_content({
+            contents: {
+              role: 'user',
+              parts: [
+                { text: transcription_prompt },
+                {
+                  inline_data: {
+                    mime_type: 'image/jpeg',
+                    data: image_data
+                  }
+                }
+              ]
             }
-          ]
-        }
-      })
-      # Extract transcribed text from response
-      extract_text_from_response(response)
+          })
+
+          # Extract transcribed text from response
+          return extract_text_from_response(response)
+        rescue StandardError => e
+          last_error = e
+
+          # Check if this is a 503 error (server overload)
+          if e.message.include?('503') && attempt <= max_retries
+            # Calculate exponential backoff delay: 2^attempt seconds
+            delay = 2**attempt
+            Rails.logger.warn("Gemini API 503 error (attempt #{attempt}/#{max_retries}). Retrying in #{delay} seconds...")
+            sleep(delay)
+            next
+          end
+
+          # If not a 503 or out of retries, raise the error
+          Rails.logger.error("Gemini API error: #{e.message}")
+          raise
+        end
+      end
     rescue StandardError => e
       Rails.logger.error("Gemini API error: #{e.message}")
       raise
