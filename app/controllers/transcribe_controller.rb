@@ -57,7 +57,7 @@ class TranscribeController  < ApplicationController
 
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
-    
+
     # Track AI draft usage if the flag is set
     @page.ai_draft_used_flag = params[:ai_draft_used] == 'true'
 
@@ -267,7 +267,7 @@ class TranscribeController  < ApplicationController
     old_article_ids = @page.articles.pluck(:id)
 
     @page.attributes = page_params
-    
+
     # Track AI draft usage if the flag is set
     @page.ai_draft_used_flag = params[:ai_draft_used] == 'true'
 
