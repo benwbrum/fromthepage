@@ -47,6 +47,8 @@ class Page < ApplicationRecord
   include XmlSourceProcessor
   include ApplicationHelper
 
+  attr_accessor :ai_draft_used_flag
+
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
@@ -381,6 +383,7 @@ class Page < ApplicationRecord
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
     version.status = self.status
+    version.ai_draft_used = self.ai_draft_used_flag || false
 
     # Add other attributes as needed
 

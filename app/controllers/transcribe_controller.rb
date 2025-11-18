@@ -39,6 +39,11 @@ class TranscribeController  < ApplicationController
     respond_to(&:turbo_stream)
   end
 
+  def record_ai_draft_usage
+    record_deed(DeedType::AI_DRAFT)
+    render json: { success: true }
+  end
+
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     old_article_ids = @page.articles.pluck(:id)
@@ -52,6 +57,9 @@ class TranscribeController  < ApplicationController
 
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
+    
+    # Track AI draft usage if the flag is set
+    @page.ai_draft_used_flag = params[:ai_draft_used] == 'true'
 
     unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(
@@ -259,6 +267,9 @@ class TranscribeController  < ApplicationController
     old_article_ids = @page.articles.pluck(:id)
 
     @page.attributes = page_params
+    
+    # Track AI draft usage if the flag is set
+    @page.ai_draft_used_flag = params[:ai_draft_used] == 'true'
 
     unless params[:page]['needs_review'] == '1'
       @page = Transcribe::Lib::MarkAsBlankHandler.new(

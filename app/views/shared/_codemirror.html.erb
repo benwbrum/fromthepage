@@ -11,17 +11,41 @@
   <script>
     var ai_plaintext = <%= raw(@page.ai_plaintext.to_json) %>;
     var ai_plaintext_caveat = <%= raw(t('.ai_plaintext_caveat').to_json) %>;
+    var ai_draft_used = false;
 
     function appendAiPlaintext(cm, pred) {
       var currentText = cm.getValue();
       // append ai_plaintext to the end of the current text
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
       cm.markClean();
+      ai_draft_used = true;
+      
+      // Record the AI draft usage via AJAX
+      $.ajax({
+        url: '<%= transcribe_record_ai_draft_usage_path %>',
+        type: 'POST',
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+          page_id: <%= @page.id %>,
+          work_id: <%= @work.id %>,
+          collection_id: <%= @collection.id %>
+        }
+      });
     };
+    
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {
       appendAiPlaintext(myCodeMirror);
       // now disable the button
       $('#copy-ai-plaintext').prop('disabled', true);
+    });
+
+    // Add hidden field to track AI draft usage in the form
+    $('form').on('submit', function() {
+      if (ai_draft_used) {
+        $(this).append('<input type="hidden" name="ai_draft_used" value="true">');
+      }
     });
 
   </script>
