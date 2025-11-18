@@ -4,29 +4,30 @@ module OwnerStatistic
   end
 
   def page_count
-    count = Page.where(work_id: self.owner_works.ids).count
+    count = Page.where(work_id: self.owner_works.select(:id)).count
   end
 
   def active_page_count
     inactive = Collection.where(is_active: false).pluck(:id)
     Page.joins(work: :collection)
-      .where(work_id: self.owner_works.ids)
+      .where(work_id: self.owner_works.select(:id))
       .where('collections.is_active': true).count
   end
 
   def incomplete_page_count
-    Page.where(work_id: self.owner_works.ids)
-      .where(status: Page::NEEDS_WORK_STATUSES).count
+    Page.where(work_id: self.owner_works.select(:id))
+        .where(status: Page::NEEDS_WORK_STATUSES)
+        .count
   end
 
   def needs_review_count(days = nil)
-    Page.where(work_id: self.owner_works.ids)
-      .where(date_range_clause(days, 'edit_started_at'))
-      .where(status: :needs_review).count
+    Page.where(work_id: self.owner_works.select(:id))
+        .where(date_range_clause(days, 'edit_started_at'))
+        .where(status: :needs_review).count
   end
 
   def review_count(days = nil)
-    Deed.where(work_id: self.owner_works.ids)
+    Deed.where(work_id: self.owner_works.select(:id))
         .where(date_range_clause(days))
         .where(deed_type: DeedType::PAGE_REVIEWED)
         .distinct
@@ -34,7 +35,7 @@ module OwnerStatistic
   end
 
   def owner_subjects
-   Article.where(collection_id: self.all_owner_collections.ids)
+    Article.where(collection_id: self.all_owner_collections.ids)
   end
 
   def collection_ids
@@ -56,11 +57,21 @@ module OwnerStatistic
   end
 
   def comment_count(days = nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::NOTE_ADDED).where(date_range_clause(days)).count
+    if days.nil?
+      Note.where(collection_id: collection_ids).count
+    else
+      Deed.where(collection_id: collection_ids).where(deed_type: DeedType::NOTE_ADDED).where(date_range_clause(days)).count
+    end
   end
 
   def transcription_count(days = nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where(date_range_clause(days)).count
+    if days.nil?
+      Page.where(work_id: self.owner_works.select(:id))
+          .where(status: Page::COMPLETED_STATUSES)
+          .count
+    else
+      Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where(date_range_clause(days)).count
+    end
   end
 
   def edit_count(days = nil)
