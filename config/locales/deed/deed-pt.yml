@@ -26,6 +26,7 @@ pt:
       this_collection: esta coleção
       transcribed_page: transcreveu a página %{page}
       translated_page: traduziu a página %{page}
+      used_ai_draft_for_page: usou um rascunho de IA para %{page}
     deeds:
       show_more: Mostrar Mais
     described_metadata: Metadados Descritos
@@ -55,3 +56,4 @@ pt:
     translation_review: A página de tradução precisa de revisão
     translation_reviewed: Tradução revisada
     work_added: Obra adicionada
+    ai_draft: Rascunho de IA usado

@@ -28,6 +28,7 @@ fr:
       this_collection: cette collection
       transcribed_page: a transcrit %{page}
       translated_page: a traduit %{page}
+      used_ai_draft_for_page: a utilisé un brouillon IA pour %{page}
     deeds:
       show_more: Voir plus
     described_metadata: Métadonnées décrites
@@ -57,3 +58,4 @@ fr:
     translation_review: La page de traduction doit être révisée
     translation_reviewed: Traduction révisée
     work_added: Œuvre ajoutée
+    ai_draft: Brouillon IA utilisé
