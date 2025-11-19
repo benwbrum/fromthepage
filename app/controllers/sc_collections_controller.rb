@@ -18,6 +18,7 @@ class ScCollectionsController < ApplicationController
     import = CdmBulkImport.new
     import.collection_param = params[:collection_id]
     import.ocr_correction = params[:ocr_correction]
+    import.generate_ai_draft = params[:generate_ai_draft]
     import.user = current_user
     clean_urls = params[:cdm_urls].gsub(/\s+/m, "\n")
     import.cdm_urls = clean_urls
@@ -155,6 +156,7 @@ class ScCollectionsController < ApplicationController
     collection_id = params[:collection_id]
     cdm_ocr = !params[:contentdm_ocr].blank?
     annotation_ocr = !params[:annotation_ocr].blank?
+    generate_ai_draft = !params[:generate_ai_draft].blank?
     import_ocr = cdm_ocr || annotation_ocr
 
     # if collection id is set to sc_collection or no collection is set,
@@ -181,7 +183,7 @@ class ScCollectionsController < ApplicationController
     # get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(' ')
     # kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr}] --trace >> #{log_file} 2>&1 &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr},#{generate_ai_draft}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
@@ -206,6 +208,7 @@ class ScCollectionsController < ApplicationController
   def convert_manifest
     at_id = params[:at_id]
     annotation_ocr = !params[:annotation_ocr].blank?
+    generate_ai_draft = !params[:generate_ai_draft].blank?
     version = detect_version(at_id)
     @sc_manifest = if version == 3
                      ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
@@ -243,6 +246,18 @@ class ScCollectionsController < ApplicationController
       # flash notice about the rake task
       ocr_text = ocr ? 'and OCR text ' : ''
       flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
+    end
+
+    # Trigger AI Draft generation if requested
+    if generate_ai_draft
+      # make sure import folder exists
+      Dir.mkdir("#{Rails.root}/public/imports") unless Dir.exist?("#{Rails.root}/public/imports")
+
+      log_file = "#{Rails.root}/public/imports/work_#{work.id}_ai_draft.log"
+      rake_call = "#{RAKE} fromthepage:gemini:transcribe_work[#{work.id}] --trace >> #{log_file} 2>&1 &"
+      logger.info rake_call
+      system(rake_call)
+      flash[:notice] = (flash[:notice] || '') + ' AI Draft text generation has been started.'
     end
 
     if @collection.text_entry?

@@ -48,6 +48,12 @@ h1= t('.manage_archive_org_import')
           span= t('.ocr_for_page_contents')
         .ia-form_help= t('.ocr_for_page_contents_description')
       .ia-form_field
+        =label_tag :generate_ai_draft
+          =check_box_tag :generate_ai_draft
+          |&nbsp;
+          span= t('.generate_ai_draft_text')
+        .ia-form_help= t('.generate_ai_draft_text_description')
+      .ia-form_field
         =select_tag :collection_id, options_from_collection_for_select(current_user.collections.sort{|a,b| a.title <=> b.title}, 'id', 'title'), prompt: t('.select_a_collection'), required: true, 'aria-label' => t('.select_a_collection_1')
       =button_tag t('.publish_work'), class: 'ia-form_submit'
       .ia-form_help= t('.publish_work_description')

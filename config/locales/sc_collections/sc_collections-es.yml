@@ -6,6 +6,7 @@ es:
     cdm_bulk_import_new:
       bulk_contentdm_import: Importación masiva de CONTENTdm
       compound_object_urls: URL de objetos compuestos
+      generate_ai_draft_text: Generación de borradores de texto con IA mediante Gemini AI
       import: Importar
       import_ocr_text: Importar texto OCR de CONTENTdm
       select_a_collection_to_import_into: "- Seleccione una colección para importar a -"
@@ -17,6 +18,7 @@ es:
       collection: 'Colección: %{sc_collection}'
       collections: 'Colecciones:'
       first_page: Primera página
+      generate_ai_draft_text: Generación de borradores de texto con IA mediante Gemini AI
       id: 'Identificación: %{id}'
       import_checked_manifests: Importar manifiestos marcados
       import_ocr_text: Importar texto OCR de CONTENTdm
@@ -32,6 +34,7 @@ es:
       canvases: 'Lienzos:'
       collection: 'Colección: %{sc_collection}'
       description: 'Descripción: %{description}'
+      generate_ai_draft_text: Generación de borradores de texto con IA mediante Gemini AI
       id: 'Identificación:'
       import_manifest: Manifiesto de importación
       import_ocr_text: Importar texto OCR de CONTENTdm
