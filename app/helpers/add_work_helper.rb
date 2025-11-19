@@ -14,10 +14,15 @@ module AddWorkHelper
   end
 
   def new_upload
+    logger.info "DEBUG: params[:document_upload] = #{params[:document_upload].inspect}"
+    logger.info "DEBUG: document_upload_params = #{document_upload_params.inspect}"
     @document_upload = DocumentUpload.new(document_upload_params)
     @document_upload.user = current_user
+    logger.info "DEBUG: @document_upload.generate_ai_draft before save = #{@document_upload.generate_ai_draft.inspect}"
 
     if @document_upload.save
+      logger.info "DEBUG: @document_upload.generate_ai_draft after save = #{@document_upload.generate_ai_draft.inspect}"
+      logger.info "DEBUG: Reloaded from DB: #{DocumentUpload.find(@document_upload.id).generate_ai_draft.inspect}"
       if SMTP_ENABLED
         begin
           flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
