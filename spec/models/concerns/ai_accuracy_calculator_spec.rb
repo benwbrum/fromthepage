@@ -1,0 +1,244 @@
+require 'spec_helper'
+
+describe AiAccuracyCalculator do
+  let(:work) { create(:work) }
+  let(:page) { create(:page, work: work) }
+
+  describe '#can_calculate_ai_accuracy?' do
+    context 'when page has AI plaintext and is completed' do
+      before do
+        page.ai_plaintext = 'Sample AI text'
+        page.status = :transcribed
+      end
+
+      it 'returns true' do
+        expect(page.can_calculate_ai_accuracy?).to be true
+      end
+    end
+
+    context 'when page has AI plaintext but is not completed' do
+      before do
+        page.ai_plaintext = 'Sample AI text'
+        page.status = :incomplete
+      end
+
+      it 'returns false' do
+        expect(page.can_calculate_ai_accuracy?).to be false
+      end
+    end
+
+    context 'when page is completed but has no AI plaintext' do
+      before do
+        page.status = :transcribed
+      end
+
+      it 'returns false' do
+        expect(page.can_calculate_ai_accuracy?).to be false
+      end
+    end
+  end
+
+  describe '#ai_accuracy_statistics' do
+    context 'when statistics can be calculated' do
+      before do
+        page.source_text = '<page><p>Hello world, this is a test.</p></page>'
+        page.ai_plaintext = 'Hello world, this is a test.'
+        page.status = :transcribed
+        page.process_source
+      end
+
+      it 'returns a hash with verbatim and text_only statistics' do
+        stats = page.ai_accuracy_statistics
+
+        expect(stats).to be_a(Hash)
+        expect(stats).to have_key(:verbatim)
+        expect(stats).to have_key(:text_only)
+      end
+
+      it 'includes CER, WER, and non-stopword accuracy in verbatim stats' do
+        stats = page.ai_accuracy_statistics
+
+        expect(stats[:verbatim]).to have_key(:cer)
+        expect(stats[:verbatim]).to have_key(:wer)
+        expect(stats[:verbatim]).to have_key(:non_stopword_accuracy)
+      end
+
+      it 'includes CER and WER in text_only stats' do
+        stats = page.ai_accuracy_statistics
+
+        expect(stats[:text_only]).to have_key(:cer)
+        expect(stats[:text_only]).to have_key(:wer)
+      end
+    end
+
+    context 'when statistics cannot be calculated' do
+      before do
+        page.status = :incomplete
+      end
+
+      it 'returns nil' do
+        expect(page.ai_accuracy_statistics).to be_nil
+      end
+    end
+  end
+
+  describe 'accuracy calculation methods' do
+    describe '#character_error_rate' do
+      it 'returns 0 for identical strings' do
+        cer = page.send(:character_error_rate, 'hello', 'hello')
+        expect(cer).to eq(0.0)
+      end
+
+      it 'returns 100 for completely different strings of same length' do
+        cer = page.send(:character_error_rate, 'abc', 'xyz')
+        expect(cer).to eq(100.0)
+      end
+
+      it 'calculates CER correctly for similar strings' do
+        cer = page.send(:character_error_rate, 'kitten', 'sitting')
+        expect(cer).to be > 0
+        expect(cer).to be < 100
+      end
+
+      it 'handles empty ground truth' do
+        cer = page.send(:character_error_rate, '', 'hello')
+        expect(cer).to eq(100.0)
+      end
+
+      it 'handles empty predicted text' do
+        cer = page.send(:character_error_rate, 'hello', '')
+        expect(cer).to eq(100.0)
+      end
+    end
+
+    describe '#word_error_rate' do
+      it 'returns 0 for identical word sequences' do
+        wer = page.send(:word_error_rate, 'hello world', 'hello world')
+        expect(wer).to eq(0.0)
+      end
+
+      it 'calculates WER for different word sequences' do
+        wer = page.send(:word_error_rate, 'the cat sat', 'the dog sat')
+        expect(wer).to be > 0
+        expect(wer).to be <= 100
+      end
+
+      it 'handles single word differences' do
+        wer = page.send(:word_error_rate, 'hello world test', 'hello world testing')
+        expect(wer).to be > 0
+      end
+
+      it 'handles empty ground truth' do
+        wer = page.send(:word_error_rate, '', 'hello world')
+        expect(wer).to eq(100.0)
+      end
+
+      it 'handles empty predicted text' do
+        wer = page.send(:word_error_rate, 'hello world', '')
+        expect(wer).to eq(100.0)
+      end
+    end
+
+    describe '#non_stopword_accuracy' do
+      it 'returns 100 for identical content words' do
+        accuracy = page.send(:non_stopword_accuracy, 'the cat jumped', 'the cat jumped')
+        expect(accuracy).to eq(100.0)
+      end
+
+      it 'ignores stopwords in comparison' do
+        # Both texts have "cat" and "jumped" as non-stopwords
+        accuracy = page.send(:non_stopword_accuracy, 'a cat jumped', 'the cat jumped')
+        expect(accuracy).to eq(100.0)
+      end
+
+      it 'calculates accuracy based on content words' do
+        # Ground truth: "cat", "jumped" (2 words)
+        # Predicted: "dog", "jumped" (2 words, 1 match)
+        accuracy = page.send(:non_stopword_accuracy, 'the cat jumped', 'the dog jumped')
+        expect(accuracy).to eq(50.0)
+      end
+
+      it 'handles text with only stopwords' do
+        accuracy = page.send(:non_stopword_accuracy, 'the a is', 'the a was')
+        expect(accuracy).to eq(100.0)
+      end
+
+      it 'handles empty text' do
+        accuracy = page.send(:non_stopword_accuracy, '', '')
+        expect(accuracy).to eq(100.0)
+      end
+    end
+
+    describe '#normalize_text' do
+      it 'removes punctuation' do
+        normalized = page.send(:normalize_text, 'Hello, world!')
+        expect(normalized).to eq('hello world')
+      end
+
+      it 'converts to lowercase' do
+        normalized = page.send(:normalize_text, 'Hello World')
+        expect(normalized).to eq('hello world')
+      end
+
+      it 'collapses multiple spaces' do
+        normalized = page.send(:normalize_text, 'hello    world')
+        expect(normalized).to eq('hello world')
+      end
+
+      it 'trims whitespace' do
+        normalized = page.send(:normalize_text, '  hello world  ')
+        expect(normalized).to eq('hello world')
+      end
+
+      it 'handles empty text' do
+        normalized = page.send(:normalize_text, '')
+        expect(normalized).to eq('')
+      end
+
+      it 'combines all normalizations' do
+        normalized = page.send(:normalize_text, '  Hello,   WORLD!  ')
+        expect(normalized).to eq('hello world')
+      end
+    end
+
+    describe '#extract_non_stopwords' do
+      it 'extracts content words' do
+        words = page.send(:extract_non_stopwords, 'The cat jumped over the fence')
+        expect(words).to contain_exactly('cat', 'jumped', 'over', 'fence')
+      end
+
+      it 'removes stopwords' do
+        words = page.send(:extract_non_stopwords, 'this is a test')
+        expect(words).to contain_exactly('test')
+      end
+
+      it 'handles punctuation' do
+        words = page.send(:extract_non_stopwords, 'Hello, world!')
+        expect(words).to contain_exactly('hello', 'world')
+      end
+
+      it 'handles empty text' do
+        words = page.send(:extract_non_stopwords, '')
+        expect(words).to eq([])
+      end
+    end
+  end
+
+  describe 'integration test with real page data' do
+    before do
+      page.source_text = '<page><p>The quick brown fox jumps over the lazy dog.</p></page>'
+      page.ai_plaintext = 'The quick brown fox jumped over the lazy dog.'
+      page.status = :transcribed
+      page.process_source
+    end
+
+    it 'calculates statistics for similar texts' do
+      stats = page.ai_accuracy_statistics
+
+      expect(stats).not_to be_nil
+      expect(stats[:verbatim][:cer]).to be < 20.0
+      expect(stats[:verbatim][:wer]).to be < 20.0
+      expect(stats[:verbatim][:non_stopword_accuracy]).to be > 80.0
+    end
+  end
+end

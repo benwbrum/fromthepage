@@ -139,6 +139,9 @@ class DisplayController < ApplicationController
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
       nil
     end
+
+    # Calculate accuracy statistics if available
+    @ai_accuracy_stats = @page.ai_accuracy_statistics
   end
 
   def paged_search
