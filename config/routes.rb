@@ -252,7 +252,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'transcribe', as: 'transcribe' do
     post 'mark_page_blank', to: 'transcribe#mark_page_blank'
-    post 'record_ai_draft_usage', to: 'transcribe#record_ai_draft_usage'
     get 'display_page', to: 'transcribe#display_page'
     get 'assign_categories', to: 'transcribe#assign_categories'
     get 'guest', to: 'transcribe#guest'

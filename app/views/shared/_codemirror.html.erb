@@ -19,20 +19,6 @@
       cm.setValue(currentText + ai_plaintext_caveat + "\n" + ai_plaintext);
       cm.markClean();
       ai_draft_used = true;
-      
-      // Record the AI draft usage via AJAX
-      $.ajax({
-        url: '<%= transcribe_record_ai_draft_usage_path %>',
-        type: 'POST',
-        headers: {
-          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-          page_id: <%= @page.id %>,
-          work_id: <%= @work.id %>,
-          collection_id: <%= @collection.id %>
-        }
-      });
     };
     
     document.getElementById("copy-ai-plaintext").addEventListener("click", function() {

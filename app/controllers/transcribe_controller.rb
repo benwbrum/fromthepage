@@ -39,11 +39,6 @@ class TranscribeController  < ApplicationController
     respond_to(&:turbo_stream)
   end
 
-  def record_ai_draft_usage
-    record_deed(DeedType::AI_DRAFT)
-    render json: { success: true }
-  end
-
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     old_article_ids = @page.articles.pluck(:id)
@@ -114,6 +109,11 @@ class TranscribeController  < ApplicationController
       if @page.save
         log_transcript_success
         flash[:notice] = t('.saved_notice')
+
+        # Log AI draft deed first if AI was used
+        if params[:ai_draft_used] == 'true'
+          record_deed(DeedType::AI_DRAFT)
+        end
 
         if @page.work.ocr_correction
           record_deed(DeedType::OCR_CORRECTED)
@@ -296,6 +296,12 @@ class TranscribeController  < ApplicationController
 
       if @page.save
         log_translation_success
+        
+        # Log AI draft deed first if AI was used
+        if params[:ai_draft_used] == 'true'
+          record_deed(DeedType::AI_DRAFT)
+        end
+        
         record_translation_deed
 
         unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)

@@ -610,50 +610,63 @@ describe TranscribeController do
     end
   end
 
-  describe '#record_ai_draft_usage' do
-    let(:action_path) { transcribe_record_ai_draft_usage_path }
+  describe '#save_transcription with AI draft' do
+    let(:action_path) { transcribe_save_transcription_path }
+    let!(:page) { create(:page, work: work, source_text: 'initial text') }
     let(:params) do
       {
         page_id: page.id,
-        work_id: work.id,
-        collection_id: collection.id
+        ai_draft_used: 'true',
+        page: {
+          source_text: 'updated with AI draft',
+          mark_blank: '0',
+          needs_review: '0'
+        }
       }
     end
-    let(:subject) { post action_path, params: params }
+    let(:subject) { patch action_path, params: params }
 
-    context 'when user is not logged in' do
-      it 'redirects' do
-        subject
-
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(new_user_session_path)
-      end
-    end
-
-    context 'when user is logged in' do
+    context 'when AI draft was used' do
       before do
         login_as owner
       end
 
-      it 'creates an AI_DRAFT deed' do
-        expect { subject }.to change { Deed.where(deed_type: DeedType::AI_DRAFT).count }.by(1)
+      it 'creates an AI_DRAFT deed before transcription deed' do
+        expect { subject }.to change { Deed.count }.by(2)
+        
+        deeds = Deed.where(page_id: page.id).order(:created_at)
+        expect(deeds.first.deed_type).to eq(DeedType::AI_DRAFT)
+        expect(deeds.second.deed_type).to eq(DeedType::PAGE_TRANSCRIPTION)
       end
 
-      it 'returns success json' do
+      it 'associates the AI_DRAFT deed with the correct page, work, and collection' do
         subject
 
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to eq({ 'success' => true })
-      end
-
-      it 'associates the deed with the correct page, work, and collection' do
-        subject
-
-        deed = Deed.where(deed_type: DeedType::AI_DRAFT).last
+        deed = Deed.where(deed_type: DeedType::AI_DRAFT, page_id: page.id).last
         expect(deed.page_id).to eq(page.id)
         expect(deed.work_id).to eq(work.id)
         expect(deed.collection_id).to eq(collection.id)
         expect(deed.user_id).to eq(owner.id)
+      end
+    end
+
+    context 'when AI draft was not used' do
+      let(:params) do
+        {
+          page_id: page.id,
+          page: {
+            source_text: 'updated without AI draft',
+            mark_blank: '0',
+            needs_review: '0'
+          }
+        }
+      end
+
+      it 'does not create an AI_DRAFT deed' do
+        login_as owner
+        
+        expect { subject }.to change { Deed.count }.by(1)
+        expect(Deed.where(deed_type: DeedType::AI_DRAFT).count).to eq(0)
       end
     end
   end
