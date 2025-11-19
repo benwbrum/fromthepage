@@ -418,7 +418,7 @@ class Page < ApplicationRecord
       source_translation: self.source_translation,
       xml_translation: self.xml_translation,
       status: self.status,
-      transcription_json: self.transcription_json
+      transcription_json: self.transcription_json,
       ai_draft_used: self.ai_draft_used_flag || false
     )
 
