@@ -32,6 +32,9 @@
       -elsif @sc_manifest.has_annotations?
         =label_tag :annotation_ocr, 'Import text from annotations'
         =check_box_tag :annotation_ocr
+      br
+      =label_tag :generate_ai_draft, t('.generate_ai_draft_text')
+      =check_box_tag :generate_ai_draft
 
         -unless @sc_manifest.service.sequences.empty?
           h5= t('.canvases')

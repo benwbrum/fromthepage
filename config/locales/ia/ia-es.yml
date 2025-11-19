@@ -27,6 +27,8 @@ es:
       conceal_preceding_pages: Ocultar páginas anteriores
       first_line_of_ocr: Primera línea de OCR
       first_line_of_ocr_description: "<b>Primera línea de OCR</b> reemplaza los títulos de página con la línea superior del texto OCR en cada página. Esto es útil para agendas y diarios, ya que la primera línea generalmente es una fecha."
+      generate_ai_draft_text: Generación de borradores de texto con IA mediante Gemini AI
+      generate_ai_draft_text_description: Seleccione esta casilla para generar automáticamente un borrador de texto con IA para todas las páginas utilizando Gemini AI después de que se publique el trabajo.
       last_line_of_ocr: Última línea de OCR
       last_line_of_ocr_description: "<b>Última línea de OCR</b> reemplaza los títulos de página con la última línea de texto OCR en cada página. Esto es útil para obras impresas en los que los números de página aparecen en la parte inferior."
       manage_archive_org_import: Administrar la importación de Archive.org
