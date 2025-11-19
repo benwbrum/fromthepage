@@ -316,7 +316,7 @@ class DashboardController < ApplicationController
   end
 
   def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
+    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id, :generate_ai_draft)
   end
 
   def load_user_hours_data
