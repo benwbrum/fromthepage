@@ -47,15 +47,15 @@ namespace :fromthepage do
       created_work_ids.each do |work_id|
         work = Work.find(work_id)
         print "Generating AI Draft text for work: #{work.title} (ID: #{work.id})\n"
-        
+
         success_count = 0
         error_count = 0
-        
+
         work.pages.each_with_index do |page, index|
           print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
-          
+
           result = Page::FetchAiText.new(page: page).call
-          
+
           if result.success?
             print "SUCCESS\n"
             success_count += 1
@@ -63,11 +63,11 @@ namespace :fromthepage do
             print "ERROR - #{result.message}\n"
             error_count += 1
           end
-          
+
           # Small delay to avoid rate limiting
           sleep(0.5)
         end
-        
+
         print "AI Draft generation completed for #{work.title}: #{success_count} successful, #{error_count} errors\n"
       end
       print "=== AI Draft Text Generation Complete ===\n\n"
