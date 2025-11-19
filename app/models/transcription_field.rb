@@ -32,6 +32,7 @@ class TranscriptionField < ApplicationRecord
   validates :page_number, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 1000 }
   validates :label, format: { without: /[\[\]]/, message: "cannot contain '[' or ']'" }
 
+  # TODO: Use enum
   module FieldType
     TRANSCRIPTION = 'transcription'
     METADATA = 'metadata'

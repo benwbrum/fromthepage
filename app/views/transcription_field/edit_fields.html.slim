@@ -1,9 +1,9 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection }})
+=render partial: '/shared/collection_tabs', locals: { selected: 10, collection_id: @collection }
 
 div.columns
   div.maincol
     h2 =t('.edit_transcription_fields')
-    p 
+    p
     -if @collection.table_cells.present?
       i =t('.transcription_warning')
-    =render({partial: 'edit_field_form', locals: { field_type: TranscriptionField::FieldType::TRANSCRIPTION }})
+    =render partial: 'edit_field_form', locals: { field_type: TranscriptionField::FieldType::TRANSCRIPTION }
