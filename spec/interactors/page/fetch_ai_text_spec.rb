@@ -23,7 +23,7 @@ describe Page::FetchAiText do
 
     it 'successfully transcribes the image' do
       expect(Gemini::TextTranscriber).to receive(:transcribe_image)
-        .with('http://example.com/image.jpg', { model: 'gemini-2.5-pro' })
+        .with('http://example.com/image.jpg', { model: 'gemini-2.5-pro', prompt: nil })
         .and_return('This is transcribed text from the image.')
 
       result
