@@ -6,6 +6,7 @@ de:
     cdm_bulk_import_new:
       bulk_contentdm_import: Sammelimport von CONTENTdm
       compound_object_urls: URLs für komplexe Objekte
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI
       import: Importieren
       import_ocr_text: OCR-Text importieren
       select_a_collection_to_import_into: "- Wählen Sie eine Sammlung aus, in die importiert werden soll -"
@@ -17,6 +18,7 @@ de:
       collection: 'Sammlung: %{sc_collection}'
       collections: 'Sammlungen:'
       first_page: Erste Seite
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI
       id: 'ID: %{id}'
       import_checked_manifests: Geprüfte Manifeste importieren
       import_ocr_text: OCR-Text importieren
@@ -32,6 +34,7 @@ de:
       canvases: 'Canvases:'
       collection: 'Collection: %{sc_collection}'
       description: 'Beschreibung: %{description}'
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI
       id: 'ID:'
       import_manifest: Manifest importieren
       import_ocr_text: OCR-Text importieren

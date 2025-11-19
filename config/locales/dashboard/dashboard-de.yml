@@ -151,6 +151,7 @@ de:
       each_folder_will_be_treated: Jeder Ordner wird als ein eigenes Dokument behandelt, vermischen Sie also keine Seiten aus verschiedenen Dokumenten in einem Ordner.
       each_pdf_will_be_treated: Jedes PDF wird als eigenes Dokument behandelt. Teilen Sie also Seiten desselben Dokuments nicht auf mehr als ein PDF auf.
       for_example_a_zip_file: 'Der Upload einer ZIP-Datei mit 3 Bildern, 2 PDFs und 1 Ordner mit 5 weiteren Bildern würde zum Beispiel zur Erstellung von 4 Werken führen: die Bilder der obersten Ebene in einem, jedes PDF als eigenes Werk und ein letztes Werk, das die 5 Bilder aus dem Ordner enthält.'
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI.
       image_naming_guidelines: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
       image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
       import_form_message: In diesem Bereich können Sie Ihre Faksimiles nach FromThePage importieren. Wählen Sie eine Sammlung aus, in die importiert werden soll, und hängen Sie eine ZIP- oder PDF-Datei an, die Faksimiles enthält, die für Ihr Projekt verwendet werden sollen.

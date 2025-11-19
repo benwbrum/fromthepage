@@ -151,6 +151,7 @@ pt:
       each_folder_will_be_treated: Cada pasta será tratada como um documento diferente, por isso não misture páginas de documentos diferentes na mesma pasta.
       each_pdf_will_be_treated: Cada PDF será tratado como seu próprio documento, por isso não divida páginas do mesmo documento entre mais de um PDF.
       for_example_a_zip_file: 'Por exemplo, um arquivo ZIP com 3 imagens, 2 PDFs, e uma pasta contendo 5 imagens adicionais criaria 4 obras: as imagens de nível superior em um, cada PDF em sua própria obra, e uma última obra contendo as 5 imagens adicionais da pasta.'
+      generate_ai_draft_text: Gere rascunhos de texto com IA usando o Gemini AI.
       image_naming_guidelines: 'As imagens devem ser nomeadas para que uma classificação alfabética resulte na ordem correta das páginas.<br> (Isso pode exigir "preenchimento zero" para qualquer número de página: <code>page_09.jpg, page_10.jpg</code> classificará corretamente, mas <code>page_9.jpg, page_10.jpg</code> não.)'
       image_orientation_guidelines: As imagens devem ser orientadas para que fiquem com o lado certo para cima.
       import_form_message: Usando este formulário, você pode importar as suas imagens de página para FromThePage. Você deve selecionar uma coleção de destino para importar e anexar um arquivo ZIP ou PDF contendo imagens de página para o seu projeto.
