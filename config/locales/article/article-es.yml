@@ -65,6 +65,7 @@ es:
       enable_bio_fields_for_category: Habilitar campos biográficos para la categoría
       enable_gis_for_category: Habilitar SIG para la categoría
       enable_org_fields_for_category: Habilitar campos de organización para la categoría
+      loading_more_subjects: Cargando más temas...
       no_categories: Sin categorías
       no_categories_message: No hay categorías de temas en la colección.<br>
       there_are_no_subjects: No hay asignaturas para la categoría seleccionada

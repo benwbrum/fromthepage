@@ -45,7 +45,7 @@
       p.fglight
         =t('.no_category_message')
         br
-        =link_to t('.all_uncategorized_subjects'), article_list_path(collection_id: @collection.slug, anchor: "category-none")
+        =link_to t('.all_uncategorized_subjects'), article_list_path(collection_id: @collection.slug, selected_category_id: 'uncategorized')
     -else
       ul.article-category-list.big
         -@article.categories.each do |cat|

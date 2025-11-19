@@ -1,0 +1,9 @@
+dd
+  -articles.each do |article|
+    p[*language_attrs(@collection)]
+      = link_to collection_article_show_path(@collection.owner, @collection, article.id) do
+        = article.title
+        = content_tag :span, "(#{pages_count_map[article.id] || 0})", class: 'grey-number'
+
+-if @next_batch.present?
+  =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: @next_batch, timestamp: Time.now.to_i }

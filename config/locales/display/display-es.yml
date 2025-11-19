@@ -1,6 +1,11 @@
 ---
 es:
   display:
+    ai_text:
+      ai_generated_text: Texto generado por IA
+      ai_text: Texto de IA
+      ai_text_edit_notice: Para editar este texto, utilice el botón "Borrador de IA" en la pestaña de transcripción.
+      facsimile: Facsímil
     display_page:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
       collection_is_not_active: Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta.
