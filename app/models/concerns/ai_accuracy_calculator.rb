@@ -1,20 +1,43 @@
 # frozen_string_literal: true
 
+require 'stopwords'
+
 # Concern for calculating AI transcription accuracy metrics
 # Compares AI-generated text against human-verified ground truth
 module AiAccuracyCalculator
   extend ActiveSupport::Concern
 
-  # Stopwords list for English - common words to exclude from non-stopword accuracy
-  STOPWORDS = %w[
-    a an and are as at be but by for if in into is it
-    no not of on or such that the their then there these they
-    this to was will with
-  ].freeze
-
   # Check if accuracy statistics can be calculated for this page
   def can_calculate_ai_accuracy?
     has_ai_plaintext? && completed_transcription?
+  end
+
+  # Check if non-stopword accuracy can be calculated for this collection's language
+  def can_calculate_non_stopword_accuracy?
+    return false unless collection&.text_language.present?
+    
+    # Map FromThePage language codes to stopwords-filter language codes
+    language_map = {
+      'en' => :en,
+      'es' => :es,
+      'fr' => :fr,
+      'de' => :de,
+      'pt' => :pt,
+      'it' => :it,
+      'nl' => :nl,
+      'sv' => :sv,
+      'da' => :da,
+      'no' => :no,
+      'fi' => :fi,
+      'hu' => :hu,
+      'ru' => :ru,
+      'ar' => :ar,
+      'ja' => :ja,
+      'zh' => :zh
+    }
+    
+    lang_code = language_map[collection.text_language.to_s]
+    lang_code && Stopwords::Snowball::Filter.locales.include?(lang_code)
   end
 
   # Calculate all accuracy statistics
@@ -27,31 +50,38 @@ module AiAccuracyCalculator
 
     return nil if ground_truth.blank? && ai_text.blank?
 
-    {
+    stats = {
       verbatim: calculate_verbatim_statistics(ground_truth, ai_text),
       text_only: calculate_text_only_statistics(ground_truth, ai_text)
     }
+    
+    # Add non-stopword accuracy only if language is supported
+    if can_calculate_non_stopword_accuracy?
+      stats[:verbatim][:non_stopword_accuracy] = non_stopword_accuracy(ground_truth, ai_text)
+    end
+    
+    stats
   end
 
   private
 
   # Check if page has a completed transcription status
   def completed_transcription?
-    # Completed statuses include: blank, indexed, transcribed
-    # We exclude 'translated' as that's for translation_status
-    [
+    # Use Page model's COMPLETED_STATUSES but exclude translation status
+    # since transcription happens before translation
+    transcription_completed_statuses = [
       Page.statuses[:blank],
       Page.statuses[:indexed],
       Page.statuses[:transcribed]
-    ].include?(status)
+    ]
+    transcription_completed_statuses.include?(status)
   end
 
   # Calculate statistics for verbatim text (with punctuation and formatting)
   def calculate_verbatim_statistics(ground_truth, ai_text)
     {
       cer: character_error_rate(ground_truth, ai_text),
-      wer: word_error_rate(ground_truth, ai_text),
-      non_stopword_accuracy: non_stopword_accuracy(ground_truth, ai_text)
+      wer: word_error_rate(ground_truth, ai_text)
     }
   end
 
@@ -155,13 +185,38 @@ module AiAccuracyCalculator
     (matches.to_f / total * 100.0).round(2)
   end
 
-  # Extract non-stopwords from text
+  # Extract non-stopwords from text using stopwords-filter gem
   def extract_non_stopwords(text)
     return [] if text.blank?
+    return [] unless collection&.text_language.present?
 
+    # Map FromThePage language codes to stopwords-filter language codes
+    language_map = {
+      'en' => :en,
+      'es' => :es,
+      'fr' => :fr,
+      'de' => :de,
+      'pt' => :pt,
+      'it' => :it,
+      'nl' => :nl,
+      'sv' => :sv,
+      'da' => :da,
+      'no' => :no,
+      'fi' => :fi,
+      'hu' => :hu,
+      'ru' => :ru,
+      'ar' => :ar,
+      'ja' => :ja,
+      'zh' => :zh
+    }
+    
+    lang_code = language_map[collection.text_language.to_s] || :en
+    
     # Split into words, remove punctuation, convert to lowercase
-    words = text.downcase.scan(/\b[a-z]+\b/)
-    # Filter out stopwords
-    words.reject { |word| STOPWORDS.include?(word) }
+    words = text.downcase.scan(/\b[\w]+\b/)
+    
+    # Use stopwords-filter to remove stopwords
+    filter = Stopwords::Snowball::Filter.new(lang_code)
+    filter.filter(words)
   end
 end

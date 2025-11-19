@@ -2,23 +2,32 @@
 en:
   display:
     ai_text:
-      accuracy_explanation: These statistics compare the AI-generated text against the human-verified transcription, providing insights into the accuracy of the AI transcription.
+      accuracy_explanation: These statistics compare the AI-generated text against the human-verified transcription.
       accuracy_statistics: Accuracy Statistics
       ai_generated_text: AI Generated Text
       ai_text: AI Text
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
       character_error_rate: Character Error Rate (CER)
+      character_error_rate_short: CER
       character_error_rate_tooltip: "CER measures the percentage of character-level edits (insertions, deletions, substitutions) needed to transform the AI text into the ground truth. Lower values indicate higher accuracy."
+      current_transcription: Current Transcription
+      current_version: "Current version by"
       facsimile: Facsimile
+      metric: Metric
       non_stopword_accuracy: Non-Stopword Accuracy
+      non_stopword_accuracy_short: NSA
       non_stopword_accuracy_tooltip: "Measures the percentage of content words (excluding common words like 'the', 'a', 'is') that match between AI and ground truth. Higher values indicate better content recognition."
+      show_comparison_with_transcription: Show comparison with transcription
       statistics_unavailable: Accuracy statistics are not available for this page.
       statistics_unavailable_reason: Statistics can only be calculated for pages with a completed transcription status (blank, indexed, or transcribed).
+      text_only: Text-Only
       text_only_comparison: Text-Only Comparison
       text_only_description: Statistics calculated after removing punctuation, extra whitespace, and normalizing case.
+      verbatim: Verbatim
       verbatim_comparison: Verbatim Comparison
       verbatim_description: Statistics calculated on the original text with all formatting preserved.
       word_error_rate: Word Error Rate (WER)
+      word_error_rate_short: WER
       word_error_rate_tooltip: "WER measures the percentage of word-level edits needed to transform the AI text into the ground truth. Lower values indicate higher accuracy."
     display_page:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
