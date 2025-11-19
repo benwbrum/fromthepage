@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_29_120653) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_17_160945) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -631,6 +631,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_29_120653) do
     t.text "source_translation", collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", collation: "utf8mb4_unicode_ci"
     t.string "status"
+    t.json "transcription_json"
     t.index ["page_id"], name: "index_page_versions_on_page_id"
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end

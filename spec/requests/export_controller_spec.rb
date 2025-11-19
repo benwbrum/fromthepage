@@ -74,6 +74,19 @@ describe ExportController do
     end
 
     context 'sort by indexed count' do
+      let(:params) { { search: work.title, sort: 'indexed_count' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by indexed count desc' do
       let(:params) { { search: work.title, sort: 'indexed_count', order: 'desc' } }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
 
@@ -99,8 +112,47 @@ describe ExportController do
       end
     end
 
+    context 'sort by completed count desc' do
+      let(:params) { { search: work.title, sort: 'completed_count', order: 'desc' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
     context 'sort by reviewed count' do
       let(:params) { { search: work.title, sort: 'reviewed_count' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by reviewed count desc' do
+      let(:params) { { search: work.title, sort: 'reviewed_count', order: 'desc' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'ordered by invalid key' do
+      let(:params) { { search: work.title, order: 'inv', per_page: '-1' } }
       let(:subject) { get action_path, params: params, as: :turbo_stream }
 
       it 'renders status and template' do
@@ -152,6 +204,17 @@ describe ExportController do
         subject
 
         expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'unsupported type' do
+      let(:params) { { edition: 'text', format: 'tex' } }
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:internal_server_error)
       end
     end
   end
@@ -449,15 +512,62 @@ describe ExportController do
   end
 
   describe '#table_csv' do
+    let!(:text_field) do
+      create(:transcription_field, :as_transcription, collection: collection, label: 'Text Field', input_type: 'text')
+    end
+    let!(:spreadsheet_field) do
+      create(:transcription_field, :as_transcription, collection: collection, label: 'Spreadsheet Field',
+                                                      input_type: 'spreadsheet')
+    end
+    let!(:spreadsheet_column) do
+      create(:spreadsheet_column, transcription_field: spreadsheet_field, label: 'Text Column', input_type: 'text')
+    end
+
     let(:action_path) { export_table_csv_path(work_id: work.id) }
 
     let(:subject) { get action_path }
 
-    it 'renders status' do
-      login_as owner
-      subject
+    context 'when field_based' do
+      let!(:collection) do
+        create(:collection, owner_user_id: owner.id, field_based: true)
+      end
 
-      expect(response).to have_http_status(:ok)
+      let(:transcription_json) do
+        tj = {}
+        tj[text_field.id.to_s] = 'Text Field Value'
+        sf = {}
+        sf[spreadsheet_column.id.to_s] = 'Text Column Value'
+        tj[spreadsheet_field.id.to_s] = [sf]
+
+        tj
+      end
+      let!(:page) do
+        create(:page, :transcribed, work: work, transcription_json: transcription_json, position: 1)
+      end
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when not field_based' do
+      let!(:text_field_cell) do
+        create(:table_cell, work: work, page: page, transcription_field: text_field)
+      end
+      let!(:spreadsheet_column_cell) do
+        create(:table_cell, work: work, page: page, transcription_field: spreadsheet_field, header: 'Text Column')
+      end
+      let!(:oprhaned_cell) { create(:table_cell, work: work, page: page) }
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
     end
   end
 
@@ -471,6 +581,43 @@ describe ExportController do
       subject
 
       expect(response).to have_http_status(:ok)
+    end
+
+    context 'when field based' do
+      let!(:text_field) do
+        create(:transcription_field, :as_transcription, collection: collection, label: 'Text Field', input_type: 'text')
+      end
+      let!(:spreadsheet_field) do
+        create(:transcription_field, :as_transcription, collection: collection, label: 'Spreadsheet Field',
+                                                        input_type: 'spreadsheet')
+      end
+      let!(:spreadsheet_column) do
+        create(:spreadsheet_column, transcription_field: spreadsheet_field, label: 'Text Column', input_type: 'text')
+      end
+
+      let!(:collection) do
+        create(:collection, owner_user_id: owner.id, field_based: true)
+      end
+
+      let(:transcription_json) do
+        tj = {}
+        tj[text_field.id.to_s] = 'Text Field Value'
+        sf = {}
+        sf[spreadsheet_column.id.to_s] = 'Text Column Value'
+        tj[spreadsheet_field.id.to_s] = [sf]
+
+        tj
+      end
+      let!(:page) do
+        create(:page, :transcribed, work: work, transcription_json: transcription_json, position: 1)
+      end
+
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
     end
   end
 
