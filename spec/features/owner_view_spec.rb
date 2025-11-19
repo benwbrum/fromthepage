@@ -17,8 +17,9 @@ describe "owner view - collection" do
     expect(page).to have_selector('.owner-info')
     expect(page).to have_content("#{@owner.account_type} account since #{@owner.start_date.strftime('%b %d, %Y')}")
     # look at owner stats in dashboard
-    expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
-    expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
+    expect(page.all('.owner-counters .counter')[0]['data-prefix'].to_i).to eq(@owner.all_owner_collections.count)
+    expect(page.all('.owner-counters .counter')[1]['data-prefix'].to_i).to eq(@works.count)
+
     # look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'
@@ -27,16 +28,20 @@ describe "owner view - collection" do
     expect(page.current_path).to eq dashboard_owner_path
   end
 
-  it "looks at statistics tab" do
+  it 'looks at statistics tab', js: true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Summary")
+    page.find('.tabs').click_link('Summary')
     expect(page).to have_selector('.collection-stats_counters')
-    expect(page).to have_content("Statistics from")
-    expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @works.count
+    expect(page).to have_content('Statistics from')
+    within page.all('.collection-stats_counters')[0] do
+      expect(page.all('.counter')[0]['data-prefix'].to_i).to eq(@works.count)
+    end
     expect(page.find('.collection-users')).to have_content('Transcribing')
     expect(page.find('.collection-users')).to have_content('Editing')
     expect(page.find('.collection-users')).to have_content('Indexing')
-    expect(page.find('.collection-users')).to have_content(@owner.all_collaborators.last.display_name)
+
+    page.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+    expect(page).to have_selector('.collection-users', text: @owner.all_collaborators.last.display_name, wait: 10)
   end
 
   it "looks at subjects tab" do
@@ -47,12 +52,14 @@ describe "owner view - collection" do
     expect(page).to have_content("Places")
   end
 
-  it "looks at statistics tab" do
+  it 'looks at statistics tab' do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Statistics")
-    expect(page).to have_content("Works")
-    expect(page).to have_content("Collaborators")
-    expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @collection.works.count
+    page.find('.tabs').click_link('Statistics')
+    expect(page).to have_content('Works')
+    expect(page).to have_content('Collaborators')
+    within page.all('.collection-stats_counters')[0] do
+      expect(page.all('.counter')[0]['data-prefix'].to_i).to eq(@collection.works.count)
+    end
   end
 
   it "looks at works list tab" do

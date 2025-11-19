@@ -11,6 +11,7 @@ pt:
       collaborators: Colaboradores
       editing: Editando
       indexing: Indexando
+      loading_more_collaborators: Carregando mais colaboradores...
       mailing_list_export: Exportação de lista de correio
       no_editors: Sem editores
       no_indexers: Sem indexadores

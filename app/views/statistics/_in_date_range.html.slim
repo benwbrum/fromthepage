@@ -1,0 +1,15 @@
+section.collection-stats_recent
+  =fe_counter(count: dated_statistics_object[:contributor_count], text: t('statistics.statistics.collaborator', count: dated_statistics_object[:contributor_count]))
+  =fe_counter(count: dated_statistics_object[:transcription_count], text: t('statistics.statistics.page_transcribed', count: dated_statistics_object[:transcription_count]))
+  =fe_counter(count: dated_statistics_object[:needs_review_count], text: t('statistics.statistics.page_marked_needing_review', count: dated_statistics_object[:needs_review_count]))
+  =fe_counter(count: dated_statistics_object[:review_count], text: t('statistics.statistics.page_reviewed', count: dated_statistics_object[:review_count]))
+  =fe_counter(count: dated_statistics_object[:edit_count], text: t('statistics.statistics.page_edit', count: dated_statistics_object[:edit_count]))
+  -unless subjects_disabled
+    =fe_counter(count: dated_statistics_object[:index_count], text: t('statistics.statistics.page_indexed', count: dated_statistics_object[:index_count]))
+    =fe_counter(count: dated_statistics_object[:mention_count], text: t('statistics.statistics.reference', count: dated_statistics_object[:mention_count]))
+    =fe_counter(count: dated_statistics_object[:subject_count], text: t('statistics.statistics.new_subject', count: dated_statistics_object[:subject_count]))
+  =fe_counter(count: dated_statistics_object[:comment_count], text: t('statistics.statistics.note', count: dated_statistics_object[:comment_count]))
+  -if supports_translation
+    =fe_counter(count: dated_statistics_object[:translation_count], text: t('statistics.statistics.page_translated', count: dated_statistics_object[:translation_count]))
+  -if supports_ocr
+    =fe_counter(count: dated_statistics_object[:ocr_count], text: t('statistics.statistics.ocr_correction', count: dated_statistics_object[:ocr_count]))

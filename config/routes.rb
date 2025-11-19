@@ -208,11 +208,12 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'dashboard', as: 'dashboard' do
-    get '/' => 'dashboard#index'
-    get 'owner' => 'dashboard#owner'
-    get 'watchlist' => 'dashboard#watchlist'
+    get '/', to: 'dashboard#index'
+    get 'owner', to: 'dashboard#owner'
+    get 'watchlist', to: 'dashboard#watchlist'
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
+    get 'summary_collaborators', to: 'dashboard#summary_collaborators'
     get 'exports', to: 'dashboard#exports'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'

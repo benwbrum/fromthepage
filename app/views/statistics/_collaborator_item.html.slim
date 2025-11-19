@@ -1,0 +1,25 @@
+-if contributor_deeds_map.empty?
+  ruby:
+    key = case @deed_type
+          when DeedType::PAGE_INDEXED
+            'indexers'
+          when DeedType::PAGE_REVIEWED
+            'reviewers'
+          when DeedType::EDIT
+            'editors'
+          else
+            # DeedType::PAGE_TRANSCRIPTION
+            'transcribers'
+          end
+  p.a50 =t("statistics.collaborators.no_#{key}")
+
+-else
+  -contributor_deeds_map[:counts_map].each do |user_id, count|
+    -user = contributor_deeds_map[:users_map][user_id]
+    .collection-user(data-prefix="#{count}")
+      =link_to(user_profile_path(user), class: 'collection-user_link')
+        span =profile_picture(user)
+        span.vmiddle =user.display_name
+
+  -if contributor_deeds_map[:next_batch].present?
+    =render partial: 'statistics/lazy_collaborator', locals: { deed_type: @deed_type, batch: contributor_deeds_map[:next_batch], timestamp: Time.now.to_i }

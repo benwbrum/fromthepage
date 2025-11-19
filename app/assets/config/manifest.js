@@ -2,9 +2,6 @@
 //= link_directory ../javascripts .js
 //= link_directory ../stylesheets .css
 //= link_directory ../stylesheets/codemirror/lib .css
-//= link datepicker/datepicker.js
-//= link datepicker/lang/en-us.js
-//= link datepicker/lang/en.js
 //= link application.css
 //= link bootstrap.min.css
 //= link optimize.css

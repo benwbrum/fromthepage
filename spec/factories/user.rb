@@ -42,5 +42,9 @@ FactoryBot.define do
         admin { true }
       end
     end
+
+    after(:create) do |user|
+      create(:privacy_preference, user: user)
+    end
   end
 end

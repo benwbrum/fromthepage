@@ -80,4 +80,10 @@ export default class extends Controller {
       $(this.formTarget).trigger('change');
     });
   }
+
+  triggerFilter(event) {
+    event.preventDefault();
+
+    $(this.formTarget).trigger('change');
+  }
 }

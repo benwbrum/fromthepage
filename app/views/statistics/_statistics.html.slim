@@ -1,81 +1,48 @@
+// Owner Statistics
+
 -unless @works.empty?
   section.collection-stats
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.work_count}") #{t('.work', count: @statistics_object.work_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.page_count}") #{t('.total_page', count: @statistics_object.page_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.active_page_count}") #{t('.active_page', count: @statistics_object.active_page_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count}") #{t('.note', count: @statistics_object.comment_count)}
-      -unless subjects_disabled
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count}") #{t('.subject', count: @statistics_object.subject_count)}
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count}") #{t('.reference', count: @statistics_object.mention_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count}") #{t('.collaborator', count: @statistics_object.contributor_count)}
+      =fe_counter(count: @statistics_object[:work_count], text: t('.work', count: @statistics_object[:work_count]))
+      =fe_counter(count: @statistics_object[:page_count], text: t('.total_page', count: @statistics_object[:page_count]))
+      =fe_counter(count: @statistics_object[:active_page_count], text: t('.active_page', count: @statistics_object[:active_page_count]))
+      =fe_counter(count: @statistics_object[:comment_count], text: t('.note', count: @statistics_object[:comment_count]))
+      -unless @subjects_disabled
+        =fe_counter(count: @statistics_object[:subject_count], text: t('.subject', count: @statistics_object[:subject_count]))
+        =fe_counter(count: @statistics_object[:mention_count], text: t('.reference', count: @statistics_object[:mention_count]))
+      =fe_counter(count: @statistics_object[:contributor_count], text: t('.collaborator', count: @statistics_object[:contributor_count]))
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count}") #{t('.page_transcribed', count: @statistics_object.transcription_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.incomplete_page_count}") #{t('.incomplete_page', count: @statistics_object.incomplete_page_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count}") #{t('.page_needing_review', count: @statistics_object.needs_review_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count}") #{t('.page_reviewed', count: @statistics_object.review_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count}") #{t('.page_edit', count: @statistics_object.edit_count)}
-      -unless subjects_disabled
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count}") #{t('.page_indexed', count: @statistics_object.index_count)}
-      -if @works.where(supports_translation: true).exists?
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count}") #{t('.page_translated', count: @statistics_object.translation_count)}
-      -if @works.where(ocr_correction: true).exists?
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count}") #{t('.ocr_correction', count: @statistics_object.ocr_count)}
+      =fe_counter(count: @statistics_object[:transcription_count], text: t('.page_transcribed', count: @statistics_object[:transcription_count]))
+      =fe_counter(count: @statistics_object[:incomplete_page_count], text: t('.incomplete_page', count: @statistics_object[:incomplete_page_count]))
+      =fe_counter(count: @statistics_object[:needs_review_count], text: t('.page_needing_review', count: @statistics_object[:needs_page_count]))
+      =fe_counter(count: @statistics_object[:review_count], text: t('.page_reviewed', count: @statistics_object[:review_count]))
+      =fe_counter(count: @statistics_object[:edit_count], text: t('.page_edit', count: @statistics_object[:edit_count]))
+      -unless @subjects_disabled
+        =fe_counter(count: @statistics_object[:index_count], text: t('.page_indexed', count: @statistics_object[:index_count]))
+      -if @supports_translation
+        =fe_counter(count: @statistics_object[:translation_count], text: t('.page_translated', count: @statistics_object[:translation_count]))
+      -if @supports_ocr
+        =fe_counter(count: @statistics_object[:ocr_count], text: t('.ocr_correction', count: @statistics_object[:ocr_count]))
 
-  h2=t('.statistics_from', start_date: l(@start_date.to_date), end_date: l(@end_date.to_date))
+  =fe_filter_table_wrapper(selector: 'statistics-table') do
+    h2#range-label =t('statistics.statistics.statistics_from', start_date: l(@start_date.to_date), end_date: l(@end_date.to_date))
+    h4 =t('statistics.statistics.select_new_date')
 
-  h4=t('.select_new_date')
+    =fe_filter_form_wrapper(url: dashboard_summary_path(collection_id: @collection), selector: 'statistics-table', sorting: false, ordering: false) do
+      =label_tag(:start_date, t('statistics.statistics.start_date'))
+      |
+      =text_field_tag(:start_date, l(@start_date.to_date), style: 'width:30%', id: 'start_date', data: { controller: 'datepicker' })
+      |
+      =label_tag(:end_date, t('statistics.statistics.end_date'))
+      |
+      =text_field_tag(:end_date, l(@end_date.to_date), style: 'width:30%', id: 'end_date', data: { controller: 'datepicker' })
+      |
+      =submit_tag(t('statistics.statistics.update'), data: { action: 'click->filter-table#triggerFilter' })
 
-  =form_tag('/dashboard/summary', method: "get") do
-    =hidden_field_tag(:collection_id, @collection)
-    =label_tag(:start_date, t('.start_date'))
-    |
-    =text_field_tag(:start_date, l(@start_date.to_date), style: "width:30%")
-    |
-    =label_tag(:end_date, t('.end_date'))
-    |
-    =text_field_tag(:end_date, l(@end_date.to_date), style: "width:30%")
-    |
-    =submit_tag(t('.update'))
-  br
+    br
 
-  -date_range = @start_date..@end_date
-  section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(date_range)}") #{t('.collaborator', count: @statistics_object.contributor_count(date_range))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(date_range)}") #{t('.page_transcribed', count: @statistics_object.transcription_count(date_range))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count(date_range)}") #{t('.page_marked_needing_review', count: @statistics_object.needs_review_count(date_range))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count(date_range)}") #{t('.page_reviewed', count: @statistics_object.review_count(date_range))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(date_range)}") #{t('.page_edit', count: @statistics_object.edit_count)}
-    -unless subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(date_range)}") #{t('.page_indexed', count: @statistics_object.index_count(date_range))}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(date_range)}") #{t('.reference', count: @statistics_object.mention_count(date_range))}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(date_range)}") #{t('.new_subject', count: @statistics_object.subject_count(date_range))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(date_range)}") #{t('.note', count: @statistics_object.comment_count(date_range))}
-    -if @works.where(supports_translation: true).exists?
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(date_range)}") #{t('.page_translated', count: @statistics_object.translation_count(date_range))}
-    -if @works.where(ocr_correction: true).exists?
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(date_range)}") #{t('.ocr_correction', count: @statistics_object.ocr_count(date_range))}
-
--content_for :javascript
-  =javascript_include_tag 'datepicker/datepicker'
-  javascript:
-    var today = new Date()
-    var yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
-
-    //Attach a date picker for start and end dates
-    datePickerController.createDatePicker({
-        formElements:{
-            "start_date":"%M %d, %Y"
-        },
-        rangeHigh: yesterday,
-        noFadeEffect: true
-    });
-
-    datePickerController.createDatePicker({
-        formElements:{
-            "end_date":"%M %d, %Y"
-        },
-        noFadeEffect: true,
-        rangeHigh: yesterday
-    });
+    =fe_filter_table(selector: 'statistics-table') do
+      =render partial: 'statistics/in_date_range', \
+        locals: { dated_statistics_object: @dated_statistics_object, \
+          subjects_disabled: @subjects_disabled, supports_translation: @supports_translation, \
+          supports_ocr: @supports_ocr }

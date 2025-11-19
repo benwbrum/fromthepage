@@ -11,6 +11,7 @@ fr:
       collaborators: Collaborateurs
       editing: Modification
       indexing: Indexage
+      loading_more_collaborators: Chargement de nouveaux collaborateurs...
       mailing_list_export: Exportation de la liste de diffusion
       no_editors: Aucun éditeur
       no_indexers: Aucun indexeur
