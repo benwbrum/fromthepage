@@ -151,6 +151,7 @@ en:
       each_folder_will_be_treated: Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
       each_pdf_will_be_treated: Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
       for_example_a_zip_file: 'For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.'
+      generate_ai_draft_text: " Generate AI Draft text using Gemini AI."
       image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
       image_orientation_guidelines: Images should be oriented so that they are right-side-up.
       import_form_message: Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
@@ -162,7 +163,6 @@ en:
       upload_pdf_or_zip_file: Upload PDF or ZIP File
       use_image_filenames: " Use image filenames as page titles."
       use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
-      generate_ai_draft_text: " Generate AI Draft text using Gemini AI."
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
     watchlist:
       collections: collections

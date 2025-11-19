@@ -27,13 +27,13 @@ en:
       conceal_preceding_pages: Conceal preceding pages
       first_line_of_ocr: First line of OCR
       first_line_of_ocr_description: "<b>First line of OCR</b> replaces the page titles with the top line of OCR text on each page. This is useful for diaries and daybooks, since the first line is generally a date."
+      generate_ai_draft_text: Generate AI Draft text using Gemini AI
+      generate_ai_draft_text_description: Select this check-box to automatically generate AI Draft text for all pages using Gemini AI after the work is published.
       last_line_of_ocr: Last line of OCR
       last_line_of_ocr_description: "<b>Last line of OCR</b> replaces the page titles with the bottom line of OCR text on each page. This is useful for printed works in which page numbers appear at the bottom."
       manage_archive_org_import: Manage Archive.org Import
       ocr_for_page_contents: Use OCR text for page contents?
       ocr_for_page_contents_description: Select this check-box to populate each page's initial transcript with the contents of the corresponding OCR. (Don't do this if your pages contain handwriting you want to be transcribed.)
-      generate_ai_draft_text: Generate AI Draft text using Gemini AI
-      generate_ai_draft_text_description: Select this check-box to automatically generate AI Draft text for all pages using Gemini AI after the work is published.
       ocr_page_titles_description: This process will take several seconds to run, since it requires parsing the entire OCR text for the book and updating each page title. After the book has been converted to a FromThePage work, you will be able to correct page titles manually.
       page_n_of_n: Page %{n} of %{total} (%{n2})
       page_titles: Page Titles
