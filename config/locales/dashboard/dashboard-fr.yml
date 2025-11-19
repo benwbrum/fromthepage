@@ -84,7 +84,9 @@ fr:
       search_org_label: Rechercher du contenu publié par cette organisation...
     new_upload:
       document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
+      document_uploaded_with_ai: Le document a été téléchargé et sera traité prochainement. Nous vous enverrons un courriel à %{email} dès qu'il sera prêt. Le traitement par IA de Gemini peut prendre un certain temps ; veuillez patienter et nous informer à support@fromthepage.com si l'onglet IA n'apparaît pas sur la page dans l'heure qui suit.
       reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
+      reload_this_page_with_ai: Le document a été téléchargé et sera traité prochainement. Veuillez actualiser la page dans quelques minutes pour le visualiser. L'intégration du texte par l'IA de Gemini peut prendre un certain temps ; merci de votre patience. Si l'onglet IA n'apparaît pas sur la page dans l'heure qui suit, veuillez nous en informer à l'adresse support@fromthepage.com.
     new_work:
       acceptable_formats: Les fichiers PNG, GIF et JPG sont tous acceptables.
       images_should_be_named: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'

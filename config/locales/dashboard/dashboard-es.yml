@@ -84,7 +84,9 @@ es:
       search_org_label: Buscar contenido publicado por esta organización...
     new_upload:
       document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.
+      document_uploaded_with_ai: El documento se ha subido y se procesará en breve. Le enviaremos un correo electrónico a %{email} cuando esté listo. El texto generado por IA de Gemini puede tardar un poco; tenga paciencia, pero si no ve la pestaña de IA en una página en el plazo de una hora, póngase en contacto con nosotros en support@fromthepage.com.
       reload_this_page: El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo.
+      reload_this_page_with_ai: El documento se ha subido y se procesará en breve. Recarga esta página en unos minutos para verlo. El texto generado por IA de Gemini puede tardar un poco; ten paciencia, pero si no ves la pestaña de IA en una página en una hora, escríbenos a support@fromthepage.com.
     new_work:
       acceptable_formats: Los archivos PNG, GIF y JPG son aceptables.
       images_should_be_named: 'Las imágenes deben nombrarse de modo que un ordenamiento alfabético dará como resultado el orden de página correcto.<br> (Esto puede requerir "cero-relleno" para cualquier número de página: <code>pagina_09.jpg, pagina_10jpg</code> se ordenará correctamente, pero <code>page_9.jpg, pagina_10.jpg</code> no.)'
