@@ -25,13 +25,25 @@ module AddWorkHelper
       logger.info "DEBUG: Reloaded from DB: #{DocumentUpload.find(@document_upload.id).generate_ai_draft.inspect}"
       if SMTP_ENABLED
         begin
-          flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
+          if @document_upload.generate_ai_draft
+            flash[:info] = t('document_uploaded_with_ai', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
+          else
+            flash[:info] = t('document_uploaded', email: @document_upload.user.email, scope: [:dashboard, :new_upload])
+          end
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+          if @document_upload.generate_ai_draft
+            flash[:info] = t('reload_this_page_with_ai', scope: [:dashboard, :new_upload])
+          else
+            flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+          end
         end
       else
-        flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+        if @document_upload.generate_ai_draft
+          flash[:info] = t('reload_this_page_with_ai', scope: [:dashboard, :new_upload])
+        else
+          flash[:info] = t('reload_this_page', scope: [:dashboard, :new_upload])
+        end
       end
       @document_upload.submit_process
       upload_host = Rails.application.config.upload_host
