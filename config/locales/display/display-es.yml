@@ -8,17 +8,26 @@ es:
       ai_text: Texto de IA
       ai_text_edit_notice: Para editar este texto, utilice el botón "Borrador de IA" en la pestaña de transcripción.
       character_error_rate: Tasa de error de caracteres (CER)
+      character_error_rate_short: CER
       character_error_rate_tooltip: CER mide el porcentaje de ediciones a nivel de carácter (inserciones, eliminaciones, sustituciones) necesarias para transformar el texto generado por IA en el texto correcto. Los valores más bajos indican mayor precisión.
+      current_transcription: Transcripción actual
+      current_version: Versión actual por
       facsimile: Facsímil
+      metric: Métrico
       non_stopword_accuracy: Precisión sin palabras vacías
+      non_stopword_accuracy_short: Agencia Nacional de Seguridad (NSA)
       non_stopword_accuracy_tooltip: Mide el porcentaje de palabras de contenido (excluyendo palabras comunes como «el», «la», «un», «es») que coinciden entre la IA y la verdad fundamental. Valores más altos indican un mejor reconocimiento de contenido.
+      show_comparison_with_transcription: Mostrar comparación con la transcripción
       statistics_unavailable: Las estadísticas de precisión no están disponibles para esta página.
       statistics_unavailable_reason: Las estadísticas solo se pueden calcular para las páginas con un estado de transcripción completado (en blanco, indexadas o transcritas).
+      text_only: Solo texto
       text_only_comparison: Comparación solo de texto
       text_only_description: Estadísticas calculadas tras eliminar la puntuación, los espacios en blanco adicionales y normalizar las mayúsculas y minúsculas.
+      verbatim: Literal
       verbatim_comparison: Comparación literal
       verbatim_description: Estadísticas calculadas sobre el texto original conservando todo el formato.
       word_error_rate: Tasa de error de palabras (WER)
+      word_error_rate_short: NOSOTROS
       word_error_rate_tooltip: WER mide el porcentaje de ediciones a nivel de palabra necesarias para transformar el texto generado por IA en la versión correcta. Los valores más bajos indican mayor precisión.
     display_page:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
