@@ -314,4 +314,38 @@ describe Page do
       end
     end
   end
+
+  describe '#ai_plaintext_has_emoji_placeholders?' do
+    let(:page) { build_stubbed(:page) }
+
+    context 'when ai_plaintext contains emoji placeholders' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("This is some text with 🤔 placeholder")
+      end
+
+      it 'returns true' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be true
+      end
+    end
+
+    context 'when ai_plaintext does not contain emoji placeholders' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("This is some text without placeholders")
+      end
+
+      it 'returns false' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be false
+      end
+    end
+
+    context 'when ai_plaintext is empty' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("")
+      end
+
+      it 'returns false' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be false
+      end
+    end
+  end
 end

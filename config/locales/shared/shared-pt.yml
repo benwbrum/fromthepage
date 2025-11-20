@@ -12,6 +12,7 @@ pt:
       abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
       add_description: Marca o texto inserido após o fato pelo escritor.
       ai_plaintext_caveat: "<!-- O texto a seguir foi gerado por inteligência artificial e provavelmente contém erros. Alguns erros óbvios foram substituídos por símbolos 🤔, mas os mais complicados podem não ser marcados. (Por favor, exclua este aviso.) -->"
+      ai_plaintext_caveat_no_emoji: "<!-- O texto a seguir foi gerado por inteligência artificial e provavelmente contém erros. (Por favor, exclua este aviso.) -->"
       copy_ai_plaintext: Rascunho de IA
       date_description: Marca datas, com forma padronizada no atributo quando.
       del_description: Marca o texto que foi removido por apagamento ou tachado.
