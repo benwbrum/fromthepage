@@ -296,12 +296,12 @@ class TranscribeController  < ApplicationController
 
       if @page.save
         log_translation_success
-        
+
         # Log AI draft deed first if AI was used
         if params[:ai_draft_used] == 'true'
           record_deed(DeedType::AI_DRAFT)
         end
-        
+
         record_translation_deed
 
         unless @page.collection.subjects_disabled || (@page.source_translation.include?('[[') == false)

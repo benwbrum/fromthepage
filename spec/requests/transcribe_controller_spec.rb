@@ -633,7 +633,7 @@ describe TranscribeController do
 
       it 'creates an AI_DRAFT deed before transcription deed' do
         expect { subject }.to change { Deed.count }.by(2)
-        
+
         deeds = Deed.where(page_id: page.id).order(:created_at)
         expect(deeds.first.deed_type).to eq(DeedType::AI_DRAFT)
         expect(deeds.second.deed_type).to eq(DeedType::PAGE_TRANSCRIPTION)
@@ -664,7 +664,7 @@ describe TranscribeController do
 
       it 'does not create an AI_DRAFT deed' do
         login_as owner
-        
+
         expect { subject }.to change { Deed.count }.by(1)
         expect(Deed.where(deed_type: DeedType::AI_DRAFT).count).to eq(0)
       end
