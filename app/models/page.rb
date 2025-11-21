@@ -630,6 +630,10 @@ class Page < ApplicationRecord
     File.write(ai_plaintext_path, text)
   end
 
+  def ai_plaintext_has_emoji_placeholders?
+    ai_plaintext.include?('🤔')
+  end
+
   def has_alto?
     File.exist?(alto_path)
   end

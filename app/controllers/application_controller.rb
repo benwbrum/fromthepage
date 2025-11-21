@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    return @current_user if defined?(@current_user)
+    return @current_user if @current_user&.present?
 
     user = super || guest_user
 

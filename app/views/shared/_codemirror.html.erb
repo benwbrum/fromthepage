@@ -10,7 +10,7 @@
 <% if @page && !@page.ai_plaintext.blank? %>
   <script>
     var ai_plaintext = <%= raw(@page.ai_plaintext.to_json) %>;
-    var ai_plaintext_caveat = <%= raw(t('.ai_plaintext_caveat').to_json) %>;
+    var ai_plaintext_caveat = <%= raw(t(@page.ai_plaintext_has_emoji_placeholders? ? '.ai_plaintext_caveat' : '.ai_plaintext_caveat_no_emoji').to_json) %>;
     var ai_draft_used = false;
 
     function appendAiPlaintext(cm, pred) {
