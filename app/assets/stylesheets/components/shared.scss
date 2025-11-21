@@ -1226,6 +1226,7 @@ button, .button, .dropdown dd a {
     text-decoration: none;
     text-overflow: ellipsis;
     padding: 0 $gapSize / 2;
+    align-items: center;
     &:hover { color: $bodyFg; }
     &.selected {
       color: $bodyFg;
@@ -1234,10 +1235,23 @@ button, .button, .dropdown dd a {
     time {
       width: 8em;
       display: inline-block;
+      flex-shrink: 0;
     }
+  }
+  .ai-column {
+    width: 2em;
+    flex-shrink: 0;
+    text-align: left;
   }
   .image-wrap {
     margin: 0px 10px;
+    flex-shrink: 0;
+  }
+  .user-name {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
