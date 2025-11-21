@@ -15,29 +15,16 @@ module AiAccuracyCalculator
   # Check if non-stopword accuracy can be calculated for this collection's language
   def can_calculate_non_stopword_accuracy?
     return false unless collection&.text_language.present?
-    
-    # Map FromThePage language codes to stopwords-filter language codes
-    language_map = {
-      'en' => :en,
-      'es' => :es,
-      'fr' => :fr,
-      'de' => :de,
-      'pt' => :pt,
-      'it' => :it,
-      'nl' => :nl,
-      'sv' => :sv,
-      'da' => :da,
-      'no' => :no,
-      'fi' => :fi,
-      'hu' => :hu,
-      'ru' => :ru,
-      'ar' => :ar,
-      'ja' => :ja,
-      'zh' => :zh
-    }
-    
-    lang_code = language_map[collection.text_language.to_s]
-    lang_code && Stopwords::Snowball::Filter.locales.include?(lang_code)
+    lang_code = ISO_639.find(collection.text_language).alpha2
+    # Snowball::Filter will thrown an exception if initialized on a language it doesn't support
+    if lang_code
+      begin
+        Stopwords::Snowball::Filter.new(lang_code)
+        return true
+      rescue ArgumentError
+        return false
+      end
+    end
   end
 
   # Calculate all accuracy statistics
@@ -190,27 +177,7 @@ module AiAccuracyCalculator
     return [] if text.blank?
     return [] unless collection&.text_language.present?
 
-    # Map FromThePage language codes to stopwords-filter language codes
-    language_map = {
-      'en' => :en,
-      'es' => :es,
-      'fr' => :fr,
-      'de' => :de,
-      'pt' => :pt,
-      'it' => :it,
-      'nl' => :nl,
-      'sv' => :sv,
-      'da' => :da,
-      'no' => :no,
-      'fi' => :fi,
-      'hu' => :hu,
-      'ru' => :ru,
-      'ar' => :ar,
-      'ja' => :ja,
-      'zh' => :zh
-    }
-    
-    lang_code = language_map[collection.text_language.to_s] || :en
+    lang_code = ISO_639.find(collection.text_language).alpha2
     
     # Split into words, remove punctuation, convert to lowercase
     words = text.downcase.scan(/\b[\w]+\b/)

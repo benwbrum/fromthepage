@@ -8,100 +8,27 @@
     .page_info
       =t('.ai_generated_text')
 
+
 .page-columns(data-layout-mode="ltr")
   .page-column(id="leftColumn")
     .page-imagescan
       =render :partial => '/shared/osd_div'
-    -if @ai_accuracy_stats
-      .ai-accuracy-statistics
-        h4 =t('.accuracy_statistics')
-        p.accuracy-explanation =t('.accuracy_explanation')
-        
-        table.accuracy-table
-          thead
-            tr
-              th.metric-name =t('.metric')
-              th.text-center =t('.verbatim')
-              th.text-center =t('.text_only')
-              th.help-column
-          tbody
-            tr
-              td.metric-name =t('.character_error_rate_short')
-              td.text-center.stat-value =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:cer])
-              td.text-center.stat-value =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:cer])
-              td.help-column
-                span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
-            tr
-              td.metric-name =t('.word_error_rate_short')
-              td.text-center.stat-value =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:wer])
-              td.text-center.stat-value =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:wer])
-              td.help-column
-                span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
-            -if @ai_accuracy_stats[:verbatim][:non_stopword_accuracy]
-              tr
-                td.metric-name =t('.non_stopword_accuracy_short')
-                td.text-center.stat-value =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:non_stopword_accuracy])
-                td.text-center —
-                td.help-column
-                  span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
-    -elsif @page.has_ai_plaintext?
-      .ai-accuracy-unavailable
-        p.info-message =t('.statistics_unavailable')
-        p =t('.statistics_unavailable_reason')
   .splitter(id="splitter")
   .page-column(id="rightColumn")
     .page-preview[*language_attrs(@collection)]
-      .ai-text-controls
-        .ai-text-notice
-          p.info-message =t('.ai_text_edit_notice')
-        -if @page.can_calculate_ai_accuracy?
-          .ai-text-toggle
-            label.toggle-label
-              input(type="checkbox" id="show-diff-toggle")
-              span =t('.show_comparison_with_transcription')
-      .ai-text-content(id="ai-text-display")
+      .ai-text-notice
+        p.info-message =t('.ai_text_edit_notice')
+      .ai-text-content
         pre.ai-plaintext =@page.ai_plaintext
-      .ai-diff-content(id="ai-diff-display" style="display:none")
-        .diff-metadata
-          -if @page.current_version
-            p
-              strong =t('.current_version')
-              |  
-              =link_to(@page.current_version.user.display_name, user_profile_path(:user_id => @page.current_version.user.id))
-              |  
-              small =l(@page.current_version.created_on.localtime)
-        .diff-comparison
-          .comparison-col
-            h5 =t('.ai_text')
-            .source-code(data-diff-ai="changed")
-              =@page.ai_plaintext
-          .comparison-col
-            h5 =t('.current_transcription')
-            .source-code(data-diff-transcription="original")
-              =@page.verbatim_transcription_plaintext
 
+-if @ai_accuracy_stats
+  =render(:partial => 'cer_stats')
+-elsif @page.has_ai_plaintext?
+  .ai-accuracy-unavailable
+    p.info-message =t('.statistics_unavailable')
+    p =t('.statistics_unavailable_reason')
 -content_for :javascript
-  =javascript_include_tag 'textdiff'
   javascript:
     let splitter = Object.create(ResizableSplitter);
     splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
-    
-    $(function() {
-      $('#show-diff-toggle').on('change', function() {
-        if($(this).is(':checked')) {
-          $('#ai-text-display').hide();
-          $('#ai-diff-display').show();
-          
-          // Apply prettyXMLDiff to show differences
-          $('.diff-comparison').prettyXMLDiff({
-            changedContainer: '[data-diff-ai=changed]',
-            originalContainer: '[data-diff-transcription=original]',
-            diffContainer: '[data-diff-transcription=original]'
-          });
-        } else {
-          $('#ai-text-display').show();
-          $('#ai-diff-display').hide();
-        }
-      });
-    });
 

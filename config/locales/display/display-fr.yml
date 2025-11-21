@@ -2,24 +2,25 @@
 fr:
   display:
     ai_text:
-      accuracy_explanation: Ces statistiques comparent le texte généré par l'IA à la transcription vérifiée par un humain, fournissant ainsi des informations sur la précision de la transcription par l'IA.
-      accuracy_statistics: Statistiques de précision
       ai_generated_text: Texte généré par l'IA
       ai_text: Texte IA
       ai_text_edit_notice: Pour modifier ce texte, utilisez le bouton « Brouillon IA » dans l'onglet de transcription.
-      character_error_rate: Taux d'erreur de caractères (CER)
-      character_error_rate_short: CER
-      character_error_rate_tooltip: Le CER mesure le pourcentage de modifications au niveau des caractères (insertions, suppressions, substitutions) nécessaires pour transformer le texte généré par l'IA en texte de référence. Plus la valeur est basse, plus la précision est élevée.
       current_transcription: Transcription actuelle
       current_version: Version actuelle par
       facsimile: Facsimilé
+      show_comparison_with_transcription: Afficher la comparaison avec la transcription
+      statistics_unavailable: Les statistiques de précision ne sont pas disponibles pour cette page.
+      statistics_unavailable_reason: Les statistiques ne peuvent être calculées que pour les pages dont le statut de transcription est terminé (vierges, indexées ou transcrites).
+    cer_stats:
+      accuracy_explanation: Ces statistiques comparent le texte généré par l'IA à la transcription vérifiée par un humain, fournissant ainsi des informations sur la précision de la transcription par l'IA.
+      accuracy_statistics: Statistiques de précision
+      character_error_rate: Taux d'erreur de caractères (CER)
+      character_error_rate_short: CER
+      character_error_rate_tooltip: Le CER mesure le pourcentage de modifications au niveau des caractères (insertions, suppressions, substitutions) nécessaires pour transformer le texte généré par l'IA en texte de référence. Plus la valeur est basse, plus la précision est élevée.
       metric: Métrique
       non_stopword_accuracy: Précision des mots non vides
       non_stopword_accuracy_short: NSA
       non_stopword_accuracy_tooltip: Mesure le pourcentage de mots clés (à l'exclusion des mots courants comme « le/la/les », « un/une/les », « est/sa/les ») qui correspondent entre l'IA et les données de référence. Plus la valeur est élevée, meilleure est la reconnaissance du contenu.
-      show_comparison_with_transcription: Afficher la comparaison avec la transcription
-      statistics_unavailable: Les statistiques de précision ne sont pas disponibles pour cette page.
-      statistics_unavailable_reason: Les statistiques ne peuvent être calculées que pour les pages dont le statut de transcription est terminé (vierges, indexées ou transcrites).
       text_only: Texte uniquement
       text_only_comparison: Comparaison textuelle uniquement
       text_only_description: Statistiques calculées après suppression de la ponctuation, des espaces superflus et normalisation de la casse.

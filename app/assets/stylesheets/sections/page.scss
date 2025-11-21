@@ -585,83 +585,74 @@
 
 // AI Text specific styles
 .ai-accuracy-statistics {
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
-  border-radius: 4px;
+  border-radius: 6px;
 
   h4 {
     margin-top: 0;
     margin-bottom: 0.5rem;
     color: #212529;
-    font-size: 1.1rem;
-    font-weight: 600;
+    // font-size: 1.25rem;
   }
 
   .accuracy-explanation {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: #6c757d;
-    font-size: 0.85rem;
-    line-height: 1.4;
+    // font-size: 0.9rem;
+    line-height: 1.5;
   }
 
-  .accuracy-table {
-    width: 100%;
-    border-collapse: collapse;
+  .statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-section {
     background-color: #fff;
-    font-size: 0.9rem;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
 
-    thead {
-      background-color: #f8f9fa;
-      
-      th {
-        padding: 0.5rem;
-        border: 1px solid #dee2e6;
-        font-weight: 600;
-        color: #495057;
-        text-align: left;
-        
-        &.text-center {
-          text-align: center;
-        }
-        
-        &.help-column {
-          width: 30px;
-          border-right: none;
-        }
-      }
+    h5 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: #495057;
+      // font-size: 1.1rem;
     }
 
-    tbody {
-      tr {
-        &:nth-child(even) {
-          background-color: #f8f9fa;
-        }
-        
-        td {
-          padding: 0.5rem;
-          border: 1px solid #dee2e6;
-          
-          &.metric-name {
-            font-weight: 500;
-            color: #495057;
-          }
-          
-          &.stat-value {
-            font-weight: 600;
-            color: #28a745;
-            font-size: 1rem;
-          }
-          
-          &.help-column {
-            width: 30px;
-            text-align: center;
-            border-right: none;
-          }
-        }
-      }
+    .section-description {
+      margin-bottom: 1rem;
+      color: #6c757d;
+      // font-size: 0.85rem;
+      line-height: 1.4;
     }
+  }
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .stat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #495057;
+    // font-size: 0.9rem;
   }
 
   .help-icon {
@@ -673,9 +664,18 @@
     background-color: #6c757d;
     color: #fff;
     border-radius: 50%;
-    font-size: 0.7rem;
+    // font-size: 0.75rem;
     font-weight: bold;
     cursor: help;
+    flex-shrink: 0;
+  }
+
+  .stat-value {
+    // font-size: 1.1rem;
+    font-weight: 600;
+    color: #28a745;
+    min-width: 80px;
+    text-align: right;
   }
 }
 
@@ -705,13 +705,9 @@
   }
 }
 
-.ai-text-controls {
-  margin-bottom: 1rem;
-}
-
 .ai-text-notice {
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
   background-color: #d9edf7;
   border-left: 4px solid #0066cc;
   border-radius: 4px;
@@ -720,30 +716,6 @@
     margin: 0;
     color: #003d5c;
     font-size: $fontSize;
-  }
-}
-
-.ai-text-toggle {
-  padding: 0.75rem;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  
-  .toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    margin: 0;
-    
-    input[type="checkbox"] {
-      cursor: pointer;
-    }
-    
-    span {
-      font-size: 0.9rem;
-      color: #495057;
-    }
   }
 }
 
@@ -759,57 +731,5 @@
     border-radius: 4px;
     margin: 0;
     color: #000;
-  }
-}
-
-.ai-diff-content {
-  .diff-metadata {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    
-    p {
-      margin: 0;
-      font-size: 0.9rem;
-      
-      strong {
-        color: #495057;
-      }
-      
-      small {
-        color: #6c757d;
-      }
-    }
-  }
-  
-  .diff-comparison {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    
-    .comparison-col {
-      h5 {
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-        color: #495057;
-      }
-      
-      .source-code {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: $fontSize;
-        line-height: 1.6;
-        background-color: #f5f5f5;
-        padding: 1rem;
-        border-radius: 4px;
-        border: 1px solid #dee2e6;
-        min-height: 200px;
-        overflow-y: auto;
-      }
-    }
   }
 }
