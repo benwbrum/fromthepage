@@ -93,7 +93,7 @@ gem 'will_paginate'
 
 # Utilities / Helpers
 gem 'text'
-gem 'stopwords-filter', '~> 0.7.0'
+gem 'stopwords-filter2'
 gem 'diffy'
 gem 'edtf'
 gem 'edtf-humanize'
