@@ -16,11 +16,27 @@
   .splitter(id="splitter")
   .page-column(id="rightColumn")
     .page-preview[*language_attrs(@collection)]
-      .ai-text-notice
-        p.info-message =t('.ai_text_edit_notice')
+      -if @page.can_calculate_ai_accuracy?
+        .ai-text-toggle
+          label.toggle-label
+            input(type="checkbox" id="show-diff-toggle")
+            span =t('.show_comparison_with_transcription')
+      -else
+        .ai-text-notice
+          p.info-message =t('.ai_text_edit_notice')
       .ai-text-content
         pre.ai-plaintext =@page.ai_plaintext
 
+      .ai-diff-content(id="ai-diff-display" style="display:none")
+        .diff-comparison
+          .comparison-col
+            h5 =t('.ai_text')
+            .source-code(data-diff-ai="changed")
+              =@page.ai_plaintext
+          .comparison-col
+            h5 =t('.current_transcription')
+            .source-code(data-diff-transcription="original")
+              =@page.verbatim_transcription_plaintext
 -if @ai_accuracy_stats
   =render(:partial => 'cer_stats')
 -elsif @page.has_ai_plaintext?
@@ -28,7 +44,26 @@
     p.info-message =t('.statistics_unavailable')
     p =t('.statistics_unavailable_reason')
 -content_for :javascript
+  =javascript_include_tag 'textdiff'
   javascript:
     let splitter = Object.create(ResizableSplitter);
     splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
 
+    $(function() {
+      $('#show-diff-toggle').on('change', function() {
+        if($(this).is(':checked')) {
+          $('#ai-text-display').hide();
+          $('#ai-diff-display').show();
+
+          // Apply prettyXMLDiff to show differences
+          $('.diff-comparison').prettyXMLDiff({
+            changedContainer: '[data-diff-ai=changed]',
+            originalContainer: '[data-diff-transcription=original]',
+            diffContainer: '[data-diff-transcription=original]'
+          });
+        } else {
+          $('#ai-text-display').show();
+          $('#ai-diff-display').hide();
+        }
+      });
+    });
