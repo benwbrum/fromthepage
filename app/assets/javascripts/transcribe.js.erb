@@ -195,11 +195,17 @@ function reportPasteEvent(event) {
   }
   
   // Send AJAX request to report the paste event
+  var csrfToken = document.querySelector('meta[name="csrf-token"]');
+  if (!csrfToken) {
+    console.log('CSRF token not found, cannot report paste event');
+    return;
+  }
+  
   fetch('/transcribe/detect_paste', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      'X-CSRF-Token': csrfToken.content
     },
     body: JSON.stringify({
       page_id: pageId.value,

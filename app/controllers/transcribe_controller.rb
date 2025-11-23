@@ -386,29 +386,33 @@ class TranscribeController  < ApplicationController
     end
 
     collection = page.collection
+    is_first_paste = false
 
-    # Check if this is the first paste for this user
-    existing_paste = SuspiciousBehavior.where(
-      user: current_user,
-      behavior_type: 'paste_detected'
-    ).exists?
+    # Use a transaction to prevent race conditions
+    SuspiciousBehavior.transaction do
+      # Check if this is the first paste for this user
+      is_first_paste = !SuspiciousBehavior.where(
+        user: current_user,
+        behavior_type: 'paste_detected'
+      ).exists?
 
-    # Create suspicious behavior record
-    suspicious_behavior = SuspiciousBehavior.create(
-      user: current_user,
-      page: page,
-      collection: collection,
-      behavior_type: 'paste_detected',
-      metadata: {
-        text_length: params[:text_length],
-        timestamp: params[:timestamp]
-      },
-      flagged_at: Time.current
-    )
+      # Create suspicious behavior record
+      SuspiciousBehavior.create!(
+        user: current_user,
+        page: page,
+        collection: collection,
+        behavior_type: 'paste_detected',
+        metadata: {
+          text_length: params[:text_length],
+          timestamp: params[:timestamp]
+        },
+        flagged_at: Time.current
+      )
+    end
 
-    # Send email notification on first paste only
-    if suspicious_behavior.persisted? && !existing_paste
-      notify_owner_of_paste(suspicious_behavior)
+    # Send email notification on first paste only (outside transaction)
+    if is_first_paste
+      notify_owner_of_paste_async(current_user, collection)
     end
 
     head :ok
@@ -589,17 +593,23 @@ class TranscribeController  < ApplicationController
 
   private
 
-  def notify_owner_of_paste(suspicious_behavior)
+  def notify_owner_of_paste_async(user, collection)
     return unless SMTP_ENABLED
 
-    collection = suspicious_behavior.collection
     owner = collection.owner
 
-    # Send email to collection owner
+    # Find the most recent suspicious behavior for this user and collection
+    suspicious_behavior = SuspiciousBehavior.where(
+      user: user,
+      collection: collection,
+      behavior_type: 'paste_detected'
+    ).order(flagged_at: :desc).first
+
+    # Send email to collection owner asynchronously
     begin
       UserMailer.suspicious_paste_alert(
         owner: owner,
-        user: suspicious_behavior.user,
+        user: user,
         collection: collection,
         suspicious_behavior: suspicious_behavior
       ).deliver_later

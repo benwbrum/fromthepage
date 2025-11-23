@@ -62,9 +62,13 @@ en:
       exports: Exports
       jobs: Jobs
       logfile: Logfile
+      moderation: Moderation
       owners: Owners
+      searches: Searches
       settings: Settings
       summary: Summary
+      suspicious_behaviors: Suspicious Behaviors
+      tags: Tags
       uploads: Uploads
       users: Users
     index:
