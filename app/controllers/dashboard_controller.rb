@@ -393,4 +393,40 @@ class DashboardController < ApplicationController
 
     collections_query + document_sets_query
   end
+
+  def suspicious_behaviors
+    unless user_signed_in? && current_user.owner
+      redirect_to dashboard_path
+      return
+    end
+
+    # Get all collections owned by the current user
+    owner_collections = current_user.all_owner_collections
+
+    @suspicious_behaviors = SuspiciousBehavior.includes(:user, :collection, :page)
+                                               .where(collection: owner_collections)
+                                               .recent
+                                               .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+  end
+
+  def approve_user_for_paste
+    unless user_signed_in? && current_user.owner
+      redirect_to dashboard_path
+      return
+    end
+
+    user = User.find(params[:user_id])
+    user.update!(approved_for_paste: true)
+
+    # Update all pending suspicious behaviors for this user to dismissed
+    SuspiciousBehavior.where(user: user, status: 'pending')
+                      .update_all(
+                        status: 'dismissed',
+                        resolved_at: Time.current,
+                        resolved_by_user_id: current_user.id
+                      )
+
+    flash[:notice] = "#{user.display_name} has been approved for paste. No further notifications will be sent."
+    redirect_to dashboard_suspicious_behaviors_path
+  end
 end

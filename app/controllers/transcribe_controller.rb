@@ -4,10 +4,10 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing]
-  before_action :active?, except: [:still_editing, :active_editing]
+  before_action :authorized?, except: [:zoom, :guest, :help, :still_editing, :active_editing, :detect_paste]
+  before_action :active?, except: [:still_editing, :active_editing, :detect_paste]
 
-  protect_from_forgery except: [:zoom, :unzoom]
+  protect_from_forgery except: [:zoom, :unzoom, :detect_paste]
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
   skip_before_action :load_objects_from_params, only: :still_editing
@@ -366,6 +366,58 @@ class TranscribeController  < ApplicationController
     end
   end
 
+  # Detect paste events for suspicious behavior tracking
+  def detect_paste
+    unless user_signed_in?
+      head :unauthorized
+      return
+    end
+
+    # Skip if user is already approved for paste
+    if current_user.approved_for_paste
+      head :ok
+      return
+    end
+
+    page = Page.find_by(id: params[:page_id])
+    unless page
+      head :not_found
+      return
+    end
+
+    collection = page.collection
+
+    # Check if this is the first paste for this user
+    existing_paste = SuspiciousBehavior.where(
+      user: current_user,
+      behavior_type: 'paste_detected'
+    ).exists?
+
+    # Create suspicious behavior record
+    suspicious_behavior = SuspiciousBehavior.create(
+      user: current_user,
+      page: page,
+      collection: collection,
+      behavior_type: 'paste_detected',
+      metadata: {
+        text_length: params[:text_length],
+        timestamp: params[:timestamp]
+      },
+      flagged_at: Time.current
+    )
+
+    # Send email notification on first paste only
+    if suspicious_behavior.persisted? && !existing_paste
+      notify_owner_of_paste(suspicious_behavior)
+    end
+
+    head :ok
+  rescue StandardError => e
+    logger.error "Failed to detect paste: #{e.message}"
+    logger.error e.backtrace.join("\n")
+    head :ok # Don't interrupt user's work even if logging fails
+  end
+
   def goto_next_untranscribed_page
     next_page_path = user_profile_path(@work.collection.owner)
     flash[:notice] = t('.notice')
@@ -536,6 +588,25 @@ class TranscribeController  < ApplicationController
   end
 
   private
+
+  def notify_owner_of_paste(suspicious_behavior)
+    return unless SMTP_ENABLED
+
+    collection = suspicious_behavior.collection
+    owner = collection.owner
+
+    # Send email to collection owner
+    begin
+      UserMailer.suspicious_paste_alert(
+        owner: owner,
+        user: suspicious_behavior.user,
+        collection: collection,
+        suspicious_behavior: suspicious_behavior
+      ).deliver_later
+    rescue StandardError => e
+      logger.error "Failed to send paste alert email: #{e.message}"
+    end
+  end
 
   def authorized?
     unless user_signed_in?

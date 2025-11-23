@@ -383,6 +383,28 @@ class AdminController < ApplicationController
     @tags = Tag.all.order(:canonical, :ai_text)
   end
 
+  def suspicious_behaviors
+    @suspicious_behaviors = SuspiciousBehavior.includes(:user, :collection, :page)
+                                               .recent
+                                               .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+  end
+
+  def approve_user_for_paste
+    user = User.find(params[:user_id])
+    user.update!(approved_for_paste: true)
+
+    # Update all pending suspicious behaviors for this user to dismissed
+    SuspiciousBehavior.where(user: user, status: 'pending')
+                      .update_all(
+                        status: 'dismissed',
+                        resolved_at: Time.current,
+                        resolved_by_user_id: current_user.id
+                      )
+
+    flash[:notice] = "#{user.display_name} has been approved for paste. No further notifications will be sent."
+    redirect_to admin_suspicious_behaviors_path
+  end
+
   private
   def tag_params
     params.require(:tag).permit(:ai_text, :canonical, :tag_type)

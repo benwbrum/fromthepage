@@ -107,6 +107,17 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: I18n.t('user_mailer.metadata_refresh_finished.subject', id: id, type: type)
   end
 
+  def suspicious_paste_alert(owner:, user:, collection:, suspicious_behavior:)
+    @owner = owner
+    @user = user
+    @collection = collection
+    @suspicious_behavior = suspicious_behavior
+
+    mail to: @owner.email,
+         subject: "User paste detected in #{@collection.title}",
+         reply_to: SENDING_EMAIL_ADDRESS
+  end
+
   private
 
   def add_inline_attachments!

@@ -1,0 +1,36 @@
+p Hello #{@owner.display_name},
+
+p
+  | A user has pasted text into the transcription editor for your collection "#{@collection.title}".
+  | This may indicate they are using AI assistance (like ChatGPT) instead of transcribing from the page image.
+
+p
+  strong User:
+  |  #{@user.display_name} (#{@user.email})
+
+p
+  strong Collection:
+  |  #{@collection.title}
+
+p
+  | Please review their work to determine if it's appropriate. You can:
+
+ul
+  li View all of their contributions to this collection
+  li Approve them if their use of paste is legitimate (e.g., transcribing in a separate document)
+  li Contact them to discuss proper transcription methods
+  li Block them from the project if necessary
+
+p
+  span =link_to 'View user contributions', collection_user_contribution_list_url(@collection.owner, @collection, @user.slug, only_path: false)
+
+p
+  span =link_to 'Manage suspicious behaviors', dashboard_suspicious_behaviors_url(only_path: false)
+
+p
+  | Note: If you approve this user, you will not receive further notifications about their paste activity.
+
+p
+  | Best regards,
+  br
+  | The FromThePage Team

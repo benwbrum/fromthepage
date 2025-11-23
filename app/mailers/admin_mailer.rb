@@ -67,7 +67,7 @@ class AdminMailer < ActionMailer::Base
   end
 
   class OwnerCollectionActivity
-    attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity
+    attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity, :suspicious_behaviors
 
     def initialize(owner, activity_since)
       @owner = owner
@@ -83,10 +83,15 @@ class AdminMailer < ActionMailer::Base
         .where('created_at > ?', activity_since)
         .where.not(deed_type: DeedType::NOTE_ADDED)
         .group_by { |d| d.collection.title }
+      @suspicious_behaviors = SuspiciousBehavior
+        .where(collection: @collections)
+        .where('flagged_at > ?', activity_since)
+        .includes(:user, :collection)
+        .group_by(&:user_id)
     end
 
     def has_activity?
-      !@collaborators.blank? || !@comments.blank? || !@activity.blank?
+      !@collaborators.blank? || !@comments.blank? || !@activity.blank? || !@suspicious_behaviors.blank?
     end
 
     class << self

@@ -150,3 +150,64 @@ window.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Detect paste events in transcription editor
+window.addEventListener('DOMContentLoaded', function() {
+  // Track paste events for CodeMirror editor
+  if (typeof myCodeMirror !== 'undefined') {
+    myCodeMirror.on('paste', function(cm, event) {
+      reportPasteEvent(event);
+    });
+  }
+  
+  // Track paste events for regular textarea (fallback or field-based)
+  var textareas = document.querySelectorAll('.page-editarea_textarea, textarea');
+  textareas.forEach(function(textarea) {
+    textarea.addEventListener('paste', function(event) {
+      reportPasteEvent(event);
+    });
+  });
+  
+  // Track paste events for field-based transcriptions
+  var fieldInputs = document.querySelectorAll('.field-input');
+  fieldInputs.forEach(function(input) {
+    input.addEventListener('paste', function(event) {
+      reportPasteEvent(event);
+    });
+  });
+});
+
+// Report paste event to the server
+function reportPasteEvent(event) {
+  var pageId = document.querySelector('input[name="page_id"]');
+  if (!pageId) {
+    return;
+  }
+  
+  var clipboardData = event.clipboardData || window.clipboardData;
+  var pastedText = '';
+  
+  try {
+    pastedText = clipboardData.getData('text');
+  } catch (e) {
+    // If we can't get the pasted text, that's okay
+    pastedText = '';
+  }
+  
+  // Send AJAX request to report the paste event
+  fetch('/transcribe/detect_paste', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      page_id: pageId.value,
+      text_length: pastedText.length,
+      timestamp: new Date().toISOString()
+    })
+  }).catch(function(error) {
+    // Silently fail - don't interrupt user's work
+    console.log('Failed to report paste event:', error);
+  });
+}

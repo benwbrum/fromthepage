@@ -1,6 +1,25 @@
 
 h2.nomargin =t('.recent_activity')
 
+/ Suspicious Behaviors
+- unless @activity.suspicious_behaviors.blank?
+  h3 Suspicious Paste Activity
+  p
+    | #{@activity.suspicious_behaviors.count} user(s) have used paste in the transcription editor.
+    | This may indicate they are using AI assistance. Please review their contributions.
+  - @activity.suspicious_behaviors.each do |user_id, behaviors|
+    - user = behaviors.first.user
+    - collections = behaviors.map(&:collection).uniq
+    p
+      strong User:
+      |  #{user.display_name} (#{user.email})
+      br
+      | Paste events in: #{collections.map(&:title).join(', ')}
+      br
+      =link_to 'View all contributions', collection_user_contribution_list_url(collections.first.owner, collections.first, user.slug, only_path: false)
+  p
+    =link_to 'Manage all suspicious behaviors', dashboard_suspicious_behaviors_url(only_path: false)
+
 / New Collaborators
 - unless @activity.collaborators.blank?
   h3 =t('.you_have_new_collaborators')

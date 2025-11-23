@@ -1,0 +1,44 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 15, :collection_id => nil }})
+
+.page-content
+  h2 Suspicious Behaviors in Your Collections
+
+  -if @suspicious_behaviors.empty?
+    p.nodata_text No suspicious behaviors to review.
+  -else
+    p Review paste events and other suspicious activities from transcribers in your collections.
+
+    table.admin-grid.datagrid.striped
+      thead
+        tr
+          th User
+          th Collection
+          th Page
+          th Behavior Type
+          th Flagged At
+          th Status
+          th Actions
+      tbody
+        -@suspicious_behaviors.each do |behavior|
+          tr
+            td
+              =link_to behavior.user.display_name, user_profile_path(behavior.user)
+              br
+              small =behavior.user.email
+            td =link_to behavior.collection.title, collection_path(behavior.collection.owner, behavior.collection)
+            td
+              -if behavior.page
+                =link_to "Page #{behavior.page.position}", collection_display_page_path(behavior.collection.owner, behavior.collection, behavior.page.work, behavior.page)
+              -else
+                | N/A
+            td =behavior.behavior_type_name
+            td =behavior.flagged_at.localtime.strftime('%b %d, %Y at %H:%M')
+            td
+              span.badge(class="badge-#{behavior.status}") =behavior.status.titleize
+            td.nowrap
+              .instack
+                =link_to 'View User Contributions', collection_user_contribution_list_path(behavior.collection.owner, behavior.collection, behavior.user.slug)
+                -unless behavior.user.approved_for_paste
+                  =button_to 'Approve User', dashboard_approve_user_for_paste_path(user_id: behavior.user.id), method: :post, class: 'button small', data: { confirm: "Are you sure you want to approve #{behavior.user.display_name} for paste? This will dismiss all their pending behaviors." }
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @suspicious_behaviors, :entries_info => true })

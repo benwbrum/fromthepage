@@ -48,6 +48,8 @@ Fromthepage::Application.routes.draw do
     get 'collection_list', to: 'admin#collection_list'
     get 'work_list', to: 'admin#work_list'
     get 'owner_list', to: 'admin#owner_list'
+    get 'suspicious_behaviors', to: 'admin#suspicious_behaviors'
+    post 'approve_user_for_paste', to: 'admin#approve_user_for_paste'
     get 'user_list', to: 'admin#user_list'
     get 'flag_list', to: 'admin#flag_list'
     get 'moderation', to: 'admin#moderation'
@@ -226,6 +228,8 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
+    get 'suspicious_behaviors', to: 'dashboard#suspicious_behaviors'
+    post 'approve_user_for_paste', to: 'dashboard#approve_user_for_paste'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
@@ -252,6 +256,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'transcribe', as: 'transcribe' do
     post 'mark_page_blank', to: 'transcribe#mark_page_blank'
+    post 'detect_paste', to: 'transcribe#detect_paste'
     get 'display_page', to: 'transcribe#display_page'
     get 'assign_categories', to: 'transcribe#assign_categories'
     get 'guest', to: 'transcribe#guest'

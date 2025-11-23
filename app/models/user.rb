@@ -103,6 +103,7 @@ class User < ApplicationRecord
   has_many :article_versions, -> { order(created_on: :desc) }
   has_many :notes, -> { order(created_at: :desc) }
   has_many :deeds
+  has_many :suspicious_behaviors, dependent: :destroy
 
   has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty },
     class_name: 'Collection',  foreign_key: 'owner_user_id'
