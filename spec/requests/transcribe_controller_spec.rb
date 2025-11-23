@@ -609,4 +609,47 @@ describe TranscribeController do
       end
     end
   end
+
+  describe '#detect_paste' do
+    let(:user) { create(:unique_user) }
+    let(:action_path) { transcribe_detect_paste_path }
+
+    context 'when user is not logged in' do
+      it 'returns unauthorized' do
+        post action_path, params: { page_id: page.id, text_length: 100, timestamp: Time.current.iso8601 }
+        
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        login_as user
+      end
+
+      it 'creates a suspicious behavior record' do
+        expect {
+          post action_path, params: { page_id: page.id, text_length: 100, timestamp: Time.current.iso8601 }
+        }.to change(SuspiciousBehavior, :count).by(1)
+        
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'does not create a record if user is approved for paste' do
+        user.update!(approved_for_paste: true)
+        
+        expect {
+          post action_path, params: { page_id: page.id, text_length: 100, timestamp: Time.current.iso8601 }
+        }.not_to change(SuspiciousBehavior, :count)
+        
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'handles missing page gracefully' do
+        post action_path, params: { page_id: 99999, text_length: 100, timestamp: Time.current.iso8601 }
+        
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
 end

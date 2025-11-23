@@ -10,9 +10,9 @@ class TranscribeController  < ApplicationController
   protect_from_forgery except: [:zoom, :unzoom, :detect_paste]
   # this prevents failed redirects after sign up
   skip_before_action :store_current_location
-  skip_before_action :load_objects_from_params, only: :still_editing
-  skip_before_action :load_html_blocks, only: [:still_editing, :active_editing]
-  skip_around_action :switch_locale, only: [:still_editing, :active_editing]
+  skip_before_action :load_objects_from_params, only: [:still_editing, :detect_paste]
+  skip_before_action :load_html_blocks, only: [:still_editing, :active_editing, :detect_paste]
+  skip_around_action :switch_locale, only: [:still_editing, :active_editing, :detect_paste]
 
   def display_page
     rollback_article_categories(params[:rollback_delete_ids], params[:rollback_unset_ids])

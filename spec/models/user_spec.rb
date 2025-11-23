@@ -80,4 +80,37 @@ describe User do
       end
     end
   end
+
+  describe 'suspicious_behaviors association' do
+    it 'has many suspicious_behaviors' do
+      user = create(:user)
+      collection = create(:collection)
+      
+      behavior1 = create(:suspicious_behavior, user: user, collection: collection)
+      behavior2 = create(:suspicious_behavior, user: user, collection: collection)
+      
+      expect(user.suspicious_behaviors).to include(behavior1, behavior2)
+    end
+    
+    it 'destroys associated behaviors when user is destroyed' do
+      user = create(:user)
+      collection = create(:collection)
+      
+      behavior = create(:suspicious_behavior, user: user, collection: collection)
+      
+      expect { user.destroy }.to change(SuspiciousBehavior, :count).by(-1)
+    end
+  end
+
+  describe 'approved_for_paste' do
+    it 'defaults to false' do
+      user = create(:user)
+      expect(user.approved_for_paste).to be false
+    end
+    
+    it 'can be set to true' do
+      user = create(:user, approved_for_paste: true)
+      expect(user.approved_for_paste).to be true
+    end
+  end
 end
