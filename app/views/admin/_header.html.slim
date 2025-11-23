@@ -6,6 +6,7 @@ h1 =t('.administration')
   =active_link_to t('.summary'), main_app.admin_path, active: :exclusive
   =active_link_to t('.owners'), main_app.admin_owner_list_path
   =active_link_to t('.users'), main_app.admin_user_list_path
+  =active_link_to t('.suspicious_behaviors'), main_app.admin_suspicious_behaviors_path
   =active_link_to t('.abuse'), main_app.admin_flag_list_path
   =active_link_to t('.moderation'), main_app.admin_moderation_path
   =active_link_to t('.uploads'), main_app.admin_uploads_path

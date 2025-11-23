@@ -22,6 +22,12 @@
   :options => {\
     :action => 'exports',
   },
+},{\
+  :name => t('.suspicious_behaviors'),
+  :selected => 5,
+  :options => {\
+    :action => 'suspicious_behaviors',
+  },
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
@@ -67,3 +73,4 @@ section.owner-counters
   =active_link_to t('.your_collections'), dashboard_owner_path
   =active_link_to t('.summary'), dashboard_summary_path
   =active_link_to t('.exports'), dashboard_exports_path
+  =active_link_to t('.suspicious_behaviors'), dashboard_suspicious_behaviors_path
