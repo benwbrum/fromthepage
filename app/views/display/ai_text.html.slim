@@ -24,11 +24,12 @@
       -else
         .ai-text-notice
           p.info-message =t('.ai_text_edit_notice')
-      .ai-text-content
+      .ai-text-content(id="ai-text-content")
         pre.ai-plaintext =@page.ai_plaintext
 
-      .ai-diff-content(id="ai-diff-display" style="display:none")
+      .ai-diff-content(id="ai-diff-content" style="display:none")
         .diff-comparison
+          h4 Comparison div
           .comparison-col
             h5 =t('.ai_text')
             .source-code(data-diff-ai="changed")
@@ -52,18 +53,33 @@
     $(function() {
       $('#show-diff-toggle').on('change', function() {
         if($(this).is(':checked')) {
-          $('#ai-text-display').hide();
-          $('#ai-diff-display').show();
+          $('#ai-text-content').hide();
+          $('#ai-diff-content').show();
 
-          // Apply prettyXMLDiff to show differences
-          $('.diff-comparison').prettyXMLDiff({
-            changedContainer: '[data-diff-ai=changed]',
-            originalContainer: '[data-diff-transcription=original]',
-            diffContainer: '[data-diff-transcription=original]'
+         $('.diff-comparison')
+          // apply prettyHTMLDiff for formatted html string
+          .prettyHTMLDiff({
+            changedContainer:  '[data-diff-ai=changed] div.html-code',
+            originalContainer: '[data-diff-transcription=original] div.html-code',
+            diffContainer:     '[data-diff-transcription=original] div.html-code'
+          })
+          // apply prettyXMLDiff for source code
+          .prettyXMLDiff({
+            changedContainer:  '[data-diff-ai=changed] div.source-code',
+            originalContainer: '[data-diff-transcription=original] div.source-code',
+            diffContainer:     '[data-diff-transcription=original] div.source-code'
+          })
+          .prettyXMLDiff({
+            changedContainer:  '[data-diff-ai=changed] div.source-code',
+            originalContainer: '[data-diff-ai=changed] div.source-code',
+            diffContainer:     '[data-diff-ai=changed] div.source-code'
           });
+    
+   
+   
         } else {
-          $('#ai-text-display').show();
-          $('#ai-diff-display').hide();
+          $('#ai-text-content').show();
+          $('#ai-diff-content').hide();
         }
       });
     });
