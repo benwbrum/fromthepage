@@ -11,7 +11,7 @@ class Article::ImportCsv < ApplicationInteractor
     'bibliography',
     'birth date',
     'death date',
-    'disambiguator',
+    'short_summary',
     'ended',
     'latitude',
     'longitude',
