@@ -111,6 +111,22 @@ export default class extends Controller {
           return value;
         });
       });
+
+      const currentLength = this._dataConfig.length;
+      const requiredLength = this.transcriptionFieldValue.starting_rows;
+
+      if (currentLength < requiredLength) {
+        const rowsToAdd = requiredLength - currentLength;
+
+        for (let i = 0; i < rowsToAdd; i++) {
+          const newRow = this.columnsValue.map(col => {
+            if (col.input_type === 'checkbox') return 'false';
+            return null;
+          });
+
+          this._dataConfig.push(newRow);
+        }
+      }
     }
 
     return this._dataConfig
