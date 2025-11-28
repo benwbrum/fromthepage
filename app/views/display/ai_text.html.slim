@@ -31,12 +31,15 @@
         .diff-comparison
           h4 Comparison div
           .comparison-col
+            h5 =t('.comparison')
+            .source-code(data-diff-ai="comparison")
+          .comparison-col(style="display:none")
             h5 =t('.ai_text')
             .source-code(data-diff-ai="changed")
               =@page.ai_plaintext
-          .comparison-col
+          .comparison-col(style="display:none")
             h5 =t('.current_transcription')
-            .source-code(data-diff-transcription="original")
+            .source-code(data-diff-ai="original")
               =@page.verbatim_transcription_plaintext
 -if @ai_accuracy_stats
   =render(:partial => 'cer_stats')
@@ -58,21 +61,11 @@
 
          $('.diff-comparison')
           // apply prettyHTMLDiff for formatted html string
-          .prettyHTMLDiff({
-            changedContainer:  '[data-diff-ai=changed] div.html-code',
-            originalContainer: '[data-diff-transcription=original] div.html-code',
-            diffContainer:     '[data-diff-transcription=original] div.html-code'
-          })
           // apply prettyXMLDiff for source code
           .prettyXMLDiff({
-            changedContainer:  '[data-diff-ai=changed] div.source-code',
-            originalContainer: '[data-diff-transcription=original] div.source-code',
-            diffContainer:     '[data-diff-transcription=original] div.source-code'
-          })
-          .prettyXMLDiff({
-            changedContainer:  '[data-diff-ai=changed] div.source-code',
-            originalContainer: '[data-diff-ai=changed] div.source-code',
-            diffContainer:     '[data-diff-ai=changed] div.source-code'
+            changedContainer:  '[data-diff-ai=changed]',
+            originalContainer: '[data-diff-ai=original]',
+            diffContainer:     '[data-diff-ai=comparison]'
           });
     
    
