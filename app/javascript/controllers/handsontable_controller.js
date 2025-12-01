@@ -111,6 +111,22 @@ export default class extends Controller {
           return value;
         });
       });
+
+      const currentLength = this._dataConfig.length;
+      const requiredLength = this.transcriptionFieldValue.starting_rows;
+
+      if (currentLength < requiredLength) {
+        const rowsToAdd = requiredLength - currentLength;
+
+        for (let i = 0; i < rowsToAdd; i++) {
+          const newRow = this.columnsValue.map(col => {
+            if (col.input_type === 'checkbox') return 'false';
+            return null;
+          });
+
+          this._dataConfig.push(newRow);
+        }
+      }
     }
 
     return this._dataConfig
@@ -158,20 +174,20 @@ export default class extends Controller {
 
   highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
     // first calculate against a 100% high canvas
-    rowHeightAsSpreadsheetPct = 1.0 / maxRows;
+    let rowHeightAsSpreadsheetPct = 1.0 / maxRows;
 
-    pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
-    rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
-    margin = 0.005;
-    fuzzyRowHeightAsPagePct = rowHeightAsPagePct + (margin * 2);
+    let pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
+    let rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
+    let margin = 0.005;
+    let fuzzyRowHeightAsPagePct = rowHeightAsPagePct + (margin * 2);
 
-    rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
-    fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
+    let rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
+    let fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
 
     if (window.viewer.world.getItemCount() > 0) {
       // now transpose for viewport coordinates
-      viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
-      viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
+      let viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
+      let viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
       // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
 
       window.viewer.removeOverlay("runtime-overlay");
@@ -179,7 +195,6 @@ export default class extends Controller {
       var elt = document.createElement("div");
       elt.id = "runtime-overlay";
       elt.className = "image-row-highlight";
-      console.log('here');
       window.viewer.addOverlay({
         element: elt,
         location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)

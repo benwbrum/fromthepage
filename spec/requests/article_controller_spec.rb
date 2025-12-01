@@ -448,4 +448,96 @@ describe ArticleController do
       end
     end
   end
+
+  describe '#upload_form' do
+    let(:action_path) { article_upload_form_path(collection) }
+    let(:subject) { get action_path }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    context 'when no access' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:non_owner) { create(:unique_user) }
+
+      it 'redirects' do
+        login_as non_owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(user_profile_path(owner))
+      end
+    end
+
+    context 'with access' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:upload_form)
+      end
+    end
+  end
+
+  describe '#subject_upload' do
+    let(:action_path) { article_subject_upload_path(collection_id: collection.slug) }
+
+    let(:file_path) { Rails.root.join('test_data/imports/subject_upload.csv') }
+    let(:file_type) { 'text/csv' }
+    let(:params) do
+      {
+        upload: {
+          file: Rack::Test::UploadedFile.new(file_path, file_type)
+        }
+      }
+    end
+    let(:subject) { post action_path, params: params }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    context 'when no access' do
+      let!(:collection) { create(:collection, owner_user_id: owner.id, restricted: true) }
+      let!(:non_owner) { create(:unique_user) }
+
+      it 'redirects' do
+        login_as non_owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(user_profile_path(owner))
+      end
+    end
+
+    context 'with access' do
+      it 'redirects' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_subjects_path(owner, collection))
+      end
+
+      context 'incomplete headers' do
+        let(:file_path) { Rails.root.join('test_data/imports/wrong_subject_upload.csv') }
+
+        it 'redirects' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:redirect)
+          expect(response).to redirect_to(article_upload_form_path(collection))
+        end
+      end
+    end
+  end
 end
