@@ -632,7 +632,29 @@ class Page < ApplicationRecord
   end
 
   def has_alto?
-    File.exist?(alto_path)
+    File.exist?(alto_path) && valid_alto?
+  end
+
+  def valid_alto?
+    return false unless File.exist?(alto_path)
+
+    begin
+      content = File.read(alto_path)
+      return false if content.blank?
+
+      # Check if the content is a Transkribus error response
+      return false if content.include?('<errorRepresentation>') || content.include?('<statusCode>')
+
+      # Verify it's valid XML and contains ALTO-specific elements
+      doc = Nokogiri::XML(content) { |config| config.strict }
+      return false if doc.errors.any?
+
+      # Check for ALTO namespace or common ALTO elements
+      doc.at_xpath('//alto') || doc.at_xpath('//Layout') || doc.at_xpath('//Page') || doc.at_xpath('//TextBlock')
+    rescue StandardError => e
+      Rails.logger.warn("Invalid ALTO XML for page #{id}: #{e.message}")
+      false
+    end
   end
 
   def alto_xml
@@ -646,6 +668,10 @@ class Page < ApplicationRecord
   def alto_xml=(xml)
     FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
     File.write(alto_path, xml)
+  end
+
+  def delete_alto
+    File.delete(alto_path) if File.exist?(alto_path)
   end
 
   def image_url_for_download

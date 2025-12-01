@@ -76,12 +76,21 @@ class PageProcessor
     if status=='FINISHED'
       alto_response = authorized_transkribus_request { get_processing_result(process_id) }
       alto = alto_response.body.force_encoding('UTF-8') # HTTParty doesn't thinks the response is ASCII-8BIT but it's actually UTF-8
-      # write to the page
-      @page.alto_xml = alto
-      @page.save!
-      # mark the request as complete
-      @external_api_request.status = ExternalApiRequest::Status::COMPLETED
-      @external_api_request.save!
+      
+      # Validate the ALTO XML before saving
+      if valid_alto_xml?(alto)
+        # write to the page
+        @page.alto_xml = alto
+        @page.save!
+        # mark the request as complete
+        @external_api_request.status = ExternalApiRequest::Status::COMPLETED
+        @external_api_request.save!
+      else
+        # The response is not valid ALTO XML (likely an error response)
+        print "error: Transkribus returned invalid ALTO XML for process_id=#{process_id}. Response: #{alto[0..500]}\n"
+        @external_api_request.status = ExternalApiRequest::Status::FAILED
+        @external_api_request.save!
+      end
     end
   end
 
@@ -89,6 +98,32 @@ class PageProcessor
 
 
   private
+
+  def valid_alto_xml?(xml)
+    return false if xml.blank?
+
+    # Check if the content is a Transkribus error response
+    return false if xml.include?('<errorRepresentation>') || 
+                   (xml.include?('<statusCode>') && xml.include?('<reasonPhrase>'))
+
+    begin
+      # Verify it's valid XML and contains ALTO-specific elements
+      doc = Nokogiri::XML(xml) { |config| config.strict }
+      return false if doc.errors.any?
+
+      # Check for ALTO namespace or common ALTO elements
+      has_alto_elements = doc.at_xpath('//alto') || 
+                         doc.at_xpath('//Layout') || 
+                         doc.at_xpath('//Page') || 
+                         doc.at_xpath('//TextBlock')
+      
+      !!has_alto_elements
+    rescue StandardError => e
+      print "XML parsing error: #{e.message}\n"
+      false
+    end
+  end
+
   def log_file
     '/tmp/fromthepage_rake.log'
   end

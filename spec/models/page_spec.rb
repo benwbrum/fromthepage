@@ -348,4 +348,137 @@ describe Page do
       end
     end
   end
+
+  describe '#has_alto? and #valid_alto?' do
+    let(:page) { build_stubbed(:page, id: 12345, work_id: 100) }
+    let(:alto_path) { File.join(Rails.root, 'public', 'text', '100', '12345_alto.xml') }
+
+    before do
+      # Ensure the directory exists
+      FileUtils.mkdir_p(File.dirname(alto_path))
+    end
+
+    after do
+      # Clean up test files
+      File.delete(alto_path) if File.exist?(alto_path)
+    end
+
+    context 'when ALTO file does not exist' do
+      it 'has_alto? returns false' do
+        expect(page.has_alto?).to be false
+      end
+
+      it 'valid_alto? returns false' do
+        expect(page.valid_alto?).to be false
+      end
+    end
+
+    context 'when ALTO file contains valid ALTO XML' do
+      before do
+        valid_alto = <<~XML
+          <?xml version="1.0" encoding="UTF-8"?>
+          <alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+            <Layout>
+              <Page>
+                <TextBlock>
+                  <TextLine>
+                    <String CONTENT="Test"/>
+                  </TextLine>
+                </TextBlock>
+              </Page>
+            </Layout>
+          </alto>
+        XML
+        File.write(alto_path, valid_alto)
+      end
+
+      it 'has_alto? returns true' do
+        expect(page.has_alto?).to be true
+      end
+
+      it 'valid_alto? returns true' do
+        expect(page.valid_alto?).to be true
+      end
+
+      it 'alto_xml returns the file content' do
+        expect(page.alto_xml).to include('<alto')
+        expect(page.alto_xml).to include('Test')
+      end
+    end
+
+    context 'when ALTO file contains Transkribus error response' do
+      before do
+        error_xml = <<~XML
+          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <errorRepresentation>
+            <statusCode>404</statusCode>
+            <reasonPhrase>Not Found</reasonPhrase>
+            <message>Processing result is not available. Process status is 'FAILED'</message>
+          </errorRepresentation>
+        XML
+        File.write(alto_path, error_xml)
+      end
+
+      it 'has_alto? returns false' do
+        expect(page.has_alto?).to be false
+      end
+
+      it 'valid_alto? returns false' do
+        expect(page.valid_alto?).to be false
+      end
+
+      it 'alto_xml returns empty string' do
+        expect(page.alto_xml).to eq('')
+      end
+    end
+
+    context 'when ALTO file is empty' do
+      before do
+        File.write(alto_path, '')
+      end
+
+      it 'has_alto? returns false' do
+        expect(page.has_alto?).to be false
+      end
+
+      it 'valid_alto? returns false' do
+        expect(page.valid_alto?).to be false
+      end
+    end
+
+    context 'when ALTO file contains invalid XML' do
+      before do
+        File.write(alto_path, '<invalid><xml>')
+      end
+
+      it 'has_alto? returns false' do
+        expect(page.has_alto?).to be false
+      end
+
+      it 'valid_alto? returns false' do
+        expect(page.valid_alto?).to be false
+      end
+    end
+  end
+
+  describe '#delete_alto' do
+    let(:page) { build_stubbed(:page, id: 12345, work_id: 100) }
+    let(:alto_path) { File.join(Rails.root, 'public', 'text', '100', '12345_alto.xml') }
+
+    before do
+      FileUtils.mkdir_p(File.dirname(alto_path))
+      File.write(alto_path, 'test content')
+    end
+
+    it 'deletes the ALTO file if it exists' do
+      expect(File.exist?(alto_path)).to be true
+      page.delete_alto
+      expect(File.exist?(alto_path)).to be false
+    end
+
+    it 'does not raise error if file does not exist' do
+      File.delete(alto_path)
+      expect { page.delete_alto }.not_to raise_error
+    end
+  end
 end

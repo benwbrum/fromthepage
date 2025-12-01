@@ -90,5 +90,102 @@ namespace :fromthepage do
         end
       end
     end
+
+    desc 'Find and report pages with invalid ALTO XML files'
+    task find_invalid_alto: :environment do |t, args|
+      puts "Scanning for pages with invalid ALTO XML files..."
+      
+      invalid_count = 0
+      total_checked = 0
+      
+      Page.find_each do |page|
+        # Check if there's an ALTO file on disk
+        alto_file = File.join(Rails.root, 'public', 'text', page.work_id.to_s, "#{page.id}_alto.xml")
+        next unless File.exist?(alto_file)
+        
+        total_checked += 1
+        
+        # Check if the ALTO file is valid
+        unless page.valid_alto?
+          invalid_count += 1
+          content_preview = File.read(alto_file)[0..200]
+          puts "Page #{page.id} (Work #{page.work_id}): Invalid ALTO XML"
+          puts "  Preview: #{content_preview.gsub("\n", ' ')}"
+          puts "  URL: #{Rails.application.routes.url_helpers.transcribe_page_path(page_id: page.id)}" rescue nil
+          puts ""
+        end
+      end
+      
+      puts "\nSummary:"
+      puts "  Total pages checked: #{total_checked}"
+      puts "  Invalid ALTO files found: #{invalid_count}"
+    end
+
+    desc 'Clean up invalid ALTO XML files for a collection or work'
+    task :cleanup_invalid_alto, [:collection_id] => :environment do |t, args|
+      if args.collection_id.nil?
+        puts "Please provide a collection_id or work_id"
+        puts "Usage: rake fromthepage:transkribus:cleanup_invalid_alto[collection_id]"
+        exit
+      end
+
+      pages = []
+      
+      if args.collection_id.match(/^\d+$/)
+        collection = Collection.where(id: args.collection_id.to_i).first
+      else
+        collection = Collection.where(slug: args.collection_id).first
+      end
+      
+      if collection
+        pages = collection.pages
+        puts "Cleaning up invalid ALTO files for collection: #{collection.title}"
+      else
+        # Try as work_id
+        work = Work.find_by(id: args.collection_id.to_i)
+        if work
+          pages = work.pages
+          puts "Cleaning up invalid ALTO files for work: #{work.title}"
+        else
+          puts "Collection or Work not found"
+          exit
+        end
+      end
+      
+      cleaned_count = 0
+      failed_requests_reset = 0
+      
+      pages.each do |page|
+        alto_file = File.join(Rails.root, 'public', 'text', page.work_id.to_s, "#{page.id}_alto.xml")
+        next unless File.exist?(alto_file)
+        
+        unless page.valid_alto?
+          puts "Deleting invalid ALTO file for page #{page.id}"
+          page.delete_alto
+          cleaned_count += 1
+          
+          # Also reset any failed external API requests for this page so they can be retried
+          failed_requests = page.external_api_requests.where(
+            engine: ExternalApiRequest::Engine::TRANSKRIBUS,
+            status: [ExternalApiRequest::Status::FAILED, ExternalApiRequest::Status::COMPLETED]
+          )
+          
+          failed_requests.each do |request|
+            request.update(status: ExternalApiRequest::Status::QUEUED, params: {})
+            failed_requests_reset += 1
+          end
+        end
+      end
+      
+      puts "\nSummary:"
+      puts "  Invalid ALTO files deleted: #{cleaned_count}"
+      puts "  Failed API requests reset: #{failed_requests_reset}"
+      puts "\nYou can now reprocess these pages using:"
+      if collection
+        puts "  rake fromthepage:transkribus:process_collection[#{args.collection_id},unprocessed]"
+      else
+        puts "  rake fromthepage:transkribus:process_work[#{args.collection_id},unprocessed]"
+      end
+    end
   end
 end

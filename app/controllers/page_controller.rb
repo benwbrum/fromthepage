@@ -78,16 +78,33 @@ class PageController < ApplicationController
   end
 
   def alto_xml
+    # Check if the page has valid ALTO XML
+    unless @page.has_alto?
+      render plain: '', status: :not_found and return
+    end
+
     # Transkribus ALTO does not include an ID on the String element, but we need one for Annotorious
     # we need to read the alto file and iterate over every string element, adding an ID attribute
     raw_alto = @page.alto_xml
-    doc = Nokogiri::XML(raw_alto)
+    
+    begin
+      doc = Nokogiri::XML(raw_alto) { |config| config.strict }
+      
+      # Check if parsing resulted in errors or error representation
+      if doc.errors.any? || doc.at_xpath('//errorRepresentation')
+        Rails.logger.error("Invalid ALTO XML for page #{@page.id}")
+        render plain: '', status: :unprocessable_entity and return
+      end
 
-    doc.search('String').each_with_index do |string, i|
-      string['ID'] = "string_#{i}"
+      doc.search('String').each_with_index do |string, i|
+        string['ID'] = "string_#{i}"
+      end
+
+      render plain: doc.to_xml, layout: false, content_type: 'text/xml'
+    rescue StandardError => e
+      Rails.logger.error("Error processing ALTO XML for page #{@page.id}: #{e.message}")
+      render plain: '', status: :unprocessable_entity
     end
-
-    render plain: doc.to_xml, layout: false, content_type: 'text/xml'
   end
 
   private
