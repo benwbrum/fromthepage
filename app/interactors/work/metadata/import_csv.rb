@@ -95,6 +95,8 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
         @content += 1
       end
     end
+
+    raise StandardError, 'Import metadata finished with errors' unless @rowset_errors.empty?
   end
 
   private
