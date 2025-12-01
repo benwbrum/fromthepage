@@ -645,7 +645,8 @@ class Page < ApplicationRecord
       # Quick check for Transkribus error responses using string matching
       # These specific tags are unique to Transkribus errors and won't appear in valid ALTO
       # This avoids expensive XML parsing for obviously invalid files
-      return false if content.include?('<errorRepresentation>') || content.include?('<statusCode>')
+      return false if content.include?('<errorRepresentation>') || 
+                     (content.include?('<statusCode>') && content.include?('<reasonPhrase>'))
 
       # Verify it's valid XML and contains ALTO-specific elements
       doc = Nokogiri::XML(content) { |config| config.strict }

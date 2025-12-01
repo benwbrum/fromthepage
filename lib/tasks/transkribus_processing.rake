@@ -24,7 +24,7 @@ namespace :fromthepage do
         print "TRANSKRIBUS_USERNAME and TRANSKRIBUS_PASSWORD must be set in the environment\n"
         exit
       end
-      if args.collection_id.match(/^\d+$/)
+      if args.collection_id.match?(/^\d+$/)
         collection = Collection.where(id: args.collection_id.to_i).first
       else
         collection = Collection.where(slug: args.collection_id).first
@@ -71,7 +71,7 @@ namespace :fromthepage do
         print "TRANSKRIBUS_USERNAME and TRANSKRIBUS_PASSWORD must be set in the environment\n"
         return
       end
-      if args.work_id.match(/^\d+$/)
+      if args.work_id.match?(/^\d+$/)
         work = Work.find args.work_id.to_i
       else
         work = Work.find args.work_id
@@ -135,7 +135,7 @@ namespace :fromthepage do
 
       pages = []
       
-      if args.collection_id.match(/^\d+$/)
+      if args.collection_id.match?(/^\d+$/)
         collection = Collection.where(id: args.collection_id.to_i).first
       else
         collection = Collection.where(slug: args.collection_id).first
@@ -174,9 +174,8 @@ namespace :fromthepage do
             status: [ExternalApiRequest::Status::FAILED, ExternalApiRequest::Status::COMPLETED]
           )
           
-          failed_requests.each do |request|
-            request.update(status: ExternalApiRequest::Status::QUEUED, params: {})
-            failed_requests_reset += 1
+          if failed_requests.any?
+            failed_requests_reset += failed_requests.update_all(status: ExternalApiRequest::Status::QUEUED, params: {})
           end
         end
       end
