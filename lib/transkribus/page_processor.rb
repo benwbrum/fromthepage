@@ -111,13 +111,8 @@ class PageProcessor
       doc = Nokogiri::XML(xml) { |config| config.strict }
       return false if doc.errors.any?
 
-      # Check for ALTO namespace or common ALTO elements
-      has_alto_elements = doc.at_xpath('//alto') || 
-                         doc.at_xpath('//Layout') || 
-                         doc.at_xpath('//Page') || 
-                         doc.at_xpath('//TextBlock')
-      
-      !!has_alto_elements
+      # Check for ALTO namespace or common ALTO elements using single XPath query
+      !!doc.at_xpath('//alto | //Layout | //Page | //TextBlock')
     rescue StandardError => e
       print "XML parsing error: #{e.message}\n"
       false

@@ -111,7 +111,11 @@ namespace :fromthepage do
           content_preview = File.read(alto_file)[0..200]
           puts "Page #{page.id} (Work #{page.work_id}): Invalid ALTO XML"
           puts "  Preview: #{content_preview.gsub("\n", ' ')}"
-          puts "  URL: #{Rails.application.routes.url_helpers.transcribe_page_path(page_id: page.id)}" rescue nil
+          begin
+            puts "  URL: #{Rails.application.routes.url_helpers.transcribe_page_path(page_id: page.id)}"
+          rescue StandardError => e
+            Rails.logger.warn("Unable to generate URL for page #{page.id}: #{e.message}")
+          end
           puts ""
         end
       end
