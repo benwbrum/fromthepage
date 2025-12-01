@@ -80,9 +80,7 @@ describe Work::Metadata::ImportCsvJob do
     it 'performs job' do
       ActionMailer::Base.deliveries.clear
 
-      expect do
-        perform_worker
-      end.to raise_error(StandardError, 'Import metadata finished with errors')
+      expect { perform_worker }.to raise_error(StandardError, /Import metadata finished with errors/)
 
       expect(ActionMailer::Base.deliveries).not_to be_empty
       expect(ActionMailer::Base.deliveries.first.to).to include owner.email
