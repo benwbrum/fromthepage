@@ -617,6 +617,7 @@ describe TranscribeController do
       {
         page_id: page.id,
         ai_draft_used: 'true',
+        save: true,
         page: {
           source_text: 'updated with AI draft',
           mark_blank: '0',
@@ -654,6 +655,7 @@ describe TranscribeController do
       let(:params) do
         {
           page_id: page.id,
+          save: true,
           page: {
             source_text: 'updated without AI draft',
             mark_blank: '0',
