@@ -87,7 +87,7 @@ class PageProcessor
         @external_api_request.save!
       else
         # The response is not valid ALTO XML (likely an error response)
-        print "error: Transkribus returned invalid ALTO XML for process_id=#{process_id}. Response: #{alto[0..500]}\n"
+        Rails.logger.error("Transkribus returned invalid ALTO XML for process_id=#{process_id}. Response: #{alto[0..500]}")
         @external_api_request.status = ExternalApiRequest::Status::FAILED
         @external_api_request.save!
       end
@@ -102,7 +102,9 @@ class PageProcessor
   def valid_alto_xml?(xml)
     return false if xml.blank?
 
-    # Check if the content is a Transkribus error response
+    # Quick check for Transkribus error responses using string matching
+    # These specific tags are unique to Transkribus errors and won't appear in valid ALTO
+    # This avoids expensive XML parsing for obviously invalid responses
     return false if xml.include?('<errorRepresentation>') || 
                    (xml.include?('<statusCode>') && xml.include?('<reasonPhrase>'))
 
@@ -114,7 +116,7 @@ class PageProcessor
       # Check for ALTO namespace or common ALTO elements using single XPath query
       !!doc.at_xpath('//alto | //Layout | //Page | //TextBlock')
     rescue StandardError => e
-      print "XML parsing error: #{e.message}\n"
+      Rails.logger.error("XML parsing error: #{e.message}")
       false
     end
   end

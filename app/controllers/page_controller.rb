@@ -80,7 +80,8 @@ class PageController < ApplicationController
   def alto_xml
     # Check if the page has valid ALTO XML
     unless @page.has_alto?
-      render plain: '', status: :not_found and return
+      render plain: '', status: :not_found
+      return
     end
 
     # Transkribus ALTO does not include an ID on the String element, but we need one for Annotorious
@@ -93,7 +94,8 @@ class PageController < ApplicationController
       # Check if parsing resulted in errors or error representation
       if doc.errors.any? || doc.at_xpath('//errorRepresentation')
         Rails.logger.error("Invalid ALTO XML for page #{@page.id}")
-        render plain: '', status: :unprocessable_entity and return
+        render plain: '', status: :unprocessable_entity
+        return
       end
 
       doc.search('String').each_with_index do |string, i|

@@ -642,7 +642,9 @@ class Page < ApplicationRecord
       content = File.read(alto_path)
       return false if content.blank?
 
-      # Check if the content is a Transkribus error response
+      # Quick check for Transkribus error responses using string matching
+      # These specific tags are unique to Transkribus errors and won't appear in valid ALTO
+      # This avoids expensive XML parsing for obviously invalid files
       return false if content.include?('<errorRepresentation>') || content.include?('<statusCode>')
 
       # Verify it's valid XML and contains ALTO-specific elements
