@@ -9,11 +9,11 @@ class DashboardController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
-    only: [:owner, :staging, :startproject, :summary]
+    only: [:owner, :staging, :startproject, :summary, :suspicious_behaviors]
 
   before_action :get_data,
     only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary, :exports]
+           :startproject, :empty_work, :create_work, :summary, :exports, :suspicious_behaviors]
 
   before_action :remove_col_id
 
@@ -395,11 +395,6 @@ class DashboardController < ApplicationController
   end
 
   def suspicious_behaviors
-    unless user_signed_in? && current_user.owner
-      redirect_to dashboard_path
-      return
-    end
-
     # Get all collections owned by the current user
     owner_collections = current_user.all_owner_collections
 
