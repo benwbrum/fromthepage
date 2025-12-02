@@ -1,0 +1,8 @@
+= hidden_field_tag "fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}"
+div.spreadsheet-input data = { \
+    'controller' => 'handsontable', \
+    'handsontable-columns-value' => spreadsheet_columns.map { |c| c.as_json(only: [:id, :transcription_field_id, :position, :label, :input_type, :options]) }.to_json, \
+    'handsontable-content-value' => content&.to_json || '[]', \
+    'handsontable-transcription-field-value' => transcription_field.as_json(only: [:id, :starting_rows, :row_highlight, :top_offset, :bottom_offset]).to_json, \
+    'handsontable-date-tooltip-value' => t('shared.handsontable.date_tooltip') \
+  }

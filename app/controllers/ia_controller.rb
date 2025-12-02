@@ -36,6 +36,18 @@ class IaController < ApplicationController
       work.save!
     end
 
+    # Trigger AI Draft generation if requested
+    if params[:generate_ai_draft] && work
+      # make sure import folder exists
+      Dir.mkdir("#{Rails.root}/public/imports") unless Dir.exist?("#{Rails.root}/public/imports")
+
+      log_file = "#{Rails.root}/public/imports/work_#{work.id}_ai_draft.log"
+      rake_call = "#{RAKE} fromthepage:gemini:transcribe_work[#{work.id}] --trace >> #{log_file} 2>&1 &"
+      logger.info rake_call
+      system(rake_call)
+      flash[:notice] = (flash[:notice] || '') + ' AI Draft text generation has been started.'
+    end
+
     redirect_to controller: 'work', action: 'edit', work_id: work.id
   end
 

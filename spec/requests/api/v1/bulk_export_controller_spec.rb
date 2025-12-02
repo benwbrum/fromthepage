@@ -190,12 +190,7 @@ describe Api::V1::BulkExportController do
     end
 
     context 'when bulk export does not exist' do
-      before do
-        Rails.application.env_config['action_dispatch.show_exceptions'] = false
-        Rails.application.env_config['action_dispatch.show_detailed_exceptions'] = true
-      end
-
-      let(:action_path) { api_v1_bulk_export_download_path(bulk_export_id: SecureRandom.uuid) }
+      let(:action_path) { api_v1_bulk_export_download_path(bulk_export_id: 'thisexportdoesnotexist') }
 
       it 'renders status and json' do
         subject

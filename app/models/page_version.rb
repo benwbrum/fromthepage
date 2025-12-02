@@ -9,6 +9,7 @@
 #  status             :string(255)
 #  title              :string(255)
 #  transcription      :text(16777215)
+#  transcription_json :text(4294967295)
 #  work_version       :integer          default(0)
 #  xml_transcription  :text(16777215)
 #  xml_translation    :text(65535)
@@ -26,6 +27,13 @@ class PageVersion < ApplicationRecord
   has_many :flags
 
   after_create :check_content
+
+  # TODO: We need to upgrade our DB version to utilize native json column field.
+  # Right now we are technically using long-text field and serializing to JSON
+  if (col = columns_hash['transcription_json']) &&
+    !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
+    serialize :transcription_json, coder: JSON
+  end
 
   def check_content
     Flag.check_page(self) if content_changed?

@@ -20,6 +20,8 @@ class Work::Metadata::ImportCsvJob < ApplicationJob
         # :nocov:
       end
     end
+
+    raise result.full_errors if result.full_errors.present?
   ensure
     metadata_file.close
   end

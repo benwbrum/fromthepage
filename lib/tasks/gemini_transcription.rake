@@ -1,7 +1,7 @@
 namespace :fromthepage do
   namespace :gemini do
     desc 'Transcribe all pages in a work using Gemini AI (pass "retranscribe" to overwrite existing)'
-    task :transcribe_work, [:work_slug, :retranscribe, :model] => :environment do |_t, args|
+    task :transcribe_work, [:work_slug, :retranscribe, :model, :prompt_file] => :environment do |_t, args|
       require 'gemini/text_transcriber'
 
       unless args.work_slug
@@ -20,6 +20,12 @@ namespace :fromthepage do
                Work.find(args.work_slug.to_i)
       else
                Work.friendly.find(args.work_slug)
+      end
+
+      if args.prompt_file.present?
+        prompt = File.read(Rails.root.join(args.prompt_file))
+      else
+        prompt = nil
       end
 
       puts "Starting Gemini AI transcription for work: #{work.title}"
@@ -42,7 +48,7 @@ namespace :fromthepage do
         end
 
         # Call the interactor
-        result = Page::FetchAiText.new(page: page, model: model).call
+        result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
 
         if result.success?
           puts 'SUCCESS'
@@ -66,7 +72,7 @@ namespace :fromthepage do
     end
 
     desc 'Transcribe all pages in all works in a collection using Gemini AI (pass "retranscribe" to overwrite existing)'
-    task :transcribe_collection, [:collection_slug, :retranscribe, :model] => :environment do |_t, args|
+    task :transcribe_collection, [:collection_slug, :retranscribe, :model, :prompt_file] => :environment do |_t, args|
       require 'gemini/text_transcriber'
 
       unless args.collection_slug
@@ -93,6 +99,12 @@ namespace :fromthepage do
       end
 
       raise 'Collection does not exist' if collection.nil?
+
+      if args.prompt_file.present?
+        prompt = File.read(Rails.root.join(args.prompt_file))
+      else
+        prompt = nil
+      end
 
       puts "Starting Gemini AI transcription for collection: #{collection.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
@@ -123,7 +135,7 @@ namespace :fromthepage do
           end
 
           # Call the interactor
-          result = Page::FetchAiText.new(page: page, model: model).call
+          result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
 
           if result.success?
             puts 'SUCCESS'

@@ -159,17 +159,42 @@ module ExportService
   def export_table_csv_collection(out:, collection:)
     path = 'fields_and_tables.csv'
     out.put_next_entry(path)
-    out.write(export_tables_as_csv(collection))
+
+    if collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: collection,
+        work_ids: collection.works.pluck(:id)
+      ).call
+
+      csv_string = result.csv_string
+    else
+      csv_string = export_tables_as_csv(collection)
+    end
+
+    out.write(csv_string)
   end
 
   def export_table_csv_work(out:, work:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'csv', 'fields_and_tables.csv')
+    path = if by_work
+             File.join(path_from_work(work, original_filenames), 'csv', 'fields_and_tables.csv')
     else
-      path = File.join('fields_and_tables', "#{path_from_work(work, original_filenames)}.csv")
+             File.join('fields_and_tables', "#{path_from_work(work, original_filenames)}.csv")
     end
+
+    collection = work.collection
+    if collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: collection,
+        work_ids: [work.id]
+      ).call
+
+      csv_string = result.csv_string
+    else
+      csv_string = export_tables_as_csv(work)
+    end
+
     out.put_next_entry(path)
-    out.write(export_tables_as_csv(work))
+    out.write(csv_string)
   end
 
   def export_collection_notes_csv(out:, collection:)
@@ -459,6 +484,7 @@ module ExportService
         csv = generate_csv(w, csv, col_sections, collection.transcription_fields.present?, collection)
       end
     end
+
     csv_string
   end
 
