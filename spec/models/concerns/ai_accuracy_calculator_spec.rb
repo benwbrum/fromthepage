@@ -63,13 +63,20 @@ describe AiAccuracyCalculator do
         expect(stats[:verbatim]).to have_key(:wer)
       end
 
-      it 'may include non-stopword accuracy if language is supported' do
+      it 'includes non-stopword accuracy if language is supported' do
+        # modify the collection's text language to be English
+        allow(page).to receive(:collection).and_return(double(text_language: 'eng'))
         stats = page.ai_accuracy_statistics
 
-        # Non-stopword accuracy is optional based on collection language
-        # Just verify the stats structure is correct
-        expect(stats[:verbatim]).to have_key(:cer)
-        expect(stats[:verbatim]).to have_key(:wer)
+        expect(stats[:verbatim]).to have_key(:non_stopword_accuracy)
+      end
+
+      it 'does not include non-stopword accuracy if language is unsupported' do
+        # modify the collection's text language to be Akkadian
+        allow(page).to receive(:collection).and_return(double(text_language: 'akk'))
+        stats = page.ai_accuracy_statistics
+
+        expect(stats[:verbatim]).not_to have_key(:non_stopword_accuracy)
       end
 
       it 'includes CER and WER in text_only stats' do
