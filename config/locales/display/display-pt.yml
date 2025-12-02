@@ -5,8 +5,6 @@ pt:
       ai_generated_text: Texto gerado por IA
       ai_text: Texto de IA
       ai_text_edit_notice: Para editar este texto, use o botão "Rascunho de IA" na aba de transcrição.
-      current_transcription: Transcrição atual
-      current_version: Versão atual por
       facsimile: Fax
       show_comparison_with_transcription: Mostrar comparação com a transcrição
       statistics_unavailable: Estatísticas de precisão não estão disponíveis para esta página.
@@ -15,20 +13,14 @@ pt:
       accuracy_explanation: Essas estatísticas comparam o texto gerado por IA com a transcrição verificada por humanos, fornecendo informações sobre a precisão da transcrição feita por IA.
       accuracy_statistics: Estatísticas de precisão
       character_error_rate: Taxa de Erro de Caracteres (CER)
-      character_error_rate_short: CER
       character_error_rate_tooltip: O CER mede a porcentagem de edições em nível de caractere (inserções, exclusões, substituições) necessárias para transformar o texto gerado pela IA na versão correta. Valores mais baixos indicam maior precisão.
-      metric: Métrica
       non_stopword_accuracy: Precisão sem stopwords
-      non_stopword_accuracy_short: NSA
-      non_stopword_accuracy_tooltip: Mede a porcentagem de palavras de conteúdo (excluindo palavras comuns como 'o/a', 'um/uma', 'é/está') que correspondem entre a IA e a verdade fundamental. Valores mais altos indicam melhor reconhecimento de conteúdo.
-      text_only: Somente texto
+      non_stopword_accuracy_tooltip: Mede a porcentagem de palavras de conteúdo (excluindo palavras comuns como 'o/a', 'um/uma', 'é/está') que correspondem entre a IA e a verdade fundamental. Valores mais altos indicam melhor reconhecimento de conteúdo.  (NSA)
       text_only_comparison: Comparação somente de texto
       text_only_description: Estatísticas calculadas após a remoção de pontuação, espaços em branco extras e normalização de maiúsculas e minúsculas.
-      verbatim: Literalmente
       verbatim_comparison: Comparação literal
       verbatim_description: Estatísticas calculadas com base no texto original, mantendo toda a formatação.
       word_error_rate: Taxa de Erro de Palavras (WER)
-      word_error_rate_short: NÓS
       word_error_rate_tooltip: A WER mede a porcentagem de edições em nível de palavra necessárias para transformar o texto gerado pela IA na verdade fundamental. Valores mais baixos indicam maior precisão.
     display_page:
       collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
