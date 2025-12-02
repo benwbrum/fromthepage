@@ -666,21 +666,9 @@
 
   .stat-value {
     font-weight: 600;
-    color: $fgGreen;
+    color: $bodyFg;
     min-width: 80px;
     text-align: right;
-
-    &.stat-value-green {
-      color: $fgGreen;
-    }
-
-    &.stat-value-yellow {
-      color: $fgYellow;
-    }
-
-    &.stat-value-red {
-      color: $fgRed;
-    }
   }
 }
 

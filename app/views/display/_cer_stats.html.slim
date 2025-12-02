@@ -11,14 +11,14 @@
         .stat-label
           =t('.character_error_rate')
           span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
-        .stat-value(class=accuracy_color_class(:cer, @ai_accuracy_stats[:verbatim][:cer]))
+        .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:cer])
 
       .stat-item
         .stat-label
           =t('.word_error_rate')
           span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
-        .stat-value(class=accuracy_color_class(:wer, @ai_accuracy_stats[:verbatim][:wer]))
+        .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:wer])
 
     .stat-section
@@ -29,14 +29,14 @@
         .stat-label
           =t('.character_error_rate')
           span.help-icon(title=t('.character_error_rate_tooltip')) ⓘ
-        .stat-value(class=accuracy_color_class(:cer, @ai_accuracy_stats[:text_only][:cer]))
+        .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:cer])
 
       .stat-item
         .stat-label
           =t('.word_error_rate')
           span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
-        .stat-value(class=accuracy_color_class(:wer, @ai_accuracy_stats[:text_only][:wer]))
+        .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:wer])
 
       -if @ai_accuracy_stats[:verbatim][:non_stopword_accuracy]
@@ -44,5 +44,5 @@
           .stat-label
             =t('.non_stopword_accuracy')
             span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
-          .stat-value(class=accuracy_color_class(:nsa, @ai_accuracy_stats[:verbatim][:non_stopword_accuracy], @ai_accuracy_stats[:text_only][:wer]))
+          .stat-value
             =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:non_stopword_accuracy])
