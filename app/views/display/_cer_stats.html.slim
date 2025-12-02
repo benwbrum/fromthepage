@@ -20,13 +20,6 @@
           span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
         .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:wer])
-      -if @ai_accuracy_stats[:verbatim][:non_stopword_accuracy]
-        .stat-item
-          .stat-label
-            =t('.non_stopword_accuracy')
-            span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
-          .stat-value
-            =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:non_stopword_accuracy])
 
     .stat-section
       h5 =t('.text_only_comparison')
@@ -45,3 +38,11 @@
           span.help-icon(title=t('.word_error_rate_tooltip')) ⓘ
         .stat-value
           =sprintf("%.2f%%", @ai_accuracy_stats[:text_only][:wer])
+
+      -if @ai_accuracy_stats[:verbatim][:non_stopword_accuracy]
+        .stat-item
+          .stat-label
+            =t('.non_stopword_accuracy')
+            span.help-icon(title=t('.non_stopword_accuracy_tooltip')) ⓘ
+          .stat-value
+            =sprintf("%.2f%%", @ai_accuracy_stats[:verbatim][:non_stopword_accuracy])

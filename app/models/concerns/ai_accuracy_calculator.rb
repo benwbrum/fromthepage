@@ -162,14 +162,8 @@ module AiAccuracyCalculator
 
     return 100.0 if ground_truth_words.empty? && predicted_words.empty?
     return 0.0 if ground_truth_words.empty? || predicted_words.empty?
-
-    # Count matching non-stopwords
-    matches = (ground_truth_words & predicted_words).length
-    total = ground_truth_words.length
-
-    return 0.0 if total.zero?
-
-    (matches.to_f / total * 100.0).round(2)
+    non_stopword_wer= word_error_rate(ground_truth_words.join(' '), predicted_words.join(' '))
+    (100.0 - non_stopword_wer).round(2)
   end
 
   # Extract non-stopwords from text using stopwords-filter gem
