@@ -20,9 +20,9 @@ module AiAccuracyCalculator
     if lang_code
       begin
         Stopwords::Snowball::Filter.new(lang_code)
-        return true
+        true
       rescue ArgumentError
-        return false
+        false
       end
     end
   end
@@ -41,12 +41,12 @@ module AiAccuracyCalculator
       verbatim: calculate_verbatim_statistics(ground_truth, ai_text),
       text_only: calculate_text_only_statistics(ground_truth, ai_text)
     }
-    
+
     # Add non-stopword accuracy only if language is supported
     if can_calculate_non_stopword_accuracy?
       stats[:verbatim][:non_stopword_accuracy] = non_stopword_accuracy(ground_truth, ai_text)
     end
-    
+
     stats
   end
 
@@ -172,10 +172,10 @@ module AiAccuracyCalculator
     return [] unless collection&.text_language.present?
 
     lang_code = ISO_639.find(collection.text_language).alpha2
-    
+
     # Split into words, remove punctuation, convert to lowercase
     words = text.downcase.scan(/\b[\w]+\b/)
-    
+
     # Use stopwords-filter to remove stopwords
     filter = Stopwords::Snowball::Filter.new(lang_code)
     filter.filter(words)
