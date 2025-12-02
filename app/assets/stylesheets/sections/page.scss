@@ -669,6 +669,18 @@
     color: $fgGreen;
     min-width: 80px;
     text-align: right;
+
+    &.stat-value-green {
+      color: $fgGreen;
+    }
+
+    &.stat-value-yellow {
+      color: $fgOrange;
+    }
+
+    &.stat-value-red {
+      color: $fgRed;
+    }
   }
 }
 
