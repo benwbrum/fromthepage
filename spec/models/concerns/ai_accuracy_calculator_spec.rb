@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe AiAccuracyCalculator do
-  let(:collection) { create(:collection) }
-  let(:work) { create(:work, collection: collection) }
-  let(:page) { create(:page, work: work) }
+  let!(:owner) { create(:unique_user, :owner) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id) }
+  let!(:work) { create(:work, collection: collection) }
+  let!(:page) { create(:page, work: work) }
 
   describe '#can_calculate_ai_accuracy?' do
     context 'when page has AI plaintext and is completed' do
