@@ -1,4 +1,4 @@
-=render(:partial => 'admin/header', :locals => { :selected => 6 })
+=render partial: 'admin/header', locals: { selected: 6 }
 .columns
   article.maincol
 
@@ -36,9 +36,8 @@
                   span= t('.actions')
                   =svg_symbol '#icon-list', class: 'icon'
                 dd
-                  =link_to(t('.show_details'), bulk_export_show_path(:bulk_export_id => bulk_export.id))
+                  =link_to(t('.show_details'), bulk_export_show_path(bulk_export_id: bulk_export.id))
 
         .toolbar_group =will_paginate @bulk_exports
 
-    =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
-
+    =render partial: 'shared/pagination', locals: { model: @bulk_exports, entries_info: true }

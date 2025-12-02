@@ -1,5 +1,8 @@
 class BulkExportController < ApplicationController
+  before_action :require_logged_in
   before_action :set_bulk_export, only: [:show, :edit, :download]
+  before_action :authorized?, except: [:new, :create, :create_for_work, :create_for_work_ajax, :create_for_owner]
+  before_action :authorize_collection, only: [:new, :create, :create_for_work_ajax, :create_for_owner]
 
   PAGES_PER_SCREEN = 20
 
@@ -162,5 +165,15 @@ class BulkExportController < ApplicationController
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
+  end
+
+  def authorized?
+    unless current_user.admin || @bulk_export&.user_id == current_user.id
+      redirect_to main_app.dashboard_path
+    end
+  end
+
+  def require_logged_in
+    redirect_to main_app.dashboard_path unless user_signed_in?
   end
 end

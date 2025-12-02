@@ -1,9 +1,10 @@
 class Page::FetchAiText < ApplicationInteractor
   attr_accessor :page
 
-  def initialize(page:, model: 'gemini-2.5-pro')
+  def initialize(page:, model: 'gemini-2.5-pro', prompt: nil)
     @page = page
     @model = model
+    @prompt = prompt
     super
   end
 
@@ -20,7 +21,7 @@ class Page::FetchAiText < ApplicationInteractor
     end
 
     # Call Gemini API to transcribe the image
-    transcribed_text = Gemini::TextTranscriber.transcribe_image(image_url, model: @model)
+    transcribed_text = Gemini::TextTranscriber.transcribe_image(image_url, model: @model, prompt: @prompt)
 
     # Save the transcribed text to the page
     @page.ai_plaintext = transcribed_text

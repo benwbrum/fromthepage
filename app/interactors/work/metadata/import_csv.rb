@@ -42,7 +42,7 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
   end
 
   def perform
-    csv = read_csv(@metadata_file)
+    csv = Utils::Csv::ReadCsv.perform(@metadata_file)
 
     csv.each do |row|
       metadata = []
@@ -95,23 +95,14 @@ class Work::Metadata::ImportCsv < ApplicationInteractor
         @content += 1
       end
     end
+
+    if @rowset_errors.present?
+      rowset_msg = @rowset_errors.join("\n")
+      raise StandardError, "Import metadata finished with errors:\n#{rowset_msg}"
+    end
   end
 
   private
-
-  def read_csv(metadata_file)
-    CSV.read(metadata_file, headers: true)
-  rescue StandardError
-    contents = File.read(metadata_file)
-    detection = CharlockHolmes::EncodingDetector.detect(contents)
-
-    CSV.read(
-      metadata_file,
-      encoding: "bom|#{detection[:encoding]}",
-      liberal_parsing: true,
-      headers: true
-    )
-  end
 
   def nil_work_row_error(work_id, work_title, work_filename)
     if work_id.present?

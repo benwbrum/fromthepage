@@ -6,7 +6,7 @@ namespace :fromthepage do
     TEMP_FILE='/tmp/conversion_cohorts.csv'
     week_cohorts=[]
     current_day=Date.new(2023, 2, 12)
-    while current_day+1.week < Date.today
+    while current_day+1.week <= Date.today
       week_cohorts << current_day
       current_day=current_day+1.week
     end

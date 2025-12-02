@@ -587,21 +587,19 @@
 .ai-accuracy-statistics {
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
 
   h4 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    color: #212529;
-    // font-size: 1.25rem;
+    color: $fgH1;
   }
 
   .accuracy-explanation {
     margin-bottom: 1.5rem;
-    color: #6c757d;
-    // font-size: 0.9rem;
+    color: $bodyFgLight;
     line-height: 1.5;
   }
 
@@ -612,22 +610,20 @@
   }
 
   .stat-section {
-    background-color: #fff;
+    background-color: $bgWhite;
     padding: 1rem;
     border-radius: 4px;
-    border: 1px solid #dee2e6;
+    border: 1px solid $borderColor;
 
     h5 {
       margin-top: 0;
       margin-bottom: 0.5rem;
-      color: #495057;
-      // font-size: 1.1rem;
+      color: $fgH2;
     }
 
     .section-description {
       margin-bottom: 1rem;
-      color: #6c757d;
-      // font-size: 0.85rem;
+      color: $bodyFgLight;
       line-height: 1.4;
     }
   }
@@ -638,7 +634,7 @@
     align-items: center;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
-    background-color: #f8f9fa;
+    background-color: $highlightBoxBg;
     border-radius: 4px;
 
     &:last-child {
@@ -651,8 +647,7 @@
     align-items: center;
     gap: 0.5rem;
     font-weight: 500;
-    color: #495057;
-    // font-size: 0.9rem;
+    color: $bodyFg;
   }
 
   .help-icon {
@@ -661,19 +656,17 @@
     height: 18px;
     line-height: 18px;
     text-align: center;
-    background-color: #6c757d;
-    color: #fff;
+    background-color: $bodyFgLight;
+    color: $fgWhite;
     border-radius: 50%;
-    // font-size: 0.75rem;
     font-weight: bold;
     cursor: help;
     flex-shrink: 0;
   }
 
   .stat-value {
-    // font-size: 1.1rem;
     font-weight: 600;
-    color: #28a745;
+    color: $fgGreen;
     min-width: 80px;
     text-align: right;
   }
@@ -682,20 +675,20 @@
 .ai-accuracy-unavailable {
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: #fff3cd;
-  border-left: 4px solid #ffc107;
+  background-color: $bgOrange;
+  border-left: 4px solid $fgOrange;
   border-radius: 4px;
 
   .info-message {
     margin: 0 0 0.5rem 0;
-    color: #856404;
+    color: $bodyFgDark;
     font-weight: 600;
     font-size: $fontSize;
   }
 
   p {
     margin: 0;
-    color: #856404;
+    color: $bodyFgDark;
     font-size: $fontSize;
     line-height: 1.5;
 
@@ -708,13 +701,13 @@
 .ai-text-notice {
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: #d9edf7;
-  border-left: 4px solid #0066cc;
+  background-color: $bgBlue;
+  border-left: 4px solid $fgBlue;
   border-radius: 4px;
 
   .info-message {
     margin: 0;
-    color: #003d5c;
+    color: $bodyFgDark;
     font-size: $fontSize;
   }
 }
@@ -726,10 +719,10 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: $fontSize;
     line-height: 1.6;
-    background-color: #f5f5f5;
+    background-color: $highlightBoxBg;
     padding: 1rem;
     border-radius: 4px;
     margin: 0;
-    color: #000;
+    color: $bodyFg;
   }
 }
