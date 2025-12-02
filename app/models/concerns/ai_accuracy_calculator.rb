@@ -104,7 +104,7 @@ module AiAccuracyCalculator
     return 100.0 if ground_truth.blank? || predicted.blank?
 
     distance = Text::Levenshtein.distance(ground_truth, predicted).to_f
-    max_length = [ground_truth.length, predicted.length].max
+    max_length = ground_truth.length
     return 0.0 if max_length.zero?
 
     (distance / max_length * 100.0).round(2)

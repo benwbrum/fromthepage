@@ -111,10 +111,14 @@ describe AiAccuracyCalculator do
         expect(cer).to eq(100.0)
       end
 
+      it 'returns 100 for completely different strings with longer ground truth' do
+        cer = page.send(:character_error_rate, 'abcd', 'xy')
+        expect(cer).to eq(100.0)
+      end
+
       it 'calculates CER correctly for similar strings' do
-        cer = page.send(:character_error_rate, 'kitten', 'sitting')
-        expect(cer).to be > 0
-        expect(cer).to be < 100
+        cer = page.send(:character_error_rate, 'abcd', 'abxy')
+        expect(cer).to eq(50.0)
       end
 
       it 'handles empty ground truth' do
@@ -159,7 +163,7 @@ describe AiAccuracyCalculator do
     describe '#non_stopword_accuracy' do
       before do
         # Mock collection with English language for consistency
-        allow(page).to receive(:collection).and_return(double(text_language: 'en'))
+        allow(page).to receive(:collection).and_return(double(text_language: 'eng'))
       end
 
       it 'returns 100 for identical content words' do
@@ -190,6 +194,12 @@ describe AiAccuracyCalculator do
         accuracy = page.send(:non_stopword_accuracy, '', '')
         expect(accuracy).to eq(100.0)
       end
+
+      it 'handles repeated non-stopwords' do
+        # "cat" appears twice in both, should count both occurrences but miss the verb for 2/3 accuracy
+        accuracy = page.send(:non_stopword_accuracy, 'a cat hopped over the cat', 'the cat jumped under a cat')
+        expect(accuracy).to eq(66.67)
+      end
     end
 
     describe '#normalize_text' do
@@ -210,6 +220,11 @@ describe AiAccuracyCalculator do
 
       it 'trims whitespace' do
         normalized = page.send(:normalize_text, '  hello world  ')
+        expect(normalized).to eq('hello world')
+      end
+
+      it 'handles newlines' do
+        normalized = page.send(:normalize_text, "hello\nworld")
         expect(normalized).to eq('hello world')
       end
 
