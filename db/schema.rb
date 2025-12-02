@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_17_160945) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_02_174404) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -918,6 +918,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_17_160945) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
+  end
+
+  create_table "suspicious_behaviors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "page_id"
+    t.integer "collection_id"
+    t.json "metadata"
+    t.string "behavior_type", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "resolved_at"
+    t.integer "resolved_by_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_suspicious_behaviors_on_collection_id"
+    t.index ["page_id"], name: "index_suspicious_behaviors_on_page_id"
+    t.index ["resolved_by_user_id"], name: "index_suspicious_behaviors_on_resolved_by_user_id"
+    t.index ["user_id"], name: "index_suspicious_behaviors_on_user_id"
   end
 
   create_table "table_cells", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|

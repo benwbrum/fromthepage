@@ -82,6 +82,8 @@ Fromthepage::Application.routes.draw do
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
       post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
+
+    resources :suspicious_behaviors, module: 'admin', only: [:index, :show]
   end
 
   scope 'facets', as: 'facets' do
@@ -261,6 +263,10 @@ Fromthepage::Application.routes.draw do
     patch 'save_translation', to: 'transcribe#save_translation'
   end
 
+  namespace :transcribe do
+    resources :suspicious_behaviors, only: [:create]
+  end
+
   scope 'deed', as: 'deed' do
     get 'listing', to: 'deed#list', as: :list
   end
@@ -376,6 +382,7 @@ Fromthepage::Application.routes.draw do
 
   namespace :api do
     get '/', to: 'api#help'
+
     namespace :v1 do
       get 'bulk_export', to: 'bulk_export#index'
       get 'bulk_export/:collection_slug', to: 'bulk_export#index'
@@ -384,7 +391,6 @@ Fromthepage::Application.routes.draw do
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
     end
   end
-
 
   get '/iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', to: 'iiif#layer'
@@ -527,6 +533,8 @@ Fromthepage::Application.routes.draw do
       get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
+
+      resources :suspicious_behaviors, only: [:index, :show]
 
       # work related routes
       # have to use match because it must be both get and post

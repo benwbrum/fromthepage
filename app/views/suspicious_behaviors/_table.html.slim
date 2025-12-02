@@ -1,0 +1,41 @@
+table.datagrid.striped.dataTable.no-footer
+  thead
+    th
+    th =t('admin.suspicious_behaviors.table.user')
+    th =t('admin.suspicious_behaviors.table.page')
+    th =t('admin.suspicious_behaviors.table.metadata')
+    th =t('admin.suspicious_behaviors.table.resolved_by')
+    =fe_sortable_header(key: :resolved_at, sorting: @sorting, ordering: @ordering) do
+      =t('admin.suspicious_behaviors.table.resolved_at')
+    =fe_sortable_header(key: :created_at, sorting: @sorting, ordering: @ordering) do
+      =t('admin.suspicious_behaviors.table.flagged_at')
+    th =t('admin.suspicious_behaviors.table.type')
+    th =t('admin.suspicious_behaviors.table.status')
+
+  tbody
+    -if @suspicious_behaviors.any?
+      -@suspicious_behaviors.each do |item|
+        tr
+          td
+            =link_to user_profile_path(item.user) do
+              =render partial: 'shared/profile_picture', locals: { user: item.user, gravatar_size: nil }
+          td
+            =link_to item.user.display_name, user_profile_path(item.user)
+          td
+            -if item.page.present?
+              =link_to(item.page.title, collection_display_page_path(item.collection.owner, item.collection, item.page.work_id, item.page))
+          td
+            =link_to t('admin.suspicious_behaviors.table.metadata'), collection_suspicious_behavior_path(@collection.owner, @collection, item), target: '_blank'
+          td
+            -if item.resolved_by_user.present?
+              =link_to item.resolved_by_user.display_name, user_profile_path(item.resolved_by_user)
+          td
+            =item.resolved_at&.strftime('%D %H:%M:%S')
+          td
+            =item.created_at.strftime('%D %H:%M:%S')
+          td
+            =t("suspicious_behaviors.filters.behavior_type.#{item.behavior_type}")
+          td
+            =t("suspicious_behaviors.filters.status.#{item.status}")
+
+=render partial: 'shared/pagination', locals: { model: @suspicious_behaviors, entries_info: true, controller: 'suspicious_behaviors', action: 'index' }
