@@ -30,35 +30,23 @@
         pre.ai-plaintext =@page.ai_plaintext
 
       -if @page.can_calculate_ai_accuracy?
-        h3 Diff Goes Here
-        table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
+        table.diff-versions(id="ai-diff-content", data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
           tr
             td.diff-version[*language_attrs(@collection)]
               div.versions-wrapper
-                div.version-col
+                / hide the selected version
+                div.version-col(style="display: none;")
                   div.version-content
-                    - if true
-                      h4(data-diff-title="changed" data-empty=t('.untitled')) = @selected_version&.title.presence || t('.untitled')
-                      h5 I'm here 5!
-                      div.table-responsive(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
-                        div.source-code
-                          h6 Source Code of Ground Truth
-                          = @page.source_text
-                        div.html-code
-                          h6 HTML Code of Ground Truth
-                          == xml_to_html(@page.xml_text)
+                    div.table-responsive(data-diff-transcription="changed")
+                      div.html-code
+                        h5 Ground Truth
+                        == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
                 div.version-col.right
                   div.version-content
-                    - if true
-                      h4(data-diff-title="original" data-empty=t('.untitled')) = @previous_version&.title.presence || ""
-                      h5 I'm here 4!
-                      div.table-responsive(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
-                        div.source-code
-                          h6 Source Code of AI Transcription
-                          = @page.ai_plaintext
-                        div.html-code
-                          h6 HTML Code of AI Transcription
-                          = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
+                    div.table-responsive(data-diff-transcription="original")
+                      div.html-code
+                        h5 AI Draft
+                        = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
 
 
 
@@ -77,6 +65,7 @@
     $(function() {
       if (!$('#show-diff-toggle').length) { return; }
 
+      $('#ai-diff-content').hide();
       let diffInitialized = false;
 
       $('#show-diff-toggle').on('change', function() {
@@ -86,43 +75,11 @@
 
           if (!diffInitialized) {
             $('.diff-versions')
-            .prettyXMLDiff({
-              changedContainer:  '[data-diff-title=changed]',
-              originalContainer: '[data-diff-title=original]',
-              diffContainer:     '[data-diff-title=original]'
-            })
             // apply prettyHTMLDiff for formatted html string
             .prettyHTMLDiff({
               changedContainer:  '[data-diff-transcription=changed] div.html-code',
               originalContainer: '[data-diff-transcription=original] div.html-code',
               diffContainer:     '[data-diff-transcription=original] div.html-code'
-            })
-            .prettyHTMLDiff({
-              changedContainer:  '[data-diff-translation=changed] div.html-code',
-              originalContainer: '[data-diff-translation=original] div.html-code',
-              diffContainer:     '[data-diff-translation=original] div.html-code'
-            })
-
-            // apply prettyXMLDiff for source code
-            .prettyXMLDiff({
-              changedContainer:  '[data-diff-transcription=changed] div.source-code',
-              originalContainer: '[data-diff-transcription=original] div.source-code',
-              diffContainer:     '[data-diff-transcription=original] div.source-code'
-            })
-            .prettyXMLDiff({
-              changedContainer:  '[data-diff-translation=changed] div.source-code',
-              originalContainer: '[data-diff-translation=original] div.source-code',
-              diffContainer:     '[data-diff-translation=original] div.source-code'
-            })
-            .prettyXMLDiff({
-              changedContainer:  '[data-diff-transcription=changed] div.source-code',
-              originalContainer: '[data-diff-transcription=changed] div.source-code',
-              diffContainer:     '[data-diff-transcription=changed] div.source-code'
-            })
-            .prettyXMLDiff({
-              changedContainer:  '[data-diff-translation=changed] div.source-code',
-              originalContainer: '[data-diff-translation=changed] div.source-code',
-              diffContainer:     '[data-diff-translation=changed] div.source-code'
             });
 
             diffInitialized = true;

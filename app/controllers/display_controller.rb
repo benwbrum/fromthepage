@@ -139,14 +139,6 @@ class DisplayController < ApplicationController
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
       nil
     end
-    # TODO: get rid of this
-    @page_versions = []
-
-    @page.page_versions.each do |version|
-      @page_versions << version if version.content_changed?
-    end
-    @selected_version = @page_version.present? ? @page_version : @page_versions.first
-
     # Calculate accuracy statistics if available
     @ai_accuracy_stats = @page.ai_accuracy_statistics
   end

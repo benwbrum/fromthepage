@@ -30,7 +30,6 @@ pt:
       word_error_rate: Taxa de Erro de Palavras (WER)
       word_error_rate_short: NÓS
       word_error_rate_tooltip: A WER mede a porcentagem de edições em nível de palavra necessárias para transformar o texto gerado pela IA na verdade fundamental. Valores mais baixos indicam maior precisão.
-
     display_page:
       collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
       collection_is_not_active: Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas.
