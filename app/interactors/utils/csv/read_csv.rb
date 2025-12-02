@@ -11,7 +11,10 @@ class Utils::Csv::ReadCsv
       csv_file,
       encoding: "bom|#{detection[:encoding]}",
       liberal_parsing: true,
-      headers: headers
+      headers: headers,
+      invalid: :replace,
+      undef: :replace,
+      replace: ''
     )
   end # :nocov:
 end
