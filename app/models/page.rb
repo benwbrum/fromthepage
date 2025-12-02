@@ -46,6 +46,7 @@ class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper
+  include AiAccuracyCalculator
 
   before_create :set_default_transcription_json
   before_update :validate_blank_page
