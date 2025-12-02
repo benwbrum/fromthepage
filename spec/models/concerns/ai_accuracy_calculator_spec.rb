@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe AiAccuracyCalculator do
-  let(:work) { create(:work) }
+  let(:collection) { create(:collection) }
+  let(:work) { create(:work, collection: collection) }
   let(:page) { create(:page, work: work) }
 
   describe '#can_calculate_ai_accuracy?' do
@@ -61,7 +62,7 @@ describe AiAccuracyCalculator do
         expect(stats[:verbatim]).to have_key(:cer)
         expect(stats[:verbatim]).to have_key(:wer)
       end
-      
+
       it 'may include non-stopword accuracy if language is supported' do
         stats = page.ai_accuracy_statistics
 
@@ -243,7 +244,7 @@ describe AiAccuracyCalculator do
         words = page.send(:extract_non_stopwords, '')
         expect(words).to eq([])
       end
-      
+
       it 'returns empty array when collection has no language' do
         allow(page).to receive(:collection).and_return(double(text_language: nil))
         words = page.send(:extract_non_stopwords, 'Hello world')
