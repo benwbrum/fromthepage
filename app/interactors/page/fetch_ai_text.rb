@@ -21,10 +21,16 @@ class Page::FetchAiText < ApplicationInteractor
     end
 
     # Call Gemini API to transcribe the image
-    transcribed_text = Gemini::TextTranscriber.transcribe_image(image_url, model: @model, prompt: @prompt)
+    transcribed_text, reasoning, metadata = Gemini::TextTranscriber.transcribe_image(image_url, model: @model, prompt: @prompt)
 
     # Save the transcribed text to the page
-    @page.ai_plaintext = transcribed_text
+    ai_transcription = @page.build_ai_transcription(
+      source_text: transcribed_text,
+      reasoning: reasoning,
+      model: @model,
+      metadata: metadata
+    )
+    ai_transcription.save!
 
     context.message = 'Successfully transcribed text from image using Gemini AI'
   rescue StandardError => e

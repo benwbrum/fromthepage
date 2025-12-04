@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_17_160945) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_17_160945) do
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["user_id", "name"], name: "index_ahoy_events_on_user_id_and_name"
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
+  end
+
+  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "page_id", null: false
+    t.text "source_text"
+    t.string "model", null: false
+    t.text "reasoning"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
   end
 
   create_table "article_article_links", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|

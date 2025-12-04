@@ -65,6 +65,9 @@ class Page < ApplicationRecord
   has_many :articles, through: :page_article_links
   has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
+  has_many :ai_transcriptions
+  has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
@@ -612,24 +615,33 @@ class Page < ApplicationRecord
   end
 
   def has_ai_plaintext?
-    File.exist?(ai_plaintext_path)
+    self.ai_transcription.present? || File.exist?(self.ai_plaintext_path)
   end
 
   def ai_plaintext
-    if has_ai_plaintext?
-      File.read(ai_plaintext_path)
+    if self.ai_transcription.present?
+      self.ai_transcription.source_text
+    elsif File.exist?(self.ai_plaintext_path)
+      File.read(self.ai_plaintext_path)
     else
       ''
     end
   end
 
+  # TODO: This will be deprecated, we have to move the creation of ai_transcription to the interactor
+  # for easier management. We also have to separate the implementation for alto transcriptions.
+  # For now, all places that uses this will be assumed to be from `alto` implementation
   def ai_plaintext=(text)
-    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
-    File.write(ai_plaintext_path, text)
+    ai_transcription = @page.build_ai_transcription(
+      source_text: text,
+      reasoning: nil,
+      model: 'alto',
+    )
+    ai_transcription.save!
   end
 
   def ai_plaintext_has_emoji_placeholders?
-    ai_plaintext.include?('🤔')
+    self.ai_plaintext.include?('🤔')
   end
 
   def has_alto?
