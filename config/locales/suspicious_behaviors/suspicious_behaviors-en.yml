@@ -1,15 +1,35 @@
 ---
 en:
   suspicious_behaviors:
+    actions:
+      delete: Delete
+      flag: Flag
+      ignore: Ignore
+    confirm_delete_message: Are you sure you want to delete this report?
+    destroy:
+      deleted: Report deleted
     filters:
       behavior_type:
         all: All
         large_paste: Large Paste
       status:
         all: All
-        confirmed: Confirmed
-        dismissed: Dismissed
+        flagged: Flagged
+        ignored: Ignored
         pending: Pending
     labels:
       behavior_type: Type
       status: Status
+    table:
+      actions: Actions
+      flagged_at: Flagged at
+      metadata: Metadata
+      page: Page
+      resolved_at: Resolved at
+      resolved_by: Resolved by
+      status: Status
+      type: Type
+      user: User
+    update:
+      flagged: User flagged
+      ignored: Report ignored

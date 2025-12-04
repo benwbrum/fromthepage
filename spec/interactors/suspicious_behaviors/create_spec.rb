@@ -6,6 +6,7 @@ describe SuspiciousBehaviors::Create do
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection) }
   let!(:page) { create(:page, work: work) }
+  let!(:suspicious_behavior) { create(:suspicious_behavior, collection: collection, page: page, user: user, resolved_by_user_id: nil) }
 
   let(:suspicious_behavior_params) do
     {
@@ -36,5 +37,17 @@ describe SuspiciousBehaviors::Create do
       resolved_at: nil,
       resolved_by_user_id: nil
     )
+  end
+
+  context 'user is greenlisted' do
+    let!(:resolved_report) do
+      create(:suspicious_behavior, collection: collection, page: page, user: user, resolved_by_user_id: owner,
+        resolved_at: Time.current, status: :ignored)
+    end
+
+    it 'does not create suspicious_behavior' do
+      expect(result.success?).to be_truthy
+      expect(result.suspicious_behavior).to be_nil
+    end
   end
 end

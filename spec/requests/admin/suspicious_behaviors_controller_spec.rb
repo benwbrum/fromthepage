@@ -38,9 +38,12 @@ describe Admin::SuspiciousBehaviorsController do
       let(:params) do
         {
           behaviour_type: 'large_paste',
-          status: 'pending',
+          status: 'flagged',
           ordering: 'ASC',
-          sorting: 'resolved_at'
+          sorting: 'resolved_at',
+          search_user: user.slug,
+          search_collection: collection.slug,
+          search_owner: owner.slug
         }
       end
       let(:subject) { get action_path, params: params, as: :turbo_stream }

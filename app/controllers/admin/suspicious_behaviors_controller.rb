@@ -30,7 +30,7 @@ class Admin::SuspiciousBehaviorsController < AdminController
       :resolved_by_user
     )
 
-    status_filter = params[:status]&.downcase&.to_sym
+    status_filter = params[:status]&.downcase&.to_sym || :pending
 
     if (SuspiciousBehavior::STATUS_FILTERS - [:all]).include?(status_filter)
       @filtered_scope = @filtered_scope.where(status: status_filter)
@@ -40,6 +40,35 @@ class Admin::SuspiciousBehaviorsController < AdminController
 
     if (SuspiciousBehavior::BEHAVIOR_TYPE_FILTERS - [:all]).include?(type_filter)
       @filtered_scope = @filtered_scope.where(behavior_type: type_filter)
+    end
+
+    if params[:search_user].present?
+      user_filter = User.where(id: params[:search_user]).or(User.where(slug: params[:search_user]))
+      if user_filter.any?
+        @filtered_scope.where(user_id: user_filter.select(:id))
+      else
+        @filtered_scope = @filtered_scope.none
+      end
+    end
+
+    if params[:search_collection].present?
+      collection_filter = Collection.where(id: params[:search_collection]).or(Collection.where(slug: params[:search_collection]))
+      if collection_filter.any?
+        @filtered_scope.where(collection_id: collection_filter.select(:id))
+      else
+        @filtered_scope = @filtered_scope.none
+      end
+    end
+
+    if params[:search_owner].present?
+      owner_filter = User.where(id: params[:search_owner]).or(User.where(slug: params[:search_owner]))
+      owner_filter = Collection.where(owner_user_id: owner_filter.select(:id))
+
+      if owner_filter.any?
+        @filtered_scope.where(collection_id: owner_filter.select(:id))
+      else
+        @filtered_scope = @filtered_scope.none
+      end
     end
 
     case @sorting

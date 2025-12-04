@@ -1,0 +1,6 @@
+<% if @result.success? %>
+  <%= turbo_stream.remove(dom_id(@suspicious_behavior)) %>
+  <%= turbo_flash(t('.deleted'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

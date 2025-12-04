@@ -1,15 +1,35 @@
 ---
 es:
   suspicious_behaviors:
+    actions:
+      delete: Borrar
+      flag: Bandera
+      ignore: Ignorar
+    confirm_delete_message: "¿Está seguro que desea eliminar este informe?"
+    destroy:
+      deleted: Informe eliminado
     filters:
       behavior_type:
         all: Todo
         large_paste: Pasta grande
       status:
         all: Todo
-        confirmed: Confirmado
-        dismissed: Despedido
+        flagged: Marcado
+        ignored: Ignorado
         pending: Pendiente
     labels:
       behavior_type: Tipo
       status: Estado
+    table:
+      actions: Comportamiento
+      flagged_at: Marcado en
+      metadata: Metadatos
+      page: Página
+      resolved_at: Resuelto en
+      resolved_by: Resuelto por
+      status: Estado
+      type: Tipo
+      user: Usuario
+    update:
+      flagged: Usuario marcado
+      ignored: Informe ignorado

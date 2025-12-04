@@ -1,0 +1,33 @@
+tr [id=dom_id(item)]
+  td
+    =link_to user_profile_path(item.user) do
+      =render partial: 'shared/profile_picture', locals: { user: item.user, gravatar_size: nil }
+  td [data-controller='clipboard']
+    =link_to item.user.display_name, user_profile_path(item.user)
+    b [data-clipboard-target='source' style='display: none'] =item.user.slug
+    a.clipboard-btn [data-action='click->clipboard#copy' aria-label=t('filter_table.click_to_copy_slug') title=t('filter_table.click_to_copy_slug')]
+      =svg_symbol '#icon-copy', class: 'icon'
+  td
+    -if item.page.present?
+      =link_to(item.page.title, collection_display_page_path(item.collection.owner, item.collection, item.page.work_id, item.page))
+  td
+    =link_to t('suspicious_behaviors.table.metadata'), collection_suspicious_behavior_path(@collection.owner, @collection, item), target: '_blank'
+  td
+    -if item.resolved_by_user.present?
+      =link_to item.resolved_by_user.display_name, user_profile_path(item.resolved_by_user)
+  td
+    =item.resolved_at&.strftime('%D %H:%M:%S')
+  td
+    =item.created_at.strftime('%D %H:%M:%S')
+  td
+    =t("suspicious_behaviors.filters.behavior_type.#{item.behavior_type}")
+  td
+    =t("suspicious_behaviors.filters.status.#{item.status}")
+  td
+    -unless item.flagged?
+      =link_to t('suspicious_behaviors.actions.flag'), collection_suspicious_behavior_path(@collection.owner, @collection, item, status: :flagged), data: { turbo: true, turbo_method: :put }
+      span[style='margin-left: 2px; margin-right: 2px']= '|'
+    -unless item.ignored?
+      =link_to t('suspicious_behaviors.actions.ignore'), collection_suspicious_behavior_path(@collection.owner, @collection, item, status: :ignored), data: { turbo: true, turbo_method: :put }
+      span[style='margin-left: 2px; margin-right: 2px']= '|'
+    =link_to t('suspicious_behaviors.actions.delete'), collection_suspicious_behavior_path(@collection.owner, @collection, item), data: { turbo: true, turbo_method: :delete, turbo_confirm: t('suspicious_behaviors.confirm_delete_message') }

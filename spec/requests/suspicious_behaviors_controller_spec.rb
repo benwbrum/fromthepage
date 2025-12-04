@@ -38,9 +38,10 @@ describe SuspiciousBehaviorsController do
       let(:params) do
         {
           behaviour_type: 'large_paste',
-          status: 'pending',
+          status: 'flagged',
           ordering: 'ASC',
-          sorting: 'resolved_at'
+          sorting: 'resolved_at',
+          search_user: user.slug
         }
       end
       let(:subject) { get action_path, params: params, as: :turbo_stream }
@@ -75,6 +76,58 @@ describe SuspiciousBehaviorsController do
       login_as owner
       subject
       expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { collection_suspicious_behavior_path(owner, collection, suspicious_behavior) }
+    let(:params) { { status: 'flagged' } }
+    let(:subject) { put action_path, params: params, as: :turbo_stream }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects when not owner' do
+      login_as user
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:update)
+    end
+  end
+
+
+  describe '#destroy' do
+    let(:action_path) { collection_suspicious_behavior_path(owner, collection, suspicious_behavior) }
+    let(:subject) { delete action_path, as: :turbo_stream }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects when not owner' do
+      login_as user
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:destroy)
     end
   end
 end

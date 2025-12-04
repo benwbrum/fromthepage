@@ -18,6 +18,29 @@ class SuspiciousBehaviorsController < ApplicationController
     render json: suspicious_behavior&.metadata || {}
   end
 
+  def update
+    @suspicious_behavior = @collection.suspicious_behaviors.find(params[:id])
+
+    @result = SuspiciousBehaviors::Update.new(
+      suspicious_behavior: @suspicious_behavior,
+      status: params[:status],
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
+  end
+
+  def destroy
+    @suspicious_behavior = @collection.suspicious_behaviors.find(params[:id])
+
+    @result = SuspiciousBehaviors::Delete.new(
+      suspicious_behavior: @suspicious_behavior,
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
+  end
+
   private
 
   def filtered_scope
@@ -31,7 +54,7 @@ class SuspiciousBehaviorsController < ApplicationController
       :resolved_by_user
     )
 
-    status_filter = params[:status]&.downcase&.to_sym
+    status_filter = params[:status]&.downcase&.to_sym || :pending
 
     if (SuspiciousBehavior::STATUS_FILTERS - [:all]).include?(status_filter)
       @filtered_scope = @filtered_scope.where(status: status_filter)
@@ -41,6 +64,15 @@ class SuspiciousBehaviorsController < ApplicationController
 
     if (SuspiciousBehavior::BEHAVIOR_TYPE_FILTERS - [:all]).include?(type_filter)
       @filtered_scope = @filtered_scope.where(behavior_type: type_filter)
+    end
+
+    if params[:search_user].present?
+      user_filter = User.where(id: params[:search_user]).or(User.where(slug: params[:search_user]))
+      if user_filter.any?
+        @filtered_scope.where(user_id: user_filter.select(:id))
+      else
+        @filtered_scope = @filtered_scope.none
+      end
     end
 
     case @sorting

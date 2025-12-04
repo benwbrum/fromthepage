@@ -92,4 +92,10 @@ module ResourcesHelper
       [t("suspicious_behaviors.filters.status.#{key}"), key]
     end
   end
+
+  def suspicious_behavior_action_options
+    SuspiciousBehavior::ACTION_FILTERS.map do |key|
+      [t("suspicious_behaviors.filters.action.#{key}"), key]
+    end
+  end
 end

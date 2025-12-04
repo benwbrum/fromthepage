@@ -44,8 +44,8 @@ class SuspiciousBehavior < ApplicationRecord
 
   enum :status, {
     pending: 'pending',
-    confirmed: 'confirmed',
-    dismissed: 'dismissed'
+    flagged: 'flagged',
+    ignored: 'ignored'
   }, default: :pending
 
   # TODO: We need to upgrade our DB version to utilize native json column field.
@@ -59,5 +59,7 @@ class SuspiciousBehavior < ApplicationRecord
   # we focus on large_paste
   BEHAVIOR_TYPE_FILTERS = [:all, :large_paste].freeze
 
-  STATUS_FILTERS = [:all, :pending, :confirmed, :dismissed].freeze
+  STATUS_FILTERS = [:all, :pending, :flagged, :ignored].freeze
+
+  ACTION_FILTERS = [:all, :pending, :resolved].freeze
 end
