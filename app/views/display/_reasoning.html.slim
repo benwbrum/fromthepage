@@ -1,3 +1,5 @@
-.ai-text-notice[style="margin-top: 5px; margin-bottom: 5px;"]
+.ai-reasoning
   h4 =t('.ai_reasoning')
-  == Markdown.new(reasoning).to_html
+  p.reasoning-explanation =t('.reasoning_explanation')
+  .reasoning-content
+    == Markdown.new(reasoning).to_html
