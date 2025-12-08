@@ -33,4 +33,6 @@ class AiTranscription < ApplicationRecord
     !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
     serialize :metadata, coder: JSON
   end
+
+  validates :model, presence: true
 end
