@@ -113,6 +113,7 @@ en:
       translations_need_review: Translations That Need Review
     reasoning:
       ai_reasoning: AI Reasoning Steps
+      reasoning_explanation: Reasoning Explanation
   display_helper:
     page_action:
       blank_page: Blank page
