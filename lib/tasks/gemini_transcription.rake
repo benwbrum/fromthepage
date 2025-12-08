@@ -66,7 +66,7 @@ namespace :fromthepage do
         print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
 
         # Skip pages that already have ai_plaintext unless retranscribe mode
-        if !retranscribe && page.has_ai_plaintext?
+        if !retranscribe && page.ai_transcription.present?
           puts 'SKIPPED (already has AI plaintext)'
           skip_count += 1
           next
@@ -153,7 +153,7 @@ namespace :fromthepage do
           print "[#{current_page}/#{total_pages}] Page #{page.id} (#{page.title}): "
 
           # Skip pages that already have ai_plaintext unless retranscribe mode
-          if !retranscribe && page.has_ai_plaintext?
+          if !retranscribe && page.ai_transcription.present?
             puts 'SKIPPED (already has AI plaintext)'
             overall_skip += 1
             next

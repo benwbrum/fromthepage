@@ -48,14 +48,18 @@
                         h5 AI Draft
                         = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
 
-
-
 -if @ai_accuracy_stats
   =render(:partial => 'cer_stats')
--elsif @page.has_ai_plaintext?
+-elsif @page.ai_transcription.present?
   .ai-accuracy-unavailable
     p.info-message =t('.statistics_unavailable')
     p =t('.statistics_unavailable_reason')
+
+-if @page.ai_transcription.reasoning.present?
+  =render partial: 'reasoning', locals: { reasoning: @page.ai_transcription.reasoning }
+
+
+
 -content_for :javascript
   =javascript_include_tag 'textdiff'
   javascript:

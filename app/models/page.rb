@@ -65,6 +65,12 @@ class Page < ApplicationRecord
   has_many :articles, through: :page_article_links
   has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
+  has_many :ai_transcriptions, -> { not_alto }, class_name: 'AiTranscription'
+  has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+
+  has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
+  has_one :alto_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
@@ -611,42 +617,40 @@ class Page < ApplicationRecord
     users
   end
 
+  # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?
-    File.exist?(ai_plaintext_path)
+    self.ai_transcription.present? || File.exist?(self.ai_plaintext_path)
   end
 
+  # TODO: Remove this on different PR after running migration
   def ai_plaintext
-    if has_ai_plaintext?
-      File.read(ai_plaintext_path)
+    if self.ai_transcription.present?
+      self.ai_transcription.source_text
+    elsif File.exist?(self.ai_plaintext_path)
+      File.read(self.ai_plaintext_path)
     else
       ''
     end
-  end
-
-  def ai_plaintext=(text)
-    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
-    File.write(ai_plaintext_path, text)
   end
 
   def ai_plaintext_has_emoji_placeholders?
-    ai_plaintext.include?('🤔')
+    self.ai_plaintext.include?('🤔')
   end
 
+  # TODO: Remove this on different PR after running migration
   def has_alto?
-    File.exist?(alto_path)
+    self.alto_transcription.present? || File.exist?(self.alto_path)
   end
 
+  # TODO: Remove this on different PR after running migration
   def alto_xml
-    if has_alto?
-      File.read(alto_path)
+    if self.alto_transcription.present?
+      self.alto_transcription.source_text
+    elsif self.has_alto?
+      File.read(self.alto_path)
     else
       ''
     end
-  end
-
-  def alto_xml=(xml)
-    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
-    File.write(alto_path, xml)
   end
 
   def image_url_for_download
@@ -680,10 +684,12 @@ class Page < ApplicationRecord
 
   private
 
+  # TODO: Remove this on different PR after running migration
   def ai_plaintext_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
   end
 
+  # TODO: Remove this on different PR after running migration
   def alto_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")
   end

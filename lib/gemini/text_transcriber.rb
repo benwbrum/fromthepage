@@ -11,6 +11,10 @@ module Gemini
       'gemini-3-pro-preview' => 'v1beta'
     }.freeze
 
+    REASONING_MAP = {
+      'gemini-3-pro-preview' => true
+    }
+
     # Transcribes text from a page image using Google's Gemini multi-modal model
     # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
     # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
@@ -52,7 +56,7 @@ module Gemini
         attempt += 1
 
         begin
-          response = client.stream_generate_content({
+          payload = {
             contents: {
               role: 'user',
               parts: [
@@ -65,10 +69,25 @@ module Gemini
                 }
               ]
             }
-          })
+          }
+
+          if REASONING_MAP[model]
+            payload = payload.merge({
+              generation_config: {
+                thinking_config: {
+                  include_thoughts: true
+                }
+              }
+            })
+          end
+
+          response = client.stream_generate_content(payload)
+
+          # TODO: Make options customizable for gemini and add to metadata
+          metadata = {}
 
           # Extract transcribed text from response
-          return extract_text_from_response(response)
+          return [extract_text_from_response(response), extract_reasoning_from_response(response), metadata, prompt]
         rescue StandardError => e
           last_error = e
 
@@ -127,7 +146,26 @@ module Gemini
 
         parts = event.dig('candidates', 0, 'content', 'parts')
         parts.each do |part|
-          accumulated_text << part['text'] if part['text']
+          accumulated_text << part['text'] if part['text'] && !ActiveRecord::Type::Boolean.new.cast(part['thought'])
+        end
+      end
+
+      accumulated_text.join('').strip
+    end
+
+    # Extracts reasoning text from Gemini API response
+    #
+    # @param response [Array] The response from Gemini API
+    # @return [String] The extracted reasoning text
+    def self.extract_reasoning_from_response(response)
+      accumulated_text = []
+
+      response.each do |event|
+        next unless event.dig('candidates', 0, 'content', 'parts')
+
+        parts = event.dig('candidates', 0, 'content', 'parts')
+        parts.each do |part|
+          accumulated_text << part['text'] if part['text'] && ActiveRecord::Type::Boolean.new.cast(part['thought'])
         end
       end
 

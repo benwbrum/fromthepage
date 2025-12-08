@@ -111,6 +111,9 @@ pt:
       pages_need_translation: Páginas que precisam de tradução
       translations_need_indexing: Traduções que precisam de indexação
       translations_need_review: Traduções que precisam de revisão
+    reasoning:
+      ai_reasoning: Etapas de raciocínio da IA
+      reasoning_explanation: Explicação do raciocínio
   display_helper:
     page_action:
       blank_page: Página em branco
