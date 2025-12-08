@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
   create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text"
+    t.text "prompt"
     t.string "model", null: false
     t.text "reasoning"
     t.json "metadata"
