@@ -111,6 +111,9 @@ de:
       pages_need_translation: Seiten, die übersetzt werden müssen
       translations_need_indexing: Übersetzungen, die indexiert werden müssen
       translations_need_review: Übersetzungen, die überprüft werden müssen
+    reasoning:
+      ai_reasoning: Schritte des KI-Schlussfolgerns
+      reasoning_explanation: Begründung
   display_helper:
     page_action:
       blank_page: Leere Seite

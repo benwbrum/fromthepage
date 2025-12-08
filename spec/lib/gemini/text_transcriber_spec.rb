@@ -37,7 +37,7 @@ describe Gemini::TextTranscriber do
         # Mock sleep to speed up test
         allow_any_instance_of(Object).to receive(:sleep)
 
-        result = described_class.transcribe_image(image_url)
+        result, _, _, _ = described_class.transcribe_image(image_url)
         expect(result).to eq('Transcribed text')
         expect(call_count).to eq(3)
       end
