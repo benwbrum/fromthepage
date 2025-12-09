@@ -1,5 +1,30 @@
 namespace :fromthepage do
   namespace :gemini do
+    desc 'Transcribe a single page using Gemini AI'
+    task :transcribe_page, [:page_id, :model, :prompt_file] => :environment do |_t, args|
+      require 'gemini/text_transcriber'
+      unless args.page_id
+        puts 'Usage: rake fromthepage:gemini:transcribe_page[page_id]'
+        puts 'Example: rake fromthepage:gemini:transcribe_page[123]'
+        puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-2.5-pro,prompt.txt]'
+        exit 1
+      end
+      model = args.model
+      page = Page.find(args.page_id.to_i)
+      if args.prompt_file.present?
+        prompt = File.read(Rails.root.join(args.prompt_file))
+      else
+        prompt = nil
+      end
+      puts "Starting Gemini AI transcription for page ID: #{page.id} (#{page.title})"
+      result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
+      if result.success?
+        puts 'Transcription SUCCESS'
+      else
+        puts "Transcription ERROR - #{result.message}"
+      end
+    end
+
     desc 'Transcribe all pages in a work using Gemini AI (pass "retranscribe" to overwrite existing)'
     task :transcribe_work, [:work_slug, :retranscribe, :model, :prompt_file] => :environment do |_t, args|
       require 'gemini/text_transcriber'
@@ -41,7 +66,7 @@ namespace :fromthepage do
         print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
 
         # Skip pages that already have ai_plaintext unless retranscribe mode
-        if !retranscribe && page.has_ai_plaintext?
+        if !retranscribe && page.ai_transcription.present?
           puts 'SKIPPED (already has AI plaintext)'
           skip_count += 1
           next
@@ -128,7 +153,7 @@ namespace :fromthepage do
           print "[#{current_page}/#{total_pages}] Page #{page.id} (#{page.title}): "
 
           # Skip pages that already have ai_plaintext unless retranscribe mode
-          if !retranscribe && page.has_ai_plaintext?
+          if !retranscribe && page.ai_transcription.present?
             puts 'SKIPPED (already has AI plaintext)'
             overall_skip += 1
             next

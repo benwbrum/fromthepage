@@ -15,32 +15,63 @@ describe DisplayController do
   end
 
   describe '#ai_text' do
-    let(:page) { pages.first }
+    let!(:page) { pages.first }
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content') }
+
     let(:action_path) { collection_ai_text_page_path(owner, collection, work, page) }
 
-    context 'when page has AI plaintext' do
-      before do
-        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(true)
-        allow_any_instance_of(Page).to receive(:ai_plaintext).and_return("AI generated text content")
-      end
+    let(:subject) { get action_path }
 
+    context 'when page has AI plaintext' do
       it 'renders the AI text page' do
-        get action_path
+        subject
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:ai_text)
       end
+
+      context 'with completed transcription' do
+        before do
+          page.status = :transcribed
+          page.save!
+          allow_any_instance_of(Page).to receive(:ai_accuracy_statistics).and_return({
+            verbatim: { cer: 5.0, wer: 10.0 },
+            text_only: { cer: 3.0, wer: 8.0 }
+          })
+        end
+
+        it 'calculates and provides accuracy statistics' do
+          subject
+
+          expect(assigns(:ai_accuracy_stats)).not_to be_nil
+          expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:cer)
+          expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:wer)
+        end
+      end
+
+      context 'without completed transcription' do
+        before do
+          page.status = :incomplete
+          page.save!
+        end
+
+        it 'does not provide accuracy statistics' do
+          subject
+
+          expect(assigns(:ai_accuracy_stats)).to be_nil
+        end
+      end
     end
 
     context 'when page does not have AI plaintext' do
-      before do
-        allow_any_instance_of(Page).to receive(:has_ai_plaintext?).and_return(false)
-      end
+      let!(:page_without_transcription) { create(:page, work: work) }
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_without_transcription) }
 
       it 'redirects to display page' do
-        get action_path
+        subject
 
-        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page))
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page_without_transcription))
       end
     end
   end

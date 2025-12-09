@@ -28,10 +28,6 @@ namespace :fromthepage do
     document_upload.status = :processing
     document_upload.save
 
-    # Check if generate_ai_draft attribute exists (migration may not have run yet)
-    generate_ai_draft = document_upload.respond_to?(:generate_ai_draft) ? document_upload.generate_ai_draft : false
-    print "DEBUG: generate_ai_draft = #{generate_ai_draft.inspect} (attribute exists: #{document_upload.respond_to?(:generate_ai_draft)})\n"
-
     works_created = 0
     created_work_ids = []
     begin
@@ -46,10 +42,10 @@ namespace :fromthepage do
     end
 
     print "DEBUG: After processing - works_created = #{works_created}, created_work_ids = #{created_work_ids.inspect}\n"
-    print "DEBUG: generate_ai_draft check = #{generate_ai_draft} && works_created > 0 = #{generate_ai_draft && works_created > 0}\n"
+    print "DEBUG: generate_ai_draft check = #{document_upload.generate_ai_draft} && works_created > 0 = #{document_upload.generate_ai_draft && works_created > 0}\n"
 
     # Trigger AI Draft generation if requested
-    if generate_ai_draft && works_created > 0
+    if document_upload.generate_ai_draft && works_created > 0
       print "\n\n=== Starting AI Draft Text Generation ===\n"
       created_work_ids.each do |work_id|
         work = Work.find(work_id)
