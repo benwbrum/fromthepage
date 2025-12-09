@@ -9,6 +9,7 @@ Guidelines:
 - Preserve punctuation and capitalization as shown
 - If you encounter text that is unclear or illegible, transcribe what you can and 
   use [?] for uncertain characters or <unclear></unclear> tags around your best guess
+- Mark up strike-throug text, superscript or additions using XML tags `strike`, `sup`, and `add` 
 - Do not add any commentary, explanations, or notes
 - Only provide the transcribed text itself
 - Use Markdown tables to format any accounts, lists, or other tabular text, following
