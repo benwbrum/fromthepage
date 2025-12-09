@@ -78,7 +78,7 @@ class PageProcessor
       alto = alto_response.body.force_encoding('UTF-8') # HTTParty doesn't thinks the response is ASCII-8BIT but it's actually UTF-8
       AiTranscription.create!(
         page_id: @page.id,
-        source_text: alto,
+        prompt: alto,
         model: AiTranscription::ALTO_MODEL
       )
       @page.save!
