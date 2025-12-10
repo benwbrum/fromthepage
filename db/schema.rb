@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -631,7 +631,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
     t.index ["controller", "view"], name: "index_page_blocks_on_controller_and_view"
   end
 
-  create_table "page_versions", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "page_versions", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
     t.text "transcription", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_transcription", size: :medium, collation: "utf8mb4_unicode_ci"
@@ -644,6 +644,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
     t.text "xml_translation", collation: "utf8mb4_unicode_ci"
     t.string "status"
     t.json "transcription_json"
+    t.boolean "ai_draft_used", default: false, null: false
     t.index ["page_id"], name: "index_page_versions_on_page_id"
     t.index ["user_id"], name: "index_page_versions_on_user_id"
   end

@@ -1218,6 +1218,7 @@ button, .button, .dropdown dd a {
     padding-right: $gapSize / 2;
   }
   a {
+    align-items: center;
     display: flex;
     overflow: hidden;
     line-height: 2.4;

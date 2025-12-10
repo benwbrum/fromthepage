@@ -6,6 +6,7 @@ en:
     collection_inactive: Collection Inactive
     collection_joined: Collection Joined
     deed:
+      ai_draft_used: used AI draft for %{page}
       added_a_note_to_page: added a note to %{page}
       added_work: added %{work}
       corrected_page: corrected %{page}
