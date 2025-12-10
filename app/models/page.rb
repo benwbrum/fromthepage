@@ -72,7 +72,6 @@ class Page < ApplicationRecord
   has_one :alto_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
 
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
-
   has_and_belongs_to_many :sections
 
   has_many :notes, -> { order(:created_at) }, dependent: :destroy
@@ -645,7 +644,7 @@ class Page < ApplicationRecord
   # TODO: Remove this on different PR after running migration
   def alto_xml
     if self.alto_transcription.present?
-      self.alto_transcription.source_text
+      self.alto_transcription.prompt
     elsif self.has_alto?
       File.read(self.alto_path)
     else
