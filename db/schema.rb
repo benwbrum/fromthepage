@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_200640) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -63,10 +63,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_202855) do
 
   create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "page_id", null: false
-    t.text "source_text"
-    t.text "prompt"
+    t.text "source_text", size: :long
+    t.text "prompt", size: :long
     t.string "model", null: false
-    t.text "reasoning"
+    t.text "reasoning", size: :long
     t.json "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
