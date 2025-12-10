@@ -5,9 +5,9 @@
 #  id          :bigint           not null, primary key
 #  metadata    :text(4294967295)
 #  model       :string(255)      not null
-#  prompt      :text(65535)
-#  reasoning   :text(65535)
-#  source_text :text(65535)
+#  prompt      :text(4294967295)
+#  reasoning   :text(4294967295)
+#  source_text :text(4294967295)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  page_id     :integer          not null
