@@ -16,28 +16,35 @@ namespace :fromthepage do
       puts "Processing folder #{folder}..."
 
       Dir.each_child(folder_path) do |filename|
-        next unless filename.end_with?('_alto.xml', '_ai_plaintext.txt')
+        ai_plaintext_file = Dir.children(folder_path).find { |f| f.end_with?('_ai_plaintext.txt') }
+        next unless ai_plaintext_file
+
+        ai_plaintext_path = folder_path.join(ai_plaintext_file)
+
+        alto_file = Dir.children(folder_path).find { |f| f.end_with?('_alto.xml') }
+        alto_path = alto_file ? folder_path.join(alto_file) : nil
 
         page_id = filename.split('_').first.to_i
-        if filename.include?('alto.xml')
+        page = Page.find_by(id: page_id)
+        next unless page.present?
+
+        if alto_path && File.exist?(alto_path)
           type = 'alto'
           model = AiTranscription::ALTO_MODEL
+          prompt = File.read(alto_path)
         else
           type = 'ai_plaintext'
           model = 'gemini-2.5-pro'
+          prompt = nil
         end
-        file_path = folder_path.join(filename)
 
-        source_text = File.read(file_path)
-
-        page = Page.find_by(id: page_id)
-
-        next unless page.present?
+        source_text = File.read(ai_plaintext_path)
 
         AiTranscription.create!(
           page_id: page.id,
           source_text: source_text,
-          model: model
+          model: model,
+          prompt: prompt
         )
       end
 
