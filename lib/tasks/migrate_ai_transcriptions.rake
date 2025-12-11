@@ -1,5 +1,4 @@
 namespace :fromthepage do
-
   desc 'Cleanup bad migration'
   task cleanup_ai_migration_folders: :environment do
     # first rename all of the folders in public/text that end with _processed back to original name
@@ -12,7 +11,7 @@ namespace :fromthepage do
       puts "Renaming #{folder_path} back to #{original_path}..."
       File.rename(folder_path, original_path)
     end
-    puts "rename completed."
+    puts 'rename completed.'
   end
 
   desc 'Remove bad AI transcription records'
@@ -26,7 +25,7 @@ namespace :fromthepage do
         transcription.destroy!
       end
     end
-    puts "Bad AI transcriptions removed."
+    puts 'Bad AI transcriptions removed.'
   end
 
 
@@ -46,7 +45,7 @@ namespace :fromthepage do
 
       puts "Processing folder #{folder}..."
 
-      Dir.children(folder_path).map{|filename| filename.split('_').first.to_i }.sort.uniq.each do |page_id|
+      Dir.children(folder_path).map { |filename| filename.split('_').first.to_i }.sort.uniq.each do |page_id|
         filename = "#{page_id}_ai_plaintext.txt"
         ai_plaintext_path = folder_path.join(filename)
         next unless File.exist?(ai_plaintext_path)
@@ -76,7 +75,6 @@ namespace :fromthepage do
           )
         rescue => e
           puts "Error creating AiTranscription for page #{page.id}: #{e.message}"
-          binding.pry
         end
       end
 
