@@ -60,7 +60,7 @@ namespace :fromthepage do
           prompt = File.read(alto_path)
         else
           type = 'ai_plaintext'
-          model = 'gemini-2.5-pro'
+          model = 'gemini-3-pro-preview (migrated)'
           prompt = nil
         end
 
@@ -69,7 +69,7 @@ namespace :fromthepage do
         begin
           AiTranscription.create!(
             page_id: page.id,
-            source_text: source_text.gsub('🤔', '?'),
+            source_text: source_text,
             model: model,
             prompt: prompt
           )
