@@ -28,7 +28,7 @@ class Page::FetchAiText < ApplicationInteractor
       page_id: @page.id,
       source_text: transcribed_text,
       reasoning: reasoning,
-      model: @model,
+      model: @model || 'gemini-3-pro-preview',
       metadata: metadata,
       prompt: prompt
     )
