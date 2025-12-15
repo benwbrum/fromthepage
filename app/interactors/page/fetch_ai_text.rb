@@ -1,7 +1,7 @@
 class Page::FetchAiText < ApplicationInteractor
   attr_accessor :page
 
-  def initialize(page:, model: 'gemini-2.5-pro', prompt: nil)
+  def initialize(page:, model: 'gemini-3-pro-preview', prompt: nil)
     @page = page
     @model = model
     @prompt = prompt
@@ -28,7 +28,7 @@ class Page::FetchAiText < ApplicationInteractor
       page_id: @page.id,
       source_text: transcribed_text,
       reasoning: reasoning,
-      model: @model,
+      model: @model || 'gemini-3-pro-preview',
       metadata: metadata,
       prompt: prompt
     )
