@@ -1,7 +1,7 @@
 class Page::FetchAiText < ApplicationInteractor
   attr_accessor :page
 
-  def initialize(page:, model: 'gemini-2.5-pro', prompt: nil)
+  def initialize(page:, model: 'gemini-3-pro-preview', prompt: nil)
     @page = page
     @model = model
     @prompt = prompt

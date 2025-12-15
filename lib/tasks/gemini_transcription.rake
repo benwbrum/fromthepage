@@ -6,7 +6,7 @@ namespace :fromthepage do
       unless args.page_id
         puts 'Usage: rake fromthepage:gemini:transcribe_page[page_id]'
         puts 'Example: rake fromthepage:gemini:transcribe_page[123]'
-        puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-2.5-pro,prompt.txt]'
+        puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-3-pro-preview,prompt.txt]'
         exit 1
       end
       model = args.model
