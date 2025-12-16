@@ -1,6 +1,23 @@
 ---
 de:
   collection:
+    ai_transcriptions:
+      create:
+        success: KI-Transkriptionsauftrag gestartet.
+      form:
+        ai_transcription: KI-Transkription
+        description: Starten Sie KI-Transkriptionsaufträge für Seiten in dieser Sammlung.
+        description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
+        failed: Fehlgeschlagen
+        finished: Fertig
+        generate: Für neue Seiten generieren
+        in_progress: Im Gange
+        not_started: Nicht gestartet
+        pages: Seiten
+        queued: In der Warteschlange
+        retry: Fehlgeschlagene Aufträge erneut versuchen
+      update:
+        success: KI-Transkriptionsjobs werden neu sortiert.
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     blank_collection:
@@ -239,6 +256,7 @@ de:
       review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen bzw. freigeben."
       review_type_restricted_description: Alle Transkriptionen müssen überprüft werden, und nur autorisierte Prüfer können Transkriptionen genehmigen.
     edit_tabs:
+      ai: KI
       danger_zone: Gefahrenzone
       general: Allgemein
       help_text: Hilfstext

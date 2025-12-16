@@ -1,5 +1,6 @@
 class DisplayController < ApplicationController
   include ApplicationHelper
+
   public :render_to_string
 
   protect_from_forgery except: [:set_note_body]
@@ -134,18 +135,18 @@ class DisplayController < ApplicationController
   end
 
   def ai_text
-    # Redirect if page doesn't have AI plaintext
-    unless @page.ai_transcription.present?
+    unless @page.ai_transcription&.status_finished?
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
-      nil
+
+      return
     end
-    # Calculate accuracy statistics if available
-    @ai_accuracy_stats = @page.ai_accuracy_statistics
+
+    @ai_accuracy_stats = @page.ai_accuracy_statistics if @page.ai_transcription&.status_finished?
   end
 
   def paged_search
     if @article
-      render plain: 'This functionality has been disabled.  Please contact support@frothepage.com if you need it.'
+      render plain: 'This functionality has been disabled. Please contact support@frothepage.com if you need it.'
       return
 
       session[:col_id] = @collection.slug

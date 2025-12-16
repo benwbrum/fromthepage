@@ -32,16 +32,22 @@
 
 -if current_user == @collection.owner
   -tabs += [{\
+    icon: '#icon-robot',
+    name: t('.ai'),
+    selected: 7,
+    path: "#{main_app.edit_collection_ai_transcriptions_path(@collection.owner, @collection)}",
+  }]
+  -tabs += [{\
     icon: '#icon-warning-sign',
     name: t('.danger_zone'),
-    selected: 7,
+    selected: 8,
     path: "#{main_app.edit_danger_collection_path(@collection.owner, @collection)}",
   }]
 
 .side-tabs
   -for tab in tabs
     -if tab[:selected] == selected
-      a.active 
+      a.active
         =svg_symbol tab[:icon], class: 'icon'
         =tab[:name]
     -else

@@ -1,6 +1,23 @@
 ---
 pt:
   collection:
+    ai_transcriptions:
+      create:
+        success: Vaga de transcrição por IA aberta.
+      form:
+        ai_transcription: Transcrição por IA
+        description: Inicie trabalhos de transcrição por IA para páginas desta coleção.
+        description_complete: Todas as páginas desta coleção possuem transcrições por IA.
+        failed: Fracassado
+        finished: Finalizado
+        generate: Gerar para novas páginas
+        in_progress: Em andamento
+        not_started: Não iniciado
+        pages: Páginas
+        queued: Em fila
+        retry: Tentar novamente trabalhos com falha
+      update:
+        success: Reaproveitando vagas de transcrição de IA.
     approve_all:
       approved_n_pages: Páginas %{page_count} aprovadas.
     blank_collection:
@@ -239,6 +256,7 @@ pt:
       review_type_restricted: " Restrito: Todas as transcrições precisam de revisão e apenas revisores autorizados podem aprovar transcrições."
       review_type_restricted_description: Todas as transcrições precisam de revisão e somente revisores autorizados podem aprová-las.
     edit_tabs:
+      ai: IA
       danger_zone: Zona de perigo
       general: Em geral
       help_text: Texto de ajuda

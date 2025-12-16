@@ -9,7 +9,7 @@ describe AiAccuracyCalculator do
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection) }
   let!(:page) { create(:page, work: work, status: status) }
-  let!(:ai_transcription) { create(:ai_transcription, page: page) }
+  let!(:ai_transcription) { create(:ai_transcription, page: page, status: :finished) }
 
   let(:status) { :new }
 
@@ -49,7 +49,7 @@ describe AiAccuracyCalculator do
           xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p><page><p>Hello world, this is a test.</p></page></p>\n</page>"
         )
       end
-      let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'Hello world, this is a test.') }
+      let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'Hello world, this is a test.', status: :finished) }
 
       it 'returns a hash with verbatim and text_only statistics' do
         stats = page.ai_accuracy_statistics
@@ -284,7 +284,9 @@ describe AiAccuracyCalculator do
         xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p><page><p>The quick brown fox jumps over the lazy dog.</p></page></p>\n</page>"
       )
     end
-    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'The quick brown fox jumped over the lazy dog.') }
+    let!(:ai_transcription) do
+      create(:ai_transcription, page: page, source_text: 'The quick brown fox jumped over the lazy dog.', status: :finished)
+    end
 
     it 'calculates statistics for similar texts' do
       stats = page.ai_accuracy_statistics

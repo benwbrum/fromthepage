@@ -13,7 +13,7 @@ class CollectionController < ApplicationController
     :set_collection_footer_block
   ]
 
-  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_ai, :edit_danger]
 
   before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :authorized?, only: [
@@ -24,6 +24,7 @@ class CollectionController < ApplicationController
     :edit_privacy,
     :edit_help,
     :edit_quality_control,
+    :edit_ai,
     :edit_danger,
     :update,
     :blank_collection,
@@ -543,6 +544,30 @@ class CollectionController < ApplicationController
 
   def edit_quality_control
     @reviewers = @collection.reviewers
+  end
+
+  def edit_ai
+    latest_per_page = AiTranscription
+      .where(page_id: @collection.pages.select(:id))
+      .select('MAX(id) AS id')
+      .group(:page_id)
+
+    ai_transcriptions_count = AiTranscription
+      .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
+      .group(:status)
+      .count
+
+    @works_count = @collection.works.count
+    @pages_count = @collection.pages.count
+    @ai_transcriptions_count = latest_per_page.to_a.size
+    @queued_transcriptions_count =
+      ai_transcriptions_count['new'].to_i +
+      ai_transcriptions_count['queued'].to_i +
+      ai_transcriptions_count['processing'].to_i
+
+    @finished_transcriptions_count = ai_transcriptions_count['finished'].to_i
+    @failed_transcriptions_count = ai_transcriptions_count['error'].to_i
+    @not_started_transcriptions_count = @pages_count - @ai_transcriptions_count
   end
 
   def edit_danger
