@@ -16,9 +16,9 @@ module Gemini
     }
 
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
-    # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
-    # available. This can be updated when Gemini 2.5 is released.
+    # Defaults to gemini-3-pro-preview but can be configured via model parameter
+    # Note: The issue mentions Gemini 2.5, but we use gemini-3-pro-preview as default.
+    # This can be updated when other models are released.
     #
     # Implements exponential backoff retry logic for 503 errors (server overload) and 429 errors (rate limit)
     #
