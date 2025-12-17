@@ -6,9 +6,9 @@ en:
     collection_inactive: Collection Inactive
     collection_joined: Collection Joined
     deed:
-      ai_draft_used: used AI draft for %{page}
       added_a_note_to_page: added a note to %{page}
       added_work: added %{work}
+      ai_draft_used: used AI draft for %{page}
       corrected_page: corrected %{page}
       described_metadata: described metadata
       edited_article: edited %{article}
