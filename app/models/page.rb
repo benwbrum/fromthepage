@@ -104,7 +104,7 @@ class Page < ApplicationRecord
     serialize :transcription_json, coder: JSON
   end
 
-  attribute :ai_draft_used, :boolean
+  attribute :ai_draft_used, :boolean, default: false
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -425,7 +425,7 @@ class Page < ApplicationRecord
       xml_translation: self.xml_translation,
       status: self.status,
       transcription_json: self.transcription_json,
-      ai_draft_used: self.ai_draft_used && self.saved_change_to_source_text?
+      ai_draft_used: self.ai_draft_used? && self.saved_change_to_source_text?
     )
 
     # Add other attributes as needed
