@@ -24,7 +24,7 @@ module Gemini
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
-    # @param model [String] Optional custom model to use. Defaults to gemini-2.5-pro
+    # @param model [String] Optional custom model to use. Defaults to gemini-3-pro-preview
     # @param max_retries [Integer] Maximum number of retry attempts for 503/429 errors
     # @return [String] The transcribed text from the image
     def self.transcribe_image(image_url, prompt: nil, model: 'gemini-3-pro-preview', max_retries: 5)

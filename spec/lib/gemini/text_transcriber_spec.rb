@@ -106,7 +106,7 @@ describe Gemini::TextTranscriber do
       end
     end
 
-    context 'when API returns non-503 error' do
+    context 'when API returns non-503/429 error' do
       it 'does not retry and raises error immediately' do
         mock_client = double("GeminiClient")
         allow(Gemini).to receive(:new).and_return(mock_client)
