@@ -16,16 +16,16 @@ module Gemini
     }
 
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
-    # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
-    # available. This can be updated when Gemini 2.5 is released.
+    # Defaults to gemini-3-pro-preview but can be configured via model parameter
+    # Note: The issue mentions Gemini 2.5, but we use gemini-3-pro-preview as default.
+    # This can be updated when other models are released.
     #
-    # Implements exponential backoff retry logic for 503 errors (server overload)
+    # Implements exponential backoff retry logic for 503 errors (server overload) and 429 errors (rate limit)
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
-    # @param model [String] Optional custom model to use. Defaults to gemini-2.5-pro
-    # @param max_retries [Integer] Maximum number of retry attempts for 503 errors
+    # @param model [String] Optional custom model to use. Defaults to gemini-3-pro-preview
+    # @param max_retries [Integer] Maximum number of retry attempts for 503/429 errors
     # @return [String] The transcribed text from the image
     def self.transcribe_image(image_url, prompt: nil, model: 'gemini-3-pro-preview', max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
@@ -91,11 +91,12 @@ module Gemini
         rescue StandardError => e
           last_error = e
 
-          # Check if this is a 503 error (server overload)
-          if e.message.include?('503') && attempt <= max_retries
+          # Check if this is a 503 error (server overload) or 429 error (rate limit)
+          if (e.message.include?('503') || e.message.include?('429')) && attempt <= max_retries
             # Calculate exponential backoff delay: 2^attempt seconds
             delay = 2**attempt
-            Rails.logger.warn("Gemini API 503 error (attempt #{attempt}/#{max_retries}). Retrying in #{delay} seconds...")
+            error_type = e.message.include?('429') ? '429 (rate limit)' : '503 (server overload)'
+            Rails.logger.warn("Gemini API #{error_type} error (attempt #{attempt}/#{max_retries}). Retrying in #{delay} seconds...")
             sleep(delay)
             next
           end
