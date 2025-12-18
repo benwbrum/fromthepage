@@ -15,6 +15,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
 
     @collections   = []
     @document_sets = []
+    @articles      = []
     @works         = []
     @pages         = []
     @users         = []
@@ -101,6 +102,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       indices_boost: [
         { UsersIndex.index_name => 1000.0 },
         { CollectionsIndex.index_name => 50.0 },
+        { ArticlesIndex.index_name => 25.0 },
         { WorksIndex.index_name => 10.0 },
         { PagesIndex.index_name => 1.0 }
       ],
@@ -115,6 +117,12 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       base_query[:post_filter] = {
         prefix: {
           _index: CollectionsIndex.index_name
+        }
+      }
+    when 'subject'
+      base_query[:post_filter] = {
+        prefix: {
+          _index: ArticlesIndex.index_name
         }
       }
     when 'work'
@@ -154,10 +162,11 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       if collection_id.present?
         base_query[:query][:bool][:filter] << { term: { collection_id: collection_id } }
 
+        base_query[:query][:bool][:must][:bool][:should] << article_query
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [PagesIndex.index_name, WorksIndex.index_name]
+        return [ArticlesIndex.index_name, PagesIndex.index_name, WorksIndex.index_name]
       end
     end
 
@@ -168,10 +177,11 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
       if docset_id.present?
         base_query[:query][:bool][:filter] << { term: { docset_id: docset_id } }
 
+        base_query[:query][:bool][:must][:bool][:should] << article_query
         base_query[:query][:bool][:must][:bool][:should] << page_query
         base_query[:query][:bool][:must][:bool][:should] << work_query
 
-        return [PagesIndex.index_name, WorksIndex.index_name]
+        return [ArticlesIndex.index_name, PagesIndex.index_name, WorksIndex.index_name]
       end
     end
 
@@ -221,6 +231,14 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
     @user_query = rendered_query(query)
   end
 
+  def article_query
+    return @article_query if defined?(@article_query)
+
+    query = Article.es_search(query: augmented_query, user: @user)
+
+    @article_query = rendered_query(query)
+  end
+
   def page_query
     return @page_query if defined?(@page_query)
 
@@ -247,6 +265,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
   def inflate_results
     collection_ids = []
     docset_ids     = []
+    article_ids    = []
     page_ids       = []
     user_ids       = []
     work_ids       = []
@@ -260,6 +279,8 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
         collection_ids << hit['_id'].to_i
       elsif hit['_index'] == DocumentSetsIndex.index_name
         docset_ids << hit['_id'].gsub('docset-', '').to_i
+      elsif hit['_index'] == ArticlesIndex.index_name
+        article_ids << hit['_id'].to_i
       elsif hit['_index'] == PagesIndex.index_name
         page_ids << hit['_id'].to_i
       elsif hit['_index'] == UsersIndex.index_name
@@ -271,6 +292,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
 
     collections_map = Collection.includes(:owner).where(id: collection_ids).index_by(&:id)
     docsets_map = DocumentSet.includes(collection: :owner).where(id: docset_ids).index_by(&:id)
+    articles_map = Article.includes({ collection: :owner }, :categories).where(id: article_ids).index_by(&:id)
     pages_map = Page.includes(work: [{ collection: :owner }, :document_sets]).where(id: page_ids).index_by(&:id)
     users_map = User.where(id: user_ids).index_by(&:id)
     works_map = Work.includes(collection: :owner).where(id: work_ids).index_by(&:id)
@@ -290,6 +312,14 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
 
         if item.present?
           @document_sets << item
+          @results << item
+        end
+      elsif hit['_index'] == ArticlesIndex.index_name
+        hit_id = hit['_id'].to_i
+        item = articles_map[hit_id]
+
+        if item.present?
+          @articles << item
           @results << item
         end
       elsif hit['_index'] == PagesIndex.index_name
