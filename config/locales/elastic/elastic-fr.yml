@@ -1,0 +1,14 @@
+---
+fr:
+  elastic:
+    tabbed_results:
+      all: Tous (%{count})
+      collections: Collections (%{count})
+      no_results: Aucun résultat trouvé
+      pages: Pages (%{count})
+      refine_search: Veuillez affiner votre requête de recherche.
+      search_results: Résultats de la recherche
+      searching_inside: Fouiller à l'intérieur
+      subjects: Sujets (%{count})
+      users: Utilisateurs (%{count})
+      works: Œuvres (%{count})

@@ -623,7 +623,9 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def ai_plaintext
-    if self.ai_transcription.present?
+    if self.alto_transcription.present?
+      self.alto_transcription.source_text
+    elsif self.ai_transcription.present?
       self.ai_transcription.source_text
     elsif File.exist?(self.ai_plaintext_path)
       File.read(self.ai_plaintext_path)

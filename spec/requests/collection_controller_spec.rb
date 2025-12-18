@@ -717,6 +717,8 @@ describe CollectionController do
     let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id, works: [work]) }
     let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
     let!(:page) { create(:page, work: work) }
+    let!(:category) { create(:category, collection_id: collection.id) }
+    let!(:article) { create(:article, collection: collection, pages: [page]) }
 
     let(:action_path) { collection_search_path(owner, collection) }
     let(:params) { { term: page.title } }
@@ -732,6 +734,7 @@ describe CollectionController do
       DocumentSetsIndex.import document_set.reload
       WorksIndex.import collection.works
       PagesIndex.import collection.works.flat_map(&:pages)
+      ArticlesIndex.import article
     end
 
     after do
