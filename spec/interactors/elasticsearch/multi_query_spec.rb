@@ -140,6 +140,7 @@ describe Elasticsearch::MultiQuery do
 
         expect(result.results).to contain_exactly(
           collection,
+          article,
           work_1,
           page_1,
           page_3
@@ -152,6 +153,7 @@ describe Elasticsearch::MultiQuery do
         expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
           collection,
+          article,
           work_1,
           page_1,
           page_2,
@@ -163,6 +165,7 @@ describe Elasticsearch::MultiQuery do
         collection.update!(restricted: true)
         collection.reload.works.each(&:save!)
         collection.reload.pages.each(&:save!)
+        collection.reload.articles.each(&:save!)
 
         expect(result.success?).to be_truthy
         expect(result.results).to eq([])
@@ -235,6 +238,7 @@ describe Elasticsearch::MultiQuery do
         expect(result.success?).to be_truthy
         expect(result.results).to contain_exactly(
           collection,
+          article,
           work_1,
           page_1,
           page_3
