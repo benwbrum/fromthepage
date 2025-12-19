@@ -1,0 +1,15 @@
+---
+de:
+  suspicious_behaviors:
+    filters:
+      behavior_type:
+        all: Alle
+        large_paste: Große Paste
+      status:
+        all: Alle
+        confirmed: Bestätigt
+        dismissed: Abgewiesen
+        pending: Ausstehend
+    labels:
+      behavior_type: Typ
+      status: Status

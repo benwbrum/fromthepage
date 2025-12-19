@@ -45,6 +45,7 @@ en:
       settings: Settings
       statistics: Statistics
       subjects: Subjects
+      suspicious_behaviors: Suspicious Behaviors
       works_list: Works List
     description_tabs:
       describe: Metadata
