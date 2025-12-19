@@ -76,8 +76,14 @@ namespace :fromthepage do
           at_id = manifest['@id'] || manifest['id']
           print "\n[#{index}/#{sc_collection.manifests.count}] attempting #{at_id}\n"
           if sc_collection.v3?
-            # TODO
-            sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id)) # fetch the manifest
+            # Try to parse as v3, but fall back to v2 if version mismatch detected
+            begin
+              sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
+            rescue ScManifest::VersionMismatchError => version_error
+              puts "Version mismatch detected: #{version_error.message}"
+              puts "Retrying as v2 manifest..."
+              sc_manifest = ScManifest.manifest_for_at_id(at_id)
+            end
           else
             sc_manifest = ScManifest.manifest_for_at_id(at_id)
           end
