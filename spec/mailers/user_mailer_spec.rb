@@ -160,7 +160,7 @@ RSpec.describe UserMailer, type: :mailer do
            "items" => []
         }.to_json.to_s
       end
-    
+
       let(:sc_manifest) { ScManifest.manifest_for_v3_hash(v3_hash) }
       let(:work) { create(:work, collection: collection, sc_manifest: sc_manifest) }
       let(:work_no_manifest) { create(:work, collection: collection) }
