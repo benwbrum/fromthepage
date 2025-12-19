@@ -13,7 +13,7 @@ module ImageHelper
   #############################
 
   def self.unzip_file(file, destination)
-    print "upzip_file(#{file})\n"
+    print "unzip_file(#{file})\n"
 
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
