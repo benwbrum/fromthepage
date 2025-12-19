@@ -116,6 +116,18 @@ describe "Devise" do
       # but this seems to be a limitation of Capybara-Webkit
       expect(page.current_path).to eq dashboard_owner_path
     end
+    it "stays on trial signup form when organization name is blank" do
+      visit users_new_trial_path
+      page.fill_in 'Login', with: owner.login
+      page.fill_in 'Email Address', with: owner.email
+      page.fill_in 'Password', with: owner.password
+      page.fill_in 'Confirm Password', with: owner.password
+      page.fill_in :user_real_name, with: ''
+      click_button('Create Account')
+      expect(page).to have_content("Organization Name can't be blank")
+      expect(page).to have_content('Sign Up For A Free Trial')
+      expect(page.current_path).to eq user_registration_path
+    end
   end
 
   context "user login" do
