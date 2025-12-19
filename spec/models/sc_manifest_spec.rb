@@ -24,6 +24,11 @@ RSpec.describe ScManifest, type: :model do
         manifest = { '@context' => ['http://iiif.io/api/presentation/3/context.json', 'http://www.w3.org/ns/anno.jsonld'] }
         expect(ScManifest.detect_manifest_version(manifest)).to eq('3')
       end
+
+      it 'detects v3 when presentation/3 is not first in array context' do
+        manifest = { '@context' => ['http://www.w3.org/ns/anno.jsonld', 'http://iiif.io/api/presentation/3/context.json'] }
+        expect(ScManifest.detect_manifest_version(manifest)).to eq('3')
+      end
     end
 
     context 'with edge cases' do

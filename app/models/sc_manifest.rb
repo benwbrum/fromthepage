@@ -42,15 +42,16 @@ class ScManifest < ApplicationRecord
     return '2' if context.nil?
     
     # Handle array contexts (IIIF v3 can have array of contexts)
-    context = context.first if context.is_a?(Array)
+    # Search through all contexts to find the presentation context
+    contexts_to_check = context.is_a?(Array) ? context : [context]
     
-    # Check if it's v3 (uses presentation/3)
-    if context.to_s.include?('presentation/3')
-      '3'
-    else
-      # Default to v2 for presentation/2 or other contexts
-      '2'
+    # Check if any context is v3 (uses presentation/3)
+    contexts_to_check.each do |ctx|
+      return '3' if ctx.to_s.include?('presentation/3')
     end
+    
+    # Default to v2 for presentation/2 or other contexts
+    '2'
   end
 
   def self.manifest_for_at_id(at_id)

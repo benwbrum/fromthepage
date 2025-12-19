@@ -10,6 +10,7 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
   describe 'version detection and fallback' do
     let(:owner) { User.find_by(login: OWNER) || create(:user, login: OWNER) }
     let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let!(:owner_exists_before) { User.exists?(login: OWNER) }
     
     let(:v2_manifest_json) do
       {
@@ -39,7 +40,8 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
 
     after do
       collection.destroy
-      owner.destroy if owner.login == OWNER && User.where(login: OWNER).count == 1
+      # Only destroy owner if we created it (it didn't exist before)
+      owner.destroy unless owner_exists_before
     end
 
     context 'when v3 collection contains v2 manifests' do
