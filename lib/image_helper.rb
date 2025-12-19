@@ -13,7 +13,7 @@ module ImageHelper
   #############################
 
   def self.unzip_file(file, destination)
-    print "upzip_file(#{file})\n"
+    print "unzip_file(#{file})\n"
 
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
@@ -24,6 +24,11 @@ module ImageHelper
 
         print "\textracting #{outfile}\n"
         zip_file.extract(f, destination_directory: destination)
+
+        # Ensure directories have write permissions so files can be written into them
+        if File.directory?(outfile)
+          FileUtils.chmod(0755, outfile)
+        end
       end
     end
   end

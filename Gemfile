@@ -91,6 +91,7 @@ gem 'active_link_to'
 gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
 gem 'will_paginate'
+gem 'markdown'
 
 # Utilities / Helpers
 gem 'text'

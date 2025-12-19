@@ -1,17 +1,21 @@
 require 'spec_helper'
 
 describe AiAccuracyCalculator do
+  before do
+    Current.user = owner
+  end
+
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection) }
-  let!(:page) { create(:page, work: work) }
+  let!(:page) { create(:page, work: work, status: status) }
+  let!(:ai_transcription) { create(:ai_transcription, page: page) }
+
+  let(:status) { :new }
 
   describe '#can_calculate_ai_accuracy?' do
     context 'when page has AI plaintext and is completed' do
-      before do
-        page.ai_plaintext = 'Sample AI text'
-        page.status = :transcribed
-      end
+      let(:status) { :transcribed }
 
       it 'returns true' do
         expect(page.can_calculate_ai_accuracy?).to be true
@@ -19,10 +23,7 @@ describe AiAccuracyCalculator do
     end
 
     context 'when page has AI plaintext but is not completed' do
-      before do
-        page.ai_plaintext = 'Sample AI text'
-        page.status = :incomplete
-      end
+      let(:status) { :incomplete }
 
       it 'returns false' do
         expect(page.can_calculate_ai_accuracy?).to be false
@@ -30,9 +31,8 @@ describe AiAccuracyCalculator do
     end
 
     context 'when page is completed but has no AI plaintext' do
-      before do
-        page.status = :transcribed
-      end
+      let(:ai_transcription) { nil }
+      let(:status) { :transcribed }
 
       it 'returns false' do
         expect(page.can_calculate_ai_accuracy?).to be false
@@ -42,12 +42,14 @@ describe AiAccuracyCalculator do
 
   describe '#ai_accuracy_statistics' do
     context 'when statistics can be calculated' do
-      before do
-        page.source_text = '<page><p>Hello world, this is a test.</p></page>'
-        page.ai_plaintext = 'Hello world, this is a test.'
-        page.status = :transcribed
-        page.process_source
+      let(:status) { :transcribed }
+      let!(:page) do
+        create(:page, work: work, status: status,
+          source_text: '<page><p>Hello world, this is a test.</p></page>',
+          xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p><page><p>Hello world, this is a test.</p></page></p>\n</page>"
+        )
       end
+      let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'Hello world, this is a test.') }
 
       it 'returns a hash with verbatim and text_only statistics' do
         stats = page.ai_accuracy_statistics
@@ -89,9 +91,7 @@ describe AiAccuracyCalculator do
     end
 
     context 'when statistics cannot be calculated' do
-      before do
-        page.status = :incomplete
-      end
+      let(:status) { :incomplete }
 
       it 'returns nil' do
         expect(page.ai_accuracy_statistics).to be_nil
@@ -277,12 +277,14 @@ describe AiAccuracyCalculator do
   end
 
   describe 'integration test with real page data' do
-    before do
-      page.source_text = '<page><p>The quick brown fox jumps over the lazy dog.</p></page>'
-      page.ai_plaintext = 'The quick brown fox jumped over the lazy dog.'
-      page.status = :transcribed
-      page.process_source
+    let(:status) { :transcribed }
+    let!(:page) do
+      create(:page, work: work, status: status,
+        source_text: '<page><p>The quick brown fox jumps over the lazy dog.</p></page>',
+        xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p><page><p>The quick brown fox jumps over the lazy dog.</p></page></p>\n</page>"
+      )
     end
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'The quick brown fox jumped over the lazy dog.') }
 
     it 'calculates statistics for similar texts' do
       stats = page.ai_accuracy_statistics

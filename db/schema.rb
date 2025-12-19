@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "ai_transcriptions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text", size: :long
     t.text "prompt", size: :long
