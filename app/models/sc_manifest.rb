@@ -36,7 +36,10 @@ class ScManifest < ApplicationRecord
   # Detect IIIF manifest version from @context field
   # Returns '2' or '3' based on the context URL
   def self.detect_manifest_version(manifest_hash)
+    return '2' if manifest_hash.nil?
+    
     context = manifest_hash['@context']
+    return '2' if context.nil?
     
     # Handle array contexts (IIIF v3 can have array of contexts)
     context = context.first if context.is_a?(Array)
@@ -80,7 +83,7 @@ class ScManifest < ApplicationRecord
     
     sc_manifest = ScManifest.new
     sc_manifest.at_id = v3['id']
-    sc_manifest.label = v3['label'].values.first.first
+    sc_manifest.label = pluck_language_value(v3['label'])
     sc_manifest.metadata = v3['metadata']
     sc_manifest.v3_hash = v3
     sc_manifest.version = '3'

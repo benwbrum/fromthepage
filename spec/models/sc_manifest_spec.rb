@@ -26,10 +26,19 @@ RSpec.describe ScManifest, type: :model do
       end
     end
 
-    context 'with other contexts' do
+    context 'with edge cases' do
       it 'defaults to v2 for unknown contexts' do
         manifest = { '@context' => 'http://example.com/custom/context.json' }
         expect(ScManifest.detect_manifest_version(manifest)).to eq('2')
+      end
+
+      it 'defaults to v2 when context is nil' do
+        manifest = { '@context' => nil }
+        expect(ScManifest.detect_manifest_version(manifest)).to eq('2')
+      end
+
+      it 'defaults to v2 when manifest_hash is nil' do
+        expect(ScManifest.detect_manifest_version(nil)).to eq('2')
       end
     end
   end
