@@ -12,7 +12,8 @@ de:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
       ai_plaintext_caveat: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. Einige offensichtliche Fehler wurden durch 🤔-Symbole ersetzt, kniffligere Fehler werden jedoch möglicherweise nicht markiert. (Bitte löschen Sie diese Warnung.) -->"
-      copy_ai_plaintext: KI-Text
+      ai_plaintext_caveat_no_emoji: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. (Bitte löschen Sie diese Warnung.) -->"
+      copy_ai_plaintext: KI-Entwurf
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.
@@ -82,6 +83,7 @@ de:
       next_page: Nächste Seite
       previous_page: Vorherige Seite
     page_tabs:
+      ai: KI
       correct: Korrektur
       describe_work: Werk beschreiben
       help: Hilfe

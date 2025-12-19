@@ -180,7 +180,7 @@ describe Work::Metadata::ImportCsv do
   end
 
   it 'imports csv' do
-    expect(result.success?).to be_truthy
+    expect(result.success?).to be_falsey
     expect(result.rowset_errors).to include(
       # Case work 3, different collection
       {

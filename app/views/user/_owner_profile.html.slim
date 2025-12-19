@@ -24,7 +24,7 @@ section.user-profile
       -if user.about.present?
         div ==user.about
 
--unless carousel_collections.blank?
+-if carousel_collections.size > 1
   .carousel
     -carousel_collections.each do |c|
       -snippet = to_snippet(c.intro_block)

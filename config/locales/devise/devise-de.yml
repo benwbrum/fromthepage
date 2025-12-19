@@ -58,6 +58,7 @@ de:
     receive_activity_emails: Mails zu Aktivitäten erhalten
     registrations:
       choose_saml:
+        dartmouth_university: Dartmouth College
         harvard_university: Harvard University
         illinois_state: Illinois State University
         institution: Institution

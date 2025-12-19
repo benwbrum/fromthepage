@@ -36,7 +36,13 @@ module ApplicationHelper
 
   def file_to_url(filename)
     if filename
-      filename.sub(/.*public/, '')
+      # Strip the path before 'public'
+      web_path = filename.sub(/.*public/, '')
+      # Split the path into directory and filename components, URL encode each part
+      # to handle special characters like # in filenames
+      path_parts = web_path.split('/')
+      encoded_parts = path_parts.map { |part| ERB::Util.url_encode(part) }
+      encoded_parts.join('/')
     else
       ''
     end

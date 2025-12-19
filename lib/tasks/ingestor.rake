@@ -29,8 +29,9 @@ namespace :fromthepage do
     document_upload.save
 
     works_created = 0
+    created_work_ids = []
     begin
-      works_created = process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+      works_created, created_work_ids = process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
 
       document_upload.status = :finished
       document_upload.save
@@ -38,6 +39,41 @@ namespace :fromthepage do
       print "Process Batch: Exception: #{e.message}"
       document_upload.status = :error
       document_upload.save
+    end
+
+    print "DEBUG: After processing - works_created = #{works_created}, created_work_ids = #{created_work_ids.inspect}\n"
+    print "DEBUG: generate_ai_draft check = #{document_upload.generate_ai_draft} && works_created > 0 = #{document_upload.generate_ai_draft && works_created > 0}\n"
+
+    # Trigger AI Draft generation if requested
+    if document_upload.generate_ai_draft && works_created > 0
+      print "\n\n=== Starting AI Draft Text Generation ===\n"
+      created_work_ids.each do |work_id|
+        work = Work.find(work_id)
+        print "Generating AI Draft text for work: #{work.title} (ID: #{work.id})\n"
+
+        success_count = 0
+        error_count = 0
+
+        work.pages.each_with_index do |page, index|
+          print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
+
+          result = Page::FetchAiText.new(page: page).call
+
+          if result.success?
+            print "SUCCESS\n"
+            success_count += 1
+          else
+            print "ERROR - #{result.message}\n"
+            error_count += 1
+          end
+
+          # Small delay to avoid rate limiting
+          sleep(0.5)
+        end
+
+        print "AI Draft generation completed for #{work.title}: #{success_count} successful, #{error_count} errors\n"
+      end
+      print "=== AI Draft Text Generation Complete ===\n\n"
     end
 
     if SMTP_ENABLED
@@ -76,11 +112,11 @@ namespace :fromthepage do
     # resize files
     compress_tree(temp_dir)
     # ingest
-    works_created = ingest_tree(document_upload, temp_dir)
+    works_created, created_work_ids = ingest_tree(document_upload, temp_dir)
     # clean
     clean_tmp_dir(temp_dir)
 
-    works_created
+    [works_created, created_work_ids]
   end
 
   def clean_tmp_dir(temp_dir)
@@ -176,6 +212,7 @@ namespace :fromthepage do
   def ingest_tree(document_upload, temp_dir)
     print "ingest_tree(#{temp_dir})\n"
     works_created = 0
+    created_work_ids = []
 
     # first process all sub-directories
     clean_dir=temp_dir.gsub('[', '\[').gsub(']', '\]')
@@ -184,7 +221,9 @@ namespace :fromthepage do
       print "ingest_tree considering #{path})\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
-        works_created += ingest_tree(document_upload, path) # recurse
+        sub_works_created, sub_work_ids = ingest_tree(document_upload, path) # recurse
+        works_created += sub_works_created
+        created_work_ids += sub_work_ids
       end
     end
 
@@ -192,13 +231,16 @@ namespace :fromthepage do
     image_files = Dir.glob(File.join(clean_dir, '*.{'+IMAGE_FILE_EXTENSIONS.join(',')+'}')).sort
     if image_files.length > 0
       print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
-      convert_to_work(document_upload, temp_dir)
-      works_created += 1
+      work_id = convert_to_work(document_upload, temp_dir)
+      if work_id
+        works_created += 1
+        created_work_ids << work_id
+      end
       print "Finished converting files in #{temp_dir} to a work\n"
     end
     print "Finished ingest_tree for #{temp_dir} - created #{works_created} works\n"
 
-    works_created
+    [works_created, created_work_ids]
   end
 
 
@@ -333,6 +375,7 @@ namespace :fromthepage do
     end
 
     print "convert_to_work succeeded for #{work.title}\n"
+    work.id
   end
 
   def record_deed(work)

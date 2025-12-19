@@ -232,6 +232,38 @@ describe Page do
       end
     end
 
+    context 'when page has base_image with special characters' do
+      let(:page) { build_stubbed(:page, :with_image) }
+
+      before do
+        # Ensure no sc_canvas or ia_leaf to test the local image scenario
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+
+        # Simulate a base_image with special characters like # and spaces
+        page.base_image = '/home/fromthepage/deployment/releases/20250514221152/public/images/uploaded/32237431/ASS 642 #11 f. 1r.jpeg'
+
+        # Mock the default_url_options that would be set in production
+        allow(Rails.application.config.action_mailer).to receive(:default_url_options).and_return({ host: 'fromthepage.com' })
+      end
+
+      it 'converts path with special characters to properly encoded URL' do
+        result = page.image_url_for_download
+
+        # Should not contain the deployment path
+        expect(result).not_to include('/home/fromthepage/deployment/releases/')
+
+        # Should start with https://fromthepage.com for local images
+        expect(result).to start_with('https://fromthepage.com')
+
+        # Should contain URL-encoded special characters
+        expect(result).to include('ASS%20642%20%2311%20f.%201r.jpeg')
+
+        # Should be the complete expected URL with proper encoding
+        expect(result).to eq('https://fromthepage.com/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r.jpeg')
+      end
+    end
+
     context 'when page has sc_canvas (IIIF image)' do
       let(:sc_canvas) { double('sc_canvas', sc_resource_id: 'https://iiif.durham.ac.uk/iiif/trifle/32150/t1/mg/73/t1mg732d945c/c449d8a03531bef78218f0b3f3db4f01.jp2/full/full/0/default.jpg') }
       let(:page) { build_stubbed(:page) }
@@ -260,6 +292,59 @@ describe Page do
 
       it 'returns ia_leaf facsimile url' do
         expect(page.image_url_for_download).to eq('https://archive.org/image/123')
+      end
+    end
+  end
+
+  describe '#thumbnail_url' do
+    context 'when page has base_image with special characters' do
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(nil)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        allow(page).to receive(:thumbnail_image).and_return('/public/images/uploaded/32237431/ASS 642 #11 f. 1r_thumb.jpeg')
+      end
+
+      it 'returns URL encoded thumbnail path' do
+        # Include the ApplicationHelper to access file_to_url
+        page.extend(ApplicationHelper)
+        result = page.thumbnail_url
+        expect(result).to eq('/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r_thumb.jpeg')
+      end
+    end
+  end
+
+  describe '#ai_plaintext_has_emoji_placeholders?' do
+    let(:page) { build_stubbed(:page) }
+
+    context 'when ai_plaintext contains emoji placeholders' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("This is some text with 🤔 placeholder")
+      end
+
+      it 'returns true' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be true
+      end
+    end
+
+    context 'when ai_plaintext does not contain emoji placeholders' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("This is some text without placeholders")
+      end
+
+      it 'returns false' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be false
+      end
+    end
+
+    context 'when ai_plaintext is empty' do
+      before do
+        allow(page).to receive(:ai_plaintext).and_return("")
+      end
+
+      it 'returns false' do
+        expect(page.ai_plaintext_has_emoji_placeholders?).to be false
       end
     end
   end

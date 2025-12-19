@@ -2,13 +2,14 @@
 #
 # Table name: cdm_bulk_imports
 #
-#  id               :integer          not null, primary key
-#  cdm_urls         :text(65535)
-#  collection_param :string(255)      not null
-#  ocr_correction   :boolean          default(FALSE)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  user_id          :integer          not null
+#  id                 :integer          not null, primary key
+#  cdm_urls           :text(65535)
+#  collection_param   :string(255)      not null
+#  generate_ai_draft  :boolean          default(FALSE)
+#  ocr_correction     :boolean          default(FALSE)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  user_id            :integer          not null
 #
 # Indexes
 #

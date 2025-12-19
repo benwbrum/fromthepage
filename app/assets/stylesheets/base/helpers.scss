@@ -35,10 +35,18 @@
 .strikethrough {
   text-decoration: line-through !important;
 }
-.addition {
-  vertical-align: super;
-  font-size: 100%;
+
+ins.addition {
+  text-decoration: none;           /* kill UA underline */
+  vertical-align: super; 
+  font-size: 0.8em;
+  line-height: 1;                  /* avoid tall line boxes */
+  /* optional cue so additions are still visible */
+  color: #444;
+  /* or: border-top: 1px dotted currentColor; padding-top: 0.1em; */
 }
+
+
 .unclear {
   text-decoration: wavy !important;
 }

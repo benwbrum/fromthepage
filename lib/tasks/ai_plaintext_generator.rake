@@ -24,8 +24,8 @@ namespace :fromthepage do
         plaintext = generate_plaintext(raw_alto, diff_level)
         if !plaintext.blank?
           # save the plaintext
-          page.ai_plaintext = generate_plaintext(raw_alto, diff_level)
-          page.save!
+          new_plaintext = generate_plaintext(raw_alto, diff_level)
+          page.alto_transcription.update!(source_text: new_plaintext || '')
         end
       end
     end

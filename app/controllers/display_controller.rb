@@ -133,6 +133,16 @@ class DisplayController < ApplicationController
     end
   end
 
+  def ai_text
+    # Redirect if page doesn't have AI plaintext
+    unless @page.ai_transcription.present?
+      redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
+      nil
+    end
+    # Calculate accuracy statistics if available
+    @ai_accuracy_stats = @page.ai_accuracy_statistics
+  end
+
   def paged_search
     if @article
       render plain: 'This functionality has been disabled.  Please contact support@frothepage.com if you need it.'

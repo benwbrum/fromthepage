@@ -13,6 +13,7 @@ namespace :fromthepage do
     end
 
     errors = {}
+    imported_work_ids = []
     cdm_urls = bulk_import.cdm_urls.split(/\s/m)
 
     cdm_urls.each_with_index do |cdm_url, index|
@@ -27,6 +28,7 @@ namespace :fromthepage do
         if document_set
           document_set.works << work
         end
+        imported_work_ids << work.id if work
         puts "#{work.title} has been imported"
         unless work.errors.blank?
           error.update(work.errors)
@@ -40,6 +42,38 @@ namespace :fromthepage do
         errors.store(at_id, e.message)
         #        errors.store(at_id, e.backtrace.join("\n"))
       end
+    end
+
+    # Trigger AI Draft generation if requested
+    if bulk_import.generate_ai_draft && !imported_work_ids.empty?
+      puts "\n\n=== Starting AI Draft Text Generation ==="
+      imported_work_ids.each do |work_id|
+        work = Work.find(work_id)
+        puts "Generating AI Draft text for work: #{work.title} (ID: #{work.id})"
+
+        success_count = 0
+        error_count = 0
+
+        work.pages.each_with_index do |page, page_index|
+          print "[#{page_index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
+
+          result = Page::FetchAiText.new(page: page).call
+
+          if result.success?
+            print "SUCCESS\n"
+            success_count += 1
+          else
+            print "ERROR - #{result.message}\n"
+            error_count += 1
+          end
+
+          # Small delay to avoid rate limiting
+          sleep(0.5)
+        end
+
+        puts "AI Draft generation completed for #{work.title}: #{success_count} successful, #{error_count} errors"
+      end
+      puts "=== AI Draft Text Generation Complete ===\n\n"
     end
 
     if SMTP_ENABLED

@@ -97,18 +97,46 @@ class ExportController < ApplicationController
   end
 
   def table_csv
+    filename = "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv"
+    collection = @work.collection
+
+    if collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: collection,
+        work_ids: [@work.id]
+      ).call
+
+      raise 'Failed to export csv' unless result.success?
+
+      csv_string = result.csv_string
+    else
+      csv_string = export_tables_as_csv(@work)
+    end
+
     send_data(
-      export_tables_as_csv(@work),
-      filename: "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv",
+      csv_string,
+      filename: filename,
       type: 'text/csv'
     )
     cookies['download_finished'] = 'true'
   end
 
   def export_all_tables
+    filename = "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv"
+
+    if @collection.field_based?
+      result = Work::Table::ExportCsv.new(
+        collection: @collection,
+        work_ids: @collection.works.pluck(:id)
+      ).call
+
+      csv_string = result.csv_string
+    else
+      csv_string = export_tables_as_csv(@collection)
+    end
     send_data(
-      export_tables_as_csv(@collection),
-      filename: "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+      csv_string,
+      filename: filename,
       type: 'application/csv'
     )
     cookies['download_finished'] = 'true'
@@ -158,6 +186,7 @@ class ExportController < ApplicationController
     # display the edit form
   end
 
+  # TODO: Add specs for this
   def update_contentdm_credentials
     # test credentials
     license_key = params[:collection][:license_key]
