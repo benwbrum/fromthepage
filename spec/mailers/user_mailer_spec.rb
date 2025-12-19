@@ -135,9 +135,29 @@ RSpec.describe UserMailer, type: :mailer do
       let(:at_id) { 'http://example.com/manifest' }
       let(:v3_hash) do
         {
-          id: at_id,
-          label: { en: ['Original Metadata'] },
-          metadata: original_metadata
+          "@context" => "http://iiif.io/api/presentation/3/context.json",
+                "id" => "http://example.com/manifest",
+              "type" => "Manifest",
+             "label" => {
+              "en" => [
+                "Original Metadata"
+              ]
+          },
+          "metadata" => [
+              {
+                "label" => {
+                  "en" => [
+                     "Origin"
+                   ]
+                 },
+                 "value" => {
+                   "en" => [
+                      "Test Data"
+                   ]
+                 }
+              }
+          ],
+           "items" => []
         }.to_json.to_s
       end
 
