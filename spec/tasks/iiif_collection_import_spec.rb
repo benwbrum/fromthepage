@@ -11,7 +11,7 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
     let(:owner) { User.find_by(login: OWNER) || create(:user, login: OWNER) }
     let(:collection) { create(:collection, owner_user_id: owner.id) }
     let!(:owner_exists_before) { User.exists?(login: OWNER) }
-    
+
     let(:v2_manifest_json) do
       {
         '@context' => 'http://iiif.io/api/presentation/2/context.json',
@@ -61,7 +61,7 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
         }
 
         sc_collection = ScCollection.collection_for_v3_hash(v3_collection_hash)
-        
+
         # Mock URI.open to return v2 manifest when manifest is fetched
         allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
 
@@ -103,7 +103,7 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
         }
 
         sc_collection = ScCollection.collection_for_v3_hash(v3_collection_hash)
-        
+
         # Mock URI.open to return v3 manifest when manifest is fetched
         allow(URI).to receive(:open).and_return(double(read: v3_manifest_json))
 
@@ -147,7 +147,7 @@ RSpec.describe 'IIIF Collection Import Rake Task' do
 
         allow(URI).to receive(:open).and_return(double(read: v2_collection_json))
         sc_collection = ScCollection.collection_for_at_id('https://example.com/collection/v2')
-        
+
         # Mock URI.open to return v2 manifest when manifest is fetched
         allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
 

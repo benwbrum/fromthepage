@@ -121,7 +121,7 @@ RSpec.describe ScManifest, type: :model do
 
     it 'creates ScManifest object for v2 manifest' do
       allow(URI).to receive(:open).and_return(double(read: v2_manifest_json))
-      
+
       sc_manifest = ScManifest.manifest_for_at_id('https://example.com/manifest/v2')
       expect(sc_manifest).to be_a(ScManifest)
       expect(sc_manifest.at_id).to eq('https://example.com/manifest/v2')
@@ -130,7 +130,7 @@ RSpec.describe ScManifest, type: :model do
 
     it 'raises ArgumentError for collections' do
       allow(URI).to receive(:open).and_return(double(read: v2_collection_json))
-      
+
       expect {
         ScManifest.manifest_for_at_id('https://example.com/collection/v2')
       }.to raise_error(ArgumentError, /contains a collection, not an item/)

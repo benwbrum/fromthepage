@@ -37,20 +37,20 @@ class ScManifest < ApplicationRecord
   # Returns '2' or '3' based on the context URL
   def self.detect_manifest_version(manifest_hash)
     return '2' if manifest_hash.nil?
-    
+
     context = manifest_hash['@context']
     return '2' if context.nil?
-    
+
     # Handle array contexts (IIIF v3 can have array of contexts)
     # Search through all contexts to find the presentation context
     contexts_to_check = context.is_a?(Array) ? context : [context]
-    
+
     # Check if any context is v3 (uses presentation/3)
     # Using regex for more precise matching
     contexts_to_check.each do |ctx|
       return '3' if ctx.to_s.match?(%r{iiif\.io/api/presentation/3/context\.json})
     end
-    
+
     # Default to v2 for presentation/2 or other contexts
     '2'
   end
@@ -76,13 +76,13 @@ class ScManifest < ApplicationRecord
     if v3.is_a? String
       v3 = JSON.parse(v3)
     end
-    
+
     # Validate that this is actually a v3 manifest
     detected_version = detect_manifest_version(v3)
     if detected_version != '3'
       raise VersionMismatchError, "Expected v3 manifest but detected v#{detected_version} based on @context"
     end
-    
+
     sc_manifest = ScManifest.new
     sc_manifest.at_id = v3['id']
     sc_manifest.label = pluck_language_value(v3['label'])

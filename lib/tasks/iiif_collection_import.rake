@@ -81,7 +81,7 @@ namespace :fromthepage do
               sc_manifest = ScManifest.manifest_for_v3_hash(fetch_manifest(at_id))
             rescue ScManifest::VersionMismatchError => version_error
               puts "Version mismatch detected: #{version_error.message}"
-              puts "Retrying as v2 manifest..."
+              puts 'Retrying as v2 manifest...'
               sc_manifest = ScManifest.manifest_for_at_id(at_id)
             end
           else
