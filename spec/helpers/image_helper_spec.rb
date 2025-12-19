@@ -181,12 +181,12 @@ describe ImageHelper do
       require 'zip'
       FileUtils.mkdir_p(test_dir)
       FileUtils.mkdir_p(restricted_dir)
-      
+
       # Create a test image file
       require 'rmagick'
       image = Magick::Image.new(10, 10)
       image.write(test_file)
-      
+
       # Create a zip file with restricted directory permissions
       Zip::File.open(zip_file_path, create: true) do |zipfile|
         # Add the directory entry with read-only permissions
@@ -203,20 +203,20 @@ describe ImageHelper do
     it 'successfully extracts files from directories with restricted permissions' do
       # Extract the zip file
       expect { ImageHelper.unzip_file(zip_file_path, extraction_path) }.not_to raise_error
-      
+
       # Verify the directory was created
       extracted_dir = File.join(extraction_path, 'restricted_folder')
       expect(File.directory?(extracted_dir)).to be true
-      
+
       # Verify the directory has write permissions (owner can write)
       dir_mode = File.stat(extracted_dir).mode
       owner_can_write = (dir_mode & 0o200) != 0
       expect(owner_can_write).to be true
-      
+
       # Verify the file was extracted
       extracted_file = File.join(extracted_dir, 'test_image.jpg')
       expect(File.exist?(extracted_file)).to be true
-      
+
       # Verify we can write to the directory
       test_write_file = File.join(extracted_dir, 'test_write.txt')
       expect { File.write(test_write_file, 'test') }.not_to raise_error
@@ -230,32 +230,32 @@ describe ImageHelper do
       nested_dir1 = File.join(nested_source, 'level1')
       nested_dir2 = File.join(nested_dir1, 'level2')
       FileUtils.mkdir_p(nested_dir2)
-      
+
       nested_file = File.join(nested_dir2, 'nested_image.jpg')
       image = Magick::Image.new(5, 5)
       image.write(nested_file)
-      
+
       Zip::File.open(nested_zip_path, create: true) do |zipfile|
         zipfile.mkdir('level1', 0555)
         zipfile.mkdir('level1/level2', 0555)
         zipfile.add('level1/level2/nested_image.jpg', nested_file)
       end
-      
+
       nested_extraction_path = File.join(test_dir, 'nested_extracted')
-      
+
       # Extract and verify
       expect { ImageHelper.unzip_file(nested_zip_path, nested_extraction_path) }.not_to raise_error
-      
+
       extracted_nested_file = File.join(nested_extraction_path, 'level1', 'level2', 'nested_image.jpg')
       expect(File.exist?(extracted_nested_file)).to be true
-      
+
       # Verify both levels have write permissions
       level1_dir = File.join(nested_extraction_path, 'level1')
       level2_dir = File.join(level1_dir, 'level2')
-      
+
       level1_mode = File.stat(level1_dir).mode
       level2_mode = File.stat(level2_dir).mode
-      
+
       expect((level1_mode & 0o200) != 0).to be true
       expect((level2_mode & 0o200) != 0).to be true
     end

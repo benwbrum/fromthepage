@@ -24,7 +24,7 @@ module ImageHelper
 
         print "\textracting #{outfile}\n"
         zip_file.extract(f, destination_directory: destination)
-        
+
         # Ensure directories have write permissions so files can be written into them
         if File.directory?(outfile)
           FileUtils.chmod(0755, outfile)
