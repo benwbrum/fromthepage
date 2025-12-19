@@ -125,7 +125,7 @@ describe "Devise" do
       page.fill_in :user_real_name, with: ''
       click_button('Create Account')
       expect(page).to have_content("Organization Name can't be blank")
-      expect(page).to have_content('Sign Up For A Free Trial')
+      expect(page).to have_content('Sign Up for a Trial')
       expect(page.current_path).to eq user_registration_path
     end
   end
