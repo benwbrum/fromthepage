@@ -46,8 +46,9 @@ class ScManifest < ApplicationRecord
     contexts_to_check = context.is_a?(Array) ? context : [context]
     
     # Check if any context is v3 (uses presentation/3)
+    # Using regex for more precise matching
     contexts_to_check.each do |ctx|
-      return '3' if ctx.to_s.include?('presentation/3')
+      return '3' if ctx.to_s.match?(%r{iiif\.io/api/presentation/3/context\.json})
     end
     
     # Default to v2 for presentation/2 or other contexts
