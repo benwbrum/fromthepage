@@ -1,0 +1,9 @@
+- content_for :page_title, t('devise.sign_in')
+
+section.signon
+  h1= t('devise.registrations.choose_saml.sign_in_with_institution')
+  = form_tag(user_omniauth_authorize_path(@institution), method: :post, id: 'saml-provider-form') do
+    = submit_tag t('devise.sign_in'), class: 'strong signin'
+
+javascript:
+  document.getElementById('saml-provider-form').submit();
