@@ -1,0 +1,6 @@
+---
+fr:
+  errors:
+    error: Quelque chose s'est mal passé
+    html_syntax_error: syntaxe html invalide
+    unsupported_file_type: type de fichier non pris en charge

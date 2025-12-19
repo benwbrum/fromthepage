@@ -1,0 +1,7 @@
+<%= turbo_stream.replace("note-#{@result.note.id}", partial: 'notes/note', locals: { note: @result.note, editing: !@result.success? }) %>
+
+<% if @result.success? %>
+  <%= turbo_flash(t('.note_has_been_updated'), :notice) %>
+<% else %>
+  <%= turbo_flash(t('.error_updating_note'), :error) %>
+<% end %>

@@ -11,6 +11,9 @@ fr:
     codemirror:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
       add_description: Marque le texte inséré après coup par l'auteur.
+      ai_plaintext_caveat: "<!-- Le texte suivant a été généré par l'intelligence artificielle et contient probablement des erreurs. Certaines erreurs évidentes ont été remplacées par des symboles 🤔, mais les plus délicates ne peuvent pas être marquées. (Veuillez supprimer cet avertissement.) -->"
+      ai_plaintext_caveat_no_emoji: "<!-- Le texte suivant a été généré par l'intelligence artificielle et contient probablement des erreurs. (Veuillez supprimer cet avertissement.) -->"
+      copy_ai_plaintext: Brouillon IA
       date_description: Marque les dates, avec une forme standardisée dans l'attribut quand.
       del_description: Marque le texte qui a été supprimé par effacement ou barré.
       expan_description: Marque les abréviations développées avec les formes originales dans l'attribut abbr.
@@ -19,12 +22,14 @@ fr:
       gap_description: Marque un vide dans le texte, souvent dû à des dommages
       head_description: Marque les titres dans le texte
       marginalia_description: Marque le texte dans les marges du texte principal.
+      redo_description: Refaire la dernière action annulée
       reg_description: Marque une forme régularisée du texte, avec des formes originales dans l'attribut orig.
       s_description: Marque le texte qui a été barré pour une raison quelconque.
       sub_description: Texte en indice.
       sup_description: Texte en exposant.
       u_description: Marque le texte souligné.
       unclear_description: Marque le texte peu clair.
+      undo_description: Annuler la dernière action
     collection_tabs:
       add_work: Ajouter un œuvre
       collaborators: Collaborateurs
@@ -57,18 +62,28 @@ fr:
     markup_help:
       markup_help_description: '"Lien automatique" suggérera des sujets auxquels certains mots pourraient être liés ou vous pouvez utiliser des accolades doubles pour lier des sujets. <code>[[Jane Doe]]</code> liera le texte "Jane Doe" au sujet Jane Doe, tandis que <code>[[Jane Doe|Jane]]</code> liera le texte "Jane" au sujet Jane Doe. Nous recommandons que la liaison soit faite après la transcription initiale.'
     osd_div:
+      ai_assist: Assistance IA
       brightness: Luminosité
       contrast: Contraste
+      fit_width: Ajuster la largeur
       full_page: Basculer en pleine page
       home: Rentrer chez soi
       image_filters: Filtres d'images
+      monitor_close: Fermer la fenêtre
+      monitor_open: Ouvrir dans une nouvelle fenêtre
       open_seadragon_needs_js: OpenSeadragon n'est disponible que si JavaScript est activé.
       rotate_left: Tourne à gauche
       rotate_right: Tourner à droite
       threshold: Seuillage
       zoom_in: Agrandir
       zoom_out: Dézoomer
+    page_navigation:
+      describe_work: Décrire l'œuvre
+      nav_info: Page %{position} sur %{size}
+      next_page: Page suivante
+      previous_page: Page précédente
     page_tabs:
+      ai: IA
       correct: Corriger
       describe_work: Décrire l'œuvre
       help: Aide

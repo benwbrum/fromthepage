@@ -1,14 +1,13 @@
--user_name = user.display_name.presence || user.login
 section.user-profile
   .user-profile_image
-    =profile_picture(@user, 128)
+    =profile_picture(user, 128)
   .user-profile_details
     .headline
       h1.headline_title
-        =user_name
+        =user.display_name
       -if user == current_user
         .headline_aside
-          =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+          =link_to(update_profile_path(user.id), class: 'button outline', data: { controller: 'litebox', litebox: { hash: 'update-profile' } })
             =svg_symbol '#icon-edit', class: 'icon'
             span =t('.edit_profile')
           |&nbsp;&nbsp;
@@ -16,7 +15,7 @@ section.user-profile
             =svg_symbol '#icon-user', class: 'icon'
             span =t('.login_and_password').html_safe
           |&nbsp;&nbsp;
-          =link_to(user_api_key_path, class: 'button outline', :data => { litebox: { hash: 'api-key' }})
+          =link_to(user_api_key_path, class: 'button outline', data: { controller: 'litebox', litebox: { hash: 'api-key' } })
             =svg_symbol '#icon-lock', class: 'icon'
             span =t('.api_keys').html_safe
     .user-profile_stats
@@ -25,7 +24,7 @@ section.user-profile
       -if user.about.present?
         div ==user.about
 
--unless carousel_collections.blank?
+-if carousel_collections.size > 1
   .carousel
     -carousel_collections.each do |c|
       -snippet = to_snippet(c.intro_block)
@@ -37,10 +36,15 @@ section.user-profile
 
 .columns
   article.maincol
-    -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
-      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+    -if ELASTIC_ENABLED
+      =form_tag(owner_search_path(user.slug), :method => :get, class: 'collection-search') do
+        =search_field_tag :term, params[:term], placeholder: t('dashboard.landing_page.search_org')
+        =button_tag t('dashboard.landing_page.search')
+        =label_tag 'term', t('dashboard.landing_page.search_org_label'), class: 'hidden'
+    -if collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
+      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: collections_and_document_sets, as: :cds
     -else
-      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: collections_and_document_sets, as: :cds
   aside.sidecol
 
 -content_for :javascript

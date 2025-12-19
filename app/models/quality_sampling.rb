@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: quality_samplings
+#
+#  id            :integer          not null, primary key
+#  sample_set    :text(16777215)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  collection_id :integer          not null
+#  user_id       :integer          not null
+#
+# Indexes
+#
+#  index_quality_samplings_on_collection_id  (collection_id)
+#  index_quality_samplings_on_user_id        (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (collection_id => collections.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class QualitySampling < ApplicationRecord
   belongs_to :user
   belongs_to :collection
@@ -17,7 +38,7 @@ class QualitySampling < ApplicationRecord
   # end
 
   def current_field
-    self.collection.pages.where(status: Page::STATUS_NEEDS_REVIEW)
+    self.collection.pages.where(status: :needs_review)
   end
 
   def calculate_set
@@ -30,16 +51,16 @@ class QualitySampling < ApplicationRecord
     # look for unique works/users in the current field (pages needing review)
     review_triples = current_field.pluck(:work_id, :last_editor_user_id, 'pages.id')
     review_triples_by_work = review_triples.group_by { |triple| triple[0] } # work_id
-    review_triples_by_user = review_triples.select{ |triple| !triple[1].nil? }.group_by{ |triple| triple[1] }# user_id
+    review_triples_by_user = review_triples.select { |triple| !triple[1].nil? }.group_by { |triple| triple[1] }# user_id
 
     # for each user, add the relevant pages to the sample
     review_triples_by_user.sort.each do |user_id, review_triples_for_user|
       # how many of this user's pages are in the set?
-      user_page_ids = all_triples_by_user[user_id].map{|user_triple| user_triple[2]}
+      user_page_ids = all_triples_by_user[user_id].map { |user_triple| user_triple[2] }
       user_pages_in_set = working_set & user_page_ids
       if user_pages_in_set.size < MINIMUM_SAMPLE_SIZE
         # append target pages
-        user_review_page_ids = review_triples_for_user.map{|review_triple| review_triple[2]}
+        user_review_page_ids = review_triples_for_user.map { |review_triple| review_triple[2] }
         user_review_page_ids_not_in_set = user_review_page_ids - working_set
         working_set += user_review_page_ids_not_in_set.sample(MINIMUM_SAMPLE_SIZE - user_pages_in_set.size)
       end
@@ -48,11 +69,11 @@ class QualitySampling < ApplicationRecord
     # do the same for works
     review_triples_by_work.sort.each do |work_id, review_triples_for_work|
       # how many of this work's pages are in the set?
-      work_page_ids = all_triples_by_work[work_id].map{|work_triple| work_triple[2]}
+      work_page_ids = all_triples_by_work[work_id].map { |work_triple| work_triple[2] }
       work_pages_in_set = working_set & work_page_ids
       if work_pages_in_set.size < MINIMUM_SAMPLE_SIZE
         # append target pages
-        work_review_page_ids = review_triples_for_work.map{|review_triple| review_triple[2]}
+        work_review_page_ids = review_triples_for_work.map { |review_triple| review_triple[2] }
         work_review_page_ids_not_in_set = work_review_page_ids - working_set
         working_set += work_review_page_ids_not_in_set.sample(MINIMUM_SAMPLE_SIZE - work_pages_in_set.size)
       end
@@ -69,7 +90,7 @@ class QualitySampling < ApplicationRecord
   end
 
   def needs_review_pages
-    Page.where(status: Page::STATUS_NEEDS_REVIEW).where(id: sample_set)
+    Page.where(status: :needs_review).where(id: sample_set)
   end
 
   def next_unsampled_page
@@ -105,7 +126,7 @@ class QualitySampling < ApplicationRecord
   end
 
   def max_approval_delta
-    Page.where(id:sample_set).where.not(approval_delta: nil).maximum(:approval_delta)
+    Page.where(id: sample_set).where.not(approval_delta: nil).maximum(:approval_delta)
   end
 
   def sampling_objects
@@ -121,14 +142,14 @@ class QualitySampling < ApplicationRecord
     # replace reviewed page count with pages needing review
 
 
-    # for works: 
+    # for works:
     ## total page count should be the total pages in the work
-    ## approval delta should be the total/average for the pages in the work that have one and 
+    ## approval delta should be the total/average for the pages in the work that have one and
     ##    are in a completed state (since reviewed pages can be opened again)
     ## corrected_page_count should be pages in completed state with approval delta > 0
-    #  replace reviewed_page_count with pages needing review. 
-    ## 
-    Page.where(id:sample_set).each do |page|
+    #  replace reviewed_page_count with pages needing review.
+    ##
+    Page.where(id: sample_set).each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
       user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
 
@@ -149,7 +170,6 @@ class QualitySampling < ApplicationRecord
         work_sampling.reviewed_page_count += 1
         user_sampling.reviewed_page_count += 1
       end
-
     end
 
     [work_hash, user_hash]
@@ -168,6 +188,4 @@ class QualitySampling < ApplicationRecord
       @corrected_page_count = 0
     end
   end
-
-
 end

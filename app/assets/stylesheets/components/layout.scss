@@ -128,5 +128,44 @@
   .sidecol {
     width: 30%;
     min-width: 300px;
+
+    .allowed-collaborators {
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      width: 100%;
+
+      h3 {
+        margin-bottom: 0px !important;
+      }
+
+    }
+
+    .users-list {
+      padding: 0;
+
+      .user-label {
+        float: none;
+        padding: 0.5rem 1rem;
+
+        &:nth-child(5) {
+          margin-right: 0px;
+          margin-bottom: 30px;
+        }
+      }
+
+      &.expanded {
+        .user-label {
+          display: inline-block;
+          &:nth-child(5) {
+            margin-bottom: 0px;
+          }
+        }
+        .expand-btn .icon {
+          transform: rotate(-180deg);
+          transition: transform 0.3s;
+        }
+      }
+    }
   }
 }

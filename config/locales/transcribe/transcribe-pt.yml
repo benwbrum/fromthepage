@@ -1,11 +1,17 @@
 ---
 pt:
+  shared:
+    insert_table_modal:
+      cancel: Cancelar
+      columns: Colunas
+      ok: OK
+      rows: Linhas
   transcribe:
     assign_categories:
       assign_categories: Atribuir categorias
+      cancel: Cancelar
       continue: Continuar
       manage_categories: Controlar Categorias
-      options: opções
       subject: 'Tema: '
       uncategorized_subjects: Temas Não Categorizados
       uncategorized_subjects_mentioned: Você tem temas não categorizados mencionados na transcrição da página. Por favor, revisa os temas abaixo e atribua as categorias apropriadas para eles.
@@ -40,12 +46,15 @@ pt:
       sign_up_now_to_transcribe: Inscreva-se agora para transcrever.
       transcribe_as_guest: Transcrever como hóspede
     mark_page_blank:
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
     save_buttons:
       approve: Confirmar
       approve_to_transcribed_tooltip: Salve e aprove esta página
       autolink: Autolink
       autolink_tooltip: Sugerir tags de assunto automaticamente
+      copy_ai_plaintext: Rascunho de IA
+      copy_ai_plaintext_tooltip: Copie o texto gerado pela IA para o editor
       done: Feito
       edit: Editar
       edit_tooltip: Edite essa página
@@ -60,6 +69,7 @@ pt:
       save_to_transcribed_tooltip: Salve suas alterações
     save_transcription:
       error_message: 'Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})'
+      saved_and_next_notice: Salvo. Passando para a próxima página.
       saved_notice: Guardada
       you_may_save_notice: Você pode guardar até %{guest_deed_count} transcrições como hóspede.
     save_translation:

@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: page_versions
+#
+#  id                 :integer          not null, primary key
+#  created_on         :datetime
+#  page_version       :integer          default(0)
+#  source_translation :text(65535)
+#  status             :string(255)
+#  title              :string(255)
+#  transcription      :text(16777215)
+#  transcription_json :text(4294967295)
+#  work_version       :integer          default(0)
+#  xml_transcription  :text(16777215)
+#  xml_translation    :text(65535)
+#  page_id            :integer
+#  user_id            :integer
+#
+# Indexes
+#
+#  index_page_versions_on_page_id  (page_id)
+#  index_page_versions_on_user_id  (user_id)
+#
 class PageVersion < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :user, optional: true
@@ -5,20 +28,40 @@ class PageVersion < ApplicationRecord
 
   after_create :check_content
 
+  # TODO: We need to upgrade our DB version to utilize native json column field.
+  # Right now we are technically using long-text field and serializing to JSON
+  if (col = columns_hash['transcription_json']) &&
+    !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
+    serialize :transcription_json, coder: JSON
+  end
+
+  def check_content
+    Flag.check_page(self) if content_changed?
+  end
+
+  def content_changed?
+    previous_version = self.prev
+    return true unless previous_version
+
+    %i[title status transcription xml_transcription source_translation xml_translation].any? do |attribute|
+      self[attribute] != previous_version[attribute]
+    end
+  end
+
   def check_content
     Flag.check_page(self)
   end
 
   def display
-    self.created_on.strftime("%b %d, %Y") + " - " + self.user.display_name
+    self.created_on.strftime('%b %d, %Y') + ' - ' + self.user.display_name
   end
 
   def prev
-    page.page_versions.where("id < ?", id).first
+    page.page_versions.where('id < ?', id).first
   end
 
   def next
-    page.page_versions.where("id > ?", id).last
+    page.page_versions.where('id > ?', id).last
   end
 
   def current_version?
@@ -30,16 +73,29 @@ class PageVersion < ApplicationRecord
     if self.current_version?
       #   copy the previous version's contents into the page and save without callbacks
       previous_version = self.prev
-      page.update_columns(
-        :title => previous_version.title,
-        :source_text => previous_version.transcription,
-        :xml_text => previous_version.xml_transcription,
-        :source_translation => previous_version.source_translation,
-        :xml_translation => previous_version.xml_translation
-      )
-      if previous_version.page_version == 0
-        # reset the page and work status
-        page.update_columns(:status => nil)
+      if previous_version
+        page.update_columns(
+          title: previous_version.title,
+          source_text: previous_version.transcription,
+          xml_text: previous_version.xml_transcription,
+          source_translation: previous_version.source_translation,
+          xml_translation: previous_version.xml_translation
+        )
+        if previous_version.page_version == 0
+          # reset the page and work status
+          page.update_columns(status: 'new')
+          page.update_work_stats
+        end
+      else
+        # no previous version exists, reset the page to blank state
+        page.update_columns(
+          title: nil,
+          source_text: nil,
+          xml_text: nil,
+          source_translation: nil,
+          xml_translation: nil,
+          status: 'new'
+        )
         page.update_work_stats
       end
     else

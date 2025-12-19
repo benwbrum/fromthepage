@@ -5,7 +5,11 @@ es:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     create_for_owner:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
+    create_for_work:
+      export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     create_for_work_actual:
+      export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
+    create_for_work_ajax:
       export_running_message: Exportación en ejecución. El correo electrónico se enviará a %{email} al finalizar.
     download:
       download_cleaned_message: Esta descarga de exportación se ha limpiado. Por favor, comience uno nuevo.
@@ -43,6 +47,8 @@ es:
       organization_description: Los archivos zip se pueden organizar con una carpeta por obra que contenga archivos o subcarpetas para cada formato de exportación, o con una carpeta por formato de exportación que contenga archivos por obra.
       organization_format: Formatear carpetas
       organization_work: Carpetas de obras
+      page_details_csv: Detalles de página CSV
+      page_details_csv_description: Una hoja de cálculo con una fila por página, incluyendo información de la página y metadatos de la obra principal.
       preserve_linebreaks: Conservar saltos de línea
       previous_exports: Exportaciones anteriores
       search_optimized_plaintext: Texto sin formato optimizado para búsqueda

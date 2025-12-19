@@ -1,45 +1,14 @@
--field_order(@collection)
--@fields.each do |line, array|
-  -page_number = array.map{|field| field.page_number}.uniq.first
-  -if (@page && (page_number == @page.position || page_number == nil)) || (current_page?({action: 'edit_fields'}))
-    .fields-row
-      -field_layout(array)
-      -@field_array.each do |field, cell|
-        -if @field_preview && @field_preview[field.id]
-          -cell = @field_preview[field.id].first
-        -if field.input_type == 'spreadsheet'
-          .field-wrapper.spreadsheet
-            =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
-        -else
-          -span_width = !field.percentage.blank? ? field.percentage : @width
-          .field-wrapper(style="width: #{span_width}%")
-            -if field.input_type == "instruction"
-              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
-                h5 =t('.instructions')
-                p ==field.label
-            -else
-              =label_tag field.label, field.label
-              -content = cell.nil? ? nil : cell.content
-              -if field.input_type == "text"
-                =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-              -elsif field.input_type == "date"
-                =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input edtf', data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"'}
-              -elsif field.input_type == "select"
-                -options = field.options.split(";") unless field.options.nil?
-                =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
-              -elsif field.input_type == "description"
-                =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-              -elsif field.input_type == "alt text"
-                =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input alt-text', maxlength: '255'
-                div.character-count
-              -else
-                =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+-@field_presenter.formatted_fields.each do |formatted_fields|
+  .fields-row
+    -formatted_fields.each do |formatted_field|
+      .field-wrapper[style="width: #{formatted_field[:width]}%"]
+        =@field_presenter.generate_field_input(field_id: formatted_field[:field].id, content: formatted_field[:values])
 
 -content_for :javascript
   javascript:
     function countChars() {
       var chars = $(this).val().length
-      $(this).next().text(chars + " / 180"); 
+      $(this).next().text(chars + " / 180");
 
       if (chars > 180) {
         $(this).css('background-color', '#F5B7AC');

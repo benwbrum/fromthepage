@@ -1,11 +1,10 @@
 module ApplicationHelper
-  
   def contact_form_token
     ("#{Time.now.year}#{Time.now.month}#{Time.now.day}".to_i * 32 / 7)
   end
 
 
-  #dead code
+  # dead code
   def billing_host
     if defined? BILLING_HOST
       BILLING_HOST
@@ -26,82 +25,86 @@ module ApplicationHelper
   end
 
   def html_block(tag)
-    render({ :partial => 'page_block/html_block',
-             :locals =>
-              { :tag => tag,
-                :page_block => @html_blocks[tag],
-                :origin_controller => controller_name,
-                :origin_action => action_name
+    render({ partial: 'page_block/html_block',
+             locals:               { tag: tag,
+                page_block: @html_blocks[tag],
+                origin_controller: controller_name,
+                origin_action: action_name
               }
           })
   end
 
   def file_to_url(filename)
     if filename
-      filename.sub(/.*public/, "")
+      # Strip the path before 'public'
+      web_path = filename.sub(/.*public/, '')
+      # Split the path into directory and filename components, URL encode each part
+      # to handle special characters like # in filenames
+      path_parts = web_path.split('/')
+      encoded_parts = path_parts.map { |part| ERB::Util.url_encode(part) }
+      encoded_parts.join('/')
     else
-      ""
+      ''
     end
   end
 
   def profile_picture(user, gravatar_size = nil)
-    render({ 
-              :partial => 'shared/profile_picture',
-              :locals => { :user => user, :gravatar_size => gravatar_size }
+    render({
+              partial: 'shared/profile_picture',
+              locals: { user: user, gravatar_size: gravatar_size }
       })
   end
 
-  def svg_symbol(id, options={})
+  def svg_symbol(id, options = {})
     content_tag(:svg, options) do
-      content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
+      content_tag(:use, nil, 'xlink:href': asset_path('symbols.svg') + id)
     end
   end
 
   # ripped off from
   # http://wiki.rubyonrails.org/rails/pages/CategoryTreeUsingActsAsTree
-  def display_categories(categories, parent_id, expanded=false, &block)
+  def display_categories(categories, parent_id, expanded = false, &block)
     ret = "<ul>\n"
       for category in categories
         if category.parent_id == parent_id
           ret << "<li#{' class="expanded"' if expanded}>"
           ret << yield(category)
           ret << display_categories(category.children, category.id, expanded, &block) if category.children.any?
-          ret << "</li>"
+          ret << '</li>'
         end
       end
     ret << "</ul>\n"
   end
 
-  def deeds_for(options={})
+  def deeds_for(options = {})
     limit = options[:limit] || 20
 
     condition = [String.new]
 
     if options[:types]
       types = options[:types]
-      types = types.map { |t| "'#{t}'"}
+      types = types.map { |t| "'#{t}'" }
       condition[0] = "deed_type IN (#{types.join(',')})"
     end
 
     if options[:user_id]
-      condition[0] << " AND " unless condition[0].length == 0
-      condition[0] << "user_id = ?"
+      condition[0] << ' AND ' unless condition[0].length == 0
+      condition[0] << 'user_id = ?'
       condition << options[:user_id]
     end
 
     if options[:not_user_id]
-      condition[0] << " AND " unless condition[0].length == 0
-      condition[0] << "user_id != ?"
+      condition[0] << ' AND ' unless condition[0].length == 0
+      condition[0] << 'user_id != ?'
       condition << options[:not_user_id]
     end
-
 
     suppress_collection = false
     if options[:collection]
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
       suppress_collection = true
     else
-      #restricting to visible collections first speeds up the query
+      # restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner].id)
@@ -113,10 +116,10 @@ module ApplicationHelper
       end
     end
     options[:suppress_collection] = suppress_collection
-    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
+    render partial: 'deed/deeds', locals: { limit: limit, deeds: deeds, options: options }
   end
 
-  def show_prerender(prerender, locale) 
+  def show_prerender(prerender, locale)
     begin
       prerenders = JSON.parse(prerender)
       unless rendered = prerenders[locale.to_s] # show prerender in specified locale
@@ -133,11 +136,11 @@ module ApplicationHelper
 
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
-      render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })
+      render({ partial: 'shared/validation_summary', locals: { errors: errors } })
     end
   end
 
-  def page_title(title=nil)
+  def page_title(title = nil)
     base_title = 'FromThePage'
 
     if title.blank?
@@ -147,7 +150,7 @@ module ApplicationHelper
     end
   end
 
-  def work_title 
+  def work_title
     if @document_set
       "#{@work.title} (#{@document_set.title})"
     elsif @collection
@@ -159,18 +162,18 @@ module ApplicationHelper
 
   def language_attrs(collection)
     direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
-    
+
     language = ISO_639.find_by_code(collection.text_language)
     language = ISO_639.find_by_code('en') if language.nil?
 
     display_language = language.alpha2
 
     attrs = {
-      'lang'=>"#{display_language}", 
-      'dir'=>"#{direction}", 
+      'lang'=>"#{display_language}",
+      'dir'=>"#{direction}",
       'class'=>"#{direction}"
     }
-    return attrs
+    attrs
   end
 
   def fromthepage_version
@@ -179,40 +182,40 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      return value # scalar value
+      value # scalar value
     elsif value.is_a? Array
       if value.first.is_a? String
-        return value.join("; ") # simple array
+        value.join('; ') # simple array
       else
         # array of language pairs
-        return value.map {|e| e["@value"]}.join("; ")
+        value.map { |e| e['@value'] }.join('; ')
       end
     elsif value.is_a? Hash
       # is this a pre-IIIF-v3 multi-language value?
       if value.keys.include?('@language') && value.keys.include?('@value')
-        return value["@value"]
+        value['@value']
       else
-        return value.values.map{|value_array| value_array.first}.join('<br/>')
+        value.values.map { |value_array| value_array.first }.join('<br/>')
       end
     end
   end
 
   def html_metadata_from_work(work)
     if work.original_metadata.blank?
-      ""
+      ''
     else
       html_metadata(JSON.parse(work.original_metadata))
     end
   end
 
   def html_metadata(metadata_hash)
-    html = ""
+    html = ''
     metadata_hash.each do |md|
       label = md['label']
       if label.is_a? Array
         label = label.first['@value']
       elsif label.is_a? Hash
-        label = label.values.map{|label_array| label_array.first}.join(" / ")
+        label = label.values.map { |label_array| label_array.first }.join(' / ')
       end
       value = md['value']
 
@@ -223,9 +226,9 @@ module ApplicationHelper
 
   def target_collection_options(default)
     option_data = {}
-    current_user.collections.sort { |a,b| a.title <=> b.title }.each do |c| 
-      option_data[c.title]=c.id 
-      c.document_sets.sort { |a,b| a.title <=> b.title }.each do |set|
+    current_user.collections.sort { |a, b| a.title <=> b.title }.each do |c|
+      option_data[c.title]=c.id
+      c.document_sets.sort { |a, b| a.title <=> b.title }.each do |set|
         option_data[" -- #{set.title}"] = "D#{set.id}"
       end
     end
@@ -238,7 +241,7 @@ module ApplicationHelper
       end
     else
       options_for_select(option_data)
-    end      
+    end
   end
 
   def feature_enabled?(feature)
@@ -247,19 +250,35 @@ module ApplicationHelper
 
   # makes an intro block into a snippet by removing style tag, stripping tags, and truncating
   def to_snippet(intro_block)
-    # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
-    doc = Nokogiri::HTML(intro_block)
-    doc.xpath('//style').each { |n| n.remove } 
-    # strip tags and truncate
-    truncate(Loofah.fragment(doc.to_s).text(encode_special_chars: false), length: 300, separator: ' ') || '' 
+    return '' if intro_block.blank?
+
+    begin
+      # remove style tag, Loofah.fragment.text doesn't do this (strip_tags does)
+      doc = Nokogiri::HTML(intro_block)
+      doc.xpath('//style').each { |n| n.remove }
+      # strip tags and truncate
+      text = Loofah.fragment(doc.to_s).text(encode_special_chars: false)
+      truncate(text.to_s, length: 300, separator: ' ') || ''
+    rescue => e
+      # If anything goes wrong, return empty string
+      ''
+    end
   end
 
   def timeago(time, options = {})
-    options[:class] ||= "timeago"
+    options[:class] ||= 'timeago'
     content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
   end
 
   def mobile_device?
     !!(request.user_agent =~ /Mobile/)
+  end
+
+  def pagination_options_collection
+    [
+      ['50', 50],
+      ['200', 200],
+      [I18n.t('will_paginate.all'), -1]
+    ]
   end
 end

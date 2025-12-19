@@ -1,0 +1,13 @@
+<%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection, scope: 'edit_tasks' }) %>
+
+<% if @result.success? %>
+  <%= turbo_stream.update('collection-tabs', partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @collection.id }) %>
+
+  <% if @collection.field_based && !@collection.transcription_fields.present? %>
+    <%= turbo_flash(t('collection.edit_tasks.alert'), :info) %>
+  <% else %>
+    <%= turbo_flash(t('collection.update.notice'), :notice) %>
+  <% end %>
+<% else %>
+  <%= turbo_flash(t('collection.update.error'), :error) %>
+<% end %>

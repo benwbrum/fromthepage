@@ -1,6 +1,27 @@
 ---
 de:
   display:
+    ai_text:
+      ai_generated_text: KI-generierter Text
+      ai_text: KI-Text
+      ai_text_edit_notice: Um diesen Text zu bearbeiten, verwenden Sie die Schaltfläche „AI-Entwurf“ im Transkriptions-Tab.
+      facsimile: Faksimile
+      show_comparison_with_transcription: Vergleich mit der Transkription anzeigen
+      statistics_unavailable: Für diese Seite sind keine Genauigkeitsstatistiken verfügbar.
+      statistics_unavailable_reason: Statistiken können nur für Seiten mit einem abgeschlossenen Transkriptionsstatus (leer, indexiert oder transkribiert) berechnet werden.
+    cer_stats:
+      accuracy_explanation: Diese Statistiken vergleichen den von der KI generierten Text mit der von Menschen überprüften Transkription und geben Aufschluss über die Genauigkeit der KI-Transkription.
+      accuracy_statistics: Genauigkeitsstatistik
+      character_error_rate: Zeichenfehlerrate (CER)
+      character_error_rate_tooltip: CER misst den Prozentsatz der notwendigen Änderungen auf Zeichenebene (Einfügungen, Löschungen, Ersetzungen), um den KI-Text in den korrekten Originaltext zu überführen. Niedrigere Werte bedeuten eine höhere Genauigkeit.
+      non_stopword_accuracy: Genauigkeit ohne Stoppwörter
+      non_stopword_accuracy_tooltip: Misst den Prozentsatz der Inhaltswörter (ohne häufige Wörter wie „der“, „ein“, „ist“), die zwischen KI und Referenzdaten übereinstimmen. Höhere Werte deuten auf eine bessere Inhaltserkennung hin.
+      text_only_comparison: Vergleich (nur Text)
+      text_only_description: Die Statistiken wurden nach Entfernung von Satzzeichen und überflüssigen Leerzeichen sowie nach Normalisierung der Groß-/Kleinschreibung berechnet.
+      verbatim_comparison: Wortgetreuer Vergleich
+      verbatim_description: Die Statistiken wurden auf Basis des Originaltextes unter Beibehaltung der gesamten Formatierung berechnet.
+      word_error_rate: Wortfehlerrate (WER)
+      word_error_rate_tooltip: WER misst den Prozentsatz der Wortbearbeitungen, die nötig sind, um den KI-Text in den Originaltext umzuwandeln. Niedrigere Werte deuten auf eine höhere Genauigkeit hin.
     display_page:
       collaboration_is_restricted: Die Mitarbeit an dieser Sammlung ist eingeschränkt. Bitte wenden Sie sich an den/die Projektinhaber:in, wenn Sie zur Transkription beitragen möchten.
       collection_is_not_active: Dieses Projekt ist nicht aktiv. Bei Fragen wenden Sie sich bitte an den Projektverantwortlichen.
@@ -9,6 +30,7 @@ de:
       help_correct: zu korrigieren
       help_transcribe: zu transkribieren
       help_translate: zu übersetzen
+      legend: Legende
       mark_the_page_blank: Seite als leer markieren
       or_mark_blank: "<br>oder %{mark_blank}"
       page_notes: Anmerkungen und Fragen
@@ -35,6 +57,7 @@ de:
       no_notes: Keine Anmerkungen
       no_pages_found: Keine Seiten gefunden
       no_pages_in_work: Dieses Werk enthält noch keine Seiten, gehen Sie zu %{link}, um eine neue Seite zu erstellen
+      no_works_found: Keine Werke gefunden
       page_title: Seitentitel
       pages_tab: Seiten-Tab
       review: Review
@@ -44,6 +67,7 @@ de:
     multi_page:
       categories: Kategorien
       describe: Metadaten erstellen
+      pages_need_completion: Seiten, die vervollständigt werden müssen
       pages_need_indexing: Seiten, die indexiert werden müssen
       pages_need_review: Seiten, die überprüft werden müssen
       pages_need_transcription: Seiten, die transkribiert werden müssen
@@ -80,17 +104,22 @@ de:
       pages_that_mention: Seiten, die %{article} erwähnen
     read_work:
       pages: Seiten
+      pages_need_completion: Seiten, die vervollständigt werden müssen
       pages_need_indexing: Seiten, die indexiert werden müssen
       pages_need_review: Seiten, die überprüft werden müssen
       pages_need_transcription: Seiten, die transkribiert werden müssen
       pages_need_translation: Seiten, die übersetzt werden müssen
       translations_need_indexing: Übersetzungen, die indexiert werden müssen
       translations_need_review: Übersetzungen, die überprüft werden müssen
+    reasoning:
+      ai_reasoning: Schritte des KI-Schlussfolgerns
+      reasoning_explanation: Begründung
   display_helper:
     page_action:
       blank_page: Leere Seite
       completed: Abgeschlossen
       correct: Richtig
+      incomplete: Unvollständig
       index: Index
       review: Review
       transcribe: Transkribieren

@@ -39,9 +39,9 @@
           span.page-nav_info = t('.metadata')
           -if index.present?
             -next_works = @collection.works.to_a[index+1..]
-            -next_work = next_works.detect {|candidate| candidate.pages.where(status: [nil, Page::STATUS_INCOMPLETE]).first || candidate.description_status == Work::DescriptionStatus::UNDESCRIBED }
+            -next_work = next_works.detect {|candidate| candidate.pages.where(status: [:new, :incomplete]).first || candidate.description_status == Work::DescriptionStatus::UNDESCRIBED }
             -if next_work
-              -next_page = next_work.pages.where(status: [nil, Page::STATUS_INCOMPLETE]).first
+              -next_page = next_work.pages.where(status: [:new, :incomplete]).first
               -if next_page
                 =link_to(collection_transcribe_page_path(@collection.owner, @collection, @work, @work.pages.last.id), class: 'page-nav_next', title: t('.next_page'), 'aria-label' => t('.next_page'), onclick: 'unsavedTranscription(event);')
                   =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'

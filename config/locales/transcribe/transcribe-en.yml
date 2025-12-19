@@ -1,11 +1,17 @@
 ---
 en:
+  shared:
+    insert_table_modal:
+      cancel: Cancel
+      columns: Columns
+      ok: OK
+      rows: Rows
   transcribe:
     assign_categories:
       assign_categories: Assign categories
+      cancel: Cancel
       continue: Continue
       manage_categories: Manage Categories
-      options: options
       subject: 'Subject: '
       uncategorized_subjects: Uncategorized Subjects
       uncategorized_subjects_mentioned: You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
@@ -40,12 +46,15 @@ en:
       sign_up_now_to_transcribe: Sign up now to transcribe.
       transcribe_as_guest: Transcribe as guest
     mark_page_blank:
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
     save_buttons:
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this page
       autolink: Autolink
       autolink_tooltip: Suggest subject tags automatically
+      copy_ai_plaintext: AI Draft
+      copy_ai_plaintext_tooltip: Copy AI-generated text to the editor
       done: Done
       edit: Edit
       edit_tooltip: Edit this page
@@ -60,6 +69,7 @@ en:
       save_to_transcribed_tooltip: Save your changes
     save_transcription:
       error_message: 'There was an error parsing the mark-up in your transcript.  This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  Check any instances of < or > symbols in your text.  (The parser error was: %{error_message})'
+      saved_and_next_notice: Saved. Moving to the next page.
       saved_notice: Saved
       you_may_save_notice: You may save up to %{guest_deed_count} transcriptions as a guest.
     save_translation:

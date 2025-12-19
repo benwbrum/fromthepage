@@ -1,0 +1,48 @@
+{
+	"mappings": {
+		"properties": {
+			"is_public": {
+				"type": "boolean"
+			},
+			"permissions_updated": {
+				"type": "long"
+			},
+			"collection_id": {
+				"type": "integer"
+			},
+			"docset_id": {
+				"type": "integer"
+			},
+			"owner_user_id": {
+				"type": "integer"
+			},
+			"db_id": {
+				"type": "integer"
+			},
+			"title": {
+				"type": "text",
+				"analyzer": "general",
+				"fields": {
+					"no_underscores": {
+						"type": "text",
+						"analyzer": "general_no_underscores"
+					}
+				}
+			},
+			"searchable_metadata": {
+				"type": "text",
+				"fields": {
+					"identifier_whitespace": {
+						"type": "text",
+						"analyzer": "identifier_whitespace",
+						"search_analyzer": "identifier_whitespace_querytime"
+					},
+					"whitespace": {
+						"type": "text",
+						"analyzer": "general_whitespace"
+					}
+				}
+			}
+		}
+	}
+}

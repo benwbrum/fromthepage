@@ -14,7 +14,7 @@
   <%= t('.new_notes') %>
   <% @user_activity.active_note_pages.each do |page| %>
     <%= t('.note_added', work: page.work.title, collection: page.work.collection.title) %>
-    <%= t('.text.to_view_note', work: page.work.title, page: page.title, url: (collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false))) %>
+    <%= t('.text.to_view_note', work: page.work.title, page: page.title, url: (collection_display_page_url(page.collection.owner, page.collection, page.work, page, only_path: false))) %>
   <%end%>
 <%end%>
 

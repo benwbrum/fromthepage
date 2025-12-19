@@ -1,7 +1,6 @@
 class CreateArticlesCategories < ActiveRecord::Migration[5.0]
   def self.up
-
-    create_table :articles_categories, :id => false do |t|
+    create_table :articles_categories, id: false do |t|
       # foreign key to articles
       t.column :article_id, :integer
       # foreign key to categories

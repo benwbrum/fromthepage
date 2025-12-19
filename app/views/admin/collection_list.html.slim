@@ -1,85 +1,14 @@
-=stylesheet_link_tag 'datatables.min'
+=render(:partial => 'header', :locals => { :selected => 2 })
+
+
 h2 =t('.all_collections')
 
 .columns
   article.maincol
     -unless @collections.empty?
-      table#collections.datagrid.striped 
-        thead
-          th Collection
-          th Project Owner
-          th Structure
-          th Privacy
-          th Origin
-          th Status
-          th Type
-          th Completion
-          th Created
-          th Facets
-        tbody
-          -@collections.each do |c|
-            tr
-              td
-                =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, :target => "_blank")
-              -if c.owner
-                td
-                  =c.owner.display_name
-                  br
-                  i =c.owner.account_type
-                  .small =c.owner.email
-              -else
-                td
-                  b Orphan
-            
-              -if c.field_based
-                -if c.transcription_fields.where(input_type: 'spreadsheet').exists?
-                  td Spreadsheet
-                -else
-                  td Field-based
-              -else
-                td Document
-              -if c.restricted
-                td Private
-              -else
-                td Public
-              -if c.works.joins(:sc_manifest).exists?
-                -if c.works.joins(:sc_manifest).where("sc_manifests.at_id LIKE '%contentdm.oclc.org%'").exists?
-                  td CONTENTdm
-                -else
-                  td IIIF
-              -else
-                -if c.works.joins(:ia_work).exists?
-                  td Archive.org
-                -else
-                  td Uploaded
-              -if c.active?
-                td Active
-              -else
-                td Inactive
-              -if c.works.where(supports_translation: true).exists?
-                td Translation
-              -else
-                -if c.works.where(ocr_correction: true).exists?
-                  td OCR Correction
-                -else
-                  td Transcription
-              td =c.pct_completed
-              td =c.created_on.to_date
-              -if c.facets_enabled?
-                td facets
-              -else
-                td
+      =render :partial => 'collection_list_datatable'
     -else
       -new_collection = link_to t('.create_a_collection'), collection_new_path
       .nodata
         h5.nodata_title =t('.you_dont_have_any_collections_yet')
         p.nodata_text =t('.you_can', new_collection: new_collection)
-
-
-
--content_for :javascript
-  javascript:
-
-    $(document).ready( function() {
-        $('#collections').DataTable({ paging: false });
-    } );

@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-#lock '3.4.1'
+# lock '3.4.1'
 
 set :application, 'fromthepage'
 set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
@@ -23,11 +23,11 @@ set :branch, 'ui-design'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/initializers/omniauth.rb config/newrelic.yml public/robots.txt}
+set :linked_files, %w[config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/initializers/rack_attack.rb config/initializers/omniauth.rb config/newrelic.yml public/robots.txt]
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded", "public/images/fordham", "public/images/zebrapedia"]
+set :linked_dirs, ['log', 'public/images/working', 'public/uploads', 'tmp', 'public/images/uploaded', 'public/images/fordham', 'public/images/zebrapedia', 'public/text']
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -38,7 +38,6 @@ set :keep_releases, 20
 set :assets_roles, [:web, :app]
 
 namespace :deploy do
-
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
@@ -48,16 +47,25 @@ namespace :deploy do
 
   after :publishing, :restart
 
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-    # Here we can do anything such as:
-    # within release_path do
-    #   execute :rake, 'cache:clear'
-    # end
+  after :restart, :restart_solid_queue
+
+  desc 'Restart Solid Queue service'
+  task :restart_solid_queue do
+    on roles(:app) do
+      execute :sudo, :systemctl, 'restart solid_queue'
     end
   end
 
-  desc "Check that we can access everything"
+  after :restart_solid_queue, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
+  end
+
+  desc 'Check that we can access everything'
   task :check_write_permissions do
     on roles(:all) do |host|
       if test("[ -w #{fetch(:deploy_to)} ]")
@@ -67,5 +75,4 @@ namespace :deploy do
       end
     end
   end
-
 end

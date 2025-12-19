@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "IIIF Manifests API", :type => :request do
-  fixtures :all
+describe 'IIIF Manifests API' do
+  fixtures [:collections]
 
-  it "returns JSON" do
+  it 'returns JSON' do
     get iiif_manifest_path(1)
     expect(response.content_type).to eq("application/json; charset=utf-8")
   end
@@ -13,5 +13,4 @@ describe "IIIF Manifests API", :type => :request do
     json = JSON.parse(response.body)
     expect(json['within']['@id']).to eql("http://www.example.com/iiif/collection/cs-pierce")
   end
-
 end

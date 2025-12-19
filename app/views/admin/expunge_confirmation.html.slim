@@ -7,7 +7,7 @@
       =hidden_field_tag :flag_id, params[:flag_id]
 
     .toolbar
-      .toolbar_group.aright 
+      .toolbar_group.aright
         =f.button t('.expunge_user_display_name', user: @user.display_name), class: 'big', tabindex: '1', autofocus: true
 
   h2 =t('.user_contributions_to_be_deleted')
@@ -15,7 +15,7 @@
     -@user.deeds.each do |d|
       tr
         td.w100.toleft
-          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+          =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
         td
           small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
         td.nowrap

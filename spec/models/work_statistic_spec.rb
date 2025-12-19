@@ -302,8 +302,7 @@ RSpec.describe WorkStatistic, type: :model do
   context 'update methods' do
     let(:work) { create(:work) }
     let(:ws) do
-      create(:work_statistic,
-             work: work)
+      create(:work_statistic, work: work)
     end
 
     describe '#recalculate' do
@@ -316,15 +315,7 @@ RSpec.describe WorkStatistic, type: :model do
       end
       it 'recalculates with all page status types' do
         # Ensures compatibility with old API
-        statuses = %w[
-          transcribed
-          corrected
-          translated
-          blank
-          indexed
-          review
-        ]
-        statuses.each do |status|
+        Page.statuses.each_value do |status|
           ws.recalculate(type: status)
         end
       end
@@ -341,7 +332,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.transcribed_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
+          create(:page, work: work, status: :transcribed)
           ws.recalculate
           expect(ws.transcribed_pages).to eq(1)
         end
@@ -349,7 +340,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.blank_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_BLANK)
+          create(:page, work: work, status: :blank)
           ws.recalculate
           expect(ws.blank_pages).to eq(1)
         end
@@ -357,7 +348,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.annotated_pages).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_INDEXED)
+          create(:page, work: work, status: :indexed)
           ws.recalculate
           expect(ws.annotated_pages).to eq(1)
         end
@@ -365,7 +356,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.needs_review).to eq(0)
 
-          create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work: work, status: :needs_review)
           ws.recalculate
           expect(ws.needs_review).to eq(1)
         end
@@ -374,10 +365,10 @@ RSpec.describe WorkStatistic, type: :model do
             ws.recalculate
             expect(ws.complete).to eq(0)
 
-            create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_INDEXED)
-            create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            create(:page, work: work, status: :transcribed)
+            create(:page, work: work, status: :blank)
+            create(:page, work: work, status: :indexed)
+            create(:page, work: work, status: :needs_review)
             ws.recalculate
 
             # Corrected and Transcribed are synonymous and
@@ -398,11 +389,11 @@ RSpec.describe WorkStatistic, type: :model do
             ws.recalculate
             expect(ws.complete).to eq(0)
 
-            create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_BLANK)
-            create(:page, work: work, status: Page::STATUS_INDEXED)
-            create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            create(:page, work: work, status: :transcribed)
+            create(:page, work: work, status: :blank)
+            create(:page, work: work, status: :blank)
+            create(:page, work: work, status: :indexed)
+            create(:page, work: work, status: :needs_review)
             ws.recalculate
 
             # Corrected and Transcribed are synonymous and
@@ -418,7 +409,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.translated_pages).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_TRANSLATED)
+          create(:page, work: work, translation_status: :translated)
           ws.recalculate
           expect(ws.translated_pages).to eq(1)
         end
@@ -426,7 +417,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.translated_blank).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_BLANK)
+          create(:page, work: work, translation_status: :blank)
           ws.recalculate
           expect(ws.translated_blank).to eq(1)
         end
@@ -434,7 +425,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.translated_annotated).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_INDEXED)
+          create(:page, work: work, translation_status: :indexed)
           ws.recalculate
           expect(ws.translated_annotated).to eq(1)
         end
@@ -442,7 +433,7 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.translated_review).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work: work, translation_status: :needs_review)
           ws.recalculate
           expect(ws.translated_review).to eq(1)
         end
@@ -450,10 +441,10 @@ RSpec.describe WorkStatistic, type: :model do
           ws.recalculate
           expect(ws.translation_complete).to eq(0)
 
-          create(:page, work: work, translation_status: Page::STATUS_TRANSLATED)
-          create(:page, work: work, translation_status: Page::STATUS_BLANK)
-          create(:page, work: work, translation_status: Page::STATUS_INDEXED)
-          create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          create(:page, work: work, translation_status: :translated)
+          create(:page, work: work, translation_status: :blank)
+          create(:page, work: work, translation_status: :indexed)
+          create(:page, work: work, translation_status: :needs_review)
           ws.recalculate
 
           expect(ws.translation_complete).to eq(75)

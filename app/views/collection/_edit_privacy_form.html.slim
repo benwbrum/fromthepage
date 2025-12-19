@@ -1,0 +1,42 @@
+tr
+  th(colspan="2")
+    h3.settings-label
+      =t('collection.edit_privacy.collection_privacy')
+      i =collection.is_public ? t('collection.edit_privacy.public') : t('collection.edit_privacy.private')
+    -if collection.restricted
+      =button_tag name: 'collection[restricted]', value: 'false', class: 'button inline-btn' do
+        =svg_symbol '#icon-unlock', class: 'icon'
+        span =t('collection.edit_privacy.make_collection_public')
+    -else
+      =button_tag name: 'collection[restricted]', value: 'true', class: 'button inline-btn' do
+        =svg_symbol '#icon-lock', class: 'icon'
+        span =t('collection.edit_privacy.make_collection_private')
+tr
+  td(colspan="2")
+    -if collection.restricted
+      p =t('collection.edit_privacy.collection_restricted_description')
+    -else
+      p =t('collection.edit_privacy.collection_public_description')
+tr: td
+tr#collaborators
+  =render partial: 'collaborators', locals: { collection: collection, collaborators: @collaborators }
+tr#owners
+  =render partial: 'owners', locals: { collection: collection, owners: @owners }
+tr#blocked-users
+  =render partial: 'blocked_users', locals: { collection: collection, blocked_users: @blocked_users }
+tr: td
+tr
+  td(colspan="2")
+    h3 =t('collection.edit_privacy.api_access')
+    p =t('collection.edit_privacy.api_access_description')
+tr
+  td(colspan="2")
+    =f.radio_button :api_access, true, disabled: !collection.restricted, :checked => (collection.api_access || !collection.restricted)
+    =f.label :api_access_true
+      .big =t('collection.edit_privacy.open_api')
+    br
+    =f.radio_button :api_access, false, disabled: !collection.restricted, :checked => !(collection.api_access || !collection.restricted)
+    =f.label :api_access_false
+      .big =t('collection.edit_privacy.closed_api')
+
+= render partial: 'restrict_transcribed', locals: { collection: collection, works_to_restrict_count: @works_to_restrict_count }

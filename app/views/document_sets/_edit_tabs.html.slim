@@ -1,0 +1,27 @@
+-tabs = [{\
+  icon: '#icon-settings',
+  name: t('.general'),
+  selected: 1,
+  path: "#{main_app.collection_settings_path(@document_set.owner, @document_set)}",
+},{\
+  icon: '#icon-lock',
+  name: t('.privacy_access'),
+  selected: 2,
+  path: "#{main_app.collection_settings_privacy_path(@document_set.owner, @document_set)}",
+},{\
+  icon: '#icon-stacks',
+  name: t('.manage_works'),
+  selected: 3,
+  path: "#{main_app.collection_settings_works_path(@document_set.owner, @document_set)}",
+}]
+
+.side-tabs
+  -for tab in tabs
+    -if tab[:selected] == selected
+      a.active
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]
+    -else
+      =link_to tab[:path]
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]

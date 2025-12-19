@@ -1,0 +1,34 @@
+=form_tag(document_sets_update_works_path, data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true }) do
+  =hidden_field_tag :document_set_id, @document_set.slug
+
+  table.datagrid.striped.dataTable.no-footer
+    thead
+      =fe_sortable_header(key: :title, sorting: 'title', ordering: @ordering) do
+        =t('document_sets.edit_works.work')
+      th=t('document_sets.edit_works.status')
+      th.document_set
+        =check_box_tag(nil, nil, false, style: 'margin: 0 5px 0 0;', data: { controller: 'select-all', select_all: 'works' })
+        =t('document_sets.edit_works.included')
+
+    tbody
+      -@works.each do |work|
+        -work_stats(work)
+        tr
+          td[style='max-width: 175px;']
+            =work.title
+          td
+            span(title="#{t('document_sets.edit_works.n_pages', count: work.work_statistic.total_pages)}#{@wording}")
+              .progress
+                -unless @document_set.subjects_disabled
+                  span(style="width:#{@progress_annotated}%")
+                  span(style="width:#{@progress_completed - @progress_annotated}%")
+                  span(style="width:#{@progress_review}%")
+                -else
+                  span(style="width:#{@progress_completed}%")
+                  span(style="width:#{@progress_review}%")
+          td.document_set
+            =hidden_field_tag "works[#{work.id}][included]", false
+            =check_box_tag "works[#{work.id}][included]", true, @set_work_ids.include?(work.id), { title: t('document_sets.edit_works.add_work_title_to_document_set', work_title: work.title), class: 'works' }
+
+  =render partial: 'shared/pagination', locals: { model: @works, entries_info: true }
+

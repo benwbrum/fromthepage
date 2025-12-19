@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "disable subject linking", :order => :defined do
-
+describe "disable subject linking", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -11,29 +10,30 @@ describe "disable subject linking", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
-  it "disables subject indexing in a collection" do
+  it "disables subject indexing in a collection", js: true do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_content("Enable subject indexing")
     uncheck('collection_subjects_enabled')
-    click_button('Save Changes')
-    #have to find the collection again to make sure it's been updated
+    sleep(3)
+    # have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be true
   end
 
   it "checks collection level subject items" do
     visit collection_path(@collection.owner, @collection)
-    #check for subject related items on Overview tab
+    # check for subject related items on Overview tab
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Works")
     expect(page).not_to have_content("% indexed")
     expect(page).not_to have_content("Subject Categories")
     expect(page.find('.tabs')).not_to have_content("Subjects")
-    #check for subject related items on Statistics tab
+    # check for subject related items on Statistics tab
     page.find('.tabs').click_link("Statistics")
     expect(page).to have_content("Collaborators")
     expect(page).not_to have_content('Subjects')
@@ -41,11 +41,11 @@ describe "disable subject linking", :order => :defined do
     expect(page).not_to have_content('Pages indexed')
     expect(page).not_to have_content('New subjects')
     expect(page).not_to have_content("Indexing")
-    #check for subject related items on Export tab
+    # check for subject related items on Export tab
     page.find('.tabs').click_link("Export")
     expect(page).to have_content("Export Individual Works")
     expect(page).not_to have_content("Export Subjects")
-    #check for subject related items on Collaborators tab
+    # check for subject related items on Collaborators tab
     page.find('.tabs').click_link("Collaborators")
     expect(page).to have_content("Contributions")
     expect(page).not_to have_content("Recent Subjects")
@@ -87,18 +87,20 @@ describe "disable subject linking", :order => :defined do
     expect(page).not_to have_selector('a', text: 'Short Subject')
   end
 
-  it "enables subject indexing" do
+  it "enables subject indexing", js: true do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
+
+    page.find('.tabs').click_link('Settings')
+    page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_content("Enable subject indexing")
     check('collection_subjects_enabled')
-    click_button('Save Changes')
-    #have to find the collection again to make sure it's been updated
-    collection = Collection.where(owner_user_id: @owner.id).first
-    expect(collection.subjects_disabled).to be false
+
+    expect(page).to have_content("Collection has been updated")
+
+    expect(@collection.reload.subjects_disabled).to be false
   end
 
- it "checks links work when enabled" do
+ it "checks links work when enabled", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)

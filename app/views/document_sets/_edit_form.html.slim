@@ -1,0 +1,35 @@
+-link = link_to t('document_sets.edit.here'), document_sets_path(collection_id: document_set.collection)
+p =t('document_sets.edit.document_set_based_on', title: document_set.collection.title, link: link).html_safe
+
+tr
+  th: h3 =f.label :title, t('document_sets.edit.title')
+  td =f.text_field :title
+tr
+  th
+    h3 =f.label :slug, t('document_sets.edit.url')
+    p ==t('document_sets.edit.url_description')
+  td
+    =f.text_field :slug
+tr
+  th =t('document_sets.edit.current_url')
+  td [data-controller='clipboard']
+    b [data-clipboard-target='source'] = collection_url(document_set.owner, document_set)
+    a.clipboard-btn (data-action='click->clipboard#copy')
+      =svg_symbol '#icon-copy', class: 'icon'
+tr
+  th
+    h3 =f.label :description, t('document_sets.edit.description')
+    p = t('document_sets.edit.description_message')
+  td =f.text_area :description, rows: 6
+tr
+  th
+    h3 =t('document_sets.edit.document_set_image')
+    p =t('document_sets.edit.document_set_image_description')
+  td.image-form
+    -if document_set.picture_url(:thumb)
+      label.image-upload( data-hover=t('document_sets.edit.upload_image') aria-label=t('document_sets.edit.upload_image') title=t('document_sets.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+        =image_tag(document_set.picture_url(:thumb), alt: document_set.title)
+    -else
+      label( data-empty=t('document_sets.edit.no_image') data-hover=t('document_sets.edit.upload_image') aria-label=t('document_sets.edit.upload_image') title=t('document_sets.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'

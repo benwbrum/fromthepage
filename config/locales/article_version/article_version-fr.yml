@@ -12,3 +12,4 @@ fr:
       revision_changes: Changements de révision
       untitled: Sans titre
       user_at_time: "%{user} à %{time}"
+      user_deleted: "[supprimé]"

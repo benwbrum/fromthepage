@@ -11,6 +11,9 @@ de:
     codemirror:
       abbr_description: Kennzeichnet Abkürzungen in einem Text mit Erweiterungen im expan-Attribut.
       add_description: Markiert Text, der nachträglich vom Autor/von der Autorin eingefügt wurde.
+      ai_plaintext_caveat: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. Einige offensichtliche Fehler wurden durch 🤔-Symbole ersetzt, kniffligere Fehler werden jedoch möglicherweise nicht markiert. (Bitte löschen Sie diese Warnung.) -->"
+      ai_plaintext_caveat_no_emoji: "<!-- Der folgende Text wurde durch künstliche Intelligenz generiert und enthält wahrscheinlich Fehler. (Bitte löschen Sie diese Warnung.) -->"
+      copy_ai_plaintext: KI-Entwurf
       date_description: Markiert Datumsangaben mit standardisierter Form im when-Attribut.
       del_description: Markiert Text, der durch Löschen oder Durchstreichen entfernt wurde.
       expan_description: Kennzeichnet erweiterte Abkürzungen mit Originalformen im abbr-Attribut.
@@ -19,12 +22,14 @@ de:
       gap_description: Markiert eine Lücke im Text, oft aufgrund von Beschädigungen
       head_description: Markiert Überschriften im Text
       marginalia_description: Markiert Text am Seitenrand (außerhalb des Haupttextes).
+      redo_description: Die letzte rückgängig gemachte Aktion wiederherstellen.
       reg_description: Markiert eine normalisierte Schreibung mit Originalform im orig-Attribut.
       s_description: Markiert Text, der aus irgendeinem Grund durchgestrichen wurde.
       sub_description: Tiefgestellter Text.
       sup_description: Hochgestellter Text.
       u_description: Markiert unterstrichenen Text.
       unclear_description: Markiert unklaren Text.
+      undo_description: Die letzte Aktion rückgängig machen.
     collection_tabs:
       add_work: Werk hinzufügen
       collaborators: Mitarbeitende
@@ -57,18 +62,28 @@ de:
     markup_help:
       markup_help_description: '"Autolink" schlägt Entitäten vor, mit denen bestimmte Wörter verknüpft werden könnten. Sie können aber auch doppelte Klammern verwenden, um Entitäten zu verknüpfen. <code>[[Jane Doe]]</code> verknüpft den Text „Jane Doe“ mit der Entität Jane Doe, und <code>[[Jane Doe|Jane]]</code> den Text „Jane“ zur Entität Jane Doe. Wir empfehlen, die Verlinkungen erst dann von einem/einer Bearbeiter:in vornehmen zu lassen, sobald eine erste Fassung der Transkription fertig ist.'
     osd_div:
+      ai_assist: KI-Hilfe
       brightness: Helligkeit
       contrast: Kontrast
+      fit_width: Passformweite
       full_page: Auf Vollbild umschalten
       home: Zum Ausgangsbild zurückkehren
       image_filters: Bildfilter
+      monitor_close: Fenster schließen
+      monitor_open: In einem neuen Fenster öffnen
       open_seadragon_needs_js: OpenSeadragon ist nur verfügbar, wenn JavaScript aktiviert ist.
       rotate_left: Nach links drehen
       rotate_right: Nach rechts drehen
       threshold: Schwelleneffekt
       zoom_in: Hineinzoomen
       zoom_out: Rauszoomen
+    page_navigation:
+      describe_work: Beschreiben Sie die Arbeit
+      nav_info: Seite %{position} von %{size}
+      next_page: Nächste Seite
+      previous_page: Vorherige Seite
     page_tabs:
+      ai: KI
       correct: Korrektur
       describe_work: Werk beschreiben
       help: Hilfe

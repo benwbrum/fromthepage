@@ -1,3 +1,13 @@
+-# Meta tags for better archival and SEO
+-content_for :page_title, @page_title if @page_title
+-content_for :meta_description, @meta_description if @meta_description
+-content_for :meta_keywords, @meta_keywords if @meta_keywords
+
+-# Structured data for better content understanding by crawlers
+-if @structured_data
+  script type="application/ld+json"
+    =raw @structured_data.to_json
+
 -if current_page?(collection_forum_page_path(@collection.owner, @collection, @page.work, @page))
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 14, :collection_id => @collection.id }})
   =render('thredded/shared/breadcrumbs')
@@ -23,11 +33,12 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns
-  .page-column.page-imagescan
-    =render :partial => '/shared/osd_div'
-
-  .page-column
+.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render :partial => '/shared/osd_div'
+  .splitter(id="splitter")
+  .page-column(id="rightColumn")
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
@@ -47,9 +58,9 @@
         -help_word = t('.help_transcribe')
         -text_type = t('.transcribed')
 
-      -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
+      -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(page_id: @page.id), data: { turbo: true, turbo_method: :post, turbo_stream: true })
 
-      -if @page.status == Page::STATUS_BLANK
+      -if @page.status_blank?
         .centered
           .centered_content
             p.nodata_text==t('.this_page_is_blank')
@@ -61,10 +72,10 @@
             -if @collection.active? # Inactive Collections shouldn't display this stuff
               h5.nodata_title =t('.this_page_is_not', text_type: text_type)
               p.nodata_text
-                -if current_user && current_user.can_transcribe?(@page.work)
+                -if current_user && current_user.can_transcribe?(@page.work, @collection)
                   -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
                   ==t('.please_help_this_page', help_link: help_link)
-                  ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
+                  ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status_blank?
                 -elsif !current_user && !@page.work.restrict_scribes
                   -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
                   ==t('.please_help_this_page', help_link: help_link)
@@ -73,9 +84,20 @@
             -else
               ==t('.collection_is_not_active')
 
+-if @collection.legend.present?
+  .page-legend
+    h2.page-legend-title =t('.legend')
+    .page-legend-content
+      ==@collection.legend
+
 h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Display Page");
+
+-content_for :javascript
+  javascript:
+    let splitter = Object.create(ResizableSplitter);
+    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');

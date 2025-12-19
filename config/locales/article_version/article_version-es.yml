@@ -12,3 +12,4 @@ es:
       revision_changes: Cambios de revisión
       untitled: Intitulado
       user_at_time: "%{user} a %{time}"
+      user_deleted: "[eliminado]"

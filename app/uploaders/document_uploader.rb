@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class DocumentUploader < CarrierWave::Uploader::Base
-
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
@@ -38,8 +37,8 @@ class DocumentUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_white_list
-    %w(zip pdf)
+  def extension_allowlist
+    %w[zip pdf]
   end
 
   # Override the filename of the uploaded files:
@@ -47,5 +46,4 @@ class DocumentUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-
 end

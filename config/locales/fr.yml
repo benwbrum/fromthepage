@@ -1,8 +1,17 @@
 ---
 fr:
   authentication_failed: Authentification échouée
+  collection:
+    edit:
+      subject_tags: Balises de sujet
   dashboard:
     collaborator: Tableau de bord des collaborateurs
+    landing_page:
+      all_collections: Toutes les collections
+      next_image: Image suivante
+      previous_image: Image précédente
+      recent_activity: Activité récente
+      search_for_collections_or_owners: Rechercher des collections ou des propriétaires
     plain: Tableau de bord
   date:
     formats:
@@ -19,3 +28,4 @@ fr:
       short: "%d/%m/%Y à %Hh%M"
   time_ago_in_words: Il y a %{time}
   unauthorized_collection: Vous n'avez pas accès à %{project}. Veuillez vous connecter ou contacter le propriétaire du projet à ajouter.
+  unsaved_changes_confirmation: Vous avez des changements non enregistrés. Êtes-vous sûr de vouloir quitter cet écran ?

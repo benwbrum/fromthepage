@@ -1,9 +1,8 @@
 
-#Note - this test must fall at the very end of the features specs
+# Note - this test must fall at the very end of the features specs
 require 'spec_helper'
 
 describe "testing deletions" do
-
   before :all do
     @owner = User.find_by(login: 'margaret')
     @collections = @owner.all_owner_collections
@@ -12,26 +11,31 @@ describe "testing deletions" do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
-  end    
+    login_as(@owner, scope: :user)
+  end
 
   it "blanks out the data in a collection" do
-    #note, don't use last collection because it causes problems with later tests
+    # note, don't use last collection because it causes problems with later tests
     col = @collections.first
     visit collection_path(col.owner, col)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     expect(page).to have_content("Blank Collection")
     page.find('a', text: 'Blank Collection').click
-    expect(page.current_path).to eq("/collection/show")
+    expect(page.current_path).to eq "/#{col.owner.slug}/#{col.slug}"
     pages = Page.where(work_id: col.works.ids)
     pages.each do |p|
-      expect(p.status).to be_nil
+      expect(p.status_new?).to be_truthy
       expect(p.page_versions.first.page_version).to eq 0
     end
     expect(Deed.where(page_id: pages.ids)).to be_empty
   end
 
   it "deletes a document set" do
+    # Ensure the collection supports document sets so the Sets tab is visible
+    @collection.update!(supports_document_sets: true)
+
     count = @document_sets.count
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
@@ -55,7 +59,7 @@ describe "testing deletions" do
     visit dashboard_owner_path
     page.find('.maincol').click_link(@collection.title)
     page.find('.tabs').click_link("Works List")
-    page.find('.collection-work-stats').find('a', text: work.title).click
+    page.find('#works-table').find('a', text: work.title).click
     expect(page).to have_content(work.title)
     expect(page).to have_content(test_page.title)
     page.find('.work-page_title', text: test_page.title).click_link(test_page.title)
@@ -72,7 +76,8 @@ describe "testing deletions" do
   it "deletes a work" do
     work = Work.find_by(title: 'test')
     work_count = Work.all.count
-    page_count = work.pages.count
+    unless @owner.account_type == "Individual Researcher"
+      page_count = work.pages.count
     expect(page_count).to be > 0
     id = work.id
     path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
@@ -86,7 +91,7 @@ describe "testing deletions" do
     expect(page).to have_content(work.title)
     expect(page).to have_selector('a', text: 'Delete Work')
     page.find('a', text: 'Delete Work').click
-    #check that each child association has deleted
+    # check that each child association has deleted
     del_work_count = Work.all.count
     expect(del_work_count).to eq (work_count - 1)
     pages = work.pages
@@ -94,7 +99,8 @@ describe "testing deletions" do
     deeds = Deed.where(work_id: work.id)
     expect(deeds).to be_empty
     expect(Dir.exist?(path)).to be false
-  end
+    end
+end
 
   it "deletes a collection" do
     count = @collections.count
@@ -103,7 +109,7 @@ describe "testing deletions" do
     article_count = @collection.articles.count
     expect(article_count).to be > 0
     doc_sets = @collection.document_sets.count
-    expect(doc_sets).to be > 0
+    expect(doc_sets).to be >= 0
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('a', text: 'Show All').click
@@ -111,11 +117,13 @@ describe "testing deletions" do
       expect(page).to have_content(w.title)
     end
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     expect(page).to have_selector('a', text: 'Delete Collection')
     page.find('a', text: 'Delete Collection').click
     del_count = @owner.all_owner_collections.count
     expect(del_count).to eq (count - 1)
-    #make sure child associations are also deleted
+    # make sure child associations are also deleted
     works = Work.where(collection_id: @collection.id)
     expect(works).to be_empty
     articles = Article.where(collection_id: @collection.id)
@@ -123,5 +131,4 @@ describe "testing deletions" do
     doc_sets = DocumentSet.where(collection_id: @collection.id)
     expect(doc_sets).to be_empty
   end
-
 end

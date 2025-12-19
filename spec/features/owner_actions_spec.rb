@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe "owner actions", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -11,14 +11,14 @@ describe "owner actions", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
-  it "fails to upload a document", :js => true do
+  it "fails to upload a document", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collections.first.title, :from => 'document_upload_collection_id')
+    select(@collections.first.title, from: 'document_upload_collection_id')
     click_button('Upload File')
     expect(page).to have_content("prohibited the form from being saved")
     expect(page).to have_content("File can't be blank")
@@ -38,21 +38,23 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
-  it "creates an empty new work in a collection", :js => true do
-    @owner.account_type = "Small Organization"
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    work_title = "New Test Work"
-    visit dashboard_owner_path
-    click_link("#{test_collection.title}")
-    click_link("Add a new work")
-    expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Create Empty Work")
-    page.find(:css, "#create-empty-work").click
-    fill_in 'work_title', with: work_title
-    fill_in 'work_description', with: "This work contains no pages."
-    click_button('Create Work')
-    expect(page).to have_content("Here you see the list of all pages in the work.")
-    expect(Work.find_by(title: work_title)).not_to be nil
+  it "creates an empty new work in a collection", js: true do
+    VCR.use_cassette('sc_collections/gist', record: :none) do
+      @owner.account_type = "Small Organization"
+      test_collection = Collection.find_by(title: 'New Test Collection')
+      work_title = "New Test Work"
+      visit dashboard_owner_path
+      click_link("#{test_collection.title}")
+      click_link("Add a new work")
+      expect(page).to have_content("#{test_collection.title}")
+      expect(page).to have_content("Create Empty Work")
+      page.find(:css, "#create-empty-work").click
+      fill_in 'work_title', with: work_title
+      fill_in 'work_description', with: "This work contains no pages."
+      click_button('Create Work')
+      expect(page).to have_content("Here you see the list of all pages in the work.")
+      expect(Work.find_by(title: work_title)).not_to be nil
+    end
   end
 
   it "checks for subject in a new collection" do
@@ -75,21 +77,23 @@ describe "owner actions", :order => :defined do
     expect(page.find('.maincol')).to have_content("#{test_collection.title}")
     page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Danger Zone")
+    expect(page).to have_content("Please use caution")
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
   end
 
-  it "creates a collection from work dropdown", :js => true do
+  it "creates a collection from work dropdown", js: true do
     @owner.account_type = "Small Organization"
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, '#document-upload').click
-    page.select 'Add New Collection', from: 'document_upload_collection_id' 
+    page.select 'Add New Collection', from: 'document_upload_collection_id'
 
-    within(page.find('.litebox-embed')) do
+    within(page.find('.litebox-embed', wait: 5)) do
       expect(page).to have_content('Create New Collection')
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")
@@ -100,7 +104,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)
     expect(Collection.last.title).to eq col_title
-    #need to remove this collection to prevent conflicts in later tests
+    # need to remove this collection to prevent conflicts in later tests
     Collection.last.destroy
   end
 
@@ -131,33 +135,47 @@ describe "owner actions", :order => :defined do
     expect(page).not_to have_content("New Test Category")
   end
 
-  it "enables GIS for subject category" do
-    category = @collection.categories.find_by(title: "Places")
+  it 'enables GIS for subject category', js: true do
+    category = @collection.categories.find_by(title: 'Places')
     category.gis_enabled = false
     category.save
 
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    @name = "#category-" + "#{category.id}"
+    page.find('.tabs').click_link('Subjects')
+    @name = "#category-#{category.id}"
+    expect(page).to have_content('Places')
+    page.find('a.tree-item', text: 'Places').click
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places")
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS'
     click_button('Create Category')
+
+    page.find('a.tree-item', text: 'Places').click
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Disable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS disabled for Places and 1 child category")
+
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Add Child Category').click
     fill_in 'category_title', with: 'Child GIS-2'
     click_button('Create Category')
+
+    page.find('a.tree-item', text: 'Places').click
+    page.find(@name).find('dl.dropdown.right dt.h5', text: 'Actions', match: :first).click
     page.find(@name).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end
 
-  it "fails to create an empty work", :js => true do
+  it "fails to create an empty work", js: true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(@collections.last.title, :from => 'work_collection_id')
+    select(@collections.last.title, from: 'work_collection_id')
     fill_in 'work_description', with: "This work should fail to create."
     click_button('Create Work')
     expect(page).to have_content("Create Empty Work")
@@ -175,16 +193,16 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
     expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
-    select(@collection.title, :from => 'work_collection_id')
+    select(@collection.title, from: 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     work = Work.find_by(title: @title)
     expect(Deed.last.work_id).to eq(work.id)
-    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
+    expect(work.deeds.where.not(collection_id: work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 
-  it "doesn't move a work with articles", :js => true do
+  it "doesn't move a work with articles", js: true do
     col = Collection.second
     work = col.works.second
     test_page = work.pages.first
@@ -197,8 +215,8 @@ describe "owner actions", :order => :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, :from => 'work_collection_id')
-    #reject the modal and get text
+    select(@collection.title, from: 'work_collection_id')
+    # reject the modal and get text
     message = page.dismiss_confirm do
       click_button('Save Changes')
     end
@@ -211,7 +229,7 @@ describe "owner actions", :order => :defined do
     work = col.works.second
     test_page = work.pages.first
 
-    #note: this is probably redundant, but it prevents failure from other tests
+    # note: this is probably redundant, but it prevents failure from other tests
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
@@ -220,12 +238,12 @@ describe "owner actions", :order => :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, :from => 'work_collection_id')
+    select(@collection.title, from: 'work_collection_id')
     click_button('Save Changes')
-    #the modal is silently accepted by default
+    # the modal is silently accepted by default
     expect(Work.find_by(id: work.id).collection).not_to eq col
     expect(Work.find_by(id: work.id).collection).to eq @collection
-    #check the links
+    # check the links
     expect(PageArticleLink.where(page_id: work.pages.ids)).to be_empty
     test_page2 = Page.find_by(id: test_page.id)
     expect(test_page2.source_text).not_to have_content('[[')
@@ -236,6 +254,7 @@ describe "owner actions", :order => :defined do
 
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
+    page.click_link('Show All')
     page.find('.collection-works').find('a', text: @title).click
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
@@ -260,22 +279,21 @@ describe "owner actions", :order => :defined do
     end
   end
 
-  it "changes the collection's default language" do
+  it "changes the collection's default language", js: true do
     visit edit_collection_path(@owner, @rtl_collection)
-    expect(page).to have_selector('#collection_text_language')
-    select('Arabic', from: 'collection_text_language')
-    click_button 'Save Changes'
-    #note: this is just to make sure it's on the settings page again
-    expect(page).to have_content('Collection Owners')
-    expect(Collection.find(3).text_language).to eq 'ara'
+    page.find('.side-tabs').click_link("Task Configuration")
+    first('.select2-container', minimum: 1).click
+    find('.select2-dropdown input.select2-search__field').send_keys("Arabic", :enter)
+    expect(page).to have_content('Transcription type')
+    expect(@rtl_collection.reload.text_language).to eq 'ara'
   end
 
   it "checks rtl transcription page views" do
     rtl_page = @rtl_collection.works.first.pages.first
     visit collection_transcribe_page_path(@rtl_collection.owner, @rtl_collection, rtl_page.work, rtl_page)
-    #check transcription page direction
+    # check transcription page direction
     expect(page.find('.page-editarea')[:dir]).to eq 'rtl'
-    #check overview page direction
+    # check overview page direction
     page.find('.tabs').click_link('Overview')
     expect(page.find('.page-preview')[:dir]).to eq 'rtl'
   end
@@ -324,6 +342,7 @@ describe "owner actions", :order => :defined do
       click_link "Letters from America", match: :first
       expect(page).to have_content("Settings")
       click_link "Settings"
+      click_link "Privacy & Access"
       page.click_link 'Edit Owners'
       select("shuri - shuri@example.org", from: "user_id").select_option
       within(".user-select-form") do
@@ -360,6 +379,5 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Letters from America")
       expect(page).to have_content("Science Archives")
     end
-
   end
 end

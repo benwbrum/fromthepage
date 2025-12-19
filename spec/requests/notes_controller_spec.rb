@@ -1,0 +1,259 @@
+require 'spec_helper'
+
+describe NotesController do
+  before do
+    Current.user = owner
+  end
+
+  let!(:owner) { create(:unique_user, :owner) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id) }
+  let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+  let!(:page) { create(:page, work: work) }
+  let!(:note) { create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: owner.id) }
+
+  describe '#index' do
+    let(:action_path) { collection_notes_path(collection_id: collection.slug) }
+    let(:params) { {} }
+
+    let(:subject) { get action_path, params: params }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:index)
+    end
+
+    context 'filters and paginate' do
+      let(:params) { { search: note.title } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by user' do
+      let(:params) { { sort: 'user', order: 'ASC' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by note' do
+      let(:params) { { sort: 'note', order: 'DESC' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by page' do
+      let(:params) { { sort: 'page', order: 'ASC' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'sort by work' do
+      let(:params) { { sort: 'work', order: 'DESC' } }
+      let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'without collection_id' do
+      let(:action_path) { notes_path }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+      end
+    end
+  end
+
+  describe '#edit' do
+    let(:action_path) { edit_note_path(note.id) }
+    let(:params) { {} }
+
+    let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit)
+    end
+
+    context 'when editing' do
+      let(:params) { { editing: true } }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
+      end
+    end
+  end
+
+  describe '#create' do
+    let(:action_path) { notes_path(collection_id: collection.id, work_id: work.id, page_id: page.id) }
+    let(:params) { { note: { body: 'New note' } } }
+
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(root_path)
+    end
+
+    context 'success' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:create)
+      end
+    end
+
+    context 'error' do
+      let(:params) { { note: { body: '' } } }
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:create)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { note_path(note) }
+    let(:params) { { note: { body: 'Edited note' } } }
+
+    let(:subject) { put action_path, params: params, as: :turbo_stream }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(root_path)
+    end
+
+    context 'success' do
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
+      end
+    end
+
+    context 'error' do
+      let(:params) { { note: { body: '' } } }
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
+      end
+    end
+  end
+
+  describe '#destroy' do
+    let(:action_path) { note_path(note) }
+
+    let(:subject) { delete action_path, as: :turbo_stream }
+
+    it 'redirects' do
+      subject
+
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(root_path)
+    end
+
+    context 'logged in' do
+      it 'renders status' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:destroy)
+      end
+    end
+  end
+
+  describe '#discussions' do
+    let(:action_path) { collection_page_discussions_path(owner, collection) }
+
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:discussions)
+    end
+
+    context 'with pages that have inconsistent note data' do
+      let!(:page_with_notes) { create(:page, work: work, last_note_updated_at: 1.day.ago) }
+      let!(:page_without_notes) { create(:page, work: work, last_note_updated_at: 1.day.ago) }
+
+      before do
+        # Create a note for the first page
+        create(:note, collection_id: collection.id, work_id: work.id, page_id: page_with_notes.id, user_id: owner.id)
+      end
+
+      it 'handles pages with missing notes gracefully' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:discussions)
+        expect(response.body).to include(page_with_notes.title)
+        # The page without notes should not appear since we added joins(:notes)
+      end
+    end
+  end
+end

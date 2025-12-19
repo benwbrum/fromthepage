@@ -2,16 +2,17 @@
 fr:
   work:
     configurable_printout:
-      description: Exportez ce travail dans un format imprimable
+      description: Exportez cette œuvre dans un format imprimable
       export: Exporter
       file_format: Format de fichier
       file_format_description: Type de fichier pour l'exportation imprimable
       heading: Configuration de l'impression
       include_contributors: Inclure les contributeurs
       include_metadata: Inclure les métadonnées
+      include_notes: Inclure des notes
       preserve_linebreaks: Conserver les sauts de ligne
       text_contents: Contenu
-      text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur le travail.
+      text_contents_description: L'exportation imprimable inclura le texte de la transcription, et peut également inclure des informations sur les contributeurs au projet ou des métadonnées sur l'œuvre.
       text_format: Formatage du texte
       text_format_description: Options de mise en forme du texte.
       text_format_docx: MS Word (.docx)
@@ -84,12 +85,11 @@ fr:
       verbatim_plaintext_zero_index_description: Fichier zip contenant des fichiers en texte brut indexés à zéro, pouvant être importés en tant que données d'entraînement pour Transkribus.
       voyant: Voyant
       voyant_analysis_description: Envoyer la transcription de ce œuvre à un Voyant Tools pour analyse.
-      warning_work_not_complete: 'Attention : ce travail peut ne pas être complet.'
+      warning_work_not_complete: 'Attention : cette œuvre peut ne pas être complète.'
       word_trees: Word Trees
       word_trees_analysis_description: Envoyer la transcription de ce œuvre au visualiseur Word Trees de Jason Davies pour analyse.
       zip_export_only_project_owners: Formats d'exportation de fichiers zip accessibles uniquement aux propriétaires de projets.
     edit:
-      add: Ajouter
       additional_metadata: Métadonnées supplémentaires
       additional_metadata_description: Ces champs de métadonnées sont affichés sur l'écran À propos de ce œuvre et dans les exportations TEI, mais n'affectent pas la fonctionnalité de FromThePage.
       allowed_collaborators: Collaborateurs autorisés
@@ -105,6 +105,9 @@ fr:
       document_date: Date du document
       document_date_hint: La date du document est au format EDTF (par exemple, 1843, 2001-02, 1643-06-30)
       document_history: Historique du document
+      document_sets: Ensembles de documents
+      done: Fait
+      edit_collaborators: Modifier les collaborateurs
       editorial_notes: Notes éditoriales
       enable_ocr_correction: Activer la correction d'OCR
       enable_ocr_correction_description: Un œuvre peut commencer par un texte océrisé qui doit être corrigé. Lorsqu'il est coché, l'onglet Transcrire sera remplacé par un onglet Corriger.
@@ -113,7 +116,6 @@ fr:
       identifier_description: Identifiant de systèmes extérieurs à FromThePage, à utiliser pour corréler les exportations avec des enregistrements externes. (Ce champ n'est pas visible publiquement.)
       in_scope: Portée
       more_work_settings_info: Pour plus d'informations sur les paramètres de œuvre, consultez l'article wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Préparer un œuvre pour Transcription</a>.
-      no_allowed_collaborators_selected: Aucun collaborateur autorisé sélectionné
       no_image: Pas d'image
       pages_are_meaningful: Les pages sont significatives
       pages_are_meaningful_description: Les pages peuvent être des divisions sémantiques significatives d'un œuvre (comme dans un journal avec une date pour chaque page), ou elles peuvent ne pas l'être (comme dans les lettres ou les livres, où le texte ne doit pas être divisé en sections basées sur les pages). Lorsque cette case est cochée, l'œuvre aura des titres de page affichés en évidence.
@@ -121,7 +123,6 @@ fr:
       physical_description: Description physique
       place_of_creation: Lieu de création
       recipient: Destinataire
-      remove: Retirer
       restrict_collaborators: Restreindre les collaborateurs
       restricted_work_no_collaborators_warning: Seuls les propriétaires de projet peuvent modifier ce œuvre. Ajoutez des collaborateurs pour rendre l'œuvre modifiable par d'autres.
       revert: Revenir
@@ -143,6 +144,10 @@ fr:
       work_image_description: Une image à utiliser pour illustrer l'e 'œuvre. Si aucune image n'est téléchargée, une image de page sera utilisée.
       work_thumbnail: Vignette de œuvre
       work_title: Titre de l'œuvre
+    edit_scribes:
+      remove_collaborator: Supprimer un collaborateur
+      work_collaborators: Collaborateurs d'œuvre
+      work_collaborators_description: Les collaborateurs peuvent transcrire et éditer des œuvres privées.
     incomplete: Métadonnées incomplètes.
     metadata_overview:
       notes_and_questions: Notes et questions
@@ -171,6 +176,7 @@ fr:
       move_up: Déplacer vers le haut
       no_pages_found: Aucune page trouvée
       no_pages_found_description: Ce œuvre ne contient pas encore de pages
+      no_works_found_description: Il n'y a aucune œuvre présente pour le moment
       page_title: Titre de la page
       pages_tab_description: Ici vous voyez la liste de toutes les pages de l'œuvre. Si vous souhaitez modifier la position d'une page, utilisez les flèches haut et bas à droite. Pour créer une nouvelle page pour ce œuvre, cliquez sur le bouton Ajouter une nouvelle page. Une fois une nouvelle page vierge créée, recherchez-la dans la liste ci-dessous et passez aux paramètres où vous pouvez télécharger l'image de la page.
       position: Position
@@ -181,6 +187,8 @@ fr:
       upload_page_image: Image de la page %{upload}
     save_description:
       work_described: Votre description a été enregistrée
+    search:
+      search_in_work: Rechercher dans le document
     show:
       author_name: Nom de l'auteur
       description: Description

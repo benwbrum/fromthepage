@@ -1,127 +1,155 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+ruby '3.3.5'
 
-gem 'will_paginate'
-gem 'rmagick'
-gem 'nokogiri'
-gem "capistrano", "~> 3.10", require: false
-gem "capistrano-rails", "~> 1.4", require: false
-gem 'capistrano-bundler', '~> 1.6'
-gem 'rvm1-capistrano3', require: false
-gem 'jquery-rails'
-gem 'jquery-ui-sass-rails'
-gem 'savon', '~> 2.12.0'
+gem 'rails', '~> 7.2.1'
+gem 'puma'
+gem 'bootsnap', require: false
+
+# Core / Models / Business logic
 gem 'mysql2'
-gem 'text'
-gem 'thredded', '~> 1.0'
-gem "recaptcha", require: "recaptcha/rails"
-
+gem 'activerecord-import', '~> 2.1'
 gem 'acts_as_list'
 gem 'acts_as_tree'
+gem 'interactor-rails', '~> 2.0'
+gem 'friendly_id'
+gem 'thredded', '~> 1.1'
+gem 'solid_queue', '~> 1.2'
+gem 'mission_control-jobs'
 
+# Authentication / Security
 gem 'devise'
 gem 'devise-encryptable'
-
-gem 'carrierwave'
-gem 'rubyzip'
-
-gem 'ahoy_matey'
-
-gem "browser", "~> 2.0"
-gem "user_agent_parser"
-
-gem 'pry'
-gem 'oink'
-
-gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
-gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
-gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
-
+gem 'devise_masquerade', '~> 1.2.0'
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-multi-provider', '~> 0.2.1'
 gem 'omniauth', '~> 2.0.0'
+gem 'rack-attack'
+gem 'recaptcha', require: 'recaptcha/rails'
 
-gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+# File handling / Media
+gem 'carrierwave'
+gem 'rmagick'
+gem 'rubyzip'
 
-gem 'bootsnap', require: false
+# HTTP / API / External SDKs
+gem 'httparty'
+gem 'savon', '~> 2.15', '>= 2.15.1'
+gem 'ruby-openai'
+gem 'gemini-ai'
+gem 'open3'
+gem 'bento-sdk', github: 'bentonow/bento-ruby-sdk', branch: 'master'
+gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git', branch: 'main'
+gem 'iiif-presentation'
+gem 'riiif'
 
-gem 'puma'
-
-gem 'active_link_to'
-
-gem 'warning'
-
-gem 'rails-i18n', '~> 6.0.0'
-gem 'http_accept_language'
+# Data / Parsing / Search
+gem 'nokogiri'
+gem 'roo'
+gem 'charlock_holmes'
+gem 'nkf'
+gem 'net-pop', github: 'ruby/net-pop'
 
 gem 'forty_facets'
-gem 'charlock_holmes'
+gem 'chewy'
 
-gem 'edtf'
-gem 'edtf-humanize'
-
-group :assets do
-  gem 'uglifier'
-end
-
-group :test do
-  gem 'database_cleaner'
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'shoulda'
-  gem 'webmock', require: false
-  gem 'vcr'
-  gem 'coveralls', require: false
-end
-
-group :development, :test do
-  gem 'rspec-rails'
-  gem 'launchy'
-  gem 'pry-byebug'
-  gem 'factory_bot_rails'
-  gem 'pry-awesome_print' # makes console output easy to read
-  gem 'better_errors' # creates console in browser for errors
-  gem 'binding_of_caller' # goes with better_errors
-  # Supporting gem for RailsPanel
-  # https://github.com/dejan/rails_panel
-  gem 'bullet'
-  gem 'listen'
-  gem 'i18n-tasks'
-  gem 'easy_translate'
-end
-
-# Use SassC for stylesheets
-gem 'sassc-rails'
-
-# Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails'
-
-# Use Slim for templates
-gem 'slim'
-
-# Gravatar Image Tag
-gem 'gravatar_image_tag'
-
-#Admin masquerade as a user
-gem 'devise_masquerade', '~> 1.2.0'
-
-#friendly routes
-gem 'friendly_id'
-
-#support right to left languages
-gem 'rtl'
-gem 'iso-639'
-
-# Profiling for use in prod
+# Analytics / Background / Metrics
+gem 'ahoy_matey'
+gem 'newrelic_rpm'
+gem 'rack-mini-profiler'
 gem 'flamegraph'
 gem 'memory_profiler'
 gem 'meta_request'
-gem 'rack-mini-profiler'
 gem 'stackprof'
 
-gem 'intercom', '~> 3.9.0'
-gem 'newrelic_rpm'
 
-gem 'open3'
+# Internationalization / Localization
+gem 'rails-i18n', '~> 7.0.0'
+gem 'http_accept_language'
+gem 'iso-639'
+gem 'rtl'
+
+# Email / Notifications
+gem 'postmark-rails'
+gem 'mail', '~> 2.7'
+gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
+
+# Frontend / UI
+gem 'importmap-rails'
+gem 'stimulus-rails'
+gem 'turbo-rails'
+gem 'jquery-rails'
+gem 'jquery-ui-sass-rails'
+gem 'slim'
+gem 'sassc-rails'
+gem 'autoprefixer-rails'
+gem 'active_link_to'
+gem 'clipboard-rails'
+gem 'ajax-datatables-rails', '~> 1.0.0'
+gem 'will_paginate'
+gem 'markdown'
+
+# Utilities / Helpers
+gem 'text'
+gem 'stopwords-filter2'
+gem 'diffy'
+gem 'edtf'
+gem 'edtf-humanize'
+gem 'warning'
+gem 'config'
+gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
+gem 'browser', '~> 2.0'
+gem 'user_agent_parser'
+
+group :development do
+  gem 'capistrano', '~> 3.10', require: false
+  gem 'capistrano-bundler', '~> 1.6'
+  gem 'capistrano-rails', '~> 1.4', require: false
+  gem 'html-pipeline', '~> 2.14'
+  gem 'rvm1-capistrano3', require: false
+end
+
+group :assets do
+  gem 'sprockets', '~> 4.2'
+  gem 'sprockets-rails', '>= 3.4'
+  gem 'uglifier'
+end
+
+gem 'terser'
+
+group :development, :test do
+  gem 'dotenv-rails'
+  gem 'dotenv', require: 'dotenv/load'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
+  gem 'annotaterb'
+  gem 'rubocop-rails-omakase', require: false
+
+  # Debugging / dev tools
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'bullet'
+  gem 'i18n-tasks'
+  gem 'launchy'
+  gem 'listen'
+  gem 'pry'
+  gem 'pry-awesome_print'
+  gem 'pry-byebug'
+  gem 'easy_translate'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'rails-controller-testing'
+  gem 'selenium-webdriver'
+  gem 'shoulda'
+  gem 'simplecov',      require: false
+  gem 'simplecov-lcov', require: false
+  gem 'vcr'
+  gem 'webmock', require: false
+  gem 'with_model'
+end

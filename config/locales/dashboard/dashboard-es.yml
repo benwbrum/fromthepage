@@ -52,6 +52,7 @@ es:
       reload_this_page_to: Vuelva a cargar esta página para actualizar la lista.
       status: Estado
       subject_csv_collection: Índice de materias CSV (colección)
+      subject_details_csv_collection: Detalles del asunto CSV (colección)
       table_csv_collection: CSV de campo/tabla (colección)
       table_csv_work: CSV de campo/tabla (obra)
       tei_work: TEX-XML (obra)
@@ -64,19 +65,28 @@ es:
     hierarchical_collections_and_document_sets:
       project_by: Proyecto por %{author}
       start_transcribing: Comenzar a Transcribir
+    hours_letter:
+      certification_text: Esta carta es para certificar que %{user_name} ha contribuido %{time_duration} a los esfuerzos de crowdsourcing de la biblioteca en FromThePage (www.fromthepage.com) entre %{start_date} y %{end_date}. A través del sitio web, los voluntarios pueden ayudar a transcribir documentos históricos en las colecciones de la biblioteca, haciéndolos más fáciles de buscar y accesibles para futuros investigadores. El sitio web FromThePage rastrea el tiempo que los usuarios registrados están activos en el sitio e informa una cantidad total de minutos activos.
+      institutions_header: "| **Instituciones** | **Colección** | **paginas** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Saludos,
+      to_whom_it_may_concern: 'A quien le interese:'
+      volunteer_text: Cada voluntario ayuda a hacer la historia más accesible. ¡Apreciamos la contribución de %{user_display_name} a nuestro esfuerzo de crowdsourcing!
+      worked_on_collections: "%{user_name} ha trabajado en las siguientes colecciones de las siguientes instituciones:"
     landing_page:
-      all_collections: Todas las Colecciones
-      more: Más...
-      next_image: Siguiente imagen
-      previous_image: Imagen anterior
-      recent_activity: Actividad Reciente
-      search: Búsqueda
-      search_for_collections: Búsqueda de obras
-      search_for_collections_or_owners: Buscar colecciones o dueños...
-      transcribe_a_page: Transcribir una página
+      by: " por "
+      institutions: Instituciones
+      more: más
+      new_projects: Nuevos proyectos
+      search: Buscar
+      search_for_collections: Buscar colecciones
+      search_org: Buscar Organización
+      search_org_label: Buscar contenido publicado por esta organización...
     new_upload:
       document_uploaded: El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo.
+      document_uploaded_with_ai: El documento se ha subido y se procesará en breve. Le enviaremos un correo electrónico a %{email} cuando esté listo. El texto generado por IA de Gemini puede tardar un poco; tenga paciencia, pero si no ve la pestaña de IA en una página en el plazo de una hora, póngase en contacto con nosotros en support@fromthepage.com.
       reload_this_page: El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo.
+      reload_this_page_with_ai: El documento se ha subido y se procesará en breve. Recarga esta página en unos minutos para verlo. El texto generado por IA de Gemini puede tardar un poco; ten paciencia, pero si no ves la pestaña de IA en una página en una hora, escríbenos a support@fromthepage.com.
     new_work:
       acceptable_formats: Los archivos PNG, GIF y JPG son aceptables.
       images_should_be_named: 'Las imágenes deben nombrarse de modo que un ordenamiento alfabético dará como resultado el orden de página correcto.<br> (Esto puede requerir "cero-relleno" para cualquier número de página: <code>pagina_09.jpg, pagina_10jpg</code> se ordenará correctamente, pero <code>page_9.jpg, pagina_10.jpg</code> no.)'
@@ -143,12 +153,13 @@ es:
       each_folder_will_be_treated: Cada carpeta se tratará como un documento diferente, por lo tanto, no mezcle páginas de documentos diferentes en la misma carpeta.
       each_pdf_will_be_treated: Cada PDF se tratará como su propio documento, por lo tanto, no divida las páginas del mismo documento entre más de un PDF.
       for_example_a_zip_file: 'Por ejemplo, un archivo ZIP con 3 imágenes, 2 PDFs, y 1 carpeta que contenga 5 imágenes más crearía 4 obras: las imágenes de nivel superior en una, cada PDF en su propia obra, y un último obra con las 5 imágenes de la carpeta.'
+      generate_ai_draft_text: Generar borradores de texto con IA utilizando Gemini AI.
       image_naming_guidelines: 'Las imágenes se deben nombrar de modo que una ordenación alfabética resulte en el orden de página correcto.<br> (Esto puede requerir "relleno con ceros" para cualquier número de página: <code>page_09.jpg, page_10.jpg</code> ordenará correctamente, pero <code>page_9.jpg, page_10.jpg</code> no).'
       image_orientation_guidelines: Las imágenes deben estar orientadas de manera que queden boca arriba.
       import_form_message: Utilizando este formulario puedes importar imágenes de página a FromThePage. Debes seleccionar una colección como destino de importación y adjuntar un archivo ZIP o PDF que contenga las imágenes de página que se usarán en tu proyecto.
       page_image_guidelines: Directrices de imagen de página
       select_a_collection: "- Seleccione una colección -"
-      to_specify_metadata: Para especificar metadatos junto con imágenes, incluya un archivo %{link} en cada carpeta que especifique campos para la obra.
+      to_specify_metadata: Para especificar metadatos, puede cargar una hoja de cálculo después de cargar las imágenes o puede incluir un archivo %{link} en cada carpeta especificando campos para la obra.
       trial_accounts_are_limited: Las cuentas de prueba están limitadas a 200 páginas. Por favor contacta a support@fromthepage.com para actualizar tu cuenta.
       upload_file: Subir archivo
       upload_pdf_or_zip_file: Subir archivo PDF o ZIP
@@ -157,7 +168,17 @@ es:
       zip_files_may_contain: Los archivos ZIP pueden contener carpetas con imágenes, PDFs o carpetas que contengan archivos PDF.
     watchlist:
       collections: colecciones
-      private_collections_you_belong_to: Colecciones Privadas a las que Perteneces
+      private_collections_you_belong_to: Colecciones privadas en las que eres colaboradora
       projects_you_have_contributed_to: Los proyectos a los que has contribuido -- transcribiendo, editando o comentando -- se enumerarán aquí con su actividad más reciente para que puedas mantenerte al día con lo que está sucediendo.
       try_transcribing_a_page: 'Aún no has participado en ningún proyecto.  Intenta transcribir una página de uno de estos '
       your_activity: Tu Actividad
+      your_hours: Your Hours
+    your_hours:
+      contributions_between_dates: Contribuciones entre %{start_date} y %{end_date}
+      download_letter: Descargar una carta
+      end_date: Fecha final
+      hours_details_message: "%{user_name} ha contribuido %{time_duration} entre %{start_date} y %{end_date}"
+      hours_update_note: Las estadísticas de contribución se calculan cada veinticuatro horas. Estas estadísticas reflejan el uso hasta %{time_ago}.
+      select_new_date: Seleccione un nuevo rango de fechas
+      start_date: Fecha de inicio
+      update: Actualizar

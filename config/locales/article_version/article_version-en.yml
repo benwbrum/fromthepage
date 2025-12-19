@@ -12,3 +12,4 @@ en:
       revision_changes: Revision changes
       untitled: Untitled
       user_at_time: "%{user} at %{time}"
+      user_deleted: "[deleted]"

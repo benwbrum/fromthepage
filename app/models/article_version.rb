@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: article_versions
+#
+#  id          :integer          not null, primary key
+#  created_on  :datetime
+#  source_text :text(16777215)
+#  title       :string(255)
+#  version     :integer          default(0)
+#  xml_text    :text(16777215)
+#  article_id  :integer
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_article_versions_on_article_id  (article_id)
+#  index_article_versions_on_user_id     (user_id)
+#
 class ArticleVersion < ApplicationRecord
   belongs_to :article, optional: true
   belongs_to :user, optional: true
@@ -10,11 +28,11 @@ class ArticleVersion < ApplicationRecord
   end
 
   def prev
-    article.article_versions.where("id < ?", id).first
+    article.article_versions.where('id < ?', id).first
   end
 
   def next
-    article.article_versions.where("id > ?", id).last
+    article.article_versions.where('id > ?', id).last
   end
 
   def current_version?
@@ -28,9 +46,9 @@ class ArticleVersion < ApplicationRecord
       if previous_version
         #   copy the previous version's contents into the page and save without callbacks
         article.update_columns(
-          :title => previous_version.title,
-          :source_text => previous_version.source_text,
-          :xml_text => previous_version.xml_text
+          title: previous_version.title,
+          source_text: previous_version.source_text,
+          xml_text: previous_version.xml_text
         )
       else
         article.destroy! # this also deletes the article versions

@@ -211,7 +211,7 @@
                             </div>
                         </div>
 
-                    
+
 
                         <div class="box">
                             <div class="item">
@@ -226,7 +226,7 @@
                                 </div>
                             </div>
                         </div>
- 
+
                     </div>
                 </div>
             </div>
@@ -609,17 +609,17 @@
                             </div>
                         </div>
 
-                    
-                  
 
-                     
+
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/crowd-case02.png", class: 'second-img') %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>Indianapolis Public Library has six collections on FromThePage comprising a diverse range of document types. Their goal is to provide comprehensive full-text searchability because some collections are almost unusable without the ability to search the documents. Transcription will make a host of genealogical information accessible where previously it was nearly impossible to find a specific name or other information. Read more on how volunteers are helping increase the visibility of the collections to Indianapolis residents and beyond <a href="#">here</a>.</span>
                                     </div>
@@ -627,10 +627,10 @@
                             </div>
                         </div>
 
-                  
-                     
 
-                     
+
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/crowd-case03.png") %>
@@ -638,9 +638,9 @@
                             </div>
                         </div>
 
-                     
 
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/crowd-case04.png") %>
@@ -648,16 +648,16 @@
                             </div>
                         </div>
 
-                        
 
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/crowd-case05.png") %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>The Library of Virginia houses over 124 million archival items, including 14,900 World War I Questionnaires gathered from 1919-1921. They cover the veteran’s personal information and war record in detail. The Library used FromThePage to fully transcribe all the questionnaire data to honor the 100-year anniversary of WWI. They continue to transcribe other field-based documents, further increasing access and searchability of their records. See how crowdsourced transcription improves collection use <a href="#">here</a>.</span>
                                     </div>
@@ -665,10 +665,10 @@
                             </div>
                         </div>
 
-                    
-                
 
-                     
+
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/crowd-case06.png") %>
@@ -676,10 +676,10 @@
                             </div>
                         </div>
 
-                       
-                     
-                    
-                     
+
+
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/crowd-case07.png") %>
@@ -687,9 +687,9 @@
                             </div>
                         </div>
 
-            
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -750,7 +750,7 @@
                             </div>
                         </div>
 
-            
+
 
                     </div>
                 </div>
@@ -763,7 +763,7 @@
     <section class="crowd-schedule">
         <div class="container">
             <div class="title">
-                <h4><%= number_with_delimiter Page.where.not(:status=>nil).count %></h4>
+                <h4><%= number_with_delimiter Page.where.not(status: :new).count %></h4>
                 <p>Pages — and counting!</p>
             </div>
 
@@ -775,7 +775,7 @@
 
                         <h6>Reserve your call to learn how FromThePage can expand collection usability!</h6>
                         <a href="#">Schedule a Free Demo</a>
-                        
+
                     </div>
                 </div>
             </div>

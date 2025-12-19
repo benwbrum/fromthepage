@@ -1,21 +1,11 @@
 module XmlSourceProcessor
-
-  @text_dirty = false
-  @translation_dirty = false
-  #@fields = false
-
-  def source_text=(text)
-    @text_dirty = true
-    super
-  end
-
-  def source_translation=(translation)
-    @translation_dirty = true
-    super
-  end
-
   def validate_source
     if self.source_text.blank?
+      return
+    end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
       return
     end
     validate_links(self.source_text)
@@ -25,10 +15,15 @@ module XmlSourceProcessor
     if self.source_translation.blank?
       return
     end
+    # Skip subject linking validation for field-based collections
+    # and collections with subjects disabled
+    if self.collection&.field_based || self.collection&.subjects_disabled
+      return
+    end
     validate_links(self.source_translation)
   end
 
-  #check the text for problems or typos with the subject links
+  # check the text for problems or typos with the subject links
   def validate_links(text)
     error_scope = [:activerecord, :errors, :models, :xml_source_processor]
     # split on all begin-braces
@@ -55,14 +50,14 @@ module XmlSourceProcessor
         errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_tag_in', tag: '"[['+tag+'"', scope: error_scope))
       end
 
-      #check for unclosed single bracket
+      # check for unclosed single bracket
       if inner_tag.include?('[')
         unless inner_tag.include?(']')
           errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('unclosed_bracket_within', tag: '"'+inner_tag+'"', scope: error_scope))
         end
       end
       # check for blank title or display name with pipes
-      if inner_tag.include?("|")
+      if inner_tag.include?('|')
         tag_parts = inner_tag.split('|')
         debug("validate_source: inner tag parts are #{tag_parts.inspect}")
         if tag_parts[0] =~ /^\s*$/
@@ -76,32 +71,41 @@ module XmlSourceProcessor
     #    return errors.size > 0
   end
 
+def source_text=(text)
+    self.source_text_will_change!
+    super
+end
+
+def source_translation=(text)
+  self.source_translation_will_change!
+  super
+end
+
   ##############################################
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.
   ##############################################
   def process_source
-    if @text_dirty
+    if source_text_changed?
       self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
-    if @translation_dirty
+    if self.respond_to?(:source_translation) && source_translation_changed?
       self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
     end
   end
 
-  def wiki_to_xml(page, text_type)
-
+  def wiki_to_xml(page, text_type, preview_mode = false)
     subjects_disabled = page.collection.subjects_disabled
 
     source_text = case text_type
-                  when Page::TEXT_TYPE::TRANSCRIPTION
+    when Page::TEXT_TYPE::TRANSCRIPTION
                     page.source_text
-                  when Page::TEXT_TYPE::TRANSLATION
+    when Page::TEXT_TYPE::TRANSLATION
                     page.source_translation
-                  else
-                    ""
-                  end
+    else
+                    ''
+    end
 
     xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
@@ -109,9 +113,9 @@ module XmlSourceProcessor
     xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
-    xml_string = process_line_breaks(xml_string)
+    xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string, false, text_type)
+    xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
@@ -126,7 +130,7 @@ module XmlSourceProcessor
 
   BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
   def clean_bad_braces(text)
-    text.gsub BAD_SHIFT_REGEX, "[[\\1]]"
+    text.gsub BAD_SHIFT_REGEX, '[[\\1]]'
   end
 
   BRACE_REGEX = /\[\[.*?\]\]/m
@@ -135,8 +139,8 @@ module XmlSourceProcessor
     wikilinks = text.scan(BRACE_REGEX)
     wikilinks.each do |wikilink_contents|
       # strip braces
-      munged = wikilink_contents.sub('[[','')
-      munged = munged.sub(']]','')
+      munged = wikilink_contents.sub('[[', '')
+      munged = munged.sub(']]', '')
 
       # extract the title and display
       if munged.include? '|'
@@ -161,7 +165,7 @@ module XmlSourceProcessor
     new_text = text.scan(BRACE_REGEX)
     new_text.each do |results|
       changed = results
-      #remove title
+      # remove title
       if results.include?('|')
         changed = results.sub(/\[\[.*?\|/, '')
       end
@@ -191,8 +195,8 @@ module XmlSourceProcessor
     end
 
     self.tex_figures = figures
-    replacements.each_pair do |s,r|
-      text.sub!(s,r)
+    replacements.each_pair do |s, r|
+      text.sub!(s, r)
     end
 
     text
@@ -213,52 +217,64 @@ module XmlSourceProcessor
       # look for a header
       if !current_table
         if line.match(HEADER)
-          line.chomp
-          current_table = { :header => [], :rows => [], :section => @sections.last }
+          line = line.chomp
+          current_table = { header: [], rows: [], section: @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe
-          current_table[:header] = cells.map{ |cell_title| cell_title.sub(/^!\s*/,'') }
+
+          # trim whitespace from each header cell
+          cells = cells.map(&:strip)
+
+          current_table[:header] = cells.map { |cell_title| cell_title.sub(/^!\s*/, '') }
           heading = cells.map do |cell|
             if cell.match(/^!/)
-              "<th class=\"bang\">#{cell.sub(/^!\s*/,'')}</th>"
+              "<th class=\"bang\">#{cell.sub(/^!\s*/, '')}</th>"
             else
               "<th>#{cell}</th>"
             end
-          end.join(" ")
+          end.join(' ')
           new_lines << "<table class=\"tabular\">\n<thead>\n<tr>#{heading}</tr></thead>"
         else
           # no current table, no table contents -- NO-OP
           new_lines << line
         end
       else
-        #this is either an end or a separator
+        # this is either an end or a separator
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
+          # handle initial blank cells - if line starts with whitespace followed by pipe, preserve empty cell
+          line_chomp = line.chomp
+          has_initial_empty_cell = line_chomp.match(/^\s+\|/)
+
           # remove leading and trailing delimiters
-          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/,'')
+          clean_line = line_chomp.sub(/^\s*\|/, '').sub(/\|\s*$/, '')
           # fill the row
-          cells = clean_line.split(/\s*\|\s*/,-1) # -1 means "don't prune empty values at the end"
+          cells = clean_line.split(/\s*\|\s*/, -1) # -1 means "don't prune empty values at the end"
+
+          # trim whitespace from each cell
+          cells = cells.map(&:strip)
+
+          # if there was initial whitespace before pipe, add empty cell at beginning
+          cells.unshift('') if has_initial_empty_cell
           current_table[:rows] << cells
-          rowline = ""
-          cells.each_with_index do |cell, i|
-            head = current_table[:header][i]
-            role_string = " role=\"#{head}\""
+          rowline = ''
+          cells.each_with_index do |cell, _i|
             rowline += "<td>#{cell}</td> "
           end
 
           if current_table[:rows].size == 1
-            new_lines << "<tbody>"
+            new_lines << '<tbody>'
           end
           new_lines << "<tr>#{rowline}</tr>"
         else
           # finished the last row
-          if current_table[:rows].size > 0 # only process tables with bodies
+          unless current_table[:rows].empty? # only process tables with bodies
             @tables << current_table
-            new_lines << "</tbody>"
+            new_lines << '</tbody>'
           end
-          new_lines << "</table>"
+          new_lines << '</table><lb/>'
           current_table = nil
         end
       end
@@ -267,14 +283,14 @@ module XmlSourceProcessor
     if current_table
       # unclosed table
       @tables << current_table
-      if current_table[:rows].size > 0 # only process tables with bodies
+      unless current_table[:rows].empty? # only process tables with bodies
         @tables << current_table
-        new_lines << "</tbody>"
+        new_lines << '</tbody>'
       end
-      new_lines << "</table>"
+      new_lines << '</table><lb/>'
     end
     # do something with the table data
-    new_lines.join(" ")
+    new_lines.join(' ')
   end
 
   def process_any_sections(line)
@@ -283,9 +299,9 @@ module XmlSourceProcessor
         wiki_title = section_match[1].strip
         if wiki_title.length > 0
           verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title)
-          safe_verbatim = verbatim.gsub(/"/, "&quot;")
+          safe_verbatim = verbatim.gsub(/"/, '&quot;')
           line = line.sub(section_match.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title}</entryHeading>")
-          @sections << Section.new(:title => wiki_title, :depth => depth)
+          @sections << Section.new(title: wiki_title, depth: depth)
         end
       end
     end
@@ -296,9 +312,9 @@ module XmlSourceProcessor
   def postprocess_sections
     @sections.each do |section|
       doc = XmlSourceProcessor.cell_to_xml(section.title)
-      doc.elements.each("//link") do |e|
+      doc.elements.each('//link') do |e|
         title = e.attributes['target_title']
-        article = collection.articles.where(:title => title).first
+        article = collection.articles.where(title: title).first
         if article
           e.add_attribute('target_id', article.id.to_s)
         end
@@ -321,20 +337,24 @@ module XmlSourceProcessor
   end
 
   # transformations converting source mode transcription to xml
-  def process_line_breaks(text)
-    text="<p>#{text}</p>"
-    text = text.gsub(/\s*\n\s*\n\s*/, "</p><p>")
+  def process_line_breaks(text, add_paragraph_tags = true)
+    if add_paragraph_tags
+      text="<p>#{text}</p>"
+      text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
+    else
+      text = text.gsub(/\s*\n\s*\n\s*/, '<lb/><lb/>')
+    end
     text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
-    text = text.gsub(/\r\n\s*/, "<lb/>")
+    text = text.gsub(/\r\n\s*/, '<lb/>')
     text = text.gsub(/([[:word:]]+)-\n\s*/, '\1<lb break="no" />')
-    text = text.gsub(/\n\s*/, "<lb/>")
+    text = text.gsub(/\n\s*/, '<lb/>')
     text = text.gsub(/([[:word:]]+)-\r\s*/, '\1<lb break="no" />')
-    text = text.gsub(/\r\s*/, "<lb/>")
-    return text
+    text = text.gsub(/\r\s*/, '<lb/>')
+    text
   end
 
   def valid_xml_from_source(source)
-    source = source || ""
+    source = source || ''
     safe = source.gsub /\&/, '&amp;'
     safe.gsub! /\&amp;amp;/, '&amp;'
     safe.gsub! /[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/, ' '
@@ -347,62 +367,79 @@ module XmlSourceProcessor
 EOF
   end
 
-  def update_links_and_xml(xml_string, preview_mode=false, text_type)
+  def update_links_and_xml(xml_string, preview_mode = false, text_type)
     # first clear out the existing links
+    # log the count of articles before and after
     clear_links(text_type) unless preview_mode
-    processed = ""
+
+    candidate_articles = collection.articles.left_joins(:article_versions)
+    page_update_timestamp = 1.hour.ago
+
+    processed = ''
     # process it
     doc = REXML::Document.new xml_string
-    doc.elements.each("//link") do |element|
+    doc.elements.each('//link') do |element|
       # default the title to the text if it's not specified
-      if !(title=element.attributes['target_title'])
+      if !(title = element.attributes['target_title'])
         title = element.text
       end
-      #display_text = element.text
-      display_text = ""
+      # display_text = element.text
+      display_text = ''
       element.children.each do |e|
         display_text += e.to_s
       end
       debug("link display_text = #{display_text}")
-      #change the xml version of quotes back to double quotes for article title
+      # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
+      article = candidate_articles.find_by(title: title)
+
+      if article.nil?
+        article = candidate_articles.where('article_versions.title': title)
+                                    .where('article_versions.created_on > ?', page_update_timestamp)
+                                    .first
+        if article.present?
+          display_text = article.title
+          title = article.title
+        end
+      end
+
       # create new blank articles if they don't exist already
-      if !(article = collection.articles.where(:title => title).first)
+      if article.nil?
         article = Article.new
         article.title = title
         article.collection = collection
-        article.created_by_id = User.current_user.id if User.current_user.present?
+        article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
       end
+
       link_id = create_link(article, display_text, text_type) unless preview_mode
       # now update the attribute
-      link_element = REXML::Element.new("link")
+      link_element = REXML::Element.new('link')
       element.children.each { |c| link_element.add(c) }
       link_element.add_attribute('target_title', title)
-      debug("element="+link_element.inspect)
-      debug("article="+article.inspect)
+      debug('element='+link_element.inspect)
+      debug('article='+article.inspect)
       link_element.add_attribute('target_id', article.id.to_s) unless preview_mode
       link_element.add_attribute('link_id', link_id.to_s) unless preview_mode
       element.replace_with(link_element)
     end
     doc.write(processed)
-    return processed
+    processed
   end
-
 
   # handle XML-dependent post-processing
   def postprocess_xml_markup(xml_string)
     doc = REXML::Document.new xml_string
     processed = ''
-    doc.elements.each("//lb") do |element|
+    doc.elements.each('//lb') do |element|
       if element.previous_element && element.previous_sibling.node_type == :element && element.previous_element.name == 'lb'
         pre = doc.to_s
         element.parent.elements.delete(element)
       end
     end
     doc.write(processed)
-    return processed
+    processed
   end
 
 
@@ -410,13 +447,13 @@ EOF
   CELL_SUFFIX = '</cell>'
 
   def self.cell_to_xml(cell)
-    REXML::Document.new(CELL_PREFIX + cell.gsub('&','&amp;') + CELL_SUFFIX)
+    REXML::Document.new(CELL_PREFIX + cell.gsub('&', '&amp;') + CELL_SUFFIX)
   end
 
   def self.xml_to_cell(doc)
-    text = ""
+    text = ''
     doc.write(text)
-    text.sub(CELL_PREFIX,'').sub(CELL_SUFFIX,'')
+    text.sub(CELL_PREFIX, '').sub(CELL_SUFFIX, '')
   end
 
   def self.cell_to_plaintext(cell)
@@ -426,8 +463,8 @@ EOF
 
   def self.cell_to_subject(cell)
     doc = cell_to_xml(cell)
-    subjects = ""
-    doc.elements.each("//link") do |e|
+    subjects = ''
+    doc.elements.each('//link') do |e|
       title = e.attributes['target_title']
       subjects << title
       subjects << "\n"
@@ -437,8 +474,8 @@ EOF
 
   def self.cell_to_category(cell)
     doc = cell_to_xml(cell)
-    categories = ""
-    doc.elements.each("//link") do |e|
+    categories = ''
+    doc.elements.each('//link') do |e|
       id = e.attributes['target_id']
       if id
         article = Article.find(id)
@@ -457,9 +494,9 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
-    title_regex = 
+    title_regex =
       Regexp.escape(old_title)
-        .gsub('\\ ',' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
+        .gsub('\\ ', ' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
         .gsub(/\s+/, '\s+') # convert multiple whitespaces into 1+n space characters
 
     self.source_text = rename_link_in_text(source_text, title_regex, new_title)
@@ -471,16 +508,88 @@ EOF
   end
 
   def rename_link_in_text(text, title_regex, new_title)
-    # handle links of the format [[Old Title|Display Text]]
-    text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
-    # handle links of the format [[Old Title]]
-    text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+    if new_title == ''
+      # Link deleted, remove [[ ]] but keep the original title text
+
+      # Handle links of the form [[Old Title|Display Text]] => Display Text
+      text = text.gsub(/\[\[#{title_regex}\|([^\]]+)\]\]/i, '\1')
+      # Handle links of the form [[Old Title]] => Old Title
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, '\1')
+    else
+      # Replace the title part in [[Old Title|Display Text]]
+      text = text.gsub(/\[\[#{title_regex}\|/i, "[[#{new_title}|")
+      # Replace [[Old Title]] with [[New Title|Old Title]]
+      text = text.gsub(/\[\[(#{title_regex})\]\]/i, "[[#{new_title}|\\1]]")
+    end
 
     text
   end
 
+
+  def pipe_tables_formatting(text)
+    # since Pandoc Pipe Tables extension requires pipe characters at the beginning and end of each line we must add them
+    # to the beginning and end of each line
+    text.split("\n").map { |line| "|#{line}|" }.join("\n")
+  end
+
+  def xml_table_to_markdown_table(table_element, pandoc_format = false, plaintext_export = false)
+    text_table = ''
+
+    # clean up in-cell line-breaks
+    table_element.xpath('//lb').each { |n| n.replace(' ') }
+
+    # Sanitize single quotes with backticks
+    # table_element.xpath('//*').each { |n| n.content.gsub("'", '`') }
+
+    # calculate the widths of each column based on max(header, cell[0...end])
+    column_count = ([table_element.xpath('//th').count] + table_element.xpath('//tr').map { |e| e.xpath('td').count }).max
+    column_widths = {}
+    1.upto(column_count) do |column_index|
+      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map { |e| e.text().length }.max || 0)
+      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
+      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
+      column_widths[column_index] = [longest_cell, heading_length].max
+    end
+
+    # print the header as markdown
+    cell_strings = []
+    table_element.xpath('//th').each_with_index do |e, i|
+      cell_strings << e.text.rjust(column_widths[i+1], ' ')
+    end
+    text_table << cell_strings.join(' | ') << "\n"
+
+    # print the separator
+    text_table << column_count.times.map { |i| ''.rjust(column_widths[i+1], '-') }.join(' | ') << "\n"
+
+    # print each row as markdown
+    table_element.xpath('//tr').each do |row_element|
+      text_table << row_element.xpath('td').map do |e|
+        width = 80 # default for hand-coded tables
+        index = e.path.match(/.*td\[(\d+)\]/)
+        if index
+          width = column_widths[index[1].to_i] || 80
+        else
+          width = column_widths.values.first
+        end
+
+        if plaintext_export
+          e.text.rjust(width, ' ')
+        else
+          inner_html = xml_to_pandoc_md(e.to_s.gsub("'", '&#39;'), false, false, nil, false).gsub("\n", '')
+          inner_html.rjust(width, ' ')
+        end
+      end.join(' | ') << "\n"
+    end
+    if pandoc_format
+      text_table = pipe_tables_formatting(text_table)
+    end
+
+    "#{text_table}\n\n"
+  end
+
+
+
   def debug(msg)
     logger.debug("DEBUG: #{msg}")
   end
-
 end

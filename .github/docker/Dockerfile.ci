@@ -1,0 +1,26 @@
+FROM ruby:3.3.5
+
+RUN apt-get update -qq && \
+    apt-get install -y \
+      ghostscript \
+      poppler-utils \
+      graphviz \
+      pandoc \
+      texlive-base \
+      texlive-latex-base \
+      texlive-latex-recommended \
+      texlive-fonts-recommended \
+      texlive-latex-extra \
+      texlive-xetex \
+      libmagickwand-dev \
+      imagemagick \
+      nodejs \
+      npm \
+      xauth \
+      xvfb \
+      x11-xserver-utils \
+      chromium \
+      chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app

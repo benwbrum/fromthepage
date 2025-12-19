@@ -51,7 +51,7 @@
             h5= t('.verbatim_plaintext_zero_index')
             p.nomargin= t('.verbatim_plaintext_zero_index_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_verbatim_zero_index_page, value: true
@@ -62,20 +62,20 @@
       h2.nomargin= t('.export')
       p= t('.zip_export_only_project_owners')
       ul.bulk-export
- 
+
         li
           .bulk-export_format
             h5= t('.configurable_printout')
             p.nomargin= t('.configurable_printout_description')
           .bulk-export_options
-            span =link_to(t('.configurable_printout_button'), configurable_printout_collection_work_path(@collection.slug, @work), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+            span =link_to(t('.configurable_printout_button'), configurable_printout_collection_work_path(@collection.slug, @work), class: 'button', data: { controller: 'litebox', litebox: { hash: 'edit-reviewer-buttons', noscroll: false  } })
 
         li
           .bulk-export_format
             h5= t('.facing_pdf')
             p.nomargin= t('.facing_pdf_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :facing_edition_work, value: true
@@ -85,7 +85,7 @@
             h5= t('.verbatim_plaintext')
             p.nomargin= t('.verbatim_plaintext_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_verbatim_page, value: true
@@ -95,7 +95,7 @@
             h5= t('.searchable_plaintext')
             p.nomargin= t('.searchable_plaintext_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_searchable_page, value: true
@@ -105,7 +105,7 @@
             h5= t('.expanded_plaintext')
             p.nomargin= t('.expanded_plaintext_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_emended_page, value: true
@@ -115,7 +115,7 @@
             h5= t('.html')
             p.nomargin= t('.html_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :html_page, value: true
@@ -125,7 +125,7 @@
             h5= t('.table_field_csv')
             p.nomargin= t('.table_field_csv_export_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :table_csv_work, value: true
@@ -135,7 +135,7 @@
             h5= t('.subject_index_csv')
             p.nomargin= t('.subject_index_csv_description')
           .bulk-export_options
-            =form_for :bulk_export, url: bulk_export_create_path do |f| 
+            =form_for :bulk_export, url: bulk_export_create_path do |f|
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :subject_csv_collection, value: true

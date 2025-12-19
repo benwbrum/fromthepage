@@ -1,16 +1,14 @@
-=javascript_include_tag 'application'
 .litebox-embed(style="width:550px")
   h1= t('.upload_subjects')
-  p== t('.upload_subjects_description', link: (link_to t('.csv_file_with'), article_upload_example_path, {target: "_blank", alt: t('.example_csv')}))
+  p== t('.upload_subjects_description', link: (link_to t('.csv_file_with'), article_upload_example_path, { target: '_blank', alt: t('.example_csv') }))
 
-  =form_for(:upload, url: article_subject_upload_path) do |f|
+  =form_for(:upload, url: article_subject_upload_path(collection_id: @collection.slug)) do |f|
     table.form
       tr
         td
-        .input-file
+        .input-file [data-controller='file-picker']
           =f.file_field :file
           input(type="text" placeholder=t('.click_to_browse') readonly)
           button(type="button") =t('.browse')
-        =f.hidden_field :collection_id, value: @collection.id
     .toolbar
       .toolbar_group.aright =f.button t('.upload')

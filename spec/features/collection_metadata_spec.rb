@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe "collection metadata", :order => :defined do
+describe "collection metadata", order: :defined do
+  include ActiveJob::TestHelper
+
   before :each do
     @owner = User.where(login: 'wakanda').first
     @user = User.where(login: 'margaret').first
@@ -15,18 +17,18 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("ladi")
   end
 
-  it "uploads works from a zip file", :js => true do
+  it "uploads works from a zip file", js: true do
     login_as @owner
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select("ladi", :from => 'document_upload_collection_id')
+    select("ladi", from: 'document_upload_collection_id')
 
-    # workaround
-    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
-    page.execute_script(script)
-
-    attach_file('document_upload_file', './test_data/uploads/ladi_fixture.zip')
+    attach_file(
+      'document_upload_file',
+      Rails.root.join('test_data/uploads/ladi_fixture.zip'),
+      make_visible: true
+    )
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq "ladi"
@@ -35,30 +37,35 @@ describe "collection metadata", :order => :defined do
     sleep(10)
   end
 
-  it "uploads metadata for the imported works", :js => true do
+  it "uploads metadata for the imported works", js: true do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
+    page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
     visit collection_metadata_upload_path(c)
-    expect(page).to have_content("To update metadata for several works within this collection")
+    expect(page).to have_content('To update metadata for several works within this collection')
 
-    # workaround
-    script = "$('#metadata_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
-    page.execute_script(script)
+    attach_file(
+      'metadata_file',
+      Rails.root.join('test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv'),
+      make_visible: true
+    )
 
-    attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
     click_button('Upload')
+    expect(page).to have_content('Your upload is being processed. An email will be sent to update its status')
+    perform_enqueued_jobs
   end
 
-  it "increments occurrences as works are re-imported", :js => true do
+  it "increments occurrences as works are re-imported", js: true do
     login_as @owner
-    c = Collection.where(title: "ladi").first
+    c = Collection.find_by(title: 'ladi')
     filename = c.metadata_coverages.where(key: 'filename').first
     expect(filename.count).to eq 3
 
     # reupload the same work here.
     visit edit_collection_path(@owner, c)
+    page.find('.side-tabs').click_link('Look & Feel')
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
     visit collection_metadata_upload_path(c)
     expect(page).to have_content("To update metadata for several works within this collection")
@@ -67,17 +74,28 @@ describe "collection metadata", :order => :defined do
     script = "$('#metadata_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
     page.execute_script(script)
 
-    attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
+    attach_file(
+      'metadata_file',
+      Rails.root.join('test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv'),
+      make_visible: true
+    )
+
     click_button('Upload')
+    expect(page).to have_content('Your upload is being processed. An email will be sent to update its status')
+    perform_enqueued_jobs
+
     filename.reload
     expect(filename.count).to eq 3
   end
 
-  it "enables facets" do
+  it "enables facets", js: true do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
-    click_link "Enable Facets"
+    page.find('.side-tabs').click_link('Look & Feel')
+    page.check("Enable metadata facets")
+    expect(page).to have_content('Collection has been updated')
+    page.click_link('Edit Facets')
     expect(page).to have_content("Metadata Facets")
     expect(page).to have_content("Configure metadata facets by reviewing the metadata in your collection and labelling fields to be displayed to transcribers.")
     expect(page).to have_content("filename")
@@ -88,7 +106,8 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
-    click_link "Facets"
+    page.find('.side-tabs').click_link('Look & Feel')
+    click_link "Edit Facets"
     expect(page).to have_content("Metadata Facets")
     expect(page).to have_content("filename")
     fill_in 'metadata_filename_label', with: 'Filename'
@@ -103,7 +122,8 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
-    click_link "Facets"
+    page.find('.side-tabs').click_link('Look & Feel')
+    click_link "Edit Facets"
     expect(page).to have_content("Metadata Facets")
     expect(page).to have_content("filename")
     fill_in 'metadata_filename_label', with: 'Filename'
@@ -116,7 +136,8 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
-    click_link "Facets"
+    page.find('.side-tabs').click_link('Look & Feel')
+    click_link "Edit Facets"
     expect(page).to have_content("Metadata Facets")
     expect(page).to have_content("filename")
     fill_in 'metadata_filename_label', with: 'Filename'
@@ -130,7 +151,8 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
-    click_link "Facets"
+    page.find('.side-tabs').click_link('Look & Feel')
+    click_link "Edit Facets"
     expect(page).to have_content("Metadata Facets")
     expect(page).to have_content("filename")
     fill_in 'metadata_filename_label', with: 'Filename'
@@ -139,12 +161,20 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("Order is not a number")
   end
 
-  it "should not be available/visible for the Individual Researcher plan" do
+  it "should not be available/visible for the Individual Researcher plan", js: true do
     logout
-    login_as @user
+    old_account_type=@owner.account_type
+    @owner.account_type='Individual Researcher'
+    @owner.save
+    login_as @owner
     c = Collection.where(title: "ladi").first
-    visit edit_collection_path(@user, c)
-    expect(page).not_to have_content("Metadata Facets")
+    visit edit_collection_path(@owner, c)
+    page.find('.side-tabs').click_link('Look & Feel')
+    expect(page).to have_field("Enable metadata facets", disabled: true)
+    expect(page.find_link("Edit Facets")).to match_css('[disabled]')
+    expect(page).to have_content("Not available for researcher accounts.")
+    @owner.account_type=old_account_type
+    @owner.save
   end
 
   it "deletes a collection" do
@@ -152,7 +182,9 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
+    page.find('.side-tabs').click_link('Danger Zone')
     expect(page).to have_content("ladi")
+    expect(page).to have_content("Please use caution")
     click_link "Delete Collection"
     expect(page).not_to have_content("ladi")
     expect(c.metadata_coverages).to be_empty

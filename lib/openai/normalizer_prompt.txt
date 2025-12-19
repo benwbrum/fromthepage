@@ -1,0 +1,6 @@
+These documents have been transcribed by an OCR process that produced some errors in the text.  These errors should be fixed before the documents are published.   Using your editorial expertise, you can correct many of these errors to produce a better, normalized version of the text.  
+I will provide you with the uncorrected text of a letter after the word TEXT.  Please correct any errors you can.  If words are too hard to guess, replace them with [????].
+
+TEXT
+{{text}}
+

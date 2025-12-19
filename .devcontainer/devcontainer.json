@@ -7,10 +7,10 @@
 			  "MYSQL_PASSWORD": "rails" }
 },
 
-// When creating the container, install gems and set up database 
+// When creating the container, install gems, set up database, git fetch, and start the server
 "updateContentCommand": "bundle install; sudo service mariadb start; rake db:create; rake db:migrate",
 "postAttachCommand": {
-    "server": "sudo service mariadb start; rails server"
+    "server": "git fetch --all --prune; sudo service mariadb start; rails server"
 },
 
 // Configure tool-specific properties.

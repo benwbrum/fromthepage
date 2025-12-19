@@ -4,7 +4,7 @@ p= t('.message', work: @page.work.title, collection: @page.collection.title)
 
 p "#{@note.body}"
 
-span =link_to t('user_mailer.click_here'), collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
+span =link_to t('user_mailer.click_here'), collection_display_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
 span =t('.html.view_note', collection: @page.collection.title, work: @page.work.title)
 
 -unless @note.collection.owner.display_name.blank?

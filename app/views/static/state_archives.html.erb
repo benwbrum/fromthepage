@@ -183,10 +183,10 @@
                                 </div>
                             </div>
                         </div>
- 
 
-                     
- 
+
+
+
                     </div>
                 </div>
             </div>
@@ -525,26 +525,26 @@
                             </div>
                         </div>
 
-                    
-                     
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/state-case02.png") %>
                                 <p>The Maryland State Archives had volunteer transcribers help create an index for over 50,000 marriage certificates. Archivists no longer need to search by hand for the record. This was made more difficult if the patron couldn’t remember the date of their marriage but desperately needed the certificate to apply for social security benefits, a passport, or a driver’s license renewal. Digitized, searchable indexes of records make an enormous difference in helping people who need them and those who use them for genealogical purposes. Check out this project <a href="#">here</a>.</p>
-                            </div>  
+                            </div>
                         </div>
 
-                      
-                 
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/state-case03.png") %>
                                 <p>The State Archives of North Carolina has active collections on varying topics on FromThePage, including Local Draft Board Records, Colonial Court Records, African American Education, World War I Diaries, WWI and WWII Letters, and Women’s History. Their grant-funded project North Carolina’s Early Court Records kicked-off their use of the platform. Beyond their goal to broaden accessibility to the collections, they also wanted to engage public volunteers with the work of the archives through transcription. Now patrons anywhere in the world can perform full-text searches on the transcribed documents; find out more <a href="#">here</a>.</p>
-                            </div> 
+                            </div>
                         </div>
 
-                        
-                    
+
+
                         <div class="box">
                             <div class="item">
                                 <%= image_tag("materials/state-case04.png") %>
@@ -552,22 +552,22 @@
                             </div>
                         </div>
 
-                      
-                   
+
+
                         <div class="box">
                             <div class="item">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <%= image_tag("materials/state-case05.png", class: 'second-img') %>
                                     </div>
-    
+
                                     <div class="col-lg-6">
                                         <span>The Library of Virginia houses 14,900 World War I Questionnaires gathered from 1919-1921 by the Virginia War History Commission. They cover the veteran’s personal information and war record in detail. The Library used FromThePage to capture all the data from the questionnaires, fully transcribing them to honor the 100-year anniversary of WWI. They continued to transcribe other field-based documents, to further increase access and searchability of their records. Read more about how crowdsourced-transcription makes their projects possible <a href="#">here</a>.</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
- 
+
                     </div>
 
                 </div>
@@ -617,8 +617,8 @@
                             </div>
                         </div>
 
-                
-            
+
+
 
                     </div>
                 </div>
@@ -631,7 +631,7 @@
     <section class="crowd-schedule">
         <div class="container">
             <div class="title">
-                <h4><%= number_with_delimiter Page.where.not(:status=>nil).count %></h4>
+                <h4><%= number_with_delimiter Page.where.not(status: :new).count %></h4>
                 <p>Pages — and counting!</p>
             </div>
 

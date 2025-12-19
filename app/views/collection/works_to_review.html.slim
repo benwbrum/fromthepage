@@ -21,7 +21,7 @@
         th.vbottom =t('.last_activity')
         th.vbottom =t('.contributors')
     tbody
-      -contributor_map = {} 
+      -contributor_map = {}
       -@works.each do |work|
         tr
           td.vbottom =link_to work.title, {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'review-button'
@@ -31,7 +31,7 @@
           td.vbottom.dt-body-right =work.notes.count
           td.vbottom =work.work_statistic.updated_at
           td.vbottom
-            -user_deed_count = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:deeds).group('deeds.user_id').count.sort { |a,b| b[1] <=> a[1] }
+            -user_deed_count = work.pages.where(status: :needs_review).joins(:deeds).group('deeds.user_id').count.sort { |a,b| b[1] <=> a[1] }
             -max_contributor_rows = 4
             -work_contributor_ids = user_deed_count.map{|e|e[0] }.uniq
             -unless work_contributor_ids - contributor_map.keys == []
@@ -42,18 +42,18 @@
               br
             -if user_deed_count.size > max_contributor_rows
               i =t('.and_n_more', n: (user_deed_count.size - max_contributor_rows))
-              
+
   =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 -content_for :javascript
   javascript:
 
     $(document).ready( function() {
-        $('#works').DataTable({ 
+        $('#works').DataTable({
           paging: false,
           language: {
             searchPlaceholder: "#{t('.filter_works')}",
             search: ""
-          } 
+          }
         });
     } );

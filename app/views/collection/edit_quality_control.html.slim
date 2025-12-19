@@ -1,0 +1,5 @@
+=render partial: '/shared/collection_tabs', locals: { selected: 5, collection_id: @collection }
+.collection-meta-wrapper
+  =render partial: 'edit_tabs', locals: { selected: 6 }
+  #collection-settings
+    =render partial: 'form', locals: { collection: @collection, scope: 'edit_quality_control' }

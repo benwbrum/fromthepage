@@ -25,7 +25,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # Install bundler
-RUN gem install bundler
+RUN gem install bundler -v 2.4.22
 
 # Default value to allow debug server to serve content over GitHub Codespace's port forwarding service
 # The value is a comma-separated list of allowed domains 

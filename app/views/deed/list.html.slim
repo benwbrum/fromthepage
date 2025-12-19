@@ -15,7 +15,7 @@ h1 =t('.activity_stream')
     h3 =t('.user_title', title: @user.display_name)
 
 table.datagrid.striped#deeds-list
-  thead 
+  thead
     th
     th= t('.deed')
     th= t('.type')
@@ -29,40 +29,18 @@ table.datagrid.striped#deeds-list
         td.w100.toleft
           -if @collection.nil?
             -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
-              =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+              =render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])
             -else
-              =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
+              =raw(strip_tags(render(partial: 'deed/deed', locals: { deed: d, long_view: true }, formats: [:html])))
           -else
-            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
-            
+            =render(partial: 'deed/deed', locals: { deed: d, long_view: true, suppress_collection: true }, formats: [:html])
+
         td
           small.label(class="deed-type-#{d.deed_type}") =t(d.deed_type_name)
         td.nowrap (data-order="#{d.created_at.to_i}")
           =time_tag(d.created_at, class: 'small fglight')
             =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
--if @paginate
-  br
-  small.legend
-    =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }
-  br
-
--else
-  -content_for :javascript
-    javascript:
-      $(document).ready( function () {
-        // initialize the works list datatable
-        $('#deeds-list').DataTable( {
-          // don't allow sorting on the user icon column
-          'columnDefs': [ {
-            'targets': [0], 
-            'orderable': false, 
-          } ],
-          // Initially sort by recency
-          "order": [[3, 'desc']]
-        } );
-
-        // fix the layout of the pagination controls
-        $('select[name="deeds-list_length"]').parent().before('Show ');
-        $('select[name="deeds-list_length"]').parent().after(' entries');
-
-      } );
+br
+small.legend
+  =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }
+br

@@ -1,0 +1,14 @@
+#notes-form.user-bubble
+  =profile_picture(current_user)
+
+  =form_for note, url: notes_path(collection_id: collection.slug, work_id: work&.slug, page_id: page&.id), html: { class: 'user-bubble_form', data: { turbo: true } } do |f|
+    .user-bubble_form_editor
+      =f.text_area :body, rows: 4, placeholder: t('.write_a_new_note')
+    .user-bubble_form_footer
+      span.user-bubble_form_error
+        =note.errors.full_messages.join(', ')
+      =f.label :body, t('.note_body'), class: 'hidden'
+      -if collection.voice_recognition
+        span.voice-info.voice
+          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
+      =f.button t('.save_note'), id: 'save_note_button'

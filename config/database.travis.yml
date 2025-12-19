@@ -1,7 +1,0 @@
-test:
-  database: test
-  adapter: mysql2
-  encoding: utf8
-  username: travis
-  variables:
-    sql_mode: TRADITIONAL

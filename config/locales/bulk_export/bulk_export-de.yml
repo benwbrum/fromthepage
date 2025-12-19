@@ -5,7 +5,11 @@ de:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_owner:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     create_for_work_actual:
+      export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
+    create_for_work_ajax:
       export_running_message: Export läuft. Nach Abschluss wird eine E-Mail an %{email} gesendet.
     download:
       download_cleaned_message: Dieser Export wurde bereinigt. Bitte starten Sie einen neuen.
@@ -43,6 +47,8 @@ de:
       organization_description: ZIP-Dateien können je einen Ordner pro Werk enthalten, der Dateien oder Unterordner für jedes Exportformat enthält, oder sie enthalten einen Ordner pro Exportformat, der Dateien pro Werk enthält.
       organization_format: Ordner nach Formaten
       organization_work: Ordner nach Werken
+      page_details_csv: Seitendetails CSV
+      page_details_csv_description: Eine Tabelle mit einer Zeile pro Seite, einschließlich Seiteninformationen und übergeordneten Werkmetadaten.
       preserve_linebreaks: Zeilenumbrüche beibehalten
       previous_exports: Frühere Exporte
       search_optimized_plaintext: Suchoptimierter Plaintext

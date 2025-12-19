@@ -1,50 +1,92 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  include ApplicationHelper
   include ContributorHelper
   include AddWorkHelper
   include CollectionHelper
 
   public :render_to_string
 
-  protect_from_forgery :except => [:set_collection_title,
-                                   :set_collection_intro_block,
-                                   :set_collection_footer_block]
+  protect_from_forgery except: [
+    :set_collection_title,
+    :set_collection_intro_block,
+    :set_collection_footer_block
+  ]
 
-  before_action :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :block_users, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  edit_actions = [:edit, :edit_tasks, :edit_look, :edit_privacy, :edit_help, :edit_quality_control, :edit_danger]
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer, :new_mobile_user]
-
-  def authorized?
-    unless user_signed_in?
-      ajax_redirect_to dashboard_path
-    end
-
-    if @collection &&  !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
-    end
-  end
+  before_action :set_collection, only: edit_actions + [:show, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
+  before_action :authorized?, only: [
+    :new,
+    :edit,
+    :edit_tasks,
+    :edit_look,
+    :edit_privacy,
+    :edit_help,
+    :edit_quality_control,
+    :edit_danger,
+    :update,
+    :blank_collection,
+    :delete,
+    :create,
+    :edit_owners,
+    :remove_owner,
+    :add_owner,
+    :edit_collaborators,
+    :remove_collaborator,
+    :add_collaborator,
+    :edit_reviewers,
+    :remove_reviewer,
+    :add_reviewer,
+    :new_mobile_user,
+    :search_users,
+    :edit_buttons,
+    :update_buttons
+  ]
+  before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
+  before_action :load_settings, only: [:upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
   def search_users
-    query = "%#{params[:term]}%"
-    users = User.where("real_name like ? or email like ?", query, query)
-    render json: { results: users.map{|u| {text: "#{u.display_name} #{u.email}", id: u.id}}}
+    query = "%#{params[:term].to_s.downcase}%"
+    user_type = (params[:user_type] || 'collaborator').to_sym
+
+    owner_ids = @collection.owners.select(:id)
+    blocked_user_ids = @collection.blocked_users.select(:id)
+    reviewer_ids = @collection.reviewers.select(:id)
+    collaborator_ids = @collection.collaborators.select(:id)
+
+    excluded_ids = case user_type
+    when :owner
+                     User.where(id: owner_ids).or(User.where(id: blocked_user_ids)).select(:id)
+    when :blocked
+                     User.where(id: blocked_user_ids).or(User.where(id: owner_ids)).select(:id)
+    when :reviewer
+                     reviewer_ids
+    else
+                     # collaborator
+                     collaborator_ids
+    end
+
+    users = User.where('LOWER(real_name) LIKE :search OR LOWER(email) LIKE :search', search: query)
+                .where.not(id: excluded_ids)
+                .where.not(id: @collection.owner.id)
+                .limit(100)
+
+    render json: { results: users.map { |u| { text: "#{u.display_name} #{u.email}", id: u.id } } }
   end
 
   def reviewer_dashboard
     # works which have at least one page needing review
     @total_pages=@collection.pages.count
-    @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+    @pages_needing_review=@collection.pages.where(status: :needs_review).count
     @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
-    @works_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).pluck(:work_id).uniq.count
+    @works_to_review = @collection.pages.where(status: :needs_review).pluck(:work_id).uniq.count
   end
 
   def works_to_review
-    @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
-                        .paginate(:page => params[:page], :per_page => 15)
+    @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder('works.title')
+                        .paginate(page: params[:page], per_page: 15)
   end
 
   def one_off_list
@@ -59,19 +101,23 @@ class CollectionController < ApplicationController
     unless params[:quality_sampling_id].blank?
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages = @collection.pages.where(status: :needs_review).where(last_editor_user_id: @user.id)
   end
 
   def approve_all
     @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
-    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
-    @pages.update_all(status: Page::STATUS_TRANSCRIBED)
-    flash[:notice] = t('.approved_n_pages', page_count: @pages.count)
+    @pages = @collection.pages.where(status: :needs_review).where(last_editor_user_id: @user.id)
+    page_count = @pages.count
+    @pages.update_all(status: :transcribed)
+    @collection.works.each do |work|
+      work.work_statistic.recalculate({ type: Page.statuses[:needs_review] }) if work.work_statistic
+    end
+    flash[:notice] = t('.approved_n_pages', page_count: page_count)
     redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))
   end
 
   def edit_buttons
-    @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
+    @prefer_html = @collection.editor_buttons.where(prefer_html: true).exists?
   end
 
   def update_buttons
@@ -80,7 +126,7 @@ class CollectionController < ApplicationController
     prefer_html = (params[:prefer_html] == 'true')
 
     EditorButton::BUTTON_MAP.keys.each do |key|
-      if params[key] == "1"
+      if params[key] == '1'
         button_config = EditorButton.new
         button_config.key = key
         button_config.prefer_html = prefer_html
@@ -90,31 +136,32 @@ class CollectionController < ApplicationController
     end
 
     flash[:notice] = t('.editor_buttons_updated')
-    ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
-
+    ajax_redirect_to(edit_tasks_collection_path(@collection.owner, @collection))
   end
 
+  def search
+    @search_string = search_params[:term]
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        mode: @collection.is_a?(DocumentSet) ? 'docset' : 'collection',
+        slug: @collection.slug
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
 
-  def enable_messageboards
-    @collection.enable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
+    @breadcrumb_scope = { collection: true }
+    if @collection.is_a?(DocumentSet)
+      @docset_filter = @es_query.docset_filter
+    else
+      @collection_filter = @es_query.collection_filter
+    end
 
-  def disable_messageboards
-    @collection.disable_messageboards
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def enable_document_sets
-    @collection.supports_document_sets = true
-    @collection.save!
-    redirect_to document_sets_path(collection_id: @collection)
-  end
-
-  def disable_document_sets
-    @collection.supports_document_sets = false
-    @collection.save!
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
   end
 
   def facets
@@ -122,7 +169,7 @@ class CollectionController < ApplicationController
     @metadata_coverages = collection.metadata_coverages
   end
 
-  def search
+  def facet_search
     mc = @collection.metadata_coverages.where(key: params['facet_search']['label']).first
     first_year = params['facet_search']['date'].split.first.to_i
     last_year = params['facet_search']['date'].split.last.to_i
@@ -143,10 +190,10 @@ class CollectionController < ApplicationController
 
     facet_ids = facets.pluck(:id)
 
-    @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => 10)
+    @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], per_page: 10)
     @search = WorkSearch.new(params[:page])
 
-    render :plain => @works.to_json(:methods => [:thumbnail])
+    render plain: @works.to_json(methods: [:thumbnail])
   end
 
   def new_mobile_user
@@ -154,34 +201,22 @@ class CollectionController < ApplicationController
     session[:new_mobile_user] = false
   end
 
-  def load_settings
-    @main_owner = @collection.owner
-    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
-    @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
-    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
-    if User.count > 100
-      @nonowners = []
-      @noncollaborators = []
-      @nonreviewers = []
-    else
-      @nonowners = User.order(:display_name) - @owners
-      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
-      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
-      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
-    end
-  end
-
   def show
     if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
-      flash[:error] = t('unauthorized_collection', :project => @collection.title)
+      flash[:error] = t('unauthorized_collection', project: @collection.title)
       redirect_to user_profile_path(@collection.owner)
     else
+      if @collection.alphabetize_works
+        order_clause = 'works.title ASC'
+      else
+        order_clause = 'work_statistics.complete ASC, work_statistics.transcribed_percentage ASC, work_statistics.needs_review_percentage DESC'
+      end
+
       @new_mobile_user = !!(session[:new_mobile_user])
       unless @collection.nil?
         if @collection.restricted
           if !user_signed_in? || !@collection.show_to?(current_user)
-            flash[:error] = t('unauthorized_collection', :project => @collection.title)
+            flash[:error] = t('unauthorized_collection', project: @collection.title)
             redirect_to user_profile_path(@collection.owner)
           end
         end
@@ -192,20 +227,21 @@ class CollectionController < ApplicationController
           if session[:search_attempt_id] != @search_attempt.id
             session[:search_attempt_id] = @search_attempt.id
           end
-          @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
-        elsif (params[:works] == 'untranscribed')
-          ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+          @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
+
+        elsif params[:works] == 'untranscribed'
+          ids = @collection.works.includes(:work_statistic).where.not(work_statistics: { complete: 100 }).pluck(:id)
           @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
-          #show all works
-        elsif (params[:works] == 'show')
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-          #hide incomplete works
+          # show all works
+        elsif params[:works] == 'show'
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+          # hide incomplete works
         elsif params[:works] == 'hide' || (@collection.hide_completed)
-          #find ids of completed translation works
+          # find ids of completed translation works
           translation_ids = @collection.works.incomplete_translation.pluck(:id)
-          #find ids of completed transcription works
+          # find ids of completed transcription works
           transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
-          #combine ids anduse to get works that aren't complete
+          # combine ids anduse to get works that aren't complete
           ids = translation_ids + transcription_ids
 
           if @collection.metadata_entry?
@@ -213,41 +249,41 @@ class CollectionController < ApplicationController
             ids += description_ids
           end
 
-          works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+          works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
 
           if works.empty?
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           else
             @works = works
           end
         else
-          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+          @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
         end
 
-        if @collection.facets_enabled?
+        if @collection.facets_enabled? && user_signed_in?
           # construct the search object from the parameters
           @search = WorkSearch.new(params)
           @search.filter([:work, :collection_id]).value=@collection.id
           # the search results are WorkFacets, not works, so we need to fetch the works themselves
           facet_ids = @search.result.pluck(:id)
-          @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+          @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], per_page: @per_page) unless params[:search].is_a?(String)
 
           @date_ranges = []
-          date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
+          date_configs = @collection.facet_configs.where(input_type: 'date').where.not(order: nil).order(order: :asc)
           if date_configs.size > 0
             collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
             date_configs.each do |facet_config|
-              facet_attr = [:d0,:d1,:d2][facet_config.order]
+              facet_attr = [:d0, :d1, :d2][facet_config.order]
 
-              selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
-              collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
+              selection_values = @works.map { |w| w.work_facet.send(facet_attr) }.reject { |v| v.nil? }
+              collection_values = collection_facets.map { |work_facet| work_facet.send(facet_attr) }.reject { |v| v.nil? }
 
               @date_ranges << {
-                :facet => facet_attr,
-                :max => collection_values.max.year,
-                :min => collection_values.min.year,
-                :top => selection_values.max.year,
-                :bottom => selection_values.min.year
+                facet: facet_attr,
+                max: collection_values.max.year,
+                min: collection_values.min.year,
+                top: selection_values.max.year,
+                bottom: selection_values.min.year
               }
             end
           end
@@ -257,20 +293,20 @@ class CollectionController < ApplicationController
             if session[:search_attempt_id] != @search_attempt.id
               session[:search_attempt_id] = @search_attempt.id
             end
-            @works = @search_attempt.results.paginate(page: params[:page], per_page: 10)
-          elsif (params[:works] == 'untranscribed')
-            ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+            @works = @search_attempt.query_results.paginate(page: params[:page], per_page: 10)
+          elsif params[:works] == 'untranscribed'
+            ids = @collection.works.includes(:work_statistic).where.not(work_statistics: { complete: 100 }).pluck(:id)
             @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
-            #show all works
-          elsif (params[:works] == 'show')
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-            #hide incomplete works
+            # show all works
+          elsif params[:works] == 'show'
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
+            # hide incomplete works
           elsif params[:works] == 'hide' || (@collection.hide_completed)
-            #find ids of completed translation works
+            # find ids of completed translation works
             translation_ids = @collection.works.incomplete_translation.pluck(:id)
-            #find ids of completed transcription works
+            # find ids of completed transcription works
             transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
-            #combine ids anduse to get works that aren't complete
+            # combine ids anduse to get works that aren't complete
             ids = translation_ids + transcription_ids
 
             if @collection.metadata_entry?
@@ -278,48 +314,75 @@ class CollectionController < ApplicationController
               ids += description_ids
             end
 
-            works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+            works = @collection.works.joins(:work_statistic).where(id: ids).reorder(order_clause).paginate(page: params[:page], per_page: 10)
 
             if works.empty?
-              @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+              @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
             else
               @works = works
             end
           else
-            @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+            @works = @collection.works.joins(:work_statistic).reorder(order_clause).paginate(page: params[:page], per_page: 10)
           end
 
-          if @collection.facets_enabled?
+          if @collection.facets_enabled? && user_signed_in?
             # construct the search object from the parameters
             @search = WorkSearch.new(params)
             @search.filter([:work, :collection_id]).value=@collection.id
             # the search results are WorkFacets, not works, so we need to fetch the works themselves
             facet_ids = @search.result.pluck(:id)
-            @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+            @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], per_page: @per_page) unless params[:search].is_a?(String)
 
             @date_ranges = []
-            date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
+            date_configs = @collection.facet_configs.where(input_type: 'date').where.not(order: nil).order(order: :asc)
             if date_configs.size > 0
               collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
               date_configs.each do |facet_config|
-                facet_attr = [:d0,:d1,:d2][facet_config.order]
+                facet_attr = [:d0, :d1, :d2][facet_config.order]
 
-                selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
-                collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
+                selection_values = @works.map { |w| w.work_facet.send(facet_attr) }.reject { |v| v.nil? }
+                collection_values = collection_facets.map { |work_facet| work_facet.send(facet_attr) }.reject { |v| v.nil? }
 
                 @date_ranges << {
-                  :facet => facet_attr,
-                  :max => collection_values.max.year,
-                  :min => collection_values.min.year,
-                  :top => selection_values.max.year,
-                  :bottom => selection_values.min.year
+                  facet: facet_attr,
+                  max: collection_values.max.year,
+                  min: collection_values.min.year,
+                  top: selection_values.max.year,
+                  bottom: selection_values.min.year
                 }
               end
             end
           end
         end
+
+        # Set meta information for collection pages for better archival
+        @page_title = "#{@collection.title} - FromThePage"
+        @meta_description = "#{@collection.title}: #{to_snippet(@collection.intro_block)}".truncate(160)
+        @meta_keywords = [@collection.title, 'historical documents', 'digital archive', 'transcription', 'collection'].compact.join(', ')
+
+        # Generate structured data for collection
+        @structured_data = {
+          '@context' => 'https://schema.org',
+          '@type' => 'Collection',
+          'name' => @collection.title,
+          'description' => to_snippet(@collection.intro_block),
+          'url' => request.original_url,
+          'dateModified' => @collection.most_recent_deed_created_at&.iso8601,
+          'publisher' => {
+            '@type' => 'Organization',
+            'name' => 'FromThePage'
+          },
+          'numberOfItems' => @collection.works_count
+        }
+
+        # Add archival-friendly headers
+        respond_to do |format|
+          format.html do
+            response.headers['X-Robots-Tag'] = 'index, follow, archive'
+          end
+        end
       else
-        redirect_to "/404"
+        redirect_to '/404'
       end
     end
   end
@@ -327,7 +390,7 @@ class CollectionController < ApplicationController
   def add_owner
     unless @user.owner
       @user.owner = true
-      @user.account_type = "Staff"
+      @user.account_type = 'Staff'
       @user.save!
     end
     @collection.owners << @user
@@ -356,16 +419,17 @@ class CollectionController < ApplicationController
   end
 
   def add_collaborator
-    @user = User.find_by(id: params[:collaborator_id])
-    @collection.collaborators << @user
-    if @user.notification.add_as_collaborator
-      send_email(@user, @collection)
-    end
+    collaborator = User.find_by(id: params[:collaborator_id])
+    @collection.collaborators << collaborator
+    send_email(collaborator, @collection) if collaborator.notification.add_as_collaborator
+
     redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def remove_collaborator
-    @collection.collaborators.delete(@user)
+    collaborator = User.find_by(id: params[:collaborator_id])
+    @collection.collaborators.delete(collaborator)
+
     redirect_to collection_edit_collaborators_path(@collection)
   end
 
@@ -391,51 +455,43 @@ class CollectionController < ApplicationController
     if SMTP_ENABLED
       begin
         UserMailer.collection_collaborator(user, collection).deliver!
+      # :nocov:
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
+      # :nocov:
     end
   end
 
   def publish_collection
     @collection.restricted = false
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
-  def toggle_collection_active
-    @collection.is_active = !@collection.active?
-    @collection.save!
-
+  def toggle_collection_active(is_active)
     # Register New Deed for In/Active
     deed = Deed.new
     deed.collection = @collection
     deed.user = current_user
-    if @collection.active?
+    if is_active
       deed.deed_type = DeedType::COLLECTION_ACTIVE
     else
       deed.deed_type = DeedType::COLLECTION_INACTIVE
     end
     deed.save!
-
-    redirect_to action: 'edit', collection_id: @collection.id
-  end
-
-  def toggle_collection_api_access
-    @collection.api_access = !@collection.api_access
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def restrict_collection
     @collection.restricted = true
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_back fallback_location: edit_privacy_collection_path(@collection.owner, @collection)
   end
 
   def restrict_transcribed
-    @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
-    redirect_to action: 'edit', collection_id: @collection.id
+    @result = Collection::RestrictTranscribed.new(collection: @collection).call
+
+    respond_to(&:turbo_stream)
   end
 
   def enable_fields
@@ -446,26 +502,10 @@ class CollectionController < ApplicationController
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
 
-  def disable_fields
-    @collection.field_based = false
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
-  end
-
-  def enable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_AND_METADATA
-    @collection.save!
-    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
-  end
-
-  def disable_metadata_entry
-    @collection.data_entry_type = Collection::DataEntryType::TEXT_ONLY
-    @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
-  end
-
   def delete
     @collection.destroy
+
+    flash[:notice] = t('.notice')
     redirect_to dashboard_owner_path
   end
 
@@ -474,43 +514,80 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
-    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
-    #array of languages
-    array = Collection::LANGUAGE_ARRAY
+    @tags_options = Tag.where(canonical: true)
+    @selected_tags = @collection.tags.pluck(:id)
+  end
 
-    #set language to default if it doesn't exist
+  def edit_tasks
+    flash.now[:info] = t('.alert') if @collection.field_based && !@collection.transcription_fields.present?
+  end
 
-    lang = !@collection.language.blank? ? @collection.language : "en-US"
-    #find the language portion of the language/dialect or set to nil
-    part = lang.split('-').first
-    #find the index of the language in the array (transform to integer)
-    @lang_index = array.size.times.select {|i| array[i].include?(part)}[0]
-    #then find the index of the nested dialect within the language array
-    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
-    #transform to integer and subtract 2 because of how the array is nested
-    @dialect_index = !int.nil? ? int-2 : nil
-    if @collection.field_based && !@collection.transcription_fields.present? 
-      flash.now[:info] = t('.alert') 
-    end
+  def edit_look
+    # Edit look form
+  end
+
+  def edit_privacy
+    @main_owner = @collection.owner
+    @collaborators = @collection.collaborators
+    @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
+    @blocked_users = @collection.blocked_users
+    @works_to_restrict_count = works_to_restrict_count
+  end
+
+  def edit_help
+    @works_with_custom_conventions = @collection.works
+                                                .includes(collection: :owner)
+                                                .where.not(transcription_conventions: nil)
+  end
+
+  def edit_quality_control
+    @reviewers = @collection.reviewers
+  end
+
+  def edit_danger
+    # Edit danger form
   end
 
   def update
-    @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
-    params[:collection].delete(:subjects_enabled)
+    @result = Collection::Update.new(
+      collection: @collection,
+      collection_params: collection_params,
+      user: current_user
+    ).call
 
-    @collection.attributes = collection_params
+    @collection = @result.collection
 
-    if collection_params[:slug].blank?
-      @collection.slug = @collection.title.parameterize
-    end
-   
-    if @collection.save
-      flash[:notice] = t('.notice')
-      redirect_to action: 'edit', collection_id: @collection.id
-    else
-      edit # load the appropriate variables
-      render action: 'edit'
+    respond_to do |format|
+      template = case params[:scope]
+      when 'edit_tasks'
+                   'collection/update_tasks'
+      when 'edit_look'
+                   'collection/update_look'
+      when 'edit_privacy'
+                   @main_owner = @collection.owner
+                   @collaborators = @collection.collaborators
+                   @owners = User.where(id: @main_owner.id).or(User.where(id: @collection.owners.select(:id)))
+                   @blocked_users = @collection.blocked_users
+                   @works_to_restrict_count = works_to_restrict_count
+                   'collection/update_privacy'
+      when 'edit_help'
+                   @works_with_custom_conventions = @collection.works
+                                                               .includes(collection: :owner)
+                                                               .where.not(transcription_conventions: nil)
+                   'collection/update_help'
+      when 'edit_quality_control'
+                   @reviewers = @collection.reviewers
+                   'collection/update_quality_control'
+      when 'edit_danger'
+                   'collection/update_danger'
+      else
+                   # edit
+                   @tags_options = Tag.where(canonical: true)
+                   @selected_tags = @collection.tags.pluck(:id)
+                   'collection/update_general'
+      end
+
+      format.turbo_stream { render template }
     end
   end
 
@@ -519,10 +596,10 @@ class CollectionController < ApplicationController
     @collection = Collection.new
     @collection.title = params[:collection][:title]
     @collection.intro_block = params[:collection][:intro_block]
-    if current_user.account_type != "Staff"
+    if current_user.account_type != 'Staff'
       @collection.owner = current_user
     else
-      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != 'Staff' }
       @collection.owner = extant_collection.owner
       @collection.owners << current_user
     end
@@ -543,13 +620,13 @@ class CollectionController < ApplicationController
     logger.debug("DEBUG collection1=#{@collection}")
     set_collection_for_work(@collection, @work)
     logger.debug("DEBUG collection2=#{@collection}")
-    #redirect_to action: 'edit', collection_slug: @collection.slug
+    # redirect_to action: 'edit', collection_slug: @collection.slug
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
-    #redirect_to action: 'edit', collection_slug: @collection.slug
+    # redirect_to action: 'edit', collection_slug: @collection.slug
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
@@ -563,11 +640,11 @@ class CollectionController < ApplicationController
   end
 
   def contributors
-    #Get the start and end date params from date picker, if none, set defaults
+    # Get the start and end date params from date picker, if none, set defaults
     start_date = params[:start_date]
     end_date = params[:end_date]
 
-    if start_date == nil
+    if start_date.nil?
       start_date = 1.week.ago
       end_date = DateTime.now.utc
     end
@@ -575,22 +652,27 @@ class CollectionController < ApplicationController
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
-    @start_deed = start_date.strftime("%b %d, %Y")
-    @end_deed = end_date.strftime("%b %d, %Y")
+    @start_deed = start_date.strftime('%b %d, %Y')
+    @end_deed = end_date.strftime('%b %d, %Y')
 
     new_contributors(@collection, start_date, end_date)
     @stats = @collection.get_stats_hash(start_date, end_date)
   end
 
-
   def blank_collection
-    collection = Collection.find_by(id: params[:collection_id])
-    collection.blank_out_collection
-    redirect_to action: 'show', collection_id: params[:collection_id]
+    @result = Collection::Blankout.new(collection: @collection).call
+
+    flash[:notice] = t('.notice')
+    redirect_to collection_path(@result.collection.owner, @result.collection)
   end
 
   def works_list
-    @works = @collection.works.includes(:work_statistic).order(:title)
+    filtered_works
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def needs_transcription_pages
@@ -610,6 +692,14 @@ class CollectionController < ApplicationController
     @heading = t('.pages_need_review')
   end
 
+  def needs_metadata_works
+    if params['need_review']
+      @works = @collection.works.where(description_status: 'needsreview')
+    else
+      @works = @collection.works.where(description_status: ['incomplete', 'undescribed'])
+    end
+  end
+
   def start_transcribing
     page = find_untranscribed_page
     if page.nil?
@@ -627,13 +717,13 @@ class CollectionController < ApplicationController
   def enable_ocr
     @collection.enable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def disable_ocr
     @collection.disable_ocr
     flash[:notice] = t('.notice')
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_back fallback_location: edit_tasks_collection_path(@collection.owner, @collection)
   end
 
   def email_link
@@ -644,18 +734,27 @@ class CollectionController < ApplicationController
         log_smtp_error(e, current_user)
       end
     end
-    flash[:notice] = "Email sent."
+    flash[:notice] = 'Email sent.'
     ajax_redirect_to(collection_path(@collection.owner, @collection))
   end
 
-private
+  private
+
   def authorized?
     unless user_signed_in?
-      ajax_redirect_to dashboard_path
+      respond_to do |format|
+        format.html { redirect_to dashboard_path }
+        format.js   { ajax_redirect_to dashboard_path }
+      end
+      return
     end
 
-    if @collection &&  !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
+    if @collection && !current_user.like_owner?(@collection)
+      respond_to do |format|
+        format.html { redirect_to collection_path(@collection.owner, @collection) }
+        format.js   { ajax_redirect_to collection_path(@collection.owner, @collection) }
+      end
+      nil
     end
   end
 
@@ -664,7 +763,6 @@ private
       redirect_to new_user_session_path
     end
   end
-
 
   def set_collection
     unless @collection
@@ -692,7 +790,107 @@ private
     end
   end
 
+  def updated_fields_hash
+    @collection.changed.to_h { |field| [field, @collection.send(field)] }
+  end
+
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download, :enable_spellcheck, :search_attempt_id)
+    params.require(:collection).permit(
+      :title,
+      :slug,
+      :intro_block,
+      :legend,
+      :transcription_conventions,
+      :help,
+      :link_help,
+      :subjects_disabled,
+      :subjects_enabled,
+      :review_type,
+      :hide_completed,
+      :text_language,
+      :default_orientation,
+      :voice_recognition,
+      :picture,
+      :user_download,
+      :enable_spellcheck,
+      :messageboards_enabled,
+      :facets_enabled,
+      :supports_document_sets,
+      :api_access,
+      :data_entry_type,
+      :field_based,
+      :is_active,
+      :search_attempt_id,
+      :alphabetize_works,
+      :restricted,
+      tags: []
+    )
+  end
+
+  def load_settings
+    @main_owner = @collection.owner
+    @owners = ([@main_owner] + @collection.owners).sort_by(&:display_name)
+    @works_not_in_collection = current_user.owner_works - @collection.works
+    @collaborators = @collection.collaborators
+    @reviewers = @collection.reviewers
+    @blocked_users = @collection.blocked_users.sort_by(&:display_name)
+
+    collection_owner_ids = @owners.pluck(:id)
+    @nonowners = User.where.not(id: collection_owner_ids).order(:display_name).limit(100)
+    @noncollaborators = User.where.not(id: @collaborators.pluck(:id) + collection_owner_ids).order(:display_name).limit(100)
+    @nonreviewers = User.where.not(id: @reviewers.pluck(:id) + collection_owner_ids).order(:display_name).limit(100)
+
+    @collaborators = @collaborators.sort_by(&:display_name)
+    @reviewers = @reviewers.sort_by(&:display_name)
+  end
+
+  def permit_only_transcribed_works_flag
+    params.permit(:only_transcribed)
+  end
+
+  def filtered_works
+    @sorting = (params[:sort] || 'title').to_sym
+    @ordering = (params[:order] || 'ASC').downcase.to_sym
+    @ordering = [:asc, :desc].include?(@ordering) ? @ordering : :desc
+
+    works_scope = @collection.works.includes(:work_statistic, :deeds)
+    if params[:show] == 'need_transcription'
+      works_scope = works_scope.joins(:work_statistic)
+                               .where('work_statistics.complete < ?', 100)
+                               .where('work_statistics.transcribed_percentage < ?', 100)
+    end
+
+    if params[:search]
+      query = "%#{params[:search].to_s.downcase}%"
+      works_scope = works_scope.where(
+        'LOWER(works.title) LIKE :search OR LOWER(works.searchable_metadata) like :search',
+        search: "%#{query}%"
+      )
+    end
+
+    case @sorting
+    when :activity
+      works_scope = works_scope.left_joins(:deeds)
+                               .reorder(Arel.sql("COALESCE((SELECT created_at FROM deeds WHERE deeds.work_id = works.id ORDER BY created_at DESC LIMIT 1), works.created_on) #{@ordering}"))
+    when :collaboration
+      works_scope = works_scope.reorder(restrict_scribes: @ordering)
+    else
+      works_scope = works_scope.reorder(title: @ordering)
+    end
+
+    works_scope = works_scope.distinct.paginate(page: params[:page], per_page: per_page) unless per_page == -1
+
+    @works = works_scope
+  end
+
+  def search_params
+    params.permit(:term, :page, :filter, :collection_id, :user_id)
+  end
+
+  def works_to_restrict_count
+    @collection.works
+               .joins(:work_statistic)
+               .where(work_statistics: { complete: 100 }, restrict_scribes: false)
+               .count
   end
 end

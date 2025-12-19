@@ -51,4 +51,17 @@ tags
 /**/svg-source
 
 .env
-config/locales/.DS_Store
+.DS_Store
+
+.editorconfig
+.tool-versions
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml
+
+.tool-versions
+.editorconfig
+
+index-state.json
+vendor/bundle/

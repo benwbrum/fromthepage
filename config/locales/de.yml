@@ -1,8 +1,17 @@
 ---
 de:
   authentication_failed: Authentifizierung fehlgeschlagen
+  collection:
+    edit:
+      subject_tags: Betreff-Tags
   dashboard:
     collaborator: Mitarbeitenden-Dashboard
+    landing_page:
+      all_collections: Alle Sammlungen
+      next_image: Nächstes Bild
+      previous_image: Vorheriges Bild
+      recent_activity: Letzte Aktivität
+      search_for_collections_or_owners: Suchen Sie nach Sammlungen oder Besitzern
     plain: Dashboard
   date:
     formats:
@@ -19,3 +28,4 @@ de:
       short: "%m/%d/%Y um %I:%M %p"
   time_ago_in_words: Vor %{time}
   unauthorized_collection: Sie haben keinen Zugriff auf %{project}. Bitte loggen Sie sich ein oder kontaktieren Sie den/die Projektinhaber:in, damit diese:r Sie hinzufügt.
+  unsaved_changes_confirmation: Sie haben nicht gespeicherte Änderungen. Möchten Sie diesen Bildschirm wirklich verlassen?

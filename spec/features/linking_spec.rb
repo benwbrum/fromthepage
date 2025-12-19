@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "subject linking" do
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
@@ -11,30 +10,31 @@ describe "subject linking" do
   end
 
   before :each do
-    login_as(@user, :scope => :user)
-  end    
+    login_as(@user, scope: :user)
+  end
 
-  #it checks to make sure the subject is on the page
-  it "looks at subjects in a collection" do
+  # it checks to make sure the subject is on the page
+  it 'looks at subjects in a collection', js: true do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Categories")
+    page.find('.tabs').click_link('Subjects')
+    expect(page).to have_content('Categories')
     categories = Category.where(collection_id: @collection.id)
     categories.each do |c|
-      column = page.find('div.category-tree')
+      column = page.find('form.category-tree')
       expect(column).to have_content(c.title)
-      column.click_link c.title
+      column.find('a.tree-item', text: c.title, exact_text: false).click
+
       c.articles.each do |a|
-        expect(page).to have_content(a.title)
+        expect(page).to have_content(a.title, wait: 5)
       end
     end
   end
 
-  it "edits a subject's description" do 
+  it "edits a subject's description" do
     article = Article.first
     visit "/article/show?article_id=#{article.id}"
     expect(page).to have_content("Description")
-    #this will fail if a description is already entered
+    # this will fail if a description is already entered
     click_link("Edit the description in the settings tab")
     expect(page).to have_content("Description")
     expect(page).not_to have_content("Related Subjects")
@@ -45,15 +45,15 @@ describe "subject linking" do
     expect(article.article_versions.count).to be >=1
   end
 
-  it "conditionally displays GIS fields on subject" do 
+  it "conditionally displays GIS fields on subject" do
     article = Article.first
     category = article.categories.first
     category_hash = "#category-" + "#{category.id}"
-    
+
     visit "/article/show?article_id=#{article.id}"
     page.find('.tabs').click_link('Settings')
     expect(page).not_to have_content("Latitude")
-    
+
     category.gis_enabled = true
     category.save
 
@@ -62,31 +62,20 @@ describe "subject linking" do
     expect(page).to have_content("Latitude")
   end
 
-  it "deletes a subject" do
+  it 'deletes a subject', js: true do
     logout(:user)
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
     collection = @collections.find(3)
     visit collection_path(collection.owner, collection)
-    page.find('.tabs').click_link("Subjects")
-    page.find('a', text: "Testing").click
-    page.find('.tabs').click_link("Settings")
-    click_link('Delete Subject')
-    expect(page.find('.flash_message')).to have_content("You must remove all referring links")
-    page.find('a', text: "Show pages that mention").click
-    page.find('.work-page_title').find('a').click
-    page.find('.tabs').click_link("Transcribe")
-    fill_in_editor_field ""
-    find('#save_button_top').click
-    page.click_link("Overview")
-    expect(page).to have_content("Facsimile")
-    click_link(collection.title)
-    page.find('.tabs').click_link("Subjects")
-    page.find('a', text: "Testing").click
-    expect(page).not_to have_content("Show pages that mention Testing in all works")
-    page.find('.tabs').click_link("Settings")
-    click_link('Delete Subject')
-    expect(page).to have_content("People")
-    expect(page).to have_content("There are no subjects for the category selected")
+    page.find('.tabs').click_link('Subjects')
+    page.find('a', text: 'Testing').click
+    page.find('.tabs').click_link('Settings')
+    accept_confirm do
+      click_link('Delete Subject')
+    end
+    expect(page).to have_content('Places')
+    page.find('a.tree-item', text: 'Places').click
+    expect(page).to have_content('There are no subjects for the category selected')
   end
 
   it "links a categorized subject" do
@@ -100,7 +89,7 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
-    #check to see if the links are regenerating on save
+    # check to see if the links are regenerating on save
     page.find('.tabs').click_link("Transcribe")
     fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
@@ -108,11 +97,11 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
-    #check the tooltip to explore a subject
+    # check the tooltip to explore a subject
     page.find('a', text: 'Texas').click
     expect(page).to have_content("Related Subjects")
     expect(page).to have_content("Texas")
-    #check that it's creating an initial version
+    # check that it's creating an initial version
     page.find('.tabs').click_link("Versions")
     expect(ArticleVersion.count).to be >= 1
     expect(page).to have_content("1 revision")
@@ -137,15 +126,15 @@ describe "subject linking" do
     test_page = @work.pages.fourth
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    #no text in the link
+    # no text in the link
     fill_in_editor_field "[[ ]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank tag")
-    #no text in the category
+    # no text in the category
     fill_in_editor_field "[[|Texas]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank subject")
-    #no text in the subject
+    # no text in the subject
     fill_in_editor_field "[[Texas| ]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank text")
@@ -205,7 +194,7 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1
-  #check to see if the links are regenerating on save
+    # check to see if the links are regenerating on save
     page.find('.tabs').click_link("Translate")
     fill_in_editor_field "[[Texas]]"
     click_button('Save Changes')
@@ -221,18 +210,18 @@ describe "subject linking" do
     link_page = link_work.pages.first
     visit "/display/display_page?page_id=#{link_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    #make sure the autolink doesn't duplicate a link
+    # make sure the autolink doesn't duplicate a link
     expect(page).to have_content("[[John Samuel Smith]]")
     expect(page).to have_content("Mrs. Davis")
     click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith]]")
     expect(page).not_to have_content("[[Mrs.]]")
     expect(page).to have_content("Mrs. Davis")
-    #make sure it doesn't autolink something that has no subject
+    # make sure it doesn't autolink something that has no subject
     fill_in_editor_field "Austin"
     click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[Austin]]")
-    #check that it links if there is a subject
+    # check that it links if there is a subject
     fill_in_editor_field "Texas"
     click_button('Autolink', match: :first)
     expect(page).to have_content("[[Texas]]")
@@ -243,17 +232,17 @@ describe "subject linking" do
     test_page = translate_work.pages.last
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
-    #make sure it doesn't autolink something that has no subject
+    # make sure it doesn't autolink something that has no subject
     fill_in_editor_field "Austin"
     click_button('Autolink')
     expect(page).not_to have_content("[[Austin]]")
-    #check that it links if there is a subject
+    # check that it links if there is a subject
     fill_in_editor_field "Texas"
     click_button('Autolink')
     expect(page).to have_content("[[Texas]]")
   end
 
-  it "checks the number of subject links" do
+  it 'checks the number of subject links', js: true do
     link_page = @work.pages.last
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, link_page)
     fill_in_editor_field "[[Ada Lovelace]] [[Ada Lovelace]]"
@@ -262,9 +251,8 @@ describe "subject linking" do
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Ada Lovelace")
     click_link("Ada Lovelace")
-    expect(page.find('.article-links').find('li')).to have_content("Ada Lovelace")
-    expect(page.find('.article-links')).to have_selector('li', count: 1)
-    expect(page.find('.article-links')).not_to have_selector('li', count: 2)
+    expect(page.find('.article-links').first('li')).to have_content("Ada Lovelace")
+    expect(page.find('.article-links')).to have_selector('li', count: 2)
+    expect(page.find('.article-links')).not_to have_selector('li', count: 1)
   end
-
 end

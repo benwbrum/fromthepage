@@ -1,6 +1,7 @@
 ---
 en:
   will_paginate:
+    all: All
     container_aria_label: Pagination
     next_label: Next &#8594;
     page_aria_label: Page %{page}

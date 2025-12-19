@@ -11,10 +11,13 @@
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
+
+=render({ :partial => '/shared/insert_table_modal' })
+
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 - if @autolinked_changed
   = hidden_field_tag(:autolinked_source_text, @autolinked_source_text)
-=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
+=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, id: 'custom_form_id' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
   =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
@@ -27,7 +30,7 @@
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
-        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+        dl.dropdown.page-columns-layout(data-controller='dropdown' data-dropdown-selectable-value='true')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
             span.hide-l =t('.layout')
@@ -36,7 +39,7 @@
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+        -if !@page.status_blank? && @collection.voice_recognition
           .voice-recognition
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
@@ -48,29 +51,34 @@
           span =t('.always_show_fullscreen')
 
       .flex-toolbar_group.push-right
-        =f.label 'mark_blank', t('.mark_as_blank')
-        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
+
+      -if @preview_xml.blank?
+        .flex-toolbar_group
+          =f.label 'mark_blank', t('.mark_as_blank')
+          =f.check_box('mark_blank', {checked: @page.status_blank?})
+      -else
+        =f.hidden_field(:mark_blank, value: @page.status_blank?)
 
       -if !@collection.review_workflow
         .flex-toolbar_group
           =f.label 'needs_review', t('.needs_review')
-          =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
+          =f.check_box('needs_review', {checked: @page.status_needs_review?})
 
-      =render(:partial => 'save_buttons')
+      =render partial: 'save_buttons'
 
-  -if @page.status == Page::STATUS_NEEDS_REVIEW && current_user.can_review?(@collection)
+  -if @page.status_needs_review? && current_user.can_review?(@collection)
     .page-review
-      -if @collection.review_workflow 
+      -if @collection.review_workflow
         =t('.this_page_marked_needs_review_workflow_version')
       -else
         =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}")
-    .page-column.page-imagescan
+    .page-column.page-imagescan(id="leftColumn")
       =render :partial => '/shared/osd_div'
-
-    .page-column
-      -if @page.status == Page::STATUS_BLANK
+    .splitter(id="splitter")
+    .page-column(id="rightColumn")
+      -if @page.status_blank?
         .page-preview[*language_attrs(@collection)]
           .centered
             .centered_content
@@ -89,8 +97,10 @@
               =f.text_field :title
           -if !@collection.field_based
             =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: @collection.enable_spellcheck, 'aria-label': t('.edit_transcription'))
+            -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+            =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction, :height => '', :show_line_numbers => true} })
           -else
-            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
+            =render partial: 'transcription_field/field_layout', locals: { collection_id: @collection, transcribe: true }
 
 .fgfaded
   ==@work.set_transcription_conventions
@@ -101,8 +111,12 @@ h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
 
--text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'  
-=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
+
+#custom-alert
+  #custom-alert-box
+    p Are you sure you want to blank out this page?
+    button#cancelButton Cancel
+    button#blankPageButton Blank out this page
 
 -unless @current_user_alerted
   -unless current_user.slug.nil?
@@ -117,12 +131,10 @@ h2.legend =t('.notes_and_questions')
                 // user has been logged out
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your session may have expired while you were editing.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               } else {
                 // some connection problem
                 var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your connection to the website is unstable.  You may want to copy your work to prevent it getting lost.' }))}}";
                 $('#flash_wrapper').html(flash_message);
-                $('.flash').flashclose();
               }
             },
             complete: function() {
@@ -138,19 +150,94 @@ h2.legend =t('.notes_and_questions')
     //set language for voice to text
     var lang = "#{current_user.dictation_language || @collection.language}";
 
+    function transcribe_active_editing() {
+      $.ajax({
+        url: "#{active_editing_collection_work_path(@collection.owner.slug, @collection.id, @work.id, @page.id)}"
+      });
+    }
+
+    var lastTypingAt = null;
+
+    function minutesDiff(dateTimeValue2, dateTimeValue1) {
+      var differenceValue =(dateTimeValue2.getTime() - dateTimeValue1.getTime()) / 1000;
+      differenceValue /= 60;
+      return Math.abs(Math.round(differenceValue));
+    }
+
+    function sendActiveEditing() {
+      if(!lastTypingAt || (lastTypingAt && minutesDiff(lastTypingAt, new Date()) > 10)) {
+        lastTypingAt = new Date();
+        transcribe_active_editing();
+      }
+    }
+
+    window.sendActiveEditing = sendActiveEditing;
+
+    $('.field-wrapper .field-input').each(function() {
+      $(this).change(function() {
+        sendActiveEditing()
+      })
+      $(this).keyup(function() {
+        sendActiveEditing()
+      })
+    });
+
+
     $(function() {
+      var imageWindow = null;
+      var resizableSplitter = Object.create(ResizableSplitter);
+
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+
+        if(resizableSplitter && resizableSplitter.destroy) {
+          resizableSplitter.destroy()
+        }
+
+        resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('splitterPos', pos)
+
+            // re-render spreedsheet & codemirror
+            refreshEditors();
+          },
+          initialPosition: (window.localStorage.getItem('splitterPos') || 50) + '%'
+        });
+
+        // re-render spreedsheet & codemirror
+        refreshEditors();
+      }
+
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
+
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
+        $('.headline').toggleClass('fullscreen');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         }
+
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
       });
 
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+        Cookies.set('drag_position', 0, { expires: 365 });
+
+        if (typeof freezeTableColumn !== "undefined") {
+          window.removeEventListener('scroll', freezeTableColumn);
+          window.addEventListener('scroll', function (e) {
+            freezeTableColumn();
+          });
+        }
+
         $('[data-layout-mode]').attr('data-layout-mode', mode);
 
         if (typeof viewer !== 'undefined') {
@@ -160,6 +247,8 @@ h2.legend =t('.notes_and_questions')
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         };
+
+        applySplitter(mode);
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -169,16 +258,52 @@ h2.legend =t('.notes_and_questions')
 
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
+        $('button[name="preview"], input[name="preview"]').prop('disabled', false);
       });
 
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
+
+        if ($(this).is(':checked')) {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', true);
+        } else {
+          $('button[name="preview"], input[name="preview"]').prop('disabled', false);
+        }
       });
     });
 
     $(function() {
-      $('form').submit(function() {
+
+        let allowFormSubmission = false;
+
+        function showCustomAlert(message) {
+            // Show the custom alert
+            $("#custom-alert-box p").text(message);
+            $("#custom-alert").show();
+        }
+
+        function hideCustomAlert() {
+            // Hide the custom alert
+            $("#custom-alert").hide();
+        }
+
+        function allowFormToSubmit() {
+            // Allow form submission
+            allowFormSubmission = true;
+            // Submit the form
+            $("#custom_form_id").submit();
+        }
+
+        function restrictFormSubmission() {
+            // Restrict form submission
+            allowFormSubmission = false;
+            // Show the custom alert
+            showCustomAlert();
+        }
+
+      $('form').submit(function(event) {
         var isMarkedBlank = $('#page_mark_blank').is(':checked');
+        var hasTranscribedvalue = $('.page-editarea_textarea').length < 0;
         var hasTranscribedText = $('.page-editarea_textarea').length > 0 && $('.page-editarea_textarea').val().trim().length > 0;
         var hasFieldContent = false;
         var hasFilledCells = false;
@@ -209,12 +334,35 @@ h2.legend =t('.notes_and_questions')
         });
 
         if (isMarkedBlank && (hasTranscribedText || hasFieldContent || hasFilledCells)) {
-          var confirmation = confirm("#{j(t('.mark_blank_warning'))}");
+          if (!allowFormSubmission) {
+            event.preventDefault();
+            // Show the custom alert
 
-          if (!confirmation) {
-            return false;
+            var confirmation = showCustomAlert("#{j(t('.mark_blank_warning'))}");
+
+            if (!confirmation) {
+              return false;
+            }
           }
+        } else {
+          hideCustomAlert();
+          allowFormToSubmit();
         }
+
+      });
+      $("#cancelButton").click(function() {
+          hideCustomAlert();
+      });
+
+      // Handle blank page button click
+      $("#blankPageButton").click(function() {
+          allowFormToSubmit();
+          hideCustomAlert();
+      });
+
+      // Handle finish_button_top click
+      $("#finish_button_top").click(function() {
+          restrictFormSubmission();
       });
     });
 

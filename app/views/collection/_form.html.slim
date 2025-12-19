@@ -1,0 +1,6 @@
+.collection-settings-wrapper
+  =form_for collection, url: collection_update_path(collection.id, scope: scope), method: :post, html: { multipart: true, data: { controller: 'form', action: 'change->form#requestSubmit', turbo: true } } do |f|
+    =render 'shared/validation_summary', errors: collection.errors
+    =f.submit t('collection.edit.save_changes'), id: 'collection-settings-save', hidden: true
+    table.form.collection-settings
+      =render partial: "#{scope}_form", locals: { collection: collection, f: f }

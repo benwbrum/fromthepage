@@ -1,11 +1,33 @@
-#     # foreign keys
-#      t.column :page_id, :integer
-#      t.column :article_id, :integer
-#      # text
-#      t.column :display_text, :string
-#      # automated stuff
-#      t.column :created_on, :datetime
+# == Schema Information
+#
+# Table name: page_article_links
+#
+#  id           :integer          not null, primary key
+#  created_on   :datetime
+#  display_text :string(255)
+#  text_type    :string(255)      default("transcription")
+#  article_id   :integer
+#  page_id      :integer
+#  work_id      :integer
+#
+# Indexes
+#
+#  index_page_article_links_on_article_id  (article_id)
+#  index_page_article_links_on_page_id     (page_id)
+#  index_page_article_links_on_work_id     (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (work_id => works.id)
+#
 class PageArticleLink < ApplicationRecord
   belongs_to :page, optional: true
+  belongs_to :work, optional: true
   belongs_to :article, optional: true
+
+  before_create :set_work
+
+  def set_work
+    self.work_id = page.work_id if page.present?
+  end
 end

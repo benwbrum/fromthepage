@@ -1,6 +1,27 @@
 ---
 es:
   display:
+    ai_text:
+      ai_generated_text: Texto generado por IA
+      ai_text: Texto de IA
+      ai_text_edit_notice: Para editar este texto, utilice el botón "Borrador de IA" en la pestaña de transcripción.
+      facsimile: Facsímil
+      show_comparison_with_transcription: Mostrar comparación con la transcripción
+      statistics_unavailable: Las estadísticas de precisión no están disponibles para esta página.
+      statistics_unavailable_reason: Las estadísticas solo se pueden calcular para las páginas con un estado de transcripción completado (en blanco, indexadas o transcritas).
+    cer_stats:
+      accuracy_explanation: Estas estadísticas comparan el texto generado por IA con la transcripción verificada por humanos, proporcionando información sobre la precisión de la transcripción realizada por IA.
+      accuracy_statistics: Estadísticas de precisión
+      character_error_rate: Tasa de error de caracteres (CER)
+      character_error_rate_tooltip: CER mide el porcentaje de ediciones a nivel de carácter (inserciones, eliminaciones, sustituciones) necesarias para transformar el texto generado por IA en el texto correcto. Los valores más bajos indican mayor precisión.
+      non_stopword_accuracy: Precisión sin palabras vacías (NSA)
+      non_stopword_accuracy_tooltip: Mide el porcentaje de palabras de contenido (excluyendo palabras comunes como «el», «la», «un», «es») que coinciden entre la IA y la verdad fundamental. Valores más altos indican un mejor reconocimiento de contenido.
+      text_only_comparison: Comparación solo de texto
+      text_only_description: Estadísticas calculadas tras eliminar la puntuación, los espacios en blanco adicionales y normalizar las mayúsculas y minúsculas.
+      verbatim_comparison: Comparación literal
+      verbatim_description: Estadísticas calculadas sobre el texto original conservando todo el formato.
+      word_error_rate: Tasa de error de palabras (WER)
+      word_error_rate_tooltip: WER mide el porcentaje de ediciones a nivel de palabra necesarias para transformar el texto generado por IA en la versión correcta. Los valores más bajos indican mayor precisión.
     display_page:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
       collection_is_not_active: Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta.
@@ -9,6 +30,7 @@ es:
       help_correct: ayudar a corregir
       help_transcribe: ayudar a transcribir
       help_translate: ayudar a traducir
+      legend: Leyenda
       mark_the_page_blank: marcar la página en blanco
       or_mark_blank: "<br>o %{mark_blank}"
       page_notes: Notas de Página
@@ -35,6 +57,7 @@ es:
       no_notes: No hay notas
       no_pages_found: No se encontró ninguna página
       no_pages_in_work: Esta obra aún no contiene ninguna página, ve a %{link} para crear una nueva página
+      no_works_found: No se encontraron obras
       page_title: Título de la Página
       pages_tab: Pestaña Páginas
       review: Revisar
@@ -44,6 +67,7 @@ es:
     multi_page:
       categories: Categorías
       describe: Crear metadatos
+      pages_need_completion: Páginas que deben completarse
       pages_need_indexing: Páginas que Necesitan Indexación
       pages_need_review: Páginas que Necesitan Revisión
       pages_need_transcription: Páginas que Necesitan Transcripción
@@ -80,17 +104,22 @@ es:
       pages_that_mention: Páginas que mencionan %{article}
     read_work:
       pages: Paginas
+      pages_need_completion: Páginas que deben completarse
       pages_need_indexing: Páginas que necesitan indexación
       pages_need_review: Páginas que necesitan revisión
       pages_need_transcription: Páginas que necesitan transcripción
       pages_need_translation: Páginas que necesitan traducción
       translations_need_indexing: Traducciones que necesitan indexación
       translations_need_review: Traducciones que necesitan revisión
+    reasoning:
+      ai_reasoning: Pasos del razonamiento de la IA
+      reasoning_explanation: Explicación del razonamiento
   display_helper:
     page_action:
       blank_page: Página en blanco
       completed: Terminada
       correct: Correcto
+      incomplete: Incompleto
       index: Índice
       review: Revisar
       transcribe: Transcribir

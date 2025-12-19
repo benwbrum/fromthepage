@@ -38,8 +38,12 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options = config.action_mailer.default_url_options =  { host: 'localhost:3000' }
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.delivery_method = :postmark
+
+  config.action_mailer.postmark_settings = {
+    api_token: ''
+  }
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -68,14 +72,15 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   # Allow codespaces host
-  unless ENV["CODESPACE_NAME"].nil?
-    config.hosts << ENV["CODESPACE_NAME"]+"-3000.preview.app.github.dev"
+  unless ENV['CODESPACE_NAME'].nil?
+    config.hosts << ENV['CODESPACE_NAME']+'-3000.app.github.dev'
   end
 
   # location of system calls on this machine
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+  UPGRADE_FORM_LINK='https://app.bentonow.com/f/6247d0278bfbafc3ef75b753f26a46d2/red-tree-885/'
 
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
@@ -85,4 +90,10 @@ Rails.application.configure do
   # Open 'http://localhost:1080/' in your browser to see mail sent
 
   Ahoy.geocode = false
+  # Add a custom hostname for uploads
+  # config.upload_host = 'uploads'
+  # config.hosts << "#{config.upload_host}.localhost"
+
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))
 end

@@ -1,0 +1,21 @@
+Please transcribe all the text you see in this image as accurately as possible.
+
+Guidelines:
+- Preserve the original formatting, line breaks, and layout
+- Maintain paragraph structure and spacing
+- If the text is handwritten, interpret it as accurately as you can
+- Include all visible text, including marginalia, headers, and footers
+- Preserve punctuation and capitalization as shown
+- If you encounter text that is unclear or illegible, transcribe what you can and use [?] for uncertain characters or [illegible] for completely unreadable sections
+
+- Do not add any commentary, explanations, or notes
+- Only provide the transcribed text itself
+
+- Use Markdown tables to format any accounts, lists, or other tabular text, following
+this example:
+
+ | | |
+ --- | --- | --- | ---
+     |     |     |
+
+Please begin the transcription now:

@@ -1,0 +1,9 @@
+tr#restrict-transcribed
+  td(colspan="2")
+    h3 =t('collection.edit_privacy.restrict_editing')
+    = link_to collection_restrict_transcribed_path(collection_id: collection),
+      class: 'button action-btn exits',
+      data: { turbo_method: :post, turbo_stream: true },
+      disabled: works_to_restrict_count.zero? || !collection.text_entry? do
+      span =t('collection.edit_privacy.restrict_completed_works')
+    p =t('collection.edit_privacy.restricted_completed_works_description', work_count: works_to_restrict_count)

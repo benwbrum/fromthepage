@@ -1,0 +1,27 @@
+-disabled = false if local_assigns[:disabled].nil?
+
+.users-list (id="users-list-#{type}" class=(disabled ? 'disabled' : ''))
+  -if users.empty?
+    h3.nodata =t(".no_users_#{type}")
+  -else
+    -if users.count > 4
+      a.expand-btn id="expand-btn-#{type}"
+        span.more (id="expand-more-#{type}") =t('collection.edit.n_more', count: users.count - 4)
+        span.less.no-display (id="expand-less-#{type}") =t('collection.edit.less')
+        =svg_symbol '#icon-arrow-bottom', class: 'icon'
+    -users.each do |user|
+      span.user-label
+        =profile_picture(user)
+        .username
+          =link_to user.display_name, user_profile_path(user)
+
+-content_for :javascript
+  javascript: 
+    $(document).ready(function() {
+      $("#expand-btn-#{type}").click(function() {
+        $("#expand-btn-#{type}").toggleClass('expanded');
+        $("#expand-more-#{type}").toggleClass('no-display');
+        $("#expand-less-#{type}").toggleClass('no-display');
+        $("#users-list-#{type}").toggleClass('expanded');
+      });
+    });

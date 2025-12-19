@@ -1,0 +1,6 @@
+<% if @result.success? %>
+  <%= turbo_flash(t('collection.restrict_scribes.success'), :notice) %>
+  <%= turbo_stream.replace('restrict-transcribed', partial: 'restrict_transcribed', locals: { collection: @result.collection, works_to_restrict_count: 0 }) %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

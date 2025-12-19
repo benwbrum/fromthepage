@@ -1,50 +1,151 @@
+# == Schema Information
+#
+# Table name: document_sets
+#
+#  id                         :integer          not null, primary key
+#  default_orientation        :string(255)
+#  description                :text(65535)
+#  featured_at                :datetime
+#  pct_completed              :integer
+#  picture                    :string(255)
+#  slug                       :string(255)
+#  title                      :string(255)
+#  visibility                 :integer          default("private"), not null
+#  works_count                :integer          default(0)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  collection_id              :integer
+#  next_untranscribed_page_id :integer
+#  owner_user_id              :integer
+#
+# Indexes
+#
+#  index_document_sets_on_collection_id  (collection_id)
+#  index_document_sets_on_owner_user_id  (owner_user_id)
+#  index_document_sets_on_slug           (slug) UNIQUE
+#
 class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
 
   extend FriendlyId
-  friendly_id :slug_candidates, :use => [:slugged, :history]
+  friendly_id :slug_candidates, use: [:slugged, :history]
+
+  before_create :fill_featured_at
   before_save :uniquify_slug
   # validate :slug_uniqueness_across_objects
 
   mount_uploader :picture, PictureUploader
 
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_user_id', optional: true
   belongs_to :collection, optional: true
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
-
-  has_many :pages, through: :works
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: 'Page', optional: true
 
   has_many :document_set_works
-  has_many :works, -> { order 'title' }, through: :document_set_works
+  has_many :works, -> { order(:title) }, through: :document_set_works
+  has_many :pages, through: :works
+  has_many :articles, -> { distinct }, through: :works
+  has_many :notes, -> { order(created_at: :desc) }, through: :works
+  has_many :deeds, ->(document_set) {
+    where(work_id: document_set.works.select(:id))
+      .includes(:work)
+      .reorder('deeds.created_at DESC')
+  }, through: :collection, source: :deeds
 
-  has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
+  has_and_belongs_to_many :collaborators, class_name: 'User', join_table: :document_set_collaborators
 
-  has_many :bulk_exports, :dependent => :delete_all
+  has_many :bulk_exports, dependent: :delete_all
 
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, format: { with: /[[:alpha:]]/ }
 
-  scope :unrestricted, -> { where(is_public: true)}
-  scope :restricted, -> { where(is_public: false)}
-  scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder(Arel.sql("RAND()"))}
+  scope :unrestricted, -> { where(visibility: [:public, :read_only]) }
+  scope :restricted, -> { where(visibility: [:private]) }
+
+  scope :carousel, -> {
+    where(pct_completed: [nil, 1..90])
+      .joins(:collection)
+      .where.not(collections: { picture: nil })
+      .where.not(description: [nil, ''])
+      .unrestricted
+      .reorder(Arel.sql('RAND()'))
+  }
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
+  scope :has_picture, -> { where.not(picture: nil) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
 
-  scope :random_sample, -> (sample_size = 5) do
-    carousel
-    reorder(Arel.sql("RAND()")) unless sample_size > 1
-    limit(sample_size).reorder(Arel.sql("RAND()"))
+  scope :featured_projects, -> {
+    joins(works: :pages)
+      .joins(:owner)
+      .where(owner: { deleted: false })
+      .unrestricted.where("LOWER(document_sets.title) NOT LIKE 'test%'")
+      .where.not(featured_at: nil)
+      .distinct
+  }
+
+  enum :visibility, {
+    private: 0,
+    public: 1,
+    read_only: 2
+  }, prefix: :visibility
+
+  update_index('document_sets', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id).map { |x| "docset-#{x}" }
+    end
+
+    DocumentSetsIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: [
+              'title^2',
+              'title.no_underscores^1.3',
+              'intro_block',
+              'slug'
+            ]
+          }
+        },
+        filter: [
+          { term: { is_docset: true } },
+          {
+            bool: {
+              must_not: [
+                { terms: { collection_id: blocked_collections } }
+              ],
+              should: [
+                { term: { is_public: is_public } },
+                { term: { owner_user_id: user&.id || -1 } },
+                { terms: { collection_id: collection_collabs } },
+                { terms: { _id: docset_collabs } }
+              ],
+              minimum_should_match: 1
+            }
+          }
+        ]
+      }
+    )
   end
 
   def show_to?(user)
-    self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    is_public? || visibility_read_only? || user&.like_owner?(self) || user&.collaborator?(self)
   end
 
   def intro_block
-    self.description
+    description
   end
 
   def messageboards_enabled
@@ -52,63 +153,49 @@ class DocumentSet < ApplicationRecord
   end
 
   def messageboards_enabled?
-    self.messageboards_enabled
+    messageboards_enabled
   end
 
   def uniquify_slug
-    if Collection.where(slug: self.slug).exists?
-      self.slug = self.slug+'-set'
-    end
+    self.slug = "#{slug}-set" if Collection.where(slug: slug).exists?
   end
 
-  def metadata_coverages
-    self.collection.metadata_coverages
-  end
+  delegate :metadata_coverages,          to: :collection
+  delegate :enable_spellcheck,           to: :collection
+  delegate :reviewers,                   to: :collection
+  delegate :facet_configs,               to: :collection
+  delegate :text_entry?,                 to: :collection
+  delegate :metadata_entry?,             to: :collection
+  delegate :metadata_only_entry?,        to: :collection
+  delegate :text_and_metadata_entry?,    to: :collection
+  delegate :hide_completed,              to: :collection
+  delegate :review_workflow,             to: :collection
+  delegate :review_type,                 to: :collection
+  delegate :review_type_optional?,       to: :collection
+  delegate :review_type_required?,       to: :collection
+  delegate :review_type_restricted?,     to: :collection
+  delegate :user_download,               to: :collection
+  delegate :subjects_disabled,           to: :collection
+  delegate :editor_buttons,              to: :collection
+  delegate :categories,                  to: :collection
+  delegate :active?,                     to: :collection
+  delegate :footer_block,                to: :collection
+  delegate :help,                        to: :collection
+  delegate :link_help,                   to: :collection
+  delegate :voice_recognition,           to: :collection
+  delegate :language,                    to: :collection
+  delegate :text_language,               to: :collection
+  delegate :field_based,                 to: :collection
+  delegate :transcription_fields,        to: :collection
+  delegate :metadata_fields,             to: :collection
+  delegate :description_instructions,    to: :collection
+  delegate :facets_enabled?,             to: :collection
+  delegate :api_access,                  to: :collection
+  delegate :alphabetize_works,           to: :collection
+  delegate :institution_signature,       to: :collection
+  delegate :most_recent_deed_created_at, to: :collection
+  delegate :legend,                      to: :collection
 
-  def enable_spellcheck
-    self.collection.enable_spellcheck
-  end
-
-  def reviewers
-    self.collection.reviewers
-  end
-
-  def facet_configs
-    self.collection.facet_configs
-  end
-
-  def text_entry?
-    self.collection.text_entry?
-  end
-
-  def metadata_entry?
-    self.collection.text_entry?
-  end
-
-
-  def hide_completed
-    self.collection.hide_completed
-  end
-
-  def review_workflow
-    self.collection.review_workflow
-  end
-
-  def review_type
-    self.collection.review_type
-  end
-
-  def user_download
-    self.collection.user_download
-  end
-
-  def subjects_disabled
-    self.collection.subjects_disabled
-  end
-
-  def editor_buttons
-    self.collection.editor_buttons
-  end
 
   def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
@@ -128,131 +215,59 @@ class DocumentSet < ApplicationRecord
     subjects.export
   end
 
-  def articles
-    Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
-  end
-
-  def categories
-    self.collection.categories
-  end
-
   def supports_document_sets
     false
   end
 
-  def notes
-    Note.where(work_id: self.works.ids).order('created_at DESC')
-  end
-
-  def deeds
-    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work).reorder('deeds.created_at DESC')
-  end
-
   def restricted
-    !self.is_public
+    visibility_private?
   end
 
-  def active?
-    self.collection.active?
-  end
-
-  def footer_block
-    self.collection.footer_block
-  end
-
-  def help
-    self.collection.help
-  end
-
-  def link_help
-    self.collection.link_help
-  end
-
-  def voice_recognition
-    self.collection.voice_recognition
-  end
-
-  def language
-    self.collection.language
-  end
-
-  def text_language
-    self.collection.text_language
-  end
-
-  def field_based
-    self.collection.field_based
-  end
-
-  def picture_url(thumb=nil)
-    if self.picture.blank?
-      self.collection.picture.url(thumb)
+  def picture_url(thumb = nil)
+    if picture.blank?
+      collection.picture.url(thumb)
     else
-      self.picture.url(thumb)
+      picture.url(thumb)
     end
   end
 
-  def transcription_fields
-    self.collection.transcription_fields
-  end
-
-  def metadata_fields
-    self.collection.metadata_fields
-  end
-
-  def description_instructions
-    self.collection.description_instructions
-  end
-
-  def text_entry?
-    self.collection.text_entry?
-  end
-
-  def metadata_entry?
-    self.collection.metadata_entry?
-  end
-
   def set_next_untranscribed_page
-    first_work = works.order_by_incomplete.first
-    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
-    page_id = first_page.nil? ? nil : first_page.id
+    first_work = works.unrestricted.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
+    first_page = first_work&.next_untranscribed_page
+    page_id = first_page&.id
 
     update_columns(next_untranscribed_page_id: page_id)
   end
 
   def find_next_untranscribed_page_for_user(user)
     return nil unless has_untranscribed_pages?
-    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work, self)
 
-    public = works
-      .where.not(next_untranscribed_page_id: nil)
-      .unrestricted
-      .order_by_incomplete
+    public = works.unrestricted
+                  .where.not(next_untranscribed_page_id: nil)
+                  .order_by_incomplete
 
-    return public.first.next_untranscribed_page unless public.empty?
-
-    private = works
-      .where.not(next_untranscribed_page_id: nil)
-      .restricted
-      .order_by_incomplete
-
-    wk = private.find{ |w| user.can_transcribe?(w) }
-
-    wk.nil? ? nil : wk.next_untranscribed_page
+    public&.first&.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
     next_untranscribed_page.present?
   end
 
+  def fill_featured_at
+    return if self.visibility.nil? || self.visibility.to_sym == :private
+
+    self.featured_at = Time.current
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
     else
-    [
-      :title,
-      [:title, :id]
-    ]
+      [
+        :title,
+        [:title, :id]
+      ]
     end
   end
 
@@ -265,16 +280,12 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
-  end
-
-  def search_collection_works(search)
-    self.collection.search_works(search)
+    works.where('title LIKE ? OR searchable_metadata like ?', "%#{search}%", "%#{search}%")
   end
 
   def self.search(search)
     sql = "title like ? OR slug LIKE ? OR owner_user_id in (select id from \
-    users where owner=1 and display_name like ?)"
+           users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
 
@@ -288,23 +299,35 @@ class DocumentSet < ApplicationRecord
     end
   end
 
-  def facets_enabled?
-    self.collection.facets_enabled?
-  end
-
-  def sc_collection # association does not exist for document sets
+  def sc_collection
+    # association does not exist for document sets
     nil
   end
 
-  def api_access 
-    collection.api_access
+  def user_help
+    collection.owner.help
   end
 
-  def institution_signature
-    self.collection.institution_signature
+  def is_public
+    visibility_public?
   end
 
-  def most_recent_deed_created_at
-    self.collection.most_recent_deed_created_at
+  def is_public?
+    visibility_public?
+  end
+
+  public :user_help
+
+  private
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: DocumentSetsIndex.index_name,
+      id: "docset-#{id}"
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
   end
 end

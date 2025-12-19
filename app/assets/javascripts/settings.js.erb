@@ -1,0 +1,68 @@
+// Autosave settings
+window.addEventListener('DOMContentLoaded', function() {
+    var inputs = $('input').add('textarea').add('select');
+    if (inputs) {
+        inputs.each(function() {
+            $(this).change(function() {
+                $('#collection-settings-save').click();
+            });
+        });
+    }
+});
+
+// Callbacks from ajax form submission
+window.addEventListener('DOMContentLoaded', function() {
+    $('#collection-settings-form').on('ajax:success', function(e, data, status, xhr) {
+        if (data['success']) {
+            hideValidationErrors();
+            showChange(data['updated_field']);
+        } else {
+            // Form had validation errors
+            showValidationErrors(data['errors']);
+        }
+    }).on('ajax:error', function(e, xhr, status, error) {
+        console.log("Error!");
+    });
+});
+
+function showValidationErrors(errors) {
+    $('.validation_title').text(function () {
+        return $(this).text().replace("0", errors.length).replace("errors", errors.length == 1 ? "error" : "errors")
+    });
+    list = $('.validation_summary')
+    list.empty();
+    errors.forEach(function(error) {
+        list.append('<li>' + error + '</li>');
+    });
+    list.parent().parent().show();
+}
+
+function hideValidationErrors() {
+    $('.validation-wrapper').hide();
+}
+
+function showChange(change) {
+    if (change) {
+        field = Object.keys(change)[0]
+        value = change[field]
+        if (field == 'title') {
+            $('.collection-title').children('h1').text(value);
+        } else if (field == 'is_active') {
+            if (value == true) {
+                $('.collection-active').show();
+                $('.collection-inactive').hide();
+            } else {
+                $('.collection-active').hide();
+                $('.collection-inactive').show();
+            }
+        } else if (field == 'slug') {
+            old_slug = $('#collection-url').text().split('/').pop();
+            $('#collection-url').text(function() {
+                return $(this).text().replace(old_slug, value);
+            })
+            $('#transcriber-url').text(function() {
+                return $(this).text().replace(old_slug, value);
+            })
+        }
+    }
+}

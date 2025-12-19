@@ -2,7 +2,7 @@
   h1 =t('.add_new_page')
   p =t('.choose_a_title')
 
-  =form_for(@page, { :url => { :action => 'create' }}) do |f|
+  =form_for @page, url: page_index_path, method: :post do |f|
     =hidden_field_tag(:work_id, @page.work.id)
     =validation_summary @page.errors
     table.form
@@ -12,7 +12,7 @@
       tr
         th =f.label :base_image, t('.page_image')
         td
-          .input-file
+          .input-file [data-controller='file-picker']
             =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
             input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') readonly)
             button(type="button") #{t('.browse')}
@@ -23,6 +23,3 @@
         =f.button t('.save_and_new_work'), :name => 'subaction', :value => 'save_and_new'
         |&nbsp;
         =f.button t('.save_and_add_next_page'), :name => 'subaction', :value => 'save_and_next'
-
-javascript:
-  $('.input-file').inputFile();

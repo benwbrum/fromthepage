@@ -35,6 +35,9 @@ es:
       add_as_collaborator: Añadido a obra privada como colaborador
       add_as_owner: Añadido a obra privada como dueño
       add_as_reviewer: Añadido a la colección como revisor autorizado
+      cookies_analytics: Ayuda a comprender el uso del sitio para mejorarlo.
+      cookies_essential: Necesario para que la aplicación funcione.
+      cookies_marketing: Ayuda a mejorar el alcance y mostrar contenido relevante.
       default_dictation_language: 'Idioma de dictado predeterminado: '
       footer: Pie de página
       help: Texto de Ayuda Básica
@@ -42,19 +45,16 @@ es:
       learn_more_footer: Obtén más información sobre cómo configurar el pie de página.
       location: Ubicación
       name: Nombre
-      name_only_required: Tu nombre es el único campo obligatorio.
-      no_image: Sin imágen
       ocrid_id: ID OCRID
       owner_stats: Correos electrónicos nocturnos con la actividad de la colección propia
       page_edited: Nota añadida en respuesta a un comentario que hiciste
       picture: Imagen de perfil
-      picture_to_be_used_message: Imagen a utilizar
+      select_cookies: 'Seleccione cuáles de las siguientes cookies desea permitir:'
       select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
       sign_up_url: 'URL de registro:'
       suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       update_profile: Actualizar Perfil
       update_user_profile: Actualizar Perfil de Usuario
-      upload_image: Cargar imagen
       url: URL
       user_activity: Correo electrónico nocturno con la actividad de colecciones en las que has trabajado
       user_url: 'URL:'

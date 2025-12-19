@@ -1,6 +1,7 @@
 ---
 de:
   will_paginate:
+    all: Alle
     container_aria_label: Seitennummerierung
     next_label: Weiter →
     page_aria_label: Seite %{page}

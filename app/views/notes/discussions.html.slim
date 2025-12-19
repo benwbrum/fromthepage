@@ -20,13 +20,14 @@
 	    		span &nbsp; in #{page.work.title}
 	    	=t(".most_recent_of") 
 	    	=link_to t(".total_notes", count: page.notes.count), collection_forum_page_path(@collection.owner, @collection, page.work, page.id, anchor: "notes")
-			.user-bubble.editable.comment-bubble(id="note-#{note.id}")
-	  		=link_to(user_profile_path(:user_id => note.user.id))
-	    		=profile_picture(note.user)
-	  		.user-bubble_content
-			    =time_tag note.created_at
-			      =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
-			      |&nbsp;
-			      =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
-			    .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
+			- if note
+				.user-bubble.editable.comment-bubble(id="note-#{note.id}")
+		  		=link_to(user_profile_path(:user_id => note.user.id))
+		    		=profile_picture(note.user)
+		  		.user-bubble_content
+				    =time_tag note.created_at
+				      =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
+				      |&nbsp;
+				      =t('time_ago_in_words', time: time_ago_in_words(note.created_at))
+				    .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
 	=render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })

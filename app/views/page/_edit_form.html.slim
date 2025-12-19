@@ -1,0 +1,52 @@
+.columns
+  .maincol
+    -direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
+    table.form.collection-settings lang="#{collection.text_language}" dir=direction class=direction
+      tr
+        th
+          h3 = f.label :title, t('page.form.page_title')
+        td.w100 =f.text_field :title
+      tr
+        th
+          h3 = f.label :status, t('page.form.page_status')
+        td.w100
+          -option_array = Page::statuses.map {|key, val| [t("page.form.page_status_#{val}"), key]}
+          =f.select :status, options_for_select(option_array, page.status), {}, { class: 'bs ms-0' }
+      -if work.supports_translation
+        tr
+          th
+            h3 = f.label :translation_status, t('page.form.page_translation_status')
+          td
+            -option_array = Page::translation_statuses.map {|key, val| [t("page.form.page_status_#{val}"), key]}
+            =f.select :translation_status, options_for_select(option_array, page.translation_status)
+      tr
+        th
+          h3 = f.label :base_image, t('page.form.page_image')
+        td
+          .input-file [data-controller='file-picker']
+            =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+            input(type="text" tabindex="-1" placeholder=t('page.form.click_to_browse_a_file') aria-label=t('page.form.click_to_browse_a_file') readonly)
+            button(type="button") #{t('page.form.browse')}
+  .sidecol
+    h3 = t('page.form.page_position', position: page.position)
+    =time_tag page.created_on
+      =t('page.form.created', date: l(page.created_on.localtime))
+
+-if page.base_image.present?
+  hr
+  .headline
+    h2.headline_title =t('page.form.page_image')
+    .headline_aside
+      span.fgfaded = t('page.form.dimensions', width: page.base_width, height: page.base_height).html_safe
+    .headline_aside
+      .button-stack
+        =link_to rotate_page_index_path(page_id: page.id, orientation: 90), class: 'button outline', title: t('page.form.rotate_clockwise'), method: :post do
+          =svg_symbol "#icon-rotate-cw", class: 'icon'
+        =link_to rotate_page_index_path(page_id: page.id, orientation: 270), class: 'button outline', title: t('page.form.rotate_counterclockwise'), method: :post do
+          =svg_symbol "#icon-rotate-ccw", class: 'icon'
+
+  .page-image-preview =image_tag("#{file_to_url(page.canonical_facsimile_url)}?#{Time.now.to_i}")
+
+.toolbar
+  .toolbar_group.w100
+    =link_to t('page.form.delete'), page_path(page), method: :delete, data: { confirm: t('page.form.delete_confirm_message') }, class: 'button big'

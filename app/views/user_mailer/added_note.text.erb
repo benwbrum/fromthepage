@@ -4,7 +4,7 @@
 
 "<%=@note.body%>"
 
-<%= t('.text.view_note', collection: @page.collection.title, work: @page.work.title, url: (collection_transcribe_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false))) %>
+<%= t('.text.view_note', collection: @page.collection.title, work: @page.work.title, url: (collection_display_page_url(@page.collection.owner, @page.collection, @page.work, @page, only_path: false))) %>
 
 <% unless @note.collection.owner.display_name.blank? %>
     <%= t('user_mailer.text.closing', from: @note.collection.owner.display_name) %>

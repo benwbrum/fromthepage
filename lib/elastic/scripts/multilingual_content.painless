@@ -1,0 +1,13 @@
+if (ctx.language == 'DE') {
+	ctx.content_german = ctx.source_text;
+} else if (ctx.language == 'EN') {
+	ctx.content_english = ctx.source_text;
+} else if (ctx.language == 'ES') {
+	ctx.content_spanish = ctx.source_text;
+} else if (ctx.language == 'FR') {
+	ctx.content_french = ctx.source_text;
+} else if (ctx.language == 'PT') {
+	ctx.content_portuguese = ctx.source_text;
+} else if (ctx.language == 'SW') {
+	ctx.content_swedish = ctx.source_text;
+}

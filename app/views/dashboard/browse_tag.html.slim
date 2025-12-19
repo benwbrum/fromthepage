@@ -1,0 +1,7 @@
+h2
+  span Collections tagged
+  i =@tag.ai_text
+
+.collection-tiles-wrapper
+  -@collections.each do |collection|
+    =render(partial: 'shared/collection_tile', locals: { collection: collection })

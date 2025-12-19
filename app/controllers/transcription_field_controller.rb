@@ -1,9 +1,6 @@
 class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
-  before_action :authorized?, :only => [:new, :edit_fields, :add_field]
-
-  #no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil}
+  before_action :authorized?, only: [:new, :edit_fields, :add_field]
 
   def multiselect_form
     @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
@@ -28,7 +25,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
-    @field_preview = {}
+    @field_presenter = TranscriptionField::Lib::Presenter.new(view_context: view_context, collection: @collection, edit_action: true)
   end
 
   def edit_metadata_fields
@@ -40,10 +37,10 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(params[:collection_id])
 
     if params[:description_instructions]
-      @collection.update(:description_instructions => params[:description_instructions])
+      @collection.update(description_instructions: params[:description_instructions])
     end
     if params[:data_entry_type]
-      @collection.update(:data_entry_type => params[:data_entry_type])
+      @collection.update(data_entry_type: params[:data_entry_type])
     end
 
     field_type = params[:field_type]
@@ -51,29 +48,29 @@ class TranscriptionFieldController < ApplicationController
 
 
     new_fields.each_with_index do |fields, index|
-      if fields[:line_number] == "new"
+      if fields[:line_number] == 'new'
         fields[:line_number] = new_fields[index-1][:line_number]
       end
-      #ignore blank fields
+      # ignore blank fields
       unless fields[:line_number].blank? || fields[:label].blank?
         if fields[:options].blank?
           fields[:options] = nil
-          if fields[:input_type] == "select"
-            fields[:input_type] = "text"
+          if fields[:input_type] == 'select'
+            fields[:input_type] = 'text'
             errors.add(:base, t('.must_have_options_list'))
           end
         else
           fields[:options].gsub!(/;\s/, ';')
         end
         if fields[:id].blank?
-          #if the field doesn't exist, create a new one
+          # if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields.permit!)
           transcription_field.starting_rows = 1
           transcription_field.collection_id = params[:collection_id]
           transcription_field.field_type = field_type
           transcription_field.save
         else
-          #otherwise update field if anything changed
+          # otherwise update field if anything changed
           transcription_field = TranscriptionField.find_by(id: fields[:id])
           transcription_field.label = fields[:label]
           transcription_field.input_type = fields[:input_type]
@@ -86,7 +83,7 @@ class TranscriptionFieldController < ApplicationController
       end
     end
     if errors[:base].any?
-      flash[:error] = errors[:base].uniq.join(" ")
+      flash[:error] = errors[:base].uniq.join(' ')
     end
     if params[:done].nil?
       if field_type == TranscriptionField::FieldType::TRANSCRIPTION
@@ -95,7 +92,7 @@ class TranscriptionFieldController < ApplicationController
         redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
       end
     else
-      redirect_to edit_collection_path(@collection.owner, @collection)
+      redirect_to edit_tasks_collection_path(@collection.owner, @collection)
     end
   end
 
@@ -111,7 +108,7 @@ class TranscriptionFieldController < ApplicationController
   def reorder_field
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
-    if(params[:direction]=='up')
+    if params[:direction]=='up'
       if field.line_number != field.higher_item.line_number
         field.update_columns(line_number: field.higher_item.line_number)
       else
@@ -129,14 +126,12 @@ class TranscriptionFieldController < ApplicationController
 
   def line_form
     @line_count = params[:line_count].strip.next
-    @count = @line_count.split(" ").last.to_i
+    @count = @line_count.split(' ').last.to_i
     @field_type = params[:field_type]
     respond_to do |format|
       format.js
     end
   end
-
-
 
   # Spreadsheet column actions
   def column_form
@@ -161,18 +156,18 @@ class TranscriptionFieldController < ApplicationController
     if params[:starting_rows].blank?
       errors.add(:base, t('.starting_rows_must_not_be_blank'))
     else
-      @transcription_field.update(:starting_rows => params[:starting_rows].to_i)
+      @transcription_field.update(starting_rows: params[:starting_rows].to_i)
     end
 
     new_columns = spreadsheet_column_params[:spreadsheet_columns]
 
     new_columns.each_with_index do |column, index|
-      #ignore blank fields
+      # ignore blank fields
       unless column[:label].blank?
         if column[:options].blank?
           column[:options] = nil
-          if column[:input_type] == "select"
-            column[:input_type] = "text"
+          if column[:input_type] == 'select'
+            column[:input_type] = 'text'
             errors.add(:base, t('.must_have_options_list'))
           end
         else
@@ -180,15 +175,15 @@ class TranscriptionFieldController < ApplicationController
         end
 
         if column[:id].blank?
-          #if the field doesn't exist, create a new one
+          # if the field doesn't exist, create a new one
           spreadsheet_column = SpreadsheetColumn.new(column)
           spreadsheet_column.transcription_field = @transcription_field
           spreadsheet_column.position = index + 1
           spreadsheet_column.save
         else
-          #otherwise update field if anything changed
+          # otherwise update field if anything changed
           spreadsheet_column = SpreadsheetColumn.find_by(id: column[:id])
-          #remove ID from params before update
+          # remove ID from params before update
           column.delete(:id)
           spreadsheet_column.position = index + 1
           spreadsheet_column.update(column)
@@ -196,12 +191,12 @@ class TranscriptionFieldController < ApplicationController
       end
     end
     if errors[:base].any?
-      flash[:error] = errors[:base].uniq.join(" ")
+      flash[:error] = errors[:base].uniq.join(' ')
     end
     if params[:done].nil?
       redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
     else
-      redirect_to transcription_field_edit_fields_path(:collection_id => @collection.slug)
+      redirect_to transcription_field_edit_fields_path(collection_id: @collection.slug)
     end
   end
 
@@ -226,14 +221,14 @@ class TranscriptionFieldController < ApplicationController
 
   def enable_ruler
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
-    @transcription_field.update(:row_highlight => true)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+    @transcription_field.update(row_highlight: true)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
   end
 
   def disable_ruler
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
-    @transcription_field.update(:row_highlight => false)
-    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+    @transcription_field.update(row_highlight: false)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
   end
 
   def choose_offset
@@ -245,7 +240,7 @@ class TranscriptionFieldController < ApplicationController
   def save_offset
     @transcription_field = TranscriptionField.find(params[:transcription_field_id])
     raw_selector = params[:selector]
-    parts = raw_selector.split(",")
+    parts = raw_selector.split(',')
     raw_y = parts[1]
     raw_h = parts[3]
 
@@ -270,5 +265,4 @@ class TranscriptionFieldController < ApplicationController
       ajax_redirect_to dashboard_path
     end
   end
-
 end

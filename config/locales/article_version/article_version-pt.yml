@@ -12,3 +12,4 @@ pt:
       revision_changes: Alterações de revisão
       untitled: Sem título
       user_at_time: "%{user} em %{time}"
+      user_deleted: "[apagado]"

@@ -1,8 +1,17 @@
 ---
 en:
   authentication_failed: Authentication failed
+  collection:
+    edit:
+      subject_tags: Subject tags
   dashboard:
     collaborator: Collaborator Dashboard
+    landing_page:
+      all_collections: All collections
+      next_image: Next image
+      previous_image: Previous image
+      recent_activity: Recent activity
+      search_for_collections_or_owners: Search for collections or institutions
     plain: Dashboard
   date:
     formats:
@@ -19,3 +28,4 @@ en:
       short: "%m/%d/%Y at %I:%M %p"
   time_ago_in_words: "%{time} ago"
   unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.
+  unsaved_changes_confirmation: You have unsaved changes. Are you sure you want to leave this screen?

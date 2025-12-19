@@ -3,23 +3,36 @@ en:
   page:
     create:
       page_created: Page created successfully
-    delete:
+    destroy:
       page_deleted: Page has been deleted
     edit:
+      page_status_blank: Blank Page
+      page_status_incomplete: Incomplete
+      page_status_indexed: Indexed
+      page_status_new: Not Started
+      page_status_review: Needs Review
+      page_status_transcribed: Complete
+      page_status_translated: Translated
+      status: 'Status: '
+    edit_tabs:
+      general: General
+      htr: HTR
+    form:
       browse: Browse
       click_to_browse_a_file: Click to browse a file...
       created: Created %{date}
+      delete: Delete Page
       delete_confirm_message: Are you sure you want to delete this page? After deleting you won't be able to recover it!
-      delete_page: Delete Page
       dimensions: 'Dimensions: %{width}&times;%{height}'
       here_you_can_edit: Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above.
       page_image: Page Image
       page_position: 'Page Position: %{position}'
       page_status: Page Status
-      page_status_: Not Started
       page_status_blank: Blank Page
       page_status_incomplete: Incomplete
       page_status_indexed: Indexed
+      page_status_needs_review: Needs Review
+      page_status_new: Not Started
       page_status_review: Needs Review
       page_status_transcribed: Complete
       page_status_translated: Translated
@@ -28,7 +41,6 @@ en:
       rotate_clockwise: Rotate Clockwise
       rotate_counterclockwise: Rotate Counterclockwise
       save_changes: Save Changes
-      status: 'Status: '
     new:
       add_new_page: Add New Page
       browse: Browse
@@ -40,4 +52,5 @@ en:
       save_and_new_work: Save & New Work
       title: Title
     update:
-      page_updated: Page updated
+      error: Failed to update page
+      notice: Page has been updated

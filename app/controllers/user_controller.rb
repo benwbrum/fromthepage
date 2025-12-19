@@ -1,13 +1,11 @@
 class UserController < ApplicationController
-  before_action :remove_col_id, :only => [:profile, :update_profile]
-  before_action :authorized?, :only => [:update_profile, :update]
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
+  before_action :remove_col_id, only: [:profile, :update_profile]
+  before_action :authorized?, only: [:update_profile, :update]
 
   PAGES_PER_SCREEN = 50
 
   def demo
-    session[:demo_mode] = true;
+    session[:demo_mode] = true
     redirect_to dashboard_path
   end
 
@@ -21,13 +19,13 @@ class UserController < ApplicationController
       session[:features][feature]=nil
     else
       if session[:features][feature]
-        render :plain => "#{feature} is enabled"
+        render plain: "#{feature} is enabled"
       else
-        render :plain => "#{feature} is disabled"
+        render plain: "#{feature} is disabled"
       end
       return
     end
-    redirect_back :fallback_location => dashboard_role_path
+    redirect_back fallback_location: dashboard_role_path
   end
 
   def choose_locale
@@ -43,13 +41,12 @@ class UserController < ApplicationController
     else
       session[:current_locale] = new_locale
     end
-    redirect_back :fallback_location => dashboard_role_path
+    redirect_back fallback_location: dashboard_role_path
   end
 
 
-  NOTOWNER = "NOTOWNER"
+  NOTOWNER = 'NOTOWNER'
   def update
-
     # spam check
     if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
       logger.error("Possible spam: deleting user #{@user.email}")
@@ -58,23 +55,29 @@ class UserController < ApplicationController
     else
       params_hash = user_params.except(:notifications)
       notifications_hash = user_params[:notifications]
-      params_hash.delete_if { |k,v| v == NOTOWNER }
+      params_hash.delete_if { |k, v| v == NOTOWNER }
       params_hash[:dictation_language] = params[:dialect]
 
-      if params_hash[:slug] == ""
+      if params_hash[:slug] == ''
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
       else
         @user.update(params_hash)
       end
-        @user.notification.update(notifications_hash)
+
+      @user.notification.update(notifications_hash)
+      Cookies::Lib::CreateOrUpdateHandler.new(
+        cookies: cookies,
+        privacy_preference_params: privacy_params[:privacy_preferences],
+        user: @user
+      ).perform
 
       if @user.save!
         flash[:notice] = t('.user_updated')
-        ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
+        ajax_redirect_to({ action: 'profile', user_id: @user.slug, anchor: '' })
       else
-        render :action => 'update_profile'
+        render action: 'update_profile'
       end
     end
   end
@@ -89,15 +92,15 @@ class UserController < ApplicationController
     end
 
     # Set dictation language to default (en-US) if it doesn't exist
-    lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
+    lang = !@user.dictation_language.blank? ? @user.dictation_language : 'en-US'
     # Find the language portion of the language/dialect or set to nil
     part = lang.split('-').first
     # Find the index of the language in the array (transform to integer)
     @lang_index = Collection::LANGUAGE_ARRAY.size.times
-      .select {|i| Collection::LANGUAGE_ARRAY[i].include?(part)}[0]
+      .select { |i| Collection::LANGUAGE_ARRAY[i].include?(part) }[0]
     # Then find the index of the nested dialect within the language array
     int = Collection::LANGUAGE_ARRAY[@lang_index].size.times
-      .select {|i| Collection::LANGUAGE_ARRAY[@lang_index][i].include?(lang)}[0]
+      .select { |i| Collection::LANGUAGE_ARRAY[@lang_index][i].include?(lang) }[0]
     # Transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
   end
@@ -112,8 +115,8 @@ class UserController < ApplicationController
     @user.api_key = User.generate_api_key
     @user.save!
 
-#    ajax_redirect_to(user_api_key_path(@user))
-    render :action => :api_key, :layout => false
+    #    ajax_redirect_to(user_api_key_path(@user))
+    render action: :api_key, layout: false
   end
 
   def disable_api_key
@@ -121,27 +124,58 @@ class UserController < ApplicationController
     @user.api_key = nil
     @user.save!
     # ajax_redirect_to(user_api_key_path(@user))
-    render :action => :api_key, :layout => false
+    render action: :api_key, layout: false
   end
 
   def profile
-    #find the user if it isn't already set
-    unless @user
-      @user = User.friendly.find(params[:id])
-    end
-    if !@user.deleted || current_user.admin
+    # Find the user if it isn't already set
+    @user ||= User.friendly.find(params[:id])
+
+    if !@user.deleted || current_user&.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
-      @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
-      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      @collection_ids = @collections_and_document_sets.map(&:id)
+      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection)
+                    .order('created_at DESC').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     else
       flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
     end
-    if @user.owner?
-      collections = @user.all_owner_collections.carousel
-      sets = @user.document_sets.carousel
-      @carousel_collections = (collections + sets).sample(8)
+
+    return unless @user.owner?
+
+    if params[:ai_text]
+      @tag = Tag.where(ai_text: params[:ai_text]).first
+      if @tag
+        tag_collections = @tag.collections.where(owner_user_id: @user.id)
+        tag_document_sets = tag_collections.map(&:document_sets).flatten
+        @tag_collections = tag_collections+tag_document_sets
+      end
     end
+    collections = @user.all_owner_collections.carousel
+    sets = @user.document_sets.carousel
+    @carousel_collections = (collections + sets).sample(8)
+  end
+
+  def search
+    @user = User.friendly.find(params[:user_slug])
+    @search_string = search_params[:term]
+
+    @es_query = Elasticsearch::MultiQuery.new(
+      query: @search_string,
+      query_params: {
+        org: params[:user_slug]
+      },
+      page: params[:page] || 1,
+      scope: search_params[:filter],
+      user: current_user
+    ).call
+
+    @breadcrumb_scope = { owner: true }
+    @org_filter = @es_query.org_filter
+
+    @search_results = @es_query.results
+    @full_count = @es_query.total_count
+    @type_counts = @es_query.type_counts
   end
 
   private
@@ -156,9 +190,15 @@ class UserController < ApplicationController
     end
   end
 
+  def search_params
+    params.permit(:term, :page, :filter, :user_id)
+  end
 
   def user_params
     params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, :help, :footer_block, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added, :add_as_reviewer])
   end
 
+  def privacy_params
+    params.require(:user).permit(privacy_preferences: [:marketing, :analytics])
+  end
 end

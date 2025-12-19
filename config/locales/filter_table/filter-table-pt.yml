@@ -1,0 +1,7 @@
+---
+pt:
+  filter_table:
+    entries: entradas
+    no_matching_records_found: Nenhum registro correspondente encontrado
+    search_placeholder: Procurar...
+    show: Mostrar

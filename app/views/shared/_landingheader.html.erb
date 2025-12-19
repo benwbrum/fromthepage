@@ -16,15 +16,85 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Crete+Round&family=Lora:wght@400;500;600;700&display=swap" %>
     <%= stylesheet_link_tag 'optimize' %>
     <%= stylesheet_link_tag 'main' %>
 
+    <%=javascript_importmap_tags %>
 
 
 
     <style>
+        /* Flash message styles - copied from application.scss */
+        .flash {
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            position: fixed;
+            text-align: center;
+            height: 80px; /* headerHeight equivalent */
+            line-height: 80px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .flash-notice {
+            color: #490;
+            background: rgba(240, 249, 217, 0.9);
+        }
+
+        .flash-info {
+            color: #08D;
+            background: rgba(217, 240, 255, 0.9);
+        }
+
+        .flash-alert {
+            color: #E60;
+            background: rgba(255, 246, 204, 0.9);
+        }
+
+        .flash-error {
+            color: #D00;
+            background: rgba(255, 240, 240, 0.9);
+        }
+
+        .flash_message {
+            display: inline-block;
+            line-height: 1.375;
+        }
+
+        .flash_close {
+            top: 50%;
+            right: 18px;
+            width: 32px;
+            height: 32px;
+            font-size: 32px;
+            cursor: pointer;
+            line-height: 36px;
+            margin-top: -16px;
+            text-align: center;
+            position: absolute;
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .flash_close:hover {
+            color: #000;
+        }
+
+        /* Icon styles for flash messages */
+        .flash .icon {
+            width: 1em;
+            height: 1em;
+            font-size: 16px;
+            vertical-align: -12%;
+            display: inline-block;
+            text-decoration: none;
+            margin-right: 0.375em;
+        }
+
         .home-main::before {
             background: url('<%=path_to_image('materials/main-bg.png')%>') no-repeat;
         }

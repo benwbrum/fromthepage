@@ -1,7 +1,9 @@
+require 'csv'
+
 class UserMailer < ActionMailer::Base
   include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
-  layout "mailer"
+  layout 'mailer'
 
   before_action :add_inline_attachments!
 
@@ -13,26 +15,32 @@ class UserMailer < ActionMailer::Base
   def upload_finished(document_upload)
     @document_upload = document_upload
 
-    mail to: @document_upload.user.email, subject: "Your upload is ready"
+    mail to: @document_upload.user.email, subject: 'Your upload is ready'
+  end
+
+  def upload_no_images_warning(document_upload)
+    @document_upload = document_upload
+
+    mail to: @document_upload.user.email, subject: 'Upload processing complete - no images found'
   end
 
   def bulk_export_finished(bulk_export)
     @bulk_export = bulk_export
 
-    mail to: @bulk_export.user.email, subject: "Your export is ready"
+    mail to: @bulk_export.user.email, subject: 'Your export is ready'
   end
 
   def new_owner(user, text)
     @owner = user
     @text = text
-    mail to: @owner.email, subject: "New FromThePage Owner"
+    mail to: @owner.email, subject: 'New FromThePage Owner'
   end
 
   def added_note(user, note)
     @user = user
     @note = note
     @page = note.page
-    mail to: @user.email, subject: "New FromThePage Note", reply_to: @note.collection.owner.email
+    mail to: @user.email, subject: 'New FromThePage Note', reply_to: @note.collection.owner.email
   end
 
   def collection_reviewer(user, obj)
@@ -59,7 +67,7 @@ class UserMailer < ActionMailer::Base
 
   def nightly_user_activity(user_activity)
     @user_activity = user_activity
-    mail to: @user_activity.user.email, subject: "New FromThePage Activity"
+    mail to: @user_activity.user.email, subject: 'New FromThePage Activity'
   end
 
   def new_mobile_user(user, obj)
@@ -68,10 +76,41 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "#{@collection.owner.display_name}'s #{@collection.title} Collection"
   end
 
+  def metadata_csv_import_finished(user, result)
+    @user = user
+    @result = result
+
+    if @result.rowset_errors.any?
+      csv_data = CSV.generate(headers: true) do |csv|
+        csv << [:error, :work_id, :title]
+
+        @result.rowset_errors.each do |error|
+          csv << [error[:error], error[:work_id], error[:title]]
+        end
+      end
+
+      attachments['errors.csv'] = { mime_type: 'text/csv', content: csv_data }
+    end
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_csv_import_finished.subject')
+  end
+
+  def metadata_refresh_finished(user, result, id, type, logs)
+    @user = user
+    @result = result
+
+    attachments['refresh_logs.txt'] = {
+      mime_type: 'text/plain',
+      content: logs.join("\n")
+    }
+
+    mail to: @user.email, subject: I18n.t('user_mailer.metadata_refresh_finished.subject', id: id, type: type)
+  end
+
   private
 
   def add_inline_attachments!
-    attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+    attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end
 
   class Activity
@@ -85,7 +124,7 @@ class UserMailer < ActionMailer::Base
 
     class << self
       def build(user)
-        #find which pages the user has worked on
+        # Find which pages the user has worked on
         user_page_ids ||= user.deeds.pluck(:page_id).uniq.compact
 
         Activity.new(
@@ -99,13 +138,14 @@ class UserMailer < ActionMailer::Base
 
       def user_pages_with_notes_added_in_past_day(user, user_page_ids)
         pages_with_recent_notes = Page.joins(:deeds)
-          .where(deeds: {deed_type: DeedType::NOTE_ADDED})
-          .merge(Deed.past_day).distinct
-          .where.not(deeds: {user_id: user.id})
-        pages_with_recent_notes.where(id: user_page_ids).select do |page| 
-          if page.deeds.where(deed_type: DeedType::NOTE_ADDED).last.user_id != user.id && page.work.access_object(user)
-            page
-          end
+                                      .where(deeds: { deed_type: DeedType::NOTE_ADDED })
+                                      .merge(Deed.past_day).distinct
+                                      .where.not(deeds: { user_id: user.id })
+
+        pages_with_recent_notes.where(id: user_page_ids).select do |page|
+          last_note = page.deeds.where(deed_type: DeedType::NOTE_ADDED).last
+          last_note.present? && last_note.user_id != user.id &&
+            page.work.access_object(user) && page.work.user_can_transcribe?(user)
         end
       end
 
@@ -114,13 +154,14 @@ class UserMailer < ActionMailer::Base
         user_collection_ids = user.deeds.pluck(:collection_id).uniq
         # works that have been added to those collections by someone other than the user in the past day
         works = Work.where(collection_id: user_collection_ids).joins(:deeds)
-          .where(deeds: {deed_type: DeedType::WORK_ADDED})
-          .merge(Deed.past_day).where.not(deeds: {user_id: user.id})
-          .distinct
+                    .where(deeds: { deed_type: DeedType::WORK_ADDED })
+                    .merge(Deed.past_day)
+                    .where.not(deeds: { user_id: user.id })
+                    .distinct
 
-        works.select {|work| work.access_object(user)}
+        works.select { |work| work.access_object(user) && work.user_can_transcribe?(user) }
       end
-    end #end class << self
+    end # end class << self
 
     def has_contributions?
       (
@@ -128,5 +169,5 @@ class UserMailer < ActionMailer::Base
         @active_note_pages
       ).any?
     end
-  end #end Activity
+  end # end Activity
 end

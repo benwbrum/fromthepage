@@ -1,28 +1,35 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
+ruby:
+  if @text_type == 'translation'
+    cancel_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id,
+      rollback_unset_ids: @unassigned_articles.pluck(:id), rollback_delete_ids: @new_article_ids)
+    continue_path = collection_translate_page_path(@collection.owner, @collection, @work, @next_page_id)
+  else
+    cancel_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id,
+      rollback_unset_ids: @unassigned_articles.pluck(:id), rollback_delete_ids: @new_article_ids)
+    continue_path = collection_transcribe_page_path(@collection.owner, @collection, @work, @next_page_id)
+  end
+
+=render({ partial: '/shared/page_tabs', locals: { selected: 3, page_id: @page.id } })
 
 .headline
   h2.headline_title =t('.uncategorized_subjects')
   -if user_signed_in? && current_user.like_owner?(@collection)
     .headline_aside
-      =link_to t('.manage_categories'), article_list_path(:page_id => @page.id), class: 'button'
+      =link_to t('.manage_categories'), article_list_path(page_id: @page.id), class: 'button'
 
 p.big =t('.uncategorized_subjects_mentioned')
 
 -@unassigned_articles.each do |article|
-  -update_article_url = url_for(article_article_category_path(:article_id => article.id))
   .page-uncategorized
     h4.page-uncategorized_subject(data-prefix=t('.subject') *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
 
     pre== excerpt_subject(@page, article.title, {:text_type => @text_type})
 
-    select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" aria-label=t('.assign_categories') multiple)
-      -@collection.categories.walk_tree do |c, level|
-        -selected = true if article.categories.include?(c)
-        option(data-level=level value=c.id selected=selected aria-label=t('.options') *language_attrs(@collection)) =c.title
+    =form_with url: article_article_category_path(article_id: article.id), method: :post, data: { controller: 'form', turbo: true, action: 'change->form#requestSubmit' } do |f|
+      =f.select :category_ids, \
+        options_for_select(categories_options(@collection.categories), selected: article.category_ids), \
+        {}, { size: 1, aria: { label: t('.assign_categories') }, multiple: true, data: { controller: 'select2', select2_placeholder_value: 'Assign categories...' } }
 
 span.legend
-  -if @text_type == 'translation'
-    -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
-  -else
-    -next_path =collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
-  =link_to t('.continue'), next_path, class: 'button outline round'
+  =link_to t('.cancel'), cancel_path, class: 'button outline round', style: 'margin: 0 0.5rem';
+  =link_to t('.continue'), continue_path, class: 'button outline round', style: 'margin: 0 0.5rem';

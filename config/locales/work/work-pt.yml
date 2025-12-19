@@ -9,9 +9,10 @@ pt:
       heading: Configuração de impressão
       include_contributors: Incluir colaboradores
       include_metadata: Incluir metadados
+      include_notes: Incluir notas
       preserve_linebreaks: Preservar quebras de linha
       text_contents: Conteúdo
-      text_contents_description: A exportação imprimível incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
+      text_contents_description: A versão para impressão incluirá o texto da transcrição e também pode incluir informações sobre os colaboradores do projeto ou metadados sobre a obra.
       text_format: Formatação de texto
       text_format_description: Opções para formatar texto.
       text_format_docx: MS Word (.docx)
@@ -89,7 +90,6 @@ pt:
       word_trees_analysis_description: Envie a transcrição desta obra para o visualizador Árvores de Palavras de Jason Davies para análise.
       zip_export_only_project_owners: Formatos de exportação de arquivos zip acessíveis apenas para proprietários de projetos.
     edit:
-      add: Adicionar
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
       allowed_collaborators: Colaboradores permitidos
@@ -105,6 +105,9 @@ pt:
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
+      document_sets: Conjuntos de documentos
+      done: Feito
+      edit_collaborators: Editar colaboradores
       editorial_notes: Notas editoriais
       enable_ocr_correction: Ativar correção de OCR
       enable_ocr_correction_description: Uma obra pode começar com texto OCR que precisa ser corrigido. Quando marcada, a guia Transcrever será substituída por uma guia Correta.
@@ -113,7 +116,6 @@ pt:
       identifier_description: Identificador de sistemas fora de FromThePage, para ser usado correlacionando exportações para registros externos. (Este campo não é visível ao público.)
       in_scope: Na mira
       more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
-      no_allowed_collaborators_selected: Nenhum colaborador permitido selecionado
       no_image: Sem imagem
       pages_are_meaningful: As páginas são significativas
       pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
@@ -121,7 +123,6 @@ pt:
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
-      remove: Remover
       restrict_collaborators: Restringir colaboradores
       restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
       revert: Reverter
@@ -140,9 +141,13 @@ pt:
       uploaded_by: Enviado por
       url: URL
       work_image: Imagem da obra
-      work_image_description: Uma imagem a ser usada para ilustrar a obra. Se nenhuma imagem for carregada, uma imagem da página será usada.
+      work_image_description: Uma imagem utilizada para ilustrar a obra. Caso nenhuma imagem seja carregada, será usada uma imagem da página.
       work_thumbnail: Miniatura da obra
       work_title: Título da obra
+    edit_scribes:
+      remove_collaborator: Remover colaborador
+      work_collaborators: Colaboradores de obra
+      work_collaborators_description: Os colaboradores podem transcrever e editar obras privadas.
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -152,7 +157,7 @@ pt:
     new:
       collection: Coleção
       create_empty_work: Criar obra vazia
-      create_empty_work_description: Isso cria uma obra vazio. Depois de criar a obra, você pode adicionar imagens de páginas individuais. Se você tiver um arquivo zip ou pdf com várias imagens, você deve criar a obra e fazer upload do arquivo em %{start_project}.
+      create_empty_work_description: Cria uma obra vazia. Após criar a obra, é possível adicionar imagens de páginas individuais. Caso possua um arquivo ZIP ou PDF com várias imagens, crie a obra e envie o arquivo em %{start_project}.
       create_work: Criar obra
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
@@ -162,7 +167,7 @@ pt:
     pages_tab:
       actions: Ações
       add_new_page: Adicionar nova página
-      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-lo!
+      confirm_delete_page: Tem certeza de que deseja excluir esta página? Após a exclusão, você não poderá recuperá-la!
       delete: Excluir
       featured_page: Página em destaque
       image_status: Status da imagem
@@ -170,17 +175,20 @@ pt:
       move_down: Mover para baixo
       move_up: Subir
       no_pages_found: Nenhuma página encontrada
-      no_pages_found_description: Esta obra ainda não contém páginas
+      no_pages_found_description: Esta obra ainda não possui páginas
+      no_works_found_description: Não há nenhuma obra neste momento
       page_title: Título da página
-      pages_tab_description: Aqui você vê a lista de todas as páginas da obra. Se você quiser alterar a posição de uma página, use as setas para cima e para baixo à direita. Para criar uma nova página para esta obra clique no botão Adicionar Nova Página. Depois que uma nova página em branco for criada, encontre-a na lista abaixo e prossiga para as configurações onde você pode fazer upload da imagem da página.
+      pages_tab_description: Aqui é possível visualizar a lista de todas as páginas da obra. Para alterar a posição de uma página, utilize as setas para cima e para baixo à direita. Para criar uma nova página, clique no botão Adicionar Nova Página. Após criar uma nova página em branco, localize-a na lista abaixo e acesse as configurações para enviar a imagem da página.
       position: Posição
       ready_to_transcribe: Pronto para %{transcribe}
       settings: Definições
-      transcribe: transcrever
+      transcribe: Transcrever
       upload: Envio
       upload_page_image: "%{upload} imagem da página"
     save_description:
       work_described: Sua descrição foi salva
+    search:
+      search_in_work: Pesquisar no documento
     show:
       author_name: Nome do Autor
       description: Descrição
@@ -201,7 +209,7 @@ pt:
       source_box_folder: Caixa de fontes
       source_collection_name: Nome de coleção fonte
       source_location: Localização de fonte
-      uploaded_by: Subido por
+      uploaded_by: Enviado por
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso

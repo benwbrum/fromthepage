@@ -15,6 +15,7 @@ section.signon
     .signon_field
       =f.label :password, t('devise.password')
       =f.password_field :password, autocomplete: 'off'
+      small#password-validation style='color: red;'
     .signon_field
       =f.label :password_confirmation, t('devise.confirm_password')
       =f.password_field :password_confirmation, autocomplete: 'off'

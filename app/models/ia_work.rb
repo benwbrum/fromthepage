@@ -1,14 +1,44 @@
+# == Schema Information
+#
+# Table name: ia_works
+#
+#  id             :integer          not null, primary key
+#  archive_format :string(255)      default("zip")
+#  collection     :string(255)
+#  contributor    :string(255)
+#  creator        :string(255)
+#  description    :string(1024)
+#  detail_url     :string(255)
+#  djvu_file      :string(255)
+#  ia_path        :string(255)
+#  image_count    :string(255)
+#  image_format   :string(255)      default("jp2")
+#  notes          :string(255)
+#  scandata_file  :string(255)
+#  server         :string(255)
+#  sponsor        :string(255)
+#  subject        :string(255)
+#  title          :string(255)
+#  title_leaf     :integer
+#  use_ocr        :boolean          default(FALSE)
+#  zip_file       :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  book_id        :string(255)
+#  user_id        :integer
+#  work_id        :integer
+#
 class IaWork < ApplicationRecord
   require 'open-uri'
 
   belongs_to :user, optional: true
   belongs_to :work, optional: true
-  has_many :ia_leaves, class_name: "IaLeaf"
+  has_many :ia_leaves, class_name: 'IaLeaf'
 
   before_create :truncate_title
 
   def truncate_title
-    self.title = self.title.truncate(255, :omission => "...")
+    self.title = self.title.truncate(255, omission: '...')
   end
 
   def display_page
@@ -28,7 +58,7 @@ class IaWork < ApplicationRecord
     dir = location['dir']
     logger.debug "DEBUG Server=#{server}"
     logger.debug "DEBUG Dir=#{dir}"
-    return {:server => server, :ia_path => dir}
+    { server: server, ia_path: dir }
   end
 
   def zip_file
@@ -46,9 +76,9 @@ class IaWork < ApplicationRecord
 
     scandata_stub = self[:scandata_file].sub(/_scandata.xml/, '')
     if scandata_stub == self.book_id
-      return self[:ia_path]
+      self[:ia_path]
     else
-      return "#{self[:ia_path]}/#{scandata_stub}"
+      "#{self[:ia_path]}/#{scandata_stub}"
     end
   end
 
@@ -60,9 +90,9 @@ class IaWork < ApplicationRecord
     scandata_stub = self[:scandata_file].sub(/_scandata.xml/, '')
 
     if scandata_stub == self.book_id
-      return self[:book_id]
+      self[:book_id]
     else
-      return "#{scandata_stub}"
+      "#{scandata_stub}"
     end
   end
 
@@ -87,7 +117,7 @@ class IaWork < ApplicationRecord
       page.base_width = leaf.page_w
       page.title = leaf.page_number
       page.source_text = leaf.ocr_text if self.use_ocr
-      work.pages << page #necessary to make acts_as_list work here
+      work.pages << page # necessary to make acts_as_list work here
       work.save!
 
       leaf.page_id = page.id
@@ -102,7 +132,7 @@ class IaWork < ApplicationRecord
   end
 
   def ingest_work(id)
-    #find the length of the description column
+    # find the length of the description column
     limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
@@ -112,16 +142,16 @@ class IaWork < ApplicationRecord
     self.server = server
     self.ia_path = dir
     self.book_id = loc_doc.search('identifier').text
-    self[:title] = loc_doc.search('title').text            #work title
-    self[:creator] = loc_doc.search('creator').map{|e| e.text}.join('; ')       #work author
-    self[:collection] = loc_doc.search('collection').text   #?
-    #description is truncated so it isn't too long for the description column
+    self[:title] = loc_doc.search('title').text            # work title
+    self[:creator] = loc_doc.search('creator').map { |e| e.text }.join('; ')       # work author
+    self[:collection] = loc_doc.search('collection').text   # ?
+    # description is truncated so it isn't too long for the description column
     if loc_doc.search('abstract').blank?
-      self[:description] = loc_doc.search('description').text.truncate(limit) #description
+      self[:description] = loc_doc.search('description').text.truncate(limit) # description
     else
-      self[:description] = loc_doc.search('abstract').text.truncate(limit) #description
+      self[:description] = loc_doc.search('abstract').text.truncate(limit) # description
     end
-    self[:notes] = loc_doc.search('notes').text             #physical description
+    self[:notes] = loc_doc.search('notes').text             # physical description
     self[:image_count] = loc_doc.search('imagecount').text
 
     image_format, archive_format = formats_from_loc(loc_doc)
@@ -135,7 +165,7 @@ class IaWork < ApplicationRecord
 
     self.save!
     # now fetch the scandata.xml file and parse it
-    scandata_url = "http://#{server}#{dir}/#{URI.encode(scandata_file)}" # will not work on new format: we cannot assume filenames are re-named with their content
+    scandata_url = "http://#{server}#{dir}/#{CGI.escape(scandata_file)}" # will not work on new format: we cannot assume filenames are re-named with their content
 
     sd_doc = open_doc(scandata_url)
 
@@ -144,9 +174,9 @@ class IaWork < ApplicationRecord
       leaf = IaLeaf.new
       leaf.leaf_number = page.xpath('@leafNum|@leafnum').text
       leaf.page_number = page.xpath('pageNumber|pagenumber').text
-      altpageelement = page.children.xpath("altPageNumber")
+      altpageelement = page.children.xpath('altPageNumber')
       if !altpageelement.blank?
-        leaf.page_number = altpageelement.attr("prefix").value + " [" + altpageelement.children.text + "]"
+        leaf.page_number = altpageelement.attr('prefix').value + ' [' + altpageelement.children.text + ']'
       end
       leaf.page_type = page.xpath('pageType|pagetype').text
       leaf.page_w = page.xpath('(cropBox|cropbox)/w').text
@@ -172,7 +202,7 @@ class IaWork < ApplicationRecord
       leaf_number = leaf_number_from_object(e)
       ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
 
-      ia_leaf.ocr_text = ""
+      ia_leaf.ocr_text = ''
 
       e.search('PARAGRAPH').each do |para|
         para.search('LINE').each do |line|
@@ -190,9 +220,8 @@ class IaWork < ApplicationRecord
 
     leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
-
       page_id = e.search('PARAM[@name="PAGE"]').first['value']
-      page_id[/\w*_0*/]=""
+      page_id[/\w*_0*/]=''
       page_id[/\.djvu/]=''
       logger.debug(page_id)
       # there may well be an off-by-one error in the source.  I'm seeing page_id 7
@@ -205,7 +234,7 @@ class IaWork < ApplicationRecord
         line = e.search('LINE').last
       end
 
-      if(line)
+      if line
         ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
         ia_leaf.page_number = ocr_line_to_text(line).titleize
         ia_leaf.save!
@@ -223,24 +252,23 @@ class IaWork < ApplicationRecord
 
   def leaf_number_from_object(object_element)
     page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
-    page_id[/\S*_0*/]=""
+    page_id[/\S*_0*/]=''
     page_id[/\.djvu/]=''
     logger.debug(page_id)
     # there may well be an off-by-one error in the source.  I'm seeing page_id 7
     # correspond with leaf_id 6
     page_id.to_i
-
   end
 
   def ocr_line_to_text(line)
     words = []
 
     line.search('WORD').each { |e| words << e.inner_text }
-    title = words.join(" ")
+    title = words.join(' ')
     # clean any angle braces -- this source won't be HTML
-    title.gsub!("<", "&lt;")
-    title.gsub!(">", "&gt;")
-    title.gsub!(/\[\[+/, "[")
+    title.gsub!('<', '&lt;')
+    title.gsub!('>', '&gt;')
+    title.gsub!(/\[\[+/, '[')
 
     title
   end
@@ -249,7 +277,7 @@ class IaWork < ApplicationRecord
     loc_doc = fetch_loc_doc(self.book_id)
     scandata_file, djvu_file = files_from_loc(loc_doc)
 
-    djvu_url =  "http://#{self.server}#{self.ia_path}/#{URI.encode(djvu_file)}"
+    djvu_url =  "http://#{self.server}#{self.ia_path}/#{CGI.escape(djvu_file)}"
     logger.debug(djvu_url)
     djvu_doc = open_doc(djvu_url)
 
@@ -270,7 +298,7 @@ class IaWork < ApplicationRecord
     ARCHIVE_FORMATS.each do |aft|
       IMAGE_FORMATS.each do |ift|
         suffix = "#{ift}.#{aft}"
-        if locations.count { |l| l.end_with? suffix} > 0
+        if locations.count { |l| l.end_with? suffix } > 0
           return [ift, aft]
         end
       end
@@ -282,27 +310,27 @@ class IaWork < ApplicationRecord
     api_url = 'http://www.archive.org/services/find_file.php?file='+id
     logger.debug(api_url)
     loc_doc = open_doc(api_url)
-    return loc_doc
+    loc_doc
   end
 
   def files_from_loc(loc_doc)
     formats = loc_doc.search('file').search('format')
 
-    scandata = formats.select{|e| e.inner_text=='Scandata'}.first.parent['name']
-    djvu = formats.select{|e| e.inner_text=='Djvu XML'}.first.parent['name']
-    zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}
+    scandata = formats.select { |e| e.inner_text=='Scandata' }.first.parent['name']
+    djvu = formats.select { |e| e.inner_text=='Djvu XML' }.first.parent['name']
+    zips = formats.select { |e| e.inner_text=='Single Page Processed JP2 ZIP' }
     if zips.size < 1
-      zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 Tar'}
+      zips = formats.select { |e| e.inner_text=='Single Page Processed JP2 Tar' }
     end
     if zips.size < 1
-      zips = formats.select{|e| e.inner_text=="Single Page Processed JPEG Tar"}
+      zips = formats.select { |e| e.inner_text=='Single Page Processed JPEG Tar' }
     end
 
 
 
     zip = zips.first.parent['name']
 
-    return [scandata, djvu, zip]
+    [scandata, djvu, zip]
   end
 
   protected

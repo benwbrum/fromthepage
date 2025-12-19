@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe "convention related tasks", :order => :defined do
+describe "convention related tasks", order: :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
-    @collection = @collections.second
-    @work = @collection.works.last
+    @collection = @collections.find('imported-collection')
+    @work = @collection.works.find_by(transcription_conventions: nil)
     @page = @work.pages.first
     @conventions = @collection.transcription_conventions
     @clean_conventions = ActionController::Base.helpers.strip_tags(@collection.transcription_conventions)
@@ -20,13 +20,13 @@ describe "convention related tasks", :order => :defined do
   end
 
   before :each do
-    login_as(@owner, :scope => :user)
+    login_as(@owner, scope: :user)
   end
 
   it "checks for collection level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    #if the page isn't already transcribed, must go to Transcribe tab
+    # if the page isn't already transcribed, must go to Transcribe tab
     if page.has_content?("Facsimile")
       page.find('.tabs').click_link(@tab)
     end
@@ -52,29 +52,28 @@ describe "convention related tasks", :order => :defined do
     expect(convention_work.transcription_conventions).to eq @work_convention
   end
 
-  it "changes conventions at collection level but not work level" do
+  it "changes conventions at collection level but not work level", js: true do
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Settings")
+    page.find('.side-tabs').click_link("Help Text")
     page.fill_in 'collection_transcription_conventions', with: @new_convention
-    click_button 'Save Changes'
-    #check unchanged work for collection conventions
-    work2 = @collection.works.first
+    # check unchanged work for collection conventions
+    work2 = @collection.works.where(transcription_conventions: nil).where.not(id: @work.id).first
     page2 = work2.pages.second
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
+    page.find('.tabs').find_link('Transcribe', visible: true, wait: 5).click
     expect(page).to have_content @new_convention
-    #check changed work for collection conventions
+    # check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    if page.has_content?("Facsimile")
-      page.find('.tabs').click_link(@tab)
-    end
+    page.find('.tabs').find_link('Correct', visible: true, wait: 5).click
     expect(page).not_to have_content @new_convention
     expect(page).to have_content @work_convention
   end
 
-  it "reverts to collection level transcription conventions", :js => true do
+  it "reverts to collection level transcription conventions", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     convention_work = Work.find_by(id: @work.id)
@@ -91,6 +90,4 @@ describe "convention related tasks", :order => :defined do
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
   end
-
 end
-

@@ -12,3 +12,4 @@ de:
       revision_changes: Überarbeitungen
       untitled: Ohne Titel
       user_at_time: "%{user} um %{time}"
+      user_deleted: "[gelöscht]"

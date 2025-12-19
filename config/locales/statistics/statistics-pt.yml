@@ -14,7 +14,9 @@ pt:
       mailing_list_export: Exportação de lista de correio
       no_editors: Sem editores
       no_indexers: Sem indexadores
+      no_reviewers: Sem revisores
       no_transcribers: Sem transcritores
+      reviewing: Revendo
       transcribing: Transcrevendo
     collection:
       last_days_statistics: Estatísticas dos últimos 7 dias

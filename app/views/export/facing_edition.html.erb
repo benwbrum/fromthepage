@@ -12,7 +12,7 @@
 <%= t('export.facing_edition.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
 
-<% 
+<%
   xml_metadata = @work.merge_metadata.map{|e| "#{e['label']}: #{e['value']}"}.join("<lb/>\n")
 %>
 <%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
@@ -25,22 +25,31 @@
 
 <% if @edition_type == 'facing'%>
 \newpage
-  <% if @work.sc_manifest %>
-![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
-  <% elsif page.ia_leaf %>
-![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
-  <% else %>
-![<%= page.title %>](<%= root_url %><%= file_to_url(page.canonical_facsimile_url) %>)
-  <% end %>
+![<%= page.title %>](<%= page.image_url_for_download%>)
 \newpage
 <% end %>
 
 ### <%= page.title %>
+<% unless page.status_blank? %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
+<% end %>
 
-<% if @work.supports_translation && !page.xml_translation.blank?%>
+<% if @work.supports_translation && !page.source_translation.blank? %>
 ### <%= page.title %>
 <%= raw(xml_to_pandoc_md(page.xml_translation, @preserve_linebreaks, true)) %>
+<% end %>
+
+<% if @include_notes && page.notes.any? %>
+::: {.smalltext}
+*Notes:*
+
+<% page.notes.each do |note| %>
+_<%= "#{note.user.display_name}:" %>_
+  <%= raw(note.body.gsub("\n", "\n\n")) %>
+
+<% end %>
+:::
+
 <% end %>
 
 <% end %>
@@ -53,7 +62,7 @@
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>
 <% contributor_ids.each do |user_id| %>
-  <% user = User.find(user_id) 
+  <% user = User.find(user_id)
     if user.real_name.blank?
       name = user.display_name
     else

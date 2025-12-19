@@ -52,6 +52,7 @@ de:
       reload_this_page_to: Laden Sie diese Seite neu, um die Liste zu aktualisieren.
       status: Status
       subject_csv_collection: Entitätsindex CSV (Sammlung)
+      subject_details_csv_collection: Betreffdetails CSV (Sammlung)
       table_csv_collection: Feld/Tabellen CSV (Sammlung)
       table_csv_work: Feld/Tabellen CSV (Werk)
       tei_work: TEX-XML (Werk)
@@ -64,19 +65,28 @@ de:
     hierarchical_collections_and_document_sets:
       project_by: Projekt von %{author}
       start_transcribing: Mit der Transkription beginnen
+    hours_letter:
+      certification_text: Mit diesem Schreiben wird bestätigt, dass %{user_name} zwischen %{start_date} und %{end_date} %{time_duration} zu den Crowdsourcing-Bemühungen der Bibliothek auf FromThePage (www.fromthepage.com) beigetragen hat. Über die Website können Freiwillige dabei helfen, historische Dokumente in Bibliotheksbeständen zu transkribieren und sie so für zukünftige Forscher durchsuchbarer und zugänglicher zu machen. Die FromThePage-Website verfolgt die Zeit, die registrierte Benutzer auf der Website aktiv sind, und meldet die Gesamtzahl der aktiven Minuten.
+      institutions_header: "| **Institutionen** | **Sammlung** | **Seiten** |"
+      institutions_separator: "|--------------|------------|-------------:|"
+      regards_text: Grüße,
+      to_whom_it_may_concern: 'Wen es angeht:'
+      volunteer_text: Jeder Freiwillige trägt dazu bei, die Geschichte zugänglicher zu machen. Wir freuen uns über den Beitrag von %{user_display_name} zu unserem Crowdsourcing-Bemühen!
+      worked_on_collections: "%{user_name} hat an den folgenden Sammlungen der folgenden Institutionen gearbeitet:"
     landing_page:
-      all_collections: Alle Sammlungen
-      more: Mehr...
-      next_image: Nächstes Bild
-      previous_image: Vorheriges Bild
-      recent_activity: Letzte Aktivitäten
-      search: Suche
-      search_for_collections: Nach Sammlungen suchen
-      search_for_collections_or_owners: Suchen Sie nach Sammlungen oder Projektinhaber:innen...
-      transcribe_a_page: Eine Seite transkribieren
+      by: " von "
+      institutions: Institutionen
+      more: mehr
+      new_projects: Neue Projekte
+      search: Suchen
+      search_for_collections: Suche nach Sammlungen
+      search_org: Organisation durchsuchen
+      search_org_label: Suchen Sie nach von dieser Organisation veröffentlichten Inhalten ...
     new_upload:
       document_uploaded: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Wir senden Ihnen eine E-Mail an %{email}, sobald der Vorgang abgeschlossen ist.
+      document_uploaded_with_ai: Das Dokument wurde hochgeladen und wird in Kürze verarbeitet. Wir benachrichtigen Sie per E-Mail an %{email}, sobald es fertig ist. Die KI-Texterstellung von Gemini kann etwas dauern; bitte haben Sie Geduld und informieren Sie uns unter support@fromthepage.com, falls der KI-Tab auf einer Seite nicht innerhalb einer Stunde angezeigt wird.
       reload_this_page: Dokument wurde hochgeladen und wird in Kürze bearbeitet. Laden Sie diese Seite in ein paar Minuten neu, um den Upload angezeigt zu bekommen.
+      reload_this_page_with_ai: Das Dokument wurde hochgeladen und wird in Kürze verarbeitet. Bitte laden Sie die Seite in wenigen Minuten neu, um es anzuzeigen. Die KI-Texterstellung von Gemini kann etwas dauern. Bitte haben Sie Geduld und informieren Sie uns unter support@fromthepage.com, falls der KI-Tab innerhalb einer Stunde nicht angezeigt wird.
     new_work:
       acceptable_formats: 'Zulässige Formate: PNG-, GIF- und JPG.'
       images_should_be_named: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
@@ -143,12 +153,13 @@ de:
       each_folder_will_be_treated: Jeder Ordner wird als ein eigenes Dokument behandelt, vermischen Sie also keine Seiten aus verschiedenen Dokumenten in einem Ordner.
       each_pdf_will_be_treated: Jedes PDF wird als eigenes Dokument behandelt. Teilen Sie also Seiten desselben Dokuments nicht auf mehr als ein PDF auf.
       for_example_a_zip_file: 'Der Upload einer ZIP-Datei mit 3 Bildern, 2 PDFs und 1 Ordner mit 5 weiteren Bildern würde zum Beispiel zur Erstellung von 4 Werken führen: die Bilder der obersten Ebene in einem, jedes PDF als eigenes Werk und ein letztes Werk, das die 5 Bilder aus dem Ordner enthält.'
+      generate_ai_draft_text: Generieren Sie KI-Entwürfe mit Gemini AI.
       image_naming_guidelines: 'Bilder sollten so benannt werden, dass eine alphabetische Sortierung zu einer korrekten Seitenreihenfolge führt.<br> (Dies erfordert möglicherweise "Zero Padding" - also das voranstellen von Nullen für alle Seitenzahlen: <code>page_09.jpg, page_10.jpg</code> führt zu einer korrekten Sortierung, <code>page_9.jpg, page_10.jpg</code> jedoch nicht.)'
       image_orientation_guidelines: Bilder sollten so ausgerichtet werden, dass sie nicht mehr gedreht werden müssen, um richtig herum zu sein.
       import_form_message: In diesem Bereich können Sie Ihre Faksimiles nach FromThePage importieren. Wählen Sie eine Sammlung aus, in die importiert werden soll, und hängen Sie eine ZIP- oder PDF-Datei an, die Faksimiles enthält, die für Ihr Projekt verwendet werden sollen.
       page_image_guidelines: Richtlinien für Faksimiles
       select_a_collection: "- Sammlung auswählen -"
-      to_specify_metadata: Um Metadaten zusammen mit Bildern hochzuladen, fügen Sie jedem Ordner eine %{link}-Datei hinzu, die Felder für das Werk angibt.
+      to_specify_metadata: Um Metadaten anzugeben, können Sie nach dem Hochladen der Bilder eine Tabelle hochladen oder in jeden Ordner eine %{link}-Datei einfügen, die Felder für die Arbeit angibt.
       trial_accounts_are_limited: Testversionskonten sind auf 200 Seiten begrenzt. Bitte wenden Sie sich an support@fromthepage.com, um Ihren Kontotyp zu ändern.
       upload_file: Datei hochladen
       upload_pdf_or_zip_file: PDF- oder ZIP-Datei hochladen
@@ -157,7 +168,17 @@ de:
       zip_files_may_contain: ZIP-Dateien können Ordner mit Bildern, PDFs oder Ordner mit PDFs enthalten.
     watchlist:
       collections: Sammlungen
-      private_collections_you_belong_to: Private Projekte
+      private_collections_you_belong_to: Privatsammlungen, an denen Sie mitarbeiten
       projects_you_have_contributed_to: Projekte, an denen Sie mitgewirkt haben – durch Transkription, Bearbeitung oder Kommentierung –, werden hier mit der letzten Aktivität aufgelistet, damit Sie auf dem Laufenden bleiben.
       try_transcribing_a_page: Sie haben sich noch an keinem Projekt beteiligt. Versuchen Sie, eine Seite davon zu transkribieren
       your_activity: Ihre Aktivitäten
+      your_hours: Ihre Stunden
+    your_hours:
+      contributions_between_dates: Beiträge zwischen %{start_date} und %{end_date}
+      download_letter: Laden Sie einen Brief herunter
+      end_date: Endtermin
+      hours_details_message: "%{user_name} hat zwischen %{start_date} und %{end_date} %{time_duration} beigetragen"
+      hours_update_note: Beitragsstatistiken werden alle vierundzwanzig Stunden berechnet. Diese Statistiken spiegeln die Nutzung bis %{time_ago} wider.
+      select_new_date: Wählen Sie einen neuen Datumsbereich
+      start_date: Startdatum
+      update: Aktualisieren

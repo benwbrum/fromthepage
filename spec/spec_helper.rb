@@ -1,12 +1,12 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] ||= 'test'
+require_relative 'support/simplecov_profile'
+
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
-require 'coveralls'
-Coveralls.wear!
+require 'with_model'
 
 DatabaseCleaner.strategy = :transaction
 
@@ -19,13 +19,17 @@ WebMock.allow_net_connect!
 # run twice. It is recommended that you do not name files matching this glob to
 # end with _spec.rb. You can configure this pattern with with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
+
+# Require lib files
+Rails.root.glob('lib/**/*.rb').each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-#ActiveRecord::Migration.maintain_test_schema!
+# ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.extend WithModel
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -35,15 +39,19 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = Rails.root.join('spec', 'fixtures')
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.before(:each) do
+    Chewy.strategy(:urgent)
+  end
+
   config.before(:suite) do
-    %x[bundle exec rake assets:precompile]
+    %x(bundle exec rake assets:precompile)
 
     puts "Setting Collection Work Counts..."
     Collection.all.each do |c|
@@ -84,10 +92,6 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
 end
 
-Capybara.configure do |config|
-  config.asset_host = "http://localhost:3000"
-end
-
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -109,7 +113,7 @@ end
 ActionMailer::Base.perform_deliveries = true
 
 def wait_for_upload_processing
-  while DocumentUpload.where.not(:status => 'finished').count > 0
+  while DocumentUpload.where.not(status: 'finished').count > 0
     sleep 2
   end
 end
@@ -117,13 +121,12 @@ end
 
 
 def fill_in_editor_field(text)
-  if page.has_field?('page_source_text') # we find page_source_text
-    fill_in('page_source_text', :with => text)
-  elsif page.has_field?('page_source_translation') # we find page_source_translation
-    fill_in('page_source_translation', :with => text)
-  else #codemirror
+  if page.has_field?('page[source_text]') # we find page_source_text
+    fill_in('page[source_text]', with: text)
+  elsif page.has_field?('page[source_translation]') # we find page_source_translation
+    fill_in('page[source_translation]', with: text)
+  else # codemirror
     script = "myCodeMirror.setValue(#{text.to_json});"
     page.execute_script(script)
   end
 end
-
