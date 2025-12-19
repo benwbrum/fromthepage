@@ -22,4 +22,9 @@
     p =to_snippet(result[:about])
 
 -elsif result.is_a?(Work) && result.collection.present?
-  =render partial: 'elastic/work_partial', locals: { work: result , collection: result.collection }
+  .collection-work.search_result
+    =render partial: 'elastic/work_partial', locals: { work: result , collection: result.collection }
+
+-elsif result.is_a?(Article) && result.collection.present?
+  .collection-work.search_result
+    =render partial: 'elastic/article_partial', locals: { article: result , collection: result.collection }

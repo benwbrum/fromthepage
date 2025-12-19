@@ -15,7 +15,8 @@ class Elasticsearch::Collection::SyncJob < ApplicationJob
       end
     end
 
-    WorksIndex.import collection.works
-    PagesIndex.import collection.pages
+    WorksIndex.import collection.works.includes({ collection: :owner }, :document_sets)
+    PagesIndex.import collection.pages.includes(work: [{ collection: :owner }, :document_sets])
+    ArticlesIndex.import collection.articles.includes(:collection, :categories, { works: :document_sets })
   end
 end

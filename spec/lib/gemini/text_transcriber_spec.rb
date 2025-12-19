@@ -37,8 +37,33 @@ describe Gemini::TextTranscriber do
         # Mock sleep to speed up test
         allow_any_instance_of(Object).to receive(:sleep)
 
-        result = described_class.transcribe_image(image_url)
+        result, _, _, _ = described_class.transcribe_image(image_url)
         expect(result).to eq('Transcribed text')
+        expect(call_count).to eq(3)
+      end
+    end
+
+    context 'when API returns 429 rate limit error and then succeeds' do
+      it 'retries with exponential backoff and eventually succeeds' do
+        mock_client = double("GeminiClient")
+        allow(Gemini).to receive(:new).and_return(mock_client)
+
+        # First two calls raise 429, third succeeds
+        call_count = 0
+        allow(mock_client).to receive(:stream_generate_content) do
+          call_count += 1
+          if call_count <= 2
+            raise StandardError.new('the server responded with status 429')
+          else
+            [{ 'candidates' => [{ 'content' => { 'parts' => [{ 'text' => 'Transcribed text after rate limit' }] } }] }]
+          end
+        end
+
+        # Mock sleep to speed up test
+        allow_any_instance_of(Object).to receive(:sleep)
+
+        result, _, _, _ = described_class.transcribe_image(image_url)
+        expect(result).to eq('Transcribed text after rate limit')
         expect(call_count).to eq(3)
       end
     end
@@ -62,7 +87,26 @@ describe Gemini::TextTranscriber do
       end
     end
 
-    context 'when API returns non-503 error' do
+    context 'when API returns 429 rate limit error repeatedly' do
+      it 'retries up to max_retries times then raises error' do
+        mock_client = double("GeminiClient")
+        allow(Gemini).to receive(:new).and_return(mock_client)
+
+        # Always raise 429
+        allow(mock_client).to receive(:stream_generate_content) do
+          raise StandardError.new('the server responded with status 429')
+        end
+
+        # Mock sleep to speed up test
+        allow_any_instance_of(Object).to receive(:sleep)
+
+        expect {
+          described_class.transcribe_image(image_url, max_retries: 2)
+        }.to raise_error(StandardError, /429/)
+      end
+    end
+
+    context 'when API returns non-503/429 error' do
       it 'does not retry and raises error immediately' do
         mock_client = double("GeminiClient")
         allow(Gemini).to receive(:new).and_return(mock_client)
