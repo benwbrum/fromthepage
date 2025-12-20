@@ -80,4 +80,16 @@ module ResourcesHelper
       [t("document_sets.new.#{key}"), key]
     end
   end
+
+  def suspicious_behavior_type_options
+    SuspiciousBehavior::BEHAVIOR_TYPE_FILTERS.map do |key|
+      [t("suspicious_behaviors.filters.behavior_type.#{key}"), key]
+    end
+  end
+
+  def suspicious_behavior_status_options
+    SuspiciousBehavior::STATUS_FILTERS.map do |key|
+      [t("suspicious_behaviors.filters.status.#{key}"), key]
+    end
+  end
 end

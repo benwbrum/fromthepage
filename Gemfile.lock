@@ -644,6 +644,8 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
+    requestjs-rails (0.0.13)
+      railties (>= 7.1.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -980,6 +982,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n (~> 7.0.0)
   recaptcha
+  requestjs-rails
   riiif
   rmagick
   roo

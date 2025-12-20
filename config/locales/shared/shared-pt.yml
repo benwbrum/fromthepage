@@ -45,6 +45,7 @@ pt:
       settings: Configurações
       statistics: Estatisticas
       subjects: Temas
+      suspicious_behaviors: Comportamentos suspeitos
       works_list: Lista de Obras
     description_tabs:
       describe: Metadados
