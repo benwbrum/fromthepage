@@ -572,6 +572,25 @@ private
         annotation.resource['format'] =  'text/html'
         annotation.resource['chars'] = xml_to_html @page.xml_translation
       end
+    when 'ai_text'
+      if page.ai_transcription.present?
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/plain'
+        annotation.resource['chars'] = @page.ai_plaintext
+        annotation.resource['annotatedBy'] = @page.ai_transcription.model
+        annotation.resource['annotatedAt'] = @page.ai_transcription.created_at.iso8601
+      end
+    when 'ai_reasoning'
+      if page.ai_transcription.present? && page.ai_transcription.reasoning.present?
+        annotation['motivation'] = 'oa:commenting'
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/html'
+        annotation.resource['chars'] = Markdown.new(@page.ai_transcription.reasoning).to_html
+        annotation.resource['annotatedBy'] = @page.ai_transcription.model
+        annotation.resource['annotatedAt'] = @page.ai_transcription.created_at.iso8601
+      end
     when 'facsimile'
       # annotation = IIIF::Presentation::Annotation.new
       # page = Page.find page_id
@@ -823,6 +842,22 @@ private
       annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'notes', only_path: false })
       annotation_list['label'] = 'Notes'
       canvas.other_content << annotation_list
+    end
+
+    # Add AI text annotation if available
+    if page.ai_transcription.present?
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_text', only_path: false })
+      annotation_list['label'] = 'AI Text'
+      canvas.other_content << annotation_list
+
+      # Add AI reasoning annotation if available
+      if page.ai_transcription.reasoning.present?
+        annotation_list = IIIF::Presentation::AnnotationList.new
+        annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_reasoning', only_path: false })
+        annotation_list['label'] = 'AI Reasoning'
+        canvas.other_content << annotation_list
+      end
     end
     canvas
   end
