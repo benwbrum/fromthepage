@@ -578,8 +578,15 @@ private
         annotation.resource = IIIF::Presentation::Resource.new({ '@type' => 'cnt:ContentAsText' })
         annotation.resource['format'] = 'text/plain'
         annotation.resource['chars'] = @page.ai_plaintext
-        annotation.resource['annotatedBy'] = @page.ai_transcription.model
-        annotation.resource['annotatedAt'] = @page.ai_transcription.created_at.iso8601
+        # Use Web Annotation standard lifecycle fields
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+        # TODO: Add creator field when user association is available
+        # annotation['creator'] = user_display_name
+        # annotation['created'] = @page.ai_transcription.created_at.iso8601
       end
     when 'ai_reasoning'
       if page.ai_transcription.present? && page.ai_transcription.reasoning.present?
@@ -595,8 +602,15 @@ private
           # Fallback to plain text wrapped in <p> tags
           annotation.resource['chars'] = "<p>#{ERB::Util.html_escape(@page.ai_transcription.reasoning)}</p>"
         end
-        annotation.resource['annotatedBy'] = @page.ai_transcription.model
-        annotation.resource['annotatedAt'] = @page.ai_transcription.created_at.iso8601
+        # Use Web Annotation standard lifecycle fields
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+        # TODO: Add creator field when user association is available
+        # annotation['creator'] = user_display_name
+        # annotation['created'] = @page.ai_transcription.created_at.iso8601
       end
     when 'facsimile'
       # annotation = IIIF::Presentation::Annotation.new

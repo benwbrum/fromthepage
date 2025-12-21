@@ -52,8 +52,9 @@ describe 'IIIF AI Annotations' do
 
       expect(json['resource']['format']).to eq('text/plain')
       expect(json['resource']['chars']).to eq('AI generated text content')
-      expect(json['resource']['annotatedBy']).to eq('GPT-4o')
-      expect(json['resource']['annotatedAt']).to be_present
+      expect(json['generator']['type']).to eq('Software')
+      expect(json['generator']['name']).to eq('GPT-4o')
+      expect(json['generated']).to be_present
     end
   end
 
@@ -67,8 +68,9 @@ describe 'IIIF AI Annotations' do
       expect(json['motivation']).to eq('oa:commenting')
       expect(json['resource']['format']).to eq('text/html')
       expect(json['resource']['chars']).to include('<h2>Reasoning</h2>')
-      expect(json['resource']['annotatedBy']).to eq('GPT-4o')
-      expect(json['resource']['annotatedAt']).to be_present
+      expect(json['generator']['type']).to eq('Software')
+      expect(json['generator']['name']).to eq('GPT-4o')
+      expect(json['generated']).to be_present
     end
   end
 
