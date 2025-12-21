@@ -4,6 +4,7 @@ en:
     ai_text:
       ai_generated_text: AI Generated Text
       ai_text: AI Text
+      ai_text_generated_with: AI text generated with %{model} on %{date}
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
       facsimile: Facsimile
       show_comparison_with_transcription: Compare AI draft against ground truth

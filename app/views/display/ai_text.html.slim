@@ -6,7 +6,10 @@
   .headline
     h3.headline_title =t('.ai_text')
     .page_info
-      =t('.ai_generated_text')
+      -if @page.ai_transcription.present?
+        =t('.ai_text_generated_with', model: @page.ai_transcription.model, date: @page.ai_transcription.created_at.strftime("%B %e, %Y"))
+      -else
+        =t('.ai_generated_text')
 
 
 .page-columns(data-layout-mode="ltr")
