@@ -587,7 +587,14 @@ private
         annotation['on'] = region_from_page(@page)
         annotation.resource = IIIF::Presentation::Resource.new({ '@type' => 'cnt:ContentAsText' })
         annotation.resource['format'] = 'text/html'
-        annotation.resource['chars'] = Markdown.new(@page.ai_transcription.reasoning).to_html
+        # Convert markdown to HTML with error handling
+        begin
+          annotation.resource['chars'] = Markdown.new(@page.ai_transcription.reasoning).to_html
+        rescue StandardError => e
+          Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+          # Fallback to plain text wrapped in <p> tags
+          annotation.resource['chars'] = "<p>#{ERB::Util.html_escape(@page.ai_transcription.reasoning)}</p>"
+        end
         annotation.resource['annotatedBy'] = @page.ai_transcription.model
         annotation.resource['annotatedAt'] = @page.ai_transcription.created_at.iso8601
       end

@@ -329,19 +329,19 @@ module ExportHelper
   # Gather AI transcription statistics for a work
   # Returns an array of hashes with model name, date range, and page ranges
   def gather_ai_model_contributions(work)
-    ai_transcriptions = AiTranscription
+    # Use pluck to avoid loading full ActiveRecord objects
+    ai_data = AiTranscription
       .joins(:page)
       .where(pages: { work_id: work.id })
       .order(:model, :created_at)
-      .select('ai_transcriptions.model, ai_transcriptions.created_at, pages.position')
+      .pluck('ai_transcriptions.model', 'ai_transcriptions.created_at', 'pages.position')
 
     # Group by model
     models_data = {}
-    ai_transcriptions.each do |ai_trans|
-      model = ai_trans.model
+    ai_data.each do |model, created_at, position|
       models_data[model] ||= { dates: [], positions: [] }
-      models_data[model][:dates] << ai_trans.created_at
-      models_data[model][:positions] << ai_trans.position
+      models_data[model][:dates] << created_at
+      models_data[model][:positions] << position
     end
 
     # Format the data for the template
@@ -375,6 +375,9 @@ module ExportHelper
     ranges = []
     range_start = positions.first
     range_end = positions.first
+
+    # Handle arrays with only one element
+    return [range_start.to_s] if positions.length == 1
 
     positions[1..-1].each do |pos|
       if pos == range_end + 1
