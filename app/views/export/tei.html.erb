@@ -69,6 +69,28 @@ xml:id="W<%=@work.identifier||@work.id%>">
         </respStmt>
       <% end %>
 
+      <% if @ai_model_contributions && @ai_model_contributions.any? %>
+        <% @ai_model_contributions.each_with_index do |ai_contrib, index| %>
+          <respStmt xml:id="AI<%= index %>">
+            <resp><%= t('export.tei.ai_transcription_by') %></resp>
+            <name><%= h(ai_contrib[:model]) %></name>
+            <% if ai_contrib[:first_date] == ai_contrib[:last_date] %>
+              <note>
+                <%= t('export.tei.ai_generated_on', date: ai_contrib[:first_date].strftime("%B %e, %Y")) %>
+                <%= t('export.tei.ai_page_ranges', ranges: ai_contrib[:page_ranges].join(', ')) %>
+              </note>
+            <% else %>
+              <note>
+                <%= t('export.tei.ai_generated_between', 
+                      start_date: ai_contrib[:first_date].strftime("%B %e, %Y"),
+                      end_date: ai_contrib[:last_date].strftime("%B %e, %Y")) %>
+                <%= t('export.tei.ai_page_ranges', ranges: ai_contrib[:page_ranges].join(', ')) %>
+              </note>
+            <% end %>
+          </respStmt>
+        <% end %>
+      <% end %>
+
     </editionStmt>
 
     <publicationStmt>

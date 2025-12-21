@@ -264,6 +264,9 @@ module ExportHelper
 
     @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('work_version DESC').includes(:page).all
 
+    # Gather AI transcription statistics for TEI header
+    @ai_model_contributions = gather_ai_model_contributions(@work)
+
     @all_articles = @work.articles
     people = work.collection.categories.where(title: 'People').first
     people_and_descendants = people.descendants << people
@@ -307,6 +310,7 @@ module ExportHelper
         work: @work,
         context: @context,
         user_contributions: @user_contributions,
+        ai_model_contributions: @ai_model_contributions,
         work_versions: @work_versions,
         all_articles: @all_articles,
         person_articles: @person_articles,
@@ -320,6 +324,73 @@ module ExportHelper
     post_process_xml(xml, @work)
 
     xml
+  end
+
+  # Gather AI transcription statistics for a work
+  # Returns an array of hashes with model name, date range, and page ranges
+  def gather_ai_model_contributions(work)
+    ai_transcriptions = AiTranscription
+      .joins(:page)
+      .where(pages: { work_id: work.id })
+      .order(:model, :created_at)
+      .select('ai_transcriptions.model, ai_transcriptions.created_at, pages.position')
+
+    # Group by model
+    models_data = {}
+    ai_transcriptions.each do |ai_trans|
+      model = ai_trans.model
+      models_data[model] ||= { dates: [], positions: [] }
+      models_data[model][:dates] << ai_trans.created_at
+      models_data[model][:positions] << ai_trans.position
+    end
+
+    # Format the data for the template
+    contributions = []
+    models_data.each do |model, data|
+      # Get date range
+      dates = data[:dates].sort
+      first_date = dates.first
+      last_date = dates.last
+
+      # Get page ranges (consolidate consecutive pages)
+      positions = data[:positions].uniq.sort
+      page_ranges = consolidate_page_ranges(positions)
+
+      contributions << {
+        model: model,
+        first_date: first_date,
+        last_date: last_date,
+        page_ranges: page_ranges
+      }
+    end
+
+    contributions
+  end
+
+  # Helper method to consolidate consecutive page positions into ranges
+  # e.g., [1, 2, 3, 5, 6, 8] becomes ["1-3", "5-6", "8"]
+  def consolidate_page_ranges(positions)
+    return [] if positions.empty?
+
+    ranges = []
+    range_start = positions.first
+    range_end = positions.first
+
+    positions[1..-1].each do |pos|
+      if pos == range_end + 1
+        range_end = pos
+      else
+        # End current range and start a new one
+        ranges << (range_start == range_end ? range_start.to_s : "#{range_start}-#{range_end}")
+        range_start = pos
+        range_end = pos
+      end
+    end
+
+    # Add the final range
+    ranges << (range_start == range_end ? range_start.to_s : "#{range_start}-#{range_end}")
+
+    ranges
   end
 
 
