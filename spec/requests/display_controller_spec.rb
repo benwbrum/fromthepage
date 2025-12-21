@@ -30,6 +30,13 @@ describe DisplayController do
         expect(response).to render_template(:ai_text)
       end
 
+      it 'displays AI model name and date' do
+        subject
+
+        expect(response.body).to include(ai_transcription.model)
+        expect(response.body).to include(ai_transcription.created_at.strftime("%B"))
+      end
+
       context 'with completed transcription' do
         before do
           page.status = :transcribed
