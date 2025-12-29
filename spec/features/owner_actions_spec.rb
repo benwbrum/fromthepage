@@ -323,10 +323,7 @@ describe "owner actions", order: :defined do
   it "does not count inactive collections for Individual Researcher limit" do
     @owner.account_type = "Individual Researcher"
     # Make all existing collections inactive
-    @owner.collections.each do |c|
-      c.is_active = false
-      c.save
-    end
+    @owner.collections.update_all(is_active: false)
     # Now the user should be able to create a new collection
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
