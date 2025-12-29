@@ -430,6 +430,8 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'iiif_page_export_plaintext_translation_verbatim', to: 'iiif#export_page_plaintext_translation_verbatim'
   get '/iiif/:work_id/export/:page_id/plaintext/emended', as: 'iiif_page_export_plaintext_emended', to: 'iiif#export_page_plaintext_emended'
   get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/ai/transcription', as: 'iiif_page_export_plaintext_ai_transcription', to: 'iiif#export_page_plaintext_ai_transcription'
+  get '/iiif/:work_id/export/:page_id/html/ai/reasoning', as: 'iiif_page_export_html_ai_reasoning', to: 'iiif#export_page_html_ai_reasoning'
 
   get '/iiif/admin/explore/:at_id', to: 'sc_collections#explore', constraints: { at_id: /.*/ }
   get '/iiif/admin/import_manifest', to: 'sc_collections#import_manifest'
@@ -590,6 +592,8 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
       get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
+      get ':work_id/annotation/:page_id/plaintext/ai_text', to: 'annotation#page_ai_text', as: 'annotation_page_ai_text'
+      get ':work_id/annotation/:page_id/html/ai_reasoning', to: 'annotation#page_ai_reasoning_html', as: 'annotation_page_reasoning_html'
 
       # article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'

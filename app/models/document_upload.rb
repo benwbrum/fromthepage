@@ -2,16 +2,16 @@
 #
 # Table name: document_uploads
 #
-#  id                 :integer          not null, primary key
-#  file               :string(255)
-#  generate_ai_draft  :boolean          default(FALSE)
-#  ocr                :boolean          default(FALSE)
-#  preserve_titles    :boolean          default(FALSE)
-#  status             :string(255)      default("new")
-#  created_at         :datetime
-#  updated_at         :datetime
-#  collection_id      :integer
-#  user_id            :integer
+#  id                :integer          not null, primary key
+#  file              :string(255)
+#  generate_ai_draft :boolean          default(FALSE)
+#  ocr               :boolean          default(FALSE)
+#  preserve_titles   :boolean          default(FALSE)
+#  status            :string(255)      default("new")
+#  created_at        :datetime
+#  updated_at        :datetime
+#  collection_id     :integer
+#  user_id           :integer
 #
 # Indexes
 #
