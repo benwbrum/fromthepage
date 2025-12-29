@@ -4,7 +4,7 @@ describe 'IIIF AI Annotations' do
   let(:owner) { User.find_by(owner: true) || create(:user, owner: true) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
-  let!(:page) { create(:page, work: work) }
+  let!(:page) { create(:page, :with_image, work: work) }
   let!(:ai_transcription) do
     create(:ai_transcription,
            page: page,
@@ -225,7 +225,7 @@ describe 'IIIF AI Annotations' do
       end
 
       context 'when page has no AI transcription' do
-        let!(:page_without_ai) { create(:page, work: work) }
+        let!(:page_without_ai) { create(:page, :with_image, work: work) }
 
         it 'returns 404' do
           get iiif_page_export_plaintext_ai_transcription_path(work.id, page_without_ai.id)
@@ -246,7 +246,7 @@ describe 'IIIF AI Annotations' do
       end
 
       context 'when page has no AI reasoning' do
-        let!(:page_no_reasoning) { create(:page, work: work) }
+        let!(:page_no_reasoning) { create(:page, :with_image, work: work) }
         let!(:ai_no_reasoning) do
           create(:ai_transcription,
                  page: page_no_reasoning,

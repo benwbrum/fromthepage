@@ -897,6 +897,9 @@ private
 
 
   def add_annotations_to_canvas(canvas, page)
+    # Initialize other_content if it doesn't exist
+    canvas.other_content ||= []
+    
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'transcription', only_path: false })
