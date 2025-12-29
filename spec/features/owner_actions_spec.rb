@@ -320,6 +320,20 @@ describe "owner actions", order: :defined do
     expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
   end
 
+  it "does not count inactive collections for Individual Researcher limit" do
+    @owner.account_type = "Individual Researcher"
+    # Make all existing collections inactive
+    @owner.collections.each do |c|
+      c.is_active = false
+      c.save
+    end
+    # Now the user should be able to create a new collection
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+    expect(page).to have_content("Enter the title of your collection")
+  end
+
   context "owner/staff related" do
     before :each do
       @owner = User.where(login: 'wakanda').first
