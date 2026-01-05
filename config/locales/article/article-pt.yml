@@ -68,7 +68,7 @@ pt:
       loading_more_subjects: Carregando mais assuntos...
       no_categories: Sem categorias
       no_categories_message: Não há categorias de assunto na coleção.<br>
-      there_are_no_subjects: Não há assuntos para a categoria selecionada
+      there_are_no_subjects: Não há assuntos para a categoria
       there_are_no_subjects_for_the_search: Não existem assuntos que correspondam à pesquisa.
       uncategorized: Sem categoria
       uncategorized_subjects: Assuntos não categorizados

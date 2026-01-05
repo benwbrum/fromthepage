@@ -65,6 +65,7 @@ en:
       owners: Owners
       settings: Settings
       summary: Summary
+      suspicious_behaviors: Suspicious Behaviors
       uploads: Uploads
       users: Users
     index:
@@ -113,6 +114,18 @@ en:
       flag_blacklist: 'Terms to flag as potential abusive content:'
       save_changes: Save Changes
       welcome_text: 'Project owner welcome email text:'
+    suspicious_behaviors:
+      table:
+        collection: Collection
+        flagged_at: Flagged at
+        metadata: Metadata
+        owner: Owner
+        page: Page
+        resolved_at: Resolved at
+        resolved_by: Resolved by
+        status: Status
+        type: Type
+        user: User
     tail_logfile:
       last_lines_of_development_logfile: Last %{lines} lines of development logfile
       last_lines_of_production_logfile: Last %{lines} lines of production logfile

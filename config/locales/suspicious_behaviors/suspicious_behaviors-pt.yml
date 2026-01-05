@@ -1,0 +1,15 @@
+---
+pt:
+  suspicious_behaviors:
+    filters:
+      behavior_type:
+        all: Todos
+        large_paste: Pasta Grande
+      status:
+        all: Todos
+        confirmed: Confirmado
+        dismissed: Demitido
+        pending: Pendente
+    labels:
+      behavior_type: Tipo
+      status: Status

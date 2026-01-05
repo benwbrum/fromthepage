@@ -132,7 +132,6 @@ class AdminController < ApplicationController
     end
   end
 
-
   def flag_list
     @flags = Flag.where(status: Flag::Status::UNCONFIRMED).order(content_at: :desc).paginate page: params[:page], per_page: PAGES_PER_SCREEN
   end
@@ -384,6 +383,7 @@ class AdminController < ApplicationController
   end
 
   private
+
   def tag_params
     params.require(:tag).permit(:ai_text, :canonical, :tag_type)
   end

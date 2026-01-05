@@ -1,1 +1,1 @@
-<%= turbo_stream.update('collection-categories-table', partial: 'table', locals: { category: @selected_category, articles: @articles }) %>
+<%= turbo_stream.update('collection-categories-table', partial: 'table', locals: { selected_category: @selected_category, categories_tree: @categories_tree, category_ids_with_articles: @category_ids_with_articles, uncategorized_articles: @uncategorized_articles }) %>

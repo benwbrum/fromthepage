@@ -1,0 +1,9 @@
+=render partial: '/shared/collection_tabs', locals: { selected: 10, collection_id: @collection }
+
+=fe_filter_table_wrapper(selector: 'suspicious-behaviors-table') do
+  =fe_filter_form_wrapper(url: collection_suspicious_behaviors_path(@collection.owner, @collection), selector: 'suspicious-behaviors-table', sorting: @sorting, ordering: @ordering) do
+    =fe_filter_select(key: :status, value: params[:status] || 'all', options: suspicious_behavior_status_options, label: t('suspicious_behaviors.labels.status'))
+    =fe_filter_select(key: :behavior_type, value: params[:behavior_type] || 'all', options: suspicious_behavior_type_options, label: t('suspicious_behaviors.labels.behavior_type'))
+
+  =fe_filter_table(selector: 'suspicious-behaviors-table') do
+    =render partial: 'table'

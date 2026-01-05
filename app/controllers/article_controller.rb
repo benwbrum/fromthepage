@@ -18,21 +18,22 @@ class ArticleController < ApplicationController
     @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
 
-    if params[:selected_category_id] == 'uncategorized'
-      @selected_category = 'uncategorized'
-      @articles = @uncategorized_articles
+    @category_ids_with_articles = ArticlesCategory.where(category_id: @categories.pluck(:id)).pluck(:category_id).uniq
+
+    if search.present?
+      @selected_category = 'all'
       @ancestor_ids = []
-    elsif params[:selected_category_id].present?
+    elsif params[:selected_category_id] == 'uncategorized'
+      @selected_category = 'uncategorized'
+      @ancestor_ids = []
+    elsif params[:selected_category_id].present? && params[:selected_category_id] != 'all'
       @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
-      @articles = articles.where(categories: { id: @selected_category.id })
       @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else
       @selected_category = @categories_tree.dig(nil).first
       if @selected_category.present?
-        @articles = articles.where(categories: { id: @selected_category.id })
         @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
       else
-        @articles = articles.none
         @ancestor_ids = []
       end
     end
@@ -70,11 +71,12 @@ class ArticleController < ApplicationController
                                      .to_h
 
     @articles = Article.sort_vertically(articles_scope)
+                       .distinct
                        .limit(ARTICLES_BATCH_SIZE)
                        .offset(@batch * ARTICLES_BATCH_SIZE)
 
     render turbo_stream: turbo_stream.replace(
-      "lazy_items_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
+      "lazy_items_#{@category == 'uncategorized' ? @category : @category.id}_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
     )
   end
 
