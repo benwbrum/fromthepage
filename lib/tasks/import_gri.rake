@@ -20,6 +20,7 @@ namespace :fromthepage do
       row_values = sheet.row(i)
       row = Hash[headers.zip(row_values)]
       stock_book = row['Stock Book ID']
+      # check to see whether work.pages.where(title: stock_book).count == 0 or don't add (actually use logic below on 31-32)
       data[stock_book] << row
     end
 
@@ -52,13 +53,18 @@ namespace :fromthepage do
       lines << '| ' + headers_out.map { '---' }.join(' | ') + ' |'
 
       rows.each do |row|
+        # in the new spreadsheet, culture, and location is pair of columns.  The "Authority" column sometimes (but not always) contains semi-valid FtP wikilinks.  We will need to strip these out and use the value as the canonical name.
+        # an exception to this is the case where two different tags exist.  We are waiting on clairification tehre.
         culture = wiki_link(row['Culture/Origin [tag]'], row['Culture/Origin'])
         location = wiki_link(row['Location [tag]'], row['Location'])
+        # We will need to separate out column M and N based on semicolons to handle the two names and two links in e.g line 2082
         assoc = wiki_link(row['Associated name [tag]'], row['Associated Name'])
         values = [
           row['Row Number'],
+          # Inventory Number (probably replaces Stock Number) appears to contain valid wikilinks.  We might consider pre-creating them to associate them with a category, otherwise we may need a second pass to categorize any uncategorized subjects.  (That might be easier)
           row['Stock Number'],
           row['Verbatim Object Description'],
+
           row['Object Type'],
           culture,
           location,
