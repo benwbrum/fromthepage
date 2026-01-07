@@ -65,7 +65,6 @@ namespace :fromthepage do
       sorted_rows = rows.sort_by { |row| row['Row'].to_i }
 
       sorted_rows.each do |row|
-        culture = wiki_link(row['Culture/Origin [tag]'], row['Culture(s)'])
         location = wiki_link(row['Location [tag]'], row['Location(s)'])
         assoc = wiki_link(row['Associated name [tag]'], row['Associated Name(s)'])
         values = [
@@ -73,7 +72,7 @@ namespace :fromthepage do
           row['Inventory Number'],
           row['Verbatim Description'],
           row['Object Type(s)'],
-          culture,
+          row['Culture(s)'],
           row['Culture(s) Authority'],
           location,
           assoc,
