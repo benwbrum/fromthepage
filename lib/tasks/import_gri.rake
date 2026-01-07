@@ -46,13 +46,14 @@ namespace :fromthepage do
       end
 
       headers_out = [
-        'Row Number',
-        'Stock Number',
-        'Verbatim Object Description',
-        'Object Type',
-        'Culture/Origin',
-        'Location',
-        'Associated Name',
+        'Row',
+        'Inventory Number',
+        'Verbatim Description',
+        'Object Type(s)',
+        'Culture(s)',
+        'Culture(s) Authority',
+        'Location(s)',
+        'Associated Name(s)',
         'Right Margin Price'
       ]
 
@@ -61,15 +62,16 @@ namespace :fromthepage do
       lines << '| ' + headers_out.map { '---' }.join(' | ') + ' |'
 
       rows.each do |row|
-        culture = wiki_link(row['Culture/Origin [tag]'], row['Culture/Origin'])
-        location = wiki_link(row['Location [tag]'], row['Location'])
-        assoc = wiki_link(row['Associated name [tag]'], row['Associated Name'])
+        culture = wiki_link(row['Culture/Origin [tag]'], row['Culture(s)'])
+        location = wiki_link(row['Location [tag]'], row['Location(s)'])
+        assoc = wiki_link(row['Associated name [tag]'], row['Associated Name(s)'])
         values = [
-          row['Row Number'],
-          row['Stock Number'],
-          row['Verbatim Object Description'],
-          row['Object Type'],
+          row['Row'],
+          row['Inventory Number'],
+          row['Verbatim Description'],
+          row['Object Type(s)'],
           culture,
+          row['Culture(s) Authority'],
           location,
           assoc,
           row['Right Margin Price']
