@@ -9,6 +9,8 @@ pt:
       document_set:
         slug: URL
         title: Titulo
+      document_upload:
+        attachment: Arquivo
       page:
         base_image: Imagem da página
       work:
@@ -26,6 +28,10 @@ pt:
             slug:
               blank: É necessário
               invalid: deve ter pelo menos uma letra
+        document_upload:
+          attributes:
+            attachment:
+              content_type_invalid: 'Você não tem permissão para enviar arquivos "%{human_content_type}", tipos permitidos: %{authorized_human_content_types}'
         user:
           attributes:
             email:
