@@ -47,14 +47,14 @@ namespace :fromthepage do
 
       headers_out = [
         'Row',
-        'Inventory Number',
+        "Inventory\nNumber",
         'Verbatim Description',
         'Object Type(s)',
         'Culture(s)',
         'Culture(s) Authority',
         'Location(s)',
         'Associated Name(s)',
-        'Right Margin Price'
+        "Right\nMargin\nPrice"
       ]
 
       lines = []
