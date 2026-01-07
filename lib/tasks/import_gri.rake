@@ -51,7 +51,6 @@ namespace :fromthepage do
         'Verbatim Description',
         'Object Type(s)',
         'Culture(s)',
-        'Culture(s) Authority',
         'Location(s)',
         'Associated Name(s)',
         "Right\nMargin\nPrice"
@@ -73,7 +72,6 @@ namespace :fromthepage do
           row['Verbatim Description'],
           row['Object Type(s)'],
           row['Culture(s)'],
-          row['Culture(s) Authority'],
           location,
           assoc,
           row['Right Margin Price']
@@ -90,7 +88,9 @@ namespace :fromthepage do
 
   def wiki_link(tag, value)
     if tag.present? && value.present?
-      "[[#{tag}|#{value}]]"
+      # Strip square brackets from tag if present
+      cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
+      "[[#{cleaned_tag}|#{value}]]"
     else
       value.to_s
     end
@@ -104,7 +104,7 @@ namespace :fromthepage do
     
     links = tag_array.zip(value_array).map do |tag, value|
       if tag.present? && value.present?
-        "[[#{tag}]]"
+        "[[#{tag}|#{value}]]"
       else
         value.to_s
       end
