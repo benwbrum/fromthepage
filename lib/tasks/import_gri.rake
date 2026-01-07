@@ -65,7 +65,7 @@ namespace :fromthepage do
       sorted_rows = rows.sort_by { |row| row['Row'].to_i }
 
       sorted_rows.each do |row|
-        location = wiki_link(row['Location [tag]'], row['Location(s)'])
+        location = wiki_link(row['Location(s) Authority'], row['Location(s)'])
         assoc = multi_wiki_link(row['Associated Name(s)_Authoritative'], row['Associated Name(s)'])
         values = [
           row['Row'],
