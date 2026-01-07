@@ -16,14 +16,23 @@ namespace :fromthepage do
 
     data = Hash.new { |h, k| h[k] = [] }
 
+    work_pages = work.pages.to_a
+
     (2..sheet.last_row).each do |i|
       row_values = sheet.row(i)
       row = Hash[headers.zip(row_values)]
       stock_book = row['Stock Book ID']
+      
+      # Check if Stock_Book_ID matches any page title before adding to hash
+      page_exists = work_pages.any? do |p|
+        p.title == stock_book ||
+          File.basename(p.base_image.to_s, File.extname(p.base_image.to_s)) == stock_book
+      end
+      
+      next unless page_exists
+      
       data[stock_book] << row
     end
-
-    work_pages = work.pages.to_a
 
     data.each do |stock_book_id, rows|
       page = work_pages.find do |p|
