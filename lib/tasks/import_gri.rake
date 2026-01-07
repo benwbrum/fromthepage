@@ -61,7 +61,10 @@ namespace :fromthepage do
       lines << '| ' + headers_out.join(' | ') + ' |'
       lines << '| ' + headers_out.map { '---' }.join(' | ') + ' |'
 
-      rows.each do |row|
+      # Sort rows by Row Number order per page
+      sorted_rows = rows.sort_by { |row| row['Row'].to_i }
+
+      sorted_rows.each do |row|
         culture = wiki_link(row['Culture/Origin [tag]'], row['Culture(s)'])
         location = wiki_link(row['Location [tag]'], row['Location(s)'])
         assoc = wiki_link(row['Associated name [tag]'], row['Associated Name(s)'])
