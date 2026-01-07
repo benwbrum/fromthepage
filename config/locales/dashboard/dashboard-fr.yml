@@ -166,6 +166,8 @@ fr:
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
       upload_file: Téléverser un fichier
       upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
+      uploading: Téléchargement en cours...
+      uploading_failed: Échec du téléchargement du fichier. Réessayer.
       use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
       use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.

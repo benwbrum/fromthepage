@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DashboardController < ApplicationController
   protect_from_forgery except: [:new_upload]
 
@@ -328,7 +326,6 @@ class DashboardController < ApplicationController
 
   def document_upload_params
     params.require(:document_upload).permit(
-      :document_upload,
       :attachment,
       :preserve_titles,
       :ocr,

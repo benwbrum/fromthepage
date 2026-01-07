@@ -166,6 +166,8 @@ en:
       trial_accounts_are_limited: Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.
       upload_file: Upload File
       upload_pdf_or_zip_file: Upload PDF or ZIP File
+      uploading: Uploading...
+      uploading_failed: Failed to upload file. Try again
       use_image_filenames: " Use image filenames as page titles."
       use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.

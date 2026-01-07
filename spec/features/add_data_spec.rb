@@ -26,10 +26,11 @@ describe "uploads data for collections", order: :defined do
     select(@collection.title, from: 'document_upload_collection_id')
 
     attach_file(
-      'document_upload_attachment',
+      'document_upload_file',
       Rails.root.join('test_data/uploads/test.pdf'),
       make_visible: true
     )
+    sleep 2
     click_button('Upload File')
 
     expect(page).to have_content("Document has been uploaded")
@@ -46,10 +47,11 @@ describe "uploads data for collections", order: :defined do
     select(@collection.title, from: 'document_upload_collection_id')
 
     attach_file(
-      'document_upload_attachment',
+      'document_upload_file',
       Rails.root.join('test_data/uploads/ocr.pdf'),
       make_visible: true
     )
+    sleep 2
     find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
 

@@ -166,6 +166,8 @@ pt:
       trial_accounts_are_limited: As contas de teste estão limitadas a 200 páginas. Por favor entre em contato com support@fromthepage.com para fazer upgrade da sua conta.
       upload_file: Subir arquivo
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP
+      uploading: Enviando...
+      uploading_failed: Falha ao enviar o arquivo. Tente novamente.
       use_image_filenames: Utilizar os nomes dos arquivos das imagens como títulos de páginas.
       use_ocr_from_pdf: Utilizar o OCR da camada de texto PDF.
       zip_files_may_contain: Os arquivos ZIP podem conter pastas que contenham imagens, PDFs ou pastas que contenham PDFs.

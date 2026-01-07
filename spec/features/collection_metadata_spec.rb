@@ -25,11 +25,13 @@ describe "collection metadata", order: :defined do
     select("ladi", from: 'document_upload_collection_id')
 
     attach_file(
-      'document_upload_attachment',
+      'document_upload_file',
       Rails.root.join('test_data/uploads/ladi_fixture.zip'),
       make_visible: true
     )
+    sleep 2
     click_button('Upload File')
+
     expect(page).to have_content("Document has been uploaded")
     title = find('h1').text
     expect(title).to eq "ladi"
