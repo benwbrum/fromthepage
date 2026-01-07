@@ -66,7 +66,7 @@ namespace :fromthepage do
 
       sorted_rows.each do |row|
         location = wiki_link(row['Location [tag]'], row['Location(s)'])
-        assoc = wiki_link(row['Associated name [tag]'], row['Associated Name(s)'])
+        assoc = multi_wiki_link(row['Associated Name(s)_Authoritative'], row['Associated Name(s)'])
         values = [
           row['Row'],
           row['Inventory Number'],
@@ -94,5 +94,22 @@ namespace :fromthepage do
     else
       value.to_s
     end
+  end
+
+  def multi_wiki_link(tags, values)
+    return values.to_s if tags.blank? || values.blank?
+    
+    tag_array = tags.split(';').map(&:strip)
+    value_array = values.split(';').map(&:strip)
+    
+    links = tag_array.zip(value_array).map do |tag, value|
+      if tag.present? && value.present?
+        "[[#{tag}]]"
+      else
+        value.to_s
+      end
+    end
+    
+    links.join('; ')
   end
 end
