@@ -116,7 +116,9 @@ namespace :fromthepage do
     
     links = tag_array.zip(value_array).map do |tag, value|
       if tag.present? && value.present?
-        "[[#{tag}|#{value}]]"
+        # Strip square brackets from tag if present
+        cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
+        "[[#{cleaned_tag}|#{value}]]"
       else
         value.to_s
       end
