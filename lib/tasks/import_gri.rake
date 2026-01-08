@@ -51,6 +51,7 @@ namespace :fromthepage do
         'Verbatim Description',
         'Object Type(s)',
         'Culture(s)',
+        'Culture(s) Authority',
         'Location(s)',
         'Associated Name(s)',
         "Right\nMargin\nPrice"
@@ -72,6 +73,7 @@ namespace :fromthepage do
           row['Verbatim Description'],
           row['Object Type(s)'],
           row['Culture(s)'],
+          row['Culture(s) Authority'],
           location,
           assoc,
           row['Right Margin Price']
