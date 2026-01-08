@@ -90,6 +90,9 @@ namespace :fromthepage do
 
   def wiki_link(tag, value)
     if tag.present? && value.present?
+      # If tag doesn't contain square brackets, return plain value
+      return value.to_s unless tag.to_s.include?('[[') || tag.to_s.include?(']]')
+      
       # Strip square brackets from tag if present
       cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
       "[[#{cleaned_tag}|#{value}]]"
