@@ -171,7 +171,7 @@ RSpec.describe UserMailer, type: :mailer do
       let(:mail) { UserMailer.metadata_refresh_finished(user, result, id, type, result.logs) }
 
       it 'renders success email' do
-        VCR.use_cassette('iiif/refresh_metadata', record: :none) do
+        VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
           expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
           expect(mail.to).to eq([user.email])
           expect(mail.from).to eq(['support@fromthepage.com'])
@@ -182,7 +182,7 @@ RSpec.describe UserMailer, type: :mailer do
       end
 
       context 'failed refresh' do
-        VCR.use_cassette('iiif/refresh_metadata_failed', record: :none) do
+        VCR.use_cassette('iiif/refresh_metadata_failed', record: :new_episodes) do
           it 'renders failed email' do
             expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
             expect(mail.to).to eq([user.email])

@@ -30,11 +30,12 @@ describe "uploads data for collections", order: :defined do
       Rails.root.join('test_data/uploads/test.pdf'),
       make_visible: true
     )
+    sleep 2
     click_button('Upload File')
 
+    expect(page).to have_content("Document has been uploaded")
     title = find('h1').text
     expect(title).to eq @collection.title
-    expect(page).to have_content("Document has been uploaded")
     wait_for_upload_processing
     sleep(10)
   end
@@ -50,11 +51,13 @@ describe "uploads data for collections", order: :defined do
       Rails.root.join('test_data/uploads/ocr.pdf'),
       make_visible: true
     )
+    sleep 2
     find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
+
+    expect(page).to have_content("Document has been uploaded")
     title = find('h1').text
     expect(title).to eq @collection.title
-    expect(page).to have_content("Document has been uploaded")
     wait_for_upload_processing
     uploaded_work = Work.last
     expect(uploaded_work.ocr_correction).to eq true
