@@ -74,10 +74,12 @@ namespace :fromthepage do
       sorted_rows.each do |row|
         location = wiki_link(row['Location(s) Authority'], row['Location(s)'])
         assoc = multi_wiki_link(row['Associated Name(s)_Authoritative'], row['Associated Name(s)'])
+        # Replace < and > with HTML entities to avoid HTML validation issues
+        verbatim_desc = row['Verbatim Description'].to_s.gsub('<', '&lt;').gsub('>', '&gt;')
         values = [
           row['Row'],
           row['Inventory Number'],
-          row['Verbatim Description'],
+          verbatim_desc,
           row['Object Type(s)'],
           row['Culture(s)'],
           row['Culture(s) Authority'],
