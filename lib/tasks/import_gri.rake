@@ -95,7 +95,7 @@ namespace :fromthepage do
       begin 
         page.save
       rescue => ex
-	      #binding.pry
+	      #PUT A BINDING PRY HERE
       end
       puts "Updated page #{page.title} with #{rows.length} rows"
     end
