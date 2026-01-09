@@ -8,6 +8,7 @@
 #  created_on                     :datetime
 #  data_entry_type                :string(255)      default("text")
 #  default_orientation            :string(255)
+#  default_overview_orientation   :string(255)
 #  description_instructions       :text(65535)
 #  enable_spellcheck              :boolean          default(FALSE)
 #  facets_enabled                 :boolean          default(FALSE)
