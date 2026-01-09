@@ -92,10 +92,10 @@ namespace :fromthepage do
 
       page.source_text = lines.join("\n")
       page.status = Page.statuses[:transcribed]
-      begin 
+      begin
         page.save
       rescue => ex
-	      #PUT A BINDING PRY HERE
+        # PUT A BINDING PRY HERE
       end
       puts "Updated page #{page.title} with #{rows.length} rows"
     end
