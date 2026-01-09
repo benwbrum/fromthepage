@@ -173,6 +173,8 @@ pt:
       alphabetize_works_description: A exibição funciona em ordem alfabética e não em ordem de quantidade de trabalho restante.
       default_orientation: Selecione a orientação da página predeterminada da transcrição
       default_orientation_description: Escolha a orientação que melhor corresponde à maioria das obras desta coleção. Os usuários poderão alterar a orientação para a que preferirem.
+      default_overview_orientation: Orientação padrão da tela de visão geral
+      default_overview_orientation_description: Escolha a orientação para a exibição da guia de visão geral da página.
       document_sets_description: Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos.
       edit_document_sets: Editar conjuntos
       edit_facets: Editar facetas

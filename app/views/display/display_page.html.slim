@@ -33,7 +33,7 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns(data-layout-mode="ltr")
+.page-columns(data-layout-mode="#{@overview_layout_mode}")
   .page-column(id="leftColumn")
     .page-imagescan
       =render :partial => '/shared/osd_div'
@@ -99,5 +99,27 @@ h2.legend#notes =t('.page_notes')
 
 -content_for :javascript
   javascript:
-    let splitter = Object.create(ResizableSplitter);
-    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
+    $(function() {
+      let splitter = Object.create(ResizableSplitter);
+      
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+        
+        if(splitter && splitter.destroy) {
+          splitter.destroy()
+        }
+        
+        splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('overviewSplitterPos', pos)
+          },
+          initialPosition: (window.localStorage.getItem('overviewSplitterPos') || 50) + '%'
+        });
+      }
+      
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
+    });
