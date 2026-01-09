@@ -21,23 +21,23 @@ namespace :fromthepage do
     (2..sheet.last_row).each do |i|
       row_values = sheet.row(i)
       row = Hash[headers.zip(row_values)]
-      
+
       # Parse stock_book_page from FTP_Page Title
       # Input format: "Box 97, Page 312 (gri_2017_m_38_b97_0312)"
       # Extract: "gri_2017_m_38_b97_0312"
       ftp_page_title = row['FTP_Page Title']
       stock_book_page = ftp_page_title.to_s.match(/\(([^)]+)\)/)&.captures&.first
-      
+
       next if stock_book_page.nil?
-      
+
       # Check if stock_book_page matches any page title before adding to hash
       page_exists = work_pages.any? do |p|
         p.title == stock_book_page ||
           File.basename(p.base_image.to_s, File.extname(p.base_image.to_s)) == stock_book_page
       end
-      
+
       next unless page_exists
-      
+
       data[stock_book_page] << row
     end
 
@@ -105,7 +105,7 @@ namespace :fromthepage do
     if tag.present? && value.present?
       # If tag doesn't contain square brackets, return plain value
       return value.to_s unless tag.to_s.include?('[[') || tag.to_s.include?(']]')
-      
+
       # Strip square brackets from tag if present
       cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
       "[[#{cleaned_tag}|#{value}]]"
@@ -116,10 +116,10 @@ namespace :fromthepage do
 
   def multi_wiki_link(tags, values)
     return values.to_s if tags.blank? || values.blank?
-    
+
     tag_array = tags.split(';').map(&:strip)
     value_array = values.split(';').map(&:strip)
-    
+
     links = tag_array.zip(value_array).map do |tag, value|
       if tag.present? && value.present?
         # Strip square brackets from tag if present
@@ -129,7 +129,7 @@ namespace :fromthepage do
         value.to_s
       end
     end
-    
+
     links.join('; ')
   end
 end
