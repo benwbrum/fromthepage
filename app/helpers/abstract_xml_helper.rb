@@ -495,7 +495,7 @@ module AbstractXmlHelper
       tags: SANITIZE_ALLOWED_TAGS,
       attributes: SANITIZE_ALLOWED_ATTRIBUTES
     ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
-    
+
     # Fix double-escaped XML entities from legacy data
     result.gsub('&amp;lt;', '&lt;')
           .gsub('&amp;gt;', '&gt;')
