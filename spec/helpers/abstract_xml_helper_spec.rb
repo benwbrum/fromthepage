@@ -56,4 +56,49 @@ RSpec.describe AbstractXmlHelper, type: :helper do
       expect(xml_to_html(@xml_text, false, true)).to include("guide the reader <span class=\"line-break\"> </span>to")
     end
   end
+
+  context "XML entity handling" do
+    it "displays &lt; entity as < sign" do
+      xml_with_lt = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &lt; sign</p></page>"
+      result = xml_to_html(xml_with_lt, true, true)
+      expect(result).to include("Here is a &lt; sign")
+    end
+
+    it "displays &gt; entity as > sign" do
+      xml_with_gt = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &gt; sign</p></page>"
+      result = xml_to_html(xml_with_gt, true, true)
+      expect(result).to include("Here is a &gt; sign")
+    end
+
+    it "displays &amp; entity correctly" do
+      xml_with_amp = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &amp; sign</p></page>"
+      result = xml_to_html(xml_with_amp, true, true)
+      expect(result).to include("Here is an &amp; sign")
+    end
+
+    it "displays &quot; entity correctly" do
+      xml_with_quot = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &quot;quote&quot;</p></page>"
+      result = xml_to_html(xml_with_quot, true, true)
+      expect(result).to include('Here is a "quote"')
+    end
+
+    it "displays &apos; entity correctly" do
+      xml_with_apos = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &apos;apostrophe&apos;</p></page>"
+      result = xml_to_html(xml_with_apos, true, true)
+      expect(result).to include("Here is an 'apostrophe'")
+    end
+
+    it "handles multiple XML entities in the same text" do
+      xml_with_multiple = "<?xml version='1.0' encoding='UTF-8'?><page><p>Comparison: 5 &lt; 10 &amp; 10 &gt; 5</p></page>"
+      result = xml_to_html(xml_with_multiple, true, true)
+      expect(result).to include("Comparison: 5 &lt; 10 &amp; 10 &gt; 5")
+    end
+
+    it "handles XML entities within markdown tables" do
+      xml_with_table = "<?xml version='1.0' encoding='UTF-8'?><page><table class=\"tabular\">\n<thead>\n<tr><th>Operator</th> <th>Meaning</th></tr></thead><tbody><tr><td>5 &lt; 10</td> <td>Less than</td> </tr><tr><td>10 &gt; 5</td> <td>Greater than</td> </tr></tbody></table></page>"
+      result = xml_to_html(xml_with_table, true, true)
+      expect(result).to include("5 &lt; 10")
+      expect(result).to include("10 &gt; 5")
+    end
+  end
 end
