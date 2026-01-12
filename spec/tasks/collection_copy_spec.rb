@@ -47,10 +47,8 @@ RSpec.describe 'Collection Copy Rake Task' do
       end
 
       it 'copies the base image file to a new location' do
-        # Execute within the task's binding context
-        task.instance_eval do
-          copy_page_image_files(source_page, target_page)
-        end
+        # Call the helper method directly
+        CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
         
@@ -68,9 +66,7 @@ RSpec.describe 'Collection Copy Rake Task' do
       end
 
       it 'does not share image files between source and target' do
-        task.instance_eval do
-          copy_page_image_files(source_page, target_page)
-        end
+        CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
         
@@ -94,9 +90,7 @@ RSpec.describe 'Collection Copy Rake Task' do
       it 'does not attempt to copy files' do
         original_base_image = target_page.base_image
         
-        task.instance_eval do
-          copy_page_image_files(source_page, target_page)
-        end
+        CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
         
