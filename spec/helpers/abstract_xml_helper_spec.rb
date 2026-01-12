@@ -57,48 +57,56 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     end
   end
 
-  context "XML entity handling" do
-    it "displays &lt; entity as < sign" do
-      xml_with_lt = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &lt; sign</p></page>"
-      result = xml_to_html(xml_with_lt, true, true)
+  context "double-escaped XML entity handling" do
+    it "fixes double-escaped &lt; entity" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &amp;lt; sign</p></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include("Here is a &lt; sign")
+      expect(result).not_to include("&amp;lt;")
     end
 
-    it "displays &gt; entity as > sign" do
-      xml_with_gt = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &gt; sign</p></page>"
-      result = xml_to_html(xml_with_gt, true, true)
+    it "fixes double-escaped &gt; entity" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &amp;gt; sign</p></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include("Here is a &gt; sign")
+      expect(result).not_to include("&amp;gt;")
     end
 
-    it "displays &amp; entity correctly" do
-      xml_with_amp = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &amp; sign</p></page>"
-      result = xml_to_html(xml_with_amp, true, true)
-      expect(result).to include("Here is an &amp; sign")
-    end
-
-    it "displays &quot; entity correctly" do
-      xml_with_quot = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &quot;quote&quot;</p></page>"
-      result = xml_to_html(xml_with_quot, true, true)
+    it "fixes double-escaped &quot; entity" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &amp;quot;quote&amp;quot;</p></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include('Here is a "quote"')
+      expect(result).not_to include("&amp;quot;")
     end
 
-    it "displays &apos; entity correctly" do
-      xml_with_apos = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &apos;apostrophe&apos;</p></page>"
-      result = xml_to_html(xml_with_apos, true, true)
+    it "fixes double-escaped &apos; entity" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &amp;apos;apostrophe&amp;apos;</p></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include("Here is an 'apostrophe'")
+      expect(result).not_to include("&amp;apos;")
     end
 
-    it "handles multiple XML entities in the same text" do
-      xml_with_multiple = "<?xml version='1.0' encoding='UTF-8'?><page><p>Comparison: 5 &lt; 10 &amp; 10 &gt; 5</p></page>"
-      result = xml_to_html(xml_with_multiple, true, true)
+    it "fixes multiple double-escaped entities in the same text" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Comparison: 5 &amp;lt; 10 &amp;amp; 10 &amp;gt; 5</p></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include("Comparison: 5 &lt; 10 &amp; 10 &gt; 5")
+      expect(result).not_to include("&amp;lt;")
+      expect(result).not_to include("&amp;gt;")
     end
 
-    it "handles XML entities within markdown tables" do
-      xml_with_table = "<?xml version='1.0' encoding='UTF-8'?><page><table class=\"tabular\">\n<thead>\n<tr><th>Operator</th> <th>Meaning</th></tr></thead><tbody><tr><td>5 &lt; 10</td> <td>Less than</td> </tr><tr><td>10 &gt; 5</td> <td>Greater than</td> </tr></tbody></table></page>"
-      result = xml_to_html(xml_with_table, true, true)
+    it "fixes double-escaped entities within markdown tables" do
+      xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><table class=\"tabular\">\n<thead>\n<tr><th>Operator</th> <th>Meaning</th></tr></thead><tbody><tr><td>5 &amp;lt; 10</td> <td>Less than</td> </tr><tr><td>10 &amp;gt; 5</td> <td>Greater than</td> </tr></tbody></table></page>"
+      result = xml_to_html(xml_with_double_escaped, true, true)
       expect(result).to include("5 &lt; 10")
       expect(result).to include("10 &gt; 5")
+      expect(result).not_to include("&amp;lt;")
+      expect(result).not_to include("&amp;gt;")
+    end
+
+    it "preserves correctly-escaped entities" do
+      xml_with_correct = "<?xml version='1.0' encoding='UTF-8'?><page><p>Already correct: &lt; &gt; &amp;</p></page>"
+      result = xml_to_html(xml_with_correct, true, true)
+      expect(result).to include("Already correct: &lt; &gt; &amp;")
     end
   end
 end

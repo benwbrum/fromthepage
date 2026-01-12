@@ -355,28 +355,8 @@ end
 
   def valid_xml_from_source(source)
     source = source || ''
-    # Preserve valid XML entities before escaping ampersands
-    # Replace valid entities with placeholders, escape remaining ampersands, then restore entities
-    # Using control characters (U+0001 to U+0005) as placeholders to avoid collisions
-    safe = source.gsub(/&(lt|gt|amp|quot|apos);/) do |match|
-      entity_type = Regexp.last_match(1)
-      placeholder_char = case entity_type
-                        when 'lt' then "\u0001"
-                        when 'gt' then "\u0002"
-                        when 'amp' then "\u0003"
-                        when 'quot' then "\u0004"
-                        when 'apos' then "\u0005"
-                        end
-      placeholder_char
-    end
-    safe = safe.gsub(/&/, '&amp;')
-    safe = safe.gsub(/&amp;amp;/, '&amp;')
-    # Restore the preserved XML entities
-    safe = safe.gsub("\u0001", '&lt;')
-               .gsub("\u0002", '&gt;')
-               .gsub("\u0003", '&amp;')
-               .gsub("\u0004", '&quot;')
-               .gsub("\u0005", '&apos;')
+    safe = source.gsub /\&/, '&amp;'
+    safe.gsub! /\&amp;amp;/, '&amp;'
     safe.gsub! /[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/, ' '
 
     string = <<EOF

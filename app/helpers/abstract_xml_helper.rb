@@ -490,10 +490,16 @@ module AbstractXmlHelper
     my_display_html.gsub!('<p/>', '')
     my_display_html.gsub!(/<\/?page>/, '')
 
-    ActionController::Base.helpers.sanitize(
+    result = ActionController::Base.helpers.sanitize(
       my_display_html.strip,
       tags: SANITIZE_ALLOWED_TAGS,
       attributes: SANITIZE_ALLOWED_ATTRIBUTES
     ).gsub('<br>', '<br/>').gsub('<hr>', '<hr/>')
+    
+    # Fix double-escaped XML entities from legacy data
+    result.gsub('&amp;lt;', '&lt;')
+          .gsub('&amp;gt;', '&gt;')
+          .gsub('&amp;quot;', '&quot;')
+          .gsub('&amp;apos;', '&apos;')
   end
 end
