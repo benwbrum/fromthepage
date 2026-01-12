@@ -25,11 +25,11 @@ RSpec.describe 'Collection Copy Rake Task' do
         # Create a test image file for the source page
         source_image_path = File.join(Rails.root, 'public', 'images', 'working', 'upload', "#{source_page.id}.jpg")
         FileUtils.mkdir_p(File.dirname(source_image_path))
-        
+
         # Copy test image from test_data
         test_image = File.join(Rails.root, 'test_data', 'images', 'pages', 'sanskrit.jpg')
         FileUtils.cp(test_image, source_image_path) if File.exist?(test_image)
-        
+
         source_page.update_column(:base_image, source_image_path)
       end
 
@@ -37,10 +37,10 @@ RSpec.describe 'Collection Copy Rake Task' do
         # Clean up test files
         [source_page, target_page].each do |page|
           next unless page.base_image.present?
-          
+
           image_path = File.join(Rails.root, 'public', page.base_image.sub(/.*public/, ''))
           File.delete(image_path) if File.exist?(image_path)
-          
+
           thumb_path = page.thumbnail_filename
           File.delete(thumb_path) if thumb_path.present? && File.exist?(thumb_path)
         end
@@ -51,15 +51,15 @@ RSpec.describe 'Collection Copy Rake Task' do
         CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
-        
+
         # Verify target page has different image path
         expect(target_page.base_image).not_to eq(source_page.base_image)
         expect(target_page.base_image).to include(target_page.id.to_s)
-        
+
         # Verify target image file exists
         target_image_path = File.join(Rails.root, 'public', target_page.base_image.sub(/.*public/, ''))
         expect(File.exist?(target_image_path)).to be true
-        
+
         # Verify source image still exists
         source_image_path = File.join(Rails.root, 'public', source_page.base_image.sub(/.*public/, ''))
         expect(File.exist?(source_image_path)).to be true
@@ -69,13 +69,13 @@ RSpec.describe 'Collection Copy Rake Task' do
         CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
-        
+
         source_image_path = File.join(Rails.root, 'public', source_page.base_image.sub(/.*public/, ''))
         target_image_path = File.join(Rails.root, 'public', target_page.base_image.sub(/.*public/, ''))
-        
+
         # Files should be different
         expect(source_image_path).not_to eq(target_image_path)
-        
+
         # Deleting target should not affect source
         File.delete(target_image_path) if File.exist?(target_image_path)
         expect(File.exist?(source_image_path)).to be true
@@ -89,11 +89,11 @@ RSpec.describe 'Collection Copy Rake Task' do
 
       it 'does not attempt to copy files' do
         original_base_image = target_page.base_image
-        
+
         CollectionCopyHelper.copy_page_image_files(source_page, target_page)
 
         target_page.reload
-        
+
         # Base image should not be changed
         expect(target_page.base_image).to eq(original_base_image)
       end
