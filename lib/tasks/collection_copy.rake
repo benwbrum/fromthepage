@@ -27,6 +27,7 @@ namespace :fromthepage do
       FileUtils.chmod('u=wr,go=r', target_base_path)
 
       # Update the target page's base_image attribute to point to the new file
+      # Note: base_image is stored as absolute path matching the pattern from Page::Lib::Common
       target_page.base_image = target_base_path
       target_page.save!
 
@@ -35,7 +36,7 @@ namespace :fromthepage do
 
       # Copy thumbnail if it exists
       source_thumb_path = source_page.thumbnail_filename
-      if File.exist?(source_thumb_path)
+      if source_thumb_path.present? && File.exist?(source_thumb_path)
         target_thumb_path = target_page.thumbnail_filename
         target_thumb_dir = File.dirname(target_thumb_path)
         FileUtils.mkdir_p(target_thumb_dir) unless Dir.exist?(target_thumb_dir)
@@ -46,7 +47,7 @@ namespace :fromthepage do
         target_page.thumbnail_image
       end
 
-      p "Copied image files for page #{source_page.id} to page #{target_page.id}"
+      puts "Copied image files for page #{source_page.id} to page #{target_page.id}"
     end
 
     desc 'Copy a collection into a new collection owned by the same user, with subjects, works, and pages'

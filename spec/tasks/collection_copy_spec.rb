@@ -42,7 +42,7 @@ RSpec.describe 'Collection Copy Rake Task' do
           File.delete(image_path) if File.exist?(image_path)
           
           thumb_path = page.thumbnail_filename
-          File.delete(thumb_path) if File.exist?(thumb_path)
+          File.delete(thumb_path) if thumb_path.present? && File.exist?(thumb_path)
         end
       end
 
