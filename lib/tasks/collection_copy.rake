@@ -30,6 +30,9 @@ namespace :fromthepage do
       target_page.base_image = target_base_path
       target_page.save!
 
+      # Reload to ensure thumbnail_filename uses the updated base_image
+      target_page.reload
+
       # Copy thumbnail if it exists
       source_thumb_path = source_page.thumbnail_filename
       if File.exist?(source_thumb_path)
