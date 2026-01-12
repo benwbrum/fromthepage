@@ -17,21 +17,6 @@
 .page-headlines
   .headline
     h3.headline_title =t('.facsimile')
-  .headline
-    -if translation_mode?
-      h3.headline_title =t('.translation')
-      .page_status
-        =t("page.edit.status")
-        =t("page.edit.page_status_#{@page.translation_status}")
-      small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
-    -else
-      h3.headline_title =t('.transcription')
-      .page_status
-        =t("page.edit.status")
-        =t("page.edit.page_status_#{@page.status}")
-
-      -if @work.supports_translation
-        small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
 .page-columns(data-layout-mode="#{@overview_layout_mode}")
   .page-column(id="leftColumn")
@@ -39,6 +24,21 @@
       =render :partial => '/shared/osd_div'
   .splitter(id="splitter")
   .page-column(id="rightColumn")
+    .headline
+      -if translation_mode?
+        h3.headline_title =t('.translation')
+        .page_status
+          =t("page.edit.status")
+          =t("page.edit.page_status_#{@page.translation_status}")
+        small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
+      -else
+        h3.headline_title =t('.transcription')
+        .page_status
+          =t("page.edit.status")
+          =t("page.edit.page_status_#{@page.status}")
+
+        -if @work.supports_translation
+          small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
