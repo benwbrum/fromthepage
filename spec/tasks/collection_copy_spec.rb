@@ -8,7 +8,7 @@ RSpec.describe 'Collection Copy Rake Task' do
     Rake::Task.define_task(:environment)
   end
 
-  let(:owner) { create(:user, :owner) }
+  let!(:owner) { create(:unique_user, :owner) }
   let(:source_collection) { create(:collection, owner_user_id: owner.id) }
   let(:target_collection) { create(:collection, owner_user_id: owner.id) }
   let(:source_work) { create(:work, collection: source_collection, owner_user_id: owner.id) }

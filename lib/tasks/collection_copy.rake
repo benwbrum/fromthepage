@@ -33,21 +33,7 @@ module CollectionCopyHelper
     # Reload to ensure thumbnail_filename uses the updated base_image
     target_page.reload
 
-    # Copy thumbnail if it exists
-    source_thumb_path = source_page.thumbnail_filename
-    if source_thumb_path.present? && File.exist?(source_thumb_path)
-      target_thumb_path = target_page.thumbnail_filename
-      if target_thumb_path.present?
-        target_thumb_dir = File.dirname(target_thumb_path)
-        FileUtils.mkdir_p(target_thumb_dir) unless Dir.exist?(target_thumb_dir)
-        FileUtils.cp(source_thumb_path, target_thumb_path)
-        FileUtils.chmod('u=wr,go=r', target_thumb_path)
-      end
-    else
-      # Regenerate thumbnail from the copied base image
-      target_page.thumbnail_image
-    end
-
+    # thumbnails are generated on demand; no need to copy
     puts "Copied image files for page #{source_page.id} to page #{target_page.id}"
   end
 end
