@@ -102,6 +102,8 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
+        record_deed(DeedType::AI_DRAFT) if @page.ai_draft_used
+
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 
@@ -110,8 +112,6 @@ class TranscribeController  < ApplicationController
         elsif @page.source_text_previously_changed?
           record_transcription_deed
         end
-
-        record_deed(DeedType::AI_DRAFT) if @page.ai_draft_used
 
         # don't reset subjects if they're disabled
         unless @page.collection.subjects_disabled || (@page.source_text.include?('[[') == false)

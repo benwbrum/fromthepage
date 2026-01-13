@@ -1233,12 +1233,19 @@ button, .button, .dropdown dd a {
       background-color: rgba(#000, 0.06);
     }
     time {
-      width: 8em;
+      min-width: 6em;
+      max-width: 6em;
       display: inline-block;
     }
   }
   .image-wrap {
     margin: 0px 10px;
+    min-width: 55px;
+    max-width: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
 
