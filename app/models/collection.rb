@@ -348,7 +348,6 @@ class Collection < ApplicationRecord
   end
 
   def default_overview_orientation
-    return 'ltr' unless self.has_attribute?(:default_overview_orientation)
     if !self[:default_overview_orientation].nil?
       self[:default_overview_orientation]
     else
