@@ -500,6 +500,7 @@ module AbstractXmlHelper
     result.gsub('&amp;lt;', '&lt;')
           .gsub('&amp;gt;', '&gt;')
           .gsub('&amp;quot;', '&quot;')
+          .gsub('&amp;amp;', '&amp;')
           .gsub('&amp;apos;', '&apos;')
   end
 end

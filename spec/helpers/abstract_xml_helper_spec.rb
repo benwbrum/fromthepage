@@ -75,14 +75,14 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     it "fixes double-escaped &quot; entity" do
       xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is a &amp;quot;quote&amp;quot;</p></page>"
       result = xml_to_html(xml_with_double_escaped, true, true)
-      expect(result).to include('Here is a "quote"')
+      expect(result).to include('Here is a &quot;quote&quot;')
       expect(result).not_to include("&amp;quot;")
     end
 
     it "fixes double-escaped &apos; entity" do
       xml_with_double_escaped = "<?xml version='1.0' encoding='UTF-8'?><page><p>Here is an &amp;apos;apostrophe&amp;apos;</p></page>"
       result = xml_to_html(xml_with_double_escaped, true, true)
-      expect(result).to include("Here is an 'apostrophe'")
+      expect(result).to include("Here is an &apos;apostrophe&apos;")
       expect(result).not_to include("&amp;apos;")
     end
 
