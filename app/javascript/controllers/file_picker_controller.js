@@ -57,5 +57,7 @@ export default class extends Controller {
 
     this.disabled = false;
     this.button.prop('disabled', false);
+
+    this.file.val('');
   }
 }
