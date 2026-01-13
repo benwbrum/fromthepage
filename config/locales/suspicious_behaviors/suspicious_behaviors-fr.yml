@@ -1,0 +1,15 @@
+---
+fr:
+  suspicious_behaviors:
+    filters:
+      behavior_type:
+        all: Tous
+        large_paste: Grande pâte
+      status:
+        all: Tous
+        confirmed: Confirmé
+        dismissed: Licencié
+        pending: En attente
+    labels:
+      behavior_type: Taper
+      status: Statut

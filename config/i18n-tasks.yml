@@ -156,6 +156,8 @@ ignore_unused:
   - 'collection.edit_buttons.*_description'
   - 'bulk_export.create_for_work_ajax.*'
   - 'category.*'
+  - 'page_version.show.page_version_status_*'
+  - 'display.multi_page.search_in_collection_1'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

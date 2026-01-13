@@ -251,6 +251,12 @@ class ArticleController < ApplicationController
   end
 
   def show
+    # Handle missing article_id parameter (e.g., from crawlers)
+    if @article.nil?
+      head :bad_request
+      return
+    end
+
     sql =
       'SELECT count(*) as link_count, '+
       'a.title as title, '+

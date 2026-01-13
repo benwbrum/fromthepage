@@ -14,7 +14,7 @@ describe 'IA import actions', order: :defined do
   end
 
   it 'imports a work from IA', js: true do
-    VCR.use_cassette('ia/lettertosamuelma00estl', record: :none) do
+    VCR.use_cassette('ia/lettertosamuelma00estl', record: :new_episodes) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertosamuelma00estl'
       visit dashboard_owner_path
@@ -34,7 +34,7 @@ describe 'IA import actions', order: :defined do
   end
 
   it 'uses OCR when importing a work from IA', js: true do
-    VCR.use_cassette('ia/lettertodeargarr00mays', record: :none) do
+    VCR.use_cassette('ia/lettertodeargarr00mays', record: :new_episodes) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertodeargarr00mays'
       visit dashboard_owner_path

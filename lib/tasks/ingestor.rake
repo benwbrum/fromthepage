@@ -23,7 +23,7 @@ namespace :fromthepage do
     print "fetching upload with ID=#{document_upload_id}\n"
     document_upload = DocumentUpload.find document_upload_id
 
-    print "found document_upload for \n\tuser=#{document_upload.user.login}, \n\ttarget collection=#{document_upload.collection.title}, \n\tfile=#{document_upload.file}\n"
+    print "found document_upload for \n\tuser=#{document_upload.user.login}, \n\ttarget collection=#{document_upload.collection.title}, \n\tfile=#{document_upload.attachment.filename}\n"
 
     document_upload.status = :processing
     document_upload.save
@@ -31,7 +31,7 @@ namespace :fromthepage do
     works_created = 0
     created_work_ids = []
     begin
-      works_created, created_work_ids = process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+      works_created, created_work_ids = process_batch(document_upload, document_upload.id.to_s)
 
       document_upload.status = :finished
       document_upload.save
@@ -97,11 +97,17 @@ namespace :fromthepage do
     end
   end
 
-
-  def process_batch(document_upload, path, temp_dir_seed)
-    # copy to temp dir
-    temp_dir = temp_dir_path(temp_dir_seed)
-    copy_to_temp_dir(path, temp_dir)
+  def process_batch(document_upload, temp_dir_seed)
+    temp_dir = File.join(Dir.tmpdir, 'fromthepage_uploads', document_upload.id.to_s)
+    print "creating temp directory #{temp_dir}\n"
+    FileUtils.mkdir_p(temp_dir)
+    # Write ActiveStorage attachment to a tempfile
+    attachment = document_upload.attachment
+    filename = attachment.filename.to_s
+    tempfile_path = File.join(temp_dir, filename)
+    File.open(tempfile_path, 'wb') do |file|
+      file.write(attachment.download)
+    end
 
     # unzip everything
     unzip_tree(temp_dir)
@@ -414,13 +420,6 @@ namespace :fromthepage do
 
   def temp_dir_path(seed)
     File.join(Dir.tmpdir, 'fromthepage_uploads', seed)
-  end
-
-  def copy_to_temp_dir(path, temp_dir)
-    print "creating temp directory #{temp_dir}\n"
-    FileUtils.mkdir_p(temp_dir)
-    print "copying #{File.join(path, '*')} to #{temp_dir}\n"
-    FileUtils.cp_r(Dir.glob(File.join(path, '*')), temp_dir)
   end
 
   desc 'Import IIIF Collection'

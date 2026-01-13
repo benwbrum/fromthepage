@@ -39,6 +39,34 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date", precision: nil
     t.integer "user_id"
@@ -67,7 +95,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.text "prompt", size: :long
     t.string "model", null: false
     t.text "reasoning", size: :long
-    t.json "metadata"
+    t.text "metadata", size: :long, collation: "utf8mb4_bin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_id"], name: "index_ai_transcriptions_on_page_id"
@@ -189,6 +217,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.text "cdm_urls"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "generate_ai_draft", default: false
     t.index ["user_id"], name: "index_cdm_bulk_imports_on_user_id"
   end
 
@@ -368,6 +397,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.string "status", default: "new"
     t.boolean "preserve_titles", default: false
     t.boolean "ocr", default: false
+    t.boolean "generate_ai_draft", default: false
     t.index ["collection_id"], name: "index_document_uploads_on_collection_id"
     t.index ["user_id"], name: "index_document_uploads_on_user_id"
   end
@@ -643,7 +673,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.text "source_translation", collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", collation: "utf8mb4_unicode_ci"
     t.string "status"
-    t.json "transcription_json"
+    t.text "transcription_json", size: :long, collation: "utf8mb4_bin"
     t.boolean "ai_draft_used", default: false, null: false
     t.index ["page_id"], name: "index_page_versions_on_page_id"
     t.index ["user_id"], name: "index_page_versions_on_user_id"
@@ -931,6 +961,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
+  end
+
+  create_table "suspicious_behaviors", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "page_id"
+    t.integer "collection_id"
+    t.text "metadata", size: :long, collation: "utf8mb4_bin"
+    t.string "behavior_type", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "resolved_at"
+    t.integer "resolved_by_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_suspicious_behaviors_on_collection_id"
+    t.index ["page_id"], name: "index_suspicious_behaviors_on_page_id"
+    t.index ["resolved_by_user_id"], name: "index_suspicious_behaviors_on_resolved_by_user_id"
+    t.index ["user_id"], name: "index_suspicious_behaviors_on_user_id"
   end
 
   create_table "table_cells", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
@@ -1390,6 +1437,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ai_transcriptions", "pages", on_delete: :cascade
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"
@@ -1414,6 +1462,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
   add_foreign_key "quality_samplings", "collections"
   add_foreign_key "quality_samplings", "users"
   add_foreign_key "spreadsheet_columns", "transcription_fields"
+  add_foreign_key "suspicious_behaviors", "collections", on_delete: :nullify
+  add_foreign_key "suspicious_behaviors", "pages", on_delete: :nullify
+  add_foreign_key "suspicious_behaviors", "users", column: "resolved_by_user_id", on_delete: :nullify
+  add_foreign_key "suspicious_behaviors", "users", on_delete: :cascade
   add_foreign_key "thredded_messageboard_users", "thredded_messageboards", on_delete: :cascade
   add_foreign_key "thredded_messageboard_users", "thredded_user_details", on_delete: :cascade
   add_foreign_key "thredded_user_post_notifications", "thredded_posts", column: "post_id", on_delete: :cascade

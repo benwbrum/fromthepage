@@ -82,6 +82,8 @@ Fromthepage::Application.routes.draw do
       get ':source_tag_id/:target_tag_id/merge', to: 'admin#merge_tag', as: 'merge'
       post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
+
+    resources :suspicious_behaviors, module: 'admin', only: [:index, :show]
   end
 
   scope 'facets', as: 'facets' do
@@ -205,20 +207,6 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
-  if Rails.application.config.upload_host.present?
-    constraints subdomain: Rails.application.config.upload_host do
-      scope 'dashboard', as: 'dashboard' do
-        post 'new_upload', to: 'dashboard#new_upload'
-      end
-    end
-  else
-    scope 'dashboard', as: 'dashboard' do
-      post 'new_upload', to: 'dashboard#new_upload'
-    end
-  end
-
-
-
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
     get 'owner' => 'dashboard#owner'
@@ -226,10 +214,10 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
+    post 'upload', to: 'dashboard#upload'
   end
 
   resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
@@ -259,6 +247,10 @@ Fromthepage::Application.routes.draw do
     get 'translate', to: 'transcribe#translate'
     patch 'save_transcription', to: 'transcribe#save_transcription'
     patch 'save_translation', to: 'transcribe#save_translation'
+  end
+
+  namespace :transcribe do
+    resources :suspicious_behaviors, only: [:create]
   end
 
   scope 'deed', as: 'deed' do
@@ -376,6 +368,7 @@ Fromthepage::Application.routes.draw do
 
   namespace :api do
     get '/', to: 'api#help'
+
     namespace :v1 do
       get 'bulk_export', to: 'bulk_export#index'
       get 'bulk_export/:collection_slug', to: 'bulk_export#index'
@@ -384,7 +377,6 @@ Fromthepage::Application.routes.draw do
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
     end
   end
-
 
   get '/iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', to: 'iiif#layer'
@@ -528,10 +520,12 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
+      resources :suspicious_behaviors, only: [:index, :show]
+
       # work related routes
       # have to use match because it must be both get and post
       match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
-      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
+      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work, constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member

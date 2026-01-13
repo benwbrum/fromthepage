@@ -1,0 +1,10 @@
+.article-page.search_result
+  .article-page_content
+    h4.collection-work_title
+      =link_to article.title, collection_article_show_path(collection.owner, collection, article), onclick: 'resultClicked();'
+
+    -if article.source_text.present?
+      .work-page_text.search_result
+        =article.source_text
+
+=render partial: 'elastic/breadcrumbs', locals: { doc: article }

@@ -1,8 +1,8 @@
 section.search(style='width: 50%; float: right;')
   =form_tag(search_attempt_index_path, method: :post, class: 'collection-search', enforce_utf8: false, data: { turbo: true }) do
+    =label_tag 'search', t('.search_for_collections'), class: 'sr-only'
     =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
     =button_tag t('.search')
-    =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
 -if @search_results.empty? && @owners.empty?
   h3.search_heading

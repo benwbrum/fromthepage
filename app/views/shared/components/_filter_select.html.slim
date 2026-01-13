@@ -1,2 +1,4 @@
 div[class=classes style='margin-right: 5px']
+  -if label.present?
+    label =label
   =select_tag(key, options_for_select(options, value))

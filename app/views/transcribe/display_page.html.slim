@@ -74,7 +74,10 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}")
+  -data_attrs = {}
+  -if current_user.id != @collection.owner_user_id
+    -data_attrs = { 'data-controller' => 'behavior-flagger', 'data-behavior-flagger-url-value' => transcribe_suspicious_behaviors_path(collection_id: @collection.id, page_id: @page.id) }
+  .page-columns(data-layout-mode="#{@layout_mode}" *data_attrs)
     .page-column.page-imagescan(id="leftColumn")
       =render :partial => '/shared/osd_div'
     .splitter(id="splitter")
@@ -91,7 +94,7 @@
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
-        .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
+        .page-editarea(style=('display:none' if @preview_xml) data-behavior-flagger-target='editArea' *language_attrs(@collection))
           -if @work.scribes_can_edit_titles
             .page-editarea_title
               =f.label :title, t('.title'), class: 'a50'

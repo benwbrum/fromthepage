@@ -1,9 +1,9 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
 =form_tag(admin_user_list_path, method: :get, enforce_utf8: false, class: 'collection-search') do
+  =label_tag :search, t('.search_users'), class: 'sr-only'
   =search_field_tag :search, params[:search], placeholder: t('.search_users_ellipsis')
   =button_tag t('.search'), :name => nil
-  =label_tag :search, t('.search_users'), class: "hidden"
 
 table.admin-grid.datagrid.striped
   thead

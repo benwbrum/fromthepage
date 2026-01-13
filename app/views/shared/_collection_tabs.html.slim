@@ -22,8 +22,6 @@
   :path => "#{Thredded::UrlsHelper::show_messageboard_group_path(@collection.messageboard_group, user_slug: @collection.owner.slug, collection_id: @collection.slug)}",
 }]
 
-
-
 -if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type && @collection.pages.where(status: :needs_review).count > 0
   -tabs +=[{\
   :name => t('.review'),
@@ -79,8 +77,6 @@
       :path => "#{main_app.collection_edit_metadata_fields_path(@collection.owner, @collection)}",
     }]
 
-
-
   -if @collection.supports_document_sets
     -tabs += [{\
       :name => t('.sets'),
@@ -100,6 +96,12 @@
     :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
   }]
 
+-if false && @collection.owner == current_user
+  -tabs += [{\
+      :name => t('.suspicious_behaviors'),
+      :selected => 10,
+      :path => "#{main_app.collection_suspicious_behaviors_path(@collection.owner, @collection)}",
+    }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -content_for :page_title, selected == 1 ? @collection.title : "#{selected_tab} - #{@collection.title}"
