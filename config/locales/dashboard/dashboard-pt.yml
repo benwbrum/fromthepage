@@ -168,6 +168,7 @@ pt:
       upload_pdf_or_zip_file: Subir um Arquivo PDF ou ZIP
       uploading: Enviando...
       uploading_failed: Falha ao enviar o arquivo. Tente novamente.
+      uploading_wait: Aguarde a conclusão do carregamento do arquivo antes de enviar o formulário.
       use_image_filenames: Utilizar os nomes dos arquivos das imagens como títulos de páginas.
       use_ocr_from_pdf: Utilizar o OCR da camada de texto PDF.
       zip_files_may_contain: Os arquivos ZIP podem conter pastas que contenham imagens, PDFs ou pastas que contenham PDFs.

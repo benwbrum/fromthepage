@@ -168,6 +168,7 @@ de:
       upload_pdf_or_zip_file: PDF- oder ZIP-Datei hochladen
       uploading: Hochladen...
       uploading_failed: Das Hochladen der Datei ist fehlgeschlagen. Versuchen Sie es erneut.
+      uploading_wait: Bitte warten Sie, bis der Datei-Upload abgeschlossen ist, bevor Sie das Formular absenden.
       use_image_filenames: " Bilddateinamen als Seitentitel verwenden."
       use_ocr_from_pdf: " Text aus PDF-Textebenen, Textdateien oder XML-Dateien impprtieren."
       zip_files_may_contain: ZIP-Dateien können Ordner mit Bildern, PDFs oder Ordner mit PDFs enthalten.

@@ -6,7 +6,8 @@ export default class extends Controller {
   static values = {
     directUrl: String,
     directUploadingPlaceholder: String,
-    directFailedPlaceholder: String
+    directFailedPlaceholder: String,
+    directWaitMsg: String
   }
 
   connect() {
@@ -17,6 +18,12 @@ export default class extends Controller {
     this.hidden = this.container.find('input[type=hidden]');
 
     this.disabled = false;
+
+    this.uploading = false;
+    this.form = this.element.closest('form');
+    if (this.form) {
+      this.form.addEventListener('submit', this.handleFormSubmit.bind(this));
+    }
 
     this.button.add(this.text).on('click', () => {
       if(!this.disabled) {
@@ -35,6 +42,7 @@ export default class extends Controller {
   }
 
   handleDirectUpload(blobFile) {
+    this.uploading = true;
     this.disabled = true;
     this.button.prop('disabled', true);
     this.text.val(this.directUploadingPlaceholderValue);
@@ -44,6 +52,7 @@ export default class extends Controller {
       this.directUrlValue,
       this
     ).create((error, blob) => {
+        this.uploading = false;
         if (error) {
           this.text.val(this.directFailedPlaceholderValue);
           this.hidden.val('');
@@ -59,5 +68,13 @@ export default class extends Controller {
     this.button.prop('disabled', false);
 
     this.file.val('');
+  }
+
+
+  handleFormSubmit(event) {
+    if (this.uploading) {
+      event.preventDefault();
+      alert(this.directWaitMsgValue);
+    }
   }
 }
