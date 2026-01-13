@@ -50,6 +50,30 @@ describe AiTranscription::GenerateJob do
         status: 'finished'
       )
     end
+
+    context 'when user is admin' do
+      let!(:admin) { create(:unique_user, :admin) }
+
+      let(:perform_worker) do
+        worker.perform(user_id: admin.id, ai_transcription_id: ai_transcription.id)
+      end
+
+      it 'performs generate job' do
+        VCR.use_cassette('ai_transcriptions/generate', record: :none, allow_playback_repeats: false) do
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        end
+
+        # Refer to `test_data/ai_transcriptions/gemini_3_response.json`
+        # It contains an actual response from gemini
+        expect(ai_transcription.reload).to have_attributes(
+          source_text: expected_response["candidates"].first["content"]["parts"].second["text"],
+          reasoning: expected_response["candidates"].first["content"]["parts"].first["text"],
+          status: 'finished'
+        )
+      end
+    end
   end
 
   context 'failure' do
@@ -60,6 +84,24 @@ describe AiTranscription::GenerateJob do
 
       allow(ai_transcription).to receive(:page).and_return(page)
       allow(page).to receive(:image_url_for_download).and_return(nil)
+    end
+
+    it 'performs generate job' do
+      expect {
+        perform_enqueued_jobs do
+          perform_worker
+        end
+      }.to raise_error
+
+      expect(ai_transcription.reload.status).to eq('error')
+    end
+  end
+
+  context 'no permission' do
+    let!(:user) { create(:unique_user) }
+
+    let(:perform_worker) do
+      worker.perform(user_id: user.id, ai_transcription_id: ai_transcription.id)
     end
 
     it 'performs generate job' do

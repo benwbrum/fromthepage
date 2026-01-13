@@ -9,7 +9,11 @@ describe Collection::AiTranscriptionsController do
   let!(:owner) { create(:unique_user, :owner) }
   let!(:admin) { create(:unique_user, :admin) }
   let!(:user) { create(:unique_user) }
-  let!(:collection) { create(:collection, owner_user_id: owner.id) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
+  let!(:work) { create(:work, owner_user_id: owner.id, pages: [], collection: collection) }
+
+  let!(:page) { create(:page, work: work) }
+  let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, status: :processing, source_text: nil, reasoning: nil) }
 
   describe '#edit' do
     let(:action_path) { edit_collection_ai_transcriptions_path(owner, collection) }
@@ -30,6 +34,24 @@ describe Collection::AiTranscriptionsController do
 
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
+      end
+
+      context 'with more than 1 result' do
+        let!(:page_2) { create(:page, work: work) }
+        let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
+
+        let!(:page_3) { create(:page, work: work) }
+        let!(:ai_transcription_3) { create(:ai_transcription, page_id: page_3.id, status: :error, source_text: nil, reasoning: nil) }
+
+        let!(:page_4) { create(:page, work: work) }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:edit)
+        end
       end
     end
 
@@ -66,6 +88,20 @@ describe Collection::AiTranscriptionsController do
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:create)
     end
+
+    context 'with errors' do
+      before do
+        stub_const('AiTranscription::DEFAULT_MODEL', nil)
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:create)
+      end
+    end
   end
 
   describe '#update' do
@@ -73,12 +109,34 @@ describe Collection::AiTranscriptionsController do
 
     let(:subject) { put action_path, as: :turbo_stream }
 
+    let!(:ai_transcription) { create(:ai_transcription, page_id: page.id, status: :error, source_text: nil, reasoning: nil) }
+
+    let!(:page_2) { create(:page, work: work) }
+    let!(:ai_transcription_2) { create(:ai_transcription, page_id: page_2.id, status: :finished, source_text: nil, reasoning: nil) }
+
     it 'renders status and template' do
       login_as owner
       subject
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:update)
+    end
+
+    context 'with errors' do
+      let(:result) { instance_double('Result', success?: false) }
+      let(:service) { instance_double(AiTranscription::BulkRetry, call: result) }
+
+      before do
+        allow(AiTranscription::BulkRetry).to receive(:new).and_return(service)
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update)
+      end
     end
   end
 end

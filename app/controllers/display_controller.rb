@@ -141,7 +141,7 @@ class DisplayController < ApplicationController
       return
     end
 
-    @ai_accuracy_stats = @page.ai_accuracy_statistics if @page.ai_transcription&.status_finished?
+    @ai_accuracy_stats = @page.ai_accuracy_statistics
   end
 
   def paged_search
