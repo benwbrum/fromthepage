@@ -262,14 +262,13 @@ const ResizableSplitter = {
 
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
-        const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
-        const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
-        splitter.style.top = `${splitterTop}px`;
+        // Let CSS sticky positioning handle the splitter position
+        // Don't manually set top position as it interferes with sticky behavior
         splitter.style.bottom = `auto`;
 
         // reset the sticky position of the CodeMirror buttons panel
         if(document.querySelector('.CodeMirror-buttonsPanel'))
-          document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
+          document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
