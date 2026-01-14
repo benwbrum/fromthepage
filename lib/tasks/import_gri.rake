@@ -10,7 +10,7 @@ namespace :fromthepage do
     end
 
     work = Work.find(work_id)
-    log_file = File.open("/tmp/import_GRI_errors.txt","a+")
+    log_file = File.open('/tmp/import_GRI_errors.txt', 'a+')
     log_file.print("\n"+work.title+"\n")
     Current.user = work.collection.owner
     sheet = Roo::Spreadsheet.open(spreadsheet_path).sheet(0)
