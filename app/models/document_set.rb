@@ -195,6 +195,7 @@ class DocumentSet < ApplicationRecord
   delegate :institution_signature,       to: :collection
   delegate :most_recent_deed_created_at, to: :collection
   delegate :legend,                      to: :collection
+  delegate :default_overview_orientation, to: :collection
 
 
   def export_subject_index_as_csv
