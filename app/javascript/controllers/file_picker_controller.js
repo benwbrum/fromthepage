@@ -22,6 +22,7 @@ export default class extends Controller {
     this.uploading = false;
     this.form = this.element.closest('form');
     if (this.form) {
+      this.submitButtons = $(this.form).find('button[type=submit], input[type=submit]');
       this.form.addEventListener('submit', this.handleFormSubmit.bind(this));
     }
 
@@ -46,6 +47,7 @@ export default class extends Controller {
     this.disabled = true;
     this.button.prop('disabled', true);
     this.text.val(this.directUploadingPlaceholderValue);
+    this.submitButtons.prop('disabled', true);
 
     new DirectUpload(
       blobFile,
@@ -62,12 +64,13 @@ export default class extends Controller {
           this.text.val(blob.filename);
           this.hidden.val(blob.signed_id);
         }
+
+        this.disabled = false;
+        this.button.prop('disabled', false);
+        this.submitButtons.prop('disabled', false);
+
+        this.file.val('');
       })
-
-    this.disabled = false;
-    this.button.prop('disabled', false);
-
-    this.file.val('');
   }
 
 
