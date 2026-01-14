@@ -130,9 +130,19 @@ h2.legend#notes =t('.page_notes')
         splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
           onPositionChange: function (pos) {
             window.localStorage.setItem('overviewSplitterPos', pos)
+            
+            // Trigger viewer to reset bounds when splitter position changes
+            if (typeof viewer !== 'undefined') {
+              requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+            }
           },
           initialPosition: (window.localStorage.getItem('overviewSplitterPos') || 50) + '%'
         });
+        
+        // Trigger viewer to reset bounds after splitter initialization
+        if (typeof viewer !== 'undefined') {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        }
       }
       
       // initialize splitter when page loaded
