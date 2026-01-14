@@ -10,6 +10,8 @@ namespace :fromthepage do
     end
 
     work = Work.find(work_id)
+    log_file = File.open("/tmp/import_GRI_errors.txt","a+")
+    log_file.print("\n"+work.title+"\n")
     Current.user = work.collection.owner
     sheet = Roo::Spreadsheet.open(spreadsheet_path).sheet(0)
     headers = sheet.row(1)
@@ -25,6 +27,7 @@ namespace :fromthepage do
       # Parse stock_book_page from FTP_Page Title
       # Input format: "Box 97, Page 312 (gri_2017_m_38_b97_0312)"
       # Extract: "gri_2017_m_38_b97_0312"
+
       ftp_page_title = row['FTP_Page Title']
       stock_book_page = ftp_page_title.to_s.match(/\(([^)]+)\)/)&.captures&.first
 
@@ -46,7 +49,6 @@ namespace :fromthepage do
         p.title == stock_book_page ||
           File.basename(p.base_image.to_s, File.extname(p.base_image.to_s)) == stock_book_page
       end
-
       unless page
         puts "Page not found for Stock Book Page #{stock_book_page}"
         next
@@ -93,12 +95,15 @@ namespace :fromthepage do
       page.source_text = lines.join("\n")
       page.status = Page.statuses[:transcribed]
       begin
-        page.save
+        page.save!
       rescue => ex
-        # PUT A BINDING PRY HERE
+        log_file.print(page.title+"\n")
+        log_file.print(page.errors.full_messages.join("\n"))
+        log_file.print("\n\n")
       end
       puts "Updated page #{page.title} with #{rows.length} rows"
     end
+    log_file.close
   end
 
   def wiki_link(tag, value)
@@ -108,7 +113,9 @@ namespace :fromthepage do
 
       # Strip square brackets from tag if present
       cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
-      "[[#{cleaned_tag}|#{value}]]"
+      # strip square brackets from value if present
+      cleaned_value = value.to_s.gsub(/^\[\[|\]\]$/, '')
+      "[[#{cleaned_tag}|#{cleaned_value}]]"
     else
       value.to_s
     end
@@ -124,7 +131,9 @@ namespace :fromthepage do
       if tag.present? && value.present?
         # Strip square brackets from tag if present
         cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
-        "[[#{cleaned_tag}|#{value}]]"
+        # strip square brackets from value if present
+        cleaned_value = value.to_s.gsub(/^\[\[|\]\]$/, '')
+        "[[#{cleaned_tag}|#{cleaned_value}]]"
       else
         value.to_s
       end
