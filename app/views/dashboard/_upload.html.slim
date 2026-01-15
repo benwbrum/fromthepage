@@ -21,7 +21,7 @@
                 { prompt: t('.select_a_collection') }
           tr
             td
-              .input-file[data-controller='file-picker' data-file-picker-direct-url-value=rails_direct_uploads_url data-file-picker-direct-uploading-placeholder-value=t('.uploading') data-file-picker-direct-failed-placeholder-value=t('.uploading_failed')]
+              .input-file[data-controller='file-picker' data-file-picker-direct-url-value=rails_direct_uploads_url data-file-picker-direct-uploading-placeholder-value=t('.uploading') data-file-picker-direct-failed-placeholder-value=t('.uploading_failed') data-file-picker-direct-wait-msg-value=t('.uploading_wait')]
                 =f.file_field :file,
                   tabindex: '-1',
                   accept: (DocumentUpload::ACCEPTED_FILE_TYPES + DocumentUpload::FE_ACCEPTED_FILE_TYPES).join(','),
