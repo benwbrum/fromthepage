@@ -304,7 +304,8 @@ module AbstractXmlHelper
     # convert indent elements to spans or spaces, depending on preserve_lb
     doc.elements.each('//indent') do |e|
       spaces_attr = e.attributes['spaces']
-      # Default to 0 if attribute is missing, but this should not happen in normal operation
+      # Defensive coding: default to 0 if attribute is somehow missing from malformed XML
+      # In normal operation, all indent elements should have the spaces attribute
       spaces_count = (spaces_attr || '0').to_i
       
       if preserve_lb
