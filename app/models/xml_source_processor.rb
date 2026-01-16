@@ -344,11 +344,11 @@ end
     
     # Process initial whitespace after line breaks (various newline formats)
     # Handle \r\n, \n, and \r line endings
-    text = text.gsub(/(\r\n|\n|\r)( +)/) { |match| 
-      line_break = match[0] == "\r" && match[1] == "\n" ? "\r\n" : match[0]
-      spaces = match.scan(/ /).length
-      "#{line_break}<indent spaces=\"#{spaces}\"/>"
-    }
+    text = text.gsub(/(\r\n|\n|\r)( +)/) do
+      line_break = $1  # First capture group is the line break
+      spaces = $2      # Second capture group is the spaces
+      "#{line_break}<indent spaces=\"#{spaces.length}\"/>"
+    end
     
     text
   end
