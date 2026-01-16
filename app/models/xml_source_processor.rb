@@ -336,8 +336,28 @@ end
     title
   end
 
+  # Process initial whitespace at the beginning of lines
+  # Replaces leading spaces with <indent> elements containing a spaces attribute
+  def process_initial_whitespace(text)
+    # Process initial whitespace at the very beginning of the text
+    text = text.gsub(/^( +)/) { |match| "<indent spaces=\"#{match.length}\"/>" }
+    
+    # Process initial whitespace after line breaks (various newline formats)
+    # Handle \r\n, \n, and \r line endings
+    text = text.gsub(/(\r\n|\n|\r)( +)/) { |match| 
+      line_break = match[0] == "\r" && match[1] == "\n" ? "\r\n" : match[0]
+      spaces = match.scan(/ /).length
+      "#{line_break}<indent spaces=\"#{spaces}\"/>"
+    }
+    
+    text
+  end
+
   # transformations converting source mode transcription to xml
   def process_line_breaks(text, add_paragraph_tags = true)
+    # First, process initial whitespace before converting line breaks
+    text = process_initial_whitespace(text)
+    
     if add_paragraph_tags
       text="<p>#{text}</p>"
       text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
