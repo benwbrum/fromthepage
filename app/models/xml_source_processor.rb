@@ -340,7 +340,7 @@ end
   # Replaces leading spaces with <indent> elements containing a spaces attribute
   def process_initial_whitespace(text)
     # Process initial whitespace at the very beginning of the text
-    text = text.gsub(/^( +)/) { |match| "<indent spaces=\"#{match.length}\"/>" }
+    text = text.gsub(/^( +)/) { "<indent spaces=\"#{$1.length}\"/>" }
     
     # Process initial whitespace after line breaks (various newline formats)
     # Handle \r\n, \n, and \r line endings

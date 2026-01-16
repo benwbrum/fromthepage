@@ -303,7 +303,9 @@ module AbstractXmlHelper
 
     # convert indent elements to spans or spaces, depending on preserve_lb
     doc.elements.each('//indent') do |e|
-      spaces_count = e.attributes['spaces'].to_i
+      spaces_attr = e.attributes['spaces']
+      # Default to 0 if attribute is missing, but this should not happen in normal operation
+      spaces_count = (spaces_attr || '0').to_i
       
       if preserve_lb
         # Create a span with inline style for indentation
