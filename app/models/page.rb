@@ -639,7 +639,7 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def has_alto?
-    self.alto_transcription.present? || File.exist?(self.alto_path)
+    self.alto_transcription&.prompt&.present? || File.exist?(self.alto_path)
   end
 
   # TODO: Remove this on different PR after running migration

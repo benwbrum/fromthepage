@@ -37,7 +37,7 @@
     a#osd_prev =svg_symbol "#icon-arrow-left", class: 'icon'
     a#osd_next =svg_symbol "#icon-arrow-right", class: 'icon'
 
--if @page && @page.has_alto?
+-if @page&.has_alto?
   .ai-toolbar(id="ai_toolbar")
     a#toggle-locked =svg_symbol "#icon-clipboard", class: 'icon'
     a#toggle-visibility #{t('.ai_assist')}
