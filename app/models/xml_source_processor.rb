@@ -113,6 +113,7 @@ end
     xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
+    xml_string = process_initial_whitespace(xml_string)
     xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
@@ -340,13 +341,13 @@ end
   # Replaces leading spaces with <indent> elements containing a spaces attribute
   def process_initial_whitespace(text)
     # Process initial whitespace at the very beginning of the text
+    # and after newlines. The ^ anchor matches after \n and \r\n, but not after \r alone.
     text = text.gsub(/^( +)/) { "<indent spaces=\"#{$1.length}\"/>" }
     
-    # Process initial whitespace after line breaks (various newline formats)
-    # Handle \r\n, \n, and \r line endings
-    text = text.gsub(/(\r\n|\n|\r)( +)/) do
-      line_break = $1  # First capture group is the line break
-      spaces = $2      # Second capture group is the spaces
+    # Handle the \r (old Mac) line ending case, which ^ doesn't match
+    text = text.gsub(/(\r)( +)(?!\n)/) do
+      line_break = $1  # The \r character
+      spaces = $2      # The spaces after \r
       "#{line_break}<indent spaces=\"#{spaces.length}\"/>"
     end
     
@@ -355,9 +356,6 @@ end
 
   # transformations converting source mode transcription to xml
   def process_line_breaks(text, add_paragraph_tags = true)
-    # First, process initial whitespace before converting line breaks
-    text = process_initial_whitespace(text)
-    
     if add_paragraph_tags
       text="<p>#{text}</p>"
       text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
