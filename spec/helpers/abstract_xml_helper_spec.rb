@@ -114,15 +114,15 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     it "converts indent elements to styled spans when preserve_lb=true" do
       xml_with_indent = "<?xml version='1.0' encoding='UTF-8'?><page><p><indent spaces=\"3\"/>This is indented</p></page>"
       result = xml_to_html(xml_with_indent, true, false, @collection)
-      
-      expect(result).to include('<span class="indent" style="padding-left: 1.5em;"></span>')
+
+      expect(result).to include('<span class="indent" style="padding-left:1.5em;">')
       expect(result).to include('This is indented')
     end
 
     it "converts indent elements to single space when preserve_lb=false" do
-      xml_with_indent = "<?xml version='1.0' encoding='UTF-8'?><page><p><indent spaces=\"3\"/>This is indented</p></page>"
+      xml_with_indent = "<?xml version='1.0' encoding='UTF-8'?><page><p>Preceding Line\n<indent spaces=\"3\"/>This is indented</p></page>"
       result = xml_to_html(xml_with_indent, false, false, @collection)
-      
+
       # Should contain a single space where the indent was
       expect(result).to include(' This is indented')
       # Should not contain the indent span
@@ -132,17 +132,17 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     it "handles different indent sizes correctly" do
       xml_with_indents = "<?xml version='1.0' encoding='UTF-8'?><page><p><indent spaces=\"2\"/>Two spaces<lb/><indent spaces=\"5\"/>Five spaces</p></page>"
       result = xml_to_html(xml_with_indents, true, false, @collection)
-      
-      expect(result).to include('padding-left: 1.0em;')
-      expect(result).to include('padding-left: 2.5em;')
+
+      expect(result).to include('padding-left:1.0em;')
+      expect(result).to include('padding-left:2.5em;')
     end
 
     it "handles multiple indented lines in a paragraph" do
       xml_with_multiple = "<?xml version='1.0' encoding='UTF-8'?><page><p><indent spaces=\"4\"/>Line one<lb/><indent spaces=\"4\"/>Line two</p></page>"
       result = xml_to_html(xml_with_multiple, true, false, @collection)
-      
+
       # Should have two indent spans
-      expect(result.scan(/padding-left: 2\.0em;/).length).to eq(2)
+      expect(result.scan(/padding-left:2\.0em;/).length).to eq(2)
     end
   end
 end

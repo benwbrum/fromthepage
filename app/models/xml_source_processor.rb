@@ -343,14 +343,14 @@ end
     # Process initial whitespace at the very beginning of the text
     # and after newlines. The ^ anchor matches after \n and \r\n, but not after \r alone.
     text = text.gsub(/^( +)/) { "<indent spaces=\"#{$1.length}\"/>" }
-    
+
     # Handle the \r (old Mac) line ending case, which ^ doesn't match
     text = text.gsub(/(\r)( +)(?!\n)/) do
       line_break = $1  # The \r character
       spaces = $2      # The spaces after \r
       "#{line_break}<indent spaces=\"#{spaces.length}\"/>"
     end
-    
+
     text
   end
 

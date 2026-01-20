@@ -307,7 +307,7 @@ module AbstractXmlHelper
       # Defensive coding: default to 0 if attribute is somehow missing from malformed XML
       # In normal operation, all indent elements should have the spaces attribute
       spaces_count = (spaces_attr || '0').to_i
-      
+
       if preserve_lb
         # Create a span with inline style for indentation
         # Use 0.5em per space for more compact indentation
