@@ -10,5 +10,5 @@ pin '@rails/request.js', to: 'requestjs.js'
 pin_all_from 'app/javascript/plugins', under: 'plugins'
 pin_all_from 'app/javascript/controllers', under: 'controllers'
 pin_all_from 'app/javascript/actions', under: 'actions'
-pin_all_from 'app/javascript/vendor', under: 'vendor', preload: false
+pin_all_from 'app/javascript/vendor', under: 'vendor'
 pin_all_from 'app/javascript/libs', under: 'libs'

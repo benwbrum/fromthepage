@@ -1,0 +1,14 @@
+#sc_collection_upload_form.my-3[data-controller='toggle-view']
+  h3
+    =link_to t('.import_a_iiif_manifest_or_collection'), '#', class: 'title', id: 'import-iiif-manifest', data: { action: 'click->toggle-view#toggle' }
+
+  section[data-toggle-view-target='toggleable' style='display: none']
+    =form_tag(sc_collections_import_path) do
+      table.form
+        tr
+          td
+            .input-file
+              =text_field_tag :at_id
+              -if @collection
+                =hidden_field_tag :collection_id, @collection.slug
+              =button_tag t('.import'), id: 'iiif_import'

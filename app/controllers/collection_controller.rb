@@ -43,8 +43,9 @@ class CollectionController < ApplicationController
     :edit_buttons,
     :update_buttons
   ]
+
   before_action :review_authorized?, only: [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
-  before_action :load_settings, only: [:upload, :edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
+  before_action :load_settings, only: [:edit_collaborators, :edit_owners, :block_users, :remove_owner, :remove_collaborator, :edit_reviewers, :remove_reviewer]
   before_action :permit_only_transcribed_works_flag, only: [:works_list]
 
   def search_users

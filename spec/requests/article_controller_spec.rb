@@ -416,6 +416,32 @@ describe ArticleController do
     end
   end
 
+  describe '#show' do
+    let!(:article) { create(:article, collection: collection, pages: [page]) }
+
+    context 'when article_id is missing' do
+      let(:action_path) { article_show_path }
+      let(:subject) { get action_path }
+
+      it 'returns bad request status' do
+        subject
+
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context 'when article_id is provided' do
+      let(:action_path) { article_show_path(article_id: article.id) }
+      let(:subject) { get action_path }
+
+      it 'renders successfully' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe '#relationship_graph' do
     let!(:article) { create(:article, collection: collection, pages: [page]) }
     let!(:linked_article) { create(:article, collection: collection) }
