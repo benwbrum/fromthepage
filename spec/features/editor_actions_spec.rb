@@ -55,6 +55,13 @@ describe "editor actions", order: :defined do
       expect(page_fact.verbatim_transcription_plaintext).to eq("foo bar contin-\nued on next\nline\n\n\n")
     end
 
+    it "preserves indentation in plaintext export" do
+      page_fact.source_text = "  Indented paragraph\nNormal paragraph\n\n       Centered title"
+      page_fact.save
+
+      expect(page_fact.verbatim_transcription_plaintext).to eq("  Indented paragraph\nNormal paragraph\n\n       Centered title\n\n")
+    end
+
     it "creates correct search text" do
       page_fact.source_text = "foo <strike>bar</strike> contin-\nued on next\nline"
       page_fact.save

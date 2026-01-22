@@ -733,8 +733,15 @@ class Page < ApplicationRecord
     doc.xpath('//br').each { |n| n.replace("\n") }
     doc.xpath('//div').each { |n| n.add_next_sibling("\n") }
     doc.xpath('//footnote').each { |n| n.replace('') }
+    
+    # Convert indent elements to actual spaces for plaintext
+    doc.xpath('//indent').each do |n|
+      spaces_count = (n['spaces'] || '0').to_i
+      n.replace(' ' * spaces_count)
+    end
 
-    doc.text.sub(/^\s*/m, '').gsub(/ *$/m, '')
+    # Strip leading/trailing whitespace from entire document, but preserve per-line indentation
+    doc.text.gsub(/^ +$/m, '').gsub(/ *$/m, '')
   end
 
   def formatted_plaintext_table(table_element)
