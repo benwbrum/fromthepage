@@ -168,8 +168,9 @@ en:
       upload_pdf_or_zip_file: Upload PDF or ZIP File
       uploading: Uploading...
       uploading_failed: Failed to upload file. Try again
+      uploading_wait: Please wait for the file upload to finish before submitting the form
       use_image_filenames: " Use image filenames as page titles."
-      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
+      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files.  You should only choose this option if your PDF contains typewritten text and you know it to have an OCR layer or your zip file contains .txt or .xml files that correspond to each page image file."
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
     watchlist:
       collections: collections

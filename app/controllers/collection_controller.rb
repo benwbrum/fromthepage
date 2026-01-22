@@ -203,6 +203,9 @@ class CollectionController < ApplicationController
   end
 
   def show
+    # Return early if collection not found to prevent NoMethodError
+    return redirect_to(dashboard_path) if @collection.nil?
+
     if current_user && CollectionBlock.find_by(collection_id: @collection.id, user_id: current_user.id).present?
       flash[:error] = t('unauthorized_collection', project: @collection.title)
       redirect_to user_profile_path(@collection.owner)
