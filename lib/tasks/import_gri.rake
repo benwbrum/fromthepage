@@ -133,7 +133,13 @@ namespace :fromthepage do
         cleaned_tag = tag.to_s.gsub(/^\[\[|\]\]$/, '')
         # strip square brackets from value if present
         cleaned_value = value.to_s.gsub(/^\[\[|\]\]$/, '')
-        "[[#{cleaned_tag}|#{cleaned_value}]]"
+        
+        # Add space after opening [[ if tag contains square braces
+        opening = cleaned_tag.include?('[') || cleaned_tag.include?(']') ? '[[  ' : '[['
+        # Add space before closing ]] if value contains square braces
+        closing = cleaned_value.include?('[') || cleaned_value.include?(']') ? ' ]]' : ']]'
+        
+        "#{opening}#{cleaned_tag}|#{cleaned_value}#{closing}"
       else
         value.to_s
       end
