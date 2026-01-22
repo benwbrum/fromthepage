@@ -170,7 +170,7 @@ de:
       uploading_failed: Das Hochladen der Datei ist fehlgeschlagen. Versuchen Sie es erneut.
       uploading_wait: Bitte warten Sie, bis der Datei-Upload abgeschlossen ist, bevor Sie das Formular absenden.
       use_image_filenames: " Bilddateinamen als Seitentitel verwenden."
-      use_ocr_from_pdf: " Text aus PDF-Textebenen, Textdateien oder XML-Dateien impprtieren."
+      use_ocr_from_pdf: " Text aus PDF-Textebenen, Textdateien oder XML-Dateien importieren. Sie sollten diese Option nur wählen, wenn Ihr PDF maschinengeschriebenen Text enthält und Sie wissen, dass es eine OCR-Ebene hat, oder wenn Ihre Zip-Datei .txt- oder .xml-Dateien enthält, die jeder Seitenbilddatei entsprechen."
       zip_files_may_contain: ZIP-Dateien können Ordner mit Bildern, PDFs oder Ordner mit PDFs enthalten.
     watchlist:
       collections: Sammlungen
