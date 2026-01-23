@@ -9,7 +9,7 @@ module AiAccuracyCalculator
 
   # Check if accuracy statistics can be calculated for this page
   def can_calculate_ai_accuracy?
-    has_ai_plaintext? && completed_transcription?
+    has_ai_plaintext? && has_human_transcription?
   end
 
   # Check if non-stopword accuracy can be calculated for this collection's language
@@ -52,16 +52,9 @@ module AiAccuracyCalculator
 
   private
 
-  # Check if page has a completed transcription status
-  def completed_transcription?
-    # Use Page model's COMPLETED_STATUSES but exclude translation status
-    # since transcription happens before translation
-    transcription_completed_statuses = [
-      Page.statuses[:blank],
-      Page.statuses[:indexed],
-      Page.statuses[:transcribed]
-    ]
-    transcription_completed_statuses.include?(status)
+  # Check if page has human transcription content
+  def has_human_transcription?
+    xml_text.present?
   end
 
   # Calculate statistics for verbatim text (with punctuation and formatting)
