@@ -661,7 +661,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.index ["controller", "view"], name: "index_page_blocks_on_controller_and_view"
   end
 
-  create_table "page_versions", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "page_versions", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
     t.text "transcription", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_transcription", size: :medium, collation: "utf8mb4_unicode_ci"
