@@ -3,7 +3,7 @@
 require 'stopwords'
 
 # Concern for calculating AI transcription accuracy metrics
-# Compares AI-generated text against human-verified ground truth
+# Compares AI-generated text against human transcription
 module AiAccuracyCalculator
   extend ActiveSupport::Concern
 
@@ -91,7 +91,7 @@ module AiAccuracyCalculator
   end
 
   # Calculate Character Error Rate (CER)
-  # CER = Levenshtein distance / length of ground truth
+  # CER = Levenshtein distance / length of human transcription
   def character_error_rate(ground_truth, predicted)
     return 0.0 if ground_truth == predicted
     return 100.0 if ground_truth.blank? || predicted.blank?
@@ -104,7 +104,7 @@ module AiAccuracyCalculator
   end
 
   # Calculate Word Error Rate (WER)
-  # WER = Levenshtein distance on words / number of words in ground truth
+  # WER = Levenshtein distance on words / number of words in human transcription
   def word_error_rate(ground_truth, predicted)
     ground_truth_words = ground_truth.split(/\s+/).reject(&:blank?)
     predicted_words = predicted.split(/\s+/).reject(&:blank?)
