@@ -3,7 +3,7 @@ dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : catego
     .headline
       h3.headline_title(data-category-title="#{category == 'uncategorized' ? 'none' : category.id}")
         ="#{category == 'uncategorized' ? t('article.list.uncategorized_subjects') : category.title}"
-      -if user_signed_in? && current_user.like_owner?(@collection) && category != 'uncategorized'
+      -if user_signed_in? && current_user.like_owner?(@collection) && category != 'uncategorized' && @search.blank?
         =render partial: 'table_actions', locals: { category: category }
 
   -if has_articles

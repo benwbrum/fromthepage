@@ -18,8 +18,6 @@ class ArticleController < ApplicationController
     @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
 
-    @category_ids_with_articles = ArticlesCategory.where(category_id: @categories.pluck(:id)).pluck(:category_id).uniq
-
     if search.present?
       @selected_category = 'all'
       @ancestor_ids = []
@@ -37,6 +35,8 @@ class ArticleController < ApplicationController
         @ancestor_ids = []
       end
     end
+
+    @category_ids_with_articles = @collection.categories.joins(:articles).distinct.pluck(:id)
 
     respond_to do |format|
       format.html
@@ -64,20 +64,24 @@ class ArticleController < ApplicationController
       articles_scope = articles_scope.where(categories: { id: @category.id })
     end
 
-    @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
-    @pages_count_map = articles_scope.left_joins(:page_article_links)
-                                     .group('articles.id')
-                                     .pluck('articles.id, COUNT(page_article_links.id)')
-                                     .to_h
+    if search.present? && articles_scope.count.zero?
+      render turbo_stream: turbo_stream.remove("category-#{@category == 'uncategorized' ? 'none' : @category.id}")
+    else
+      @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
+      @pages_count_map = articles_scope.left_joins(:page_article_links)
+                                       .group('articles.id')
+                                       .pluck('articles.id, COUNT(page_article_links.id)')
+                                       .to_h
 
-    @articles = Article.sort_vertically(articles_scope)
-                       .distinct
-                       .limit(ARTICLES_BATCH_SIZE)
-                       .offset(@batch * ARTICLES_BATCH_SIZE)
+      @articles = Article.sort_vertically(articles_scope)
+                         .distinct
+                         .limit(ARTICLES_BATCH_SIZE)
+                         .offset(@batch * ARTICLES_BATCH_SIZE)
 
-    render turbo_stream: turbo_stream.replace(
-      "lazy_items_#{@category == 'uncategorized' ? @category : @category.id}_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
-    )
+      render turbo_stream: turbo_stream.replace(
+        "lazy_items_#{@category == 'uncategorized' ? @category : @category.id}_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
+      )
+    end
   end
 
   def delete
