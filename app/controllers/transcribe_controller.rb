@@ -87,6 +87,8 @@ class TranscribeController  < ApplicationController
         return
       end
     else
+      @page.attributes = page_params unless page_params.empty?
+
       if params['preview']
         @display_context = 'preview'
         @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)
