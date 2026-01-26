@@ -330,6 +330,18 @@ describe DashboardController do
           expect(response).to render_template(:landing_page)
         end
       end
+
+      context 'filter by user' do
+        let(:params) { { search: collection.title, filter: 'user' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
     end
   end
 
