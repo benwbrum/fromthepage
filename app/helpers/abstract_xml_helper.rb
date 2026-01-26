@@ -301,6 +301,27 @@ module AbstractXmlHelper
       e.replace_with(lb) unless preserve_lb
     end
 
+    # convert indent elements to spans or spaces, depending on preserve_lb
+    doc.elements.each('//indent') do |e|
+      spaces_attr = e.attributes['spaces']
+      # Defensive coding: default to 0 if attribute is somehow missing from malformed XML
+      # In normal operation, all indent elements should have the spaces attribute
+      spaces_count = (spaces_attr || '0').to_i
+
+      if preserve_lb
+        # Create a span with inline style for indentation
+        # Use 0.5em per space for more compact indentation
+        indent_span = REXML::Element.new('span')
+        indent_span.add_attribute('class', 'indent')
+        indent_span.add_attribute('style', "padding-left: #{spaces_count * 0.5}em;")
+        e.replace_with(indent_span)
+      else
+        # When not preserving line breaks, just replace with a single space
+        text_node = REXML::Text.new(' ')
+        e.replace_with(text_node)
+      end
+    end
+
     doc.elements.each('//entryHeading') do |e|
       # convert to a span
       depth = e.attributes['depth']

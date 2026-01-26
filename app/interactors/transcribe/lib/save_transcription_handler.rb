@@ -6,7 +6,7 @@ class Transcribe::Lib::SaveTranscriptionHandler < Transcribe::Lib::BaseHandler
   TRANSLATION = 'TRANSLATION'
   TRANSCRIPTION = 'TRANSCRIPTION'
 
-  def initialize(page:, collection:, page_params:, extra_page_params:, user:, action_params:, field_cells: nil, quality_sampling: nil)
+  def initialize(page:, collection:, page_params:, extra_page_params:, user:, action_params:, field_cells: nil, quality_sampling: nil, ai_draft_used: nil)
     @page = page
     @collection = collection
     @page_params = page_params
@@ -14,6 +14,7 @@ class Transcribe::Lib::SaveTranscriptionHandler < Transcribe::Lib::BaseHandler
     @action_params = action_params
     @field_cells = field_cells
     @quality_sampling = quality_sampling
+    @ai_draft_used = ai_draft_used
     @user = user
 
     @notice = nil
@@ -28,12 +29,23 @@ class Transcribe::Lib::SaveTranscriptionHandler < Transcribe::Lib::BaseHandler
     calculate_table_cells
 
     @page.attributes = @page_params unless @page_params.empty?
+    @page.ai_draft_used = @ai_draft_used
 
     @message = log_transcript_attempt
 
     handle_page_status
 
     if @page.save
+      if @page.ai_draft_used
+        record_deed({
+          page_id: @page.id,
+          work_id: @page.work_id,
+          collection_id: @collection.id,
+          user_id: @user.id,
+          deed_type: DeedType::AI_DRAFT
+        })
+      end
+
       log_success(TRANSCRIPTION)
       @notice = I18n.t('transcribe.save_transcription.saved_notice')
 

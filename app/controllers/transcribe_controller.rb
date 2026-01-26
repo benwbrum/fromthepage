@@ -75,7 +75,8 @@ class TranscribeController  < ApplicationController
         user: current_user,
         action_params: action_params,
         field_cells: params[:fields],
-        quality_sampling: @quality_sampling
+        quality_sampling: @quality_sampling,
+        ai_draft_used: params[:ai_draft_used]
       )
 
       save_handler.perform
@@ -86,8 +87,6 @@ class TranscribeController  < ApplicationController
         return
       end
     else
-      @page.attributes = page_params unless page_params.empty?
-
       if params['preview']
         @display_context = 'preview'
         @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION, true)

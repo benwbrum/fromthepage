@@ -120,16 +120,31 @@ class Article < ApplicationRecord
 
   def self.sort_vertically(articles_scope, columns: LIST_NUM_COLUMNS)
     subquery_sql = articles_scope
-      .select('articles.*, ROW_NUMBER() OVER (ORDER BY TRIM(articles.title) ASC) AS rn, COUNT(*) OVER () AS total_count')
+      .select('articles.*, ROW_NUMBER() OVER (ORDER BY TRIM(articles.title) ASC, articles.id ASC) AS rn, COUNT(*) OVER () AS total_count')
       .to_sql
 
     from("(#{subquery_sql}) AS ordered")
       .select('ordered.*')
       .order(
-        Arel.sql(
-          "((rn - 1) % CEIL(total_count / #{columns}.0)) * #{columns} + " \
-          "FLOOR((rn - 1) / CEIL(total_count / #{columns}.0))"
-        )
+        Arel.sql(<<~SQL)
+          CASE
+            WHEN rn <= (FLOOR(total_count / #{columns}) + 1)
+                       * (total_count % #{columns})
+            THEN
+              ((rn - 1) % (FLOOR(total_count / #{columns}) + 1)) * #{columns}
+              + FLOOR((rn - 1) / (FLOOR(total_count / #{columns}) + 1))
+            ELSE
+              ((rn - 1 - (FLOOR(total_count / #{columns}) + 1)
+                       * (total_count % #{columns}))
+                % FLOOR(total_count / #{columns})) * #{columns}
+              + (total_count % #{columns})
+              + FLOOR(
+                  (rn - 1 - (FLOOR(total_count / #{columns}) + 1)
+                   * (total_count % #{columns}))
+                  / FLOOR(total_count / #{columns})
+                )
+          END
+        SQL
       )
   end
 
