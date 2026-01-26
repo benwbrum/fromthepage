@@ -39,37 +39,37 @@ describe DocumentUpload do
     let!(:upload2) { create(:document_upload, collection: collection2, user: user2, file: file2) }
 
     it 'finds uploads by user login' do
-      results = DocumentUpload.search(user1.login)
+      results = DocumentUpload.search(user1.login).to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
 
     it 'finds uploads by user display name' do
-      results = DocumentUpload.search('Alpha')
+      results = DocumentUpload.search('Alpha').to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
 
     it 'finds uploads by user email' do
-      results = DocumentUpload.search(user1.email)
+      results = DocumentUpload.search(user1.email).to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
 
     it 'finds uploads by collection title' do
-      results = DocumentUpload.search('Searchable')
+      results = DocumentUpload.search('Searchable').to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
 
     it 'is case insensitive' do
-      results = DocumentUpload.search(user1.login.upcase)
+      results = DocumentUpload.search(user1.login.upcase).to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
 
     it 'finds partial matches' do
-      results = DocumentUpload.search('Alpha')
+      results = DocumentUpload.search('Alpha').to_a
       expect(results).to include(upload1)
       expect(results).not_to include(upload2)
     end
