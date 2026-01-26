@@ -8,7 +8,7 @@ de:
       facsimile: Faksimile
       show_comparison_with_transcription: Vergleich mit der Transkription anzeigen
       statistics_unavailable: Für diese Seite sind keine Genauigkeitsstatistiken verfügbar.
-      statistics_unavailable_reason: Statistiken können nur für Seiten mit einem abgeschlossenen Transkriptionsstatus (leer, indexiert oder transkribiert) berechnet werden.
+      statistics_unavailable_reason: Statistiken können nur für Seiten mit menschlicher Transkription berechnet werden.
     cer_stats:
       accuracy_explanation: Diese Statistiken vergleichen den von der KI generierten Text mit der von Menschen überprüften Transkription und geben Aufschluss über die Genauigkeit der KI-Transkription.
       accuracy_statistics: Genauigkeitsstatistik
