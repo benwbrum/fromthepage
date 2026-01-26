@@ -137,6 +137,12 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
           _index: PagesIndex.index_name
         }
       }
+    when 'user'
+      base_query[:post_filter] = {
+        prefix: {
+          _index: UsersIndex.index_name
+        }
+      }
     end
 
     if @query_params[:org].present?
