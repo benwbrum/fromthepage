@@ -41,6 +41,10 @@ FactoryBot.define do
       trait :admin do
         admin { true }
       end
+
+      trait :with_real_name do
+        sequence(:real_name) { |n| "real_name_#{n}" }
+      end
     end
   end
 end

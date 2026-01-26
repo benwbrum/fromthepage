@@ -43,7 +43,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
     inflate_results
 
     @results = WillPaginate::Collection.create(@page, DEFAULT_PAGE_SIZE,
-                                               [MAX_SEARCH_RESULTS, filtered_count].min) do |pager|
+                                               [MAX_SEARCH_RESULTS, (filtered_count || 0)].min) do |pager|
       pager.replace(@results)
     end
   end
