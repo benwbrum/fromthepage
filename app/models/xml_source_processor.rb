@@ -71,15 +71,15 @@ module XmlSourceProcessor
     #    return errors.size > 0
   end
 
-def source_text=(text)
+  def source_text=(text)
     self.source_text_will_change!
     super
-end
+  end
 
-def source_translation=(text)
-  self.source_translation_will_change!
-  super
-end
+  def source_translation=(text)
+    self.source_translation_will_change!
+    super
+  end
 
   ##############################################
   # All code to convert transcriptions from source
@@ -112,8 +112,8 @@ end
     xml_string = clean_bad_braces(xml_string)
     xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
-    xml_string = process_linewise_markup(xml_string)
     xml_string = process_initial_whitespace(xml_string)
+    xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
