@@ -342,13 +342,16 @@ end
   def process_initial_whitespace(text)
     # Process initial whitespace at the very beginning of the text
     # and after newlines. The ^ anchor matches after \n and \r\n, but not after \r alone.
-    text = text.gsub(/^( +)/) { "<indent spaces=\"#{$1.length}\"/>" }
+    text = text.gsub(/^( +)/) do
+      spaces = $1.length
+      spaces == 1 ? '' : "<indent spaces=\"#{spaces}\"/>"
+    end
 
     # Handle the \r (old Mac) line ending case, which ^ doesn't match
     text = text.gsub(/(\r)( +)(?!\n)/) do
       line_break = $1  # The \r character
       spaces = $2      # The spaces after \r
-      "#{line_break}<indent spaces=\"#{spaces.length}\"/>"
+      spaces == 1 ? line_break : "#{line_break}<indent spaces=\"#{spaces}\"/>"
     end
 
     text
