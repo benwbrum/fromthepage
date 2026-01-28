@@ -391,12 +391,31 @@ EOF
     # log the count of articles before and after
     clear_links(text_type) unless preview_mode
 
-    candidate_articles = collection.articles.left_joins(:article_versions)
+    # Pre-load all articles and article versions into memory for fast lookups
+    # This eliminates N+1 queries when processing multiple links
     page_update_timestamp = 1.hour.ago
+    
+    # Load all articles from the collection into a hash indexed by title
+    articles_by_title = collection.articles.index_by(&:title)
+    
+    # Load recent article versions (within the past hour) indexed by title
+    # This handles cases where articles were recently renamed
+    recent_versions = ArticleVersion
+                        .joins(:article)
+                        .where(articles: { collection_id: collection.id })
+                        .where('article_versions.created_on > ?', page_update_timestamp)
+                        .includes(:article)
+    
+    article_versions_by_title = recent_versions.group_by(&:title)
+                                               .transform_values { |versions| versions.first.article }
 
     processed = ''
     # process it
     doc = REXML::Document.new xml_string
+    
+    # Collect new articles to create in batch
+    new_articles_by_title = {}
+    
     doc.elements.each('//link') do |element|
       # default the title to the text if it's not specified
       if !(title = element.attributes['target_title'])
@@ -411,12 +430,12 @@ EOF
       # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
-      article = candidate_articles.find_by(title: title)
+      # Look up article in pre-loaded hash (O(1) instead of O(n) database query)
+      article = articles_by_title[title]
 
-      if article.nil?
-        article = candidate_articles.where('article_versions.title': title)
-                                    .where('article_versions.created_on > ?', page_update_timestamp)
-                                    .first
+      # If not found, check recent article versions for renamed articles
+      if article.nil? && article_versions_by_title.key?(title)
+        article = article_versions_by_title[title]
         if article.present?
           display_text = article.title
           title = article.title
@@ -425,11 +444,19 @@ EOF
 
       # create new blank articles if they don't exist already
       if article.nil?
-        article = Article.new
-        article.title = title
-        article.collection = collection
-        article.created_by_id = Current.user.id if Current.user.present?
-        article.save! unless preview_mode
+        # Check if we've already staged this article for creation in this batch
+        article = new_articles_by_title[title]
+        
+        if article.nil?
+          article = Article.new
+          article.title = title
+          article.collection = collection
+          article.created_by_id = Current.user.id if Current.user.present?
+          article.save! unless preview_mode
+          # Add to both hashes for future lookups in this same batch
+          new_articles_by_title[title] = article
+          articles_by_title[title] = article
+        end
       end
 
       link_id = create_link(article, display_text, text_type) unless preview_mode
