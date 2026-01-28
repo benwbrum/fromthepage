@@ -114,14 +114,13 @@ module XmlSourceProcessor
     xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_initial_whitespace(xml_string)
     xml_string = process_linewise_markup(xml_string)
-    xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
+    xml_string = process_line_breaks(xml_string, is_field_based: page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
   end
-
 
   # remove script tags from HTML to prevent javascript injection
   def clean_script_tags(text)
@@ -356,12 +355,12 @@ module XmlSourceProcessor
   end
 
   # transformations converting source mode transcription to xml
-  def process_line_breaks(text, add_paragraph_tags = true)
-    if add_paragraph_tags
+  def process_line_breaks(text, is_field_based: false)
+    if is_field_based
+      text = text.gsub(/\n/, '<lb/>')
+    else
       text="<p>#{text}</p>"
       text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
-    else
-      text = text.gsub(/\s*\n\s*\n\s*/, '<lb/><lb/>')
     end
     text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\n\s*/, '<lb/>')
