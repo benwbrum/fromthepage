@@ -391,7 +391,9 @@ EOF
     # log the count of articles before and after
     clear_links(text_type) unless preview_mode
 
-    candidate_articles = collection.articles.left_joins(:article_versions)
+
+    articles_by_title = collection.articles.index_by(&:title) # optimize for common case
+    candidate_articles = collection.articles.left_joins(:article_versions) # fall-back
     page_update_timestamp = 1.hour.ago
 
     processed = ''
@@ -411,7 +413,7 @@ EOF
       # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
-      article = candidate_articles.find_by(title: title)
+      article = articles_by_title[title]
 
       if article.nil?
         article = candidate_articles.where('article_versions.title': title)
@@ -430,6 +432,8 @@ EOF
         article.collection = collection
         article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
+        # add the new article to the hash
+        articles_by_title[title] = article
       end
 
       link_id = create_link(article, display_text, text_type) unless preview_mode

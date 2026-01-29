@@ -560,7 +560,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
