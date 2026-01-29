@@ -374,8 +374,13 @@
       padding: 0.25em 0.5em;
       border: 1px solid $borderColor;
     }
+
+    td, th {
+      vertical-align: top;
+    }
   }
 }
+
 .ai-toolbar {
   top: 0;
   right: 2%;
@@ -527,17 +532,17 @@
   background-color: mix(#FFF, $bodyBg, 35%);
   border: 1px solid $borderColor;
   border-radius: 0.5em;
-  
+
   .page-legend-title {
     margin: 0 0 1em 0;
     color: $bodyFg;
     font-size: $fontSize;
   }
-  
+
   .page-legend-content {
     color: $bodyFgFaded;
     line-height: 1.6;
-    
+
     p {
       margin: 0 0 1em 0;
       &:last-child { margin-bottom: 0; }
@@ -603,9 +608,7 @@
     border-radius: 4px;
     border: 1px solid $borderColor;
   }
-}  
-
-
+}
 
 // AI Text specific styles
 .ai-accuracy-statistics {

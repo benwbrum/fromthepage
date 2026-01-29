@@ -36,6 +36,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
@@ -559,7 +560,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
