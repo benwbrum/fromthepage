@@ -58,7 +58,7 @@ class Work::Export::Printable < ApplicationInteractor
         format: @format,
         time: @time
       },
-      formats: [ :html ]
+      formats: [:html]
     ).each_line.map(&:strip).join("\n")
   end
 
@@ -66,7 +66,7 @@ class Work::Export::Printable < ApplicationInteractor
 
   def sanitize_format
     format_sym = @format&.downcase&.to_sym
-    if [ :doc, :docx ].include?(format_sym)
+    if [:doc, :docx].include?(format_sym)
       @format = :docx
       @content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     elsif format_sym == :pdf
