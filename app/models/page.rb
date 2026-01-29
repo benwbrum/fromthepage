@@ -14,7 +14,7 @@
 #  lock_version            :integer          default(0)
 #  metadata                :text(65535)
 #  position                :integer
-#  search_text             :text(65535)
+#  search_text             :text(16777215)
 #  shrink_factor           :integer
 #  source_text             :text(16777215)
 #  source_translation      :text(16777215)
@@ -36,6 +36,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
