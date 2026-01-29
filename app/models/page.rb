@@ -14,7 +14,7 @@
 #  lock_version            :integer          default(0)
 #  metadata                :text(65535)
 #  position                :integer
-#  search_text             :text(16777215)
+#  search_text             :text(65535)
 #  shrink_factor           :integer
 #  source_text             :text(16777215)
 #  source_translation      :text(16777215)
