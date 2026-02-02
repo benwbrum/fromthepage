@@ -6,6 +6,7 @@ de:
       admin_dashboard: Admin-Dashboard
       all_rights_reserved: Alle Rechte vorbehalten.
       blog: Bloggen
+      case_studies: Fallstudien
       collaborator_dashboard: Mitarbeitenden-Dashboard
       contact_us: Kontaktieren Sie uns
       create_an_account: Konto erstellen
@@ -14,7 +15,6 @@ de:
       home: Home
       owner_dashboard: Projektinhaber:innen-Dashboard
       pricing: Preisgestaltung
-      case_studies: Fallstudien
       privacy_policy: Datenschutz-Bestimmungen
       projects: Projekte
       recaptcha_validation_failed: ReCAPTCHA-Validierung fehlgeschlagen

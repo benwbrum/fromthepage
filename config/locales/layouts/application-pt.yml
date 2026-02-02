@@ -6,6 +6,7 @@ pt:
       admin_dashboard: Painel de administração
       all_rights_reserved: Todos os direitos reservados.
       blog: Blog
+      case_studies: Estudos de Caso
       collaborator_dashboard: Painel do colaborador
       contact_us: Entre em contato
       create_an_account: Criar uma conta
@@ -14,7 +15,6 @@ pt:
       home: Página inicial
       owner_dashboard: Painel do proprietário
       pricing: Preços
-      case_studies: Estudos de Caso
       privacy_policy: Política de privacidade
       projects: Projetos
       recaptcha_validation_failed: Falha na validação do ReCAPTCHA
