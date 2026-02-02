@@ -11,6 +11,9 @@ fr:
     facing_edition:
       contributions_message: 'Ce document ne serait pas possible sans les contributions éditoriales des personnes suivantes :'
       export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.
+      metadata: Métadonnées
+      notes: Remarques
+      translation: Traduction
     index:
       api: API
       export_all_works: Exporter toutes les œuvres

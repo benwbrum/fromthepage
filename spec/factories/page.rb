@@ -18,6 +18,10 @@ FactoryBot.define do
       base_width { 1581 }
       base_height { 570 }
     end
+
+    trait :with_source_text_change do
+      after(:build) { |page, evaluator| page.source_text = evaluator.source_text }
+    end
   end
 end
 
