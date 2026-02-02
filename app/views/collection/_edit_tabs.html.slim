@@ -30,7 +30,7 @@
   path: "#{main_app.edit_quality_control_collection_path(@collection.owner, @collection)}",
 }]
 
--if current_user == @collection.owner
+-if current_user.admin? || current_user.like_owner?(@collection)
   -tabs += [{\
     icon: '#icon-robot',
     name: t('.ai'),
