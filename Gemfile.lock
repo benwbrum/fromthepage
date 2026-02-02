@@ -565,6 +565,7 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.3)
+    pandoc-ruby (2.1.10)
     parallel (1.27.0)
     parser (3.3.10.0)
       ast (~> 2.4.1)
@@ -1000,6 +1001,7 @@ DEPENDENCIES
   omniauth-multi-provider (~> 0.2.1)
   omniauth-saml (~> 1.10.6)
   open3
+  pandoc-ruby
   postmark-rails
   pry
   pry-awesome_print
