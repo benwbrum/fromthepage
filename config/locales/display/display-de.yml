@@ -2,13 +2,15 @@
 de:
   display:
     ai_text:
+      ai_draft: KI-Entwurf
       ai_generated_text: KI-generierter Text
       ai_text: KI-Text
       ai_text_edit_notice: Um diesen Text zu bearbeiten, verwenden Sie die Schaltfläche „AI-Entwurf“ im Transkriptions-Tab.
       facsimile: Faksimile
+      human_transcription: Menschliche Transkription
       show_comparison_with_transcription: Vergleich mit der Transkription anzeigen
       statistics_unavailable: Für diese Seite sind keine Genauigkeitsstatistiken verfügbar.
-      statistics_unavailable_reason: Statistiken können nur für Seiten mit einem abgeschlossenen Transkriptionsstatus (leer, indexiert oder transkribiert) berechnet werden.
+      statistics_unavailable_reason: Statistiken können nur für Seiten mit menschlicher Transkription berechnet werden.
     cer_stats:
       accuracy_explanation: Diese Statistiken vergleichen den von der KI generierten Text mit der von Menschen überprüften Transkription und geben Aufschluss über die Genauigkeit der KI-Transkription.
       accuracy_statistics: Genauigkeitsstatistik

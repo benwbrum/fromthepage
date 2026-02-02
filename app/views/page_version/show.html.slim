@@ -31,6 +31,9 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
               =l(version.created_on.to_date)
             div.image-wrap
               = version.status && render_status_icon("page_version_status_#{version.status}")
+              -if version.ai_draft_used
+                span[title=t('.ai_draft_used')]
+                  =svg_symbol '#icon-robot', class: 'icon'
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
@@ -39,6 +42,12 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
           div.diff-title
             - if @selected_version
               = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
+              - if @selected_version.ai_draft_used
+                b
+                  = ' - '
+                  i
+                    = t('.ai_draft_used')
+                    = svg_symbol '#icon-robot', class: 'icon', style: 'margin-left: 5px; stroke: yellow;'
           div.version-content
             - if @selected_version&.page_version && @previous_version&.page_version
               - if @selected_version.page_version > @previous_version.page_version

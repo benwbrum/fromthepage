@@ -2,13 +2,15 @@
 fr:
   display:
     ai_text:
+      ai_draft: Brouillon IA
       ai_generated_text: Texte généré par l'IA
       ai_text: Texte IA
       ai_text_edit_notice: Pour modifier ce texte, utilisez le bouton « Brouillon IA » dans l'onglet de transcription.
       facsimile: Facsimilé
+      human_transcription: Transcription humaine
       show_comparison_with_transcription: Afficher la comparaison avec la transcription
       statistics_unavailable: Les statistiques de précision ne sont pas disponibles pour cette page.
-      statistics_unavailable_reason: Les statistiques ne peuvent être calculées que pour les pages dont le statut de transcription est terminé (vierges, indexées ou transcrites).
+      statistics_unavailable_reason: Les statistiques ne peuvent être calculées que pour les pages avec transcription humaine.
     cer_stats:
       accuracy_explanation: Ces statistiques comparent le texte généré par l'IA à la transcription vérifiée par un humain, fournissant ainsi des informations sur la précision de la transcription par l'IA.
       accuracy_statistics: Statistiques de précision

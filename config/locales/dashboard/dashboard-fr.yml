@@ -168,8 +168,9 @@ fr:
       upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
       uploading: Téléchargement en cours...
       uploading_failed: Échec du téléchargement du fichier. Réessayer.
+      uploading_wait: Veuillez patienter jusqu'à la fin du téléchargement du fichier avant de soumettre le formulaire.
       use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
-      use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
+      use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML. Vous ne devriez choisir cette option que si votre PDF contient du texte dactylographié et que vous savez qu'il possède une couche OCR ou si votre fichier zip contient des fichiers .txt ou .xml qui correspondent à chaque fichier d'image de page."
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
     watchlist:
       collections: collections

@@ -168,8 +168,9 @@ es:
       upload_pdf_or_zip_file: Subir archivo PDF o ZIP
       uploading: Subiendo...
       uploading_failed: No se pudo cargar el archivo. Inténtalo de nuevo.
+      uploading_wait: Espere a que finalice la carga del archivo antes de enviar el formulario.
       use_image_filenames: Utilizar los nombres de archivo de las imágenes como títulos de página.
-      use_ocr_from_pdf: Utilizar el OCR de la capa de texto del PDF.
+      use_ocr_from_pdf: Importar texto de capas de texto PDF, archivos de texto o archivos XML. Solo debes elegir esta opción si tu PDF contiene texto mecanografiado y sabes que tiene una capa OCR o si tu archivo zip contiene archivos .txt o .xml que corresponden a cada archivo de imagen de página.
       zip_files_may_contain: Los archivos ZIP pueden contener carpetas con imágenes, PDFs o carpetas que contengan archivos PDF.
     watchlist:
       collections: colecciones

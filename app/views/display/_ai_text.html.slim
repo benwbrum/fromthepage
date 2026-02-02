@@ -29,12 +29,12 @@
                   div.version-content
                     div.table-responsive(data-diff-transcription="changed")
                       div.html-code
-                        h5 Ground Truth
+                        h5 =t('.human_transcription')
                         == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
                 div.version-col.right
                   div.version-content
                     div.table-responsive(data-diff-transcription="original")
                       div.html-code
-                        h5 AI Draft
+                        h5 =t('.ai_draft')
                         = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
 

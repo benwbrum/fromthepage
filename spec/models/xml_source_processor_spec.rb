@@ -189,6 +189,54 @@ RSpec.describe XmlSourceProcessor, type: :model do
     end
   end
 
+  describe '#process_initial_whitespace' do
+    let(:collection) { build_stubbed(:collection) }
+    let(:work) { build_stubbed(:work, collection: collection) }
+    let(:page) { build_stubbed(:page, work: work) }
+
+    it 'should convert leading spaces at the beginning of text to indent elements' do
+      text = "   This has three leading spaces"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq('<indent spaces="3"/>This has three leading spaces')
+    end
+
+    it 'should convert leading spaces after newlines to indent elements' do
+      text = "First line\n  Second line with 2 spaces\n    Third line with 4 spaces"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("First line\n<indent spaces=\"2\"/>Second line with 2 spaces\n<indent spaces=\"4\"/>Third line with 4 spaces")
+    end
+
+    it 'should handle text with no leading spaces' do
+      text = "No leading spaces\nAlso no leading spaces"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("No leading spaces\nAlso no leading spaces")
+    end
+
+    it 'should handle mixed lines with and without leading spaces' do
+      text = "First line\n  Indented\nNot indented\n    More indent"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("First line\n<indent spaces=\"2\"/>Indented\nNot indented\n<indent spaces=\"4\"/>More indent")
+    end
+
+    it 'should handle CRLF line endings' do
+      text = "First line\r\n  Second line"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("First line\r\n<indent spaces=\"2\"/>Second line")
+    end
+
+    it 'should handle single spaces' do
+      text = "Line one\n Line two"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("Line one\n<indent spaces=\"1\"/>Line two")
+    end
+
+    it 'should not affect spaces in the middle of lines' do
+      text = "Word   with   spaces"
+      result = page.process_initial_whitespace(text)
+      expect(result).to eq("Word   with   spaces")
+    end
+  end
+
   describe '#process_linewise_markup table processing' do
     let(:collection) { build_stubbed(:collection) }
     let(:work) { build_stubbed(:work, collection: collection) }

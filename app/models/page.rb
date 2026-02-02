@@ -36,6 +36,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
@@ -47,13 +48,13 @@ class Page < ApplicationRecord
   include ApplicationHelper
   include AiAccuracyCalculator
 
-  before_create :set_default_transcription_json
-  before_update :validate_blank_page
-  before_update :process_source
-  before_update :populate_search
-  before_update :update_line_count
-  before_save :calculate_last_editor
-  before_save :calculate_approval_delta
+  before_create { log_callback_duration('set_default_transcription_json') { set_default_transcription_json } }
+  before_update { log_callback_duration('validate_blank_page') { validate_blank_page } }
+  before_update { log_callback_duration('process_source') { process_source } }
+  before_update { log_callback_duration('populate_search') { populate_search } }
+  before_update { log_callback_duration('update_line_count') { update_line_count } }
+  before_save { log_callback_duration('calculate_last_editor') { calculate_last_editor } }
+  before_save { log_callback_duration('calculate_approval_delta') { calculate_approval_delta } }
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -68,7 +69,7 @@ class Page < ApplicationRecord
   has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
-  has_one :alto_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
+  has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
 
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
   has_and_belongs_to_many :sections
@@ -81,12 +82,14 @@ class Page < ApplicationRecord
   has_many :deeds, dependent: :destroy
   has_many :external_api_requests, dependent: :destroy
 
-  after_save :create_version
-  after_save :update_sections_and_tables
-  after_save :update_tex_figures
+  after_save { log_callback_duration('create_version') { create_version } }
+  after_save { log_callback_duration('update_sections_and_tables') { update_sections_and_tables } }
+  after_save { log_callback_duration('update_tex_figures') { update_tex_figures } }
   after_save do
-    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
-    work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
+    log_callback_duration('after_save_work_updates') do
+      work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
+      work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
+    end
   end
 
   after_initialize :defaults
@@ -102,6 +105,8 @@ class Page < ApplicationRecord
     !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
     serialize :transcription_json, coder: JSON
   end
+
+  attribute :ai_draft_used, :boolean, default: false
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -421,7 +426,8 @@ class Page < ApplicationRecord
       source_translation: self.source_translation,
       xml_translation: self.xml_translation,
       status: self.status,
-      transcription_json: self.transcription_json
+      transcription_json: self.transcription_json,
+      ai_draft_used: self.ai_draft_used? && self.saved_change_to_source_text?
     )
 
     # Add other attributes as needed
@@ -556,7 +562,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
@@ -683,6 +689,14 @@ class Page < ApplicationRecord
   end
 
   private
+
+  def log_callback_duration(callback_name)
+    start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    result = yield
+    elapsed_seconds = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
+    Rails.logger.info("page_callback: #{callback_name} finished in #{format('%.6f', elapsed_seconds)} seconds")
+    result
+  end
 
   # TODO: Remove this on different PR after running migration
   def ai_plaintext_path

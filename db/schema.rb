@@ -39,34 +39,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_16_170745) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
   create_table "ahoy_activity_summaries", id: :integer, charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.datetime "date", precision: nil
     t.integer "user_id"
@@ -89,7 +61,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_16_170745) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ai_transcriptions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text", size: :long
     t.text "prompt", size: :long
@@ -306,6 +278,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_16_170745) do
     t.boolean "alphabetize_works", default: true
     t.datetime "featured_at", precision: nil
     t.text "legend"
+    t.string "default_overview_orientation"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -696,7 +669,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_16_170745) do
     t.string "status", default: "new", null: false
     t.text "source_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", size: :medium, collation: "utf8mb4_unicode_ci"
-    t.text "search_text", collation: "utf8mb4_unicode_ci"
+    t.text "search_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "translation_status", default: "new", null: false
     t.text "metadata"
     t.datetime "edit_started_at", precision: nil

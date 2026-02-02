@@ -794,6 +794,15 @@ describe CollectionController do
     let(:action_path) { collection_path(owner, collection) }
     let(:subject) { get action_path }
 
+    context 'when collection does not exist' do
+      it 'redirects to dashboard' do
+        get "/#{owner.slug}/nonexistent-collection"
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
     context 'when facets are enabled' do
       let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
 
