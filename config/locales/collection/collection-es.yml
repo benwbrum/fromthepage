@@ -6,18 +6,18 @@ es:
         success: Se lanzó el trabajo de transcripción de IA.
       form:
         ai_transcription: Transcripción de IA
-        description: Inicie trabajos de transcripción de IA para las páginas de esta colección.
+        description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
         failed: Fallido
         finished: Finalizado
-        generate: Generar para nuevas páginas
+        generate: Crea borradores de IA para páginas que no los tengan
         in_progress: En curso
         not_started: No iniciado
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos
       update:
-        success: Retirada de trabajos de transcripción de IA.
+        success: Reintentando trabajos de transcripción de IA.
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     blank_collection:

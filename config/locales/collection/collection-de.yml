@@ -6,18 +6,18 @@ de:
         success: KI-Transkriptionsauftrag gestartet.
       form:
         ai_transcription: KI-Transkription
-        description: Starten Sie KI-Transkriptionsaufträge für Seiten in dieser Sammlung.
+        description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
         description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
         failed: Fehlgeschlagen
         finished: Fertig
-        generate: Für neue Seiten generieren
+        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese
         in_progress: Im Gange
         not_started: Nicht gestartet
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
       update:
-        success: KI-Transkriptionsjobs werden neu sortiert.
+        success: KI-Transkriptionsaufträge werden wiederholt.
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     blank_collection:

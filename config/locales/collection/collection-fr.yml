@@ -6,18 +6,18 @@ fr:
         success: Lancement d'un projet de transcription par IA.
       form:
         ai_transcription: Transcription par IA
-        description: Lancer des tâches de transcription IA pour les pages de cette collection.
+        description: Lancer une tâche de transcription IA pour les pages de cette collection.
         description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
         failed: Échoué
         finished: Fini
-        generate: Générer pour de nouvelles pages
+        generate: Créer des brouillons IA pour les pages qui en sont dépourvues
         in_progress: En cours
         not_started: Pas encore commencé
         pages: Pages
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
       update:
-        success: Réembauche des emplois de transcription IA.
+        success: Nouvelle tentative de transcription par IA.
     approve_all:
       approved_n_pages: "%{page_count} pages approuvées."
     blank_collection:
