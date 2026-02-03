@@ -11,14 +11,14 @@ es:
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
         failed: Fallido
         finished: Finalizado
-        generate: Crea borradores de IA para páginas que no los tengan
+        generate: Crea borradores de IA para páginas que no los tengan.
         in_progress: En curso
         not_started: No iniciado
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos
       update:
-        success: Reintentando trabajos de transcripción de IA.
+        success: Reintentando el trabajo de transcripción de IA.
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     blank_collection:

@@ -11,7 +11,7 @@ fr:
         description_complete: Toutes les pages de cette collection comportent des transcriptions IA.
         failed: Échoué
         finished: Fini
-        generate: Créer des brouillons IA pour les pages qui en sont dépourvues
+        generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
         in_progress: En cours
         not_started: Pas encore commencé
         pages: Pages

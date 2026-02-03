@@ -11,14 +11,14 @@ de:
         description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
         failed: Fehlgeschlagen
         finished: Fertig
-        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese
+        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
         in_progress: Im Gange
         not_started: Nicht gestartet
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
       update:
-        success: KI-Transkriptionsaufträge werden wiederholt.
+        success: KI-Transkriptionsauftrag wird wiederholt.
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     blank_collection:

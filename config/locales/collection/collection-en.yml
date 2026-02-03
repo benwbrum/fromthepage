@@ -11,14 +11,14 @@ en:
         description_complete: All pages in this collection have AI transcriptions.
         failed: Failed
         finished: Finished
-        generate: Create AI drafts for pages without them
+        generate: Create AI drafts for pages without them.
         in_progress: In progress
         not_started: Not started
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
       update:
-        success: Retrying AI transcription jobs.
+        success: Retrying AI transcription job.
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     blank_collection:
