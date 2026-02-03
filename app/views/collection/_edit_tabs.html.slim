@@ -37,6 +37,8 @@
     selected: 7,
     path: "#{main_app.edit_collection_ai_transcriptions_path(@collection.owner, @collection)}",
   }]
+
+-if current_user == @collection.owner
   -tabs += [{\
     icon: '#icon-warning-sign',
     name: t('.danger_zone'),
