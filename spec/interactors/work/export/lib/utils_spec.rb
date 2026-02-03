@@ -6,6 +6,11 @@ describe Work::Export::Lib::Utils do
     let(:preserve_lb) { false }
     let(:flatten_links) { false }
 
+    # Helper method to calculate expected column width
+    def expected_column_width(column_count)
+      (0.9 / column_count).round(2)
+    end
+
     context 'with a small table (3 columns)' do
       let(:table_xml) do
         <<~XML
@@ -25,7 +30,8 @@ describe Work::Export::Lib::Utils do
         result = described_class.process_table(page, table_element, preserve_lb, flatten_links)
 
         # Should use paragraph columns (p{width})
-        expect(result).to include('p{0.3\\linewidth}')
+        expected_width = expected_column_width(3)
+        expect(result).to include("p{#{expected_width}\\linewidth}")
         # Should NOT use landscape mode
         expect(result).not_to include('\\begin{landscape}')
         # Should NOT use small font
@@ -53,7 +59,8 @@ describe Work::Export::Lib::Utils do
         result = described_class.process_table(page, table_element, preserve_lb, flatten_links)
 
         # Should use paragraph columns with appropriate width
-        expect(result).to include('p{0.15\\linewidth}')
+        expected_width = expected_column_width(6)
+        expect(result).to include("p{#{expected_width}\\linewidth}")
         # Should use small font
         expect(result).to include('\\small')
         # Should NOT use landscape mode
@@ -81,7 +88,8 @@ describe Work::Export::Lib::Utils do
         result = described_class.process_table(page, table_element, preserve_lb, flatten_links)
 
         # Should use paragraph columns with appropriate width
-        expect(result).to include('p{0.11\\linewidth}')
+        expected_width = expected_column_width(8)
+        expect(result).to include("p{#{expected_width}\\linewidth}")
         # Should use landscape mode
         expect(result).to include('\\begin{landscape}')
         expect(result).to include('\\end{landscape}')
@@ -111,7 +119,8 @@ describe Work::Export::Lib::Utils do
         result = described_class.process_table(page, table_element, preserve_lb, flatten_links)
 
         # Should use paragraph columns with appropriate width
-        expect(result).to include('p{0.09\\linewidth}')
+        expected_width = expected_column_width(10)
+        expect(result).to include("p{#{expected_width}\\linewidth}")
         # Should use landscape mode
         expect(result).to include('\\begin{landscape}')
         expect(result).to include('\\end{landscape}')

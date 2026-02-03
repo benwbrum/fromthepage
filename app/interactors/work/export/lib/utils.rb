@@ -160,14 +160,15 @@ class Work::Export::Lib::Utils
     
     # Use paragraph columns with text wrapping for better handling of wide content
     # Calculate appropriate column width based on number of columns
-    column_width = column_count > 0 ? "#{(0.9 / column_count).round(2)}\\linewidth" : "0.3\\linewidth"
+    # Tables should always have at least one column
+    column_width = "#{(0.9 / column_count).round(2)}\\linewidth"
     column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
 
     # Determine if we need landscape mode and/or smaller font
     use_landscape = column_count >= 8
     use_small_font = column_count >= 6
 
-    latex = LINEBREAK_ELEMENT.dup
+    latex = "#{LINEBREAK_ELEMENT}"
     
     # Add landscape environment for very wide tables (8+ columns)
     latex += "\\begin{landscape}\n" if use_landscape
