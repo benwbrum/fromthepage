@@ -6,6 +6,7 @@ pt:
         success: Vaga de transcrição por IA aberta.
       form:
         ai_transcription: Transcrição por IA
+        contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
         description: Inicie um trabalho de transcrição por IA para páginas desta coleção.
         description_complete: Todas as páginas desta coleção possuem transcrições por IA.
         failed: Fracassado

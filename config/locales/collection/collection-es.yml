@@ -6,6 +6,7 @@ es:
         success: Se lanzó el trabajo de transcripción de IA.
       form:
         ai_transcription: Transcripción de IA
+        contact_us: Comuníquese con %{email} para actualizar a un plan que incluya borradores de IA.
         description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
         description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
         failed: Fallido
