@@ -108,29 +108,17 @@ module XmlSourceProcessor
     end
 
     xml_string = String.new(source_text)
-    start_time=Time.now
     xml_string = process_latex_snippets(xml_string)
-    logger.info("wiki_to_xml: process_latex_snippets finished at #{Time.now - start_time} seconds")
     xml_string = clean_bad_braces(xml_string)
-    logger.info("wiki_to_xml: clean_bad_braces finished at #{Time.now - start_time} seconds")
     xml_string = clean_script_tags(xml_string)
-    logger.info("wiki_to_xml: clean_script_tags finished at #{Time.now - start_time} seconds")
     xml_string = process_square_braces(xml_string) unless subjects_disabled
-    logger.info("wiki_to_xml: process_square_braces finished at #{Time.now - start_time} seconds")
     xml_string = process_initial_whitespace(xml_string)
-    logger.info("wiki_to_xml: process_initial_whitespace finished at #{Time.now - start_time} seconds")
     xml_string = process_linewise_markup(xml_string)
-    logger.info("wiki_to_xml: process_linewise_markup finished at #{Time.now - start_time} seconds")
     xml_string = process_line_breaks(xml_string, is_field_based: page.collection.field_based?)
-    logger.info("wiki_to_xml: process_line_breaks finished at #{Time.now - start_time} seconds")
     xml_string = valid_xml_from_source(xml_string)
-    logger.info("wiki_to_xml: valid_xml_from_source finished at #{Time.now - start_time} seconds")
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
-    logger.info("wiki_to_xml: update_links_and_xml finished at #{Time.now - start_time} seconds")
     xml_string = postprocess_xml_markup(xml_string)
-    logger.info("wiki_to_xml: postprocess_xml_markup finished at #{Time.now - start_time} seconds")
     postprocess_sections
-    logger.info("wiki_to_xml: postprocess_sections finished at #{Time.now - start_time} seconds")
     xml_string
   end
 
