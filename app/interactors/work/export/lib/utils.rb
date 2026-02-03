@@ -157,9 +157,27 @@ class Work::Export::Lib::Utils
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
-    column_format = '@{}' + ('l ' * column_count).strip + '@{}'
+    
+    # Use paragraph columns with text wrapping for better handling of wide content
+    # Calculate appropriate column width based on number of columns
+    column_width = column_count > 0 ? "#{(0.9 / column_count).round(2)}\\linewidth" : "0.3\\linewidth"
+    column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
 
-    latex = "#{LINEBREAK_ELEMENT}\\begin{longtable}[]{#{column_format}}\n"
+    # Determine if we need landscape mode and/or smaller font
+    use_landscape = column_count >= 8
+    use_small_font = column_count >= 6
+
+    latex = LINEBREAK_ELEMENT.dup
+    
+    # Add landscape environment for very wide tables (8+ columns)
+    latex += "\\begin{landscape}\n" if use_landscape
+    
+    # Use smaller font for tables with many columns (6+ columns)
+    latex += "\\small\n" if use_small_font && !use_landscape
+    latex += "\\footnotesize\n" if use_landscape
+    
+    latex += "\\begin{longtable}[]{#{column_format}}\n"
+    
     if table_element.elements['thead']
       latex += "\\toprule\n"
 
@@ -177,6 +195,10 @@ class Work::Export::Lib::Utils
 
     latex += "\\bottomrule\\noalign{}\n"
     latex += "\\end{longtable}\n"
+    
+    # Close landscape environment if used
+    latex += "\\end{landscape}\n" if use_landscape
+    
     latex
   end
 
