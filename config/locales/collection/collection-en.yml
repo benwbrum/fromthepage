@@ -6,7 +6,7 @@ en:
         success: AI transcription job launched.
       form:
         ai_transcription: AI Transcription
-        contact_us: "Contact %{email} to upgrade to a plan that includes AI drafts."
+        contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
         description: Launch AI transcription job for pages in this collection.
         description_complete: All pages in this collection have AI transcriptions.
         failed: Failed
