@@ -1,53 +1,9 @@
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $('.title').click(function(){
-        $(this).parent().next().toggle();
-      });
-    });
-
 .columns
   article.maincol
     =render 'dashboard/upload'
-
-    a name = "create-work"
-
-    h3
-      a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") =t('.import_a_iiif_manifest_or_collection')
-    section style="display: none"
-      =form_tag(sc_collections_import_path) do |f|
-        table.form
-            td
-              .input-file
-                =text_field_tag :at_id
-                -if @collection
-                  =hidden_field_tag :collection_id, @collection.slug
-                =button_tag t('.import'), :id => 'iiif_import'
-
-    h3
-      a(href="#" class="title" onclick="return false;" id="import-contentdm") =t('.import_from_contentdm')
-    section style="display: none"
-      p
-      =label_tag :cdm_url, t('.paste_in_the_url')
-      =form_tag(sc_collections_import_cdm_path) do |f|
-        table.form
-            td
-              .input-file
-                =text_field_tag :cdm_url
-                -if @collection
-                  =hidden_field_tag :collection_id, @collection.slug
-                =button_tag t('.import'), :id => 'cdm_import'
-        =t('.or_import_many')
-        -if @collection
-          =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path(collection_id: @collection.slug))
-        -else
-          =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path)
-
-    h3
-      a(href="#" class="title" onclick="return false;" id="import-internet-archive") =t('.import_from_the_internet_archive')
-    section style="display: none"
-      =link_to t('.import_from_archive_dot_org'), ia_book_form_path, data: { controller: 'litebox', litebox: { hash: 'import-ia' } }, class: 'button'
-
+    =render 'dashboard/sc_collection_upload'
+    =render 'dashboard/cdm_upload'
+    =render 'dashboard/ia_upload'
     =render 'dashboard/empty'
 
   aside.sidecol

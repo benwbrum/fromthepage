@@ -11,23 +11,27 @@ module Gemini
       'gemini-3-pro-preview' => 'v1beta'
     }.freeze
 
+    REASONING_MAP = {
+      'gemini-3-pro-preview' => true
+    }
+
     # Transcribes text from a page image using Google's Gemini multi-modal model
-    # Defaults to gemini-1.5-flash but can be configured via GEMINI_MODEL env var
-    # Note: The issue mentions Gemini 2.5, but we use 1.5-flash as it's stable and
-    # available. This can be updated when Gemini 2.5 is released.
+    # Defaults to gemini-3-pro-preview but can be configured via model parameter
+    # Note: The issue mentions Gemini 2.5, but we use gemini-3-pro-preview as default.
+    # This can be updated when other models are released.
     #
-    # Implements exponential backoff retry logic for 503 errors (server overload)
+    # Implements exponential backoff retry logic for 503 errors (server overload) and 429 errors (rate limit)
     #
     # @param image_url [String] The URL of the page image to transcribe
     # @param prompt [String] Optional custom prompt for transcription
-    # @param model [String] Optional custom model to use. Defaults to gemini-2.5-pro
-    # @param max_retries [Integer] Maximum number of retry attempts for 503 errors
+    # @param model [String] Optional custom model to use. Defaults to gemini-3-pro-preview
+    # @param max_retries [Integer] Maximum number of retry attempts for 503/429 errors
     # @return [String] The transcribed text from the image
-    def self.transcribe_image(image_url, prompt: nil, model: 'gemini-2.5-pro', max_retries: 5)
+    def self.transcribe_image(image_url, prompt: nil, model: 'gemini-3-pro-preview', max_retries: 5)
       api_key = ENV['GEMINI_API_KEY']
       raise ArgumentError, 'GEMINI_API_KEY environment variable is not set' if api_key.blank?
 
-      model ||= 'gemini-2.5-pro'
+      model ||= 'gemini-3-pro-preview'
 
       client = ::Gemini.new(
         credentials: {
@@ -52,7 +56,7 @@ module Gemini
         attempt += 1
 
         begin
-          response = client.stream_generate_content({
+          payload = {
             contents: {
               role: 'user',
               parts: [
@@ -65,18 +69,34 @@ module Gemini
                 }
               ]
             }
-          })
+          }
+
+          if REASONING_MAP[model]
+            payload = payload.merge({
+              generation_config: {
+                thinking_config: {
+                  include_thoughts: true
+                }
+              }
+            })
+          end
+
+          response = client.stream_generate_content(payload)
+
+          # TODO: Make options customizable for gemini and add to metadata
+          metadata = {}
 
           # Extract transcribed text from response
-          return extract_text_from_response(response)
+          return [extract_text_from_response(response), extract_reasoning_from_response(response), metadata, prompt]
         rescue StandardError => e
           last_error = e
 
-          # Check if this is a 503 error (server overload)
-          if e.message.include?('503') && attempt <= max_retries
+          # Check if this is a 503 error (server overload) or 429 error (rate limit)
+          if (e.message.include?('503') || e.message.include?('429')) && attempt <= max_retries
             # Calculate exponential backoff delay: 2^attempt seconds
             delay = 2**attempt
-            Rails.logger.warn("Gemini API 503 error (attempt #{attempt}/#{max_retries}). Retrying in #{delay} seconds...")
+            error_type = e.message.include?('429') ? '429 (rate limit)' : '503 (server overload)'
+            Rails.logger.warn("Gemini API #{error_type} error (attempt #{attempt}/#{max_retries}). Retrying in #{delay} seconds...")
             sleep(delay)
             next
           end
@@ -127,7 +147,26 @@ module Gemini
 
         parts = event.dig('candidates', 0, 'content', 'parts')
         parts.each do |part|
-          accumulated_text << part['text'] if part['text']
+          accumulated_text << part['text'] if part['text'] && !ActiveRecord::Type::Boolean.new.cast(part['thought'])
+        end
+      end
+
+      accumulated_text.join('').strip
+    end
+
+    # Extracts reasoning text from Gemini API response
+    #
+    # @param response [Array] The response from Gemini API
+    # @return [String] The extracted reasoning text
+    def self.extract_reasoning_from_response(response)
+      accumulated_text = []
+
+      response.each do |event|
+        next unless event.dig('candidates', 0, 'content', 'parts')
+
+        parts = event.dig('candidates', 0, 'content', 'parts')
+        parts.each do |part|
+          accumulated_text << part['text'] if part['text'] && ActiveRecord::Type::Boolean.new.cast(part['thought'])
         end
       end
 

@@ -7,9 +7,29 @@ describe Work::Metadata::Refresh do
   let(:at_id) { 'http://example.com/manifest' }
   let(:v3_hash) do
     {
-      id: at_id,
-      label: { en: ['Original Metadata'] },
-      metadata: original_metadata
+      "@context" => "http://iiif.io/api/presentation/3/context.json",
+            "id" => "http://example.com/manifest",
+          "type" => "Manifest",
+         "label" => {
+          "en" => [
+            "Original Metadata"
+          ]
+      },
+      "metadata" => [
+          {
+            "label" => {
+              "en" => [
+                 "Origin"
+               ]
+             },
+             "value" => {
+               "en" => [
+                  "Test Data"
+               ]
+             }
+          }
+      ],
+       "items" => []
     }.to_json.to_s
   end
 
@@ -24,7 +44,7 @@ describe Work::Metadata::Refresh do
   context 'when original metadata is blank' do
     it 'adds metadata' do
       expect(work.original_metadata).to be_nil
-      VCR.use_cassette('iiif/refresh_metadata', record: :none) do
+      VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
         result
       end
       expect(result.success?).to be_truthy
@@ -38,7 +58,7 @@ describe Work::Metadata::Refresh do
 
     it 'updates metadata' do
       expect(work.original_metadata).to eq(existing_metadata)
-      VCR.use_cassette('iiif/refresh_metadata', record: :none) do
+      VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
         result
       end
       expect(result.success?).to be_truthy
@@ -49,7 +69,7 @@ describe Work::Metadata::Refresh do
   context 'when refresh fails' do
     it 'handles error gracefully' do
       expect(work.original_metadata).to be_nil
-      VCR.use_cassette('iiif/refresh_metadata_failed', record: :none) do
+      VCR.use_cassette('iiif/refresh_metadata_failed', record: :new_episodes) do
         result
       end
 

@@ -3,13 +3,13 @@
 require 'stopwords'
 
 # Concern for calculating AI transcription accuracy metrics
-# Compares AI-generated text against human-verified ground truth
+# Compares AI-generated text against human transcription
 module AiAccuracyCalculator
   extend ActiveSupport::Concern
 
   # Check if accuracy statistics can be calculated for this page
   def can_calculate_ai_accuracy?
-    has_ai_plaintext? && completed_transcription?
+    has_ai_plaintext? && has_human_transcription?
   end
 
   # Check if non-stopword accuracy can be calculated for this collection's language
@@ -52,16 +52,9 @@ module AiAccuracyCalculator
 
   private
 
-  # Check if page has a completed transcription status
-  def completed_transcription?
-    # Use Page model's COMPLETED_STATUSES but exclude translation status
-    # since transcription happens before translation
-    transcription_completed_statuses = [
-      Page.statuses[:blank],
-      Page.statuses[:indexed],
-      Page.statuses[:transcribed]
-    ]
-    transcription_completed_statuses.include?(status)
+  # Check if page has human transcription content
+  def has_human_transcription?
+    xml_text.present?
   end
 
   # Calculate statistics for verbatim text (with punctuation and formatting)
@@ -98,7 +91,7 @@ module AiAccuracyCalculator
   end
 
   # Calculate Character Error Rate (CER)
-  # CER = Levenshtein distance / length of ground truth
+  # CER = Levenshtein distance / length of human transcription
   def character_error_rate(ground_truth, predicted)
     return 0.0 if ground_truth == predicted
     return 100.0 if ground_truth.blank? || predicted.blank?
@@ -111,7 +104,7 @@ module AiAccuracyCalculator
   end
 
   # Calculate Word Error Rate (WER)
-  # WER = Levenshtein distance on words / number of words in ground truth
+  # WER = Levenshtein distance on words / number of words in human transcription
   def word_error_rate(ground_truth, predicted)
     ground_truth_words = ground_truth.split(/\s+/).reject(&:blank?)
     predicted_words = predicted.split(/\s+/).reject(&:blank?)

@@ -32,9 +32,11 @@
                 p.nodata_text =t('.you_can_upload_documents', start_project: start_project).html_safe
             -unless c.document_sets.empty?
               h3 =t('.document_sets')
-              -c.document_sets.each do |s|
-                h5.collection_title
-                  =link_to s.title, collection_path(s.owner, s)
+              ul
+                -c.document_sets.each do |s|
+                  li
+                    h5.collection_title
+                      =link_to s.title, collection_path(s.owner, s)
 
     -else
       -new_collection = link_to t('.create_a_collection'), collection_new_path

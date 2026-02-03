@@ -207,20 +207,6 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
-  if Rails.application.config.upload_host.present?
-    constraints subdomain: Rails.application.config.upload_host do
-      scope 'dashboard', as: 'dashboard' do
-        post 'new_upload', to: 'dashboard#new_upload'
-      end
-    end
-  else
-    scope 'dashboard', as: 'dashboard' do
-      post 'new_upload', to: 'dashboard#new_upload'
-    end
-  end
-
-
-
   scope 'dashboard', as: 'dashboard' do
     get '/' => 'dashboard#index'
     get 'owner' => 'dashboard#owner'
@@ -228,10 +214,10 @@ Fromthepage::Application.routes.draw do
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
     get 'exports', to: 'dashboard#exports'
-    post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
     get 'your_hours', to: 'dashboard#your_hours'
     get 'dashboard/download_hours_letter/:start_date/:end_date/:time_duration', to: 'dashboard#download_hours_letter', as: 'download_hours_letter', format: :pdf
+    post 'upload', to: 'dashboard#upload'
   end
 
   resources :search_attempt, path: 'search_attempt', only: [:show, :create] do
@@ -476,6 +462,8 @@ Fromthepage::Application.routes.draw do
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
+  get '/case-studies', to: 'static#case_studies', as: :case_studies
+  get '/case-studies/ayn-rand-institute', to: 'static#case_study_ayn_rand_institute', as: :case_study_ayn_rand_institute
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -539,7 +527,7 @@ Fromthepage::Application.routes.draw do
       # work related routes
       # have to use match because it must be both get and post
       match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
-      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
+      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work, constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'download', on: :member

@@ -106,6 +106,9 @@
   -when DeedType::EDITED_METADATA
     -output += t('.edited_metadata')
 
+  -when DeedType::AI_DRAFT
+    -output += t('.ai_draft_used', page: page)
+
   -if !deed.work.nil? && deed.deed_type != DeedType::WORK_ADDED
     -output += t('.in_the_work', work: work)
 

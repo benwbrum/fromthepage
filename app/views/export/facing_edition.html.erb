@@ -15,7 +15,7 @@
 <%
   xml_metadata = @work.merge_metadata.map{|e| "#{e['label']}: #{e['value']}"}.join("<lb/>\n")
 %>
-<%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
+<%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, true)) %>
 \newpage
 <% end %>
 

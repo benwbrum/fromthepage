@@ -12,6 +12,7 @@ RUN apt-get update -qq && \
       texlive-fonts-recommended \
       texlive-latex-extra \
       texlive-xetex \
+      texlive-luatex \
       libmagickwand-dev \
       imagemagick \
       nodejs \
@@ -21,6 +22,8 @@ RUN apt-get update -qq && \
       x11-xserver-utils \
       chromium \
       chromium-driver \
+      pdf2svg \
+      fonts-cmu \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

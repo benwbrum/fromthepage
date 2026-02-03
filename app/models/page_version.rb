@@ -3,6 +3,7 @@
 # Table name: page_versions
 #
 #  id                 :integer          not null, primary key
+#  ai_draft_used      :boolean          default(FALSE), not null
 #  created_on         :datetime
 #  page_version       :integer          default(0)
 #  source_translation :text(65535)

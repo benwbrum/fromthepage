@@ -36,6 +36,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
@@ -64,8 +65,13 @@ class Page < ApplicationRecord
   has_many :articles, through: :page_article_links
   has_many :page_versions, -> { order(page_version: :desc) }, dependent: :destroy
 
-  belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
+  has_many :ai_transcriptions, -> { not_alto }, class_name: 'AiTranscription'
+  has_one :ai_transcription, -> { order(created_at: :desc) }, class_name: 'AiTranscription'
 
+  has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
+  has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
+
+  belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
   has_and_belongs_to_many :sections
 
   has_many :notes, -> { order(:created_at) }, dependent: :destroy
@@ -97,6 +103,8 @@ class Page < ApplicationRecord
     !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
     serialize :transcription_json, coder: JSON
   end
+
+  attribute :ai_draft_used, :boolean, default: false
 
   ACCEPTED_FILE_TYPES = [
     'image/jpeg',
@@ -416,7 +424,8 @@ class Page < ApplicationRecord
       source_translation: self.source_translation,
       xml_translation: self.xml_translation,
       status: self.status,
-      transcription_json: self.transcription_json
+      transcription_json: self.transcription_json,
+      ai_draft_used: self.ai_draft_used? && self.saved_change_to_source_text?
     )
 
     # Add other attributes as needed
@@ -551,7 +560,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
@@ -610,42 +619,42 @@ class Page < ApplicationRecord
     users
   end
 
+  # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?
-    File.exist?(ai_plaintext_path)
+    self.ai_transcription.present? || File.exist?(self.ai_plaintext_path)
   end
 
+  # TODO: Remove this on different PR after running migration
   def ai_plaintext
-    if has_ai_plaintext?
-      File.read(ai_plaintext_path)
+    if self.alto_transcription.present?
+      self.alto_transcription.source_text
+    elsif self.ai_transcription.present?
+      self.ai_transcription.source_text
+    elsif File.exist?(self.ai_plaintext_path)
+      File.read(self.ai_plaintext_path)
     else
       ''
     end
-  end
-
-  def ai_plaintext=(text)
-    FileUtils.mkdir_p(File.dirname(ai_plaintext_path)) unless Dir.exist? File.dirname(ai_plaintext_path)
-    File.write(ai_plaintext_path, text)
   end
 
   def ai_plaintext_has_emoji_placeholders?
-    ai_plaintext.include?('🤔')
+    self.ai_plaintext.include?('🤔')
   end
 
+  # TODO: Remove this on different PR after running migration
   def has_alto?
-    File.exist?(alto_path)
+    self.alto_transcription.present? || File.exist?(self.alto_path)
   end
 
+  # TODO: Remove this on different PR after running migration
   def alto_xml
-    if has_alto?
-      File.read(alto_path)
+    if self.alto_transcription.present?
+      self.alto_transcription.prompt
+    elsif self.has_alto?
+      File.read(self.alto_path)
     else
       ''
     end
-  end
-
-  def alto_xml=(xml)
-    FileUtils.mkdir_p(File.dirname(alto_path)) unless Dir.exist? File.dirname(alto_path)
-    File.write(alto_path, xml)
   end
 
   def image_url_for_download
@@ -679,10 +688,12 @@ class Page < ApplicationRecord
 
   private
 
+  # TODO: Remove this on different PR after running migration
   def ai_plaintext_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_ai_plaintext.txt")
   end
 
+  # TODO: Remove this on different PR after running migration
   def alto_path
     File.join(Rails.root, 'public', 'text', self.work_id.to_s, "#{self.id}_alto.xml")
   end

@@ -8,7 +8,7 @@ es:
       facsimile: Facsímil
       show_comparison_with_transcription: Mostrar comparación con la transcripción
       statistics_unavailable: Las estadísticas de precisión no están disponibles para esta página.
-      statistics_unavailable_reason: Las estadísticas solo se pueden calcular para las páginas con un estado de transcripción completado (en blanco, indexadas o transcritas).
+      statistics_unavailable_reason: Las estadísticas solo se pueden calcular para las páginas con transcripción humana.
     cer_stats:
       accuracy_explanation: Estas estadísticas comparan el texto generado por IA con la transcripción verificada por humanos, proporcionando información sobre la precisión de la transcripción realizada por IA.
       accuracy_statistics: Estadísticas de precisión
@@ -111,6 +111,9 @@ es:
       pages_need_translation: Páginas que necesitan traducción
       translations_need_indexing: Traducciones que necesitan indexación
       translations_need_review: Traducciones que necesitan revisión
+    reasoning:
+      ai_reasoning: Pasos del razonamiento de la IA
+      reasoning_explanation: Explicación del razonamiento
   display_helper:
     page_action:
       blank_page: Página en blanco

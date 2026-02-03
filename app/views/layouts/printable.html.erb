@@ -1,0 +1,15 @@
+\documentclass{article}
+
+<%= render partial: 'shared/printable/packages' %>
+
+<%= render partial: 'shared/printable/configurations' %>
+
+\begin{document}
+
+<% if @edition_type != 'text_only' %>
+  <%= render partial: 'shared/printable/headers', locals: { work: @work, collection: @collection, include_metadata: @include_metadata, time: @time } %>
+<% end %>
+
+<%= yield %>
+
+\end{document}

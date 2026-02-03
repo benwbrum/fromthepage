@@ -135,9 +135,29 @@ RSpec.describe UserMailer, type: :mailer do
       let(:at_id) { 'http://example.com/manifest' }
       let(:v3_hash) do
         {
-          id: at_id,
-          label: { en: ['Original Metadata'] },
-          metadata: original_metadata
+          "@context" => "http://iiif.io/api/presentation/3/context.json",
+                "id" => "http://example.com/manifest",
+              "type" => "Manifest",
+             "label" => {
+              "en" => [
+                "Original Metadata"
+              ]
+          },
+          "metadata" => [
+              {
+                "label" => {
+                  "en" => [
+                     "Origin"
+                   ]
+                 },
+                 "value" => {
+                   "en" => [
+                      "Test Data"
+                   ]
+                 }
+              }
+          ],
+           "items" => []
         }.to_json.to_s
       end
 
@@ -151,7 +171,7 @@ RSpec.describe UserMailer, type: :mailer do
       let(:mail) { UserMailer.metadata_refresh_finished(user, result, id, type, result.logs) }
 
       it 'renders success email' do
-        VCR.use_cassette('iiif/refresh_metadata', record: :none) do
+        VCR.use_cassette('iiif/refresh_metadata', record: :new_episodes) do
           expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
           expect(mail.to).to eq([user.email])
           expect(mail.from).to eq(['support@fromthepage.com'])
@@ -162,7 +182,7 @@ RSpec.describe UserMailer, type: :mailer do
       end
 
       context 'failed refresh' do
-        VCR.use_cassette('iiif/refresh_metadata_failed', record: :none) do
+        VCR.use_cassette('iiif/refresh_metadata_failed', record: :new_episodes) do
           it 'renders failed email' do
             expect(mail.subject).to eq("Metadata refresh for collection:#{id} is finished.")
             expect(mail.to).to eq([user.email])

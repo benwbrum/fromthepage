@@ -47,6 +47,7 @@ class TranscribeController  < ApplicationController
 
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     @page.attributes = page_params unless page_params.empty?
+    @page.ai_draft_used = params[:ai_draft_used]
 
     if @page.field_based
       @field_cells = request.params[:fields]
@@ -101,6 +102,8 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
+        record_deed(DeedType::AI_DRAFT) if @page.ai_draft_used
+
         log_transcript_success
         flash[:notice] = t('.saved_notice')
 

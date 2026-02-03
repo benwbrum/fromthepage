@@ -9,6 +9,8 @@ es:
       document_set:
         slug: URL
         title: Título
+      document_upload:
+        attachment: Archivo
       page:
         base_image: Imagen de la página
       work:
@@ -26,6 +28,10 @@ es:
             slug:
               blank: es requerido
               invalid: debe tener al menos una letra
+        document_upload:
+          attributes:
+            attachment:
+              content_type_invalid: 'No está permitido cargar archivos "%{human_content_type}", tipos permitidos: %{authorized_human_content_types}'
         user:
           attributes:
             email:

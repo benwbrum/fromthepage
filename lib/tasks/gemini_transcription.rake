@@ -6,7 +6,7 @@ namespace :fromthepage do
       unless args.page_id
         puts 'Usage: rake fromthepage:gemini:transcribe_page[page_id]'
         puts 'Example: rake fromthepage:gemini:transcribe_page[123]'
-        puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-2.5-pro,prompt.txt]'
+        puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-3-pro-preview,prompt.txt]'
         exit 1
       end
       model = args.model
@@ -66,7 +66,7 @@ namespace :fromthepage do
         print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
 
         # Skip pages that already have ai_plaintext unless retranscribe mode
-        if !retranscribe && page.has_ai_plaintext?
+        if !retranscribe && page.ai_transcription.present?
           puts 'SKIPPED (already has AI plaintext)'
           skip_count += 1
           next
@@ -153,7 +153,7 @@ namespace :fromthepage do
           print "[#{current_page}/#{total_pages}] Page #{page.id} (#{page.title}): "
 
           # Skip pages that already have ai_plaintext unless retranscribe mode
-          if !retranscribe && page.has_ai_plaintext?
+          if !retranscribe && page.ai_transcription.present?
             puts 'SKIPPED (already has AI plaintext)'
             overall_skip += 1
             next

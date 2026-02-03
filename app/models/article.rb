@@ -70,18 +70,81 @@ class Article < ApplicationRecord
   edtf_date_attribute :begun
   edtf_date_attribute :ended
 
+  update_index('articles', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
+  after_destroy :handle_index_deletion
+
+  def self.es_search(query:, user: nil, is_public: true)
+    blocked_collections = []
+    collection_collabs = []
+    docset_collabs = []
+
+    if user.present?
+      blocked_collections = user.blocked_collections.pluck(:id)
+      collection_collabs  = user.collection_collaborations.pluck(:id)
+      collection_collabs += user.owned_collections.pluck(:id)
+      docset_collabs      = user.document_set_collaborations.pluck(:id)
+    end
+
+    search_fields = [
+      'title^2',
+      'title.no_underscores^1.3',
+      'content_english'
+    ]
+
+    ArticlesIndex.query(
+      bool: {
+        must: {
+          simple_query_string: {
+            query: query,
+            fields: search_fields
+          }
+        },
+        filter: [
+          bool: {
+            must_not: [
+              { terms: { collection_id: blocked_collections } }
+            ],
+            # At least one of the following must be true
+            should: [
+              { term: { is_public: is_public } },
+              { term: { owner_user_id: user&.id || -1 } },
+              { terms: { collection_id: collection_collabs } },
+              { terms: { docset_id: docset_collabs } }
+            ],
+            minimum_should_match: 1
+          }
+        ]
+      }
+    )
+  end
+
   def self.sort_vertically(articles_scope, columns: LIST_NUM_COLUMNS)
     subquery_sql = articles_scope
-      .select('articles.*, ROW_NUMBER() OVER (ORDER BY TRIM(articles.title) ASC) AS rn, COUNT(*) OVER () AS total_count')
+      .select('articles.*, ROW_NUMBER() OVER (ORDER BY TRIM(articles.title) ASC, articles.id ASC) AS rn, COUNT(*) OVER () AS total_count')
       .to_sql
 
     from("(#{subquery_sql}) AS ordered")
       .select('ordered.*')
       .order(
-        Arel.sql(
-          "((rn - 1) % CEIL(total_count / #{columns}.0)) * #{columns} + " \
-          "FLOOR((rn - 1) / CEIL(total_count / #{columns}.0))"
-        )
+        Arel.sql(<<~SQL)
+          CASE
+            WHEN rn <= (FLOOR(total_count / #{columns}) + 1)
+                       * (total_count % #{columns})
+            THEN
+              ((rn - 1) % (FLOOR(total_count / #{columns}) + 1)) * #{columns}
+              + FLOOR((rn - 1) / (FLOOR(total_count / #{columns}) + 1))
+            ELSE
+              ((rn - 1 - (FLOOR(total_count / #{columns}) + 1)
+                       * (total_count % #{columns}))
+                % FLOOR(total_count / #{columns})) * #{columns}
+              + (total_count % #{columns})
+              + FLOOR(
+                  (rn - 1 - (FLOOR(total_count / #{columns}) + 1)
+                   * (total_count % #{columns}))
+                  / FLOOR(total_count / #{columns})
+                )
+          END
+        SQL
       )
   end
 
@@ -234,5 +297,16 @@ class Article < ApplicationRecord
     ancestors = category.ancestors.reverse
 
     [category] + ancestors
+  end
+
+  def handle_index_deletion
+    return unless ELASTIC_ENABLED
+
+    Chewy.client.delete(
+      index: ArticlesIndex.index_name,
+      id: id
+    )
+  rescue StandardError => _e
+    # Make sure it does not fail
   end
 end

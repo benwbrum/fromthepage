@@ -135,7 +135,7 @@ class DisplayController < ApplicationController
 
   def ai_text
     # Redirect if page doesn't have AI plaintext
-    unless @page.has_ai_plaintext?
+    unless @page.ai_transcription.present?
       redirect_to collection_display_page_path(@collection.owner, @collection, @work, @page.id)
       nil
     end
