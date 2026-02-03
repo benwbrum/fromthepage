@@ -134,4 +134,78 @@
       visibility: hidden;
     }
   }
+
+  // Case Studies styles
+  #case-studies-list {
+    margin-top: $gapSize * 2;
+
+    .case-study-card {
+      padding: $gapSize * 2;
+      margin-bottom: $gapSize * 2;
+      border: 1px solid $borderColor;
+      border-radius: 4px;
+      background: #fdfaf5;
+
+      h3 {
+        margin-top: 0;
+      }
+
+      .case-study-subtitle {
+        font-style: italic;
+        color: #666;
+      }
+
+      .case-study-highlights {
+        margin: $gapSize 0;
+      }
+    }
+  }
+
+  #your-story {
+    margin-top: $gapSize * 3;
+    text-align: center;
+  }
+
+  // Individual case study page styles
+  #snapshot {
+    margin-top: $gapSize * 2;
+    padding: $gapSize * 2;
+    background: #fdfaf5;
+    border-radius: 4px;
+
+    .case-study-details {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: $gapSize / 2 $gapSize;
+      margin: 0;
+
+      dt {
+        font-weight: bold;
+      }
+
+      dd {
+        margin: 0;
+      }
+    }
+  }
+
+  section blockquote {
+    border-left: 4px solid $borderColor;
+    margin: $gapSize 0;
+    padding: $gapSize / 2 $gapSize;
+    font-style: italic;
+    background: #fdfaf5;
+  }
+
+  .results-list {
+    li {
+      margin-bottom: $gapSize / 2;
+    }
+  }
+
+  #more-case-studies {
+    margin-top: $gapSize * 3;
+    padding-top: $gapSize;
+    border-top: 1px solid $borderColor;
+  }
 }

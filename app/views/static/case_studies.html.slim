@@ -1,0 +1,24 @@
+-content_for :page_title, "Case Studies"
+-content_for :meta_description, "See how libraries, archives, and museums use FromThePage for collaborative transcription projects. Real-world case studies from institutions using AI-assisted transcription."
+
+#software
+  h2 Case Studies
+
+  p See how institutions are using FromThePage to transcribe, translate, and index their collections.
+
+  section#case-studies-list
+    .case-study-card
+      h3 The Ayn Rand Archives
+      p.case-study-subtitle Using Gemini 3 drafts to accelerate transcription—while keeping humans firmly in control
+
+      p The Ayn Rand Archives demonstrates a practical middle path for AI in transcription: use AI to remove friction, not judgment. By keeping AI drafts optional, transparent, and clearly tentative, they move faster without compromising scholarly standards.
+
+      ul.case-study-highlights
+        li Typewritten pages with handwritten edits
+        li Volunteer-driven transcription with AI assistance
+        li Public, read-only page + transcript views
+
+      =link_to 'Read the full case study', case_study_ayn_rand_institute_path, class: 'button'
+
+  section#your-story
+    p Interested in using FromThePage for your institution? #{link_to('Contact us', contact_path(contact_form_token))}.

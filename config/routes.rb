@@ -462,6 +462,8 @@ Fromthepage::Application.routes.draw do
   get '/public_libraries', to: 'static#public_libraries', as: :public_libraries
   get '/digital_scholarship', to: 'static#digital_scholarship', as: :digital_scholarship
   get '/state_archives', to: 'static#state_archives', as: :state_archives
+  get '/case-studies', to: 'static#case_studies', as: :case_studies
+  get '/case-studies/ayn-rand-institute', to: 'static#case_study_ayn_rand_institute', as: :case_study_ayn_rand_institute
 
   resources :document_sets, except: [:show, :create, :edit]
 
