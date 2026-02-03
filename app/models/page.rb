@@ -48,13 +48,13 @@ class Page < ApplicationRecord
   include ApplicationHelper
   include AiAccuracyCalculator
 
-  before_create { log_callback_duration('set_default_transcription_json') { set_default_transcription_json } }
-  before_update { log_callback_duration('validate_blank_page') { validate_blank_page } }
-  before_update { log_callback_duration('process_source') { process_source } }
-  before_update { log_callback_duration('populate_search') { populate_search } }
-  before_update { log_callback_duration('update_line_count') { update_line_count } }
-  before_save { log_callback_duration('calculate_last_editor') { calculate_last_editor } }
-  before_save { log_callback_duration('calculate_approval_delta') { calculate_approval_delta } }
+  before_create :set_default_transcription_json
+  before_update :validate_blank_page
+  before_update :process_source
+  before_update :populate_search
+  before_update :update_line_count
+  before_save :calculate_last_editor
+  before_save :calculate_approval_delta
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -82,14 +82,12 @@ class Page < ApplicationRecord
   has_many :deeds, dependent: :destroy
   has_many :external_api_requests, dependent: :destroy
 
-  after_save { log_callback_duration('create_version') { create_version } }
-  after_save { log_callback_duration('update_sections_and_tables') { update_sections_and_tables } }
-  after_save { log_callback_duration('update_tex_figures') { update_tex_figures } }
+  after_save :create_version
+  after_save :update_sections_and_tables
+  after_save :update_tex_figures
   after_save do
-    log_callback_duration('after_save_work_updates') do
-      work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
-      work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
-    end
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
+    work.work_statistic.update_last_edit_date if self.saved_change_to_source_text? or self.saved_change_to_source_translation?
   end
 
   after_initialize :defaults
@@ -689,14 +687,6 @@ class Page < ApplicationRecord
   end
 
   private
-
-  def log_callback_duration(callback_name)
-    start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    result = yield
-    elapsed_seconds = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
-    Rails.logger.info("page_callback: #{callback_name} finished in #{format('%.6f', elapsed_seconds)} seconds")
-    result
-  end
 
   # TODO: Remove this on different PR after running migration
   def ai_plaintext_path
