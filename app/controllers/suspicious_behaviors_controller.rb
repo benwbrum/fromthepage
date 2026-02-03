@@ -67,7 +67,12 @@ class SuspiciousBehaviorsController < ApplicationController
     end
 
     if params[:search_user].present?
-      user_filter = User.where(id: params[:search_user]).or(User.where(slug: params[:search_user]))
+      term = params[:search_user]
+      user_filter = User.where(id: term)
+        .or(User.where(slug: term))
+        .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{term}%"))
+        .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{term}%"))
+        .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{term}%"))
       if user_filter.any?
         @filtered_scope.where(user_id: user_filter.select(:id))
       else
