@@ -26,18 +26,30 @@ class Work::Export::Printable < ApplicationInteractor
 
     tex_file = export_path.join(tex_filename)
     @file = export_path.join(filename)
+    log_file = export_path.join(log_filename)
 
     File.open(tex_file, 'w') { |f| f.write(tex_string) }
 
-    system(
+    # Build pandoc command as a single string with stdout/stderr redirected
+    pandoc_command = [
       'pandoc',
       tex_file.to_s,
       '-o', @file.to_s,
       '--from=latex',
       "--to=#{@format}",
       "--pdf-engine=#{PDF_ENGINE}",
-      "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}"
-    )
+      "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
+      '--verbose'
+    ].join(' ')
+
+    full_command = "#{pandoc_command} > #{log_file} 2>&1"
+    success = system(full_command)
+
+    raise "Pandoc conversion failed! See log: #{log_file}" unless success
+  end
+
+  def log_filename
+    @log_filename ||= "#{@work.slug.gsub('-', '_')}_#{time_stub}.log"
   end
 
   def tex_filename
