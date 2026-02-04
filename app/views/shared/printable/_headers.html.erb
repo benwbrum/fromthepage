@@ -4,13 +4,13 @@
 <%= render partial: 'shared/printable/newpage' %>
 
 <% if include_metadata %>
-  \subsection{<%= t('export.facing_edition.metadata') %>}
-  \label{<%= t('export.facing_edition.metadata').downcase %>}
+  \subsection{<%= t('export.facing_edition.metadata').html_safe %>}
+  \label{<%= t('export.facing_edition.metadata').html_safe.downcase %>}
 
   <%= t('export.facing_edition.export_metadata',
     work: Work::Export::Lib::Utils.latex_escape(work.title),
     collection: Work::Export::Lib::Utils.latex_escape(collection.title),
-    time: Work::Export::Lib::Utils.latex_escape(time.to_s)) %>
+    time: Work::Export::Lib::Utils.latex_escape(time.to_s)).html_safe %>
 
   <% work.merge_metadata.each do |metadata| %>
     <%= Work::Export::Lib::Utils.latex_escape("#{metadata['label']}: #{metadata['value']}") %>
