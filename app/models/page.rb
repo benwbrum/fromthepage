@@ -55,6 +55,7 @@ class Page < ApplicationRecord
   before_update :update_line_count
   before_save :calculate_last_editor
   before_save :calculate_approval_delta
+
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -387,26 +388,11 @@ class Page < ApplicationRecord
   end
 
   def calculate_approval_delta
-    if source_text_changed?
-      if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
-        if most_recent_not_approver_version
-          old_transcription = most_recent_not_approver_version.transcription || ''
-        else
-          old_transcription = ''
-        end
-        new_transcription = self.source_text
+    return if Current.user.nil?
 
-        if new_transcription.blank? && old_transcription.blank?
-          self.approval_delta = nil
-        else
-          self.approval_delta =
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / (old_transcription.size + new_transcription.size).to_f
-        end
-      else # zero out deltas if the page is not complete
-        self.approval_delta = nil
-      end
-    end
+    return unless source_text_changed?
+
+    Page::CalculateApprovalDeltaJob.perform_later(page_id: self.id, user_id: Current.user.id)
   end
 
   def create_version
