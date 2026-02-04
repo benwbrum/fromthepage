@@ -22,7 +22,7 @@
 
   <% end %>
   <% if @work.supports_translation && !page.source_translation.blank? %>
-    \subsubsection{<%= t('export.facing_edition.translation') %>}
+    \subsubsection{<%= t('export.facing_edition.translation').html_safe %>}
     \label{<%= "#{page.title} translation" %>}
 
     <%= Work::Export::Lib::Utils.xml_to_latex(
@@ -41,7 +41,7 @@
 <% end %>
 
 <% if @edition != 'text_only' && @include_contributors %>
-  <%= t('export.facing_edition.contributions_message') %>
+  <%= t('export.facing_edition.contributions_message').html_safe %>
 
   <%= Work::Export::Lib::Utils.latex_escape(@contributor_names.to_sentence) %>
 <% end %>
