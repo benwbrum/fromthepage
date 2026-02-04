@@ -1,0 +1,111 @@
+\documentclass{article}
+
+% Required Packages
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[normalem]{ulem}
+\usepackage[bookmarks=true, bookmakrsopen=true, linktoc=all]{hyperref}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{pdfcomment}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{xymtex}
+\usepackage{chemfig}
+
+
+% Configurations
+
+%% Set paragraph indent to 0
+\setlength{\parindent}{0pt}
+
+%% Hide numbers globally for sections/subsections
+\titleformat{\section}[hang]{\Large\bfseries}{}{0pt}{}
+\titleformat{\subsection}[hang]{\large\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}[hang]{\normalsize\bfseries}{}{0pt}{}
+
+
+\begin{document}
+
+\section{Special-Tags-Work}
+\label{special-tags-work}
+
+\{\{startnewpage\}\}
+
+
+\subsection{Metadata}
+\label{metadata}
+
+FromThePage export of Special-Tags-Work from Special-Tags-Collection made on <%= made_on %>.
+
+Title: Special-Tags-Work
+
+Created On: <%= created_on %>
+
+Identifier: <%= identifier %>
+
+In Scope: true
+
+
+\{\{startnewpage\}\}
+
+
+
+
+\subsection{Special Tags Page}
+\label{Special Tags Page}
+
+Add tag is \textsuperscript{\underline{for text insertions}}\\
+Use hi rend bold for \textbf{bolded text}\\
+Column break \\
+\textit{\{column\}}\\
+to indicate a break between columns\\
+Date December 9, 2020 to indicate a date, with an attribute of when\\
+Figure tag drawing or graph here\{Figure\} to indicate a figure or illustration in the text\\
+\{\{hr\}\}\\
+Footnote \footnote{This is a footnote} contains the body of a footnote within the original document. This tag should be placed where the footnote marker appears in the text.\\
+Gap \textit{[...]} for missing text\\
+\\
+\textbf{Heading}\\
+for headings (similar to using \underline{\textbf{wiki heading mark-up}}\{wiki heading mark-up\})\\
+Stamp \textit{\{Stamp\}} for stamps on envelops\\
+\\
+\begin{longtable}[]{@{}l l l@{}}
+\toprule
+Col 1 & Col 2 & Col 3 \\
+\midrule\noalign{}
+''\textit{Val } & \underline{\sout{ Va'l }} & Nested \sout{s\textsuperscript{\underline{tr'}}ikethrough} \\
+\bottomrule\noalign{}
+\end{longtable}
+\textit{[Unclear ]} for text that is difficult to read\\
+\sout{\textsuperscript{\underline{and of little importance}}}\\
+\sout{\textit{[to be?]}}\\
+thither \textsuperscript{\underline{for}}\sout{an many}\textsuperscript{\sout{\textit{[[unclear]]}} many}years\\
+Strike \sout{through} or \sout{s} or \sout{str} for struck through text\\
+Superscript \textsuperscript{sup} or \textsuperscript{hi rend=sup} for superscript text\\
+\underline{'U} or \underline{underline} for underlined text\\
+Expan \underline{\textit{expanded text}}\{original text\} for expanding abbreviations, for example: \underline{\textit{quatorsiemes}}\{qᵃtorsimes\}\\
+Reg \underline{\textit{regularized text}}\{original text\} for regularizing text\\
+Abbr \underline{\textit{expanded text}}\{abbreviated text\}\\
+-\\
+a soft break tag.  In non-verbatim exports, combines the end of the line with the beginning of the next when a word is broken across the lines.\\
+Marginalia \{marginalia here\}  for noting marginalia\\
+Catchword \{catchword\} for catchwords\\
+\href{#article-<%= "#{last_article_id}" %>}{Subject}\\
+\\
+\textit{\{page break 1\}}\\
+\\
+$(\psi_1, \psi_2,  \psi_3) = \vec{\psi}(\vec{x},t) = V^{-1/2}\sum_k \sqrt{\frac{\hbar}{2k}} (\vec{a_k} e^{i \vec{k}\dot\vec{x} - ikt} + c.c.)$
+\\
+
+
+\{\{startnewpage\}\}
+
+
+This document would not be possible without the editorial contributions of the following people:
+
+<%= owner_display_name %>
+
+
+\end{document}

@@ -14,8 +14,6 @@ module ExportService
     Rails.application.config.action_mailer.default_url_options || {}
   end
 
-
-
   def path_from_work(work, original_filenames = false)
     if original_filenames && !work.uploaded_filename.blank?
       dirname = File.basename(work.uploaded_filename).sub(File.extname(work.uploaded_filename), '')

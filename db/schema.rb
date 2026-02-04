@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "ai_transcriptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ai_transcriptions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text", size: :long
     t.text "prompt", size: :long
@@ -277,6 +277,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.boolean "alphabetize_works", default: true
     t.datetime "featured_at", precision: nil
     t.text "legend"
+    t.string "default_overview_orientation"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -667,7 +668,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_202813) do
     t.string "status", default: "new", null: false
     t.text "source_translation", size: :medium, collation: "utf8mb4_unicode_ci"
     t.text "xml_translation", size: :medium, collation: "utf8mb4_unicode_ci"
-    t.text "search_text", collation: "utf8mb4_unicode_ci"
+    t.text "search_text", size: :medium, collation: "utf8mb4_unicode_ci"
     t.string "translation_status", default: "new", null: false
     t.text "metadata"
     t.datetime "edit_started_at", precision: nil

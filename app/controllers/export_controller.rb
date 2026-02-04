@@ -25,21 +25,27 @@ class ExportController < ApplicationController
   end
 
   def printable
-    output_file = export_printable(@work, params[:edition], params[:format], false, true, true, false)
+    result = Work::Export::Printable.new(
+      work: @work,
+      format: params[:format],
+      edition: params[:edition],
+      include_metadata: true,
+      include_contributors: true,
+      include_notes: false,
+      preserve_lb: false
+    ).call
 
-    if params[:format] == 'pdf'
-      content_type = 'application/pdf'
-    elsif params[:format] == 'doc'
-      content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    if result.success?
+      send_data(
+        File.read(result.file),
+        filename: result.filename,
+        content_type: result.content_type
+      )
+
+      cookies['download_finished'] = 'true'
+    else
+      head :internal_server_error
     end
-
-    # spew the output to the browser
-    send_data(
-      File.read(output_file),
-      filename: File.basename(output_file),
-      content_type: content_type
-    )
-    cookies['download_finished'] = 'true'
   end
 
   def tei

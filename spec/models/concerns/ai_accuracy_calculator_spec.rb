@@ -14,15 +14,33 @@ describe AiAccuracyCalculator do
   let(:status) { :new }
 
   describe '#can_calculate_ai_accuracy?' do
-    context 'when page has AI plaintext and is completed' do
+    context 'when page has AI plaintext and human transcription' do
       let(:status) { :transcribed }
+      let!(:page) do
+        create(:page, work: work, status: status,
+          xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p>Some human transcription</p>\n</page>"
+        )
+      end
 
       it 'returns true' do
         expect(page.can_calculate_ai_accuracy?).to be true
       end
     end
 
-    context 'when page has AI plaintext but is not completed' do
+    context 'when page has AI plaintext and human transcription regardless of status' do
+      let(:status) { :incomplete }
+      let!(:page) do
+        create(:page, work: work, status: status,
+          xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p>Some human transcription</p>\n</page>"
+        )
+      end
+
+      it 'returns true' do
+        expect(page.can_calculate_ai_accuracy?).to be true
+      end
+    end
+
+    context 'when page has AI plaintext but no human transcription' do
       let(:status) { :incomplete }
 
       it 'returns false' do
@@ -30,9 +48,14 @@ describe AiAccuracyCalculator do
       end
     end
 
-    context 'when page is completed but has no AI plaintext' do
+    context 'when page has human transcription but no AI plaintext' do
       let(:ai_transcription) { nil }
       let(:status) { :transcribed }
+      let!(:page) do
+        create(:page, work: work, status: status,
+          xml_text: "<?xml version='1.0' encoding='UTF-8'?>\n<page>\n<p>Some human transcription</p>\n</page>"
+        )
+      end
 
       it 'returns false' do
         expect(page.can_calculate_ai_accuracy?).to be false
@@ -93,7 +116,7 @@ describe AiAccuracyCalculator do
     context 'when statistics cannot be calculated' do
       let(:status) { :incomplete }
 
-      it 'returns nil' do
+      it 'returns nil when no human transcription exists' do
         expect(page.ai_accuracy_statistics).to be_nil
       end
     end

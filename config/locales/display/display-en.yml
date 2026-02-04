@@ -7,22 +7,22 @@ en:
       ai_text_generated_with: AI text generated with %{model} on %{date}
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
       facsimile: Facsimile
-      show_comparison_with_transcription: Compare AI draft against ground truth
+      show_comparison_with_transcription: Compare AI draft against human transcription
       statistics_unavailable: Accuracy statistics are not available for this page.
-      statistics_unavailable_reason: Statistics can only be calculated for pages with a completed transcription status (blank, indexed, or transcribed).
+      statistics_unavailable_reason: Statistics can only be calculated for pages with human transcription.
     cer_stats:
       accuracy_explanation: These statistics compare the AI-generated text against the human-verified transcription.
       accuracy_statistics: Accuracy Statistics
       character_error_rate: Character Error Rate (CER)
-      character_error_rate_tooltip: CER measures the percentage of character-level edits (insertions, deletions, substitutions) needed to transform the AI text into the ground truth. Lower values indicate higher accuracy.
+      character_error_rate_tooltip: CER measures the percentage of character-level edits (insertions, deletions, substitutions) needed to transform the AI text into the human transcription. Lower values indicate higher accuracy.
       non_stopword_accuracy: Non-Stopword Accuracy
-      non_stopword_accuracy_tooltip: Measures the percentage of content words (excluding common words like 'the', 'a', 'is') that match between AI and ground truth. Higher values indicate better content recognition.
+      non_stopword_accuracy_tooltip: Measures the percentage of content words (excluding common words like 'the', 'a', 'is') that match between AI and human transcription. Higher values indicate better content recognition.
       text_only_comparison: Text-Only Comparison
       text_only_description: Statistics calculated after removing punctuation, extra whitespace, and normalizing case.
       verbatim_comparison: Verbatim Comparison
       verbatim_description: Statistics calculated on the original text with all formatting preserved.
       word_error_rate: Word Error Rate (WER)
-      word_error_rate_tooltip: WER measures the percentage of word-level edits needed to transform the AI text into the ground truth. Lower values indicate higher accuracy.
+      word_error_rate_tooltip: WER measures the percentage of word-level edits needed to transform the AI text into the human transcription. Lower values indicate higher accuracy.
     display_page:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
       collection_is_not_active: This project is not active. Please contact the project owner with any questions.
