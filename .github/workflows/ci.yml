@@ -45,6 +45,7 @@ jobs:
       MYSQL_HOST: mysql
       ELASTIC_HOST_URL: http://elasticsearch:9200
       ELASTIC_SUFFIX: ci
+      GEMINI_API_KEY: redacted
 
     steps:
       - name: Checkout code

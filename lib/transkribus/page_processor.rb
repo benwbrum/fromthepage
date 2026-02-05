@@ -76,11 +76,14 @@ class PageProcessor
     if status=='FINISHED'
       alto_response = authorized_transkribus_request { get_processing_result(process_id) }
       alto = alto_response.body.force_encoding('UTF-8') # HTTParty doesn't thinks the response is ASCII-8BIT but it's actually UTF-8
+
+      # TODO: Move this to interactor, specific for alto transcriptions
       AiTranscription.create!(
         page_id: @page.id,
         prompt: alto,
         model: AiTranscription::ALTO_MODEL
       )
+
       @page.save!
       # mark the request as complete
       @external_api_request.status = ExternalApiRequest::Status::COMPLETED
@@ -88,20 +91,12 @@ class PageProcessor
     end
   end
 
-
-
-
   private
+
   def log_file
     '/tmp/fromthepage_rake.log'
   end
 
-
-
-
-
-
-  private
   def authorized_transkribus_request
     # takes a block with the actual request to be made
     response = yield

@@ -2,33 +2,46 @@ namespace :fromthepage do
   namespace :gemini do
     desc 'Transcribe a single page using Gemini AI'
     task :transcribe_page, [:page_id, :model, :prompt_file] => :environment do |_t, args|
-      require 'gemini/text_transcriber'
       unless args.page_id
         puts 'Usage: rake fromthepage:gemini:transcribe_page[page_id]'
         puts 'Example: rake fromthepage:gemini:transcribe_page[123]'
         puts 'Example: rake fromthepage:gemini:transcribe_page[123,gemini-3-pro-preview,prompt.txt]'
         exit 1
       end
+
       model = args.model
+      prompt_file = args.prompt_file
+
       page = Page.find(args.page_id.to_i)
-      if args.prompt_file.present?
-        prompt = File.read(Rails.root.join(args.prompt_file))
-      else
-        prompt = nil
+      user = User.find(page.collection.owner_user_id)
+
+      puts "Initializing Gemini AI transcription for page ID: #{page.id} (#{page.title})"
+      create_result = AiTranscription::Create.new(
+        page: page,
+        user: user,
+        model: model,
+        prompt_file: prompt_file,
+        retranscribe: true
+      ).call
+
+      if !create_result.success?
+        puts "Initialization ERROR - #{result.full_errors}\n#{result.full_errors.message}"
+        exit 1
       end
+
       puts "Starting Gemini AI transcription for page ID: #{page.id} (#{page.title})"
-      result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
-      if result.success?
+
+      begin
+        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
+
         puts 'Transcription SUCCESS'
-      else
-        puts "Transcription ERROR - #{result.message}"
+      rescue StandardError => e
+        puts "Transcription ERROR - #{e}\n#{e.message}"
       end
     end
 
     desc 'Transcribe all pages in a work using Gemini AI (pass "retranscribe" to overwrite existing)'
     task :transcribe_work, [:work_slug, :retranscribe, :model, :prompt_file] => :environment do |_t, args|
-      require 'gemini/text_transcriber'
-
       unless args.work_slug
         puts 'Usage: rake fromthepage:gemini:transcribe_work[work_slug,retranscribe]'
         puts 'Example: rake fromthepage:gemini:transcribe_work[my-work-slug]'
@@ -47,11 +60,9 @@ namespace :fromthepage do
                Work.friendly.find(args.work_slug)
       end
 
-      if args.prompt_file.present?
-        prompt = File.read(Rails.root.join(args.prompt_file))
-      else
-        prompt = nil
-      end
+      user = User.find(work.collection.owner_user_id)
+
+      prompt_file = args.prompt_file
 
       puts "Starting Gemini AI transcription for work: #{work.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
@@ -65,25 +76,32 @@ namespace :fromthepage do
       work.pages.each_with_index do |page, index|
         print "[#{index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
 
-        # Skip pages that already have ai_plaintext unless retranscribe mode
-        if !retranscribe && page.ai_transcription.present?
+        puts "Initializing Gemini AI transcription for page ID: #{page.id} (#{page.title})"
+        create_result = AiTranscription::Create.new(
+          page: page,
+          user: user,
+          model: model,
+          prompt_file: prompt_file,
+          retranscribe: retranscribe
+        ).call
+
+        if !create_result.success? && create_result.full_errors.message.include?('AI Transcription generation is either in progress or completed!')
+          # Skip pages that already have ai_plaintext unless retranscribe mode
           puts 'SKIPPED (already has AI plaintext)'
           skip_count += 1
           next
+        elsif !create_result.success?
+          raise create_result.full_errors
         end
 
-        # Call the interactor
-        result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
+        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
 
-        if result.success?
-          puts 'SUCCESS'
-          success_count += 1
-        else
-          puts "ERROR - #{result.message}"
-          error_count += 1
-        end
-
-        # Small delay to avoid rate limiting
+        puts 'SUCCESS'
+        success_count += 1
+      rescue StandardError => e
+        puts "ERROR - #{e}\n#{e.message}"
+        error_count += 1
+      ensure
         sleep(0.5)
       end
 
@@ -98,8 +116,6 @@ namespace :fromthepage do
 
     desc 'Transcribe all pages in all works in a collection using Gemini AI (pass "retranscribe" to overwrite existing)'
     task :transcribe_collection, [:collection_slug, :retranscribe, :model, :prompt_file] => :environment do |_t, args|
-      require 'gemini/text_transcriber'
-
       unless args.collection_slug
         puts 'Usage: rake fromthepage:gemini:transcribe_collection[collection_slug,retranscribe]'
         puts 'Example: rake fromthepage:gemini:transcribe_collection[my-collection-slug]'
@@ -125,11 +141,9 @@ namespace :fromthepage do
 
       raise 'Collection does not exist' if collection.nil?
 
-      if args.prompt_file.present?
-        prompt = File.read(Rails.root.join(args.prompt_file))
-      else
-        prompt = nil
-      end
+      user = User.find(collection.owner_user_id)
+
+      prompt_file = args.prompt_file
 
       puts "Starting Gemini AI transcription for collection: #{collection.title}"
       puts "Mode: #{retranscribe ? 'RETRANSCRIBE (will overwrite existing)' : 'NORMAL (skips existing)'}"
@@ -152,25 +166,32 @@ namespace :fromthepage do
           current_page += 1
           print "[#{current_page}/#{total_pages}] Page #{page.id} (#{page.title}): "
 
-          # Skip pages that already have ai_plaintext unless retranscribe mode
-          if !retranscribe && page.ai_transcription.present?
+          puts "Initializing Gemini AI transcription for page ID: #{page.id} (#{page.title})"
+          create_result = AiTranscription::Create.new(
+            page: page,
+            user: user,
+            model: model,
+            prompt_file: prompt_file,
+            retranscribe: retranscribe
+          ).call
+
+          if !create_result.success? && create_result.full_errors.message.include?('AI Transcription generation is either in progress or completed!')
+            # Skip pages that already have ai_plaintext unless retranscribe mode
             puts 'SKIPPED (already has AI plaintext)'
             overall_skip += 1
             next
+          elsif !create_result.success?
+            raise create_result.full_errors
           end
 
-          # Call the interactor
-          result = Page::FetchAiText.new(page: page, model: model, prompt: prompt).call
+          AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
 
-          if result.success?
-            puts 'SUCCESS'
-            overall_success += 1
-          else
-            puts "ERROR - #{result.message}"
-            overall_error += 1
-          end
-
-          # Small delay to avoid rate limiting
+          puts 'SUCCESS'
+          overall_success += 1
+        rescue StandardError => e
+          puts "ERROR - #{e}\n#{e.message}"
+          overall_error += 1
+        ensure
           sleep(0.5)
         end
       end

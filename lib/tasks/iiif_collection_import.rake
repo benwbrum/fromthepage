@@ -124,13 +124,24 @@ namespace :fromthepage do
         work.pages.each_with_index do |page, page_index|
           print "[#{page_index + 1}/#{work.pages.count}] Page #{page.id} (#{page.title}): "
 
-          result = Page::FetchAiText.new(page: page).call
+          begin
+            create_result = AiTranscription::Create.new(
+              page: page,
+              user: user,
+              retranscribe: true
+            ).call
 
-          if result.success?
+            raise create_result.full_errors unless create_result.success?
+
+            AiTranscription::GenerateJob.perform_now(
+              user_id: user.id,
+              ai_transcription_id: create_result.ai_transcription.id
+            )
+
             print "SUCCESS\n"
             success_count += 1
-          else
-            print "ERROR - #{result.message}\n"
+          rescue StandardError => e
+            print "ERROR - #{e}\n#{e.message}"
             error_count += 1
           end
 

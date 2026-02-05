@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://example.com/image.jpg
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - external-content.duckduckgo.com
+  response:
+    status:
+      code: 302
+      message: Found
+    headers:
+      Location:
+      - https://cdn.example.com/images/image.jpg
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Tue, 16 Dec 2025 23:50:00 GMT
+      Server:
+      - nginx
+    body:
+      encoding: UTF-8
+      string: |
+        <html>
+          <head><title>302 Found</title></head>
+          <body>
+            <h1>Found</h1>
+            <p>The document has moved <a href="https://cdn.example.com/images/image.jpg">here</a>.</p>
+          </body>
+        </html>
+  recorded_at: Tue, 16 Dec 2025 23:50:00 GMT
+recorded_with: VCR 6.3.1

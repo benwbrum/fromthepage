@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DisplayController do
-  let(:owner) { User.find_by(owner: true) || create(:user, owner: true) }
+  let(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:pages) do
@@ -16,7 +16,7 @@ describe DisplayController do
 
   describe '#ai_text' do
     let!(:page) { pages.first }
-    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content') }
+    let!(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI generated text content', status: :finished) }
 
     let(:action_path) { collection_ai_text_page_path(owner, collection, work, page) }
 
@@ -38,6 +38,8 @@ describe DisplayController do
             verbatim: { cer: 5.0, wer: 10.0 },
             text_only: { cer: 3.0, wer: 8.0 }
           })
+
+          ai_transcription.update!(status: :finished)
         end
 
         it 'calculates and provides accuracy statistics' do
@@ -67,7 +69,7 @@ describe DisplayController do
       let!(:page_without_transcription) { create(:page, work: work) }
       let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_without_transcription) }
 
-      it 'redirects to display page' do
+      it 'redirects' do
         subject
 
         expect(response).to have_http_status(:redirect)

@@ -8,6 +8,7 @@
 #  prompt      :text(4294967295)
 #  reasoning   :text(4294967295)
 #  source_text :text(4294967295)
+#  status      :string(255)      default("new"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  page_id     :integer          not null
@@ -21,7 +22,15 @@
 #  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
 #
 class AiTranscription < ApplicationRecord
+  DEFAULT_MODEL = 'gemini-3-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
+  FE_COLOR_STATUSES = {
+    finished: '#6C2',
+    in_progress: '#F0E68C',
+    failed: '#CC4444',
+    not_started: '#FFFFFF'
+  }
+
   belongs_to :page
 
   scope :alto, -> { where(model: ALTO_MODEL) }
@@ -35,4 +44,11 @@ class AiTranscription < ApplicationRecord
   end
 
   validates :model, presence: true
+
+  enum :status, {
+    new: 'new',
+    processing: 'processing',
+    finished: 'finished',
+    error: 'error'
+  }, prefix: :status
 end
