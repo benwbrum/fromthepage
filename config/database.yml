@@ -21,19 +21,18 @@ default: &default
   variables:
     sql_mode: TRADITIONAL
 
-
 development:
   <<: *default
   username: rails
   password: <%= ENV['MYSQL_DEV_PASSWORD'] %>
-  database: diary_development
+  database: <%= ENV['DEVELOPMENT_DATABASE'] || 'diary_development' %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: diary_test
+  database: <%= ENV['TEST_DATABASE'] || 'diary_test' %>
   host: <%= ENV['MYSQL_HOST'] || '127.0.0.1' %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
