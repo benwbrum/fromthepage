@@ -168,6 +168,6 @@ module CollectionHelper
     return true unless current_user
     return true unless current_user.account_type == "Individual Researcher"
     
-    !current_user.collections.where(is_active: true).exists?
+    current_user.collections.none? { |c| c.is_active }
   end
 end
