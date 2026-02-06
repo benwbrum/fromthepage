@@ -5,9 +5,9 @@ describe DashboardController do
     Current.user = owner
   end
 
-  let!(:owner) { build(:owner).tap { |o| o.save(validate: false) } }
-  let!(:user) { build(:user).tap { |u| u.save(validate: false) } }
-  let!(:guest) { build(:user, guest: true).tap { |u| u.save(validate: false) } }
+  let!(:owner) { create(:unique_user, :owner, :with_real_name) }
+  let!(:user) { create(:unique_user, :with_real_name) }
+  let!(:guest) { create(:unique_user, :with_real_name, guest: true) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
 
   describe '#dashboard_role' do
@@ -330,6 +330,18 @@ describe DashboardController do
           expect(response).to render_template(:landing_page)
         end
       end
+
+      context 'filter by user' do
+        let(:params) { { search: owner.real_name, filter: 'user' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
     end
   end
 
@@ -354,6 +366,52 @@ describe DashboardController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:browse_tag)
+    end
+  end
+
+  describe '#upload' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:signed_id) { '' }
+
+    let(:params) do
+      {
+        document_upload: {
+          attachment: signed_id,
+          collection_id: collection.id
+        }
+      }
+    end
+
+    let(:action_path) { dashboard_upload_path }
+
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:upload)
+    end
+
+    context 'with correct params' do
+      let(:attachment_blob) do
+        fixture_file_upload(Rails.root.join('test_data/uploads/test.pdf'), 'application/pdf')
+      end
+      let(:blob) do
+        ActiveStorage::Blob.create_and_upload!(io: attachment_blob, filename: 'test.pdf',
+          content_type: 'application/pdf')
+      end
+      let(:signed_id) { blob.signed_id }
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:upload)
+      end
     end
   end
 end

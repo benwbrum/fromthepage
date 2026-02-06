@@ -44,7 +44,6 @@ Rails.application.configure do
     api_token: ''
   }
 
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -90,9 +89,6 @@ Rails.application.configure do
   # Open 'http://localhost:1080/' in your browser to see mail sent
 
   Ahoy.geocode = false
-  # Add a custom hostname for uploads
-  # config.upload_host = 'uploads'
-  # config.hosts << "#{config.upload_host}.localhost"
 
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.logger = ActiveSupport::Logger.new(Rails.root.join('log/queue.log'))

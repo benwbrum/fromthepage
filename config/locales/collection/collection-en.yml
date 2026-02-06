@@ -1,6 +1,24 @@
 ---
 en:
   collection:
+    ai_transcriptions:
+      create:
+        success: AI transcription job launched.
+      form:
+        ai_transcription: AI Transcription
+        contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
+        description: Launch AI transcription job for pages in this collection.
+        description_complete: All pages in this collection have AI transcriptions.
+        failed: Failed
+        finished: Finished
+        generate: Create AI drafts for pages without them.
+        in_progress: In progress
+        not_started: Not started
+        pages: Pages
+        queued: Queued
+        retry: Retry failed jobs
+      update:
+        success: Retrying AI transcription job.
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     blank_collection:
@@ -239,6 +257,7 @@ en:
       review_type_restricted: Restricted
       review_type_restricted_description: All transcriptions need review, and only authorized reviewers may approve transcriptions.
     edit_tabs:
+      ai: AI
       danger_zone: Danger Zone
       general: General
       help_text: Help Text

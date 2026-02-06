@@ -1,0 +1,9 @@
+\subsubsection{<%= t('export.facing_edition.notes').html_safe %>}
+\label{<%= "#{page.title} notes" %>}
+
+\begin{small}
+<% notes.each do |note| %>
+  <%= "\\hspace*{0.5em}\\textit{#{Work::Export::Lib::Utils.latex_escape(note.user.display_name + ': ' + note.body)}} \\\\" %>
+
+<% end %>
+\end{small}

@@ -36,6 +36,7 @@ class Database::Base < ApplicationInteractor
     'ia_works' => IaWork,
     'ia_leaves' => IaLeaf,
     'work_statistics' => WorkStatistic,
+    'work_facets' => WorkFacet,
     'transcribe_authorizations' => TranscribeAuthorization
   }.freeze
 

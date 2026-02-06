@@ -5,5 +5,6 @@ FactoryBot.define do
     model { 'gemini-3-pro-preview' }
     metadata { nil }
     reasoning { 'Sample AI reasoning' }
+    status { :new }
   end
 end

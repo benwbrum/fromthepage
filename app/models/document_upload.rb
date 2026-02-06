@@ -2,16 +2,16 @@
 #
 # Table name: document_uploads
 #
-#  id                 :integer          not null, primary key
-#  file               :string(255)
-#  generate_ai_draft  :boolean          default(FALSE)
-#  ocr                :boolean          default(FALSE)
-#  preserve_titles    :boolean          default(FALSE)
-#  status             :string(255)      default("new")
-#  created_at         :datetime
-#  updated_at         :datetime
-#  collection_id      :integer
-#  user_id            :integer
+#  id                :integer          not null, primary key
+#  file              :string(255)
+#  generate_ai_draft :boolean          default(FALSE)
+#  ocr               :boolean          default(FALSE)
+#  preserve_titles   :boolean          default(FALSE)
+#  status            :string(255)      default("new")
+#  created_at        :datetime
+#  updated_at        :datetime
+#  collection_id     :integer
+#  user_id           :integer
 #
 # Indexes
 #
@@ -22,8 +22,24 @@ class DocumentUpload < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :collection, optional: true
 
-  validates :collection_id, :file, presence: true
+  validates :collection_id, presence: true
 
+  ACCEPTED_FILE_TYPES = [
+    'application/pdf',
+    'application/zip'
+  ].freeze
+
+  FE_ACCEPTED_FILE_TYPES = [
+    'application/x-zip',
+    'application/x-zip-compressed'
+  ].freeze
+
+  validates :attachment, attached: true, on: :create
+  validates :attachment, content_type: ACCEPTED_FILE_TYPES, on: :create
+
+  has_one_attached :attachment
+
+  # TODO: We will soon deprecate DocumentUploader in favor of ActiveStorage
   mount_uploader :file, DocumentUploader
 
   enum :status, {
@@ -38,6 +54,8 @@ class DocumentUpload < ApplicationRecord
     self.status = :queued
     self.save
 
+    FileUtils.mkdir_p(upload_dir)
+
     rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if settings are present
@@ -51,12 +69,13 @@ class DocumentUpload < ApplicationRecord
   end
 
   def name
-    File.basename(self.file.to_s)
+    File.basename(self.attachment.filename.to_s)
   end
 
   private
 
+  # TODO: This will be deprecated soon
   def upload_dir
-    File.dirname(self.file.path)
+    Rails.root.join('public', 'uploads', 'document_upload', 'file', self.id.to_s).to_s
   end
 end

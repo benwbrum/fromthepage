@@ -12,12 +12,11 @@ describe ExportController do
     File.read(Rails.root.join('test_data', 'transcripts', 'special_tags.txt'))
   end
 
-  let(:xml_text) do
-    File.read(Rails.root.join('test_data', 'transcripts', 'special_tags.xml'))
-  end
   let!(:page) do
-    create(:page, work: work, source_text: source_text, xml_text: xml_text, search_text: 'Search text',
-      status: :transcribed)
+    page = create(:page, work: work, search_text: 'Search text', status: :transcribed)
+    page.update!(source_text: source_text)
+
+    page
   end
 
   describe '#index' do
@@ -512,22 +511,22 @@ describe ExportController do
   end
 
   describe '#table_csv' do
-    let!(:text_field) do
-      create(:transcription_field, :as_transcription, collection: collection, label: 'Text Field', input_type: 'text')
-    end
-    let!(:spreadsheet_field) do
-      create(:transcription_field, :as_transcription, collection: collection, label: 'Spreadsheet Field',
-                                                      input_type: 'spreadsheet')
-    end
-    let!(:spreadsheet_column) do
-      create(:spreadsheet_column, transcription_field: spreadsheet_field, label: 'Text Column', input_type: 'text')
-    end
-
     let(:action_path) { export_table_csv_path(work_id: work.id) }
 
     let(:subject) { get action_path }
 
     context 'when field_based' do
+      let!(:text_field) do
+        create(:transcription_field, :as_transcription, collection: collection, label: 'Text Field', input_type: 'text')
+      end
+      let!(:spreadsheet_field) do
+        create(:transcription_field, :as_transcription, collection: collection, label: 'Spreadsheet Field',
+          input_type: 'spreadsheet')
+      end
+      let!(:spreadsheet_column) do
+        create(:spreadsheet_column, transcription_field: spreadsheet_field, label: 'Text Column', input_type: 'text')
+      end
+
       let!(:collection) do
         create(:collection, owner_user_id: owner.id, field_based: true)
       end
@@ -554,13 +553,7 @@ describe ExportController do
     end
 
     context 'when not field_based' do
-      let!(:text_field_cell) do
-        create(:table_cell, work: work, page: page, transcription_field: text_field)
-      end
-      let!(:spreadsheet_column_cell) do
-        create(:table_cell, work: work, page: page, transcription_field: spreadsheet_field, header: 'Text Column')
-      end
-      let!(:oprhaned_cell) { create(:table_cell, work: work, page: page) }
+      let!(:oprhaned_cell) { create(:table_cell, work: work, page: page, transcription_field: nil) }
 
       it 'renders status' do
         login_as owner

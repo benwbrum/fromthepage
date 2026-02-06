@@ -71,15 +71,15 @@ module XmlSourceProcessor
     #    return errors.size > 0
   end
 
-def source_text=(text)
+  def source_text=(text)
     self.source_text_will_change!
     super
-end
+  end
 
-def source_translation=(text)
-  self.source_translation_will_change!
-  super
-end
+  def source_translation=(text)
+    self.source_translation_will_change!
+    super
+  end
 
   ##############################################
   # All code to convert transcriptions from source
@@ -112,15 +112,15 @@ end
     xml_string = clean_bad_braces(xml_string)
     xml_string = clean_script_tags(xml_string)
     xml_string = process_square_braces(xml_string) unless subjects_disabled
+    xml_string = process_initial_whitespace(xml_string)
     xml_string = process_linewise_markup(xml_string)
-    xml_string = process_line_breaks(xml_string, !page.collection.field_based?)
+    xml_string = process_line_breaks(xml_string, is_field_based: page.collection.field_based?)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, preview_mode, text_type)
     xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
   end
-
 
   # remove script tags from HTML to prevent javascript injection
   def clean_script_tags(text)
@@ -336,13 +336,31 @@ end
     title
   end
 
+  # Process initial whitespace at the beginning of lines
+  # Replaces leading spaces with <indent> elements containing a spaces attribute
+  def process_initial_whitespace(text)
+    # Beginning of text
+    text = text.gsub(/\A( +)(?=\S)/) do
+      "<indent spaces=\"#{$1.length}\"/>"
+    end
+
+    # Handle the \r (old Mac) line ending case, which ^ doesn't match
+    text = text.gsub(/(\r?\n|\r)( +)(?=\S)/) do
+      line_break = $1
+      spaces = $2.length
+      "#{line_break}<indent spaces=\"#{spaces}\"/>"
+    end
+
+    text
+  end
+
   # transformations converting source mode transcription to xml
-  def process_line_breaks(text, add_paragraph_tags = true)
-    if add_paragraph_tags
+  def process_line_breaks(text, is_field_based: false)
+    if is_field_based
+      text = text.gsub(/\n/, '<lb/>')
+    else
       text="<p>#{text}</p>"
       text = text.gsub(/\s*\n\s*\n\s*/, '</p><p>')
-    else
-      text = text.gsub(/\s*\n\s*\n\s*/, '<lb/><lb/>')
     end
     text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\n\s*/, '<lb/>')
@@ -372,7 +390,9 @@ EOF
     # log the count of articles before and after
     clear_links(text_type) unless preview_mode
 
-    candidate_articles = collection.articles.left_joins(:article_versions)
+
+    articles_by_title = collection.articles.index_by(&:title) # optimize for common case
+    candidate_articles = collection.articles.left_joins(:article_versions) # fall-back
     page_update_timestamp = 1.hour.ago
 
     processed = ''
@@ -392,7 +412,7 @@ EOF
       # change the xml version of quotes back to double quotes for article title
       title = title.gsub('&quot;', '"')
 
-      article = candidate_articles.find_by(title: title)
+      article = articles_by_title[title]
 
       if article.nil?
         article = candidate_articles.where('article_versions.title': title)
@@ -411,6 +431,8 @@ EOF
         article.collection = collection
         article.created_by_id = Current.user.id if Current.user.present?
         article.save! unless preview_mode
+        # add the new article to the hash
+        articles_by_title[title] = article
       end
 
       link_id = create_link(article, display_text, text_type) unless preview_mode

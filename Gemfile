@@ -11,6 +11,7 @@ gem 'bootsnap', require: false
 # Core / Models / Business logic
 gem 'mysql2'
 gem 'activerecord-import', '~> 2.1'
+gem 'active_storage_validations'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 gem 'interactor-rails', '~> 2.0'
@@ -18,6 +19,7 @@ gem 'friendly_id'
 gem 'thredded', '~> 1.1'
 gem 'solid_queue', '~> 1.2'
 gem 'mission_control-jobs'
+gem 'aws-sdk-s3', require: false
 
 # Authentication / Security
 gem 'devise'
@@ -52,7 +54,6 @@ gem 'roo'
 gem 'charlock_holmes'
 gem 'nkf'
 gem 'net-pop', github: 'ruby/net-pop'
-
 gem 'forty_facets'
 gem 'chewy'
 
