@@ -1,7 +1,7 @@
 .litebox-embed(style="width:550px")
   h1 =t('.create_new_collection')
 
-  -if current_user.account_type == "Individual Researcher" && current_user.collections.select { |c| c.is_active }.count >= 1
+  -if current_user.account_type == "Individual Researcher" && current_user.collections.any? { |c| c.is_active }
     p(style="color: #FF0000") =t('.individual_researcher_limited_account')
   -else
     p =t('.enter_collection_title')
