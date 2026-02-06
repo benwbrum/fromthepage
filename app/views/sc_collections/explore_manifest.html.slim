@@ -46,7 +46,9 @@
 -content_for :javascript
   javascript:
     $(function(){
-      $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
+      -# Only show "Add New Collection" option if user is not Individual Researcher with 1+ active collections
+      -unless current_user.account_type == "Individual Researcher" && current_user.collections.where(is_active: true).count >= 1
+        $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
       if (("#{@label}" != '') && ("#{@col}" == '')){
       	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@label}</option>");
     	}

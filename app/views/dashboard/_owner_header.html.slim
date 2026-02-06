@@ -35,7 +35,9 @@
         span= t('.actions')
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
+        -# Only show "Create a Collection" if user is not Individual Researcher with 1+ active collections
+        -unless current_user.account_type == "Individual Researcher" && current_user.collections.where(is_active: true).count >= 1
+          =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
