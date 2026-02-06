@@ -82,8 +82,7 @@
           if(collection == ''){
             $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
           }
-          -# Only show "Add New Collection" option if user is not Individual Researcher with 1+ active collections
-          -unless current_user.account_type == "Individual Researcher" && current_user.collections.where(is_active: true).count >= 1
+          -if can_create_collection?
             $('#manifest_import').append("<option value='new'>Add New Collection</option>");
         });
 
