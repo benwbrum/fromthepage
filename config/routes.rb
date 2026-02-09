@@ -83,7 +83,7 @@ Fromthepage::Application.routes.draw do
       post 'manual_merge', to: 'admin#merge_tag', as: 'manual_merge'
     end
 
-    resources :suspicious_behaviors, module: 'admin', only: [:index, :show]
+    resources :suspicious_behaviors, module: :admin, only: [:index, :show]
   end
 
   scope 'facets', as: 'facets' do
@@ -514,6 +514,11 @@ Fromthepage::Application.routes.draw do
       get 'edit/privacy', on: :member, to: 'collection#edit_privacy'
       get 'edit/help', on: :member, to: 'collection#edit_help'
       get 'edit/quality_control', on: :member, to: 'collection#edit_quality_control'
+
+      scope module: :collection do
+        resource :ai_transcriptions, only: [:edit, :create, :update]
+      end
+
       get 'edit/danger', on: :member, to: 'collection#edit_danger'
 
       get 'new_work', on: :member
@@ -562,6 +567,7 @@ Fromthepage::Application.routes.draw do
       get ':work_id/transcribe_monitor/:page_id', as: 'monitor_view', to: 'transcribe#monitor_view'
       get ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
       get ':work_id/ai_text/:page_id', as: 'ai_text_page', to: 'display#ai_text'
+      post ':work_id/generate_ai_text/:page_id', as: 'generate_ai_text_page', to: 'display#generate_ai_text'
       get ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
       get ':work_id/still_editing/:page_id', to: 'transcribe#still_editing', as: 'transcribe_still_editing'

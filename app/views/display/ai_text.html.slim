@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 5, :page_id => @page.id }})
+=render partial: '/shared/page_tabs', locals: { selected: 5, page_id: @page.id }
 
 .page-headlines
   .headline
@@ -11,57 +11,18 @@
       -else
         =t('.ai_generated_text')
 
-
-.page-columns(data-layout-mode="ltr")
-  .page-column(id="leftColumn")
-    .page-imagescan
-      =render :partial => '/shared/osd_div'
-  .splitter(id="splitter")
-  .page-column(id="rightColumn")
-    .page-preview[*language_attrs(@collection)]
-
-      -if @page.can_calculate_ai_accuracy?
-        .ai-text-toggle
-          label.toggle-label
-            input(type="checkbox" id="show-diff-toggle")
-            span =t('.show_comparison_with_transcription')
-      -else
-        .ai-text-notice
-          p.info-message =t('.ai_text_edit_notice')
-
-      .ai-text-content(id="ai-text-content")
-        pre.ai-plaintext =@page.ai_plaintext
-
-      -if @page.can_calculate_ai_accuracy?
-        table.diff-versions(id="ai-diff-content", data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
-          tr
-            td.diff-version[*language_attrs(@collection)]
-              div.versions-wrapper
-                / hide the selected version
-                div.version-col(style="display: none;")
-                  div.version-content
-                    div.table-responsive(data-diff-transcription="changed")
-                      div.html-code
-                        h5 Human Transcription
-                        == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
-                div.version-col.right
-                  div.version-content
-                    div.table-responsive(data-diff-transcription="original")
-                      div.html-code
-                        h5 AI Draft
-                        = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
+=render partial: 'ai_text', locals: { ai_transcription: @page.ai_transcription }
 
 -if @ai_accuracy_stats
-  =render(:partial => 'cer_stats')
+  =render partial: 'cer_stats'
+
 -elsif @page.ai_transcription.present?
   .ai-accuracy-unavailable
     p.info-message =t('.statistics_unavailable')
     p =t('.statistics_unavailable_reason')
 
--if @page.ai_transcription.reasoning.present?
+-if @page.ai_transcription&.reasoning&.present?
   =render partial: 'reasoning', locals: { reasoning: @page.ai_transcription.reasoning }
-
-
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'

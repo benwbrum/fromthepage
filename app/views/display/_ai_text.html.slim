@@ -1,0 +1,40 @@
+#ai-text.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render partial: '/shared/osd_div'
+
+  .splitter(id="splitter")
+  .page-column(id="rightColumn")
+    .page-preview[*language_attrs(@collection)]
+      -if ai_transcription&.status_finished?
+        -if @page.can_calculate_ai_accuracy?
+          .ai-text-toggle
+            label.toggle-label
+              input(type="checkbox" id="show-diff-toggle")
+              span =t('.show_comparison_with_transcription')
+        -else
+          .ai-text-notice
+            p.info-message =t('.ai_text_edit_notice')
+
+        .ai-text-content(id="ai-text-content")
+          pre.ai-plaintext =@page.ai_plaintext
+
+      -if @page.can_calculate_ai_accuracy?
+        table.diff-versions(id="ai-diff-content", data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
+          tr
+            td.diff-version[*language_attrs(@collection)]
+              div.versions-wrapper
+                / hide the selected version
+                div.version-col(style="display: none;")
+                  div.version-content
+                    div.table-responsive(data-diff-transcription="changed")
+                      div.html-code
+                        h5 =t('.human_transcription')
+                        == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
+                div.version-col.right
+                  div.version-content
+                    div.table-responsive(data-diff-transcription="original")
+                      div.html-code
+                        h5 =t('.ai_draft')
+                        = @page.ai_plaintext.gsub("\n", '<br/>').html_safe
+

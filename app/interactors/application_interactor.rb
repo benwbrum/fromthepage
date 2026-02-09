@@ -13,7 +13,7 @@ class ApplicationInteractor
     self
   rescue StandardError => e
     @success = false
-    @full_errors = "#{e.message}\n#{e.backtrace.join("\n")}"
+    @full_errors = e
 
     self
   end

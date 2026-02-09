@@ -1,5 +1,5 @@
 class Work::Export::Lib::Utils
-  LINEBREAK_ELEMENT = "\\\\\n"
+  LINEBREAK_ELEMENT = "\\\\{}\n"
   HR_ELEMENT = '\{\{hr\}\}'
   BREAK_TEXT = {
     'cb' => 'column',
