@@ -182,20 +182,18 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      value # scalar value
+      value.tr('“”', '"')
     elsif value.is_a? Array
       if value.first.is_a? String
-        value.join('; ') # simple array
+        value.map { |v| v.tr('“”', '"') }.join('; ')
       else
-        # array of language pairs
-        value.map { |e| e['@value'] }.join('; ')
+        value.map { |e| e['@value'].tr('“”', '"') }.join('; ')
       end
     elsif value.is_a? Hash
-      # is this a pre-IIIF-v3 multi-language value?
       if value.keys.include?('@language') && value.keys.include?('@value')
-        value['@value']
+        value['@value'].tr('“”', '"')
       else
-        value.values.map { |value_array| value_array.first }.join('<br/>')
+        value.values.map { |value_array| value_array.first.tr('“”', '"') }.join('<br/>')
       end
     end
   end
