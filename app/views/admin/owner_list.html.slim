@@ -39,8 +39,16 @@ table.admin-grid.datagrid.striped
           -if o.location
             small(data-prefix='From ') =o.location
         td.nowrap =o.account_type
-        td.nowrap =o.start_date.strftime('%b %d, %Y') if o.start_date
-        td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
+        td.nowrap
+          - if o.start_date
+            =o.start_date.strftime('%b %d, %Y')
+          - else
+            | -
+        td.nowrap
+          - if o.paid_date
+            =o.paid_date.strftime('%b %d, %Y')
+          - else
+            | -
         td.nowrap.aright =o.collections.count
         td.nowrap.aright =o.page_count
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at

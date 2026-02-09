@@ -267,7 +267,8 @@ class AdminController < ApplicationController
       @owners = User.search(params[:search]).where(owner: true).order(paid_date: :desc).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     elsif params[:sort]
       @sort = params[:sort]
-      @dir = params[:dir] || 'asc'
+      # Validate direction to prevent SQL injection
+      @dir = %w[asc desc].include?(params[:dir]&.downcase) ? params[:dir].downcase : 'asc'
       
       # Toggle direction if clicking the same column
       @next_dir = @dir == 'asc' ? 'desc' : 'asc'
