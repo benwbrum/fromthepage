@@ -82,9 +82,30 @@ describe AdminController do
   end
 
   describe '#owner_list' do
-    let!(:owner1) { create(:unique_user, :owner, login: 'alice', account_type: 'Individual', start_date: 1.year.ago, paid_date: 1.month.ago, last_sign_in_at: 2.days.ago) }
-    let!(:owner2) { create(:unique_user, :owner, login: 'bob', account_type: 'Institution', start_date: 6.months.ago, paid_date: 2.months.ago, last_sign_in_at: 1.day.ago) }
-    let!(:owner3) { create(:unique_user, :owner, login: 'charlie', account_type: 'Individual', start_date: 3.months.ago, paid_date: 3.months.ago, last_sign_in_at: 3.days.ago) }
+    let!(:owner1) do
+      create(:unique_user, :owner,
+             login: 'alice',
+             account_type: 'Individual',
+             start_date: 1.year.ago,
+             paid_date: 1.month.ago,
+             last_sign_in_at: 2.days.ago)
+    end
+    let!(:owner2) do
+      create(:unique_user, :owner,
+             login: 'bob',
+             account_type: 'Institution',
+             start_date: 6.months.ago,
+             paid_date: 2.months.ago,
+             last_sign_in_at: 1.day.ago)
+    end
+    let!(:owner3) do
+      create(:unique_user, :owner,
+             login: 'charlie',
+             account_type: 'Individual',
+             start_date: 3.months.ago,
+             paid_date: 3.months.ago,
+             last_sign_in_at: 3.days.ago)
+    end
     let(:action_path) { admin_owner_list_path }
 
     it 'renders owner list for admin' do
