@@ -2,11 +2,9 @@ tr [id=dom_id(item)]
   td
     =link_to user_profile_path(item.user) do
       =render partial: 'shared/profile_picture', locals: { user: item.user, gravatar_size: nil }
-  td [data-controller='clipboard']
+  td
     =link_to item.user.display_name, user_profile_path(item.user)
-    b [data-clipboard-target='source' style='display: none'] =item.user.slug
-    a.clipboard-btn [data-action='click->clipboard#copy' aria-label=t('filter_table.click_to_copy_slug') title=t('filter_table.click_to_copy_slug')]
-      =svg_symbol '#icon-copy', class: 'icon'
+
   td
     -if item.page.present?
       =link_to(item.page.title, collection_display_page_path(item.collection.owner, item.collection, item.page.work_id, item.page))

@@ -54,6 +54,25 @@ describe Admin::SuspiciousBehaviorsController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
       end
+
+      context 'when elastic enabled' do
+        before do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+          stub_const('ELASTIC_ENABLED', true)
+        end
+
+        after do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+        end
+
+        it 'renders status and template' do
+          login_as admin
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:index)
+        end
+      end
     end
   end
 

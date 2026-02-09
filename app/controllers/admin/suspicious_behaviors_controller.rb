@@ -44,41 +44,42 @@ class Admin::SuspiciousBehaviorsController < AdminController
 
     if params[:search_user].present?
       search_user_term = params[:search_user]
-      user_filter = User.where(id: search_user_term)
-        .or(User.where(slug: search_user_term))
-        .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{search_user_term}%"))
-        .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{search_user_term}%"))
-        .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{search_user_term}%"))
-      if user_filter.any?
-        @filtered_scope.where(user_id: user_filter.select(:id))
+
+      if ELASTIC_ENABLED
+        users_scope = filtered_es_users(search_user_term)
       else
-        @filtered_scope = @filtered_scope.none
+        users_scope = filtered_users(search_user_term)
       end
+
+      @filtered_scope = @filtered_scope.where(user_id: users_scope.select(:id))
     end
 
     if params[:search_collection].present?
-      collection_filter = Collection.where(id: params[:search_collection]).or(Collection.where(slug: params[:search_collection]))
-      if collection_filter.any?
-        @filtered_scope.where(collection_id: collection_filter.select(:id))
+      search_collection_term = params[:search_collection]
+
+      if ELASTIC_ENABLED
+        collection_ids = Collection.es_search(query: "~#{search_collection_term}~", user: current_user).pluck('_id')
+        collections_scope = Collection.where(id: collection_ids)
       else
-        @filtered_scope = @filtered_scope.none
+        collections_scope = Collection.where(id: search_collection_term)
+          .or(Collection.where(slug: search_collection_term))
       end
+
+      @filtered_scope = @filtered_scope.where(collection_id: collections_scope.select(:id))
     end
 
     if params[:search_owner].present?
       search_owner_term = params[:search_owner]
-      owner_filter = User.where(id: search_owner_term)
-        .or(User.where(slug: search_owner_term))
-        .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{search_owner_term}%"))
-        .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{search_owner_term}%"))
-        .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{search_owner_term}%"))
-      owner_filter = Collection.where(owner_user_id: owner_filter.select(:id))
 
-      if owner_filter.any?
-        @filtered_scope.where(collection_id: owner_filter.select(:id))
+      if ELASTIC_ENABLED
+        owners_scope = filtered_es_users(search_owner_term)
       else
-        @filtered_scope = @filtered_scope.none
+        owners_scope = filtered_users(search_owner_term)
       end
+
+      owner_filter = Collection.where(owner_user_id: owners_scope.select(:id))
+
+      @filtered_scope = @filtered_scope.where(collection_id: owner_filter.select(:id))
     end
 
     case @sorting
@@ -91,5 +92,19 @@ class Admin::SuspiciousBehaviorsController < AdminController
     @filtered_scope = @filtered_scope.paginate(page: params[:page], per_page: DEFAULT_PER_PAGE)
 
     @filtered_scope
+  end
+
+  def filtered_es_users(query)
+    user_ids = User.es_search(query: "~#{query}~").pluck('_id')
+
+    User.where(id: user_ids)
+  end
+
+  def filtered_users(query)
+    User.where(id: query)
+      .or(User.where(slug: query))
+      .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{query}%"))
+      .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{query}%"))
+      .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{query}%"))
   end
 end

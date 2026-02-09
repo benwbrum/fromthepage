@@ -68,16 +68,19 @@ class SuspiciousBehaviorsController < ApplicationController
 
     if params[:search_user].present?
       term = params[:search_user]
-      user_filter = User.where(id: term)
-        .or(User.where(slug: term))
-        .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{term}%"))
-        .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{term}%"))
-        .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{term}%"))
-      if user_filter.any?
-        @filtered_scope.where(user_id: user_filter.select(:id))
+
+      if ELASTIC_ENABLED
+        user_ids = User.es_search(query: "~#{term}~").pluck('_id')
+        users_scope = User.where(id: user_ids)
       else
-        @filtered_scope = @filtered_scope.none
+        users_scope = User.where(id: term)
+          .or(User.where(slug: term))
+          .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{term}%"))
+          .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{term}%"))
+          .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{term}%"))
       end
+
+      @filtered_scope = @filtered_scope.where(user_id: users_scope.select(:id))
     end
 
     case @sorting
