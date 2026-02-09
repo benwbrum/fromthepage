@@ -96,7 +96,7 @@
     :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
   }]
 
--if false && @collection.owner == current_user
+-if @collection.owner == current_user
   -tabs += [{\
       :name => t('.suspicious_behaviors'),
       :selected => 10,
