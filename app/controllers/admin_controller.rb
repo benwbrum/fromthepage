@@ -269,15 +269,15 @@ class AdminController < ApplicationController
       @sort = params[:sort]
       # Validate direction to prevent SQL injection
       @dir = %w[asc desc].include?(params[:dir]&.downcase) ? params[:dir].downcase : 'asc'
-      
+
       # Toggle direction if clicking the same column
       @next_dir = @dir == 'asc' ? 'desc' : 'asc'
-      
+
       # Sanitize sort column to prevent SQL injection
       # Note: created_at is included as a fallback when an invalid sort column is provided
       allowed_sorts = ['login', 'account_type', 'start_date', 'paid_date', 'created_at', 'last_sign_in_at']
       @sort = 'created_at' unless allowed_sorts.include?(@sort)
-      
+
       # Use hash syntax for safer ordering
       @owners = User.where(owner: true).order(@sort.to_sym => @dir.to_sym).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     else
