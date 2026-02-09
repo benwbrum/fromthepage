@@ -3,8 +3,10 @@ pt:
   suspicious_behaviors:
     filters:
       behavior_type:
+        ai_warning_left: Texto de aviso de IA à esquerda
         all: Todos
         large_paste: Pasta Grande
+        minimal_ai_changes: Alterações mínimas no rascunho da IA
       status:
         all: Todos
         confirmed: Confirmado
