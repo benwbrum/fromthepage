@@ -14,7 +14,6 @@ table.admin-grid.datagrid.striped
       th =link_to t('.start_date'), admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
       th =link_to t('.acct_expiration'), admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
       th =t('.collections')
-      th =t('.active_pages')
       th =t('.total_pages')
       th =t('.last_sign_in')
       th =t('.action')
@@ -36,7 +35,6 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.created_at.strftime('%b %d, %Y')
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
         td.nowrap.aright =o.collections.count
-        td.nowrap.aright =o.active_page_count
         td.nowrap.aright =o.page_count
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap
