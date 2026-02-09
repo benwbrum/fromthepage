@@ -2,10 +2,12 @@
 es:
   display:
     ai_text:
+      ai_draft: Borrador de IA
       ai_generated_text: Texto generado por IA
       ai_text: Texto de IA
       ai_text_edit_notice: Para editar este texto, utilice el botón "Borrador de IA" en la pestaña de transcripción.
       facsimile: Facsímil
+      human_transcription: Transcripción humana
       show_comparison_with_transcription: Mostrar comparación con la transcripción
       statistics_unavailable: Las estadísticas de precisión no están disponibles para esta página.
       statistics_unavailable_reason: Las estadísticas solo se pueden calcular para las páginas con transcripción humana.

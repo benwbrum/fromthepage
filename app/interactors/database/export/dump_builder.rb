@@ -171,6 +171,10 @@ class Database::Export::DumpBuilder < Database::Base
     @work_statistics ||= WorkStatistic.where(work_id: works.select(:id))
   end
 
+  def work_facets
+    @work_facets ||= WorkFacet.where(work_id: works.select(:id))
+  end
+
   def transcribe_authorizations
     @transcribe_authorizations ||= TranscribeAuthorization.where(work_id: works.select(:id))
   end
