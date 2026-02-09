@@ -266,9 +266,17 @@ class AdminController < ApplicationController
     if params[:search]
       @owners = User.search(params[:search]).where(owner: true).order(paid_date: :desc).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     elsif params[:sort]
-      sort = params[:sort]
-      dir = params[:dir].upcase
-      @owners = User.where(owner: true).order("#{sort} #{dir}").paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @sort = params[:sort]
+      @dir = params[:dir] || 'asc'
+      
+      # Toggle direction if clicking the same column
+      @next_dir = @dir == 'asc' ? 'desc' : 'asc'
+      
+      # Sanitize sort column to prevent SQL injection
+      allowed_sorts = ['login', 'account_type', 'start_date', 'paid_date', 'created_at', 'last_sign_in_at']
+      @sort = 'created_at' unless allowed_sorts.include?(@sort)
+      
+      @owners = User.where(owner: true).order("#{@sort} #{@dir}").paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     else
       @owners = User.where(owner: true).order(created_at: :desc).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     end

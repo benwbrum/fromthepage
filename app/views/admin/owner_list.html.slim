@@ -8,14 +8,21 @@
 table.admin-grid.datagrid.striped
   thead
     tr
-      th(colspan="2") =link_to t('.owner_login'), admin_owner_list_path(:sort => 'login', :dir => 'asc')
+      -# Helper to determine next direction for a column
+      - login_dir = (@sort == 'login' ? @next_dir : 'asc')
+      - account_type_dir = (@sort == 'account_type' ? @next_dir : 'asc')
+      - start_date_dir = (@sort == 'start_date' ? @next_dir : 'desc')
+      - paid_date_dir = (@sort == 'paid_date' ? @next_dir : 'desc')
+      - last_sign_in_dir = (@sort == 'last_sign_in_at' ? @next_dir : 'desc')
+      
+      th(colspan="2") =link_to t('.owner_login'), admin_owner_list_path(:sort => 'login', :dir => login_dir)
       th.w100 =t('.name_and_location').html_safe
-      th =link_to t('.acct_type'), admin_owner_list_path(:sort => 'account_type', :dir => 'desc')
-      th =link_to t('.start_date'), admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
-      th =link_to t('.acct_expiration'), admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
+      th =link_to t('.acct_type'), admin_owner_list_path(:sort => 'account_type', :dir => account_type_dir)
+      th =link_to t('.start_date'), admin_owner_list_path(:sort => 'start_date', :dir => start_date_dir)
+      th =link_to t('.acct_expiration'), admin_owner_list_path(:sort => 'paid_date', :dir => paid_date_dir)
       th =t('.collections')
       th =t('.total_pages')
-      th =t('.last_sign_in')
+      th =link_to t('.last_sign_in'), admin_owner_list_path(:sort => 'last_sign_in_at', :dir => last_sign_in_dir)
       th =t('.action')
 
   tbody
@@ -32,7 +39,7 @@ table.admin-grid.datagrid.striped
           -if o.location
             small(data-prefix='From ') =o.location
         td.nowrap =o.account_type
-        td.nowrap =o.created_at.strftime('%b %d, %Y')
+        td.nowrap =o.start_date.strftime('%b %d, %Y') if o.start_date
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
         td.nowrap.aright =o.collections.count
         td.nowrap.aright =o.page_count
