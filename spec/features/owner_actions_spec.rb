@@ -305,12 +305,12 @@ describe "owner actions", order: :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
-  it "warns if account type is Individual Researcher" do
+  it "hides Create a Collection link for Individual Researcher with active collections" do
     @owner.account_type = "Individual Researcher"
+    @owner.save!
     visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    expect(@owner.collections.count).to be >= 1
-    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
+    expect(@owner.collections.where(is_active: true).count).to be >= 1
+    expect(page).not_to have_link('Create a Collection')
   end
 
   it "does not warn with another account type" do
@@ -318,6 +318,19 @@ describe "owner actions", order: :defined do
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+  end
+
+  it "shows Create a Collection link for Individual Researcher with only inactive collections" do
+    @owner.account_type = "Individual Researcher"
+    @owner.save!
+    # Make all existing collections inactive
+    @owner.collections.update_all(is_active: false)
+    # Now the user should be able to see and click Create a Collection
+    visit dashboard_owner_path
+    expect(page).to have_link('Create a Collection')
+    page.find('a', text: 'Create a Collection').click
+    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+    expect(page).to have_content("Enter the title of your collection")
   end
 
   context "owner/staff related" do

@@ -82,7 +82,8 @@
           if(collection == ''){
             $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
           }
-          $('#manifest_import').append("<option value='new'>Add New Collection</option>");
+          -if can_create_collection?
+            $('#manifest_import').append("<option value='new'>Add New Collection</option>");
         });
 
         $(function(){

@@ -46,7 +46,8 @@
 -content_for :javascript
   javascript:
     $(function(){
-      $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
+      -if can_create_collection?
+        $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
       if (("#{@label}" != '') && ("#{@col}" == '')){
       	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@label}</option>");
     	}

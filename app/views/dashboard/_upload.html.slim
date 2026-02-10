@@ -55,7 +55,8 @@
 -content_for :javascript
   javascript:
     $(function(){
-      $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
+      -if can_create_collection?
+        $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
     });
 
     $(function(){

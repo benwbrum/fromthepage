@@ -35,7 +35,8 @@
         span= t('.actions')
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
+        -if can_create_collection?
+          =link_to t('.create_a_collection'), collection_new_path, data: { controller: 'litebox', litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
