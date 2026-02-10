@@ -26,8 +26,7 @@
   -content_for :javascript
     javascript:
       $(function(){
-        -if can_create_collection?
-          $('#work_collection_id').append("<option value='new'>#{t('.add_new_collection')}</option>");
+        $('#work_collection_id').append("<option value='new'>#{t('.add_new_collection')}</option>");
       });
 
       $(function(){
