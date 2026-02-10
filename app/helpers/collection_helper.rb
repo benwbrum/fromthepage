@@ -166,8 +166,8 @@ module CollectionHelper
   # Individual Researcher accounts are limited to 1 active collection
   def can_create_collection?
     return true unless current_user
-    return true unless current_user.account_type == "Individual Researcher"
-    
+    return true unless current_user.account_type == 'Individual Researcher'
+
     current_user.collections.none? { |c| c.is_active }
   end
 end
