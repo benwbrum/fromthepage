@@ -46,62 +46,21 @@ module ExportService
       path = File.join dirname, 'printable', "text_only.#{output_format}"
     end
 
-    tempfile = export_printable(work, edition, output_format, preserve_lb, include_metadata, include_contributors, include_notes)
+    result = Work::Export::Printable.new(
+      work: work,
+      format: output_format,
+      edition: edition,
+      include_metadata: include_metadata,
+      include_contributors: include_contributors,
+      include_notes: include_notes,
+      preserve_lb: preserve_lb
+    ).call
+
+    return unless result.success?
+
+    tempfile = result.file
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
-  end
-
-  def export_printable(work, edition, format, preserve_lb, include_metadata, include_contributors, include_notes)
-    # render to a string
-    rendered_markdown =
-      ApplicationController.new.render_to_string(
-        template: '/export/facing_edition',
-        layout: false,
-        assigns: {
-          collection: work.collection,
-          work: work,
-          edition_type: edition,
-          output_type: format,
-          preserve_linebreaks: preserve_lb,
-          include_metadata: include_metadata,
-          include_contributors: include_contributors,
-          include_notes: include_notes
-        },
-        formats: [:html]
-      )
-
-    # write the string to a temp directory
-    temp_dir = File.join(Rails.root, 'tmp', 'printable')
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
-
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/, '')
-    temp_dir = File.join(temp_dir, time_stub)
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
-
-    file_stub = "#{@work.slug.gsub('-', '_')}_#{time_stub}"
-    md_file = File.join(temp_dir, "#{file_stub}.md")
-
-    if format == 'pdf'
-      output_file = File.join(temp_dir, "#{file_stub}.pdf")
-    elsif format == 'doc'
-      output_file = File.join(temp_dir, "#{file_stub}.docx")
-    end
-
-    File.write(md_file, rendered_markdown)
-
-    # run pandoc against the temp directory
-    log_file = File.join(temp_dir, "#{file_stub}.log")
-
-    tex_template = Rails.root.join('lib', 'pandoc', 'pdf_export_template.tex')
-    lua_filter = Rails.root.join('lib', 'pandoc', 'risky_soul_filter.lua')
-    cmd = "pandoc --template #{tex_template} --lua-filter=#{lua_filter} --from markdown+superscript+pipe_tables -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose --abbreviations=/dev/null -V colorlinks=true  > #{log_file} 2>&1"
-    puts cmd
-    logger.info(cmd)
-    system(cmd)
-
-    puts File.read(log_file)
-
-    output_file
   end
 
   def export_owner_mailing_list_csv(out:, owner:)

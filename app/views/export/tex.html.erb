@@ -18,11 +18,11 @@
       xml_text: page.xml_text,
       preserve_lb: @preserve_lb,
       flatten_links: true
-    ).html_safe %>
+    ) %>
 
   <% end %>
   <% if @work.supports_translation && !page.source_translation.blank? %>
-    \subsubsection{<%= t('export.facing_edition.translation').html_safe %>}
+    \subsubsection{<%= t('export.facing_edition.translation') %>}
     \label{<%= "#{page.title} translation" %>}
 
     <%= Work::Export::Lib::Utils.xml_to_latex(
@@ -30,7 +30,7 @@
       xml_text: page.xml_translation,
       preserve_lb: @preserve_lb,
       flatten_links: true
-    ).html_safe %>
+    ) %>
 
   <% end %>
   <% if !@include_notes && page.notes.size > 0 %>
@@ -41,7 +41,7 @@
 <% end %>
 
 <% if @edition != 'text_only' && @include_contributors %>
-  <%= t('export.facing_edition.contributions_message').html_safe %>
+  <%= t('export.facing_edition.contributions_message') %>
 
   <%= Work::Export::Lib::Utils.latex_escape(@contributor_names.to_sentence) %>
 <% end %>
