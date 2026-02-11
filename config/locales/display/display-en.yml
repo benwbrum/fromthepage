@@ -117,6 +117,9 @@ en:
     reasoning:
       ai_reasoning: AI Reasoning Steps
       reasoning_explanation: Reasoning Explanation
+    prompt:
+      ai_prompt: AI Prompt
+      prompt_explanation: The prompt used to generate this transcription
   display_helper:
     page_action:
       blank_page: Blank page

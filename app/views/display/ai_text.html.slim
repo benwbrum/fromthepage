@@ -24,6 +24,9 @@
 -if @page.ai_transcription&.reasoning&.present?
   =render partial: 'reasoning', locals: { reasoning: @page.ai_transcription.reasoning }
 
+-if @page.ai_transcription&.prompt&.present?
+  =render partial: 'prompt', locals: { prompt: @page.ai_transcription.prompt }
+
 -content_for :javascript
   =javascript_include_tag 'textdiff'
   javascript:
