@@ -23,7 +23,8 @@ describe "uploads data for collections", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collection.title, from: 'document_upload_collection_id')
+    find('#document_upload_collection_id', visible: false)
+      .select(@collection.title)
 
     attach_file(
       'document_upload_file',
@@ -44,7 +45,8 @@ describe "uploads data for collections", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collection.title, from: 'document_upload_collection_id')
+    find('#document_upload_collection_id', visible: false)
+      .select(@collection.title)
 
     attach_file(
       'document_upload_file',
