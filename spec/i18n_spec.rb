@@ -37,6 +37,24 @@ RSpec.describe I18n do
     expect(inconsistent_interpolations).to be_empty, error_message
   end
 
+  # Translation Quality Tests
+  #
+  # These tests check for incorrect translations of "work" (as in "work of literature")
+  # being translated to words meaning "labor" in other languages.
+  #
+  # The test:
+  # 1. Parses YAML locale files to extract translation key-value pairs
+  # 2. Uses word boundary regex to check for standalone bad words (avoiding compound words)
+  # 3. Maintains an allowlist for keys where "labor" translations are acceptable
+  # 4. Provides detailed output showing the file, key, bad word, and actual message
+  #
+  # To add an allowlisted key:
+  # - Add the key (without locale prefix) to the allowlist array below
+  # - Add a comment explaining why the translation is acceptable
+  #
+  # Example allowlist entry:
+  #   'collection.ai_transcriptions.create.success', # "AI transcription job" (background job, not literary work)
+  #
   describe 'translations' do
     # Words that should be "work of literature" not "labor"
     let(:incorrect_translations) do
