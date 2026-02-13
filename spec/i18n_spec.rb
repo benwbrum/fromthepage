@@ -59,7 +59,7 @@ RSpec.describe I18n do
     # Words that should be "work of literature" not "labor"
     let(:incorrect_translations) do
       {
-        'de' => ['arbeit', 'arbeiten'],
+        'de' => ['arbeit', 'arbeiten', 'dokumentensatz'],
         'es' => ['trabajo', 'trabajos'],
         'fr' => ['travail', 'travaux'],
         'pt' => ['trabalho', 'trabalhos']
@@ -72,13 +72,9 @@ RSpec.describe I18n do
         # Phrases about "working on" something (labor is correct)
         'collection.recent_contributor_list.recent_contributor_description', # "working on the project"
         'work.download.warning_work_not_complete', # "work on this document"
-        'work.configurable_printout.text_contents_description', # "metadata about the work" (ambiguous but acceptable)
         'collection.edit_danger.blank_collection_description', # "work on the collection" (labor context)
-        'collection.edit_look.alphabetize_works_description', # "amount of work remaining" (labor context)
         'collection.contributors_body.time_on_this', # "time on this" (labor context)
         'collection.show.this_work_has_pages_that_need_work', # "pages that need work" (labor context)
-        'dashboard.upload.to_specify_metadata', # "work" referring to literary work but in metadata context (acceptable)
-        'shared.page_navigation.describe_work', # "describe the work" (ambiguous but referring to the literary work in context)
         # AI transcription jobs (these are background jobs/tasks, not literary works)
         'collection.ai_transcriptions.create.success', # "AI transcription job"
         'collection.ai_transcriptions.form.description', # "AI transcription job"
@@ -143,9 +139,9 @@ RSpec.describe I18n do
         error_message = "\n\nFound #{errors.count} incorrect translation(s):\n\n"
         errors.each do |error|
           error_message += "File: #{error[:file]}\n"
-          error_message += "Key: #{error[:key]}\n"
-          error_message += "Bad word: '#{error[:word]}'\n"
-          error_message += "Message: #{error[:value]}\n"
+          error_message += "  Key: #{error[:key]}\n"
+          error_message += "  Bad word: '#{error[:word]}'\n"
+          error_message += "  Message: #{error[:value]}\n"
           error_message += "\n"
         end
         RSpec.configuration.reporter.message(error_message)
