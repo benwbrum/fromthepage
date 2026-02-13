@@ -88,7 +88,7 @@ RSpec.describe I18n do
 
       locale_files.each do |file|
         begin
-          data = YAML.load_file(file)
+          data = YAML.safe_load_file(file)
           next unless data.is_a?(Hash)
 
           # Get the locale code (e.g., 'de', 'es', 'fr')
@@ -115,8 +115,8 @@ RSpec.describe I18n do
               end
             end
           end
-        rescue Psych::SyntaxError, StandardError => e
-          # Skip files that can't be parsed
+        rescue Psych::Exception, Errno::ENOENT
+          # Skip files that can't be parsed or don't exist
           next
         end
       end
