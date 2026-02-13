@@ -5,9 +5,9 @@ describe DashboardController do
     Current.user = owner
   end
 
-  let!(:owner) { build(:owner).tap { |o| o.save(validate: false) } }
-  let!(:user) { build(:user).tap { |u| u.save(validate: false) } }
-  let!(:guest) { build(:user, guest: true).tap { |u| u.save(validate: false) } }
+  let!(:owner) { create(:unique_user, :owner, :with_real_name) }
+  let!(:user) { create(:unique_user, :with_real_name) }
+  let!(:guest) { create(:unique_user, :with_real_name, guest: true) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
 
   describe '#dashboard_role' do
@@ -321,6 +321,18 @@ describe DashboardController do
 
       context 'filter by page' do
         let(:params) { { search: collection.title, filter: 'page' } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:landing_page)
+        end
+      end
+
+      context 'filter by user' do
+        let(:params) { { search: owner.real_name, filter: 'user' } }
 
         it 'renders status and template' do
           login_as owner

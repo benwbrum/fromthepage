@@ -1,0 +1,47 @@
+<% @pages.each do |page| %>
+  <% if @edition == 'facing' %>
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=\linewidth]{<%= page.image_url_for_download %>}
+      \label{fig:<%= page.title %>}
+    \end{figure}
+
+    <%= render partial: 'shared/printable/newpage' %>
+  <% end %>
+
+  \subsection{<%= Work::Export::Lib::Utils.latex_escape(page.title) %>}
+  \label{<%= page.title %>}
+
+  <% if !page.status_blank? && !page.source_text.blank? %>
+    <%= Work::Export::Lib::Utils.xml_to_latex(
+      page: page,
+      xml_text: page.xml_text,
+      preserve_lb: @preserve_lb,
+      flatten_links: true
+    ) %>
+
+  <% end %>
+  <% if @work.supports_translation && !page.source_translation.blank? %>
+    \subsubsection{<%= t('export.facing_edition.translation') %>}
+    \label{<%= "#{page.title} translation" %>}
+
+    <%= Work::Export::Lib::Utils.xml_to_latex(
+      page: page,
+      xml_text: page.xml_translation,
+      preserve_lb: @preserve_lb,
+      flatten_links: true
+    ) %>
+
+  <% end %>
+  <% if !@include_notes && page.notes.size > 0 %>
+    <%= render partial: 'shared/printable/page_notes', locals: { page: page, notes: page.notes } %>
+
+  <% end %>
+  <%= render partial: 'shared/printable/newpage' %>
+<% end %>
+
+<% if @edition != 'text_only' && @include_contributors %>
+  <%= t('export.facing_edition.contributions_message') %>
+
+  <%= Work::Export::Lib::Utils.latex_escape(@contributor_names.to_sentence) %>
+<% end %>

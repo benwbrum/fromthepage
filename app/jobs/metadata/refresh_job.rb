@@ -87,6 +87,6 @@ class Metadata::RefreshJob < ApplicationJob
     # :nocov:
   rescue StandardError => e
     log("SMTP Failed: Exception: #{e.message}")
-    # :cov:
+    # :nocov:
   end
 end

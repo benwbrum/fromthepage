@@ -54,7 +54,6 @@ gem 'roo'
 gem 'charlock_holmes'
 gem 'nkf'
 gem 'net-pop', github: 'ruby/net-pop'
-
 gem 'forty_facets'
 gem 'chewy'
 

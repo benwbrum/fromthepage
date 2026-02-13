@@ -8,6 +8,7 @@
 #  created_on                     :datetime
 #  data_entry_type                :string(255)      default("text")
 #  default_orientation            :string(255)
+#  default_overview_orientation   :string(255)
 #  description_instructions       :text(65535)
 #  enable_spellcheck              :boolean          default(FALSE)
 #  facets_enabled                 :boolean          default(FALSE)
@@ -523,10 +524,6 @@ class Collection < ApplicationRecord
     User.find(self.owner_user_id).help
   end
 
-  public :user_help
-
-  private
-
   def handle_index_deletion
     return unless ELASTIC_ENABLED
 
@@ -537,4 +534,6 @@ class Collection < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :user_help, :handle_index_deletion
 end

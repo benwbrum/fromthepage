@@ -36,6 +36,7 @@
 #  index_pages_on_status_and_work_id                      (status,work_id)
 #  index_pages_on_status_and_work_id_and_edit_started_at  (status,work_id,edit_started_at)
 #  index_pages_on_work_id                                 (work_id)
+#  pages_search_text_index                                (search_text)
 #
 require 'search_translator'
 require 'transkribus/page_processor'
@@ -53,7 +54,8 @@ class Page < ApplicationRecord
   before_update :populate_search
   before_update :update_line_count
   before_save :calculate_last_editor
-  before_save :calculate_approval_delta
+  after_save :calculate_approval_delta
+
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -69,6 +71,8 @@ class Page < ApplicationRecord
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
+
+  has_many :suspicious_behaviors, dependent: :destroy
 
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
   has_and_belongs_to_many :sections
@@ -386,26 +390,12 @@ class Page < ApplicationRecord
   end
 
   def calculate_approval_delta
-    if source_text_changed?
-      if COMPLETED_STATUSES.include? self.status
-        most_recent_not_approver_version = self.page_versions.where.not(user_id: Current.user.id).first
-        if most_recent_not_approver_version
-          old_transcription = most_recent_not_approver_version.transcription || ''
-        else
-          old_transcription = ''
-        end
-        new_transcription = self.source_text
+    return Current.user.present? && saved_change_to_source_text?
 
-        if new_transcription.blank? && old_transcription.blank?
-          self.approval_delta = nil
-        else
-          self.approval_delta =
-            Text::Levenshtein.distance(old_transcription, new_transcription).to_f / (old_transcription.size + new_transcription.size).to_f
-        end
-      else # zero out deltas if the page is not complete
-        self.approval_delta = nil
-      end
-    end
+    Page::CalculateApprovalDeltaJob.perform_later(
+      page_id: self.id,
+      user_id: Current.user.id
+    )
   end
 
   def create_version
@@ -559,7 +549,7 @@ class Page < ApplicationRecord
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").destroy_all
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
@@ -620,7 +610,7 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?
-    self.ai_transcription.present? || File.exist?(self.ai_plaintext_path)
+    self.ai_transcription&.status_finished? || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
@@ -782,4 +772,6 @@ class Page < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :handle_index_deletion
 end
