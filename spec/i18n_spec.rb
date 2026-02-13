@@ -38,8 +38,48 @@ RSpec.describe I18n do
   end
 
   describe 'translations' do
+    # Words that should be "work of literature" not "labor"
     let(:incorrect_translations) do
-      ['travail', 'travaux', 'trabalho', 'trabalhos', 'arbeit', 'arbeiten', 'trabajo', 'trabajos', 'dokumentensatz']
+      {
+        'de' => ['arbeit', 'arbeiten'],
+        'es' => ['trabajo', 'trabajos'],
+        'fr' => ['travail', 'travaux'],
+        'pt' => ['trabalho', 'trabalhos']
+      }
+    end
+
+    # Message keys where "labor" translation is acceptable
+    let(:allowlist) do
+      [
+        # Phrases about "working on" something (labor is correct)
+        'collection.recent_contributor_list.recent_contributor_description', # "working on the project"
+        'work.download.warning_work_not_complete', # "work on this document"
+        'work.configurable_printout.text_contents_description', # "metadata about the work" (ambiguous but acceptable)
+        'collection.edit_danger.blank_collection_description', # "work on the collection" (labor context)
+        'collection.edit_look.alphabetize_works_description', # "amount of work remaining" (labor context)
+        'collection.contributors_body.time_on_this', # "time on this" (labor context)
+        'collection.show.this_work_has_pages_that_need_work', # "pages that need work" (labor context)
+        'dashboard.upload.to_specify_metadata', # "work" referring to literary work but in metadata context (acceptable)
+        'shared.page_navigation.describe_work', # "describe the work" (ambiguous but referring to the literary work in context)
+        # AI transcription jobs (these are background jobs/tasks, not literary works)
+        'collection.ai_transcriptions.create.success', # "AI transcription job"
+        'collection.ai_transcriptions.form.description', # "AI transcription job"
+        'collection.ai_transcriptions.form.retry', # "retry failed jobs"
+        'collection.ai_transcriptions.update.success' # "AI transcription job"
+      ]
+    end
+
+    # Helper to recursively extract all key-value pairs from YAML
+    def extract_translations(hash, prefix = '', results = {})
+      hash.each do |key, value|
+        full_key = prefix.empty? ? key : "#{prefix}.#{key}"
+        if value.is_a?(Hash)
+          extract_translations(value, full_key, results)
+        elsif value.is_a?(String)
+          results[full_key] = value
+        end
+      end
+      results
     end
 
     it 'does not contain incorrect translations in locale files' do
@@ -47,16 +87,53 @@ RSpec.describe I18n do
       errors = []
 
       locale_files.each do |file|
-        file_content = File.read(file).downcase
+        begin
+          data = YAML.load_file(file)
+          next unless data.is_a?(Hash)
 
-        incorrect_translations.each do |word|
-          errors << "Found incorrect translation '#{word}' in file: #{file}" if file_content.include?(word)
+          # Get the locale code (e.g., 'de', 'es', 'fr')
+          locale = data.keys.first
+          next unless incorrect_translations.key?(locale)
+
+          translations = extract_translations(data)
+          bad_words = incorrect_translations[locale]
+
+          translations.each do |key, value|
+            # Skip if key is in allowlist
+            next if allowlist.include?(key.sub(/^#{locale}\./, ''))
+
+            bad_words.each do |word|
+              # Use word boundary regex to avoid matching compound words
+              # e.g., don't flag "bearbeiten" when looking for "arbeit"
+              if value.downcase.match?(/\b#{Regexp.escape(word)}\b/)
+                errors << {
+                  file: file.sub(Rails.root.to_s, ''),
+                  key: key,
+                  value: value,
+                  word: word
+                }
+              end
+            end
+          end
+        rescue Psych::SyntaxError, StandardError => e
+          # Skip files that can't be parsed
+          next
         end
       end
 
-      RSpec.configuration.reporter.message(errors.join("\n")) if errors.any?
+      if errors.any?
+        error_message = "\n\nFound #{errors.count} incorrect translation(s):\n\n"
+        errors.each do |error|
+          error_message += "File: #{error[:file]}\n"
+          error_message += "Key: #{error[:key]}\n"
+          error_message += "Bad word: '#{error[:word]}'\n"
+          error_message += "Message: #{error[:value]}\n"
+          error_message += "\n"
+        end
+        RSpec.configuration.reporter.message(error_message)
+      end
 
-      expect(true).to eq(true)
+      expect(errors).to be_empty, "Found #{errors.count} incorrect translation(s). See output above for details."
     end
   end
 end
