@@ -165,7 +165,7 @@ class Work::Export::Lib::Utils
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
-    
+
     # Use paragraph columns with text wrapping for better handling of wide content
     # Calculate appropriate column width based on number of columns
     # Tables should always have at least one column
@@ -177,14 +177,14 @@ class Work::Export::Lib::Utils
     use_small_font = column_count >= 6
 
     latex = "#{LINEBREAK_ELEMENT}"
-    
+
     # Add landscape environment for very wide tables (8+ columns)
     latex += "\\begin{landscape}\n" if use_landscape
-    
+
     # Use smaller font for tables with many columns (6+ columns)
     latex += "\\small\n" if use_small_font && !use_landscape
     latex += "\\footnotesize\n" if use_landscape
-    
+
     latex += "\\begin{longtable}[]{#{column_format}}\n"
     
     if table_element.elements['thead']
@@ -204,10 +204,10 @@ class Work::Export::Lib::Utils
 
     latex += "\\bottomrule\\noalign{}\n"
     latex += "\\end{longtable}\n"
-    
+
     # Close landscape environment if used
     latex += "\\end{landscape}\n" if use_landscape
-    
+
     latex
   end
 
