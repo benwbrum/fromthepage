@@ -73,6 +73,7 @@ RSpec.describe I18n do
         'collection.recent_contributor_list.recent_contributor_description', # "working on the project"
         'work.download.warning_work_not_complete', # "work on this document"
         'collection.edit_danger.blank_collection_description', # "work on the collection" (labor context)
+        'collection.edit_look.alphabetize_works_description', # "amount of work remaining" - contains both meanings of "work"
         'collection.contributors_body.time_on_this', # "time on this" (labor context)
         'collection.show.this_work_has_pages_that_need_work', # "pages that need work" (labor context)
         # AI transcription jobs (these are background jobs/tasks, not literary works)
