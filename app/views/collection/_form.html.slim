@@ -3,4 +3,4 @@
     =render 'shared/validation_summary', errors: collection.errors
     =f.submit t('collection.edit.save_changes'), id: 'collection-settings-save', hidden: true
     table.form.collection-settings
-      =render partial: "#{scope}_form", locals: { collection: collection, f: f }
+      =render partial: "collection/#{scope}_form", locals: { collection: collection, f: f }

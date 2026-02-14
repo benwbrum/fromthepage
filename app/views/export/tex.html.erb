@@ -18,7 +18,7 @@
       xml_text: page.xml_text,
       preserve_lb: @preserve_lb,
       flatten_links: true
-    ).html_safe %>
+    ) %>
 
   <% end %>
   <% if @work.supports_translation && !page.source_translation.blank? %>
@@ -30,7 +30,7 @@
       xml_text: page.xml_translation,
       preserve_lb: @preserve_lb,
       flatten_links: true
-    ).html_safe %>
+    ) %>
 
   <% end %>
   <% if !@include_notes && page.notes.size > 0 %>

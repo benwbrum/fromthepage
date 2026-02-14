@@ -102,7 +102,15 @@ class TranscribeController  < ApplicationController
       end
 
       if @page.save
-        record_deed(DeedType::AI_DRAFT) if @page.ai_draft_used
+        # TODO: Implement in save_transcription refactor PR as well
+        if @page.ai_draft_used
+          record_deed(DeedType::AI_DRAFT)
+
+          Transcribe::FlagAiUseJob.perform_later(
+            page_id: @page.id,
+            user_id: current_user.id
+          )
+        end
 
         log_transcript_success
         flash[:notice] = t('.saved_notice')

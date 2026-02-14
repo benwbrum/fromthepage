@@ -4,7 +4,7 @@ class PagesIndex < Chewy::Index
   index_name formatted_index_name('page')
   default_import_options batch_size: 1000
 
-  index_scope Page
+  index_scope Page.joins(:work)
 
   field :db_id, type: 'integer', value: -> { id }
   field :is_public, type: 'boolean', value: -> { is_public? }

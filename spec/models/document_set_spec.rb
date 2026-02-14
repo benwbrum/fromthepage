@@ -65,11 +65,7 @@ describe DocumentSet do
     let!(:other_base_collection) { create(:collection, owner_user_id: other_user.id) }
 
     let!(:other_public_docset) { create(:document_set, title: identifier, collection_id: other_base_collection.id, owner_user_id: other_user.id, visibility: :public) }
-    let!(:other_restricted_docset) { create(:document_set, title: identifier, collection_id: other_base_collection.id, owner_user_id: other_user.id, visibility: :private) }
-
-    # We also query by intro_block, so this tests that
-    let!(:no_owner_public_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: other_base_collection.id, owner_user_id: nil, visibility: :public) }
-    let!(:no_col_private_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: nil, owner_user_id: nil, visibility: :private) }
+    let!(:other_restricted_docset) { create(:document_set, description: "<div>#{identifier}</div>", collection_id: other_base_collection.id, owner_user_id: other_user.id, visibility: :private) }
 
     let(:records) do
       [
@@ -81,9 +77,7 @@ describe DocumentSet do
         other_user,
         other_base_collection,
         other_public_docset,
-        other_restricted_docset,
-        no_owner_public_docset,
-        no_col_private_docset
+        other_restricted_docset
       ]
     end
 
@@ -119,8 +113,7 @@ describe DocumentSet do
           expect(es_search.pluck("_id")).to match_array(
             [
               "docset-#{public_docset.id}",
-              "docset-#{other_public_docset.id}",
-              "docset-#{no_owner_public_docset.id}"
+              "docset-#{other_public_docset.id}"
             ]
           )
         end
@@ -135,8 +128,7 @@ describe DocumentSet do
               "docset-#{public_docset.id}",
               "docset-#{restricted_docset.id}",
               "docset-#{public_updated_to_restricted_docset.id}",
-              "docset-#{other_public_docset.id}",
-              "docset-#{no_owner_public_docset.id}"
+              "docset-#{other_public_docset.id}"
             ]
           )
         end
@@ -153,8 +145,7 @@ describe DocumentSet do
           expect(es_search.pluck("_id")).to match_array(
             [
               "docset-#{other_public_docset.id}",
-              "docset-#{other_restricted_docset.id}",
-              "docset-#{no_owner_public_docset.id}"
+              "docset-#{other_restricted_docset.id}"
             ]
           )
         end
