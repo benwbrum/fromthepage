@@ -72,7 +72,7 @@ pt:
       status: Status
       title: Titulo
       toggle_work_in_document_set: Alternar %{work} no conjunto de documentos %{document_set}
-      transfer_works: Trabalhos de Transferência
+      transfer_works: Transferir Obras
       work: Obra
     new:
       create_document_set: Criar Conjunto de Documentos
@@ -101,7 +101,7 @@ pt:
       target_set: Conjunto de documentos de destino
       transfer: Transferir
       transfer_type_label: Tipo de transferência
-      transfer_works: Trabalhos de Transferência
+      transfer_works: Transferir Obras
       transfer_works_description: A transferência funciona entre conjuntos de documentos. (A cópia colocará a mesma obra em dois conjuntos de documentos ao mesmo tempo.)
     update:
       document_failed_update: Falha ao atualizar conjunto de documentos

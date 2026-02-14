@@ -12,7 +12,7 @@ de:
       include_notes: Notizen einschließen
       preserve_linebreaks: Zeilenumbrüche beibehalten
       text_contents: Inhalt
-      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über die Arbeit enthalten.
+      text_contents_description: Der druckbare Export enthält den Text der Transkription und kann auch Informationen über die Mitwirkenden des Projekts oder Metadaten über das Werk enthalten.
       text_format: Textformatierung
       text_format_description: Optionen zum Formatieren von Text.
       text_format_docx: MS-Word (.docx)
