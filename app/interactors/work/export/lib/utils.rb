@@ -186,7 +186,7 @@ class Work::Export::Lib::Utils
     latex += "\\footnotesize\n" if use_landscape
 
     latex += "\\begin{longtable}[]{#{column_format}}\n"
-    
+
     if table_element.elements['thead']
       latex += "\\toprule\n"
 
