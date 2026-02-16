@@ -64,7 +64,7 @@ describe "document sets", order: :defined do
       expect(checkbox).to be_checked
     end
 
-    doc_set.work_ids |= work_ids
+    doc_set.work_ids = (doc_set.work_ids + work_ids).uniq
     doc_set.save!
   end
 
