@@ -95,7 +95,7 @@ class Admin::SuspiciousBehaviorsController < AdminController
   end
 
   def filtered_es_users(query)
-    user_ids = User.es_search(query: "~#{query}~").pluck('_id')
+    user_ids = User.es_search(query: "~#{query}~", extra_fields: ['display_name', 'login']).pluck('_id')
 
     User.where(id: user_ids)
   end

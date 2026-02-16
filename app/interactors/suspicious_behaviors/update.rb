@@ -10,12 +10,18 @@ class SuspiciousBehaviors::Update < ApplicationInteractor
   end
 
   def perform
-    raise StandardError, 'User cannot update this record' if @suspicious_behavior.collection&.owner_user_id != @user.id
+    raise StandardError, 'User cannot update this record' unless user_has_permission?
 
     @suspicious_behavior.update!(
       status: @status,
       resolved_by_user_id: @user.id,
       resolved_at: Time.current
     )
+  end
+
+  private
+
+  def user_has_permission?
+    @user.like_owner?(@suspicious_behavior.collection) || @user.collaborator?(@suspicious_behavior.collection)
   end
 end

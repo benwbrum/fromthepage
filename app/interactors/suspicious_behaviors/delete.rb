@@ -9,8 +9,14 @@ class SuspiciousBehaviors::Delete < ApplicationInteractor
   end
 
   def perform
-    raise StandardError, 'User cannot delete this record' if @suspicious_behavior.collection&.owner_user_id != @user.id
+    raise StandardError, 'User cannot delete this record' unless user_has_permission?
 
     @suspicious_behavior.destroy!
+  end
+
+  private
+
+  def user_has_permission?
+    @user.like_owner?(@suspicious_behavior.collection) || @user.collaborator?(@suspicious_behavior.collection)
   end
 end

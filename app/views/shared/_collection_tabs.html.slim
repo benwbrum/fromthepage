@@ -96,7 +96,7 @@
     :path => "#{main_app.collection_works_list_path(@collection.owner, @collection)}",
   }]
 
--if @collection.owner == current_user
+-if current_user.like_owner?(@collection) || current_user.collaborator?(@collection)
   -tabs += [{\
       :name => t('.suspicious_behaviors'),
       :selected => 10,
@@ -116,4 +116,4 @@
   .tabs
     -for tab in tabs
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
-          a.active =tab[:name]
+        a.active =tab[:name]

@@ -20,6 +20,22 @@ describe SuspiciousBehaviors::Delete do
     expect(result.suspicious_behavior.destroyed?).to be_truthy
   end
 
+  context 'user is a collaborator' do
+    let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+    let(:result) do
+      described_class.new(
+        suspicious_behavior: suspicious_behavior,
+        user: user
+      ).call
+    end
+
+    it 'destroys suspicious_behavior' do
+      expect(result.success?).to be_truthy
+      expect(result.suspicious_behavior.destroyed?).to be_truthy
+    end
+  end
+
   context 'user has no permission' do
     let(:result) do
       described_class.new(

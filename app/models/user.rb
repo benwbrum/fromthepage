@@ -145,17 +145,20 @@ class User < ApplicationRecord
   update_index('users', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
 
-  def self.es_search(query:)
+  def self.es_search(query:, extra_fields: [])
+    fields = [
+      'about',
+      'real_name',
+      'website'
+    ]
+    fields += extra_fields
+
     UsersIndex.query(
       bool: {
         must: {
           simple_query_string: {
             query: query,
-            fields: [
-              'about',
-              'real_name',
-              'website'
-            ]
+            fields: fields
           }
         },
         filter: []

@@ -70,7 +70,7 @@ class SuspiciousBehaviorsController < ApplicationController
       term = params[:search_user]
 
       if ELASTIC_ENABLED
-        user_ids = User.es_search(query: "~#{term}~").pluck('_id')
+        user_ids = User.es_search(query: "~#{term}~", extra_fields: ['display_name', 'login']).pluck('_id')
         users_scope = User.where(id: user_ids)
       else
         users_scope = User.where(id: term)
@@ -97,7 +97,7 @@ class SuspiciousBehaviorsController < ApplicationController
 
   # TODO: Introduce permission concern
   def authorized?
-    return if user_signed_in? && @collection.owner_user_id == current_user.id
+    return if current_user.like_owner?(@collection) || current_user.collaborator?(@collection)
 
     redirect_to dashboard_path
   end
