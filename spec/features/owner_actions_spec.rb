@@ -18,7 +18,7 @@ describe "owner actions", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select(@collections.first.title, from: 'document_upload_collection_id')
+    select2_select(id: 'document_upload_collection_id', value: @collections.first.title)
     click_button('Upload File')
     expect(page).to have_content("prohibited the form from being saved")
     expect(page).to have_content("File can't be blank")
@@ -91,7 +91,7 @@ describe "owner actions", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link('Start A Project')
     page.find(:css, '#document-upload', wait: 5).click
-    page.select 'Add New Collection', from: 'document_upload_collection_id'
+    select2_select(id: 'document_upload_collection_id', value: 'Add New Collection')
 
     within(page.find('.litebox-embed', wait: 5)) do
       expect(page).to have_content('Create New Collection', wait: 5)
@@ -175,7 +175,7 @@ describe "owner actions", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(@collections.last.title, from: 'work_collection_id')
+    select(id: 'work_collection_id', value: @collections.last.title)
     fill_in 'work_description', with: "This work should fail to create."
     click_button('Create Work')
     expect(page).to have_content("Create Empty Work")
