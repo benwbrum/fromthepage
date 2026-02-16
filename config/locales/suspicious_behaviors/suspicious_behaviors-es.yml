@@ -10,8 +10,10 @@ es:
       deleted: Informe eliminado
     filters:
       behavior_type:
+        ai_warning_left: Texto de advertencia de IA a la izquierda
         all: Todo
         large_paste: Pasta grande
+        minimal_ai_changes: Cambios mínimos en el borrador de IA
       status:
         all: Todo
         flagged: Marcado

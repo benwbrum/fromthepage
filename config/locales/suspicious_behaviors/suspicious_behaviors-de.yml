@@ -10,8 +10,10 @@ de:
       deleted: Bericht gelöscht
     filters:
       behavior_type:
+        ai_warning_left: KI-Warntext links
         all: Alle
         large_paste: Große Paste
+        minimal_ai_changes: Minimale Änderungen am KI-Entwurf
       status:
         all: Alle
         flagged: Markiert

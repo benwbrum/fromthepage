@@ -28,7 +28,7 @@ pt:
       first_line_of_ocr: Primeira linha de OCR
       first_line_of_ocr_description: "<b>Primeira linha do OCR</b> substitui os títulos das páginas pela linha superior do texto OCR em cada página. Isso é útil para diários e diários, já que a primeira linha geralmente é uma data."
       generate_ai_draft_text: Gere rascunhos de texto com IA usando o Gemini AI.
-      generate_ai_draft_text_description: Selecione esta caixa de seleção para gerar automaticamente o texto de rascunho com IA para todas as páginas usando o Gemini AI após a publicação do trabalho.
+      generate_ai_draft_text_description: Selecione esta caixa de seleção para gerar automaticamente o texto de rascunho com IA para todas as páginas usando o Gemini AI após a publicação da obra.
       last_line_of_ocr: Última linha do OCR
       last_line_of_ocr_description: "<b>Última linha do OCR</b> substitui os títulos das páginas pela linha inferior do texto OCR em cada página. Isso é útil para obras impressos nos quais os números de página aparecem na parte inferior."
       manage_archive_org_import: Gerenciar importação do Archive.org

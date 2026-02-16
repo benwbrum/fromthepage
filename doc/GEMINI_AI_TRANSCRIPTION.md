@@ -27,33 +27,54 @@ To obtain a Gemini API key:
 
 ### 3. (Optional) Configure Model
 
-By default, the integration uses `gemini-1.5-flash`. You can override this by setting:
+By default, the integration uses `gemini-3-pro-preview`. You can override this by setting:
 
 ```bash
 export GEMINI_MODEL='gemini-1.5-pro'
 ```
 
 Available models include:
-- `gemini-1.5-flash` (default, stable, fast, good for transcription)
+- `gemini-1.5-flash` (stable, fast, good for transcription)
 - `gemini-1.5-pro` (stable, more accurate, slower)
 - `gemini-pro-vision` (older model with vision capabilities)
+- `gemini-2.5-pro`
+- `gemini-3-pro-preview` (default model with reasoning capabilities)
 
 ## Usage
 
-### Via Interactor
+### Standard Pipeline
 
 ```ruby
 # For a given page
 page = Page.find(123)
 
-# Fetch AI transcription
-result = Page::FetchAiText.new(page: page).call
+# User that can_transcribe the given page
+user = User.find(123)
 
-if result.success?
-  puts "Transcription saved to page.ai_plaintext"
-  puts page.ai_plaintext
-else
-  puts "Error: #{result.message}"
+begin
+  create_result = AiTranscription::Create.new(
+    page: page,
+    user: user
+  ).call
+
+  if !create_result.success?
+    # create interactor exposes the error at create_result.full_errors,
+    # allowing for custom error handling
+
+    raise create_result.full_errors
+  end
+
+  # Start generation job
+  AiTranscription::GenerateJob.perform_now(
+    user_id: document_upload.user.id,
+    ai_transcription_id: create_result.ai_transcription.id
+  )
+
+  print "SUCCESS\n"
+
+rescue StandardError => e
+  # Handle errors here
+  print "ERROR - #{e}\n#{e.message}"
 end
 ```
 
@@ -62,26 +83,61 @@ end
 You can also use the transcriber directly:
 
 ```ruby
-require 'gemini/text_transcriber'
-
 image_url = 'https://example.com/path/to/page-image.jpg'
-transcribed_text = Gemini::TextTranscriber.transcribe_image(image_url)
+transcription_text, reasoning_text, metadata = AiTranscription::Lib::Gemini::TranscriberHandler.new(
+  prompt: 'prompt text',
+  model: 'model',
+  image_url: image_url
+).perform
 ```
 
-### With Custom Prompt
+### With Custom Prompt and Model
+
+Ideally, we must use AiTranscription::Create interactor for proper sanitization of model and prompt
+
+```ruby
+# For a given page
+page = Page.find(123)
+# User that can_transcribe the given page
+user = User.find(123)
+
+create_result = AiTranscription::Create.new(
+  page: page,
+  user: user,
+  model: 'gemini-2.5-pro',
+  prompt_file: 'path_to_prompt_file'
+).perform
+
+# And from here, access the sanitized models and prompts
+if create_result.success?
+  create_result.ai_transcription.model
+  create_result.ai_transcription.prompt
+end
+```
+
+Otherwise, we can directly use the `transcribe_handler`
 
 ```ruby
 custom_prompt = "Transcribe this document and pay special attention to dates and proper nouns."
-text = Gemini::TextTranscriber.transcribe_image(image_url, prompt: custom_prompt)
+custom_model = 'gemini-2.5-pro'
+
+transcription_text, reasoning_text, metadata = AiTranscription::Lib::Gemini::TranscribeHandler.new(
+  prompt: custom_prompt,
+  model: custom_model,
+  image_url: image_url
+).perform
 ```
 
 ## How It Works
 
-1. The interactor retrieves the page image URL using `page.image_url_for_download`
-2. The image is downloaded and encoded as base64 (automatically follows HTTP redirects)
-3. The encoded image and prompt are sent to the Gemini API
-4. The API returns transcribed text in a streaming response
-5. The transcribed text is saved to the page using `page.ai_plaintext=`
+1. The AiTranscription::Create interactor initializes the `ai_transcription` record, sanitized params and queues for processing
+2. The AiTranscription::GenerateJob enqueues the job for generation.
+3. The AiTranscription::Generate interactor receives a valid `ai_transcription` record and performs generation.
+   - Retrieves the page image URL using `page.image_url_for_download`
+   - The image is downloaded and encoded as base64 (automatically follows HTTP redirects)
+   - The encoded image and prompt are sent to the Gemini API
+   - The API returns transcribed text in a streaming response
+   - The transcribed text is saved to `ai_transcription` record
 
 ### Redirect Handling
 
@@ -108,7 +164,7 @@ You can modify this prompt to better suit your document collection's needs.
 
 ## Error Handling
 
-The interactor handles several error cases:
+The `transcribe_handler` handles several error cases:
 
 - **No image**: Returns failure if the page has no associated image
 - **Missing API key**: Raises `ArgumentError` if `GEMINI_API_KEY` is not set
@@ -136,10 +192,11 @@ After 5 retries (6 total attempts), if the error persists, the operation fails. 
 Run the test suite:
 
 ```bash
-bundle exec rspec spec/interactors/page/fetch_ai_text_spec.rb
+bundle exec rspec spec/interactors/ai_transcription
+bundle exec rspec spec/job/ai_transcription
 ```
 
-The tests use mocked Gemini API responses to avoid requiring actual API credentials.
+The tests use mocked Gemini API response VCRs to avoid requiring actual API credentials.
 
 ## Bulk Operations with Rake Tasks
 
@@ -230,7 +287,7 @@ Success: 20, Skipped: 3, Errors: 2
 
 ## Future Enhancements
 
-When Gemini 2.5 is released, simply update the `GEMINI_MODEL` environment variable or change the default in `lib/gemini/text_transcriber.rb`.
+We will be adding support for custom models and other tracking for `ai_transcription` generations
 
 ## Related Features
 

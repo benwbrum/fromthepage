@@ -10,8 +10,10 @@ pt:
       deleted: Relatório excluído
     filters:
       behavior_type:
+        ai_warning_left: Texto de aviso de IA à esquerda
         all: Todos
         large_paste: Pasta Grande
+        minimal_ai_changes: Alterações mínimas no rascunho da IA
       status:
         all: Todos
         flagged: Sinalizado

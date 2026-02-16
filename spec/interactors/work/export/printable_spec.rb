@@ -30,7 +30,7 @@ describe Work::Export::Printable do
   let!(:deed) { create(:deed, deed_type: DeedType::WORK_ADDED, work: work, collection: collection, user: owner) }
 
   let(:format) { 'pdf' }
-  let(:time) { Time.now }
+  let(:time) { Time.now.utc }
 
   let!(:expected_tex_string) do
     renderer = ERB.new(tex_text)

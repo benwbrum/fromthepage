@@ -10,8 +10,10 @@ fr:
       deleted: Rapport supprimé
     filters:
       behavior_type:
+        ai_warning_left: Texte d'avertissement IA à gauche
         all: Tous
         large_paste: Grande pâte
+        minimal_ai_changes: Modifications mineures du brouillon de l'IA
       status:
         all: Tous
         flagged: Signalé

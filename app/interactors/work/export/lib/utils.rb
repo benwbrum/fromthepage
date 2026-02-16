@@ -1,5 +1,5 @@
 class Work::Export::Lib::Utils
-  LINEBREAK_ELEMENT = "\\\\\n"
+  LINEBREAK_ELEMENT = "\\\\{}\n"
   HR_ELEMENT = '\{\{hr\}\}'
   BREAK_TEXT = {
     'cb' => 'column',
@@ -9,6 +9,14 @@ class Work::Export::Lib::Utils
     'row' => 'tr',
     'cell' => 'td'
   }
+  HTML_ENTITIES = [
+    '&amp;',
+    '&lt;',
+    '&gt;',
+    '&quot;',
+    '&#39;',
+    '&nbsp;'
+  ]
 
   def self.latex_escape(text)
     return '' if text.blank?
@@ -237,5 +245,19 @@ class Work::Export::Lib::Utils
     end
 
     content
+  end
+
+  def self.html_unescape(html_string)
+    unescaped = html_string.dup
+
+    loop do
+      new_unescaped = CGI.unescapeHTML(unescaped)
+
+      break if new_unescaped == unescaped
+
+      unescaped = new_unescaped
+    end
+
+    unescaped
   end
 end

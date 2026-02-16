@@ -4,7 +4,7 @@ class CollectionsIndex < Chewy::Index
   index_name formatted_index_name('collection')
   default_import_options batch_size: 1000
 
-  index_scope Collection
+  index_scope Collection.joins(:owner)
 
   field :is_public, type: 'boolean', value: -> { !restricted }
   field :is_docset, type: 'boolean', value: -> { false }

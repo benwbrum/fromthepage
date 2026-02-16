@@ -31,8 +31,7 @@ ruby:
     end
   end
 
-  # Add AI tab for anyone who can see the page if it has AI plaintext
-  if @page.ai_transcription.present?
+  if @page.ai_transcription&.status_finished?
     tabs << {
       name: t('.ai'),
       selected: 5,

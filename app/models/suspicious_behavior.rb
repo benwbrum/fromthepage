@@ -35,7 +35,11 @@ class SuspiciousBehavior < ApplicationRecord
   belongs_to :resolved_by_user, optional: true, class_name: 'User'
 
   enum :behavior_type, {
+    # Implemented
     large_paste: 'large_paste',
+    ai_warning_left: 'ai_warning_left',
+    minimal_ai_changes: 'minimal_ai_changes',
+    # Pending
     high_wpm: 'high_wpm',
     chatgpt_tell: 'chatgpt_tell',
     low_backspace: 'low_backspace',
@@ -55,9 +59,13 @@ class SuspiciousBehavior < ApplicationRecord
     serialize :metadata, coder: JSON
   end
 
-  # TODO: We will add support for other suspicious_behaviors, for now
-  # we focus on large_paste
-  BEHAVIOR_TYPE_FILTERS = [:all, :large_paste].freeze
+  # TODO: We will add support for other suspicious_behaviors
+  BEHAVIOR_TYPE_FILTERS = [
+    :all,
+    :large_paste,
+    :ai_warning_left,
+    :minimal_ai_changes
+  ].freeze
 
   STATUS_FILTERS = [:all, :pending, :flagged, :ignored].freeze
 

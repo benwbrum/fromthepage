@@ -87,7 +87,7 @@ module Gemini
           metadata = {}
 
           # Extract transcribed text from response
-          return [extract_text_from_response(response), extract_reasoning_from_response(response), metadata, prompt]
+          return [extract_text_from_response(response), extract_reasoning_from_response(response), metadata, transcription_prompt]
         rescue StandardError => e
           last_error = e
 

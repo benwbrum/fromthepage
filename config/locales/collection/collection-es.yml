@@ -1,6 +1,24 @@
 ---
 es:
   collection:
+    ai_transcriptions:
+      create:
+        success: Se lanzó el trabajo de transcripción de IA.
+      form:
+        ai_transcription: Transcripción de IA
+        contact_us: Comuníquese con %{email} para actualizar a un plan que incluya borradores de IA.
+        description: Iniciar un trabajo de transcripción de IA para las páginas de esta colección.
+        description_complete: Todas las páginas de esta colección tienen transcripciones de IA.
+        failed: Fallido
+        finished: Finalizado
+        generate: Crea borradores de IA para páginas que no los tengan.
+        in_progress: En curso
+        not_started: No iniciado
+        pages: Páginas
+        queued: En cola
+        retry: Reintentar trabajos fallidos
+      update:
+        success: Reintentando el trabajo de transcripción de IA.
     approve_all:
       approved_n_pages: "%{page_count} páginas aprobadas."
     blank_collection:
@@ -169,7 +187,7 @@ es:
         one: "%{title} tiene convenciones de transcripción personalizadas"
         other: "%{title} y %{count} otros tienen convenciones de transcripción personalizadas"
     edit_look:
-      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
+      alphabetize_works: Listar obras alfabéticamente.
       alphabetize_works_description: La visualización funciona alfabéticamente en lugar de en orden de cantidad de trabajo restante.
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       default_orientation_description: Elija la orientación que mejor se adapte a la mayoría de las obras de esta colección. Los usuarios podrán cambiar la orientación a la que prefieran.
@@ -239,6 +257,7 @@ es:
       review_type_restricted: " Restringido: todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones."
       review_type_restricted_description: Todas las transcripciones necesitan revisión y solo los revisores autorizados pueden aprobar las transcripciones.
     edit_tabs:
+      ai: AI
       danger_zone: Zona peligrosa
       general: General
       help_text: texto de ayuda
@@ -297,7 +316,7 @@ es:
       project_by: Proyecto de
       return_to_collection: Volver a la colección
       review_metadata: Revisar metadatos
-      works_that_need_metadata: Trabajos que necesitan metadatos
+      works_that_need_metadata: Obras que necesitan metadatos
     needs_transcription_pages:
       pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de

@@ -496,6 +496,10 @@ class User < ApplicationRecord
     self.account_type == 'Staff'
   end
 
+  def individual_researcher?
+    self.account_type == 'Individual Researcher'
+  end
+
   private
 
   def email_domain_blacklist

@@ -1,6 +1,24 @@
 ---
 de:
   collection:
+    ai_transcriptions:
+      create:
+        success: KI-Transkriptionsauftrag gestartet.
+      form:
+        ai_transcription: KI-Transkription
+        contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
+        description: Starte einen KI-Transkriptionsauftrag für Seiten in dieser Sammlung.
+        description_complete: Alle Seiten dieser Sammlung enthalten KI-Transkriptionen.
+        failed: Fehlgeschlagen
+        finished: Fertig
+        generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
+        in_progress: Im Gange
+        not_started: Nicht gestartet
+        pages: Seiten
+        queued: In der Warteschlange
+        retry: Fehlgeschlagene Aufträge erneut versuchen
+      update:
+        success: KI-Transkriptionsauftrag wird wiederholt.
     approve_all:
       approved_n_pages: Freigegebene %{page_count} Seiten.
     blank_collection:
@@ -169,7 +187,7 @@ de:
         one: "%{title} hat benutzerdefinierte Transkriptionskonventionen"
         other: "%{title} und %{count} andere haben benutzerdefinierte Transkriptionskonventionen"
     edit_look:
-      alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
+      alphabetize_works: Werke alphabetisch auflisten.
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.
       default_orientation: Wählen Sie die standardmäßige Seitenausrichtung für die Transkription aus
       default_orientation_description: Wählen Sie die Ausrichtung, die am besten zu den meisten Werken dieser Sammlung passt. Benutzer können die Ausrichtung nach Belieben ändern.
@@ -239,6 +257,7 @@ de:
       review_type_restricted: " Eingeschränkt: Alle Transkriptionen müssen überprüft werden und nur autorisierte Reviewer:innen können Transkriptionen genehmigen bzw. freigeben."
       review_type_restricted_description: Alle Transkriptionen müssen überprüft werden, und nur autorisierte Prüfer können Transkriptionen genehmigen.
     edit_tabs:
+      ai: KI
       danger_zone: Gefahrenzone
       general: Allgemein
       help_text: Hilfstext
@@ -333,7 +352,7 @@ de:
       review: Review
       user: Mitarbeiter:in
     restrict_scribes:
-      success: Abgeschlossene Arbeiten wurden erfolgreich eingeschränkt
+      success: Abgeschlossene Werke wurden erfolgreich eingeschränkt
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten

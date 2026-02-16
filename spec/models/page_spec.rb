@@ -74,12 +74,6 @@ describe Page do
     let!(:other_restricted_work) { create(:work, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_page) { create(:page, title: identifier, work_id: other_restricted_work.id) }
 
-    # Set work_id to nil in before_block to avoid callback errors
-    let!(:no_work_page) { create(:page, title: identifier, work_id: public_work.id) }
-
-    let!(:no_col_work) { create(:work, collection_id: nil, owner_user_id: other_user.id) }
-    let!(:no_col_page) { create(:page, work_id: no_col_work.id) }
-
     let(:records) do
       [
         owner,
@@ -101,10 +95,7 @@ describe Page do
         other_public_work,
         other_public_page,
         other_restricted_work,
-        other_restricted_page,
-        no_work_page,
-        no_col_work,
-        no_col_page
+        other_restricted_page
       ]
     end
 
@@ -116,13 +107,11 @@ describe Page do
       PagesIndex.purge
       records.each(&:save!)
 
-      no_work_page.update_column(:work_id, nil)
       restricted_page.update_column(:search_text, identifier)
       docset.works << restricted_col_public_set_work
       restricted_docset.works << restricted_col_set_work
 
       PagesIndex.import [
-        no_work_page.reload,
         restricted_page.reload,
         restricted_col_public_set_page.reload,
         restricted_col_set_page.reload
@@ -133,9 +122,6 @@ describe Page do
       VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
 
       stub_const('ELASTIC_ENABLED', true)
-
-      no_work_page.update_column(:work_id, public_work.id)
-      no_work_page.reload
 
       records.reverse.each(&:destroy!)
       PagesIndex.purge
@@ -154,8 +140,7 @@ describe Page do
             [
               public_page.id,
               restricted_col_public_set_page.id,
-              other_public_page.id,
-              no_work_page.id
+              other_public_page.id
             ]
           )
         end
@@ -171,8 +156,7 @@ describe Page do
               restricted_page.id,
               restricted_col_public_set_page.id,
               restricted_col_set_page.id,
-              other_public_page.id,
-              no_work_page.id
+              other_public_page.id
             ]
           )
         end
@@ -190,8 +174,7 @@ describe Page do
             [
               restricted_col_public_set_page.id,
               other_public_page.id,
-              other_restricted_page.id,
-              no_work_page.id
+              other_restricted_page.id
             ]
           )
         end

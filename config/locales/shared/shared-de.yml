@@ -79,7 +79,7 @@ de:
       zoom_in: Hineinzoomen
       zoom_out: Rauszoomen
     page_navigation:
-      describe_work: Beschreiben Sie die Arbeit
+      describe_work: Werk beschreiben
       nav_info: Seite %{position} von %{size}
       next_page: Nächste Seite
       previous_page: Vorherige Seite

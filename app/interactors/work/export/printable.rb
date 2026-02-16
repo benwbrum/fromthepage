@@ -21,20 +21,39 @@ class Work::Export::Printable < ApplicationInteractor
   def perform
     sanitize_format
 
-    output = PandocRuby.new(
-      tex_string,
-      from: :latex,
-      to: @format,
-      'pdf-engine' => PDF_ENGINE,
-      'lua-filter' => Rails.root.join('lib', 'pandoc', 'ftp_filters.lua').to_s,
-    ).convert
-
     export_path = PRINTABLE_PATH.join(time_stub)
     FileUtils.mkdir_p(export_path)
 
+    tex_file = export_path.join(tex_filename)
     @file = export_path.join(filename)
+    log_file = export_path.join(log_filename)
 
-    File.open(export_path.join(@file), 'wb') { |f| f.write(output) }
+    File.open(tex_file, 'w') { |f| f.write(tex_string) }
+
+    # Build pandoc command as a single string with stdout/stderr redirected
+    pandoc_command = [
+      'pandoc',
+      tex_file.to_s,
+      '-o', @file.to_s,
+      '--from=latex',
+      "--to=#{@format}",
+      "--pdf-engine=#{PDF_ENGINE}",
+      "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
+      '--verbose'
+    ].join(' ')
+
+    full_command = "#{pandoc_command} > #{log_file} 2>&1"
+    success = system(full_command)
+
+    raise "Pandoc conversion failed! See log: #{log_file}" unless success
+  end
+
+  def log_filename
+    @log_filename ||= "#{@work.slug.gsub('-', '_')}_#{time_stub}.log"
+  end
+
+  def tex_filename
+    @tex_filename ||= "#{@work.slug.gsub('-', '_')}_#{time_stub}.tex"
   end
 
   def filename
@@ -42,7 +61,9 @@ class Work::Export::Printable < ApplicationInteractor
   end
 
   def tex_string
-    @tex_string ||= ApplicationController.new.render_to_string(
+    return @tex_string if defined?(@tex_string)
+
+    html_string = ApplicationController.new.render_to_string(
       template: '/export/tex',
       layout: 'printable',
       assigns: {
@@ -60,6 +81,8 @@ class Work::Export::Printable < ApplicationInteractor
       },
       formats: [:html]
     ).each_line.map(&:strip).join("\n")
+
+    @tex_string = Work::Export::Lib::Utils.html_unescape(html_string)
   end
 
   private
@@ -86,6 +109,8 @@ class Work::Export::Printable < ApplicationInteractor
     @pages = @work.pages.includes(:notes, :ia_leaf, :sc_canvas)
 
     @pages = @pages.where(id: @page_ids) unless @page_ids == :all
+
+    @pages = @pages
 
     @pages
   end
