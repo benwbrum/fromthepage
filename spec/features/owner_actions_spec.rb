@@ -104,7 +104,7 @@ describe "owner actions", order: :defined do
     page.find(:css, '#document-upload', wait: 5).click
 
     select_element = find('#document_upload_collection_id', visible: false, wait: 5)
-    expect(select_element.value).to eq(col_title)
+    expect(select_element.value.titleize).to eq(col_title)
 
     sleep(2)
     expect(Collection.last.title).to eq col_title
