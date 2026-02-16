@@ -513,7 +513,7 @@ describe "document sets", order: :defined do
     page.fill_in 'document_set_slug', with: "new-#{@set.slug}"
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
-    sleep(5)
+    expect(page).to have_content('Document set has been saved', wait: 5)
     expect(page.find('h1')).to have_content @set.title
     expect(DocumentSet.find_by(id: @set.id).slug).to eq "#{slug}"
     # check new path
