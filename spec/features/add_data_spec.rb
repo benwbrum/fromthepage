@@ -23,8 +23,8 @@ describe "uploads data for collections", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    find('#document_upload_collection_id', visible: false)
-      .select(@collection.title)
+
+    select2_select(id: 'document_upload_collection_id', value: @collection.title)
 
     attach_file(
       'document_upload_file',
@@ -45,8 +45,8 @@ describe "uploads data for collections", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    find('#document_upload_collection_id', visible: false)
-      .select(@collection.title)
+
+    select2_select(id: 'document_upload_collection_id', value: @collection.title)
 
     attach_file(
       'document_upload_file',
@@ -101,7 +101,7 @@ describe "uploads data for collections", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(@collection.title, from: 'work_collection_id')
+    select2_select(id: 'work_collection_id', value: @collection.title)
     fill_in 'work_title', with: @title
     fill_in 'work_description', with: "This work contains no pages."
     click_button('Create Work')
