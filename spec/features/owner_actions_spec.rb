@@ -98,10 +98,14 @@ describe "owner actions", order: :defined do
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")
     end
+
     sleep(2)
+
     page.find(:css, '#document-upload', wait: 5).click
-    page.find('#document_upload_collection_id', wait: 5)
-    expect(page).to have_select('document_upload_collection_id', selected: col_title, wait: 5)
+
+    select_element = find('#document_upload_collection_id', visible: false, wait: 5)
+    expect(select_element.value).to eq(col_title)
+
     sleep(2)
     expect(Collection.last.title).to eq col_title
     # need to remove this collection to prevent conflicts in later tests
@@ -175,7 +179,7 @@ describe "owner actions", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
-    select(id: 'work_collection_id', value: @collections.last.title)
+    select2_select(id: 'work_collection_id', value: @collections.last.title)
     fill_in 'work_description', with: "This work should fail to create."
     click_button('Create Work')
     expect(page).to have_content("Create Empty Work")
