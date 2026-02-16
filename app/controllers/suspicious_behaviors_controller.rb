@@ -97,7 +97,7 @@ class SuspiciousBehaviorsController < ApplicationController
 
   # TODO: Introduce permission concern
   def authorized?
-    return if current_user.like_owner?(@collection) || current_user.collaborator?(@collection)
+    return if user_signed_in? && (current_user.like_owner?(@collection) || current_user.collaborator?(@collection))
 
     redirect_to dashboard_path
   end

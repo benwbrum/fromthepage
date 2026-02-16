@@ -20,19 +20,33 @@ describe SuspiciousBehaviorsController do
       expect(response).to redirect_to(dashboard_path)
     end
 
-    it 'redirects when not the owner' do
-      login_as user
-      subject
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(dashboard_path)
-    end
-
     it 'renders status and template' do
       login_as owner
       subject
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:index)
     end
+
+    context 'when not the owner' do
+      it 'redirects when not the owner' do
+        login_as user
+        subject
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+
+      context 'when a collaborator' do
+        let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+        it 'renders status and template' do
+          login_as user
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:index)
+        end
+      end
+    end
+
 
     context 'filters' do
       let(:params) do
