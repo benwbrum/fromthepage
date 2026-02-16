@@ -611,8 +611,6 @@ class Work < ApplicationRecord
     document_sets.unrestricted.any?
   end
 
-  private
-
   def handle_index_deletion
     return unless ELASTIC_ENABLED
 

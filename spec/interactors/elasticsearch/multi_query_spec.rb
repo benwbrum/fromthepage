@@ -80,6 +80,8 @@ describe Elasticsearch::MultiQuery do
   end
 
   after(:each) do
+    VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
     stub_const('ELASTIC_ENABLED', true)
 
     [article, page_1, page_2, page_3, work_1, work_2, document_set, other_collection, collection, other_user, owner]

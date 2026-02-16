@@ -187,7 +187,7 @@ de:
         one: "%{title} hat benutzerdefinierte Transkriptionskonventionen"
         other: "%{title} und %{count} andere haben benutzerdefinierte Transkriptionskonventionen"
     edit_look:
-      alphabetize_works: Die Anzeige erfolgt alphabetisch und nicht in der Reihenfolge der erforderlichen Arbeiten.
+      alphabetize_works: Werke alphabetisch auflisten.
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.
       default_orientation: Wählen Sie die standardmäßige Seitenausrichtung für die Transkription aus
       default_orientation_description: Wählen Sie die Ausrichtung, die am besten zu den meisten Werken dieser Sammlung passt. Benutzer können die Ausrichtung nach Belieben ändern.
@@ -352,7 +352,7 @@ de:
       review: Review
       user: Mitarbeiter:in
     restrict_scribes:
-      success: Abgeschlossene Arbeiten wurden erfolgreich eingeschränkt
+      success: Abgeschlossene Werke wurden erfolgreich eingeschränkt
     reviewer_dashboard:
       one_off_contributions: Einmalige Beiträge
       pages_needing_review: Zu überprüfende Seiten
