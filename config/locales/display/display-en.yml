@@ -119,7 +119,7 @@ en:
       reasoning_explanation: Reasoning Explanation
     prompt:
       ai_prompt: AI Prompt
-      prompt_explanation: The prompt used to generate this transcription
+      prompt_explanation: This prompt was used to generate the AI draft
   display_helper:
     page_action:
       blank_page: Blank page
