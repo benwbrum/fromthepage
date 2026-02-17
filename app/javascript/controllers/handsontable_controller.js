@@ -22,7 +22,6 @@ export default class extends Controller {
       width: '100%',
       rowHeights: 23,
       columnHeaderHeight: 25,
-      height: this.getHotHeight(this.dataConfig() ? this.dataConfig().length : this.transcriptionFieldValue.starting_rows),
       stretchH: 'all',
       contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
       dropdownMenu: true,
@@ -132,16 +131,8 @@ export default class extends Controller {
     return this._dataConfig
   }
 
-  getHotHeight(rows) {
-    return rows * 23 + 40;
-  };
-
   updateHotHeight() {
     document.getElementById(`fields-${this.transcriptionFieldValue.id}`).value = JSON.stringify(this._handsontable.getData());
-
-    this._handsontable.updateSettings(
-      { height: this.getHotHeight(this._handsontable.countRows()) }
-    );
   }
 
   afterChangeCallback(changes, source) {
