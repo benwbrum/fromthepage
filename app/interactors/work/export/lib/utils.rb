@@ -166,23 +166,32 @@ class Work::Export::Lib::Utils
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
 
-    # Use paragraph columns with text wrapping for better handling of wide content
-    # Calculate appropriate column width based on number of columns
-    # Tables should always have at least one column
-    column_width = "#{(0.9 / column_count).round(2)}\\linewidth"
-    column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
-
     # Determine if we need landscape mode and/or smaller font
-    use_landscape = column_count >= 8
-    use_small_font = column_count >= 6
+    # Use landscape mode for tables with 6+ columns to avoid unreadable narrow columns
+    use_landscape = column_count >= 6
+    use_small_font = column_count >= 4 && !use_landscape
+
+    # For landscape mode, we have more width available (~10 inches vs ~6.5 inches)
+    # For portrait mode, we have less width
+    if use_landscape
+      # In landscape mode, we have more width, so columns can be wider
+      # Use a larger fraction of linewidth for fewer, more readable columns
+      column_width = "#{(1.3 / column_count).round(2)}\\linewidth"
+    else
+      # In portrait mode with fewer columns, use standard width
+      column_width = "#{(0.9 / column_count).round(2)}\\linewidth"
+    end
+
+    column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
 
     latex = "#{LINEBREAK_ELEMENT}"
 
-    # Add landscape environment for very wide tables (8+ columns)
+    # Add landscape environment for wide tables (6+ columns)
     latex += "\\begin{landscape}\n" if use_landscape
 
-    # Use smaller font for tables with many columns (6+ columns)
-    latex += "\\small\n" if use_small_font && !use_landscape
+    # Use smaller font for tables with several columns in portrait mode
+    latex += "\\small\n" if use_small_font
+    # Use footnotesize font in landscape to fit more content
     latex += "\\footnotesize\n" if use_landscape
 
     latex += "\\begin{longtable}[]{#{column_format}}\n"
