@@ -167,32 +167,32 @@ class Work::Export::Lib::Utils
     column_count = all_rows.map { |tr| tr.elements.count }.max
 
     # Determine if we need landscape mode and/or smaller font
-    # Use landscape mode for tables with 6+ columns to avoid unreadable narrow columns
-    use_landscape = column_count >= 6
-    use_small_font = column_count >= 4 && !use_landscape
+    # Use landscape mode for tables with 8+ columns
+    use_landscape = column_count >= 8
+    # Use smaller font for tables with 5+ columns
+    use_small_font = column_count >= 5 && column_count < 8
+    use_footnotesize = column_count >= 8
 
-    # For landscape mode, we have more width available (~10 inches vs ~6.5 inches)
-    # For portrait mode, we have less width
-    if use_landscape
-      # In landscape mode, we have more width, so columns can be wider
-      # Use a larger fraction of linewidth for fewer, more readable columns
-      column_width = "#{(1.3 / column_count).round(2)}\\linewidth"
+    # Calculate column width based on column count
+    # For very wide tables, use narrower columns but readable with smaller font
+    if column_count >= 8
+      # Use left-aligned columns for very wide tables with small font
+      # This allows LaTeX to manage column widths more flexibly
+      column_format = '@{}' + ('l ' * column_count).strip + '@{}'
     else
-      # In portrait mode with fewer columns, use standard width
+      # Use paragraph columns with text wrapping for fewer columns
       column_width = "#{(0.9 / column_count).round(2)}\\linewidth"
+      column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
     end
-
-    column_format = '@{}' + ("p{#{column_width}} " * column_count).strip + '@{}'
 
     latex = "#{LINEBREAK_ELEMENT}"
 
-    # Add landscape environment for wide tables (6+ columns)
+    # Add landscape environment for very wide tables (8+ columns)
     latex += "\\begin{landscape}\n" if use_landscape
 
-    # Use smaller font for tables with several columns in portrait mode
+    # Use smaller font for tables with many columns
     latex += "\\small\n" if use_small_font
-    # Use footnotesize font in landscape to fit more content
-    latex += "\\footnotesize\n" if use_landscape
+    latex += "\\footnotesize\n" if use_footnotesize
 
     latex += "\\begin{longtable}[]{#{column_format}}\n"
 
