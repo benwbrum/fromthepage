@@ -4,13 +4,16 @@
 
   section[data-toggle-view-target='toggleable' style="#{@work.errors.any? ? '' : 'display: none'}"]
     p.big =t('.create_empty_work_description')
-    =form_for(:work, { url: dashboard_create_work_path }) do |f|
+    =form_for :work, url: dashboard_create_work_path, html: { data: { turbo: true } } do |f|
       =validation_summary @work.errors
       table.form
         tr
           td
             =f.label :collection_id, class: "hidden"
-            =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @work.collection_id), prompt: t('.select_a_collection')
+            =f.select :collection_id,
+              options_for_select(collections_and_document_sets_options, selected: @work.document_sets.first&.slug || @work.collection&.slug),
+              { include_blank: true },
+              { style: 'width: 100%', data: { controller: 'select2', select2_placeholder_value: t('.select_a_collection') } }
         tr
           td
             =f.label :title, class: "hidden"
@@ -22,21 +25,3 @@
             br: i =t('.description_message')
       .toolbar
         .toolbar_group.aright =f.button t('.create_work')
-
-  -content_for :javascript
-    javascript:
-      $(function(){
-        $('#work_collection_id').append("<option value='new'>#{t('.add_new_collection')}</option>");
-      });
-
-      $(function(){
-        $('#work_collection_id').on('change', function(){
-          var col = $(this).val();
-            if (col == 'new'){
-              new LiteBox({
-                url: '/collection/new',
-                hash: 'create-collection'
-              }).open();
-            };
-        });
-      })

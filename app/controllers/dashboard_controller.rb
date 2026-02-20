@@ -316,6 +316,17 @@ class DashboardController < ApplicationController
     respond_to(&:turbo_stream)
   end
 
+  def create_work
+    @result = Work::Create.new(
+      work_params: work_params,
+      user: current_user
+    ).call
+
+    @work = @result.work
+
+    respond_to(&:turbo_stream)
+  end
+
   private
 
   def authorized?
@@ -331,6 +342,14 @@ class DashboardController < ApplicationController
       :ocr,
       :collection_id,
       :generate_ai_draft
+    )
+  end
+
+  def work_params
+    params.require(:work).permit(
+      :title,
+      :collection_id,
+      :description
     )
   end
 

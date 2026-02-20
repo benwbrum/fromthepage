@@ -300,7 +300,7 @@ describe "collection spec (isolated)" do
 
     page.find(:css, '#create-empty-work').click
 
-    select('Add New Collection', from: 'work_collection_id')
+    select2_select(id: 'work_collection_id', value: 'Add New Collection')
     page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
     old_count = Collection.all.count
 
