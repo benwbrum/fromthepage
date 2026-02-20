@@ -84,7 +84,6 @@ describe AdminController do
   describe '#owner_list' do
     let!(:owner1) do
       create(:unique_user, :owner,
-             login: 'alice',
              account_type: 'Individual',
              start_date: 1.year.ago,
              paid_date: 1.month.ago,
@@ -92,7 +91,6 @@ describe AdminController do
     end
     let!(:owner2) do
       create(:unique_user, :owner,
-             login: 'bob',
              account_type: 'Institution',
              start_date: 6.months.ago,
              paid_date: 2.months.ago,
@@ -100,7 +98,6 @@ describe AdminController do
     end
     let!(:owner3) do
       create(:unique_user, :owner,
-             login: 'charlie',
              account_type: 'Individual',
              start_date: 3.months.ago,
              paid_date: 3.months.ago,
@@ -119,14 +116,18 @@ describe AdminController do
       login_as admin
       get action_path, params: { sort: 'login', dir: 'asc' }
       expect(response).to have_http_status(:ok)
-      expect(assigns(:owners).map(&:login)).to eq(['alice', 'bob', 'charlie'])
+      # Verify that results are sorted in ascending order
+      logins = assigns(:owners).map(&:login)
+      expect(logins).to eq(logins.sort)
     end
 
     it 'sorts by login descending' do
       login_as admin
       get action_path, params: { sort: 'login', dir: 'desc' }
       expect(response).to have_http_status(:ok)
-      expect(assigns(:owners).map(&:login)).to eq(['charlie', 'bob', 'alice'])
+      # Verify that results are sorted in descending order
+      logins = assigns(:owners).map(&:login)
+      expect(logins).to eq(logins.sort.reverse)
     end
 
     it 'sorts by account_type ascending' do

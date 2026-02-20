@@ -54,7 +54,7 @@ class Page < ApplicationRecord
   before_update :populate_search
   before_update :update_line_count
   before_save :calculate_last_editor
-  before_save :calculate_approval_delta
+  after_save :calculate_approval_delta
 
   validate :validate_source, :validate_source_translation
 
@@ -71,6 +71,8 @@ class Page < ApplicationRecord
 
   has_many :alto_transcriptions, -> { alto }, class_name: 'AiTranscription'
   has_one :alto_transcription, -> { alto.order(created_at: :desc) }, class_name: 'AiTranscription'
+
+  has_many :suspicious_behaviors, dependent: :destroy
 
   belongs_to :current_version, class_name: 'PageVersion', foreign_key: 'page_version_id', optional: true
   has_and_belongs_to_many :sections
@@ -388,11 +390,12 @@ class Page < ApplicationRecord
   end
 
   def calculate_approval_delta
-    return if Current.user.nil?
+    return Current.user.present? && saved_change_to_source_text?
 
-    return unless source_text_changed?
-
-    Page::CalculateApprovalDeltaJob.perform_later(page_id: self.id, user_id: Current.user.id)
+    Page::CalculateApprovalDeltaJob.perform_later(
+      page_id: self.id,
+      user_id: Current.user.id
+    )
   end
 
   def create_version
@@ -769,4 +772,6 @@ class Page < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :handle_index_deletion
 end

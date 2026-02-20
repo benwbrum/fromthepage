@@ -3,8 +3,10 @@ en:
   suspicious_behaviors:
     filters:
       behavior_type:
+        ai_warning_left: AI warning text left
         all: All
         large_paste: Large Paste
+        minimal_ai_changes: Minimal changes to AI draft
       status:
         all: All
         confirmed: Confirmed

@@ -71,8 +71,6 @@ describe Work do
     let!(:other_public_work) { create(:work, title: identifier, collection_id: other_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_work) { create(:work, title: identifier, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }
 
-    let!(:no_collection_work) { create(:work, title: identifier, collection_id: nil) }
-
     let(:records) do
       [
         owner,
@@ -88,8 +86,7 @@ describe Work do
         other_collection,
         other_restricted_collection,
         other_public_work,
-        other_restricted_work,
-        no_collection_work
+        other_restricted_work
       ]
     end
 
@@ -140,17 +137,12 @@ describe Work do
         end
 
         context 'when indexing work with collection' do
-          before do
-            WorksIndex.import no_collection_work
-          end
-
           it 'returns correct work ids' do
             expect(es_search.pluck('_id').map(&:to_i)).to match_array(
               [
                 public_work.id,
                 restricted_col_public_set_work.id,
-                other_public_work.id,
-                no_collection_work.id
+                other_public_work.id
               ]
             )
           end

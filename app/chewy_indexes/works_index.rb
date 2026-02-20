@@ -4,7 +4,7 @@ class WorksIndex < Chewy::Index
   index_name formatted_index_name('work')
   default_import_options batch_size: 1000
 
-  index_scope Work
+  index_scope Work.joins(:owner, :collection)
 
   field :db_id, type: 'integer', value: -> { id }
   field :is_public, type: 'boolean', value: -> { is_public? }
