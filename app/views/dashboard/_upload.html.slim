@@ -14,11 +14,9 @@
             =f.label :collection_id, class: 'hidden'
             td
               =f.select :collection_id,
-                options_from_collection_for_select(current_user.collections.sort { |a, b| a.title <=> b.title },
-                'id',
-                'title',
-                @document_upload.collection_id),
-                { prompt: t('.select_a_collection') }
+                options_for_select(collections_and_document_sets_options, selected: @document_upload.document_set&.slug || @document_upload.collection&.slug),
+                { include_blank: true },
+                { style: 'width: 100%', data: { controller: 'select2', select2_placeholder_value: t('.select_a_collection') } }
           tr
             td
               .input-file[data-controller='file-picker' data-file-picker-direct-url-value=rails_direct_uploads_url data-file-picker-direct-uploading-placeholder-value=t('.uploading') data-file-picker-direct-failed-placeholder-value=t('.uploading_failed') data-file-picker-direct-wait-msg-value=t('.uploading_wait')]
@@ -52,20 +50,20 @@
         p.aright
           =f.button t('.upload_file'), class: 'big'
 
--content_for :javascript
-  javascript:
-    $(function(){
-      $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
-    });
-
-    $(function(){
-      $('#document_upload_collection_id').on('change', function(){
-        var col = $(this).val();
-          if (col == 'new'){
-            new LiteBox({
-              url: '/collection/new',
-              hash: 'create-collection'
-            }).open();
-          };
-      });
-    })
+// -content_for :javascript
+//   javascript:
+//     $(function(){
+//       $('#document_upload_collection_id').append("<option value='new'>Add New Collection</option>");
+//     });
+//
+//     $(function(){
+//       $('#document_upload_collection_id').on('change', function(){
+//         var col = $(this).val();
+//           if (col == 'new'){
+//             new LiteBox({
+//               url: '/collection/new',
+//               hash: 'create-collection'
+//             }).open();
+//           };
+//       });
+//     })

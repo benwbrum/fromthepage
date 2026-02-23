@@ -325,6 +325,10 @@ namespace :fromthepage do
 
     work.save!
 
+    if document_upload.document_set.present?
+      document_upload.document_set.works << work
+    end
+
     new_dir_name = File.join(Rails.root,
                              'public',
                              'images',

@@ -338,7 +338,9 @@ class User < ApplicationRecord
   end
 
   def collections
-    self.owned_collections + Collection.where(owner_user_id: self.id)# .all
+    Collection
+      .where(id: owned_collections.select(:id))
+      .or(Collection.where(owner_user_id: id))
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
