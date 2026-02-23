@@ -20,4 +20,4 @@ production:
 
   clean_elasticsearch_orphaned_records_job:
     command: "Elasticsearch::CleanOrphanedRecordsJob.perform_later"
-    schedule: every week on Sunday at minute 12
+    schedule: every Sunday at 12:00am
