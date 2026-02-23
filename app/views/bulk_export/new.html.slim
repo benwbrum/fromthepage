@@ -14,12 +14,12 @@
             h5= t('.organization')
             p.nomargin= t('.organization_description')
           .bulk-export_options
-            =f.label "organization_#{BulkExport::Organization::WORK_THEN_FORMAT}"
-              =f.radio_button :organization, BulkExport::Organization::WORK_THEN_FORMAT
+            =f.label "organization_#{:by_work}"
+              =f.radio_button :organization, :by_work
               span =t('.organization_work')
             br
-            =f.label "organization_#{BulkExport::Organization::FORMAT_THEN_WORK}"
-              =f.radio_button :organization, BulkExport::Organization::FORMAT_THEN_WORK
+            =f.label "organization_#{:by_format}"
+              =f.radio_button :organization, :by_format
               span =t('.organization_format')
         -if @uploaded_filename_available
           li
@@ -113,7 +113,7 @@
             =f.label :text_docx_work
               =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
               span= t('.one_file_per_work')
-            #report-options 
+            #report-options
               =t('.format_options')
               =f.label :preserve_linebreaks
                 =f.check_box 'report_arguments[preserve_linebreaks]', value: @bulk_export.report_arguments['preserve_linebreaks']
@@ -170,7 +170,7 @@
             =f.label :static
               =f.check_box :static, value: @bulk_export.static
               span= t('.one_site_per_collection')
-        li 
+        li
           .bulk-export_format
             h5= t('.notes_csv')
             p.nomargin= t('.notes_csv_description')
@@ -178,7 +178,7 @@
             =f.label :notes_csv
               =f.check_box :notes_csv, value: @bulk_export.notes_csv
               span= t('.one_file_per_collection')
-        li 
+        li
           .bulk-export_format
             h5= t('.page_details_csv')
             p.nomargin= t('.page_details_csv_description')
@@ -189,7 +189,7 @@
             =f.label :page_details_csv_collection
               =f.check_box :page_details_csv_collection, value: @bulk_export.page_details_csv_collection
               span= t('.one_file_per_collection')
-            
+
 
       .toolbar
         .toolbar_group.aright =f.button t('.start_export'), class: 'big', 'data-start-export': ''
@@ -203,15 +203,19 @@
           th= t('.status')
 
       tbody
-        -@collection.bulk_exports.where.not(:status => BulkExport::Status::CLEANED).order(:created_at => :desc).each do |bulk_export|
+        -@collection.bulk_exports.where.not(status: :cleaned).order(created_at: :desc).each do |bulk_export|
           tr
             td.nowrap
               =l(bulk_export.created_at.localtime, format: :short)
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
-              -if bulk_export.status == BulkExport::Status::FINISHED
+              -if bulk_export.status_finished?
                 br
-                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
+                -if bulk_export.output.attached?
+                  =link_to(t('.download'), url_for(bulk_export.output), class: 'btnExport')
+                -else
+                  // NOTE: Backsupport
+                  =link_to(t('.download'), bulk_export_download_path(bulk_export_id: bulk_export.id), class: 'btnExport')
 
 h2 =t('.export_work_metadata')
 p.big

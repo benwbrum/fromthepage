@@ -130,7 +130,7 @@ module ExportHelper
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
-      by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
+      by_work = bulk_export.organization_by_work?
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
         print "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n"
