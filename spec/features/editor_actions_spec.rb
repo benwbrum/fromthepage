@@ -99,6 +99,14 @@ describe "editor actions", order: :defined do
       expect(page.find('.tabs')).not_to have_content("Transcribe")
     end
 
+    it "checks that a guest does see a Transcribe tab on an unrestricted work" do
+      logout(:user)
+      expect(@work.restrict_scribes).to be false
+      visit collection_read_work_path(@work.owner, @work.collection, @work)
+      page.find('.work-page_title', text: @work.pages.first.title).click_link
+      expect(page.find('.tabs')).to have_content("Transcribe")
+    end
+
     it "checks that a restricted editor can't see a work" do
       logout(:user)
       login_as(@rest_user, scope: :user)
