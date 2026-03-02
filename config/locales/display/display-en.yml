@@ -6,11 +6,17 @@ en:
       ai_generated_text: AI Generated Text
       ai_text: AI Text
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
+      compare_ai_transcriptions: Compare AI Transcriptions
       facsimile: Facsimile
       human_transcription: Human Transcription
       show_comparison_with_transcription: Compare AI draft against human transcription
       statistics_unavailable: Accuracy statistics are not available for this page.
       statistics_unavailable_reason: Statistics can only be calculated for pages with human transcription.
+    ai_text_versions:
+      back: Back
+    ai_text_version_content:
+      untitled: Untitled
+      no_transcription_provided: No transcription provided
     cer_stats:
       accuracy_explanation: These statistics compare the AI-generated text against the human-verified transcription.
       accuracy_statistics: Accuracy Statistics
