@@ -4,7 +4,6 @@ namespace :fromthepage do
     days_old = args.days_old.to_i
     BulkExport.where('created_at < ?', Time.now - days_old.days).each do |export|
       export.clean_zip_file
-      export.destroy
     end
   end
 
