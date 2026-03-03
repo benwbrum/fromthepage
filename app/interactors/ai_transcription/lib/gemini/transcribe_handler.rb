@@ -146,6 +146,10 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
       end
     end
 
-    [transcription_text.join('').strip, reasoning_text.join('').strip]
+    [sanitize_text(transcription_text.join('').strip), reasoning_text.join('').strip]
+  end
+
+  def sanitize_text(text)
+    text.gsub("\u00A0", ' ')
   end
 end
