@@ -259,7 +259,7 @@ class ArticleController < ApplicationController
 
     # Handle inaccessible collection (e.g., invalid slug in URL)
     if @collection.nil?
-      redirect_to '/404'
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
       return
     end
 

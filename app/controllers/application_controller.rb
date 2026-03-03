@@ -244,7 +244,7 @@ class ApplicationController < ActionController::Base
 
     # When a specific collection was requested but not found, show 404
     if @collection.nil? && params[:collection_id].present?
-      redirect_to '/404'
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
       return
     end
 

@@ -393,11 +393,10 @@ describe ArticleController do
       let(:action_path) { "/#{owner.slug}/nonexistent-collection-slug/article/#{article.id}" }
       let(:subject) { get action_path }
 
-      it 'redirects to 404 instead of raising a 500 error' do
+      it 'returns 404 instead of raising a 500 error' do
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to('/404')
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
