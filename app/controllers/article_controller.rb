@@ -257,6 +257,12 @@ class ArticleController < ApplicationController
       return
     end
 
+    # Handle inaccessible collection (e.g., invalid slug in URL)
+    if @collection.nil?
+      redirect_to '/404'
+      return
+    end
+
     sql =
       'SELECT count(*) as link_count, '+
       'a.title as title, '+

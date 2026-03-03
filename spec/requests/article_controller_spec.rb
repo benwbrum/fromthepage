@@ -388,6 +388,18 @@ describe ArticleController do
         expect(response).to have_http_status(:ok)
       end
     end
+
+    context 'when collection slug in URL does not exist' do
+      let(:action_path) { "/#{owner.slug}/nonexistent-collection-slug/article/#{article.id}" }
+      let(:subject) { get action_path }
+
+      it 'redirects to 404 instead of raising a 500 error' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to('/404')
+      end
+    end
   end
 
   describe '#relationship_graph' do

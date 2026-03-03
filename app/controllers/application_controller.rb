@@ -242,6 +242,12 @@ class ApplicationController < ActionController::Base
   def authorize_collection
     return if params[:controller] == 'iiif'
 
+    # When a specific collection was requested but not found, show 404
+    if @collection.nil? && params[:collection_id].present?
+      redirect_to '/404'
+      return
+    end
+
     return unless @collection
 
     if self.class.module_parent.name == 'Thredded'
