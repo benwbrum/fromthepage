@@ -83,4 +83,43 @@ RSpec.describe Deed, type: :model do
       expect(deed.deed_type_name).to eq(human_readable_name)
     end
   end
+
+  describe '#calculate_public' do
+    let(:deed_type) { DeedType.all_types.first }
+
+    it 'sets is_public to true for deeds in an unrestricted collection' do
+      allow_any_instance_of(Deed).to receive(:calculate_prerender)
+      allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
+
+      collection = create(:collection, restricted: false)
+      deed = create(:deed, deed_type: deed_type, collection: collection)
+
+      expect(deed.is_public).to be true
+
+      Deed.destroy(deed.id)
+    end
+
+    it 'sets is_public to false for deeds in a restricted collection' do
+      allow_any_instance_of(Deed).to receive(:calculate_prerender)
+      allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
+
+      collection = create(:collection, restricted: true)
+      deed = create(:deed, deed_type: deed_type, collection: collection)
+
+      expect(deed.is_public).to be false
+
+      Deed.destroy(deed.id)
+    end
+
+    it 'sets is_public to true for deeds with no collection' do
+      allow_any_instance_of(Deed).to receive(:calculate_prerender)
+      allow_any_instance_of(Deed).to receive(:calculate_prerender_mailer)
+
+      deed = create(:deed, deed_type: deed_type, collection: nil)
+
+      expect(deed.is_public).to be true
+
+      Deed.destroy(deed.id)
+    end
+  end
 end
