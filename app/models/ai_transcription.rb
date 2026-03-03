@@ -32,6 +32,7 @@ class AiTranscription < ApplicationRecord
   }
 
   belongs_to :page
+  before_save :replace_nbsp
 
   scope :alto, -> { where(model: ALTO_MODEL) }
   scope :not_alto, -> { where.not(model: ALTO_MODEL) }
@@ -51,4 +52,9 @@ class AiTranscription < ApplicationRecord
     finished: 'finished',
     error: 'error'
   }, prefix: :status
+
+  # we want to replace the non-breaking space html entities Gemini 3 insists on returning with regular spaces
+  def replace_nbsp
+    self.source_text = source_text.gsub('&nbsp;', ' ') if source_text.present?
+  end
 end
