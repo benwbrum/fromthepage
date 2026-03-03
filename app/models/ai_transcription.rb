@@ -22,7 +22,7 @@
 #  fk_rails_...  (page_id => pages.id) ON DELETE => cascade
 #
 class AiTranscription < ApplicationRecord
-  DEFAULT_MODEL = 'gemini-3-pro-preview'
+  DEFAULT_MODEL = 'gemini-3.1-pro-preview'
   ALTO_MODEL = 'Transkribus+OpenAI'
   FE_COLOR_STATUSES = {
     finished: '#6C2',
