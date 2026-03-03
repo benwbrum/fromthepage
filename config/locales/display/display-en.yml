@@ -3,20 +3,11 @@ en:
   display:
     ai_text:
       ai_draft: AI Draft
-      ai_generated_text: AI Generated Text
       ai_text: AI Text
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
-      compare_ai_transcriptions: Compare AI Transcriptions
       facsimile: Facsimile
       human_transcription: Human Transcription
       show_comparison_with_transcription: Compare AI draft against human transcription
-      statistics_unavailable: Accuracy statistics are not available for this page.
-      statistics_unavailable_reason: Statistics can only be calculated for pages with human transcription.
-    ai_text_versions:
-      back: Back
-    ai_text_version_content:
-      untitled: Untitled
-      no_transcription_provided: No transcription provided
     cer_stats:
       accuracy_explanation: These statistics compare the AI-generated text against the human-verified transcription.
       accuracy_statistics: Accuracy Statistics
@@ -24,6 +15,8 @@ en:
       character_error_rate_tooltip: CER measures the percentage of character-level edits (insertions, deletions, substitutions) needed to transform the AI text into the human transcription. Lower values indicate higher accuracy.
       non_stopword_accuracy: Non-Stopword Accuracy
       non_stopword_accuracy_tooltip: Measures the percentage of content words (excluding common words like 'the', 'a', 'is') that match between AI and human transcription. Higher values indicate better content recognition.
+      statistics_unavailable: Accuracy statistics are not available for this page.
+      statistics_unavailable_reason: Statistics can only be calculated for pages with human transcription.
       text_only_comparison: Text-Only Comparison
       text_only_description: Statistics calculated after removing punctuation, extra whitespace, and normalizing case.
       verbatim_comparison: Verbatim Comparison
