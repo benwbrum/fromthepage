@@ -6,6 +6,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
   # Add custom handling here if the model you are using
   # does not use `v1`
   VERSION_MAP = {
+    'gemini-3-pro-preview' => 'v1beta',
     'gemini-3.1-pro-preview' => 'v1beta'
   }.freeze
 

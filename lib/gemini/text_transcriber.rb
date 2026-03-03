@@ -9,7 +9,7 @@ module Gemini
     # does not use `v1`
     VERSION_MAP = {
       'gemini-3-pro-preview' => 'v1beta',
-      'gemini-3.1-pro-preview' => 'vibeta'
+      'gemini-3.1-pro-preview' => 'v1beta'
     }.freeze
 
     REASONING_MAP = {
