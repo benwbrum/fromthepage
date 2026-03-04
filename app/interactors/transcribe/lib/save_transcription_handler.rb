@@ -44,6 +44,11 @@ class Transcribe::Lib::SaveTranscriptionHandler < Transcribe::Lib::BaseHandler
           user_id: @user.id,
           deed_type: DeedType::AI_DRAFT
         })
+
+        Transcribe::FlagAiUseJob.perform_later(
+          page_id: @page.id,
+          user_id: @user.id
+        )
       end
 
       log_success(TRANSCRIPTION)
