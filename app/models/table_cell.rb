@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: table_cells
+# Database name: primary
 #
 #  id                     :integer          not null, primary key
 #  content                :text(65535)

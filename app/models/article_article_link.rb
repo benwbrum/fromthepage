@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: article_article_links
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  created_on        :datetime

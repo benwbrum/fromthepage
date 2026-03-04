@@ -470,7 +470,6 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (6.0.1)
       prism (~> 1.5)
     mission_control-jobs (1.1.0)
@@ -509,9 +508,6 @@ GEM
     newrelic_rpm (9.24.0)
     nio4r (2.7.5)
     nkf (0.2.0)
-    nokogiri (1.19.0)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.19.0-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.0-aarch64-linux-musl)
@@ -808,6 +804,10 @@ GEM
     snaky_hash (2.0.3)
       hashie (>= 0.1.0, < 6)
       version_gem (>= 1.1.8, < 3)
+    solid_cache (1.0.10)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     solid_queue (1.2.4)
       activejob (>= 7.1)
       activerecord (>= 7.1)
@@ -925,7 +925,6 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
-  ruby
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
@@ -1029,6 +1028,7 @@ DEPENDENCIES
   simplecov
   simplecov-lcov
   slim
+  solid_cache
   solid_queue (~> 1.2)
   sprockets (~> 4.2)
   sprockets-rails (>= 3.4)

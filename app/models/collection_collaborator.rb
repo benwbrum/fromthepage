@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: collection_collaborators
+# Database name: primary
 #
 #  collection_id :integer
 #  user_id       :integer

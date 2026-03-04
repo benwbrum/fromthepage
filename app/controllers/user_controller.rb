@@ -131,6 +131,39 @@ class UserController < ApplicationController
     # Find the user if it isn't already set
     @user ||= User.friendly.find(params[:id])
 
+    if @user.deleted && !current_user&.admin
+      flash[:notice] = t('.user_deleted')
+      redirect_to dashboard_path
+
+      return
+    end
+
+    collections = @user.all_owner_collections
+    sets = @user.document_sets
+    @deeds = @user.deeds
+      .includes(:note, :page, :user, :work, :collection)
+      .order('created_at DESC')
+      .paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+    @tag = Tag.find_by(ai_text: params[:ai_text]) if params[:ai_text]
+
+    return if cache_fresh?(etags: [@user, collections, sets, @tag, @deeds])
+
+    @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
+    @collection_ids = @collections_and_document_sets.map(&:id)
+
+    if @tag
+      tag_collections = @tag.collections.where(owner_user_id: @user.id)
+      tag_document_sets = tag_collections.map(&:document_sets).flatten
+      @tag_collections = tag_collections + tag_document_sets
+    end
+
+    @carousel_collections = (collections.carousel + sets.carousel).sample(8)
+  end
+
+  def profile_old
+    # Find the user if it isn't already set
+    @user ||= User.friendly.find(params[:id])
+
     if !@user.deleted || current_user&.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map(&:id)

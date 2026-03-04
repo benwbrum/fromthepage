@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: flags
+# Database name: primary
 #
 #  id                 :integer          not null, primary key
 #  comment            :text(65535)

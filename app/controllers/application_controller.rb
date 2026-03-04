@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include CookiesConsent
+  include PageCaching
 
   DEFAULT_PER_PAGE = 200
 

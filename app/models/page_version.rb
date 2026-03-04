@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: page_versions
+# Database name: primary
 #
 #  id                 :integer          not null, primary key
 #  ai_draft_used      :boolean          default(FALSE), not null

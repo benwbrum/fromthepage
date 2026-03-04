@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: sc_collections
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  label         :string(255)

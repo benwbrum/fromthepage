@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: work_statistics
+# Database name: primary
 #
 #  id                      :integer          not null, primary key
 #  annotated_pages         :integer

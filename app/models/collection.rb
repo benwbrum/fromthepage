@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: collections
+# Database name: primary
 #
 #  id                             :integer          not null, primary key
 #  alphabetize_works              :boolean          default(TRUE)
@@ -39,6 +40,7 @@
 #  user_download                  :boolean          default(FALSE)
 #  voice_recognition              :boolean          default(FALSE)
 #  works_count                    :integer          default(0)
+#  updated_at                     :datetime         not null
 #  next_untranscribed_page_id     :integer
 #  owner_user_id                  :integer
 #  thredded_messageboard_group_id :bigint

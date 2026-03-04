@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: pages
+# Database name: primary
 #
 #  id                      :integer          not null, primary key
 #  approval_delta          :float(24)

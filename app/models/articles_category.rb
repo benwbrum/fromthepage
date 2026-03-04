@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: articles_categories
+# Database name: primary
 #
 #  article_id  :integer
 #  category_id :integer

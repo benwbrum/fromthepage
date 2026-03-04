@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: users
+# Database name: primary
 #
 #  id                        :integer          not null, primary key
 #  about                     :text(65535)

@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: article_versions
+# Database name: primary
 #
 #  id          :integer          not null, primary key
 #  created_on  :datetime

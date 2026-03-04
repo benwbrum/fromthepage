@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: facet_configs
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  input_type           :string(255)

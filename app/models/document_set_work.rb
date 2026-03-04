@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: document_sets_works
+# Database name: primary
 #
 #  created_at      :datetime
 #  updated_at      :datetime

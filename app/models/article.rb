@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: articles
+# Database name: primary
 #
 #  id               :integer          not null, primary key
 #  begun            :string(255)

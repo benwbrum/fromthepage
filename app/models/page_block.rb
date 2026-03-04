@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: page_blocks
+# Database name: primary
 #
 #  id          :integer          not null, primary key
 #  controller  :string(255)

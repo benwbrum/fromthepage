@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: works
+# Database name: primary
 #
 #  id                              :integer          not null, primary key
 #  author                          :string(255)

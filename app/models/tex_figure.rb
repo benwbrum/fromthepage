@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: tex_figures
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  position   :integer

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_04_191218) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -279,6 +279,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
     t.datetime "featured_at", precision: nil
     t.text "legend"
     t.string "default_overview_orientation"
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true

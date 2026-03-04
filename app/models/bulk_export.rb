@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: bulk_exports
+# Database name: primary
 #
 #  id                                 :integer          not null, primary key
 #  admin_searches                     :boolean
