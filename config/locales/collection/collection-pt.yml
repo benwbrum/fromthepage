@@ -187,7 +187,7 @@ pt:
         one: "%{title} tem convenções de transcrição personalizadas"
         other: "%{title} e %{count} outros têm convenções de transcrição personalizadas"
     edit_look:
-      alphabetize_works: A exibição funciona em ordem alfabética e não na ordem do trabalho necessário.
+      alphabetize_works: Listar obras alfabeticamente.
       alphabetize_works_description: A exibição funciona em ordem alfabética e não em ordem de quantidade de trabalho restante.
       default_orientation: Selecione a orientação da página predeterminada da transcrição
       default_orientation_description: Escolha a orientação que melhor corresponde à maioria das obras desta coleção. Os usuários poderão alterar a orientação para a que preferirem.

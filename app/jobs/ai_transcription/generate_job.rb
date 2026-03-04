@@ -1,5 +1,5 @@
 class AiTranscription::GenerateJob < ApplicationJob
-  queue_as :default
+  queue_as :ai_transcriptions
 
   retry_on StandardError, attempts: 1
 

@@ -55,13 +55,11 @@ tags
 
 .editorconfig
 .tool-versions
+.byebug_history
 
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
-
-.tool-versions
-.editorconfig
 
 index-state.json
 vendor/bundle/

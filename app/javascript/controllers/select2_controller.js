@@ -31,6 +31,16 @@ export default class extends Controller {
 
     $element.select2(this.options());
 
+    $element.on('select2:select', (e) => {
+      const liteboxData = $(e.params.data.element).data('litebox');
+
+      if (liteboxData) {
+        new LiteBox({ url: liteboxData.url, hash: liteboxData.hash }).open();
+
+        $element.val(null).trigger('change');
+      }
+    });
+
     if (this.syncOnValue === 'none') {
       return;
     } else if (this.syncOnValue === 'commit') {
@@ -50,7 +60,15 @@ export default class extends Controller {
       templateResult: function(option) {
         if(!option.id) { return option.text; }
         var level = $(option.element).data('level');
+
         var $option = $('<div>').css('margin-left', level * 15).text(option.text);
+
+        var liteboxData = $(option.element).data('litebox');
+        if (liteboxData) {
+          $option.attr('data-litebox-url', liteboxData.url);
+          $option.attr('data-litebox-hash', liteboxData.hash);
+        }
+
         return $option;
       },
     }

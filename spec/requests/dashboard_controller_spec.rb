@@ -414,4 +414,28 @@ describe DashboardController do
       end
     end
   end
+
+  describe '#create_work' do
+    let(:action_path) { dashboard_create_work_path }
+
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
+
+    let(:params) do
+      {
+        work: {
+          title: "New work #{Time.current.to_i}",
+          description: "New work",
+          collection_id: collection.slug
+        }
+      }
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:create_work)
+    end
+  end
 end
