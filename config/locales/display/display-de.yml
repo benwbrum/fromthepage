@@ -3,6 +3,7 @@ de:
   display:
     ai_text:
       ai_draft: KI-Entwurf
+      ai_generated_text: KI-generierter Text
       ai_text: KI-Text
       ai_text_edit_notice: Um diesen Text zu bearbeiten, verwenden Sie die Schaltfläche „AI-Entwurf“ im Transkriptions-Tab.
       facsimile: Faksimile

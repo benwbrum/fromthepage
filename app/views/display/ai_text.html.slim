@@ -5,10 +5,14 @@
     h3.headline_title =t('.facsimile')
   .headline
     h3.headline_title =t('.ai_text')
-    .page_info[style='min-width: 300px;']
-      =fe_filter_table_wrapper(selector: 'ai-text-table') do
-        =fe_filter_form_wrapper(url: collection_ai_text_page_path(@collection.owner, @collection, @work, @page), selector: 'ai-text-table', sorting: nil, ordering: nil) do
-          =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
+    -if @finished_transcription_count > 1
+      .page_info[style='min-width: 300px;']
+        =fe_filter_table_wrapper(selector: 'ai-text-table') do
+          =fe_filter_form_wrapper(url: collection_ai_text_page_path(@collection.owner, @collection, @work, @page), selector: 'ai-text-table', sorting: nil, ordering: nil) do
+            =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
+    -else
+      .page_info
+        =t('.ai_generated_text')
 
 #ai-text.page-columns(data-layout-mode="ltr")
   .page-column(id="leftColumn")

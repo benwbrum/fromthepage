@@ -3,6 +3,7 @@ fr:
   display:
     ai_text:
       ai_draft: Brouillon IA
+      ai_generated_text: Texte généré par l'IA
       ai_text: Texte IA
       ai_text_edit_notice: Pour modifier ce texte, utilisez le bouton « Brouillon IA » dans l'onglet de transcription.
       facsimile: Facsimilé
