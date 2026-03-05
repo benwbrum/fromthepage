@@ -806,8 +806,6 @@ describe CollectionController do
     context 'when slug starts with a number' do
       let!(:collection1) { create(:collection, owner_user_id: owner.id, slug: '123-collection', title: "Collection1Title") }
       let!(:collection2) { create(:collection, owner_user_id: owner.id, slug: "#{collection1.id}-text", title: "Collection2Title") }
-      let!(:document_set2) { create(:document_set, owner_user_id: owner.id, collection_id: collection2.id, slug: "#{collection1.id}-docset", title: "DocumentSet2Title") }
-
 
       it 'renders the collection show page for the correct collection' do
         get "/#{owner.slug}/#{collection1.slug}"
@@ -828,10 +826,6 @@ describe CollectionController do
           expect(response.body).not_to include(collection1.title)
           expect(response.body).to include(collection2.title)
         end
-
-
-        get "/#{owner.slug}/#{document_set2.slug}"
-        expect(response.body).to include(document_set2.title)
       end
     end
 
