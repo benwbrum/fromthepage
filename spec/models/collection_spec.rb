@@ -255,6 +255,24 @@ describe Collection do
           )
         end
       end
+
+      context 'when logged in as admin_user' do
+        let(:user) { nil }
+        let!(:admin_user) { create(:unique_user, :admin) }
+        let(:es_search) { described_class.es_search(query: identifier, admin_user: admin_user) }
+
+        it 'overrides all filter and returns correct collection ids' do
+          expect(es_search.pluck("_id").map(&:to_i)).to match_array(
+            [
+              public_collection.id,
+              restricted_collection.id,
+              public_updated_to_restricted_collection.id,
+              other_public_collection.id,
+              other_restricted_collection.id
+            ]
+          )
+        end
+      end
     end
   end
 end

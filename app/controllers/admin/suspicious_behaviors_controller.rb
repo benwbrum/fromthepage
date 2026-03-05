@@ -58,7 +58,7 @@ class Admin::SuspiciousBehaviorsController < AdminController
       search_collection_term = params[:search_collection]
 
       if ELASTIC_ENABLED
-        collection_ids = Collection.es_search(query: "~#{search_collection_term}~", user: current_user).pluck('_id')
+        collection_ids = Collection.es_search(query: "~#{search_collection_term}~", admin_user: current_user).pluck('_id')
         collections_scope = Collection.where(id: collection_ids)
       else
         collections_scope = Collection.where(id: search_collection_term)
