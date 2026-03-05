@@ -6,7 +6,7 @@
   .headline
     h3.headline_title =t('.ai_text')
     -if @finished_transcription_count > 1
-      .page_info[style='min-width: 300px;']
+      .page_info
         =fe_filter_table_wrapper(selector: 'ai-text-table') do
           =fe_filter_form_wrapper(url: collection_ai_text_page_path(@collection.owner, @collection, @work, @page), selector: 'ai-text-table', sorting: nil, ordering: nil) do
             =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
