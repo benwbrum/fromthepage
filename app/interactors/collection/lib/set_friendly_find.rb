@@ -1,10 +1,6 @@
 class Collection::Lib::SetFriendlyFind
   def self.perform(id:, work_reference: nil)
-    collection =
-      Collection.friendly.find_by(id: id) ||
-      DocumentSet.friendly.find_by(id: id) ||
-      DocumentSet.find_by(slug: id) ||
-      Collection.find_by(slug: id)
+    collection = Collection.friendly.find(id, allow_nil: true) || DocumentSet.friendly.find(id, allow_nil: true)
 
     return collection unless work_reference
 
