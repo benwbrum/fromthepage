@@ -182,22 +182,24 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      value # scalar value
+      safe_text(value)
     elsif value.is_a? Array
       if value.first.is_a? String
-        value.join('; ') # simple array
+        value.map { |v| safe_text(v) }.join('; ')
       else
-        # array of language pairs
-        value.map { |e| e['@value'] }.join('; ')
+        value.map { |e| safe_text(e['@value']) }.join('; ')
       end
     elsif value.is_a? Hash
-      # is this a pre-IIIF-v3 multi-language value?
       if value.keys.include?('@language') && value.keys.include?('@value')
-        value['@value']
+        safe_text(value['@value'])
       else
-        value.values.map { |value_array| value_array.first }.join('<br/>')
+        value.values.map { |value_array| safe_text(value_array.first) }.join('<br/>')
       end
     end
+  end
+
+  def safe_text(text)
+    ERB::Util.html_escape(text.to_s.tr('“”', '"'))
   end
 
   def html_metadata_from_work(work)

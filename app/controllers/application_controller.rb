@@ -207,26 +207,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_friendly_collection(id)
-    if Collection.friendly.exists?(id)
-      @collection = Collection.friendly.find(id)
-    elsif DocumentSet.friendly.exists?(id)
-      @collection = DocumentSet.friendly.find(id)
-    elsif !DocumentSet.find_by(slug: id).nil?
-      @collection = DocumentSet.find_by(slug: id)
-    elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id)
-    end
-
-    # check to make sure URLs haven't gotten scrambled
-    if @work
-      if @work.collection != @collection
-        # this could be a document set or a bad collection
-        unless @collection.is_a? DocumentSet
-          @collection = @work.collection
-        end
-      end
-    end
-    @collection
+    @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
   end
 
   def bad_record_id(e)

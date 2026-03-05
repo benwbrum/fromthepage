@@ -22,7 +22,7 @@ describe "collection metadata", order: :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
-    select("ladi", from: 'document_upload_collection_id')
+    select2_select(id: 'document_upload_collection_id', value: 'ladi')
 
     attach_file(
       'document_upload_file',
