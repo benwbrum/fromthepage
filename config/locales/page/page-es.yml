@@ -9,8 +9,8 @@ es:
       page_status_blank: Página en blanco
       page_status_incomplete: Incompleto
       page_status_indexed: Indexado
+      page_status_needs_review: Revisión de necesidades
       page_status_new: No empezado
-      page_status_review: Revisión de necesidades
       page_status_transcribed: Completo
       page_status_translated: Traducido
       status: 'Estado:'
