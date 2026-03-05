@@ -3,4 +3,4 @@ active_job:
 elasticsearch:
   host: <%= ENV['ELASTIC_HOST_URL'] %>
   prefix: ftp
-  suffix: <%= ENV['ELASTIC_SUFFIX'] %>
+  suffix: <%= "#{ENV['ELASTIC_SUFFIX']}_test" %>
