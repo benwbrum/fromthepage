@@ -48,8 +48,8 @@ class SuspiciousBehavior < ApplicationRecord
 
   enum :status, {
     pending: 'pending',
-    confirmed: 'confirmed',
-    dismissed: 'dismissed'
+    flagged: 'flagged',
+    ignored: 'ignored'
   }, default: :pending
 
   # TODO: We need to upgrade our DB version to utilize native json column field.
@@ -67,5 +67,7 @@ class SuspiciousBehavior < ApplicationRecord
     :minimal_ai_changes
   ].freeze
 
-  STATUS_FILTERS = [:all, :pending, :confirmed, :dismissed].freeze
+  STATUS_FILTERS = [:all, :pending, :flagged, :ignored].freeze
+
+  ACTION_FILTERS = [:all, :pending, :resolved].freeze
 end

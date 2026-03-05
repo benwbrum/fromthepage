@@ -1,7 +1,13 @@
 ---
 de:
   filter_table:
+    collection: Sammlung
     entries: Einträge
     no_matching_records_found: Keine übereinstimmenden Datensätze gefunden
+    owner: Eigentümer
+    search_collection: Sammlung durchsuchen...
+    search_owner: Besitzer suchen...
     search_placeholder: Suchen...
+    search_user: Benutzer suchen...
     show: Zeigen
+    user: Benutzer
