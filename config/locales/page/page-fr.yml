@@ -9,8 +9,8 @@ fr:
       page_status_blank: Page vierge
       page_status_incomplete: Incomplet
       page_status_indexed: Indexé
+      page_status_needs_review: À besoin d'une révision
       page_status_new: Non-trancrite
-      page_status_review: À besoin d'une révision
       page_status_transcribed: Complet
       page_status_translated: Traduit
       status: 'Statut:'
