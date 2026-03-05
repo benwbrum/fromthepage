@@ -9,8 +9,6 @@ de:
       facsimile: Faksimile
       human_transcription: Menschliche Transkription
       show_comparison_with_transcription: Vergleich mit der Transkription anzeigen
-      statistics_unavailable: Für diese Seite sind keine Genauigkeitsstatistiken verfügbar.
-      statistics_unavailable_reason: Statistiken können nur für Seiten mit menschlicher Transkription berechnet werden.
     cer_stats:
       accuracy_explanation: Diese Statistiken vergleichen den von der KI generierten Text mit der von Menschen überprüften Transkription und geben Aufschluss über die Genauigkeit der KI-Transkription.
       accuracy_statistics: Genauigkeitsstatistik
@@ -18,6 +16,8 @@ de:
       character_error_rate_tooltip: CER misst den Prozentsatz der notwendigen Änderungen auf Zeichenebene (Einfügungen, Löschungen, Ersetzungen), um den KI-Text in den korrekten Originaltext zu überführen. Niedrigere Werte bedeuten eine höhere Genauigkeit.
       non_stopword_accuracy: Genauigkeit ohne Stoppwörter
       non_stopword_accuracy_tooltip: Misst den Prozentsatz der Inhaltswörter (ohne häufige Wörter wie „der“, „ein“, „ist“), die zwischen KI und Referenzdaten übereinstimmen. Höhere Werte deuten auf eine bessere Inhaltserkennung hin.
+      statistics_unavailable: Für diese Seite sind keine Genauigkeitsstatistiken verfügbar.
+      statistics_unavailable_reason: Statistiken können nur für Seiten mit menschlicher Transkription berechnet werden.
       text_only_comparison: Vergleich (nur Text)
       text_only_description: Die Statistiken wurden nach Entfernung von Satzzeichen und überflüssigen Leerzeichen sowie nach Normalisierung der Groß-/Kleinschreibung berechnet.
       verbatim_comparison: Wortgetreuer Vergleich
