@@ -68,7 +68,8 @@ es:
       loading_more_subjects: Cargando más temas...
       no_categories: Sin categorías
       no_categories_message: No hay categorías de temas en la colección.<br>
-      there_are_no_subjects: No hay asignaturas para la categoría seleccionada
+      there_are_no_subjects: No hay temas para la categoría
+      there_are_no_subjects_for_the_search: No hay temas que se ajusten a la búsqueda.
       uncategorized: Sin categorizar
       uncategorized_subjects: Temas sin categorizar
       upload_subjects: Subir materias

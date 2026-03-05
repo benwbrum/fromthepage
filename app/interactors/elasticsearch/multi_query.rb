@@ -53,23 +53,7 @@ class Elasticsearch::MultiQuery < ApplicationInteractor
   def augmented_query
     return @augmented_query if defined?(@augmented_query)
 
-    if @query.nil? || @query.include?('"')
-      @augmented_query = @query
-
-      return @augmented_query
-    end
-
-    tokens = @query.split
-
-    augmented_tokens = tokens.map do |t|
-      if t.nil? || t.include?('"') || !t.match?(/[.\-_]/)
-        t
-      else
-        '"' + t + '"'
-      end
-    end
-
-    @augmented_query = augmented_tokens.join(' ')
+    @augmented_query = Elasticsearch::Lib::AugmentedQuery.new(query: @query).perform
 
     @augmented_query
   end

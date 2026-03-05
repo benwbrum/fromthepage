@@ -75,7 +75,7 @@ describe "subject linking" do
     end
     expect(page).to have_content('Places')
     page.find('a.tree-item', text: 'Places').click
-    expect(page).to have_content('There are no subjects for the category selected')
+    expect(page).to have_content('There are no subjects for the category')
   end
 
   it "links a categorized subject" do

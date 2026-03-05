@@ -1,13 +1,12 @@
-dl.category-article[id="category-#{category == 'uncategorized' ? 'none' : category.id}" style='display: block;']
-  dt
-    .headline
-      h3.headline_title(data-category-title="#{category == 'uncategorized' ? 'none' : category.id}")
-        ="#{category == 'uncategorized' ? t('article.list.uncategorized_subjects') : category.title}"
-      -if user_signed_in? && current_user.like_owner?(@collection) && category != 'uncategorized'
-        =render partial: 'table_actions', locals: { category: category }
+-if selected_category.present?
+  -if selected_category == 'all'
+    =render partial: 'table_tree', locals: { key: nil, categories_tree: categories_tree, category_ids_with_articles: category_ids_with_articles }
 
-  -if articles.any?
-    =render partial: 'lazy_item', locals: { collection_id: @collection.slug, category: category, batch: 0, timestamp: Time.now.to_i }
+    -if @uncategorized_articles.any?
+      =render partial: 'table_contents', locals: { category: 'uncategorized', has_articles: true }
+
+  -elsif selected_category == 'uncategorized'
+    =render partial: 'table_contents', locals: { category: 'uncategorized', has_articles: uncategorized_articles.any? }
+
   -else
-    dd
-      p.acenter.fglight= t('article.list.there_are_no_subjects')
+    =render partial: 'table_contents', locals: { category: selected_category, has_articles: category_ids_with_articles.include?(selected_category.id) }

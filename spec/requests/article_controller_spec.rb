@@ -107,6 +107,18 @@ describe ArticleController do
         end
       end
 
+      context 'when searching' do
+        let(:params) { { search: categorized_article.title } }
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:list)
+        end
+      end
+
       context 'when document_set' do
         let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
         let(:action_path) { collection_subjects_path(owner, document_set) }
@@ -146,6 +158,46 @@ describe ArticleController do
 
       expect(response).to have_http_status(:ok)
       expect(response).to render_template(:_items)
+    end
+
+    context 'when searching' do
+      let(:params) do
+        {
+          search: categorized_article.title,
+          batch: 0,
+          timestamp: Time.now.to_i,
+          selected_category_id: selected_category_id
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:_items)
+      end
+
+      context 'with elasticsearch' do
+        before do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+          stub_const('ELASTIC_ENABLED', true)
+          ArticlesIndex.import [categorized_article, uncategorized_article]
+        end
+
+        after do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:_items)
+        end
+      end
     end
 
     context 'when uncategorized' do

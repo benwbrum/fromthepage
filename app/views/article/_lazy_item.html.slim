@@ -1,3 +1,5 @@
-turbo-frame id="lazy_items_#{timestamp}" src=article_items_path(collection_id: collection_id, selected_category_id: category == 'uncategorized' ? 'uncategorized' : category.id, batch: batch, timestamp: timestamp) loading="lazy"
+ruby:
+  selected_category_id = category == 'uncategorized' ? 'uncategorized' : category.id
+turbo-frame id="lazy_items_#{selected_category_id}_#{timestamp}" src=article_items_path(collection_id: collection_id, selected_category_id: selected_category_id, search: search, batch: batch, timestamp: timestamp) loading="lazy"
   p style='text-align: center'
     = t('article.list.loading_more_subjects')

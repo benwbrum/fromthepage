@@ -1,0 +1,7 @@
+ruby:
+  categories = categories_tree.dig(key) || []
+
+-categories.each do |category|
+  =render partial: 'table_contents', locals: { category: category, has_articles: category_ids_with_articles.include?(category.id) }
+
+  =render partial: 'table_tree', locals: { key: category.id, categories_tree: categories_tree, category_ids_with_articles: category_ids_with_articles }

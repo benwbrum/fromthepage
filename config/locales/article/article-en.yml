@@ -68,7 +68,8 @@ en:
       loading_more_subjects: Loading more subjects...
       no_categories: No Categories
       no_categories_message: There are no subject categories in the collection.<br>
-      there_are_no_subjects: There are no subjects for the category selected
+      there_are_no_subjects: There are no subjects for the category
+      there_are_no_subjects_for_the_search: There are no subjects that fits the search
       uncategorized: Uncategorized
       uncategorized_subjects: Uncategorized subjects
       upload_subjects: Upload Subjects

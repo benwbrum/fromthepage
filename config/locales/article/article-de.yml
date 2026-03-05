@@ -68,7 +68,8 @@ de:
       loading_more_subjects: Weitere Themen werden geladen...
       no_categories: Keine Kategorien
       no_categories_message: Es sind keine Entitätskategorien in der Sammlung vorhanden.<br>
-      there_are_no_subjects: Es sind keine Entitäten für die ausgewählte Kategorie vorhanden
+      there_are_no_subjects: Es gibt keine Themen für die Kategorie
+      there_are_no_subjects_for_the_search: Es gibt keine Themen, die zur Suche passen.
       uncategorized: Nicht kategorisiert
       uncategorized_subjects: Nicht kategorisierte Entitäten
       upload_subjects: Entitäten hochladen

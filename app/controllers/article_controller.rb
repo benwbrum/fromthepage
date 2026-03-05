@@ -18,24 +18,25 @@ class ArticleController < ApplicationController
     @categories = Category.recursive_tree_for(@collection.is_a?(DocumentSet) ? @collection.collection_id : @collection.id)
     @categories_tree = @categories.group_by(&:parent_id)
 
-    if params[:selected_category_id] == 'uncategorized'
-      @selected_category = 'uncategorized'
-      @articles = @uncategorized_articles
+    if search.present?
+      @selected_category = 'all'
       @ancestor_ids = []
-    elsif params[:selected_category_id].present?
+    elsif params[:selected_category_id] == 'uncategorized'
+      @selected_category = 'uncategorized'
+      @ancestor_ids = []
+    elsif params[:selected_category_id].present? && params[:selected_category_id] != 'all'
       @selected_category = @categories.find { |category| category.id == params[:selected_category_id].to_i }
-      @articles = articles.where(categories: { id: @selected_category.id })
       @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
     else
       @selected_category = @categories_tree.dig(nil).first
       if @selected_category.present?
-        @articles = articles.where(categories: { id: @selected_category.id })
         @ancestor_ids = Category.ancestors_for(@selected_category.id).pluck(:id)
       else
-        @articles = articles.none
         @ancestor_ids = []
       end
     end
+
+    @category_ids_with_articles = @collection.categories.joins(:articles).distinct.pluck(:id)
 
     respond_to do |format|
       format.html
@@ -48,6 +49,13 @@ class ArticleController < ApplicationController
     @batch = params[:batch].to_i
     @timestamp = params[:timestamp]
 
+    if ELASTIC_ENABLED && search.present?
+      article_ids = Article.es_search(query: search, user: current_user).pluck('_id')
+      articles_scope = articles_scope.where(id: article_ids)
+    elsif search.present?
+      articles_scope = articles_scope.where('articles.title LIKE ?', "%#{search}%")
+    end
+
     if params[:selected_category_id] == 'uncategorized'
       @category = 'uncategorized'
       articles_scope = articles_scope.where(categories: { id: nil })
@@ -56,19 +64,24 @@ class ArticleController < ApplicationController
       articles_scope = articles_scope.where(categories: { id: @category.id })
     end
 
-    @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
-    @pages_count_map = articles_scope.left_joins(:page_article_links)
-                                     .group('articles.id')
-                                     .pluck('articles.id, COUNT(page_article_links.id)')
-                                     .to_h
+    if search.present? && articles_scope.count.zero?
+      render turbo_stream: turbo_stream.remove("category-#{@category == 'uncategorized' ? 'none' : @category.id}")
+    else
+      @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
+      @pages_count_map = articles_scope.left_joins(:page_article_links)
+                                       .group('articles.id')
+                                       .pluck('articles.id, COUNT(page_article_links.id)')
+                                       .to_h
 
-    @articles = Article.sort_vertically(articles_scope)
-                       .limit(ARTICLES_BATCH_SIZE)
-                       .offset(@batch * ARTICLES_BATCH_SIZE)
+      @articles = Article.sort_vertically(articles_scope)
+                         .distinct
+                         .limit(ARTICLES_BATCH_SIZE)
+                         .offset(@batch * ARTICLES_BATCH_SIZE)
 
-    render turbo_stream: turbo_stream.replace(
-      "lazy_items_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
-    )
+      render turbo_stream: turbo_stream.replace(
+        "lazy_items_#{@category == 'uncategorized' ? @category : @category.id}_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
+      )
+    end
   end
 
   def delete
@@ -373,5 +386,9 @@ class ArticleController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :uri, :short_summary, :source_text, :latitude, :longitude, :birth_date, :death_date, :race_description, :sex, :bibliography, :begun, :ended, category_ids: [])
+  end
+
+  def search
+    @search ||= Elasticsearch::Lib::AugmentedQuery.new(query: params[:search]).perform
   end
 end
