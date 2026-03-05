@@ -3,7 +3,7 @@ class MasqueradesController < Devise::MasqueradesController
 
   def authorized?
     admin_id = session[session_key]
-    admin_user = User.friendly.find_by(id: admin_id)
+    admin_user = User.friendly.find(admin_id)
     unless user_signed_in? && admin_user.admin
       cleanup_masquerade_owner_session
       redirect_to dashboard_path

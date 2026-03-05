@@ -375,6 +375,9 @@ Fromthepage::Application.routes.draw do
       post 'bulk_export/:collection_slug', to: 'bulk_export#start', as: 'bulk_export_start'
       get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
+
+      post 'document_upload/:collection_slug', to: 'document_upload#start', as: 'document_upload_start'
+      get 'document_upload/:document_upload_id/status', to: 'document_upload#status', as: 'document_upload_status'
     end
   end
 

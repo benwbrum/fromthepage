@@ -118,8 +118,6 @@ def wait_for_upload_processing
   end
 end
 
-
-
 def fill_in_editor_field(text)
   if page.has_field?('page[source_text]') # we find page_source_text
     fill_in('page[source_text]', with: text)
@@ -129,4 +127,14 @@ def fill_in_editor_field(text)
     script = "myCodeMirror.setValue(#{text.to_json});"
     page.execute_script(script)
   end
+end
+
+def select2_select(id:, value:)
+  find("#select2-#{id}-container").click
+
+  dropdown = find(".select2-dropdown", visible: true)
+
+  option = dropdown.find("li.select2-results__option", text: value, match: :prefer_exact)
+
+  option.click
 end

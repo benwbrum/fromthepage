@@ -803,6 +803,33 @@ describe CollectionController do
       end
     end
 
+    context 'when slug starts with a number' do
+      let!(:collection1) { create(:collection, owner_user_id: owner.id, slug: '123-collection', title: "Collection1Title") }
+      let!(:collection2) { create(:collection, owner_user_id: owner.id, slug: "#{collection1.id}-text", title: "Collection2Title") }
+
+      it 'renders the collection show page for the correct collection' do
+        get "/#{owner.slug}/#{collection1.slug}"
+        expect(response.body).to include(collection1.title)
+        get "/#{owner.slug}/#{collection2.slug}"
+        expect(response.body).to include(collection2.title)
+        get "/#{owner.slug}/#{collection1.id}"
+        expect(response.body).to include(collection1.title)
+        get "/#{owner.slug}/#{collection2.id}"
+        expect(response.body).to include(collection2.title)
+
+        login_as owner
+        ['subjects', 'page-notes', 'statistics', 'edit', 'recent_contributor_list', 'export'].each do |subpage|
+          get "/#{owner.slug}/#{collection1.slug}/#{subpage}"
+          expect(response.body).to include(collection1.title)
+          get "/#{owner.slug}/#{collection2.slug}/#{subpage}"
+          expect(response.request.path).to eq("/#{owner.slug}/#{collection2.slug}/#{subpage}")
+          expect(response.body).not_to include(collection1.title)
+          expect(response.body).to include(collection2.title)
+        end
+      end
+    end
+
+
     context 'when facets are enabled' do
       let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
 

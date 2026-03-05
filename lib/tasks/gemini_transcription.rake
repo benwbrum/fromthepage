@@ -129,15 +129,7 @@ namespace :fromthepage do
 
       # Find collection by ID or slug
       id = args.collection_slug
-      if Collection.friendly.exists?(id)
-        collection = Collection.friendly.find(id)
-      elsif DocumentSet.friendly.exists?(id)
-        collection = DocumentSet.friendly.find(id)
-      elsif !DocumentSet.find_by(slug: id).nil?
-        collection = DocumentSet.find_by(slug: id)
-      elsif !Collection.find_by(slug: id).nil?
-        collection = Collection.find_by(slug: id)
-      end
+      collection = Collection::Lib::SetFriendlyFind.perform(id: id)
 
       raise 'Collection does not exist' if collection.nil?
 
