@@ -1,6 +1,80 @@
 require 'spec_helper'
 
 describe User do
+  describe '#can_transcribe?' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, :private, :docset_enabled, owner_user_id: owner.id) }
+    let(:document_set) { create(:document_set, :private, collection_id: collection.id, owner_user_id: owner.id) }
+    let(:work) { create(:work, collection: collection) }
+    let(:collaborator) { create(:unique_user) }
+
+    before do
+      document_set.works << work
+    end
+
+    context 'when document set is private and work is restricted' do
+      before { work.update!(restrict_scribes: true) }
+
+      it 'returns false for a document set collaborator' do
+        document_set.collaborators << collaborator
+        expect(collaborator.can_transcribe?(work, document_set)).to be false
+      end
+
+      it 'returns false for a parent collection collaborator' do
+        collection.collaborators << collaborator
+        expect(collaborator.can_transcribe?(work, document_set)).to be false
+      end
+
+      it 'returns true for an explicit work scribe' do
+        work.scribes << collaborator
+        expect(collaborator.can_transcribe?(work, document_set)).to be true
+      end
+
+      it 'returns true for the collection owner' do
+        expect(owner.can_transcribe?(work, document_set)).to be true
+      end
+    end
+
+    context 'when document set is private and work is not restricted' do
+      it 'returns true for a document set collaborator' do
+        document_set.collaborators << collaborator
+        expect(collaborator.can_transcribe?(work, document_set)).to be true
+      end
+    end
+
+    context 'when document set is public and work is restricted' do
+      let(:document_set) { create(:document_set, :public, collection_id: collection.id, owner_user_id: owner.id) }
+
+      before do
+        document_set.works << work
+        work.update!(restrict_scribes: true)
+      end
+
+      it 'returns false for a regular user' do
+        expect(collaborator.can_transcribe?(work, document_set)).to be false
+      end
+
+      it 'returns true for an explicit work scribe' do
+        work.scribes << collaborator
+        expect(collaborator.can_transcribe?(work, document_set)).to be true
+      end
+
+      it 'returns true for the collection owner' do
+        expect(owner.can_transcribe?(work, document_set)).to be true
+      end
+    end
+
+    context 'when document set is public and work is not restricted' do
+      let(:document_set) { create(:document_set, :public, collection_id: collection.id, owner_user_id: owner.id) }
+
+      before { document_set.works << work }
+
+      it 'returns true for any user' do
+        expect(collaborator.can_transcribe?(work, document_set)).to be true
+      end
+    end
+  end
+
   describe '#last_deed_at' do
     let(:user) { create(:user) }
 
