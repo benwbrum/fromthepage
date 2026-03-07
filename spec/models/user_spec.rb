@@ -53,7 +53,7 @@ describe User do
       before do
         document_set.works << work
       end
-  
+
       before do
         work.update!(restrict_scribes: true)
       end
