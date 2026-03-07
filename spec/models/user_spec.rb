@@ -4,15 +4,16 @@ describe User do
   describe '#can_transcribe?' do
     let(:owner) { create(:unique_user, :owner) }
     let(:collection) { create(:collection, :private, :docset_enabled, owner_user_id: owner.id) }
-    let(:document_set) { create(:document_set, :private, collection_id: collection.id, owner_user_id: owner.id) }
     let(:work) { create(:work, collection: collection) }
     let(:collaborator) { create(:unique_user) }
 
-    before do
-      document_set.works << work
-    end
 
     context 'when document set is private and work is restricted' do
+      let(:document_set) { create(:document_set, :private, collection_id: collection.id, owner_user_id: owner.id) }
+      before do
+        document_set.works << work
+      end
+
       before { work.update!(restrict_scribes: true) }
 
       it 'returns false for a document set collaborator' do
@@ -36,6 +37,11 @@ describe User do
     end
 
     context 'when document set is private and work is not restricted' do
+      let(:document_set) { create(:document_set, :private, collection_id: collection.id, owner_user_id: owner.id) }
+      before do
+        document_set.works << work
+      end
+
       it 'returns true for a document set collaborator' do
         document_set.collaborators << collaborator
         expect(collaborator.can_transcribe?(work, document_set)).to be true
@@ -44,9 +50,11 @@ describe User do
 
     context 'when document set is public and work is restricted' do
       let(:document_set) { create(:document_set, :public, collection_id: collection.id, owner_user_id: owner.id) }
-
       before do
         document_set.works << work
+      end
+  
+      before do
         work.update!(restrict_scribes: true)
       end
 
@@ -76,7 +84,7 @@ describe User do
   end
 
   describe '#last_deed_at' do
-    let(:user) { create(:user) }
+    let(:user) { create(:unique_user) }
 
     it 'returns the created_at of the most recent deed' do
       allow_any_instance_of(Deed).to receive(:calculate_prerender)
