@@ -18,6 +18,29 @@ class SuspiciousBehaviorsController < ApplicationController
     render json: suspicious_behavior&.metadata || {}
   end
 
+  def update
+    @suspicious_behavior = @collection.suspicious_behaviors.find(params[:id])
+
+    @result = SuspiciousBehaviors::Update.new(
+      suspicious_behavior: @suspicious_behavior,
+      status: params[:status],
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
+  end
+
+  def destroy
+    @suspicious_behavior = @collection.suspicious_behaviors.find(params[:id])
+
+    @result = SuspiciousBehaviors::Delete.new(
+      suspicious_behavior: @suspicious_behavior,
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
+  end
+
   private
 
   def filtered_scope
@@ -31,7 +54,7 @@ class SuspiciousBehaviorsController < ApplicationController
       :resolved_by_user
     )
 
-    status_filter = params[:status]&.downcase&.to_sym
+    status_filter = params[:status]&.downcase&.to_sym || :pending
 
     if (SuspiciousBehavior::STATUS_FILTERS - [:all]).include?(status_filter)
       @filtered_scope = @filtered_scope.where(status: status_filter)
@@ -41,6 +64,23 @@ class SuspiciousBehaviorsController < ApplicationController
 
     if (SuspiciousBehavior::BEHAVIOR_TYPE_FILTERS - [:all]).include?(type_filter)
       @filtered_scope = @filtered_scope.where(behavior_type: type_filter)
+    end
+
+    if params[:search_user].present?
+      term = params[:search_user]
+
+      if ELASTIC_ENABLED
+        user_ids = User.es_search(query: "~#{term}~", extra_fields: ['display_name', 'login']).pluck('_id')
+        users_scope = User.where(id: user_ids)
+      else
+        users_scope = User.where(id: term)
+          .or(User.where(slug: term))
+          .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{term}%"))
+          .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{term}%"))
+          .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{term}%"))
+      end
+
+      @filtered_scope = @filtered_scope.where(user_id: users_scope.select(:id))
     end
 
     case @sorting
@@ -57,7 +97,7 @@ class SuspiciousBehaviorsController < ApplicationController
 
   # TODO: Introduce permission concern
   def authorized?
-    return if user_signed_in? && @collection.owner_user_id == current_user.id
+    return if user_signed_in? && (current_user.like_owner?(@collection) || current_user.collaborator?(@collection))
 
     redirect_to dashboard_path
   end

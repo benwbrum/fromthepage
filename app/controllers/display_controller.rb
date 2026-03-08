@@ -141,7 +141,23 @@ class DisplayController < ApplicationController
       return
     end
 
-    @ai_accuracy_stats = @page.ai_accuracy_statistics
+    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished)
+    @finished_transcription_count = ai_transcriptions_scope.where(status: :finished).count
+    @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
+
+    @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_text: @ai_transcription.source_text)
+
+    respond_to do |format|
+      format.html do
+        @ai_transcription_options = ai_transcriptions_scope.map do |ai_transcription|
+          display_text = "#{ai_transcription.model} - #{ai_transcription.created_at.strftime('%b %d, %Y %I:%M %p')}"
+
+          [display_text, ai_transcription.id]
+        end
+      end
+
+      format.turbo_stream
+    end
   end
 
   def paged_search

@@ -1,6 +1,13 @@
 ---
 de:
   suspicious_behaviors:
+    actions:
+      delete: Löschen
+      flag: Flagge
+      ignore: Ignorieren
+    confirm_delete_message: Sind Sie sicher, dass Sie diesen Bericht löschen möchten?
+    destroy:
+      deleted: Bericht gelöscht
     filters:
       behavior_type:
         ai_warning_left: KI-Warntext links
@@ -9,9 +16,22 @@ de:
         minimal_ai_changes: Minimale Änderungen am KI-Entwurf
       status:
         all: Alle
-        confirmed: Bestätigt
-        dismissed: Abgewiesen
+        flagged: Markiert
+        ignored: Ignoriert
         pending: Ausstehend
     labels:
       behavior_type: Typ
       status: Status
+    table:
+      actions: Aktionen
+      flagged_at: Gekennzeichnet bei
+      metadata: Metadaten
+      page: Seite
+      resolved_at: Erledigt am
+      resolved_by: Erledigt durch
+      status: Status
+      type: Typ
+      user: Benutzer
+    update:
+      flagged: Benutzer hat dies gemeldet
+      ignored: Bericht ignoriert

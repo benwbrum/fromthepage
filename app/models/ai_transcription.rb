@@ -31,8 +31,11 @@ class AiTranscription < ApplicationRecord
     not_started: '#FFFFFF'
   }
 
-  belongs_to :page
   before_save :replace_nbsp
+
+  belongs_to :page
+  has_one :work, through: :page
+  has_one :collection, through: :work
 
   scope :alto, -> { where(model: ALTO_MODEL) }
   scope :not_alto, -> { where.not(model: ALTO_MODEL) }

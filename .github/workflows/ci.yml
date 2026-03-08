@@ -165,3 +165,52 @@ jobs:
           fi
 
           kill $WORKER_PID
+<<<<<<< HEAD
+=======
+
+  linked_files_warn:
+    name: "Warn on linked files changes"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - name: Check for changes in linked files
+        run: |
+          LINKED_FILES=(
+            "config.ru"
+            "config/database.yml"
+            "config/environments/production.rb"
+            "config/initializers/01fromthepage.rb"
+            "config/initializers/rack_attack.rb"
+            "config/initializers/omniauth.rb"
+            "config/newrelic.yml"
+            "public/robots.txt"
+          )
+
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+
+          WARN_FILES=()
+          for f in "${LINKED_FILES[@]}"; do
+            if echo "$CHANGED_FILES" | grep -q "^$f$"; then
+              WARN_FILES+=("$f")
+            fi
+          done
+
+          if [ ${#WARN_FILES[@]} -gt 0 ]; then
+            echo "❌ WARNING: The following linked files were changed:"
+            for wf in "${WARN_FILES[@]}"; do
+              echo "  - $wf"
+            done
+            exit 1
+          else
+            echo "✅ No linked files changed."
+          fi
+>>>>>>> 88d0fd873a30b3823f35f9582599e9e751cce988

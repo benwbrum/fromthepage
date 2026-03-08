@@ -530,7 +530,7 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-      resources :suspicious_behaviors, only: [:index, :show]
+      resources :suspicious_behaviors, except: [:new, :create, :edit]
 
       # work related routes
       # have to use match because it must be both get and post

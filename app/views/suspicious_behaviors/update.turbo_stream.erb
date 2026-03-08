@@ -1,0 +1,10 @@
+<% if @result.success? %>
+  <%= turbo_stream.replace(dom_id(@result.suspicious_behavior), partial: 'suspicious_behaviors/item', locals: { item: @result.suspicious_behavior }) %>
+  <% if @result.suspicious_behavior.flagged? %>
+    <%= turbo_flash(t('.flagged'), :notice) %>
+  <% else %>
+    <%= turbo_flash(t('.ignored'), :notice) %>
+  <% end %>
+<% else %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

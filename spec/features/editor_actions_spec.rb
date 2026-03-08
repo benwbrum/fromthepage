@@ -107,7 +107,7 @@ describe "editor actions", order: :defined do
       expect(page.find('.tabs')).to have_content("Transcribe")
     end
 
-    it "checks that a restricted editor can't see a work" do
+    it "checks that a restricted editor can't transcribe a work" do
       logout(:user)
       login_as(@rest_user, scope: :user)
       visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
