@@ -77,6 +77,7 @@ gem 'rtl'
 gem 'postmark-rails'
 gem 'mail', '~> 2.7'
 gem 'gravatar_image_tag', github: 'Tinix/gravatar_image_tag'
+gem 'slack-notifier'
 
 # Frontend / UI
 gem 'importmap-rails'
