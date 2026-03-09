@@ -284,6 +284,7 @@ describe "editor actions", order: :defined do
     end
 
     it "adds a note", js: true do
+      # depends on being able to see the transcribe tab at this point.
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
       fill_in 'Write a new note or ask a question...', with: "Test note"
       find('#save_note_button').click
