@@ -296,6 +296,42 @@ describe Page do
         expect(result).to eq('/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r_thumb.jpeg')
       end
     end
+
+    context 'when page has sc_canvas but no local base_image' do
+      let(:sc_canvas) { double('sc_canvas', sc_service_id: 'https://iiif.example.com/image/1', sc_service_context: 'http://iiif.io/api/image/2/context.json') }
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+      end
+
+      it 'returns the IIIF canvas thumbnail URL' do
+        result = page.thumbnail_url
+        expect(result).to eq('https://iiif.example.com/image/1/full/100,/0/default.jpg')
+      end
+    end
+
+    context 'when page has sc_canvas and a local base_image (e.g. after rotation)' do
+      let(:sc_canvas) { double('sc_canvas', sc_service_id: 'https://iiif.example.com/image/1', sc_service_context: 'http://iiif.io/api/image/2/context.json') }
+      # build_stubbed properly sets base_image in the attribute hash, so self[:base_image] works correctly
+      let(:page) { build_stubbed(:page, base_image: "#{Rails.root}/public/images/working/upload/123.jpg") }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        allow(page).to receive(:thumbnail_image).and_return("#{Rails.root}/public/images/working/upload/123_thumb.jpg")
+      end
+
+      it 'returns the local thumbnail URL instead of the IIIF canvas URL' do
+        # build_stubbed does not fully replicate included modules, so we extend ApplicationHelper
+        # to make file_to_url available (same pattern as the existing test above)
+        page.extend(ApplicationHelper)
+        result = page.thumbnail_url
+        expect(result).to eq('/images/working/upload/123_thumb.jpg')
+        expect(result).not_to include('iiif.example.com')
+      end
+    end
   end
 
   describe '#ai_plaintext_has_emoji_placeholders?' do
