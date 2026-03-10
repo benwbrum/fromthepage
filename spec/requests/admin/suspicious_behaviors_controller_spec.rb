@@ -38,9 +38,12 @@ describe Admin::SuspiciousBehaviorsController do
       let(:params) do
         {
           behaviour_type: 'large_paste',
-          status: 'pending',
+          status: 'flagged',
           ordering: 'ASC',
-          sorting: 'resolved_at'
+          sorting: 'resolved_at',
+          search_user: user.slug,
+          search_collection: collection.slug,
+          search_owner: owner.slug
         }
       end
       let(:subject) { get action_path, params: params, as: :turbo_stream }
@@ -50,6 +53,25 @@ describe Admin::SuspiciousBehaviorsController do
         subject
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
+      end
+
+      context 'when elastic enabled' do
+        before do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+          stub_const('ELASTIC_ENABLED', true)
+        end
+
+        after do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+        end
+
+        it 'renders status and template' do
+          login_as admin
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:index)
+        end
       end
     end
   end

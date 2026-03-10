@@ -1,4 +1,8 @@
 ---
+slack_webhook:
+  channel: '#solid-queue-health-check'
+  url: <%= ENV['SLACK_WEBHOOK_URL'] %>
+  username: bot
 spammy_emails:
   tlds:
     - io

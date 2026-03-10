@@ -29,7 +29,7 @@ module AiAccuracyCalculator
 
   # Calculate all accuracy statistics
   # Returns a hash with various accuracy metrics or nil if cannot calculate
-  def ai_accuracy_statistics
+  def ai_accuracy_statistics(ai_text: ai_plaintext)
     return nil unless can_calculate_ai_accuracy?
 
     ground_truth = verbatim_transcription_plaintext
