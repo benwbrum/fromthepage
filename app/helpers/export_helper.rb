@@ -179,8 +179,10 @@ module ExportHelper
         include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
         include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         include_notes = bulk_export.report_arguments['include_notes'] != '0'
+
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+          # NOTE: Facing editions should always preserve_lb
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_pdf_work
