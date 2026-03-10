@@ -316,8 +316,9 @@ describe "editor actions", order: :defined do
     end
 
     it "tries to save transcription with unsaved note", js: true do
-      col = Collection.second
-      test_page = col.works.first.pages.first
+      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+      col = @work.collection
+      test_page = @work.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       text = Page.find_by(id: test_page.id).source_text
       fill_in('Write a new note or ask a question...', with: "Test two")
@@ -341,8 +342,9 @@ describe "editor actions", order: :defined do
     end
 
     it "deletes a note", js: true do
-      col = Collection.second
-      test_page = col.works.first.pages.first
+      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+      col = @work.collection
+      test_page = @work.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       title = test_page.notes.last.id
       note_id = test_page.notes.last.id
@@ -355,8 +357,9 @@ describe "editor actions", order: :defined do
     end
 
     it "uses page arrows with unsaved transcription", js: true do
-      col = Collection.second
-      test_page = col.works.first.pages.second
+      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+      col = @work.collection
+      test_page = @work.pages.first
       # next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       fill_in_editor_field "Attempt to save"
