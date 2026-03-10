@@ -169,7 +169,7 @@ jobs:
   linked_files_warn:
     name: "Warn on linked files changes"
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
