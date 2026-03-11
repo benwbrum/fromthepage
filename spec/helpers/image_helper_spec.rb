@@ -3,6 +3,42 @@
 require 'spec_helper'
 
 describe ImageHelper do
+  describe '.sanitize_filename' do
+    it 'replaces spaces with underscores' do
+      expect(ImageHelper.sanitize_filename('my file with spaces.pdf')).to eq('my_file_with_spaces.pdf')
+    end
+
+    it 'preserves the file extension' do
+      expect(ImageHelper.sanitize_filename('my file.PDF')).to eq('my_file.PDF')
+      expect(ImageHelper.sanitize_filename('archive file.zip')).to eq('archive_file.zip')
+    end
+
+    it 'does not modify filenames without spaces' do
+      expect(ImageHelper.sanitize_filename('clean_filename.pdf')).to eq('clean_filename.pdf')
+    end
+
+    it 'replaces multiple consecutive spaces with a single underscore' do
+      expect(ImageHelper.sanitize_filename('too  many   spaces.pdf')).to eq('too_many_spaces.pdf')
+    end
+
+    it 'truncates base names longer than 100 characters' do
+      long_name = ('a' * 150) + '.pdf'
+      result = ImageHelper.sanitize_filename(long_name)
+      expect(File.basename(result, '.pdf').length).to eq(100)
+      expect(File.extname(result)).to eq('.pdf')
+    end
+
+    it 'does not truncate base names exactly 100 characters long' do
+      name = ('a' * 100) + '.pdf'
+      result = ImageHelper.sanitize_filename(name)
+      expect(File.basename(result, '.pdf').length).to eq(100)
+    end
+
+    it 'replaces special characters with underscores' do
+      expect(ImageHelper.sanitize_filename("file(1).pdf")).to eq('file_1_.pdf')
+    end
+  end
+
   describe '.calculate_page_size_and_dpi' do
     context 'with filename containing spaces' do
       let(:test_pdf_source) { File.join(Rails.root, 'test_data/uploads/test.pdf') }
