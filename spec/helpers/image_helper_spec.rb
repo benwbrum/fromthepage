@@ -37,6 +37,12 @@ describe ImageHelper do
     it 'replaces special characters with underscores' do
       expect(ImageHelper.sanitize_filename("file(1).pdf")).to eq('file_1_.pdf')
     end
+
+    it 'replaces apostrophes and commas to produce a shell-safe filename' do
+      # Apostrophes break shell single-quoted strings used in the Ghostscript command
+      expect(ImageHelper.sanitize_filename("1850-1910_Town_Clerk's_Miscellaneous_Records,_Book_1.pdf"))
+        .to eq('1850-1910_Town_Clerk_s_Miscellaneous_Records__Book_1.pdf')
+    end
   end
 
   describe '.calculate_page_size_and_dpi' do
