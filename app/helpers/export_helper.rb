@@ -1122,7 +1122,4 @@ module ExportHelper
 
     array
   end
-
-  def handle_soul_risky_tags(doc)
-  end
 end

@@ -135,7 +135,7 @@ class Work::Export::Lib::Utils
     when 'figure'
       process_figure(element, content)
     when 'unclear'
-      wrap_inline_with_linebreak(['textit'], content)
+      wrap_inline_with_linebreak(['textit'], content, decorator: :brackets)
     when 'cb', 'pb', 'marginalia'
       # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
       # `cb, pb, or marginalia` tags to have linebreaks.
@@ -275,11 +275,15 @@ class Work::Export::Lib::Utils
     unescaped
   end
 
-  def self.wrap_inline_with_linebreak(wrappers, content)
+  def self.wrap_inline_with_linebreak(wrappers, content, decorator: nil)
     content.split(LINEBREAK_ELEMENT).map do |part|
       wrapped = part
       wrappers.reverse.each do |w|
-        wrapped = "\\#{w}{#{wrapped}}"
+        if decorator == :brackets
+          wrapped = "\\#{w}{[#{wrapped}]}"
+        else
+          wrapped = "\\#{w}{#{wrapped}}"
+        end
       end
       wrapped
     end.join(LINEBREAK_ELEMENT)
