@@ -276,15 +276,27 @@ module ExportHelper
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
-    @other_articles.each do |subject|
+
+    people_ids = people_and_descendants.map(&:id)
+    places_ids = places_and_descendants.map(&:id)
+    org_ids = organizations_and_descendants.map(&:id)
+
+    all_articles_to_expand = (@person_articles + @place_articles + @organization_articles + @other_articles).dup
+    all_articles_to_expand.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
         subjects[1..].each do |expanded|
-          if expanded.categories.where(title: 'People').present?
+          next if @person_articles.include?(expanded) ||
+                  @place_articles.include?(expanded) ||
+                  @organization_articles.include?(expanded) ||
+                  @other_articles.include?(expanded)
+
+          expanded_category_ids = expanded.categories.pluck(:id)
+          if (expanded_category_ids & people_ids).present?
             @person_articles << expanded
-          elsif expanded.categories.where(title: 'Places').present?
+          elsif (expanded_category_ids & places_ids).present?
             @place_articles << expanded
-          elsif expanded.categories.where(org_fields_enabled: true).present?
+          elsif (expanded_category_ids & org_ids).present?
             @organization_articles << expanded
           else
             @other_articles << expanded

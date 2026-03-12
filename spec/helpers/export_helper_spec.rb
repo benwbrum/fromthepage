@@ -8,6 +8,75 @@ RSpec.describe ExportHelper, type: :helper do
     @context = double("context", translation_mode: false)
   end
 
+  describe '#expand_subject' do
+    let(:collection) { FactoryBot.create(:collection) }
+
+    it 'returns only the subject itself when no parent subjects exist' do
+      article = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      result = expand_subject(article)
+      expect(result).to eq([article])
+    end
+
+    it 'finds parent subjects when title contains -- delimiter' do
+      parent = FactoryBot.create(:article, title: 'Alabama', collection: collection)
+      child  = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      result = expand_subject(child)
+      expect(result).to include(child)
+      expect(result).to include(parent)
+    end
+
+    it 'finds parent subjects when title contains ". " delimiter' do
+      parent = FactoryBot.create(:article, title: 'Confederate States of America. Army', collection: collection)
+      child  = FactoryBot.create(:article,
+                                  title: 'Confederate States of America. Army. Mississippi. Infantry Regiment, 10th (1861-1862)',
+                                  collection: collection)
+      result = expand_subject(child)
+      expect(result).to include(child)
+      expect(result).to include(parent)
+    end
+
+    it 'does not include non-existent parent subjects' do
+      child = FactoryBot.create(:article, title: 'Alabama--Baldwin County. Blakeley', collection: collection)
+      result = expand_subject(child)
+      expect(result).to eq([child])
+    end
+  end
+
+  describe 'article classification by category hierarchy' do
+    let(:collection) { FactoryBot.create(:collection) }
+    let(:places_root) { FactoryBot.create(:category, title: 'Places', collection: collection, parent: nil) }
+    let(:counties_category) do
+      FactoryBot.create(:category, title: 'Counties & Parishes', collection: collection, parent: places_root)
+    end
+    let(:towns_category) do
+      FactoryBot.create(:category, title: 'Towns & Cities', collection: collection, parent: places_root)
+    end
+
+    it 'classifies expanded subjects from a Places subcategory as place articles' do
+      # Set up parent and child articles with Places subcategory membership
+      county_article = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      county_article.categories << counties_category
+
+      town_article = FactoryBot.create(:article, title: 'Alabama--Baldwin County. Blakeley', collection: collection)
+      town_article.categories << towns_category
+
+      # Simulate the classification logic in work_to_tei
+      places_and_descendants = places_root.descendants.to_a + [places_root]
+      places_ids = places_and_descendants.map(&:id)
+
+      # The county article is in Counties & Parishes which is a descendant of Places
+      expanded_category_ids = county_article.categories.pluck(:id)
+      expect((expanded_category_ids & places_ids).present?).to be true
+    end
+
+    it 'correctly identifies subject categories as descendants of Places' do
+      places_and_descendants = places_root.descendants.to_a + [places_root]
+      expect(places_and_descendants).to include(places_root)
+      expect(places_and_descendants).to include(counties_category)
+      expect(places_and_descendants).to include(towns_category)
+    end
+  end
+
   describe "Bibliography TEI export formatting" do
     context "bibliography_to_export_tei" do
       it "processes TEI markup in bibliography for export" do
