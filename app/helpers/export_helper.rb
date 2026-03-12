@@ -276,15 +276,17 @@ module ExportHelper
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
-    @other_articles.each do |subject|
+    [@other_articles+@person_articles+@place_articles+@organization_articles].flatten.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
         subjects[1..].each do |expanded|
-          if expanded.categories.where(title: 'People').present?
+          # we want to look for top-level categories of People and Places in the parents of the subject category
+          categories_with_parents = expanded.categories.map { |c| [c] + c.ancestors }.flatten.uniq
+          if categories_with_parents.detect { |c| c.title='People' }
             @person_articles << expanded
-          elsif expanded.categories.where(title: 'Places').present?
+          elsif categories_with_parents.detect { |c| c.title='Places' }
             @place_articles << expanded
-          elsif expanded.categories.where(org_fields_enabled: true).present?
+          elsif categories_with_parents.detect { |c| c.org_fields_enabled? }
             @organization_articles << expanded
           else
             @other_articles << expanded
