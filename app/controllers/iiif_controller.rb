@@ -629,8 +629,7 @@ private
       if page.ai_transcription.present? && page.ai_transcription.reasoning.present?
         annotation['motivation'] = 'oa:commenting'
         annotation['on'] = region_from_page(@page)
-        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_ai_reasoning_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
-        annotation.resource = IIIF::Presentation::Resource.new({ '@type' => 'cnt:ContentAsText' })
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_reasoning_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
         annotation.resource['format'] = 'text/html'
         # Convert markdown to HTML with error handling
         begin
