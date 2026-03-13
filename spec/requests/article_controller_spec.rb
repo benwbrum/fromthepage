@@ -176,6 +176,26 @@ describe ArticleController do
     end
   end
 
+  describe '#page_counts' do
+    let!(:article) { create(:article, collection: collection) }
+    let(:params) do
+      {
+        timestamp: Time.now.to_i
+      }
+    end
+
+    let(:action_path) { article_page_counts_path(collection_id: collection.slug, article_id: article.id) }
+    let(:subject) { get action_path, params: params }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:_page_counts)
+    end
+  end
+
   describe '#delete' do
     let!(:article) { create(:article, collection: collection) }
 
