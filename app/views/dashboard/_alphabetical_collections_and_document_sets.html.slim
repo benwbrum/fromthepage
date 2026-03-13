@@ -1,5 +1,6 @@
 .collections
-  -snippet = to_snippet(cds.intro_block)
+  - show_full_description = local_assigns.fetch(:show_full_description, false)
+  -snippet = show_full_description ? cds.intro_block.to_s : to_snippet(cds.intro_block)
   -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner) unless cds.owner.nil?
   .collection
     -unless cds.picture.blank?
@@ -12,6 +13,9 @@
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
       -unless snippet.empty?
-        p.collection_snippet =snippet
+        -if show_full_description
+          p.collection_snippet ==snippet
+        -else
+          p.collection_snippet =snippet
       .collection_summary
         span =t('.project_by', author: owner_link).html_safe 
