@@ -298,7 +298,10 @@ describe Page do
     end
 
     context 'when page has sc_canvas but no local base_image' do
-      let(:sc_canvas) { double('sc_canvas', sc_service_id: 'https://iiif.example.com/image/1', sc_service_context: 'http://iiif.io/api/image/2/context.json') }
+      let(:sc_canvas) { double('sc_canvas',
+        sc_service_id: 'https://iiif.example.com/image/1',
+        sc_service_context: 'http://iiif.io/api/image/2/context.json',
+        thumbnail_url: 'https://iiif.example.com/image/1/full/100,/0/default.jpg') }
       let(:page) { build_stubbed(:page) }
 
       before do
@@ -313,7 +316,10 @@ describe Page do
     end
 
     context 'when page has sc_canvas and a local base_image (e.g. after rotation)' do
-      let(:sc_canvas) { double('sc_canvas', sc_service_id: 'https://iiif.example.com/image/1', sc_service_context: 'http://iiif.io/api/image/2/context.json') }
+      let(:sc_canvas) { double('sc_canvas',
+        sc_service_id: 'https://iiif.example.com/image/1',
+        sc_service_context: 'http://iiif.io/api/image/2/context.json',
+        thumbnail_url: 'https://iiif.example.com/image/1/full/100,/0/default.jpg') }
       # build_stubbed properly sets base_image in the attribute hash, so self[:base_image] works correctly
       let(:page) { build_stubbed(:page, base_image: "#{Rails.root}/public/images/working/upload/123.jpg") }
 
