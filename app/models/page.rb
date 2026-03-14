@@ -376,7 +376,7 @@ class Page < ApplicationRecord
   def thumbnail_url
     if self.ia_leaf
       self.ia_leaf.thumb_url
-    elsif self.sc_canvas
+    elsif self.sc_canvas && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
     else
       file_to_url(self.thumbnail_image)
