@@ -63,6 +63,8 @@ class DeedType
     AI_DRAFT => 'deed.ai_draft'
   }
 
+  CONTRIBUTORS_COUNT_TYPES = [PAGE_EDIT, PAGE_TRANSCRIPTION, PAGE_INDEXED, PAGE_REVIEWED]
+
   # This `class << self` inherited group replaces the need to call `self.` on
   # all of the class methods inside. Ex: `def all_types` vs `def self.all_types`
   class << self

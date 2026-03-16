@@ -46,5 +46,9 @@ FactoryBot.define do
         sequence(:real_name) { |n| "real_name_#{n}" }
       end
     end
+
+    after(:create) do |user|
+      create(:privacy_preference, user: user)
+    end
   end
 end

@@ -1,65 +1,26 @@
--content_for :javascript
-  javascript:
-    $(document).ready(function() {
-      $(".page-busy-overlay").hide();
-    });
-
 h2 =t('.collaborators')
+
 - if user_signed_in?
   - if mailing_list_export
     - if current_user.owner?
-        =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+        =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f|
           =f.hidden_field :owner_mailing_list, value: true
           =f.submit t('.mailing_list_export'), id: 'mailing-list-export-submit'
 
-
-
 .collection-users.justified
   .justified_box>
-    -unless transcribers.empty?
-      h3 =t('.transcribing')
-      -transcribers.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to(user_profile_path(user), class: 'collection-user_link')
-            span =profile_picture(user)
-            span.vmiddle =user.display_name
-    -else
-      h3 =t('.transcribing')
-      p.a50 =t('.no_transcribers')
+    h3 =t('.transcribing')
+    =render partial: 'statistics/lazy_collaborator', locals: { deed_type: DeedType::PAGE_TRANSCRIPTION, batch: 0, timestamp: Time.now.to_i }
 
   .justified_box>
-    -unless reviewers.empty?
-      h3 =t('.reviewing')
-      -reviewers.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to(user_profile_path(user), class: 'collection-user_link')
-            span =profile_picture(user)
-            span.vmiddle =user.display_name
-    -else
-      h3 =t('.reviewing')
-      p.a50 =t('.no_reviewers')
-      
+    h3 =t('.reviewing')
+    =render partial: 'statistics/lazy_collaborator', locals: { deed_type: DeedType::PAGE_REVIEWED, batch: 0, timestamp: Time.now.to_i }
+
   .justified_box>
-    -unless editors.empty?
-      h3 =t('.editing')
-      -editors.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to(user_profile_path(user), class: 'collection-user_link')
-            span =profile_picture(user)
-            span.vmiddle =user.display_name
-    -else
-      h3 =t('.editing')
-      p.a50 =t('.no_editors')
-      
+    h3 =t('.editing')
+    =render partial: 'statistics/lazy_collaborator', locals: { deed_type: DeedType::PAGE_EDIT, batch: 0, timestamp: Time.now.to_i }
+
   -unless subjects_disabled
     .justified_box>
-      -unless indexers.empty?
-        h3 =t('.indexing')
-        -indexers.each do |user, count|
-          .collection-user(data-prefix="#{count}")
-            =link_to(user_profile_path(user), class: 'collection-user_link')
-              span =profile_picture(user)
-              span.vmiddle =user.display_name
-      -else
-        h3 =t('.indexing')
-        p.a50 =t('.no_indexers')
+      h3 =t('.indexing')
+      =render partial: 'statistics/lazy_collaborator', locals: { deed_type: DeedType::PAGE_INDEXED, batch: 0, timestamp: Time.now.to_i }

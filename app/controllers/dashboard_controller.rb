@@ -4,7 +4,9 @@ class DashboardController < ApplicationController
   include AddWorkHelper
   include DashboardHelper
   include OwnerExporter
+
   PAGES_PER_SCREEN = 20
+  CONTRIBUTORS_BATCH_SIZE = 1000
 
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]
@@ -114,32 +116,48 @@ class DashboardController < ApplicationController
 
   # Owner Summary Statistics - statistics for all owned collections
   def summary
-    start_d = params[:start_date]
-    end_d = params[:end_date]
-
     max_date = 1.day.ago
-
-    # Give a week fo data if there are no dates
-    @start_date = start_d&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
-    @end_date = end_d&.to_datetime&.end_of_day || max_date
+    @start_date = params[:start_date]&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
+    @end_date = params[:end_date]&.to_datetime&.end_of_day || max_date
     @end_date = max_date if max_date < @end_date
 
-    @statistics_object = current_user
-    @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
+    @dated_statistics_object = current_user.get_stats_hash(@start_date, @end_date)
+
+    @subjects_disabled = current_user.all_owner_collections.where(subjects_disabled: false).none?
+    @supports_translation = @works.where(supports_translation: true).any?
+    @supports_ocr = @works.where(ocr_correction: true).any?
 
     # Stats
-    owner_collections = current_user.all_owner_collections.map { |c| c.id }
     contributor_ids_for_dates = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
-
-    @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-
+      .where(collection_id: current_user.all_owner_collections.select(:id))
+      .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct
+    @contributors = User.where(id: contributor_ids_for_dates.select(:user_id)).order(:display_name)
     @activity = AhoyActivitySummary
-        .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', @start_date, @end_date)
-        .group(:user_id)
-        .sum(:minutes)
+      .where(collection_id: current_user.all_owner_collections.select(:id))
+      .where('date BETWEEN ? AND ?', @start_date, @end_date)
+      .group(:user_id)
+      .sum(:minutes)
+
+    respond_to do |format|
+      format.html do
+        # Only fetch general stats when request is not turbo_stream
+        @statistics_object = current_user.get_stats_hash
+      end
+
+      format.turbo_stream
+    end
+  end
+
+  def summary_collaborators
+    batch = params[:batch].to_i
+    @deed_type = params[:deed_type]
+    timestamp = params[:timestamp]
+
+    raise if DeedType::CONTRIBUTORS_COUNT_TYPES.exclude?(@deed_type)
+
+    contributor_deeds_map = current_user.contributor_deeds_by_type(@deed_type, batch, CONTRIBUTORS_BATCH_SIZE)
+
+    render turbo_stream: turbo_stream.replace("lazy_collaborator_#{@deed_type}_#{timestamp}", partial: 'statistics/collaborator_item', locals: { contributor_deeds_map: contributor_deeds_map })
   end
 
   # Collaborator Dashboard - watchlist
