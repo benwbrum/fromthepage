@@ -55,7 +55,7 @@ class Work::Export::Lib::Utils
 
     case element.name
     when 'p'
-      "#{content}#{LINEBREAK_ELEMENT}#{preserve_lb ? LINEBREAK_ELEMENT : ''}"
+      "#{content}#{LINEBREAK_ELEMENT}#{LINEBREAK_ELEMENT}"
     when 'lb'
       if element.attributes['break'] == 'no'
         content = LINEBREAK_ELEMENT
