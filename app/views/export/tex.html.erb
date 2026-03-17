@@ -1,7 +1,7 @@
 <% @pages.each do |page| %>
   <% if @edition == 'facing' %>
     \begin{center}
-      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{<%= page.image_url_for_download %>}
+      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{<%= page.normalized_image_url_for_download %>}
     \end{center}
 
     <%= render partial: 'shared/printable/newpage' %>
