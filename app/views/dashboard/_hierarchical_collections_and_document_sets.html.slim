@@ -20,9 +20,9 @@
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
           -else
             =link_to t('.start_transcribing'), collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
-        .collection_summary
-          span =t('.project_by', author: owner_link).html_safe
         -unless show_full_description
+          .collection_summary
+            span =t('.project_by', author: owner_link).html_safe
           -if cds.document_sets.unrestricted.count < 20
             ul
               -cds.document_sets.unrestricted.each do |doc_set|
