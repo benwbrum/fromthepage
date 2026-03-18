@@ -34,7 +34,15 @@ class Work::Export::Lib::Utils
       '^'  => '\\textasciicircum{}'
     }
 
-    text.gsub(/([\\\{\}\$\&\%\#\_\~\^])/) { replacements[$1] }
+    command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
+
+    text.gsub(/#{command_regex}|./m) do |chunk|
+      if chunk.match?(command_regex)
+        chunk
+      else
+        replacements[chunk] || chunk
+      end
+    end
   end
 
   def self.xml_to_latex(page:, xml_text:, preserve_lb: true, flatten_links: false)
@@ -213,7 +221,7 @@ class Work::Export::Lib::Utils
     parts = content.split(LINEBREAK_ELEMENT)
 
     parts.map do |part|
-      "\\href{#{href_value}}{#{part}}"
+      " \\href{#{href_value}}{#{part}} "
     end.join(LINEBREAK_ELEMENT)
   end
 
