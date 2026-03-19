@@ -6,6 +6,7 @@ describe Work::Metadata::ImportCsvJob do
 
   before do
     Current.user = owner
+    allow(Settings.active_job).to receive(:attempts).and_return(1)
   end
 
   subject(:worker) { described_class.new }
@@ -80,7 +81,17 @@ describe Work::Metadata::ImportCsvJob do
     it 'performs job' do
       ActionMailer::Base.deliveries.clear
 
-      expect { perform_worker }.to raise_error(StandardError, /Import metadata finished with errors/)
+      expect do
+        perform_enqueued_jobs do
+          described_class.perform_later(
+            metadata_file_path: metadata_file_path,
+            collection_id: collection.reload.id,
+            user_id: owner.id
+          )
+        end
+      end.to raise_error(Minitest::UnexpectedError) { |error|
+          expect(error.error.message).to match(/Import metadata finished with errors/)
+        }
 
       expect(ActionMailer::Base.deliveries).not_to be_empty
       expect(ActionMailer::Base.deliveries.first.to).to include owner.email
