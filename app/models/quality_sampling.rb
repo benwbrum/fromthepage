@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: quality_samplings
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  sample_set    :text(16777215)

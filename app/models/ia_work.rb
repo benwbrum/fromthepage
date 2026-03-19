@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: ia_works
+# Database name: primary
 #
 #  id             :integer          not null, primary key
 #  archive_format :string(255)      default("zip")

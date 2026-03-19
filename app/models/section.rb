@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: sections
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  depth      :integer

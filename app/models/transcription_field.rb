@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: transcription_fields
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  bottom_offset :float(24)        default(1.0)

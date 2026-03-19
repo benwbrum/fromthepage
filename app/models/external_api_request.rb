@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: external_api_requests
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  engine        :string(255)

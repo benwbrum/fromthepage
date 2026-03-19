@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: categories
+# Database name: primary
 #
 #  id                 :integer          not null, primary key
 #  bio_fields_enabled :boolean          default(FALSE)

@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: work_facets
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  d0         :date

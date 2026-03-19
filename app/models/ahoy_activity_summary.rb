@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: ahoy_activity_summaries
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  activity      :string(255)

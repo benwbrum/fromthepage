@@ -23,10 +23,15 @@ default: &default
     sql_mode: TRADITIONAL
 
 development:
-  <<: *default
-  username: rails
-  password: <%= ENV['MYSQL_DEV_PASSWORD'] %>
-  database: <%= ENV['DEVELOPMENT_DATABASE'] || 'diary_development' %>
+  primary:
+    <<: *default
+    username: rails
+    password: <%= ENV['MYSQL_DEV_PASSWORD'] %>
+    database: <%= ENV['DEVELOPMENT_DATABASE'] || 'diary_development' %>
+  cache:
+    <<: *default
+    database: diary_development_cache
+    migrations_paths: db/cache_migrate
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -56,7 +61,12 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: diary_production
-  username: diary
-  password: <%= ENV['DIARY_DATABASE_PASSWORD'] %>
+  primary:
+    <<: *default
+    database: diary_production
+    username: diary
+    password: <%= ENV['DIARY_DATABASE_PASSWORD'] %>
+  cache:
+    <<: *default
+    database: diary_production_cache
+    migrations_paths: db/cache_migrate

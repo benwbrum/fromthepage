@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: search_attempts
+# Database name: primary
 #
 #  id              :integer          not null, primary key
 #  clicks          :integer          default(0)

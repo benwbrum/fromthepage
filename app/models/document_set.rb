@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: document_sets
+# Database name: primary
 #
 #  id                         :integer          not null, primary key
 #  default_orientation        :string(255)

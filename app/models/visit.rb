@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: visits
+# Database name: primary
 #
 #  id               :integer          not null, primary key
 #  browser          :string(255)

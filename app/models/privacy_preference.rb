@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: privacy_preferences
+# Database name: primary
 #
 #  id        :bigint           not null, primary key
 #  analytics :boolean          default(FALSE), not null

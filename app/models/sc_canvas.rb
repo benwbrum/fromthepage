@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: sc_canvases
+# Database name: primary
 #
 #  id                 :integer          not null, primary key
 #  annotations        :text(16777215)

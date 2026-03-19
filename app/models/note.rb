@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: notes
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  body          :text(16777215)

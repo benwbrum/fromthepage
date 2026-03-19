@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: suspicious_behaviors
+# Database name: primary
 #
 #  id                  :bigint           not null, primary key
 #  behavior_type       :string(255)      not null

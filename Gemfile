@@ -18,6 +18,7 @@ gem 'interactor-rails', '~> 2.0'
 gem 'friendly_id'
 gem 'thredded', '~> 1.1'
 gem 'solid_queue', '~> 1.2'
+gem 'solid_cache'
 gem 'mission_control-jobs'
 gem 'aws-sdk-s3', require: false
 

@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: ai_transcriptions
+# Database name: primary
 #
 #  id          :bigint           not null, primary key
 #  metadata    :text(4294967295)

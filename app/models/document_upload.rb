@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: document_uploads
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  file              :string(255)

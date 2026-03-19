@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: metadata_description_versions
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  metadata_description :text(65535)

@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: notifications
+# Database name: primary
 #
 #  id                  :integer          not null, primary key
 #  add_as_collaborator :boolean          default(TRUE)

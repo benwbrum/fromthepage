@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: sc_manifests
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  first_sequence_label :string(255)

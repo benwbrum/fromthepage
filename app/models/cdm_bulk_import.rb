@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: cdm_bulk_imports
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  cdm_urls          :text(65535)

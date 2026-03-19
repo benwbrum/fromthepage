@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: metadata_coverages
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  count         :integer          default(0)

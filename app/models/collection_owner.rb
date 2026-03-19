@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: collection_owners
+# Database name: primary
 #
 #  created_at    :datetime
 #  updated_at    :datetime
