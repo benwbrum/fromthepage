@@ -59,7 +59,7 @@ http_interactions:
   recorded_at: Tue, 16 Dec 2025 23:19:45 GMT
 - request:
     method: post
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=redacted
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=redacted
     body:
       encoding: UTF-8
       string: '{"contents":{"role":"user","parts":[{"text":"Please transcribe all
@@ -184,7 +184,7 @@ http_interactions:
   recorded_at: Tue, 16 Dec 2025 23:19:45 GMT
 - request:
     method: post
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=redacted
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=redacted
     body:
       encoding: UTF-8
       string: '{"contents":{"role":"user","parts":[{"text":"Please transcribe all

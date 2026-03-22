@@ -60,6 +60,36 @@ module ResourcesHelper
     options
   end
 
+  def collections_and_document_sets_options
+    scope = current_user.collections.includes(:document_sets)
+
+    options = []
+
+    scope.sort_by(&:title).each do |collection|
+      options << [
+        collection.title,
+        collection.slug,
+        { data: { level: 0 } }
+      ]
+
+      collection.document_sets.sort_by(&:title).each do |doc_set|
+        options << [
+          doc_set.title,
+          doc_set.slug,
+          { data: { level: 1 } }
+        ]
+      end
+    end
+
+    options << [
+      t('dashboard.empty.add_new_collection'),
+      'new',
+      { data: { litebox: { url: collection_new_path, hash: 'create-collection' } } }
+    ]
+
+    options
+  end
+
   def works_list_show_options
     [
       [t('collection.collection_works.all_works'), 'all'],
@@ -90,6 +120,12 @@ module ResourcesHelper
   def suspicious_behavior_status_options
     SuspiciousBehavior::STATUS_FILTERS.map do |key|
       [t("suspicious_behaviors.filters.status.#{key}"), key]
+    end
+  end
+
+  def suspicious_behavior_action_options
+    SuspiciousBehavior::ACTION_FILTERS.map do |key|
+      [t("suspicious_behaviors.filters.action.#{key}"), key]
     end
   end
 end

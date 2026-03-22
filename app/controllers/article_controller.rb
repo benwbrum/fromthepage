@@ -57,17 +57,23 @@ class ArticleController < ApplicationController
     end
 
     @next_batch = @batch + 1 if articles_scope.count > (@batch + 1) * ARTICLES_BATCH_SIZE
-    @pages_count_map = articles_scope.left_joins(:page_article_links)
-                                     .group('articles.id')
-                                     .pluck('articles.id, COUNT(page_article_links.id)')
-                                     .to_h
 
-    @articles = Article.sort_vertically(articles_scope)
-                       .limit(ARTICLES_BATCH_SIZE)
-                       .offset(@batch * ARTICLES_BATCH_SIZE)
+    article_ids = Article.sort_vertically(articles_scope.pluck(:id))
+    paged_article_ids = article_ids[@batch * ARTICLES_BATCH_SIZE, ARTICLES_BATCH_SIZE] || []
+    @articles = Article.where(id: paged_article_ids)
+                       .order(Arel.sql("FIELD(id, #{paged_article_ids.join(',')})"))
 
     render turbo_stream: turbo_stream.replace(
-      "lazy_items_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, pages_count_map: @pages_count_map }
+      "lazy_items_#{@timestamp}", partial: 'items', locals: { articles: @articles, category: @category, timestamp: @timestamp }
+    )
+  end
+
+  def page_counts
+    article = @collection.articles.find(params[:article_id])
+    count = article.page_article_links.count
+
+    render turbo_stream: turbo_stream.replace(
+      "lazy_item_#{article.id}_#{params[:timestamp]}", partial: 'page_counts', locals: { count: count }
     )
   end
 

@@ -1,15 +1,37 @@
 ---
 fr:
   suspicious_behaviors:
+    actions:
+      delete: Supprimer
+      flag: Drapeau
+      ignore: Ignorer
+    confirm_delete_message: Êtes-vous sûr de vouloir supprimer ce rapport ?
+    destroy:
+      deleted: Rapport supprimé
     filters:
       behavior_type:
+        ai_warning_left: Texte d'avertissement IA à gauche
         all: Tous
         large_paste: Grande pâte
+        minimal_ai_changes: Modifications mineures du brouillon de l'IA
       status:
         all: Tous
-        confirmed: Confirmé
-        dismissed: Licencié
+        flagged: Signalé
+        ignored: Ignoré
         pending: En attente
     labels:
       behavior_type: Taper
       status: Statut
+    table:
+      actions: Actes
+      flagged_at: Signalé à
+      metadata: Métadonnées
+      page: Page
+      resolved_at: Résolu à
+      resolved_by: Résolu par
+      status: Statut
+      type: Taper
+      user: Utilisateur
+    update:
+      flagged: Signalé par l'utilisateur
+      ignored: Rapport ignoré

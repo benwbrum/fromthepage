@@ -69,6 +69,26 @@ describe UserController do
         expect(response).to render_template(:profile)
       end
     end
+
+    context 'when owner has document_sets_on_owner_page flag set' do
+      let(:gri_owner) { create(:unique_user, :owner, document_sets_on_owner_page: true) }
+      let!(:gri_collection) { create(:collection, owner_user_id: gri_owner.id, supports_document_sets: true, intro_block: '<p>Full HTML <a href="#">description</a></p>') }
+      let!(:document_set) { create(:document_set, collection_id: gri_collection.id, owner_user_id: gri_owner.id, visibility: :public) }
+
+      it 'does not show document sets on the owner profile page' do
+        get user_profile_path(gri_owner.slug)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include(document_set.title)
+      end
+
+      it 'shows full HTML description without truncation on the owner profile page' do
+        get user_profile_path(gri_owner.slug)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('<a href="#">description</a>')
+      end
+    end
   end
 
   describe '#update' do

@@ -187,7 +187,7 @@ es:
         one: "%{title} tiene convenciones de transcripción personalizadas"
         other: "%{title} y %{count} otros tienen convenciones de transcripción personalizadas"
     edit_look:
-      alphabetize_works: La visualización funciona alfabéticamente en lugar de en orden de trabajo necesario.
+      alphabetize_works: Listar obras alfabéticamente.
       alphabetize_works_description: La visualización funciona alfabéticamente en lugar de en orden de cantidad de trabajo restante.
       default_orientation: Selecciona la orientación predeterminada para la página de transcripción
       default_orientation_description: Elija la orientación que mejor se adapte a la mayoría de las obras de esta colección. Los usuarios podrán cambiar la orientación a la que prefieran.
@@ -316,7 +316,7 @@ es:
       project_by: Proyecto de
       return_to_collection: Volver a la colección
       review_metadata: Revisar metadatos
-      works_that_need_metadata: Trabajos que necesitan metadatos
+      works_that_need_metadata: Obras que necesitan metadatos
     needs_transcription_pages:
       pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
@@ -369,6 +369,7 @@ es:
       about: Acerca de
       add_a_new_work: Añadir una obra nueva
       all_complete: Todas las obras están completamente transcritas.
+      document_sets: Conjuntos de Documentos
       help_create_metadata: "¡Ayudar!"
       help_transcribe_or_correct: "¡Ayudar!"
       n_pages:

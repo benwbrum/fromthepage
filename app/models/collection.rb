@@ -151,7 +151,7 @@ class Collection < ApplicationRecord
     TEXT_AND_METADATA = 'text_and_metadata'
   end
 
-  def self.es_search(query:, user: nil, is_public: true)
+  def self.es_search(query:, user: nil, is_public: true, admin_user: nil)
     blocked_collections = []
     collection_collabs = []
 
@@ -159,6 +159,28 @@ class Collection < ApplicationRecord
       blocked_collections = user.blocked_collections.pluck(:id)
       collection_collabs  = user.collection_collaborations.pluck(:id)
       collection_collabs += user.owned_collections.pluck(:id)
+    end
+
+    if admin_user&.admin?
+      filter = []
+    else
+      filter = [
+        { term: { is_docset: false } },
+        {
+          bool: {
+            must_not: [
+              { terms: { _id: blocked_collections } }
+            ],
+            should: [
+              { term: { is_public: is_public } },
+              { term: { owner_user_id: user&.id || -1 } },
+              { terms: { _id: collection_collabs } },
+              { terms: { collection_id: collection_collabs } }
+            ],
+            minimum_should_match: 1
+          }
+        }
+      ]
     end
 
     CollectionsIndex.query(
@@ -174,23 +196,7 @@ class Collection < ApplicationRecord
             ]
           }
         },
-        filter: [
-          { term: { is_docset: false } },
-          {
-            bool: {
-              must_not: [
-                { terms: { _id: blocked_collections } }
-              ],
-              should: [
-                { term: { is_public: is_public } },
-                { term: { owner_user_id: user&.id || -1 } },
-                { terms: { _id: collection_collabs } },
-                { terms: { collection_id: collection_collabs } }
-              ],
-              minimum_should_match: 1
-            }
-          }
-        ]
+        filter: filter
       }
     )
   end
@@ -524,10 +530,6 @@ class Collection < ApplicationRecord
     User.find(self.owner_user_id).help
   end
 
-  public :user_help
-
-  private
-
   def handle_index_deletion
     return unless ELASTIC_ENABLED
 
@@ -538,4 +540,6 @@ class Collection < ApplicationRecord
   rescue StandardError => _e
     # Make sure it does not fail
   end
+
+  public :user_help, :handle_index_deletion
 end

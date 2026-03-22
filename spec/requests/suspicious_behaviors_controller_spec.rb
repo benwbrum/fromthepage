@@ -20,13 +20,6 @@ describe SuspiciousBehaviorsController do
       expect(response).to redirect_to(dashboard_path)
     end
 
-    it 'redirects when not the owner' do
-      login_as user
-      subject
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(dashboard_path)
-    end
-
     it 'renders status and template' do
       login_as owner
       subject
@@ -34,13 +27,35 @@ describe SuspiciousBehaviorsController do
       expect(response).to render_template(:index)
     end
 
+    context 'when not the owner' do
+      it 'redirects when not the owner' do
+        login_as user
+        subject
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+
+      context 'when a collaborator' do
+        let!(:collection) { create(:collection, owner_user_id: owner.id, collaborators: [user]) }
+
+        it 'renders status and template' do
+          login_as user
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:index)
+        end
+      end
+    end
+
+
     context 'filters' do
       let(:params) do
         {
           behaviour_type: 'large_paste',
-          status: 'pending',
+          status: 'flagged',
           ordering: 'ASC',
-          sorting: 'resolved_at'
+          sorting: 'resolved_at',
+          search_user: user.slug
         }
       end
       let(:subject) { get action_path, params: params, as: :turbo_stream }
@@ -50,6 +65,25 @@ describe SuspiciousBehaviorsController do
         subject
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
+      end
+
+      context 'when elastic enabled' do
+        before do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
+
+          stub_const('ELASTIC_ENABLED', true)
+        end
+
+        after do
+          VCR.configure { |c| c.allow_http_connections_when_no_cassette = false }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:index)
+        end
       end
     end
   end
@@ -75,6 +109,58 @@ describe SuspiciousBehaviorsController do
       login_as owner
       subject
       expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe '#update' do
+    let(:action_path) { collection_suspicious_behavior_path(owner, collection, suspicious_behavior) }
+    let(:params) { { status: 'flagged' } }
+    let(:subject) { put action_path, params: params, as: :turbo_stream }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects when not owner' do
+      login_as user
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:update)
+    end
+  end
+
+
+  describe '#destroy' do
+    let(:action_path) { collection_suspicious_behavior_path(owner, collection, suspicious_behavior) }
+    let(:subject) { delete action_path, as: :turbo_stream }
+
+    it 'redirects when not logged in' do
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects when not owner' do
+      login_as user
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:destroy)
     end
   end
 end

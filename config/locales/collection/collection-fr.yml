@@ -187,7 +187,7 @@ fr:
         one: "%{title} a des conventions de transcription personnalisées"
         other: "%{title} et %{count} autres ont des conventions de transcription personnalisées"
     edit_look:
-      alphabetize_works: L'affichage fonctionne par ordre alphabétique plutôt que par ordre de travail nécessaire.
+      alphabetize_works: Lister les œuvres par ordre alphabétique.
       alphabetize_works_description: L’affichage fonctionne par ordre alphabétique plutôt que par ordre de quantité de travail restant.
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       default_orientation_description: Choisissez l'orientation qui correspond le mieux à la majorité des œuvres de cette collection. Les utilisateurs pourront modifier l'orientation selon celle qu'ils préfèrent.
@@ -316,7 +316,7 @@ fr:
       project_by: Projet par
       return_to_collection: Retour à la collection
       review_metadata: Examiner les métadonnées
-      works_that_need_metadata: Travaux nécessitant des métadonnées
+      works_that_need_metadata: Œuvres nécessitant des métadonnées
     needs_transcription_pages:
       pages_need_transcription: Pages nécessitant une transcription
       project_by: Projet par
@@ -369,6 +369,7 @@ fr:
       about: À propos
       add_a_new_work: Ajouter une nouvelle œuvre
       all_complete: Toutes les œuvres sont entièrement transcrites.
+      document_sets: Jeux de Documents
       help_create_metadata: Aide
       help_transcribe_or_correct: Aide
       n_pages:

@@ -37,13 +37,14 @@
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
             td.nowrap
-              -if bulk_export.status == BulkExport::Status::FINISHED
-                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport button')
-
-
+              -if bulk_export.status_finished?
+                -if bulk_export.output.attached?
+                  =link_to(t('.download'), url_for(bulk_export.output), class: 'btnExport button')
+                -else
+                  // NOTE: Backsupport
+                  =link_to(t('.download'), bulk_export_download_path(bulk_export_id: bulk_export.id), class: 'btnExport button')
 
         .toolbar_group =will_paginate @bulk_exports
-
 
     =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
 

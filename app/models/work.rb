@@ -137,6 +137,8 @@ class Work < ApplicationRecord
             }
   validates :description, html: true, length: { maximum: 16.megabytes - 1 }
 
+  validates :collection, presence: true, on: :fe_create
+
   edtf_date_attribute :document_date
 
   mount_uploader :picture, PictureUploader
@@ -610,8 +612,6 @@ class Work < ApplicationRecord
 
     document_sets.unrestricted.any?
   end
-
-  private
 
   def handle_index_deletion
     return unless ELASTIC_ENABLED

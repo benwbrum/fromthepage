@@ -17,3 +17,7 @@ production:
   clean_printable_directory:
     class: "Export::CleanPrintableJob"
     schedule: every day at minute 30
+
+  clean_elasticsearch_orphaned_records_job:
+    command: "Elasticsearch::CleanOrphanedRecordsJob.perform_later(user_id: 1)"
+    schedule: every Sunday at 12:00am

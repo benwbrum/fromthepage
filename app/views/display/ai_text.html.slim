@@ -5,59 +5,27 @@
     h3.headline_title =t('.facsimile')
   .headline
     h3.headline_title =t('.ai_text')
-    .page_info
-      -if @page.ai_transcription.present?
+    -if @finished_transcription_count > 1
+      .page_info
+        =fe_filter_table_wrapper(selector: 'ai-text-table') do
+          =fe_filter_form_wrapper(url: collection_ai_text_page_path(@collection.owner, @collection, @work, @page), selector: 'ai-text-table', sorting: nil, ordering: nil) do
+            =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
+    -else
+      .page_info
         =t('.ai_text_generated_with', model: @page.ai_transcription.model, date: @page.ai_transcription.created_at.strftime("%B %e, %Y"))
-      -else
-        =t('.ai_generated_text')
 
-=render partial: 'ai_text', locals: { ai_transcription: @page.ai_transcription }
+#ai-text.page-columns(data-layout-mode="ltr")
+  .page-column(id="leftColumn")
+    .page-imagescan
+      =render partial: '/shared/osd_div'
 
--if @ai_accuracy_stats
-  =render partial: 'cer_stats'
+  .splitter(id="splitter")
 
--elsif @page.ai_transcription.present?
-  .ai-accuracy-unavailable
-    p.info-message =t('.statistics_unavailable')
-    p =t('.statistics_unavailable_reason')
+  =render partial: 'ai_text'
 
--if @page.ai_transcription&.reasoning&.present?
-  =render partial: 'reasoning', locals: { reasoning: @page.ai_transcription.reasoning }
+=render partial: 'cer_stats'
+
+=render partial: 'reasoning'
 
 -if @page.ai_transcription&.prompt&.present?
   =render partial: 'prompt', locals: { prompt: @page.ai_transcription.prompt }
-
--content_for :javascript
-  =javascript_include_tag 'textdiff'
-  javascript:
-    let splitter = Object.create(ResizableSplitter);
-    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
-
-    $(function() {
-      if (!$('#show-diff-toggle').length) { return; }
-
-      $('#ai-diff-content').hide();
-      let diffInitialized = false;
-
-      $('#show-diff-toggle').on('change', function() {
-        if($(this).is(':checked')) {
-          $('#ai-text-content').hide();
-          $('#ai-diff-content').show();
-
-          if (!diffInitialized) {
-            $('.diff-versions')
-            // apply prettyHTMLDiff for formatted html string
-            .prettyHTMLDiff({
-              changedContainer:  '[data-diff-transcription=changed] div.html-code',
-              originalContainer: '[data-diff-transcription=original] div.html-code',
-              diffContainer:     '[data-diff-transcription=original] div.html-code'
-            });
-
-            diffInitialized = true;
-          }
-        } else {
-          $('#ai-text-content').show();
-          $('#ai-diff-content').hide();
-        }
-      });
-    });

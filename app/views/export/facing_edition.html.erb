@@ -30,7 +30,7 @@
 <% end %>
 
 ### <%= page.title %>
-<% unless page.status_blank? %>
+<% if !page.status_blank? && !page.source_text.blank? %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @preserve_linebreaks, true)) %>
 <% end %>
 

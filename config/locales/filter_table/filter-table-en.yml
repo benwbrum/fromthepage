@@ -1,7 +1,13 @@
 ---
 en:
   filter_table:
+    collection: Collection
     entries: entries
     no_matching_records_found: No matching records found
+    owner: Owner
+    search_collection: Search collection...
+    search_owner: Search owner...
     search_placeholder: Search...
+    search_user: Search user...
     show: Show
+    user: User

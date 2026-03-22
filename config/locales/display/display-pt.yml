@@ -9,8 +9,6 @@ pt:
       facsimile: Fax
       human_transcription: Transcrição Humana
       show_comparison_with_transcription: Mostrar comparação com a transcrição
-      statistics_unavailable: Estatísticas de precisão não estão disponíveis para esta página.
-      statistics_unavailable_reason: As estatísticas só podem ser calculadas para páginas com transcrição humana.
     cer_stats:
       accuracy_explanation: Essas estatísticas comparam o texto gerado por IA com a transcrição verificada por humanos, fornecendo informações sobre a precisão da transcrição feita por IA.
       accuracy_statistics: Estatísticas de precisão
@@ -18,6 +16,8 @@ pt:
       character_error_rate_tooltip: O CER mede a porcentagem de edições em nível de caractere (inserções, exclusões, substituições) necessárias para transformar o texto gerado pela IA na versão correta. Valores mais baixos indicam maior precisão.
       non_stopword_accuracy: Precisão sem stopwords
       non_stopword_accuracy_tooltip: Mede a porcentagem de palavras de conteúdo (excluindo palavras comuns como 'o/a', 'um/uma', 'é/está') que correspondem entre a IA e a verdade fundamental. Valores mais altos indicam melhor reconhecimento de conteúdo.  (NSA)
+      statistics_unavailable: Estatísticas de precisão não estão disponíveis para esta página.
+      statistics_unavailable_reason: As estatísticas só podem ser calculadas para páginas com transcrição humana.
       text_only_comparison: Comparação somente de texto
       text_only_description: Estatísticas calculadas após a remoção de pontuação, espaços em branco extras e normalização de maiúsculas e minúsculas.
       verbatim_comparison: Comparação literal

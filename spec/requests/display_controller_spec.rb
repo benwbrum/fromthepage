@@ -56,6 +56,21 @@ describe DisplayController do
           expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:cer)
           expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:wer)
         end
+
+        context 'when switching ai_transcription' do
+          let!(:ai_transcription_2) { create(:ai_transcription, page: page, source_text: 'Other AI generated text content', status: :finished) }
+
+          let(:params) { { ai_transcription_id: ai_transcription_2.id } }
+
+          let(:subject) { get action_path, params: params, as: :turbo_stream }
+
+          it 'renders status and template' do
+            subject
+
+            expect(response).to have_http_status(:ok)
+            expect(response).to render_template(:ai_text)
+          end
+        end
       end
 
       context 'without completed transcription' do

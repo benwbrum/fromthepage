@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe "export tasks" do
+  include ActiveJob::TestHelper
+
   before :all do
     @owner = User.find_by(login: OWNER)
     @collection = @owner.all_owner_collections.second
@@ -42,13 +44,7 @@ describe "export tasks" do
 
     login_as(User.where(admin: true).first, scope: :user)
 
-    # wait for the background process to run
-    1.upto(10) do
-      sleep 5
-      if BulkExport.last.status == 'finished'
-        break
-      end
-    end
+    perform_enqueued_jobs
 
     visit bulk_export_index_path
     expect(page).to have_content("Administration")

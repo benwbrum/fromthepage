@@ -74,12 +74,6 @@ describe Page do
     let!(:other_restricted_work) { create(:work, collection_id: other_restricted_collection.id, owner_user_id: other_user.id) }
     let!(:other_restricted_page) { create(:page, title: identifier, work_id: other_restricted_work.id) }
 
-    # Set work_id to nil in before_block to avoid callback errors
-    let!(:no_work_page) { create(:page, title: identifier, work_id: public_work.id) }
-
-    let!(:no_col_work) { create(:work, collection_id: nil, owner_user_id: other_user.id) }
-    let!(:no_col_page) { create(:page, work_id: no_col_work.id) }
-
     let(:records) do
       [
         owner,
@@ -101,10 +95,7 @@ describe Page do
         other_public_work,
         other_public_page,
         other_restricted_work,
-        other_restricted_page,
-        no_work_page,
-        no_col_work,
-        no_col_page
+        other_restricted_page
       ]
     end
 
@@ -116,13 +107,11 @@ describe Page do
       PagesIndex.purge
       records.each(&:save!)
 
-      no_work_page.update_column(:work_id, nil)
       restricted_page.update_column(:search_text, identifier)
       docset.works << restricted_col_public_set_work
       restricted_docset.works << restricted_col_set_work
 
       PagesIndex.import [
-        no_work_page.reload,
         restricted_page.reload,
         restricted_col_public_set_page.reload,
         restricted_col_set_page.reload
@@ -133,9 +122,6 @@ describe Page do
       VCR.configure { |c| c.allow_http_connections_when_no_cassette = true }
 
       stub_const('ELASTIC_ENABLED', true)
-
-      no_work_page.update_column(:work_id, public_work.id)
-      no_work_page.reload
 
       records.reverse.each(&:destroy!)
       PagesIndex.purge
@@ -154,8 +140,7 @@ describe Page do
             [
               public_page.id,
               restricted_col_public_set_page.id,
-              other_public_page.id,
-              no_work_page.id
+              other_public_page.id
             ]
           )
         end
@@ -171,8 +156,7 @@ describe Page do
               restricted_page.id,
               restricted_col_public_set_page.id,
               restricted_col_set_page.id,
-              other_public_page.id,
-              no_work_page.id
+              other_public_page.id
             ]
           )
         end
@@ -190,8 +174,7 @@ describe Page do
             [
               restricted_col_public_set_page.id,
               other_public_page.id,
-              other_restricted_page.id,
-              no_work_page.id
+              other_restricted_page.id
             ]
           )
         end
@@ -311,6 +294,48 @@ describe Page do
         page.extend(ApplicationHelper)
         result = page.thumbnail_url
         expect(result).to eq('/images/uploaded/32237431/ASS%20642%20%2311%20f.%201r_thumb.jpeg')
+      end
+    end
+
+    context 'when page has sc_canvas but no local base_image' do
+      let(:sc_canvas) { double('sc_canvas',
+        sc_service_id: 'https://iiif.example.com/image/1',
+        sc_service_context: 'http://iiif.io/api/image/2/context.json',
+        thumbnail_url: 'https://iiif.example.com/image/1/full/100,/0/default.jpg') }
+      let(:page) { build_stubbed(:page) }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+      end
+
+      it 'returns the IIIF canvas thumbnail URL' do
+        result = page.thumbnail_url
+        expect(result).to eq('https://iiif.example.com/image/1/full/100,/0/default.jpg')
+      end
+    end
+
+    context 'when page has sc_canvas and a local base_image (e.g. after rotation)' do
+      let(:sc_canvas) { double('sc_canvas',
+        sc_service_id: 'https://iiif.example.com/image/1',
+        sc_service_context: 'http://iiif.io/api/image/2/context.json',
+        thumbnail_url: 'https://iiif.example.com/image/1/full/100,/0/default.jpg') }
+      # build_stubbed properly sets base_image in the attribute hash, so self[:base_image] works correctly
+      let(:page) { build_stubbed(:page, base_image: "#{Rails.root}/public/images/working/upload/123.jpg") }
+
+      before do
+        allow(page).to receive(:sc_canvas).and_return(sc_canvas)
+        allow(page).to receive(:ia_leaf).and_return(nil)
+        allow(page).to receive(:thumbnail_image).and_return("#{Rails.root}/public/images/working/upload/123_thumb.jpg")
+      end
+
+      it 'returns the local thumbnail URL instead of the IIIF canvas URL' do
+        # build_stubbed does not fully replicate included modules, so we extend ApplicationHelper
+        # to make file_to_url available (same pattern as the existing test above)
+        page.extend(ApplicationHelper)
+        result = page.thumbnail_url
+        expect(result).to eq('/images/working/upload/123_thumb.jpg')
+        expect(result).not_to include('iiif.example.com')
       end
     end
   end

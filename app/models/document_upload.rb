@@ -11,16 +11,19 @@
 #  created_at        :datetime
 #  updated_at        :datetime
 #  collection_id     :integer
+#  document_set_id   :integer
 #  user_id           :integer
 #
 # Indexes
 #
-#  index_document_uploads_on_collection_id  (collection_id)
-#  index_document_uploads_on_user_id        (user_id)
+#  index_document_uploads_on_collection_id    (collection_id)
+#  index_document_uploads_on_document_set_id  (document_set_id)
+#  index_document_uploads_on_user_id          (user_id)
 #
 class DocumentUpload < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :collection, optional: true
+  belongs_to :document_set, optional: true
 
   validates :collection_id, presence: true
 

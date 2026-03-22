@@ -45,7 +45,7 @@ describe PageController do
 
         expect(response).to have_http_status(:redirect)
         expect(response).to redirect_to(
-          work_pages_tab_path(work_id: work.id, anchor: 'create-page')
+          work_pages_tab_path(collection_id: collection.slug, work_id: work.id, anchor: 'create-page')
         )
       end
 

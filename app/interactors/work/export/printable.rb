@@ -61,7 +61,9 @@ class Work::Export::Printable < ApplicationInteractor
   end
 
   def tex_string
-    @tex_string ||= ApplicationController.new.render_to_string(
+    return @tex_string if defined?(@tex_string)
+
+    html_string = ApplicationController.new.render_to_string(
       template: '/export/tex',
       layout: 'printable',
       assigns: {
@@ -79,6 +81,8 @@ class Work::Export::Printable < ApplicationInteractor
       },
       formats: [:html]
     ).each_line.map(&:strip).join("\n")
+
+    @tex_string = Work::Export::Lib::Utils.html_unescape(html_string)
   end
 
   private

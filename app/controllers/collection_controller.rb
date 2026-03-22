@@ -769,17 +769,7 @@ class CollectionController < ApplicationController
   end
 
   def set_collection
-    unless @collection
-      if Collection.friendly.exists?(params[:id])
-        @collection = Collection.friendly.find(params[:id])
-      elsif DocumentSet.friendly.exists?(params[:id])
-        @collection = DocumentSet.friendly.find(params[:id])
-      elsif !DocumentSet.find_by(slug: params[:id]).nil?
-        @collection = DocumentSet.find_by(slug: params[:id])
-      elsif !Collection.find_by(slug: params[:id]).nil?
-        @collection = Collection.find_by(slug: params[:id])
-      end
-    end
+    @collection ||= Collection::Lib::SetFriendlyFind.perform(id: params[:id])
   end
 
   def set_collection_for_work(collection, work)
