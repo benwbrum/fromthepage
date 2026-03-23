@@ -199,15 +199,19 @@ module ApplicationHelper
   end
 
   def safe_text(text)
-    ERB::Util.html_escape(text.to_s.tr('“”', '"'))
+    doc = Nokogiri::HTML::DocumentFragment.parse(
+      text.to_s.tr('“”', '"')
+    )
+
+    doc.css('script').remove
+
+    doc.to_html.html_safe
   end
 
   def html_metadata_from_work(work)
-    if work.original_metadata.blank?
-      ''
-    else
-      html_metadata(JSON.parse(work.original_metadata))
-    end
+    return '' unless work.original_metadata.present?
+
+    html_metadata(JSON.parse(work.original_metadata))
   end
 
   def html_metadata(metadata_hash)
