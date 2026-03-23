@@ -49,7 +49,8 @@ class Work::Export::Lib::Utils
     doc = REXML::Document.new(xml_text)
     page_doc = doc.root
 
-    page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
+    tex_string = page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
+    tex_string.sub(/(#{Regexp.escape(LINEBREAK_ELEMENT)}){2}\z/, '')
   end
 
   def self.process_element(page, element, preserve_lb, flatten_links)
