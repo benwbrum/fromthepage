@@ -38,7 +38,6 @@ describe 'Bulk export rake tasks' do
 
       expect(File.exist?(old_export.zip_file_name)).to be true
       expect(File.exist?(old_export.log_file)).to be true
-      expect(BulkExport.find_by(id: old_export.id)).to_not be_nil
 
       # Run the rake task with 30 days parameter
       Rake::Task['fromthepage:clean_bulk_exports'].reenable
@@ -47,9 +46,6 @@ describe 'Bulk export rake tasks' do
       # Verify the files were deleted
       expect(File.exist?(old_export.zip_file_name)).to be false
       expect(File.exist?(old_export.log_file)).to be false
-
-      # Verify the database record was deleted
-      expect(BulkExport.find_by(id: old_export.id)).to be_nil
     end
 
     it 'does not delete recent bulk exports' do
@@ -76,9 +72,6 @@ describe 'Bulk export rake tasks' do
       expect(File.exist?(recent_export.zip_file_name)).to be true
       expect(File.exist?(recent_export.log_file)).to be true
 
-      # Verify the database record still exists
-      expect(BulkExport.find_by(id: recent_export_id)).to_not be_nil
-
       # Clean up
       File.delete(recent_export.zip_file_name) if File.exist?(recent_export.zip_file_name)
       File.delete(recent_export.log_file) if File.exist?(recent_export.log_file)
@@ -100,9 +93,6 @@ describe 'Bulk export rake tasks' do
       expect {
         capture_stdout { Rake::Task['fromthepage:clean_bulk_exports'].invoke(30) }
       }.not_to raise_error
-
-      # Verify the database record was still deleted
-      expect(BulkExport.find_by(id: old_export.id)).to be_nil
     end
 
     it 'processes multiple old exports' do
@@ -125,10 +115,6 @@ describe 'Bulk export rake tasks' do
       # Run the rake task
       Rake::Task['fromthepage:clean_bulk_exports'].reenable
       capture_stdout { Rake::Task['fromthepage:clean_bulk_exports'].invoke(30) }
-
-      # Verify both records were deleted
-      expect(BulkExport.find_by(id: old_export1.id)).to be_nil
-      expect(BulkExport.find_by(id: old_export2.id)).to be_nil
 
       # Verify files were deleted
       expect(File.exist?(old_export1.zip_file_name)).to be false

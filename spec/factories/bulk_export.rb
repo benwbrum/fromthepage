@@ -2,30 +2,30 @@ FactoryBot.define do
   factory :bulk_export do
     collection_id { association(:collection).id }
     user_id { association(:user).id }
-    status { BulkExport::Status::NEW }
+    status { :new }
 
     trait :new do
-      status { BulkExport::Status::NEW }
+      status { :new }
     end
 
     trait :queued do
-      status { BulkExport::Status::QUEUED }
+      status { :queued }
     end
 
     trait :processing do
-      status { BulkExport::Status::PROCESSING }
+      status { :processing }
     end
 
     trait :finished do
-      status { BulkExport::Status::FINISHED }
+      status { :finished }
     end
 
     trait :cleaned do
-      status { BulkExport::Status::CLEANED }
+      status { :cleaned }
     end
 
     trait :error do
-      status { BulkExport::Status::ERROR }
+      status { :error }
     end
   end
 end

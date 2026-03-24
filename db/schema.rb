@@ -1285,6 +1285,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
     t.string "picture"
     t.text "help"
     t.text "footer_block", size: :medium
+    t.boolean "document_sets_on_owner_page", default: false
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
