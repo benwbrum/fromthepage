@@ -99,6 +99,7 @@ describe "admin actions" do
     page.find('.tabs').click_link("Owners")
     expect(page).to have_content("Owner Login")
     click_link('Acct Type')
+    binding.pry
     expect(page.find('.admin-grid tbody tr[2]')).to have_content(@admin.login)
     click_link('Acct Expiration')
     expect(page.find('.admin-grid tbody tr[1]')).to have_content(@owner.login)
