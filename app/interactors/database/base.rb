@@ -13,6 +13,7 @@ class Database::Base < ApplicationInteractor
     'notes' => Note,
     'articles' => Article,
     'page_article_links' => PageArticleLink,
+    'article_article_links' => ArticleArticleLink,
     'deeds' => Deed,
     'document_sets_works' => DocumentSetWork,
     'categories' => Category,
