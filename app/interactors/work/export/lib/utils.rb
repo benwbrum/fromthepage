@@ -64,7 +64,8 @@ class Work::Export::Lib::Utils
 
     case element.name
     when 'p'
-      "#{content}#{LINEBREAK_ELEMENT}#{LINEBREAK_ELEMENT}"
+      stripped_content = content.sub(/#{Regexp.escape(LINEBREAK_ELEMENT)}\z/, '')
+      "#{stripped_content}#{LINEBREAK_ELEMENT}#{LINEBREAK_ELEMENT}"
     when 'lb'
       if element.attributes['break'] == 'no'
         content = LINEBREAK_ELEMENT
