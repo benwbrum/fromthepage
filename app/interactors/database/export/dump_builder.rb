@@ -56,6 +56,11 @@ class Database::Export::DumpBuilder < Database::Base
     @articles ||= Article.where(collection_id: collections.select(:id))
   end
 
+  def article_article_links
+    @article_article_links ||= ArticleArticleLink.where(source_article_id: articles.select(:id))
+                                                 .or(ArticleArticleLink.where(target_article_id: articles.select(:id)))
+  end
+
   def page_article_links
     @page_article_links ||= PageArticleLink.where(article_id: articles.select(:id))
   end
