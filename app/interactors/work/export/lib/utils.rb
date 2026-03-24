@@ -34,14 +34,23 @@ class Work::Export::Lib::Utils
       '^'  => '\\textasciicircum{}'
     }
 
-    text.gsub(/([\\\{\}\$\&\%\#\_\~\^])/) { replacements[$1] }
+    command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
+
+    text.gsub(/#{command_regex}|./m) do |chunk|
+      if chunk.match?(command_regex)
+        chunk
+      else
+        replacements[chunk] || chunk
+      end
+    end
   end
 
   def self.xml_to_latex(page:, xml_text:, preserve_lb: true, flatten_links: false)
     doc = REXML::Document.new(xml_text)
     page_doc = doc.root
 
-    page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
+    tex_string = page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
+    tex_string.sub(/(#{Regexp.escape(LINEBREAK_ELEMENT)}){2}\z/, '')
   end
 
   def self.process_element(page, element, preserve_lb, flatten_links)
@@ -55,7 +64,8 @@ class Work::Export::Lib::Utils
 
     case element.name
     when 'p'
-      "#{content}#{LINEBREAK_ELEMENT}"
+      stripped_content = content.sub(/#{Regexp.escape(LINEBREAK_ELEMENT)}\z/, '')
+      "#{stripped_content}#{LINEBREAK_ELEMENT}#{LINEBREAK_ELEMENT}"
     when 'lb'
       if element.attributes['break'] == 'no'
         content = LINEBREAK_ELEMENT
@@ -64,17 +74,17 @@ class Work::Export::Lib::Utils
         preserve_lb ? "#{LINEBREAK_ELEMENT}" : ' '
       end
     when 'b'
-      "\\textbf{#{content}}"
+      wrap_inline_with_linebreak(['textbf'], content)
     when 'i', 'em'
-      "\\textit{#{content}}"
+      wrap_inline_with_linebreak(['textit'], content)
     when 'u'
-      "\\underline{#{content}}"
+      wrap_inline_with_linebreak(['underline'], content)
     when 's'
-      "\\sout{#{content}}"
+      wrap_inline_with_linebreak(['sout'], content)
     when 'hi'
       process_hi(element, content)
     when 'sup'
-      "\\textsuperscript{#{content}}"
+      wrap_inline_with_linebreak(['textsuperscript'], content)
     when 'table'
       process_table(page, element, preserve_lb, flatten_links)
     when 'tr', 'row'
@@ -84,24 +94,30 @@ class Work::Export::Lib::Utils
     when 'link'
       process_links(element, content, flatten_links)
     when 'add', 'ins'
-      "\\textsuperscript{\\underline{#{content}}}"
+      wrap_inline_with_linebreak(['textsuperscript', 'underline'], content)
     when 'abbr'
       expan = element.attributes['expan']
 
+      # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
+      # an `abbr` tag to have linebreaks in it.
       # TODO: PDF and DOCX. Add lua filter to handle HTML to have tooltips
       "\\underline{\\textit{#{expan}}}\\{#{content}\\}"
     when 'expan'
       abbr = element.attributes['abbr'] || element.attributes['orig']
 
+      # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
+      # an `expan` tag to have linebreaks in it.
       # TODO: PDF and DOCX. Add lua filter to handle HTML to have tooltips
       "\\underline{\\textit{#{content}}}\\{#{abbr}\\}"
     when 'reg'
       orig = element.attributes['orig']
 
+      # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
+      # a `reg` tag to have linebreaks in it.
       # TODO: PDF and DOCX. Add lua filter to handle HTML to have tooltips
       "\\underline{\\textit{#{content}}}\\{#{orig}\\}"
     when 'footnote'
-      "\\footnote{#{content}}"
+      wrap_inline_with_linebreak(['footnote'], content)
     when 'head'
       "#{LINEBREAK_ELEMENT}\\textbf{#{content}}#{LINEBREAK_ELEMENT}"
     when 'entryHeading'
@@ -109,13 +125,13 @@ class Work::Export::Lib::Utils
       title = element.attributes['title']
       case depth
       when 2
-        output = "\\underline{\\textbf{#{content}}}"
+        output  = wrap_inline_with_linebreak(['underline', 'textbf'], content)
       when 3
-        output = "\\textbf{#{content}}"
+        output  = wrap_inline_with_linebreak(['textbf'], content)
       when 4
-        output = "\\underline{#{content}}"
+        output  = wrap_inline_with_linebreak(['underline'], content)
       when 5
-        output = "\\textit{#{content}}"
+        output  = wrap_inline_with_linebreak(['textit'], content)
       else
         output = content
       end
@@ -129,8 +145,10 @@ class Work::Export::Lib::Utils
     when 'figure'
       process_figure(element, content)
     when 'unclear'
-      "\\textit{[#{content}]}"
+      wrap_inline_with_linebreak(['textit'], content, decorator: :brackets)
     when 'cb', 'pb', 'marginalia'
+      # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
+      # `cb, pb, or marginalia` tags to have linebreaks.
       process_breaks(element, content)
     when 'catchword'
       "\\{#{content}\\}"
@@ -141,9 +159,11 @@ class Work::Export::Lib::Utils
       stamp_text = stamp_type.present? ? "#{stamp_type&.titleize} " : ''
       stamp_text += 'Stamp'
 
+      # NOTE: No need to wrap_inline_with_linebreak. We are not expecting
+      # a `stamp` tag to have linebreaks in it.
       "\\textit{\\{#{stamp_text}\\}}"
     when 'strike', 'del'
-      "\\sout{#{content}}"
+      wrap_inline_with_linebreak(['sout'], content)
     when 'texFigure'
       position = element.attributes['position']
       tex_figure = page.tex_figures.find_by(position: position)
@@ -200,23 +220,27 @@ class Work::Export::Lib::Utils
       )
     end
 
-    "\\href{#{href_value}}{#{content}}"
+    parts = content.split(LINEBREAK_ELEMENT)
+
+    parts.map do |part|
+      " \\href{#{href_value}}{#{part}} "
+    end.join(LINEBREAK_ELEMENT)
   end
 
   def self.process_hi(hi_element, content)
     case hi_element.attributes['rend']
     when 'sup'
-      "\\textsuperscript{#{content}}"
+      wrap_inline_with_linebreak(['textsuperscript'], content)
     when 'sub'
-      "\\textsubscript{#{content}}"
+      wrap_inline_with_linebreak(['textsubscript'], content)
     when 'underline'
-      "\\underline{#{content}}"
+      wrap_inline_with_linebreak(['underline'], content)
     when 'italics'
-      "\\textit{#{content}}"
+      wrap_inline_with_linebreak(['textit'], content)
     when 'bold'
-      "\\textbf{#{content}}"
+      wrap_inline_with_linebreak(['textbf'], content)
     when 'str'
-      "\\sout{#{content}}"
+      wrap_inline_with_linebreak(['sout'], content)
     else
       content
     end
@@ -259,5 +283,19 @@ class Work::Export::Lib::Utils
     end
 
     unescaped
+  end
+
+  def self.wrap_inline_with_linebreak(wrappers, content, decorator: nil)
+    content.split(LINEBREAK_ELEMENT).map do |part|
+      wrapped = part
+      wrappers.reverse.each do |w|
+        if decorator == :brackets
+          wrapped = "\\#{w}{[#{wrapped}]}"
+        else
+          wrapped = "\\#{w}{#{wrapped}}"
+        end
+      end
+      wrapped
+    end.join(LINEBREAK_ELEMENT)
   end
 end

@@ -652,23 +652,50 @@ class Page < ApplicationRecord
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
     else
-      # Convert file path to web URL path using the helper
-      # Note: file_to_url now returns URL-encoded paths, so no additional encoding needed
-      web_path = file_to_url(self.canonical_facsimile_url)
-      uri = URI.parse(web_path)
-      # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
-      raw_host = Rails.application.config.action_mailer.default_url_options[:host]
-      host = raw_host.split(':')[0]
-      uri.host = host
-      port = raw_host.split(':')[1]
-      if port
-        uri.scheme = 'http'
-        uri.port = port
-      else
-        uri.scheme = 'https'
-      end
-      uri.to_s
+      image_url_from_web_path(self.canonical_facsimile_url)
     end
+  end
+
+  def normalized_image_url_for_download
+    return unless image_url_for_download.present?
+
+    normalized_dir = "#{Rails.root}/public/images/working/upload"
+    FileUtils.mkdir_p(normalized_dir)
+
+    filename = "#{normalized_dir}/#{id}_normalized.jpg"
+
+    original_url = image_url_for_download
+    begin
+      img = Magick::Image.from_blob(URI.open(original_url).read).first
+    rescue => e
+      Rails.logger.error("Failed to load image for normalization: #{original_url} – #{e.message}")
+
+      return image_url_for_download
+    end
+
+    img = img.auto_orient
+    img.write(filename)
+
+    image_url_from_web_path(filename)
+  end
+
+  def image_url_from_web_path(raw_path)
+    web_path = file_to_url(raw_path)
+    uri = URI.parse(web_path)
+
+    # if we are in test, we will be http://localhost:3000 and need to separate out the port from the host
+    raw_host = Rails.application.config.action_mailer.default_url_options[:host]
+    host = raw_host.split(':')[0]
+    uri.host = host
+    port = raw_host.split(':')[1]
+    if port
+      uri.scheme = 'http'
+      uri.port = port
+    else
+      uri.scheme = 'https'
+    end
+
+    uri.to_s
   end
 
   def is_public?
