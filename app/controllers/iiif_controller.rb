@@ -524,6 +524,14 @@ class IiifController < ApplicationController
     end
   end
 
+  def export_page_plaintext_ai_prompt
+    if @page.ai_transcription.present? && @page.ai_transcription.prompt.present?
+      render layout: false, content_type: 'text/plain', plain: @page.ai_transcription.prompt
+    else
+      render status: 404, plain: 'No AI prompt available for this page.'
+    end
+  end
+
   def annotation_page_ai_text
     begin
       html=Markdown.new(@page.ai_transcription.source_text).to_html
@@ -1023,19 +1031,26 @@ private
     if page.ai_transcriptions.present?
       page.ai_transcriptions.each do |ai_transcription|
         canvas.seeAlso <<
-          { 'label' => "AI-generated Transcript Plaintext (Model: #{ai_transcription.model})",
+          { 'label' => "AI-generated Transcript Plaintext (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
             'format' => 'text/plain',
             'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-transcription',
             '@id' => iiif_page_export_plaintext_ai_transcription_url(page.work_id, page.id)
         }
-        if page.ai_transcription.reasoning.present?
+        if !ai_transcription.reasoning.blank?
           canvas.seeAlso <<
-            { 'label' => "AI Reasoning Explanation (Model: #{ai_transcription.model})",
+            { 'label' => "AI Reasoning Explanation (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
               'format' => 'text/html',
               'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-reasoning',
               '@id' => iiif_page_export_html_ai_reasoning_url(page.work_id, page.id)
           }
-          # TODO show prompt
+        end
+        if !ai_transcription.prompt.blank?
+          canvas.seeAlso <<
+            { 'label' => "AI Prompt (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+              'format' => 'text/plain',
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-prompt',
+              '@id' => iiif_page_export_plaintext_ai_prompt_url(page.work_id, page.id)
+          }
         end
       end
     end

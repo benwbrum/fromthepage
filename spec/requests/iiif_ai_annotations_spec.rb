@@ -43,6 +43,17 @@ describe 'IIIF AI Annotations' do
         expect(ai_reasoning_annotation).to be_present
         expect(ai_reasoning_annotation['@id']).to include('/ai_reasoning')
       end
+
+      it 'does not include AI prompt annotation even when prompt is present' do
+        get iiif_canvas_path(work.id, page.id)
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        # Check that AI prompt annotation list is not present
+        ai_prompt_annotation = json['otherContent']&.find { |content| content['label'] == 'AI Prompt' }
+        expect(ai_prompt_annotation).not_to be_present
+      end
     end
 
     context 'when page has source text' do
@@ -144,21 +155,38 @@ describe 'IIIF AI Annotations' do
       end
       expect(ai_reasoning_see_also).to be_present
       expect(ai_reasoning_see_also['format']).to eq('text/html')
-      expect(ai_reasoning_see_also['label']).to include('GPT-4o')
+      expect(ai_reasoning_see_also['label']).to include('Reasoning')
       expect(ai_reasoning_see_also['@id']).to include('html/ai/reasoning')
     end
 
+    it 'includes AI prompt in seeAlso when prompt is present' do
+      get iiif_canvas_path(work.id, page.id)
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      # Check that seeAlso contains AI reasoning
+      ai_prompt_see_also = json['seeAlso']&.find do |item|
+        item['label']&.include?('AI Prompt')
+      end
+      expect(ai_prompt_see_also).to be_present
+      expect(ai_prompt_see_also['format']).to eq('text/plain')
+      expect(ai_prompt_see_also['label']).to include('Prompt')
+      expect(ai_prompt_see_also['@id']).to include('plaintext/ai/prompt')
+    end
+
     context 'when AI transcription has no reasoning' do
-      let!(:ai_transcription_no_reasoning) do
+      let!(:page_no_reasoning) { create(:page, :with_image, work: work) }
+      let!(:ai_no_reasoning) do
         create(:ai_transcription,
-               page: page,
-               source_text: 'AI text without reasoning',
+               page: page_no_reasoning,
+               source_text: 'AI text',
                model: 'GPT-4o',
                reasoning: nil)
       end
 
       it 'does not include AI reasoning in seeAlso' do
-        get iiif_canvas_path(work.id, page.id)
+        get iiif_canvas_path(work.id, page_no_reasoning.id)
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
@@ -176,7 +204,6 @@ describe 'IIIF AI Annotations' do
   describe 'Annotation list for AI text' do
     it 'returns annotation list with AI text annotation' do
       get iiif_page_annotation_list_for_type_path(page.id, 'ai_text')
-      binding.pry
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

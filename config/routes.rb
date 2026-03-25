@@ -422,6 +422,7 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
   get '/iiif/:work_id/export/:page_id/plaintext/ai/transcription', as: 'iiif_page_export_plaintext_ai_transcription', to: 'iiif#export_page_plaintext_ai_transcription'
   get '/iiif/:work_id/export/:page_id/html/ai/reasoning', as: 'iiif_page_export_html_ai_reasoning', to: 'iiif#export_page_html_ai_reasoning'
+  get '/iiif/:work_id/export/:page_id/plaintext/ai/prompt', as: 'iiif_page_export_plaintext_ai_prompt', to: 'iiif#export_page_plaintext_ai_prompt'
 
   get '/iiif/admin/explore/:at_id', to: 'sc_collections#explore', constraints: { at_id: /.*/ }
   get '/iiif/admin/import_manifest', to: 'sc_collections#import_manifest'
