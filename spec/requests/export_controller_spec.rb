@@ -321,21 +321,21 @@ describe ExportController do
 
       before do
         # Create AI transcriptions for different pages with different models
-        create(:ai_transcription, 
-               page: page1, 
-               model: 'GPT-4o', 
+        create(:ai_transcription,
+               page: page1,
+               model: 'GPT-4o',
                created_at: Time.zone.parse('2024-01-15 10:00:00'))
-        create(:ai_transcription, 
-               page: page2, 
-               model: 'GPT-4o', 
+        create(:ai_transcription,
+               page: page2,
+               model: 'GPT-4o',
                created_at: Time.zone.parse('2024-01-20 15:30:00'))
-        create(:ai_transcription, 
-               page: page3, 
-               model: 'Claude-3', 
+        create(:ai_transcription,
+               page: page3,
+               model: 'Claude-3',
                created_at: Time.zone.parse('2024-02-01 09:00:00'))
-        create(:ai_transcription, 
-               page: page5, 
-               model: 'Claude-3', 
+        create(:ai_transcription,
+               page: page5,
+               model: 'Claude-3',
                created_at: Time.zone.parse('2024-02-01 09:00:00'))
       end
 
@@ -422,9 +422,9 @@ describe ExportController do
         # All pages transcribed by the same model on the same day
         same_time = Time.zone.parse('2024-03-01 12:00:00')
         [page1, page2, page3, page4].each do |p|
-          create(:ai_transcription, 
-                 page: p, 
-                 model: 'Gemini-Pro', 
+          create(:ai_transcription,
+                 page: p,
+                 model: 'Gemini-Pro',
                  created_at: same_time)
         end
       end
