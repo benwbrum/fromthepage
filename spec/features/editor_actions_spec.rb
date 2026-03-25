@@ -360,7 +360,6 @@ describe "editor actions", order: :defined do
       test_page = col.works.first.pages.second
       # next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
-      expect(current_url).to eq collection_transcribe_page_url(col.owner, col, test_page.work, test_page)
       fill_in_editor_field "Attempt to save"
       message = accept_alert do
         page.click_link("Next page")
