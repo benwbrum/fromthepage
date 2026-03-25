@@ -11,6 +11,20 @@ class Work::Metadata::ImportCsvJob < ApplicationJob
       collection: collection
     ).call
 
+    if result.full_errors.present?
+      send_email(user, result) if executions == Settings.active_job.attempts
+
+      raise result.full_errors
+    else
+      send_email(user, result)
+    end
+  ensure
+    metadata_file.close
+  end
+
+  private
+
+  def send_email(user, result)
     if SMTP_ENABLED
       begin
         UserMailer.metadata_csv_import_finished(user, result).deliver!
@@ -20,9 +34,5 @@ class Work::Metadata::ImportCsvJob < ApplicationJob
         # :nocov:
       end
     end
-
-    raise result.full_errors if result.full_errors.present?
-  ensure
-    metadata_file.close
   end
 end

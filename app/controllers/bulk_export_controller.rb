@@ -34,11 +34,11 @@ class BulkExportController < ApplicationController
     end
     @bulk_export.work = @work if params[:work_id]
     @bulk_export.user = current_user
-    @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.status = :queued
     @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
 
     if @bulk_export.save!
-      @bulk_export.submit_export_process
+      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
@@ -61,21 +61,23 @@ class BulkExportController < ApplicationController
   def create_for_owner
     @bulk_export = BulkExport.new(bulk_export_params)
     @bulk_export.user = current_user
-    @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.status = :queued
     if bulk_export_params[:report_arguments]
       @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
     end
 
     if @bulk_export.save
-      @bulk_export.submit_export_process
+      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
     redirect_to dashboard_exports_path
   end
 
+  # TODO: Deprecate
+  # Keep for now for backsupport
   def download
-    if @bulk_export.status == BulkExport::Status::FINISHED
+    if @bulk_export.status_finished?
       # read and spew the file
       send_file(@bulk_export.zip_file_name,
         filename: 'fromthepage_export.zip',
@@ -155,13 +157,13 @@ class BulkExportController < ApplicationController
     end
     @bulk_export.work = @work
     @bulk_export.user = current_user
-    @bulk_export.status = BulkExport::Status::NEW
+    @bulk_export.status = :queued
     if bulk_export_params[:report_arguments]
       @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
     end
 
     if @bulk_export.save
-      @bulk_export.submit_export_process
+      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end

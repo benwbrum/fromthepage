@@ -1,6 +1,13 @@
 ---
 pt:
   suspicious_behaviors:
+    actions:
+      delete: Excluir
+      flag: Bandeira
+      ignore: Ignorar
+    confirm_delete_message: Tem certeza de que deseja excluir este relatório?
+    destroy:
+      deleted: Relatório excluído
     filters:
       behavior_type:
         ai_warning_left: Texto de aviso de IA à esquerda
@@ -9,9 +16,22 @@ pt:
         minimal_ai_changes: Alterações mínimas no rascunho da IA
       status:
         all: Todos
-        confirmed: Confirmado
-        dismissed: Demitido
+        flagged: Sinalizado
+        ignored: Ignorado
         pending: Pendente
     labels:
       behavior_type: Tipo
       status: Status
+    table:
+      actions: Ações
+      flagged_at: Sinalizado em
+      metadata: Metadados
+      page: Página
+      resolved_at: Resolvido em
+      resolved_by: Resolvido por
+      status: Status
+      type: Tipo
+      user: Usuário
+    update:
+      flagged: Usuário sinalizou
+      ignored: Relatório ignorado

@@ -803,6 +803,33 @@ describe CollectionController do
       end
     end
 
+    context 'when slug starts with a number' do
+      let!(:collection1) { create(:collection, owner_user_id: owner.id, slug: '123-collection', title: "Collection1Title") }
+      let!(:collection2) { create(:collection, owner_user_id: owner.id, slug: "#{collection1.id}-text", title: "Collection2Title") }
+
+      it 'renders the collection show page for the correct collection' do
+        get "/#{owner.slug}/#{collection1.slug}"
+        expect(response.body).to include(collection1.title)
+        get "/#{owner.slug}/#{collection2.slug}"
+        expect(response.body).to include(collection2.title)
+        get "/#{owner.slug}/#{collection1.id}"
+        expect(response.body).to include(collection1.title)
+        get "/#{owner.slug}/#{collection2.id}"
+        expect(response.body).to include(collection2.title)
+
+        login_as owner
+        ['subjects', 'page-notes', 'statistics', 'edit', 'recent_contributor_list', 'export'].each do |subpage|
+          get "/#{owner.slug}/#{collection1.slug}/#{subpage}"
+          expect(response.body).to include(collection1.title)
+          get "/#{owner.slug}/#{collection2.slug}/#{subpage}"
+          expect(response.request.path).to eq("/#{owner.slug}/#{collection2.slug}/#{subpage}")
+          expect(response.body).not_to include(collection1.title)
+          expect(response.body).to include(collection2.title)
+        end
+      end
+    end
+
+
     context 'when facets are enabled' do
       let!(:collection) { create(:collection, owner_user_id: owner.id, facets_enabled: true) }
 
@@ -844,6 +871,21 @@ describe CollectionController do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).not_to include('facet-label')
+      end
+    end
+
+    context 'when owner has document_sets_on_owner_page flag set' do
+      let(:gri_owner) { create(:unique_user, :owner, document_sets_on_owner_page: true) }
+      let!(:gri_collection) { create(:collection, owner_user_id: gri_owner.id, supports_document_sets: true) }
+      let!(:doc_set) { create(:document_set, collection_id: gri_collection.id, owner_user_id: gri_owner.id, visibility: :public, title: 'My Document Set') }
+      let!(:work) { create(:work, collection: gri_collection, owner_user_id: gri_owner.id) }
+
+      it 'shows document sets instead of works on the collection landing page' do
+        get collection_path(gri_owner, gri_collection)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(doc_set.title)
+        expect(response.body).not_to include(work.title)
       end
     end
   end

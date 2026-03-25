@@ -30,7 +30,7 @@ class Admin::SuspiciousBehaviorsController < AdminController
       :resolved_by_user
     )
 
-    status_filter = params[:status]&.downcase&.to_sym
+    status_filter = params[:status]&.downcase&.to_sym || :pending
 
     if (SuspiciousBehavior::STATUS_FILTERS - [:all]).include?(status_filter)
       @filtered_scope = @filtered_scope.where(status: status_filter)
@@ -40,6 +40,46 @@ class Admin::SuspiciousBehaviorsController < AdminController
 
     if (SuspiciousBehavior::BEHAVIOR_TYPE_FILTERS - [:all]).include?(type_filter)
       @filtered_scope = @filtered_scope.where(behavior_type: type_filter)
+    end
+
+    if params[:search_user].present?
+      search_user_term = params[:search_user]
+
+      if ELASTIC_ENABLED
+        users_scope = filtered_es_users(search_user_term)
+      else
+        users_scope = filtered_users(search_user_term)
+      end
+
+      @filtered_scope = @filtered_scope.where(user_id: users_scope.select(:id))
+    end
+
+    if params[:search_collection].present?
+      search_collection_term = params[:search_collection]
+
+      if ELASTIC_ENABLED
+        collection_ids = Collection.es_search(query: "~#{search_collection_term}~", admin_user: current_user).pluck('_id')
+        collections_scope = Collection.where(id: collection_ids)
+      else
+        collections_scope = Collection.where(id: search_collection_term)
+          .or(Collection.where(slug: search_collection_term))
+      end
+
+      @filtered_scope = @filtered_scope.where(collection_id: collections_scope.select(:id))
+    end
+
+    if params[:search_owner].present?
+      search_owner_term = params[:search_owner]
+
+      if ELASTIC_ENABLED
+        owners_scope = filtered_es_users(search_owner_term)
+      else
+        owners_scope = filtered_users(search_owner_term)
+      end
+
+      owner_filter = Collection.where(owner_user_id: owners_scope.select(:id))
+
+      @filtered_scope = @filtered_scope.where(collection_id: owner_filter.select(:id))
     end
 
     case @sorting
@@ -52,5 +92,19 @@ class Admin::SuspiciousBehaviorsController < AdminController
     @filtered_scope = @filtered_scope.paginate(page: params[:page], per_page: DEFAULT_PER_PAGE)
 
     @filtered_scope
+  end
+
+  def filtered_es_users(query)
+    user_ids = User.es_search(query: "~#{query}~", extra_fields: ['display_name', 'login']).pluck('_id')
+
+    User.where(id: user_ids)
+  end
+
+  def filtered_users(query)
+    User.where(id: query)
+      .or(User.where(slug: query))
+      .or(User.where('LOWER(email) LIKE LOWER(?)', "%#{query}%"))
+      .or(User.where('LOWER(display_name) LIKE LOWER(?)', "%#{query}%"))
+      .or(User.where('LOWER(real_name) LIKE LOWER(?)', "%#{query}%"))
   end
 end

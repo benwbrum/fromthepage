@@ -118,34 +118,21 @@ class Article < ApplicationRecord
     )
   end
 
-  def self.sort_vertically(articles_scope, columns: LIST_NUM_COLUMNS)
-    subquery_sql = articles_scope
-      .select('articles.*, ROW_NUMBER() OVER (ORDER BY TRIM(articles.title) ASC, articles.id ASC) AS rn, COUNT(*) OVER () AS total_count')
-      .to_sql
+  def self.sort_vertically(article_ids, columns: LIST_NUM_COLUMNS)
+    ids = Article.where(id: article_ids).order('TRIM(articles.title) ASC, articles.id ASC').pluck(:id)
+    total = ids.size
+    per_column = (total.to_f / columns).ceil
 
-    from("(#{subquery_sql}) AS ordered")
-      .select('ordered.*')
-      .order(
-        Arel.sql(<<~SQL)
-          CASE
-            WHEN rn <= (FLOOR(total_count / #{columns}) + 1)
-                       * (total_count % #{columns})
-            THEN
-              ((rn - 1) % (FLOOR(total_count / #{columns}) + 1)) * #{columns}
-              + FLOOR((rn - 1) / (FLOOR(total_count / #{columns}) + 1))
-            ELSE
-              ((rn - 1 - (FLOOR(total_count / #{columns}) + 1)
-                       * (total_count % #{columns}))
-                % FLOOR(total_count / #{columns})) * #{columns}
-              + (total_count % #{columns})
-              + FLOOR(
-                  (rn - 1 - (FLOOR(total_count / #{columns}) + 1)
-                   * (total_count % #{columns}))
-                  / FLOOR(total_count / #{columns})
-                )
-          END
-        SQL
-      )
+    vertical_ordered_ids = []
+
+    per_column.times do |i|
+      columns.times do |c|
+        idx = i + c * per_column
+        vertical_ordered_ids << ids[idx] if idx < total
+      end
+    end
+
+    vertical_ordered_ids
   end
 
   def link_list

@@ -114,7 +114,8 @@ namespace :fromthepage do
     FileUtils.mkdir_p(temp_dir)
     # Write ActiveStorage attachment to a tempfile
     attachment = document_upload.attachment
-    filename = attachment.filename.to_s
+    filename = ImageHelper.sanitize_filename(attachment.filename.to_s)
+    print "sanitized filename: #{filename}\n"
     tempfile_path = File.join(temp_dir, filename)
     File.open(tempfile_path, 'wb') do |file|
       file.write(attachment.download)
@@ -324,6 +325,10 @@ namespace :fromthepage do
     end
 
     work.save!
+
+    if document_upload.document_set.present?
+      document_upload.document_set.works << work
+    end
 
     new_dir_name = File.join(Rails.root,
                              'public',

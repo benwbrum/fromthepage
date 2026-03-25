@@ -1,5 +1,6 @@
-.ai-reasoning
-  h4 =t('.ai_reasoning')
-  p.reasoning-explanation =t('.reasoning_explanation')
-  .reasoning-content
-    == Markdown.new(reasoning).to_html
+#reasoning.ai-reasoning
+  -if @ai_transcription&.reasoning&.present?
+    h4 =t('.ai_reasoning')
+    p.reasoning-explanation =t('.reasoning_explanation')
+    .reasoning-content
+      == Markdown.new(@ai_transcription.reasoning).to_html

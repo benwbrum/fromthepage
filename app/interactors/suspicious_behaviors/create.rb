@@ -6,11 +6,14 @@ class SuspiciousBehaviors::Create < ApplicationInteractor
     @page = page
     @user = user
     @suspicious_behavior_params = suspicious_behavior_params
+    @suspicious_behavior = nil
 
     super
   end
 
   def perform
+    return if user_is_greenlisted?
+
     @suspicious_behavior = SuspiciousBehavior.new(
       user_id: @user.id,
       collection_id: @collection.id,
@@ -20,5 +23,11 @@ class SuspiciousBehaviors::Create < ApplicationInteractor
     @suspicious_behavior.attributes = @suspicious_behavior_params
 
     @suspicious_behavior.save!
+  end
+
+  private
+
+  def user_is_greenlisted?
+    @collection.suspicious_behaviors.where(user_id: @user.id, status: :ignored).any?
   end
 end

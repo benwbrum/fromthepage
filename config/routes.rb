@@ -158,6 +158,7 @@ Fromthepage::Application.routes.draw do
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'items', to: 'article#items'
+    get 'page_counts', to: 'article#page_counts'
     get 'tooltip', to: 'article#tooltip'
     delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
@@ -375,6 +376,9 @@ Fromthepage::Application.routes.draw do
       post 'bulk_export/:collection_slug', to: 'bulk_export#start', as: 'bulk_export_start'
       get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
       get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
+
+      post 'document_upload/:collection_slug', to: 'document_upload#start', as: 'document_upload_start'
+      get 'document_upload/:document_upload_id/status', to: 'document_upload#status', as: 'document_upload_status'
     end
   end
 
@@ -527,7 +531,7 @@ Fromthepage::Application.routes.draw do
       get 'needs_metadata', as: :needs_metadata, to: 'collection#needs_metadata_works'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
-      resources :suspicious_behaviors, only: [:index, :show]
+      resources :suspicious_behaviors, except: [:new, :create, :edit]
 
       # work related routes
       # have to use match because it must be both get and post

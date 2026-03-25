@@ -1,10 +1,10 @@
 h3 =t('.collaborator_time')
 p =t('.collaborator_time_description')
 -unless @contributors.empty?
-  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f| 
+  =form_for :bulk_export, url: bulk_export_create_for_owner_path do |f|
     =f.hidden_field :owner_detailed_activity, value: true
     =f.hidden_field 'report_arguments[start_date]', value: @start_date
-    =f.hidden_field 'report_arguments[end_date]', value: @end_date    
+    =f.hidden_field 'report_arguments[end_date]', value: @end_date
     =f.submit t('.collaborator_time_export_button')
 
 

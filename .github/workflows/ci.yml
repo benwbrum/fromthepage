@@ -109,3 +109,105 @@ jobs:
 
       - name: Run RuboCop
         run: bundle exec rubocop
+
+  solid_queue:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/willnigel23/ftp-ci:latest
+    services:
+      mysql:
+        image: mariadb:10.11
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: diary_test
+          MYSQL_USER: rails
+          MYSQL_PASSWORD: password
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -ppassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      RAILS_ENV: test
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_HOST: mysql
+      ELASTIC_ENABLED: false
+      ELASTIC_SUFFIX: ci
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Create database
+        run: bundle exec rake db:create
+
+      - name: Migrate database
+        run: bundle exec rake db:migrate
+
+      - name: Load fixtures
+        run: bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+
+      - name: Start Solid Queue Workers (CI Test)
+        run: |
+          bundle exec rails solid_queue:start RAILS_ENV=test &
+          WORKER_PID=$!
+
+          sleep 5
+
+          if ! ps -p $WORKER_PID > /dev/null; then
+            echo "Solid Queue workers failed to start!"
+            exit 1
+          fi
+
+          kill $WORKER_PID
+
+  linked_files_warn:
+    name: "Warn on linked files changes"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - name: Check for changes in linked files
+        run: |
+          LINKED_FILES=(
+            "config.ru"
+            "config/database.yml"
+            "config/environments/production.rb"
+            "config/initializers/01fromthepage.rb"
+            "config/initializers/rack_attack.rb"
+            "config/initializers/omniauth.rb"
+            "config/newrelic.yml"
+            "public/robots.txt"
+          )
+
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+
+          WARN_FILES=()
+          for f in "${LINKED_FILES[@]}"; do
+            if echo "$CHANGED_FILES" | grep -q "^$f$"; then
+              WARN_FILES+=("$f")
+            fi
+          done
+
+          if [ ${#WARN_FILES[@]} -gt 0 ]; then
+            echo "❌ WARNING: The following linked files were changed:"
+            for wf in "${WARN_FILES[@]}"; do
+              echo "  - $wf"
+            done
+            exit 1
+          else
+            echo "✅ No linked files changed."
+          fi

@@ -12,6 +12,18 @@ module ImageHelper
   # Code for new zoom feature
   #############################
 
+  def self.sanitize_filename(filename)
+    ext = File.extname(filename)
+    base = File.basename(filename, ext)
+    # Replace spaces and other problematic characters with underscores
+    base = base.gsub(/\s+/, '_').gsub(/[^\w\-.]/, '_')
+    # Truncate the base name if it's too long (filesystem limit is typically 255 bytes)
+    # Keep it well under the limit to leave room for the directory path
+    max_base_length = 100
+    base = base[0...max_base_length] if base.length > max_base_length
+    "#{base}#{ext}"
+  end
+
   def self.unzip_file(file, destination)
     print "unzip_file(#{file})\n"
 

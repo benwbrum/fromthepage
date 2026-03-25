@@ -145,17 +145,20 @@ class User < ApplicationRecord
   update_index('users', if: -> { ELASTIC_ENABLED && !destroyed? }) { self }
   after_destroy :handle_index_deletion
 
-  def self.es_search(query:)
+  def self.es_search(query:, extra_fields: [])
+    fields = [
+      'about',
+      'real_name',
+      'website'
+    ]
+    fields += extra_fields
+
     UsersIndex.query(
       bool: {
         must: {
           simple_query_string: {
             query: query,
-            fields: [
-              'about',
-              'real_name',
-              'website'
-            ]
+            fields: fields
           }
         },
         filter: []
@@ -275,9 +278,14 @@ class User < ApplicationRecord
     collection ||= work.access_object(self) || work.collection
 
     if collection.is_a? DocumentSet
-      return true if collection.visibility_public? || like_owner?(work)
+      return true if like_owner?(work)
 
-      collection.collaborators.find_by(id: id).present? || collection.collection.collaborators.find_by(id: id).present? || work&.scribes&.include?(self)
+      has_access = collection.visibility_public? ||
+                   collection.collaborators.find_by(id: id).present? ||
+                   collection.collection.collaborators.find_by(id: id).present? ||
+                   work&.scribes&.include?(self)
+
+      has_access && (!work&.restrict_scribes || work&.scribes&.include?(self))
     else
       !work&.restrict_scribes || like_owner?(work) || work&.scribes&.include?(self)
     end
@@ -338,7 +346,9 @@ class User < ApplicationRecord
   end
 
   def collections
-    self.owned_collections + Collection.where(owner_user_id: self.id)# .all
+    Collection
+      .where(id: owned_collections.select(:id))
+      .or(Collection.where(owner_user_id: id))
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

@@ -1,7 +1,13 @@
 ---
 fr:
   filter_table:
+    collection: Collection
     entries: entrées
-    no_matching_records_found: Aucun enregistrement correspondant n'a été trouvé
+    no_matching_records_found: Aucun résultat correspondant trouvé
+    owner: Propriétaire
+    search_collection: Recherche dans la collection...
+    search_owner: Rechercher le propriétaire...
     search_placeholder: Recherche...
+    search_user: Rechercher un utilisateur...
     show: Montrer
+    user: Utilisateur
