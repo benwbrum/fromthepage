@@ -313,6 +313,154 @@ describe ExportController do
       end
     end
 
+    context 'with AI model contributions' do
+      let!(:page1) { create(:page, work: work, position: 1) }
+      let!(:page2) { create(:page, work: work, position: 2) }
+      let!(:page3) { create(:page, work: work, position: 3) }
+      let!(:page5) { create(:page, work: work, position: 5) }
+
+      before do
+        # Create AI transcriptions for different pages with different models
+        create(:ai_transcription,
+               page: page1,
+               model: 'GPT-4o',
+               created_at: Time.zone.parse('2024-01-15 10:00:00'))
+        create(:ai_transcription,
+               page: page2,
+               model: 'GPT-4o',
+               created_at: Time.zone.parse('2024-01-20 15:30:00'))
+        create(:ai_transcription,
+               page: page3,
+               model: 'Claude-3',
+               created_at: Time.zone.parse('2024-02-01 09:00:00'))
+        create(:ai_transcription,
+               page: page5,
+               model: 'Claude-3',
+               created_at: Time.zone.parse('2024-02-01 09:00:00'))
+      end
+
+      it 'includes AI model respStmt elements in TEI export' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Check for AI model respStmt elements
+        expect(response.body).to include('<respStmt xml:id="AI0">')
+        expect(response.body).to include('<respStmt xml:id="AI1">')
+      end
+
+      it 'includes model names in respStmt' do
+        login_as owner
+        subject
+
+        # Check that model names are present
+        expect(response.body).to include('<name>GPT-4o</name>')
+        expect(response.body).to include('<name>Claude-3</name>')
+      end
+
+      it 'includes AI transcription responsibility label' do
+        login_as owner
+        subject
+
+        # Check for the responsibility label (appears twice, once for each model)
+        expect(response.body.scan(/AI transcription by:/).count).to eq(2)
+      end
+
+      it 'includes date range for models used on multiple dates' do
+        login_as owner
+        subject
+
+        # GPT-4o was used on two different dates
+        expect(response.body).to match(/Generated between.*January.*2024.*and.*January.*2024/)
+      end
+
+      it 'includes single date for models used on one date' do
+        login_as owner
+        subject
+
+        # Claude-3 was used on one date
+        expect(response.body).to match(/Generated on.*February.*2024/)
+      end
+
+      it 'includes page ranges for AI transcriptions' do
+        login_as owner
+        subject
+
+        # Check that page ranges are included
+        # GPT-4o should have pages 1-2
+        expect(response.body).to match(/Pages:.*1-2/)
+        # Claude-3 should have pages 3, 5
+        expect(response.body).to match(/Pages:.*3, 5/)
+      end
+
+      it 'formats consecutive page numbers as ranges' do
+        login_as owner
+        subject
+
+        # Pages 1 and 2 should be formatted as "1-2"
+        expect(response.body).to include('1-2')
+      end
+
+      it 'formats non-consecutive page numbers separately' do
+        login_as owner
+        subject
+
+        # Pages 3 and 5 should be formatted as "3, 5"
+        expect(response.body).to include('3, 5')
+      end
+    end
+
+    context 'with AI transcriptions on all pages' do
+      let!(:page1) { create(:page, work: work, position: 1) }
+      let!(:page2) { create(:page, work: work, position: 2) }
+      let!(:page3) { create(:page, work: work, position: 3) }
+      let!(:page4) { create(:page, work: work, position: 4) }
+
+      before do
+        # All pages transcribed by the same model on the same day
+        same_time = Time.zone.parse('2024-03-01 12:00:00')
+        [page1, page2, page3, page4].each do |p|
+          create(:ai_transcription,
+                 page: p,
+                 model: 'Gemini-Pro',
+                 created_at: same_time)
+        end
+      end
+
+      it 'consolidates all pages into a single range' do
+        login_as owner
+        subject
+
+        # All consecutive pages should be formatted as "1-4"
+        expect(response.body).to match(/Pages:.*1-4/)
+      end
+
+      it 'uses single date format when all transcriptions are from same day' do
+        login_as owner
+        subject
+
+        # Should use "Generated on" format, not "Generated between"
+        expect(response.body).to match(/Generated on.*March.*2024/)
+        expect(response.body).not_to match(/Generated between/)
+      end
+    end
+
+    context 'without AI transcriptions' do
+      it 'does not include AI model respStmt when no AI transcriptions exist' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        # Should not have any AI respStmt elements
+        expect(response.body).not_to include('<respStmt xml:id="AI')
+        expect(response.body).not_to include('AI transcription by:')
+      end
+    end
+
     context 'with articles containing complex TEI bibliography data' do
       # all collections have a category titled 'People' by default
       let!(:people_category) { collection.categories.find_by(title: 'People') }
