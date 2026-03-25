@@ -324,7 +324,7 @@ describe "editor actions", order: :defined do
       fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in_editor_field "Attempt to save"
       message = dismiss_confirm do
-        find('#finish_button_top').click
+        find('#save_button_top').click
       end
       sleep(2)
       expect(message).to have_content("You have unsaved notes.")
@@ -342,9 +342,8 @@ describe "editor actions", order: :defined do
     end
 
     it "deletes a note", js: true do
-      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
-      col = @work.collection
-      test_page = @work.pages.first
+      col = Collection.second
+      test_page = col.works.first.pages.first      test_page = @work.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       title = test_page.notes.last.id
       note_id = test_page.notes.last.id
@@ -357,9 +356,8 @@ describe "editor actions", order: :defined do
     end
 
     it "uses page arrows with unsaved transcription", js: true do
-      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
-      col = @work.collection
-      test_page = @work.pages.first
+      col = Collection.second
+      test_page = col.works.first.pages.first
       # next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       fill_in_editor_field "Attempt to save"

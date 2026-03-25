@@ -331,6 +331,11 @@ describe "collection settings js tasks", order: :defined do
 
     # Should show "Collaboration is restricted" for restricted works
     expect(page).to have_content(I18n.t('collection.show.restricted_collaboratoration'))
+
+    # unrestrict the work
+    restricted_work = @collection.works.first
+    restricted_work.restrict_scribes = false
+    restricted_work.save!
   end
 end
 
