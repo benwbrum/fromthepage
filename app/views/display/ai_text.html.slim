@@ -12,7 +12,7 @@
             =fe_filter_select(key: :ai_transcription_id, value: params[:ai_transcription_id], options: @ai_transcription_options)
     -else
       .page_info
-        =t('.ai_generated_text')
+        =t('.ai_text_generated_with', model: @page.ai_transcription.model, date: @page.ai_transcription.created_at.strftime("%B %e, %Y"))
 
 #ai-text.page-columns(data-layout-mode="ltr")
   .page-column(id="leftColumn")
@@ -26,3 +26,6 @@
 =render partial: 'cer_stats'
 
 =render partial: 'reasoning'
+
+-if @page.ai_transcription&.prompt&.present?
+  =render partial: 'prompt', locals: { prompt: @page.ai_transcription.prompt }

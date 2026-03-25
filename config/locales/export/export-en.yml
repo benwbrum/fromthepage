@@ -55,6 +55,10 @@ en:
       subjects_and_indices: Subjects and Indices
     tei:
       administrator: Administrator of the %{collection} transcription project on FromThePage
+      ai_generated_between: Generated between %{start_date} and %{end_date}.
+      ai_generated_on: Generated on %{date}.
+      ai_page_ranges: 'Pages: %{ranges}.'
+      ai_transcription_by: 'AI transcription by:'
       changes_to_page_transcript: Changes to page transcript.
       double_proof_by: 'Double Proof by:'
       dynamic_tei_export: Dynamic TEI export from FromThePage (version %{version})
