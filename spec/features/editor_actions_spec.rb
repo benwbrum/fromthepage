@@ -344,17 +344,19 @@ describe "editor actions", order: :defined do
     it "deletes a note", js: true do
       col = Collection.second
       test_page = col.works.first.pages.first
+      # Ensure a note exists before attempting to delete
+      unless test_page.notes.exists?(content: "Test note")
+        test_page.notes.create!(user: User.first, content: "Test note")
+      end
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
-      title = test_page.notes.last.id
       note_id = test_page.notes.last.id
-      page.find('.user-bubble_content', text: "Test two")
+      page.find('.user-bubble_content', text: "Test note")
       accept_alert do
         find("form[data-turbo='true'][data-turbo-confirm='Are you sure you want to delete this note?'][action='/notes/#{note_id}'] button[type='submit']").click
       end
       sleep(3)
-      expect(Note.find_by(id: title)).to be_nil
+      expect(Note.find_by(id: note_id)).to be_nil
     end
-
     it "uses page arrows with unsaved transcription", js: true do
       col = Collection.second
       test_page = col.works.first.pages.second
