@@ -3,9 +3,9 @@ es:
   display:
     ai_text:
       ai_draft: Borrador de IA
-      ai_generated_text: Texto generado por IA
       ai_text: Texto de IA
       ai_text_edit_notice: Para editar este texto, utilice el botón "Borrador de IA" en la pestaña de transcripción.
+      ai_text_generated_with: Texto generado por IA con %{model} en %{date}
       facsimile: Facsímil
       human_transcription: Transcripción humana
       show_comparison_with_transcription: Mostrar comparación con la transcripción
@@ -101,6 +101,9 @@ es:
       transcribed: transcrita
       translation: Traducción
       unable_to_find_pages: No pudimos encontrar ninguna página que coincida con la solicitud
+    prompt:
+      ai_prompt: Mensaje de IA
+      prompt_explanation: Esta indicación se utilizó para generar el borrador de la IA.
     read_all_works:
       pages: Paginas
       pages_that_mention: Páginas que mencionan %{article}
