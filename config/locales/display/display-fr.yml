@@ -3,9 +3,9 @@ fr:
   display:
     ai_text:
       ai_draft: Brouillon IA
-      ai_generated_text: Texte généré par l'IA
       ai_text: Texte IA
       ai_text_edit_notice: Pour modifier ce texte, utilisez le bouton « Brouillon IA » dans l'onglet de transcription.
+      ai_text_generated_with: Texte généré par IA avec %{model} sur %{date}
       facsimile: Facsimilé
       human_transcription: Transcription humaine
       show_comparison_with_transcription: Afficher la comparaison avec la transcription
@@ -101,6 +101,9 @@ fr:
       transcribed: transcrite
       translation: Traduction
       unable_to_find_pages: Nous n'avons trouvé aucune page correspondant à votre demande
+    prompt:
+      ai_prompt: Invite IA
+      prompt_explanation: Cette invite a servi à générer l'ébauche de l'IA.
     read_all_works:
       pages: Pages
       pages_that_mention: Pages qui mentionnent %{article}
