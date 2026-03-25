@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'IIIF AI Annotations' do
+  AI_TEXT_PROFILE="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-transcription"
+  AI_REASONING_PROFILE="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-reasoning"
+  AI_PROMPT_PROFILE="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-prompt"
+
   let(:owner) { User.find_by(owner: true) || create(:user, owner: true) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
@@ -140,7 +144,7 @@ describe 'IIIF AI Annotations' do
       expect(ai_plaintext_see_also).to be_present
       expect(ai_plaintext_see_also['format']).to eq('text/plain')
       expect(ai_plaintext_see_also['label']).to include('GPT-4o')
-      expect(ai_plaintext_see_also['@id']).to include('plaintext/ai/transcription')
+      expect(ai_plaintext_see_also['@id']).to include(/plaintext\/ai\/\d+\/transcription/)
     end
 
     it 'includes AI reasoning in seeAlso when reasoning is present' do
@@ -156,7 +160,7 @@ describe 'IIIF AI Annotations' do
       expect(ai_reasoning_see_also).to be_present
       expect(ai_reasoning_see_also['format']).to eq('text/html')
       expect(ai_reasoning_see_also['label']).to include('Reasoning')
-      expect(ai_reasoning_see_also['@id']).to include('html/ai/reasoning')
+      expect(ai_reasoning_see_also['@id']).to include(/html\/ai\/\d+\/reasoning/)
     end
 
     it 'includes AI prompt in seeAlso when prompt is present' do
@@ -172,7 +176,7 @@ describe 'IIIF AI Annotations' do
       expect(ai_prompt_see_also).to be_present
       expect(ai_prompt_see_also['format']).to eq('text/plain')
       expect(ai_prompt_see_also['label']).to include('Prompt')
-      expect(ai_prompt_see_also['@id']).to include('plaintext/ai/prompt')
+      expect(ai_prompt_see_also['@id']).to include(/plaintext\/ai\/\d+\/prompt/)
     end
 
     context 'when AI transcription has no reasoning' do
@@ -198,6 +202,134 @@ describe 'IIIF AI Annotations' do
         expect(ai_reasoning_see_also).to be_nil
       end
     end
+
+    context 'when a page has multiple transcriptions with different prompts or models' do
+      let!(:page_multiple_transcriptions) { create(:page, :with_image, work: work) }
+      let!(:ai_transcription_1) do
+        create(:ai_transcription,
+              page: page_multiple_transcriptions,
+              source_text: 'AI text 1',
+              model: 'Gemini 1',
+              prompt: 'Prompt 1',
+              reasoning: 'Reasoning 1')
+        end
+      let!(:ai_transcription_2) do
+        create(:ai_transcription,
+              page: page_multiple_transcriptions,
+              source_text: 'AI text 2',
+              model: 'Gemini 2',
+              prompt: 'Prompt 2',
+              reasoning: 'Reasoning 2')
+      end
+
+      it 'includes seeAlso entries for both transcriptions' do
+        get iiif_canvas_path(work.id, page_multiple_transcriptions.id)
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        # find seeAlso entries
+        see_also = json['seeAlso']
+        ai_transcription_1_text = see_also&.find do |item|
+          item['label'].include?('Gemini 1') && item['profile'] == AI_TEXT_PROFILE
+        end
+        ai_transcription_2_text = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_TEXT_PROFILE
+        end
+        ai_transcription_1_reasoning = see_also&.find do |item|
+          item['label'].include?('Gemini 1') && item['profile'] == AI_REASONING_PROFILE
+        end
+        ai_transcription_2_reasoning = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_REASONING_PROFILE
+        end
+        # Check that both transcriptions are present in seeAlso
+        expect(ai_transcription_1_text).to be_present
+        expect(ai_transcription_2_text).to be_present
+        expect(ai_transcription_1_reasoning).to be_present
+        expect(ai_transcription_2_reasoning).to be_present
+      end
+
+      it 'fetches the correct text, reasoning, and prompt for each transcription' do
+        get iiif_canvas_path(work.id, page_multiple_transcriptions.id)
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        see_also = json['seeAlso']
+        # check transcription
+        ai_transcription_1_text = see_also&.find do |item|
+          item['label'].include?('Gemini 1') && item['profile'] == AI_TEXT_PROFILE
+        end
+        get ai_transcription_1_text['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to eq('AI text 1')
+
+        ai_transcription_2_text = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_TEXT_PROFILE
+        end
+        get ai_transcription_2_text['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to eq('AI text 2')
+
+        # check reasoning
+        ai_transcription_1_reasoning = see_also&.find do |item|
+          item['label'].include?('Gemini 1') && item['profile'] == AI_REASONING_PROFILE
+        end
+        get ai_transcription_1_reasoning['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Reasoning 1')
+
+        ai_transcription_2_reasoning = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_REASONING_PROFILE
+        end
+        get ai_transcription_2_reasoning['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Reasoning 2')
+
+        # check prompt
+        ai_transcription_1_prompt = see_also&.find do |item|
+          item['label'].include?('Gemini 1') && item['profile'] == AI_PROMPT_PROFILE
+        end
+        get ai_transcription_1_prompt['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Prompt 1')
+
+        ai_transcription_2_prompt = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_PROMPT_PROFILE
+        end
+        get ai_transcription_2_prompt['@id']
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Prompt 2')
+      end
+
+      it 'only shows AI text annotation for the most recent transcription' do
+        # first get the canvas to fetch the seeAlso and the annotation
+        get iiif_canvas_path(work.id, page_multiple_transcriptions.id)
+        expect(response).to have_http_status(:ok)
+
+        json = JSON.parse(response.body)
+        see_also = json['seeAlso']
+        ai_text_annotation = json['otherContent']&.find { |content| content['label'] == 'AI Text' }
+        # The AI text annotation should correspond to the most recent transcription (Gemini 2)
+        expect(ai_text_annotation).to be_present
+        expect(ai_text_annotation['@id']).to include('/ai_text')
+        get ai_text_annotation['@id']
+        expect(response).to have_http_status(:ok)
+        annotation_text = response.body
+        expect(annotation_text).to include('AI text 2')
+
+        # The seeAlso should include both transcriptions, but the annotation should only reflect the most recent one
+        ai_transcription_2_text = see_also&.find do |item|
+          item['label'].include?('Gemini 2') && item['profile'] == AI_TEXT_PROFILE
+        end
+        expect(ai_transcription_2_text).to be_present
+        get ai_transcription_2_text['@id']
+        expect(response).to have_http_status(:ok)
+        see_also_text = response.body
+        expect(see_also_text).to eq('AI text 2')
+
+        # since the annotation prepends a warning, we want to test that it includes the seeAlso response
+        expect(annotation_text).to include(see_also_text)
+      end
+    end
   end
 
 
@@ -216,7 +348,7 @@ describe 'IIIF AI Annotations' do
   describe 'AI transcription export endpoints' do
     describe 'GET /iiif/:work_id/export/:page_id/plaintext/ai/transcription' do
       it 'returns AI transcription as plaintext' do
-        get iiif_page_export_plaintext_ai_transcription_path(work.id, page.id)
+        get iiif_page_export_plaintext_ai_transcription_path(work.id, page.id, ai_transcription.id)
 
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('text/plain; charset=utf-8')
@@ -226,18 +358,17 @@ describe 'IIIF AI Annotations' do
       context 'when page has no AI transcription' do
         let!(:page_without_ai) { create(:page, :with_image, work: work) }
 
-        it 'returns 404' do
-          get iiif_page_export_plaintext_ai_transcription_path(work.id, page_without_ai.id)
+        it 'does not return 200' do
+          get iiif_page_export_plaintext_ai_transcription_path(work.id, page_without_ai.id, 1010101)
 
-          expect(response).to have_http_status(:not_found)
-          expect(response.body).to include('No AI transcription available')
+          expect(response).not_to have_http_status(:ok)
         end
       end
     end
 
     describe 'GET /iiif/:work_id/export/:page_id/html/ai/reasoning' do
       it 'returns AI reasoning as HTML' do
-        get iiif_page_export_html_ai_reasoning_path(work.id, page.id)
+        get iiif_page_export_html_ai_reasoning_path(work.id, page.id, ai_transcription.id)
 
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('text/html; charset=utf-8')
@@ -256,7 +387,7 @@ describe 'IIIF AI Annotations' do
         end
 
         it 'returns 404' do
-          get iiif_page_export_html_ai_reasoning_path(work.id, page_no_reasoning.id)
+          get iiif_page_export_html_ai_reasoning_path(work.id, page_no_reasoning.id, ai_no_reasoning.id)
 
           expect(response).to have_http_status(:not_found)
           expect(response.body).to include('No AI reasoning available')

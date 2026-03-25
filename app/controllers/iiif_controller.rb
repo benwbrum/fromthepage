@@ -499,8 +499,9 @@ class IiifController < ApplicationController
   end
 
   def export_page_plaintext_ai_transcription
-    if @page.ai_transcription.present?
-      render layout: false, content_type: 'text/plain', plain: @page.ai_transcription.source_text
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.source_text
     else
       # return a 404 Not Found if there is no AI transcription
       render status: 404, plain: 'No AI transcription available for this page.'
@@ -508,8 +509,9 @@ class IiifController < ApplicationController
   end
 
   def export_page_html_ai_reasoning
-    if @page.ai_transcription.present? && @page.ai_transcription.reasoning.present?
-      reasoning_markdown = @page.ai_transcription.reasoning
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.reasoning.present?
+      reasoning_markdown = ai_transcription.reasoning
       begin
         reasoning_html = Markdown.new(reasoning_markdown).to_html
         render layout: false, content_type: 'text/html', plain: reasoning_html
@@ -525,8 +527,9 @@ class IiifController < ApplicationController
   end
 
   def export_page_plaintext_ai_prompt
-    if @page.ai_transcription.present? && @page.ai_transcription.prompt.present?
-      render layout: false, content_type: 'text/plain', plain: @page.ai_transcription.prompt
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.prompt.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.prompt
     else
       render status: 404, plain: 'No AI prompt available for this page.'
     end
@@ -1034,22 +1037,22 @@ private
           { 'label' => "AI-generated Transcript Plaintext (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
             'format' => 'text/plain',
             'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-transcription',
-            '@id' => iiif_page_export_plaintext_ai_transcription_url(page.work_id, page.id)
+            '@id' => iiif_page_export_plaintext_ai_transcription_url(page.work_id, page.id, ai_transcription.id)
         }
         if !ai_transcription.reasoning.blank?
           canvas.seeAlso <<
             { 'label' => "AI Reasoning Explanation (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
               'format' => 'text/html',
               'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-reasoning',
-              '@id' => iiif_page_export_html_ai_reasoning_url(page.work_id, page.id)
+              '@id' => iiif_page_export_html_ai_reasoning_url(page.work_id, page.id, ai_transcription.id)
           }
         end
         if !ai_transcription.prompt.blank?
           canvas.seeAlso <<
             { 'label' => "AI Prompt (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
               'format' => 'text/plain',
-              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-prompt',
-              '@id' => iiif_page_export_plaintext_ai_prompt_url(page.work_id, page.id)
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-prompt',
+              '@id' => iiif_page_export_plaintext_ai_prompt_url(page.work_id, page.id, ai_transcription.id)
           }
         end
       end
