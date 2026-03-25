@@ -388,7 +388,7 @@ Fromthepage::Application.routes.draw do
   get '/iiif/set/:document_set_id', to: 'iiif#document_set', as: :iiif_document_set
   get '/iiif/collections', to: 'iiif#collections'
   get '/iiif/collections/:user_id', to: 'iiif#user_collections', as: :iiif_user_collections
-  get '/iiif/:page_id/list/:annotation_type', to: 'iiif#list'
+  get '/iiif/:page_id/list/:annotation_type', to: 'iiif#list', as: :iiif_page_annotation_list_for_type
   get '/iiif/:page_id/notes', to: 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', to: 'iiif#note'
   get '/iiif/:work_id/canvas/:page_id', to: 'iiif#canvas', as: 'iiif_canvas'
@@ -590,8 +590,8 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
       get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
-      get ':work_id/annotation/:page_id/plaintext/ai_text', to: 'annotation#page_ai_text', as: 'annotation_page_ai_text'
-      get ':work_id/annotation/:page_id/html/ai_reasoning', to: 'annotation#page_ai_reasoning_html', as: 'annotation_page_reasoning_html'
+      get ':work_id/annotation/:page_id/html/ai_text', to: 'iiif#annotation_page_ai_text', as: 'annotation_page_ai_text'
+      get ':work_id/annotation/:page_id/html/ai_reasoning', to: 'iiif#annotation_page_ai_reasoning', as: 'annotation_page_reasoning_html'
 
       # article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'
