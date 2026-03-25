@@ -343,7 +343,7 @@ describe "editor actions", order: :defined do
 
     it "deletes a note", js: true do
       col = Collection.second
-      test_page = col.works.first.pages.first      test_page = @work.pages.first
+      test_page = col.works.first.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       title = test_page.notes.last.id
       note_id = test_page.notes.last.id
@@ -357,9 +357,10 @@ describe "editor actions", order: :defined do
 
     it "uses page arrows with unsaved transcription", js: true do
       col = Collection.second
-      test_page = col.works.first.pages.first
+      test_page = col.works.first.pages.second
       # next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
+      expect(current_url).to eq collection_transcribe_page_url(col.owner, col, test_page.work, test_page)
       fill_in_editor_field "Attempt to save"
       message = accept_alert do
         page.click_link("Next page")
