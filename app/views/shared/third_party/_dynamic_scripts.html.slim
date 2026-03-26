@@ -13,5 +13,5 @@
     -if FACEBOOK_PIXEL_ID.present?
       =render partial: 'shared/third_party/fb_pixel'
 
-    -if defined?(BENTO_ENABLED) && BENTO_ENABLED
+    -if defined?(BENTO_ENABLED) && BENTO_ENABLED && !user_masquerade?
       =render partial: 'shared/third_party/bento'
