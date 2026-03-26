@@ -345,8 +345,8 @@ describe "editor actions", order: :defined do
       col = Collection.second
       test_page = col.works.first.pages.first
       # Ensure a note exists before attempting to delete
-      unless test_page.notes.exists?(content: "Test note")
-        test_page.notes.create!(user: User.first, content: "Test note")
+      unless test_page.notes.exists?(text: "Test note")
+        test_page.notes.create!(user: User.first, text: "Test note")
       end
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       note_id = test_page.notes.last.id
@@ -357,6 +357,7 @@ describe "editor actions", order: :defined do
       sleep(3)
       expect(Note.find_by(id: note_id)).to be_nil
     end
+
     it "uses page arrows with unsaved transcription", js: true do
       col = Collection.second
       test_page = col.works.first.pages.second
