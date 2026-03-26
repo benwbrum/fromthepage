@@ -77,6 +77,6 @@
     <%= javascript_include_tag 'landing/main.js' %>
 
 
-    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED && current_user&.privacy_preference&.marketing %>
+    <% if defined?(BENTO_ENABLED) && BENTO_ENABLED && current_user&.privacy_preference&.marketing && !user_masquerade? %>
       <%= render partial: '/shared/third_party/bento' %>
     <% end %>
