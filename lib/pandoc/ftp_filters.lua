@@ -113,6 +113,10 @@ function handle_meta(meta)
 \setmainfont{CMU Serif}
 \setsansfont{CMU Sans Serif}
 \setmonofont{CMU Typewriter Text}
+
+% For tables
+\usepackage{pdflscape}
+\usepackage{geometry}
 ]]
 
   table.insert(meta['header-includes'], pandoc.RawBlock('latex', header))
@@ -120,11 +124,39 @@ function handle_meta(meta)
   return meta
 end
 
+function RotatetableDiv(el)
+  if el.classes:includes("rotatetable") then
+    local latex_blocks = {}
+    table.insert(latex_blocks, pandoc.RawBlock("latex", [[
+\clearpage
+\begingroup
+\newgeometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
+\begin{landscape}
+\scriptsize
+]]))
+
+    for _, block in ipairs(el.content) do
+      table.insert(latex_blocks, block)
+    end
+
+    table.insert(latex_blocks, pandoc.RawBlock("latex", [[
+\normalsize
+\end{landscape}
+\restoregeometry
+\endgroup
+\clearpage
+]]))
+
+    return latex_blocks
+  end
+end
+
 return {
   {
     Para = handle_block,
     Plain = handle_block,
     Math = handle_math,
-    Meta = handle_meta
+    Meta = handle_meta,
+    Div = RotatetableDiv
   }
 }

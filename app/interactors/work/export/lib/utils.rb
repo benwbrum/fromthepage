@@ -1,5 +1,6 @@
 class Work::Export::Lib::Utils
   LINEBREAK_ELEMENT = "\\\\{}\n"
+  COLUMN_THRESHOLD = 7
   HR_ELEMENT = '\{\{hr\}\}'
   BREAK_TEXT = {
     'cb' => 'column',
@@ -187,7 +188,13 @@ class Work::Export::Lib::Utils
     column_count = all_rows.map { |tr| tr.elements.count }.max
     column_format = '@{}' + ('l ' * column_count).strip + '@{}'
 
-    latex = "#{LINEBREAK_ELEMENT}\\begin{longtable}[]{#{column_format}}\n"
+    latex = "#{LINEBREAK_ELEMENT}\n"
+
+    if column_count > COLUMN_THRESHOLD
+      latex += "\\begin{rotatetable}\n"
+    end
+
+    latex += "\\begin{longtable}[\\textwidth]{#{column_format}}\n"
     if table_element.elements['thead']
       latex += "\\toprule\n"
 
@@ -205,6 +212,11 @@ class Work::Export::Lib::Utils
 
     latex += "\\bottomrule\\noalign{}\n"
     latex += "\\end{longtable}\n"
+
+    if column_count > COLUMN_THRESHOLD
+      latex += "\\end{rotatetable}\n"
+    end
+
     latex
   end
 
