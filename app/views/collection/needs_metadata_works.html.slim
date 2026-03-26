@@ -19,19 +19,19 @@ div.collection-work-list
         p.collection-work_snippet = to_snippet(work.description)
         -if @collection.text_entry? && work.next_untranscribed_page
           p.collection-work_action
-            -if (current_user && current_user.can_transcribe?(work, @collection))
+            -if work.user_can_transcribe?(current_user)
               =t('collection.show.this_work_has_pages_that_need_work')
               span &nbsp;
               =link_to(t('collection.show.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
-            -else
+            -elsif work.restrict_scribes
               =t('collection.show.restricted_collaboratoration')
         -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
           p.collection-work_action
-            -if (current_user && current_user.can_transcribe?(work, @collection))
+            -if work.user_can_transcribe?(current_user)
               =t('collection.show.this_work_has_not_been_described')
               span &nbsp;
               =link_to(t('collection.show.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
-            -else
+            -elsif work.restrict_scribes
               =t('collection.show.restricted_collaboratoration')
         -if @collection.text_entry?
           .collection-work_stats

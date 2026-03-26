@@ -284,6 +284,59 @@ describe "collection settings js tasks", order: :defined do
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
   end
+
+  it "does not show 'Collaboration is restricted' for unrestricted works when not logged in" do
+    # Ensure the collection is public
+    @collection.restricted = false
+    @collection.save!
+
+    # Ensure we have a work with untranscribed pages that is not restricted
+    work = @collection.works.first
+    work.restrict_scribes = false
+    work.save!
+
+    # Ensure the work has untranscribed pages
+    if work.pages.empty?
+      work.pages.create!(title: "Test Page", position: 1)
+    end
+    work.pages.first.update!(status: "new")
+
+    # Visit the collection page without being logged in
+    logout(:user)
+    visit collection_path(@collection.owner, @collection)
+
+    # Should not show "Collaboration is restricted" for unrestricted works
+    expect(page).not_to have_content(I18n.t('collection.show.restricted_collaboratoration'))
+  end
+
+  it "shows 'Collaboration is restricted' for restricted works when not logged in" do
+    # Ensure the collection is public
+    @collection.restricted = false
+    @collection.save!
+
+    # Create a restricted work with untranscribed pages
+    restricted_work = @collection.works.first
+    restricted_work.restrict_scribes = true
+    restricted_work.save!
+
+    # Ensure the work has untranscribed pages
+    if restricted_work.pages.empty?
+      restricted_work.pages.create!(title: "Test Page", position: 1)
+    end
+    restricted_work.pages.first.update!(status: "new")
+
+    # Visit the collection page without being logged in
+    logout(:user)
+    visit collection_path(@collection.owner, @collection)
+
+    # Should show "Collaboration is restricted" for restricted works
+    expect(page).to have_content(I18n.t('collection.show.restricted_collaboratoration'))
+
+    # unrestrict the work
+    restricted_work = @collection.works.first
+    restricted_work.restrict_scribes = false
+    restricted_work.save!
+  end
 end
 
 describe "collection spec (isolated)" do
