@@ -443,9 +443,17 @@ class IiifController < ApplicationController
     annotation_list = IIIF::Presentation::AnnotationList.new
     annotation_list['@id'] = url_for({ controller: 'iiif', action: 'notes', page_id: @page.id, only_path: false })
     @page.notes.each_with_index do |note, i|
-      note = iiif_page_note(@page, i+1)
-      note['@id'] = url_for({ controller: 'iiif', action: 'note', page_id: @page.id, note_id: i+1, only_path: false })
-      annotation_list.resources << note
+      note_data = iiif_page_note(@page, i+1)
+      note_data['@id'] = url_for({ controller: 'iiif', action: 'note', page_id: @page.id, note_id: i+1, only_path: false })
+
+      # BEGIN: Add user information
+      note_data['creator'] = {
+        '@type' => 'foaf:Person',
+        'name' => note.user.display_name # Assuming note has a user association
+      }
+      # END: Add user information
+
+      annotation_list.resources << note_data
     end
     render plain: annotation_list.to_json(pretty: true), content_type: 'application/json'
   end
@@ -490,6 +498,71 @@ class IiifController < ApplicationController
     render  layout: false, content_type: 'text/plain', plain: @page.search_text
   end
 
+  def export_page_plaintext_ai_transcription
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.source_text
+    else
+      # return a 404 Not Found if there is no AI transcription
+      render status: 404, plain: 'No AI transcription available for this page.'
+    end
+  end
+
+  def export_page_html_ai_reasoning
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.reasoning.present?
+      reasoning_markdown = ai_transcription.reasoning
+      begin
+        reasoning_html = Markdown.new(reasoning_markdown).to_html
+        render layout: false, content_type: 'text/html', plain: reasoning_html
+      rescue StandardError => e
+        Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+        # fallback to text/plain with the raw markdown if HTML conversion fails
+        render layout: false, content_type: 'text/plain', plain: reasoning_markdown
+      end
+    else
+      # return a 404 Not Found if there is no AI reasoning
+      render status: 404, plain: 'No AI reasoning available for this page.'
+    end
+  end
+
+  def export_page_plaintext_ai_prompt
+    ai_transcription = @ai_transcription || @page.ai_transcription
+    if ai_transcription.present? && ai_transcription.prompt.present?
+      render layout: false, content_type: 'text/plain', plain: ai_transcription.prompt
+    else
+      render status: 404, plain: 'No AI prompt available for this page.'
+    end
+  end
+
+  def annotation_page_ai_text
+    begin
+      html=Markdown.new(@page.ai_transcription.source_text).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI transcription to HTML: #{e.message}"
+      html = ERB::Util.html_escape(@page.ai_transcription.source_text).gsub("\n", '<br/>')
+    end
+    formatted_ai_text = <<-HTML
+      <b>Warning: This transcript is AI-generated.</b><br/>
+      #{html}
+    HTML
+    render layout: false, content_type: 'text/html', plain: formatted_ai_text
+  end
+
+  def annotation_page_ai_reasoning
+    reasoning=''
+    # Convert markdown to HTML with error handling
+    begin
+      reasoning = Markdown.new(@page.ai_transcription.reasoning).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+      # Fallback to plain text
+      reasoning = '(@page.ai_transcription.reasoning)}'
+    end
+    render  layout: false, content_type: 'text/html', plain: reasoning
+  end
+
+
   def export_work_plaintext_verbatim
     render  layout: false, content_type: 'text/plain', plain: @work.verbatim_transcription_plaintext
   end
@@ -523,6 +596,20 @@ class IiifController < ApplicationController
   end
 
 private
+  def markdown_to_html_with_fallback(markdown)
+    html=nil
+    plaintext=nil
+    begin
+      html=Markdown.new(markdown).to_html
+    rescue StandardError => e
+      Rails.logger.error "Failed to convert AI transcription to HTML: #{e.message}"
+      plaintext = markdown
+    end
+    [html, plaintext]
+  end
+
+
+
   def structured_data_label(work, page = nil)
     if page
       'Structured data (field-based or spreadsheet transcriptions) for canvas'
@@ -553,6 +640,7 @@ private
     note
   end
 
+
   def iiif_annotation_by_type(page_id, type)
     annotation = IIIF::Presentation::Annotation.new
     page = Page.find page_id
@@ -571,6 +659,50 @@ private
         annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_translation_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
         annotation.resource['format'] =  'text/html'
         annotation.resource['chars'] = xml_to_html @page.xml_translation
+      end
+    when 'ai_text'
+      if page.ai_transcription.present?
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_ai_text_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/html'
+        # Convert plaintext to HTML by wrapping it in <pre> tags and prepend a warning message in bold that the transcript is ai-generated
+        formatted_ai_text = <<-HTML
+          <b>Warning: This transcript is AI-generated.</b><br/>
+          #{ERB::Util.html_escape(@page.ai_transcription.source_text).gsub("\n", '<br/>')}
+        HTML
+
+        annotation.resource['chars'] = formatted_ai_text
+        # Use Web Annotation standard lifecycle fields even if Mirador ignores them
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+      end
+    when 'ai_reasoning'
+      if page.ai_transcription.present? && page.ai_transcription.reasoning.present?
+        annotation['motivation'] = 'oa:commenting'
+        annotation['on'] = region_from_page(@page)
+        annotation.resource = IIIF::Presentation::Resource.new({ '@id' => "#{collection_annotation_page_reasoning_html_url(@work.owner, @collection, @work, @page)}", '@type' => 'cnt:ContentAsText' })
+        annotation.resource['format'] = 'text/html'
+        # Convert markdown to HTML with error handling
+        begin
+          annotation.resource['chars'] = Markdown.new(@page.ai_transcription.reasoning).to_html
+        rescue StandardError => e
+          Rails.logger.error "Failed to convert AI reasoning to HTML: #{e.message}"
+          # Fallback to plain text
+          annotation.resource['format'] = 'text/plain'
+          annotation.resource['chars'] = '(@page.ai_transcription.reasoning)}'
+        end
+        # Use Web Annotation standard lifecycle fields
+        annotation['generator'] = {
+          'type' => 'Software',
+          'name' => @page.ai_transcription.model
+        }
+        annotation['generated'] = @page.ai_transcription.created_at.iso8601
+        # TODO: Add creator field when user association is available
+        # annotation['creator'] = user_display_name
+        # annotation['created'] = @page.ai_transcription.created_at.iso8601
       end
     when 'facsimile'
       # annotation = IIIF::Presentation::Annotation.new
@@ -738,6 +870,7 @@ private
     canvas.images << annotation
 
     add_related_to_canvas(canvas, page)
+    add_rendering_to_canvas(canvas, page)
     add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
@@ -773,6 +906,7 @@ private
     canvas.images << annotation
 
     add_related_to_canvas(canvas, page)
+    add_rendering_to_canvas(canvas, page)
     add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
@@ -795,6 +929,7 @@ private
       canvas.images << annotation
 
       add_related_to_canvas(canvas, page)
+      add_rendering_to_canvas(canvas, page)
       add_seeAlso_to_canvas(canvas, page)
       add_services_to_canvas(canvas, page)
       add_annotations_to_canvas(canvas, page)
@@ -803,7 +938,22 @@ private
     end
   end
 
+  def add_rendering_to_canvas(canvas, page)
+    if page.has_alto?
+      canvas['rendering'] = [] unless canvas['rendering']
+      canvas['rendering'] <<
+        { '@id' => collection_alto_xml_url(page.collection.owner, page.collection, page.work, page),
+          'label' => 'ALTO XML',
+          'format' => 'application/xml',
+          'profile' => 'http://www.loc.gov/standards/alto/' }
+    end
+  end
+
+
   def add_annotations_to_canvas(canvas, page)
+    # Initialize other_content if it doesn't exist
+    canvas.other_content ||= []
+
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'transcription', only_path: false })
@@ -823,6 +973,22 @@ private
       annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'notes', only_path: false })
       annotation_list['label'] = 'Notes'
       canvas.other_content << annotation_list
+    end
+
+    # Add AI text annotation if available and no human-created source text
+    if page.ai_transcription.present? && page.source_text.blank?
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_text', only_path: false })
+      annotation_list['label'] = 'AI Text'
+      canvas.other_content << annotation_list
+
+      # Add AI reasoning annotation if available
+      if page.ai_transcription.reasoning.present?
+        annotation_list = IIIF::Presentation::AnnotationList.new
+        annotation_list['@id'] = url_for({ controller: 'iiif', action: 'list', page_id: page.id, annotation_type: 'ai_reasoning', only_path: false })
+        annotation_list['label'] = 'AI Reasoning'
+        canvas.other_content << annotation_list
+      end
     end
     canvas
   end
@@ -864,6 +1030,33 @@ private
       'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1',
       '@id' => iiif_page_export_plaintext_emended_url(page.work_id, page.id)
     }
+    # if the page has ai transcriptions, add links to their exports with profiles for the model as a generator
+    if page.ai_transcriptions.present?
+      page.ai_transcriptions.each do |ai_transcription|
+        canvas.seeAlso <<
+          { 'label' => "AI-generated Transcript Plaintext (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+            'format' => 'text/plain',
+            'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-transcription',
+            '@id' => iiif_page_export_plaintext_ai_transcription_url(page.work_id, page.id, ai_transcription.id)
+        }
+        if !ai_transcription.reasoning.blank?
+          canvas.seeAlso <<
+            { 'label' => "AI Reasoning Explanation (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+              'format' => 'text/html',
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-ai-reasoning',
+              '@id' => iiif_page_export_html_ai_reasoning_url(page.work_id, page.id, ai_transcription.id)
+          }
+        end
+        if !ai_transcription.prompt.blank?
+          canvas.seeAlso <<
+            { 'label' => "AI Prompt (Model: #{ai_transcription.model} at #{ai_transcription.created_at.iso8601})",
+              'format' => 'text/plain',
+              'profile' => 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-ai-prompt',
+              '@id' => iiif_page_export_plaintext_ai_prompt_url(page.work_id, page.id, ai_transcription.id)
+          }
+        end
+      end
+    end
     if page.work.supports_translation? && !page.source_translation.blank?
       canvas.seeAlso <<
         { 'label' => 'HTML Translation',

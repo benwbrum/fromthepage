@@ -142,6 +142,13 @@ class ApplicationController < ActionController::Base
     # object without being overridden by child_id.parent
     # whenever both are specified on the parameters
 
+    if params[:ai_transcription_id]
+      @ai_transcription = AiTranscription.find(params[:ai_transcription_id])
+      @page = @ai_transcription.page
+      @work = @page.work
+      @collection = @work.collection
+    end
+
     if params[:article_id]
       @article = Article.find(params[:article_id])
       if session[:col_id] != nil

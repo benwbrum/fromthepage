@@ -37,7 +37,7 @@ module Api::V1
           bulk_export = BulkExport.new
           bulk_export.collection = collection
           bulk_export.user = @api_user
-          bulk_export.status = BulkExport::Status::NEW
+          bulk_export.status = :queued
           bulk_export.plaintext_verbatim_page = params[:plaintext_verbatim_page].present?
           bulk_export.plaintext_verbatim_work = params[:plaintext_verbatim_work].present?
           bulk_export.plaintext_emended_page = params[:plaintext_emended_page].present?
@@ -53,7 +53,7 @@ module Api::V1
           bulk_export.table_csv_work = params[:table_csv_work].present?
           bulk_export.notes_csv = params[:notes_csv].present?
           bulk_export.save
-          bulk_export.submit_export_process
+          BulkExport::ProcessJob.perform_later(user_id: bulk_export.user.id, bulk_export_id: bulk_export.id)
 
           response = {
             id: bulk_export.id,
@@ -98,9 +98,17 @@ module Api::V1
         bulk_export_id = params[:bulk_export_id]
         bulk_export = @api_user.bulk_exports.find_by(id: bulk_export_id)
         if bulk_export
-          case bulk_export.status
-          when BulkExport::Status::FINISHED
-            if File.exist?(bulk_export.zip_file_name)
+          case bulk_export.status.to_sym
+          when :finished
+            if bulk_export.output.attached?
+              send_data(
+                bulk_export.output.download,
+                filename: bulk_export.output.filename.to_s,
+                content_type: bulk_export.output.content_type || 'application/zip'
+              )
+            elsif File.exist?(bulk_export.zip_file_name)
+              # TODO: Deprecate
+              # Keep for now for backsupport
               send_file(
                 bulk_export.zip_file_name,
                 filename: 'fromthepage_export.zip',
@@ -109,9 +117,9 @@ module Api::V1
             else
               render status: 410, json: "Bulk export #{bulk_export_id} file has been deleted. Please start a new export."
             end
-          when BulkExport::Status::CLEANED
+          when :cleaned
             render status: 410, json: "Bulk export #{bulk_export_id} has been deleted.  Please start a new export."
-          when BulkExport::Status::ERROR
+          when :error
             render status: 410, json: "Bulk export #{bulk_export_id} failed with an error.  Please report this to support.  Re-running an export with different requested formats might succeed."
           else
             render status: 409, json: "Bulk export #{bulk_export_id} is not ready to download.  It is probably still running, but might have failed with an un-caught error."

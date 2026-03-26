@@ -17,4 +17,8 @@ module AdminHelper
       content_for :page_title, 'Settings - Administration'
     end
   end
+
+  def format_date_or_dash(date)
+    date ? date.strftime('%b %d, %Y') : '-'
+  end
 end

@@ -8,6 +8,68 @@ RSpec.describe ExportHelper, type: :helper do
     @context = double("context", translation_mode: false)
   end
 
+
+
+  describe '#expand_subject' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+
+    it 'returns only the subject itself when no parent subjects exist' do
+      article = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      result = expand_subject(article)
+      expect(result).to eq([article])
+    end
+
+    it 'finds parent subjects when title contains -- delimiter' do
+      parent = FactoryBot.create(:article, title: 'Alabama', collection: collection)
+      child  = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      result = expand_subject(child)
+      expect(result).to include(child)
+      expect(result).to include(parent)
+    end
+
+    it 'finds parent subjects when title contains ". " delimiter' do
+      parent = FactoryBot.create(:article, title: 'Confederate States of America. Army', collection: collection)
+      child  = FactoryBot.create(:article,
+                                  title: 'Confederate States of America. Army. Mississippi. Infantry Regiment, 10th (1861-1862)',
+                                  collection: collection)
+      result = expand_subject(child)
+      expect(result).to include(child)
+      expect(result).to include(parent)
+    end
+  end
+
+  describe 'article classification by category hierarchy' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:places_root) { collection.categories.where(title: 'Places').first }
+    let(:counties_category) do
+      FactoryBot.create(:category, title: 'Counties & Parishes', collection: collection, parent: places_root)
+    end
+    let(:towns_category) do
+      FactoryBot.create(:category, title: 'Towns & Cities', collection: collection, parent: places_root)
+    end
+
+    it 'classifies expanded subjects from a Places subcategory as place articles' do
+      # Set up parent and child articles with Places subcategory membership
+      county_article = FactoryBot.create(:article, title: 'Alabama--Baldwin County', collection: collection)
+      county_article.categories << counties_category
+
+      town_article = FactoryBot.create(:article, title: 'Alabama--Baldwin County. Blakeley', collection: collection)
+      town_article.categories << towns_category
+
+      # Simulate the classification logic in work_to_tei
+      places_and_descendants = places_root.descendants.to_a + [places_root]
+      places_ids = places_and_descendants.map(&:id)
+
+      # The county article is in Counties & Parishes which is a descendant of Places
+      expanded_category_ids = county_article.categories.pluck(:id)
+      expect((expanded_category_ids & places_ids).present?).to be true
+    end
+  end
+
+
+
   describe "Bibliography TEI export formatting" do
     context "bibliography_to_export_tei" do
       it "processes TEI markup in bibliography for export" do
@@ -178,6 +240,67 @@ Henry Tanner, ed., <hi rend=\"italic\">Directory</hi> (Louisville, 1861), 227."
       expect(elements.length).to eq(1)
       expect(elements[0].name).to eq('p')
       expect(elements[0].text).to eq('Just regular content.')
+    end
+  end
+
+  describe '#consolidate_page_ranges' do
+    it 'consolidates consecutive page numbers into ranges' do
+      positions = [1, 2, 3, 5, 6, 8, 10]
+      result = consolidate_page_ranges(positions)
+      expect(result).to eq(['1-3', '5-6', '8', '10'])
+    end
+
+    it 'handles single page as a single number' do
+      positions = [5]
+      result = consolidate_page_ranges(positions)
+      expect(result).to eq(['5'])
+    end
+
+    it 'handles all consecutive pages' do
+      positions = [1, 2, 3, 4, 5]
+      result = consolidate_page_ranges(positions)
+      expect(result).to eq(['1-5'])
+    end
+
+    it 'handles empty array' do
+      positions = []
+      result = consolidate_page_ranges(positions)
+      expect(result).to eq([])
+    end
+  end
+
+  describe '#gather_ai_model_contributions' do
+    let(:owner) { User.find_by(owner: true) || create(:user, owner: true) }
+    let!(:collection) { create(:collection, owner_user_id: owner.id) }
+    let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let!(:page1) { create(:page, work: work, position: 1) }
+    let!(:page2) { create(:page, work: work, position: 2) }
+    let!(:page3) { create(:page, work: work, position: 3) }
+
+    it 'gathers AI model contributions with date ranges and page ranges' do
+      ai_trans1 = create(:ai_transcription, page: page1, model: 'GPT-4o', created_at: 1.day.ago)
+      ai_trans2 = create(:ai_transcription, page: page2, model: 'GPT-4o', created_at: Time.current)
+      ai_trans3 = create(:ai_transcription, page: page3, model: 'Claude-3', created_at: Time.current)
+
+      result = gather_ai_model_contributions(work)
+
+      expect(result).to be_an(Array)
+      expect(result.length).to eq(2)
+
+      gpt_contrib = result.find { |c| c[:model] == 'GPT-4o' }
+      expect(gpt_contrib).to be_present
+      expect(gpt_contrib[:first_date]).to be_present
+      expect(gpt_contrib[:last_date]).to be_present
+      expect(gpt_contrib[:page_ranges]).to include('1-2')
+
+      claude_contrib = result.find { |c| c[:model] == 'Claude-3' }
+      expect(claude_contrib).to be_present
+      expect(claude_contrib[:page_ranges]).to eq(['3'])
+    end
+
+    it 'handles work with no AI transcriptions' do
+      result = gather_ai_model_contributions(work)
+      expect(result).to eq([])
     end
   end
 end

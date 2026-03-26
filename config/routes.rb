@@ -158,6 +158,7 @@ Fromthepage::Application.routes.draw do
   scope 'article', as: 'article' do
     get 'list', to: 'article#list'
     get 'items', to: 'article#items'
+    get 'page_counts', to: 'article#page_counts'
     get 'tooltip', to: 'article#tooltip'
     delete 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
@@ -387,7 +388,7 @@ Fromthepage::Application.routes.draw do
   get '/iiif/set/:document_set_id', to: 'iiif#document_set', as: :iiif_document_set
   get '/iiif/collections', to: 'iiif#collections'
   get '/iiif/collections/:user_id', to: 'iiif#user_collections', as: :iiif_user_collections
-  get '/iiif/:page_id/list/:annotation_type', to: 'iiif#list'
+  get '/iiif/:page_id/list/:annotation_type', to: 'iiif#list', as: :iiif_page_annotation_list_for_type
   get '/iiif/:page_id/notes', to: 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', to: 'iiif#note'
   get '/iiif/:work_id/canvas/:page_id', to: 'iiif#canvas', as: 'iiif_canvas'
@@ -419,6 +420,9 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'iiif_page_export_plaintext_translation_verbatim', to: 'iiif#export_page_plaintext_translation_verbatim'
   get '/iiif/:work_id/export/:page_id/plaintext/emended', as: 'iiif_page_export_plaintext_emended', to: 'iiif#export_page_plaintext_emended'
   get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/ai/:ai_transcription_id/transcription', as: 'iiif_page_export_plaintext_ai_transcription', to: 'iiif#export_page_plaintext_ai_transcription'
+  get '/iiif/:work_id/export/:page_id/html/ai/:ai_transcription_id/reasoning', as: 'iiif_page_export_html_ai_reasoning', to: 'iiif#export_page_html_ai_reasoning'
+  get '/iiif/:work_id/export/:page_id/plaintext/ai/:ai_transcription_id/prompt', as: 'iiif_page_export_plaintext_ai_prompt', to: 'iiif#export_page_plaintext_ai_prompt'
 
   get '/iiif/admin/explore/:at_id', to: 'sc_collections#explore', constraints: { at_id: /.*/ }
   get '/iiif/admin/import_manifest', to: 'sc_collections#import_manifest'
@@ -587,6 +591,8 @@ Fromthepage::Application.routes.draw do
       get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
       get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
       get ':work_id/:page_id/alto_xml', as: 'alto_xml', to: 'page#alto_xml'
+      get ':work_id/annotation/:page_id/html/ai_text', to: 'iiif#annotation_page_ai_text', as: 'annotation_page_ai_text'
+      get ':work_id/annotation/:page_id/html/ai_reasoning', to: 'iiif#annotation_page_ai_reasoning', as: 'annotation_page_reasoning_html'
 
       # article related routes
       get 'article/:article_id', to: 'article#show', as: 'article_show'

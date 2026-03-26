@@ -24,10 +24,8 @@
     .work-page_thumbnail
       -if page.ia_leaf
         =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page), onclick: "resultClicked();")
-      -elsif page.sc_canvas
-        =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page), onclick: "resultClicked();")
       -else
-        =link_to(image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page), onclick: "resultClicked();")
+        =link_to(image_tag(page.thumbnail_url, alt: page.title), page_params(page), onclick: "resultClicked();")
       span
         span.progress
           -if page.status_new?

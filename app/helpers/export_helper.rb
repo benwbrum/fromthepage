@@ -130,7 +130,7 @@ module ExportHelper
     end
 
     if bulk_export.work_level? || bulk_export.page_level?
-      by_work = bulk_export.organization == BulkExport::Organization::WORK_THEN_FORMAT
+      by_work = bulk_export.organization_by_work?
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
         print "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n"
@@ -179,8 +179,10 @@ module ExportHelper
         include_metadata = bulk_export.report_arguments['include_metadata'] != '0'
         include_contributors = bulk_export.report_arguments['include_contributors'] != '0'
         include_notes = bulk_export.report_arguments['include_notes'] != '0'
+
         if bulk_export.facing_edition_work
-          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+          # NOTE: Facing editions should always preserve_lb
+          export_printable_to_zip(work, 'facing', 'pdf', out, by_work, original_filenames, true, include_metadata, include_contributors, include_notes)
         end
 
         if bulk_export.text_pdf_work
@@ -264,6 +266,9 @@ module ExportHelper
 
     @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('work_version DESC').includes(:page).all
 
+    # Gather AI transcription statistics for TEI header
+    @ai_model_contributions = gather_ai_model_contributions(@work)
+
     @all_articles = @work.articles
     people = work.collection.categories.where(title: 'People').first
     people_and_descendants = people.descendants << people
@@ -276,15 +281,17 @@ module ExportHelper
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
     @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
-    @other_articles.each do |subject|
+    [@other_articles+@person_articles+@place_articles+@organization_articles].flatten.each do |subject|
       subjects = expand_subject(subject)
       if subjects.count > 1
         subjects[1..].each do |expanded|
-          if expanded.categories.where(title: 'People').present?
+          # we want to look for top-level categories of People and Places in the parents of the subject category
+          categories_with_parents = expanded.categories.map { |c| [c] + c.ancestors }.flatten.uniq
+          if categories_with_parents.detect { |c| c.title='People' }
             @person_articles << expanded
-          elsif expanded.categories.where(title: 'Places').present?
+          elsif categories_with_parents.detect { |c| c.title='Places' }
             @place_articles << expanded
-          elsif expanded.categories.where(org_fields_enabled: true).present?
+          elsif categories_with_parents.detect { |c| c.org_fields_enabled? }
             @organization_articles << expanded
           else
             @other_articles << expanded
@@ -307,6 +314,7 @@ module ExportHelper
         work: @work,
         context: @context,
         user_contributions: @user_contributions,
+        ai_model_contributions: @ai_model_contributions,
         work_versions: @work_versions,
         all_articles: @all_articles,
         person_articles: @person_articles,
@@ -320,6 +328,76 @@ module ExportHelper
     post_process_xml(xml, @work)
 
     xml
+  end
+
+  # Gather AI transcription statistics for a work
+  # Returns an array of hashes with model name, date range, and page ranges
+  def gather_ai_model_contributions(work)
+    # Use pluck to avoid loading full ActiveRecord objects
+    ai_data = AiTranscription
+      .joins(:page)
+      .where(pages: { work_id: work.id })
+      .order(:model, :created_at)
+      .pluck('ai_transcriptions.model', 'ai_transcriptions.created_at', 'pages.position')
+
+    # Group by model
+    models_data = {}
+    ai_data.each do |model, created_at, position|
+      models_data[model] ||= { dates: [], positions: [] }
+      models_data[model][:dates] << created_at
+      models_data[model][:positions] << position
+    end
+
+    # Format the data for the template
+    contributions = []
+    models_data.each do |model, data|
+      # Get date range
+      dates = data[:dates].sort
+      first_date = dates.first
+      last_date = dates.last
+
+      # Get page ranges (consolidate consecutive pages)
+      positions = data[:positions].uniq.sort
+      page_ranges = consolidate_page_ranges(positions)
+
+      contributions << {
+        model: model,
+        first_date: first_date,
+        last_date: last_date,
+        page_ranges: page_ranges
+      }
+    end
+
+    contributions
+  end
+
+  # Helper method to consolidate consecutive page positions into ranges
+  # e.g., [1, 2, 3, 5, 6, 8] becomes ["1-3", "5-6", "8"]
+  def consolidate_page_ranges(positions)
+    return [] if positions.empty?
+
+    ranges = []
+    range_start = positions.first
+    range_end = positions.first
+
+    # Handle arrays with only one element
+    return [range_start.to_s] if positions.length == 1
+
+    positions[1..-1].each do |pos|
+      if pos == range_end + 1
+        range_end = pos
+      else
+        # End current range and start a new one
+        ranges << (range_start == range_end ? range_start.to_s : "#{range_start}-#{range_end}")
+        range_start = pos
+        range_end = pos
+      end
+    end
+
+    # Add the final range
+    ranges << (range_start == range_end ? range_start.to_s : "#{range_start}-#{range_end}")
+
+    ranges
   end
 
 
@@ -1119,8 +1197,5 @@ module ExportHelper
     end
 
     array
-  end
-
-  def handle_soul_risky_tags(doc)
   end
 end

@@ -1,10 +1,8 @@
 <% @pages.each do |page| %>
   <% if @edition == 'facing' %>
-    \begin{figure}[h]
-      \centering
-      \includegraphics[width=\linewidth]{<%= page.image_url_for_download %>}
-      \label{fig:<%= page.title %>}
-    \end{figure}
+    \begin{center}
+      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{<%= page.normalized_image_url_for_download %>}
+    \end{center}
 
     <%= render partial: 'shared/printable/newpage' %>
   <% end %>

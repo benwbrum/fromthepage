@@ -11,83 +11,97 @@
         .collection-intro_about
           ==@collection.intro_block
 
-    div.collection-work-list
-      h2 =t('.works')
+    - show_document_sets_instead_of_works = @collection.is_a?(Collection) && @collection.owner&.document_sets_on_owner_page?
+    -if show_document_sets_instead_of_works
+      -if @collection.document_sets.unrestricted.any?
+        h2 =t('.document_sets')
+        .collection-works
+          -@collection.document_sets.unrestricted.each do |doc_set|
+            .collection-work
+              .collection-work_image
+                -unless doc_set.picture.blank?
+                  =link_to image_tag(doc_set.picture_url(:thumb), alt: doc_set.title), collection_path(doc_set.owner, doc_set)
+              h4.collection-work_title =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
+              -unless doc_set.intro_block.blank?
+                p.collection-work_snippet ==doc_set.intro_block
+    -else
+      div.collection-work-list
+        h2 =t('.works')
 
-      .start_link
-        -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
-          -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
-            p
-            -if user_signed_in?
-              =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-            -else
-              =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-          - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
-            p
-            -if user_signed_in?
-              =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
-            -else
-              =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+        .start_link
+          -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+            -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
+              p
+              -if user_signed_in?
+                =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+              -else
+                =link_to t('.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+            - elsif @collection.has_untranscribed_pages? && @collection.active? && @collection.metadata_only_entry?
+              p
+              -if user_signed_in?
+                =link_to t('.start_creating_transcribing'), describe_collection_work_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+              -else
+                =link_to t('.start_creating_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
 
-    -if all_complete
-      h5.collection-work.acenter
-        = t('.all_complete')
+      -if all_complete
+        h5.collection-work.acenter
+          = t('.all_complete')
 
-    .collection-works
-      -@works.each do |work|
-        -if @collection.text_entry?
-          -default_path = collection_read_work_path(@collection.owner, @collection, work)
-        -else
-          -default_path = metadata_overview_collection_work_path(@collection.owner, @collection, work)
-        .collection-work
-          .collection-work_image
-            -unless work.thumbnail.nil?
-                =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
-          h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
-          p.collection-work_snippet = to_snippet(work.description)
-          -if @collection.text_entry? && work.next_untranscribed_page
-            p.collection-work_action
-              -if @collection.active? && work.user_can_transcribe?(current_user)
-                =t('.this_work_has_pages_that_need_work')
-                span &nbsp;
-                =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
-              -elsif work.restrict_scribes
-                =t('.restricted_collaboratoration')
-
-          -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
-            p.collection-work_action
-              -if work.user_can_transcribe?(current_user)
-                =t('.this_work_has_not_been_described')
-                span &nbsp;
-                =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
-              -elsif work.restrict_scribes
-                =t('.restricted_collaboratoration')
+      .collection-works
+        -@works.each do |work|
           -if @collection.text_entry?
-            .collection-work_stats
-              -work_stats(work)
-              span
-                = t('.n_pages', count: work.work_statistic.total_pages)
-                = @wording
-              span
-                =render(:partial => 'shared/progress', :locals => { :collection => @collection })
+            -default_path = collection_read_work_path(@collection.owner, @collection, work)
           -else
-            .collection-work_stats
-              span =t("work.#{work.description_status}")
+            -default_path = metadata_overview_collection_work_path(@collection.owner, @collection, work)
+          .collection-work
+            .collection-work_image
+              -unless work.thumbnail.nil?
+                  =link_to image_tag(work.thumbnail, alt: work.title), default_path, onclick: "resultClicked();"
+            h4.collection-work_title =link_to work.title, default_path, onclick: "resultClicked();"
+            p.collection-work_snippet = to_snippet(work.description)
+            -if @collection.text_entry? && work.next_untranscribed_page
+              p.collection-work_action
+                -if @collection.active? && work.user_can_transcribe?(current_user)
+                  =t('.this_work_has_pages_that_need_work')
+                  span &nbsp;
+                  =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page), onclick: "resultClicked();")
+                -elsif work.restrict_scribes
+                  =t('.restricted_collaboratoration')
 
-      =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+            -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
+              p.collection-work_action
+                -if work.user_can_transcribe?(current_user)
+                  =t('.this_work_has_not_been_described')
+                  span &nbsp;
+                  =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work), onclick: "resultClicked();")
+                -elsif work.restrict_scribes
+                  =t('.restricted_collaboratoration')
+            -if @collection.text_entry?
+              .collection-work_stats
+                -work_stats(work)
+                span
+                  = t('.n_pages', count: work.work_statistic.total_pages)
+                  = @wording
+                span
+                  =render(:partial => 'shared/progress', :locals => { :collection => @collection })
+            -else
+              .collection-work_stats
+                span =t("work.#{work.description_status}")
 
-    -unless @collection.facets_enabled?
-      -unless (@collection.works.incomplete_transcription.count == @collection.works.count)
-        -link
-        p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
+        =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
-    -if user_signed_in? && current_user.like_owner?(@collection) && @collection.active?
-      -if @collection.is_a?(Collection)
-        p.nodata_text = link_to t('.add_a_new_work'), new_work_collection_path(@collection.owner, @collection)
+      -unless @collection.facets_enabled?
+        -unless (@collection.works.incomplete_transcription.count == @collection.works.count)
+          -link
+          p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
-    -unless @collection.subjects_disabled
-      -unless @collection.categories.empty?
-        h3 =t('.subject_categories')
+      -if user_signed_in? && current_user.like_owner?(@collection) && @collection.active?
+        -if @collection.is_a?(Collection)
+          p.nodata_text = link_to t('.add_a_new_work'), new_work_collection_path(@collection.owner, @collection)
+
+      -unless @collection.subjects_disabled
+        -unless @collection.categories.empty?
+          h3 =t('.subject_categories')
         p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(collection_id: @collection, selected_category_id: c.id) }.join(', ')
 
   aside.sidecol
