@@ -22,7 +22,7 @@ ruby:
       end
     end
 
-    if !(user_signed_in? || @collection.visibility_read_only? && @work.restrict_scribes)
+    if !user_signed_in? && @work.user_can_transcribe?(nil)
       tabs << {
         name: t('.transcribe'),
         selected: 3,

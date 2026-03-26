@@ -80,4 +80,56 @@ describe AdminController do
       expect(response).to render_template('mission_control/jobs/queues/index')
     end
   end
+
+  describe '#owner_list' do
+    let(:action_path) { admin_owner_list_path }
+
+    it 'renders owner list for admin' do
+      login_as admin
+      get action_path
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:owner_list)
+    end
+
+    it 'sorts by login ascending' do
+      login_as admin
+      get action_path, params: { sort: 'login', dir: 'asc' }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'sorts by login descending' do
+      login_as admin
+      get action_path, params: { sort: 'login', dir: 'desc' }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'sorts by account_type ascending' do
+      login_as admin
+      get action_path, params: { sort: 'account_type', dir: 'asc' }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'sorts by account_type descending' do
+      login_as admin
+      get action_path, params: { sort: 'account_type', dir: 'desc' }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'sorts by start_date ascending' do
+      login_as admin
+      get action_path, params: { sort: 'start_date', dir: 'asc' }
+    end
+
+    it 'sorts by paid_date ascending' do
+      login_as admin
+      get action_path, params: { sort: 'paid_date', dir: 'asc' }
+    end
+
+
+    it 'sorts by last_sign_in_at ascending' do
+      login_as admin
+      get action_path, params: { sort: 'last_sign_in_at', dir: 'asc' }
+      expect(response).to have_http_status(:ok)
+    end
+  end
 end

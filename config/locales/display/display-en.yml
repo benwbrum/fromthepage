@@ -3,9 +3,9 @@ en:
   display:
     ai_text:
       ai_draft: AI Draft
-      ai_generated_text: AI Generated Text
       ai_text: AI Text
       ai_text_edit_notice: To edit this text, use the "AI Draft" button in the transcribe tab.
+      ai_text_generated_with: AI text generated with %{model} on %{date}
       facsimile: Facsimile
       human_transcription: Human Transcription
       show_comparison_with_transcription: Compare AI draft against human transcription
@@ -101,6 +101,9 @@ en:
       transcribed: transcribed
       translation: Translation
       unable_to_find_pages: We were unable to find any pages matching your request
+    prompt:
+      ai_prompt: AI Prompt
+      prompt_explanation: This prompt was used to generate the AI draft
     read_all_works:
       pages: Pages
       pages_that_mention: Pages That Mention %{article}

@@ -91,6 +91,22 @@ describe "editor actions", order: :defined do
       login_as(@user, scope: :user)
     end
 
+    it "checks that a guest does not see a Transcribe tab on a restricted work" do
+      logout(:user)
+      expect(@auth_work.restrict_scribes).to be true
+      visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+      page.find('.work-page_title', text: @work.pages.first.title).click_link
+      expect(page.find('.tabs')).not_to have_content("Transcribe")
+    end
+
+    it "checks that a guest does see a Transcribe tab on an unrestricted work" do
+      logout(:user)
+      expect(@work.restrict_scribes).to be false
+      visit collection_read_work_path(@work.owner, @work.collection, @work)
+      page.find('.work-page_title', text: @work.pages.first.title).click_link
+      expect(page.find('.tabs')).to have_content("Transcribe")
+    end
+
     it "checks that a restricted editor can't transcribe a work" do
       logout(:user)
       login_as(@rest_user, scope: :user)
@@ -300,14 +316,15 @@ describe "editor actions", order: :defined do
     end
 
     it "tries to save transcription with unsaved note", js: true do
-      col = Collection.second
-      test_page = col.works.first.pages.first
+      @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+      col = @work.collection
+      test_page = @work.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       text = Page.find_by(id: test_page.id).source_text
       fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in_editor_field "Attempt to save"
       message = dismiss_confirm do
-        find('#finish_button_top').click
+        find('#save_button_top').click
       end
       sleep(2)
       expect(message).to have_content("You have unsaved notes.")
@@ -327,15 +344,18 @@ describe "editor actions", order: :defined do
     it "deletes a note", js: true do
       col = Collection.second
       test_page = col.works.first.pages.first
+      # Ensure a note exists before attempting to delete
+      unless test_page.notes.exists?(body: "Test note")
+        test_page.notes.create!(user: @user, body: "Test note", collection: col, work: test_page.work)
+      end
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
-      title = test_page.notes.last.id
       note_id = test_page.notes.last.id
-      page.find('.user-bubble_content', text: "Test two")
+      page.find('.user-bubble_content', text: "Test note")
       accept_alert do
         find("form[data-turbo='true'][data-turbo-confirm='Are you sure you want to delete this note?'][action='/notes/#{note_id}'] button[type='submit']").click
       end
       sleep(3)
-      expect(Note.find_by(id: title)).to be_nil
+      expect(Note.find_by(id: note_id)).to be_nil
     end
 
     it "uses page arrows with unsaved transcription", js: true do

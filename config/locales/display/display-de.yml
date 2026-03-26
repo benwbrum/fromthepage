@@ -3,9 +3,9 @@ de:
   display:
     ai_text:
       ai_draft: KI-Entwurf
-      ai_generated_text: KI-generierter Text
       ai_text: KI-Text
       ai_text_edit_notice: Um diesen Text zu bearbeiten, verwenden Sie die Schaltfläche „AI-Entwurf“ im Transkriptions-Tab.
+      ai_text_generated_with: KI-Text, generiert mit %{model} auf %{date}
       facsimile: Faksimile
       human_transcription: Menschliche Transkription
       show_comparison_with_transcription: Vergleich mit der Transkription anzeigen
@@ -101,6 +101,9 @@ de:
       transcribed: transkribiert
       translation: Übersetzung
       unable_to_find_pages: Wir konnten keine Seiten finden, die Ihrer Anfrage entsprechen
+    prompt:
+      ai_prompt: KI-Aufforderung
+      prompt_explanation: Diese Vorgabe wurde verwendet, um den KI-Entwurf zu generieren.
     read_all_works:
       pages: Seiten
       pages_that_mention: Seiten, die %{article} erwähnen
