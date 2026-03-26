@@ -346,7 +346,7 @@ describe "editor actions", order: :defined do
       test_page = col.works.first.pages.first
       # Ensure a note exists before attempting to delete
       unless test_page.notes.exists?(body: "Test note")
-        test_page.notes.create!(user: User.first, body: "Test note", collection: col, work: test_page.work)
+        test_page.notes.create!(user: @user, body: "Test note", collection: col, work: test_page.work)
       end
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       note_id = test_page.notes.last.id
