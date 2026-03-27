@@ -16,7 +16,13 @@ class DocumentSet::Update < ApplicationInteractor
     @document_set.slug = @document_set.title.parameterize if @document_set_params[:slug].blank?
     set_featured_at
 
-    @document_set.save!
+    ActiveRecord::Base.transaction do
+      Collection::Lib::ResolveSlugConflictsHandler.new(
+        collection: @document_set
+      ).perform
+
+      @document_set.save!
+    end
 
     return unless @document_set.saved_change_to_visibility?
 

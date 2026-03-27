@@ -5,7 +5,7 @@ describe Collection::Update do
     Current.user = owner
   end
 
-  let(:owner) { User.find_by(owner: true) }
+  let(:owner) { create(:unique_user, :owner) }
   let!(:collection) do
     create(
       :collection,
@@ -83,6 +83,52 @@ describe Collection::Update do
           deed_type: DeedType::COLLECTION_ACTIVE
         ).present?
       ).to be_truthy
+    end
+
+    context 'when active slug conflict' do
+      let!(:document_set) { create(:document_set, collection_id: collection.id, owner_user_id: owner.id) }
+      let(:collection_params) do
+        {
+          slug: document_set.slug
+        }
+      end
+
+      it 'uniquifies slug' do
+        expect(result.success?).to be_truthy
+        expect(result.collection).to have_attributes(
+          slug: "#{document_set.slug}-collection"
+        )
+      end
+    end
+
+    context 'when old conflict' do
+      let(:time_stub) { Time.current.to_i }
+      let(:slug) { "collection-conflict-slug-#{time_stub}" }
+      let!(:other_collection) do
+        create(:collection, owner_user_id: owner.id, slug: slug)
+      end
+
+      let!(:old_friendly_id) do
+        FriendlyId::Slug.find_by(
+          slug: other_collection.slug,
+          sluggable_type: 'Collection',
+          sluggable_id: other_collection.id
+        )
+      end
+
+      let(:collection_params) do
+        {
+          slug: slug
+        }
+      end
+
+      it 'reclaims old slug' do
+        other_collection.update!(slug: "changed-collection-slug-#{time_stub}")
+
+        expect(result.success?).to be_truthy
+        expect(result.collection.slug).to eq(slug)
+        expect(old_friendly_id.reload.slug).to include("#{slug}-reclaimed-")
+      end
     end
   end
 end

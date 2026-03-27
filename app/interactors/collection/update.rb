@@ -22,6 +22,11 @@ class Collection::Update < ApplicationInteractor
       set_tags
 
       @collection.attributes = @collection_params
+
+      Collection::Lib::ResolveSlugConflictsHandler.new(
+        collection: @collection
+      ).perform
+
       set_featured_at
 
       @collection.save!
