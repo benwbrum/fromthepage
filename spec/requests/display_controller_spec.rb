@@ -195,6 +195,45 @@ describe DisplayController do
     end
   end
 
+  describe '#read_all_works' do
+    let!(:article) { create(:article, collection: collection) }
+    let!(:page_article_link) { create(:page_article_link, article: article, page: pages.first) }
+    let(:action_path) { display_read_all_works_path(article_id: article.id) }
+
+    context 'when user is not logged in' do
+      before do
+        Current.user = nil
+      end
+
+      it 'renders successfully without raising an error' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_all_works)
+      end
+
+      context 'when a work has description_status of NEEDS_REVIEW' do
+        before do
+          work.update!(description_status: Work::DescriptionStatus::NEEDS_REVIEW)
+        end
+
+        it 'does not raise a NoMethodError for nil current_user' do
+          expect { get action_path }.not_to raise_error
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context 'when user is logged in' do
+      it 'renders successfully' do
+        get action_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:read_all_works)
+      end
+    end
+  end
+
   describe '#parse_page_range' do
     let(:controller) { described_class.new }
 

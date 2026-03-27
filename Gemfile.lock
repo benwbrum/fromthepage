@@ -1045,7 +1045,7 @@ DEPENDENCIES
   with_model
 
 RUBY VERSION
-   ruby 3.3.5p100
+   ruby 3.2.3p157
 
 BUNDLED WITH
    2.7.2
