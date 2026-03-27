@@ -217,9 +217,11 @@ describe DisplayController do
           work.update!(description_status: Work::DescriptionStatus::NEEDS_REVIEW)
         end
 
-        it 'does not raise a NoMethodError for nil current_user' do
-          expect { get action_path }.not_to raise_error
+        it 'renders successfully and does not display the review metadata button' do
+          get action_path
+
           expect(response).to have_http_status(:ok)
+          expect(response.body).not_to include('review-button')
         end
       end
     end
