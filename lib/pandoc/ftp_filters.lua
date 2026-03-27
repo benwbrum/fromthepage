@@ -115,8 +115,10 @@ function handle_meta(meta)
 \setmonofont{CMU Typewriter Text}
 
 % For tables
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
 \usepackage{pdflscape}
-\usepackage{geometry}
 ]]
 
   table.insert(meta['header-includes'], pandoc.RawBlock('latex', header))
@@ -127,23 +129,66 @@ end
 function RotatetableDiv(el)
   if el.classes:includes("rotatetable") then
     local latex_blocks = {}
+
     table.insert(latex_blocks, pandoc.RawBlock("latex", [[
 \clearpage
-\begingroup
-\newgeometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
 \begin{landscape}
 \scriptsize
 ]]))
 
     for _, block in ipairs(el.content) do
-      table.insert(latex_blocks, block)
+      if block.t == "Table" then
+        -- Count columns from the table header
+        local col_count = 0
+        if block.colspecs then
+          col_count = #block.colspecs
+        elseif block.head and block.head.rows[1] then
+          col_count = #block.head.rows[1].cells
+        end
+
+        -- Fallback (just in case)
+        if col_count == 0 then col_count = 1 end
+
+        -- Build colspec = {X X X ...}
+        local colspec = {}
+        for i = 1, col_count do
+          table.insert(colspec, "X")
+        end
+        local colspec_str = table.concat(colspec, " ")
+
+        -- Convert table to LaTeX
+        local latex = pandoc.write(pandoc.Pandoc({block}), "latex")
+
+        -- Replace longtable → longtblr with dynamic colspec
+        latex = latex:gsub(
+          "\\begin{longtable}%b[]%b{}",
+          "\\begin{longtblr}{width=\\linewidth,colspec={" .. colspec_str .. "}}"
+        )
+
+        latex = latex:gsub(
+          "\\begin{longtable}",
+          "\\begin{longtblr}{width=\\linewidth,colspec={" .. colspec_str .. "}}"
+        )
+
+        latex = latex:gsub("\\end{longtable}", "\\end{longtblr}")
+
+        latex = latex:gsub("\\noalign%b{}", "")
+        latex = latex:gsub("\\toprule", "")
+        latex = latex:gsub("\\bottomrule", "")
+        latex = latex:gsub("\\endhead", "")
+        latex = latex:gsub("\\endfirsthead", "")
+        latex = latex:gsub("\\endfoot", "")
+        latex = latex:gsub("\\endlastfoot", "")
+
+        table.insert(latex_blocks, pandoc.RawBlock("latex", latex))
+      else
+        table.insert(latex_blocks, block)
+      end
     end
 
     table.insert(latex_blocks, pandoc.RawBlock("latex", [[
 \normalsize
 \end{landscape}
-\restoregeometry
-\endgroup
 \clearpage
 ]]))
 

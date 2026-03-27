@@ -196,12 +196,12 @@ class Work::Export::Lib::Utils
 
     latex += "\\begin{longtable}[\\textwidth]{#{column_format}}\n"
     if table_element.elements['thead']
-      latex += "\\toprule\n"
+      # latex += "\\toprule\n"
 
       table_element.elements['thead'].elements.each do |th|
         latex += process_element(page, th, preserve_lb, flatten_links)
       end
-      latex += "\\midrule\\noalign{}\n"
+      # latex += "\\midrule\n"
     end
 
     if table_element.elements['tbody']
@@ -210,7 +210,7 @@ class Work::Export::Lib::Utils
       end
     end
 
-    latex += "\\bottomrule\\noalign{}\n"
+    # latex += "\\bottomrule\n"
     latex += "\\end{longtable}\n"
 
     if column_count > COLUMN_THRESHOLD
