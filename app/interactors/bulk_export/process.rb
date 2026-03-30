@@ -1,7 +1,4 @@
 class BulkExport::Process < ApplicationInteractor
-  include ExportHelper
-  include ExportService
-
   def initialize(bulk_export:)
     @bulk_export = bulk_export
 
@@ -15,7 +12,7 @@ class BulkExport::Process < ApplicationInteractor
 
     @bulk_export.update!(status: :processing)
 
-    export_to_zip
+    @bulk_export.export_to_zip
 
     @bulk_export.update!(status: :finished)
   rescue StandardError => e

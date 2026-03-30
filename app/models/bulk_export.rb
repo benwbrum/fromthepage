@@ -57,6 +57,9 @@
 #  fk_rails_...  (work_id => works.id)
 #
 class BulkExport < ApplicationRecord
+  include ExportHelper
+  include ExportService
+
   store :report_arguments, accessors: [
     :preserve_linebreaks,
     :include_metadata,
@@ -124,5 +127,35 @@ class BulkExport < ApplicationRecord
 
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
+  end
+
+  def export_to_zip
+    works_scope = Work.includes(pages: [:notes, { page_versions: :user }])
+    works =
+      if self.work.present?
+        works_scope.where(id: self.work.id)
+      elsif self.document_set.present?
+        works_scope.where(id: self.document_set.works.pluck(:id))
+      elsif self.collection.present?
+        works_scope.where(collection_id: self.collection.id)
+      else
+        works_scope.none
+      end
+
+    zip_filename = "export_#{self.id}.zip"
+
+    Tempfile.create([zip_filename, '.zip']) do |tmpfile|
+      Zip::OutputStream.open(tmpfile.path) do |out|
+        write_work_exports(works, out, self.user, self)
+      end
+
+      tmpfile.rewind
+
+      self.output.attach(
+        io: tmpfile,
+        filename: zip_filename,
+        content_type: 'application/zip'
+      )
+    end
   end
 end
