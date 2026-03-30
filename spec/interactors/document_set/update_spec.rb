@@ -30,6 +30,57 @@ describe DocumentSet::Update do
     end
   end
 
+  context 'when active slug conflict' do
+    let(:document_set_params) do
+      {
+        title: 'New title',
+        description: 'New description',
+        slug: collection.slug,
+        visibility: 'public'
+      }
+    end
+
+    it 'uniquifies slug' do
+      expect(result.success?).to be_truthy
+      expect(result.document_set).to have_attributes(
+        title: 'New title',
+        description: 'New description',
+        visibility: 'public',
+        slug: "#{collection.slug}-set"
+      )
+    end
+  end
+
+  context 'when old conflict' do
+    let(:time_stub) { Time.current.to_i }
+    let(:slug) { "docset-conflict-slug-#{time_stub}" }
+    let!(:other_document_set) do
+      create(:document_set, collection_id: collection.id, owner_user_id: owner.id, slug: slug)
+    end
+
+    let!(:old_friendly_id) do
+      FriendlyId::Slug.find_by(
+        slug: other_document_set.slug,
+        sluggable_type: 'DocumentSet',
+        sluggable_id: other_document_set.id
+      )
+    end
+
+    let(:document_set_params) do
+      {
+        slug: slug
+      }
+    end
+
+    it 'reclaims old slug' do
+      other_document_set.update!(slug: "changed-docset-slug-#{time_stub}")
+
+      expect(result.success?).to be_truthy
+      expect(result.document_set.slug).to eq(slug)
+      expect(old_friendly_id.reload.slug).to include("#{slug}-reclaimed-")
+    end
+  end
+
   context 'when invalid params' do
     let(:document_set_params) do
       {
