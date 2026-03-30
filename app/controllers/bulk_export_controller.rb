@@ -77,7 +77,7 @@ class BulkExportController < ApplicationController
   # TODO: Deprecate
   # Keep for now for backsupport
   def download
-    if @bulk_export.status_finished?
+    if @bulk_export.status.to_sym == :finished
       # read and spew the file
       send_file(@bulk_export.zip_file_name,
         filename: 'fromthepage_export.zip',
