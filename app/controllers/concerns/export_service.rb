@@ -4,8 +4,8 @@ module ExportService
   include OwnerExporter
   include AdminExporter
   include ContributorHelper
-  require_dependency 'subject_exporter'
-  require_dependency 'subject_details_exporter'
+  require 'subject_exporter'
+  require 'subject_details_exporter'
 
   include Rails.application.routes.url_helpers
 
