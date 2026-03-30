@@ -160,35 +160,6 @@ class UserController < ApplicationController
     @carousel_collections = (collections.carousel + sets.carousel).sample(8)
   end
 
-  def profile_old
-    # Find the user if it isn't already set
-    @user ||= User.friendly.find(params[:id])
-
-    if !@user.deleted || current_user&.admin
-      @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
-      @collection_ids = @collections_and_document_sets.map(&:id)
-      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection)
-                    .order('created_at DESC').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-    else
-      flash[:notice] = t('.user_deleted')
-      redirect_to dashboard_path
-    end
-
-    return unless @user.owner?
-
-    if params[:ai_text]
-      @tag = Tag.where(ai_text: params[:ai_text]).first
-      if @tag
-        tag_collections = @tag.collections.where(owner_user_id: @user.id)
-        tag_document_sets = tag_collections.map(&:document_sets).flatten
-        @tag_collections = tag_collections+tag_document_sets
-      end
-    end
-    collections = @user.all_owner_collections.carousel
-    sets = @user.document_sets.carousel
-    @carousel_collections = (collections + sets).sample(8)
-  end
-
   def search
     @user = User.friendly.find(params[:user_slug])
     @search_string = search_params[:term]

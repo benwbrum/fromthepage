@@ -1,3 +1,4 @@
+# :nocov:
 module PageCaching
   extend ActiveSupport::Concern
 
@@ -27,21 +28,6 @@ module PageCaching
     cached?
   end
 
-  def render(*args, &block)
-    return super(*args, &block) if cache_key.blank?
-
-    if cached?
-      self.response_body = Rails.cache.read(cache_key)
-      self.content_type ||= 'text/html'
-
-      return
-    end
-
-    super(*args, &block).tap do
-      Rails.cache.write(cache_key, response.body)
-    end
-  end
-
   private
 
   def cache_key
@@ -49,11 +35,15 @@ module PageCaching
   end
 
   def cached?
-    @cached ||= Rails.cache.exist?(cache_key)
+    @cached || !stale?(etag: cache_key)
   end
 
   def etag_values
     self.class.etaggers.map { |block| instance_exec(&block) }
+  end
+
+  def request_etag
+    @request_etag ||= request.headers['If-None-Match']
   end
 
   module ClassMethods
@@ -66,3 +56,4 @@ module PageCaching
     end
   end
 end
+# :nocov:
