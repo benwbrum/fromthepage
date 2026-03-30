@@ -25,7 +25,7 @@ module PageCaching
     etags = etags.map { |etag| etag&.cache_key_with_version }.compact
     add_etags(etags) if etags.any?
 
-    cached?
+    !stale?(etag: cache_key)
   end
 
   private
@@ -34,16 +34,8 @@ module PageCaching
     @cache_key ||= ([etag_values, @custom_etags].flatten.compact.join('-'))
   end
 
-  def cached?
-    @cached || !stale?(etag: cache_key)
-  end
-
   def etag_values
     self.class.etaggers.map { |block| instance_exec(&block) }
-  end
-
-  def request_etag
-    @request_etag ||= request.headers['If-None-Match']
   end
 
   module ClassMethods
