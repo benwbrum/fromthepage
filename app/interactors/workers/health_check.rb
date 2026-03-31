@@ -79,7 +79,14 @@ class Workers::HealthCheck < Workers::Base
   end
 
   def pending
-    @pending ||= SolidQueue::Job.where(finished_at: nil).group(:queue_name).count
+    return @pending if defined?(@pending)
+
+    @pending = {}
+    SolidQueue::Queue.all.each do |q|
+      @pending[q.name] = q.size
+    end
+
+    @pending
   end
 
   def stale_workers
