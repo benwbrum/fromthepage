@@ -1,5 +1,5 @@
 # :nocov:
-class Workers::HealthCheck < ApplicationInteractor
+class Workers::HealthCheck < Workers::Base
   STALE_SECONDS = 120
   JOB_THRESHOLD = 1_000
 
