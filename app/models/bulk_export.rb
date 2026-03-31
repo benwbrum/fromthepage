@@ -74,19 +74,20 @@ class BulkExport < ApplicationRecord
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
-  enum :status, {
-    new: 'new',
-    queued: 'queued',
-    processing: 'processing',
-    finished: 'finished',
-    cleaned: 'cleaned',
-    error: 'error'
-  }, prefix: :status
+  # TODO: Find out conflict why this is re-declared on async jobs
+  # enum :status, {
+  #   new: 'new',
+  #   queued: 'queued',
+  #   processing: 'processing',
+  #   finished: 'finished',
+  #   cleaned: 'cleaned',
+  #   error: 'error'
+  # }, prefix: false
 
-  enum :organization, {
-    by_format: 'by_format',
-    by_work: 'by_work'
-  }, prefix: :organization
+  # enum :organization, {
+  #   by_format: 'by_format',
+  #   by_work: 'by_work'
+  # }, prefix: false
 
   has_one_attached :output
 
