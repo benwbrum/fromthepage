@@ -1,6 +1,7 @@
 class AiTranscription::Lib::Gemini::TranscribeHandler
   MAX_RETRY = 5
   IMAGE_FETCH_LIMIT = 10
+  TIMEOUT = 5
 
   # Follows key (model_name) value (version)
   # Add custom handling here if the model you are using
@@ -87,7 +88,14 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
     raise ArgumentError, 'Too many HTTP redirects' if limit.zero?
 
     uri = URI.parse(url)
-    response = Net::HTTP.get_response(uri)
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = (uri.scheme == 'https')
+
+    http.open_timeout = TIMEOUT
+    http.read_timeout = TIMEOUT
+
+    response = http.get(uri.request_uri)
 
     case response
     when Net::HTTPSuccess
