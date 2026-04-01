@@ -349,6 +349,14 @@ h3, .thredded--post-form--title {
   &[data-layout-mode='ttb'],
   &[data-layout-mode='btt'] {
 
+    .page-column {
+      flex: 0 0 auto;
+    }
+
+    #leftColumn {
+      flex: 0 0 auto !important;
+    }
+
     .splitter {
       margin-top: -2rem;
       margin-bottom: -2rem;

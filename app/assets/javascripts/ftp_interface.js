@@ -257,8 +257,16 @@ const ResizableSplitter = {
 
     const { heightPanel1, heightPanel2 } = calculateInitialHeights(initialPosition);
 
-    panel1.style.flex = mode === 'ttb'?`${heightPanel1}px`:'auto';
-    panel2.style.flex = mode === 'ttb'?`auto`:`${heightPanel2}px`;
+    // For ttb mode, use natural content height initially
+    // This prevents empty space in the image panel on overview pages
+    if (mode === 'ttb') {
+      // Don't set flex on panel1 initially - let CSS handle it
+      // CSS has flex: 0 0 auto which sizes to content
+      panel2.style.flex = '1 1 auto';
+    } else {
+      panel1.style.flex = 'auto';
+      panel2.style.flex = `${heightPanel2}px`;
+    }
 
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
