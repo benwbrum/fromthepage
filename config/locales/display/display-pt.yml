@@ -119,6 +119,11 @@ pt:
     reasoning:
       ai_reasoning: Etapas de raciocínio da IA
       reasoning_explanation: Explicação do raciocínio
+    token_usage:
+      ai_token_usage: Uso de tokens de IA
+      prompt_token_count: "Tokens de entrada: %{count}"
+      candidates_token_count: "Tokens de saída: %{count}"
+      total_token_count: "Total de tokens: %{count}"
   display_helper:
     page_action:
       blank_page: Página em branco

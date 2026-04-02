@@ -42,6 +42,11 @@ describe AiTranscription::Generate do
       # It contains an actual response from gemini
       expect(result.ai_transcription.source_text).to eq(expected_response["candidates"].first["content"]["parts"].second["text"])
       expect(result.ai_transcription.reasoning).to eq(expected_response["candidates"].first["content"]["parts"].first["text"])
+
+      usage = expected_response["usageMetadata"]
+      expect(result.ai_transcription.metadata["prompt_token_count"]).to eq(usage["promptTokenCount"])
+      expect(result.ai_transcription.metadata["candidates_token_count"]).to eq(usage["candidatesTokenCount"])
+      expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
     end
 
     context 'when model used does not support reasoning' do
@@ -63,6 +68,11 @@ describe AiTranscription::Generate do
         # It contains an actual response from gemini
         expect(result.ai_transcription.source_text).to eq(expected_response["candidates"].first["content"]["parts"].first["text"])
         expect(result.ai_transcription.reasoning).to eq("")
+
+        usage = expected_response["usageMetadata"]
+        expect(result.ai_transcription.metadata["prompt_token_count"]).to eq(usage["promptTokenCount"])
+        expect(result.ai_transcription.metadata["candidates_token_count"]).to eq(usage["candidatesTokenCount"])
+        expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
       end
     end
 

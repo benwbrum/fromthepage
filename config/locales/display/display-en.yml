@@ -119,6 +119,11 @@ en:
     reasoning:
       ai_reasoning: AI Reasoning Steps
       reasoning_explanation: Reasoning Explanation
+    token_usage:
+      ai_token_usage: AI Token Usage
+      prompt_token_count: "Input tokens: %{count}"
+      candidates_token_count: "Output tokens: %{count}"
+      total_token_count: "Total tokens: %{count}"
   display_helper:
     page_action:
       blank_page: Blank page

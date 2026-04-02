@@ -1,0 +1,11 @@
+- metadata = @ai_transcription&.metadata
+- if metadata && (metadata['prompt_token_count'] || metadata['total_token_count'])
+  #token-usage.ai-token-usage
+    h4 =t('.ai_token_usage')
+    .token-usage-content
+      - if metadata['prompt_token_count']
+        p =t('.prompt_token_count', count: metadata['prompt_token_count'])
+      - if metadata['candidates_token_count']
+        p =t('.candidates_token_count', count: metadata['candidates_token_count'])
+      - if metadata['total_token_count']
+        p =t('.total_token_count', count: metadata['total_token_count'])
