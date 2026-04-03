@@ -14,6 +14,7 @@ de:
         generate: Erstellen Sie KI-Entwürfe für Seiten ohne diese.
         in_progress: Im Gange
         not_started: Nicht gestartet
+        total_tokens_used: Gesamte verwendete Tokens
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen

@@ -14,6 +14,7 @@ es:
         generate: Crea borradores de IA para páginas que no los tengan.
         in_progress: En curso
         not_started: No iniciado
+        total_tokens_used: Total de tokens utilizados
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos

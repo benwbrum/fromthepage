@@ -14,6 +14,7 @@ pt:
         generate: Crie rascunhos com IA para páginas que não os possuem.
         in_progress: Em andamento
         not_started: Não iniciado
+        total_tokens_used: Total de tokens utilizados
         pages: Páginas
         queued: Em fila
         retry: Tentar novamente trabalhos com falha
