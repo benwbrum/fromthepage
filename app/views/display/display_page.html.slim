@@ -128,10 +128,12 @@ h2.legend#notes =t('.page_notes')
         }
         
         splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
-          onDrag: function() {
-            // Trigger viewer to resize during drag
+          onChanged: function() {
+            // Trigger viewer to reset bounds after drag completes
             if (typeof viewer !== 'undefined') {
-              requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+              });
             }
           },
           onPositionChange: function (pos) {
