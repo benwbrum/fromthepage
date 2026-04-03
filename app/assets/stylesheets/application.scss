@@ -354,7 +354,8 @@ h3, .thredded--post-form--title {
     }
 
     #leftColumn {
-      flex: 0 0 auto !important;
+      // Don't use !important - allow JavaScript to override when dragging splitter
+      flex: 0 0 auto;
     }
 
     .splitter {
