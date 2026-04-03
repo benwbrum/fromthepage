@@ -257,13 +257,11 @@ const ResizableSplitter = {
 
     const { heightPanel1, heightPanel2 } = calculateInitialHeights(initialPosition);
 
-    // For ttb mode, use the natural content height of panel1 initially
-    // This prevents empty space while still allowing the splitter to work
+    // For ttb mode, use the calculated height from initialPosition
+    // This allows proper initial sizing and still allows the splitter to work
     if (mode === 'ttb') {
-      // Get the natural height of panel1's content
-      const naturalHeight = panel1.scrollHeight;
-      // Set both panels with flex values that allow resizing
-      panel1.style.flex = `0 0 ${naturalHeight}px`;
+      // Use the calculated height from initialPosition parameter
+      panel1.style.flex = `0 0 ${heightPanel1}px`;
       panel2.style.flex = '1 1 auto';
     } else {
       panel1.style.flex = 'auto';
