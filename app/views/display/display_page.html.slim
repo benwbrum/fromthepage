@@ -128,13 +128,14 @@ h2.legend#notes =t('.page_notes')
         }
         
         splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
-          onPositionChange: function (pos) {
-            window.localStorage.setItem('overviewSplitterPos', pos)
-            
-            // Trigger viewer to reset bounds when splitter position changes
+          onDrag: function() {
+            // Trigger viewer to resize during drag
             if (typeof viewer !== 'undefined') {
               requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
             }
+          },
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('overviewSplitterPos', pos)
           },
           initialPosition: (window.localStorage.getItem('overviewSplitterPos') || 50) + '%'
         });
