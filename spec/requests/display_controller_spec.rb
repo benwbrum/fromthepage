@@ -87,7 +87,7 @@ describe DisplayController do
       end
     end
 
-    context 'when page only has an ALTO transcription (no non-ALTO finished transcriptions)' do
+    context 'when page only has an ALTO transcription' do
       let!(:page_alto_only) { create(:page, work: work) }
       let!(:alto_transcription) do
         create(:ai_transcription, page: page_alto_only, model: AiTranscription::ALTO_MODEL,
@@ -95,11 +95,11 @@ describe DisplayController do
       end
       let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_alto_only) }
 
-      it 'redirects instead of raising a 500 error' do
+      it 'renders the AI text page' do
         subject
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(collection_display_page_path(owner, collection, work, page_alto_only))
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
       end
     end
 
