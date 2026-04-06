@@ -91,6 +91,9 @@ class DisplayController < ApplicationController
   end
 
   def display_page
+    # Set layout mode for the overview tab
+    @overview_layout_mode = cookies[:overview_layout_mode] || @collection.default_overview_orientation
+
     # Set meta information for web crawlers and archival only for pages with content
     if @page.status != 'new'
       @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"

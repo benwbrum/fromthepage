@@ -191,6 +191,8 @@ en:
       alphabetize_works_description: Display works alphabetically rather than in order of amount of work remaining.
       default_orientation: Default transcription screen orientation
       default_orientation_description: Choose the orientation that best matches the majority of the works in this collection.  Users will be able to change the orientation to one that they prefer.
+      default_overview_orientation: Default overview screen orientation
+      default_overview_orientation_description: Choose the orientation for the page overview tab display.
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
       edit_document_sets: Edit Sets
       edit_facets: Edit Facets
