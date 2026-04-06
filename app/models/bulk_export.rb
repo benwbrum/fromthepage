@@ -159,4 +159,18 @@ class BulkExport < ApplicationRecord
       )
     end
   end
+
+  def submit_export_process
+    rake_call = "#{RAKE} fromthepage:process_bulk_export[#{self.id}]  --trace &"
+
+    # Nice-up the rake call if settings are present
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} stdbuf -oL " << rake_call if NICE_RAKE_ENABLED
+
+    logger.info rake_call
+    system('env > /home/fromthepage/environment_logging/env_from_application.log')
+    Rails.logger.info("whoami is \n" + `whoami`)
+    Rails.logger.info("pwd is \n" + `pwd`)
+    Rails.logger.info("ulimit -a is \n" + `/bin/bash -c "ulimit -a"`)
+    system(rake_call)
+  end
 end
