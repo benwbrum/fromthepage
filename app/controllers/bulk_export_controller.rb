@@ -38,7 +38,10 @@ class BulkExportController < ApplicationController
     @bulk_export.report_arguments = bulk_export_params[:report_arguments].to_h
 
     if @bulk_export.save!
-      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
+      @bulk_export.submit_export_process
+
+      # TODO: Once solid_queue worker contexts are figured out, bring this back
+      # BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
@@ -67,7 +70,10 @@ class BulkExportController < ApplicationController
     end
 
     if @bulk_export.save
-      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
+      @bulk_export.submit_export_process
+
+      # TODO: Once solid_queue worker contexts are figured out, bring this back
+      # BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
@@ -163,7 +169,10 @@ class BulkExportController < ApplicationController
     end
 
     if @bulk_export.save
-      BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
+      @bulk_export.submit_export_process
+
+      # TODO: Once solid_queue worker contexts are figured out, bring this back
+      # BulkExport::ProcessJob.perform_later(user_id: current_user.id, bulk_export_id: @bulk_export.id)
 
       flash[:info] = t('.export_running_message', email: (current_user.email))
     end
