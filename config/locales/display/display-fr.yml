@@ -121,9 +121,9 @@ fr:
       reasoning_explanation: Explication du raisonnement
     token_usage:
       ai_token_usage: Utilisation des tokens IA
-      prompt_token_count: "Tokens d'entrée : %{count}"
-      candidates_token_count: "Tokens de sortie : %{count}"
-      total_token_count: "Total des tokens : %{count}"
+      candidates_token_count: 'Tokens de sortie : %{count}'
+      prompt_token_count: 'Tokens d''entrée : %{count}'
+      total_token_count: 'Total des tokens : %{count}'
   display_helper:
     page_action:
       blank_page: Page vierge

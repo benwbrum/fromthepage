@@ -14,10 +14,10 @@ fr:
         generate: Créer des brouillons IA pour les pages qui en sont dépourvues.
         in_progress: En cours
         not_started: Pas encore commencé
-        total_tokens_used: Total de tokens utilisés
         pages: Pages
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
+        total_tokens_used: Total de tokens utilisés
       update:
         success: Nouvelle tentative de transcription par IA.
     approve_all:

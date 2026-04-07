@@ -14,10 +14,10 @@ en:
         generate: Create AI drafts for pages without them.
         in_progress: In progress
         not_started: Not started
-        total_tokens_used: Total tokens used
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
+        total_tokens_used: Total tokens used
       update:
         success: Retrying AI transcription job.
     approve_all:
