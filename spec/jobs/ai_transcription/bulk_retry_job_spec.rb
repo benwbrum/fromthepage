@@ -17,7 +17,8 @@ describe AiTranscription::BulkRetryJob do
   it 'enqueues GenerateJob for ai_transcriptions' do
     expect(AiTranscription::GenerateJob).to receive(:perform_later).with(
       ai_transcription_id: ai_transcription.id,
-      user_id: owner.id
+      user_id: owner.id,
+      page_id: page.id
     )
 
     perform_worker

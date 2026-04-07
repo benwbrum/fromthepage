@@ -21,11 +21,13 @@ describe AiTranscription::BulkGenerateJob do
   it 'enqueues GenerateJob for ai_transcriptions' do
     expect(AiTranscription::GenerateJob).to receive(:perform_later).with(
       ai_transcription_id: ai_transcription_1.id,
-      user_id: owner.id
+      user_id: owner.id,
+      page_id: page_1.id
     )
     expect(AiTranscription::GenerateJob).to receive(:perform_later).with(
       ai_transcription_id: ai_transcription_2.id,
-      user_id: owner.id
+      user_id: owner.id,
+      page_id: page_2.id
     )
 
     perform_worker

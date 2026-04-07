@@ -1,4 +1,6 @@
 class AiTranscription::GenerateJob < ApplicationJob
+  limits_concurrency key: ->(user_id:, ai_transcription_id:, page_id:) { "generate:#{page_id}" }, duration: 2.hours
+
   queue_as :ai_transcriptions
 
   retry_on StandardError, attempts: 1
@@ -11,7 +13,10 @@ class AiTranscription::GenerateJob < ApplicationJob
   #
   # @params ai_transcription_id
   #   - valid ai_transcription record id to be used for generation
-  def perform(user_id:, ai_transcription_id:)
+  #
+  # @params page_id
+  #   - valid page record id to be used for concurrency key
+  def perform(user_id:, ai_transcription_id:, page_id:)
     ai_transcription = AiTranscription.find(ai_transcription_id)
     user = User.find(user_id)
     collection = ai_transcription.page.collection

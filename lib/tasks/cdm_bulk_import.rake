@@ -68,7 +68,8 @@ namespace :fromthepage do
 
             AiTranscription::GenerateJob.perform_now(
               user_id: bulk_import.user.id,
-              ai_transcription_id: create_result.ai_transcription.id
+              ai_transcription_id: create_result.ai_transcription.id,
+              page_id: create_result.ai_transcription.page_id
             )
 
             print "SUCCESS\n"

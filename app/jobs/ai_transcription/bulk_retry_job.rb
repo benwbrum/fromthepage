@@ -1,4 +1,6 @@
 class AiTranscription::BulkRetryJob < ApplicationJob
+  limits_concurrency key: ->(user_id:, ai_transcription_ids:) { "bulk_retry:#{ai_transcription_ids}" }, duration: 2.hours
+
   queue_as :ai_transcriptions
 
   retry_on StandardError, attempts: 1
@@ -11,7 +13,8 @@ class AiTranscription::BulkRetryJob < ApplicationJob
     ai_transcriptions.each do |ai_transcription|
       AiTranscription::GenerateJob.perform_later(
         ai_transcription_id: ai_transcription.id,
-        user_id: user.id
+        user_id: user.id,
+        page_id: ai_transcription.page_id
       )
     end
   end

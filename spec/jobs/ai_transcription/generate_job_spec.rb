@@ -22,7 +22,7 @@ describe AiTranscription::GenerateJob do
   subject(:worker) { described_class.new }
 
   let(:perform_worker) do
-    worker.perform(user_id: owner.id, ai_transcription_id: ai_transcription.id)
+    worker.perform(user_id: owner.id, ai_transcription_id: ai_transcription.id, page_id: page.id)
   end
 
   context 'success' do
