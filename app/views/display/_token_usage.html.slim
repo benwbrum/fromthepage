@@ -1,6 +1,6 @@
-- metadata = @ai_transcription&.metadata
-- if metadata && (metadata['prompt_token_count'] || metadata['total_token_count'])
-  #token-usage.ai-token-usage
+#token-usage.ai-token-usage
+  - metadata = @ai_transcription&.metadata
+  - if metadata && (metadata['prompt_token_count'] || metadata['total_token_count'])
     h4 =t('.ai_token_usage')
     .token-usage-content
       - if metadata['prompt_token_count']
