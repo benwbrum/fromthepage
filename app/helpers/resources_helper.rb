@@ -12,6 +12,13 @@ module ResourcesHelper
     ]
   end
 
+  def default_overview_orientations_collection
+    [
+      [t('collection.edit_look.page_on_the_left'), 'ltr'],
+      [t('collection.edit_look.page_on_the_top'), 'ttb']
+    ]
+  end
+
   def flash_icons
     {
       notice: '#icon-check-sign',

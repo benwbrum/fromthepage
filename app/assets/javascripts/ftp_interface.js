@@ -257,19 +257,26 @@ const ResizableSplitter = {
 
     const { heightPanel1, heightPanel2 } = calculateInitialHeights(initialPosition);
 
-    panel1.style.flex = mode === 'ttb'?`${heightPanel1}px`:'auto';
-    panel2.style.flex = mode === 'ttb'?`auto`:`${heightPanel2}px`;
+    // For ttb mode, use the calculated height from initialPosition
+    // This allows proper initial sizing and still allows the splitter to work
+    if (mode === 'ttb') {
+      // Use the calculated height from initialPosition parameter
+      panel1.style.flex = `0 0 ${heightPanel1}px`;
+      panel2.style.flex = '1 1 auto';
+    } else {
+      panel1.style.flex = 'auto';
+      panel2.style.flex = `${heightPanel2}px`;
+    }
 
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
-        const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
-        const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
-        splitter.style.top = `${splitterTop}px`;
+        // Let CSS sticky positioning handle the splitter position
+        // Don't manually set top position as it interferes with sticky behavior
         splitter.style.bottom = `auto`;
 
         // reset the sticky position of the CodeMirror buttons panel
         if(document.querySelector('.CodeMirror-buttonsPanel'))
-          document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
+          document.querySelector('.CodeMirror-buttonsPanel').style.top = '73px';
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
@@ -294,7 +301,7 @@ const ResizableSplitter = {
       }
 
       if(mode === 'ttb') {
-        panel1.style.flex = `${newHeightPanel1}px`;
+        panel1.style.flex = `0 0 ${newHeightPanel1}px`;
       } else {
         panel2.style.flex = `${newHeightPanel1}px`;
       }

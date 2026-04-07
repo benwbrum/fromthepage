@@ -191,6 +191,8 @@ fr:
       alphabetize_works_description: L’affichage fonctionne par ordre alphabétique plutôt que par ordre de quantité de travail restant.
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       default_orientation_description: Choisissez l'orientation qui correspond le mieux à la majorité des œuvres de cette collection. Les utilisateurs pourront modifier l'orientation selon celle qu'ils préfèrent.
+      default_overview_orientation: Orientation par défaut de l'écran de vue d'ensemble
+      default_overview_orientation_description: Choisissez l'orientation pour l'affichage de l'onglet de vue d'ensemble de la page.
       document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
       edit_document_sets: Modifier les ensembles
       edit_facets: Modifier les facettes

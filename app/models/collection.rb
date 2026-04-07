@@ -353,6 +353,14 @@ class Collection < ApplicationRecord
     end
   end
 
+  def default_overview_orientation
+    if !self[:default_overview_orientation].nil?
+      self[:default_overview_orientation]
+    else
+      'ltr'
+    end
+  end
+
   def is_public
     !restricted
   end

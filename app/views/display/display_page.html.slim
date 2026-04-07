@@ -17,28 +17,45 @@
 .page-headlines
   .headline
     h3.headline_title =t('.facsimile')
-  .headline
-    -if translation_mode?
-      h3.headline_title =t('.translation')
-      .page_status
-        =t("page.edit.status")
-        =t("page.edit.page_status_#{@page.translation_status}")
-      small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
-    -else
-      h3.headline_title =t('.transcription')
-      .page_status
-        =t("page.edit.status")
-        =t("page.edit.page_status_#{@page.status}")
+  -if @overview_layout_mode == 'ltr'
+    .headline
+      -if translation_mode?
+        h3.headline_title =t('.translation')
+        .page_status
+          =t("page.edit.status")
+          =t("page.edit.page_status_#{@page.translation_status}")
+        small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
+      -else
+        h3.headline_title =t('.transcription')
+        .page_status
+          =t("page.edit.status")
+          =t("page.edit.page_status_#{@page.status}")
 
-      -if @work.supports_translation
-        small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
+        -if @work.supports_translation
+          small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
 
-.page-columns(data-layout-mode="ltr")
+.page-columns(data-layout-mode="#{@overview_layout_mode}")
   .page-column(id="leftColumn")
     .page-imagescan
       =render :partial => '/shared/osd_div'
   .splitter(id="splitter")
   .page-column(id="rightColumn")
+    -if @overview_layout_mode == 'ttb'
+      .headline
+        -if translation_mode?
+          h3.headline_title =t('.translation')
+          .page_status
+            =t("page.edit.status")
+            =t("page.edit.page_status_#{@page.translation_status}")
+          small.headline_aside =link_to t('.show_transcription'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: false), class: 'button outline'
+        -else
+          h3.headline_title =t('.transcription')
+          .page_status
+            =t("page.edit.status")
+            =t("page.edit.page_status_#{@page.status}")
+
+          -if @work.supports_translation
+            small.headline_aside =link_to t('.show_translation'), collection_display_page_path(@collection.owner, @collection, @work, @page.id, translation: true), class: 'button outline'
     .page-preview[*language_attrs(@collection)]
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
@@ -99,5 +116,40 @@ h2.legend#notes =t('.page_notes')
 
 -content_for :javascript
   javascript:
-    let splitter = Object.create(ResizableSplitter);
-    splitter.initVertical('#splitter', '#leftColumn', '#rightColumn');
+    $(function() {
+      let splitter = Object.create(ResizableSplitter);
+      
+      function applySplitter(mode=$('[data-layout-mode]').attr('data-layout-mode')) {
+        const leftPanel = (mode === 'ltr' || mode === 'ttb')?'#leftColumn':'#rightColumn';
+        const rightPanel = (mode === 'ltr' || mode === 'ttb')?'#rightColumn':'#leftColumn';
+        
+        if(splitter && splitter.destroy) {
+          splitter.destroy()
+        }
+        
+        splitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          onChanged: function() {
+            // Trigger viewer to reset bounds after drag completes
+            if (typeof viewer !== 'undefined') {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+              });
+            }
+          },
+          onPositionChange: function (pos) {
+            window.localStorage.setItem('overviewSplitterPos', pos)
+          },
+          initialPosition: (window.localStorage.getItem('overviewSplitterPos') || 50) + '%'
+        });
+        
+        // Trigger viewer to reset bounds after splitter initialization
+        if (typeof viewer !== 'undefined') {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        }
+      }
+      
+      // initialize splitter when page loaded
+      $(document).ready(function(){
+        applySplitter($('[data-layout-mode]').attr('data-layout-mode'));
+      })
+    });
