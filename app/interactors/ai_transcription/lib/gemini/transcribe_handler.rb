@@ -31,8 +31,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
       begin
         response = client.generate_content(payload)
 
-        # TODO: Make options customizable for gemini and add to metadata
-        metadata = {}
+        metadata = extract_usage_metadata(response)
 
         transcription_text, reasoning_text = extract_texts_from_response(response)
 
@@ -149,5 +148,15 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
     end
 
     [transcription_text.join('').strip, reasoning_text.join('').strip]
+  end
+
+  def extract_usage_metadata(response)
+    usage = response['usageMetadata'] || {}
+
+    {
+      prompt_token_count: usage['promptTokenCount'],
+      candidates_token_count: usage['candidatesTokenCount'],
+      total_token_count: usage['totalTokenCount']
+    }.compact
   end
 end

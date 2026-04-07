@@ -27,5 +27,7 @@
 
 =render partial: 'reasoning'
 
+=render partial: 'token_usage'
+
 -if @page.ai_transcription&.prompt&.present?
   =render partial: 'prompt', locals: { prompt: @page.ai_transcription.prompt }

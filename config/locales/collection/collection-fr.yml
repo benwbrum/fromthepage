@@ -17,6 +17,7 @@ fr:
         pages: Pages
         queued: File d'attente
         retry: Réessayer les tâches ayant échoué
+        total_tokens_used: Total de tokens utilisés
       update:
         success: Nouvelle tentative de transcription par IA.
     approve_all:
