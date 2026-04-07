@@ -287,11 +287,11 @@ module ExportHelper
         subjects[1..].each do |expanded|
           # we want to look for top-level categories of People and Places in the parents of the subject category
           categories_with_parents = expanded.categories.map { |c| [c] + c.ancestors }.flatten.uniq
-          if categories_with_parents.detect { |c| c.title='People' }
+          if categories_with_parents.detect { |c| people_and_descendants.include?(c) }
             @person_articles << expanded
-          elsif categories_with_parents.detect { |c| c.title='Places' }
+          elsif categories_with_parents.detect { |c| places_and_descendants.include?(c) }
             @place_articles << expanded
-          elsif categories_with_parents.detect { |c| c.org_fields_enabled? }
+          elsif categories_with_parents.detect { |c| organizations_and_descendants.include?(c) }
             @organization_articles << expanded
           else
             @other_articles << expanded
