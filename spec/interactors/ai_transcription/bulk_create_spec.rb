@@ -21,6 +21,7 @@ describe AiTranscription::BulkCreate do
   end
 
   it 'initializes processing ai_transcription records' do
+    expect(result.full_errors).to eq(nil)
     expect(result.success?).to be_truthy
     ai_transcriptions = collection.pages.includes(:ai_transcription).map(&:ai_transcription)
     expect(ai_transcriptions.size).to eq(2)
