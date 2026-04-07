@@ -74,7 +74,7 @@ describe DisplayController do
 
         context 'with multiple finished transcriptions' do
           let!(:older_transcription) { create(:ai_transcription, page: page, source_text: 'Older AI text', status: :finished, created_at: 2.days.ago) }
-          let!(:newer_transcription) { create(:ai_transcription, page: page, source_text: 'Newer AI text', status: :finished, created_at: 1.day.ago) }
+          let!(:newer_transcription) { create(:ai_transcription, page: page, source_text: 'Newer AI text', status: :finished, created_at: 1.minute.from_now) }
 
           it 'defaults to the most recent transcription' do
             subject
