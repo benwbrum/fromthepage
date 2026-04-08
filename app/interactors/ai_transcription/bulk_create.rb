@@ -45,7 +45,7 @@ class AiTranscription::BulkCreate < ApplicationInteractor
   end
 
   def lock_name
-    @lock_name ||= "bulk_create:#{@collection.id}:#{@user.id}"
+    @lock_name ||= "bulk_create:#{@collection.id}"
   end
 
   def lock
@@ -55,7 +55,7 @@ class AiTranscription::BulkCreate < ApplicationInteractor
   end
 
   def check_lock
-    return unless lock == 1
+    return if lock == 1
 
     raise ArgumentError, 'Job is already running'
   end
