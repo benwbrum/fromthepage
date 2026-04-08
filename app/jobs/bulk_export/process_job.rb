@@ -1,5 +1,5 @@
 class BulkExport::ProcessJob < ApplicationJob
-  queue_as :default
+  queue_as :bulk_exports
 
   retry_on StandardError, attempts: 1
 

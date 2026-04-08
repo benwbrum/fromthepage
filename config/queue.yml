@@ -3,11 +3,15 @@ default: &default
     - polling_interval: 1
       batch_size: 500
   workers:
-    - queues: ["default"]
+    - queues: ["default", "solid_queue_recurring"]
       threads: 10
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
     - queues: ["ai_transcriptions"]
+      threads: 3
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+      polling_interval: 0.1
+    - queues: ["bulk_exports"]
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
