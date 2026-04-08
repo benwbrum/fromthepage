@@ -37,5 +37,20 @@ namespace :oneoff do
     end
 
     jobs_to_delete.each(&:destroy!)
+
+    SolidQueue::ClaimedExecution
+      .left_joins(:job)
+      .where(solid_queue_jobs: { id: nil })
+      .delete_all
+
+    SolidQueue::ReadyExecution
+      .left_joins(:job)
+      .where(solid_queue_jobs: { id: nil })
+      .delete_all
+
+    SolidQueue::ScheduledExecution
+      .left_joins(:job)
+      .where(solid_queue_jobs: { id: nil })
+      .delete_all
   end
 end
