@@ -72,6 +72,7 @@ describe AiTranscription::Generate do
         usage = expected_response["usageMetadata"]
         expect(result.ai_transcription.metadata["prompt_token_count"]).to eq(usage["promptTokenCount"])
         expect(result.ai_transcription.metadata["candidates_token_count"]).to eq(usage["candidatesTokenCount"])
+        expect(result.ai_transcription.metadata["thoughts_token_count"]).to eq(usage["thoughtsTokenCount"])
         expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
       end
     end

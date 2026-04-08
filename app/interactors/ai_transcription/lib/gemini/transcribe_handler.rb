@@ -156,6 +156,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
     {
       prompt_token_count: usage['promptTokenCount'],
       candidates_token_count: usage['candidatesTokenCount'],
+      thoughts_token_count: usage['thoughtsTokenCount'],
       total_token_count: usage['totalTokenCount']
     }.compact
   end
