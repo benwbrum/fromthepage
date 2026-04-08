@@ -43,18 +43,13 @@ describe AiTranscription::BulkCreate do
   context 'when another bulk_create for collection is in progress' do
     let(:lock_name) { "bulk_create:#{collection.id}" }
 
-    before do
-      ActiveRecord::Base.connection.select_value(
-        "SELECT GET_LOCK('#{lock_name}', 0)"
-      )
-    end
-
-    after do
-      ActiveRecord::Base.connection.execute("DO RELEASE_LOCK('#{lock_name}')")
-    end
-
     it 'fails to start creation job' do
+      other_conn = ActiveRecord::Base.connection_pool.checkout
+      other_conn.select_value("SELECT GET_LOCK('#{lock_name}', 0)")
+
       expect(result.success?).to be_falsey
+
+      ActiveRecord::Base.connection.execute("DO RELEASE_LOCK('#{lock_name}')")
     end
   end
 end
