@@ -71,6 +71,17 @@ describe DisplayController do
             expect(response).to render_template(:ai_text)
           end
         end
+
+        context 'with multiple finished transcriptions' do
+          let!(:older_transcription) { create(:ai_transcription, page: page, source_text: 'Older AI text', status: :finished, created_at: 2.days.ago) }
+          let!(:newer_transcription) { create(:ai_transcription, page: page, source_text: 'Newer AI text', status: :finished, created_at: 1.minute.from_now) }
+
+          it 'defaults to the most recent transcription' do
+            subject
+
+            expect(assigns(:ai_transcription)).to eq(newer_transcription)
+          end
+        end
       end
 
       context 'without completed transcription' do

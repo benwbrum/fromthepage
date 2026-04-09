@@ -144,8 +144,8 @@ class DisplayController < ApplicationController
       return
     end
 
-    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished)
-    @finished_transcription_count = ai_transcriptions_scope.where(status: :finished).count
+    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
+    @finished_transcription_count = ai_transcriptions_scope.count
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
 
     @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_text: @ai_transcription.source_text)

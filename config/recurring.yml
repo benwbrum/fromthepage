@@ -21,3 +21,7 @@ production:
   clean_elasticsearch_orphaned_records_job:
     command: "Elasticsearch::CleanOrphanedRecordsJob.perform_later(user_id: 1)"
     schedule: every Sunday at 12:00am
+
+  workers_env_check_job:
+    command: "Workers::EnvCheckJob.perform_later(user_id: 1)"
+    schedule: every hour at minute 30
