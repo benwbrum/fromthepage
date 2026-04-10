@@ -229,7 +229,7 @@ const ResizableSplitter = {
   },
 
   initHorizontal: function(splitterSelector, panel1Selector, panel2Selector, mode='', options = {}) {
-    const { onDrag, onChanged, initialPosition = '50%', onPositionChange } = options;
+    const { onDrag, onChanged, initialPosition = '50%', onPositionChange, splitterContext='transcribe' } = options;
 
     const splitter = document.querySelector(splitterSelector);
     const panel1 = document.querySelector(panel1Selector);
@@ -270,15 +270,20 @@ const ResizableSplitter = {
 
     const resetSplitterPos = () => {
       if(mode === 'ttb') {
-        const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
-        const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
-        splitter.style.top = `${splitterTop}px`;
+        if(splitterContext === 'transcribe') {
+          const elementTop = Math.abs(panel1.parentElement.offsetTop - window.scrollTop);
+          const splitterTop = elementTop > 73?elementTop:73 + panel1.clientHeight;
+          splitter.style.top = `${splitterTop}px`;
 
-        splitter.style.bottom = `auto`;
+          splitter.style.bottom = `auto`;
 
-        // reset the sticky position of the CodeMirror buttons panel
-        if(document.querySelector('.CodeMirror-buttonsPanel'))
-          document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
+          // reset the sticky position of the CodeMirror buttons panel
+          if(document.querySelector('.CodeMirror-buttonsPanel'))
+            document.querySelector('.CodeMirror-buttonsPanel').style.top = (splitterTop + 20) + 'px';
+        } else {
+          // Let CSS sticky positioning handle the splitter position in page overview mode
+          // Don't manually set top position as it interferes with sticky behavior
+        }
       } else {
         splitter.style.bottom = `${panel2.clientHeight}px`
         splitter.style.top = `auto`;
