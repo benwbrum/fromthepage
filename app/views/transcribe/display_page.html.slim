@@ -200,6 +200,7 @@ h2.legend =t('.notes_and_questions')
         }
 
         resizableSplitter[(mode === 'ltr' || mode === 'rtl')?'initVertical':'initHorizontal']('#splitter', leftPanel, rightPanel, mode, {
+          splitterContext: 'transcribe',
           onPositionChange: function (pos) {
             window.localStorage.setItem('splitterPos', pos)
 

@@ -8,11 +8,7 @@ default: &default
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
     - queues: ["ai_transcriptions"]
-      threads: 3
-      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
-      polling_interval: 0.1
-    - queues: ["bulk_exports"]
-      threads: 3
+      threads: 10
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
 
