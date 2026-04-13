@@ -10,13 +10,13 @@ describe "uploads data for collections", order: :defined do
     login_as(@owner, scope: :user)
   end
 
-  it "imports an IIIF collection", js: true do
+  it "imports an IIIF collection" do
     visit dashboard_owner_path
     VCR.use_cassette('iiif/cambridge_hebrew_mss', record: :none) do
       page.find('.tabs').click_link("Start A Project")
-      page.find(:css, '#import-iiif-manifest').click
-      page.fill_in 'at_id', with: @at_id
-      find_button('iiif_import').click
+      find('#at_id', visible: false)
+        .set(@at_id)
+      find('#iiif_import', visible: false).click
       expect(page).to have_content(@at_id)
       expect(page).to have_content("Manifests")
       select("Create Collection", from: 'manifest_import')
