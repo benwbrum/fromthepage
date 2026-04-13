@@ -1,17 +1,10 @@
 namespace :oneoff do
   desc 'Remediate duplicate and dead jobs'
-  task remediate_duplicate_jobs: :environment do
-    active_process_pids = [
-      # WORKERS
-      2074926,
-      2074932,
-
-      # SCHEDULER
-      2074936,
-
-      # DISPATCHERS
-      2074922
-    ]
+  task :remediate_duplicate_jobs, [:active_process_pids] => :environment do |t, args|
+    active_process_pids = (args[:active_process_pids] || '')
+      .split(',')
+      .map(&:strip)
+      .map(&:to_i)
 
     active_processes = SolidQueue::Process
       .where(id: active_process_pids)
