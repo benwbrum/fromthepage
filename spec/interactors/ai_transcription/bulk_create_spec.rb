@@ -21,6 +21,7 @@ describe AiTranscription::BulkCreate do
   end
 
   it 'initializes processing ai_transcription records' do
+    expect(result.full_errors).to eq(nil)
     expect(result.success?).to be_truthy
     ai_transcriptions = collection.pages.includes(:ai_transcription).map(&:ai_transcription)
     expect(ai_transcriptions.size).to eq(2)
@@ -36,6 +37,19 @@ describe AiTranscription::BulkCreate do
       expect(ai_transcriptions.size).to eq(2)
       expect(ai_transcriptions.pluck(:id)).to include(ai_transcription.id)
       expect(ai_transcriptions.pluck(:status).uniq).to eq(['processing'])
+    end
+  end
+
+  context 'when another bulk_create for collection is in progress' do
+    let(:lock_name) { "bulk_create:#{collection.id}" }
+
+    it 'fails to start creation job' do
+      other_conn = ActiveRecord::Base.connection_pool.checkout
+      other_conn.select_value("SELECT GET_LOCK('#{lock_name}', 0)")
+
+      expect(result.success?).to be_falsey
+
+      ActiveRecord::Base.connection.execute("DO RELEASE_LOCK('#{lock_name}')")
     end
   end
 end

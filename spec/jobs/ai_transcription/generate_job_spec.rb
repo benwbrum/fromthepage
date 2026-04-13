@@ -22,7 +22,7 @@ describe AiTranscription::GenerateJob do
   subject(:worker) { described_class.new }
 
   let(:perform_worker) do
-    worker.perform(user_id: owner.id, ai_transcription_id: ai_transcription.id)
+    worker.perform(user_id: owner.id, ai_transcription_id: ai_transcription.id, page_id: page.id)
   end
 
   context 'success' do
@@ -55,7 +55,7 @@ describe AiTranscription::GenerateJob do
       let!(:admin) { create(:unique_user, :admin) }
 
       let(:perform_worker) do
-        worker.perform(user_id: admin.id, ai_transcription_id: ai_transcription.id)
+        worker.perform(user_id: admin.id, ai_transcription_id: ai_transcription.id, page_id: page.id)
       end
 
       it 'performs generate job' do
@@ -101,7 +101,7 @@ describe AiTranscription::GenerateJob do
     let!(:user) { create(:unique_user) }
 
     let(:perform_worker) do
-      worker.perform(user_id: user.id, ai_transcription_id: ai_transcription.id)
+      worker.perform(user_id: user.id, ai_transcription_id: ai_transcription.id, page_id: page.id)
     end
 
     it 'performs generate job' do

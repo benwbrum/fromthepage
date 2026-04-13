@@ -32,7 +32,7 @@ namespace :fromthepage do
       puts "Starting Gemini AI transcription for page ID: #{page.id} (#{page.title})"
 
       begin
-        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
+        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id, page_id: create_result.ai_transcription.page_id)
 
         puts 'Transcription SUCCESS'
       rescue StandardError => e
@@ -94,7 +94,7 @@ namespace :fromthepage do
           raise create_result.full_errors
         end
 
-        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
+        AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id, page_id: create_result.ai_transcription.page_id)
 
         puts 'SUCCESS'
         success_count += 1
@@ -176,7 +176,7 @@ namespace :fromthepage do
             raise create_result.full_errors
           end
 
-          AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id)
+          AiTranscription::GenerateJob.perform_now(user_id: user.id, ai_transcription_id: create_result.ai_transcription.id, page_id: create_result.ai_transcription.page_id)
 
           puts 'SUCCESS'
           overall_success += 1

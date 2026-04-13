@@ -12,29 +12,55 @@ class AiTranscription::BulkCreate < ApplicationInteractor
   end
 
   def perform
-    check_user_permission
+    check_lock
 
-    @sanitized_model = sanitize_model
-    @sanitized_prompt = sanitize_prompt
+    begin
+      check_user_permission
 
-    ai_transcription_records = []
+      @sanitized_model = sanitize_model
+      @sanitized_prompt = sanitize_prompt
 
-    @collection.pages.includes(:ai_transcription).find_each do |page|
-      ai_transcription = page.ai_transcription
+      ai_transcription_records = []
 
-      if ai_transcription.nil?
-        ai_transcription_records << AiTranscription.new(
-          page_id: page.id,
-          model: @sanitized_model,
-          prompt: @sanitized_prompt,
-          status: :processing
-        )
-      elsif ai_transcription.status_new?
-        ai_transcription.status = :processing
-        ai_transcription_records << ai_transcription
+      @collection.pages.includes(:ai_transcription).find_each do |page|
+        ai_transcription = page.ai_transcription
+
+        if ai_transcription.nil?
+          ai_transcription_records << AiTranscription.new(
+            page_id: page.id,
+            model: @sanitized_model,
+            prompt: @sanitized_prompt,
+            status: :processing
+          )
+        elsif ai_transcription.status_new?
+          ai_transcription.status = :processing
+          ai_transcription_records << ai_transcription
+        end
       end
-    end
 
-    AiTranscription.import! ai_transcription_records, on_duplicate_key_update: [:status], batch_size: BATCH_SIZE
+      AiTranscription.import! ai_transcription_records, on_duplicate_key_update: [:status], batch_size: BATCH_SIZE
+    ensure
+      release_lock
+    end
+  end
+
+  def lock_name
+    @lock_name ||= "bulk_create:#{@collection.id}"
+  end
+
+  def lock
+    @lock ||= ActiveRecord::Base.connection.select_value(
+      "SELECT GET_LOCK('#{lock_name}', 0)"
+    )
+  end
+
+  def check_lock
+    return if lock == 1
+
+    raise ArgumentError, 'Job is already running'
+  end
+
+  def release_lock
+    ActiveRecord::Base.connection.execute("DO RELEASE_LOCK('#{lock_name}')")
   end
 end
