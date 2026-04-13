@@ -123,6 +123,7 @@ de:
       ai_token_usage: KI-Token-Nutzung
       candidates_token_count: 'Ausgabe-Token: %{count}'
       prompt_token_count: 'Eingabe-Token: %{count}'
+      thoughts_token_count: 'Gedanken-Tokens: %{count}'
       total_token_count: 'Token gesamt: %{count}'
   display_helper:
     page_action:
