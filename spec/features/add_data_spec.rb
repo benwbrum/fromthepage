@@ -72,7 +72,7 @@ describe "uploads data for collections", order: :defined do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
-      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
+      page.fill_in 'at_id', with: "https://iiif.io/api/cookbook/recipe/0009-book-1/manifest.json"
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
@@ -83,8 +83,8 @@ describe "uploads data for collections", order: :defined do
       works_count = Work.all.count
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
-      # this manifest has a very long title
-      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2654"
+
+      page.fill_in 'at_id', with: "https://iiif.io/api/cookbook/recipe/0001-mvm-image/manifest.json"
       find_button('iiif_import').click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
