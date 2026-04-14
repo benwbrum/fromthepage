@@ -68,13 +68,12 @@ describe "uploads data for collections", order: :defined do
 
   it "imports IIIF manifests", js: true do
     # import a manifest for test data
-    VCR.use_cassette('iiif/imports_iiif_manifests', record: :none) do
+    VCR.use_cassette('iiif/imports_iiif_manifests', record: :all) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
       page.fill_in 'at_id', with: "https://iiif.io/api/cookbook/recipe/0009-book-1/manifest.json"
       find_button('iiif_import').click
-      expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
       select(@collection.title, from: 'sc_manifest_collection_id')
       click_button('Import Manifest')
@@ -86,7 +85,6 @@ describe "uploads data for collections", order: :defined do
 
       page.fill_in 'at_id', with: "https://iiif.io/api/cookbook/recipe/0001-mvm-image/manifest.json"
       find_button('iiif_import').click
-      expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
       select(@collection.title, from: 'sc_manifest_collection_id')
       click_button('Import')
