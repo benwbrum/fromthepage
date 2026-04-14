@@ -19,7 +19,7 @@ describe "uploads data for collections", order: :defined do
       find('#iiif_import', visible: false).click
       expect(page).to have_content(@at_id)
       expect(page).to have_content("Manifests")
-      select("Create Collection", from: 'manifest_import')
+      find('#manifest_import option[value="sc_collection"]').select_option
       click_button('Import Checked Manifests')
       expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
       sleep(55)
