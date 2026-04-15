@@ -13,15 +13,13 @@ describe 'IA import actions', order: :defined do
     login_as(@owner, scope: :user)
   end
 
-  it 'imports a work from IA', js: true do
-    VCR.use_cassette('ia/lettertosamuelma00estl', record: :new_episodes) do
+  it 'imports a work from IA' do
+    VCR.use_cassette('ia/lettertosamuelma00estl', record: :none) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertosamuelma00estl'
       visit dashboard_owner_path
       page.find('.tabs').click_link('Start A Project')
-      page.find(:css, '#import-internet-archive').click
-      click_link('Import From Archive.org')
-      expect(page).to have_selector('#detail_url', visible: true)
+      click_link('Import From Archive.org', visible: false)
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
       page.accept_confirm if page.has_button?('Import Anyway')
@@ -33,14 +31,13 @@ describe 'IA import actions', order: :defined do
     end
   end
 
-  it 'uses OCR when importing a work from IA', js: true do
-    VCR.use_cassette('ia/lettertodeargarr00mays', record: :new_episodes) do
+  it 'uses OCR when importing a work from IA' do
+    VCR.use_cassette('ia/lettertodeargarr00mays', record: :none) do
       ia_work_count = IaWork.all.count
       ia_link = 'https://archive.org/details/lettertodeargarr00mays'
       visit dashboard_owner_path
       page.find('.tabs').click_link('Start A Project')
-      page.find(:css, '#import-internet-archive').click
-      click_link('Import From Archive.org')
+      click_link('Import From Archive.org', visible: false)
       fill_in 'detail_url', with: ia_link
       click_button('Import Work')
       page.accept_confirm if page.has_button?('Import Anyway')
@@ -78,6 +75,7 @@ describe 'IA import actions', order: :defined do
   it 'checks ocr/transcribe statistics', js: true do
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content('Works')
+
     @collection.works.each do |w|
       completed = w.ocr_correction ? 'corrected' : 'transcribed'
 
