@@ -44,7 +44,15 @@ describe "export tasks" do
 
     login_as(User.where(admin: true).first, scope: :user)
 
-    perform_enqueued_jobs
+    1.upto(10) do
+      sleep 5
+      if BulkExport.last.status == 'finished'
+        break
+      end
+    end
+
+    # TODO: Once solid_queue worker contexts are figured out, bring this back
+    # perform_enqueued_jobs
 
     visit bulk_export_index_path
     expect(page).to have_content("Administration")
