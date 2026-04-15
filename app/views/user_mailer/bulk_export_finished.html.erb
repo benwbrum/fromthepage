@@ -1,7 +1,7 @@
 <h2 style="color:#453939; margin:0; font-weight:normal;"><%= t('.your_export_is_ready') %></h2>
 <p>
   <%= t('.your_export_of') %>
-  <%= @bulk_export.collection.title %> 
+  <%= @bulk_export.collection&.title %>
   <% if @bulk_export.document_set %>
     --
     <%= @bulk_export.document_set.title %>

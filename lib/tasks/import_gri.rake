@@ -62,6 +62,7 @@ namespace :fromthepage do
         'Culture(s)',
         'Culture(s) Authority',
         'Location(s)',
+        'Location(s) Authority',
         'Associated Name(s)',
         'Right<br/>Margin<br/>Price'
       ]
@@ -85,7 +86,8 @@ namespace :fromthepage do
           row['Object Type(s)'],
           row['Culture(s)'],
           row['Culture(s) Authority'],
-          location,
+          row['Location(s)'],
+          row['Location(s) Authority'],
           assoc,
           row['Right Margin Price']
         ]
