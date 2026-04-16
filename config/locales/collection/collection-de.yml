@@ -17,6 +17,7 @@ de:
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
+        total_tokens_used: Gesamte verwendete Tokens
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.
     approve_all:
@@ -191,6 +192,8 @@ de:
       alphabetize_works_description: Die Anzeige erfolgt alphabetisch und nicht nach der Menge der verbleibenden Arbeit.
       default_orientation: Wählen Sie die standardmäßige Seitenausrichtung für die Transkription aus
       default_orientation_description: Wählen Sie die Ausrichtung, die am besten zu den meisten Werken dieser Sammlung passt. Benutzer können die Ausrichtung nach Belieben ändern.
+      default_overview_orientation: Standard-Übersichtsbildschirmausrichtung
+      default_overview_orientation_description: Wählen Sie die Ausrichtung für die Anzeige der Seitenübersichtsregisterkarte.
       document_sets_description: Dokumentensets sind Teilsets der Werke dieser Sammlung, die die Aufmerksamkeit auf ein bestimmtes Merkmal des Editionsprojekts lenken können oder zur Erstellung einer öffentlichen Sammlung mit einem bestimmten Fokus verwendet werden können.
       edit_document_sets: Sätze bearbeiten
       edit_facets: Facetten bearbeiten

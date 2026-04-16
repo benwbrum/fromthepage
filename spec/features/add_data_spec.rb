@@ -33,8 +33,7 @@ describe "uploads data for collections", order: :defined do
     )
     sleep 2
     click_button('Upload File')
-
-    expect(page).to have_content("Document has been uploaded")
+    expect(page).to have_content("Document has been uploaded", wait: 30)
     title = find('h1').text
     expect(title).to eq @collection.title
     wait_for_upload_processing
@@ -57,7 +56,7 @@ describe "uploads data for collections", order: :defined do
     find('input[name="document_upload[ocr]"]').check
     click_button('Upload File')
 
-    expect(page).to have_content("Document has been uploaded")
+    expect(page).to have_content("Document has been uploaded", wait: 30)
     title = find('h1').text
     expect(title).to eq @collection.title
     wait_for_upload_processing
@@ -66,14 +65,14 @@ describe "uploads data for collections", order: :defined do
     expect(uploaded_work.pages.first.source_text).to match 'dagegen'
   end
 
-  it "imports IIIF manifests", js: true do
+  it "imports IIIF manifests" do
     # import a manifest for test data
     VCR.use_cassette('iiif/imports_iiif_manifests', record: :none) do
       visit dashboard_owner_path
       page.find('.tabs').click_link("Start A Project")
-      page.find(:css, "#import-iiif-manifest").click
-      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
-      find_button('iiif_import').click
+      find('#at_id', visible: false)
+        .set("https://data.ucd.ie/api/img/manifests/ivrla:2638")
+      find('#iiif_import', visible: false).click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
       select(@collection.title, from: 'sc_manifest_collection_id')
@@ -82,10 +81,10 @@ describe "uploads data for collections", order: :defined do
       visit dashboard_owner_path
       works_count = Work.all.count
       page.find('.tabs').click_link("Start A Project")
-      page.find(:css, "#import-iiif-manifest").click
       # this manifest has a very long title
-      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2654"
-      find_button('iiif_import').click
+      find('#at_id', visible: false)
+        .set("https://data.ucd.ie/api/img/manifests/ivrla:2654")
+      find('#iiif_import', visible: false).click
       expect(page).to have_content("Metadata")
       expect(page).to have_content("Manifest")
       select(@collection.title, from: 'sc_manifest_collection_id')

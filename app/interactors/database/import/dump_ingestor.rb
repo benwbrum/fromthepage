@@ -21,8 +21,7 @@ class Database::Import::DumpIngestor < Database::Base
 
     rows.each do |row|
       if row['metadata'].present?
-        metadata_str = row['metadata'] == "--- {}\n" ? '{}' : row['metadata']
-        row['metadata'] = JSON.parse(metadata_str)
+        row['metadata'] = YAML.safe_load(row['metadata'])
       end
 
       new_record = RECORDS[table_name].new(row)

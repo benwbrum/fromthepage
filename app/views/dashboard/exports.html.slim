@@ -37,7 +37,7 @@
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
             td.nowrap
-              -if bulk_export.status_finished?
+              -if bulk_export.status.to_sym == :finished
                 -if bulk_export.output.attached?
                   =link_to(t('.download'), url_for(bulk_export.output), class: 'btnExport button')
                 -else

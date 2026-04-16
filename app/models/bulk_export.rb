@@ -57,6 +57,9 @@
 #  fk_rails_...  (work_id => works.id)
 #
 class BulkExport < ApplicationRecord
+  include ExportHelper
+  include ExportService
+
   store :report_arguments, accessors: [
     :preserve_linebreaks,
     :include_metadata,
@@ -71,19 +74,20 @@ class BulkExport < ApplicationRecord
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
-  enum :status, {
-    new: 'new',
-    queued: 'queued',
-    processing: 'processing',
-    finished: 'finished',
-    cleaned: 'cleaned',
-    error: 'error'
-  }, prefix: :status
+  # TODO: Find out conflict why this is re-declared on async jobs
+  # enum :status, {
+  #   new: 'new',
+  #   queued: 'queued',
+  #   processing: 'processing',
+  #   finished: 'finished',
+  #   cleaned: 'cleaned',
+  #   error: 'error'
+  # }, prefix: false
 
-  enum :organization, {
-    by_format: 'by_format',
-    by_work: 'by_work'
-  }, prefix: :organization
+  # enum :organization, {
+  #   by_format: 'by_format',
+  #   by_work: 'by_work'
+  # }, prefix: false
 
   has_one_attached :output
 
@@ -124,5 +128,49 @@ class BulkExport < ApplicationRecord
 
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
+  end
+
+  def export_to_zip
+    works_scope = Work.includes(pages: [:notes, { page_versions: :user }])
+    works =
+      if self.work.present?
+        works_scope.where(id: self.work.id)
+      elsif self.document_set.present?
+        works_scope.where(id: self.document_set.works.pluck(:id))
+      elsif self.collection.present?
+        works_scope.where(collection_id: self.collection.id)
+      else
+        works_scope.none
+      end
+
+    zip_filename = "export_#{self.id}.zip"
+
+    Tempfile.create([zip_filename, '.zip']) do |tmpfile|
+      Zip::OutputStream.open(tmpfile.path) do |out|
+        write_work_exports(works, out, self.user, self)
+      end
+
+      tmpfile.rewind
+
+      self.output.attach(
+        io: tmpfile,
+        filename: zip_filename,
+        content_type: 'application/zip'
+      )
+    end
+  end
+
+  def submit_export_process
+    rake_call = "#{RAKE} fromthepage:process_bulk_export[#{self.id}]  --trace &"
+
+    # Nice-up the rake call if settings are present
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} stdbuf -oL " << rake_call if NICE_RAKE_ENABLED
+
+    logger.info rake_call
+    system('env > /home/fromthepage/environment_logging/env_from_application.log')
+    Rails.logger.info("whoami is \n" + `whoami`)
+    Rails.logger.info("pwd is \n" + `pwd`)
+    Rails.logger.info("ulimit -a is \n" + `/bin/bash -c "ulimit -a"`)
+    system(rake_call)
   end
 end

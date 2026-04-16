@@ -1,7 +1,4 @@
 class BulkExport::Process < ApplicationInteractor
-  include ExportHelper
-  include ExportService
-
   def initialize(bulk_export:)
     @bulk_export = bulk_export
 
@@ -15,9 +12,13 @@ class BulkExport::Process < ApplicationInteractor
 
     @bulk_export.update!(status: :processing)
 
-    export_to_zip
+    @bulk_export.export_to_zip
 
     @bulk_export.update!(status: :finished)
+
+    logger.info "Finished bulk_export for \n\tuser=#{@bulk_export.user.login}"
+    logger.info "\tfrom collection=#{@bulk_export.collection.title}" if @bulk_export.collection.present?
+    logger.info @bulk_export.attributes.pretty_inspect
   rescue StandardError => e
     @bulk_export.update!(status: :error)
     logger.error e.full_message(highlight: false)

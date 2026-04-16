@@ -91,6 +91,9 @@ class DisplayController < ApplicationController
   end
 
   def display_page
+    # Set layout mode for the overview tab
+    @overview_layout_mode = cookies[:overview_layout_mode] || @collection.default_overview_orientation
+
     # Set meta information for web crawlers and archival only for pages with content
     if @page.status != 'new'
       @page_title = "#{@page.title || "Page #{@page.position}"} - #{@work.title} - #{@collection.title}"
@@ -141,7 +144,7 @@ class DisplayController < ApplicationController
       return
     end
 
-    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished)
+    ai_transcriptions_scope = @page.ai_transcriptions.where(status: :finished).order(created_at: :desc)
     @finished_transcription_count = ai_transcriptions_scope.count
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
 

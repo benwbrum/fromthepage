@@ -53,7 +53,9 @@ module Api::V1
           bulk_export.table_csv_work = params[:table_csv_work].present?
           bulk_export.notes_csv = params[:notes_csv].present?
           bulk_export.save
-          BulkExport::ProcessJob.perform_later(user_id: bulk_export.user.id, bulk_export_id: bulk_export.id)
+          bulk_export.submit_export_process
+          # TODO: Once solid_queue worker contexts are figured out, bring this back
+          # BulkExport::ProcessJob.perform_later(user_id: bulk_export.user.id, bulk_export_id: bulk_export.id)
 
           response = {
             id: bulk_export.id,

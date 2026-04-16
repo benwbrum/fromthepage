@@ -75,15 +75,17 @@ class Work::Table::ExportCsv < ApplicationInteractor
       row = base_row.dup
 
       field_objects.each do |field|
+        safe_transcription_json = page.transcription_json || {}
+
         if field.is_a?(SpreadsheetColumn)
           parent_field = field.transcription_field
 
-          row_columns = page.transcription_json[parent_field.id.to_s] || []
+          row_columns = safe_transcription_json[parent_field.id.to_s] || []
           max_row_size = [max_row_size, row_columns.size].max
 
           row << row_columns[row_index]&.dig(field.id.to_s) || ''
         else
-          row << page.transcription_json[field.id.to_s] || ''
+          row << safe_transcription_json[field.id.to_s] || ''
         end
       end
 
