@@ -123,6 +123,7 @@ fr:
       ai_token_usage: Utilisation des tokens IA
       candidates_token_count: 'Tokens de sortie : %{count}'
       prompt_token_count: 'Tokens d''entrée : %{count}'
+      thoughts_token_count: 'Jetons de pensées : %{count}'
       total_token_count: 'Total des tokens : %{count}'
   display_helper:
     page_action:
