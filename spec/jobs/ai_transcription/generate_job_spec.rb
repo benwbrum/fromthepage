@@ -77,23 +77,52 @@ describe AiTranscription::GenerateJob do
   end
 
   context 'failure' do
-    before do
-      allow(AiTranscription).to receive(:find)
-        .with(ai_transcription.id)
-        .and_return(ai_transcription)
+    context 'API returns blank source_text and reasoning' do
+      before do
+        allow(AiTranscription).to receive(:find)
+          .with(ai_transcription.id)
+          .and_return(ai_transcription)
 
-      allow(ai_transcription).to receive(:page).and_return(page)
-      allow(page).to receive(:image_url_for_download).and_return(nil)
+        allow(ai_transcription).to receive(:page).and_return(page)
+        allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
+      end
+
+      it 'performs generate job' do
+        VCR.use_cassette('ai_transcriptions/generate_blank', record: :none, allow_playback_repeats: false) do
+          expect {
+            perform_enqueued_jobs do
+              perform_worker
+            end
+          }.to raise_error
+        end
+
+        expect(ai_transcription.reload).to have_attributes(
+          source_text: '',
+          reasoning: '',
+          status: 'error'
+        )
+      end
     end
 
-    it 'performs generate job' do
-      expect {
-        perform_enqueued_jobs do
-          perform_worker
-        end
-      }.to raise_error
+    context 'failed to download image' do
+      before do
+        allow(AiTranscription).to receive(:find)
+          .with(ai_transcription.id)
+          .and_return(ai_transcription)
 
-      expect(ai_transcription.reload.status).to eq('error')
+        allow(ai_transcription).to receive(:page).and_return(page)
+        allow(page).to receive(:image_url_for_download).and_return(nil)
+      end
+
+      it 'performs generate job' do
+        expect {
+          perform_enqueued_jobs do
+            perform_worker
+          end
+        }.to raise_error
+
+        expect(ai_transcription.reload.status).to eq('error')
+      end
     end
   end
 
