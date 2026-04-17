@@ -1,5 +1,5 @@
 #reasoning.ai-reasoning
-  -if @ai_transcription&.reasoning&.present?
+  -if @ai_transcription&.supports_reasoning? && @ai_transcription&.reasoning&.present?
     h4 =t('.ai_reasoning')
     p.reasoning-explanation =t('.reasoning_explanation')
     .reasoning-content
