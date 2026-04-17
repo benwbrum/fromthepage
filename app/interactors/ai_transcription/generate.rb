@@ -24,6 +24,10 @@ class AiTranscription::Generate < ApplicationInteractor
       reasoning: reasoning,
       metadata: metadata
     )
+
+    return if @ai_transcription.source_text.present? || @ai_transcription.reasoning.present?
+
+    raise ArgumentError, 'AI Transcription has blank text and reasoning'
   end
 
   private

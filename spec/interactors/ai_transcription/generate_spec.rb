@@ -31,7 +31,7 @@ describe AiTranscription::Generate do
       allow(page).to receive(:image_url_for_download).and_return('http://example.com/image.jpg')
     end
 
-    it 'generates ai_transcriptiont text and reasoning' do
+    it 'generates ai_transcription text and reasoning' do
       VCR.use_cassette('ai_transcriptions/generate', record: :none, allow_playback_repeats: false) do
         result
       end
@@ -72,6 +72,7 @@ describe AiTranscription::Generate do
         usage = expected_response["usageMetadata"]
         expect(result.ai_transcription.metadata["prompt_token_count"]).to eq(usage["promptTokenCount"])
         expect(result.ai_transcription.metadata["candidates_token_count"]).to eq(usage["candidatesTokenCount"])
+        expect(result.ai_transcription.metadata["thoughts_token_count"]).to eq(usage["thoughtsTokenCount"])
         expect(result.ai_transcription.metadata["total_token_count"]).to eq(usage["totalTokenCount"])
       end
     end
@@ -81,7 +82,7 @@ describe AiTranscription::Generate do
         stub_const('AiTranscription::Lib::Gemini::TranscribeHandler::MAX_RETRY', 1)
       end
 
-      it 'generates ai_transcriptiont text and reasoning' do
+      it 'generates ai_transcription text and reasoning' do
         VCR.use_cassette('ai_transcriptions/generate_503', record: :none, allow_playback_repeats: false) do
           result
         end
@@ -92,13 +93,29 @@ describe AiTranscription::Generate do
     end
 
     context 'when 429 error' do
-      it 'generates ai_transcriptiont text and reasoning' do
+      it 'generates ai_transcription text and reasoning' do
         VCR.use_cassette('ai_transcriptions/generate_429', record: :none, allow_playback_repeats: false) do
           result
         end
 
         expect(result.success?).to be_falsey
         expect(result.full_errors.message.include?('the server responded with status 429')).to be_truthy
+      end
+    end
+
+    context 'when source_text and reasoning are both blank' do
+      it 'generates failed ai_transcription' do
+        VCR.use_cassette('ai_transcriptions/generate_blank', record: :none, allow_playback_repeats: false) do
+          result
+        end
+
+        expect(result.success?).to be_falsey
+        expect(result.full_errors.message.include?('AI Transcription has blank text and reasoning')).to be_truthy
+
+        expect(result.ai_transcription).to have_attributes(
+          source_text: '',
+          reasoning: ''
+        )
       end
     end
   end

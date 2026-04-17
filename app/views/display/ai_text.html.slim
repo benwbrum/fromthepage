@@ -29,5 +29,5 @@
 
 =render partial: 'token_usage'
 
--if @page.ai_transcription&.prompt&.present?
-  =render partial: 'prompt', locals: { prompt: @page.ai_transcription.prompt }
+-if @ai_transcription&.supports_prompt? && @ai_transcription&.prompt&.present?
+  =render partial: 'prompt', locals: { prompt: @ai_transcription.prompt }

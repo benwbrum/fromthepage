@@ -98,6 +98,22 @@ describe DisplayController do
       end
     end
 
+    context 'when page only has an ALTO transcription' do
+      let!(:page_alto_only) { create(:page, work: work) }
+      let!(:alto_transcription) do
+        create(:ai_transcription, page: page_alto_only, model: AiTranscription::ALTO_MODEL,
+                                  source_text: 'ALTO text', status: :finished)
+      end
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_alto_only) }
+
+      it 'renders the AI text page' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
+      end
+    end
+
     context 'when page does not have AI plaintext' do
       let!(:page_without_transcription) { create(:page, work: work) }
       let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_without_transcription) }
