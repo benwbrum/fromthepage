@@ -56,6 +56,14 @@ class AiTranscription < ApplicationRecord
     error: 'error'
   }, prefix: :status
 
+  def supports_reasoning?
+    model != ALTO_MODEL
+  end
+
+  def supports_prompt?
+    model != ALTO_MODEL
+  end
+
   # we want to replace the non-breaking space html entities Gemini 3 insists on returning with regular spaces
   def replace_nbsp
     self.source_text = source_text.gsub('&nbsp;', ' ') if source_text.present?

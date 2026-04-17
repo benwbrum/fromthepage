@@ -6,6 +6,12 @@ tr
       p =t('collection.edit_look.default_orientation_description')
 tr
   td(colspan="2")
+    =f.label :default_overview_orientation
+      h3(style="display:inline-block") =t('collection.edit_look.default_overview_orientation')
+      =f.select :default_overview_orientation, options_for_select(default_overview_orientations_collection, collection.default_overview_orientation), {}, { class: 'w20' }
+      p =t('collection.edit_look.default_overview_orientation_description')
+tr
+  td(colspan="2")
     =f.check_box :user_download, disabled: !collection.text_entry?
     =f.label :user_download, disabled: !collection.text_entry?
       h3 =t('collection.edit_look.user_download')

@@ -71,6 +71,17 @@ describe DisplayController do
             expect(response).to render_template(:ai_text)
           end
         end
+
+        context 'with multiple finished transcriptions' do
+          let!(:older_transcription) { create(:ai_transcription, page: page, source_text: 'Older AI text', status: :finished, created_at: 2.days.ago) }
+          let!(:newer_transcription) { create(:ai_transcription, page: page, source_text: 'Newer AI text', status: :finished, created_at: 1.minute.from_now) }
+
+          it 'defaults to the most recent transcription' do
+            subject
+
+            expect(assigns(:ai_transcription)).to eq(newer_transcription)
+          end
+        end
       end
 
       context 'without completed transcription' do
@@ -84,6 +95,22 @@ describe DisplayController do
 
           expect(assigns(:ai_accuracy_stats)).to be_nil
         end
+      end
+    end
+
+    context 'when page only has an ALTO transcription' do
+      let!(:page_alto_only) { create(:page, work: work) }
+      let!(:alto_transcription) do
+        create(:ai_transcription, page: page_alto_only, model: AiTranscription::ALTO_MODEL,
+                                  source_text: 'ALTO text', status: :finished)
+      end
+      let(:action_path) { collection_ai_text_page_path(owner, collection, work, page_alto_only) }
+
+      it 'renders the AI text page' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:ai_text)
       end
     end
 
