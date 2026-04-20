@@ -37,6 +37,8 @@ es:
       format_options: Opciones de formato
       html: HTML
       html_description: Esto puede ser útil para la conservación en otros sistemas o como punto de partida para su visualización en otro sitio web.
+      html_facing_edition_pdf: PDF de la edición con páginas enfrentadas, renderizado para web
+      html_facing_edition_pdf_description: Un archivo PDF que contiene imágenes y transcripciones en páginas enfrentadas, generado a partir de la vista web.
       notes_csv: Notas CSV
       notes_csv_description: Una hoja de cálculo que enumera cada nota en la colección.
       one_file_per_collection: Un archivo por colección

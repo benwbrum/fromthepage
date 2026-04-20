@@ -50,6 +50,29 @@ class ExportController < ApplicationController
     end
   end
 
+  def grover_printable
+    result = Work::Export::GroverPrintable.new(
+      work: @work,
+      edition: params[:edition],
+      include_metadata: true,
+      include_contributors: true,
+      include_notes: false,
+      preserve_lb: false
+    ).call
+
+    if result.success?
+      send_data(
+        result.file,
+        filename: result.filename,
+        content_type: 'application/pdf'
+      )
+
+      cookies['download_finished'] = 'true'
+    else
+      head :internal_server_error
+    end
+  end
+
   def tei
     tei_xml = work_to_tei(@work, current_user)
 

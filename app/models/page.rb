@@ -722,12 +722,14 @@ class Page < ApplicationRecord
     host = raw_host.split(':')[0]
     uri.host = host
     port = raw_host.split(':')[1]
-    if port
-      uri.scheme = 'http'
-      uri.port = port
-    else
-      uri.scheme = 'https'
-    end
+    # if port
+    #   uri.scheme = 'http'
+    #   uri.port = port
+    # else
+    #   uri.scheme = 'https'
+    # end
+    uri.host = 'fromthepage.com'
+    uri.scheme = 'https'
 
     uri.to_s
   end

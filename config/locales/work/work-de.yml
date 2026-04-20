@@ -89,6 +89,10 @@ de:
       facing_pdf_export_description: Laden Sie eine PDF-Version dieses Werkes mit Bildern und Text auf den gegenüberliegenden Seiten herunter.
       html: HTML
       html_export_description: Exportieren Sie Transkripte als ZIP-Datei mit einer HTML-Datei pro Seite.
+      html_facing_pdf: Webgerendertes Fronting-PDF
+      html_facing_pdf_export_description: Laden Sie eine PDF-Version dieses Werks herunter, die Bilder und Text auf gegenüberliegenden Seiten enthält und aus der Webansicht generiert wurde.
+      html_pdf: Webgerendertes PDF
+      html_pdf_download_description: Laden Sie eine PDF-Datei herunter, die aus der Webansicht dieses Werks generiert wurde.
       iiif: IIIF
       iiif_manifest: IIIF-Manifest
       iiif_manifest_description: IIIF-Manifest-URI zur Verwendung in jedem IIIF-Client.

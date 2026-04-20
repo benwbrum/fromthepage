@@ -100,6 +100,7 @@ gem 'clipboard-rails'
 gem 'ajax-datatables-rails', '~> 1.0.0'
 gem 'will_paginate'
 gem 'markdown'
+gem 'grover'
 
 # Utilities / Helpers
 gem 'text'

@@ -37,6 +37,8 @@ en:
       format_options: Format Options
       html: HTML
       html_description: This may be useful for preservation in other systems or as a starting point for display on another website.
+      html_facing_edition_pdf: Web-rendered Facing Edition PDF
+      html_facing_edition_pdf_description: A PDF file containing images and transcripts on facing pages generated from web view.
       notes_csv: Notes CSV
       notes_csv_description: A spreadsheet listing each note in the collection.
       one_file_per_collection: One file per collection

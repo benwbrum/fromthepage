@@ -89,6 +89,10 @@ es:
       facing_pdf_export_description: Descarga una versión en PDF de esta obra que incluye imágenes y texto en las páginas opuestas.
       html: HTML
       html_export_description: Exporta las transcripciones como un archivo zip que contiene un archivo HTML por página.
+      html_facing_pdf: PDF de caras renderizado en web
+      html_facing_pdf_export_description: Descargue una versión en PDF de esta obra que incluye imágenes y texto en páginas enfrentadas, generada a partir de la vista web.
+      html_pdf: PDF renderizado en la web
+      html_pdf_download_description: Descargue un PDF generado a partir de la vista web de esta obra.
       iiif: IIIF
       iiif_manifest: Manifiesto IIIF
       iiif_manifest_description: URI de Manifiesto IIIF para usar en cualquier cliente de IIIF.

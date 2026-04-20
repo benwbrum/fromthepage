@@ -7,6 +7,7 @@
 #  collection_activity                :boolean
 #  collection_contributors            :boolean
 #  facing_edition_work                :boolean
+#  html_facing_edition_work           :boolean
 #  html_page                          :boolean
 #  html_work                          :boolean
 #  notes_csv                          :boolean

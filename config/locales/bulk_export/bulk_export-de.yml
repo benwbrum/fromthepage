@@ -37,6 +37,8 @@ de:
       format_options: Formatoptionen
       html: HTML
       html_description: Dies kann für die Aufbewahrung in anderen Systemen oder als Ausgangspunkt für die Anzeige auf einer anderen Website nützlich sein.
+      html_facing_edition_pdf: Webgerenderte Facing Edition PDF
+      html_facing_edition_pdf_description: Eine PDF-Datei, die Bilder und Transkripte auf gegenüberliegenden Seiten enthält und aus der Webansicht generiert wurde.
       notes_csv: Notizen CSV
       notes_csv_description: Eine Tabelle, in der jede Notiz in der Sammlung aufgeführt ist.
       one_file_per_collection: Eine Datei pro Sammlung

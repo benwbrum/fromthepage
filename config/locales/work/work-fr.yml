@@ -89,6 +89,10 @@ fr:
       facing_pdf_export_description: Télécharger une version PDF de cette œuvre comprenant des images et du texte sur les pages en vis-à-vis.
       html: HTML
       html_export_description: Exporter les transcriptions sous forme de fichier zip contenant un fichier HTML par page.
+      html_facing_pdf: PDF en regard rendu sur le Web
+      html_facing_pdf_export_description: Téléchargez une version PDF de cet ouvrage comprenant les images et le texte sur les pages en vis-à-vis, générée à partir de la vue Web.
+      html_pdf: PDF rendu en ligne
+      html_pdf_download_description: Télécharger un PDF généré à partir de la consultation web de ce document.
       iiif: IIIF
       iiif_manifest: Manifeste IIIF
       iiif_manifest_description: IIIF Manifest URI à utiliser dans n'importe quel client IIIF.
