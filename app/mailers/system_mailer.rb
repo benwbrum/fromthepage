@@ -22,7 +22,7 @@ class SystemMailer < ActionMailer::Base
   def cdm_sync_finished(collection)
     @collection = collection
     @log_contents = ContentdmTranslator.log_contents(collection)
-    recipients = ([ADMIN_EMAILS] + [owner_emails(collection)]).reject(&:blank?).join(', ')
+    recipients = [ADMIN_EMAILS, owner_emails(collection)].reject(&:blank?).join(', ')
     mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: "CONTENTdm Sync Finished for  #{collection.title}"
   end
 
