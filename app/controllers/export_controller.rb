@@ -9,6 +9,8 @@ class ExportController < ApplicationController
 
   DEFAULT_WORKS_PER_PAGE = 15
 
+  before_action :require_owner, only: [:index]
+
   def index
     filtered_data
 
@@ -226,6 +228,12 @@ class ExportController < ApplicationController
   end
 
   private
+
+  def require_owner
+    unless user_signed_in? && (current_user.admin || current_user.like_owner?(@collection))
+      redirect_to main_app.dashboard_path
+    end
+  end
 
   def filtered_data
     @sorting = (params[:sort] || 'title').to_sym
