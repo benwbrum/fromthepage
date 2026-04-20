@@ -66,6 +66,7 @@ describe BulkExportController do
 
   describe '#new' do
     let!(:public_collection) { create(:collection, owner_user_id: owner.id, restricted: false) }
+    let!(:public_work) { create(:work, collection: public_collection, owner_user_id: owner.id) }
     let(:action_path) { bulk_export_new_path(public_collection) }
     let(:subject) { get action_path }
 
