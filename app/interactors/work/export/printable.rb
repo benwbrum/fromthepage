@@ -110,8 +110,6 @@ class Work::Export::Printable < ApplicationInteractor
 
     @pages = @pages.where(id: @page_ids) unless @page_ids == :all
 
-    @pages = @pages.limit(1)
-
     @pages
   end
 
