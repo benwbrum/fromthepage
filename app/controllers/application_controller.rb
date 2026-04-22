@@ -169,7 +169,7 @@ class ApplicationController < ActionController::Base
       end
     end
     if params[:work_id]
-      @work = Work.friendly.find(params[:work_id])
+      @work = set_friendly_work(params[:work_id])
       @collection = @work.collection
     end
     if params[:document_set_id]
@@ -178,6 +178,7 @@ class ApplicationController < ActionController::Base
     end
     if params[:collection_id]
       @collection = set_friendly_collection(params[:collection_id])
+      @work = set_friendly_work(params[:work_id], collection_reference: @collection) if params[:work_id]
     end
 
     if params[:user_id]
@@ -215,6 +216,10 @@ class ApplicationController < ActionController::Base
 
   def set_friendly_collection(id)
     @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
+  end
+
+  def set_friendly_work(id, collection_reference: nil)
+    @work = Work::Lib::SetFriendlyFind.perform(id: id, collection_reference: collection_reference)
   end
 
   def bad_record_id(e)
