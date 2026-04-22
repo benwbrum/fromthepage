@@ -186,22 +186,18 @@ class Work::Export::Lib::Utils
     all_rows += table_element.elements['tbody'].elements.to_a('tr') if table_element.elements['tbody']
 
     column_count = all_rows.map { |tr| tr.elements.count }.max
-    column_format = '@{}' + ('l ' * column_count).strip + '@{}'
+    column_format = ('X' * column_count).strip
 
     latex = "#{LINEBREAK_ELEMENT}\n"
 
-    if column_count > COLUMN_THRESHOLD
-      latex += "\\begin{rotatetable}\n"
-    end
-
-    latex += "\\begin{longtable}[\\textwidth]{#{column_format}}\n"
+    latex += "\\begin{xltabular}{\\textwidth}{#{column_format}}\n"
     if table_element.elements['thead']
-      # latex += "\\toprule\n"
+      latex += "\\toprule\n"
 
       table_element.elements['thead'].elements.each do |th|
         latex += process_element(page, th, preserve_lb, flatten_links)
       end
-      # latex += "\\midrule\n"
+      latex += "\\midrule\n"
     end
 
     if table_element.elements['tbody']
@@ -210,12 +206,8 @@ class Work::Export::Lib::Utils
       end
     end
 
-    # latex += "\\bottomrule\n"
-    latex += "\\end{longtable}\n"
-
-    if column_count > COLUMN_THRESHOLD
-      latex += "\\end{rotatetable}\n"
-    end
+    latex += "\\bottomrule\\noalign{}\n"
+    latex += "\\end{xltabular}\n"
 
     latex
   end
@@ -225,7 +217,7 @@ class Work::Export::Lib::Utils
     if flatten_links == :jekyll
       href_value = "../subjects/#{article_id}"
     elsif flatten_links
-      href_value = "#article-#{article_id}"
+      href_value = "\\#article-#{article_id}"
     else
       href_value = Rails.application.routes.url_helpers.article_show_path(
         article_id: article_id

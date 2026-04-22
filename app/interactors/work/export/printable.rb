@@ -35,7 +35,7 @@ class Work::Export::Printable < ApplicationInteractor
       'pandoc',
       tex_file.to_s,
       '-o', @file.to_s,
-      '--from=latex',
+      '--from=latex+raw_tex',
       "--to=#{@format}",
       "--pdf-engine=#{PDF_ENGINE}",
       "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
@@ -110,7 +110,7 @@ class Work::Export::Printable < ApplicationInteractor
 
     @pages = @pages.where(id: @page_ids) unless @page_ids == :all
 
-    @pages = @pages
+    @pages = @pages.limit(1)
 
     @pages
   end
