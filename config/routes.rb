@@ -547,7 +547,6 @@ Fromthepage::Application.routes.draw do
           get 'edit/metadata', to: 'work#edit_metadata'
           get 'edit/privacy', to: 'work#edit_privacy'
           get 'edit/scribes', to: 'work#edit_scribes'
-          # get 'edit/ai', to: 'work#edit_ai'
           get 'edit/danger', to: 'work#edit_danger'
         end
 
@@ -567,7 +566,7 @@ Fromthepage::Application.routes.draw do
       end
 
       resources :work, path: '', only: [] do
-        resource :ai_transcriptions, param: :work_id, only: [:create, :update]
+        resource :ai_transcriptions, only: [:edit, :create, :update], controller: 'work/ai_transcriptions'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

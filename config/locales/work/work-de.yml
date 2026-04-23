@@ -1,6 +1,25 @@
 ---
 de:
   work:
+    ai_transcriptions:
+      create:
+        success: KI-Transkriptionsauftrag gestartet.
+      form:
+        ai_transcription: KI-Transkription
+        contact_us: Wenden Sie sich an %{email}, um auf einen Tarif mit KI-Entwürfen aufzurüsten.
+        description: Starten Sie einen KI-Transkriptionsauftrag für die Seiten dieses Werkes.
+        description_complete: Alle Seiten dieses Werkes enthalten KI-Transkriptionen.
+        failed: Fehlgeschlagen
+        finished: Fertig
+        generate: Erstelle KI-Entwürfe für Seiten ohne Inhalt.
+        in_progress: Im Gange
+        not_started: Nicht gestartet
+        pages: Seiten
+        queued: In der Warteschlange
+        retry: Fehlgeschlagene Aufträge erneut versuchen
+        total_tokens_used: Insgesamt verwendete Token
+      update:
+        success: KI-Transkriptionsauftrag wird wiederholt.
     configurable_printout:
       description: Exportieren Sie diese Werk in einem druckbaren Format
       export: Export
