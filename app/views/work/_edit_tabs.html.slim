@@ -1,0 +1,53 @@
+ruby:
+  tabs = [
+    {
+      icon: '#icon-settings',
+      name: t('.general'),
+      selected: 1,
+      path: "#{main_app.edit_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
+      icon: '#icon-look-feel',
+      name: t('.metadata'),
+      selected: 2,
+      path: "#{main_app.edit_metadata_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
+      icon: '#icon-lock',
+      name: t('.privacy_access'),
+      selected: 3,
+      path: "#{main_app.edit_privacy_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+  ]
+
+  # TODO: Do this in #5375 - Part 2
+  # if current_user.admin? || current_user.like_owner?(@collection)
+  #   tabs += [
+  #     {
+  #       icon: '#icon-robot',
+  #       name: t('.ai'),
+  #       selected: 4,
+  #       path: "#{main_app.edit_ai_collection_work_path(@collection.owner, @collection, @work)}",
+  #     }
+  #   ]
+  # end
+
+  tabs += [
+    {
+      icon: '#icon-warning-sign',
+      name: t('.danger_zone'),
+      selected: 5,
+      path: "#{main_app.edit_danger_collection_work_path(@collection.owner, @collection, @work)}",
+    }
+  ]
+
+.side-tabs
+  -for tab in tabs
+    -if tab[:selected] == selected
+      a.active
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]
+    -else
+      =link_to tab[:path]
+        =svg_symbol tab[:icon], class: 'icon'
+        =tab[:name]

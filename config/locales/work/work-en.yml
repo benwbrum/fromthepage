@@ -20,6 +20,8 @@ en:
       word_wrap: Word Wrap
     create:
       work_created: Work created successfully
+    delete:
+      success: Work deleted successfully
     describe:
       always_show_fullscreen: Always show fullscreen
       approve: Approve
@@ -92,16 +94,19 @@ en:
     edit:
       additional_metadata: Additional metadata
       additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
+      allow: Allow
+      allowed: Allowed
       allowed_collaborators: Allowed Collaborators
-      apply: Apply
       author: Author
       collaborators_can_edit_titles: Allow collaborators to edit page titles
       collection: Collection
       confirm_delete_work: Are you sure you want to delete this work? After deleting you won\'t be able to recover it!
       current_url: The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
       delete_work: Delete Work
+      delete_work_description: Pressing this button will delete the work and all its pages. This action cannot be undone.
       description: Description
       description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
+      destroy_everything: Destroy everything
       document_date: Document Date
       document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
       document_history: Document history
@@ -117,13 +122,16 @@ en:
       in_scope: In Scope
       more_work_settings_info: For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
       no_image: No Image
+      not_allowed: Not Allowed
       pages_are_meaningful: Pages Are Meaningful
       pages_are_meaningful_description: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages). When checked, the work will have page titles prominently displayed.
       permission_description: Permission description
       physical_description: Physical description
       place_of_creation: Place of Creation
       recipient: Recipient
+      restrict: Restrict
       restrict_collaborators: Restrict collaborators
+      restricted: Restricted
       restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
       revert: Revert
       revert_transcription_conventions_description: 'Revert transcription conventions to collection default '
@@ -132,11 +140,14 @@ en:
       source_box_folder: Source Box/Folder
       source_collection_name: Source Collection Name
       source_location: Source Location
+      subject_change_warning: Are you sure you want to move this work to a new collection?  You will lose all subject links.
       support_translation: Enable Translation
       support_translation_description: A work can be translated as well as transcribed. When checked, the work will have a Translation tab for each page.
       transcription_conventions: Transcription conventions
       transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       translation_instructions: Translation instructions
+      unrestrict: Unrestrict
+      unrestricted: Unrestricted
       upload_image: Upload Image
       uploaded_by: Uploaded by
       url: URL
@@ -148,6 +159,12 @@ en:
       remove_collaborator: Remove collaborator
       work_collaborators: Work collaborators
       work_collaborators_description: Collaborators may transcribe and edit private works.
+    edit_tabs:
+      ai: AI
+      danger_zone: Danger Zone
+      general: General
+      metadata: Metadata
+      privacy_access: Privacy & Access
     incomplete: Incomplete metadata.
     metadata_overview:
       notes_and_questions: Notes and questions

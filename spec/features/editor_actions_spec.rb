@@ -120,6 +120,7 @@ describe "editor actions", order: :defined do
       logout(:user)
       login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+      page.find('.side-tabs').click_link("Privacy & Access")
       page.click_link 'Edit Collaborators'
       # this user should not get an email
       select(@rest_user.name_with_identifier, from: 'scribe_id')
@@ -144,6 +145,7 @@ describe "editor actions", order: :defined do
       logout(:user)
       login_as(@owner, scope: :user)
       visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+      page.find('.side-tabs').click_link("Privacy & Access")
       page.click_link 'Edit Collaborators'
       page.find('.user-label', text: @rest_user.name_with_identifier).find('button.remove').click
       expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)

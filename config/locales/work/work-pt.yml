@@ -20,6 +20,8 @@ pt:
       word_wrap: Quebra de linha
     create:
       work_created: Obra criado com sucesso
+    delete:
+      success: Obra excluído com sucesso
     describe:
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
@@ -92,16 +94,19 @@ pt:
     edit:
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
+      allow: Permitir
+      allowed: Permitido
       allowed_collaborators: Colaboradores permitidos
-      apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
       collection: Coleção
       confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão, você não poderá recuperá-lo!
       current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar a seção da obra do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir obra
+      delete_work_description: Ao pressionar este botão, a obra e todas as suas páginas serão apagados. Esta ação é irreversível.
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      destroy_everything: Destrua tudo
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
@@ -117,13 +122,16 @@ pt:
       in_scope: Na mira
       more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
       no_image: Sem imagem
+      not_allowed: Proibido
       pages_are_meaningful: As páginas são significativas
       pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
       permission_description: Descrição da permissão
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
+      restrict: Restringir
       restrict_collaborators: Restringir colaboradores
+      restricted: Restrito
       restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
       revert: Reverter
       revert_transcription_conventions_description: Reverter convenções de transcrição para padrão de coleção
@@ -132,11 +140,14 @@ pt:
       source_box_folder: Caixa/Pasta de Origem
       source_collection_name: Nome da coleção de origem
       source_location: Local de origem
+      subject_change_warning: Tem certeza de que deseja mover esta obra para uma nova coleção? Você perderá todos os links relacionados ao assunto.
       support_translation: Tradução de suporte
       support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
       transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       translation_instructions: Instruções de tradução
+      unrestrict: Sem restrições
+      unrestricted: Sem restrições
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
       url: URL
@@ -148,6 +159,12 @@ pt:
       remove_collaborator: Remover colaborador
       work_collaborators: Colaboradores de obra
       work_collaborators_description: Os colaboradores podem transcrever e editar obras privadas.
+    edit_tabs:
+      ai: IA
+      danger_zone: Zona de Perigo
+      general: Em geral
+      metadata: Metadados
+      privacy_access: Privacidade e acesso
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
