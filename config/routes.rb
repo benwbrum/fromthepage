@@ -137,13 +137,12 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'work', as: 'work' do
-    get 'delete', to: 'work#delete'
+    delete 'delete', to: 'work#delete'
     post 'update_featured_page', to: 'work#update_featured_page'
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
     get ':collection_id/:work_id/edit_scribes', to: 'work#edit_scribes', as: 'edit_scribes'
     get ':collection_id/:work_id/search_scribes', to: 'work#search_scribes', as: 'search_scribes'
-    get 'revert', to: 'work#revert'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
     patch 'update_work', to: 'work#update_work'
@@ -541,7 +540,17 @@ Fromthepage::Application.routes.draw do
       match ':work_id/:page_range', to: 'display#read_work', via: [:get, :post], as: :read_work_with_range, constraints: { page_range: /(pp?)?\d+-\d+/ }
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work, constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 
-      resources :work, path: '', param: :work_id, only: [:edit] do
+      resources :work, path: '', param: :work_id, only: [] do
+        # EDIT ROUTES
+        member do
+          get 'edit'
+          get 'edit/metadata', to: 'work#edit_metadata'
+          get 'edit/privacy', to: 'work#edit_privacy'
+          get 'edit/scribes', to: 'work#edit_scribes'
+          # get 'edit/ai', to: 'work#edit_ai'
+          get 'edit/danger', to: 'work#edit_danger'
+        end
+
         get 'download', on: :member
         get 'configurable_printout', on: :member, as: :configurable_printout, to: 'work#configurable_printout'
         get 'versions', on: :member
@@ -555,6 +564,10 @@ Fromthepage::Application.routes.draw do
         get 'metadata_overview', on: :member
         get 'metadata_overview_monitor', on: :member
         get ':page_id/active_editing', on: :member, to: 'transcribe#active_editing', as: 'active_editing'
+      end
+
+      resources :work, path: '', only: [] do
+        resource :ai_transcriptions, param: :work_id, only: [:create, :update]
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

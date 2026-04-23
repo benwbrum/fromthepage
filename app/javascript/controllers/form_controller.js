@@ -8,8 +8,25 @@ export default class extends Controller {
   }
 
   requestSubmit(event) {
-    event.preventDefault;
+    event.preventDefault();
 
     this.form.requestSubmit();
+  }
+
+  confirmAndSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const select = event.target
+    const message = select.dataset.confirmMessage || "Are you sure?"
+
+    const previousValue = select.dataset.previousValue
+
+    if (confirm(message)) {
+      this.form.requestSubmit()
+      select.dataset.previousValue = select.value
+    } else {
+      select.value = previousValue
+    }
   }
 }

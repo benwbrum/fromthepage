@@ -243,7 +243,7 @@ describe "document sets", order: :defined do
     expect(DocumentSet.all.ids).not_to include @test_set.id
   end
 
-  it "looks at document sets owner tabs" do
+  it "looks at document sets owner tabs", js: true do
     login_as(@owner, scope: :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
@@ -261,7 +261,9 @@ describe "document sets", order: :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.check('work_supports_translation')
-    click_button('Save Changes')
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
+    expect(page).to have_content('Work updated successfully')
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end

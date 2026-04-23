@@ -1,0 +1,86 @@
+tr
+  th: h3 =f.label :title, t('work.edit.work_title')
+  td =f.text_field :title
+tr
+  th
+    h3 =f.label :collection_id, t('work.edit.collection')
+  td
+    -if @subjects_exist
+      -collection_field_data = { action: "change->form#confirmAndSubmit", previous_value: collection.id, confirm_message: t("work.edit.subject_change_warning") }
+    -else
+      -collection_field_data = {}
+    =f.collection_select(:collection_id, @collections, :id, :title, {}, data: collection_field_data)
+tr
+  th
+    h3 =f.label :document_set_ids, t('work.edit.document_sets')
+  td
+    =f.collection_select(:document_set_ids, @document_sets, :id, :title, {}, { disabled: @document_sets.blank? })
+tr
+  th
+    h3
+      =f.label :slug, t('work.edit.url')
+  td
+    =f.text_field :slug, value: work.slug
+    p.nomargin.settings =t('work.edit.current_url', current_url: "<b>#{collection_read_work_url(work.collection.owner.slug, work.collection.slug, work.slug)}</b>").html_safe
+tr
+  th
+    h3 =f.label :identifier, t('work.edit.identifier')
+  td
+    =f.text_field :identifier, value: work.identifier
+tr
+  td(colspan='2')
+    p.nomargin.settings= t('work.edit.identifier_description')
+tr
+  th
+    h3 =t('work.edit.work_image')
+    p =t('work.edit.work_image_description')
+  td.image-form
+    -if work.picture_url(:thumb)
+      label.image-upload( data-hover=t('work.edit.upload_image') aria-label=t('work.edit.upload_image') title=t('work.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+        =image_tag(work.picture_url(:thumb), alt: t('work.edit.work_thumbnail'))
+    -else
+      label( data-empty=t('work.edit.no_image') data-hover=t('work.edit.upload_image') aria-label=t('work.edit.upload_image') title=t('work.edit.upload_image'))
+        =f.file_field :picture, accept: 'image/*'
+tr
+  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
+    =f.check_box :pages_are_meaningful, value: work.pages_are_meaningful
+    =f.label :pages_are_meaningful, t('work.edit.pages_are_meaningful')
+tr
+  td(colspan='2')
+    span.settings= t('work.edit.pages_are_meaningful_description')
+tr
+  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
+    =f.check_box :ocr_correction, value: work.ocr_correction
+    =f.label :ocr_correction, t('work.edit.enable_ocr_correction')
+tr
+  td(colspan='2')
+    span.settings= t('work.edit.enable_ocr_correction_description')
+tr
+  th
+    h3 =f.label :description, t('work.edit.description'), class: 'above'
+    i =t('work.edit.description_message')
+  td
+    =f.text_area :description, rows: 5, value: work.description
+tr
+  th
+    h3 =f.label :transcription_conventions, t('work.edit.transcription_conventions'), class: 'above'
+    i =t('work.edit.transcription_conventions_message')
+  td
+    =f.text_area :transcription_conventions, rows: 5, value: work.transcription_conventions
+    -if work.transcription_conventions.present?
+      =t('work.edit.revert_transcription_conventions_description')
+      =button_tag name: 'work[transcription_conventions]', value: nil, type: 'button inline-btn' do
+        =t('work.edit.revert')
+tr
+  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
+    =f.check_box :supports_translation, value: work.supports_translation
+    =f.label :supports_translation, t('work.edit.support_translation')
+tr
+  td(colspan='2')
+    span.settings= t('work.edit.support_translation_description')
+tr
+  th
+    h3 =f.label :translation_instructions, t('work.edit.translation_instructions'), class: 'above'
+  td
+    =f.text_area :translation_instructions, rows: 5, value: work.translation_instructions

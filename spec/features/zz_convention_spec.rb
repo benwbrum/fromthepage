@@ -34,13 +34,15 @@ describe "convention related tasks", order: :defined do
     expect(page).to have_content("More help")
   end
 
-  it "changes work level transcription conventions" do
+  it "changes work level transcription conventions", js: true do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content @clean_conventions.split("\n")[1]
     expect(page).not_to have_button('Revert')
     page.fill_in 'work_transcription_conventions', with: @work_convention
-    click_button 'Save Changes'
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
+    expect(page).to have_content("Work updated successfully")
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     if page.has_content?("Facsimile")
@@ -80,8 +82,9 @@ describe "convention related tasks", order: :defined do
     expect(convention_work.transcription_conventions).to eq @work_convention
     expect(page).not_to have_content @new_convention
     expect(page.find('#work_transcription_conventions')).to have_content @work_convention
-    expect(page).to have_button('Revert')
-    page.execute_script("$('#revert').click()")
+    click_button('Revert')
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     if page.has_content?("Facsimile")

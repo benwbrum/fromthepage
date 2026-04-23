@@ -186,7 +186,7 @@ describe "owner actions", order: :defined do
     expect(page).to have_content("Title can't be blank")
   end
 
-  it "moves a work to another collection" do
+  it "moves a work to another collection", js: true do
     work = Work.find_by(title: @title)
 
     visit dashboard_owner_path
@@ -198,7 +198,6 @@ describe "owner actions", order: :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
     expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
     select(@collection.title, from: 'work_collection_id')
-    click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     work = Work.find_by(title: @title)
     expect(Deed.last.work_id).to eq(work.id)
@@ -219,16 +218,15 @@ describe "owner actions", order: :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, from: 'work_collection_id')
     # reject the modal and get text
     message = page.dismiss_confirm do
-      click_button('Save Changes')
+      select(@collection.title, from: 'work_collection_id')
     end
     expect(message).to have_content("Are you sure you want to move this work")
     expect(Work.find_by(id: work.id).collection).to eq col
   end
 
-  it "moves a work with articles" do
+  it "moves a work with articles", js: true do
     col = Collection.second
     work = col.works.second
     test_page = work.pages.first
@@ -242,8 +240,10 @@ describe "owner actions", order: :defined do
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
-    select(@collection.title, from: 'work_collection_id')
-    click_button('Save Changes')
+    accept_confirm do
+      select(@collection.title, from: 'work_collection_id')
+    end
+    expect(page).to have_content("Work updated successfully")
     # the modal is silently accepted by default
     expect(Work.find_by(id: work.id).collection).not_to eq col
     expect(Work.find_by(id: work.id).collection).to eq @collection
@@ -253,7 +253,7 @@ describe "owner actions", order: :defined do
     expect(test_page2.source_text).not_to have_content('[[')
   end
 
-  it "deletes a work" do
+  it "deletes a work", js: true do
     collection = Work.find_by(title: @title).collection
 
     visit dashboard_owner_path
@@ -263,7 +263,11 @@ describe "owner actions", order: :defined do
     page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
-    click_link("Delete Work")
+    click_link "Danger Zone"
+    accept_confirm do
+      click_link("Delete Work")
+    end
+    expect(page).to have_content("Work deleted successfully")
     expect(page.current_path).to eq dashboard_owner_path
     page.find('.maincol').find('a', text: collection.title).click
     expect(page).not_to have_content(@title)

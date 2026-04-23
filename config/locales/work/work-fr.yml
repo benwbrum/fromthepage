@@ -20,6 +20,8 @@ fr:
       word_wrap: Retour à la ligne
     create:
       work_created: Œuvre créée avec succès
+    delete:
+      success: Œuvre supprimée avec succès
     describe:
       always_show_fullscreen: Toujours afficher en plein écran
       approve: Approuver
@@ -92,16 +94,19 @@ fr:
     edit:
       additional_metadata: Métadonnées supplémentaires
       additional_metadata_description: Ces champs de métadonnées sont affichés sur l'écran À propos de ce œuvre et dans les exportations TEI, mais n'affectent pas la fonctionnalité de FromThePage.
+      allow: Permettre
+      allowed: Autorisé
       allowed_collaborators: Collaborateurs autorisés
-      apply: Appliquer
       author: Auteur
       collaborators_can_edit_titles: Autoriser les collaborateurs à modifier les titres des pages
       collection: Collection
       confirm_delete_work: Voulez-vous vraiment supprimer cette œuvre ? Après la suppression, vous ne pourrez plus le récupérer !
       current_url: L'URL actuelle de ce œuvre est %{current_url}. Si vous souhaitez modifier la section de œuvre de l'URL, veuillez utiliser des lettres minuscules et des tirets entre les mots.
       delete_work: Supprimer l'œuvre
+      delete_work_description: Cliquer sur ce bouton supprimera le document et toutes ses pages. Cette action est irréversible.
       description: Description
       description_message: La description sera affichée sur l'écran Aperçu du projet et sur l'écran À propos du projet. Une partie abrégée de la description sera affichée sur l'écran d'accueil de l'organisation et sur l'écran Rechercher un projet.
+      destroy_everything: Détruisez tout
       document_date: Date du document
       document_date_hint: La date du document est au format EDTF (par exemple, 1843, 2001-02, 1643-06-30)
       document_history: Historique du document
@@ -117,13 +122,16 @@ fr:
       in_scope: Portée
       more_work_settings_info: Pour plus d'informations sur les paramètres de œuvre, consultez l'article wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Préparer un œuvre pour Transcription</a>.
       no_image: Pas d'image
+      not_allowed: Interdit
       pages_are_meaningful: Les pages sont significatives
       pages_are_meaningful_description: Les pages peuvent être des divisions sémantiques significatives d'un œuvre (comme dans un journal avec une date pour chaque page), ou elles peuvent ne pas l'être (comme dans les lettres ou les livres, où le texte ne doit pas être divisé en sections basées sur les pages). Lorsque cette case est cochée, l'œuvre aura des titres de page affichés en évidence.
       permission_description: Description de l'autorisation
       physical_description: Description physique
       place_of_creation: Lieu de création
       recipient: Destinataire
+      restrict: Limiter
       restrict_collaborators: Restreindre les collaborateurs
+      restricted: Limité
       restricted_work_no_collaborators_warning: Seuls les propriétaires de projet peuvent modifier ce œuvre. Ajoutez des collaborateurs pour rendre l'œuvre modifiable par d'autres.
       revert: Revenir
       revert_transcription_conventions_description: Rétablir les conventions de transcription par défaut de la collection
@@ -132,11 +140,14 @@ fr:
       source_box_folder: Boîte/dossier source
       source_collection_name: Nom de la collection source
       source_location: Emplacement de la source
+      subject_change_warning: Êtes-vous sûr de vouloir déplacer cette œuvre vers une nouvelle collection ? Vous perdrez tous les liens thématiques.
       support_translation: Autoriser la traduction
       support_translation_description: Une œuvre peut aussi bien être traduite que transcrite. Lorsque cette case est cochée, l'œuvre aura un onglet Traduction pour chaque page.
       transcription_conventions: Conventions de transcription
       transcription_conventions_message: Ces instructions seront affichées sous le formulaire de transcription pour chaque page en cours de transcription ou d'indexation.
       translation_instructions: Instructions de traduction
+      unrestrict: Sans restriction
+      unrestricted: Libre
       upload_image: Télécharger une image
       uploaded_by: Téléversé par
       url: URL
@@ -148,6 +159,12 @@ fr:
       remove_collaborator: Supprimer un collaborateur
       work_collaborators: Collaborateurs d'œuvre
       work_collaborators_description: Les collaborateurs peuvent transcrire et éditer des œuvres privées.
+    edit_tabs:
+      ai: IA
+      danger_zone: Zone de danger
+      general: Général
+      metadata: Métadonnées
+      privacy_access: Confidentialité et accès
     incomplete: Métadonnées incomplètes.
     metadata_overview:
       notes_and_questions: Notes et questions
