@@ -218,8 +218,8 @@ class ApplicationController < ActionController::Base
     @collection = Collection::Lib::SetFriendlyFind.perform(id: id, work_reference: @work)
   end
 
-  def set_friendly_work(id, collection_reference: nil)
-    @work = Work::Lib::SetFriendlyFind.perform(id: id, collection_reference: collection_reference)
+  def set_friendly_work(id)
+    @work = Work::Lib::SetFriendlyFind.perform(id: id)
   end
 
   def bad_record_id(e)
