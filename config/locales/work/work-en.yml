@@ -1,6 +1,25 @@
 ---
 en:
   work:
+    ai_transcriptions:
+      create:
+        success: AI transcription job launched.
+      form:
+        ai_transcription: AI Transcription
+        contact_us: Contact %{email} to upgrade to a plan that includes AI drafts.
+        description: Launch AI transcription job for pages in this work.
+        description_complete: All pages in this work have AI transcriptions.
+        failed: Failed
+        finished: Finished
+        generate: Create AI drafts for pages without them.
+        in_progress: In progress
+        not_started: Not started
+        pages: Pages
+        queued: Queued
+        retry: Retry failed jobs
+        total_tokens_used: Total tokens used
+      update:
+        success: Retrying AI transcription job.
     configurable_printout:
       description: Export this work in a printable format
       export: Export

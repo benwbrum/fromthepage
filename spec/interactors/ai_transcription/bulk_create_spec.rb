@@ -8,11 +8,13 @@ describe AiTranscription::BulkCreate do
   let!(:page_2) { create(:page, :with_image, work: work) }
 
   let(:user) { owner }
+  let(:scope) { nil }
 
   let(:result) do
     described_class.new(
       collection: collection,
-      user: user
+      user: user,
+      scope: scope
     ).call
   end
 
@@ -35,6 +37,20 @@ describe AiTranscription::BulkCreate do
       ai_transcriptions = collection.pages.includes(:ai_transcription).map(&:ai_transcription)
       expect(ai_transcriptions.size).to eq(2)
       expect(ai_transcriptions.pluck(:id)).to include(ai_transcription.id)
+      expect(ai_transcriptions.pluck(:status).uniq).to eq(['processing'])
+    end
+  end
+
+  context 'when scoped to a work' do
+    let!(:work_2) { create(:work, collection: collection, pages: []) }
+    let!(:page_3) { create(:page, :with_image, work: work_2) }
+
+    let(:scope) { { work_ids: [work.id] } }
+
+    it 'initializes processing ai_transcription records only for work 1' do
+      expect(result.success?).to be_truthy
+      ai_transcriptions = collection.pages.includes(:ai_transcription).map(&:ai_transcription).compact
+      expect(ai_transcriptions.size).to eq(2)
       expect(ai_transcriptions.pluck(:status).uniq).to eq(['processing'])
     end
   end

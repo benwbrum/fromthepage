@@ -20,17 +20,16 @@ ruby:
     },
   ]
 
-  # TODO: Do this in #5375 - Part 2
-  # if current_user.admin? || current_user.like_owner?(@collection)
-  #   tabs += [
-  #     {
-  #       icon: '#icon-robot',
-  #       name: t('.ai'),
-  #       selected: 4,
-  #       path: "#{main_app.edit_ai_collection_work_path(@collection.owner, @collection, @work)}",
-  #     }
-  #   ]
-  # end
+  if current_user.admin? || current_user.like_owner?(@collection)
+    tabs += [
+      {
+        icon: '#icon-robot',
+        name: t('.ai'),
+        selected: 4,
+        path: "#{main_app.edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)}",
+      }
+    ]
+  end
 
   tabs += [
     {

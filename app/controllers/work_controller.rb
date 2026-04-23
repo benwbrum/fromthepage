@@ -29,7 +29,7 @@ class WorkController < ApplicationController
   ]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
+  layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
   def metadata_overview_monitor
     @is_monitor_view = true
@@ -358,5 +358,9 @@ class WorkController < ApplicationController
       :term,
       document_set_ids: []
     )
+  end
+
+  def dynamic_layout
+    request.xhr? ? false : 'application'
   end
 end
