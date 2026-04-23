@@ -63,4 +63,36 @@ describe BulkExportController do
       expect(response).to render_template(:show)
     end
   end
+
+  describe '#download' do
+    let!(:finished_export) { create(:bulk_export, :finished, collection_id: collection.id, user_id: owner.id) }
+    let(:action_path) { bulk_export_download_path(bulk_export_id: finished_export.id) }
+
+    before { login_as owner }
+
+    context 'when zip file exists on disk' do
+      before do
+        FileUtils.mkdir_p(finished_export.zip_file_path)
+        Zip::File.open(finished_export.zip_file_name, create: true) { |_z| }
+      end
+
+      after do
+        File.delete(finished_export.zip_file_name) if File.exist?(finished_export.zip_file_name)
+      end
+
+      it 'sends the file' do
+        get action_path
+        expect(response).to have_http_status(:ok)
+        expect(response.headers['Content-Disposition']).to include('fromthepage_export.zip')
+      end
+    end
+
+    context 'when zip file does not exist on disk' do
+      it 'redirects with a flash message instead of raising an error' do
+        get action_path
+        expect(response).to have_http_status(:redirect)
+        expect(flash[:info]).to be_present
+      end
+    end
+  end
 end
