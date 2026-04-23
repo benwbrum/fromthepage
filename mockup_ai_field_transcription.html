@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Field Transcription Mockup – FromThePage</title>
+  <style>
+    /* ---- Color scheme (from ftp_color_scheme.scss) ---- */
+    :root {
+      --themeLight:       #EDB;
+      --themeDark:        #433;
+      --bodyBg:           #f5efe3;   /* mix(#FFF, #EDB, 70) */
+      --bodyFg:           #200;
+      --bodyFgFaded:      #4a3828;
+      --bodyFgLight:      #5e4a38;
+      --borderColor:      #d9ccbb;   /* mix(#000, #f5efe3, 15) */
+      --fgH1:             #655;
+      --fgH2:             #5c4c4c;
+      --fgLink:           #900;
+      --fgSelected:       #FFF;
+      --bgSelected:       #655;
+      --highlightBoxBg:   #faf5ec;   /* mix(#FFF, bodyBg, 50) */
+      --bgWhite:          #FFF;
+      --bgBlue:           #D9F0FF;
+      --fgBlue:           #08D;
+      --bgGreen:          #F0F9D9;
+      --fgGreen:          #490;
+      --bgOrange:         #FFF6CC;
+      --fgOrange:         #E60;
+      --inputBorderColor: #c8bba8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 15px;
+      background: var(--bodyBg);
+      color: var(--bodyFg);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ---- Page header / breadcrumb stub ---- */
+    .mock-header {
+      background: var(--themeLight);
+      padding: 0.75rem 2rem;
+      font-size: 13px;
+      color: var(--themeDark);
+      border-bottom: 1px solid var(--borderColor);
+    }
+    .mock-header a { color: var(--fgLink); text-decoration: none; }
+    .mock-header a:hover { text-decoration: underline; }
+
+    /* ---- Page tabs ---- */
+    .page-tabs {
+      display: flex;
+      gap: 0;
+      background: var(--bodyBg);
+      border-bottom: 2px solid var(--borderColor);
+      padding: 0 2rem;
+      margin-bottom: 0;
+    }
+    .page-tab {
+      padding: 0.65rem 1.2rem;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--bodyFgFaded);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      text-decoration: none;
+    }
+    .page-tab.active {
+      color: var(--fgLink);
+      border-bottom-color: var(--fgLink);
+      font-weight: bold;
+    }
+
+    /* ---- Main editor layout ---- */
+    .page-editor {
+      display: flex;
+      flex-direction: column;
+      padding: 0 2rem 2rem 2rem;
+    }
+
+    /* ---- Toolbar ---- */
+    .page-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--borderColor);
+      margin-bottom: 1rem;
+      position: sticky;
+      top: 0;
+      background: var(--bodyBg);
+      z-index: 10;
+    }
+    .toolbar-left { display: flex; align-items: center; gap: 0.5rem; }
+    .toolbar-right { display: flex; align-items: center; gap: 0.5rem; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0.4rem 0.9rem;
+      background: var(--bgWhite);
+      border: 1px solid var(--borderColor);
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--bodyFg);
+      text-decoration: none;
+    }
+    .button.primary {
+      background: var(--bgSelected);
+      color: var(--fgSelected);
+      border-color: var(--bgSelected);
+    }
+    .button.primary:hover { background: #544; }
+    .button:hover { background: var(--highlightBoxBg); }
+
+    /* ---- Two-column editor split ---- */
+    .page-columns {
+      display: flex;
+      gap: 1.5rem;
+      min-height: 70vh;
+    }
+    .page-column { flex: 1 1 50%; min-width: 0; }
+    .page-imagescan {
+      background: #111;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 13px;
+      min-height: 500px;
+      position: sticky;
+      top: 74px;
+    }
+
+    /* ---- AI notice banner ---- */
+    .ai-notice {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      margin-bottom: 1.25rem;
+      background: var(--bgBlue);
+      border-left: 4px solid var(--fgBlue);
+      border-radius: 4px;
+      font-size: 13px;
+      color: #1a4d6e;
+    }
+    .ai-notice .ai-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .ai-notice strong { font-weight: 600; }
+
+    /* ---- Fields layout ---- */
+    .fields-row {
+      display: flex;
+      align-items: flex-start;
+      column-gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .field-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .field-wrapper.w50 { flex: 0 0 50%; }
+    .field-wrapper.w100 { flex: 0 0 100%; }
+
+    .field-wrapper label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fgH2);
+      margin-bottom: 3px;
+      display: block;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    /* ---- Input states ---- */
+    .field-input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--inputBorderColor);
+      border-radius: 3px;
+      background: var(--bgWhite);
+      font-family: Georgia, serif;
+      font-size: 14px;
+      color: var(--bodyFg);
+      line-height: 1.4;
+    }
+    .field-input:focus {
+      outline: none;
+      border-color: var(--fgBlue);
+      box-shadow: 0 0 0 2px rgba(0, 136, 221, 0.15);
+    }
+
+    /* Pre-filled by AI (matching) */
+    .field-input.ai-prefilled {
+      background: #f0f9f0;
+      border-color: #9ecb9e;
+    }
+
+    /* Conflicting — left empty for user to resolve */
+    .field-input.ai-conflict {
+      border-color: var(--fgOrange);
+      background: #fffdf5;
+    }
+
+    /* ---- AI pre-fill badge ---- */
+    .ai-prefill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #3a7a3a;
+    }
+    .ai-prefill-badge svg { width: 12px; height: 12px; }
+
+    /* ---- Conflict suggestions panel ---- */
+    .ai-conflict-panel {
+      margin-top: 6px;
+      border: 1px solid var(--fgOrange);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--bgWhite);
+    }
+
+    .ai-conflict-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      background: var(--bgOrange);
+      border-bottom: 1px solid #e8d57a;
+      font-size: 11px;
+      font-weight: 600;
+      color: #7a5500;
+    }
+    .ai-conflict-header svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .ai-suggestion {
+      display: flex;
+      align-items: stretch;
+    }
+    .ai-suggestion + .ai-suggestion {
+      border-top: 1px solid var(--borderColor);
+    }
+
+    .suggestion-label {
+      flex: 0 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--highlightBoxBg);
+      border-right: 1px solid var(--borderColor);
+      color: var(--bodyFgFaded);
+    }
+
+    .suggestion-text {
+      flex: 1;
+      padding: 7px 10px;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      color: var(--bodyFg);
+      line-height: 1.4;
+    }
+
+    /* Differing tokens within a suggestion */
+    .diff-changed {
+      color: #c00;
+      background: #ffe8e8;
+      border-radius: 2px;
+      padding: 0 2px;
+      font-weight: 600;
+    }
+
+    .suggestion-use-btn {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--fgLink);
+      background: none;
+      border: none;
+      border-left: 1px solid var(--borderColor);
+      cursor: pointer;
+      white-space: nowrap;
+      gap: 3px;
+    }
+    .suggestion-use-btn:hover {
+      background: #f9f0f0;
+      color: #700;
+    }
+    .suggestion-use-btn svg { width: 11px; height: 11px; }
+
+    /* ---- Section instructions (like the Drawing No. instructions pane) ---- */
+    .field-instructions {
+      color: var(--fgH2);
+      padding: 6px 0 6px 10px;
+      border-left: 4px solid rgba(101, 85, 85, 0.4);
+    }
+    .field-instructions h5 {
+      margin: 0 0 4px 0;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--fgH1);
+    }
+    .field-instructions p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--bodyFgFaded);
+    }
+
+    /* ---- Save buttons ---- */
+    .save-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--borderColor);
+    }
+
+    /* ---- Legend / key ---- */
+    .legend {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      background: var(--highlightBoxBg);
+      border: 1px solid var(--borderColor);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .legend h4 { margin: 0 0 0.75rem 0; font-size: 13px; color: var(--fgH1); }
+    .legend-items { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-swatch {
+      width: 18px; height: 18px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+
+    /* --- SVG helpers --- */
+    svg.icon { display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- Breadcrumb / header stub -->
+<div class="mock-header">
+  <a href="#">Bethlehem Steel Engineering Drawings</a>
+  &rsaquo; <a href="#">Dust Hood for No 3 Simpson Miler</a>
+  &rsaquo; Page 1
+</div>
+
+<!-- Page tabs -->
+<div class="page-tabs">
+  <a class="page-tab" href="#">Overview</a>
+  <a class="page-tab active" href="#">Transcribe</a>
+  <a class="page-tab" href="#">Discuss</a>
+  <a class="page-tab" href="#">History</a>
+</div>
+
+<div class="page-editor">
+
+  <!-- Toolbar -->
+  <div class="page-toolbar">
+    <div class="toolbar-left">
+      <button class="button">
+        <!-- expand icon -->
+        <svg class="icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="5,1 1,1 1,5"/>
+          <polyline points="11,1 15,1 15,5"/>
+          <polyline points="1,11 1,15 5,15"/>
+          <polyline points="15,11 15,15 11,15"/>
+        </svg>
+        Fullscreen
+      </button>
+      <button class="button">
+        <!-- layout icon -->
+        <svg class="icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="1" y="1" width="6" height="14" rx="1"/>
+          <rect x="9" y="1" width="6" height="14" rx="1"/>
+        </svg>
+        Layout
+      </button>
+    </div>
+    <div class="toolbar-right">
+      <label style="font-size:13px; display:flex; align-items:center; gap:5px;">
+        <input type="checkbox"> Mark as Blank
+      </label>
+      <button class="button">Save &amp; Stay</button>
+      <button class="button primary">Save &amp; Next ›</button>
+    </div>
+  </div>
+
+  <!-- Two-column split: image | fields -->
+  <div class="page-columns">
+
+    <!-- Left: image scan placeholder -->
+    <div class="page-column page-imagescan">
+      <span>[Document image viewer]</span>
+    </div>
+
+    <!-- Right: transcription fields -->
+    <div class="page-column" style="display:flex; flex-direction:column;">
+
+      <!-- AI notice -->
+      <div class="ai-notice">
+        <span class="ai-icon">🤖</span>
+        <div>
+          <strong>AI Draft Available</strong> &mdash;
+          Two AI models transcribed this page.
+          Fields where both models agree are pre-filled.
+          Fields where they disagree are highlighted &mdash; review the suggestions below each field and click <strong>Use</strong> to accept one.
+        </div>
+      </div>
+
+      <!-- =====================================================
+           ROW 1: Header (match) | Location (match)
+           ===================================================== -->
+      <div class="fields-row">
+
+        <!-- Header — MATCH → pre-filled -->
+        <div class="field-wrapper">
+          <label for="field_header">Header</label>
+          <input
+            id="field_header"
+            class="field-input ai-prefilled"
+            type="text"
+            value="Bethlehem Steel Company"
+          >
+          <span class="ai-prefill-badge">
+            <!-- checkmark -->
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3a7a3a" stroke-width="2">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+            Both AI models agree
+          </span>
+        </div>
+
+        <!-- Location — MATCH → pre-filled -->
+        <div class="field-wrapper">
+          <label for="field_location">Location</label>
+          <input
+            id="field_location"
+            class="field-input ai-prefilled"
+            type="text"
+            value="Bethlehem, PA, U.S.A."
+          >
+          <span class="ai-prefill-badge">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3a7a3a" stroke-width="2">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+            Both AI models agree
+          </span>
+        </div>
+
+      </div><!-- /row 1 -->
+
+      <!-- =====================================================
+           ROW 2: For (match) | Place (match)
+           ===================================================== -->
+      <div class="fields-row">
+
+        <!-- For — MATCH -->
+        <div class="field-wrapper">
+          <label for="field_for">For</label>
+          <input
+            id="field_for"
+            class="field-input ai-prefilled"
+            type="text"
+            value="Bethlehem Steel Company"
+          >
+          <span class="ai-prefill-badge">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3a7a3a" stroke-width="2">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+            Both AI models agree
+          </span>
+        </div>
+
+        <!-- Place — MATCH -->
+        <div class="field-wrapper">
+          <label for="field_place">Place</label>
+          <input
+            id="field_place"
+            class="field-input ai-prefilled"
+            type="text"
+            value="Lehigh Plant - Steel Foundry"
+          >
+          <span class="ai-prefill-badge">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3a7a3a" stroke-width="2">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+            Both AI models agree
+          </span>
+        </div>
+
+      </div><!-- /row 2 -->
+
+      <!-- =====================================================
+           ROW 3: Job — CONFLICT
+           ===================================================== -->
+      <div class="fields-row">
+        <div class="field-wrapper w100">
+          <label for="field_job">Job</label>
+          <input
+            id="field_job"
+            class="field-input ai-conflict"
+            type="text"
+            placeholder="Review suggestions below and click Use, or type your transcription…"
+          >
+
+          <!-- Conflict panel -->
+          <div class="ai-conflict-panel">
+            <div class="ai-conflict-header">
+              <!-- warning icon -->
+              <svg viewBox="0 0 13 13" fill="none" stroke="#7a5500" stroke-width="1.8">
+                <path d="M6.5 1 L12 12 H1 Z"/>
+                <line x1="6.5" y1="5" x2="6.5" y2="8.5"/>
+                <circle cx="6.5" cy="10.5" r="0.5" fill="#7a5500" stroke="none"/>
+              </svg>
+              AI models disagree &mdash; review and choose one
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;1</div>
+              <div class="suggestion-text">Dust Hood for No 3 Simpson Miler</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_job', 'Dust Hood for No 3 Simpson Miler', this)"
+                title="Use this value"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;2</div>
+              <div class="suggestion-text">Dust Hood for No. 3 Simpson Miller</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_job', 'Dust Hood for No. 3 Simpson Miller', this)"
+                title="Use this value"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /row 3 -->
+
+      <!-- =====================================================
+           ROW 4: Part — CONFLICT
+           ===================================================== -->
+      <div class="fields-row">
+        <div class="field-wrapper w100">
+          <label for="field_part">Part</label>
+          <input
+            id="field_part"
+            class="field-input ai-conflict"
+            type="text"
+            placeholder="Review suggestions below and click Use, or type your transcription…"
+          >
+
+          <div class="ai-conflict-panel">
+            <div class="ai-conflict-header">
+              <svg viewBox="0 0 13 13" fill="none" stroke="#7a5500" stroke-width="1.8">
+                <path d="M6.5 1 L12 12 H1 Z"/>
+                <line x1="6.5" y1="5" x2="6.5" y2="8.5"/>
+                <circle cx="6.5" cy="10.5" r="0.5" fill="#7a5500" stroke="none"/>
+              </svg>
+              AI models disagree &mdash; review and choose one
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;1</div>
+              <div class="suggestion-text">Arrgt. [6?] Detail of Piping</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_part', 'Arrgt. [6?] Detail of Piping', this)"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;2</div>
+              <div class="suggestion-text">Arrgt. [6] Detail of Piping</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_part', 'Arrgt. [6] Detail of Piping', this)"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /row 4 -->
+
+      <!-- =====================================================
+           ROW 5: Instructions + Drawing No. — CONFLICT
+           ===================================================== -->
+      <div class="fields-row" style="align-items:flex-start;">
+
+        <!-- Instructions pane -->
+        <div class="field-wrapper" style="flex: 1 1 55%; padding-top: 4px;">
+          <div class="field-instructions">
+            <h5>Instructions</h5>
+            <p>Drawing number is usually a large bold number in the lower right portion of the diagram metadata.</p>
+          </div>
+        </div>
+
+        <!-- Drawing No. — CONFLICT -->
+        <div class="field-wrapper" style="flex: 0 0 40%;">
+          <label for="field_drawing_no">Drawing No.</label>
+          <input
+            id="field_drawing_no"
+            class="field-input ai-conflict"
+            type="text"
+            placeholder="Review suggestions…"
+          >
+
+          <div class="ai-conflict-panel">
+            <div class="ai-conflict-header">
+              <svg viewBox="0 0 13 13" fill="none" stroke="#7a5500" stroke-width="1.8">
+                <path d="M6.5 1 L12 12 H1 Z"/>
+                <line x1="6.5" y1="5" x2="6.5" y2="8.5"/>
+                <circle cx="6.5" cy="10.5" r="0.5" fill="#7a5500" stroke="none"/>
+              </svg>
+              AI models disagree &mdash; review and choose one
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;1</div>
+              <div class="suggestion-text">171,479</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_drawing_no', '171,479', this)"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+
+            <div class="ai-suggestion">
+              <div class="suggestion-label">AI&nbsp;2</div>
+              <div class="suggestion-text">171,749</div>
+              <button
+                class="suggestion-use-btn"
+                onclick="useValue('field_drawing_no', '171,749', this)"
+              >
+                <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="2,5.5 4.5,8 9,2.5"/>
+                </svg>
+                Use
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /row 5 -->
+
+      <!-- Save row -->
+      <div class="save-row">
+        <button class="button primary">Save &amp; Next ›</button>
+        <button class="button">Save &amp; Stay</button>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <h4>Legend</h4>
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#f0f9f0; border-color:#9ecb9e;"></div>
+            <span>Both AI models agree &mdash; pre-filled</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#fffdf5; border-color:#E60;"></div>
+            <span>AI models disagree &mdash; choose or type a value</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#FFF; border-color:#c8bba8;"></div>
+            <span>No AI suggestion</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /right column -->
+  </div><!-- /page-columns -->
+</div><!-- /page-editor -->
+
+<script>
+  // ── Word-level diff ──────────────────────────────────────────────
+  // Returns [tokensA, tokensB] where differing tokens are wrapped in
+  // <span class="diff-changed">…</span>.
+  function diffWords(a, b) {
+    var tokA = a.split(/(\s+)/);  // keep whitespace tokens
+    var tokB = b.split(/(\s+)/);
+
+    // Build LCS table
+    var m = tokA.length, n = tokB.length;
+    var dp = [];
+    for (var i = 0; i <= m; i++) {
+      dp[i] = new Array(n + 1).fill(0);
+    }
+    for (var i = 1; i <= m; i++) {
+      for (var j = 1; j <= n; j++) {
+        dp[i][j] = (tokA[i-1] === tokB[j-1])
+          ? dp[i-1][j-1] + 1
+          : Math.max(dp[i-1][j], dp[i][j-1]);
+      }
+    }
+
+    // Backtrack to find which tokens are in the LCS
+    var inLcsA = new Array(m).fill(false);
+    var inLcsB = new Array(n).fill(false);
+    var i = m, j = n;
+    while (i > 0 && j > 0) {
+      if (tokA[i-1] === tokB[j-1]) {
+        inLcsA[i-1] = true;
+        inLcsB[j-1] = true;
+        i--; j--;
+      } else if (dp[i-1][j] > dp[i][j-1]) {
+        i--;
+      } else {
+        j--;
+      }
+    }
+
+    // Build highlighted HTML — mark tokens NOT in LCS (i.e. changed/unique)
+    function buildHtml(tokens, inLcs) {
+      return tokens.map(function(tok, idx) {
+        if (/^\s+$/.test(tok)) return tok; // preserve whitespace as-is
+        if (inLcs[idx]) return escHtml(tok);
+        return '<span class="diff-changed">' + escHtml(tok) + '</span>';
+      }).join('');
+    }
+
+    return [buildHtml(tokA, inLcsA), buildHtml(tokB, inLcsB)];
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Apply diffs to every conflict panel on load
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.ai-conflict-panel').forEach(function(panel) {
+      var suggestions = panel.querySelectorAll('.ai-suggestion');
+      if (suggestions.length !== 2) return;
+      var textA = suggestions[0].querySelector('.suggestion-text').textContent.trim();
+      var textB = suggestions[1].querySelector('.suggestion-text').textContent.trim();
+      if (textA === textB) return;
+      var diffed = diffWords(textA, textB);
+      suggestions[0].querySelector('.suggestion-text').innerHTML = diffed[0];
+      suggestions[1].querySelector('.suggestion-text').innerHTML = diffed[1];
+    });
+  });
+
+  // ── Use-button handler ───────────────────────────────────────────
+  function useValue(fieldId, value, btn) {
+    var input = document.getElementById(fieldId);
+    input.value = value;
+    // Switch styling to "resolved" look
+    input.classList.remove('ai-conflict');
+    input.classList.add('ai-prefilled');
+    input.style.borderColor = '#9ecb9e';
+    input.style.background = '#f0f9f0';
+
+    // Mark the chosen suggestion visually
+    var panel = btn.closest('.ai-conflict-panel');
+    var suggestions = panel.querySelectorAll('.ai-suggestion');
+    suggestions.forEach(function(s) { s.style.opacity = '0.5'; });
+    btn.closest('.ai-suggestion').style.opacity = '1';
+    btn.closest('.ai-suggestion').style.background = '#f0f9f0';
+    btn.textContent = '✓ Used';
+    btn.disabled = true;
+
+    // Update the panel header
+    var header = panel.querySelector('.ai-conflict-header');
+    header.style.background = '#e6f5e6';
+    header.style.borderColor = '#9ecb9e';
+    header.style.color = '#2a5a2a';
+    header.innerHTML = '<svg viewBox="0 0 12 12" fill="none" stroke="#2a5a2a" stroke-width="2" style="width:13px;height:13px;flex-shrink:0"><polyline points="2,6 5,9 10,3"/></svg> Value selected &mdash; edit the field above if needed';
+  }
+</script>
+</body>
+</html>
