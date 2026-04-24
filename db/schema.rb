@@ -279,6 +279,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
     t.datetime "featured_at", precision: nil
     t.text "legend"
     t.string "default_overview_orientation"
+    t.boolean "hide_notes", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true

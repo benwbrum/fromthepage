@@ -17,6 +17,7 @@
 #  footer_block                   :text(16777215)
 #  help                           :text(65535)
 #  hide_completed                 :boolean          default(TRUE)
+#  hide_notes                     :boolean          default(FALSE)
 #  intro_block                    :text(16777215)
 #  is_active                      :boolean          default(TRUE)
 #  language                       :string(255)
