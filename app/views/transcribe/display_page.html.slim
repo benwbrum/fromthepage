@@ -111,9 +111,10 @@
   =render :partial => 'shared/markup_help'
   p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
-h2.legend =t('.notes_and_questions')
-.page-notes
-  =render :partial => "notes/notes"
+-unless @collection.hide_notes? && !(current_user && (current_user.like_owner?(@collection) || current_user.collaborator?(@collection)))
+  h2.legend =t('.notes_and_questions')
+  .page-notes
+    =render :partial => "notes/notes"
 
 
 #custom-alert
