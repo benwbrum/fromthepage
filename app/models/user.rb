@@ -118,6 +118,16 @@ class User < ApplicationRecord
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
 
   scope :with_owner_works, -> { joins(:uploaded_works).distinct }
+  # scope for users with public collections or document sets
+  scope :with_public_projects, lambda {
+    left_outer_joins(:collections, :document_sets)
+      .where(
+        'collections.restricted = :unrestricted OR document_sets.visibility IN (:public_visibilities)',
+        unrestricted: false,
+        public_visibilities: [DocumentSet.visibilities[:public], DocumentSet.visibilities[:read_only]]
+      )
+      .distinct
+  }
   scope :findaproject_orgs, -> { owners.where(account_type: ['Large Institution', 'Small Organization']) }
   scope :findaproject_individuals, -> { owners.where(account_type: ['Legacy', 'Individual Researcher']) }
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }

@@ -99,6 +99,10 @@ class BulkExport < ApplicationRecord
     self.attributes.detect { |k, v| k.match(/_page/) && v==true }
   end
 
+  def downloadable?
+    output.attached? || File.exist?(zip_file_name)
+  end
+
   def clean_zip_file
     output.purge
     File.unlink(zip_file_name) if File.exist?(zip_file_name)
