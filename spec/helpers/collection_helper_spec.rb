@@ -47,6 +47,23 @@ RSpec.describe CollectionHelper, type: :helper do
         expect(notes_visible?(collection, user)).to be true
       end
     end
+
+    context 'when called with a document_set whose parent collection hides notes' do
+      let(:collection) { build_stubbed(:collection, owner_user_id: owner.id, hide_notes: true) }
+      let(:document_set) { build_stubbed(:document_set, collection: collection) }
+
+      it 'returns false for nil user' do
+        expect(notes_visible?(document_set, nil)).to be false
+      end
+
+      it 'returns true for a user who is an owner' do
+        user = build_stubbed(:user)
+        allow(user).to receive(:like_owner?).with(document_set).and_return(true)
+        allow(user).to receive(:collaborator?).with(document_set).and_return(false)
+
+        expect(notes_visible?(document_set, user)).to be true
+      end
+    end
   end
 
   describe 'any_public_collections_with_document_sets?' do
