@@ -204,6 +204,8 @@ pt:
       forums_description: Permite que os colaboradores discutam tópicos entre si e com os proprietários do projeto por meio de painéis de mensagens.
       hide_completed: Automaticamente não mostrar as obras completadas
       hide_completed_description: Oculte obras totalmente transcritas ou traduzidas por padrão.
+      hide_notes: Ocultar notas de pessoas que não são colaboradoras
+      hide_notes_description: Oculte a seção de Notas e Perguntas para todos, exceto para os proprietários da coleção e colaboradores.
       legend: Legenda
       legend_description: Conteúdo HTML a exibir em cada visualização de página para fornecer contexto aos leitores. Isso aparecerá abaixo da transcrição na visão geral da página.
       metadata: Metadados

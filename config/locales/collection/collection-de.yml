@@ -204,6 +204,8 @@ de:
       forums_description: Ermöglicht Mitarbeitern die Diskussion von Themen untereinander und mit Projektinhabern über Message Boards.
       hide_completed: Abgeschlossene Werke standardmäßig ausblenden
       hide_completed_description: Verstecken Sie standardmäßig vollständig transkribierte oder übersetzte Werke.
+      hide_notes: Notizen vor Nicht-Mitarbeitern ausblenden
+      hide_notes_description: Blenden Sie den Abschnitt „Notizen und Fragen“ für alle außer Sammlungsinhabern und Mitarbeitern aus.
       legend: Legende
       legend_description: HTML-Inhalt zur Anzeige in jeder Seitenansicht, um den Lesern Kontext zu bieten. Dies wird unter der Transkription in der Seitenübersicht angezeigt.
       metadata: Metadaten
