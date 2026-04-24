@@ -107,7 +107,7 @@
     .page-legend-content
       ==@collection.legend
 
--unless @collection.hide_notes? && !(current_user && (current_user.like_owner?(@collection) || current_user.collaborator?(@collection)))
+-if notes_visible?(@collection, current_user)
   h2.legend#notes =t('.page_notes')
   .page-notes
     =render :partial => "notes/notes"
