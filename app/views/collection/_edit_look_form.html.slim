@@ -30,6 +30,12 @@ tr
       p =t('collection.edit_look.hide_completed_description')
 tr
   td(colspan="2")
+    =f.check_box :hide_notes
+    =f.label :hide_notes
+      h3 =t('collection.edit_look.hide_notes')
+      p =t('collection.edit_look.hide_notes_description')
+tr
+  td(colspan="2")
     =f.check_box :messageboards_enabled
     =f.label :messageboards_enabled
       h3 =t('collection.edit_look.enable_forums')

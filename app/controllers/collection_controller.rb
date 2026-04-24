@@ -801,6 +801,7 @@ class CollectionController < ApplicationController
       :subjects_enabled,
       :review_type,
       :hide_completed,
+      :hide_notes,
       :text_language,
       :default_orientation,
       :default_overview_orientation,

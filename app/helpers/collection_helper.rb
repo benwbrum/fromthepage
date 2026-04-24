@@ -1,4 +1,10 @@
 module CollectionHelper
+  def notes_visible?(collection, user)
+    return true unless collection.hide_notes?
+
+    user.present? && (user.like_owner?(collection) || user.collaborator?(collection))
+  end
+
   def link
     if params[:works] == 'show'
       @link_title = t('.incomplete_works')
