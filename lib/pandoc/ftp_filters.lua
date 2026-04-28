@@ -113,6 +113,11 @@ function handle_meta(meta)
 \setmainfont{CMU Serif}
 \setsansfont{CMU Sans Serif}
 \setmonofont{CMU Typewriter Text}
+
+% For tables
+\usepackage{xltabular}
+\usepackage{booktabs}
+\usepackage[margin=0.75in]{geometry}
 ]]
 
   table.insert(meta['header-includes'], pandoc.RawBlock('latex', header))
@@ -120,11 +125,19 @@ function handle_meta(meta)
   return meta
 end
 
+function handle_rawblock(el)
+  if el.format == "latex" and el.text:match("\\begin{xltabular}") then
+    return pandoc.RawBlock("latex", el.text)
+  end
+  return el
+end
+
 return {
   {
     Para = handle_block,
     Plain = handle_block,
     Math = handle_math,
+    RawBlock = handle_rawblock,
     Meta = handle_meta
   }
 }
