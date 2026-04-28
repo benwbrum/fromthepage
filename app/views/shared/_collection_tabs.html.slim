@@ -2,11 +2,14 @@
   :name => t('.overview'),
   :selected => 1,
   :path => "#{main_app.collection_path(@collection.owner, @collection)}",
-},{\
-  :name => t('.statistics'),
-  :selected => 2,
-  :path => "#{main_app.collection_statistics_path(@collection.owner, @collection)}",
 }]
+
+-if notes_visible?(@collection, current_user)
+  -tabs += [{\
+    :name => t('.statistics'),
+    :selected => 2,
+    :path => "#{main_app.collection_statistics_path(@collection.owner, @collection)}",
+  }]
 
 -unless @collection.subjects_disabled
   -tabs +=[{\
