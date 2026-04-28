@@ -4,7 +4,7 @@
   :path => "#{collection_article_show_path(@collection.owner, @collection, @article)}",
 }]
 
--if notes_visible?(@collection, current_user) && user_signed_in? && !current_user.guest
+-if user_signed_in? && !current_user.guest && notes_visible?(@collection, current_user)
   -tabs += [{\
     :name => t('.settings'),
     :selected => 4,
