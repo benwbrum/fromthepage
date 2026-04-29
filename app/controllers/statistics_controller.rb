@@ -1,7 +1,15 @@
 require 'csv'
 
 class StatisticsController < ApplicationController
+  include CollectionHelper
+
   def collection
+    unless notes_visible?(@collection, current_user)
+      flash[:error] = t('unauthorized_collection', project: @collection.title)
+      redirect_to collection_path(@collection.owner, @collection)
+      return
+    end
+
     @works = @collection.works
     @stats = @collection.get_stats_hash
     @recent_stats = @collection.get_stats_hash(7.days.ago)
