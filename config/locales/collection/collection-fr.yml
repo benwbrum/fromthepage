@@ -204,8 +204,8 @@ fr:
       forums_description: Permet aux collaborateurs de discuter de sujets entre eux et avec les propriétaires de projets via des forums de discussion.
       hide_completed: Masquer les œuvres terminés par défaut
       hide_completed_description: Masquer les œuvres entièrement transcrites ou traduites par défaut.
-      hide_notes: Masquer les notes aux non-collaborateurs
-      hide_notes_description: Masquer la section « Notes et questions » à tous, sauf aux propriétaires de la collection et aux collaborateurs.
+      hide_notes: Masquer les notes, modifications et statistiques aux non-collaborateurs
+      hide_notes_description: Masquer la section « Notes et questions », les modifications récentes et l'onglet Statistiques à tous, sauf aux propriétaires de la collection et aux collaborateurs.
       legend: Légende
       legend_description: Contenu HTML à afficher sur chaque vue de page pour fournir un contexte aux lecteurs. Cela apparaîtra sous la transcription dans l'aperçu de la page.
       metadata: Métadonnées
