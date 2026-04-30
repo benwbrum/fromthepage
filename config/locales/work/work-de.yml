@@ -40,7 +40,7 @@ de:
     create:
       work_created: Werk erfolgreich erstellt
     delete:
-      success: Arbeit erfolgreich gelöscht
+      success: Werk erfolgreich gelöscht
     describe:
       always_show_fullscreen: Immer Vollbild anzeigen
       approve: Freigeben

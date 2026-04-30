@@ -24,7 +24,10 @@ describe "needs review", order: :defined do
     login_as(@owner, scope: :user)
     visit "/work/edit?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
+    page.find('.side-tabs').click_link('Task Configuration')
     page.check('work_supports_translation')
+    script = "$('#collection-settings-save').click()"
+    page.execute_script(script)
     expect(page).to have_content('Work updated successfully')
     expect(Work.find_by(id: @work.id).supports_translation).to be true
     logout(@owner)

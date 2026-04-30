@@ -260,6 +260,7 @@ describe "document sets", order: :defined do
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.side-tabs').click_link('Task Configuration')
     page.check('work_supports_translation')
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)

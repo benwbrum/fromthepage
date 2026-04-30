@@ -16,6 +16,7 @@ describe "Work Settings" do
     # Visit work settings tab
     visit edit_collection_work_path(owner, collection, work_no_ocr)
     expect(page).to have_content(work_no_ocr.title)
+    page.find('.side-tabs').click_link('Task Configuration')
     expect(page).to have_unchecked_field('work_ocr_correction')
     # Find ocr checkbox, enable, and save
     page.check('work_ocr_correction')
