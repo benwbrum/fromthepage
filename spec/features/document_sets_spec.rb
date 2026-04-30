@@ -263,7 +263,7 @@ describe "document sets", order: :defined do
     page.find('.side-tabs').click_link('Task Configuration')
     page.check('work_supports_translation')
     expect(page).to have_content('Work updated successfully')
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit/tasks"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
