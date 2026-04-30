@@ -85,6 +85,7 @@ describe "convention related tasks", order: :defined do
     click_button('Revert')
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
+    expect(page).to have_content("Work updated successfully")
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     if page.has_content?("Facsimile")

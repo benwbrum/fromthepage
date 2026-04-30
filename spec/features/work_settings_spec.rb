@@ -20,10 +20,6 @@ describe "Work Settings" do
     expect(page).to have_unchecked_field('work_ocr_correction')
     # Find ocr checkbox, enable, and save
     page.check('work_ocr_correction')
-
-    script = "$('#collection-settings-save').click()"
-    page.execute_script(script)
-
     expect(page).to have_content("Work updated successfully")
     # Check for change
     expect(page).to have_checked_field('work_ocr_correction')
@@ -38,10 +34,6 @@ describe "Work Settings" do
     expect(page).to have_checked_field('work_ocr_correction')
     # Find ocr checkbox, enable, and save
     page.uncheck('work_ocr_correction')
-
-    script = "$('#collection-settings-save').click()"
-    page.execute_script(script)
-
     expect(page).to have_content("Work updated successfully")
     # Check for change
     expect(page).to have_unchecked_field('work_ocr_correction')
@@ -63,6 +55,7 @@ describe "Work Settings" do
     # Save without changing conventions
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
+    expect(page).to have_content("Work updated successfully")
 
     # Verify work still inherits from collection
     work_no_ocr.reload
@@ -80,10 +73,8 @@ describe "Work Settings" do
 
     # Enter custom work conventions
     page.fill_in('work_transcription_conventions', with: 'Work-specific convention text')
-
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
-
     expect(page).to have_content("Work updated successfully")
 
     # Verify work has its own conventions
