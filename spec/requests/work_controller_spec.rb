@@ -45,6 +45,40 @@ describe WorkController do
     end
   end
 
+  describe '#edit_tasks' do
+    let(:action_path) { edit_tasks_collection_work_path(owner, collection, work) }
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_tasks)
+    end
+
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when user is not an owner' do
+      let(:user) { User.where(owner: false).first }
+
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
   describe '#edit_metadata' do
     let(:action_path) { edit_metadata_collection_work_path(owner, collection, work) }
     let(:subject) { get action_path }
@@ -215,6 +249,27 @@ describe WorkController do
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:update_general)
         end
+      end
+    end
+
+    context 'when scope tasks' do
+      let(:scope) { 'edit_tasks' }
+
+      let(:params) do
+        {
+          work: {
+            collection_id: collection.id,
+            supports_translation: true
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_tasks)
       end
     end
 

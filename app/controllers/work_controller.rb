@@ -14,6 +14,7 @@ class WorkController < ApplicationController
   # tested
   before_action :authorized?, only: [
     :edit,
+    :edit_tasks,
     :edit_metadata,
     :edit_privacy,
     :edit_danger,
@@ -144,6 +145,11 @@ class WorkController < ApplicationController
     @collections = current_user.collections
     @document_sets = @work.collection.document_sets
     @subjects_exist = @work.articles.any?
+
+    @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
+  end
+
+  def edit_tasks
   end
 
   def edit_metadata
@@ -237,6 +243,8 @@ class WorkController < ApplicationController
 
     respond_to do |format|
       template = case params[:scope]
+      when 'edit_tasks'
+        'work/update_tasks'
       when 'edit_metadata'
         'work/update_metadata'
       when 'edit_privacy'
@@ -245,6 +253,9 @@ class WorkController < ApplicationController
       else
         @collections = current_user.collections
         @document_sets = @collection.document_sets
+        @subjects_exist = @work.articles.any?
+
+        @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
         'work/update_general'
       end
 

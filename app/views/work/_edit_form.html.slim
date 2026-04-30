@@ -14,7 +14,7 @@ tr
   th
     h3 =f.label :document_set_ids, t('work.edit.document_sets')
   td
-    =f.collection_select(:document_set_ids, @document_sets, :id, :title, {}, { disabled: @document_sets.blank? })
+    =f.select :document_set_ids, options_for_select(@document_sets_options, selected: work.document_set_ids), {}, { disabled: @document_sets.blank?, multiple: true, aria: { label: t('work.edit.document_sets') }, data: { controller: 'select2' } }
 tr
   th
     h3
@@ -43,20 +43,6 @@ tr
       label( data-empty=t('work.edit.no_image') data-hover=t('work.edit.upload_image') aria-label=t('work.edit.upload_image') title=t('work.edit.upload_image'))
         =f.file_field :picture, accept: 'image/*'
 tr
-  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
-    =f.check_box :pages_are_meaningful, value: work.pages_are_meaningful
-    =f.label :pages_are_meaningful, t('work.edit.pages_are_meaningful')
-tr
-  td(colspan='2')
-    span.settings= t('work.edit.pages_are_meaningful_description')
-tr
-  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
-    =f.check_box :ocr_correction, value: work.ocr_correction
-    =f.label :ocr_correction, t('work.edit.enable_ocr_correction')
-tr
-  td(colspan='2')
-    span.settings= t('work.edit.enable_ocr_correction_description')
-tr
   th
     h3 =f.label :description, t('work.edit.description'), class: 'above'
     i =t('work.edit.description_message')
@@ -72,15 +58,3 @@ tr
       =t('work.edit.revert_transcription_conventions_description')
       =button_tag name: 'work[transcription_conventions]', value: nil, type: 'button inline-btn' do
         =t('work.edit.revert')
-tr
-  td(colspan="2" style="display: flex; align-items: center; width: 100%;")
-    =f.check_box :supports_translation, value: work.supports_translation
-    =f.label :supports_translation, t('work.edit.support_translation')
-tr
-  td(colspan='2')
-    span.settings= t('work.edit.support_translation_description')
-tr
-  th
-    h3 =f.label :translation_instructions, t('work.edit.translation_instructions'), class: 'above'
-  td
-    =f.text_area :translation_instructions, rows: 5, value: work.translation_instructions

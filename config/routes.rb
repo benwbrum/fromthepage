@@ -544,6 +544,7 @@ Fromthepage::Application.routes.draw do
         # EDIT ROUTES
         member do
           get 'edit'
+          get 'edit/tasks', to: 'work#edit_tasks'
           get 'edit/metadata', to: 'work#edit_metadata'
           get 'edit/privacy', to: 'work#edit_privacy'
           get 'edit/scribes', to: 'work#edit_scribes'

@@ -113,8 +113,6 @@ en:
     edit:
       additional_metadata: Additional metadata
       additional_metadata_description: These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
-      allow: Allow
-      allowed: Allowed
       allowed_collaborators: Allowed Collaborators
       author: Author
       collaborators_can_edit_titles: Allow collaborators to edit page titles
@@ -141,16 +139,13 @@ en:
       in_scope: In Scope
       more_work_settings_info: For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
       no_image: No Image
-      not_allowed: Not Allowed
       pages_are_meaningful: Pages Are Meaningful
       pages_are_meaningful_description: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages). When checked, the work will have page titles prominently displayed.
       permission_description: Permission description
       physical_description: Physical description
       place_of_creation: Place of Creation
       recipient: Recipient
-      restrict: Restrict
       restrict_collaborators: Restrict collaborators
-      restricted: Restricted
       restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
       revert: Revert
       revert_transcription_conventions_description: 'Revert transcription conventions to collection default '
@@ -165,8 +160,6 @@ en:
       transcription_conventions: Transcription conventions
       transcription_conventions_message: These instructions will be displayed under the transcription form for each page being transcribed or indexed.
       translation_instructions: Translation instructions
-      unrestrict: Unrestrict
-      unrestricted: Unrestricted
       upload_image: Upload Image
       uploaded_by: Uploaded by
       url: URL
@@ -184,6 +177,7 @@ en:
       general: General
       metadata: Metadata
       privacy_access: Privacy & Access
+      task_configuration: Task Configuration
     incomplete: Incomplete metadata.
     metadata_overview:
       notes_and_questions: Notes and questions
@@ -249,3 +243,5 @@ en:
     undescribed: No metadata.
     update:
       work_updated: Work updated successfully
+    users_list:
+      no_users_collaborators: No collaborators

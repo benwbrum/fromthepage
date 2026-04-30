@@ -7,15 +7,21 @@ ruby:
       path: "#{main_app.edit_collection_work_path(@collection.owner, @collection, @work)}",
     },
     {
+      icon: '#icon-task-configuration',
+      name: t('.task_configuration'),
+      selected: 2,
+      path: "#{main_app.edit_tasks_collection_work_path(@collection.owner, @collection, @work)}",
+    },
+    {
       icon: '#icon-look-feel',
       name: t('.metadata'),
-      selected: 2,
+      selected: 3,
       path: "#{main_app.edit_metadata_collection_work_path(@collection.owner, @collection, @work)}",
     },
     {
       icon: '#icon-lock',
       name: t('.privacy_access'),
-      selected: 3,
+      selected: 4,
       path: "#{main_app.edit_privacy_collection_work_path(@collection.owner, @collection, @work)}",
     },
   ]
@@ -25,7 +31,7 @@ ruby:
       {
         icon: '#icon-robot',
         name: t('.ai'),
-        selected: 4,
+        selected: 5,
         path: "#{main_app.edit_collection_work_ai_transcriptions_path(@collection.owner, @collection, @work)}",
       }
     ]
@@ -35,18 +41,31 @@ ruby:
     {
       icon: '#icon-warning-sign',
       name: t('.danger_zone'),
-      selected: 5,
+      selected: 6,
       path: "#{main_app.edit_danger_collection_work_path(@collection.owner, @collection, @work)}",
     }
   ]
 
-.side-tabs
-  -for tab in tabs
-    -if tab[:selected] == selected
-      a.active
-        =svg_symbol tab[:icon], class: 'icon'
-        =tab[:name]
-    -else
-      =link_to tab[:path]
-        =svg_symbol tab[:icon], class: 'icon'
-        =tab[:name]
+div[style="float: left; max-width: 205px;"]
+  .side-tabs
+    -for tab in tabs
+      -if tab[:selected] == selected
+        a.active
+          =svg_symbol tab[:icon], class: 'icon'
+          =tab[:name]
+      -else
+        =link_to tab[:path]
+          =svg_symbol tab[:icon], class: 'icon'
+          =tab[:name]
+
+  hr[style="padding-right: 5px;"]
+
+  div[style="max-width: 205px;"]
+    .user-label
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
+        =profile_picture(@work.owner)
+      .username
+        small= t('work.edit.uploaded_by')
+        =link_to @work.owner.display_name, user_profile_path(@work.owner), style: "text-wrap: wrap;"
+    p.fglight[style="font-size: 14px;"] =t('work.edit.settings_only_work_owners')
+    p.fglight[style="font-size: 14px;"] ==t('work.edit.more_work_settings_info')

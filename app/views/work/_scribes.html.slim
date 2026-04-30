@@ -4,4 +4,4 @@ th
   p.settings-label ="(#{scribes.count})" if scribes.any?
   p =link_to(t('work.edit.edit_collaborators'), edit_scribes_collection_work_path(collection.owner, collection, work), id: 'edit-scribes-button', class: 'button', disabled: !work.restrict_scribes, data: { controller: 'litebox', litebox: { hash: 'edit-scribes', noscroll: false, noclose: true } })
 td
-  =render 'users_list', users: scribes, type: 'scribes', disabled: !work.restrict_scribes
+  =render 'users_list', users: scribes, type: 'collaborators', disabled: !work.restrict_scribes

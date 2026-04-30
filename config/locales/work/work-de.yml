@@ -113,8 +113,6 @@ de:
     edit:
       additional_metadata: Zusätzliche Metadaten
       additional_metadata_description: Diese Metadatenfelder werden in der Projektinfo dieses Werkes und in TEI-Exporten angezeigt, beeinträchtigen jedoch nicht die Funktionalität von FromThePage.
-      allow: Erlauben
-      allowed: Erlaubt
       allowed_collaborators: Erlaubte Mitwirkende
       author: Autor:in
       collaborators_can_edit_titles: Erlauben Sie Mitarbeitenden, Seitentitel zu bearbeiten
@@ -141,16 +139,13 @@ de:
       in_scope: Im Scope
       more_work_settings_info: Weitere Informationen zu den Einstellungen für das Werk finden Sie im Wiki-Artikel <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transkription</a>.
       no_image: Kein Bild
-      not_allowed: Nicht erlaubt
       pages_are_meaningful: Seitenaufteilung berücksichtigen
       pages_are_meaningful_description: Seiten können sinnvolle semantische Unterteilungen eines Werkes sein (z. B. in einer Zeitschrift mit einem Datum für jede Seite), oder aber auch nicht (wie in Briefen oder Büchern, wo der Text nicht basierend auf Seiten in Abschnitte unterteilt werden sollte). Wenn diese Option aktiviert ist, werden die Seitentitel des Werkes gut sichtbar angezeigt.
       permission_description: Beschreibung der Berechtigung(en)
       physical_description: Physische Beschreibung
       place_of_creation: Entstehungsort
       recipient: Rezipient
-      restrict: Beschränken
       restrict_collaborators: Mitarbeit einschränken
-      restricted: Eingeschränkt
       restricted_work_no_collaborators_warning: Nur Projektinhaber:innen können dieses Werk bearbeiten. Fügen Sie Mitarbeitende hinzu, damit das Werk von anderen bearbeitet werden kann.
       revert: Zurücksetzen
       revert_transcription_conventions_description: Setzen Sie die Transkriptionskonventionen auf die standardmäßigen Konventionen zurück
@@ -165,8 +160,6 @@ de:
       transcription_conventions: Transkriptionskonventionen
       transcription_conventions_message: Diese Anweisungen werden unter dem Transkriptionseditor für jede Seite angezeigt, die transkribiert oder indexiert wird.
       translation_instructions: Übersetzungsanweisungen
-      unrestrict: Uneingeschränkt
-      unrestricted: Uneingeschränkt
       upload_image: Bild hochladen
       uploaded_by: hochgeladen von
       url: URL
@@ -184,6 +177,7 @@ de:
       general: Allgemein
       metadata: Metadaten
       privacy_access: Datenschutz und Zugriff
+      task_configuration: Aufgabenkonfiguration
     incomplete: Unvollständige Metadaten.
     metadata_overview:
       notes_and_questions: Anmerkungen und Fragen
@@ -249,3 +243,5 @@ de:
     undescribed: Keine Metadaten.
     update:
       work_updated: Werk erfolgreich aktualisiert
+    users_list:
+      no_users_collaborators: Keine Mitarbeiter

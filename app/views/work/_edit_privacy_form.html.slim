@@ -1,45 +1,15 @@
 tr
-  td(colspan="2" style="width: 100%;")
-    .user-label
-      =link_to(user_profile_path(work.owner), class: 'userpic')
-        =profile_picture(work.owner)
-      .username
-        small= t('work.edit.uploaded_by')
-        =link_to work.owner.display_name, user_profile_path(work.owner)
-    p.fglight= t('work.edit.settings_only_work_owners')
-    p.fglight==t('work.edit.more_work_settings_info')
+  th(colspan="2")
+    =f.check_box :scribes_can_edit_titles, value: work.scribes_can_edit_titles
+    =f.label :scribes_can_edit_titles do
+      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.collaborators_can_edit_titles')
 tr
-  th(colspan="2" style="width: 100%;")
-    h3.settings-label[style="margin-right: 20px; margin-top: 20px"]
-      span[style="display: flex; flex-direction: row; align-items: center;"]
-        p[style="margin-right: 10px"] ="#{t('work.edit.collaborators_can_edit_titles')}: "
-        i =work.scribes_can_edit_titles ? t('work.edit.allowed') : t('work.edit.not_allowed')
-    -if work.scribes_can_edit_titles
-      =button_tag name: 'work[scribes_can_edit_titles]', value: 'false', class: 'button inline-btn' do
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('work.edit.restrict')
-    -else
-      =button_tag name: 'work[scribes_can_edit_titles]', value: 'true', class: 'button inline-btn' do
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('work.edit.allow')
-tr
-  th(colspan="2" style="width: 100%;")
-    h3.settings-label[style="margin-right: 10px;"]
-      span[style="display: flex; flex-direction: row; align-items: center;"]
-        p[style="margin-right: 10px"] ="#{t('work.edit.restrict_collaborators')}: "
-        i =work.restrict_scribes ? t('work.edit.restricted') : t('work.edit.unrestricted')
-    -if work.restrict_scribes
-      =button_tag name: 'work[restrict_scribes]', value: 'false', class: 'button inline-btn' do
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('work.edit.unrestrict')
-    -else
-      =button_tag name: 'work[restrict_scribes]', value: 'true', class: 'button inline-btn' do
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('work.edit.restrict')
-tr
-  td(colspan="2")
-    -if work.restrict_scribes
-      p[style="color: red;"] =t('work.edit.restricted_work_no_collaborators_warning')
+  th(colspan="2")
+    =f.check_box :restrict_scribes, value: work.restrict_scribes
+    =f.label :restrict_scribes do
+      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.restrict_collaborators')
+      -if work.restrict_scribes
+        p[style="color: red;"] =t('work.edit.restricted_work_no_collaborators_warning')
 tr: td
 tr#scribes
   =render partial: 'scribes', locals: { collection: collection, work: work, scribes: @scribes }

@@ -113,8 +113,6 @@ pt:
     edit:
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
-      allow: Permitir
-      allowed: Permitido
       allowed_collaborators: Colaboradores permitidos
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
@@ -141,16 +139,13 @@ pt:
       in_scope: Na mira
       more_work_settings_info: Para obter mais informações sobre configurações da obra, consulte o artigo wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparando uma obra para Transcrição</a>.
       no_image: Sem imagem
-      not_allowed: Proibido
       pages_are_meaningful: As páginas são significativas
       pages_are_meaningful_description: As páginas podem ser divisões semânticas significativas de uma obra (como em um diário com uma data para cada página), ou podem não ser (como em cartas ou livros, onde o texto não deve ser dividido em seções baseadas em páginas). Quando marcada, a obra terá os títulos das páginas exibidos com destaque.
       permission_description: Descrição da permissão
       physical_description: Descrição física
       place_of_creation: Lugar de Criação
       recipient: Destinatário
-      restrict: Restringir
       restrict_collaborators: Restringir colaboradores
-      restricted: Restrito
       restricted_work_no_collaborators_warning: Somente os proprietários do projeto podem editar esta obra. Adicione colaboradores para tornar a obra editável por outras pessoas.
       revert: Reverter
       revert_transcription_conventions_description: Reverter convenções de transcrição para padrão de coleção
@@ -165,8 +160,6 @@ pt:
       transcription_conventions: Convenções de transcrição
       transcription_conventions_message: Essas instruções serão exibidas sob o formulário de transcrição para cada página que está sendo transcrita ou indexada.
       translation_instructions: Instruções de tradução
-      unrestrict: Sem restrições
-      unrestricted: Sem restrições
       upload_image: Enviar Imagem
       uploaded_by: Enviado por
       url: URL
@@ -184,6 +177,7 @@ pt:
       general: Em geral
       metadata: Metadados
       privacy_access: Privacidade e acesso
+      task_configuration: Configuração da tarefa
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -249,3 +243,5 @@ pt:
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso
+    users_list:
+      no_users_collaborators: Sem colaboradores
