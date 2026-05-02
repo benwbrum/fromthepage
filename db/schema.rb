@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
+ActiveRecord::Schema[7.2].define(version: 2026_05_02_000000) do
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -374,6 +374,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_12_193204) do
     t.boolean "ocr", default: false
     t.boolean "generate_ai_draft", default: false
     t.integer "document_set_id"
+    t.bigint "upload_file_size"
     t.index ["collection_id"], name: "index_document_uploads_on_collection_id"
     t.index ["document_set_id"], name: "index_document_uploads_on_document_set_id"
     t.index ["user_id"], name: "index_document_uploads_on_user_id"

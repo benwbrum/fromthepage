@@ -17,6 +17,7 @@ class DocumentUpload::Create < ApplicationInteractor
 
     @document_upload.user = @user
     @document_upload.attachment = @attachment if @attachment.present?
+    @document_upload.upload_file_size = @attachment.byte_size if @attachment.present?
     @document_upload.save!
 
     # TODO: We will move this to async job soon
