@@ -289,9 +289,13 @@ describe Article do
         expect(duplicates).to include(both_words)
         expect(duplicates).to include(only_calvert)
         expect(duplicates).to include(only_frederick)
-        # The article sharing both words should appear first (higher priority)
-        expect(duplicates.index(both_words)).to be < duplicates.index(only_calvert)
-        expect(duplicates.index(both_words)).to be < duplicates.index(only_frederick)
+        # The article sharing both words should appear first (higher priority).
+        # The include assertions above guarantee non-nil index lookups below.
+        both_words_idx     = duplicates.index(both_words)
+        only_calvert_idx   = duplicates.index(only_calvert)
+        only_frederick_idx = duplicates.index(only_frederick)
+        expect(both_words_idx).to be < only_calvert_idx
+        expect(both_words_idx).to be < only_frederick_idx
       end
     end
   end

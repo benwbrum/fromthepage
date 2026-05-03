@@ -41,6 +41,12 @@ class Article < ApplicationRecord
   # (e.g. "Jr", "Fr", "R.").
   MINIMUM_DUPLICATE_WORD_LENGTH = 4
 
+  # Pre-compiled regex used to extract candidate words from a subject title for
+  # duplicate detection. Only pure alphabetic sequences (including accented /
+  # Unicode letters via POSIX [[:alpha:]]) that are at least
+  # MINIMUM_DUPLICATE_WORD_LENGTH characters long are considered.
+  DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
+
   before_save :process_source
 
   validates_presence_of :title
@@ -200,9 +206,9 @@ class Article < ApplicationRecord
     logger.debug 'article.possible_duplicates'
     # Extract only alphabetic words that meet the minimum length threshold to
     # reduce false positives from short abbreviations and initials (e.g. "Jr",
-    # "Fr", "R."). scan returns only sequences of [[:alpha:]] characters, so
+    # "Fr", "R."). DUPLICATE_WORD_REGEX only matches [[:alpha:]] sequences, so
     # the resulting words never contain REGEXP metacharacters.
-    words = self.title.scan(/[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/)
+    words = self.title.scan(DUPLICATE_WORD_REGEX)
     # Remove duplicates and sort by word length, longest to shortest
     words.uniq!
     words.sort! { |x, y| x.length <=> y.length }
@@ -213,11 +219,12 @@ class Article < ApplicationRecord
     words.each do |word|
       # find articles in the same collection whose title contains that word as a
       # complete word (not as a substring of a longer word) to reduce false
-      # positives. The REGEXP pattern ensures word-boundary matching: the match
-      # is only valid when the word is preceded/followed by a non-alphabetic
-      # character or the start/end of the string.
-      # Regexp.escape is used defensively; words from scan only contain [[:alpha:]]
-      # characters and will never include REGEXP metacharacters.
+      # positives. The REGEXP pattern uses POSIX character class [[:alpha:]]
+      # which is supported by both MySQL 5.x (POSIX ERE engine) and MySQL 8.0+
+      # (ICU engine) and correctly handles accented/Unicode alphabetic
+      # characters in subject names.
+      # Regexp.escape is applied defensively; DUPLICATE_WORD_REGEX guarantees
+      # words contain only [[:alpha:]] characters (no REGEXP metacharacters).
       escaped_word = Regexp.escape(word)
       current_matches =
         self.collection.articles.where(
