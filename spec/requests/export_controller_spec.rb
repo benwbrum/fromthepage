@@ -345,11 +345,11 @@ describe ExportController do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:tei)
 
-        expect(response.body).to include('<listOrg>')
-        expect(response.body).to include('<org xml:id="S' + military_unit_article.id.to_s + '">')
-        expect(response.body).to include('<org xml:id="S' + child_military_unit_article.id.to_s + '">')
-        expect(response.body).to include('<orgName>Mississippi Infantry</orgName>')
-        expect(response.body).to include('<orgName>Mississippi Infantry -- Company A</orgName>')
+        expect(response.body).to include("<listOrg>")
+        expect(response.body).to include("<org xml:id=\"S#{military_unit_article.id}\">")
+        expect(response.body).to include("<org xml:id=\"S#{child_military_unit_article.id}\">")
+        expect(response.body).to include("<orgName>Mississippi Infantry</orgName>")
+        expect(response.body).to include("<orgName>Mississippi Infantry -- Company A</orgName>")
       end
 
       it 'does not duplicate org articles between listOrg and taxonomy' do
@@ -357,12 +357,12 @@ describe ExportController do
         subject
 
         # Articles in descendant org categories should appear exactly once in listOrg
-        expect(response.body.scan('<org xml:id="S' + military_unit_article.id.to_s + '">').count).to eq(1)
-        expect(response.body.scan('<org xml:id="S' + child_military_unit_article.id.to_s + '">').count).to eq(1)
+        expect(response.body.scan("<org xml:id=\"S#{military_unit_article.id}\">").count).to eq(1)
+        expect(response.body.scan("<org xml:id=\"S#{child_military_unit_article.id}\">").count).to eq(1)
 
         # They should NOT appear in the taxonomy (encodingDesc > classDecl)
-        expect(response.body).not_to include('<category xml:id="S' + military_unit_article.id.to_s + '">')
-        expect(response.body).not_to include('<category xml:id="S' + child_military_unit_article.id.to_s + '">')
+        expect(response.body).not_to include("<category xml:id=\"S#{military_unit_article.id}\">")
+        expect(response.body).not_to include("<category xml:id=\"S#{child_military_unit_article.id}\">")
       end
     end
 
