@@ -45,7 +45,7 @@ class Article < ApplicationRecord
   # duplicate detection. Only pure alphabetic sequences (including accented /
   # Unicode letters via POSIX [[:alpha:]]) that are at least
   # MINIMUM_DUPLICATE_WORD_LENGTH characters long are considered.
-  DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
+  DUPLICATE_WORD_REGEX = /[[:alpha:]]{4,}/.freeze
 
   before_save :process_source
 
@@ -225,6 +225,9 @@ class Article < ApplicationRecord
       # characters in subject names.
       # Regexp.escape is applied defensively; DUPLICATE_WORD_REGEX guarantees
       # words contain only [[:alpha:]] characters (no REGEXP metacharacters).
+      # The full pattern string is passed as a bound parameter via the `?`
+      # placeholder in the where clause, so it is never directly concatenated
+      # into SQL — making this safe against SQL injection.
       escaped_word = Regexp.escape(word)
       current_matches =
         self.collection.articles.where(

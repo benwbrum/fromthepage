@@ -269,9 +269,9 @@ describe Article do
 
     context 'when articles are in different collections' do
       it 'does not return articles from a different collection' do
-        other_collection    = create(:collection, owner_user_id: owner.id)
-        subject_article     = make_article('John Smith')
-        other_coll_article  = create(:article, title: 'John Smith', collection: other_collection)
+        other_collection = create(:collection, owner_user_id: owner.id)
+        subject_article = make_article('John Smith')
+        other_coll_article = create(:article, title: 'John Smith', collection: other_collection)
 
         expect(subject_article.possible_duplicates).not_to include(other_coll_article)
       end
