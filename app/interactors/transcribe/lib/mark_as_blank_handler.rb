@@ -45,7 +45,7 @@ class Transcribe::Lib::MarkAsBlankHandler < Transcribe::Lib::BaseHandler
 
   def clear_transcription
     @page.source_text = nil
-    @page.source_translation = nil
+    @page.source_translation = nil if @page.respond_to?(:source_translation)
   end
 
   def record_blank_deed
