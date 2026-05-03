@@ -2,7 +2,7 @@
 
 % Required Packages
 \usepackage{graphicx}
-\usepackage{longtable}
+\usepackage{xltabular}
 \usepackage{booktabs}
 \usepackage[normalem]{ulem}
 \usepackage[bookmarks=true, bookmakrsopen=true, linktoc=all]{hyperref}
@@ -81,13 +81,14 @@ for headings (similar to using \underline{\textbf{wiki heading mark-up}}\{wiki h
 Stamp \textit{\{Stamp\}} for stamps on envelops\\{}
 \\{}
 \\{}
-\begin{longtable}[]{@{}l l l@{}}
+
+\begin{xltabular}{\textwidth}{XXX}
 \toprule
 Col 1 & Col 2 & Col 3 \\
-\midrule\noalign{}
+\midrule
 ''\textit{Val } & \underline{\sout{ Va'l }} & Nested \sout{s\textsuperscript{\underline{tr'}}ikethrough} \\
 \bottomrule\noalign{}
-\end{longtable}
+\end{xltabular}
 \textit{[Unclear ]} for text that is difficult to read\\{}
 \\{}
 \sout{\textsuperscript{\underline{and of little importance}}}\\{}
@@ -115,7 +116,7 @@ Marginalia \{marginalia here\}  for noting marginalia\\{}
 \\{}
 Catchword \{catchword\} for catchwords\\{}
 \\{}
-\href{#article-<%= "#{last_article_id}" %>}{Subject} \\{}
+\href{\#article-<%= "#{last_article_id}" %>}{Subject} \\{}
 \\{}
 \\{}
 \textit{\{page break 1\}}\\{}

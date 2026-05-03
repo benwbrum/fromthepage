@@ -137,7 +137,7 @@
         =search_field_tag :search_by_title, @search_attemp&.query, placeholder: t('.search_by_title')
         =button_tag t('.search')
 
-    -if @collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection)
+    -if notes_visible?(@collection, current_user) && (@collection.is_a?(Collection) || current_user&.can_transcribe?(nil, @collection))
       -if @collection.active? && @collection.text_entry?
         ruby:
           pages_need_correction_count = Page.where(work_id: @collection.work_ids, status: [:new, :incomplete]).count
@@ -160,31 +160,33 @@
     -if @collection.facets_enabled? && user_signed_in?
       =render(:partial => 'facet_form')
 
-    h3 =t('.recent_notes')
-    -@collection.notes.active.limit(10).each do |note|
-      -if note.page || note.work
-        -user = link_to note.user.display_name, user_profile_path(note.user)
-        -note_title = strip_tags(note.title)
-        -if @collection.metadata_only_entry?
-          -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
-        -else
-          -if @collection.text_and_metadata_entry?
+    -if notes_visible?(@collection, current_user)
+      h3 =t('.recent_notes')
+      -@collection.notes.active.limit(10).each do |note|
+        -if note.page || note.work
+          -user = link_to note.user.display_name, user_profile_path(note.user)
+          -note_title = strip_tags(note.title)
+          -if @collection.metadata_only_entry?
             -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
-          -elsif note.page.nil?
-            -text = truncate(note_title, :length => 100)
           -else
-            -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
-        .deed-short.small
-          =time_tag(note.created_at, class: 'legend legend-left')
-            =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
-          span.deed-short_content
-            ==t('.user_wrote_note', user: user, note: text)
-    small.legend
-      =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
+            -if @collection.text_and_metadata_entry?
+              -text = link_to truncate(note_title, :length => 100), metadata_overview_collection_work_path(@collection.owner, @collection, note.work)
+            -elsif note.page.nil?
+              -text = truncate(note_title, :length => 100)
+            -else
+              -text = link_to truncate(note_title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.work, note.page)
+          .deed-short.small
+            =time_tag(note.created_at, class: 'legend legend-left')
+              =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
+            span.deed-short_content
+              ==t('.user_wrote_note', user: user, note: text)
+      small.legend
+        =link_to t('.show_more'), collection_notes_path(collection_id: @collection.slug), class: 'button outline round'
 
-    h3 =t('.recent_edits')
-    -cache [@collection.id, @collection.most_recent_deed_created_at, :collection_show] do
-      =deeds_for({ collection: @collection, limit: 20, types: DeedType.collection_edits, long_view: true })
+    -if notes_visible?(@collection, current_user)
+      h3 =t('.recent_edits')
+      -cache [@collection.id, @collection.most_recent_deed_created_at, :collection_show] do
+        =deeds_for({ collection: @collection, limit: 20, types: DeedType.collection_edits, long_view: true })
 
 =link_to(collection_new_mobile_user_path(collection_id: @collection.slug), data: { controller: 'litebox', litebox: { hash: 'new-mobile-user' }}, id: 'new_mobile_user_link', style: "display: none")
   span =""

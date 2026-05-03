@@ -169,6 +169,8 @@ class DocumentSet < ApplicationRecord
   delegate :metadata_only_entry?,        to: :collection
   delegate :text_and_metadata_entry?,    to: :collection
   delegate :hide_completed,              to: :collection
+  delegate :hide_notes,                  to: :collection
+  delegate :hide_notes?,                 to: :collection
   delegate :review_workflow,             to: :collection
   delegate :review_type,                 to: :collection
   delegate :review_type_optional?,       to: :collection

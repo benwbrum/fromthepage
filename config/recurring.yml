@@ -23,5 +23,5 @@ production:
     schedule: every Sunday at 12:00am
 
   workers_env_check_job:
-    command: "Workers::EnvCheckJob.perform_later(user_id: 1)"
+    command: "Workers::EnvCheckJob.perform_later"
     schedule: every hour at minute 30

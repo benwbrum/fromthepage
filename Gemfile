@@ -20,6 +20,8 @@ gem 'thredded', '~> 1.1'
 gem 'solid_queue', '~> 1.2'
 gem 'mission_control-jobs'
 gem 'aws-sdk-s3', require: false
+gem 'dotenv-rails'
+gem 'dotenv', require: 'dotenv/load'
 
 # Authentication / Security
 gem 'devise'
@@ -124,8 +126,6 @@ end
 gem 'terser'
 
 group :development, :test do
-  gem 'dotenv-rails'
-  gem 'dotenv', require: 'dotenv/load'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'annotaterb'

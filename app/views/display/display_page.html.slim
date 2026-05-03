@@ -107,9 +107,10 @@
     .page-legend-content
       ==@collection.legend
 
-h2.legend#notes =t('.page_notes')
-.page-notes
-  =render :partial => "notes/notes"
+-if notes_visible?(@collection, current_user)
+  h2.legend#notes =t('.page_notes')
+  .page-notes
+    =render :partial => "notes/notes"
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Display Page");

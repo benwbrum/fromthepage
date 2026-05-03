@@ -45,6 +45,7 @@ module Api::V1
       document_upload.preserve_titles = ActiveModel::Type::Boolean.new.cast(params[:preserve_titles])
       document_upload.generate_ai_draft = ActiveModel::Type::Boolean.new.cast(params[:generate_ai_draft])
       document_upload.attachment = params[:file]
+      document_upload.upload_file_size = params[:file].size
 
       unless document_upload.save
         render status: 422, json: document_upload.errors.full_messages.to_json
