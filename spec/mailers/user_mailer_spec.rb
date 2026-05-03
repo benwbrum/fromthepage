@@ -1,6 +1,94 @@
 require 'spec_helper'
 
 RSpec.describe UserMailer, type: :mailer do
+  describe 'added_note' do
+    let(:owner) { create(:unique_user, :owner) }
+    let(:transcriber) { create(:unique_user) }
+    let(:collection) { create(:collection, owner_user_id: owner.id) }
+    let(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
+    let(:page) { create(:page, work: work) }
+    let(:note) { create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: owner.id) }
+
+    after do
+      note.destroy
+      page.destroy
+      work.destroy
+      collection.destroy
+      transcriber.destroy
+      owner.destroy
+    end
+
+    context 'with default collection (parent collection)' do
+      it 'renders the subject' do
+        mail = UserMailer.added_note(transcriber, note)
+        expect(mail.subject).to eq('New FromThePage Note')
+      end
+
+      it 'renders the receiver email' do
+        mail = UserMailer.added_note(transcriber, note)
+        expect(mail.to).to eq([transcriber.email])
+      end
+
+      it 'renders the sender email' do
+        mail = UserMailer.added_note(transcriber, note)
+        expect(mail.from).to eq(['support@fromthepage.com'])
+      end
+
+      it 'includes the note body' do
+        mail = UserMailer.added_note(transcriber, note)
+        expect(mail.body.encoded).to include(note.body)
+      end
+
+      it 'links to the parent collection page URL' do
+        mail = UserMailer.added_note(transcriber, note)
+        expect(mail.body.encoded).to include(collection.slug)
+      end
+    end
+
+    context 'when access is via a public document set in a private collection' do
+      let(:private_collection) { create(:collection, :private, :docset_enabled, owner_user_id: owner.id) }
+      let(:work_in_docset) { create(:work, collection: private_collection, owner_user_id: owner.id) }
+      let(:page_in_docset) { create(:page, work: work_in_docset) }
+      let(:public_document_set) do
+        ds = DocumentSet.create!(
+          title: 'Public Document Set',
+          collection: private_collection,
+          owner: owner,
+          visibility: :public
+        )
+        ds.works << work_in_docset
+        ds
+      end
+      let(:note_in_docset) do
+        create(:note, collection_id: private_collection.id, work_id: work_in_docset.id,
+                      page_id: page_in_docset.id, user_id: owner.id)
+      end
+
+      after do
+        note_in_docset.destroy
+        page_in_docset.destroy
+        public_document_set.destroy
+        work_in_docset.destroy
+        private_collection.destroy
+      end
+
+      it 'links to the document set URL (not the private parent collection)' do
+        mail = UserMailer.added_note(transcriber, note_in_docset, public_document_set)
+        expect(mail.body.encoded).to include(public_document_set.slug)
+      end
+
+      it 'uses the document set title in the message' do
+        mail = UserMailer.added_note(transcriber, note_in_docset, public_document_set)
+        expect(mail.body.encoded).to include(public_document_set.title)
+      end
+
+      it 'still uses the parent collection owner for reply_to' do
+        mail = UserMailer.added_note(transcriber, note_in_docset, public_document_set)
+        expect(mail.reply_to).to eq([private_collection.owner.email])
+      end
+    end
+  end
+
   describe 'upload_no_images_warning' do
     let(:user) { create(:user) }
     let(:collection) { create(:collection, owner_user_id: user.id) }

@@ -69,9 +69,11 @@ class Note < ApplicationRecord
       end
       previous_users.each do |user|
         # send email regarding previous note, if it isn't the same user
-        if user.id != self.user_id && self.work.access_object(user)
+        # and the user can still access the work (it may have been made private)
+        access = self.work.access_object(user)
+        if user.id != self.user_id && access
           begin
-            UserMailer.added_note(user, self).deliver!
+            UserMailer.added_note(user, self, access).deliver!
           rescue StandardError => e
             print "SMTP Failed: Exception: #{e.message}"
           end
