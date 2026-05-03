@@ -23,7 +23,6 @@ describe BulkExportController do
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(dashboard_path)
     end
-
   end
 
   describe 'show' do
