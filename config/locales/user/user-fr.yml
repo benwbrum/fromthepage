@@ -45,7 +45,7 @@ fr:
       learn_more_footer: En savoir plus sur la configuration du pied de page.
       location: Emplacement
       name: Nom
-      ocrid_id: Identifiant OCRID
+      ocrid_id: Identifiant ORCID
       owner_stats: E-mails nocturnes avec activité de collecte détenue
       page_edited: Note ajoutée en réponse à un commentaire que vous avez fait
       picture: Image de profil
@@ -61,4 +61,4 @@ fr:
       website: Site Internet
       where_are_you_from: D'où viens-tu?
       your_blog_or_homepage: Votre blog ou votre page d'accueil
-      your_ocrid_id: Votre identifiant OCRID
+      your_ocrid_id: Votre identifiant ORCID
