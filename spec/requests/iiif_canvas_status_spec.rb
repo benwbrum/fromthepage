@@ -8,7 +8,7 @@ describe 'IIIF Canvas Status API' do
   describe 'GET /iiif/:work_id/:page_id/status' do
     let(:action) { get "/iiif/#{work.id}/#{page.id}/status" }
 
-    context 'when page has translation_status indexed (wiki-markup with subject links)' do
+    context 'when page has translation_status indexed (wiki markup with subject links)' do
       let!(:page) { create(:page, work: work, status: :transcribed, translation_status: :indexed) }
 
       it 'includes hasTranslation in pageStatus' do
