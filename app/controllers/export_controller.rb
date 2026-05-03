@@ -230,7 +230,7 @@ class ExportController < ApplicationController
   private
 
   def require_owner
-    unless user_signed_in? && (current_user.admin || current_user.like_owner?(@collection))
+    unless user_signed_in? && current_user.like_owner?(@collection)
       redirect_to main_app.dashboard_path
     end
   end

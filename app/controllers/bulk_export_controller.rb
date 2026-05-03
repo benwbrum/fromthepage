@@ -186,7 +186,7 @@ class BulkExportController < ApplicationController
   end
 
   def require_collection_owner
-    unless current_user.admin || current_user.like_owner?(@collection)
+    unless current_user.like_owner?(@collection)
       redirect_to main_app.dashboard_path
     end
   end

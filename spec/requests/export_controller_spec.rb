@@ -6,7 +6,6 @@ describe ExportController do
   end
 
   let!(:owner) { create(:unique_user, :owner) }
-  let!(:admin) { create(:unique_user, :admin) }
   let!(:user) { create(:unique_user) }
   let!(:collection) { create(:collection, owner_user_id: owner.id) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
@@ -42,14 +41,6 @@ describe ExportController do
 
     it 'renders when logged in as owner' do
       login_as owner
-      subject
-
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:index)
-    end
-
-    it 'renders when logged in as admin' do
-      login_as admin
       subject
 
       expect(response).to have_http_status(:ok)

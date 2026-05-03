@@ -24,12 +24,6 @@ describe BulkExportController do
       expect(response).to redirect_to(dashboard_path)
     end
 
-    it 'renders when logged in as admin' do
-      login_as admin
-      subject
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:index)
-    end
   end
 
   describe 'show' do
