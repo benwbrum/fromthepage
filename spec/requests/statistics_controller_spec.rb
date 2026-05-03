@@ -1,0 +1,45 @@
+require 'spec_helper'
+
+describe StatisticsController do
+  before do
+    Current.user = owner
+  end
+
+  let!(:owner) { create(:unique_user, :owner) }
+  let!(:user) { create(:unique_user) }
+  let!(:collection) { create(:collection, owner_user_id: owner.id) }
+
+  describe '#collection' do
+    let(:action_path) { collection_statistics_path(owner, collection) }
+    let(:subject) { get action_path }
+
+    context 'when user is not logged in' do
+      it 'redirects to sign in page' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'when logged in as owner' do
+      it 'renders the statistics page' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:collection)
+      end
+    end
+
+    context 'when logged in as a regular user' do
+      it 'renders the statistics page' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:collection)
+      end
+    end
+  end
+end
