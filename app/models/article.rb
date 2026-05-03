@@ -192,26 +192,28 @@ class Article < ApplicationRecord
   def possible_duplicates
     logger.debug '------------------------------'
     logger.debug 'article.possible_duplicates'
-    # take each element of this article name
-    words = self.title.tr(',.', ' ').split(' ')
-    # sort it by word length, longest to shortest
-    words.keep_if { |word| word.match(/\w\w/) }
+    # Extract only alphabetic words with at least 4 characters to reduce false
+    # positives from short abbreviations and initials (e.g. "Jr", "Fr", "R.")
+    words = self.title.scan(/[[:alpha:]]{4,}/)
+    # Remove duplicates and sort by word length, longest to shortest
+    words.uniq!
     words.sort! { |x, y| x.length <=> y.length }
     words.reverse!
     # for each word
     all_matches = []
     logger.debug("DEBUG: matching #{words}")
     words.each do |word|
-      # find articles in the same collection
-      # whose title contains that word
-      # logger.debug("the word is #{word}")
-
-      # logger.debug("@collection.id: #{self.collection.id}")
-
+      # find articles in the same collection whose title contains that word as a
+      # complete word (not as a substring of a longer word) to reduce false
+      # positives. The REGEXP pattern ensures word-boundary matching: the match
+      # is only valid when the word is preceded/followed by a non-alphabetic
+      # character or the start/end of the string.
       current_matches =
-        self.collection.articles.where('id <> ? AND title like ?', self.id, "%#{word}%")
-      # current_matches.delete self
-      #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
+        self.collection.articles.where(
+          'id <> ? AND title REGEXP ?',
+          self.id,
+          "(^|[^[:alpha:]])#{word}($|[^[:alpha:]])"
+        )
       #    keep sort order for new words (append to previous list)
       #    if there's a match with the previous list, bump up that
       #    article
@@ -221,8 +223,6 @@ class Article < ApplicationRecord
       # merge with articles for previous words
       all_matches = matches_in_common + old_matches + new_matches
     end
-    #    logger.debug("DEBUG: found #{all_matches.size} matches:")
-    #    logger.debug("DEBUG: #{all_matches.inspect}")
     logger.debug('at the end of article.possible_duplicates')
     logger.debug('--------------------------------------')
     all_matches
