@@ -261,9 +261,12 @@ describe Article do
     context 'when the title has no words with 4 or more alphabetic characters' do
       it 'returns an empty list' do
         subject_article = make_article('J. R. B.')
-        other_article   = make_article('Some Random Article Title')
+        other_article = make_article('Some Random Article Title')
 
-        expect(subject_article.possible_duplicates).to be_empty
+        duplicates = subject_article.possible_duplicates
+
+        expect(duplicates).to be_empty
+        expect(duplicates).not_to include(other_article)
       end
     end
 
