@@ -313,6 +313,59 @@ describe ExportController do
       end
     end
 
+    context 'with organization articles in descendant categories' do
+      let!(:organizations_category) { create(:category, title: 'Organizations', collection: collection, org_fields_enabled: true) }
+      let!(:military_units_category) do
+        create(:category, title: 'Military Units', collection: collection, parent: organizations_category)
+      end
+      let!(:military_unit_article) do
+        create(:article,
+               title: 'Mississippi Infantry',
+               collection: collection,
+               uri: 'O00010')
+      end
+      let!(:child_military_unit_article) do
+        create(:article,
+               title: 'Mississippi Infantry -- Company A',
+               collection: collection,
+               uri: 'O00011')
+      end
+
+      before do
+        military_unit_article.categories << military_units_category
+        child_military_unit_article.categories << military_units_category
+        page.page_article_links.create!(article: military_unit_article)
+        page.page_article_links.create!(article: child_military_unit_article)
+      end
+
+      it 'includes descendant org category articles in listOrg' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+
+        expect(response.body).to include('<listOrg>')
+        expect(response.body).to include('<org xml:id="S' + military_unit_article.id.to_s + '">')
+        expect(response.body).to include('<org xml:id="S' + child_military_unit_article.id.to_s + '">')
+        expect(response.body).to include('<orgName>Mississippi Infantry</orgName>')
+        expect(response.body).to include('<orgName>Mississippi Infantry -- Company A</orgName>')
+      end
+
+      it 'does not duplicate org articles between listOrg and taxonomy' do
+        login_as owner
+        subject
+
+        # Articles in descendant org categories should appear exactly once in listOrg
+        expect(response.body.scan('<org xml:id="S' + military_unit_article.id.to_s + '">').count).to eq(1)
+        expect(response.body.scan('<org xml:id="S' + child_military_unit_article.id.to_s + '">').count).to eq(1)
+
+        # They should NOT appear in the taxonomy (encodingDesc > classDecl)
+        expect(response.body).not_to include('<category xml:id="S' + military_unit_article.id.to_s + '">')
+        expect(response.body).not_to include('<category xml:id="S' + child_military_unit_article.id.to_s + '">')
+      end
+    end
+
     context 'with AI model contributions' do
       let!(:page1) { create(:page, work: work, position: 1) }
       let!(:page2) { create(:page, work: work, position: 2) }
