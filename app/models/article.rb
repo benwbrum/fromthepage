@@ -35,6 +35,12 @@ class Article < ApplicationRecord
 
   # include ActiveModel::Dirty
 
+  # Minimum number of consecutive alphabetic characters a word must have to be
+  # considered when searching for possible duplicate subjects. Raising this value
+  # reduces false positives caused by common abbreviations and short initials
+  # (e.g. "Jr", "Fr", "R.").
+  MINIMUM_DUPLICATE_WORD_LENGTH = 4
+
   before_save :process_source
 
   validates_presence_of :title
@@ -192,9 +198,11 @@ class Article < ApplicationRecord
   def possible_duplicates
     logger.debug '------------------------------'
     logger.debug 'article.possible_duplicates'
-    # Extract only alphabetic words with at least 4 characters to reduce false
-    # positives from short abbreviations and initials (e.g. "Jr", "Fr", "R.")
-    words = self.title.scan(/[[:alpha:]]{4,}/)
+    # Extract only alphabetic words that meet the minimum length threshold to
+    # reduce false positives from short abbreviations and initials (e.g. "Jr",
+    # "Fr", "R."). scan returns only sequences of [[:alpha:]] characters, so
+    # the resulting words never contain REGEXP metacharacters.
+    words = self.title.scan(/[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/)
     # Remove duplicates and sort by word length, longest to shortest
     words.uniq!
     words.sort! { |x, y| x.length <=> y.length }
@@ -208,11 +216,14 @@ class Article < ApplicationRecord
       # positives. The REGEXP pattern ensures word-boundary matching: the match
       # is only valid when the word is preceded/followed by a non-alphabetic
       # character or the start/end of the string.
+      # Regexp.escape is used defensively; words from scan only contain [[:alpha:]]
+      # characters and will never include REGEXP metacharacters.
+      escaped_word = Regexp.escape(word)
       current_matches =
         self.collection.articles.where(
           'id <> ? AND title REGEXP ?',
           self.id,
-          "(^|[^[:alpha:]])#{word}($|[^[:alpha:]])"
+          "(^|[^[:alpha:]])#{escaped_word}($|[^[:alpha:]])"
         )
       #    keep sort order for new words (append to previous list)
       #    if there's a match with the previous list, bump up that
