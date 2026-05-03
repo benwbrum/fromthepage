@@ -32,6 +32,9 @@ describe Transcribe::MarkAsBlank do
       version = PageVersion.order(:id).last
       expect(version.status).to eq('blank')
       expect(version.transcription).to be_nil
+      # The previous version should capture the original text so the diff shows deletion
+      previous_version = version.prev
+      expect(previous_version.transcription).to eq('Some transcribed text')
     end
   end
 
