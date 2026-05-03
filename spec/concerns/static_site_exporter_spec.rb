@@ -8,8 +8,6 @@ describe StaticSiteExporter do
     end.new
   end
 
-  let(:user) { create(:user) }
-
   describe '#write_index_markdown' do
     let(:out) { instance_double('Zip::OutputStream') }
 
