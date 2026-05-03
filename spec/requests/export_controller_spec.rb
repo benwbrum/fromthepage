@@ -578,6 +578,30 @@ describe ExportController do
         expect(org_bibl_count).to eq(1)
       end
     end
+
+    context 'without translation enabled' do
+      it 'does not include corresp attribute on paragraph elements' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+        expect(response.body).not_to include('corresp=')
+      end
+    end
+
+    context 'with translation enabled' do
+      let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, supports_translation: true) }
+
+      it 'includes corresp attribute on paragraph elements in the transcription section' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:tei)
+        expect(response.body).to include('corresp=')
+      end
+    end
   end
 
   describe '#subject_details_csv' do
