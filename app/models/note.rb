@@ -68,8 +68,7 @@ class Note < ApplicationRecord
         previous_users = User.joins(:notes).where(notes: { id: self.page.notes.ids }).joins(:notification).where(notifications: { note_added: true }).distinct
       end
       previous_users.each do |user|
-        # send email regarding previous note, if it isn't the same user
-        # and the user can still access the work (it may have been made private)
+        # send email regarding previous note, if it isn't the same user and the user can still access the work (it may have been made private)
         access = self.work.access_object(user)
         if user.id != self.user_id && access
           begin

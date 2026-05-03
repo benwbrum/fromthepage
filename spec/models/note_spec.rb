@@ -20,7 +20,7 @@ describe Note do
 
       it 'sends an email to a previous note author who can access the work' do
         # transcriber leaves a note
-        first_note = create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
+        create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
         transcriber.notification.update!(note_added: true)
 
         ActionMailer::Base.deliveries.clear
@@ -31,7 +31,6 @@ describe Note do
         end.to change { ActionMailer::Base.deliveries.count }.by(1)
 
         expect(ActionMailer::Base.deliveries.first.to).to include(transcriber.email)
-        first_note.destroy
       end
     end
 
@@ -54,7 +53,7 @@ describe Note do
 
       it 'does not send an email to a transcriber who no longer has access' do
         # transcriber leaves a note when they had access (simulate past access)
-        first_note = create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
+        create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
         transcriber.notification.update!(note_added: true)
 
         ActionMailer::Base.deliveries.clear
@@ -63,8 +62,6 @@ describe Note do
         expect do
           create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: owner.id)
         end.not_to change { ActionMailer::Base.deliveries.count }
-
-        first_note.destroy
       end
     end
 
@@ -87,7 +84,7 @@ describe Note do
 
       it 'sends an email to a previous note author with access via the public document set' do
         # transcriber leaves a note via the public document set
-        first_note = create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
+        create(:note, collection_id: collection.id, work_id: work.id, page_id: page.id, user_id: transcriber.id)
         transcriber.notification.update!(note_added: true)
 
         ActionMailer::Base.deliveries.clear
@@ -100,7 +97,6 @@ describe Note do
         expect(ActionMailer::Base.deliveries.first.to).to include(transcriber.email)
         # The email link should use the document set URL (not the private parent collection)
         expect(ActionMailer::Base.deliveries.first.body.encoded).to include(public_document_set.slug)
-        first_note.destroy
       end
     end
   end
