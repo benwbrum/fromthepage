@@ -84,11 +84,11 @@ describe BulkExportController do
       expect(response).to render_template(:new)
     end
 
-    it 'renders when logged in as admin' do
+    it 'redirects when logged in as admin (non-owner)' do
       login_as admin
       subject
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:new)
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(dashboard_path)
     end
   end
 
