@@ -12,6 +12,7 @@ class Transcribe::Lib::MarkAsBlankHandler < Transcribe::Lib::BaseHandler
 
     if mark_as_blank?
       set_status(:blank)
+      clear_transcription
       record_blank_deed
     else
       set_status(:new)
@@ -40,6 +41,11 @@ class Transcribe::Lib::MarkAsBlankHandler < Transcribe::Lib::BaseHandler
   def set_status(status)
     @page.status = status
     @page.translation_status = status
+  end
+
+  def clear_transcription
+    @page.source_text = nil
+    @page.source_translation = nil
   end
 
   def record_blank_deed

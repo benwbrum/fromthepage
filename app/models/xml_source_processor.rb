@@ -87,11 +87,11 @@ module XmlSourceProcessor
   ##############################################
   def process_source
     if source_text_changed?
-      self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
+      self.xml_text = source_text.present? ? wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION) : nil
     end
 
     if self.respond_to?(:source_translation) && source_translation_changed?
-      self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
+      self.xml_translation = source_translation.present? ? wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION) : nil
     end
   end
 
