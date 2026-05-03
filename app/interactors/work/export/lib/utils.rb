@@ -32,7 +32,24 @@ class Work::Export::Lib::Utils
       '#'  => '\\#',
       '_'  => '\\_',
       '~'  => '\\textasciitilde{}',
-      '^'  => '\\textasciicircum{}'
+      '^'  => '\\textasciicircum{}',
+      # Vulgar fractions (Unicode Number Forms block U+2150–U+215E)
+      # not present in the default Latin Modern font used by LuaLaTeX
+      '⅐' => '\\nicefrac{1}{7}',
+      '⅑' => '\\nicefrac{1}{9}',
+      '⅒' => '\\nicefrac{1}{10}',
+      '⅓' => '\\nicefrac{1}{3}',
+      '⅔' => '\\nicefrac{2}{3}',
+      '⅕' => '\\nicefrac{1}{5}',
+      '⅖' => '\\nicefrac{2}{5}',
+      '⅗' => '\\nicefrac{3}{5}',
+      '⅘' => '\\nicefrac{4}{5}',
+      '⅙' => '\\nicefrac{1}{6}',
+      '⅚' => '\\nicefrac{5}{6}',
+      '⅛' => '\\nicefrac{1}{8}',
+      '⅜' => '\\nicefrac{3}{8}',
+      '⅝' => '\\nicefrac{5}{8}',
+      '⅞' => '\\nicefrac{7}{8}'
     }
 
     command_regex = /\\[a-zA-Z]+(?:\{[^}]*\})?/
