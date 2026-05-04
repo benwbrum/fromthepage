@@ -73,7 +73,6 @@ class Work < ApplicationRecord
     source_location
     source_collection_name
     source_box_folder
-    in_scope
     editorial_notes
     document_date
     uploaded_filename

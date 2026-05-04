@@ -7,6 +7,17 @@ describe Work do
   after :each do
     DatabaseCleaner.clean
   end
+  describe '#merge_metadata' do
+    let!(:owner) { create(:unique_user, :owner) }
+    let!(:collection) { create(:collection, owner_user_id: owner.id) }
+    let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, in_scope: true) }
+
+    it 'does not include in_scope in merge_metadata output' do
+      labels = work.merge_metadata.map { |h| h['label'] }
+      expect(labels).not_to include('In Scope')
+    end
+  end
+
   describe '#supports_indexing?' do
     it "returns true if a work's collection does not have subjects disabled" do
       collection = create(:collection, :with_pages, subjects_disabled: false)
