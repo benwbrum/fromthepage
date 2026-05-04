@@ -38,7 +38,7 @@ table.admin-grid.datagrid.striped
               =svg_symbol '#icon-list', class: 'icon'
             dd
               -if document.status == 'new'
-                =link_to(t('.process_upload'), { :action => 'process_upload', :id => document.id })
+                =link_to(t('.process_upload'), admin_process_upload_path(:id => document.id))
                 hr
               -if document.status_processing? || document.status_finished? || document.status_error?
                 =link_to(t('.show_processing_log'), admin_view_processing_log_path(:id => document.id), target: '_blank')
