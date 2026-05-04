@@ -3,8 +3,6 @@ require 'csv'
 class StatisticsController < ApplicationController
   include CollectionHelper
 
-  before_action :authenticate_user!
-
   def collection
     unless notes_visible?(@collection, current_user)
       flash[:error] = t('unauthorized_collection', project: @collection.title)

@@ -10,11 +10,11 @@ describe StatisticsController do
     let(:make_request) { get action_path }
 
     context 'when user is not logged in' do
-      it 'redirects to sign in page' do
+      it 'renders the statistics page' do
         make_request
 
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:collection)
       end
     end
 
