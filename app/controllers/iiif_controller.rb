@@ -439,7 +439,6 @@ class IiifController < ApplicationController
   end
 
   def notes
-    page = Page.find params[:page_id]
     annotation_list = IIIF::Presentation::AnnotationList.new
     annotation_list['@id'] = url_for({ controller: 'iiif', action: 'notes', page_id: @page.id, only_path: false })
     @page.notes.each_with_index do |note, i|
@@ -460,7 +459,10 @@ class IiifController < ApplicationController
 
   def note
     noteid = params[:note_id].to_i
-    page = Page.find params[:page_id]
+    if noteid < 1 || noteid > @page.notes.size
+      render status: :not_found, plain: 'Note not found'
+      return
+    end
     note = iiif_page_note(@page, noteid)
     note['@id'] = url_for({ controller: 'iiif', action: 'note', page_id: @page.id, note_id: noteid, only_path: false })
     render plain: note.to_json(pretty: true), content_type: 'application/json'
@@ -636,7 +638,8 @@ private
     note['on'] = region_from_page(@page)
     note.resource = IIIF::Presentation::Resource.new({ '@id' => "note_#{noteid}_for_#{@page.id}", '@type' => 'cnt:ContentAsText' })
     note.resource['format'] =  'text/plain'
-    note.resource['chars'] = @page.notes[noteid.to_i-1].body
+    page_note = @page.notes[noteid.to_i - 1]
+    note.resource['chars'] = page_note&.body
     note
   end
 
