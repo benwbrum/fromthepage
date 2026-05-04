@@ -39,10 +39,11 @@ describe "document sets", order: :defined do
         page.find('a', text: 'Edit').click
       end
     end
+    page.find('#document_set_title').set('')
     page.fill_in 'document_set_title', with: 'Edited Test Document Set 1'
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
-    sleep(3)
+    expect(page).to have_content('Document set has been saved')
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
 
@@ -64,7 +65,12 @@ describe "document sets", order: :defined do
       expect(checkbox).to be_checked
     end
 
-    doc_set.work_ids = (doc_set.work_ids + work_ids).uniq
+    work_ids += doc_set.work_ids
+
+    doc_set.work_ids = []
+    doc_set.save!
+
+    doc_set.work_ids = work_ids.uniq
     doc_set.save!
   end
 
