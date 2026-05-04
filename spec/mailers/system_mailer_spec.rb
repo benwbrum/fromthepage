@@ -52,4 +52,3 @@ RSpec.describe SystemMailer, type: :mailer do
     end
   end
 end
-
