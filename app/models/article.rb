@@ -45,7 +45,7 @@ class Article < ApplicationRecord
   # duplicate detection. Only pure alphabetic sequences (including accented /
   # Unicode letters via POSIX [[:alpha:]]) that are at least
   # MINIMUM_DUPLICATE_WORD_LENGTH characters long are considered.
-  DUPLICATE_WORD_REGEX = /[[:alpha:]]{4,}/.freeze
+  DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
 
   before_save :process_source
 
