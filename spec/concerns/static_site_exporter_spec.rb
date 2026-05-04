@@ -9,15 +9,10 @@ describe StaticSiteExporter do
   end
 
   describe '#write_index_markdown' do
-    let(:out) { instance_double('Zip::OutputStream') }
-
-    before do
-      allow(out).to receive(:put_next_entry)
-      allow(out).to receive(:write)
-    end
+    let(:out) { double('zip_output_stream', put_next_entry: nil, write: nil) }
 
     context 'when collection has a nil intro_block' do
-      let(:collection) { create(:collection, intro_block: nil) }
+      let(:collection) { build_stubbed(:collection, intro_block: nil) }
 
       it 'does not raise an error' do
         expect {
@@ -32,7 +27,7 @@ describe StaticSiteExporter do
     end
 
     context 'when collection has an intro_block' do
-      let(:collection) { create(:collection, intro_block: "Some intro text") }
+      let(:collection) { build_stubbed(:collection, intro_block: "Some intro text") }
 
       it 'writes the YAML front matter with the intro block content' do
         exporter.write_index_markdown('export', out, collection)
