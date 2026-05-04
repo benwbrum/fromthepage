@@ -2,4 +2,4 @@
 .collection-meta-wrapper
   =render partial: 'edit_tabs', locals: { selected: 2 }
   #collection-settings
-    =render partial: 'form', locals: { collection: @collection, work: @work, scope: 'edit_tasks' }
+    =render partial: 'form', locals: { collection: @work.collection, work: @work, scope: 'edit_tasks' }
