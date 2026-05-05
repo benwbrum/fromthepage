@@ -12,7 +12,11 @@ class BulkExport::Process < ApplicationInteractor
 
     @bulk_export.update!(status: :processing)
 
-    @bulk_export.export_to_zip
+    File.open(@bulk_export.log_file, 'a') do |log_file|
+      with_captured_stdout(log_file) do
+        @bulk_export.export_to_zip
+      end
+    end
 
     @bulk_export.update!(status: :finished)
 
@@ -52,33 +56,16 @@ class BulkExport::Process < ApplicationInteractor
     @logger
   end
 
-  def export_to_zip
-    works_scope = Work.includes(pages: [:notes, { page_versions: :user }])
-    works =
-      if @bulk_export.work.present?
-        works_scope.where(id: @bulk_export.work.id)
-      elsif @bulk_export.document_set.present?
-        works_scope.where(id: @bulk_export.document_set.works.pluck(:id))
-      elsif @bulk_export.collection.present?
-        works_scope.where(collection_id: @bulk_export.collection.id)
-      else
-        works_scope.none
-      end
+  def with_captured_stdout(file)
+    original_stdout = $stdout
+    original_stderr = $stderr
 
-    zip_filename = "export_#{@bulk_export.id}.zip"
+    $stdout = file
+    $stderr = file
 
-    Tempfile.create([zip_filename, '.zip']) do |tmpfile|
-      Zip::OutputStream.open(tmpfile.path) do |out|
-        write_work_exports(works, out, @bulk_export.user, @bulk_export)
-      end
-
-      tmpfile.rewind
-
-      @bulk_export.output.attach(
-        io: tmpfile,
-        filename: zip_filename,
-        content_type: 'application/zip'
-      )
-    end
+    yield
+  ensure
+    $stdout = original_stdout
+    $stderr = original_stderr
   end
 end
