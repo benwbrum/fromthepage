@@ -10,13 +10,11 @@ class BulkExport::Process < ApplicationInteractor
     logger.info "\tfrom collection=#{@bulk_export.collection.title}" if @bulk_export.collection.present?
     logger.info @bulk_export.attributes.pretty_inspect
 
+    @bulk_export.custom_logger = logger
+
     @bulk_export.update!(status: :processing)
 
-    File.open(@bulk_export.log_file, 'a') do |log_file|
-      with_captured_stdout(log_file) do
-        @bulk_export.export_to_zip
-      end
-    end
+    @bulk_export.export_to_zip
 
     @bulk_export.update!(status: :finished)
 
@@ -54,18 +52,5 @@ class BulkExport::Process < ApplicationInteractor
     end
 
     @logger
-  end
-
-  def with_captured_stdout(file)
-    original_stdout = $stdout
-    original_stderr = $stderr
-
-    $stdout = file
-    $stderr = file
-
-    yield
-  ensure
-    $stdout = original_stdout
-    $stderr = original_stderr
   end
 end

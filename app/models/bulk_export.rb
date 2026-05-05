@@ -74,6 +74,8 @@ class BulkExport < ApplicationRecord
   belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
+  attr_accessor :custom_logger
+
   # TODO: Find out conflict why this is re-declared on async jobs
   # enum :status, {
   #   new: 'new',
