@@ -8,6 +8,7 @@
 #  ocr               :boolean          default(FALSE)
 #  preserve_titles   :boolean          default(FALSE)
 #  status            :string(255)      default("new")
+#  upload_file_size  :bigint
 #  created_at        :datetime
 #  updated_at        :datetime
 #  collection_id     :integer

@@ -30,7 +30,8 @@ describe DocumentUpload::Create do
     expect(result.document_upload).to have_attributes(
       ocr: true,
       preserve_titles: true,
-      collection_id: collection.id
+      collection_id: collection.id,
+      upload_file_size: blob.byte_size
     )
   end
 
