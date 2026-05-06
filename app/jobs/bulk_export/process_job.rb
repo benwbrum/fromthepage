@@ -18,6 +18,25 @@ class BulkExport::ProcessJob < ApplicationJob
       end
     elsif !result.success?
       result.bulk_export.update!(status: :error)
+      error = result.full_errors
+
+      error_message =
+        if error.respond_to?(:backtrace)
+          "#{error.message}\n#{error.backtrace.join("\n")}"
+        else
+          error.to_s
+        end
+
+      path = result.bulk_export.log_file
+
+      if path.present?
+        FileUtils.mkdir_p(File.dirname(path))
+
+        File.open(path, 'a') do |f|
+          f.puts "\n=== #{Time.current} ==="
+          f.puts error_message
+        end
+      end
 
       raise result.full_errors
     end
