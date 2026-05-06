@@ -133,7 +133,8 @@ module ExportHelper
       by_work = bulk_export.organization.to_sym == :by_work
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n"
+        log(msg: "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n", logger: bulk_export.custom_logger)
+
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
@@ -1197,5 +1198,13 @@ module ExportHelper
     end
 
     array
+  end
+
+  def log(msg:, logger: nil)
+    if logger.nil?
+      print msg
+    else
+      logger.info msg
+    end
   end
 end
