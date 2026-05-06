@@ -45,7 +45,7 @@ en:
       learn_more_footer: Learn more about configuring the footer.
       location: Location
       name: Name
-      ocrid_id: OCRID ID
+      ocrid_id: ORCID ID
       owner_stats: Nightly emails with owned collection activity
       page_edited: Note added in response to a comment you made
       picture: Profile Picture
@@ -61,4 +61,4 @@ en:
       website: Website
       where_are_you_from: Where are you from?
       your_blog_or_homepage: Your blog or homepage
-      your_ocrid_id: Your OCRID ID
+      your_ocrid_id: Your ORCID ID
