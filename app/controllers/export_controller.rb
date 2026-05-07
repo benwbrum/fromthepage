@@ -189,7 +189,15 @@ class ExportController < ApplicationController
   end
 
   def edit_contentdm_credentials
-    # display the edit form
+    if ContentdmTranslator.collection_is_cdm?(@collection)
+      begin
+        field_config = ContentdmTranslator.fetch_cdm_field_config(@collection)
+        @cdm_fulltext_fields = field_config.select { |e| e['type'] == 'FTS' }.map { |e| [e['name'], e['nick']] }
+        @cdm_metadata_fields = field_config.map { |e| [e['name'], e['nick']] }
+      rescue => e
+        Rails.logger.error("Failed to fetch CONTENTdm field config: #{e.message}")
+      end
+    end
   end
 
   # TODO: Add specs for this
