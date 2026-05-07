@@ -122,7 +122,7 @@ Otherwise, we can directly use the `transcribe_handler`
 custom_prompt = "Transcribe this document and pay special attention to dates and proper nouns."
 custom_model = 'gemini-2.5-pro'
 
-transcription_text, reasoning_text, metadata = AiTranscription::Lib::Gemini::TranscribeHandler.new(
+transcription_text, reasoning_text, metadata, response = AiTranscription::Lib::Gemini::TranscribeHandler.new(
   prompt: custom_prompt,
   model: custom_model,
   image_url: image_url

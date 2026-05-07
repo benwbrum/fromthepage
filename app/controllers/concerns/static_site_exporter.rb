@@ -229,7 +229,7 @@ EOF_FOOTER_INCLUDE
   def write_index_markdown(dirname, out, collection)
     path = File.join dirname, 'index.md'
     out.put_next_entry(path)
-    out.write("---\n"+collection.intro_block)
+    out.write("---\n"+(collection.intro_block || ''))
   end
 
   def write_navigation_yaml(dirname, out, collection)

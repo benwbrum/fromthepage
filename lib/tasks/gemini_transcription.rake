@@ -36,7 +36,8 @@ namespace :fromthepage do
 
         puts 'Transcription SUCCESS'
       rescue StandardError => e
-        puts "Transcription ERROR - #{e}\n#{e.message}"
+        puts "Transcription ERROR - #{e}\n#{e.message}\n"
+        puts e.backtrace&.join("\n")
       end
     end
 

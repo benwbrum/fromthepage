@@ -56,11 +56,13 @@ module ExportService
       preserve_lb: preserve_lb
     ).call
 
-    return unless result.success?
-
-    tempfile = result.file
-    out.put_next_entry(path)
-    out.write(IO.read(tempfile))
+    if result.success?
+      tempfile = result.file
+      out.put_next_entry(path)
+      out.write(IO.read(tempfile))
+    else
+      raise result.full_errors
+    end
   end
 
   def export_owner_mailing_list_csv(out:, owner:)

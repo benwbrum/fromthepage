@@ -36,8 +36,8 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
 
         transcription_text, reasoning_text = extract_texts_from_response(response)
 
-        return [transcription_text, reasoning_text, metadata]
-      rescue StandardError => e
+        return [transcription_text, reasoning_text, metadata, response]
+      rescue => e
         last_error = e
 
         # Check if this is a 503 error (server overload)
@@ -55,7 +55,7 @@ class AiTranscription::Lib::Gemini::TranscribeHandler
         raise e
       end
     end
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error("Gemini API error: #{e.message}")
     raise e
   end

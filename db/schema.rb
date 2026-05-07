@@ -370,6 +370,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_07_000000) do
     t.boolean "ocr", default: false
     t.boolean "generate_ai_draft", default: false
     t.integer "document_set_id"
+    t.bigint "upload_file_size"
     t.index ["collection_id"], name: "index_document_uploads_on_collection_id"
     t.index ["document_set_id"], name: "index_document_uploads_on_document_set_id"
     t.index ["user_id"], name: "index_document_uploads_on_user_id"

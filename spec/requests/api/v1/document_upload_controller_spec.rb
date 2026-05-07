@@ -27,6 +27,14 @@ describe Api::V1::DocumentUploadController do
         expect(body['status']).to be_present
         expect(body['status_uri']).to be_present
       end
+
+      it 'records the upload_file_size' do
+        subject
+
+        body = JSON.parse(response.body)
+        upload = DocumentUpload.find(body['id'])
+        expect(upload.upload_file_size).to eq(zip_file.size)
+      end
     end
 
     context 'when collection does not exist' do
