@@ -208,10 +208,18 @@ class ExportController < ApplicationController
     contentdm_password = params[:contentdm_password]
     error_message, _fts_field = ContentdmTranslator.fts_field_for_collection(@collection)
 
-    # persist license key so the user doesn't have to retype it
+    # persist license key and export settings so the user doesn't have to retype them
     if error_message.blank? || !error_message.match(/license.*invalid/)
       @collection.license_key = license_key
       @collection.save!
+
+      cdm_setting = @collection.cdm_export_setting || @collection.build_cdm_export_setting
+      cdm_setting.transcript_source    = params[:transcript_source].presence || CdmExportSetting::HUMAN_ONLY
+      cdm_setting.fulltext_field       = params[:cdm_fulltext_field].presence
+      cdm_setting.include_ai_provenance = params[:include_ai_provenance] == '1'
+      cdm_setting.ai_provenance_field  = params[:cdm_ai_provenance_field].presence
+      cdm_setting.prepend_ai_warning   = params[:prepend_ai_warning] == '1'
+      cdm_setting.save!
     end
 
     # redirect to or render edit screen with error
