@@ -1,4 +1,4 @@
-class CreateCdmExportSettings < ActiveRecord::Migration[7.0]
+class CreateCdmExportSettings < ActiveRecord::Migration[7.2]
   def change
     create_table :cdm_export_settings do |t|
       t.integer :collection_id, null: false

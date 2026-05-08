@@ -3,12 +3,14 @@ require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
   describe '.transcript_for_page' do
-    let(:page)        { create(:page) }
-    let(:cdm_setting) { build(:cdm_export_setting) }
+    let(:created_at)      { Time.zone.parse('2026-05-01 12:00:00') }
+    let(:ai_transcription) do
+      instance_double(AiTranscription, source_text: 'AI draft text', model: 'gemini-2.5-pro', created_at: created_at)
+    end
 
     context 'when cdm_setting is nil' do
       it 'returns the human transcript and no AI object' do
-        allow(page).to receive(:verbatim_transcription_plaintext).and_return('human text')
+        page = instance_double(Page, verbatim_transcription_plaintext: 'human text')
         text, ai = ContentdmTranslator.transcript_for_page(page, nil)
         expect(text).to eq('human text')
         expect(ai).to be_nil
@@ -16,8 +18,10 @@ RSpec.describe ContentdmTranslator do
     end
 
     context 'when transcript_source is human_only' do
+      let(:cdm_setting) { instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_ONLY) }
+
       it 'returns the human transcript regardless of AI drafts' do
-        allow(page).to receive(:verbatim_transcription_plaintext).and_return('human text')
+        page = instance_double(Page, verbatim_transcription_plaintext: 'human text')
         text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
         expect(text).to eq('human text')
         expect(ai).to be_nil
@@ -25,55 +29,48 @@ RSpec.describe ContentdmTranslator do
     end
 
     context 'when transcript_source is human_and_ai' do
-      before { cdm_setting.transcript_source = CdmExportSetting::HUMAN_AND_AI }
-
       context 'when a human transcript exists' do
         it 'returns the human transcript and no AI object' do
-          allow(page).to receive(:verbatim_transcription_plaintext).and_return('human text')
+          page = instance_double(Page, verbatim_transcription_plaintext: 'human text')
+          cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI)
           text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
           expect(text).to eq('human text')
           expect(ai).to be_nil
         end
       end
 
-      context 'when no human transcript exists' do
-        before { allow(page).to receive(:verbatim_transcription_plaintext).and_return(nil) }
+      context 'when no human transcript exists and an AI draft exists' do
+        let(:page) { instance_double(Page, verbatim_transcription_plaintext: '', ai_transcription: ai_transcription) }
 
-        context 'and an AI draft exists' do
-          let(:ai_transcription) { create(:ai_transcription, page: page, source_text: 'AI draft text', status: :finished) }
-          before { allow(page).to receive(:ai_transcription).and_return(ai_transcription) }
-
-          it 'returns the AI draft text and the AI object' do
-            text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
-            expect(text).to eq('AI draft text')
-            expect(ai).to eq(ai_transcription)
-          end
-
-          context 'and prepend_ai_warning is true' do
-            before { cdm_setting.prepend_ai_warning = true }
-
-            it 'prepends the warning line to the AI text' do
-              text, _ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
-              expect(text).to eq("Warning: This transcript is AI-generated.\nAI draft text")
-            end
-          end
-
-          context 'and prepend_ai_warning is false' do
-            it 'does not add a warning prefix' do
-              text, _ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
-              expect(text).not_to include('Warning:')
-            end
-          end
+        it 'returns the AI draft text and the AI object' do
+          cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI, prepend_ai_warning: false)
+          text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+          expect(text).to eq('AI draft text')
+          expect(ai).to eq(ai_transcription)
         end
 
-        context 'and no AI draft exists' do
-          before { allow(page).to receive(:ai_transcription).and_return(nil) }
+        it 'prepends a warning with model and date when prepend_ai_warning is true' do
+          cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI, prepend_ai_warning: true)
+          text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+          expect(text).to start_with('Warning: This transcript is AI-generated (gemini-2.5-pro 2026-05-01).')
+          expect(text).to end_with("\nAI draft text")
+          expect(ai).to eq(ai_transcription)
+        end
 
-          it 'returns nil transcript and no AI object' do
-            text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
-            expect(text).to be_nil
-            expect(ai).to be_nil
-          end
+        it 'does not add a warning prefix when prepend_ai_warning is false' do
+          cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI, prepend_ai_warning: false)
+          text, _ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+          expect(text).not_to include('Warning:')
+        end
+      end
+
+      context 'when no human transcript exists and no AI draft exists' do
+        it 'returns nil transcript and no AI object' do
+          page = instance_double(Page, verbatim_transcription_plaintext: nil, ai_transcription: nil)
+          cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI)
+          text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+          expect(text).to be_nil
+          expect(ai).to be_nil
         end
       end
     end

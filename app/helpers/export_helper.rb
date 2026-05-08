@@ -133,7 +133,8 @@ module ExportHelper
       by_work = bulk_export.organization.to_sym == :by_work
       original_filenames = bulk_export.use_uploaded_filename
       works.each do |work|
-        print "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n"
+        log(msg: "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n", logger: bulk_export.custom_logger)
+
         @work = work
         if by_work
           add_readme_to_zip(work: work, out: out, by_work: by_work, original_filenames: original_filenames)
@@ -279,7 +280,7 @@ module ExportHelper
     organizations_and_descendants = organization_categories.flat_map { |org| org.descendants << org }
     @person_articles = @all_articles.joins(:categories).where(categories: { id: people_and_descendants.map(&:id) }).to_a
     @place_articles = @all_articles.joins(:categories).where(categories: { id: places_and_descendants.map(&:id) }).to_a
-    @organization_articles = @all_articles.joins(:categories).where(categories: { id: organization_categories.map(&:id) }).to_a
+    @organization_articles = @all_articles.joins(:categories).where(categories: { id: organizations_and_descendants.map(&:id) }).to_a
     @other_articles = @all_articles - @person_articles - @place_articles - @organization_articles
     [@other_articles+@person_articles+@place_articles+@organization_articles].flatten.each do |subject|
       subjects = expand_subject(subject)
@@ -303,7 +304,7 @@ module ExportHelper
     @person_articles.uniq!
     @place_articles.uniq!
     @organization_articles.uniq!
-    @other_articles.uniq!
+    @other_articles = (@other_articles - @person_articles - @place_articles - @organization_articles).uniq
 
     ### Catch the rendered Work for post-processing
     xml = ApplicationController.renderer.render_to_string(
@@ -1197,5 +1198,13 @@ module ExportHelper
     end
 
     array
+  end
+
+  def log(msg:, logger: nil)
+    if logger.nil?
+      print msg
+    else
+      logger.info msg
+    end
   end
 end

@@ -3,6 +3,7 @@ class BulkExportController < ApplicationController
   before_action :set_bulk_export, only: [:show, :edit, :download]
   before_action :authorized?, except: [:new, :create, :create_for_work, :create_for_work_ajax, :create_for_owner]
   before_action :authorize_collection, only: [:new, :create, :create_for_work_ajax, :create_for_owner]
+  before_action :require_collection_owner, only: [:new, :create]
 
   PAGES_PER_SCREEN = 20
 
@@ -180,6 +181,12 @@ class BulkExportController < ApplicationController
 
   def authorized?
     unless current_user.admin || @bulk_export&.user_id == current_user.id
+      redirect_to main_app.dashboard_path
+    end
+  end
+
+  def require_collection_owner
+    unless current_user.like_owner?(@collection)
       redirect_to main_app.dashboard_path
     end
   end

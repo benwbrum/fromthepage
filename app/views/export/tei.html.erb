@@ -437,7 +437,7 @@ xml:id="W<%=@work.identifier||@work.id%>">
       <% end%>
         <fw type="pageNum"><%= h(page.title) %></fw>
         <% unless page.status_blank? %>
-          <%= raw(xml_to_export_tei(page.xml_text, @context, page.id, true))%>
+          <%= raw(xml_to_export_tei(page.xml_text, @context, page.id, false))%>
         <% end %>
         <% notes = page.notes %>
         <% if notes && notes.length > 0 %>

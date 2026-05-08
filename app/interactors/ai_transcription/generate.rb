@@ -17,7 +17,7 @@ class AiTranscription::Generate < ApplicationInteractor
   end
 
   def perform
-    source_text, reasoning, metadata = transcribe_handler.perform
+    source_text, reasoning, metadata, response = transcribe_handler.perform
 
     @ai_transcription.update!(
       source_text: source_text,
@@ -27,7 +27,7 @@ class AiTranscription::Generate < ApplicationInteractor
 
     return if @ai_transcription.source_text.present? || @ai_transcription.reasoning.present?
 
-    raise ArgumentError, 'AI Transcription has blank text and reasoning'
+    raise ArgumentError, "AI Transcription has blank text and reasoning.\nResponse:\n#{response}"
   end
 
   private

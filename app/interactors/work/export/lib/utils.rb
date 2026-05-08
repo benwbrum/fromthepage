@@ -19,8 +19,13 @@ class Work::Export::Lib::Utils
     '&nbsp;'
   ]
 
+  # Zero-width and invisible Unicode characters that LaTeX cannot handle
+  LATEX_INVISIBLE_CHARS = /[\u{2060}\u{200B}\u{200C}\u{200D}\u{FEFF}]/
+
   def self.latex_escape(text)
     return '' if text.blank?
+
+    text = text.gsub(LATEX_INVISIBLE_CHARS, '')
 
     replacements = {
       '\\' => '\\textbackslash{}',

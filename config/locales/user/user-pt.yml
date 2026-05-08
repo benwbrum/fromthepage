@@ -45,7 +45,7 @@ pt:
       learn_more_footer: Saiba mais sobre a configuração do rodapé.
       location: Localização
       name: Nome
-      ocrid_id: ID OCRID
+      ocrid_id: ID ORCID
       owner_stats: Um e-mail cada noite com a atividade nas coleções que você controla
       page_edited: Nota adicionada em resposta a um comentário que você fez
       picture: Foto do perfil
@@ -61,4 +61,4 @@ pt:
       website: Local na rede Internet
       where_are_you_from: Você é de onde?
       your_blog_or_homepage: Seu blog ou site pessoal
-      your_ocrid_id: Seu ID OCRID
+      your_ocrid_id: Seu ID ORCID
