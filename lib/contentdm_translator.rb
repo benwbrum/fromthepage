@@ -183,7 +183,7 @@ module ContentdmTranslator
       ]
 
       if ai_transcription && cdm_setting&.include_ai_provenance && cdm_setting&.ai_provenance_field.present?
-        provenance = "#{ai_transcription.model} #{ai_transcription.created_at.strftime('%Y-%m-%d')}"
+        provenance = ai_provenance(ai_transcription)
         metadata_entries << { field: cdm_setting.ai_provenance_field, value: provenance }
       end
 
@@ -206,15 +206,19 @@ module ContentdmTranslator
   end
 
   def self.transcript_for_page(page, cdm_setting)
-    if cdm_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI && page.verbatim_transcription_plaintext.blank?
-      ai = page.ai_transcription
-      if ai&.source_text.present?
-        text = ai.source_text
-        text = "Warning: This transcript is AI-generated.\n#{text}" if cdm_setting.prepend_ai_warning
-        return [text, ai]
+      if cdm_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI && page.verbatim_transcription_plaintext.blank?
+        ai = page.ai_transcription
+        if ai&.source_text.present?
+          text = ai.source_text
+          text = "Warning: This transcript is AI-generated (#{ai_provenance(ai)}).\n#{text}" if cdm_setting.prepend_ai_warning
+          return [text, ai]
+        end
       end
-    end
-    [page.verbatim_transcription_plaintext, nil]
+      [page.verbatim_transcription_plaintext, nil]
+  end
+
+  def self.ai_provenance(ai_transcription)
+    "#{ai_transcription.model} #{ai_transcription.created_at.strftime('%Y-%m-%d')}"
   end
 
   def self.log_file(collection)

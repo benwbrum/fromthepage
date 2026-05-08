@@ -2,6 +2,44 @@ require 'spec_helper'
 require 'contentdm_translator'
 
 RSpec.describe ContentdmTranslator do
+  describe '#transcript_for_page' do
+    let(:created_at) { Time.zone.parse('2026-05-01 12:00:00') }
+    let(:ai_transcription) do
+      instance_double(AiTranscription, source_text: 'AI draft text', model: 'gemini-2.5-pro', created_at: created_at)
+    end
+
+    it 'returns human transcription when transcript source is human only' do
+      page = instance_double(Page, verbatim_transcription_plaintext: 'Human text', ai_transcription: ai_transcription)
+      cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_ONLY, prepend_ai_warning: false)
+
+      transcript_text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+
+      expect(transcript_text).to eq('Human text')
+      expect(ai).to be_nil
+    end
+
+    it 'falls back to AI transcription when human text is blank and AI fallback is enabled' do
+      page = instance_double(Page, verbatim_transcription_plaintext: '', ai_transcription: ai_transcription)
+      cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI, prepend_ai_warning: false)
+
+      transcript_text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+
+      expect(transcript_text).to eq('AI draft text')
+      expect(ai).to eq(ai_transcription)
+    end
+
+    it 'prepends a warning that includes model and run date when requested' do
+      page = instance_double(Page, verbatim_transcription_plaintext: nil, ai_transcription: ai_transcription)
+      cdm_setting = instance_double(CdmExportSetting, transcript_source: CdmExportSetting::HUMAN_AND_AI, prepend_ai_warning: true)
+
+      transcript_text, ai = ContentdmTranslator.transcript_for_page(page, cdm_setting)
+
+      expect(transcript_text).to start_with('Warning: This transcript is AI-generated (gemini-2.5-pro 2026-05-01).')
+      expect(transcript_text).to end_with("\nAI draft text")
+      expect(ai).to eq(ai_transcription)
+    end
+  end
+
   describe '#cdm_url_to_iiif' do
     let(:item_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court/id/7076' }
     let(:collection_url) { 'https://digital.archives.alabama.gov/digital/collection/supreme_court' }
