@@ -157,10 +157,16 @@ module ContentdmTranslator
   end
 
   def self.export_work_to_cdm(work, username, password, license)
-    error, fieldname = fts_field_for_collection(work.collection)
-    if error
-      puts "Error retrieving Full-Text Search field: #{error}\n"
-      exit
+    collection = work.collection
+    cdm_setting = collection.cdm_export_setting
+
+    fieldname = cdm_setting&.fulltext_field.presence
+    unless fieldname
+      error, fieldname = fts_field_for_collection(collection)
+      if error
+        puts "Error retrieving Full-Text Search field: #{error}\n"
+        exit
+      end
     end
 
     soap_client = Savon.client(log: true, filters: [:password], wsdl: 'https://worldcat.org/webservices/contentdm/catcher?wsdl', follow_redirects: true)
@@ -168,14 +174,20 @@ module ContentdmTranslator
       canvas_at_id = page.sc_canvas.sc_canvas_id
       manifest_at_id = work.sc_manifest.at_id
       puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title} at #{Time.current.strftime('%Y-%m-%d %I:%M %p')}.  CONTENTdm response:"
-      metadata_wrapper = {
-        'metadataList' => {
-          'metadata' => [
-            { field: 'dmrecord', value: cdm_record(canvas_at_id) },
-            { field: fieldname, value: page.verbatim_transcription_plaintext }
-          ]
-        }
-      }
+
+      transcript_text, ai_transcription = transcript_for_page(page, cdm_setting)
+
+      metadata_entries = [
+        { field: 'dmrecord', value: cdm_record(canvas_at_id) },
+        { field: fieldname, value: transcript_text }
+      ]
+
+      if ai_transcription && cdm_setting&.include_ai_provenance && cdm_setting&.ai_provenance_field.present?
+        provenance = ai_provenance(ai_transcription)
+        metadata_entries << { field: cdm_setting.ai_provenance_field, value: provenance }
+      end
+
+      metadata_wrapper = { 'metadataList' => { 'metadata' => metadata_entries } }
 
       message = {
         cdmurl: "http://#{cdm_server(manifest_at_id)}:8888",
@@ -191,6 +203,22 @@ module ContentdmTranslator
 
       puts resp.to_hash[:process_conten_tdm_response][:return]
     end
+  end
+
+  def self.transcript_for_page(page, cdm_setting)
+      if cdm_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI && page.verbatim_transcription_plaintext.blank?
+        ai = page.ai_transcription
+        if ai&.source_text.present?
+          text = ai.source_text
+          text = "Warning: This transcript is AI-generated (#{ai_provenance(ai)}).\n#{text}" if cdm_setting.prepend_ai_warning
+          return [text, ai]
+        end
+      end
+      [page.verbatim_transcription_plaintext, nil]
+  end
+
+  def self.ai_provenance(ai_transcription)
+    "#{ai_transcription.model} #{ai_transcription.created_at.strftime('%Y-%m-%d')}"
   end
 
   def self.log_file(collection)

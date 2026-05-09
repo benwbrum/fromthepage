@@ -8,8 +8,10 @@ namespace :fromthepage do
     password = ENV['contentdm_password']
     license = ENV['contentdm_license']
 
+    include_ai_drafts = collection.cdm_export_setting&.transcript_source == CdmExportSetting::HUMAN_AND_AI
+
     collection.works.joins(:sc_manifest, :work_statistic).each do |work|
-      if work.work_statistic.complete >= 99
+      if include_ai_drafts || work.work_statistic.complete >= 99
         print "\tBeginning export of work #{work.id}, '#{work.title}' \n"
         ContentdmTranslator.export_work_to_cdm_with_retry(work, username, password, license)
         print "Finished export of work #{work.id}, '#{work.title}' \n"
