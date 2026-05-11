@@ -4,8 +4,8 @@ describe 'voice transcription' do
   let!(:owner) { create(:unique_user, :owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id, voice_recognition: voice_recognition, works: []) }
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id, supports_translation: true) }
-  let!(:page) { create(:page, work: work) }
-  let!(:article) { create(:article, collection: collection, pages: [page]) }
+  let!(:work_page) { create(:page, work: work) }
+  let!(:article) { create(:article, collection: collection, pages: [work_page]) }
 
   let(:voice_recognition) { false }
 
@@ -14,7 +14,7 @@ describe 'voice transcription' do
   end
 
   def visit_transcribe_page
-    visit collection_transcribe_page_path(collection.owner, collection, work, page)
+    visit collection_transcribe_page_path(collection.owner, collection, work, work_page)
 
     if page.has_content?('Facsimile')
       page.find('.tabs').click_link('Transcribe')
