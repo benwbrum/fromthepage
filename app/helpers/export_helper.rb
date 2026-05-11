@@ -132,8 +132,13 @@ module ExportHelper
     if bulk_export.work_level? || bulk_export.page_level?
       by_work = bulk_export.organization.to_sym == :by_work
       original_filenames = bulk_export.use_uploaded_filename
-      works.each do |work|
+      works.find_each(batch_size: 1) do |work|
         log(msg: "\t#{DateTime.now} Exporting work\t#{work.id}\t#{work.title}\n", logger: bulk_export.custom_logger)
+        before_work_mem = GetProcessMem.new.mb
+        log(
+          msg: "\t[MEM] START WORK #{work.id} RSS=#{before_work_mem.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
 
         if by_work
           add_readme_to_zip(work: work, path: path, by_work: by_work, original_filenames: original_filenames)
@@ -198,7 +203,7 @@ module ExportHelper
         end
 
         # Page-specific exports
-        work.pages.each_with_index do |page, i|
+        work.pages.find_each.with_index do |page, i|
           if bulk_export.plaintext_verbatim_page
             format = 'verbatim'
             export_plaintext_transcript_pages(name: format, path: path, page: page, by_work: by_work, original_filenames: original_filenames, index: nil)
@@ -227,6 +232,21 @@ module ExportHelper
             export_html_full_pages(path: path, page: page, by_work: by_work, original_filenames: original_filenames)
           end
         end
+
+        after_work_mem = GetProcessMem.new.mb
+        log(
+          msg: "\t[MEM] END WORK #{work.id} RSS=#{after_work_mem.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
+
+        GC.start(full_mark: true, immediate_sweep: true)
+
+        after_gc = GetProcessMem.new.mb
+
+        log(
+          msg: "\t[MEM] AFTER GC WORK #{work.id} RSS=#{after_gc.round(1)}MB\n",
+          logger: bulk_export.custom_logger
+        )
       end
     end
   end
