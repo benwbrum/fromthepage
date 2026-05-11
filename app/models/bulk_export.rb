@@ -110,9 +110,7 @@ class BulkExport < ApplicationRecord
 
     File.unlink(zip_file_name) if File.exist?(zip_file_name)
     File.unlink(log_file) if File.exist?(log_file)
-
-    artifacts_dir = Rails.root.join("tmp/fromthepage_exports/export_#{id}")
-    FileUtils.rm_rf(artifacts_dir) if Dir.exist?(artifacts_dir)
+    FileUtils.rm_rf(artifacts_path) if Dir.exist?(artifacts_path)
 
     self.status = :cleaned
     self.save
@@ -137,6 +135,17 @@ class BulkExport < ApplicationRecord
     path
   end
 
+  def artifacts_path
+    path = "tmp/fromthepage_exports/export_#{self.id}"
+    FileUtils.mkdir_p(path)
+
+    path
+  end
+
+  def artifacts_zip_path
+    "tmp/fromthepage_exports/export_#{self.id}.zip"
+  end
+
   def zip_file_name
     File.join(zip_file_path, "export_#{self.id}.zip")
   end
@@ -153,15 +162,11 @@ class BulkExport < ApplicationRecord
         Work.none
       end
 
-    artifacts_path = "tmp/fromthepage_exports/export_#{self.id}"
-    FileUtils.mkdir_p(artifacts_path)
-
     write_work_exports(works, artifacts_path, self)
 
-    zip_path = "tmp/fromthepage_exports/export_#{self.id}.zip"
-    FileUtils.rm_f(zip_path)
+    FileUtils.rm_f(artifacts_zip_path)
 
-    Zip::File.open(zip_path, create: true) do |zip|
+    Zip::File.open(artifacts_zip_path, create: true) do |zip|
       Dir.glob("#{artifacts_path}/**/*").each do |file|
         next if File.directory?(file)
 
@@ -173,15 +178,15 @@ class BulkExport < ApplicationRecord
       end
     end
 
-    File.open(zip_path) do |file|
+    File.open(artifacts_zip_path) do |file|
       output.attach(
         io: file,
-        filename: File.basename(zip_path),
+        filename: File.basename(artifacts_zip_path),
         content_type: 'application/zip'
       )
     end
 
-    FileUtils.rm_f(zip_path)
+    FileUtils.rm_f(artifacts_zip_path)
   end
 
   def submit_export_process
