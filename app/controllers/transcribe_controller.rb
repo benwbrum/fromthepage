@@ -155,7 +155,9 @@ class TranscribeController  < ApplicationController
           end
         end
 
-        if params[:flow] == 'one-off' && !@page.status_needs_review?
+        one_off_review_flow = params[:flow] == 'one-off' ||
+                              (params[:flow].blank? && request.path.match?(%r{/review/one_off/}))
+        if one_off_review_flow && !@page.status_needs_review?
           redirect_to collection_one_off_list_path(@collection.owner, @collection)
           return
         elsif params[:flow] =~ /user-contributions/ && !@page.status_needs_review?

@@ -231,6 +231,7 @@ describe TranscribeController do
         login_as owner
         subject
 
+        expect(response).to redirect_to(collection_one_off_list_path(owner, collection))
         expect(page.reload.source_text).to include('[[Original]] some change')
         expect(page.articles.reload).to include(article)
         expect(article.reload.categories).to include(category)
