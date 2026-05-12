@@ -12,113 +12,46 @@ namespace :fromthepage do
     end
 
     f = File.open(TEMP_FILE, 'w+')
-    f.print("Start Date\tLanding Pages\tLanding to Trial %\tNew Trial Views\tNew Trial to Account %\tTrial Creations\tAccout to Collection %\tCollection Creations\tCollection Created %\tHave Collections\tUploaded Work %\tWork Upload\tTranscribed Page %\tPage Transcribed\tMulti-Contributor %\tMultiple Contributors\tAccount Created to Page Transcribed %\tAccount Created to Multi Contributor %\tAccount Creation to First Page Transcribed (median minutes)\tMinutes To First Page By Others (median)\n")
+    f.print("Start Date\tTrial Creations\tWork Upload\tPage Transcribed\tAI Draft Used\n")
     week_cohorts.each do |start_day|
       end_day = start_day+1.week
       f.print("#{start_day}\t")
       previous_visits = nil
-      previous_actions=nil
-      registrations_create_count = nil
+      registrations_visits = nil
       target_actions.each do |action|
         if previous_visits
           visits = Ahoy::Event.where(time: start_day..end_day, name: action, visit_id: previous_visits).pluck(:visit_id).uniq
-          action_count = visits.count
-          previous_visits = visits
         else
           visits = Ahoy::Event.where(time: start_day..end_day, name: action).pluck(:visit_id).uniq
-          action_count = visits.count
-          previous_visits = visits
-
         end
+        previous_visits = visits
 
-        if previous_actions
-          pct = (action_count.to_f/previous_actions).round(4)
-          f.print("#{pct}\t")
-        end
-        f.print("#{action_count}\t")
-
-        # we'll need this later for TTFPT
         if action == 'registrations#create'
-          registrations_create_count = action_count
+          f.print("#{visits.count}\t")
+          registrations_visits = visits
         end
-        previous_actions=action_count
       end
 
       # additional statistics require non-Ahoy data
       collection_users = User.where(id: Visit.where(id: previous_visits).pluck(:user_id))
       ids_with_collections = collection_users.select { |u| u.collections.present? }.map { |u| u.id }
-      action_count = ids_with_collections.count
-      pct = (action_count.to_f/previous_actions).round(4)
-      f.print("#{pct}\t")
-      f.print("#{action_count}\t")
-      previous_actions=action_count
 
       users_with_collections = User.find(ids_with_collections)
       ids_with_pages = users_with_collections.select { |u| u.owner_works.present? }.map { |u| u.id }
-      action_count = ids_with_pages.count
-      pct = (action_count.to_f/previous_actions).round(4)
-      f.print("#{pct}\t")
-      f.print("#{action_count}\t")
-      previous_actions=action_count
 
       users_with_pages = User.find(ids_with_pages)
       ids_with_activity = users_with_pages.select { |u| u.owner_works.detect { |w| (w.work_statistic.line_count||0) > 0 } }.map { |u| u.id }
-      action_count = ids_with_activity.count
-      users_with_pages_transcribed = action_count
-      pct = (action_count.to_f/previous_actions).round(4)
-      f.print("#{pct}\t")
-      f.print("#{action_count}\t")
-      previous_actions=action_count
-
+      f.print("#{ids_with_activity.count}\t")
 
       users_with_activity = User.find(ids_with_activity)
       ids_with_multiple_contributors = users_with_activity.select { |u| u.owned_collections.detect { |c| c.deeds.pluck(:user_id).uniq.count > 1 } }.map { |u| u.id }
-      action_count = ids_with_multiple_contributors.count
-      users_with_pages_transcribed_by_others = action_count
-      pct = (action_count.to_f/previous_actions).round(4)
-      f.print("#{pct}\t")
-      f.print("#{action_count}\t")
-      previous_actions=action_count
+      f.print("#{ids_with_multiple_contributors.count}\t")
 
-      # Account Created to Page Transcribed %
-      pct = (users_with_pages_transcribed.to_f/registrations_create_count).round(4)
-      f.print("#{pct}\t")
-
-      # Account Created to Multi Contributor %
-      pct = (users_with_pages_transcribed_by_others.to_f/registrations_create_count).round(4)
-      f.print("#{pct}\t")
-
-      # Account Creation to First Page Transcribed (median)
-      users_with_pages_transcribed = User.find(ids_with_activity)
-      durations_to_first_transcription = []
-      # for each user, find out when their account was created (user.creation_date?) and find the first page transcribed deed
-      users_with_pages_transcribed.each do |user|
-        first_edit_dates = user.collections.map { |c| c.deeds.where(deed_type: DeedType.collection_edits).minimum(:created_at) }
-        first_edit_date = first_edit_dates.select { |e| !e.nil? }.sort.first
-        durations_to_first_transcription << first_edit_date - user.created_at
-      end
-      median_ttfpt = durations_to_first_transcription.sort[durations_to_first_transcription.count/2]
-      if median_ttfpt
-        f.print("#{median_ttfpt/60}\t")
-      else
-        f.print("\t")
-      end
-
-      # Account Creation to First Page Transcribed By Other(median)
-      users_with_pages_transcribed_by_others = User.find(ids_with_multiple_contributors)
-      durations_to_first_transcription_by_others = []
-      # for each user, find out when their account was created (user.creation_date?) and find the first page transcribed deed
-      users_with_pages_transcribed_by_others.each do |user|
-        first_edit_dates = user.collections.map { |c| c.deeds.where(deed_type: DeedType.collection_edits).where.not(user_id: user.id).minimum(:created_at) }
-        first_edit_date = first_edit_dates.select { |e| !e.nil? }.sort.first
-        durations_to_first_transcription_by_others << first_edit_date - user.created_at
-      end
-      median_ttfpt = durations_to_first_transcription_by_others.sort[durations_to_first_transcription_by_others.count/2]
-      if median_ttfpt
-        f.print("#{median_ttfpt/60}\t")
-      else
-        f.print("\t")
-      end
+      trial_user_ids = Visit.where(id: registrations_visits).pluck(:user_id).compact
+      ai_draft_count = DocumentUpload.where(user_id: trial_user_ids, generate_ai_draft: true)
+                                     .where(created_at: start_day..end_day)
+                                     .pluck(:user_id).uniq.count
+      f.print("#{ai_draft_count}\t")
 
       f.print("\n")
     end
