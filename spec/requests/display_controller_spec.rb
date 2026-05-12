@@ -57,6 +57,24 @@ describe DisplayController do
           expect(assigns(:ai_accuracy_stats)[:verbatim]).to have_key(:wer)
         end
 
+        it 'renders diff headers outside the diff HTML containers' do
+          page.update!(xml_text: '<page><p>Human transcription text</p></page>')
+
+          subject
+
+          document = Nokogiri::HTML(response.body)
+          changed_container = document.at_css('#ai-diff-content [data-diff-transcription="changed"]')
+          original_container = document.at_css('#ai-diff-content [data-diff-transcription="original"]')
+
+          expect(changed_container.at_css('h5')).to be_nil
+          expect(changed_container.previous_element.name).to eq('h5')
+          expect(changed_container.previous_element.text.strip).to eq('Human Transcription')
+
+          expect(original_container.at_css('h5')).to be_nil
+          expect(original_container.previous_element.name).to eq('h5')
+          expect(original_container.previous_element.text.strip).to eq('AI Draft')
+        end
+
         context 'when switching ai_transcription' do
           let!(:ai_transcription_2) { create(:ai_transcription, page: page, source_text: 'Other AI generated text content', status: :finished) }
 
