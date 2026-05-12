@@ -1,4 +1,6 @@
 class BulkExport::Process < ApplicationInteractor
+  attr_accessor :bulk_export
+
   def initialize(bulk_export:)
     @bulk_export = bulk_export
 
@@ -27,14 +29,6 @@ class BulkExport::Process < ApplicationInteractor
 
     raise
   ensure
-    if SMTP_ENABLED
-      begin
-        UserMailer.bulk_export_finished(@bulk_export).deliver!
-      rescue StandardError => e
-        logger.error "SMTP Failed: Exception: #{e.message}"
-      end
-    end
-
     logger&.close
   end
 

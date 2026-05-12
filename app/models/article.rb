@@ -35,6 +35,18 @@ class Article < ApplicationRecord
 
   # include ActiveModel::Dirty
 
+  # Minimum number of consecutive alphabetic characters a word must have to be
+  # considered when searching for possible duplicate subjects. Raising this value
+  # reduces false positives caused by common abbreviations and short initials
+  # (e.g. "Jr", "Fr", "R.").
+  MINIMUM_DUPLICATE_WORD_LENGTH = 4
+
+  # Pre-compiled regex used to extract candidate words from a subject title for
+  # duplicate detection. Only pure alphabetic sequences (including accented /
+  # Unicode letters via POSIX [[:alpha:]]) that are at least
+  # MINIMUM_DUPLICATE_WORD_LENGTH characters long are considered.
+  DUPLICATE_WORD_REGEX = /[[:alpha:]]{#{MINIMUM_DUPLICATE_WORD_LENGTH},}/.freeze
+
   before_save :process_source
 
   validates_presence_of :title
@@ -192,26 +204,37 @@ class Article < ApplicationRecord
   def possible_duplicates
     logger.debug '------------------------------'
     logger.debug 'article.possible_duplicates'
-    # take each element of this article name
-    words = self.title.tr(',.', ' ').split(' ')
-    # sort it by word length, longest to shortest
-    words.keep_if { |word| word.match(/\w\w/) }
+    # Extract only alphabetic words that meet the minimum length threshold to
+    # reduce false positives from short abbreviations and initials (e.g. "Jr",
+    # "Fr", "R."). DUPLICATE_WORD_REGEX only matches [[:alpha:]] sequences, so
+    # the resulting words never contain REGEXP metacharacters.
+    words = self.title.scan(DUPLICATE_WORD_REGEX)
+    # Remove duplicates and sort by word length, longest to shortest
+    words.uniq!
     words.sort! { |x, y| x.length <=> y.length }
     words.reverse!
     # for each word
     all_matches = []
     logger.debug("DEBUG: matching #{words}")
     words.each do |word|
-      # find articles in the same collection
-      # whose title contains that word
-      # logger.debug("the word is #{word}")
-
-      # logger.debug("@collection.id: #{self.collection.id}")
-
+      # find articles in the same collection whose title contains that word as a
+      # complete word (not as a substring of a longer word) to reduce false
+      # positives. The REGEXP pattern uses POSIX character class [[:alpha:]]
+      # which is supported by both MySQL 5.x (POSIX ERE engine) and MySQL 8.0+
+      # (ICU engine) and correctly handles accented/Unicode alphabetic
+      # characters in subject names.
+      # Regexp.escape is applied defensively; DUPLICATE_WORD_REGEX guarantees
+      # words contain only [[:alpha:]] characters (no REGEXP metacharacters).
+      # The full pattern string is passed as a bound parameter via the `?`
+      # placeholder in the where clause, so it is never directly concatenated
+      # into SQL — making this safe against SQL injection.
+      escaped_word = Regexp.escape(word)
       current_matches =
-        self.collection.articles.where('id <> ? AND title like ?', self.id, "%#{word}%")
-      # current_matches.delete self
-      #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
+        self.collection.articles.where(
+          'id <> ? AND title REGEXP ?',
+          self.id,
+          "(^|[^[:alpha:]])#{escaped_word}($|[^[:alpha:]])"
+        )
       #    keep sort order for new words (append to previous list)
       #    if there's a match with the previous list, bump up that
       #    article
@@ -221,8 +244,6 @@ class Article < ApplicationRecord
       # merge with articles for previous words
       all_matches = matches_in_common + old_matches + new_matches
     end
-    #    logger.debug("DEBUG: found #{all_matches.size} matches:")
-    #    logger.debug("DEBUG: #{all_matches.inspect}")
     logger.debug('at the end of article.possible_duplicates')
     logger.debug('--------------------------------------')
     all_matches

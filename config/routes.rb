@@ -62,6 +62,7 @@ Fromthepage::Application.routes.draw do
     get 'revert_flag', to: 'admin#revert_flag'
     get 'delete_user', to: 'admin#delete_user'
     get 'view_processing_log', to: 'admin#view_processing_log'
+    get 'process_upload', to: 'admin#process_upload'
     get 'delete_upload', to: 'admin#delete_upload'
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'

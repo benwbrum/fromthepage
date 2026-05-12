@@ -48,6 +48,22 @@ describe AdminController do
     end
   end
 
+  describe '#process_upload' do
+    let(:action_path) { admin_process_upload_path(id: document_upload.id) }
+    let(:subject) { get action_path }
+
+    before do
+      allow_any_instance_of(DocumentUpload).to receive(:submit_process)
+    end
+
+    it 'redirects after queuing' do
+      login_as admin
+      subject
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(admin_uploads_path)
+    end
+  end
+
   describe '#delete_upload' do
     let(:action_path) { admin_delete_upload_path(id: document_upload.id) }
     let(:subject) { get action_path }
