@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'timeout'
 
 describe 'voice transcription' do
   let!(:owner) { create(:unique_user, :owner) }
@@ -18,6 +19,17 @@ describe 'voice transcription' do
 
     if page.has_content?('Facsimile')
       page.find('.tabs').click_link('Transcribe')
+    end
+  end
+
+  def wait_for_voice_recognition(expected_state)
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop do
+        current_state = collection.reload.voice_recognition
+        return current_state if current_state == expected_state
+
+        sleep(0.1)
+      end
     end
   end
 
@@ -65,8 +77,7 @@ describe 'voice transcription' do
     page.find('.side-tabs').click_link('Look & Feel')
     page.check 'collection_voice_recognition'
 
-    sleep(2)
-    expect(collection.reload.voice_recognition).to be true
+    expect(wait_for_voice_recognition(true)).to be true
   end
 
   context 'when voice transcription starts enabled' do
@@ -79,8 +90,7 @@ describe 'voice transcription' do
       page.find('.side-tabs').click_link('Look & Feel')
       page.uncheck 'collection_voice_recognition'
 
-      sleep(2)
-      expect(collection.reload.voice_recognition).to be false
+      expect(wait_for_voice_recognition(false)).to be false
     end
   end
 end
