@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'timeout'
 
 describe 'voice transcription' do
   let!(:owner) { create(:unique_user, :owner) }
@@ -23,15 +22,15 @@ describe 'voice transcription' do
   end
 
   def wait_for_voice_recognition!(expected_state)
-    Timeout.timeout(Capybara.default_max_wait_time) do
-      loop do
-        current_state = collection.reload.voice_recognition
-        return if current_state == expected_state
+    wait_interval = 0.5
+    max_attempts = (Capybara.default_max_wait_time / wait_interval).ceil
 
-        sleep(0.1)
-      end
+    max_attempts.times do
+      return if collection.reload.voice_recognition == expected_state
+
+      sleep(wait_interval)
     end
-  rescue Timeout::Error
+
     raise RSpec::Expectations::ExpectationNotMetError,
           "Expected collection.voice_recognition to become #{expected_state.inspect} " \
           "within #{Capybara.default_max_wait_time} seconds"
