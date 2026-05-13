@@ -65,7 +65,8 @@ describe 'voice transcription' do
     page.find('.side-tabs').click_link('Look & Feel')
     page.check 'collection_voice_recognition'
 
-    expect { collection.reload.voice_recognition }.to become(true)
+    sleep(2)
+    expect(collection.reload.voice_recognition).to be true
   end
 
   context 'when voice transcription starts enabled' do
@@ -78,7 +79,8 @@ describe 'voice transcription' do
       page.find('.side-tabs').click_link('Look & Feel')
       page.uncheck 'collection_voice_recognition'
 
-      expect { collection.reload.voice_recognition }.to become(false)
+      sleep(2)
+      expect(collection.reload.voice_recognition).to be false
     end
   end
 end
