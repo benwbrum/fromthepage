@@ -22,15 +22,19 @@ describe 'voice transcription' do
     end
   end
 
-  def wait_for_voice_recognition(expected_state)
+  def wait_for_voice_recognition!(expected_state)
     Timeout.timeout(Capybara.default_max_wait_time) do
       loop do
         current_state = collection.reload.voice_recognition
-        return current_state if current_state == expected_state
+        return if current_state == expected_state
 
         sleep(0.1)
       end
     end
+  rescue Timeout::Error
+    raise RSpec::Expectations::ExpectationNotMetError,
+          "Expected collection.voice_recognition to become #{expected_state.inspect} " \
+          "within #{Capybara.default_max_wait_time} seconds"
   end
 
   it 'does not show microphones when voice transcription is disabled' do
@@ -77,7 +81,7 @@ describe 'voice transcription' do
     page.find('.side-tabs').click_link('Look & Feel')
     page.check 'collection_voice_recognition'
 
-    expect(wait_for_voice_recognition(true)).to be true
+    wait_for_voice_recognition!(true)
   end
 
   context 'when voice transcription starts enabled' do
@@ -90,7 +94,7 @@ describe 'voice transcription' do
       page.find('.side-tabs').click_link('Look & Feel')
       page.uncheck 'collection_voice_recognition'
 
-      expect(wait_for_voice_recognition(false)).to be false
+      wait_for_voice_recognition!(false)
     end
   end
 end
