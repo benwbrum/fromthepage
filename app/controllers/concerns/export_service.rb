@@ -485,7 +485,7 @@ module ExportService
         )
       end
 
-    if work.supports_translation?
+    if page.work.supports_translation?
       content =
         case name
         when 'verbatim'
