@@ -1,10 +1,5 @@
 tr
   th(colspan="2")
-    =f.check_box :scribes_can_edit_titles, value: work.scribes_can_edit_titles
-    =f.label :scribes_can_edit_titles do
-      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.collaborators_can_edit_titles')
-tr
-  th(colspan="2")
     =f.check_box :restrict_scribes, value: work.restrict_scribes
     =f.label :restrict_scribes do
       h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.restrict_collaborators')

@@ -24,4 +24,10 @@ tr
     td
       =f.text_area :translation_instructions, rows: 5, value: work.translation_instructions
 
+tr
+  th(colspan="2")
+    =f.check_box :scribes_can_edit_titles, value: work.scribes_can_edit_titles
+    =f.label :scribes_can_edit_titles do
+      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.collaborators_can_edit_titles')
+
 =f.hidden_field :collection_id, value: collection.id
