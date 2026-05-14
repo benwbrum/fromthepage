@@ -15,21 +15,16 @@ namespace :fromthepage do
     f.print("Start Date\tTrial Creations\tWork Upload\tPage Transcribed\tAI Draft Used\n")
     week_cohorts.each do |start_day|
       end_day = start_day+1.week
-      f.print("#{start_day}\t")
+      registrations_visits = Ahoy::Event.where(time: start_day..end_day, name: 'registrations#create').pluck(:visit_id).uniq
+
       previous_visits = nil
-      registrations_visits = nil
       target_actions.each do |action|
-        if previous_visits
-          visits = Ahoy::Event.where(time: start_day..end_day, name: action, visit_id: previous_visits).pluck(:visit_id).uniq
+        visits = if previous_visits
+          Ahoy::Event.where(time: start_day..end_day, name: action, visit_id: previous_visits).pluck(:visit_id).uniq
         else
-          visits = Ahoy::Event.where(time: start_day..end_day, name: action).pluck(:visit_id).uniq
+          Ahoy::Event.where(time: start_day..end_day, name: action).pluck(:visit_id).uniq
         end
         previous_visits = visits
-
-        if action == 'registrations#create'
-          f.print("#{visits.count}\t")
-          registrations_visits = visits
-        end
       end
 
       # additional statistics require non-Ahoy data
@@ -41,19 +36,13 @@ namespace :fromthepage do
 
       users_with_pages = User.find(ids_with_pages)
       ids_with_activity = users_with_pages.select { |u| u.owner_works.detect { |w| (w.work_statistic.line_count||0) > 0 } }.map { |u| u.id }
-      f.print("#{ids_with_activity.count}\t")
-
-      users_with_activity = User.find(ids_with_activity)
-      ids_with_multiple_contributors = users_with_activity.select { |u| u.owned_collections.detect { |c| c.deeds.pluck(:user_id).uniq.count > 1 } }.map { |u| u.id }
-      f.print("#{ids_with_multiple_contributors.count}\t")
 
       trial_user_ids = Visit.where(id: registrations_visits).pluck(:user_id).compact
       ai_draft_count = DocumentUpload.where(user_id: trial_user_ids, generate_ai_draft: true)
                                      .where(created_at: start_day..end_day)
                                      .pluck(:user_id).uniq.count
-      f.print("#{ai_draft_count}\t")
 
-      f.print("\n")
+      f.puts [start_day, registrations_visits.count, ids_with_pages.count, ids_with_activity.count, ai_draft_count].join("\t")
     end
     f.close
 
