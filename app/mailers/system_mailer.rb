@@ -23,7 +23,12 @@ class SystemMailer < ActionMailer::Base
     @collection = collection
     @log_contents = ContentdmTranslator.log_contents(collection)
     recipients = [ADMIN_EMAILS, owner_emails(collection)].reject(&:blank?).join(', ')
-    mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: "CONTENTdm Sync Finished for  #{collection.title}"
+    subject = if @log_contents.match?(/\b(fail(?:ed|ures?)?|error(?:s)?)\b/i)
+                "CONTENTdm Sync Finished with Failures for  #{collection.title}"
+    else
+                "CONTENTdm Sync Finished for  #{collection.title}"
+    end
+    mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: subject
   end
 
 

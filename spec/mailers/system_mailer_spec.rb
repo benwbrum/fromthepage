@@ -6,12 +6,9 @@ RSpec.describe SystemMailer, type: :mailer do
     let(:staff) { create(:user) }
     let(:collection) { create(:collection, owner_user_id: owner.id) }
 
-    before do
-      allow(ContentdmTranslator).to receive(:log_contents).and_return('sync log output')
-    end
-
     context 'when collection has an owner and staff members' do
       before do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return('sync log output')
         collection.owners << staff
       end
 
@@ -31,6 +28,7 @@ RSpec.describe SystemMailer, type: :mailer do
       let(:collection_without_owner) { create(:collection, owner_user_id: nil) }
 
       before do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return('sync log output')
         collection_without_owner.owners << staff
       end
 
@@ -45,9 +43,24 @@ RSpec.describe SystemMailer, type: :mailer do
     end
 
     context 'when collection has only a primary owner and no staff' do
+      before do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return('sync log output')
+      end
+
       it 'sends email to the primary owner' do
         mail = SystemMailer.cdm_sync_finished(collection)
         expect(mail.to).to include(owner.email)
+      end
+    end
+
+    context 'when sync log contains failures' do
+      before do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return('2 failed uploads')
+      end
+
+      it 'uses a failure subject' do
+        mail = SystemMailer.cdm_sync_finished(collection)
+        expect(mail.subject).to eq("CONTENTdm Sync Finished with Failures for  #{collection.title}")
       end
     end
   end
