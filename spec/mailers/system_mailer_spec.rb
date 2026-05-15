@@ -20,7 +20,7 @@ RSpec.describe SystemMailer, type: :mailer do
 
       it 'has the correct subject' do
         mail = SystemMailer.cdm_sync_finished(collection)
-        expect(mail.subject).to eq("CONTENTdm Sync Finished for  #{collection.title}")
+        expect(mail.subject).to eq("CONTENTdm Sync Finished for #{collection.title}")
       end
     end
 
@@ -53,14 +53,21 @@ RSpec.describe SystemMailer, type: :mailer do
       end
     end
 
-    context 'when sync log contains failures' do
-      before do
-        allow(ContentdmTranslator).to receive(:log_contents).and_return('2 failed uploads')
+    context 'when sync log contains failure indicators' do
+      ['2 failed uploads', 'failure on record 3', '5 errors returned'].each do |log_contents|
+        it "uses a failure subject when log contains '#{log_contents}'" do
+          allow(ContentdmTranslator).to receive(:log_contents).and_return(log_contents)
+          mail = SystemMailer.cdm_sync_finished(collection)
+          expect(mail.subject).to eq("CONTENTdm Sync Finished with Failures for #{collection.title}")
+        end
       end
+    end
 
-      it 'uses a failure subject' do
+    context 'when sync log has no failure indicators' do
+      it 'uses the success subject' do
+        allow(ContentdmTranslator).to receive(:log_contents).and_return('sync completed successfully')
         mail = SystemMailer.cdm_sync_finished(collection)
-        expect(mail.subject).to eq("CONTENTdm Sync Finished with Failures for  #{collection.title}")
+        expect(mail.subject).to eq("CONTENTdm Sync Finished for #{collection.title}")
       end
     end
   end
