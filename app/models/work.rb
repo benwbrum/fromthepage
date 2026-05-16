@@ -604,9 +604,9 @@ class Work < ApplicationRecord
   end
 
   def log_issue5438_work_attributes
-    changed_attributes = previous_changes.keys
+    changed_attribute_keys = previous_changes.keys
     logger.info(
-      "ISSUE5438 Work##{id} changed_attributes=#{changed_attributes.to_json} attributes after save/update: #{attributes.to_json}"
+      "ISSUE5438 Work##{id} changed_attributes=#{changed_attribute_keys.to_json} attributes after save/update: #{attributes.to_json}"
     )
 
     return unless previous_changes.key?('collection_id')
