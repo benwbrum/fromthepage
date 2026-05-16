@@ -176,6 +176,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
+  after_commit :log_issue5438_work_attributes, on: %i[create update]
   after_commit :save_metadata, on: %i[create update]
 
   module DescriptionStatus
@@ -600,6 +601,20 @@ class Work < ApplicationRecord
       # now update the work_facet
       FacetConfig.update_facets(self)
     end
+  end
+
+  def log_issue5438_work_attributes
+    changed_keys = previous_changes.keys
+    logger.info(
+      "ISSUE5438 Work##{id} changed_attributes=#{changed_keys.to_json} attributes after save/update: #{attributes.to_json}"
+    )
+
+    return unless previous_changes.key?('collection_id')
+
+    old_collection_id, new_collection_id = previous_changes['collection_id']
+    logger.warn(
+      "ISSUE5438 Work##{id} collection_id changed from #{old_collection_id.inspect} to #{new_collection_id.inspect}"
+    )
   end
 
   def user_can_transcribe?(user)
