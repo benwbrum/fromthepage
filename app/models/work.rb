@@ -604,7 +604,17 @@ class Work < ApplicationRecord
   end
 
   def log_issue5438_work_attributes
-    logger.info("ISSUE5438 Work##{id} attributes after save/update: #{attributes.to_json}")
+    changed_attributes = previous_changes.keys
+    logger.info(
+      "ISSUE5438 Work##{id} changed_attributes=#{changed_attributes.to_json} attributes after save/update: #{attributes.to_json}"
+    )
+
+    return unless previous_changes.key?('collection_id')
+
+    previous_collection_id, new_collection_id = previous_changes['collection_id']
+    logger.warn(
+      "ISSUE5438 Work##{id} collection_id changed from #{previous_collection_id.inspect} to #{new_collection_id.inspect}"
+    )
   end
 
   def user_can_transcribe?(user)
