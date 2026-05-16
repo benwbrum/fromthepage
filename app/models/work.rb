@@ -176,6 +176,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
+  after_commit :log_issue5438_work_attributes, on: %i[create update]
   after_commit :save_metadata, on: %i[create update]
 
   module DescriptionStatus
@@ -600,6 +601,10 @@ class Work < ApplicationRecord
       # now update the work_facet
       FacetConfig.update_facets(self)
     end
+  end
+
+  def log_issue5438_work_attributes
+    logger.info("ISSUE5438 Work##{id} attributes after save/update: #{attributes.to_json}")
   end
 
   def user_can_transcribe?(user)
