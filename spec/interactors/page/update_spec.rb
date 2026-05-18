@@ -28,7 +28,7 @@ describe Page::Update do
     let(:page_params) do
       {
         title: 'Updated title',
-        base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+        image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
 
@@ -50,14 +50,14 @@ describe Page::Update do
     let(:page_params) do
       {
         title: 'New page',
-        base_image: Rack::Test::UploadedFile.new(file_path, file_type)
+        image: Rack::Test::UploadedFile.new(file_path, file_type)
       }
     end
 
     it 'fails to update page' do
       expect(result.success?).to be_falsey
 
-      expect(result.page.errors).to include(:image)
+      expect(result.page.errors).to include(:base_image)
     end
   end
 end
