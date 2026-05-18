@@ -13,6 +13,21 @@ FactoryBot.define do
     factory :transcribed_page, traits: [:transcribed]
     factory :page_with_links, traits: [:with_links]
 
+    trait :with_legacy_image do
+      base_image { 'images/pages/sanskrit.jpg' }
+      base_width { 1581 }
+      base_height { 570 }
+
+      after(:build) do
+        source = Rails.root.join('test_data/images/pages/sanskrit.jpg')
+        dest_dir = Rails.root.join('public/images/pages')
+        dest = dest_dir.join('sanskrit.jpg')
+
+        FileUtils.mkdir_p(dest_dir)
+        FileUtils.cp(source, dest) unless File.exist?(dest)
+      end
+    end
+
     trait :with_image do
       image do
         Rack::Test::UploadedFile.new(
