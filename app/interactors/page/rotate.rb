@@ -17,7 +17,6 @@ class Page::Rotate < ApplicationInteractor
     filename = @page.image.filename.to_s
     content_type = @page.image.content_type
 
-    binding.pry
     downloaded = @page.image.download
     image = Magick::Image.from_blob(downloaded).first
 
