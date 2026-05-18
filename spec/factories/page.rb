@@ -14,9 +14,16 @@ FactoryBot.define do
     factory :page_with_links, traits: [:with_links]
 
     trait :with_image do
-      base_image { Rails.root.join('test_data/images/pages/sanskrit.jpg') }
-      base_width { 1581 }
-      base_height { 570 }
+      image do
+        Rack::Test::UploadedFile.new(
+          Rails.root.join("test_data/images/pages/sanskrit.jpg"),
+          "image/jpeg"
+        )
+      end
+
+      after(:build) do |page, evaluator|
+        page.image.attach(evaluator.image)
+      end
     end
 
     trait :with_source_text_change do

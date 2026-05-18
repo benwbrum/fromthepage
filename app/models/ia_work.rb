@@ -112,6 +112,7 @@ class IaWork < ApplicationRecord
 
     self.ia_leaves.each do |leaf|
       page = Page.new
+      page.image.purge if page.image.attached?
       page.base_image = nil
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w

@@ -117,6 +117,9 @@ class Page < ApplicationRecord
     'image/tiff'
   ].freeze
 
+  validates :image, content_type: ACCEPTED_FILE_TYPES
+  has_one_attached :image
+
   enum :status, {
     new: 'new',
     blank: 'blank',
@@ -357,14 +360,17 @@ class Page < ApplicationRecord
   end
 
   # Returns the thumbnail filename
-  # creates the image if it's not present
   def thumbnail_image
-    if self.ia_leaf
-      return nil
+    return if self.ia_leaf
+    return if self.base_image.blank?
+
+    if image.attached?
+      return Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     end
-    if self.base_image.blank?
-      return nil
-    end
+
+    # TODO: Deprecate this in favor of image.variant
     if !File.exist?(thumbnail_filename())
       if File.exist?(modernize_absolute(self.base_image))
         generate_thumbnail
@@ -376,9 +382,14 @@ class Page < ApplicationRecord
   def thumbnail_url
     if self.ia_leaf
       self.ia_leaf.thumb_url
-    elsif self.sc_canvas && self[:base_image].blank?
+    elsif self.sc_canvas && !self.image.attached? && self[:base_image].blank?
       self.sc_canvas.thumbnail_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(
+        image.variant(resize_to_limit: [nil, 400])
+      )
     else
+      # TODO: Deprecate this in favor of image.variant
       file_to_url(self.thumbnail_image)
     end
   end
@@ -651,12 +662,17 @@ class Page < ApplicationRecord
       self.sc_canvas.sc_resource_id
     elsif self.ia_leaf
       self.ia_leaf.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       image_url_from_web_path(self.canonical_facsimile_url)
     end
   end
 
   def normalized_image_url_for_download
+    return image_url_for_download if image.attached?
+
+    # TODO: Deprecate once move to active storage is completed
     return unless image_url_for_download.present?
 
     normalized_dir = "#{Rails.root}/public/images/working/upload"
@@ -679,6 +695,7 @@ class Page < ApplicationRecord
     image_url_from_web_path(filename)
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def image_url_from_web_path(raw_path)
     web_path = file_to_url(raw_path)
     uri = URI.parse(web_path)
@@ -696,6 +713,20 @@ class Page < ApplicationRecord
     end
 
     uri.to_s
+  end
+
+  def base_width
+    return self[:base_width] unless image.attached?
+    image.analyze unless image.analyzed?
+
+    image.metadata[:width]
+  end
+
+  def base_height
+    return self[:base_height] unless image.attached?
+    image.analyze unless image.analyzed?
+
+    image.metadata[:height]
   end
 
   def is_public?
@@ -770,6 +801,7 @@ class Page < ApplicationRecord
     end
   end
 
+  # TODO: Deprecate once move to active storage is completed
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
     factor = 400.to_f / self[:base_height].to_f

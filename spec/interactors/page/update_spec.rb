@@ -36,11 +36,11 @@ describe Page::Update do
       expect(result.success?).to be_truthy
       expect(result.page).to have_attributes(
         title: 'Updated title',
-        base_image: Rails.root.join("public/images/working/upload/#{result.page.id}.jpg").to_s,
         work_id: work.id,
         status: 'new',
         translation_status: 'new'
       )
+      expect(result.page.image.attached?).to be_truthy
     end
   end
 
@@ -57,7 +57,7 @@ describe Page::Update do
     it 'fails to update page' do
       expect(result.success?).to be_falsey
 
-      expect(result.page.errors).to include(:base_image)
+      expect(result.page.errors).to include(:image)
     end
   end
 end

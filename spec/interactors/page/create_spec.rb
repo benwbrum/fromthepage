@@ -34,9 +34,9 @@ describe Page::Create do
       expect(result.success?).to be_truthy
       expect(result.page).to have_attributes(
         title: 'New page',
-        base_image: Rails.root.join("public/images/working/upload/#{result.page.id}.jpg").to_s,
         work_id: work.id
       )
+      expect(result.page.image.attached?).to be_truthy
     end
   end
 
