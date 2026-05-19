@@ -386,6 +386,8 @@ describe ArticleController do
 
   describe '#show' do
     let!(:article) { create(:article, collection: collection, pages: [page]) }
+    let(:action_path) { article_show_path(article_id: article.id) }
+    let(:subject) { get action_path }
 
     context 'when article_id is missing' do
       let(:action_path) { article_show_path }
@@ -399,13 +401,39 @@ describe ArticleController do
     end
 
     context 'when article_id is provided' do
-      let(:action_path) { article_show_path(article_id: article.id) }
-      let(:subject) { get action_path }
-
       it 'renders successfully' do
         subject
 
         expect(response).to have_http_status(:ok)
+      end
+
+      context 'when collection hides notes' do
+        before do
+          collection.update!(hide_notes: true)
+        end
+
+        it 'hides related subjects for anonymous visitors' do
+          subject
+
+          expect(response.body).not_to include(I18n.t('article.show.related_subjects'))
+          expect(response.body).not_to include(I18n.t('article.show.related_subjects_description', article: article.title))
+        end
+
+        it 'hides related subjects for non-owner users' do
+          login_as create(:unique_user)
+
+          subject
+
+          expect(response.body).not_to include(I18n.t('article.show.related_subjects'))
+        end
+
+        it 'shows related subjects for owners' do
+          login_as owner
+
+          subject
+
+          expect(response.body).to include(I18n.t('article.show.related_subjects'))
+        end
       end
     end
   end
