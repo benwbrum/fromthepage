@@ -404,7 +404,7 @@ module ExportService
     ).call
 
     if result.success?
-      destination_path = File.join(base_path, relative_path)
+      destination_path = File.join(path, relative_path)
       FileUtils.mkdir_p(File.dirname(destination_path))
       FileUtils.cp(result.file, destination_path)
     else
