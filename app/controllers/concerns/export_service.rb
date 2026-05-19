@@ -26,62 +26,62 @@ module ExportService
 
   def export_owner_mailing_list_csv(path:, owner:)
     write_artifact(
-      base_path: path,
-      relative_path: 'mailing_list.csv',
+      base: path,
+      relative: 'mailing_list.csv',
       content: owner_mailing_list_csv(owner)
     )
   end
 
   def export_owner_detailed_activity_csv(path:, owner:, report_arguments:)
     write_artifact(
-      base_path: path,
-      relative_path: 'all_collaborator_time.csv',
+      base: path,
+      relative: 'all_collaborator_time.csv',
       content: detailed_activity_csv(owner, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
     )
   end
 
   def export_admin_searches_csv(path:, report_arguments:)
     write_artifact(
-      base_path: path,
-      relative_path: 'admin_searches.csv',
+      base: path,
+      relative: 'admin_searches.csv',
       content: admin_searches_csv(report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
     )
   end
 
   def export_collection_activity_csv(path:, collection:, report_arguments:)
     write_artifact(
-      base_path: path,
-      relative_path: 'collection_detailed_activity.csv',
+      base: path,
+      relative: 'collection_detailed_activity.csv',
       content: collection_activity_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
     )
   end
 
   def export_collection_contributors_csv(path:, collection:, report_arguments:)
     write_artifact(
-      base_path: path,
-      relative_path: 'collection_contributors_activity.csv',
+      base: path,
+      relative: 'collection_contributors_activity.csv',
       content: collection_contributors_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
     )
   end
 
   def export_subject_csv(path:, collection:, work:)
     write_artifact(
-      base_path: path,
-      relative_path: 'subject_index.csv',
+      base: path,
+      relative: 'subject_index.csv',
       content: collection.export_subject_index_as_csv(work)
     )
   end
 
   def export_subject_details_csv(path:, collection:)
     write_artifact(
-      base_path: path,
-      relative_path: 'subject_details.csv',
+      base: path,
+      relative: 'subject_details.csv',
       content: collection.export_subject_details_as_csv
     )
   end
 
   def export_table_csv_collection(path:, collection:)
-    relative_path = 'fields_and_tables.csv'
+    relative = 'fields_and_tables.csv'
 
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
@@ -95,8 +95,8 @@ module ExportService
     end
 
     write_artifact(
-      base_path: path,
-      relative_path: relative_path,
+      base: path,
+      relative: relative,
       content: csv_string
     )
   end
@@ -104,24 +104,24 @@ module ExportService
   def export_work_metadata_csv(path:, collection:)
     result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
     write_artifact(
-      base_path: path,
-      relative_path: 'work_metadata.csv',
+      base: path,
+      relative: 'work_metadata.csv',
       content: result.csv_string
     )
   end
 
   def export_collection_notes_csv(path:, collection:)
     write_artifact(
-      base_path: path,
-      relative_path: 'collection_notes.csv',
+      base: path,
+      relative: 'collection_notes.csv',
       content: export_notes_as_csv(collection)
     )
   end
 
   def export_page_details_csv_collection(path:, collection:)
     write_artifact(
-      base_path: path,
-      relative_path: 'page_details.csv',
+      base: path,
+      relative: 'page_details.csv',
       content: export_page_details_as_csv(collection)
     )
   end
@@ -131,14 +131,14 @@ module ExportService
     readme_path = Rails.root.join('doc', 'zip', 'README')
 
     write_artifact(
-      base_path: path,
-      relative_path: File.join(dirname, 'README.txt'),
+      base: path,
+      relative: File.join(dirname, 'README.txt'),
       content: File.read(readme_path)
     )
   end
 
   def export_table_csv_work(path:, work:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -167,14 +167,14 @@ module ExportService
       end
 
     write_artifact(
-      base_path: path,
-      relative_path: relative_path,
+      base: path,
+      relative: relative,
       content: csv_string
     )
   end
 
   def export_page_details_csv_work(path:, work:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -189,14 +189,14 @@ module ExportService
       end
 
     write_artifact(
-      base_path: path,
-      relative_path: relative_path,
+      base: path,
+      relative: relative,
       content: export_page_details_as_csv(work)
     )
   end
 
   def export_tei(work:, path:, export_user:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -211,14 +211,14 @@ module ExportService
       end
 
     write_artifact(
-      base_path: path,
-      relative_path: relative_path,
+      base: path,
+      relative: relative,
       content: work_to_tei(work, export_user)
     )
   end
 
   def export_plaintext_transcript(work:, name:, path:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -250,15 +250,15 @@ module ExportService
 
     unless content.nil?
       write_artifact(
-        base_path: path,
-        relative_path: relative_path,
+        base: path,
+        relative: relative,
         content: content
       )
     end
   end
 
   def export_plaintext_translation(work:, name:, path:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -289,8 +289,8 @@ module ExportService
 
       unless content.nil?
         write_artifact(
-          base_path: path,
-          relative_path: relative_path,
+          base: path,
+          relative: relative,
           content: content
         )
       end
@@ -298,7 +298,7 @@ module ExportService
   end
 
   def export_view(work:, name:, path:, export_user:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(work, original_filenames),
@@ -372,8 +372,8 @@ module ExportService
 
     unless content.nil?
       write_artifact(
-        base_path: path,
-        relative_path: relative_path,
+        base: path,
+        relative: relative,
         content: content
       )
     end
@@ -383,7 +383,7 @@ module ExportService
     return if work.pages.count == 0
 
     dirname = path_from_work(work)
-    relative_path =
+    relative =
       case edition
       when 'facing'
         File.join dirname, 'printable', 'facing_edition.pdf'
@@ -404,7 +404,7 @@ module ExportService
     ).call
 
     if result.success?
-      destination_path = File.join(base_path, relative_path)
+      destination_path = File.join(path, relative)
       FileUtils.mkdir_p(File.dirname(destination_path))
       FileUtils.cp(result.file, destination_path)
     else
@@ -413,7 +413,7 @@ module ExportService
   end
 
   def export_plaintext_transcript_pages(name:, path:, page:, by_work:, original_filenames:, index:)
-    relative_path =
+    relative =
       if by_work
         if original_filenames == :zero_index
           File.join(
@@ -463,15 +463,15 @@ module ExportService
 
     unless content.nil?
       write_artifact(
-        base_path: path,
-        relative_path: relative_path,
+        base: path,
+        relative: relative,
         content: content
       )
     end
   end
 
   def export_plaintext_translation_pages(name:, path:, page:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(page.work, original_filenames),
@@ -507,15 +507,15 @@ module ExportService
 
     unless content.nil?
       write_artifact(
-        base_path: path,
-        relative_path: relative_path,
+        base: path,
+        relative: relative,
         content: content
       )
     end
   end
 
   def export_html_full_pages(path:, page:, by_work:, original_filenames:)
-    relative_path =
+    relative =
       if by_work
         File.join(
           path_from_work(page.work, original_filenames),
@@ -534,8 +534,8 @@ module ExportService
 
     unless page.status_blank?
       write_artifact(
-        base_path: path,
-        relative_path: relative_path,
+        base: path,
+        relative: relative,
         content: page_view
       )
     end
@@ -1104,12 +1104,12 @@ module ExportService
     csv_string
   end
 
-  def write_artifact(base_path:, relative_path:, content:)
-    full_path = File.join(base_path, relative_path)
+  def write_artifact(base:, relative:, content:)
+    full = File.join(base, relative)
 
-    FileUtils.mkdir_p(File.dirname(full_path))
+    FileUtils.mkdir_p(File.dirname(full))
 
-    File.open(full_path, 'wb') do |f|
+    File.open(full, 'wb') do |f|
       f.write(content)
     end
   end
