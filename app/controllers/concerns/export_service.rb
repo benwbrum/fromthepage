@@ -24,100 +24,64 @@ module ExportService
     dirname
   end
 
-  def add_readme_to_zip(work:, out:, by_work:, original_filenames:)
-    dirname = path_from_work(work)
-    readme = "#{Rails.root}/doc/zip/README"
-    file = File.open(readme, 'r')
-    path = File.join dirname, 'README.txt'
-    out.put_next_entry path
-    out.write file.read
+  def export_owner_mailing_list_csv(path:, owner:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'mailing_list.csv',
+      content: owner_mailing_list_csv(owner)
+    )
   end
 
-  def export_printable_to_zip(work, edition, output_format, out, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
-    return if work.pages.count == 0
-
-    dirname = path_from_work(work)
-    case edition
-    when 'facing'
-      path = File.join dirname, 'printable', 'facing_edition.pdf'
-    when 'text'
-      path = File.join dirname, 'printable', "text.#{output_format}"
-    when 'text_only'
-      path = File.join dirname, 'printable', "text_only.#{output_format}"
-    end
-
-    result = Work::Export::Printable.new(
-      work: work,
-      format: output_format,
-      edition: edition,
-      include_metadata: include_metadata,
-      include_contributors: include_contributors,
-      include_notes: include_notes,
-      preserve_lb: preserve_lb
-    ).call
-
-    if result.success?
-      tempfile = result.file
-      out.put_next_entry(path)
-      out.write(IO.read(tempfile))
-    else
-      raise result.full_errors
-    end
+  def export_owner_detailed_activity_csv(path:, owner:, report_arguments:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'all_collaborator_time.csv',
+      content: detailed_activity_csv(owner, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
+    )
   end
 
-  def export_owner_mailing_list_csv(out:, owner:)
-    path = 'mailing_list.csv'
-    out.put_next_entry(path)
-    out.write(owner_mailing_list_csv(owner))
+  def export_admin_searches_csv(path:, report_arguments:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'admin_searches.csv',
+      content: admin_searches_csv(report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
+    )
   end
 
-  def export_owner_detailed_activity_csv(out:, owner:, report_arguments:)
-    path = 'all_collaborator_time.csv'
-    out.put_next_entry(path)
-    out.write(detailed_activity_csv(owner, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
+  def export_collection_activity_csv(path:, collection:, report_arguments:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'collection_detailed_activity.csv',
+      content: collection_activity_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
+    )
   end
 
-  def export_admin_searches_csv(out:, report_arguments:)
-    path = 'admin_searches.csv'
-    out.put_next_entry(path)
-    out.write(admin_searches_csv(report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
+  def export_collection_contributors_csv(path:, collection:, report_arguments:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'collection_contributors_activity.csv',
+      content: collection_contributors_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime)
+    )
   end
 
-  def export_collection_activity_csv(out:, collection:, report_arguments:)
-    path = 'collection_detailed_activity.csv'
-    out.put_next_entry(path)
-    out.write(collection_activity_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
+  def export_subject_csv(path:, collection:, work:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'subject_index.csv',
+      content: collection.export_subject_index_as_csv(work)
+    )
   end
 
-  def export_collection_contributors_csv(out:, collection:, report_arguments:)
-    path = 'collection_contributors_activity.csv'
-    out.put_next_entry(path)
-    out.write(collection_contributors_csv(collection, report_arguments['start_date'].to_datetime, report_arguments['end_date'].to_datetime))
+  def export_subject_details_csv(path:, collection:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'subject_details.csv',
+      content: collection.export_subject_details_as_csv
+    )
   end
 
-  def export_work_metadata_csv(out:, collection:)
-    path = 'work_metadata.csv'
-    out.put_next_entry(path)
-
-    result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
-    out.write(result.csv_string)
-  end
-
-  def export_subject_csv(out:, collection:, work:)
-    path = 'subject_index.csv'
-    out.put_next_entry(path)
-    out.write(collection.export_subject_index_as_csv(work))
-  end
-
-  def export_subject_details_csv(out:, collection:)
-    path = 'subject_details.csv'
-    out.put_next_entry(path)
-    out.write(collection.export_subject_details_as_csv)
-  end
-
-  def export_table_csv_collection(out:, collection:)
-    path = 'fields_and_tables.csv'
-    out.put_next_entry(path)
+  def export_table_csv_collection(path:, collection:)
+    relative_path = 'fields_and_tables.csv'
 
     if collection.field_based?
       result = Work::Table::ExportCsv.new(
@@ -130,218 +94,451 @@ module ExportService
       csv_string = export_tables_as_csv(collection)
     end
 
-    out.write(csv_string)
+    write_artifact(
+      base_path: path,
+      relative_path: relative_path,
+      content: csv_string
+    )
   end
 
-  def export_table_csv_work(out:, work:, by_work:, original_filenames:)
-    path = if by_work
-             File.join(path_from_work(work, original_filenames), 'csv', 'fields_and_tables.csv')
-    else
-             File.join('fields_and_tables', "#{path_from_work(work, original_filenames)}.csv")
-    end
+  def export_work_metadata_csv(path:, collection:)
+    result = Work::Metadata::ExportCsv.new(collection: collection, works: collection.works).call
+    write_artifact(
+      base_path: path,
+      relative_path: 'work_metadata.csv',
+      content: result.csv_string
+    )
+  end
+
+  def export_collection_notes_csv(path:, collection:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'collection_notes.csv',
+      content: export_notes_as_csv(collection)
+    )
+  end
+
+  def export_page_details_csv_collection(path:, collection:)
+    write_artifact(
+      base_path: path,
+      relative_path: 'page_details.csv',
+      content: export_page_details_as_csv(collection)
+    )
+  end
+
+  def add_readme_to_zip(work:, path:, by_work:, original_filenames:)
+    dirname = path_from_work(work)
+    readme_path = Rails.root.join('doc', 'zip', 'README')
+
+    write_artifact(
+      base_path: path,
+      relative_path: File.join(dirname, 'README.txt'),
+      content: File.read(readme_path)
+    )
+  end
+
+  def export_table_csv_work(path:, work:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'csv',
+          'fields_and_tables.csv'
+        )
+      else
+        File.join(
+          'fields_and_tables',
+          "#{path_from_work(work, original_filenames)}.csv"
+        )
+      end
 
     collection = work.collection
-    if collection.field_based?
-      result = Work::Table::ExportCsv.new(
-        collection: collection,
-        work_ids: [work.id]
-      ).call
 
-      csv_string = result.csv_string
-    else
-      csv_string = export_tables_as_csv(work)
-    end
+    csv_string =
+      if collection.field_based?
+        result = Work::Table::ExportCsv.new(
+          collection: collection,
+          work_ids: [work.id]
+        ).call
 
-    out.put_next_entry(path)
-    out.write(csv_string)
-  end
-
-  def export_collection_notes_csv(out:, collection:)
-    path = 'collection_notes.csv'
-    out.put_next_entry(path)
-    out.write(export_notes_as_csv(collection))
-  end
-
-  def export_tei(work:, out:, export_user:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'tei', 'tei.xml')
-    else
-      path = File.join('tei', "#{path_from_work(work, original_filenames)}.xml")
-    end
-    out.put_next_entry path
-    out.write work_to_tei(work, export_user)
-  end
-
-  def export_plaintext_transcript(work:, name:, out:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_transcript.txt")
-    else
-      path = File.join("plaintext_transcript_#{name}", "#{path_from_work(work, original_filenames)}.txt")
-    end
-
-    case name
-    when 'verbatim'
-      out.put_next_entry path
-      out.write @work.verbatim_transcription_plaintext
-    when 'expanded'
-      if @work.collection.subjects_disabled
-        out.put_next_entry path
-        out.write @work.emended_transcription_plaintext
-      end
-    when 'searchable'
-      out.put_next_entry path
-      out.write @work.searchable_plaintext
-    end
-  end
-
-  def export_plaintext_translation(work:, name:, out:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'plaintext', "#{name}_translation.txt")
-    else
-      path = File.join("plaintext_translation_#{name}", "#{path_from_work(work, original_filenames)}.txt")
-    end
-
-    if @work.supports_translation?
-      case name
-      when 'verbatim'
-        out.put_next_entry path
-        out.write @work.verbatim_translation_plaintext
-      when 'expanded'
-        if @work.collection.subjects_disabled
-          out.put_next_entry path
-          out.write @work.emended_translation_plaintext
-        end
-      end
-    end
-  end
-
-  def export_plaintext_transcript_pages(name:, out:, page:, by_work:, original_filenames:, index:)
-    if by_work
-      if original_filenames == :zero_index
-        path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_transcript_pages", "#{index}.txt")
+        result.csv_string
       else
-        path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_transcript_pages", "#{page.title}.txt")
+        export_tables_as_csv(work)
       end
-    else
-      path = File.join("plaintext_#{name}_transcript_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
-    end
 
-    case name
-    when 'verbatim'
-      out.put_next_entry path
-      out.write page.verbatim_transcription_plaintext unless page.status_blank?
-    when 'expanded'
-      if page.collection.subjects_disabled
-        out.put_next_entry path
-        out.write page.emended_transcription_plaintext unless page.status_blank?
-      end
-    when 'searchable'
-      out.put_next_entry path
-      out.write page.search_text unless page.status_blank?
-    end
+    write_artifact(
+      base_path: path,
+      relative_path: relative_path,
+      content: csv_string
+    )
   end
 
-  def export_plaintext_translation_pages(name:, out:, page:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(page.work, original_filenames), 'plaintext', "#{name}_translation_pages", "#{page.title}.txt")
-    else
-      path = File.join("plaintext_#{name}_translation_pages", "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt")
-    end
+  def export_page_details_csv_work(path:, work:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'csv',
+          'page_details.csv'
+        )
+      else
+        File.join(
+          'page_details',
+          "#{path_from_work(work, original_filenames)}.csv"
+        )
+      end
 
-    if @work.supports_translation?
+    write_artifact(
+      base_path: path,
+      relative_path: relative_path,
+      content: export_page_details_as_csv(work)
+    )
+  end
+
+  def export_tei(work:, path:, export_user:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'tei',
+          'tei.xml'
+        )
+      else
+        File.join(
+          'tei',
+          "#{path_from_work(work, original_filenames)}.xml"
+        )
+      end
+
+    write_artifact(
+      base_path: path,
+      relative_path: relative_path,
+      content: work_to_tei(work, export_user)
+    )
+  end
+
+  def export_plaintext_transcript(work:, name:, path:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'plaintext',
+          "#{name}_transcript.txt"
+        )
+      else
+        File.join(
+          "plaintext_transcript_#{name}",
+          "#{path_from_work(work, original_filenames)}.txt"
+        )
+      end
+
+    content =
       case name
       when 'verbatim'
-        out.put_next_entry path
-        out.write page.verbatim_translation_plaintext unless page.status_blank?
+        work.verbatim_transcription_plaintext
       when 'expanded'
-        if page.collection.subjects_disabled
-          out.put_next_entry path
-          out.write page.emended_translation_plaintext unless page.status_blank?
+        if work.collection.subjects_disabled
+          work.emended_transcription_plaintext
+        else
+          nil
         end
+      when 'searchable'
+        work.searchable_plaintext
+      else
+        nil
+      end
+
+    unless content.nil?
+      write_artifact(
+        base_path: path,
+        relative_path: relative_path,
+        content: content
+      )
+    end
+  end
+
+  def export_plaintext_translation(work:, name:, path:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'plaintext',
+          "#{name}_translation.txt"
+        )
+      else
+        File.join(
+          "plaintext_translation_#{name}",
+          "#{path_from_work(work, original_filenames)}.txt"
+        )
+      end
+
+    if work.supports_translation?
+      content =
+        case name
+        when 'verbatim'
+          work.verbatim_translation_plaintext
+        when 'expanded'
+          if work.collection.subjects_disabled
+            work.emended_translation_plaintext
+          else
+            nil
+          end
+        else
+          nil
+        end
+
+      unless content.nil?
+        write_artifact(
+          base_path: path,
+          relative_path: relative_path,
+          content: content
+        )
       end
     end
   end
 
-  def export_view(work:, name:, out:, export_user:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'html', "#{name}.html")
-    else
-      path = File.join("html_#{name}", "#{path_from_work(work, original_filenames)}.html")
-    end
+  def export_view(work:, name:, path:, export_user:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(work, original_filenames),
+          'html',
+          "#{name}.html"
+        )
+      else
+        File.join(
+          "html_#{name}",
+          "#{path_from_work(work, original_filenames)}.html"
+        )
+      end
 
-    case name
-    when 'full'
-      full_view = ApplicationController.new.render_to_string(
-        template: 'export/show',
-        formats: [:html],
-        work_id: @work.id,
-        layout: false,
-        encoding: 'utf-8',
-        assigns: {
-          collection: @work.collection,
-          work: @work,
-          export_user: export_user
-        })
-      out.put_next_entry path
-      out.write full_view
-    when 'text'
-      text_view = ApplicationController.new.render_to_string(
-        template: 'export/text',
-        formats: [:html],
-        work_id: @work.id,
-        layout: false,
-        encoding: 'utf-8',
-        assigns: {
-          collection: @work.collection,
-          work: @work,
-          export_user: export_user
-        })
-      out.put_next_entry path
-      out.write text_view
-    when 'transcript'
-      transcript_view = ApplicationController.new.render_to_string(
-        template: 'export/transcript',
-        formats: [:html],
-        work_id: @work.id,
-        layout: false,
-        encoding: 'utf-8',
-        assigns: {
-          collection: @work.collection,
-          work: @work,
-          export_user: export_user
-        })
-      out.put_next_entry path
-      out.write transcript_view
-    when 'translation'
-      if @work.supports_translation?
-        translation_view = ApplicationController.new.render_to_string(
-          template: 'export/translation',
+    content =
+      case name
+      when 'full'
+        ApplicationController.new.render_to_string(
+          template: 'export/show',
           formats: [:html],
-          work_id: @work.id,
+          work_id: work.id,
           layout: false,
           encoding: 'utf-8',
           assigns: {
-            collection: @work.collection,
-            work: @work,
+            collection: work.collection,
+            work: work,
             export_user: export_user
           })
-        out.put_next_entry path
-        out.write translation_view
+      when 'text'
+        ApplicationController.new.render_to_string(
+          template: 'export/text',
+          formats: [:html],
+          work_id: work.id,
+          layout: false,
+          encoding: 'utf-8',
+          assigns: {
+            collection: work.collection,
+            work: work,
+            export_user: export_user
+          })
+      when 'transcript'
+        ApplicationController.new.render_to_string(
+          template: 'export/transcript',
+          formats: [:html],
+          work_id: work.id,
+          layout: false,
+          encoding: 'utf-8',
+          assigns: {
+            collection: work.collection,
+            work: work,
+            export_user: export_user
+          })
+      when 'translation'
+        if work.supports_translation?
+          ApplicationController.new.render_to_string(
+            template: 'export/translation',
+            formats: [:html],
+            work_id: work.id,
+            layout: false,
+            encoding: 'utf-8',
+            assigns: {
+              collection: work.collection,
+              work: work,
+              export_user: export_user
+            })
+        else
+          nil
+        end
+      else
+        nil
       end
+
+    unless content.nil?
+      write_artifact(
+        base_path: path,
+        relative_path: relative_path,
+        content: content
+      )
     end
   end
 
-  def export_html_full_pages(out:, page:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(page.work, original_filenames), 'html', 'full_pages', "#{page.title}.html")
+  def export_printable_to_zip(work, edition, output_format, path, by_work, original_filenames, preserve_lb, include_metadata, include_contributors, include_notes)
+    return if work.pages.count == 0
+
+    dirname = path_from_work(work)
+    relative_path =
+      case edition
+      when 'facing'
+        File.join dirname, 'printable', 'facing_edition.pdf'
+      when 'text'
+        File.join dirname, 'printable', "text.#{output_format}"
+      when 'text_only'
+        File.join dirname, 'printable', "text_only.#{output_format}"
+      end
+
+    result = Work::Export::Printable.new(
+      work: work,
+      format: output_format,
+      edition: edition,
+      include_metadata: include_metadata,
+      include_contributors: include_contributors,
+      include_notes: include_notes,
+      preserve_lb: preserve_lb
+    ).call
+
+    if result.success?
+      destination_path = File.join(base_path, relative_path)
+      FileUtils.mkdir_p(File.dirname(destination_path))
+      FileUtils.cp(result.file, destination_path)
     else
-      path = File.join('html_full_pages', "#{path_from_work(page.work, original_filenames)}_#{page.title}.html")
+      raise result.full_errors
+    end
+  end
+
+  def export_plaintext_transcript_pages(name:, path:, page:, by_work:, original_filenames:, index:)
+    relative_path =
+      if by_work
+        if original_filenames == :zero_index
+          File.join(
+            path_from_work(page.work, original_filenames),
+            'plaintext',
+            "#{name}_transcript_pages",
+            "#{index}.txt"
+          )
+        else
+          File.join(
+            path_from_work(page.work, original_filenames),
+            'plaintext',
+            "#{name}_transcript_pages",
+            "#{page.title}.txt"
+          )
+        end
+      else
+        File.join(
+          "plaintext_#{name}_transcript_pages",
+          "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt"
+        )
+      end
+
+    content =
+      case name
+      when 'verbatim'
+        if page.status_blank?
+          nil
+        else
+          page.verbatim_transcription_plaintext
+        end
+      when 'expanded'
+        if page.collection.subjects_disabled && !page.status_blank?
+          page.emended_transcription_plaintext
+        else
+          nil
+        end
+      when 'searchable'
+        if page.status_blank?
+          nil
+        else
+          page.search_text
+        end
+      else
+        nil
+      end
+
+    unless content.nil?
+      write_artifact(
+        base_path: path,
+        relative_path: relative_path,
+        content: content
+      )
+    end
+  end
+
+  def export_plaintext_translation_pages(name:, path:, page:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(page.work, original_filenames),
+          'plaintext', "#{name}_translation_pages",
+          "#{page.title}.txt"
+        )
+      else
+        File.join(
+          "plaintext_#{name}_translation_pages",
+          "#{path_from_work(page.work, original_filenames)}_#{page.title}.txt"
+        )
+      end
+
+    if page.work.supports_translation?
+      content =
+        case name
+        when 'verbatim'
+          if page.status_blank?
+            nil
+          else
+            page.verbatim_translation_plaintext
+          end
+        when 'expanded'
+          if page.collection.subjects_disabled && !page.status_blank?
+            page.emended_translation_plaintext
+          else
+            nil
+          end
+        else
+          nil
+        end
     end
 
-    out.put_next_entry path
+    unless content.nil?
+      write_artifact(
+        base_path: path,
+        relative_path: relative_path,
+        content: content
+      )
+    end
+  end
+
+  def export_html_full_pages(path:, page:, by_work:, original_filenames:)
+    relative_path =
+      if by_work
+        File.join(
+          path_from_work(page.work, original_filenames),
+          'html',
+          'full_pages',
+          "#{page.title}.html"
+        )
+      else
+        File.join(
+          'html_full_pages',
+          "#{path_from_work(page.work, original_filenames)}_#{page.title}.html"
+        )
+      end
 
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
-    out.write page_view unless page.status_blank?
+
+    unless page.status_blank?
+      write_artifact(
+        base_path: path,
+        relative_path: relative_path,
+        content: page_view
+      )
+    end
   end
 
   private
@@ -788,22 +985,6 @@ module ExportService
     end
   end
 
-  def export_page_details_csv_collection(out:, collection:)
-    path = 'page_details.csv'
-    out.put_next_entry(path)
-    out.write(export_page_details_as_csv(collection))
-  end
-
-  def export_page_details_csv_work(out:, work:, by_work:, original_filenames:)
-    if by_work
-      path = File.join(path_from_work(work, original_filenames), 'csv', 'page_details.csv')
-    else
-      path = File.join('page_details', "#{path_from_work(work, original_filenames)}.csv")
-    end
-    out.put_next_entry(path)
-    out.write(export_page_details_as_csv(work))
-  end
-
   def export_page_details_as_csv(page_source)
     # page_source can be either a Collection or a Work
     if page_source.is_a?(Collection)
@@ -921,5 +1102,15 @@ module ExportService
     end
 
     csv_string
+  end
+
+  def write_artifact(base_path:, relative_path:, content:)
+    full_path = File.join(base_path, relative_path)
+
+    FileUtils.mkdir_p(File.dirname(full_path))
+
+    File.open(full_path, 'wb') do |f|
+      f.write(content)
+    end
   end
 end

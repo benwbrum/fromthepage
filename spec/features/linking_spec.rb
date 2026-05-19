@@ -122,6 +122,18 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
   end
 
+  it "detects the current link start even with unmatched brackets elsewhere", js: true do
+    test_page = @work.pages.third
+    visit "/display/display_page?page_id=#{test_page.id}"
+    page.find('.tabs').click_link("Transcribe")
+
+    page.execute_script("myCodeMirror.setValue('Broken close ]] earlier\\n[[Tex');")
+    page.execute_script('myCodeMirror.setCursor({line: 1, ch: 5});')
+
+    link_start_at = page.evaluate_script('findLinkStartAtCursor(myCodeMirror, myCodeMirror.getCursor())')
+    expect(link_start_at).to eq(2)
+  end
+
   it "enters a bad link - no text" do
     test_page = @work.pages.fourth
     visit "/display/display_page?page_id=#{test_page.id}"
