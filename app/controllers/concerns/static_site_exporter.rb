@@ -163,48 +163,48 @@ EOF_FOOTER_INCLUDE
 
   def write_gemfile(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/Gemfile",
+      base: path,
+      relative: "#{dirname}/Gemfile",
       content: GEMFILE_CONTENTS
     )
   end
 
   def write_work_layout(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_layouts/work.html",
+      base: path,
+      relative: "#{dirname}/_layouts/work.html",
       content: WORK_LAYOUT_CONTENTS
     )
   end
 
   def write_subject_layout(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_layouts/subject.html",
+      base: path,
+      relative: "#{dirname}/_layouts/subject.html",
       content: SUBJECT_LAYOUT_CONTENTS.gsub('REPLACEME', '#')
     )
   end
 
   def write_listing_layout(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_layouts/listing.html",
+      base: path,
+      relative: "#{dirname}/_layouts/listing.html",
       content: LISTING_LAYOUT_CONTENTS
     )
   end
 
   def write_tree_include(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_includes/tree.html",
+      base: path,
+      relative: "#{dirname}/_includes/tree.html",
       content: TREE_INCLUDE_CONTENTS
     )
   end
 
   def write_footer_include(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_includes/footer.html",
+      base: path,
+      relative: "#{dirname}/_includes/footer.html",
       content: FOOTER_INCLUDE_CONTENTS
     )
   end
@@ -230,16 +230,16 @@ EOF_FOOTER_INCLUDE
       ]
     }
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_config.yml",
+      base: path,
+      relative: "#{dirname}/_config.yml",
       content: site_config.to_yaml
     )
   end
 
   def write_index_markdown(dirname, path, collection)
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/index.md",
+      base: path,
+      relative: "#{dirname}/index.md",
       content: "---\n"+(collection.intro_block || '')
     )
   end
@@ -289,8 +289,8 @@ EOF_FOOTER_INCLUDE
     }
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/_data/navigation.yml",
+      base: path,
+      relative: "#{dirname}/_data/navigation.yml",
       content: navigation.to_yaml
     )
   end
@@ -309,8 +309,8 @@ EOF_FOOTER_INCLUDE
     end
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/pages/work-list.md",
+      base: path,
+      relative: "#{dirname}/pages/work-list.md",
       content: work_listing_frontmatter.to_yaml+"\n---\n"
     )
   end
@@ -346,8 +346,8 @@ EOF_FOOTER_INCLUDE
     subject_listing_frontmatter['listing'] = tree
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/pages/subject-list.md",
+      base: path,
+      relative: "#{dirname}/pages/subject-list.md",
       content: subject_listing_frontmatter.to_yaml+"\n---\n"
     )
   end
@@ -370,8 +370,8 @@ EOF_FOOTER_INCLUDE
     contributor_listing_frontmatter['listing'] = listing
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/pages/about.md",
+      base: path,
+      relative: "#{dirname}/pages/about.md",
       content: contributor_listing_frontmatter.to_yaml+"\n---\n"
     )
   end
@@ -402,8 +402,8 @@ EOF_FOOTER_INCLUDE
     markdown = frontmatter.to_yaml+"\n---\n"+text
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/pages/works/#{work.slug}.md",
+      base: path,
+      relative: "#{dirname}/pages/works/#{work.slug}.md",
       content: markdown
     )
   end
@@ -430,18 +430,18 @@ EOF_FOOTER_INCLUDE
     markdown = frontmatter.to_yaml+"\n---\n"+text
 
     write_static_artifact(
-      base_path: path,
-      relative_path: "#{dirname}/pages/subjects/#{subject.id}.md",
+      base: path,
+      relative: "#{dirname}/pages/subjects/#{subject.id}.md",
       content: markdown
     )
   end
 
-  def write_static_artifact(base_path:, relative_path:, content:)
-    full_path = File.join(base_path, relative_path)
+  def write_static_artifact(base:, relative:, content:)
+    full = File.join(base, relative)
 
-    FileUtils.mkdir_p(File.dirname(full_path))
+    FileUtils.mkdir_p(File.dirname(full))
 
-    File.open(full_path, 'wb') do |f|
+    File.open(full, 'wb') do |f|
       f.write(content)
     end
   end
