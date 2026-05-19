@@ -315,34 +315,6 @@ class Page < ApplicationRecord
     end
   end
 
-  def base_height
-    if self[:base_height].blank?
-      if self.sc_canvas
-        self.sc_canvas.height
-      elsif self.ia_leaf
-        self.ia_leaf.page_h
-      else
-        nil
-      end
-    else
-      self[:base_height]
-    end
-  end
-
-  def base_width
-    if self[:base_width].blank?
-      if self.sc_canvas
-        self.sc_canvas.width
-      elsif self.ia_leaf
-        self.ia_leaf.page_w
-      else
-        nil
-      end
-    else
-      self[:base_width]
-    end
-  end
-
   def base_image
     self[:base_image] || ''
   end
@@ -716,17 +688,29 @@ class Page < ApplicationRecord
   end
 
   def base_width
-    return self[:base_width] unless image.attached?
-    image.analyze unless image.analyzed?
-
-    image.metadata[:width]
+    if self.sc_canvas
+      self.sc_canvas.width
+    elsif self.ia_leaf
+      self.ia_leaf.page_w
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:width]
+    else
+      self[:base_width]
+    end
   end
 
   def base_height
-    return self[:base_height] unless image.attached?
-    image.analyze unless image.analyzed?
-
-    image.metadata[:height]
+    if self.sc_canvas
+      self.sc_canvas.height
+    elsif self.ia_leaf
+      self.ia_leaf.page_h
+    elsif image.attached?
+      image.analyze unless image.analyzed?
+      image.metadata[:height]
+    else
+      self[:base_height]
+    end
   end
 
   def is_public?
