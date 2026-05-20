@@ -23,5 +23,7 @@ class Page::Update < ApplicationInteractor
 
       process_uploaded_file(@page_params[:image]) if @page_params[:image]
     end
+
+    @page.thumbnail_image if @page.image.attached?
   end
 end

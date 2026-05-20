@@ -338,7 +338,7 @@ class Page < ApplicationRecord
 
     if image.attached?
       return Rails.application.routes.url_helpers.url_for(
-        image.variant(resize_to_limit: [nil, 400])
+        image.variant(resize_to_limit: [nil, 400]).processed
       )
     end
 
