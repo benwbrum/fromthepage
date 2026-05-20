@@ -14,12 +14,4 @@ module Page::Lib::Common
     context.errors = e.message
     context.fail!
   end
-
-  # TODO: Deprecate this once move to active_storage is complete
-  def assign_dimensions
-    image = Magick::ImageList.new(@page.base_image)
-    @page.base_width = image.columns
-    @page.base_height = image.rows
-    @page.save!
-  end
 end
