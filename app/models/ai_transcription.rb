@@ -2,16 +2,17 @@
 #
 # Table name: ai_transcriptions
 #
-#  id          :bigint           not null, primary key
-#  metadata    :text(4294967295)
-#  model       :string(255)      not null
-#  prompt      :text(4294967295)
-#  reasoning   :text(4294967295)
-#  source_text :text(4294967295)
-#  status      :string(255)      default("new"), not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  page_id     :integer          not null
+#  id                 :bigint           not null, primary key
+#  metadata           :text(4294967295)
+#  model              :string(255)      not null
+#  prompt             :text(4294967295)
+#  reasoning          :text(4294967295)
+#  source_text        :text(4294967295)
+#  status             :string(255)      default("new"), not null
+#  transcription_json :text(4294967295)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  page_id            :integer          not null
 #
 # Indexes
 #
@@ -45,6 +46,11 @@ class AiTranscription < ApplicationRecord
   if (col = columns_hash['metadata']) &&
     !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
     serialize :metadata, coder: JSON
+  end
+
+  if (col = columns_hash['transcription_json']) &&
+    !col.sql_type_metadata.sql_type.match?(/\bjson\b/i)
+    serialize :transcription_json, coder: JSON
   end
 
   validates :model, presence: true
