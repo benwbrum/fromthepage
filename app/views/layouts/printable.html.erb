@@ -1,8 +1,22 @@
+\ifdefined\DocumentMetadata
+\DocumentMetadata{
+  lang=en,
+  pdfversion=1.7,
+  pdfstandard=ua-1,
+<% if @work %>
+  pdftitle={<%= Work::Export::Lib::Utils.latex_escape(@work.title) %>},
+<% end %>
+}
+\fi
 \documentclass{article}
 
 <%= render partial: 'shared/printable/packages' %>
 
 <%= render partial: 'shared/printable/configurations' %>
+
+<% if @work %>
+\hypersetup{pdftitle={<%= Work::Export::Lib::Utils.latex_escape(@work.title) %>}}
+<% end %>
 
 \begin{document}
 
