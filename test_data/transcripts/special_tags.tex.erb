@@ -35,7 +35,11 @@ pdftitle={Special-Tags-Work},
 \titleformat{\subsubsection}[hang]{\normalsize\bfseries}{}{0pt}{}
 
 %% Set PDF tab order to follow structure (WCAG PDF3)
-\pdfpagesattr{/Tabs /S}
+\ifdefined\pdfextension
+  \pdfextension pagesattr {/Tabs /S}
+\else
+  \pdfpagesattr{/Tabs /S}
+\fi
 
 
 \hypersetup{pdftitle={Special-Tags-Work}}
