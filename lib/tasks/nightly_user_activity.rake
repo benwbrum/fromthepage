@@ -1,3 +1,5 @@
+NIGHTLY_USER_ACTIVITY_BATCH_SIZE = 1000
+
 namespace :fromthepage do
   desc 'nightly collection activity (new works and new notes) sent to users'
   task nightly_user_activity: :environment do
@@ -35,10 +37,8 @@ namespace :fromthepage do
     user_id_union_sql = "(#{all_collection_scribe_ids.to_sql} UNION #{all_page_scribe_ids.to_sql})"
     all_users = User.where("users.id IN #{user_id_union_sql}")
 
-    batch_size = ENV.fetch('NIGHTLY_USER_ACTIVITY_BATCH_SIZE', 1000).to_i
-
     if SMTP_ENABLED
-      all_users.find_in_batches(batch_size: batch_size) do |users|
+      all_users.find_in_batches(batch_size: NIGHTLY_USER_ACTIVITY_BATCH_SIZE) do |users|
         users.each do |user|
           begin
             user_activity = UserMailer::Activity.build(user)
