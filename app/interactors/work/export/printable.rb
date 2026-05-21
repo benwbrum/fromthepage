@@ -30,8 +30,7 @@ class Work::Export::Printable < ApplicationInteractor
 
     File.open(tex_file, 'w') { |f| f.write(tex_string) }
 
-    # Build pandoc command as a single string with stdout/stderr redirected
-    pandoc_command = [
+    command = [
       'pandoc',
       tex_file.to_s,
       '-o', @file.to_s,
@@ -40,10 +39,11 @@ class Work::Export::Printable < ApplicationInteractor
       "--pdf-engine=#{PDF_ENGINE}",
       "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
       '--verbose'
-    ].join(' ')
+    ]
 
-    full_command = "#{pandoc_command} > #{log_file} 2>&1"
-    success = system(full_command)
+    success = File.open(log_file, 'w') do |log|
+      system(*command, out: log, err: log)
+    end
 
     raise "Pandoc conversion failed! See log: #{log_file}" unless success
   end
