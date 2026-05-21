@@ -310,6 +310,8 @@ class Page < ApplicationRecord
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
       self.sc_canvas.facsimile_url
+    elsif self.image.attached?
+      Rails.application.routes.url_helpers.url_for(image)
     else
       base_image
     end
