@@ -39,6 +39,7 @@ namespace :fromthepage do
 
     if SMTP_ENABLED
       all_users.find_in_batches(batch_size: NIGHTLY_USER_ACTIVITY_BATCH_SIZE) do |users|
+        ActiveRecord::Associations::Preloader.new(records: users, associations: :notification).call
         users.each do |user|
           begin
             user_activity = UserMailer::Activity.build(user)
