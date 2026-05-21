@@ -321,22 +321,10 @@ class Page < ApplicationRecord
     self[:base_image] || ''
   end
 
-  def shrink_factor
-    self[:shrink_factor] || 0
-  end
-
-  def scaled_image(factor = 2)
-    if 0 == factor
-      self.base_image
-    else
-      self.base_image.sub(/.jpg/, "_#{factor}.jpg")
-    end
-  end
-
   # Returns the thumbnail filename
   def thumbnail_image
     return if self.ia_leaf
-    return if self.base_image.blank?
+    return if self.base_image.blank? && !self.image.attached?
 
     if image.attached?
       return Rails.application.routes.url_helpers.url_for(
@@ -545,6 +533,7 @@ class Page < ApplicationRecord
     link.id
   end
 
+  # TODO: Deprecate in favor of active_storage
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)

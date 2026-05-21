@@ -7,7 +7,6 @@ module Page::Lib::Common
     end
 
     @page.image.attach(image_file)
-    @page.shrink_factor = 0
 
     @page.save!
   rescue StandardError => e
