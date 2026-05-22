@@ -123,6 +123,24 @@ describe Work::Export::Printable do
 
         expect(exporter.tex_string_for_conversion).to eq(tex_without_metadata)
       end
+
+      it 'removes metadata wrapper with varying whitespace and multiline content' do
+        allow(exporter).to receive(:tex_string).and_return(<<~TEX)
+            \\ifdefined\\DocumentMetadata
+            \\DocumentMetadata{
+              lang=en,
+              pdftitle={A title with {nested} braces}
+            }
+            \\fi
+          \\documentclass{article}
+          \\begin{document}
+        TEX
+
+        expect(exporter.tex_string_for_conversion).to eq(<<~TEX)
+          \\documentclass{article}
+          \\begin{document}
+        TEX
+      end
     end
   end
 end
