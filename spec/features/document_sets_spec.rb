@@ -39,10 +39,11 @@ describe "document sets", order: :defined do
         page.find('a', text: 'Edit').click
       end
     end
+    page.find('#document_set_title').set('')
     page.fill_in 'document_set_title', with: 'Edited Test Document Set 1'
     script = "$('#collection-settings-save').click()"
     page.execute_script(script)
-    sleep(3)
+    expect(page).to have_content('Document set has been saved')
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq 'Edited Test Document Set 1'
     expect(page.find('h1')).to have_content(@document_sets.first.title)
 
@@ -64,7 +65,12 @@ describe "document sets", order: :defined do
       expect(checkbox).to be_checked
     end
 
-    doc_set.work_ids = (doc_set.work_ids + work_ids).uniq
+    work_ids += doc_set.work_ids
+
+    doc_set.work_ids = []
+    doc_set.save!
+
+    doc_set.work_ids = work_ids.uniq
     doc_set.save!
   end
 
@@ -243,7 +249,7 @@ describe "document sets", order: :defined do
     expect(DocumentSet.all.ids).not_to include @test_set.id
   end
 
-  it "looks at document sets owner tabs" do
+  it "looks at document sets owner tabs", js: true do
     login_as(@owner, scope: :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
@@ -260,9 +266,10 @@ describe "document sets", order: :defined do
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.side-tabs').click_link('Task Configuration')
     page.check('work_supports_translation')
-    click_button('Save Changes')
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
+    expect(page).to have_content('Work updated successfully')
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit/tasks"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
