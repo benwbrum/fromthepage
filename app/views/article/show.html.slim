@@ -7,7 +7,7 @@
     -if description.present?
       .big[*language_attrs(@collection)] ==description
     -else
-      -if user_signed_in? && !current_user.guest
+      -if user_signed_in? && !current_user.guest && notes_visible?(@collection, current_user)
         i =link_to t('.edit_description_description'), collection_article_edit_path(@collection.owner, @collection, @article)
 
     -if @article.uri && @article.uri.include?("http")
