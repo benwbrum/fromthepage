@@ -28,7 +28,7 @@ class Work::Export::Printable < ApplicationInteractor
     @file = export_path.join(filename)
     log_file = export_path.join(log_filename)
 
-    File.open(tex_file, 'w') { |f| f.write(tex_string) }
+    File.open(tex_file, 'w') { |f| f.write(tex_string_for_conversion) }
 
     command = [
       'pandoc',
@@ -83,6 +83,12 @@ class Work::Export::Printable < ApplicationInteractor
     ).each_line.map(&:strip).join("\n")
 
     @tex_string = Work::Export::Lib::Utils.html_unescape(html_string)
+  end
+
+  def tex_string_for_conversion
+    return tex_string unless @format == :pdf
+
+    tex_string.sub(/\\ifdefined\\DocumentMetadata.*?\\fi\n?/m, '')
   end
 
   private
