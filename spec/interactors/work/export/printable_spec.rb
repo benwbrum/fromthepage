@@ -18,10 +18,6 @@ describe Work::Export::Printable do
   end
 
   let!(:page) do
-    create(:page, title: 'Special Tags Page', work: work, source_text: source_text, xml_text: xml_text, search_text: 'Search text',
-      status: :transcribed)
-  end
-  let!(:page) do
     page = create(:page, title: 'Special Tags Page', work: work, search_text: 'Search text', status: :transcribed)
     page.update!(source_text: source_text)
 
