@@ -83,4 +83,45 @@ describe Work::Export::Printable do
       expect(File.exist?(result.file)).to be_truthy
     end
   end
+
+  describe '#tex_string_for_conversion' do
+    subject(:exporter) do
+      described_class.new(
+        work: work,
+        format: format,
+        edition: 'text',
+        include_metadata: true,
+        include_contributors: true,
+        include_notes: true,
+        preserve_lb: false,
+        time: time
+      )
+    end
+
+    context 'when format is not pdf' do
+      let(:format) { 'doc' }
+
+      it 'returns the original tex string' do
+        expect(exporter.tex_string_for_conversion).to eq(exporter.tex_string)
+      end
+    end
+
+    context 'when format is pdf' do
+      let(:format) { 'pdf' }
+
+      it 'removes the document metadata wrapper before conversion' do
+        sanitized_tex = exporter.tex_string_for_conversion
+
+        expect(sanitized_tex).not_to include('\ifdefined\DocumentMetadata')
+        expect(sanitized_tex).not_to include('\DocumentMetadata{')
+        expect(sanitized_tex).to include('\documentclass{article}')
+      end
+
+      it 'returns the original tex when no metadata wrapper exists' do
+        allow(exporter).to receive(:tex_string).and_return("\\documentclass{article}\n\\begin{document}\n")
+
+        expect(exporter.tex_string_for_conversion).to eq("\\documentclass{article}\n\\begin{document}\n")
+      end
+    end
+  end
 end
