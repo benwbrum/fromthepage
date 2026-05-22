@@ -520,6 +520,11 @@ class Page < ApplicationRecord
     formatted_plaintext(self.xml_text)
   end
 
+  def ground_truth_for_comparison
+    return verbatim_transcription_plaintext unless collection.field_based && transcription_json.present?
+    field_values_for_comparison(transcription_json)
+  end
+
   def verbatim_translation_plaintext
     formatted_plaintext(self.xml_translation)
   end
@@ -764,6 +769,28 @@ class Page < ApplicationRecord
   def formatted_plaintext_table(table_element)
     text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
+  end
+
+  def field_values_for_comparison(json)
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .order(:line_number, :position)
+    values = []
+    fields.each do |field|
+      next if %w[description instruction].include?(field.input_type)
+      value = json[field.id.to_s]
+      next if value.blank?
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.each do |row|
+          row_text = cols.map { |c| row[c.id.to_s].to_s }.reject(&:blank?).join(' ')
+          values << row_text if row_text.present?
+        end
+      else
+        values << value.to_s
+      end
+    end
+    values.join(' ')
   end
 
   def field_transcription_json_to_plaintext(transcription_json)

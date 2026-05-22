@@ -131,4 +131,66 @@ describe Page, 'field-based AI plaintext' do
       end
     end
   end
+
+  describe '#ground_truth_for_comparison' do
+    context 'when the page has field-based transcription data' do
+      let(:human_json) do
+        { text_field.id.to_s => 'Jane Doe', select_field.id.to_s => 'Beaver' }
+      end
+
+      before { page.update!(transcription_json: human_json) }
+
+      it 'returns only the field values joined by spaces (no labels)' do
+        result = page.reload.ground_truth_for_comparison
+        expect(result).to eq('Jane Doe Beaver')
+        expect(result).not_to include('Name:')
+        expect(result).not_to include('County:')
+      end
+    end
+
+    context 'when transcription_json is blank' do
+      it 'falls back to verbatim_transcription_plaintext' do
+        allow(page).to receive(:verbatim_transcription_plaintext).and_return('plain text fallback')
+        expect(page.ground_truth_for_comparison).to eq('plain text fallback')
+      end
+    end
+
+    context 'when collection is not field_based' do
+      let!(:non_field_collection) { create(:collection, owner_user_id: owner.id) }
+      let!(:non_field_work) { create(:work, collection: non_field_collection) }
+      let!(:non_field_page) { create(:page, work: non_field_work) }
+
+      it 'returns verbatim_transcription_plaintext' do
+        allow(non_field_page).to receive(:verbatim_transcription_plaintext).and_return('doc text')
+        expect(non_field_page.ground_truth_for_comparison).to eq('doc text')
+      end
+    end
+
+    context 'with a spreadsheet field' do
+      let!(:spreadsheet_field) do
+        create(:transcription_field, :spreadsheet_field,
+               label: 'Witnesses', collection: collection, position: 3, line_number: 3)
+      end
+      let!(:col1) { create(:spreadsheet_column, label: 'First', transcription_field: spreadsheet_field, position: 1) }
+      let!(:col2) { create(:spreadsheet_column, label: 'Last',  transcription_field: spreadsheet_field, position: 2) }
+
+      before do
+        page.update!(transcription_json: {
+          text_field.id.to_s        => 'John',
+          select_field.id.to_s      => 'Beaver',
+          spreadsheet_field.id.to_s => [
+            { col1.id.to_s => 'Jane', col2.id.to_s => 'Doe' },
+            { col1.id.to_s => 'Bob',  col2.id.to_s => 'Smith' }
+          ]
+        })
+      end
+
+      it 'includes spreadsheet rows as space-joined column values, without labels' do
+        result = page.reload.ground_truth_for_comparison
+        expect(result).to include('Jane Doe')
+        expect(result).to include('Bob Smith')
+        expect(result).not_to include('Witnesses:')
+      end
+    end
+  end
 end
