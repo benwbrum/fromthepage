@@ -3,6 +3,7 @@ class Work::Export::Printable < ApplicationInteractor
 
   PDF_ENGINE = 'lualatex'
   PRINTABLE_PATH = Rails.root.join('tmp', 'printable')
+  DOCUMENT_METADATA_BLOCK = /^\s*\\ifdefined\\DocumentMetadata\b.*?^\s*\\fi\s*$\n?/m
 
   def initialize(work:, format:, edition:, include_metadata:, include_contributors:, include_notes:, preserve_lb:, page_ids: :all, time: Time.now)
     @work = work
@@ -88,7 +89,7 @@ class Work::Export::Printable < ApplicationInteractor
   def tex_string_for_conversion
     return tex_string unless @format.to_s == 'pdf'
 
-    tex_string.sub(/^\s*\\ifdefined\\DocumentMetadata\b.*?^\s*\\fi\s*$\n?/m, '')
+    tex_string.sub(DOCUMENT_METADATA_BLOCK, '')
   end
 
   private

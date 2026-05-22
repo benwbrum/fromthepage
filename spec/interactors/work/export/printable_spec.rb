@@ -113,9 +113,9 @@ describe Work::Export::Printable do
       it 'removes the document metadata wrapper before conversion' do
         sanitized_tex = exporter.tex_string_for_conversion
 
-        expect(sanitized_tex).not_to include('\ifdefined\DocumentMetadata')
-        expect(sanitized_tex).not_to include('\DocumentMetadata{')
-        expect(sanitized_tex).to include('\documentclass{article}')
+        expect(sanitized_tex).not_to include("\\ifdefined\\DocumentMetadata")
+        expect(sanitized_tex).not_to include("\\DocumentMetadata{")
+        expect(sanitized_tex).to include("\\documentclass{article}")
       end
 
       it 'returns the original tex when no metadata wrapper exists' do
