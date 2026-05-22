@@ -108,6 +108,7 @@ describe Work::Export::Printable do
 
     context 'when format is pdf' do
       let(:format) { 'pdf' }
+      let(:tex_without_metadata) { "\\documentclass{article}\n\\begin{document}\n" }
 
       it 'removes the document metadata wrapper before conversion' do
         sanitized_tex = exporter.tex_string_for_conversion
@@ -118,9 +119,9 @@ describe Work::Export::Printable do
       end
 
       it 'returns the original tex when no metadata wrapper exists' do
-        allow(exporter).to receive(:tex_string).and_return("\\documentclass{article}\n\\begin{document}\n")
+        allow(exporter).to receive(:tex_string).and_return(tex_without_metadata)
 
-        expect(exporter.tex_string_for_conversion).to eq("\\documentclass{article}\n\\begin{document}\n")
+        expect(exporter.tex_string_for_conversion).to eq(tex_without_metadata)
       end
     end
   end

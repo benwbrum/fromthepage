@@ -88,7 +88,7 @@ class Work::Export::Printable < ApplicationInteractor
   def tex_string_for_conversion
     return tex_string unless @format.to_s == 'pdf'
 
-    tex_string.sub(/\\ifdefined\\DocumentMetadata.*?\\fi\n?/m, '')
+    tex_string.sub(/\A\\ifdefined\\DocumentMetadata\n\\DocumentMetadata\{\n.*?\n\}\n\\fi\n?/m, '')
   end
 
   private
