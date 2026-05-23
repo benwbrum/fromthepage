@@ -520,6 +520,11 @@ class Page < ApplicationRecord
     formatted_plaintext(self.xml_text)
   end
 
+  def ground_truth_for_comparison
+    return verbatim_transcription_plaintext unless collection.field_based && transcription_json.present?
+    field_values_for_comparison(transcription_json)
+  end
+
   def verbatim_translation_plaintext
     formatted_plaintext(self.xml_translation)
   end
@@ -610,7 +615,7 @@ class Page < ApplicationRecord
 
   # TODO: Remove this on different PR after running migration
   def has_ai_plaintext?
-    self.ai_transcription&.status_finished? || File.exist?(self.ai_plaintext_path)
+    (self.ai_transcription&.status_finished? && ai_plaintext.present?) || File.exist?(self.ai_plaintext_path)
   end
 
   # TODO: Remove this on different PR after running migration
@@ -618,7 +623,11 @@ class Page < ApplicationRecord
     if self.alto_transcription.present?
       self.alto_transcription.source_text
     elsif self.ai_transcription.present?
-      self.ai_transcription.source_text
+      text = self.ai_transcription.source_text
+      if text.blank? && self.ai_transcription.transcription_json.present?
+        text = field_transcription_json_to_plaintext(self.ai_transcription.transcription_json)
+      end
+      text
     elsif File.exist?(self.ai_plaintext_path)
       File.read(self.ai_plaintext_path)
     else
@@ -760,6 +769,54 @@ class Page < ApplicationRecord
   def formatted_plaintext_table(table_element)
     text_table = xml_table_to_markdown_table(table_element, false, true)
     table_element.replace(text_table)
+  end
+
+  def field_values_for_comparison(json)
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .order(:line_number, :position)
+    values = []
+    fields.each do |field|
+      next if %w[description instruction].include?(field.input_type)
+      value = json[field.id.to_s]
+      next if value.blank?
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.each do |row|
+          row_text = cols.map { |c| row[c.id.to_s].to_s }.reject(&:blank?).join(' ')
+          values << row_text if row_text.present?
+        end
+      else
+        values << value.to_s
+      end
+    end
+    values.join(' ')
+  end
+
+  def field_transcription_json_to_plaintext(transcription_json)
+    fields = collection.transcription_fields
+                       .includes(:spreadsheet_columns)
+                       .order(:line_number, :position)
+    lines = []
+
+    fields.each do |field|
+      next if %w[description instruction].include?(field.input_type)
+
+      value = transcription_json[field.id.to_s]
+      next if value.blank?
+
+      if field.input_type == 'spreadsheet' && value.is_a?(Array)
+        cols = field.spreadsheet_columns
+        value.each do |row|
+          row_text = cols.map { |c| row[c.id.to_s].to_s }.reject(&:blank?).join(' ')
+          lines << "#{field.label}: #{row_text}" if row_text.present?
+        end
+      else
+        lines << "#{field.label}: #{value}"
+      end
+    end
+
+    lines.join("\n\n")
   end
 
   def modernize_absolute(filename)
