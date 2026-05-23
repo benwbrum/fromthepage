@@ -1,0 +1,33 @@
+tr
+  td(colspan="2")
+    =f.check_box :pages_are_meaningful, value: work.pages_are_meaningful
+    =f.label :pages_are_meaningful
+      h3.settings-label =t('work.edit.pages_are_meaningful')
+      p =t('work.edit.pages_are_meaningful_description')
+tr
+  td(colspan="2")
+    =f.check_box :ocr_correction, value: work.ocr_correction
+    =f.label :ocr_correction
+      h3.settings-label =t('work.edit.enable_ocr_correction')
+      p =t('work.edit.enable_ocr_correction_description')
+tr
+  td(colspan="2")
+    =f.check_box :supports_translation, value: work.supports_translation
+    =f.label :supports_translation
+      h3.settings-label =t('work.edit.support_translation')
+      p =t('work.edit.support_translation_description')
+
+-if work.supports_translation
+  tr
+    th
+      h3 =f.label :translation_instructions, t('work.edit.translation_instructions'), class: 'above'
+    td
+      =f.text_area :translation_instructions, rows: 5, value: work.translation_instructions
+
+tr
+  th(colspan="2")
+    =f.check_box :scribes_can_edit_titles, value: work.scribes_can_edit_titles
+    =f.label :scribes_can_edit_titles do
+      h3.settings-label[style="margin-bottom: 0px;"] =t('work.edit.collaborators_can_edit_titles')
+
+=f.hidden_field :collection_id, value: collection.id

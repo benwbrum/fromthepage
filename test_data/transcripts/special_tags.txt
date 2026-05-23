@@ -54,5 +54,3 @@ Catchword <catchword>catchword</catchword> for catchwords
 <pb n="1"/>
 
 {{tex: $(\psi_1, \psi_2,  \psi_3) = \vec{\psi}(\vec{x},t) = V^{-1/2}\sum_k \sqrt{\frac{\hbar}{2k}} (\vec{a_k} e^{i \vec{k}\dot\vec{x} - ikt} + c.c.)$ :tex}}
-
-|  |  |  |

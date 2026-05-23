@@ -1,0 +1,17 @@
+<% if @result.success? %>
+  <%= turbo_stream.update('work-tabs', partial: '/shared/work_tabs', locals: { selected: 6, work_id: @work.id }) %>
+  <% flash_msg = t('work.update.work_updated') %>
+
+  <% if @result.original_collection_id != @result.collection.id %>
+    <%= turbo_stream.redirect(
+      edit_collection_work_path(@collection.owner, @collection, @work),
+      response: turbo_flash(flash_msg, :notice)
+    )%>
+  <% else %>
+    <%= turbo_flash(flash_msg, :notice) %>
+    <%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection, work: @work, scope: 'edit' }) %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update('collection-settings', partial: 'form', locals: { collection: @collection, work: @work, scope: 'edit' }) %>
+  <%= turbo_flash(t('errors.error'), :error) %>
+<% end %>

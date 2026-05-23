@@ -19,13 +19,14 @@ describe "needs review", order: :defined do
     login_as(@user, scope: :user)
   end
 
-  it "sets the work to translation" do
+  it "sets the work to translation", js: true do
     logout(@user)
     login_as(@owner, scope: :user)
     visit "/work/edit?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
+    page.find('.side-tabs').click_link('Task Configuration')
     page.check('work_supports_translation')
-    click_button('Save Changes')
+    expect(page).to have_content('Work updated successfully')
     expect(Work.find_by(id: @work.id).supports_translation).to be true
     logout(@owner)
   end
