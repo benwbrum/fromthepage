@@ -11,11 +11,12 @@
     :path =>"#{collection_article_edit_path(@collection.owner, @collection, @article)}",
   }]
 
--tabs += [{\
-  :name => t('.versions'),
-  :selected => 2,
-  :path => "#{collection_article_version_path(@collection.owner, @collection, @article)}",
-}]
+-if notes_visible?(@collection, current_user)
+  -tabs += [{\
+    :name => t('.versions'),
+    :selected => 2,
+    :path => "#{collection_article_version_path(@collection.owner, @collection, @article)}",
+  }]
 
 -description = xml_to_html(@article.xml_text)
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
