@@ -96,7 +96,7 @@ describe "URL tests" do
     expect(Collection.find_by(id: @collection.id).slug).to eq @collection.slug
   end
 
-  it "edits a work slug" do
+  it "edits a work slug", js: true do
     login_as(@owner, scope: :user)
     slug = "new-#{@work.slug}"
     # check that path works
@@ -107,7 +107,8 @@ describe "URL tests" do
     page.find('.tabs').click_link("Settings")
     expect(page).to have_field('work[slug]', with: @work.slug)
     page.fill_in 'work_slug', with: "new-#{@work.slug}"
-    click_button('Save Changes')
+    page.find('#work_slug').send_keys(:tab)
+    expect(page).to have_content("Work updated successfully")
     expect(page).to have_selector('h1', text: @work.title)
     expect(page).to have_content("Work title")
     expect(Work.find_by(id: @work.id).slug).to eq "#{slug}"
@@ -126,7 +127,8 @@ describe "URL tests" do
     expect(page).to have_selector('a', text: @collection.title)
     page.find('.tabs').click_link("Settings")
     page.fill_in 'work_slug', with: ""
-    click_button('Save Changes')
+    page.find('#work_slug').send_keys(:tab)
+    expect(page).to have_content("Work updated successfully")
     expect(Work.find_by(id: @work.id).slug).to eq @work.slug
   end
 
