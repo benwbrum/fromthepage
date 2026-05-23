@@ -1,6 +1,25 @@
 ---
 pt:
   work:
+    ai_transcriptions:
+      create:
+        success: Vaga de transcrição por IA aberta.
+      form:
+        ai_transcription: Transcrição por IA
+        contact_us: Entre em contato com %{email} para atualizar para um plano que inclua rascunhos de IA.
+        description: Inicie uma transcrição por IA para páginas nesta obra.
+        description_complete: Todas as páginas desta obra possuem transcrições feitas por IA.
+        failed: Fracassado
+        finished: Finalizado
+        generate: Crie rascunhos com IA para páginas que não os possuem.
+        in_progress: Em andamento
+        not_started: Não iniciado
+        pages: Páginas
+        queued: Em fila
+        retry: Tentar novamente trabalhos com falha
+        total_tokens_used: Total de fichas utilizadas
+      update:
+        success: Tentando novamente a tarefa de transcrição por IA.
     configurable_printout:
       description: Exporte esta obra em um formato para impressão
       export: Exportar
@@ -20,6 +39,8 @@ pt:
       word_wrap: Quebra de linha
     create:
       work_created: Obra criado com sucesso
+    delete:
+      success: Obra excluído com sucesso
     describe:
       always_show_fullscreen: Sempre mostrar tela cheia
       approve: Aprovar
@@ -93,15 +114,16 @@ pt:
       additional_metadata: Metadados adicionais
       additional_metadata_description: Esses campos de metadados são exibidos na tela Sobre desta obra e nas exportações de TEI, mas não afetam a funcionalidade de FromThePage.
       allowed_collaborators: Colaboradores permitidos
-      apply: Aplicar
       author: Autor
       collaborators_can_edit_titles: Permitir que os colaboradores editem os títulos das páginas
       collection: Coleção
       confirm_delete_work: Tem certeza de que deseja excluir esta obra? Após a exclusão, você não poderá recuperá-lo!
       current_url: A URL atual para esta obra é %{current_url}. Se você quiser editar a seção da obra do URL, use letras minúsculas e traços entre as palavras.
       delete_work: Excluir obra
+      delete_work_description: Ao pressionar este botão, a obra e todas as suas páginas serão apagados. Esta ação é irreversível.
       description: Descrição
       description_message: A descrição será exibida na tela Visão geral do projeto e na tela Sobre do projeto. Uma parte abreviada da descrição será exibida na tela inicial da organização e na tela Find A Project.
+      destroy_everything: Destrua tudo
       document_date: Data do documento
       document_date_hint: A data do documento está no formato EDTF (por exemplo, 1843, 2001-02, 1643-06-30)
       document_history: Documento histórico
@@ -132,6 +154,7 @@ pt:
       source_box_folder: Caixa/Pasta de Origem
       source_collection_name: Nome da coleção de origem
       source_location: Local de origem
+      subject_change_warning: Tem certeza de que deseja mover esta obra para uma nova coleção? Você perderá todos os links relacionados ao assunto.
       support_translation: Tradução de suporte
       support_translation_description: Uma obra pode ser traduzida assim como transcrita. Quando marcada, a obra terá uma guia Tradução para cada página.
       transcription_conventions: Convenções de transcrição
@@ -148,6 +171,13 @@ pt:
       remove_collaborator: Remover colaborador
       work_collaborators: Colaboradores de obra
       work_collaborators_description: Os colaboradores podem transcrever e editar obras privadas.
+    edit_tabs:
+      ai: IA
+      danger_zone: Zona de Perigo
+      general: Em geral
+      metadata: Metadados
+      privacy_access: Privacidade e acesso
+      task_configuration: Configuração da tarefa
     incomplete: Metadados incompletos.
     metadata_overview:
       notes_and_questions: Notas e perguntas
@@ -213,3 +243,5 @@ pt:
     undescribed: Sem metadados.
     update:
       work_updated: Obra atualizada com sucesso
+    users_list:
+      no_users_collaborators: Sem colaboradores

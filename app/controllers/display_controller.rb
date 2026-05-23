@@ -149,7 +149,7 @@ class DisplayController < ApplicationController
     @ai_transcription = ai_transcriptions_scope.find_by(id: params[:ai_transcription_id]) || ai_transcriptions_scope.first
 
     if !current_user.blank?
-      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_text: @ai_transcription.source_text)
+      @ai_accuracy_stats = @page.ai_accuracy_statistics(ai_transcription: @ai_transcription)
     end
 
     respond_to do |format|

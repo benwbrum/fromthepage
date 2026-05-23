@@ -14,10 +14,15 @@ class WorkController < ApplicationController
   # tested
   before_action :authorized?, only: [
     :edit,
+    :edit_tasks,
+    :edit_metadata,
+    :edit_privacy,
+    :edit_danger,
     :pages_tab,
     :delete,
     :new,
     :create,
+    :update,
     :edit_scribes,
     :add_scribe,
     :remove_scribe,
@@ -25,7 +30,7 @@ class WorkController < ApplicationController
   ]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
+  layout :dynamic_layout, only: [:new, :create, :configurable_printout, :edit_scribes, :remove_scribe]
 
   def metadata_overview_monitor
     @is_monitor_view = true
@@ -89,8 +94,6 @@ class WorkController < ApplicationController
       # unexpected state
     end
 
-
-
     if @work.save
       # TODO record_description_deed(@work)
       if @work.saved_change_to_description_status?
@@ -130,15 +133,37 @@ class WorkController < ApplicationController
   end
 
   def delete
-    @work.destroy
-    redirect_to dashboard_owner_path
+    @result = Work::Delete.new(
+      work: @work,
+      user: current_user
+    ).call
+
+    respond_to(&:turbo_stream)
   end
 
   def edit
     @collections = current_user.collections
-    # set subjects to true if there are any articles/page_article_links
-    @subjects = !@work.articles.blank?
+    @document_sets = @work.collection.document_sets
+    @subjects_exist = @work.articles.any?
+
+    @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
+  end
+
+  def edit_tasks
+  end
+
+  def edit_metadata
+  end
+
+  def edit_privacy
     @scribes = @work.scribes
+  end
+
+  def edit_ai
+    calculate_counts
+  end
+
+  def edit_danger
   end
 
   def edit_scribes
@@ -207,31 +232,35 @@ class WorkController < ApplicationController
     work = Work.find(params[:id])
     @collection ||= work.collection
 
-    result = Work::Update.new(work: work, work_params: work_params).call
+    @result = Work::Update.new(work: work, work_params: work_params).call
 
-    @work = result.work
-    if result.success?
-      if result.original_collection_id != result.collection.id
-        record_deed(@work, DeedType::WORK_ADDED, @work.owner)
-        @collection = @work.collection
+    @work = @result.work
+
+    if @result.success? && @result.original_collection_id != @result.collection.id
+      record_deed(@work, DeedType::WORK_ADDED, @work.owner)
+      @collection = @work.collection
+    end
+
+    respond_to do |format|
+      template = case params[:scope]
+      when 'edit_tasks'
+        'work/update_tasks'
+      when 'edit_metadata'
+        'work/update_metadata'
+      when 'edit_privacy'
+        @scribes = @work.scribes
+        'work/update_privacy'
+      else
+        @collections = current_user.collections
+        @document_sets = @collection.document_sets
+        @subjects_exist = @work.articles.any?
+
+        @document_sets_options = @document_sets.map { |ds| [ds.title, ds.id] }
+        'work/update_general'
       end
 
-      flash[:notice] = t('.work_updated')
-      redirect_to edit_collection_work_path(@work.collection.owner, @collection, @work)
-    else
-      @scribes = @work.scribes
-      @nonscribes = User.where.not(id: @scribes.select(:id))
-      @collections = current_user.collections
-      @subjects = @work.articles.any?
-
-      render :edit, status: :unprocessable_entity
+      format.turbo_stream { render template }
     end
-  end
-
-  def revert
-    work = Work.find_by(id: params[:work_id])
-    work.update_attribute(:transcription_conventions, nil)
-    render plain: work.collection.transcription_conventions
   end
 
   def update_featured_page
@@ -340,5 +369,9 @@ class WorkController < ApplicationController
       :term,
       document_set_ids: []
     )
+  end
+
+  def dynamic_layout
+    request.xhr? ? false : 'application'
   end
 end

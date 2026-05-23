@@ -2,9 +2,10 @@ class AiTranscription::BulkCreate < ApplicationInteractor
   BATCH_SIZE = 1_000
   include AiTranscription::Lib::Common
 
-  def initialize(collection:, user:, model: nil, prompt_file: nil)
+  def initialize(collection:, user:, scope: nil, model: nil, prompt_file: nil)
     @collection = collection
     @user = user
+    @scope = scope
     @model = model
     @prompt_file = prompt_file
 
@@ -19,7 +20,7 @@ class AiTranscription::BulkCreate < ApplicationInteractor
 
     ai_transcription_records = []
 
-    @collection.pages.includes(:ai_transcription).find_each do |page|
+    pages.find_each do |page|
       ai_transcription = page.ai_transcription
 
       if ai_transcription.nil?
@@ -36,5 +37,21 @@ class AiTranscription::BulkCreate < ApplicationInteractor
     end
 
     AiTranscription.import! ai_transcription_records, on_duplicate_key_update: [:status], batch_size: BATCH_SIZE
+  end
+
+  private
+
+  def pages
+    return @pages if defined?(@pages)
+
+    @pages = @collection.pages.includes(:ai_transcription)
+
+    return @pages if @scope.nil?
+
+    work_ids = @scope[:work_ids] || []
+
+    @pages = @pages.where(work_id: work_ids)
+
+    @pages
   end
 end
