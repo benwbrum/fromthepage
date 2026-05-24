@@ -33,6 +33,9 @@
   border-right: 1px solid #ddd;
   background-color: #f7f7f7;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .CodeMirror-linenumbers {}
@@ -43,6 +46,9 @@
   text-align: right;
   color: #999;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .CodeMirror-guttermarker {
