@@ -115,9 +115,8 @@ describe Textract::PageProcessor do
       end
 
       it 'marks the request as failed and returns without raising' do
-        expect { processor.process_page }.not_to raise_error
+        expect { processor.process_page }.not_to change { AiTranscription.where(page_id: page.id).count }
         expect(ExternalApiRequest.last.status).to eq(ExternalApiRequest::Status::FAILED)
-        expect(AiTranscription.count).to eq(0)
       end
     end
 
