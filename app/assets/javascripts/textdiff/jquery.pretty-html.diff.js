@@ -94,7 +94,7 @@ See https://github.com/arnab/jQuery.prettyHTMLDiff/
     };
   
     $.fn.prettyHTMLDiff.createHTML = function(diff) {
-      var data, html, operation, text;
+      var data, html, operation, tagRegex, text, words;
       html = [];
       operation = diff[0];
       text = diff[1];
