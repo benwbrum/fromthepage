@@ -88,4 +88,63 @@ describe 'spreadsheet' do
       end
     end
   end
+
+  describe 'transcription' do
+    let!(:spreadsheet_field) do
+      create(:transcription_field, :spreadsheet_field,
+             collection: collection,
+             label: 'Spreadsheet field',
+             position: 1,
+             starting_rows: 1)
+    end
+    let!(:spreadsheet_column) do
+      create(:spreadsheet_column,
+             transcription_field: spreadsheet_field,
+             label: 'Text field',
+             input_type: 'text',
+             position: 1)
+    end
+
+    it 'adds a new row when tabbing out of the last populated spreadsheet row', js: true do
+      work = create(:work, :with_pages, collection: collection, owner_user_id: owner.id)
+      field_page = work.pages.first
+
+      visit collection_transcribe_page_path(collection.owner, collection, work, field_page)
+
+      page.execute_script(<<~JS)
+        const element = document.querySelector('[data-controller="handsontable"]');
+        const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
+
+        controller._handsontable.selectCell(0, 0);
+        controller._handsontable.listen();
+      JS
+      page.driver.browser.action.send_keys('Row 1', :tab).perform
+
+      Timeout.timeout(Capybara.default_max_wait_time) do
+        loop do
+          row_count = page.evaluate_script(<<~JS)
+            const element = document.querySelector('[data-controller="handsontable"]');
+            const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
+
+            controller._handsontable.countRows();
+          JS
+
+          break if row_count == 2
+
+          sleep 0.1
+        end
+      end
+
+      row_data = page.evaluate_script(<<~JS)
+        const element = document.querySelector('[data-controller="handsontable"]');
+        const controller = window.Stimulus.getControllerForElementAndIdentifier(element, 'handsontable');
+
+        controller._handsontable.getData();
+      JS
+
+      expect(row_data.length).to eq 2
+      expect(row_data.first.first).to eq 'Row 1'
+      expect(row_data.last.first).to be_nil
+    end
+  end
 end
