@@ -23,9 +23,9 @@ namespace :fromthepage do
 
       work = if args.work_id.match?(/^\d+$/)
                Work.find(args.work_id.to_i)
-             else
+      else
                Work.find(args.work_id)
-             end
+      end
 
       page_filter = args.page_filter.presence || 'all'
 
@@ -48,10 +48,10 @@ namespace :fromthepage do
       collection = if args.collection_id.match?(/^\d+$/)
                      Collection.where(id: args.collection_id.to_i).first ||
                        DocumentSet.where(id: args.collection_id.to_i).first
-                   else
+      else
                      Collection.where(slug: args.collection_id).first ||
                        DocumentSet.where(slug: args.collection_id).first
-                   end
+      end
 
       if collection.nil?
         puts 'Collection or Document Set not found'
