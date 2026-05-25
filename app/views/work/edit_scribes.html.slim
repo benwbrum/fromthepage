@@ -27,4 +27,4 @@
         =button_tag '', class: 'remove', title: t('work.edit_scribes.remove_collaborator'), 'aria-label': t('work.edit_scribes.remove_collaborator')
   .toolbar
     .toolbar_group.aright
-      =link_to(t('work.edit.done'), edit_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'button')
+      =link_to(t('work.edit.done'), edit_privacy_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'button')

@@ -36,10 +36,11 @@ class UserMailer < ActionMailer::Base
     mail to: @owner.email, subject: 'New FromThePage Owner'
   end
 
-  def added_note(user, note)
+  def added_note(user, note, collection = nil)
     @user = user
     @note = note
     @page = note.page
+    @collection = collection || note.collection
     mail to: @user.email, subject: 'New FromThePage Note', reply_to: @note.collection.owner.email
   end
 

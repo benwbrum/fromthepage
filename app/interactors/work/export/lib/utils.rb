@@ -22,6 +22,11 @@ class Work::Export::Lib::Utils
   # Zero-width and invisible Unicode characters that LaTeX cannot handle
   LATEX_INVISIBLE_CHARS = /[\u{2060}\u{200B}\u{200C}\u{200D}\u{FEFF}]/
 
+  # Manually catch unsupported control_sequence that got through our parser
+  UNSUPPORTED_LATEX_COMMANDS = [
+    'unclear'
+  ]
+
   def self.latex_escape(text)
     return '' if text.blank?
 
@@ -51,12 +56,29 @@ class Work::Export::Lib::Utils
     end
   end
 
+  # NOTE: This is not ideal, but it is a real limitation we have. Our parser
+  # recursively parses, which means we have to let `control_sequence`-like strings
+  # through. Only way to catch these is manually disallowing specific strings.
+  def self.sanitize_unsupported_latex_commands(text)
+    UNSUPPORTED_LATEX_COMMANDS.each do |command|
+      text.gsub!(
+        /\\#{Regexp.escape(command)}\b/,
+        '\\textbackslash{}' + command
+      )
+    end
+
+    text
+  end
+
   def self.xml_to_latex(page:, xml_text:, preserve_lb: true, flatten_links: false)
     doc = REXML::Document.new(xml_text)
     page_doc = doc.root
 
     tex_string = page_doc.elements.map { |element| process_element(page, element, preserve_lb, flatten_links) }.join
     tex_string.sub(/(#{Regexp.escape(LINEBREAK_ELEMENT)}){2}\z/, '')
+    tex_string = sanitize_unsupported_latex_commands(tex_string)
+
+    tex_string
   end
 
   def self.process_element(page, element, preserve_lb, flatten_links)

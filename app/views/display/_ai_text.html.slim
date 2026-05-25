@@ -1,32 +1,67 @@
 #rightColumn.page-column[data-controller="textdiff"]
   .page-preview[*language_attrs(@collection)]
     -if @ai_transcription&.status_finished?
-      -if @page.can_calculate_ai_accuracy?
-        .ai-text-toggle
-          label.toggle-label
-            input(type="checkbox" id="show-diff-toggle" data-action="change->textdiff#toggle")
-            span =t('.show_comparison_with_transcription')
+      -if @ai_transcription.transcription_json.present?
+        -# Field-based AI transcription
+        -human_has_fields = @page.xml_text.present?
+        -if human_has_fields
+          .ai-text-toggle
+            label.toggle-label
+              input(type="checkbox" id="show-diff-toggle" data-action="change->textdiff#toggle")
+              span =t('.show_comparison_with_transcription')
+        -else
+          .ai-text-notice
+            p.info-message =t('.ai_text_edit_notice')
+
+        .ai-text-content(id="ai-text-content")
+          == ai_field_html(@ai_transcription.transcription_json, @collection)
+
+        -if human_has_fields
+          table.diff-versions id="ai-diff-content" data-fullheight='{"bottom":30,"cssrule":"min-height"}'
+            tr
+              td.diff-version[*language_attrs(@collection)]
+                div.versions-wrapper
+                  div.version-col(style="display: none;")
+                    div.version-content
+                      div.table-responsive(data-diff-transcription="changed")
+                        div.html-code
+                          h5 =t('.human_transcription')
+                          == xml_to_html(@page.xml_text)
+                  div.version-col.right
+                    div.version-content
+                      div.table-responsive(data-diff-transcription="original")
+                        div.html-code
+                          h5 =t('.ai_draft')
+                          == ai_field_html(@ai_transcription.transcription_json, @collection)
+
       -else
-        .ai-text-notice
-          p.info-message =t('.ai_text_edit_notice')
+        -# Standard (non-field-based) AI transcription
+        -if @page.can_calculate_ai_accuracy?
+          .ai-text-toggle
+            label.toggle-label
+              input(type="checkbox" id="show-diff-toggle" data-action="change->textdiff#toggle")
+              span =t('.show_comparison_with_transcription')
+        -else
+          .ai-text-notice
+            p.info-message =t('.ai_text_edit_notice')
 
-      .ai-text-content(id="ai-text-content")
-        pre.ai-plaintext =@ai_transcription.source_text
+        .ai-text-content(id="ai-text-content")
+          pre.ai-plaintext =@ai_transcription.source_text
 
-    -if @page.can_calculate_ai_accuracy?
-      table.diff-versions id="ai-diff-content" data-fullheight='{"bottom":30,"cssrule":"min-height"}'
-        tr
-          td.diff-version[*language_attrs(@collection)]
-            div.versions-wrapper
-              div.version-col(style="display: none;")
-                div.version-content
-                  div.table-responsive(data-diff-transcription="changed")
-                    div.html-code
-                      h5 =t('.human_transcription')
-                      == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
-              div.version-col.right
-                div.version-content
-                  div.table-responsive(data-diff-transcription="original")
-                    div.html-code
-                      h5 =t('.ai_draft')
-                      = @ai_transcription.source_text.gsub("\n", '<br/>').html_safe
+        -if @page.can_calculate_ai_accuracy? && @ai_transcription.source_text.present?
+          table.diff-versions id="ai-diff-content" data-fullheight='{"bottom":30,"cssrule":"min-height"}'
+            tr
+              td.diff-version[*language_attrs(@collection)]
+                div.versions-wrapper
+                  div.version-col(style="display: none;")
+                    div.version-content
+                      div.table-responsive(data-diff-transcription="changed")
+                        div.html-code
+                          h5 =t('.human_transcription')
+                          == @page.verbatim_transcription_plaintext.gsub("\n", '<br/>').html_safe
+                  div.version-col.right
+                    div.version-content
+                      div.table-responsive(data-diff-transcription="original")
+                        div.html-code
+                          h5 =t('.ai_draft')
+                          = @ai_transcription.source_text.gsub("\n", '<br/>').html_safe

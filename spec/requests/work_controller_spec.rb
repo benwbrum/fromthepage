@@ -45,56 +45,159 @@ describe WorkController do
     end
   end
 
-  describe '#update' do
-    let(:action_path) { work_update_path(id: work.id) }
-    let(:params) do
-      {
-        work: {
-          title: 'New title',
-          description: '<b> New description </b>',
-          collection_id: collection.id,
-          transcription_conventions: 'New transcription conventions'
-        }
-      }
-    end
-    let(:subject) { post action_path, params: params }
+  describe '#edit_tasks' do
+    let(:action_path) { edit_tasks_collection_work_path(owner, collection, work) }
+    let(:subject) { get action_path }
 
-    it 'redirects' do
+    it 'renders status and template' do
       login_as owner
       subject
 
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(edit_collection_work_path(owner, collection, work.reload))
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_tasks)
     end
 
-    context 'when changed collection_id' do
-      let!(:collection_2) { create(:collection, owner_user_id: owner.id) }
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when user is not an owner' do
+      let(:user) { User.where(owner: false).first }
+
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#edit_metadata' do
+    let(:action_path) { edit_metadata_collection_work_path(owner, collection, work) }
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_metadata)
+    end
+
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when user is not an owner' do
+      let(:user) { User.where(owner: false).first }
+
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#edit_privacy' do
+    let(:action_path) { edit_privacy_collection_work_path(owner, collection, work) }
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_privacy)
+    end
+
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when user is not an owner' do
+      let(:user) { User.where(owner: false).first }
+
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#edit_danger' do
+    let(:action_path) { edit_danger_collection_work_path(owner, collection, work) }
+    let(:subject) { get action_path }
+
+    it 'renders status and template' do
+      login_as owner
+      subject
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:edit_danger)
+    end
+
+    context 'when user is not logged in' do
+      it 'redirects' do
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'when user is not an owner' do
+      let(:user) { User.where(owner: false).first }
+
+      it 'redirects' do
+        login_as user
+        subject
+
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:scope) { nil }
+    let(:params) { {} }
+    let(:action_path) { work_update_path(id: work.id, scope: scope) }
+
+    let(:subject) { post action_path, params: params, as: :turbo_stream }
+
+    context 'when scope edit' do
+      let(:scope) { 'edit' }
+
       let(:params) do
         {
           work: {
             title: 'New title',
             description: '<b> New description </b>',
-            collection_id: collection_2.id,
+            collection_id: collection.id,
             transcription_conventions: 'New transcription conventions'
-          }
-        }
-      end
-
-      it 'redirects' do
-        login_as owner
-        subject
-
-        expect(response).to have_http_status(:redirect)
-        expect(response).to redirect_to(edit_collection_work_path(owner, collection_2, work.reload))
-      end
-    end
-
-    context 'failed update' do
-      let(:params) do
-        {
-          work: {
-            title: '',
-            description: ''
           }
         }
       end
@@ -103,8 +206,112 @@ describe WorkController do
         login_as owner
         subject
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to render_template(:edit)
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_general)
+      end
+
+      context 'when changed collection_id' do
+        let!(:collection_2) { create(:collection, owner_user_id: owner.id) }
+        let(:params) do
+          {
+            work: {
+              title: 'New title',
+              description: '<b> New description </b>',
+              collection_id: collection_2.id,
+              transcription_conventions: 'New transcription conventions'
+            }
+          }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:update_general)
+        end
+      end
+
+      context 'failed update' do
+        let(:params) do
+          {
+            work: {
+              title: '',
+              description: ''
+            }
+          }
+        end
+
+        it 'renders status and template' do
+          login_as owner
+          subject
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template(:update_general)
+        end
+      end
+    end
+
+    context 'when scope tasks' do
+      let(:scope) { 'edit_tasks' }
+
+      let(:params) do
+        {
+          work: {
+            collection_id: collection.id,
+            supports_translation: true
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_tasks)
+      end
+    end
+
+    context 'when scope metadata' do
+      let(:scope) { 'edit_metadata' }
+
+      let(:params) do
+        {
+          work: {
+            collection_id: collection.id,
+            author: 'Author'
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_metadata)
+      end
+    end
+
+    context 'when scope privacy' do
+      let(:scope) { 'edit_privacy' }
+
+      let(:params) do
+        {
+          work: {
+            collection_id: collection.id,
+            scribes_can_edit_title: true
+          }
+        }
+      end
+
+      it 'renders status and template' do
+        login_as owner
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:update_privacy)
       end
     end
   end
