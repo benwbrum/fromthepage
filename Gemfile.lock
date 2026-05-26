@@ -808,6 +808,10 @@ GEM
     snaky_hash (2.0.3)
       hashie (>= 0.1.0, < 6)
       version_gem (>= 1.1.8, < 3)
+    solid_cache (1.0.10)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     solid_queue (1.2.4)
       activejob (>= 7.1)
       activerecord (>= 7.1)
@@ -1030,6 +1034,7 @@ DEPENDENCIES
   simplecov-lcov
   slack-notifier
   slim
+  solid_cache
   solid_queue (~> 1.2)
   sprockets (~> 4.2)
   sprockets-rails (>= 3.4)
