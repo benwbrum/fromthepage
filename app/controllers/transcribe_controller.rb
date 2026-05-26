@@ -180,8 +180,23 @@ class TranscribeController  < ApplicationController
 
           next_page_id = @page.last? || save_button_clicked ? @page.id : @page.lower_item.id
           flash[:notice] = t('.saved_and_next_notice') if next_page_id != @page.id
+
+          cache_key = [
+            'assign_categories',
+            'save_transcription',
+            current_user.id,
+            @page.id,
+            SecureRandom.hex(8)
+          ].join(':')
+
+          Rails.cache.write(
+            cache_key,
+            old_article_ids,
+            expires_in: 30.minutes
+          )
+
           redirect_to action: 'assign_categories', page_id: @page.id,
-                      collection_id: @collection, next_page_id: next_page_id, old_article_ids: old_article_ids
+                      collection_id: @collection, next_page_id: next_page_id, article_ids_cache_key: cache_key
           return
         end
       else
@@ -229,7 +244,8 @@ class TranscribeController  < ApplicationController
     # no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
-      @new_article_ids = @page.articles.where.not(id: params[:old_article_ids]).pluck(:id)
+      old_article_ids = Rails.cache.read(params[:article_ids_cache_key]) || []
+      @new_article_ids = @page.articles.where.not(id: old_article_ids).pluck(:id)
 
       # Separate translationa and transcription links
       left, right = @page.page_article_links.partition { |x| x.text_type == 'translation' }
@@ -321,8 +337,22 @@ class TranscribeController  < ApplicationController
           end
         end
 
+        cache_key = [
+          'assign_categories',
+          'save_translation',
+          current_user.id,
+          @page.id,
+          SecureRandom.hex(8)
+        ].join(':')
+
+        Rails.cache.write(
+          cache_key,
+          old_article_ids,
+          expires_in: 30.minutes
+        )
+
         redirect_to action: 'assign_categories', page_id: @page.id,
-                    collection_id: @collection, text_type: 'translation', old_article_ids: old_article_ids
+                    collection_id: @collection, text_type: 'translation', article_ids_cache_key: cache_key
         return
       else
         log_translation_error(message)
