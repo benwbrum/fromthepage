@@ -3,6 +3,7 @@ class Work::Export::Printable < ApplicationInteractor
 
   PDF_ENGINE = 'lualatex'
   PRINTABLE_PATH = Rails.root.join('tmp', 'printable')
+  DOCUMENT_METADATA_BLOCK = /^\s*\\ifdefined\\DocumentMetadata\b.*?^\s*\\fi\s*$\n?/m
 
   def initialize(work:, format:, edition:, include_metadata:, include_contributors:, include_notes:, preserve_lb:, page_ids: :all, time: Time.now)
     @work = work
@@ -28,10 +29,9 @@ class Work::Export::Printable < ApplicationInteractor
     @file = export_path.join(filename)
     log_file = export_path.join(log_filename)
 
-    File.open(tex_file, 'w') { |f| f.write(tex_string) }
+    File.open(tex_file, 'w') { |f| f.write(tex_string_for_conversion) }
 
-    # Build pandoc command as a single string with stdout/stderr redirected
-    pandoc_command = [
+    command = [
       'pandoc',
       tex_file.to_s,
       '-o', @file.to_s,
@@ -40,10 +40,11 @@ class Work::Export::Printable < ApplicationInteractor
       "--pdf-engine=#{PDF_ENGINE}",
       "--lua-filter=#{Rails.root.join('lib', 'pandoc', 'ftp_filters.lua')}",
       '--verbose'
-    ].join(' ')
+    ]
 
-    full_command = "#{pandoc_command} > #{log_file} 2>&1"
-    success = system(full_command)
+    success = File.open(log_file, 'w') do |log|
+      system(*command, out: log, err: log)
+    end
 
     raise "Pandoc conversion failed! See log: #{log_file}" unless success
   end
@@ -83,6 +84,12 @@ class Work::Export::Printable < ApplicationInteractor
     ).each_line.map(&:strip).join("\n")
 
     @tex_string = Work::Export::Lib::Utils.html_unescape(html_string)
+  end
+
+  def tex_string_for_conversion
+    return tex_string unless @format.to_s == 'pdf'
+
+    tex_string.sub(DOCUMENT_METADATA_BLOCK, '')
   end
 
   private

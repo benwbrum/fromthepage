@@ -212,6 +212,16 @@ describe AiTranscription::Create do
     it 'sets status to processing' do
       expect(result.ai_transcription.status).to eq('processing')
     end
+
+    context 'when a custom prompt_file is supplied' do
+      let(:prompt_file) { 'test_data/ai_transcriptions/custom_prompt.txt' }
+
+      it 'uses the custom file prompt instead of the field-based prompt' do
+        expect(result.success?).to be_truthy
+        expect(result.ai_transcription.prompt).to eq("This is a custom prompt\n")
+        expect(result.ai_transcription.prompt).not_to include(text_field.id.to_s)
+      end
+    end
   end
 
   context 'when user has no permission' do
