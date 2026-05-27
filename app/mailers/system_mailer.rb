@@ -1,5 +1,6 @@
 class SystemMailer < ActionMailer::Base
   include ContributorHelper
+  FAILURE_LOG_PATTERN = /\b(fail(?:ed|ures?)?|error(?:s)?)\b/i
 
   default from: 'FromThePage <support@fromthepage.com>'
   layout 'mailer'
@@ -23,7 +24,9 @@ class SystemMailer < ActionMailer::Base
     @collection = collection
     @log_contents = ContentdmTranslator.log_contents(collection)
     recipients = [ADMIN_EMAILS, owner_emails(collection)].reject(&:blank?).join(', ')
-    mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: "CONTENTdm Sync Finished for  #{collection.title}"
+    subject = "CONTENTdm Sync Finished for #{collection.title}"
+    subject = "CONTENTdm Sync Finished with Failures for #{collection.title}" if @log_contents.match?(FAILURE_LOG_PATTERN)
+    mail from: SENDING_EMAIL_ADDRESS, to: recipients, subject: subject
   end
 
 
