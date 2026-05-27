@@ -796,6 +796,21 @@ button, .button, .dropdown dd a {
   }
 }
 
+.datagrid {
+  th.suspicious-behavior-user-cell,
+  td.suspicious-behavior-user-cell,
+  th.suspicious-behavior-actions-cell,
+  td.suspicious-behavior-actions-cell {
+    white-space: nowrap;
+  }
+
+  th.suspicious-behavior-page-cell,
+  td.suspicious-behavior-page-cell {
+    width: 22%;
+    max-width: 22%;
+  }
+}
+
 .nodata {
   margin: $gapSize 0;
   padding: $gapSize * 2;
