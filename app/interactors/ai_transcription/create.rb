@@ -49,7 +49,7 @@ class AiTranscription::Create < ApplicationInteractor
   private
 
   def build_prompt
-    return sanitize_prompt unless @collection.field_based
+    return sanitize_prompt if @prompt_file.present? || !@collection.field_based
 
     AiTranscription::Lib::FieldBasedPromptBuilder.new(collection: @collection).build
   end
