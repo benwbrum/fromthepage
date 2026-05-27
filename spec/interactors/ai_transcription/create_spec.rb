@@ -212,7 +212,7 @@ describe AiTranscription::Create do
     it 'sets status to processing' do
       expect(result.ai_transcription.status).to eq('processing')
     end
-
+    
     context 'when a custom prompt_file is supplied' do
       let(:prompt_file) { 'test_data/ai_transcriptions/custom_prompt.txt' }
 
