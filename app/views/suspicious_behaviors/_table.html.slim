@@ -1,8 +1,8 @@
 table.datagrid.striped.dataTable.no-footer
   thead
     th
-    th =t('suspicious_behaviors.table.user')
-    th =t('suspicious_behaviors.table.page')
+    th.suspicious-behavior-user-cell =t('suspicious_behaviors.table.user')
+    th.suspicious-behavior-page-cell =t('suspicious_behaviors.table.page')
     th =t('suspicious_behaviors.table.metadata')
     th =t('suspicious_behaviors.table.resolved_by')
     =fe_sortable_header(key: :resolved_at, sorting: @sorting, ordering: @ordering) do
@@ -11,7 +11,7 @@ table.datagrid.striped.dataTable.no-footer
       =t('suspicious_behaviors.table.flagged_at')
     th =t('suspicious_behaviors.table.type')
     th =t('suspicious_behaviors.table.status')
-    th =t('suspicious_behaviors.table.actions')
+    th.suspicious-behavior-actions-cell =t('suspicious_behaviors.table.actions')
 
   tbody
     -if @suspicious_behaviors.any?

@@ -295,7 +295,7 @@ module XmlSourceProcessor
 
   def process_any_sections(line)
     6.downto(2) do |depth|
-      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |section_match|
+      line.scan(/(={#{depth}}(.+?)={#{depth}})/).each do |section_match|
         wiki_title = section_match[1].strip
         if wiki_title.length > 0
           verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title)
