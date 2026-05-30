@@ -7,13 +7,24 @@ describe 'URL tests' do
   let!(:work) { create(:work, collection: collection, owner_user_id: owner.id) }
   let!(:work_page) { create(:page, work: work) }
 
-  # Give the user a deed so they appear on the watchlist
-  let!(:deed) do
+  # Give the user a deed so the collection appears on their watchlist
+  let!(:user_deed) do
     create(:deed,
            collection: collection,
            work: work,
            page: work_page,
            user: user,
+           deed_type: DeedType::PAGE_TRANSCRIPTION)
+  end
+
+  # Give the owner a deed in the same collection so their display_name
+  # appears as a link on the user's watchlist deed list
+  let!(:owner_deed) do
+    create(:deed,
+           collection: collection,
+           work: work,
+           page: work_page,
+           user: owner,
            deed_type: DeedType::PAGE_TRANSCRIPTION)
   end
 
@@ -57,7 +68,8 @@ describe 'URL tests' do
     expect(page).to have_content(user.display_name)
     expect(page).not_to have_selector('.carousel')
     expect(page).to have_content("Recent Activity by #{user.display_name}")
-    # make sure links go to user profile
+    # make sure links go to owner profile (owner has a deed in the collection
+    # so their display_name appears as a link in the watchlist deed feed)
     visit dashboard_watchlist_path
     click_link(owner.display_name, match: :first)
     expect(page.current_path).to eq "/#{owner.slug}"
