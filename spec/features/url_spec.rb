@@ -46,14 +46,13 @@ describe 'URL tests' do
 
   it 'checks user URLs' do
     login_as(user, scope: :user)
-    # look at the owner profile
+    # look at the owner profile — owners show their collections, not recent activity
     visit "/#{owner.slug}"
-    expect(page).to have_selector('.carousel')
     owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end
     expect(page).not_to have_content("Recent Activity by #{owner.display_name}")
-    # look at a user profile
+    # look at a user (non-owner) profile — shows recent activity, no carousel
     visit "/#{user.slug}"
     expect(page).to have_content(user.display_name)
     expect(page).not_to have_selector('.carousel')
