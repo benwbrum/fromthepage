@@ -14,7 +14,7 @@ describe 'URL tests' do
            work: work,
            page: work_page,
            user: user,
-           deed_type: Deed::TRANSCRIPTION)
+           deed_type: DeedType::PAGE_TRANSCRIPTION)
   end
 
   it 'visits old URLs' do
