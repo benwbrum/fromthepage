@@ -19,6 +19,7 @@ en:
         pages: Pages
         queued: Queued
         retry: Retry failed jobs
+      token:
         total_tokens_used: Total tokens used
       update:
         success: Retrying AI transcription job.

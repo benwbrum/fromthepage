@@ -61,7 +61,28 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_19_000000) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "ai_transcriptions", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "ai_batch_generation_pages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "ai_batch_generation_id", null: false
+    t.integer "page_id", null: false
+    t.bigint "ai_transcription_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ai_batch_generation_id"], name: "index_ai_batch_generation_pages_on_ai_batch_generation_id"
+    t.index ["ai_transcription_id"], name: "index_ai_batch_generation_pages_on_ai_transcription_id"
+    t.index ["page_id"], name: "index_ai_batch_generation_pages_on_page_id"
+  end
+
+  create_table "ai_batch_generations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.bigint "work_id"
+    t.string "status", default: "new", null: false
+    t.string "batch_key"
+    t.index ["batch_key"], name: "index_ai_batch_generations_on_batch_key"
+    t.index ["collection_id"], name: "index_ai_batch_generations_on_collection_id"
+    t.index ["work_id"], name: "index_ai_batch_generations_on_work_id"
+  end
+
+  create_table "ai_transcriptions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "page_id", null: false
     t.text "source_text", size: :long
     t.text "prompt", size: :long
@@ -698,6 +719,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_19_000000) do
     t.datetime "last_note_updated_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.text "transcription_json", size: :long, collation: "utf8mb4_bin"
+    t.string "cached_ai_status", default: "not_started", null: false
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id", "edit_started_at"], name: "index_pages_on_status_and_work_id_and_edit_started_at"

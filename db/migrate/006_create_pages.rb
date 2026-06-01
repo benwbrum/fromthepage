@@ -24,6 +24,7 @@ class CreatePages < ActiveRecord::Migration[5.0]
       # enum backsupport
       t.column :status, :string, default: :new
       t.column :translation_status, :string, default: :new
+      t.column :cached_ai_status, :string, default: :new
     end
   end
 

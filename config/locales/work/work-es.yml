@@ -19,6 +19,7 @@ es:
         pages: Páginas
         queued: En cola
         retry: Reintentar trabajos fallidos
+      token:
         total_tokens_used: Total de tokens utilizados
       update:
         success: Reintentando la tarea de transcripción de IA.

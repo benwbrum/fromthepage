@@ -103,6 +103,8 @@ class Collection < ApplicationRecord
 
   has_many :suspicious_behaviors
 
+  has_many :ai_batch_generations, class_name: 'AiBatchGeneration'
+
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :intro_block, html: true, length: { maximum: 16.megabytes - 1 }
   validates :footer_block, html: true, length: { maximum: 16.megabytes - 1 }

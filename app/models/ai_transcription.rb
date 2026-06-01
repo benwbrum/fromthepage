@@ -55,6 +55,9 @@ class AiTranscription < ApplicationRecord
   has_one :work, through: :page
   has_one :collection, through: :work
 
+  has_one :ai_batch_generation_page
+  has_one :ai_batch_generation, through: :ai_batch_generation_page
+
   scope :alto, -> { where(model: ALTO_MODEL) }
   scope :not_alto, -> { where.not(model: ALTO_MODEL) }
 

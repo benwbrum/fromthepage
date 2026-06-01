@@ -12,19 +12,12 @@ class Collection::AiTranscriptionsController < CollectionController
   end
 
   def create
-    @result = AiTranscription::BulkCreate.new(
+    @result = AiTranscription::EnqueueBatch.new(
       collection: @collection,
       user: current_user
     ).call
 
-    if @result.success?
-      AiTranscription::BulkGenerateJob.perform_later(
-        collection_id: @collection.id,
-        user_id: current_user.id
-      )
-
-      calculate_counts
-    end
+    calculate_counts if @result.success?
 
     respond_to(&:turbo_stream)
   end
@@ -47,44 +40,9 @@ class Collection::AiTranscriptionsController < CollectionController
     respond_to(&:turbo_stream)
   end
 
-  private
-
-  def calculate_counts
-    collection_pages = Page
-      .joins(:work)
-      .where(works: { collection_id: @collection.id })
-      .reorder(nil)
-
-    latest_per_page = AiTranscription
-      .where(page_id: collection_pages.select(:id))
-      .select('MAX(id) AS id')
-      .group(:page_id)
-
+  def failed
     latest_ai_transcriptions = AiTranscription
       .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
-
-    ai_transcriptions_count, new_transcriptions_count, queued_transcriptions_count,
-      processing_transcriptions_count, finished_transcriptions_count, failed_transcriptions_count =
-      latest_ai_transcriptions.pick(
-        Arel.sql('COUNT(*)'),
-        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'new' THEN 1 ELSE 0 END)"),
-        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'queued' THEN 1 ELSE 0 END)"),
-        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'processing' THEN 1 ELSE 0 END)"),
-        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'finished' THEN 1 ELSE 0 END)"),
-        Arel.sql("SUM(CASE WHEN ai_transcriptions.status = 'error' THEN 1 ELSE 0 END)")
-      )
-
-    @works_count = @collection.works.count
-    @pages_count = collection_pages.count
-    @ai_transcriptions_count = ai_transcriptions_count.to_i
-    @queued_transcriptions_count =
-      new_transcriptions_count.to_i +
-      queued_transcriptions_count.to_i +
-      processing_transcriptions_count.to_i
-
-    @finished_transcriptions_count = finished_transcriptions_count.to_i
-    @failed_transcriptions_count = failed_transcriptions_count.to_i
-    @not_started_transcriptions_count = @pages_count - @ai_transcriptions_count
 
     @failed_ai_transcriptions = latest_ai_transcriptions
       .where(status: :error)
@@ -93,8 +51,39 @@ class Collection::AiTranscriptionsController < CollectionController
       .limit(AiTranscription::MAX_FAILED_ERRORS)
     @failed_ai_transcriptions_hidden_count = [0, @failed_transcriptions_count - @failed_ai_transcriptions.size].max
 
-    @total_token_count = latest_ai_transcriptions
+    render turbo_stream: turbo_stream.replace('failed_transcriptions', partial: 'failed')
+  end
+
+  def tokens
+    @total_token_count = AiTranscription
+      .joins("INNER JOIN (#{latest_per_page.to_sql}) latest ON latest.id = ai_transcriptions.id")
       .where(status: :finished)
       .sum("COALESCE(JSON_EXTRACT(metadata, '$.prompt_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.candidates_token_count'), 0) + COALESCE(JSON_EXTRACT(metadata, '$.thoughts_token_count'), 0)")
+
+    render turbo_stream: turbo_stream.replace('tokens_count', partial: 'token')
+  end
+
+  private
+
+  def calculate_counts
+    @works_count = @collection.works.count
+    @pages_count = @collection.pages.count
+
+    status_counts = @collection.pages.group(:cached_ai_status).count
+
+    @queued_transcriptions_count =
+      status_counts['new'].to_i +
+      status_counts['queued'].to_i +
+      status_counts['processing'].to_i
+    @finished_transcriptions_count = status_counts['finished'].to_i
+    @failed_transcriptions_count = status_counts['error'].to_i
+    @not_started_transcriptions_count = status_counts['not_started'].to_i
+  end
+
+  def latest_per_page
+    @latest_per_page ||= AiTranscription
+      .where(page_id: @collection.pages.select(:id))
+      .select('MAX(id) AS id')
+      .group(:page_id)
   end
 end

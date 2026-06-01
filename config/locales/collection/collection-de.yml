@@ -19,6 +19,7 @@ de:
         pages: Seiten
         queued: In der Warteschlange
         retry: Fehlgeschlagene Aufträge erneut versuchen
+      token:
         total_tokens_used: Gesamte verwendete Tokens
       update:
         success: KI-Transkriptionsauftrag wird wiederholt.

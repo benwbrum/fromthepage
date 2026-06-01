@@ -45,23 +45,10 @@
                 =t('.failed')
               .counter [data-prefix=@not_started_transcriptions_count]
                 =t('.not_started')
-          -if @total_token_count.to_i > 0
-            .collection-stats_counters
-              .counter [data-prefix=@total_token_count]
-                =t('.total_tokens_used')
 
-      -if @failed_ai_transcriptions.present?
-        tr
-          td(colspan="2")
-            h4 =t('.failed_transcription_errors')
-            ul
-              -@failed_ai_transcriptions.each do |ai_transcription|
-                -work = ai_transcription.page.work
-                li
-                  =work.title
-                  |  —
-                  =link_to ai_transcription.page.title, collection_display_page_path(collection.owner, collection, work, ai_transcription.page)
-                  |  —
-                  =link_to ai_transcription.short_error_message, collection_ai_transcription_path(user_slug: collection.owner.to_param, collection_id: collection.to_param, id: ai_transcription.id)
-            -if @failed_ai_transcriptions_hidden_count.positive?
-              p =t('.failed_transcription_errors_hidden', count: @failed_ai_transcriptions_hidden_count)
+            turbo-frame id="tokens_count" src=tokens_collection_ai_transcriptions_path(@collection.owner, @collection) loading="lazy"
+              .collection-stats_counters
+                =t('.calculating_tokens')
+
+      turbo-frame id="failed_transcriptions" src=failed_collection_ai_transcriptions_path(@collection.owner, @collection) loading="lazy"
+        =t('general.loading')
