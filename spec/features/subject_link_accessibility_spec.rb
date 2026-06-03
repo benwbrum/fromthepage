@@ -4,7 +4,7 @@ describe "subject link accessibility" do
   let!(:owner)      { create(:owner) }
   let!(:collection) { create(:collection, owner_user_id: owner.id, works: []) }
   let!(:work)       { create(:work, collection: collection) }
-  let!(:work_page)  { create(:page, work: work) }
+  let!(:work_page)  { create(:page, work: work, status: :transcribed) }
   let!(:article)    { create(:article, collection: collection, title: 'Test Subject') }
 
   before :each do
