@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe "needs review", order: :defined do
   before :all do
-    @owner = User.find_by(login: OWNER)
-    @user = User.find_by(login: USER)
-    @collection = Collection.second
-    @work = Work.find(12)
+    DatabaseCleaner.start
+    @owner = create(:owner)
+    @user = create(:unique_user)
+    @collection = create(:collection, owner_user_id: @owner.id, works: [])
+    @work = create(:work, :with_pages, pages_count: 6, collection: @collection, owner_user_id: @owner.id)
     @page1 = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
@@ -13,6 +14,10 @@ describe "needs review", order: :defined do
     @page5 = @work.pages.fifth
     @page6 = @work.pages.last
     @page_count = @work.pages.count
+  end
+
+  after :all do
+    DatabaseCleaner.clean
   end
 
   before :each do
@@ -162,18 +167,20 @@ describe "needs review", order: :defined do
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
-        completed = w.work_statistic.pct_translation_completed.round
-        review = w.work_statistic.pct_translation_needs_review.round
-        indexed = w.work_statistic.pct_translation_annotated.round
+        stats = w.work_statistic.reload
+        completed = stats.pct_translation_completed.round
+        review = stats.pct_translation_needs_review.round
+        indexed = stats.pct_translation_annotated.round
       else
         if w.ocr_correction
           wording = "corrected"
         else
           wording = "transcribed"
         end
-        completed = w.work_statistic.pct_completed.round
-        review = w.work_statistic.pct_needs_review.round
-        indexed = w.work_statistic.pct_annotated.round
+        stats = w.work_statistic.reload
+        completed = stats.pct_completed.round
+        review = stats.pct_needs_review.round
+        indexed = stats.pct_annotated.round
       end
 
       collection_works = page.all('.collection-work', text: w.title)
@@ -196,18 +203,20 @@ describe "needs review", order: :defined do
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
-        completed = w.work_statistic.pct_translation_completed.round
-        review = w.work_statistic.pct_translation_needs_review.round
+        stats = w.work_statistic.reload
+        completed = stats.pct_translation_completed.round
+        review = stats.pct_translation_needs_review.round
       else
         if w.ocr_correction
           wording = "corrected"
         else
           wording = "transcribed"
         end
-        completed = w.work_statistic.pct_completed.round
-        review = w.work_statistic.pct_needs_review.round
+        stats = w.work_statistic.reload
+        completed = stats.pct_completed.round
+        review = stats.pct_needs_review.round
       end
-      stats = w.work_statistic
+      stats = w.work_statistic.reload
       rows = page.find('#works-table').find_all('tr', text: w.title)
       row = rows.first
       expect(row).to have_content(w.title)

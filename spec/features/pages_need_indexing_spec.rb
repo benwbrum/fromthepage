@@ -3,6 +3,14 @@ require 'spec_helper'
 describe "Pages need indexing" do
   INDEXING_BUTTON_TEXT = 'Pages That Need Indexing'
 
+  before :each do
+    DatabaseCleaner.start
+  end
+
+  after :each do
+    DatabaseCleaner.clean
+  end
+
   it 'when a collection has indexing disabled' do
     collection = create(:collection, :with_pages, subjects_disabled: true)
 
@@ -11,12 +19,6 @@ describe "Pages need indexing" do
 
     page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
     expect(page).to_not have_button(INDEXING_BUTTON_TEXT)
-
-    # Remove Factories
-    user_id = collection.owner.id
-    collection_id = collection.id
-    Collection.destroy(collection_id)
-    User.destroy(user_id)
   end
 
   it 'when a collection has indexing enabled' do
@@ -31,11 +33,5 @@ describe "Pages need indexing" do
     page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
     expect(page).not_to have_button(INDEXING_BUTTON_TEXT)
     collection_page.update!(status: original_page_status)
-
-    # Remove Factories
-    user_id = collection.owner.id
-    collection_id = collection.id
-    Collection.destroy(collection_id)
-    User.destroy(user_id)
   end
 end

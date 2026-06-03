@@ -10,7 +10,10 @@ FactoryBot.define do
     end
 
     trait :with_pages do
-      pages { build_list :page, 2 }
+      transient do
+        pages_count { 2 }
+      end
+      pages { build_list :page, pages_count }
     end
 
     trait :transcribed do
