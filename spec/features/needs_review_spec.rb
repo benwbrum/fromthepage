@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe "needs review", order: :defined do
   before :all do
-    DatabaseCleaner.start
     @owner = create(:owner)
     @user = create(:unique_user)
     @collection = create(:collection, owner_user_id: @owner.id, works: [])
@@ -14,10 +13,6 @@ describe "needs review", order: :defined do
     @page5 = @work.pages.fifth
     @page6 = @work.pages.last
     @page_count = @work.pages.count
-  end
-
-  after :all do
-    DatabaseCleaner.clean
   end
 
   before :each do
