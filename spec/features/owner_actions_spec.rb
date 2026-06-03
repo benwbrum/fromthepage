@@ -346,8 +346,8 @@ describe "owner actions", order: :defined do
   context "owner/staff related", order: :defined, shared_state: true do
     before :all do
       DatabaseCleaner.start
-      @wakanda = create(:owner, login: 'wakanda', email: 'wakanda@example.org')
-      @shuri = create(:unique_user, login: 'shuri', email: 'shuri@example.org')
+      @wakanda = create(:owner)
+      @shuri = create(:unique_user)
     end
 
     after :all do
