@@ -42,7 +42,7 @@ namespace :fromthepage do
                                      .where(created_at: start_day..end_day)
                                      .pluck(:user_id).uniq.count
 
-      f.puts [start_day, registrations_visits.count, ids_with_pages.count, ids_with_activity.count, ai_draft_count].join("\t")
+      f.puts [start_day, trial_user_ids.count, ids_with_pages.count, ids_with_activity.count, ai_draft_count].join("\t")
     end
     f.close
 
