@@ -1,14 +1,28 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe "different user role logins" do
-  before :all do
-    @collections = Collection.all
-    @collection = @collections.find(3)
-
-    @password = "password"
+  before :each do
+    DatabaseCleaner.start
   end
 
+  after :each do
+    DatabaseCleaner.clean
+  end
+
+  let(:inactive_user)    { create(:unique_user) }
+  let(:regular_user)     { create(:unique_user) }
+  let(:activity_collection) { create(:collection) }
+  let(:email_user)       { create(:unique_user) }
+  let(:owner_user)       { create(:owner) }
+  let!(:owner_collection) { create(:collection, owner_user_id: owner_user.id) }
+  let(:admin_user)       { create(:unique_user, :admin, :owner) }
+  let!(:admin_collection) { create(:collection, owner_user_id: admin_user.id) }
+
   it "creates a new user account" do
+    new_login = "test_#{SecureRandom.hex(6)}"
+    new_email = "#{new_login}@test.com"
     user_count = User.all.count
     visit root_path
     expect(page).to have_link("Sign In")
@@ -19,10 +33,10 @@ describe "different user role logins" do
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
     expect(page).to have_content('3 errors prohibited the user from being saved')
-    page.fill_in 'Username', with: 'alexander'
-    page.fill_in 'Email Address', with: 'alexander@test.com'
-    page.fill_in 'Password', with: @password
-    page.fill_in 'Confirm Password', with: @password
+    page.fill_in 'Username', with: new_login
+    page.fill_in 'Email Address', with: new_email
+    page.fill_in 'Password', with: 'password'
+    page.fill_in 'Confirm Password', with: 'password'
     page.fill_in 'Real Name', with: 'Alexander'
     click_button('Create Account')
     new_user_count = User.all.count
@@ -32,8 +46,8 @@ describe "different user role logins" do
 
   it 'signs in an editor with no activity' do
     visit new_user_session_path
-    fill_in 'Login', with: INACTIVE
-    fill_in 'Password', with: @password
+    fill_in 'Login', with: inactive_user.login
+    fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq landing_page_path
   end
@@ -41,13 +55,14 @@ describe "different user role logins" do
   it "signs in an editor with activity" do
     # note: signs in with login id
     # find user activity
-    user = User.find_by(login: USER)
-    collection_ids = Deed.where(user_id: user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
+    work = activity_collection.works.first
+    create(:deed, user: regular_user, collection: activity_collection, work: work)
+    collection_ids = Deed.where(user_id: regular_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     collections = Collection.where(id: collection_ids).order_by_recent_activity
     # check sign in with editor permissions
     visit new_user_session_path
-    fill_in 'Login', with: USER
-    fill_in 'Password', with: @password
+    fill_in 'Login', with: regular_user.login
+    fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
@@ -65,30 +80,28 @@ describe "different user role logins" do
   end
 
   it "signs a user in with email address" do
-    user = User.find_by(login: 'eleanor')
     visit new_user_session_path
-    fill_in 'Login', with: user.email
-    fill_in 'Password', with: @password
+    fill_in 'Login', with: email_user.email
+    fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
     expect(page).to have_content(I18n.t('dashboard.collaborator'))
   end
 
   it "signs an owner in" do
-    user = User.find_by(login: OWNER)
-    @collections = user.all_owner_collections
-    @sets = user.document_sets
+    collections = owner_user.reload.all_owner_collections
+    sets = owner_user.document_sets
     visit new_user_session_path
-    fill_in 'Login', with: OWNER
-    fill_in 'Password', with: @password
+    fill_in 'Login', with: owner_user.login
+    fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_content("Owner Dashboard")
-    @collections.each do |c|
+    collections.each do |c|
       expect(page).to have_content(c.title)
       expect(page).to have_content("#{c.works.count} works")
     end
-    @sets.each do |s|
+    sets.each do |s|
       expect(page).to have_content(s.title)
     end
     visit root_path
@@ -102,8 +115,8 @@ describe "different user role logins" do
   it "signs an admin in" do
     # check sign in with admin permissions
     visit new_user_session_path
-    fill_in 'Login', with: ADMIN
-    fill_in 'Password', with: @password
+    fill_in 'Login', with: admin_user.login
+    fill_in 'Password', with: 'password'
     click_button 'Sign In'
     expect(page.current_path).to eq admin_path
     expect(page).to have_content("Administration")
