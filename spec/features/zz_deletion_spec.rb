@@ -78,29 +78,30 @@ describe "testing deletions" do
     work_count = Work.all.count
     unless @owner.account_type == "Individual Researcher"
       page_count = work.pages.count
-    expect(page_count).to be > 0
-    id = work.id
-    path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
-    expect(Dir.exist?(path)).to be true
-    visit dashboard_owner_path
-    page.find('.maincol').click_link(work.collection.title)
-    links = page.all('.collection-works a', text: work.title)
-    # Click on the first link
-    links.first.click
-    page.find('.tabs').click_link('Settings')
-    expect(page).to have_content(work.title)
-    expect(page).to have_selector('a', text: 'Delete Work')
-    page.find('a', text: 'Delete Work').click
-    # check that each child association has deleted
-    del_work_count = Work.all.count
-    expect(del_work_count).to eq (work_count - 1)
-    pages = work.pages
-    expect(pages).to be_empty
-    deeds = Deed.where(work_id: work.id)
-    expect(deeds).to be_empty
-    expect(Dir.exist?(path)).to be false
+      expect(page_count).to be > 0
+      id = work.id
+      path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
+      # NOTE: Due to AS migration, this dir will never be present from upload
+      # expect(Dir.exist?(path)).to be true
+      visit dashboard_owner_path
+      page.find('.maincol').click_link(work.collection.title)
+      links = page.all('.collection-works a', text: work.title)
+      # Click on the first link
+      links.first.click
+      page.find('.tabs').click_link('Settings')
+      expect(page).to have_content(work.title)
+      expect(page).to have_selector('a', text: 'Delete Work')
+      page.find('a', text: 'Delete Work').click
+      # check that each child association has deleted
+      del_work_count = Work.all.count
+      expect(del_work_count).to eq (work_count - 1)
+      pages = work.pages
+      expect(pages).to be_empty
+      deeds = Deed.where(work_id: work.id)
+      expect(deeds).to be_empty
+      expect(Dir.exist?(path)).to be false
     end
-end
+  end
 
   it "deletes a collection" do
     count = @collections.count
