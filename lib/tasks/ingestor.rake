@@ -261,7 +261,6 @@ namespace :fromthepage do
     [works_created, created_work_ids]
   end
 
-
   def convert_to_work(document_upload, path)
     print "convert_to_work creating database record for #{path}\n"
     print "\tconvert_to_work owner = #{document_upload.user.login}\n"
@@ -330,27 +329,19 @@ namespace :fromthepage do
       document_upload.document_set.works << work
     end
 
-    new_dir_name = File.join(Rails.root,
-                             'public',
-                             'images',
-                             'uploaded',
-                             work.id.to_s)
-    print "\tconvert_to_work creating #{new_dir_name}\n"
+    clean_dir = path.gsub('[', '\[').gsub(']', '\]')
 
-    FileUtils.mkdir_p(new_dir_name)
-    IMAGE_FILE_EXTENSIONS.each do |ext|
-      #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
-      clean_dir=path.gsub('[', '\[').gsub(']', '\]')
-      FileUtils.cp(Dir.glob(File.join(clean_dir, "*.#{ext}")), new_dir_name)
-      Dir.glob(File.join(clean_dir, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }
-      #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
-    end
+    ls = IMAGE_FILE_EXTENSIONS.flat_map do |ext|
+      Dir.glob(File.join(clean_dir, "*.#{ext}"))
+    end.uniq
 
-    # at this point, the new dir should have exactly what we want-- only image files that are adequately compressed.
-    ls = Dir.glob(File.join(new_dir_name, '*')).sort
-    numeric_pages, alpha_numeric_pages = ls.partition { |page| File.basename(page).to_i.positive? }
-    sorted_numeric_pages = numeric_pages.sort_by { |page| File.basename(page).to_i }
-    ls = sorted_numeric_pages.concat(alpha_numeric_pages)
+    numeric_pages, alpha_numeric_pages =
+      ls.partition { |page| File.basename(page, '.*').to_i.positive? }
+
+    sorted_numeric_pages =
+      numeric_pages.sort_by { |page| File.basename(page, '.*').to_i }
+
+    ls = sorted_numeric_pages + alpha_numeric_pages.sort
 
     GC.start
     ls.each_with_index do |image_fn, i|
@@ -363,13 +354,12 @@ namespace :fromthepage do
         page.title = "#{i+1}"
       end
 
-      page.base_image = image_fn
-      print "\t\tconvert_to_work before Magick call \n"
-      image = Magick::ImageList.new(image_fn)
-      GC.start
-      print "\t\tconvert_to_work calculating base and height \n"
-      page.base_height = image.rows
-      page.base_width = image.columns
+      page.image.attach(
+        io: File.open(image_fn),
+        filename: File.basename(image_fn),
+        content_type: Marcel::MimeType.for(Pathname.new(image_fn))
+      )
+
       if work.ocr_correction
         ocr_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, 'txt')))
         xml_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, 'xml')))
