@@ -80,6 +80,8 @@ describe "different user role logins" do
   end
 
   it "signs a user in with email address" do
+    work = activity_collection.works.first
+    create(:deed, user: email_user, collection: activity_collection, work: work)
     visit new_user_session_path
     fill_in 'Login', with: email_user.email
     fill_in 'Password', with: 'password'
